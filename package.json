@@ -21,6 +21,7 @@
     "test": "CI=true react-scripts test",
     "test:watch": "react-scripts test",
     "test:coverage": "npm run test -- --coverage",
+    "test:related": "npm run test -- --passWithNoTests --findRelatedTests src/**",
     "prettier": "prettier --ignore-path .gitignore \"**/*.+(js|jsx|ts|tsx|json)\"",
     "format": "npm run prettier -- --write",
     "check-format": "npm run prettier -- --list-different",
@@ -31,6 +32,28 @@
   },
   "eslintConfig": {
     "extends": "react-app"
+  },
+  "lint-staged": {
+    "**/*.+(js|jsx|ts|tsx)": [
+      "eslint"
+    ],
+    "**/*.+(js|jsx|ts|tsx|json)": [
+      "prettier --write",
+      "npm run test:related"
+    ]
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "npm run check-types && lint-staged"
+    }
+  },
+  "jest": {
+    "collectCoverageFrom": [
+      "src/**/*.{js,jsx,ts,tsx}",
+      "!**/src/index.tsx",
+      "!**/serviceWorker.ts",
+      "!**/react-app-env.d.ts"
+    ]
   },
   "browserslist": {
     "production": [
