@@ -17,7 +17,6 @@ export default function Dashboard(props: {dashboard: Dashboard}) {
     case SIMPLE_BLOG:
       return <SimpleBlog dashboard={props.dashboard} />
     case SIMPLE_BLOG_2:
-      console.log(props.dashboard)
       return <SimpleBlog2 dashboard={props.dashboard} />
     default:
       // Need to handle undefined case explicitly, because the dashboard could
