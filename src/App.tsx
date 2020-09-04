@@ -1,12 +1,12 @@
 import React from 'react'
 import './App.css'
-import Event from 'Event'
+import Dashboard from 'Dashboard'
 
 function App() {
   return (
-    <Event
+    <Dashboard
       //@ts-ignore
-      event={EVENT_DATA}
+      dashboard={EVENT_DATA}
     />
   )
 }

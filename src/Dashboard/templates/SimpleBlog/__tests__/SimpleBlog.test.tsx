@@ -1,5 +1,5 @@
 import React from 'react'
-import {SimpleBlogEvent, SIMPLE_BLOG} from 'Event/templates/SimpleBlog'
+import {SimpleBlogDashboard, SIMPLE_BLOG} from 'Dashboard/templates/SimpleBlog'
 import {render} from '@testing-library/react'
 import App from 'App'
 import faker from 'faker'
@@ -7,7 +7,7 @@ import faker from 'faker'
 it('should show the welcome text', async () => {
   const welcomeText = faker.lorem.sentence()
 
-  const data: SimpleBlogEvent = {
+  const data: SimpleBlogDashboard = {
     template: SIMPLE_BLOG,
     welcomeText,
   }
