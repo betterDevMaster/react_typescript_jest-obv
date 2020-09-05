@@ -1,4 +1,6 @@
 import React from 'react'
+import Button from 'Dashboard/components/Button'
+import {SimpleBlogStyles} from 'Dashboard/templates/SimpleBlog/Styles'
 
 export const SIMPLE_BLOG = 'SIMPLE_BLOG'
 export type SimpleBlogDashboard = {
@@ -7,5 +9,11 @@ export type SimpleBlogDashboard = {
 }
 
 export const SimpleBlog = (props: {dashboard: SimpleBlogDashboard}) => {
-  return <div>{props.dashboard.welcomeText}</div>
+  return (
+    <div>
+      <SimpleBlogStyles />
+      <h2>{props.dashboard.welcomeText}</h2>
+      <Button textTransform="uppercase">foobar</Button>
+    </div>
+  )
 }
