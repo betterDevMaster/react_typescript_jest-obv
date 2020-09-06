@@ -5,12 +5,12 @@ cache:
   paths:
     - .npm/
 
-  test:
-    stage: test
-    except:
-      refs:
-        - staging
-        - production
-    script:
-      - npm i --cache .npm --prefer-offline
-      - npm test
+test:
+  stage: test
+  except:
+    refs:
+      - staging
+      - production
+  script:
+    - npm i --cache .npm --prefer-offline
+    - npm test
