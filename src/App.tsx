@@ -1,12 +1,15 @@
 import React from 'react'
 import Dashboard from 'Dashboard'
+import ThemeProvider from 'ui/theme/ThemeProvider'
 
 function App() {
   return (
-    <Dashboard
-      //@ts-ignore
-      dashboard={EVENT_DATA}
-    />
+    <ThemeProvider>
+      <Dashboard
+        //@ts-ignore
+        dashboard={OBV_DASHBOARD}
+      />
+    </ThemeProvider>
   )
 }
 

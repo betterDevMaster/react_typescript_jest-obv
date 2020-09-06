@@ -1,19 +1,12 @@
 import React from 'react'
-import {SimpleBlogDashboard, SIMPLE_BLOG} from 'Dashboard/templates/SimpleBlog'
 import {render} from '@testing-library/react'
 import App from 'App'
-import faker from 'faker'
+import {fakeSimpleBlog} from 'Dashboard/templates/__utils__/factory'
 
 it('should show the welcome text', async () => {
-  const welcomeText = faker.lorem.sentence()
-
-  const data: SimpleBlogDashboard = {
-    template: SIMPLE_BLOG,
-    welcomeText,
-  }
-
+  const dashboard = fakeSimpleBlog()
   //@ts-ignore
-  window.EVENT_DATA = data
+  window.OBV_DASHBOARD = dashboard
   const {findByText} = render(<App />)
-  expect(await findByText(welcomeText)).toBeInTheDocument()
+  expect(await findByText(dashboard.welcomeText)).toBeInTheDocument()
 })
