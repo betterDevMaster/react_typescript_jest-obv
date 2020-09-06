@@ -38,6 +38,6 @@ const StyledButton = styled(Button)`
   padding: 15px 30px;
 
   &:hover {
-    opacity: 0.85;
+    opacity: 0.8;
   }
 `
