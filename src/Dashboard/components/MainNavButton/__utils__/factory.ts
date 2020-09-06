@@ -6,6 +6,6 @@ export const fakeMainNavButton = (): MainNavButton => ({
   text: faker.lorem.word(),
   link: faker.internet.url(),
   size: faker.random.boolean()
-    ? (faker.random.number({min: 1, max: 12}) as Column)
+    ? (faker.random.number({min: 3, max: 12}) as Column)
     : 12,
 })
