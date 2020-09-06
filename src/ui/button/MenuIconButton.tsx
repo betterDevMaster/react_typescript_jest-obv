@@ -7,24 +7,29 @@ export function MenuIconButton(props: {
   color: string
 }) {
   return (
-    <Box onClick={props.onClick} data-testid="menu-button">
+    <Button onClick={props.onClick} data-testid="menu-button">
       <Bar color={props.color} active={props.active} />
-    </Box>
+    </Button>
   )
 }
 
-const Box = styled.div`
+const Button = styled.button`
   cursor: pointer;
   width: 30px;
   height: 30px;
   top: 50%;
   transform: translateY(-50%);
   position: relative;
+  border: 0;
+  background: 0;
+  padding: 0;
+}
 `
 
 const barStyles = css`
   position: absolute;
   top: 50%;
+  left: 0;
   transform: translateY(-50%);
   content: '';
   height: 4px;

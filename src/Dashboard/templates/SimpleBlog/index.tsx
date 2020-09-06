@@ -7,6 +7,7 @@ import BlogPost from 'Dashboard/components/BlogPost'
 import Header from 'Dashboard/templates/SimpleBlog/Header'
 import Menu from 'Dashboard/templates/SimpleBlog/Menu'
 import {User} from 'user'
+import WelcomeText from 'Dashboard/templates/SimpleBlog/WelcomeText'
 
 export const SIMPLE_BLOG = 'SIMPLE_BLOG'
 export type SimpleBlogDashboard = {
@@ -46,10 +47,10 @@ export const SimpleBlog = (props: {
         toggleMenu={toggleMenu}
       />
       <Container maxWidth="lg">
-        <h2>{props.dashboard.welcomeText}</h2>
-        <Grid container>
+        <WelcomeText>{props.dashboard.welcomeText}</WelcomeText>
+        <Grid container spacing={2}>
           {props.dashboard.mainNavButtons.map((button) => (
-            <Grid item xs={12} md={button.size}>
+            <Grid item xs={12} md={button.size} key={button.text}>
               <MainNavButton {...button} />
             </Grid>
           ))}

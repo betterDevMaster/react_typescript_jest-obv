@@ -9,6 +9,7 @@ export interface ButtonProps {
   textTransform?: 'uppercase' | 'capitalize'
   backgroundColor?: string
   textColor?: string
+  className?: string
 }
 
 export default function Button(props: ButtonProps) {
@@ -21,6 +22,7 @@ export default function Button(props: ButtonProps) {
       color={textColor(props)}
       border={border(props)}
       cursor={cursor(props)}
+      className={props.className}
     >
       {props.children}
     </StyledButton>
@@ -44,7 +46,7 @@ function textTransform(props: ButtonProps) {
 }
 
 function padding(props: ButtonProps) {
-  return '15px 30px'
+  return 'auto'
 }
 
 function textColor(props: ButtonProps) {

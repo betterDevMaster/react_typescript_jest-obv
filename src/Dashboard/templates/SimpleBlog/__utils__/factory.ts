@@ -1,5 +1,6 @@
 import {SimpleBlogDashboard, SIMPLE_BLOG} from 'Dashboard/templates/SimpleBlog'
 import faker from 'faker'
+import {fakeMainNavButton} from 'Dashboard/components/MainNavButton/__utils__/factory'
 
 export const fakeSimpleBlog = (
   overrides?: Partial<SimpleBlogDashboard>,
@@ -12,7 +13,10 @@ export const fakeSimpleBlog = (
   sidebar: {
     background: '#000000',
   },
-  mainNavButtons: [],
+  mainNavButtons: Array.from(
+    {length: faker.random.number({min: 1, max: 5})},
+    fakeMainNavButton,
+  ),
   blogPosts: [],
   ...overrides,
 })

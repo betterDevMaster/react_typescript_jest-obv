@@ -1,7 +1,7 @@
 import React from 'react'
 import Dashboard from 'Dashboard'
 import ThemeProvider from 'ui/theme/ThemeProvider'
-// import {fakeSimpleBlog} from 'Dashboard/templates/__utils__/factory'
+// import {fakeSimpleBlog} from 'Dashboard/templates/SimpleBlog/__utils__/factory'
 // import {fakeUser} from 'user/__utils__/factory'
 
 // const OBV_DASHBOARD = fakeSimpleBlog({
