@@ -1,13 +1,23 @@
 import React from 'react'
 import Dashboard from 'Dashboard'
 import ThemeProvider from 'ui/theme/ThemeProvider'
+// import {fakeSimpleBlog} from 'Dashboard/templates/__utils__/factory'
+// import {fakeUser} from 'user/__utils__/factory'
+
+// const OBV_DASHBOARD = fakeSimpleBlog({
+//   primaryColor: '#ea202e',
+// })
+
+// const OBV_USER = fakeUser()
 
 function App() {
   return (
     <ThemeProvider>
       <Dashboard
-        //@ts-ignore
+        // @ts-ignore
         dashboard={OBV_DASHBOARD}
+        // @ts-ignore
+        user={OBV_USER}
       />
     </ThemeProvider>
   )

@@ -7,13 +7,19 @@ export default function Header(props: {
   logo: string
   title: string
   primaryColor: string
+  toggleMenu: () => void
+  menuVisible: boolean
 }) {
   return (
     <Box>
       <Container maxWidth="lg">
         <Layout>
           <Side>
-            <MenuIconButton color={props.primaryColor} active={false} />
+            <MenuIconButton
+              color={props.primaryColor}
+              active={props.menuVisible}
+              onClick={props.toggleMenu}
+            />
           </Side>
           <Middle>
             <Logo src={props.logo} alt={props.title} />

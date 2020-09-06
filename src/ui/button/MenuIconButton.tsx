@@ -7,7 +7,7 @@ export function MenuIconButton(props: {
   color: string
 }) {
   return (
-    <Box>
+    <Box onClick={props.onClick} data-testid="menu-button">
       <Bar color={props.color} active={props.active} />
     </Box>
   )
