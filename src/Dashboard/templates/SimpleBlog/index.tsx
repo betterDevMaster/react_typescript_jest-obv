@@ -1,4 +1,5 @@
 import React, {useState} from 'react'
+import styled from 'styled-components'
 import SimpleBlogStyles from 'Dashboard/templates/SimpleBlog/Styles'
 import MainNavButton from 'Dashboard/components/MainNavButton'
 import Grid from '@material-ui/core/Grid'
@@ -8,6 +9,11 @@ import Header from 'Dashboard/templates/SimpleBlog/Header'
 import Menu from 'Dashboard/templates/SimpleBlog/Menu'
 import {User} from 'user'
 import WelcomeText from 'Dashboard/templates/SimpleBlog/WelcomeText'
+import Hidden from '@material-ui/core/Hidden'
+import BlogPosts from 'Dashboard/templates/SimpleBlog/BlogPosts'
+import Sidebar, {SidebarProps} from 'Dashboard/templates/SimpleBlog/Sidebar'
+import Footer from 'Dashboard/templates/SimpleBlog/Footer'
+import {withStyles} from '@material-ui/core'
 
 export const SIMPLE_BLOG = 'SIMPLE_BLOG'
 export type SimpleBlogDashboard = {
@@ -30,8 +36,12 @@ export const SimpleBlog = (props: {
   const [menuVisible, setMenuVisible] = useState(false)
   const toggleMenu = () => setMenuVisible(!menuVisible)
 
+  const sidebarProps: SidebarProps = {
+    backgroundColor: props.dashboard.sidebar.background,
+  }
+
   return (
-    <div>
+    <Box>
       <SimpleBlogStyles />
       <Menu
         visible={menuVisible}
@@ -46,16 +56,65 @@ export const SimpleBlog = (props: {
         menuVisible={menuVisible}
         toggleMenu={toggleMenu}
       />
-      <Container maxWidth="lg">
-        <WelcomeText>{props.dashboard.welcomeText}</WelcomeText>
-        <Grid container spacing={2}>
-          {props.dashboard.mainNavButtons.map((button) => (
-            <Grid item xs={12} md={button.size} key={button.text}>
-              <MainNavButton {...button} />
+      <Content>
+        <StyledContainer maxWidth="lg">
+          <WelcomeText>{props.dashboard.welcomeText}</WelcomeText>
+          <MainNavButtons>
+            <Grid container spacing={2}>
+              {props.dashboard.mainNavButtons.map((button) => (
+                <Grid item xs={12} md={button.size} key={button.text}>
+                  <MainNavButton {...button} />
+                </Grid>
+              ))}
             </Grid>
-          ))}
-        </Grid>
-      </Container>
-    </div>
+          </MainNavButtons>
+          <FullHeightGrid container spacing={2}>
+            <Hidden mdUp>
+              <Grid item xs={12}>
+                <Sidebar {...sidebarProps} />
+              </Grid>
+            </Hidden>
+            <Grid item xs={12} md={9}>
+              <BlogPosts />
+            </Grid>
+            <Hidden smDown>
+              <Grid item xs={12} md={3}>
+                <Sidebar {...sidebarProps} />
+              </Grid>
+            </Hidden>
+          </FullHeightGrid>
+        </StyledContainer>
+      </Content>
+      <Footer />
+    </Box>
   )
 }
+
+const Box = styled.div`
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+`
+
+const Content = styled.div`
+  flex: 1;
+  margin-bottom: 20px;
+  display: flex;
+`
+
+const MainNavButtons = styled.div`
+  margin-bottom: 30px;
+`
+
+const StyledContainer = withStyles({
+  root: {
+    display: 'flex',
+    flexDirection: 'column',
+  },
+})(Container)
+
+const FullHeightGrid = withStyles({
+  root: {
+    flex: 1,
+  },
+})(Grid)

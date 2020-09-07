@@ -46,6 +46,7 @@ const Side = styled.div`
 
 const Box = styled.div`
   box-shadow: 20px 20px 50px #ddd;
+  margin-bottom: 60px;
 `
 
 const Middle = styled.div`
