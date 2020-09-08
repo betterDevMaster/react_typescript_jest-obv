@@ -22,6 +22,7 @@ export type SimpleBlogDashboard = {
   primaryColor: string
   logo: string
   welcomeText: string
+  emojis: string[] | null
   sidebar: {
     background: string
   }
@@ -38,6 +39,7 @@ export const SimpleBlog = (props: {
 
   const sidebarProps: SidebarProps = {
     backgroundColor: props.dashboard.sidebar.background,
+    emojis: props.dashboard.emojis,
   }
 
   return (
@@ -74,11 +76,11 @@ export const SimpleBlog = (props: {
                 <Sidebar {...sidebarProps} />
               </Grid>
             </Hidden>
-            <Grid item xs={12} md={9}>
+            <Grid item xs={12} md={8}>
               <BlogPosts />
             </Grid>
             <Hidden smDown>
-              <Grid item xs={12} md={3}>
+              <Grid item xs={12} md={4}>
                 <Sidebar {...sidebarProps} />
               </Grid>
             </Hidden>
