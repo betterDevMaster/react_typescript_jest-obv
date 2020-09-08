@@ -27,4 +27,8 @@ const Box = styled.div`
 const Emoji = styled.span`
   margin: 0 ${(props) => props.theme.spacing[3]};
   font-size: 55px;
+
+  @media (min-width: ${(props) => props.theme.breakpoints.md}) {
+    font-size: 34px;
+  }
 `
