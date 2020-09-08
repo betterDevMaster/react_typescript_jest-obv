@@ -8,6 +8,8 @@ import * as ALL_EMOJIS from 'ui/system/emojis'
 import {setWindowMatchMedia} from '__utils__/media-query'
 import Dashboard from 'Dashboard'
 import {render} from '__utils__/render'
+import ThemeProvider from 'ui/theme/ThemeProvider'
+import {fakeAgenda} from 'Dashboard/components/AgendaList/__utils__/factory'
 
 beforeAll(() => {
   // Required to render <Hidden/> components
@@ -72,4 +74,30 @@ it('should render emojis', async () => {
 
   const emojiEl = await findAllByLabelText('event emoji')
   expect(emojiEl.length).toBe(emojis.length)
+})
+
+it('should render agendas', async () => {
+  const dashboard = fakeSimpleBlog({agendas: []})
+
+  const {queryByText, findAllByLabelText, rerender} = render(
+    <Dashboard dashboard={dashboard} user={fakeUser()} />,
+  )
+
+  expect(queryByText(/agenda/i)).not.toBeInTheDocument()
+
+  const agendas = Array.from(
+    {length: faker.random.number({min: 1, max: 4})},
+    fakeAgenda,
+  )
+
+  const dashboardWithAgendas = fakeSimpleBlog({
+    agendas,
+  })
+  rerender(
+    <ThemeProvider>
+      <Dashboard dashboard={dashboardWithAgendas} user={fakeUser()} />
+    </ThemeProvider>,
+  )
+
+  expect((await findAllByLabelText('agenda')).length).toBe(agendas.length)
 })

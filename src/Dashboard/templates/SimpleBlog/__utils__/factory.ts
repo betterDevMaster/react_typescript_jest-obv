@@ -3,6 +3,7 @@ import faker from 'faker'
 import {fakeMainNavButton} from 'Dashboard/components/MainNavButton/__utils__/factory'
 import * as ALL_EMOJIS from 'ui/system/emojis'
 import {pipe} from 'ramda'
+import {fakeAgenda} from 'Dashboard/components/AgendaList/__utils__/factory'
 
 const emojis = Object.values(ALL_EMOJIS)
 
@@ -19,11 +20,16 @@ export const fakeSimpleBlog = (
       background: '#000000',
     },
     mainNavButtons: [],
-    emojis: null,
+    emojis: [],
     blogPosts: [],
+    agendas: [],
   }
 
-  const attributes = pipe(withMainNavButtons, withEmojis)(requiredAttributes)
+  const attributes = pipe(
+    withMainNavButtons,
+    withEmojis,
+    withAgendas,
+  )(requiredAttributes)
 
   return {
     ...attributes,
@@ -42,15 +48,20 @@ function withMainNavButtons(attributes: SimpleBlogDashboard) {
 }
 
 function withEmojis(attributes: SimpleBlogDashboard) {
-  const hasEmojis = faker.random.boolean()
-  if (!hasEmojis) {
-    return attributes
-  }
-
   return {
     ...attributes,
-    emojis: Array.from({length: faker.random.number({min: 1, max: 5})}, () =>
+    emojis: Array.from({length: faker.random.number({min: 0, max: 5})}, () =>
       faker.random.arrayElement(emojis),
+    ),
+  }
+}
+
+function withAgendas(attributes: SimpleBlogDashboard) {
+  return {
+    ...attributes,
+    agendas: Array.from(
+      {length: faker.random.number({min: 0, max: 4})},
+      fakeAgenda,
     ),
   }
 }

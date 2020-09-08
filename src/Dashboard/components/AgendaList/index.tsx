@@ -1,0 +1,98 @@
+import React from 'react'
+import styled from 'styled-components'
+import moment from 'moment'
+
+export interface Agenda {
+  startDate: string
+  endDate?: string
+  text: string
+  link?: string
+}
+
+export default function AgendaList(props: {agendas: Agenda[]}) {
+  const hasAgenda = props.agendas.length > 0
+  if (!hasAgenda) {
+    return null
+  }
+
+  return (
+    <Box>
+      <Title>AGENDA:</Title>
+      {props.agendas.map((agenda, index) => (
+        <Agenda key={index} aria-label="agenda">
+          <Times agenda={agenda} />
+          <Item>{agenda.text}</Item>
+        </Agenda>
+      ))}
+    </Box>
+  )
+}
+
+function Times(props: {agenda: Agenda}) {
+  const start = moment(props.agenda.startDate)
+
+  const getMonth = (date: moment.Moment) => date.format('MMMM')
+  const getDay = (date: moment.Moment) => date.format('Do')
+  const getTime = (date: moment.Moment) => date.format('h:mm a')
+  const getTimezone = (date: moment.Moment) => date.format('zz')
+
+  const tz = getTimezone(start)
+
+  if (!props.agenda.endDate) {
+    return (
+      <TimeText>
+        <strong>{`${getMonth(start)} ${getDay(start)}:`}</strong>{' '}
+        {getTime(start)}
+        {tz}
+      </TimeText>
+    )
+  }
+
+  const end = moment(props.agenda.endDate)
+  const sameMonth = getMonth(end) === getMonth(start)
+  const sameDay = getDay(end) === getDay(start)
+  if (sameMonth && sameDay) {
+    return (
+      <TimeText>
+        <strong>{`${getMonth(start)} ${getDay(start)}:`}</strong>{' '}
+        {getTime(start)}
+        {`- ${getTime(end)} ${tz}`}
+      </TimeText>
+    )
+  }
+
+  return (
+    <TimeText>
+      <strong>{`${getMonth(start)} ${getDay(start)}:`}</strong> {getTime(start)}
+      {` - `}
+      <strong>
+        {getMonth(end)} {getDay(end)}:
+      </strong>{' '}
+      {getTime(end)} {tz}
+    </TimeText>
+  )
+}
+
+const Box = styled.div`
+  margin-bottom: ${(props) => props.theme.spacing[8]};
+`
+const Title = styled.h2`
+  margin: 0 0 ${(props) => props.theme.spacing[2]};
+  font-size: 30px;
+  font-weight: bold;
+  font-style: italic;
+`
+
+const Agenda = styled.div`
+  margin-bottom: ${(props) => props.theme.spacing[3]};
+`
+
+const TimeText = styled.span`
+  font-size: 14px;
+  display: block;
+  font-style: italic;
+`
+
+const Item = styled.span`
+  font-size: 18px;
+`
