@@ -4,12 +4,12 @@ import {fireEvent} from '@testing-library/react'
 import {fakeSimpleBlog} from 'Dashboard/templates/SimpleBlog/__utils__/factory'
 import {fakeUser} from 'user/__utils__/factory'
 import {fakeMainNavButton} from 'Dashboard/components/MainNavButton/__utils__/factory'
-import * as ALL_EMOJIS from 'ui/system/emojis'
 import {setWindowMatchMedia} from '__utils__/media-query'
 import Dashboard from 'Dashboard'
 import {render} from '__utils__/render'
 import ThemeProvider from 'ui/theme/ThemeProvider'
 import {fakeAgenda} from 'Dashboard/components/AgendaList/__utils__/factory'
+import {ALL_EMOJIS} from 'Dashboard/components/EmojiList/emoji'
 
 beforeAll(() => {
   // Required to render <Hidden/> components
@@ -57,10 +57,9 @@ it('should render main nav buttons', async () => {
 })
 
 it('should render emojis', async () => {
-  const allEmojis = Object.values(ALL_EMOJIS)
   const emojis = Array.from(
     {length: faker.random.number({min: 1, max: 5})},
-    () => faker.random.arrayElement(allEmojis),
+    () => faker.random.arrayElement(ALL_EMOJIS),
   )
 
   const {findAllByLabelText} = render(

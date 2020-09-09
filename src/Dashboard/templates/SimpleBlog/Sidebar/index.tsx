@@ -1,8 +1,8 @@
 import React from 'react'
 import styled from 'styled-components'
 import {SimpleBlogDashboard} from 'Dashboard/templates/SimpleBlog'
-import Emojis from 'Dashboard/templates/SimpleBlog/Sidebar/Emojis'
 import AgendaList from 'Dashboard/components/AgendaList'
+import EmojiList from 'Dashboard/components/EmojiList'
 
 export type SidebarProps = Pick<SimpleBlogDashboard, 'emojis' | 'agendas'> & {
   backgroundColor: SimpleBlogDashboard['sidebar']['background']
@@ -11,7 +11,7 @@ export type SidebarProps = Pick<SimpleBlogDashboard, 'emojis' | 'agendas'> & {
 export default function Sidebar(props: SidebarProps) {
   return (
     <Box backgroundColor={props.backgroundColor} style={{color: '#FFF'}}>
-      <Emojis emojis={props.emojis} />
+      <EmojiList emojis={props.emojis} />
       <AgendaList agendas={props.agendas} />
     </Box>
   )

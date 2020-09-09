@@ -1,11 +1,9 @@
 import {SimpleBlogDashboard, SIMPLE_BLOG} from 'Dashboard/templates/SimpleBlog'
 import faker from 'faker'
 import {fakeMainNavButton} from 'Dashboard/components/MainNavButton/__utils__/factory'
-import * as ALL_EMOJIS from 'ui/system/emojis'
 import {pipe} from 'ramda'
 import {fakeAgenda} from 'Dashboard/components/AgendaList/__utils__/factory'
-
-const emojis = Object.values(ALL_EMOJIS)
+import {ALL_EMOJIS} from 'Dashboard/components/EmojiList/emoji'
 
 export const fakeSimpleBlog = (
   overrides?: Partial<SimpleBlogDashboard>,
@@ -51,7 +49,7 @@ function withEmojis(attributes: SimpleBlogDashboard) {
   return {
     ...attributes,
     emojis: Array.from({length: faker.random.number({min: 0, max: 5})}, () =>
-      faker.random.arrayElement(emojis),
+      faker.random.arrayElement(ALL_EMOJIS),
     ),
   }
 }

@@ -1,8 +1,0 @@
-export const HEART = '❤️'
-export const ONE_HUNDRED = '💯'
-export const THUMBS_UP = '👍'
-export const LIGHTNING = '⚡️'
-export const CLAP = '👏'
-export const SMILE = '😃'
-export const JOY = '😂'
-export const SUNGLASSES = '😎'

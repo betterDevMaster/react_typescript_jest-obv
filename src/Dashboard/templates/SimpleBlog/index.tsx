@@ -15,6 +15,7 @@ import Sidebar, {SidebarProps} from 'Dashboard/templates/SimpleBlog/Sidebar'
 import Footer from 'Dashboard/templates/SimpleBlog/Footer'
 import {withStyles} from '@material-ui/core'
 import {Agenda} from 'Dashboard/components/AgendaList'
+import {Emoji} from 'Dashboard/components/EmojiList/emoji'
 
 export const SIMPLE_BLOG = 'SIMPLE_BLOG'
 export type SimpleBlogDashboard = {
@@ -23,7 +24,7 @@ export type SimpleBlogDashboard = {
   primaryColor: string
   logo: string
   welcomeText: string
-  emojis: string[]
+  emojis: Emoji[]
   sidebar: {
     background: string
   }

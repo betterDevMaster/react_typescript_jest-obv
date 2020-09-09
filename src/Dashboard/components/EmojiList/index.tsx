@@ -3,7 +3,8 @@ import styled from 'styled-components'
 import {SidebarProps} from 'Dashboard/templates/SimpleBlog/Sidebar'
 
 export default function Emojis(props: {emojis: SidebarProps['emojis']}) {
-  if (!props.emojis) {
+  const hasEmojis = props.emojis.length > 0
+  if (!hasEmojis) {
     return null
   }
 
