@@ -4,6 +4,7 @@ import {fakeMainNavButton} from 'Dashboard/components/MainNavButton/__utils__/fa
 import {pipe} from 'ramda'
 import {fakeAgenda} from 'Dashboard/components/AgendaList/__utils__/factory'
 import {ALL_EMOJIS} from 'Dashboard/components/EmojiList/emoji'
+import {fakePoints} from 'Dashboard/components/PointsSummary/__utils__/factory'
 
 export const fakeSimpleBlog = (
   overrides?: Partial<SimpleBlogDashboard>,
@@ -16,17 +17,20 @@ export const fakeSimpleBlog = (
     primaryColor: '#14aecf',
     sidebar: {
       background: '#000000',
+      textColor: '#FFFFFF',
     },
     mainNavButtons: [],
     emojis: [],
     blogPosts: [],
     agendas: [],
+    points: null,
   }
 
   const attributes = pipe(
     withMainNavButtons,
     withEmojis,
     withAgendas,
+    withPoints,
   )(requiredAttributes)
 
   return {
@@ -61,5 +65,16 @@ function withAgendas(attributes: SimpleBlogDashboard) {
       {length: faker.random.number({min: 0, max: 4})},
       fakeAgenda,
     ),
+  }
+}
+
+function withPoints(attributes: SimpleBlogDashboard) {
+  if (faker.random.boolean()) {
+    return attributes
+  }
+
+  return {
+    ...attributes,
+    points: fakePoints(),
   }
 }

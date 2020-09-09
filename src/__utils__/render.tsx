@@ -5,4 +5,22 @@ import ThemeProvider from 'ui/theme/ThemeProvider'
 export const render = (
   component: React.ReactElement,
   options?: Omit<RenderOptions, 'queries'>,
-) => rtlRender(<ThemeProvider>{component}</ThemeProvider>, options)
+) => {
+  const {rerender: rtlRerender, ...renderResult} = rtlRender(
+    <Providers>{component}</Providers>,
+    options,
+  )
+
+  const rerender = (component: React.ReactElement) => {
+    return rtlRerender(<Providers>{component}</Providers>)
+  }
+
+  return {
+    rerender,
+    ...renderResult,
+  }
+}
+
+function Providers(props: {children: React.ReactElement}) {
+  return <ThemeProvider>{props.children}</ThemeProvider>
+}

@@ -10,6 +10,14 @@ body {
   font-family: Arial, 'Times New Roman', Verdana;
   font-size: 17px;
 }
+
+a {
+  text-decoration: none;
+  
+  &:hover {
+    text-decoration: underline;
+  }
+}
 `
 
 export default SimpleBlogStyles

@@ -1,8 +1,8 @@
 import React from 'react'
 import styled from 'styled-components'
-import {SidebarProps} from 'Dashboard/templates/SimpleBlog/Sidebar'
+import {Emoji} from 'Dashboard/components/EmojiList/emoji'
 
-export default function Emojis(props: {emojis: SidebarProps['emojis']}) {
+export default function Emojis(props: {emojis: Emoji[]}) {
   const hasEmojis = props.emojis.length > 0
   if (!hasEmojis) {
     return null
@@ -11,9 +11,9 @@ export default function Emojis(props: {emojis: SidebarProps['emojis']}) {
   return (
     <Box>
       {props.emojis.map((emoji, index) => (
-        <Emoji aria-label="event emoji" key={index}>
+        <EmojiText aria-label="event emoji" key={index}>
           {emoji}
-        </Emoji>
+        </EmojiText>
       ))}
     </Box>
   )
@@ -25,7 +25,7 @@ const Box = styled.div`
   justify-content: center;
 `
 
-const Emoji = styled.span`
+const EmojiText = styled.span`
   margin: 0 ${(props) => props.theme.spacing[3]};
   font-size: 55px;
 

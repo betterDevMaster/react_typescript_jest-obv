@@ -16,6 +16,7 @@ import Footer from 'Dashboard/templates/SimpleBlog/Footer'
 import {withStyles} from '@material-ui/core'
 import {Agenda} from 'Dashboard/components/AgendaList'
 import {Emoji} from 'Dashboard/components/EmojiList/emoji'
+import {Points} from 'Dashboard/components/PointsSummary'
 
 export const SIMPLE_BLOG = 'SIMPLE_BLOG'
 export type SimpleBlogDashboard = {
@@ -27,10 +28,12 @@ export type SimpleBlogDashboard = {
   emojis: Emoji[]
   sidebar: {
     background: string
+    textColor: string
   }
   mainNavButtons: MainNavButton[]
   blogPosts: BlogPost[]
   agendas: Agenda[]
+  points: Points
 }
 
 export const SimpleBlog = (props: {
@@ -42,8 +45,10 @@ export const SimpleBlog = (props: {
 
   const sidebarProps: SidebarProps = {
     backgroundColor: props.dashboard.sidebar.background,
+    textColor: props.dashboard.sidebar.textColor,
     emojis: props.dashboard.emojis,
     agendas: props.dashboard.agendas,
+    points: props.dashboard.points,
   }
 
   return (

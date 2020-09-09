@@ -1,6 +1,6 @@
 import React from 'react'
 import faker from 'faker'
-import {fireEvent} from '@testing-library/react'
+import {fireEvent, findByText} from '@testing-library/react'
 import {fakeSimpleBlog} from 'Dashboard/templates/SimpleBlog/__utils__/factory'
 import {fakeUser} from 'user/__utils__/factory'
 import {fakeMainNavButton} from 'Dashboard/components/MainNavButton/__utils__/factory'
@@ -10,6 +10,7 @@ import {render} from '__utils__/render'
 import ThemeProvider from 'ui/theme/ThemeProvider'
 import {fakeAgenda} from 'Dashboard/components/AgendaList/__utils__/factory'
 import {ALL_EMOJIS} from 'Dashboard/components/EmojiList/emoji'
+import {fakePoints} from 'Dashboard/components/PointsSummary/__utils__/factory'
 
 beforeAll(() => {
   // Required to render <Hidden/> components
@@ -92,11 +93,31 @@ it('should render agendas', async () => {
   const dashboardWithAgendas = fakeSimpleBlog({
     agendas,
   })
-  rerender(
-    <ThemeProvider>
-      <Dashboard dashboard={dashboardWithAgendas} user={fakeUser()} />
-    </ThemeProvider>,
-  )
+  rerender(<Dashboard dashboard={dashboardWithAgendas} user={fakeUser()} />)
 
   expect((await findAllByLabelText('agenda')).length).toBe(agendas.length)
+})
+
+it('should render points', async () => {
+  const dashboard = fakeSimpleBlog({points: null})
+
+  const {queryByText, rerender, findByText} = render(
+    <Dashboard dashboard={dashboard} user={fakeUser()} />,
+  )
+
+  expect(queryByText(/you've earned/i)).not.toBeInTheDocument()
+
+  const points = fakePoints()
+  const dashboardWithPoints = fakeSimpleBlog({
+    points,
+  })
+
+  rerender(<Dashboard dashboard={dashboardWithPoints} user={fakeUser()} />)
+
+  const pointsText = new RegExp(
+    `you've earned ${points.numPoints} ${points.unit}!`,
+    'i',
+  )
+
+  expect(await findByText(pointsText)).toBeInTheDocument()
 })
