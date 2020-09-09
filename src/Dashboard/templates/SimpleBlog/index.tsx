@@ -17,6 +17,7 @@ import {withStyles} from '@material-ui/core'
 import {Agenda} from 'Dashboard/components/AgendaList'
 import {Emoji} from 'Dashboard/components/EmojiList/emoji'
 import {Points} from 'Dashboard/components/PointsSummary'
+import {Resource} from 'Dashboard/components/ResourceList'
 
 export const SIMPLE_BLOG = 'SIMPLE_BLOG'
 export type SimpleBlogDashboard = {
@@ -34,6 +35,7 @@ export type SimpleBlogDashboard = {
   blogPosts: BlogPost[]
   agendas: Agenda[]
   points: Points
+  resources: Resource[]
 }
 
 export const SimpleBlog = (props: {
@@ -49,6 +51,7 @@ export const SimpleBlog = (props: {
     emojis: props.dashboard.emojis,
     agendas: props.dashboard.agendas,
     points: props.dashboard.points,
+    resources: props.dashboard.resources,
   }
 
   return (

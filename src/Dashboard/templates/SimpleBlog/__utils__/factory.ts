@@ -5,11 +5,13 @@ import {pipe} from 'ramda'
 import {fakeAgenda} from 'Dashboard/components/AgendaList/__utils__/factory'
 import {ALL_EMOJIS} from 'Dashboard/components/EmojiList/emoji'
 import {fakePoints} from 'Dashboard/components/PointsSummary/__utils__/factory'
+import {fakeResource} from 'Dashboard/components/ResourceList/__utils__/factory'
+import {sometimes} from '__utils__/attributes'
 
 export const fakeSimpleBlog = (
   overrides?: Partial<SimpleBlogDashboard>,
 ): SimpleBlogDashboard => {
-  const requiredAttributes: SimpleBlogDashboard = {
+  const defaultAttributes: SimpleBlogDashboard = {
     template: SIMPLE_BLOG,
     title: faker.company.companyName(),
     logo: 'https://tax.live/success_summit/images/virtual-2020-logo.png',
@@ -24,14 +26,16 @@ export const fakeSimpleBlog = (
     blogPosts: [],
     agendas: [],
     points: null,
+    resources: [],
   }
 
   const attributes = pipe(
     withMainNavButtons,
     withEmojis,
     withAgendas,
-    withPoints,
-  )(requiredAttributes)
+    sometimes<SimpleBlogDashboard>(withPoints),
+    sometimes<SimpleBlogDashboard>(withResources),
+  )(defaultAttributes)
 
   return {
     ...attributes,
@@ -69,12 +73,18 @@ function withAgendas(attributes: SimpleBlogDashboard) {
 }
 
 function withPoints(attributes: SimpleBlogDashboard) {
-  if (faker.random.boolean()) {
-    return attributes
-  }
-
   return {
     ...attributes,
     points: fakePoints(),
+  }
+}
+
+function withResources(attributes: SimpleBlogDashboard) {
+  return {
+    ...attributes,
+    resources: Array.from(
+      {length: faker.random.number({min: 1, max: 6})},
+      fakeResource,
+    ),
   }
 }

@@ -1,6 +1,7 @@
 import React from 'react'
 import styled from 'styled-components'
 import moment from 'moment'
+import Heading from 'Dashboard/templates/SimpleBlog/Sidebar/Heading'
 
 export interface Agenda {
   startDate: string
@@ -17,7 +18,7 @@ export default function AgendaList(props: {agendas: Agenda[]}) {
 
   return (
     <Box>
-      <Title>AGENDA:</Title>
+      <Heading>AGENDA:</Heading>
       {props.agendas.map((agenda, index) => (
         <Agenda key={index} aria-label="agenda">
           <Times agenda={agenda} />
@@ -75,12 +76,6 @@ function Times(props: {agenda: Agenda}) {
 
 const Box = styled.div`
   margin-bottom: ${(props) => props.theme.spacing[8]};
-`
-const Title = styled.h2`
-  margin: 0 0 ${(props) => props.theme.spacing[2]};
-  font-size: 30px;
-  font-weight: bold;
-  font-style: italic;
 `
 
 const Agenda = styled.div`

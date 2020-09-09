@@ -11,6 +11,7 @@ import ThemeProvider from 'ui/theme/ThemeProvider'
 import {fakeAgenda} from 'Dashboard/components/AgendaList/__utils__/factory'
 import {ALL_EMOJIS} from 'Dashboard/components/EmojiList/emoji'
 import {fakePoints} from 'Dashboard/components/PointsSummary/__utils__/factory'
+import {fakeResource} from 'Dashboard/components/ResourceList/__utils__/factory'
 
 beforeAll(() => {
   // Required to render <Hidden/> components
@@ -120,4 +121,24 @@ it('should render points', async () => {
   )
 
   expect(await findByText(pointsText)).toBeInTheDocument()
+})
+
+it('should render resources', async () => {
+  const dashboard = fakeSimpleBlog({resources: []})
+
+  const {queryByText, rerender, findAllByLabelText} = render(
+    <Dashboard dashboard={dashboard} user={fakeUser()} />,
+  )
+
+  expect(queryByText(/resources:/i)).not.toBeInTheDocument()
+
+  const numResources = faker.random.number({min: 1, max: 6})
+  const withResources = fakeSimpleBlog({
+    resources: Array.from({length: numResources}, fakeResource),
+  })
+
+  rerender(<Dashboard dashboard={withResources} user={fakeUser()} />)
+
+  const resources = await findAllByLabelText('event resource')
+  expect(resources.length).toBe(numResources)
 })
