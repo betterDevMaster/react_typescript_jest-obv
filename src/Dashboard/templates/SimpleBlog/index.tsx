@@ -36,7 +36,7 @@ export type SimpleBlogDashboard = {
   mainNavButtons: MainNavButton[]
   blogPosts: BlogPost[]
   agendas: Agenda[]
-  points: Points
+  points: Points | null
   resourceList: ResourceList
 }
 

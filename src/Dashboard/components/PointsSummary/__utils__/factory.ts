@@ -1,7 +1,7 @@
 import {Points} from 'Dashboard/components/PointsSummary'
 import faker from 'faker'
 
-export const fakePoints = (): NonNullable<Points> => ({
+export const fakePoints = (): Points => ({
   headerImage:
     'https://tax.live/success_summit/images/supercharged-points-banner.png',
   description: faker.lorem.paragraph(1),

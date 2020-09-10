@@ -7,10 +7,10 @@ export type Points = {
   unit: string
   numPoints: number
   leaderboardUrl: string
-} | null
+}
 
 export default function PointsSummary(props: {
-  points: Points
+  points: Points | null
   component?: React.FunctionComponent<any>
 }) {
   if (!props.points) {
