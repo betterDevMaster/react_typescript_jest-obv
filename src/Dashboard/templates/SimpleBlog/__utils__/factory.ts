@@ -7,6 +7,7 @@ import {ALL_EMOJIS} from 'Dashboard/components/EmojiList/emoji'
 import {fakePoints} from 'Dashboard/components/PointsSummary/__utils__/factory'
 import {fakeResource} from 'Dashboard/components/ResourceList/__utils__/factory'
 import {sometimes} from '__utils__/attributes'
+import {fakeTicketRibbon} from 'Dashboard/components/TicketRibbon/__utils__/factory'
 
 export const fakeSimpleBlog = (
   overrides?: Partial<SimpleBlogDashboard>,
@@ -21,6 +22,7 @@ export const fakeSimpleBlog = (
       background: '#000000',
       textColor: '#FFFFFF',
     },
+    ticketRibbon: null,
     mainNavButtons: [],
     emojis: [],
     blogPosts: [],
@@ -36,6 +38,7 @@ export const fakeSimpleBlog = (
     withMainNavButtons,
     withEmojis,
     withAgendas,
+    sometimes<SimpleBlogDashboard>(withTicketRibbon),
     sometimes<SimpleBlogDashboard>(withPoints),
     sometimes<SimpleBlogDashboard>(withResources),
   )(defaultAttributes)
@@ -92,5 +95,12 @@ function withResources(attributes: SimpleBlogDashboard) {
         fakeResource,
       ),
     },
+  }
+}
+
+function withTicketRibbon(attributes: SimpleBlogDashboard) {
+  return {
+    ...attributes,
+    ticketRibbon: fakeTicketRibbon(),
   }
 }

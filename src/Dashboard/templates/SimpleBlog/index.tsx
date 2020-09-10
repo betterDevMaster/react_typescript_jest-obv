@@ -18,12 +18,14 @@ import {Agenda} from 'Dashboard/components/AgendaList'
 import {Emoji} from 'Dashboard/components/EmojiList/emoji'
 import {Points} from 'Dashboard/components/PointsSummary'
 import {ResourceList} from 'Dashboard/components/ResourceList'
+import {TicketRibbon} from 'Dashboard/components/TicketRibbon'
 
 export const SIMPLE_BLOG = 'SIMPLE_BLOG'
 export type SimpleBlogDashboard = {
   template: typeof SIMPLE_BLOG
   title: string
   primaryColor: string
+  ticketRibbon: TicketRibbon | null
   logo: string
   welcomeText: string
   emojis: Emoji[]
@@ -52,6 +54,7 @@ export const SimpleBlog = (props: {
     agendas: props.dashboard.agendas,
     points: props.dashboard.points,
     resourceList: props.dashboard.resourceList,
+    ticketRibbon: props.dashboard.ticketRibbon,
   }
 
   return (

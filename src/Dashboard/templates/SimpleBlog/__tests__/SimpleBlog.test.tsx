@@ -12,6 +12,7 @@ import {fakeAgenda} from 'Dashboard/components/AgendaList/__utils__/factory'
 import {ALL_EMOJIS} from 'Dashboard/components/EmojiList/emoji'
 import {fakePoints} from 'Dashboard/components/PointsSummary/__utils__/factory'
 import {fakeResource} from 'Dashboard/components/ResourceList/__utils__/factory'
+import {fakeTicketRibbon} from 'Dashboard/components/TicketRibbon/__utils__/factory'
 
 beforeAll(() => {
   // Required to render <Hidden/> components
@@ -149,4 +150,28 @@ it('should render resources', async () => {
 
   const resources = await findAllByLabelText('event resource')
   expect(resources.length).toBe(numResources)
+})
+
+it('should render ticket ribbons', () => {
+  const dashboard = fakeSimpleBlog({
+    ticketRibbon: null,
+  })
+
+  const ticketRibbon = fakeTicketRibbon()
+
+  const {queryByLabelText, rerender} = render(
+    <Dashboard dashboard={dashboard} user={fakeUser()} />,
+  )
+
+  const label = `${ticketRibbon.name} ticket`
+
+  expect(queryByLabelText(new RegExp(label))).not.toBeInTheDocument()
+
+  const withTicketRibbon = fakeSimpleBlog({
+    ticketRibbon,
+  })
+
+  rerender(<Dashboard dashboard={withTicketRibbon} user={fakeUser()} />)
+
+  expect(queryByLabelText(new RegExp(label))).toBeInTheDocument()
 })

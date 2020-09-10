@@ -6,10 +6,11 @@ import EmojiList from 'Dashboard/components/EmojiList'
 import PointsSummary from 'Dashboard/components/PointsSummary'
 import {ResourceList} from 'Dashboard/components/ResourceList'
 import Section from 'Dashboard/templates/SimpleBlog/Sidebar/Section'
+import TicketRibbon from 'Dashboard/components/TicketRibbon'
 
 export type SidebarProps = Pick<
   SimpleBlogDashboard,
-  'emojis' | 'agendas' | 'points' | 'resourceList'
+  'emojis' | 'agendas' | 'points' | 'resourceList' | 'ticketRibbon'
 > & {
   backgroundColor: SimpleBlogDashboard['sidebar']['background']
   textColor: SimpleBlogDashboard['sidebar']['textColor']
@@ -19,6 +20,7 @@ export default function Sidebar(props: SidebarProps) {
   return (
     <Box backgroundColor={props.backgroundColor} textColor={props.textColor}>
       <EmojiList emojis={props.emojis} />
+      <TicketRibbon ribbon={props.ticketRibbon} />
       <AgendaList agendas={props.agendas} component={Section} />
       <PointsSummary points={props.points} component={Section} />
       <ResourceList list={props.resourceList} component={Section} />

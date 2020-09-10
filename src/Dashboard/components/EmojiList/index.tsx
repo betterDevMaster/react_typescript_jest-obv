@@ -21,7 +21,7 @@ export default function Emojis(props: {emojis: Emoji[]}) {
 
 const Box = styled.div`
   padding: 0;
-  margin-bottom: ${(props) => props.theme.spacing[5]};
+  margin-bottom: ${(props) => props.theme.spacing[2]};
   display: flex;
   justify-content: center;
 `
@@ -31,6 +31,6 @@ const EmojiText = styled.span`
   font-size: 55px;
 
   @media (min-width: ${(props) => props.theme.breakpoints.md}) {
-    font-size: 34px;
+    font-size: 50px;
   }
 `
