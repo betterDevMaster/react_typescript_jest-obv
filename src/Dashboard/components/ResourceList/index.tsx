@@ -23,14 +23,19 @@ export const RESOURCE_ICON = {
   attachment: 'attachment',
 }
 
-export function ResourceList(props: {list: ResourceList}) {
+export function ResourceList(props: {
+  list: ResourceList
+  component?: React.FunctionComponent<any>
+}) {
   const hasResources = props.list.resources.length > 0
   if (!hasResources) {
     return null
   }
 
+  const Component = props.component || 'div'
+
   return (
-    <div className="resource-list">
+    <Component className="resource-list">
       <Heading>RESOURCES:</Heading>
       <p>{props.list.description}</p>
       <List>
@@ -40,7 +45,7 @@ export function ResourceList(props: {list: ResourceList}) {
           </li>
         ))}
       </List>
-    </div>
+    </Component>
   )
 }
 

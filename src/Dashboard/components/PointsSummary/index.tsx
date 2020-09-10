@@ -9,13 +9,18 @@ export type Points = {
   leaderboardUrl: string
 } | null
 
-export default function PointsSummary(props: {points: Points}) {
+export default function PointsSummary(props: {
+  points: Points
+  component?: React.FunctionComponent<any>
+}) {
   if (!props.points) {
     return null
   }
 
+  const Component = props.component || 'div'
+
   return (
-    <div>
+    <Component>
       <HeaderImage src={props.points.headerImage} alt={props.points.unit} />
       <NumPointsText>
         You've earned {props.points.numPoints} {props.points.unit}!
@@ -27,7 +32,7 @@ export default function PointsSummary(props: {points: Points}) {
           <strong>LEADERBOARD you can click HERE!</strong>
         </a>
       </p>
-    </div>
+    </Component>
   )
 }
 
@@ -40,6 +45,9 @@ const HeaderImage = styled.img`
 const NumPointsText = styled.span`
   font-weight: bold;
   display: block;
-  text-align: center;
   margin-bottom: ${(props) => props.theme.spacing[8]};
+
+  @media (min-width: ${(props) => props.theme.breakpoints.md}) {
+    text-align: center;
+  }
 `

@@ -10,14 +10,19 @@ export interface Agenda {
   link?: string
 }
 
-export default function AgendaList(props: {agendas: Agenda[]}) {
+export default function AgendaList(props: {
+  agendas: Agenda[]
+  component?: React.FunctionComponent<any>
+}) {
   const hasAgenda = props.agendas.length > 0
   if (!hasAgenda) {
     return null
   }
 
+  const Component = props.component || 'div'
+
   return (
-    <Box>
+    <Component>
       <Heading>AGENDA:</Heading>
       {props.agendas.map((agenda, index) => (
         <Agenda key={index} aria-label="agenda">
@@ -25,7 +30,7 @@ export default function AgendaList(props: {agendas: Agenda[]}) {
           <Item>{agenda.text}</Item>
         </Agenda>
       ))}
-    </Box>
+    </Component>
   )
 }
 
@@ -73,10 +78,6 @@ function Times(props: {agenda: Agenda}) {
     </TimeText>
   )
 }
-
-const Box = styled.div`
-  margin-bottom: ${(props) => props.theme.spacing[8]};
-`
 
 const Agenda = styled.div`
   margin-bottom: ${(props) => props.theme.spacing[3]};
