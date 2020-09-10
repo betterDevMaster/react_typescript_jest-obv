@@ -10,7 +10,7 @@ export const fakeAgenda = (): Agenda => ({
   link: faker.random.boolean() ? faker.internet.url() : undefined,
 })
 
-export function withAgendas<T>(attributes: any): T {
+export function withAgendas<T>(attributes: T): T {
   return {
     ...attributes,
     agendas: Array.from(
