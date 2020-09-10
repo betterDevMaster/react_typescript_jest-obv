@@ -1,8 +1,11 @@
 import React from 'react'
 import styled from 'styled-components'
 
-export default function Section(props: {children: React.ReactElement}) {
-  return <Box>{props.children}</Box>
+export default function Section(props: {
+  children: React.ReactElement
+  className?: string
+}) {
+  return <Box className={props.className}>{props.children}</Box>
 }
 
 const Box = styled.div`
