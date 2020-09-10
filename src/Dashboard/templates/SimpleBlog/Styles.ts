@@ -24,11 +24,6 @@ p {
   margin-bottom: ${(props) => props.theme.spacing[4]};
 }
 
-.resource-list {
-  .resource-icon {
-    color: ${(props) => props.primaryColor};
-  }
-}
 `
 
 export default SimpleBlogStyles

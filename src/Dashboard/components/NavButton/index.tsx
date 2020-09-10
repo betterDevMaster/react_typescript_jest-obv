@@ -9,6 +9,8 @@ export interface NavButton {
   backgroundColor?: string
   textColor?: string
   newTab?: boolean
+  ariaLabel?: string
+  className?: string
 }
 
 export type NavButtonWithSize = NavButton & {
@@ -24,8 +26,14 @@ export default function NavButton(props: NavButton) {
     : null
 
   return (
-    <a href={props.link} {...target} aria-label="main nav button">
-      <StyledButton fullWidth textTransform="uppercase">
+    <a href={props.link} {...target} aria-label={props.ariaLabel}>
+      <StyledButton
+        fullWidth
+        textTransform="uppercase"
+        backgroundColor={props.backgroundColor}
+        textColor={props.textColor}
+        className={props.className}
+      >
         {props.text}
       </StyledButton>
     </a>

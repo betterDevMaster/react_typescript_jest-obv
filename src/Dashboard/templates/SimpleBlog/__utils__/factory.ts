@@ -21,6 +21,7 @@ export const fakeSimpleBlog = (
     sidebar: {
       background: '#000000',
       textColor: '#FFFFFF',
+      navButtons: [],
     },
     ticketRibbon: null,
     mainNavButtons: [],

@@ -26,6 +26,7 @@ export const RESOURCE_ICON = {
 export function ResourceList(props: {
   list: ResourceList
   component?: React.FunctionComponent<any>
+  iconColor?: string
 }) {
   const hasResources = props.list.resources.length > 0
   if (!hasResources) {
@@ -41,7 +42,7 @@ export function ResourceList(props: {
       <List>
         {props.list.resources.map((resource, index) => (
           <li key={index}>
-            <Resource resource={resource} />
+            <Resource resource={resource} iconColor={props.iconColor} />
           </li>
         ))}
       </List>
@@ -49,10 +50,14 @@ export function ResourceList(props: {
   )
 }
 
-function Resource(props: {resource: Resource}) {
+function Resource(props: {resource: Resource; iconColor?: string}) {
   return (
     <ResourceLink aria-label="event resource" href={props.resource.filePath}>
-      <StyledIcon className="resource-icon" component="i">
+      <StyledIcon
+        className="resource-icon"
+        component="i"
+        color={props.iconColor}
+      >
         {props.resource.icon}
       </StyledIcon>
       <LinkText>{props.resource.name}</LinkText>
@@ -86,8 +91,9 @@ const LinkText = styled.span`
 `
 
 const StyledIcon = styled((props) => {
-  const {className, ...otherProps} = props
+  const {className, color, ...otherProps} = props
   return <Icon className={className} {...otherProps} />
 })`
+  color: ${(props) => props.color || '#000'};
   margin-right: ${(props) => props.theme.spacing[2]};
 `

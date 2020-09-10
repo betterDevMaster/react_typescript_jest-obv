@@ -11,7 +11,10 @@ import {ALL_EMOJIS} from 'Dashboard/components/EmojiList/emoji'
 import {fakePoints} from 'Dashboard/components/PointsSummary/__utils__/factory'
 import {fakeResource} from 'Dashboard/components/ResourceList/__utils__/factory'
 import {fakeTicketRibbon} from 'Dashboard/components/TicketRibbon/__utils__/factory'
-import {fakeNavButtonWithSize} from 'Dashboard/components/NavButton/__utils__/factory'
+import {
+  fakeNavButtonWithSize,
+  fakeNavButton,
+} from 'Dashboard/components/NavButton/__utils__/factory'
 
 beforeAll(() => {
   // Required to render <Hidden/> components
@@ -173,4 +176,34 @@ it('should render ticket ribbons', () => {
   rerender(<Dashboard dashboard={withTicketRibbon} user={fakeUser()} />)
 
   expect(queryByLabelText(new RegExp(label))).toBeInTheDocument()
+})
+
+it('should render sidebarNavButtons', () => {
+  const dashboard = fakeSimpleBlog({
+    sidebar: {
+      background: '#000000',
+      textColor: '#ffffff',
+      navButtons: [],
+    },
+  })
+
+  const {queryByLabelText, rerender, queryAllByLabelText} = render(
+    <Dashboard dashboard={dashboard} user={fakeUser()} />,
+  )
+
+  expect(queryByLabelText(/sidebar nav/i)).not.toBeInTheDocument()
+
+  const numButtons = faker.random.number({min: 1, max: 5})
+
+  const withNavButtons = fakeSimpleBlog({
+    sidebar: {
+      background: '#000000',
+      textColor: '#ffffff',
+      navButtons: Array.from({length: numButtons}, fakeNavButton),
+    },
+  })
+
+  rerender(<Dashboard dashboard={withNavButtons} user={fakeUser()} />)
+
+  expect(queryAllByLabelText(/sidebar nav/i).length).toBe(numButtons)
 })

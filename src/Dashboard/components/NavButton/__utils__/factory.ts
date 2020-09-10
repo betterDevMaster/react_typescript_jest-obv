@@ -2,9 +2,14 @@ import {NavButtonWithSize, NavButton} from 'Dashboard/components/NavButton'
 import faker from 'faker'
 import {Column} from 'ui/layout'
 
-export const fakeNavButtonWithSize = (): NavButtonWithSize => ({
+export const fakeNavButton = (): NavButton => ({
   text: faker.lorem.word(),
   link: faker.internet.url(),
+  newTab: true,
+})
+
+export const fakeNavButtonWithSize = (): NavButtonWithSize => ({
+  ...fakeNavButton(),
   size: faker.random.boolean()
     ? (faker.random.number({min: 3, max: 12}) as Column)
     : 12,

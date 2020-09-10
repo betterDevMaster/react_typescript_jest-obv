@@ -1,7 +1,10 @@
 import React, {useState} from 'react'
 import styled from 'styled-components'
 import SimpleBlogStyles from 'Dashboard/templates/SimpleBlog/Styles'
-import NavButton, {NavButtonWithSize} from 'Dashboard/components/NavButton'
+import NavButtonComponent, {
+  NavButtonWithSize,
+  NavButton,
+} from 'Dashboard/components/NavButton'
 import Grid from '@material-ui/core/Grid'
 import Container from '@material-ui/core/Container'
 import {BlogPost} from 'Dashboard/components/BlogPost'
@@ -32,6 +35,7 @@ export type SimpleBlogDashboard = {
   sidebar: {
     background: string
     textColor: string
+    navButtons: NavButton[]
   }
   mainNavButtons: NavButtonWithSize[]
   blogPosts: BlogPost[]
@@ -48,13 +52,13 @@ export const SimpleBlog = (props: {
   const toggleMenu = () => setMenuVisible(!menuVisible)
 
   const sidebarProps: SidebarProps = {
-    backgroundColor: props.dashboard.sidebar.background,
-    textColor: props.dashboard.sidebar.textColor,
+    ...props.dashboard.sidebar,
     emojis: props.dashboard.emojis,
     agendas: props.dashboard.agendas,
     points: props.dashboard.points,
     resourceList: props.dashboard.resourceList,
     ticketRibbon: props.dashboard.ticketRibbon,
+    primaryColor: props.dashboard.primaryColor,
   }
 
   return (
@@ -80,7 +84,7 @@ export const SimpleBlog = (props: {
             <Grid container spacing={2}>
               {props.dashboard.mainNavButtons.map((button) => (
                 <Grid item xs={12} md={button.size} key={button.text}>
-                  <NavButton {...button} />
+                  <NavButtonComponent {...button} ariaLabel="main nav button" />
                 </Grid>
               ))}
             </Grid>
