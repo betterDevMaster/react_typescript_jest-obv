@@ -20,7 +20,8 @@ export default function Emojis(props: {emojis: Emoji[]}) {
 }
 
 const Box = styled.div`
-  padding: ${(props) => props.theme.spacing[5]} 0;
+  padding: 0;
+  margin-bottom: ${(props) => props.theme.spacing[5]};
   display: flex;
   justify-content: center;
 `

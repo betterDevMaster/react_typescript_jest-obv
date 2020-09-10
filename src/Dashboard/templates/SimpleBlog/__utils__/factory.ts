@@ -26,7 +26,10 @@ export const fakeSimpleBlog = (
     blogPosts: [],
     agendas: [],
     points: null,
-    resources: [],
+    resourceList: {
+      description: '',
+      resources: [],
+    },
   }
 
   const attributes = pipe(
@@ -82,9 +85,12 @@ function withPoints(attributes: SimpleBlogDashboard) {
 function withResources(attributes: SimpleBlogDashboard) {
   return {
     ...attributes,
-    resources: Array.from(
-      {length: faker.random.number({min: 1, max: 6})},
-      fakeResource,
-    ),
+    resourceList: {
+      description: faker.lorem.paragraph(),
+      resources: Array.from(
+        {length: faker.random.number({min: 1, max: 6})},
+        fakeResource,
+      ),
+    },
   }
 }

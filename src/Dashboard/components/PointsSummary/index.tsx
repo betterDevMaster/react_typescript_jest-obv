@@ -41,4 +41,5 @@ const NumPointsText = styled.span`
   font-weight: bold;
   display: block;
   text-align: center;
+  margin-bottom: ${(props) => props.theme.spacing[8]};
 `

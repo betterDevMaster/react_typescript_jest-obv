@@ -124,7 +124,12 @@ it('should render points', async () => {
 })
 
 it('should render resources', async () => {
-  const dashboard = fakeSimpleBlog({resources: []})
+  const dashboard = fakeSimpleBlog({
+    resourceList: {
+      description: '',
+      resources: [],
+    },
+  })
 
   const {queryByText, rerender, findAllByLabelText} = render(
     <Dashboard dashboard={dashboard} user={fakeUser()} />,
@@ -134,7 +139,10 @@ it('should render resources', async () => {
 
   const numResources = faker.random.number({min: 1, max: 6})
   const withResources = fakeSimpleBlog({
-    resources: Array.from({length: numResources}, fakeResource),
+    resourceList: {
+      description: '',
+      resources: Array.from({length: numResources}, fakeResource),
+    },
   })
 
   rerender(<Dashboard dashboard={withResources} user={fakeUser()} />)

@@ -1,6 +1,6 @@
 import {createGlobalStyle} from 'styled-components'
 
-const SimpleBlogStyles = createGlobalStyle`
+const SimpleBlogStyles = createGlobalStyle<{primaryColor: string}>`
 
 html, body, #root {
   height: 100%;
@@ -16,6 +16,17 @@ a {
   
   &:hover {
     text-decoration: underline;
+  }
+}
+
+p {
+  margin-top: 0;
+  margin-bottom: ${(props) => props.theme.spacing[4]};
+}
+
+.resource-list {
+  .resource-icon {
+    color: ${(props) => props.primaryColor};
   }
 }
 `

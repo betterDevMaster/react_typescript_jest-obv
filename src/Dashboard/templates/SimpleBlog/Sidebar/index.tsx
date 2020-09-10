@@ -8,7 +8,7 @@ import {ResourceList} from 'Dashboard/components/ResourceList'
 
 export type SidebarProps = Pick<
   SimpleBlogDashboard,
-  'emojis' | 'agendas' | 'points' | 'resources'
+  'emojis' | 'agendas' | 'points' | 'resourceList'
 > & {
   backgroundColor: SimpleBlogDashboard['sidebar']['background']
   textColor: SimpleBlogDashboard['sidebar']['textColor']
@@ -20,7 +20,7 @@ export default function Sidebar(props: SidebarProps) {
       <EmojiList emojis={props.emojis} />
       <AgendaList agendas={props.agendas} />
       <PointsSummary points={props.points} />
-      <ResourceList resources={props.resources} />
+      <ResourceList list={props.resourceList} />
     </Box>
   )
 }
