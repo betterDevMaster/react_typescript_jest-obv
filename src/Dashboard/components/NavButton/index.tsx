@@ -3,18 +3,19 @@ import styled from 'styled-components'
 import Button from 'ui/button/Button'
 import {Column} from 'ui/layout'
 
-export default interface MainNavButton {
+export interface NavButton {
   text: string
   link: string
   backgroundColor?: string
   textColor?: string
   newTab?: boolean
+}
+
+export type NavButtonWithSize = NavButton & {
   size?: Column
 }
 
-type Props = Omit<MainNavButton, 'size'>
-
-export default function MainNavButton(props: Props) {
+export default function NavButton(props: NavButton) {
   const target = props.newTab
     ? {
         target: '_blank',

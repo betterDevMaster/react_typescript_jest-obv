@@ -1,6 +1,6 @@
 import {SimpleBlogDashboard, SIMPLE_BLOG} from 'Dashboard/templates/SimpleBlog'
 import faker from 'faker'
-import {withMainNavButtons} from 'Dashboard/components/MainNavButton/__utils__/factory'
+import {withMainNavButtons} from 'Dashboard/components/NavButton/__utils__/factory'
 import {pipe} from 'ramda'
 import {withAgendas} from 'Dashboard/components/AgendaList/__utils__/factory'
 import {withPoints} from 'Dashboard/components/PointsSummary/__utils__/factory'

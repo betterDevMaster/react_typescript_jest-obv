@@ -1,18 +1,17 @@
 import React from 'react'
 import faker from 'faker'
-import {fireEvent, findByText} from '@testing-library/react'
+import {fireEvent} from '@testing-library/react'
 import {fakeSimpleBlog} from 'Dashboard/templates/SimpleBlog/__utils__/factory'
 import {fakeUser} from 'user/__utils__/factory'
-import {fakeMainNavButton} from 'Dashboard/components/MainNavButton/__utils__/factory'
 import {setWindowMatchMedia} from '__utils__/media-query'
 import Dashboard from 'Dashboard'
 import {render} from '__utils__/render'
-import ThemeProvider from 'ui/theme/ThemeProvider'
 import {fakeAgenda} from 'Dashboard/components/AgendaList/__utils__/factory'
 import {ALL_EMOJIS} from 'Dashboard/components/EmojiList/emoji'
 import {fakePoints} from 'Dashboard/components/PointsSummary/__utils__/factory'
 import {fakeResource} from 'Dashboard/components/ResourceList/__utils__/factory'
 import {fakeTicketRibbon} from 'Dashboard/components/TicketRibbon/__utils__/factory'
+import {fakeNavButtonWithSize} from 'Dashboard/components/NavButton/__utils__/factory'
 
 beforeAll(() => {
   // Required to render <Hidden/> components
@@ -43,7 +42,7 @@ it('should render main nav buttons', async () => {
     {
       length: faker.random.number({min: 1, max: 4}),
     },
-    fakeMainNavButton,
+    fakeNavButtonWithSize,
   )
 
   const {findAllByLabelText} = render(

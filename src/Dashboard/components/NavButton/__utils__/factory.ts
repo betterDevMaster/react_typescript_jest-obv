@@ -1,8 +1,8 @@
-import MainNavButton from 'Dashboard/components/MainNavButton'
+import {NavButtonWithSize, NavButton} from 'Dashboard/components/NavButton'
 import faker from 'faker'
 import {Column} from 'ui/layout'
 
-export const fakeMainNavButton = (): MainNavButton => ({
+export const fakeNavButtonWithSize = (): NavButtonWithSize => ({
   text: faker.lorem.word(),
   link: faker.internet.url(),
   size: faker.random.boolean()
@@ -10,12 +10,14 @@ export const fakeMainNavButton = (): MainNavButton => ({
     : 12,
 })
 
-export function withMainNavButtons<T>(attributes: T): T {
+export function withMainNavButtons<T extends {mainNavButtons: NavButton[]}>(
+  attributes: T,
+): T {
   return {
     ...attributes,
     mainNavButtons: Array.from(
       {length: faker.random.number({min: 1, max: 5})},
-      fakeMainNavButton,
+      fakeNavButtonWithSize,
     ),
   }
 }

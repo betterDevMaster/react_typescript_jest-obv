@@ -1,10 +1,10 @@
 import React, {useState} from 'react'
 import styled from 'styled-components'
 import SimpleBlogStyles from 'Dashboard/templates/SimpleBlog/Styles'
-import MainNavButton from 'Dashboard/components/MainNavButton'
+import NavButton, {NavButtonWithSize} from 'Dashboard/components/NavButton'
 import Grid from '@material-ui/core/Grid'
 import Container from '@material-ui/core/Container'
-import BlogPost from 'Dashboard/components/BlogPost'
+import {BlogPost} from 'Dashboard/components/BlogPost'
 import Header from 'Dashboard/templates/SimpleBlog/Header'
 import Menu from 'Dashboard/templates/SimpleBlog/Menu'
 import {User} from 'user'
@@ -33,7 +33,7 @@ export type SimpleBlogDashboard = {
     background: string
     textColor: string
   }
-  mainNavButtons: MainNavButton[]
+  mainNavButtons: NavButtonWithSize[]
   blogPosts: BlogPost[]
   agendas: Agenda[]
   points: Points | null
@@ -80,7 +80,7 @@ export const SimpleBlog = (props: {
             <Grid container spacing={2}>
               {props.dashboard.mainNavButtons.map((button) => (
                 <Grid item xs={12} md={button.size} key={button.text}>
-                  <MainNavButton {...button} />
+                  <NavButton {...button} />
                 </Grid>
               ))}
             </Grid>

@@ -1,6 +1,6 @@
 import React from 'react'
 
-export default interface BlogPost {
+export interface BlogPost {
   title: string
   postedAt: string
   content: string
