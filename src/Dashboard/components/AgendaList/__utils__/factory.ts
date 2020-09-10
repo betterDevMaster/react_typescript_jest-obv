@@ -9,3 +9,13 @@ export const fakeAgenda = (): Agenda => ({
   text: faker.random.words(3),
   link: faker.random.boolean() ? faker.internet.url() : undefined,
 })
+
+export function withAgendas<T>(attributes: any): T {
+  return {
+    ...attributes,
+    agendas: Array.from(
+      {length: faker.random.number({min: 0, max: 4})},
+      fakeAgenda,
+    ),
+  }
+}

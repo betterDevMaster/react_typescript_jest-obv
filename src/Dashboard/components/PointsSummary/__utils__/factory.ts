@@ -9,3 +9,10 @@ export const fakePoints = (): Points => ({
   numPoints: faker.random.number({min: 0, max: 1000}),
   leaderboardUrl: 'https://tax.live/leaderboard',
 })
+
+export function withPoints<T>(attributes: T): T {
+  return {
+    ...attributes,
+    points: fakePoints(),
+  }
+}

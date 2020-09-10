@@ -1,13 +1,15 @@
 import {SimpleBlogDashboard, SIMPLE_BLOG} from 'Dashboard/templates/SimpleBlog'
 import faker from 'faker'
-import {fakeMainNavButton} from 'Dashboard/components/MainNavButton/__utils__/factory'
-import {pipe} from 'ramda'
-import {fakeAgenda} from 'Dashboard/components/AgendaList/__utils__/factory'
-import {ALL_EMOJIS} from 'Dashboard/components/EmojiList/emoji'
-import {fakePoints} from 'Dashboard/components/PointsSummary/__utils__/factory'
-import {fakeResource} from 'Dashboard/components/ResourceList/__utils__/factory'
+import {withMainNavButtons} from 'Dashboard/components/MainNavButton/__utils__/factory'
+import {compose} from 'ramda'
+import {withAgendas} from 'Dashboard/components/AgendaList/__utils__/factory'
+import {withPoints} from 'Dashboard/components/PointsSummary/__utils__/factory'
+import {withResources} from 'Dashboard/components/ResourceList/__utils__/factory'
 import {sometimes} from '__utils__/attributes'
-import {fakeTicketRibbon} from 'Dashboard/components/TicketRibbon/__utils__/factory'
+import {withTicketRibbon} from 'Dashboard/components/TicketRibbon/__utils__/factory'
+import {withEmojis} from 'Dashboard/components/EmojiList/__utils__/factory'
+
+type D = SimpleBlogDashboard
 
 export const fakeSimpleBlog = (
   overrides?: Partial<SimpleBlogDashboard>,
@@ -34,73 +36,17 @@ export const fakeSimpleBlog = (
     },
   }
 
-  const attributes = pipe(
-    withMainNavButtons,
-    withEmojis,
-    withAgendas,
-    sometimes<SimpleBlogDashboard>(withTicketRibbon),
-    sometimes<SimpleBlogDashboard>(withPoints),
-    sometimes<SimpleBlogDashboard>(withResources),
+  const attributes = compose(
+    (d: D) => withAgendas<D>(d),
+    (d: D) => withEmojis<D>(d),
+    (d: D) => withMainNavButtons<D>(d),
+    (d: D) => withTicketRibbon<D>(d),
+    sometimes<D>(withPoints),
+    sometimes<D>(withResources),
   )(defaultAttributes)
 
   return {
     ...attributes,
     ...overrides,
-  }
-}
-
-function withMainNavButtons(attributes: SimpleBlogDashboard) {
-  return {
-    ...attributes,
-    mainNavButtons: Array.from(
-      {length: faker.random.number({min: 1, max: 5})},
-      fakeMainNavButton,
-    ),
-  }
-}
-
-function withEmojis(attributes: SimpleBlogDashboard) {
-  return {
-    ...attributes,
-    emojis: Array.from({length: faker.random.number({min: 0, max: 5})}, () =>
-      faker.random.arrayElement(ALL_EMOJIS),
-    ),
-  }
-}
-
-function withAgendas(attributes: SimpleBlogDashboard) {
-  return {
-    ...attributes,
-    agendas: Array.from(
-      {length: faker.random.number({min: 0, max: 4})},
-      fakeAgenda,
-    ),
-  }
-}
-
-function withPoints(attributes: SimpleBlogDashboard) {
-  return {
-    ...attributes,
-    points: fakePoints(),
-  }
-}
-
-function withResources(attributes: SimpleBlogDashboard) {
-  return {
-    ...attributes,
-    resourceList: {
-      description: faker.lorem.paragraph(),
-      resources: Array.from(
-        {length: faker.random.number({min: 1, max: 6})},
-        fakeResource,
-      ),
-    },
-  }
-}
-
-function withTicketRibbon(attributes: SimpleBlogDashboard) {
-  return {
-    ...attributes,
-    ticketRibbon: fakeTicketRibbon(),
   }
 }

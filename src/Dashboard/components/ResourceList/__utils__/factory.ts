@@ -6,3 +6,16 @@ export const fakeResource = (): Resource => ({
   filePath: faker.internet.url(),
   icon: faker.random.arrayElement(Object.values(RESOURCE_ICON)),
 })
+
+export function withResources<T>(attributes: T): T {
+  return {
+    ...attributes,
+    resourceList: {
+      description: faker.lorem.paragraph(),
+      resources: Array.from(
+        {length: faker.random.number({min: 1, max: 6})},
+        fakeResource,
+      ),
+    },
+  }
+}

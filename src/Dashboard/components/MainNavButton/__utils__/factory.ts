@@ -9,3 +9,13 @@ export const fakeMainNavButton = (): MainNavButton => ({
     ? (faker.random.number({min: 3, max: 12}) as Column)
     : 12,
 })
+
+export function withMainNavButtons<T>(attributes: T): T {
+  return {
+    ...attributes,
+    mainNavButtons: Array.from(
+      {length: faker.random.number({min: 1, max: 5})},
+      fakeMainNavButton,
+    ),
+  }
+}

@@ -14,3 +14,10 @@ export const fakeTicketRibbon = (): TicketRibbon => ({
   name: faker.random.word(),
   image: faker.random.arrayElement(images),
 })
+
+export function withTicketRibbon<T>(attributes: T): T {
+  return {
+    ...attributes,
+    ticketRibbon: fakeTicketRibbon(),
+  }
+}
