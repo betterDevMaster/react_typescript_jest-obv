@@ -1,7 +1,7 @@
 import React from 'react'
 import styled from 'styled-components'
-import moment from 'moment'
 import Heading from 'Dashboard/templates/SimpleBlog/Sidebar/Heading'
+import moment from 'moment-timezone'
 
 export interface Agenda {
   startDate: string
@@ -39,8 +39,9 @@ function Times(props: {agenda: Agenda}) {
 
   const getMonth = (date: moment.Moment) => date.format('MMMM')
   const getDay = (date: moment.Moment) => date.format('Do')
-  const getTime = (date: moment.Moment) => date.format('h:mm a')
-  const getTimezone = (date: moment.Moment) => date.format('zz')
+  const getTime = (date: moment.Moment) => date.format('h:mma')
+  const getTimezone = (date: moment.Moment) =>
+    date.tz(moment.tz.guess()).format('z')
 
   const tz = getTimezone(start)
 
@@ -48,8 +49,7 @@ function Times(props: {agenda: Agenda}) {
     return (
       <TimeText>
         <strong>{`${getMonth(start)} ${getDay(start)}:`}</strong>{' '}
-        {getTime(start)}
-        {tz}
+        {`${getTime(start)} ${tz}`}
       </TimeText>
     )
   }

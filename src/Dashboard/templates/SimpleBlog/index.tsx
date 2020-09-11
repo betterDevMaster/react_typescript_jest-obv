@@ -96,14 +96,14 @@ export const SimpleBlog = (props: {
               ))}
             </Grid>
           </MainNavButtons>
-          <FullHeightGrid container spacing={2}>
+          <FullHeightGrid container spacing={4}>
             <Hidden mdUp>
               <Grid item xs={12}>
                 <Sidebar {...sidebarProps} />
               </Grid>
             </Hidden>
             <Grid item xs={12} md={8}>
-              <BlogPosts />
+              <BlogPosts posts={props.dashboard.blogPosts} />
             </Grid>
             <Hidden smDown>
               <Grid item xs={12} md={4}>

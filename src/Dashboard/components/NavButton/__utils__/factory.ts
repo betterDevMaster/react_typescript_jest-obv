@@ -1,6 +1,6 @@
 import {NavButtonWithSize, NavButton} from 'Dashboard/components/NavButton'
 import faker from 'faker'
-import {Column} from 'ui/layout'
+import {Column} from 'system/ui/layout'
 
 export const fakeNavButton = (): NavButton => ({
   text: faker.lorem.word(),

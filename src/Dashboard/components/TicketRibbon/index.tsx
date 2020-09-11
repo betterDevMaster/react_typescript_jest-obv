@@ -25,6 +25,11 @@ const Box = styled.div`
 
   @media (min-width: ${(props) => props.theme.breakpoints.md}) {
     margin: ${(props) =>
+      `-${props.theme.spacing[6]} -${props.theme.spacing[13]} ${props.theme.spacing[8]}`};
+  }
+
+  @media (min-width: ${(props) => props.theme.breakpoints.lg}) {
+    margin: ${(props) =>
       `-${props.theme.spacing[6]} -${props.theme.spacing[16]} ${props.theme.spacing[8]}`};
   }
 `

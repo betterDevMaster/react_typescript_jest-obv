@@ -1,6 +1,6 @@
 import React from 'react'
 import faker from 'faker'
-import {fireEvent, getByText} from '@testing-library/react'
+import {fireEvent} from '@testing-library/react'
 import {fakeSimpleBlog} from 'Dashboard/templates/SimpleBlog/__utils__/factory'
 import {fakeUser} from 'user/__utils__/factory'
 import {setWindowMatchMedia} from '__utils__/media-query'
@@ -15,6 +15,7 @@ import {
   fakeNavButtonWithSize,
   fakeNavButton,
 } from 'Dashboard/components/NavButton/__utils__/factory'
+import {fakeBlogPost} from 'Dashboard/components/BlogPost/__utils__/factory'
 
 beforeAll(() => {
   // Required to render <Hidden/> components
@@ -244,4 +245,31 @@ it('should render a footer', () => {
   expect(queryByLabelText(/privacy policy/i)).toBeInTheDocument()
 
   expect(getByText(new RegExp(copyrightText))).toBeInTheDocument()
+})
+
+it('should render blog posts', () => {
+  const withoutPosts = fakeSimpleBlog({
+    blogPosts: [],
+  })
+
+  const {queryByLabelText, rerender, getAllByLabelText, getByText} = render(
+    <Dashboard dashboard={withoutPosts} user={fakeUser()} />,
+  )
+
+  expect(queryByLabelText('blog post')).not.toBeInTheDocument()
+
+  const numPosts = faker.random.number({min: 1, max: 5})
+  const blogPosts = Array.from({length: numPosts}, fakeBlogPost)
+
+  const withPosts = fakeSimpleBlog({
+    blogPosts,
+  })
+
+  rerender(<Dashboard dashboard={withPosts} user={fakeUser()} />)
+
+  expect(getAllByLabelText('blog post').length).toBe(numPosts)
+
+  for (const post of blogPosts) {
+    expect(getByText(post.title)).toBeInTheDocument()
+  }
 })

@@ -8,6 +8,7 @@ import {withResources} from 'Dashboard/components/ResourceList/__utils__/factory
 import {sometimes} from '__utils__/attributes'
 import {withTicketRibbon} from 'Dashboard/components/TicketRibbon/__utils__/factory'
 import {withEmojis} from 'Dashboard/components/EmojiList/__utils__/factory'
+import {withBlogPosts} from 'Dashboard/components/BlogPost/__utils__/factory'
 
 export const fakeSimpleBlog = (
   overrides?: Partial<SimpleBlogDashboard>,
@@ -49,6 +50,7 @@ export const fakeSimpleBlog = (
     withEmojis,
     withMainNavButtons,
     withTicketRibbon,
+    withBlogPosts,
     sometimes<SimpleBlogDashboard>(withPoints),
     sometimes<SimpleBlogDashboard>(withResources),
   )

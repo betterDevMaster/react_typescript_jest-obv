@@ -1,6 +1,6 @@
 import React from 'react'
 import {render as rtlRender, RenderOptions} from '@testing-library/react'
-import ThemeProvider from 'ui/theme/ThemeProvider'
+import ThemeProvider from 'system/ui/theme/ThemeProvider'
 
 export const render = (
   component: React.ReactElement,

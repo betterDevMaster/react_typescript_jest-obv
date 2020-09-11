@@ -1,6 +1,6 @@
 import React from 'react'
 import Dashboard from 'Dashboard'
-import ThemeProvider from 'ui/theme/ThemeProvider'
+import ThemeProvider from 'system/ui/theme/ThemeProvider'
 import {fakeSimpleBlog} from 'Dashboard/templates/SimpleBlog/__utils__/factory'
 import {fakeUser} from 'user/__utils__/factory'
 import {fakePoints} from 'Dashboard/components/PointsSummary/__utils__/factory'

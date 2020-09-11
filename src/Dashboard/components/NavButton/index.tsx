@@ -1,7 +1,7 @@
 import React from 'react'
 import styled from 'styled-components'
-import Button from 'ui/button/Button'
-import {Column} from 'ui/layout'
+import Button from 'system/ui/button/Button'
+import {Column} from 'system/ui/layout'
 
 export interface NavButton {
   text: string
