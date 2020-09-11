@@ -42,6 +42,13 @@ export type SimpleBlogDashboard = {
   agendas: Agenda[]
   points: Points | null
   resourceList: ResourceList
+  footer: {
+    background: string
+    textColor: string
+    termsLink: string | null
+    privacyLink: string | null
+    copyrightText: string | null
+  }
 }
 
 export const SimpleBlog = (props: {
@@ -106,7 +113,7 @@ export const SimpleBlog = (props: {
           </FullHeightGrid>
         </StyledContainer>
       </Content>
-      <Footer />
+      <Footer {...props.dashboard.footer} />
     </Box>
   )
 }

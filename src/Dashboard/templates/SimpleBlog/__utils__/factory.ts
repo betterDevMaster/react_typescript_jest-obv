@@ -33,6 +33,15 @@ export const fakeSimpleBlog = (
       description: '',
       resources: [],
     },
+    footer: {
+      background: '#000000',
+      textColor: '#ffffff',
+      termsLink: faker.random.boolean() ? faker.internet.url() : null,
+      privacyLink: faker.random.boolean() ? faker.internet.url() : null,
+      copyrightText: faker.random.boolean()
+        ? `© 2020 ${faker.company.companyName()}. All Rights Reserved.`
+        : null,
+    },
   }
 
   const makeAttributes: (d: SimpleBlogDashboard) => SimpleBlogDashboard = pipe(

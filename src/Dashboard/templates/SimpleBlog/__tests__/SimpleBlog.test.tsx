@@ -1,6 +1,6 @@
 import React from 'react'
 import faker from 'faker'
-import {fireEvent} from '@testing-library/react'
+import {fireEvent, getByText} from '@testing-library/react'
 import {fakeSimpleBlog} from 'Dashboard/templates/SimpleBlog/__utils__/factory'
 import {fakeUser} from 'user/__utils__/factory'
 import {setWindowMatchMedia} from '__utils__/media-query'
@@ -206,4 +206,42 @@ it('should render sidebarNavButtons', () => {
   rerender(<Dashboard dashboard={withNavButtons} user={fakeUser()} />)
 
   expect(queryAllByLabelText(/sidebar nav/i).length).toBe(numButtons)
+})
+
+it('should render a footer', () => {
+  const dashboard = fakeSimpleBlog({
+    footer: {
+      background: '#000000',
+      textColor: '#FFFFFF',
+      termsLink: null,
+      privacyLink: null,
+      copyrightText: null,
+    },
+  })
+
+  const {queryByLabelText, rerender, getByText} = render(
+    <Dashboard dashboard={dashboard} user={fakeUser()} />,
+  )
+
+  expect(queryByLabelText(/terms of service/i)).not.toBeInTheDocument()
+  expect(queryByLabelText(/privacy policy/i)).not.toBeInTheDocument()
+
+  const copyrightText = faker.lorem.sentence()
+
+  const withFooter = fakeSimpleBlog({
+    footer: {
+      background: '#000000',
+      textColor: '#FFFFFF',
+      termsLink: faker.internet.url(),
+      privacyLink: faker.internet.url(),
+      copyrightText,
+    },
+  })
+
+  rerender(<Dashboard dashboard={withFooter} user={fakeUser()} />)
+
+  expect(queryByLabelText(/terms of service/i)).toBeInTheDocument()
+  expect(queryByLabelText(/privacy policy/i)).toBeInTheDocument()
+
+  expect(getByText(new RegExp(copyrightText))).toBeInTheDocument()
 })
