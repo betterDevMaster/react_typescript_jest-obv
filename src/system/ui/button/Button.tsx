@@ -13,6 +13,9 @@ export interface ButtonProps {
   hoverBackgroundColor?: string
   lightOnHover?: boolean
   borderRadius?: number
+  borderWidth?: number
+  borderColor?: string
+  borderColorOnHover?: string
 }
 
 export default function Button(props: ButtonProps) {
@@ -72,10 +75,6 @@ function backgroundColor(props: ButtonProps) {
   return '#000000'
 }
 
-function border(props: ButtonProps) {
-  return 'none'
-}
-
 function cursor(props: ButtonProps) {
   return 'pointer'
 }
@@ -105,12 +104,27 @@ function hoverBackgroundColor(props: ButtonProps) {
 }
 
 function borderRadius(props: ButtonProps) {
-  console.log(props.borderRadius)
   if (!props.borderRadius) {
     return '0px'
   }
 
   return `${props.borderRadius}px`
+}
+
+function border(props: ButtonProps) {
+  if (!props.borderWidth) {
+    return 'none'
+  }
+
+  return `${props.borderWidth}px solid ${borderColor(props)}`
+}
+
+function borderColor(props: ButtonProps) {
+  if (!props.borderColor) {
+    return '#000000'
+  }
+
+  return props.borderColor
 }
 
 type StyleProps = {
