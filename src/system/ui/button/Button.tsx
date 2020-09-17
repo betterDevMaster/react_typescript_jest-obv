@@ -15,7 +15,7 @@ export interface ButtonProps {
   borderRadius?: number
   borderWidth?: number
   borderColor?: string
-  borderColorOnHover?: string
+  hoverBorderColor?: string
 }
 
 export default function Button(props: ButtonProps) {
@@ -33,6 +33,7 @@ export default function Button(props: ButtonProps) {
       hoverBackgroundColor={hoverBackgroundColor(props)}
       borderRadius={borderRadius(props)}
       className={props.className}
+      hoverBorder={hoverBorder(props)}
     >
       {props.children}
     </StyledButton>
@@ -111,6 +112,14 @@ function borderRadius(props: ButtonProps) {
   return `${props.borderRadius}px`
 }
 
+function hoverBorder(props: ButtonProps) {
+  if (!props.hoverBorderColor) {
+    return border(props)
+  }
+
+  return `${props.borderWidth}px solid ${hoverBorderColor(props)}`
+}
+
 function border(props: ButtonProps) {
   if (!props.borderWidth) {
     return 'none'
@@ -127,6 +136,14 @@ function borderColor(props: ButtonProps) {
   return props.borderColor
 }
 
+function hoverBorderColor(props: ButtonProps) {
+  if (!props.borderColor) {
+    return '#000000'
+  }
+
+  return props.hoverBorderColor
+}
+
 type StyleProps = {
   width: string
   textTransform: string
@@ -139,6 +156,7 @@ type StyleProps = {
   hoverOpacity: number
   hoverBackgroundColor: string
   borderRadius: string
+  hoverBorder: string
 }
 
 const StyledButton = styled.button<StyleProps>`
@@ -154,5 +172,6 @@ const StyledButton = styled.button<StyleProps>`
   &:hover {
     opacity: ${(props) => props.hoverOpacity};
     background: ${(props) => props.hoverBackgroundColor};
+    border: ${(props) => props.hoverBorder};
   }
 `

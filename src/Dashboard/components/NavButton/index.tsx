@@ -15,6 +15,7 @@ export interface NavButton {
   borderRadius?: number
   borderWidth?: number
   borderColor?: string
+  hoverBorderColor?: string
 }
 
 export type NavButtonWithSize = NavButton & {

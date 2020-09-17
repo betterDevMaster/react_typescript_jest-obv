@@ -15,6 +15,7 @@ export const fakeNavButton = (overrides?: Partial<NavButton>): NavButton => {
     sometimes<NavButton>(withHoverBackground),
     sometimes<NavButton>(withBorderRadius),
     sometimes<NavButton>(withBorder),
+    sometimes<NavButton>(withHoverBorderColor),
   )
 
   return {
@@ -61,5 +62,12 @@ function withBorder(button: NavButton): NavButton {
     ...button,
     borderWidth: faker.random.number({min: 1, max: 5}),
     borderColor: faker.internet.color(),
+  }
+}
+
+function withHoverBorderColor(button: NavButton): NavButton {
+  return {
+    ...button,
+    hoverBorderColor: faker.internet.color(),
   }
 }
