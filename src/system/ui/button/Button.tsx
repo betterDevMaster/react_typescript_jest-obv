@@ -10,6 +10,8 @@ export interface ButtonProps {
   backgroundColor?: string
   textColor?: string
   className?: string
+  hoverBackgroundColor?: string
+  lightOnHover?: boolean
 }
 
 export default function Button(props: ButtonProps) {
@@ -22,6 +24,9 @@ export default function Button(props: ButtonProps) {
       color={textColor(props)}
       border={border(props)}
       cursor={cursor(props)}
+      transition={transition(props)}
+      hoverOpacity={hoverOpacity(props)}
+      hoverBackgroundColor={hoverBackgroundColor(props)}
       className={props.className}
     >
       {props.children}
@@ -73,6 +78,30 @@ function cursor(props: ButtonProps) {
   return 'pointer'
 }
 
+function transition(props: ButtonProps) {
+  if (!props.lightOnHover) {
+    return 'none'
+  }
+
+  return 'opacity 0.2s ease-in-out'
+}
+
+function hoverOpacity(props: ButtonProps) {
+  if (!props.lightOnHover) {
+    return 1
+  }
+
+  return 0.8
+}
+
+function hoverBackgroundColor(props: ButtonProps) {
+  if (props.hoverBackgroundColor) {
+    return props.hoverBackgroundColor
+  }
+
+  return backgroundColor(props)
+}
+
 type StyleProps = {
   width: string
   textTransform: string
@@ -81,6 +110,9 @@ type StyleProps = {
   color: string
   border: string
   cursor: string
+  transition: string
+  hoverOpacity: number
+  hoverBackgroundColor: string
 }
 
 const StyledButton = styled.button<StyleProps>`
@@ -91,4 +123,9 @@ const StyledButton = styled.button<StyleProps>`
   color: ${(props) => props.color};
   border: ${(props) => props.border};
   cursor: ${(props) => props.cursor};
+  transition: ${(props) => props.transition};
+  &:hover {
+    opacity: ${(props) => props.hoverOpacity};
+    background: ${(props) => props.hoverBackgroundColor};
+  }
 `

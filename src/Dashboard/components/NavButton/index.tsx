@@ -11,6 +11,7 @@ export interface NavButton {
   newTab?: boolean
   ariaLabel?: string
   className?: string
+  hoverBackgroundColor?: string
 }
 
 export type NavButtonWithSize = NavButton & {
@@ -33,6 +34,8 @@ export default function NavButton(props: NavButton) {
         backgroundColor={props.backgroundColor}
         textColor={props.textColor}
         className={props.className}
+        hoverBackgroundColor={props.hoverBackgroundColor}
+        lightOnHover={!props.hoverBackgroundColor}
       >
         {props.text}
       </StyledButton>
@@ -41,7 +44,6 @@ export default function NavButton(props: NavButton) {
 }
 
 const StyledButton = styled(Button)`
-  transition: opacity 0.2s ease-in-out;
   font-size: 29px;
   font-weight: 700;
   padding: 15px 30px;
