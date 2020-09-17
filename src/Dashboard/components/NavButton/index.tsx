@@ -12,6 +12,7 @@ export interface NavButton {
   ariaLabel?: string
   className?: string
   hoverBackgroundColor?: string
+  borderRadius?: number
 }
 
 export type NavButtonWithSize = NavButton & {
@@ -36,6 +37,7 @@ export default function NavButton(props: NavButton) {
         className={props.className}
         hoverBackgroundColor={props.hoverBackgroundColor}
         lightOnHover={!props.hoverBackgroundColor}
+        borderRadius={props.borderRadius}
       >
         {props.text}
       </StyledButton>
