@@ -18,10 +18,10 @@ import Sidebar, {SidebarProps} from 'Dashboard/templates/SimpleBlog/Sidebar'
 import Footer from 'Dashboard/templates/SimpleBlog/Footer'
 import {withStyles} from '@material-ui/core'
 import {Agenda} from 'Dashboard/components/AgendaList'
-import {Emoji} from 'Dashboard/components/EmojiList/emoji'
 import {Points} from 'Dashboard/components/PointsSummary'
 import {ResourceList} from 'Dashboard/components/ResourceList'
 import {TicketRibbon} from 'Dashboard/components/TicketRibbon'
+import {EmojiList} from 'Dashboard/components/EmojiList'
 
 export const SIMPLE_BLOG = 'SIMPLE_BLOG'
 export type SimpleBlogDashboard = {
@@ -31,7 +31,7 @@ export type SimpleBlogDashboard = {
   ticketRibbon: TicketRibbon | null
   logo: string
   welcomeText: string
-  emojis: Emoji[]
+  emojiList: EmojiList | null
   sidebar: {
     background: string
     textColor: string
@@ -60,7 +60,7 @@ export const SimpleBlog = (props: {
 
   const sidebarProps: SidebarProps = {
     ...props.dashboard.sidebar,
-    emojis: props.dashboard.emojis,
+    emojiList: props.dashboard.emojiList,
     agendas: props.dashboard.agendas,
     points: props.dashboard.points,
     resourceList: props.dashboard.resourceList,

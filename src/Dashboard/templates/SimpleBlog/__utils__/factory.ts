@@ -7,7 +7,7 @@ import {withPoints} from 'Dashboard/components/PointsSummary/__utils__/factory'
 import {withResources} from 'Dashboard/components/ResourceList/__utils__/factory'
 import {sometimes} from '__utils__/attributes'
 import {withTicketRibbon} from 'Dashboard/components/TicketRibbon/__utils__/factory'
-import {withEmojis} from 'Dashboard/components/EmojiList/__utils__/factory'
+import {withEmojiList} from 'Dashboard/components/EmojiList/__utils__/factory'
 import {withBlogPosts} from 'Dashboard/components/BlogPost/__utils__/factory'
 
 export const fakeSimpleBlog = (
@@ -26,7 +26,7 @@ export const fakeSimpleBlog = (
     },
     ticketRibbon: null,
     mainNavButtons: [],
-    emojis: [],
+    emojiList: null,
     blogPosts: [],
     agendas: [],
     points: null,
@@ -47,12 +47,12 @@ export const fakeSimpleBlog = (
 
   const makeAttributes: (d: SimpleBlogDashboard) => SimpleBlogDashboard = pipe(
     withAgendas,
-    withEmojis,
     withMainNavButtons,
     withTicketRibbon,
     withBlogPosts,
     sometimes<SimpleBlogDashboard>(withPoints),
     sometimes<SimpleBlogDashboard>(withResources),
+    sometimes<SimpleBlogDashboard>(withEmojiList),
   )
 
   return {

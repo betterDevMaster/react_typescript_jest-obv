@@ -16,6 +16,7 @@ import {
   fakeNavButton,
 } from 'Dashboard/components/NavButton/__utils__/factory'
 import {fakeBlogPost} from 'Dashboard/components/BlogPost/__utils__/factory'
+import {EmojiList} from 'Dashboard/components/EmojiList'
 
 beforeAll(() => {
   // Required to render <Hidden/> components
@@ -71,7 +72,9 @@ it('should render emojis', async () => {
   const {findAllByLabelText} = render(
     <Dashboard
       dashboard={fakeSimpleBlog({
-        emojis,
+        emojiList: {
+          emojis,
+        },
       })}
       user={fakeUser()}
     />,
