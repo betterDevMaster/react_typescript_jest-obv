@@ -1,7 +1,7 @@
 import React from 'react'
 import styled from 'styled-components'
 import Container from '@material-ui/core/Container'
-import {MenuIconButton} from 'ui/button/MenuIconButton'
+import {MenuIconButton} from 'system/ui/button/MenuIconButton'
 
 export default function Header(props: {
   logo: string
@@ -46,6 +46,7 @@ const Side = styled.div`
 
 const Box = styled.div`
   box-shadow: 20px 20px 50px #ddd;
+  margin-bottom: 60px;
 `
 
 const Middle = styled.div`

@@ -1,26 +1,54 @@
 import React, {useState} from 'react'
+import styled from 'styled-components'
 import SimpleBlogStyles from 'Dashboard/templates/SimpleBlog/Styles'
-import MainNavButton from 'Dashboard/components/MainNavButton'
+import NavButtonComponent, {
+  NavButtonWithSize,
+  NavButton,
+} from 'Dashboard/components/NavButton'
 import Grid from '@material-ui/core/Grid'
 import Container from '@material-ui/core/Container'
-import BlogPost from 'Dashboard/components/BlogPost'
+import {BlogPost} from 'Dashboard/components/BlogPost'
 import Header from 'Dashboard/templates/SimpleBlog/Header'
 import Menu from 'Dashboard/templates/SimpleBlog/Menu'
 import {User} from 'user'
 import WelcomeText from 'Dashboard/templates/SimpleBlog/WelcomeText'
+import Hidden from '@material-ui/core/Hidden'
+import BlogPosts from 'Dashboard/templates/SimpleBlog/BlogPosts'
+import Sidebar, {SidebarProps} from 'Dashboard/templates/SimpleBlog/Sidebar'
+import Footer from 'Dashboard/templates/SimpleBlog/Footer'
+import {withStyles} from '@material-ui/core'
+import {Agenda} from 'Dashboard/components/AgendaList'
+import {Points} from 'Dashboard/components/PointsSummary'
+import {ResourceList} from 'Dashboard/components/ResourceList'
+import {TicketRibbon} from 'Dashboard/components/TicketRibbon'
+import {EmojiList} from 'Dashboard/components/EmojiList'
 
 export const SIMPLE_BLOG = 'SIMPLE_BLOG'
 export type SimpleBlogDashboard = {
   template: typeof SIMPLE_BLOG
   title: string
   primaryColor: string
+  ticketRibbon: TicketRibbon | null
   logo: string
   welcomeText: string
+  emojiList: EmojiList | null
   sidebar: {
     background: string
+    textColor: string
+    navButtons: NavButton[]
   }
-  mainNavButtons: MainNavButton[]
+  mainNavButtons: NavButtonWithSize[]
   blogPosts: BlogPost[]
+  agendas: Agenda[]
+  points: Points | null
+  resourceList: ResourceList
+  footer: {
+    background: string
+    textColor: string
+    termsLink: string | null
+    privacyLink: string | null
+    copyrightText: string | null
+  }
 }
 
 export const SimpleBlog = (props: {
@@ -30,9 +58,19 @@ export const SimpleBlog = (props: {
   const [menuVisible, setMenuVisible] = useState(false)
   const toggleMenu = () => setMenuVisible(!menuVisible)
 
+  const sidebarProps: SidebarProps = {
+    ...props.dashboard.sidebar,
+    emojiList: props.dashboard.emojiList,
+    agendas: props.dashboard.agendas,
+    points: props.dashboard.points,
+    resourceList: props.dashboard.resourceList,
+    ticketRibbon: props.dashboard.ticketRibbon,
+    primaryColor: props.dashboard.primaryColor,
+  }
+
   return (
-    <div>
-      <SimpleBlogStyles />
+    <Box>
+      <SimpleBlogStyles primaryColor={props.dashboard.primaryColor} />
       <Menu
         visible={menuVisible}
         background={props.dashboard.primaryColor}
@@ -46,16 +84,65 @@ export const SimpleBlog = (props: {
         menuVisible={menuVisible}
         toggleMenu={toggleMenu}
       />
-      <Container maxWidth="lg">
-        <WelcomeText>{props.dashboard.welcomeText}</WelcomeText>
-        <Grid container spacing={2}>
-          {props.dashboard.mainNavButtons.map((button) => (
-            <Grid item xs={12} md={button.size} key={button.text}>
-              <MainNavButton {...button} />
+      <Content>
+        <StyledContainer maxWidth="lg">
+          <WelcomeText>{props.dashboard.welcomeText}</WelcomeText>
+          <MainNavButtons>
+            <Grid container spacing={2}>
+              {props.dashboard.mainNavButtons.map((button) => (
+                <Grid item xs={12} md={button.size} key={button.text}>
+                  <NavButtonComponent {...button} ariaLabel="main nav button" />
+                </Grid>
+              ))}
             </Grid>
-          ))}
-        </Grid>
-      </Container>
-    </div>
+          </MainNavButtons>
+          <FullHeightGrid container spacing={4}>
+            <Hidden mdUp>
+              <Grid item xs={12}>
+                <Sidebar {...sidebarProps} />
+              </Grid>
+            </Hidden>
+            <Grid item xs={12} md={8}>
+              <BlogPosts posts={props.dashboard.blogPosts} />
+            </Grid>
+            <Hidden smDown>
+              <Grid item xs={12} md={4}>
+                <Sidebar {...sidebarProps} />
+              </Grid>
+            </Hidden>
+          </FullHeightGrid>
+        </StyledContainer>
+      </Content>
+      <Footer {...props.dashboard.footer} />
+    </Box>
   )
 }
+
+const Box = styled.div`
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+`
+
+const Content = styled.div`
+  flex: 1;
+  margin-bottom: 20px;
+  display: flex;
+`
+
+const MainNavButtons = styled.div`
+  margin-bottom: 30px;
+`
+
+const StyledContainer = withStyles({
+  root: {
+    display: 'flex',
+    flexDirection: 'column',
+  },
+})(Container)
+
+const FullHeightGrid = withStyles({
+  root: {
+    flex: 1,
+  },
+})(Grid)

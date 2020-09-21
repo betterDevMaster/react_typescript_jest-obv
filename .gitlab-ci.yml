@@ -1,0 +1,16 @@
+image: node:12.18.2
+
+cache:
+  key: event_web
+  paths:
+    - .npm/
+
+test:
+  stage: test
+  except:
+    refs:
+      - staging
+      - production
+  script:
+    - npm i --cache .npm --prefer-offline
+    - npm test
