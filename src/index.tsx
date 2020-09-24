@@ -3,5 +3,11 @@ import ReactDOM from 'react-dom'
 import 'normalize.css'
 import App from './App'
 import 'index.css'
+import StoreProvider from 'store/StoreProvider'
 
-ReactDOM.render(<App />, document.getElementById('root'))
+ReactDOM.render(
+  <StoreProvider>
+    <App />
+  </StoreProvider>,
+  document.getElementById('root'),
+)

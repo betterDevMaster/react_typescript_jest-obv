@@ -1,4 +1,4 @@
-import React, {useState} from 'react'
+import React, {useEffect} from 'react'
 import Dashboard from 'Dashboard'
 import ThemeProvider from 'system/ui/theme/ThemeProvider'
 import {fakeSimpleBlog} from 'Dashboard/templates/SimpleBlog/__utils__/factory'
@@ -10,21 +10,33 @@ import Tabs from '@material-ui/core/Tabs'
 import Tab from '@material-ui/core/Tab'
 import TextField from '@material-ui/core/TextField'
 import Box from '@material-ui/core/Box'
+import {useDispatch, useSelector} from 'react-redux'
+import {RootState} from 'store'
+import {setDashboard} from 'Dashboard/DashboardEditor/state/actions'
 
 function App() {
   const [tab, setTab] = React.useState(0)
+  const dispatch = useDispatch()
 
-  const [dashboard, setDashboard] = useState(
-    fakeSimpleBlog({
-      primaryColor: '#ea202e',
-      points: fakePoints(),
-      sidebar: {
-        background: '#000000',
-        textColor: '#Ffffff',
-        navButtons: Array.from({length: 5}, fakeNavButton),
-      },
-    }),
+  const dashboard = useSelector(
+    (state: RootState) => state.dashboardEditor.dashboard,
   )
+
+  useEffect(() => {
+    dispatch(
+      setDashboard(
+        fakeSimpleBlog({
+          primaryColor: '#ea202e',
+          points: fakePoints(),
+          sidebar: {
+            background: '#000000',
+            textColor: '#Ffffff',
+            navButtons: Array.from({length: 5}, fakeNavButton),
+          },
+        }),
+      ),
+    )
+  }, [dispatch])
 
   const handleChangeTab = (_: React.ChangeEvent<{}>, newValue: number) => {
     setTab(newValue)
@@ -38,6 +50,10 @@ function App() {
     } catch (e) {
       //
     }
+  }
+
+  if (!dashboard) {
+    return null
   }
 
   return (
