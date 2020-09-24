@@ -25,7 +25,7 @@ beforeAll(() => {
 it('should show the welcome text', async () => {
   const dashboard = fakeSimpleBlog()
   const {findByText} = render(
-    <Dashboard dashboard={dashboard} user={fakeUser()} />,
+    <Dashboard isEditMode={false} dashboard={dashboard} user={fakeUser()} />,
   )
   expect(await findByText(dashboard.welcomeText)).toBeInTheDocument()
 })
@@ -33,7 +33,7 @@ it('should show the welcome text', async () => {
 it('should show the user email', async () => {
   const user = fakeUser()
   const {findByText, findByTestId} = render(
-    <Dashboard dashboard={fakeSimpleBlog()} user={user} />,
+    <Dashboard isEditMode={false} dashboard={fakeSimpleBlog()} user={user} />,
   )
 
   const menuButton = await findByTestId('menu-button')
@@ -51,6 +51,7 @@ it('should render main nav buttons', async () => {
 
   const {findAllByLabelText} = render(
     <Dashboard
+      isEditMode={false}
       dashboard={fakeSimpleBlog({
         mainNavButtons,
       })}
@@ -70,6 +71,7 @@ it('should render emojis', async () => {
 
   const {findAllByLabelText} = render(
     <Dashboard
+      isEditMode={false}
       dashboard={fakeSimpleBlog({
         emojiList: {
           emojis,
@@ -87,7 +89,7 @@ it('should render agendas', async () => {
   const dashboard = fakeSimpleBlog({agendas: []})
 
   const {queryByText, findAllByLabelText, rerender} = render(
-    <Dashboard dashboard={dashboard} user={fakeUser()} />,
+    <Dashboard isEditMode={false} dashboard={dashboard} user={fakeUser()} />,
   )
 
   expect(queryByText(/agenda/i)).not.toBeInTheDocument()
@@ -100,7 +102,13 @@ it('should render agendas', async () => {
   const dashboardWithAgendas = fakeSimpleBlog({
     agendas,
   })
-  rerender(<Dashboard dashboard={dashboardWithAgendas} user={fakeUser()} />)
+  rerender(
+    <Dashboard
+      isEditMode={false}
+      dashboard={dashboardWithAgendas}
+      user={fakeUser()}
+    />,
+  )
 
   expect((await findAllByLabelText('agenda')).length).toBe(agendas.length)
 })
@@ -109,7 +117,7 @@ it('should render points', async () => {
   const dashboard = fakeSimpleBlog({points: null})
 
   const {queryByText, rerender, findByText} = render(
-    <Dashboard dashboard={dashboard} user={fakeUser()} />,
+    <Dashboard isEditMode={false} dashboard={dashboard} user={fakeUser()} />,
   )
 
   expect(queryByText(/you've earned/i)).not.toBeInTheDocument()
@@ -119,7 +127,13 @@ it('should render points', async () => {
     points,
   })
 
-  rerender(<Dashboard dashboard={dashboardWithPoints} user={fakeUser()} />)
+  rerender(
+    <Dashboard
+      isEditMode={false}
+      dashboard={dashboardWithPoints}
+      user={fakeUser()}
+    />,
+  )
 
   const pointsText = new RegExp(
     `you've earned ${points.numPoints} ${points.unit}!`,
@@ -138,7 +152,7 @@ it('should render resources', async () => {
   })
 
   const {queryByText, rerender, findAllByLabelText} = render(
-    <Dashboard dashboard={dashboard} user={fakeUser()} />,
+    <Dashboard isEditMode={false} dashboard={dashboard} user={fakeUser()} />,
   )
 
   expect(queryByText(/resources:/i)).not.toBeInTheDocument()
@@ -151,7 +165,13 @@ it('should render resources', async () => {
     },
   })
 
-  rerender(<Dashboard dashboard={withResources} user={fakeUser()} />)
+  rerender(
+    <Dashboard
+      isEditMode={false}
+      dashboard={withResources}
+      user={fakeUser()}
+    />,
+  )
 
   const resources = await findAllByLabelText('event resource')
   expect(resources.length).toBe(numResources)
@@ -165,7 +185,7 @@ it('should render ticket ribbons', () => {
   const ticketRibbon = faker.random.arrayElement(ALL_TICKET_RIBBONS)
 
   const {queryByLabelText, rerender} = render(
-    <Dashboard dashboard={dashboard} user={fakeUser()} />,
+    <Dashboard isEditMode={false} dashboard={dashboard} user={fakeUser()} />,
   )
 
   const label = `${ticketRibbon.name} ticket`
@@ -176,7 +196,13 @@ it('should render ticket ribbons', () => {
     ticketRibbon,
   })
 
-  rerender(<Dashboard dashboard={withTicketRibbon} user={fakeUser()} />)
+  rerender(
+    <Dashboard
+      isEditMode={false}
+      dashboard={withTicketRibbon}
+      user={fakeUser()}
+    />,
+  )
 
   expect(queryByLabelText(new RegExp(label))).toBeInTheDocument()
 })
@@ -191,7 +217,7 @@ it('should render sidebarNavButtons', () => {
   })
 
   const {queryByLabelText, rerender, queryAllByLabelText} = render(
-    <Dashboard dashboard={dashboard} user={fakeUser()} />,
+    <Dashboard isEditMode={false} dashboard={dashboard} user={fakeUser()} />,
   )
 
   expect(queryByLabelText(/sidebar nav/i)).not.toBeInTheDocument()
@@ -206,7 +232,13 @@ it('should render sidebarNavButtons', () => {
     },
   })
 
-  rerender(<Dashboard dashboard={withNavButtons} user={fakeUser()} />)
+  rerender(
+    <Dashboard
+      isEditMode={false}
+      dashboard={withNavButtons}
+      user={fakeUser()}
+    />,
+  )
 
   expect(queryAllByLabelText(/sidebar nav/i).length).toBe(numButtons)
 })
@@ -223,7 +255,7 @@ it('should render a footer', () => {
   })
 
   const {queryByLabelText, rerender, getByText} = render(
-    <Dashboard dashboard={dashboard} user={fakeUser()} />,
+    <Dashboard isEditMode={false} dashboard={dashboard} user={fakeUser()} />,
   )
 
   expect(queryByLabelText(/terms of service/i)).not.toBeInTheDocument()
@@ -241,7 +273,9 @@ it('should render a footer', () => {
     },
   })
 
-  rerender(<Dashboard dashboard={withFooter} user={fakeUser()} />)
+  rerender(
+    <Dashboard isEditMode={false} dashboard={withFooter} user={fakeUser()} />,
+  )
 
   expect(queryByLabelText(/terms of service/i)).toBeInTheDocument()
   expect(queryByLabelText(/privacy policy/i)).toBeInTheDocument()
@@ -255,7 +289,7 @@ it('should render blog posts', () => {
   })
 
   const {queryByLabelText, rerender, getAllByLabelText, getByText} = render(
-    <Dashboard dashboard={withoutPosts} user={fakeUser()} />,
+    <Dashboard isEditMode={false} dashboard={withoutPosts} user={fakeUser()} />,
   )
 
   expect(queryByLabelText('blog post')).not.toBeInTheDocument()
@@ -267,7 +301,9 @@ it('should render blog posts', () => {
     blogPosts,
   })
 
-  rerender(<Dashboard dashboard={withPosts} user={fakeUser()} />)
+  rerender(
+    <Dashboard isEditMode={false} dashboard={withPosts} user={fakeUser()} />,
+  )
 
   expect(getAllByLabelText('blog post').length).toBe(numPosts)
 

@@ -54,6 +54,7 @@ export type SimpleBlogDashboard = {
 export const SimpleBlog = (props: {
   dashboard: SimpleBlogDashboard
   user: User
+  isEditMode: boolean
 }) => {
   const [menuVisible, setMenuVisible] = useState(false)
   const toggleMenu = () => setMenuVisible(!menuVisible)
