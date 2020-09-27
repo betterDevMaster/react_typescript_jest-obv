@@ -1,14 +1,14 @@
 import {SimpleBlogDashboard, SIMPLE_BLOG} from 'Dashboard/templates/SimpleBlog'
 import faker from 'faker'
-import {withMainNavButtons} from 'Dashboard/components/NavButton/__utils__/factory'
+import {withMainNavButtons} from 'Dashboard/component/NavButton/__utils__/factory'
 import {pipe} from 'ramda'
-import {withAgendas} from 'Dashboard/components/AgendaList/__utils__/factory'
-import {withPoints} from 'Dashboard/components/PointsSummary/__utils__/factory'
-import {withResources} from 'Dashboard/components/ResourceList/__utils__/factory'
+import {withAgendas} from 'Dashboard/component/AgendaList/__utils__/factory'
+import {withPoints} from 'Dashboard/component/PointsSummary/__utils__/factory'
+import {withResources} from 'Dashboard/component/ResourceList/__utils__/factory'
 import {sometimes} from '__utils__/attributes'
-import {withTicketRibbon} from 'Dashboard/components/TicketRibbon/__utils__/factory'
-import {withEmojiList} from 'Dashboard/components/EmojiList/__utils__/factory'
-import {withBlogPosts} from 'Dashboard/components/BlogPost/__utils__/factory'
+import {withTicketRibbon} from 'Dashboard/component/TicketRibbon/__utils__/factory'
+import {withEmojiList} from 'Dashboard/component/EmojiList/__utils__/factory'
+import {withBlogPosts} from 'Dashboard/component/BlogPost/__utils__/factory'
 
 export const fakeSimpleBlog = (
   overrides?: Partial<SimpleBlogDashboard>,

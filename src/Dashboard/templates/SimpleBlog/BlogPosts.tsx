@@ -1,4 +1,4 @@
-import {BlogPost} from 'Dashboard/components/BlogPost'
+import {BlogPost} from 'Dashboard/component/BlogPost'
 import React from 'react'
 
 export default function BlogPosts(props: {posts: BlogPost[]}) {

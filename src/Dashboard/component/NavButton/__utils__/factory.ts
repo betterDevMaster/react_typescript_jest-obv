@@ -1,14 +1,19 @@
-import {NavButtonWithSize, NavButton} from 'Dashboard/components/NavButton'
+import {NavButtonWithSize, NavButton} from 'Dashboard/component/NavButton'
 import faker from 'faker'
 import {pipe} from 'ramda'
 import {Column} from 'system/ui/layout'
 import {sometimes} from '__utils__/attributes'
 
 export const fakeNavButton = (overrides?: Partial<NavButton>): NavButton => {
+  const text = `${faker.random.word()} ${faker.random.word()} ${
+    faker.random.boolean() ? faker.random.word() : ''
+  }`
+
   const defaultAttributes = {
-    text: faker.lorem.word(),
+    text,
     link: faker.internet.url(),
     newTab: true,
+    isEditMode: false,
   }
 
   const makeAttributes: (nb: NavButton) => NavButton = pipe(

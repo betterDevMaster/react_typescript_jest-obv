@@ -1,4 +1,4 @@
-import {Points} from 'Dashboard/components/PointsSummary'
+import {Points} from 'Dashboard/component/PointsSummary'
 import faker from 'faker'
 
 export const fakePoints = (): Points => ({

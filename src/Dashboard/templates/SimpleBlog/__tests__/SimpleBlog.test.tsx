@@ -6,19 +6,19 @@ import {fakeUser} from 'user/__utils__/factory'
 import {setWindowMatchMedia} from '__utils__/media-query'
 import Dashboard from 'Dashboard'
 import {render} from '__utils__/render'
-import {fakeAgenda} from 'Dashboard/components/AgendaList/__utils__/factory'
-import {ALL_EMOJIS} from 'Dashboard/components/EmojiList/emoji'
-import {fakePoints} from 'Dashboard/components/PointsSummary/__utils__/factory'
-import {fakeResource} from 'Dashboard/components/ResourceList/__utils__/factory'
+import {fakeAgenda} from 'Dashboard/component/AgendaList/__utils__/factory'
+import {ALL_EMOJIS} from 'Dashboard/component/EmojiList/emoji'
+import {fakePoints} from 'Dashboard/component/PointsSummary/__utils__/factory'
+import {fakeResource} from 'Dashboard/component/ResourceList/__utils__/factory'
 import {
   fakeNavButtonWithSize,
   fakeNavButton,
-} from 'Dashboard/components/NavButton/__utils__/factory'
-import {fakeBlogPost} from 'Dashboard/components/BlogPost/__utils__/factory'
-import {ALL_TICKET_RIBBONS} from 'Dashboard/components/TicketRibbon'
+} from 'Dashboard/component/NavButton/__utils__/factory'
+import {fakeBlogPost} from 'Dashboard/component/BlogPost/__utils__/factory'
+import {ALL_TICKET_RIBBONS} from 'Dashboard/component/TicketRibbon'
 
 beforeAll(() => {
-  // Required to render <Hidden/> components
+  // Required to render <Hidden/> components in tests
   setWindowMatchMedia()
 })
 
@@ -39,28 +39,6 @@ it('should show the user email', async () => {
   const menuButton = await findByTestId('menu-button')
   fireEvent.click(menuButton)
   expect(await findByText(new RegExp(user.email))).toBeInTheDocument()
-})
-
-it('should render main nav buttons', async () => {
-  const mainNavButtons = Array.from(
-    {
-      length: faker.random.number({min: 1, max: 4}),
-    },
-    fakeNavButtonWithSize,
-  )
-
-  const {findAllByLabelText} = render(
-    <Dashboard
-      isEditMode={false}
-      dashboard={fakeSimpleBlog({
-        mainNavButtons,
-      })}
-      user={fakeUser()}
-    />,
-  )
-
-  const buttons = await findAllByLabelText('main nav button')
-  expect(buttons.length).toBe(mainNavButtons.length)
 })
 
 it('should render emojis', async () => {
