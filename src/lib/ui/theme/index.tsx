@@ -7,6 +7,10 @@ export const breakpoints = {
   xl: '1920px',
 }
 
+export const colors = {
+  primary: '#3FB1E5',
+}
+
 export const spacing = Array(60)
   .fill(4)
   .map((base, idx) => `${base * idx}px`)

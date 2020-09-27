@@ -1,7 +1,7 @@
 import {NavButtonWithSize, NavButton} from 'Dashboard/components/NavButton'
 import faker from 'faker'
 import {pipe} from 'ramda'
-import {Column} from 'system/ui/layout'
+import {Column} from 'lib/ui/layout'
 import {sometimes} from '__utils__/attributes'
 
 export const fakeNavButton = (overrides?: Partial<NavButton>): NavButton => {

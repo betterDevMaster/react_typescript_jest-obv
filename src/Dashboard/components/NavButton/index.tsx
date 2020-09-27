@@ -1,8 +1,10 @@
 import {Component} from 'Dashboard/components'
+import NavButtonWithEdit from 'Dashboard/components/NavButton/NavButtonWithEdit'
 import React from 'react'
 import styled from 'styled-components'
-import Button from 'system/ui/button/Button'
-import {Column} from 'system/ui/layout'
+import Button from 'lib/ui/Button'
+import {Column} from 'lib/ui/layout'
+import {newTabProps} from 'lib/link'
 
 export interface NavButton extends Component {
   text: string
@@ -24,15 +26,14 @@ export type NavButtonWithSize = NavButton & {
 }
 
 export default function NavButton(props: NavButton) {
-  const target = props.newTab
-    ? {
-        target: '_blank',
-        rel: 'noopener',
-      }
-    : null
+  const tabProps = props.newTab ? newTabProps : null
+
+  if (props.isEditMode) {
+    return <NavButtonWithEdit {...props} tabProps={tabProps} />
+  }
 
   return (
-    <a href={props.link} {...target} aria-label={props.ariaLabel}>
+    <Link href={props.link} {...tabProps} aria-label={props.ariaLabel}>
       <StyledButton
         fullWidth
         textTransform="uppercase"
@@ -47,9 +48,17 @@ export default function NavButton(props: NavButton) {
       >
         {props.text}
       </StyledButton>
-    </a>
+    </Link>
   )
 }
+
+const Link = styled.a`
+  display: flex;
+
+  &:hover {
+    text-decoration: none;
+  }
+`
 
 const StyledButton = styled(Button)`
   font-size: 29px;

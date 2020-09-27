@@ -78,7 +78,11 @@ export const SimpleBlog = (props: {
             <Grid container spacing={2}>
               {props.dashboard.mainNavButtons.map((button) => (
                 <Grid item xs={12} md={button.size} key={button.text}>
-                  <NavButtonComponent {...button} ariaLabel="main nav button" />
+                  <NavButtonComponent
+                    {...button}
+                    ariaLabel="main nav button"
+                    isEditMode={props.isEditMode}
+                  />
                 </Grid>
               ))}
             </Grid>

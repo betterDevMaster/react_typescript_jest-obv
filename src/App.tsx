@@ -1,6 +1,6 @@
 import React from 'react'
 import Dashboard from 'Dashboard'
-import ThemeProvider from 'system/ui/theme/ThemeProvider'
+import ThemeProvider from 'lib/ui/theme/ThemeProvider'
 import {fakeSimpleBlog} from 'Dashboard/templates/SimpleBlog/__utils__/factory'
 import {fakeUser} from 'user/__utils__/factory'
 import {fakePoints} from 'Dashboard/components/PointsSummary/__utils__/factory'
@@ -23,7 +23,7 @@ export default function App() {
         dashboard={dashboard}
         // @ts-ignore
         user={fakeUser()}
-        isEditMode={false}
+        isEditMode={true}
       />
     </Providers>
   )
