@@ -2,28 +2,32 @@ import {SimpleBlogDashboard} from 'Dashboard/templates/SimpleBlog'
 import React from 'react'
 import styled from 'styled-components'
 
-export default function Footer(props: SimpleBlogDashboard['footer']) {
-  const hasField = props.copyrightText || props.privacyLink || props.termsLink
+export default function Footer(props: SimpleBlogDashboard) {
+  const hasField =
+    props.footerCopyrightText ||
+    props.footerPrivacyLink ||
+    props.footerTermsLink
+
   if (!hasField) {
     return null
   }
 
   return (
-    <Box background={props.background} textColor={props.textColor}>
+    <Box background={props.footerBackground} textColor={props.footerTextColor}>
       <div>
-        {props.termsLink ? (
-          <a href={props.termsLink} aria-label="terms of service">
+        {props.footerTermsLink ? (
+          <a href={props.footerTermsLink} aria-label="terms of service">
             Terms of Service
           </a>
         ) : null}
-        {props.termsLink && props.privacyLink ? ' • ' : null}
-        {props.privacyLink ? (
-          <a href={props.privacyLink} aria-label="privacy policy">
+        {props.footerTermsLink && props.footerPrivacyLink ? ' • ' : null}
+        {props.footerPrivacyLink ? (
+          <a href={props.footerPrivacyLink} aria-label="privacy policy">
             Privacy Policy
           </a>
         ) : null}
       </div>
-      {props.copyrightText ? <p>{props.copyrightText}</p> : null}
+      {props.footerCopyrightText ? <p>{props.footerCopyrightText}</p> : null}
     </Box>
   )
 }

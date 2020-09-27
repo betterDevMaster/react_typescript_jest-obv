@@ -19,11 +19,9 @@ export const fakeSimpleBlog = (
     logo: 'https://tax.live/success_summit/images/virtual-2020-logo.png',
     welcomeText: 'WELCOME TO THE DASHBOARD',
     primaryColor: '#14aecf',
-    sidebar: {
-      background: '#000000',
-      textColor: '#FFFFFF',
-      navButtons: [],
-    },
+    sidebarBackground: '#000000',
+    sidebarTextColor: '#FFFFFF',
+    sidebarNavButtons: [],
     ticketRibbon: null,
     mainNavButtons: [],
     emojiList: null,
@@ -34,15 +32,13 @@ export const fakeSimpleBlog = (
       description: '',
       resources: [],
     },
-    footer: {
-      background: '#000000',
-      textColor: '#ffffff',
-      termsLink: faker.random.boolean() ? faker.internet.url() : null,
-      privacyLink: faker.random.boolean() ? faker.internet.url() : null,
-      copyrightText: faker.random.boolean()
-        ? `© 2020 ${faker.company.companyName()}. All Rights Reserved.`
-        : null,
-    },
+    footerBackground: '#000000',
+    footerTextColor: '#ffffff',
+    footerTermsLink: faker.random.boolean() ? faker.internet.url() : null,
+    footerPrivacyLink: faker.random.boolean() ? faker.internet.url() : null,
+    footerCopyrightText: faker.random.boolean()
+      ? `© 2020 ${faker.company.companyName()}. All Rights Reserved.`
+      : null,
   }
 
   const makeAttributes: (d: SimpleBlogDashboard) => SimpleBlogDashboard = pipe(

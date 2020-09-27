@@ -10,11 +10,9 @@ import StoreProvider from 'store/StoreProvider'
 const dashboard = fakeSimpleBlog({
   primaryColor: '#ea202e',
   points: fakePoints(),
-  sidebar: {
-    background: '#000000',
-    textColor: '#Ffffff',
-    navButtons: Array.from({length: 5}, fakeNavButton),
-  },
+  sidebarBackground: '#000000',
+  sidebarTextColor: '#Ffffff',
+  sidebarNavButtons: Array.from({length: 5}, fakeNavButton),
 })
 
 export default function App() {

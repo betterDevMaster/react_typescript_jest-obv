@@ -9,20 +9,12 @@ import Section from 'Dashboard/templates/SimpleBlog/Sidebar/Section'
 import TicketRibbon from 'Dashboard/component/TicketRibbon'
 import SidebarNav from 'Dashboard/templates/SimpleBlog/Sidebar/SidebarNav'
 
-export type SidebarProps = Pick<
-  SimpleBlogDashboard,
-  | 'emojiList'
-  | 'agendas'
-  | 'points'
-  | 'resourceList'
-  | 'ticketRibbon'
-  | 'primaryColor'
-> &
-  SimpleBlogDashboard['sidebar']
-
-export default function Sidebar(props: SidebarProps) {
+export default function Sidebar(props: SimpleBlogDashboard) {
   return (
-    <Box backgroundColor={props.background} textColor={props.textColor}>
+    <Box
+      backgroundColor={props.sidebarBackground}
+      textColor={props.sidebarTextColor}
+    >
       <EmojiList list={props.emojiList} />
       <TicketRibbon ribbon={props.ticketRibbon} />
       <AgendaList agendas={props.agendas} component={Section} />
@@ -33,7 +25,7 @@ export default function Sidebar(props: SidebarProps) {
         iconColor={props.primaryColor}
       />
       <SidebarNav
-        buttons={props.navButtons}
+        buttons={props.sidebarNavButtons}
         buttonColor={props.primaryColor}
         component={Section}
       />

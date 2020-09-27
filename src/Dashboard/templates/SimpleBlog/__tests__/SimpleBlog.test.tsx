@@ -10,10 +10,7 @@ import {fakeAgenda} from 'Dashboard/component/AgendaList/__utils__/factory'
 import {ALL_EMOJIS} from 'Dashboard/component/EmojiList/emoji'
 import {fakePoints} from 'Dashboard/component/PointsSummary/__utils__/factory'
 import {fakeResource} from 'Dashboard/component/ResourceList/__utils__/factory'
-import {
-  fakeNavButtonWithSize,
-  fakeNavButton,
-} from 'Dashboard/component/NavButton/__utils__/factory'
+import {fakeNavButton} from 'Dashboard/component/NavButton/__utils__/factory'
 import {fakeBlogPost} from 'Dashboard/component/BlogPost/__utils__/factory'
 import {ALL_TICKET_RIBBONS} from 'Dashboard/component/TicketRibbon'
 
@@ -187,11 +184,9 @@ it('should render ticket ribbons', () => {
 
 it('should render sidebarNavButtons', () => {
   const dashboard = fakeSimpleBlog({
-    sidebar: {
-      background: '#000000',
-      textColor: '#ffffff',
-      navButtons: [],
-    },
+    sidebarBackground: '#000000',
+    sidebarTextColor: '#ffffff',
+    sidebarNavButtons: [],
   })
 
   const {queryByLabelText, rerender, queryAllByLabelText} = render(
@@ -203,11 +198,9 @@ it('should render sidebarNavButtons', () => {
   const numButtons = faker.random.number({min: 1, max: 5})
 
   const withNavButtons = fakeSimpleBlog({
-    sidebar: {
-      background: '#000000',
-      textColor: '#ffffff',
-      navButtons: Array.from({length: numButtons}, fakeNavButton),
-    },
+    sidebarBackground: '#000000',
+    sidebarTextColor: '#ffffff',
+    sidebarNavButtons: Array.from({length: numButtons}, fakeNavButton),
   })
 
   rerender(
@@ -223,13 +216,11 @@ it('should render sidebarNavButtons', () => {
 
 it('should render a footer', () => {
   const dashboard = fakeSimpleBlog({
-    footer: {
-      background: '#000000',
-      textColor: '#FFFFFF',
-      termsLink: null,
-      privacyLink: null,
-      copyrightText: null,
-    },
+    footerBackground: '#000000',
+    footerTextColor: '#FFFFFF',
+    footerTermsLink: null,
+    footerPrivacyLink: null,
+    footerCopyrightText: null,
   })
 
   const {queryByLabelText, rerender, getByText} = render(
@@ -242,13 +233,11 @@ it('should render a footer', () => {
   const copyrightText = faker.lorem.sentence()
 
   const withFooter = fakeSimpleBlog({
-    footer: {
-      background: '#000000',
-      textColor: '#FFFFFF',
-      termsLink: faker.internet.url(),
-      privacyLink: faker.internet.url(),
-      copyrightText,
-    },
+    footerBackground: '#000000',
+    footerTextColor: '#FFFFFF',
+    footerTermsLink: faker.internet.url(),
+    footerPrivacyLink: faker.internet.url(),
+    footerCopyrightText: copyrightText,
   })
 
   rerender(
