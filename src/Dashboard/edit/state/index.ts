@@ -3,7 +3,7 @@ import {
   DashboardEditorAction,
   handleSetDashboard,
   SET_DASHBOARD_ACTION,
-} from 'Dashboard/DashboardEditor/state/actions'
+} from 'Dashboard/edit/state/actions'
 
 export interface DashboardEditorState {
   dashboard: Dashboard | null

@@ -7,38 +7,34 @@ import {
 import {User} from 'user'
 import {useDispatch, useSelector} from 'react-redux'
 import {RootState} from 'store'
-import {setDashboard} from 'Dashboard/DashboardEditor/state/actions'
+import {setDashboard} from 'Dashboard/edit/state/actions'
+import DashboardEditDialog from 'Dashboard/edit/views/DashboardEditDialog'
 
 export type Dashboard = SimpleBlogDashboard
-
-export default function Dashboard(props: {
+interface DashboardProps {
   dashboard: Dashboard
   user: User
   isEditMode: boolean
-}) {
+}
+
+export default function Dashboard(props: DashboardProps) {
   const dashboard = useCurrentDashboard(props.isEditMode, props.dashboard)
   if (!dashboard) {
     return null
   }
 
-  switch (dashboard.template) {
-    case SIMPLE_BLOG:
-      return (
-        <SimpleBlog
-          dashboard={dashboard}
-          user={props.user}
-          isEditMode={props.isEditMode}
-        />
-      )
-    default:
-      // Need to handle undefined case explicitly, because the dashboard could
-      // have been bound globally (via Laravel), and there's no way to
-      // verify the type at this point.
-      throw new Error(
-        //@ts-ignore
-        `Missing component for template: ${dashboard.template}`,
-      )
+  const dashboardComponent = DashboardComponent(props)
+
+  if (props.isEditMode) {
+    return (
+      <>
+        {dashboardComponent}
+        <DashboardEditDialog />
+      </>
+    )
   }
+
+  return dashboardComponent
 }
 
 function useCurrentDashboard(
@@ -52,8 +48,8 @@ function useCurrentDashboard(
   )
 
   useEffect(() => {
-    const shouldLoadSavedDashboard = isEditMode && !loadedRef.current
-    if (!shouldLoadSavedDashboard) {
+    const shouldSetDashboardToEdit = isEditMode && !loadedRef.current
+    if (!shouldSetDashboardToEdit) {
       return
     }
 
@@ -70,4 +66,25 @@ function useCurrentDashboard(
   }
 
   return updated
+}
+
+function DashboardComponent(props: DashboardProps) {
+  switch (props.dashboard.template) {
+    case SIMPLE_BLOG:
+      return (
+        <SimpleBlog
+          dashboard={props.dashboard}
+          user={props.user}
+          isEditMode={props.isEditMode}
+        />
+      )
+    default:
+      // Need to handle undefined case explicitly, because the dashboard could
+      // have been bound globally (via Laravel), and there's no way to
+      // verify the type at this point.
+      throw new Error(
+        //@ts-ignore
+        `Missing component for template: ${dashboard.template}`,
+      )
+  }
 }
