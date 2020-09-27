@@ -36,18 +36,6 @@ export const fakeNavButtonWithSize = (): NavButtonWithSize => ({
     : 12,
 })
 
-export function withMainNavButtons<T extends {mainNavButtons: NavButton[]}>(
-  attributes: T,
-): T {
-  return {
-    ...attributes,
-    mainNavButtons: Array.from(
-      {length: faker.random.number({min: 1, max: 5})},
-      fakeNavButtonWithSize,
-    ),
-  }
-}
-
 function withHoverBackground(button: NavButton): NavButton {
   return {
     ...button,

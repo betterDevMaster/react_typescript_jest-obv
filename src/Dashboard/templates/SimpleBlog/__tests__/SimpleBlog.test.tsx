@@ -13,6 +13,7 @@ import {fakeResource} from 'Dashboard/components/ResourceList/__utils__/factory'
 import {fakeNavButton} from 'Dashboard/components/NavButton/__utils__/factory'
 import {fakeBlogPost} from 'Dashboard/components/BlogPost/__utils__/factory'
 import {ALL_TICKET_RIBBONS} from 'Dashboard/components/TicketRibbon'
+import {createEntityList} from 'lib/list'
 
 beforeAll(() => {
   // Required to render <Hidden/> components in tests
@@ -186,7 +187,7 @@ it('should render sidebarNavButtons', () => {
   const dashboard = fakeSimpleBlog({
     sidebarBackground: '#000000',
     sidebarTextColor: '#ffffff',
-    sidebarNavButtons: [],
+    sidebarNavButtons: createEntityList([]),
   })
 
   const {queryByLabelText, rerender, queryAllByLabelText} = render(
@@ -200,7 +201,9 @@ it('should render sidebarNavButtons', () => {
   const withNavButtons = fakeSimpleBlog({
     sidebarBackground: '#000000',
     sidebarTextColor: '#ffffff',
-    sidebarNavButtons: Array.from({length: numButtons}, fakeNavButton),
+    sidebarNavButtons: createEntityList(
+      Array.from({length: numButtons}, fakeNavButton),
+    ),
   })
 
   rerender(
@@ -252,7 +255,7 @@ it('should render a footer', () => {
 
 it('should render blog posts', () => {
   const withoutPosts = fakeSimpleBlog({
-    blogPosts: [],
+    blogPosts: createEntityList([]),
   })
 
   const {queryByLabelText, rerender, getAllByLabelText, getByText} = render(
@@ -262,7 +265,9 @@ it('should render blog posts', () => {
   expect(queryByLabelText('blog post')).not.toBeInTheDocument()
 
   const numPosts = faker.random.number({min: 1, max: 5})
-  const blogPosts = Array.from({length: numPosts}, fakeBlogPost)
+  const blogPosts = createEntityList(
+    Array.from({length: numPosts}, fakeBlogPost),
+  )
 
   const withPosts = fakeSimpleBlog({
     blogPosts,
@@ -274,7 +279,7 @@ it('should render blog posts', () => {
 
   expect(getAllByLabelText('blog post').length).toBe(numPosts)
 
-  for (const post of blogPosts) {
+  for (const post of Object.values(blogPosts.entities)) {
     expect(getByText(post.title)).toBeInTheDocument()
   }
 })

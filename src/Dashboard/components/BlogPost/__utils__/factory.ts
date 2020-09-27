@@ -1,6 +1,7 @@
 import {BlogPost} from 'Dashboard/components/BlogPost'
 
 import faker from 'faker'
+import {createEntityList, EntityList} from 'lib/list'
 
 export const fakeBlogPost = (): BlogPost => ({
   title: faker.lorem.lines(1),
@@ -16,14 +17,16 @@ export const fakeBlogPost = (): BlogPost => ({
 
 export function withBlogPosts<
   T extends {
-    blogPosts: BlogPost[]
+    blogPosts: EntityList<BlogPost>
   }
 >(dashboard: T): T {
+  const posts = Array.from(
+    {length: faker.random.number({min: 1, max: 5})},
+    fakeBlogPost,
+  )
+
   return {
     ...dashboard,
-    blogPosts: Array.from(
-      {length: faker.random.number({min: 1, max: 5})},
-      fakeBlogPost,
-    ),
+    blogPosts: createEntityList(posts),
   }
 }

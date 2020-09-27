@@ -4,7 +4,6 @@ import ThemeProvider from 'lib/ui/theme/ThemeProvider'
 import {fakeSimpleBlog} from 'Dashboard/templates/SimpleBlog/__utils__/factory'
 import {fakeUser} from 'user/__utils__/factory'
 import {fakePoints} from 'Dashboard/components/PointsSummary/__utils__/factory'
-import {fakeNavButton} from 'Dashboard/components/NavButton/__utils__/factory'
 import StoreProvider from 'store/StoreProvider'
 
 const dashboard = fakeSimpleBlog({
@@ -12,7 +11,6 @@ const dashboard = fakeSimpleBlog({
   points: fakePoints(),
   sidebarBackground: '#000000',
   sidebarTextColor: '#Ffffff',
-  sidebarNavButtons: Array.from({length: 5}, fakeNavButton),
 })
 
 export default function App() {

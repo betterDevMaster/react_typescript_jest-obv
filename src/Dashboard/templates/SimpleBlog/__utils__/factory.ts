@@ -1,6 +1,5 @@
 import {SimpleBlogDashboard, SIMPLE_BLOG} from 'Dashboard/templates/SimpleBlog'
 import faker from 'faker'
-import {withMainNavButtons} from 'Dashboard/components/NavButton/__utils__/factory'
 import {pipe} from 'ramda'
 import {withAgendas} from 'Dashboard/components/AgendaList/__utils__/factory'
 import {withPoints} from 'Dashboard/components/PointsSummary/__utils__/factory'
@@ -9,6 +8,11 @@ import {sometimes} from '__utils__/attributes'
 import {withTicketRibbon} from 'Dashboard/components/TicketRibbon/__utils__/factory'
 import {withEmojiList} from 'Dashboard/components/EmojiList/__utils__/factory'
 import {withBlogPosts} from 'Dashboard/components/BlogPost/__utils__/factory'
+import {
+  fakeNavButton,
+  fakeNavButtonWithSize,
+} from 'Dashboard/components/NavButton/__utils__/factory'
+import {createEntityList} from 'lib/list'
 
 export const fakeSimpleBlog = (
   overrides?: Partial<SimpleBlogDashboard>,
@@ -21,11 +25,11 @@ export const fakeSimpleBlog = (
     primaryColor: '#14aecf',
     sidebarBackground: '#000000',
     sidebarTextColor: '#FFFFFF',
-    sidebarNavButtons: [],
+    sidebarNavButtons: {entities: {}, ids: []},
     ticketRibbon: null,
-    mainNavButtons: [],
+    mainNavButtons: {entities: {}, ids: []},
     emojiList: null,
-    blogPosts: [],
+    blogPosts: {entities: {}, ids: []},
     agendas: [],
     points: null,
     resourceList: {
@@ -44,6 +48,7 @@ export const fakeSimpleBlog = (
   const makeAttributes: (d: SimpleBlogDashboard) => SimpleBlogDashboard = pipe(
     withAgendas,
     withMainNavButtons,
+    withSidebarNavButtons,
     withTicketRibbon,
     withBlogPosts,
     sometimes<SimpleBlogDashboard>(withPoints),
@@ -54,5 +59,31 @@ export const fakeSimpleBlog = (
   return {
     ...makeAttributes(defaultAttributes),
     ...overrides,
+  }
+}
+
+export function withMainNavButtons<
+  T extends {mainNavButtons: SimpleBlogDashboard['mainNavButtons']}
+>(attributes: T): T {
+  const buttons = Array.from(
+    {length: faker.random.number({min: 1, max: 5})},
+    fakeNavButtonWithSize,
+  )
+  return {
+    ...attributes,
+    mainNavButtons: createEntityList(buttons),
+  }
+}
+
+export function withSidebarNavButtons<
+  T extends {mainNavButtons: SimpleBlogDashboard['sidebarNavButtons']}
+>(attributes: T): T {
+  const buttons = Array.from(
+    {length: faker.random.number({min: 1, max: 5})},
+    fakeNavButton,
+  )
+  return {
+    ...attributes,
+    sidebarNavButtons: createEntityList(buttons),
   }
 }

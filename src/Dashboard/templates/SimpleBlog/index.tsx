@@ -1,10 +1,7 @@
 import React, {useState} from 'react'
 import styled from 'styled-components'
 import SimpleBlogStyles from 'Dashboard/templates/SimpleBlog/Styles'
-import NavButtonComponent, {
-  NavButtonWithSize,
-  NavButton,
-} from 'Dashboard/components/NavButton'
+import {NavButtonWithSize, NavButton} from 'Dashboard/components/NavButton'
 import Grid from '@material-ui/core/Grid'
 import Container from '@material-ui/core/Container'
 import {BlogPost} from 'Dashboard/components/BlogPost'
@@ -22,11 +19,14 @@ import {Points} from 'Dashboard/components/PointsSummary'
 import {ResourceList} from 'Dashboard/components/ResourceList'
 import {TicketRibbon} from 'Dashboard/components/TicketRibbon'
 import {EmojiList} from 'Dashboard/components/EmojiList'
+import {EntityList} from 'lib/list'
+import MainNavButton from 'Dashboard/templates/SimpleBlog/MainNavButton'
 
 export const SIMPLE_BLOG = 'SIMPLE_BLOG'
-export type SimpleBlogDashboard = {
+export interface SimpleBlogDashboard {
   template: typeof SIMPLE_BLOG
   title: string
+  mainNavButtons: EntityList<NavButtonWithSize>
   primaryColor: string
   ticketRibbon: TicketRibbon | null
   logo: string
@@ -34,9 +34,8 @@ export type SimpleBlogDashboard = {
   emojiList: EmojiList | null
   sidebarBackground: string
   sidebarTextColor: string
-  sidebarNavButtons: NavButton[]
-  mainNavButtons: NavButtonWithSize[]
-  blogPosts: BlogPost[]
+  sidebarNavButtons: EntityList<NavButton>
+  blogPosts: EntityList<BlogPost>
   agendas: Agenda[]
   points: Points | null
   resourceList: ResourceList
@@ -76,14 +75,13 @@ export const SimpleBlog = (props: {
           <WelcomeText>{props.dashboard.welcomeText}</WelcomeText>
           <MainNavButtons>
             <Grid container spacing={2}>
-              {props.dashboard.mainNavButtons.map((button) => (
-                <Grid item xs={12} md={button.size} key={button.text}>
-                  <NavButtonComponent
-                    {...button}
-                    ariaLabel="main nav button"
-                    isEditMode={props.isEditMode}
-                  />
-                </Grid>
+              {props.dashboard.mainNavButtons.ids.map((id) => (
+                <MainNavButton
+                  key={id}
+                  id={id}
+                  buttons={props.dashboard.mainNavButtons}
+                  isEditMode={props.isEditMode}
+                />
               ))}
             </Grid>
           </MainNavButtons>

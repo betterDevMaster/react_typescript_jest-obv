@@ -1,13 +1,14 @@
 import React from 'react'
 import styled from 'styled-components'
-import NavButtonComponent, {NavButton} from 'Dashboard/components/NavButton'
+import NavButton from 'Dashboard/components/NavButton'
+import {SimpleBlogDashboard} from 'Dashboard/templates/SimpleBlog'
 
 export default function SidebarNav(props: {
-  buttons: NavButton[]
+  buttons: SimpleBlogDashboard['sidebarNavButtons']
   buttonColor: string
   component?: React.FunctionComponent<any>
 }) {
-  const hasButtons = props.buttons.length > 0
+  const hasButtons = props.buttons.ids.length > 0
   if (!hasButtons) {
     return null
   }
@@ -16,20 +17,24 @@ export default function SidebarNav(props: {
 
   return (
     <Component>
-      {props.buttons.map((button, index) => (
-        <StyledNavButtonComponent
-          key={index}
-          {...button}
-          ariaLabel="sidebar nav"
-          backgroundColor={props.buttonColor}
-          textColor="#FFFFFF"
-        />
-      ))}
+      {props.buttons.ids.map((id) => {
+        const button = props.buttons.entities[id]
+
+        return (
+          <StyledNavButtonComponent
+            key={id}
+            {...button}
+            ariaLabel="sidebar nav"
+            backgroundColor={props.buttonColor}
+            textColor="#FFFFFF"
+          />
+        )
+      })}
     </Component>
   )
 }
 
-const StyledNavButtonComponent = styled(NavButtonComponent)`
+const StyledNavButtonComponent = styled(NavButton)`
   border: 1px solid #ffffff;
   font-size: 14px;
   padding: ${(props) => `${props.theme.spacing[3]} ${props.theme.spacing[4]}`};
