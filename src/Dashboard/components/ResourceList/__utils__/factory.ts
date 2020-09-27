@@ -1,4 +1,4 @@
-import {Resource, RESOURCE_ICON} from 'Dashboard/component/ResourceList'
+import {Resource, RESOURCE_ICON} from 'Dashboard/components/ResourceList'
 import faker from 'faker'
 
 export const fakeResource = (): Resource => ({

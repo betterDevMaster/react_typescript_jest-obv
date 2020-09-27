@@ -1,6 +1,6 @@
 import React from 'react'
 import styled from 'styled-components'
-import NavButtonComponent, {NavButton} from 'Dashboard/component/NavButton'
+import NavButtonComponent, {NavButton} from 'Dashboard/components/NavButton'
 
 export default function SidebarNav(props: {
   buttons: NavButton[]

@@ -1,4 +1,4 @@
-import {BlogPost} from 'Dashboard/component/BlogPost'
+import {BlogPost} from 'Dashboard/components/BlogPost'
 
 import faker from 'faker'
 

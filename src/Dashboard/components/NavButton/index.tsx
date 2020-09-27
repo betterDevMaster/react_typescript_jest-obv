@@ -1,4 +1,4 @@
-import {Component} from 'Dashboard/component'
+import {Component} from 'Dashboard/components'
 import React from 'react'
 import styled from 'styled-components'
 import Button from 'system/ui/button/Button'

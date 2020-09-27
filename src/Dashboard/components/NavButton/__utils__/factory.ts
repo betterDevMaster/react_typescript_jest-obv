@@ -1,4 +1,4 @@
-import {NavButtonWithSize, NavButton} from 'Dashboard/component/NavButton'
+import {NavButtonWithSize, NavButton} from 'Dashboard/components/NavButton'
 import faker from 'faker'
 import {pipe} from 'ramda'
 import {Column} from 'system/ui/layout'

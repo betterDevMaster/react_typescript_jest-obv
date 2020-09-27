@@ -1,6 +1,6 @@
 import React from 'react'
 import styled from 'styled-components'
-import {Emoji} from 'Dashboard/component/EmojiList/emoji'
+import {Emoji} from 'Dashboard/components/EmojiList/emoji'
 
 export interface EmojiList {
   emojis: Emoji[]

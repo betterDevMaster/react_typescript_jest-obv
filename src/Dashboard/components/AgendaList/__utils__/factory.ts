@@ -1,4 +1,4 @@
-import {Agenda} from 'Dashboard/component/AgendaList'
+import {Agenda} from 'Dashboard/components/AgendaList'
 import faker from 'faker'
 
 export const fakeAgenda = (): Agenda => ({

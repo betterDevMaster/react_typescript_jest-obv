@@ -1,12 +1,12 @@
 import React from 'react'
 import styled from 'styled-components'
 import {SimpleBlogDashboard} from 'Dashboard/templates/SimpleBlog'
-import AgendaList from 'Dashboard/component/AgendaList'
-import EmojiList from 'Dashboard/component/EmojiList'
-import PointsSummary from 'Dashboard/component/PointsSummary'
-import {ResourceList} from 'Dashboard/component/ResourceList'
+import AgendaList from 'Dashboard/components/AgendaList'
+import EmojiList from 'Dashboard/components/EmojiList'
+import PointsSummary from 'Dashboard/components/PointsSummary'
+import {ResourceList} from 'Dashboard/components/ResourceList'
 import Section from 'Dashboard/templates/SimpleBlog/Sidebar/Section'
-import TicketRibbon from 'Dashboard/component/TicketRibbon'
+import TicketRibbon from 'Dashboard/components/TicketRibbon'
 import SidebarNav from 'Dashboard/templates/SimpleBlog/Sidebar/SidebarNav'
 
 export default function Sidebar(props: SimpleBlogDashboard) {

@@ -1,4 +1,4 @@
-import {ALL_TICKET_RIBBONS} from 'Dashboard/component/TicketRibbon'
+import {ALL_TICKET_RIBBONS} from 'Dashboard/components/TicketRibbon'
 import faker from 'faker'
 
 export function withTicketRibbon<T>(attributes: T): T {
