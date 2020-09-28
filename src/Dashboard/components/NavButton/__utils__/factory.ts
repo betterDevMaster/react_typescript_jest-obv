@@ -1,14 +1,19 @@
 import {NavButtonWithSize, NavButton} from 'Dashboard/components/NavButton'
 import faker from 'faker'
 import {pipe} from 'ramda'
-import {Column} from 'system/ui/layout'
+import {Column} from 'lib/ui/layout'
 import {sometimes} from '__utils__/attributes'
 
 export const fakeNavButton = (overrides?: Partial<NavButton>): NavButton => {
+  const text = `${faker.random.word()} ${faker.random.word()} ${
+    faker.random.boolean() ? faker.random.word() : ''
+  }`
+
   const defaultAttributes = {
-    text: faker.lorem.word(),
+    text,
     link: faker.internet.url(),
     newTab: true,
+    isEditMode: false,
   }
 
   const makeAttributes: (nb: NavButton) => NavButton = pipe(
@@ -30,18 +35,6 @@ export const fakeNavButtonWithSize = (): NavButtonWithSize => ({
     ? (faker.random.number({min: 3, max: 12}) as Column)
     : 12,
 })
-
-export function withMainNavButtons<T extends {mainNavButtons: NavButton[]}>(
-  attributes: T,
-): T {
-  return {
-    ...attributes,
-    mainNavButtons: Array.from(
-      {length: faker.random.number({min: 1, max: 5})},
-      fakeNavButtonWithSize,
-    ),
-  }
-}
 
 function withHoverBackground(button: NavButton): NavButton {
   return {

@@ -1,10 +1,7 @@
 import React, {useState} from 'react'
 import styled from 'styled-components'
 import SimpleBlogStyles from 'Dashboard/templates/SimpleBlog/Styles'
-import NavButtonComponent, {
-  NavButtonWithSize,
-  NavButton,
-} from 'Dashboard/components/NavButton'
+import {NavButtonWithSize, NavButton} from 'Dashboard/components/NavButton'
 import Grid from '@material-ui/core/Grid'
 import Container from '@material-ui/core/Container'
 import {BlogPost} from 'Dashboard/components/BlogPost'
@@ -14,7 +11,7 @@ import {User} from 'user'
 import WelcomeText from 'Dashboard/templates/SimpleBlog/WelcomeText'
 import Hidden from '@material-ui/core/Hidden'
 import BlogPosts from 'Dashboard/templates/SimpleBlog/BlogPosts'
-import Sidebar, {SidebarProps} from 'Dashboard/templates/SimpleBlog/Sidebar'
+import Sidebar from 'Dashboard/templates/SimpleBlog/Sidebar'
 import Footer from 'Dashboard/templates/SimpleBlog/Footer'
 import {withStyles} from '@material-ui/core'
 import {Agenda} from 'Dashboard/components/AgendaList'
@@ -22,51 +19,40 @@ import {Points} from 'Dashboard/components/PointsSummary'
 import {ResourceList} from 'Dashboard/components/ResourceList'
 import {TicketRibbon} from 'Dashboard/components/TicketRibbon'
 import {EmojiList} from 'Dashboard/components/EmojiList'
+import {EntityList} from 'lib/list'
+import MainNavButton from 'Dashboard/templates/SimpleBlog/MainNavButton'
 
 export const SIMPLE_BLOG = 'SIMPLE_BLOG'
-export type SimpleBlogDashboard = {
+export interface SimpleBlogDashboard {
   template: typeof SIMPLE_BLOG
   title: string
+  mainNavButtons: EntityList<NavButtonWithSize>
   primaryColor: string
   ticketRibbon: TicketRibbon | null
   logo: string
   welcomeText: string
   emojiList: EmojiList | null
-  sidebar: {
-    background: string
-    textColor: string
-    navButtons: NavButton[]
-  }
-  mainNavButtons: NavButtonWithSize[]
-  blogPosts: BlogPost[]
+  sidebarBackground: string
+  sidebarTextColor: string
+  sidebarNavButtons: EntityList<NavButton>
+  blogPosts: EntityList<BlogPost>
   agendas: Agenda[]
   points: Points | null
   resourceList: ResourceList
-  footer: {
-    background: string
-    textColor: string
-    termsLink: string | null
-    privacyLink: string | null
-    copyrightText: string | null
-  }
+  footerBackground: string
+  footerTextColor: string
+  footerTermsLink: string | null
+  footerPrivacyLink: string | null
+  footerCopyrightText: string | null
 }
 
 export const SimpleBlog = (props: {
   dashboard: SimpleBlogDashboard
   user: User
+  isEditMode: boolean
 }) => {
   const [menuVisible, setMenuVisible] = useState(false)
   const toggleMenu = () => setMenuVisible(!menuVisible)
-
-  const sidebarProps: SidebarProps = {
-    ...props.dashboard.sidebar,
-    emojiList: props.dashboard.emojiList,
-    agendas: props.dashboard.agendas,
-    points: props.dashboard.points,
-    resourceList: props.dashboard.resourceList,
-    ticketRibbon: props.dashboard.ticketRibbon,
-    primaryColor: props.dashboard.primaryColor,
-  }
 
   return (
     <Box>
@@ -89,17 +75,20 @@ export const SimpleBlog = (props: {
           <WelcomeText>{props.dashboard.welcomeText}</WelcomeText>
           <MainNavButtons>
             <Grid container spacing={2}>
-              {props.dashboard.mainNavButtons.map((button) => (
-                <Grid item xs={12} md={button.size} key={button.text}>
-                  <NavButtonComponent {...button} ariaLabel="main nav button" />
-                </Grid>
+              {props.dashboard.mainNavButtons.ids.map((id) => (
+                <MainNavButton
+                  key={id}
+                  id={id}
+                  buttons={props.dashboard.mainNavButtons}
+                  isEditMode={props.isEditMode}
+                />
               ))}
             </Grid>
           </MainNavButtons>
           <FullHeightGrid container spacing={4}>
             <Hidden mdUp>
               <Grid item xs={12}>
-                <Sidebar {...sidebarProps} />
+                <Sidebar {...props.dashboard} />
               </Grid>
             </Hidden>
             <Grid item xs={12} md={8}>
@@ -107,13 +96,13 @@ export const SimpleBlog = (props: {
             </Grid>
             <Hidden smDown>
               <Grid item xs={12} md={4}>
-                <Sidebar {...sidebarProps} />
+                <Sidebar {...props.dashboard} />
               </Grid>
             </Hidden>
           </FullHeightGrid>
         </StyledContainer>
       </Content>
-      <Footer {...props.dashboard.footer} />
+      <Footer {...props.dashboard} />
     </Box>
   )
 }

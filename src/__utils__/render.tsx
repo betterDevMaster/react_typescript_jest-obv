@@ -1,6 +1,6 @@
 import React from 'react'
 import {render as rtlRender, RenderOptions} from '@testing-library/react'
-import ThemeProvider from 'system/ui/theme/ThemeProvider'
+import {Providers} from 'App'
 
 export const render = (
   component: React.ReactElement,
@@ -19,8 +19,4 @@ export const render = (
     rerender,
     ...renderResult,
   }
-}
-
-function Providers(props: {children: React.ReactElement}) {
-  return <ThemeProvider>{props.children}</ThemeProvider>
 }

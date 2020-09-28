@@ -1,6 +1,6 @@
 import React from 'react'
 import styled from 'styled-components'
-import {blogPostTime} from 'system/date-time'
+import {blogPostTime} from 'lib/date-time'
 
 export interface BlogPost {
   title: string

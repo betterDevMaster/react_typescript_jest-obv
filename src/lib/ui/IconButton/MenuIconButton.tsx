@@ -1,5 +1,6 @@
 import React from 'react'
 import styled, {css} from 'styled-components'
+import IconButton from 'lib/ui/IconButton'
 
 export function MenuIconButton(props: {
   active: boolean
@@ -7,23 +8,17 @@ export function MenuIconButton(props: {
   color: string
 }) {
   return (
-    <Button onClick={props.onClick} data-testid="menu-button">
+    <StyledIconButton onClick={props.onClick} dataTestId="menu-button">
       <Bar color={props.color} active={props.active} />
-    </Button>
+    </StyledIconButton>
   )
 }
 
-const Button = styled.button`
-  cursor: pointer;
+const StyledIconButton = styled(IconButton)`
   width: 30px;
   height: 30px;
   top: 50%;
   transform: translateY(-50%);
-  position: relative;
-  border: 0;
-  background: 0;
-  padding: 0;
-}
 `
 
 const barStyles = css`
