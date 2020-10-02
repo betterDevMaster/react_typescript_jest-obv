@@ -1,10 +1,12 @@
 import {Component} from 'Dashboard/components'
-import NavButtonWithEdit from 'Dashboard/components/NavButton/NavButtonWithEdit'
 import React from 'react'
 import styled from 'styled-components'
 import Button from 'lib/ui/Button'
 import {Column} from 'lib/ui/layout'
 import {newTabProps} from 'lib/link'
+import EditComponent from 'Dashboard/edit/views/ComponentWithEdit'
+
+export const NAV_BUTTON = 'NAV_BUTTON'
 
 export interface NavButton extends Component {
   text: string
@@ -25,11 +27,19 @@ export type NavButtonWithSize = NavButton & {
   size?: Column
 }
 
-export default function NavButton(props: NavButton) {
+export default function NavButton(
+  props: NavButton & {
+    id: string
+  },
+) {
   const tabProps = props.newTab ? newTabProps : null
 
   if (props.isEditMode) {
-    return <NavButtonWithEdit {...props} tabProps={tabProps} />
+    return (
+      <EditComponent type={NAV_BUTTON} id={props.id}>
+        <NavButton {...props} tabProps={tabProps} isEditMode={false} />
+      </EditComponent>
+    )
   }
 
   return (

@@ -4,7 +4,7 @@ import SettingsIcon from '@material-ui/icons/Settings'
 import IconButton from 'lib/ui/IconButton'
 
 export default function EditIconButton(props: {
-  onClick?: () => {}
+  onClick?: () => void
   className?: string
   color?: string
 }) {
@@ -12,7 +12,7 @@ export default function EditIconButton(props: {
   const color = props.color || theme.colors.primary
 
   return (
-    <IconButton className={props.className}>
+    <IconButton className={props.className} onClick={props.onClick}>
       <StyledSettingsIcon color={color} />
     </IconButton>
   )

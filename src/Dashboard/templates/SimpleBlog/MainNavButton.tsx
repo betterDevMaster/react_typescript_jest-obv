@@ -14,6 +14,7 @@ export default function MainNavButton(props: {
     <Grid item xs={12} md={button.size}>
       <NavButton
         {...button}
+        id={props.id}
         ariaLabel="main nav button"
         isEditMode={props.isEditMode}
       />
