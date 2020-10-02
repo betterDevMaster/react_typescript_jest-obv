@@ -1,3 +1,10 @@
+import {MAIN_NAV_BUTTON} from 'Dashboard/templates/SimpleBlog/MainNavButton'
+
 export interface Component {
-  isEditMode: boolean
+  isEditMode?: boolean
 }
+
+// Must register component types here. This ensures wherever
+// various component types are handled, that all possible
+// components are accounted for.
+export type ComponentType = typeof MAIN_NAV_BUTTON

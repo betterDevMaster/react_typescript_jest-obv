@@ -24,6 +24,7 @@ export default function SidebarNav(props: {
           <StyledNavButtonComponent
             key={id}
             {...button}
+            id={id}
             ariaLabel="sidebar nav"
             backgroundColor={props.buttonColor}
             textColor="#FFFFFF"
