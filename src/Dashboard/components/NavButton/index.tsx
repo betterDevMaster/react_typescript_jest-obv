@@ -4,7 +4,6 @@ import styled from 'styled-components'
 import Button from 'lib/ui/Button'
 import {Column} from 'lib/ui/layout'
 import {newTabProps} from 'lib/link'
-import EditComponent from 'Dashboard/edit/views/ComponentWithEdit'
 
 export const NAV_BUTTON = 'NAV_BUTTON'
 
@@ -33,14 +32,6 @@ export default function NavButton(
   },
 ) {
   const tabProps = props.newTab ? newTabProps : null
-
-  if (props.isEditMode) {
-    return (
-      <EditComponent type={NAV_BUTTON} id={props.id}>
-        <NavButton {...props} tabProps={tabProps} isEditMode={false} />
-      </EditComponent>
-    )
-  }
 
   return (
     <Link href={props.link} {...tabProps} aria-label={props.ariaLabel}>

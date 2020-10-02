@@ -23,7 +23,10 @@ export default function Dashboard(props: DashboardProps) {
     return null
   }
 
-  const dashboardComponent = DashboardComponent(props)
+  const dashboardComponent = DashboardComponent({
+    ...props,
+    dashboard,
+  })
 
   if (props.isEditMode) {
     return (

@@ -5,12 +5,14 @@ import {Column} from 'lib/ui/layout'
 import {sometimes} from '__utils__/attributes'
 
 export const fakeNavButton = (overrides?: Partial<NavButton>): NavButton => {
-  const text = `${faker.random.word()} ${faker.random.word()} ${
-    faker.random.boolean() ? faker.random.word() : ''
-  }`
+  const texts = [
+    faker.random.word(),
+    `${faker.random.word()} ${faker.random.word()}`,
+    `${faker.random.word()} ${faker.random.word()} ${faker.random.word()}`,
+  ]
 
   const defaultAttributes = {
-    text,
+    text: faker.random.arrayElement(texts),
     link: faker.internet.url(),
     newTab: true,
     isEditMode: false,
