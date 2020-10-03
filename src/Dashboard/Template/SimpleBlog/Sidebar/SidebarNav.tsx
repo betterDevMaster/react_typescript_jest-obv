@@ -1,10 +1,10 @@
 import React from 'react'
 import styled from 'styled-components'
 import NavButton from 'Dashboard/components/NavButton'
-import {SimpleBlogDashboard} from 'Dashboard/templates/SimpleBlog'
+import {SimpleBlog} from 'Dashboard/Template/SimpleBlog'
 
 export default function SidebarNav(props: {
-  buttons: SimpleBlogDashboard['sidebarNavButtons']
+  buttons: SimpleBlog['sidebarNavButtons']
   buttonColor: string
   component?: React.FunctionComponent<any>
 }) {

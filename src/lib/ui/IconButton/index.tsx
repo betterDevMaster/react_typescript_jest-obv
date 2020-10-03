@@ -6,12 +6,14 @@ export default function IconButton(props: {
   children: React.ReactElement
   dataTestId?: string
   className?: string
+  'aria-label'?: string
 }) {
   return (
     <Button
       className={props.className}
       onClick={props.onClick}
       data-testid={props.dataTestId}
+      aria-label={props['aria-label']}
     >
       {props.children}
     </Button>

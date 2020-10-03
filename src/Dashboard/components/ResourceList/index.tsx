@@ -1,6 +1,6 @@
 import React from 'react'
 import styled from 'styled-components'
-import Heading from 'Dashboard/templates/SimpleBlog/Sidebar/Heading'
+import Heading from 'Dashboard/Template/SimpleBlog/Sidebar/Heading'
 import Icon from '@material-ui/core/Icon'
 
 export interface ResourceList {

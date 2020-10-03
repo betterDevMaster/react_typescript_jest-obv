@@ -1,6 +1,6 @@
-import {MainNavButtonConfig} from 'Dashboard/templates/SimpleBlog/MainNavButton/MainNavButtonConfig'
+import {MainNavButtonConfig} from 'Dashboard/Template/SimpleBlog/MainNavButton/MainNavButtonConfig'
 import {Component} from 'Dashboard/edit/state/actions'
-import {MAIN_NAV_BUTTON} from 'Dashboard/templates/SimpleBlog/MainNavButton'
+import {MAIN_NAV_BUTTON} from 'Dashboard/Template/SimpleBlog/MainNavButton'
 import React from 'react'
 
 export function ComponentConfig(props: {component: Component | null}) {

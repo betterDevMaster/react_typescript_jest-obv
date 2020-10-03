@@ -1,8 +1,8 @@
-import {SimpleBlogDashboard} from 'Dashboard/templates/SimpleBlog'
+import {SimpleBlog} from 'Dashboard/Template/SimpleBlog'
 import React from 'react'
 import styled from 'styled-components'
 
-export default function Footer(props: SimpleBlogDashboard) {
+export default function Footer(props: SimpleBlog) {
   const hasField =
     props.footerCopyrightText ||
     props.footerPrivacyLink ||

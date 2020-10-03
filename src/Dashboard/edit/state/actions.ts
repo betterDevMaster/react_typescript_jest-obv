@@ -1,14 +1,14 @@
-import {DashboardEditorState} from './index'
+import {DashboardEditorState, defaultState} from 'Dashboard/edit/state'
 import {Dashboard} from 'Dashboard'
 import {ComponentType} from 'Dashboard/components'
 
 export const SET_DASHBOARD_ACTION = 'SET_DASHBOARD_ACTION'
 export interface SetDashboardAction {
   type: typeof SET_DASHBOARD_ACTION
-  payload: Dashboard | null
+  payload: Partial<Dashboard> | null
 }
 export const setDashboard = (
-  dashboard: Dashboard | null,
+  dashboard: Partial<Dashboard> | null,
 ): SetDashboardAction => ({
   type: SET_DASHBOARD_ACTION,
   payload: dashboard,
@@ -16,10 +16,15 @@ export const setDashboard = (
 export const handleSetDashboard = (
   state: DashboardEditorState,
   action: SetDashboardAction,
-) => {
+): DashboardEditorState => {
+  const resetDashboardEdit = !action.payload
+  if (resetDashboardEdit) {
+    return defaultState
+  }
+
   return {
     ...state,
-    dashboard: action.payload,
+    ...action.payload,
   }
 }
 

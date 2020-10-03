@@ -1,15 +1,15 @@
 import React from 'react'
 import styled from 'styled-components'
-import {SimpleBlogDashboard} from 'Dashboard/templates/SimpleBlog'
+import {SimpleBlog} from 'Dashboard/Template/SimpleBlog'
 import AgendaList from 'Dashboard/components/AgendaList'
 import EmojiList from 'Dashboard/components/EmojiList'
 import PointsSummary from 'Dashboard/components/PointsSummary'
 import {ResourceList} from 'Dashboard/components/ResourceList'
-import Section from 'Dashboard/templates/SimpleBlog/Sidebar/Section'
+import Section from 'Dashboard/Template/SimpleBlog/Sidebar/Section'
 import TicketRibbon from 'Dashboard/components/TicketRibbon'
-import SidebarNav from 'Dashboard/templates/SimpleBlog/Sidebar/SidebarNav'
+import SidebarNav from 'Dashboard/Template/SimpleBlog/Sidebar/SidebarNav'
 
-export default function Sidebar(props: SimpleBlogDashboard) {
+export default function Sidebar(props: SimpleBlog) {
   return (
     <Box
       backgroundColor={props.sidebarBackground}

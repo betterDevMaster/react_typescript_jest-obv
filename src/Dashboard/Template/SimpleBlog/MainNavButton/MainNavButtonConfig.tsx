@@ -1,15 +1,22 @@
 import TextField from '@material-ui/core/TextField'
 import {NavButtonWithSize} from 'Dashboard/components/NavButton'
-import {useDashboard, useUpdateDashboard} from 'Dashboard/edit/state/utils'
+import {setDashboard} from 'Dashboard/edit/state/actions'
 import {onChangeHandler} from 'lib/dom'
 import React from 'react'
+import {useDispatch, useSelector} from 'react-redux'
+import {RootState} from 'store'
 
 export function MainNavButtonConfig(props: {id: string}) {
-  const dashboard = useDashboard()
+  const buttons = useSelector(
+    (state: RootState) => state.dashboardEditor.mainNavButtons,
+  )
 
-  const button = dashboard.mainNavButtons.entities[props.id]
+  const dispatch = useDispatch()
 
-  const update = useUpdateDashboard()
+  if (!buttons) {
+    throw new Error('Missing nav buttons')
+  }
+  const button = buttons.entities[props.id]
 
   const updateText = (text: string) => {
     const updated: NavButtonWithSize = {
@@ -17,15 +24,17 @@ export function MainNavButtonConfig(props: {id: string}) {
       text,
     }
 
-    update({
-      mainNavButtons: {
-        ...dashboard.mainNavButtons,
-        entities: {
-          ...dashboard.mainNavButtons.entities,
-          [props.id]: updated,
+    dispatch(
+      setDashboard({
+        mainNavButtons: {
+          ...buttons,
+          entities: {
+            ...buttons.entities,
+            [props.id]: updated,
+          },
         },
-      },
-    })
+      }),
+    )
   }
 
   return (

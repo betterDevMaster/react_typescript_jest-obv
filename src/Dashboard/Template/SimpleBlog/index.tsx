@@ -1,18 +1,18 @@
 import React, {useState} from 'react'
 import styled from 'styled-components'
-import SimpleBlogStyles from 'Dashboard/templates/SimpleBlog/Styles'
+import SimpleBlogStyles from 'Dashboard/Template/SimpleBlog/Styles'
 import {NavButtonWithSize, NavButton} from 'Dashboard/components/NavButton'
 import Grid from '@material-ui/core/Grid'
 import Container from '@material-ui/core/Container'
 import {BlogPost} from 'Dashboard/components/BlogPost'
-import Header from 'Dashboard/templates/SimpleBlog/Header'
-import Menu from 'Dashboard/templates/SimpleBlog/Menu'
+import Header from 'Dashboard/Template/SimpleBlog/Header'
+import Menu from 'Dashboard/Template/SimpleBlog/Menu'
 import {User} from 'user'
-import WelcomeText from 'Dashboard/templates/SimpleBlog/WelcomeText'
+import WelcomeText from 'Dashboard/Template/SimpleBlog/WelcomeText'
 import Hidden from '@material-ui/core/Hidden'
-import BlogPosts from 'Dashboard/templates/SimpleBlog/BlogPosts'
-import Sidebar from 'Dashboard/templates/SimpleBlog/Sidebar'
-import Footer from 'Dashboard/templates/SimpleBlog/Footer'
+import BlogPosts from 'Dashboard/Template/SimpleBlog/BlogPosts'
+import Sidebar from 'Dashboard/Template/SimpleBlog/Sidebar'
+import Footer from 'Dashboard/Template/SimpleBlog/Footer'
 import {withStyles} from '@material-ui/core'
 import {Agenda} from 'Dashboard/components/AgendaList'
 import {Points} from 'Dashboard/components/PointsSummary'
@@ -20,10 +20,10 @@ import {ResourceList} from 'Dashboard/components/ResourceList'
 import {TicketRibbon} from 'Dashboard/components/TicketRibbon'
 import {EmojiList} from 'Dashboard/components/EmojiList'
 import {EntityList} from 'lib/list'
-import MainNavButton from 'Dashboard/templates/SimpleBlog/MainNavButton'
+import MainNavButton from 'Dashboard/Template/SimpleBlog/MainNavButton'
 
 export const SIMPLE_BLOG = 'SIMPLE_BLOG'
-export interface SimpleBlogDashboard {
+export interface SimpleBlog {
   template: typeof SIMPLE_BLOG
   title: string
   mainNavButtons: EntityList<NavButtonWithSize>
@@ -46,11 +46,11 @@ export interface SimpleBlogDashboard {
   footerCopyrightText: string | null
 }
 
-export const SimpleBlog = (props: {
-  dashboard: SimpleBlogDashboard
+export default function SimpleBlog(props: {
+  dashboard: SimpleBlog
   user: User
   isEditMode: boolean
-}) => {
+}) {
   const [menuVisible, setMenuVisible] = useState(false)
   const toggleMenu = () => setMenuVisible(!menuVisible)
 
