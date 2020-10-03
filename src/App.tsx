@@ -5,6 +5,7 @@ import {fakeSimpleBlog} from 'Dashboard/Template/SimpleBlog/__utils__/factory'
 import {fakeUser} from 'user/__utils__/factory'
 import {fakePoints} from 'Dashboard/components/PointsSummary/__utils__/factory'
 import StoreProvider from 'store/StoreProvider'
+import {ColorPickerPopover} from 'lib/ui/ColorPicker'
 
 const dashboard = fakeSimpleBlog({
   primaryColor: '#ea202e',
@@ -23,11 +24,12 @@ export default function App() {
         user={fakeUser()}
         isEditMode={true}
       />
+      <ColorPickerPopover />
     </Providers>
   )
 }
 
-export function Providers(props: {children: React.ReactElement}) {
+export function Providers(props: {children: React.ReactNode}) {
   return (
     <StoreProvider>
       <ThemeProvider>{props.children}</ThemeProvider>
