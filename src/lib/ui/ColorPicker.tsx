@@ -1,4 +1,4 @@
-import styled, {useTheme} from 'styled-components'
+import styled from 'styled-components'
 import React, {useRef, useState} from 'react'
 import {ColorChangeHandler, ChromePicker} from 'react-color'
 import ReactDOM from 'react-dom'
@@ -69,7 +69,6 @@ function Picker(props: {
   toggle: () => void
   anchor: HTMLDivElement | null
 }) {
-  const theme = useTheme()
   if (!props.visible) {
     return null
   }
@@ -92,8 +91,10 @@ function Picker(props: {
     height: anchorHeight,
   } = props.anchor.getBoundingClientRect()
 
-  const topMargin = parseInt(theme.spacing[16])
-  const top = anchorTop + anchorHeight + topMargin
+  const pickerHeight = 225
+  const topMargin = 20
+  const top = anchorTop + anchorHeight + pickerHeight + topMargin
+
   return ReactDOM.createPortal(
     <Container left={anchorLeft} top={top}>
       <HideOverlay onClick={props.toggle} />
