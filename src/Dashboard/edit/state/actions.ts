@@ -2,7 +2,7 @@ import {DashboardEditorState, defaultState} from 'Dashboard/edit/state'
 import {Dashboard} from 'Dashboard'
 import {ComponentType} from 'Dashboard/components'
 
-export const SET_DASHBOARD_ACTION = 'SET_DASHBOARD_ACTION'
+export const SET_DASHBOARD_ACTION = 'SET_DASHBOARD'
 export interface SetDashboardAction {
   type: typeof SET_DASHBOARD_ACTION
   payload: Partial<Dashboard> | null
@@ -32,7 +32,7 @@ export interface Component {
   type: ComponentType
   id: string
 }
-export const SET_COMPONENT_ACTION = 'SET_COMPONENT_ACTION'
+export const SET_COMPONENT_ACTION = 'SET_COMPONENT'
 export interface SetComponentAction {
   type: typeof SET_COMPONENT_ACTION
   payload: Component | null
