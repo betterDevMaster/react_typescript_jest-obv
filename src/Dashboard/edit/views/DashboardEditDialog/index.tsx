@@ -27,7 +27,7 @@ export default function DashboardEditDialog() {
   return (
     <Dialog open={dialogVisible} onClose={stopEdit}>
       <CloseButton onClick={stopEdit} aria-label="close config dialog">
-        <CloseIcon />
+        <CloseIcon fontSize="small" />
       </CloseButton>
       <DialogTitle>Configure</DialogTitle>
       <DialogContent>
@@ -39,8 +39,8 @@ export default function DashboardEditDialog() {
 
 const CloseButton = styled(IconButton)`
   position: absolute;
-  top: ${(props) => props.theme.spacing[1]};
-  right: ${(props) => props.theme.spacing[1]};
+  top: ${(props) => props.theme.spacing[2]};
+  right: ${(props) => props.theme.spacing[2]};
 
   svg {
     color: ${grey[500]};
