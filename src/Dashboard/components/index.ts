@@ -1,4 +1,4 @@
-import {MAIN_NAV_BUTTON} from 'Dashboard/templates/SimpleBlog/MainNavButton'
+import {MAIN_NAV_BUTTON} from 'Dashboard/Template/SimpleBlog/MainNavButton'
 
 export interface Component {
   isEditMode?: boolean

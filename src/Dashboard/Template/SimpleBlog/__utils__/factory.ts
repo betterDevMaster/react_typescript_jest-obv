@@ -1,4 +1,4 @@
-import {SimpleBlogDashboard, SIMPLE_BLOG} from 'Dashboard/templates/SimpleBlog'
+import {SimpleBlog, SIMPLE_BLOG} from 'Dashboard/Template/SimpleBlog'
 import faker from 'faker'
 import {pipe} from 'ramda'
 import {withAgendas} from 'Dashboard/components/AgendaList/__utils__/factory'
@@ -14,10 +14,8 @@ import {
 } from 'Dashboard/components/NavButton/__utils__/factory'
 import {createEntityList} from 'lib/list'
 
-export const fakeSimpleBlog = (
-  overrides?: Partial<SimpleBlogDashboard>,
-): SimpleBlogDashboard => {
-  const defaultAttributes: SimpleBlogDashboard = {
+export const fakeSimpleBlog = (overrides?: Partial<SimpleBlog>): SimpleBlog => {
+  const defaultAttributes: SimpleBlog = {
     template: SIMPLE_BLOG,
     title: faker.company.companyName(),
     logo: 'https://tax.live/success_summit/images/virtual-2020-logo.png',
@@ -45,15 +43,15 @@ export const fakeSimpleBlog = (
       : null,
   }
 
-  const makeAttributes: (d: SimpleBlogDashboard) => SimpleBlogDashboard = pipe(
+  const makeAttributes: (d: SimpleBlog) => SimpleBlog = pipe(
     withAgendas,
     withMainNavButtons,
     withSidebarNavButtons,
     withTicketRibbon,
     withBlogPosts,
-    sometimes<SimpleBlogDashboard>(withPoints),
-    sometimes<SimpleBlogDashboard>(withResources),
-    sometimes<SimpleBlogDashboard>(withEmojiList),
+    sometimes<SimpleBlog>(withPoints),
+    sometimes<SimpleBlog>(withResources),
+    sometimes<SimpleBlog>(withEmojiList),
   )
 
   return {
@@ -63,7 +61,7 @@ export const fakeSimpleBlog = (
 }
 
 export function withMainNavButtons<
-  T extends {mainNavButtons: SimpleBlogDashboard['mainNavButtons']}
+  T extends {mainNavButtons: SimpleBlog['mainNavButtons']}
 >(attributes: T): T {
   const buttons = Array.from(
     {length: faker.random.number({min: 1, max: 5})},
@@ -76,7 +74,7 @@ export function withMainNavButtons<
 }
 
 export function withSidebarNavButtons<
-  T extends {mainNavButtons: SimpleBlogDashboard['sidebarNavButtons']}
+  T extends {mainNavButtons: SimpleBlog['sidebarNavButtons']}
 >(attributes: T): T {
   const buttons = Array.from(
     {length: faker.random.number({min: 1, max: 5})},

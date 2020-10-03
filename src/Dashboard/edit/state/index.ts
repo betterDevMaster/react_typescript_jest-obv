@@ -8,13 +8,11 @@ import {
   SET_DASHBOARD_ACTION,
 } from 'Dashboard/edit/state/actions'
 
-export interface DashboardEditorState {
-  dashboard: Dashboard | null
+export type DashboardEditorState = Partial<Dashboard> & {
   component: Component | null
 }
 
-const defaultState: DashboardEditorState = {
-  dashboard: null,
+export const defaultState: DashboardEditorState = {
   component: null,
 }
 
