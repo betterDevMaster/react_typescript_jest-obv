@@ -20,9 +20,12 @@ export default function ColorPicker(props: {
     setShowPicker(!showPicker)
   }
 
-  const handleColorChange: ColorChangeHandler = ({hex: newColor}) => {
+  const updateColor = (newColor: string) => {
     setColor(newColor)
     props.onPick(newColor)
+  }
+  const handleColorChange: ColorChangeHandler = ({hex: newColor}) => {
+    updateColor(newColor)
   }
 
   const useStyles = makeStyles({
@@ -43,7 +46,7 @@ export default function ColorPicker(props: {
         ref={anchorRef}
         onClick={toggleShowPicker}
         fullWidth
-        onChange={onChangeHandler(setColor)}
+        onChange={onChangeHandler(updateColor)}
       />
       <Picker
         visible={showPicker}
@@ -91,9 +94,8 @@ function Picker(props: {
     height: anchorHeight,
   } = props.anchor.getBoundingClientRect()
 
-  const pickerHeight = 225
-  const topMargin = 20
-  const top = anchorTop + anchorHeight + pickerHeight + topMargin
+  const topMargin = 8
+  const top = anchorTop + anchorHeight + topMargin
 
   return ReactDOM.createPortal(
     <Container left={anchorLeft} top={top}>
