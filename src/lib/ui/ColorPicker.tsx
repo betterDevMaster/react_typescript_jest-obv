@@ -5,6 +5,7 @@ import ReactDOM from 'react-dom'
 import TextField from '@material-ui/core/TextField'
 import {onChangeStringHandler} from 'lib/dom'
 import makeStyles from '@material-ui/core/styles/makeStyles'
+import ColorProperties from 'color'
 
 export default function ColorPicker(props: {
   label: string
@@ -29,8 +30,7 @@ export default function ColorPicker(props: {
   }
 
   // Prevent white text from being invisible
-  const isWhite = color && /#f/.test(color)
-  const fontColor = !color || isWhite ? '#e8e8e8' : color
+  const fontColor = !color || isWhite(color) ? '#e8e8e8' : color
 
   const useStyles = makeStyles({
     input: {
@@ -114,6 +114,11 @@ function Picker(props: {
     </Container>,
     popoverEl,
   )
+}
+
+function isWhite(color: string) {
+  const properties = ColorProperties(color)
+  return properties.luminosity() > 0.8
 }
 
 const Container = styled.div<{left: number; top: number}>`
