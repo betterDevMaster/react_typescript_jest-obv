@@ -17,17 +17,22 @@ import React from 'react'
 import {useDispatch, useSelector} from 'react-redux'
 import {RootState} from 'store'
 
-export function MainNavButtonConfig(props: {id: string}) {
+export function MainNavButtonConfig(props: {id?: string}) {
   const buttons = useSelector(
     (state: RootState) => state.dashboardEditor.mainNavButtons,
   )
 
   const dispatch = useDispatch()
+  const {id} = props
+
+  if (!id) {
+    throw new Error('Missing component id')
+  }
 
   if (!buttons) {
     throw new Error('Missing nav buttons')
   }
-  const button = buttons.entities[props.id]
+  const button = buttons.entities[id]
 
   const update = (updated: NavButtonWithSize) => {
     dispatch(
@@ -36,7 +41,7 @@ export function MainNavButtonConfig(props: {id: string}) {
           ...buttons,
           entities: {
             ...buttons.entities,
-            [props.id]: updated,
+            [id]: updated,
           },
         },
       }),
@@ -71,7 +76,7 @@ export function MainNavButtonConfig(props: {id: string}) {
         value={button.size || 0}
       />
       <TextField
-        label="Text"
+        label="Link URL"
         value={button.link}
         inputProps={{
           'aria-label': 'button link input',

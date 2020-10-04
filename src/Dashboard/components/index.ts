@@ -1,4 +1,6 @@
+import {SIMPLE_BLOG} from 'Dashboard/Template/SimpleBlog'
 import {MAIN_NAV_BUTTON} from 'Dashboard/Template/SimpleBlog/MainNavButton'
+import {WELCOME_TEXT} from 'Dashboard/Template/SimpleBlog/WelcomeText'
 
 export interface Component {
   isEditMode?: boolean
@@ -7,4 +9,7 @@ export interface Component {
 // Must register component types here. This ensures wherever
 // various component types are handled, that all possible
 // components are accounted for.
-export type ComponentType = typeof MAIN_NAV_BUTTON
+export type ComponentType =
+  | typeof SIMPLE_BLOG
+  | typeof MAIN_NAV_BUTTON
+  | typeof WELCOME_TEXT

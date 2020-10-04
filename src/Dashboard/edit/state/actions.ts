@@ -30,7 +30,7 @@ export const handleSetDashboard = (
 
 export interface Component {
   type: ComponentType
-  id: string
+  id?: string
 }
 export const SET_COMPONENT_ACTION = 'SET_COMPONENT'
 export interface SetComponentAction {

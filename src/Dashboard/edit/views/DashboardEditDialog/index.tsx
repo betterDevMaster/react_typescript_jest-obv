@@ -29,7 +29,7 @@ export default function DashboardEditDialog() {
       <CloseButton onClick={stopEdit} aria-label="close config dialog">
         <CloseIcon fontSize="small" />
       </CloseButton>
-      <DialogTitle>Configure</DialogTitle>
+      <DialogTitle>Configure: {component?.type}</DialogTitle>
       <DialogContent>
         <ComponentConfig component={component} />
       </DialogContent>

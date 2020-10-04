@@ -6,7 +6,7 @@ import React from 'react'
 import {useSelector} from 'react-redux'
 import {RootState} from 'store'
 
-export const MAIN_NAV_BUTTON = 'MAIN_NAV_BUTTON'
+export const MAIN_NAV_BUTTON = 'Main Nav Button'
 interface MainNavButtonProps {
   buttons: SimpleBlog['mainNavButtons']
   id: string
