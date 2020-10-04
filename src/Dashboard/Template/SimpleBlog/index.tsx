@@ -8,7 +8,9 @@ import {BlogPost} from 'Dashboard/components/BlogPost'
 import Header from 'Dashboard/Template/SimpleBlog/Header'
 import Menu from 'Dashboard/Template/SimpleBlog/Menu'
 import {User} from 'user'
-import WelcomeText from 'Dashboard/Template/SimpleBlog/WelcomeText'
+import WelcomeText, {
+  WELCOME_TEXT,
+} from 'Dashboard/Template/SimpleBlog/WelcomeText'
 import Hidden from '@material-ui/core/Hidden'
 import BlogPosts from 'Dashboard/Template/SimpleBlog/BlogPosts'
 import Sidebar from 'Dashboard/Template/SimpleBlog/Sidebar'
@@ -21,8 +23,10 @@ import {TicketRibbon} from 'Dashboard/components/TicketRibbon'
 import {EmojiList} from 'Dashboard/components/EmojiList'
 import {EntityList} from 'lib/list'
 import MainNavButton from 'Dashboard/Template/SimpleBlog/MainNavButton'
+import {usePrimaryColor} from 'Dashboard/Template/SimpleBlog/primary-color'
+import EditComponent from 'Dashboard/edit/views/EditComponent'
 
-export const SIMPLE_BLOG = 'SIMPLE_BLOG'
+export const SIMPLE_BLOG = 'Simple Blog'
 export interface SimpleBlog {
   template: typeof SIMPLE_BLOG
   title: string
@@ -53,26 +57,34 @@ export default function SimpleBlog(props: {
 }) {
   const [menuVisible, setMenuVisible] = useState(false)
   const toggleMenu = () => setMenuVisible(!menuVisible)
+  const primaryColor = usePrimaryColor(props.isEditMode, props.dashboard)
 
   return (
     <Box>
-      <SimpleBlogStyles primaryColor={props.dashboard.primaryColor} />
+      <SimpleBlogStyles primaryColor={primaryColor} />
       <Menu
         visible={menuVisible}
-        background={props.dashboard.primaryColor}
+        background={primaryColor}
         toggle={toggleMenu}
         user={props.user}
       />
-      <Header
-        logo={props.dashboard.logo}
-        title={props.dashboard.title}
-        primaryColor={props.dashboard.primaryColor}
-        menuVisible={menuVisible}
-        toggleMenu={toggleMenu}
-      />
+      <EditComponent type={SIMPLE_BLOG} isEditMode={props.isEditMode}>
+        <Header
+          logo={props.dashboard.logo}
+          title={props.dashboard.title}
+          primaryColor={primaryColor}
+          menuVisible={menuVisible}
+          toggleMenu={toggleMenu}
+          aria-label="header"
+        />
+      </EditComponent>
       <Content>
         <StyledContainer maxWidth="lg">
-          <WelcomeText>{props.dashboard.welcomeText}</WelcomeText>
+          <EditComponent type={WELCOME_TEXT}>
+            <WelcomeText isEditMode={props.isEditMode}>
+              {props.dashboard.welcomeText}
+            </WelcomeText>
+          </EditComponent>
           <MainNavButtons>
             <Grid container spacing={2}>
               {props.dashboard.mainNavButtons.ids.map((id) => (
@@ -96,7 +108,7 @@ export default function SimpleBlog(props: {
             </Grid>
             <Hidden smDown>
               <Grid item xs={12} md={4}>
-                <Sidebar {...props.dashboard} />
+                <Sidebar {...props.dashboard} primaryColor={primaryColor} />
               </Grid>
             </Hidden>
           </FullHeightGrid>

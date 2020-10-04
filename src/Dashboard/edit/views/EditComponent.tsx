@@ -8,7 +8,8 @@ import styled from 'styled-components'
 export default function EditComponent(props: {
   children: React.ReactElement
   type: ComponentType
-  id: string
+  id?: string
+  isEditMode?: boolean
 }) {
   const dispatch = useDispatch()
   const {type, id} = props
@@ -21,6 +22,11 @@ export default function EditComponent(props: {
       }),
     )
   }, [dispatch, type, id])
+
+  if (props.isEditMode === false) {
+    return props.children
+  }
+
   return (
     <Box>
       <StyledEditIconButton onClick={edit} />

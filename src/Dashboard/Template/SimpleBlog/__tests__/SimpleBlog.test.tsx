@@ -14,18 +14,34 @@ import {fakeNavButton} from 'Dashboard/components/NavButton/__utils__/factory'
 import {fakeBlogPost} from 'Dashboard/components/BlogPost/__utils__/factory'
 import {ALL_TICKET_RIBBONS} from 'Dashboard/components/TicketRibbon'
 import {createEntityList} from 'lib/list'
+import {clickEdit} from '__utils__/edit'
+import userEvent from '@testing-library/user-event'
 
 beforeAll(() => {
   // Required to render <Hidden/> components in tests
   setWindowMatchMedia()
 })
 
-it('should show the welcome text', async () => {
+it('should update the logo', async () => {
   const dashboard = fakeSimpleBlog()
-  const {findByText} = render(
-    <Dashboard isEditMode={false} dashboard={dashboard} user={fakeUser()} />,
+  const {findByLabelText} = render(
+    <Dashboard isEditMode={true} dashboard={dashboard} user={fakeUser()} />,
   )
-  expect(await findByText(dashboard.welcomeText)).toBeInTheDocument()
+
+  expect(((await findByLabelText('logo')) as HTMLImageElement).src).toBe(
+    dashboard.logo,
+  )
+
+  clickEdit(await findByLabelText('header'))
+
+  const newUrl = faker.internet.url()
+  userEvent.type(await findByLabelText('edit logo'), newUrl)
+
+  fireEvent.click(await findByLabelText('close config dialog'))
+
+  expect(((await findByLabelText('logo')) as HTMLImageElement).src).toBe(
+    `${newUrl}/`,
+  )
 })
 
 it('should show the user email', async () => {
