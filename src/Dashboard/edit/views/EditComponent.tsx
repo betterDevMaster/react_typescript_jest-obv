@@ -9,7 +9,7 @@ export default function EditComponent(props: {
   children: React.ReactElement
   type: ComponentType
   id?: string
-  isEditMode?: boolean
+  isEditMode: boolean
 }) {
   const dispatch = useDispatch()
   const {type, id} = props

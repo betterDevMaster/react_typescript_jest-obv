@@ -81,7 +81,7 @@ export default function SimpleBlog(props: {
       </EditComponent>
       <Content>
         <StyledContainer maxWidth="lg">
-          <EditComponent type={WELCOME_TEXT}>
+          <EditComponent type={WELCOME_TEXT} isEditMode={props.isEditMode}>
             <WelcomeText isEditMode={props.isEditMode}>
               {props.dashboard.welcomeText}
             </WelcomeText>
