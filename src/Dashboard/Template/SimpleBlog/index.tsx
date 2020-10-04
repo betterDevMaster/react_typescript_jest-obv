@@ -75,6 +75,7 @@ export default function SimpleBlog(props: {
           primaryColor={primaryColor}
           menuVisible={menuVisible}
           toggleMenu={toggleMenu}
+          aria-label="header"
         />
       </EditComponent>
       <Content>

@@ -1,5 +1,7 @@
+import TextField from '@material-ui/core/TextField'
 import {setDashboard} from 'Dashboard/edit/state/actions'
 import {SimpleBlog} from 'Dashboard/Template/SimpleBlog'
+import {onChangeStringHandler} from 'lib/dom'
 import ColorPicker from 'lib/ui/ColorPicker'
 import React from 'react'
 import {useDispatch, useSelector} from 'react-redux'
@@ -21,6 +23,15 @@ export default function SimpleBlogConfig() {
 
   return (
     <>
+      <TextField
+        value={dashboard.logo}
+        label="Logo URL"
+        fullWidth
+        onChange={onChangeStringHandler(update('logo'))}
+        inputProps={{
+          'aria-label': 'edit logo',
+        }}
+      />
       <ColorPicker
         label="Primary Color"
         color={dashboard.primaryColor}

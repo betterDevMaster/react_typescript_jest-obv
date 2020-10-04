@@ -2,6 +2,8 @@ import React from 'react'
 import styled from 'styled-components'
 import Container from '@material-ui/core/Container'
 import {MenuIconButton} from 'lib/ui/IconButton/MenuIconButton'
+import {RootState} from 'store'
+import {useSelector} from 'react-redux'
 
 export default function Header(props: {
   logo: string
@@ -9,9 +11,15 @@ export default function Header(props: {
   primaryColor: string
   toggleMenu: () => void
   menuVisible: boolean
+  'aria-label'?: string
 }) {
+  const currentLogo = useSelector(
+    (state: RootState) => state.dashboardEditor.logo,
+  )
+  const logo = currentLogo || props.logo
+
   return (
-    <Box>
+    <Box aria-label={props['aria-label']}>
       <Container maxWidth="lg">
         <Layout>
           <Side>
@@ -22,7 +30,7 @@ export default function Header(props: {
             />
           </Side>
           <Middle>
-            <Logo src={props.logo} alt={props.title} />
+            <Logo src={logo} alt={props.title} aria-label="logo" />
           </Middle>
           <Side />
         </Layout>
@@ -51,9 +59,7 @@ const Box = styled.div`
 
 const Middle = styled.div`
   flex: 1;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  text-align: center;
 `
 const Logo = styled.img`
   max-height: 100%;
