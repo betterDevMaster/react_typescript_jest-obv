@@ -25,6 +25,7 @@ import {EntityList} from 'lib/list'
 import MainNavButton from 'Dashboard/Template/SimpleBlog/MainNavButton'
 import {usePrimaryColor} from 'Dashboard/Template/SimpleBlog/primary-color'
 import EditComponent from 'Dashboard/edit/views/EditComponent'
+import NewMainNavButton from 'Dashboard/Template/SimpleBlog/MainNavButton/NewMainNavButton'
 
 export const SIMPLE_BLOG = 'Simple Blog'
 export interface SimpleBlog {
@@ -95,6 +96,7 @@ export default function SimpleBlog(props: {
                   isEditMode={props.isEditMode}
                 />
               ))}
+              <NewMainNavButton isEditMode={props.isEditMode} />
             </Grid>
           </MainNavButtons>
           <FullHeightGrid container spacing={4}>
