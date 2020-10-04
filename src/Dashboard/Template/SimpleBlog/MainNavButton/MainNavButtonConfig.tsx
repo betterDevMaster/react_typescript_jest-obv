@@ -1,7 +1,17 @@
+import Checkbox from '@material-ui/core/Checkbox'
+import FormControl from '@material-ui/core/FormControl'
+import FormControlLabel from '@material-ui/core/FormControlLabel'
+import Slider from '@material-ui/core/Slider'
 import TextField from '@material-ui/core/TextField'
+import Typography from '@material-ui/core/Typography'
 import {NavButtonWithSize} from 'Dashboard/components/NavButton'
 import {setDashboard} from 'Dashboard/edit/state/actions'
-import {onChangeHandler} from 'lib/dom'
+import {
+  handleChangeSlider,
+  onChangeCheckedHandler,
+  onChangeNumberHandler,
+  onChangeStringHandler,
+} from 'lib/dom'
 import ColorPicker from 'lib/ui/ColorPicker'
 import React from 'react'
 import {useDispatch, useSelector} from 'react-redux'
@@ -33,19 +43,13 @@ export function MainNavButtonConfig(props: {id: string}) {
     )
   }
 
-  const updateText = (text: string) => {
+  const updateButton = <T extends keyof NavButtonWithSize>(key: T) => (
+    value: NavButtonWithSize[T],
+  ) =>
     update({
       ...button,
-      text,
+      [key]: value,
     })
-  }
-
-  const updateBackgroundColor = (backgroundColor: string) => {
-    update({
-      ...button,
-      backgroundColor,
-    })
-  }
 
   return (
     <>
@@ -56,12 +60,74 @@ export function MainNavButtonConfig(props: {id: string}) {
           'aria-label': 'button name input',
         }}
         fullWidth
-        onChange={onChangeHandler(updateText)}
+        onChange={onChangeStringHandler(updateButton('text'))}
       />
+      <Typography gutterBottom>Size</Typography>
+      <Slider
+        min={1}
+        max={12}
+        onChange={handleChangeSlider(updateButton('size'))}
+        valueLabelDisplay="auto"
+        value={button.size || 0}
+      />
+      <TextField
+        label="Text"
+        value={button.link}
+        inputProps={{
+          'aria-label': 'button link input',
+        }}
+        fullWidth
+        onChange={onChangeStringHandler(updateButton('link'))}
+      />
+      <FormControl>
+        <FormControlLabel
+          label="New Tab"
+          control={
+            <Checkbox
+              checked={button.newTab}
+              onChange={onChangeCheckedHandler(updateButton('newTab'))}
+            />
+          }
+        />
+      </FormControl>
       <ColorPicker
         label="Background Color"
         color={button.backgroundColor}
-        onPick={updateBackgroundColor}
+        onPick={updateButton('backgroundColor')}
+      />
+      <ColorPicker
+        label="Hover Background Color"
+        color={button.hoverBackgroundColor}
+        onPick={updateButton('hoverBackgroundColor')}
+      />
+      <ColorPicker
+        label="Text Color"
+        color={button.textColor}
+        onPick={updateButton('textColor')}
+      />
+      <ColorPicker
+        label="Border Color"
+        color={button.borderColor}
+        onPick={updateButton('borderColor')}
+      />
+      <ColorPicker
+        label="Hover Border Color"
+        color={button.hoverBorderColor}
+        onPick={updateButton('hoverBorderColor')}
+      />
+      <TextField
+        value={button.borderWidth || 0}
+        label="Border"
+        type="number"
+        onChange={onChangeNumberHandler(updateButton('borderWidth'))}
+      />
+      <Typography gutterBottom>Border Radius</Typography>
+      <Slider
+        min={0}
+        max={20}
+        onChange={handleChangeSlider(updateButton('borderRadius'))}
+        valueLabelDisplay="auto"
+        value={button.borderRadius || 0}
       />
     </>
   )
