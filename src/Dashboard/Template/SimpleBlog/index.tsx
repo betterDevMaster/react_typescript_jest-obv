@@ -8,7 +8,9 @@ import {BlogPost} from 'Dashboard/components/BlogPost'
 import Header from 'Dashboard/Template/SimpleBlog/Header'
 import Menu from 'Dashboard/Template/SimpleBlog/Menu'
 import {User} from 'user'
-import WelcomeText from 'Dashboard/Template/SimpleBlog/WelcomeText'
+import WelcomeText, {
+  WELCOME_TEXT,
+} from 'Dashboard/Template/SimpleBlog/WelcomeText'
 import Hidden from '@material-ui/core/Hidden'
 import BlogPosts from 'Dashboard/Template/SimpleBlog/BlogPosts'
 import Sidebar from 'Dashboard/Template/SimpleBlog/Sidebar'
@@ -77,9 +79,11 @@ export default function SimpleBlog(props: {
       </EditComponent>
       <Content>
         <StyledContainer maxWidth="lg">
-          <WelcomeText isEditMode={props.isEditMode}>
-            {props.dashboard.welcomeText}
-          </WelcomeText>
+          <EditComponent type={WELCOME_TEXT}>
+            <WelcomeText isEditMode={props.isEditMode}>
+              {props.dashboard.welcomeText}
+            </WelcomeText>
+          </EditComponent>
           <MainNavButtons>
             <Grid container spacing={2}>
               {props.dashboard.mainNavButtons.ids.map((id) => (

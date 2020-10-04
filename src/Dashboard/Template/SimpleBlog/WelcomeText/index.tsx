@@ -1,4 +1,3 @@
-import EditComponent from 'Dashboard/edit/views/EditComponent'
 import React from 'react'
 import {useSelector} from 'react-redux'
 import {RootState} from 'store'
@@ -13,15 +12,8 @@ export default function WelcomeText(props: {
     (state: RootState) => state.dashboardEditor.welcomeText,
   )
 
-  if (props.isEditMode && current) {
-    return (
-      <EditComponent type={WELCOME_TEXT}>
-        <Text aria-label="welcome">{current}</Text>
-      </EditComponent>
-    )
-  }
-
-  return <Text aria-label="welcome">{props.children}</Text>
+  const value = props.isEditMode && current ? current : props.children
+  return <Text aria-label="welcome">{value}</Text>
 }
 
 const Text = styled.h2`

@@ -40,29 +40,15 @@ const MemoizedButton = React.memo(
       button: NavButtonWithSize
     },
   ) => {
-    if (props.isEditMode) {
-      return (
-        <Grid item xs={12} md={props.button.size}>
-          <EditComponent type={MAIN_NAV_BUTTON} id={props.id}>
-            <NavButton
-              {...props.button}
-              id={props.id}
-              ariaLabel="main nav button"
-              isEditMode={false}
-            />
-          </EditComponent>
-        </Grid>
-      )
-    }
-
     return (
       <Grid item xs={12} md={props.button.size}>
-        <NavButton
-          {...props.button}
-          id={props.id}
-          ariaLabel="main nav button"
-          isEditMode={false}
-        />
+        <EditComponent type={MAIN_NAV_BUTTON} id={props.id}>
+          <NavButton
+            {...props.button}
+            id={props.id}
+            ariaLabel="main nav button"
+          />
+        </EditComponent>
       </Grid>
     )
   },
