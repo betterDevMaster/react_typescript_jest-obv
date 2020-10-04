@@ -1,12 +1,26 @@
 import {ChangeEvent, Dispatch, SetStateAction} from 'react'
 
-type StateSetter = Dispatch<SetStateAction<string>>
-type CustomSetter = (val: any) => void
+type StringStateSetter = Dispatch<SetStateAction<string>>
+type StringCustomSetter = (val: string) => void
+export const onChangeStringHandler = (
+  setter: StringStateSetter | StringCustomSetter,
+) => (e: ChangeEvent<HTMLInputElement>): void => {
+  setter(e.currentTarget.value)
+}
 
-export const onChangeHandler = (setter: StateSetter | CustomSetter) => (
+type NumberCustomSetter = (val: number) => void
+export const onChangeNumberHandler = (setter: NumberCustomSetter) => (
   e: ChangeEvent<HTMLInputElement>,
 ): void => {
-  setter(e.currentTarget.value)
+  setter(parseInt(e.currentTarget.value))
+}
+
+type BooleanStateSetter = Dispatch<SetStateAction<boolean>>
+type BooleanCustomSetter = (val: boolean) => void
+export const onChangeCheckedHandler = (
+  setter: BooleanStateSetter | BooleanCustomSetter,
+) => (e: ChangeEvent<HTMLInputElement>): void => {
+  setter(e.currentTarget.checked)
 }
 
 export function onKeyEvent(handlers: {
@@ -55,4 +69,16 @@ export const findWithText = (value: string | RegExp) => (
 
     return Boolean(el.textContent.match(value))
   })
+}
+
+export const handleChangeSlider = (handler: (newValue: any) => void) => (
+  event: any,
+  value: number | number[],
+) => {
+  if (Array.isArray(value)) {
+    handler(value[0])
+    return
+  }
+
+  handler(value)
 }

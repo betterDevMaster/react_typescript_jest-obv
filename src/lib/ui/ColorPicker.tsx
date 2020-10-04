@@ -3,7 +3,7 @@ import React, {useRef, useState} from 'react'
 import {ColorChangeHandler, ChromePicker} from 'react-color'
 import ReactDOM from 'react-dom'
 import TextField from '@material-ui/core/TextField'
-import {onChangeHandler} from 'lib/dom'
+import {onChangeStringHandler} from 'lib/dom'
 import makeStyles from '@material-ui/core/styles/makeStyles'
 
 export default function ColorPicker(props: {
@@ -12,7 +12,7 @@ export default function ColorPicker(props: {
   onPick: (color: string) => void
 }) {
   const [showPicker, setShowPicker] = useState(false)
-  const initalColor = props.color || '#000000'
+  const initalColor = props.color
   const [color, setColor] = useState(initalColor)
   const anchorRef = useRef<HTMLDivElement | null>(null)
 
@@ -28,9 +28,13 @@ export default function ColorPicker(props: {
     updateColor(newColor)
   }
 
+  // Prevent white text from being invisible
+  const isWhite = color && /#f/.test(color)
+  const fontColor = !color || isWhite ? '#e8e8e8' : color
+
   const useStyles = makeStyles({
     input: {
-      color,
+      color: fontColor,
     },
   })
   const classes = useStyles()
@@ -41,12 +45,14 @@ export default function ColorPicker(props: {
         InputProps={{
           className: classes.input,
         }}
-        value={color}
+        // Value must be a string (not undefined), otherwise it'll
+        // switch to being an uncontrolled input
+        value={color || ''}
         label={props.label}
         ref={anchorRef}
         onClick={toggleShowPicker}
         fullWidth
-        onChange={onChangeHandler(updateColor)}
+        onChange={onChangeStringHandler(updateColor)}
       />
       <Picker
         visible={showPicker}
@@ -67,7 +73,7 @@ export function ColorPickerPopover() {
 
 function Picker(props: {
   visible: boolean
-  color: string
+  color?: string
   onChangeColor: ColorChangeHandler
   toggle: () => void
   anchor: HTMLDivElement | null

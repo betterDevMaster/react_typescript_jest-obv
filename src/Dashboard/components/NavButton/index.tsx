@@ -46,6 +46,7 @@ export default function NavButton(
         borderRadius={props.borderRadius}
         borderWidth={props.borderWidth}
         borderColor={props.borderColor}
+        hoverBorderColor={props.hoverBorderColor}
       >
         {props.text}
       </StyledButton>
