@@ -75,3 +75,34 @@ it('should edit the selected button', async () => {
   const updatedEl = await findByText(updatedValue)
   expect(updatedEl).toBeInTheDocument()
 })
+
+it('should add a new main nav button', async () => {
+  const numButtons = faker.random.number({min: 1, max: 4})
+
+  const buttons = Array.from(
+    {
+      length: numButtons,
+    },
+    fakeNavButtonWithSize,
+  )
+
+  const mainNavButtons = createEntityList(buttons)
+
+  const {findAllByLabelText, findByLabelText} = render(
+    <Dashboard
+      isEditMode={true}
+      dashboard={fakeSimpleBlog({
+        mainNavButtons,
+      })}
+      user={fakeUser()}
+    />,
+  )
+
+  const buttonEls = () => findAllByLabelText('main nav button')
+
+  expect((await buttonEls()).length).toBe(numButtons)
+
+  fireEvent.click(await findByLabelText('add main nav button'))
+
+  expect((await buttonEls()).length).toBe(numButtons + 1)
+})

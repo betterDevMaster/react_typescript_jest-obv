@@ -22,10 +22,10 @@ import {ResourceList} from 'Dashboard/components/ResourceList'
 import {TicketRibbon} from 'Dashboard/components/TicketRibbon'
 import {EmojiList} from 'Dashboard/components/EmojiList'
 import {EntityList} from 'lib/list'
-import MainNavButton from 'Dashboard/Template/SimpleBlog/MainNavButton'
 import {usePrimaryColor} from 'Dashboard/Template/SimpleBlog/primary-color'
 import EditComponent from 'Dashboard/edit/views/EditComponent'
-import NewMainNavButton from 'Dashboard/Template/SimpleBlog/MainNavButton/NewMainNavButton'
+import NewMainNavButton from 'Dashboard/Template/SimpleBlog/MainNavButtonList/MainNavButton/NewMainNavButton'
+import MainNavButtonList from 'Dashboard/Template/SimpleBlog/MainNavButtonList'
 
 export const SIMPLE_BLOG = 'Simple Blog'
 export interface SimpleBlog {
@@ -88,14 +88,10 @@ export default function SimpleBlog(props: {
           </EditComponent>
           <MainNavButtons>
             <Grid container spacing={2}>
-              {props.dashboard.mainNavButtons.ids.map((id) => (
-                <MainNavButton
-                  key={id}
-                  id={id}
-                  buttons={props.dashboard.mainNavButtons}
-                  isEditMode={props.isEditMode}
-                />
-              ))}
+              <MainNavButtonList
+                buttons={props.dashboard.mainNavButtons}
+                isEditMode={props.isEditMode}
+              />
               <NewMainNavButton isEditMode={props.isEditMode} />
             </Grid>
           </MainNavButtons>

@@ -1,5 +1,5 @@
 import {SIMPLE_BLOG} from 'Dashboard/Template/SimpleBlog'
-import {MAIN_NAV_BUTTON} from 'Dashboard/Template/SimpleBlog/MainNavButton'
+import {MAIN_NAV_BUTTON} from 'Dashboard/Template/SimpleBlog/MainNavButtonList/MainNavButton'
 import {WELCOME_TEXT} from 'Dashboard/Template/SimpleBlog/WelcomeText'
 
 export interface Component {
