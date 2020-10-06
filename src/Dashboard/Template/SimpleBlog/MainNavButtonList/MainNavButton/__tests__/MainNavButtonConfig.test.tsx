@@ -31,8 +31,7 @@ it('should edit the selected button', async () => {
   const button = faker.random.arrayElement(buttons)
   const buttonEl = await findByText(button.text)
 
-  // Nav buttons are wrapped in an <a>
-  clickEdit(buttonEl.parentElement!)
+  clickEdit(buttonEl)
 
   const textInput = (await findByLabelText(
     'button name input',
@@ -51,4 +50,35 @@ it('should edit the selected button', async () => {
 
   const updatedEl = await findByText(updatedValue)
   expect(updatedEl).toBeInTheDocument()
+})
+
+it('should remove the button', async () => {
+  const numButtons = faker.random.number({min: 1, max: 4})
+
+  const buttons = Array.from({length: numButtons}, fakeNavButtonWithSize)
+  const mainNavButtons = createEntityList(buttons)
+
+  const {findAllByLabelText, findByLabelText, queryByText} = render(
+    <Dashboard
+      isEditMode={true}
+      dashboard={fakeSimpleBlog({
+        mainNavButtons,
+      })}
+      user={fakeUser()}
+    />,
+  )
+
+  const buttonEls = () => findAllByLabelText('main nav button')
+  expect((await buttonEls()).length).toBe(numButtons)
+
+  const target = faker.random.arrayElement(await buttonEls())
+  expect(queryByText(target.textContent!)).toBeInTheDocument()
+
+  clickEdit(target)
+
+  fireEvent.click(await findByLabelText('remove button'))
+
+  expect((await buttonEls()).length).toBe(numButtons - 1)
+
+  expect(queryByText(target.textContent!)).not.toBeInTheDocument()
 })

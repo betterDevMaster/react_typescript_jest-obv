@@ -5,6 +5,9 @@ import React, {useCallback} from 'react'
 import {useDispatch} from 'react-redux'
 import styled from 'styled-components'
 
+export const EDIT_COMPONENT_CLASS = 'edit-component'
+export const EDIT_COMPONENT_BUTTON_CLASS = 'edit-component-button'
+
 export default function EditComponent(props: {
   children: React.ReactElement
   type: ComponentType
@@ -28,8 +31,11 @@ export default function EditComponent(props: {
   }
 
   return (
-    <Box>
-      <StyledEditIconButton onClick={edit} />
+    <Box className={EDIT_COMPONENT_CLASS}>
+      <StyledEditIconButton
+        onClick={edit}
+        className={EDIT_COMPONENT_BUTTON_CLASS}
+      />
       {props.children}
     </Box>
   )
