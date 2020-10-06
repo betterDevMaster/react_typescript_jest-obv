@@ -201,8 +201,6 @@ it('should render ticket ribbons', () => {
 
 it('should render sidebarNavButtons', () => {
   const dashboard = fakeSimpleBlog({
-    sidebarBackground: '#000000',
-    sidebarTextColor: '#ffffff',
     sidebarNavButtons: createEntityList([]),
   })
 
@@ -215,8 +213,6 @@ it('should render sidebarNavButtons', () => {
   const numButtons = faker.random.number({min: 1, max: 5})
 
   const withNavButtons = fakeSimpleBlog({
-    sidebarBackground: '#000000',
-    sidebarTextColor: '#ffffff',
     sidebarNavButtons: createEntityList(
       Array.from({length: numButtons}, fakeNavButton),
     ),

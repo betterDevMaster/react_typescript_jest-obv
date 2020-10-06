@@ -1,3 +1,4 @@
+import {Editable} from 'Dashboard'
 import {ComponentType} from 'Dashboard/components'
 import {setComponent} from 'Dashboard/edit/state/actions'
 import EditIconButton from 'lib/ui/IconButton/EditIconButton'
@@ -8,12 +9,13 @@ import styled from 'styled-components'
 export const EDIT_COMPONENT_CLASS = 'edit-component'
 export const EDIT_COMPONENT_BUTTON_CLASS = 'edit-component-button'
 
-export default function EditComponent(props: {
-  children: React.ReactElement
-  type: ComponentType
-  id?: string
-  isEditMode: boolean
-}) {
+export default function EditComponent(
+  props: {
+    children: React.ReactElement
+    type: ComponentType
+    id?: string
+  } & Editable,
+) {
   const dispatch = useDispatch()
   const {type, id} = props
 

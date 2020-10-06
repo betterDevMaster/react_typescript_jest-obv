@@ -10,8 +10,10 @@ import {ColorPickerPopover} from 'lib/ui/ColorPicker'
 const dashboard = fakeSimpleBlog({
   primaryColor: '#ea202e',
   points: fakePoints(),
-  sidebarBackground: '#000000',
-  sidebarTextColor: '#Ffffff',
+  sidebar: {
+    background: '#000000',
+    textColor: '#Ffffff',
+  },
 })
 
 export default function App() {

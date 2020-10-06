@@ -8,11 +8,14 @@ import Template from 'Dashboard/Template'
 
 export type Dashboard = SimpleBlog
 
-export interface DashboardProps {
-  dashboard: Dashboard
-  user: User
+export interface Editable {
   isEditMode: boolean
 }
+
+export type DashboardProps = {
+  dashboard: Dashboard
+  user: User
+} & Editable
 
 export default function Dashboard(props: DashboardProps) {
   useSetDashboard(props.isEditMode, props.dashboard)

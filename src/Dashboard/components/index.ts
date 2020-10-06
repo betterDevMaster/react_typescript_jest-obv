@@ -1,5 +1,6 @@
 import {SIMPLE_BLOG} from 'Dashboard/Template/SimpleBlog'
 import {MAIN_NAV_BUTTON} from 'Dashboard/Template/SimpleBlog/MainNavButtonList/MainNavButton'
+import {SIDEBAR_CONTAINER} from 'Dashboard/Template/SimpleBlog/Sidebar/SidebarContainer'
 import {WELCOME_TEXT} from 'Dashboard/Template/SimpleBlog/WelcomeText'
 
 export interface Component {
@@ -13,3 +14,4 @@ export type ComponentType =
   | typeof SIMPLE_BLOG
   | typeof MAIN_NAV_BUTTON
   | typeof WELCOME_TEXT
+  | typeof SIDEBAR_CONTAINER

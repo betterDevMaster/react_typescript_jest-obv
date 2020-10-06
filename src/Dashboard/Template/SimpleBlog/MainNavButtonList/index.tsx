@@ -1,13 +1,15 @@
+import {Editable} from 'Dashboard'
 import {SimpleBlog} from 'Dashboard/Template/SimpleBlog'
 import MainNavButton from 'Dashboard/Template/SimpleBlog/MainNavButtonList/MainNavButton'
 import React from 'react'
 import {useSelector} from 'react-redux'
 import {RootState} from 'store'
 
-export default function MainNavButtonList(props: {
-  buttons: SimpleBlog['mainNavButtons']
-  isEditMode: boolean
-}) {
+export default function MainNavButtonList(
+  props: {
+    buttons: SimpleBlog['mainNavButtons']
+  } & Editable,
+) {
   const buttons = useCurrentButtons(props.isEditMode, props.buttons)
 
   return (
