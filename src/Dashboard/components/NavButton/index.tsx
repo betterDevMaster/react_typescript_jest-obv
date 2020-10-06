@@ -23,7 +23,7 @@ export interface NavButton extends Component {
 }
 
 export type NavButtonWithSize = NavButton & {
-  size?: Column
+  size: Column
 }
 
 export default function NavButton(

@@ -8,7 +8,7 @@ export const breakpoints = {
 }
 
 export const colors = {
-  primary: '#3FB1E5',
+  primary: '#3490DC',
 }
 
 export const spacing = Array(60)
@@ -16,6 +16,11 @@ export const spacing = Array(60)
   .map((base, idx) => `${base * idx}px`)
 
 export const muiTheme = createMuiTheme({
+  palette: {
+    primary: {
+      main: colors.primary,
+    },
+  },
   overrides: {
     MuiFormControl: {
       root: {

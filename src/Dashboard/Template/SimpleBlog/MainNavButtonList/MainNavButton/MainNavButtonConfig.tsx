@@ -5,17 +5,19 @@ import Slider from '@material-ui/core/Slider'
 import TextField from '@material-ui/core/TextField'
 import Typography from '@material-ui/core/Typography'
 import {NavButtonWithSize} from 'Dashboard/components/NavButton'
-import {setDashboard} from 'Dashboard/edit/state/actions'
+import {setComponent, setDashboard} from 'Dashboard/edit/state/actions'
 import {
   handleChangeSlider,
   onChangeCheckedHandler,
   onChangeNumberHandler,
   onChangeStringHandler,
 } from 'lib/dom'
+import DangerButton from 'lib/ui/Button/DangerButton'
 import ColorPicker from 'lib/ui/ColorPicker'
 import React from 'react'
 import {useDispatch, useSelector} from 'react-redux'
 import {RootState} from 'store'
+import Box from '@material-ui/core/Box'
 
 export function MainNavButtonConfig(props: {id?: string}) {
   const buttons = useSelector(
@@ -43,6 +45,21 @@ export function MainNavButtonConfig(props: {id?: string}) {
             ...buttons.entities,
             [id]: updated,
           },
+        },
+      }),
+    )
+  }
+
+  const removeButton = () => {
+    const {[id]: target, ...otherButtons} = buttons.entities
+    const updatedIds = buttons.ids.filter((i) => i !== id)
+
+    dispatch(setComponent(null))
+    dispatch(
+      setDashboard({
+        mainNavButtons: {
+          entities: otherButtons,
+          ids: updatedIds,
         },
       }),
     )
@@ -134,6 +151,17 @@ export function MainNavButtonConfig(props: {id?: string}) {
         valueLabelDisplay="auto"
         value={button.borderRadius || 0}
       />
+
+      <Box mt={2} mb={3}>
+        <DangerButton
+          fullWidth
+          variant="outlined"
+          aria-label="remove button"
+          onClick={removeButton}
+        >
+          REMOVE BUTTON
+        </DangerButton>
+      </Box>
     </>
   )
 }

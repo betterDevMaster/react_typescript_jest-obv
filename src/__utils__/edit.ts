@@ -1,7 +1,13 @@
 import {fireEvent} from '@testing-library/react'
+import {
+  EDIT_COMPONENT_BUTTON_CLASS,
+  EDIT_COMPONENT_CLASS,
+} from 'Dashboard/edit/views/EditComponent'
 
 export function clickEdit(el: HTMLElement) {
-  const editButton = el.previousSibling
+  const editButton = el
+    .closest(`.${EDIT_COMPONENT_CLASS}`) // parent edit component div
+    ?.querySelector(`.${EDIT_COMPONENT_BUTTON_CLASS}`) //  edit button
 
   if (!editButton) {
     throw new Error('Could not find edit button')

@@ -21,8 +21,10 @@ export const fakeSimpleBlog = (overrides?: Partial<SimpleBlog>): SimpleBlog => {
     logo: 'https://tax.live/success_summit/images/virtual-2020-logo.png',
     welcomeText: 'WELCOME TO THE DASHBOARD',
     primaryColor: '#14aecf',
-    sidebarBackground: '#000000',
-    sidebarTextColor: '#FFFFFF',
+    sidebar: {
+      background: '#000000',
+      textColor: '#FFFFFF',
+    },
     sidebarNavButtons: {entities: {}, ids: []},
     ticketRibbon: null,
     mainNavButtons: {entities: {}, ids: []},
