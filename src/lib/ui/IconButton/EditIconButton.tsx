@@ -13,10 +13,18 @@ export default function EditIconButton(props: {
 
   return (
     <IconButton className={props.className} onClick={props.onClick}>
-      <StyledSettingsIcon color={color} />
+      <Box>
+        <StyledSettingsIcon color={color} />
+      </Box>
     </IconButton>
   )
 }
+
+const Box = styled.div`
+  background: #ffffff;
+  display: inline-flex;
+  border-radius: 4px;
+`
 
 const StyledSettingsIcon = styled((props: {color: string}) => {
   const {color, ...otherProps} = props
