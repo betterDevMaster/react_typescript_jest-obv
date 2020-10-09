@@ -2,16 +2,10 @@ import React from 'react'
 import faker from 'faker'
 import {fakeSimpleBlog} from 'Dashboard/Template/SimpleBlog/__utils__/factory'
 import {fakeUser} from 'user/__utils__/factory'
-import {setWindowMatchMedia} from '__utils__/media-query'
 import Dashboard from 'Dashboard'
 import {render} from '__utils__/render'
 import {ALL_TICKET_RIBBONS} from 'Dashboard/components/TicketRibbon'
-import {findByLabelText, fireEvent} from '@testing-library/dom'
-
-beforeAll(() => {
-  // Required to render <Hidden/> components in tests
-  setWindowMatchMedia()
-})
+import {fireEvent} from '@testing-library/dom'
 
 it('should render ticket ribbons', () => {
   const dashboard = fakeSimpleBlog({

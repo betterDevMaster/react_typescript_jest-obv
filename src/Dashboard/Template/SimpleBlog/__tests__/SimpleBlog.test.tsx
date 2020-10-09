@@ -3,7 +3,6 @@ import faker from 'faker'
 import {fireEvent} from '@testing-library/react'
 import {fakeSimpleBlog} from 'Dashboard/Template/SimpleBlog/__utils__/factory'
 import {fakeUser} from 'user/__utils__/factory'
-import {setWindowMatchMedia} from '__utils__/media-query'
 import Dashboard from 'Dashboard'
 import {render} from '__utils__/render'
 import {fakeAgenda} from 'Dashboard/components/AgendaList/__utils__/factory'
@@ -15,11 +14,6 @@ import {ALL_TICKET_RIBBONS} from 'Dashboard/components/TicketRibbon'
 import {createEntityList} from 'lib/list'
 import {clickEdit} from '__utils__/edit'
 import userEvent from '@testing-library/user-event'
-
-beforeAll(() => {
-  // Required to render <Hidden/> components in tests
-  setWindowMatchMedia()
-})
 
 it('should update the logo', async () => {
   const dashboard = fakeSimpleBlog()

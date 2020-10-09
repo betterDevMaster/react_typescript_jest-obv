@@ -5,14 +5,8 @@ import {fakeUser} from 'user/__utils__/factory'
 import Dashboard from 'Dashboard'
 import {inputElementFor, render} from '__utils__/render'
 import {ALL_EMOJIS, EMOJI} from 'Dashboard/components/EmojiList/emoji'
-import {setWindowMatchMedia} from '__utils__/media-query'
 import {fireEvent} from '@testing-library/dom'
 import {clickEdit} from '__utils__/edit'
-
-beforeAll(() => {
-  // Required to render <Hidden/> components in tests
-  setWindowMatchMedia()
-})
 
 it('should render emojis', async () => {
   const emojis = Array.from(
