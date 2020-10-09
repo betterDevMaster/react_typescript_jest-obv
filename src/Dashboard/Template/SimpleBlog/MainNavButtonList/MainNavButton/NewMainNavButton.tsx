@@ -1,20 +1,21 @@
 import Button from '@material-ui/core/Button'
 import Grid from '@material-ui/core/Grid'
-import {Editable} from 'Dashboard'
 import {NavButtonWithSize} from 'Dashboard/components/NavButton'
 import {setDashboard} from 'Dashboard/edit/state/actions'
+import {useEditMode} from 'Dashboard/edit/state/edit-mode'
 import React from 'react'
 import {useDispatch, useSelector} from 'react-redux'
 import {RootState} from 'store'
 import {v4 as uid} from 'uuid'
 
-export default function NewMainNavButton(props: Editable) {
+export default function NewMainNavButton() {
   const dispatch = useDispatch()
+  const isEditMode = useEditMode()
   const buttons = useSelector(
     (state: RootState) => state.dashboardEditor.mainNavButtons,
   )
 
-  if (!props.isEditMode || !buttons) {
+  if (!isEditMode || !buttons) {
     return null
   }
 

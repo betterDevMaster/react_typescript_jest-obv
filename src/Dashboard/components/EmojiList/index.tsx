@@ -5,7 +5,7 @@ import EditComponent from 'Dashboard/edit/views/EditComponent'
 import AddEmojiListButton from 'Dashboard/components/EmojiList/AddEmojiListButton'
 import EditModeOnly from 'Dashboard/edit/views/EditModeOnly'
 import {RootState} from 'store'
-import {useSelector} from 'react-redux'
+import {useCurrent} from 'Dashboard/edit/state/edit-mode'
 
 export const EMOJI_LIST = 'Emoji List'
 
@@ -17,12 +17,8 @@ export interface EmojiList {
   emojiWidth?: number
 }
 
-export default function EmojiList(props: {
-  list: EmojiList | null
-  isEditMode: boolean
-}) {
+export default function EmojiList(props: {list: EmojiList}) {
   const list = useCurrent(
-    props.isEditMode,
     (state: RootState) => state.dashboardEditor.emojiList,
     props.list,
   )
@@ -31,14 +27,14 @@ export default function EmojiList(props: {
   if (!list || isEmpty) {
     // Add button to create emoji list
     return (
-      <EditModeOnly isEditMode={props.isEditMode}>
+      <EditModeOnly>
         <StyledAddEmojiListButton />
       </EditModeOnly>
     )
   }
 
   return (
-    <EditComponent type={EMOJI_LIST} isEditMode={props.isEditMode}>
+    <EditComponent type={EMOJI_LIST}>
       <Box aria-label="emoji list">
         {list.emojis.map((name, index) => (
           <Container key={index} width={list.emojiWidth}>
@@ -52,20 +48,6 @@ export default function EmojiList(props: {
       </Box>
     </EditComponent>
   )
-}
-
-function useCurrent<T>(
-  isEditMode: boolean,
-  currentSelector: (state: RootState) => T | undefined,
-  saved: T,
-) {
-  const current = useSelector(currentSelector)
-
-  if (!isEditMode || !current) {
-    return saved
-  }
-
-  return current
 }
 
 const Box = styled.div`

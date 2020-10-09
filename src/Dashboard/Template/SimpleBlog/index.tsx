@@ -26,7 +26,6 @@ import {usePrimaryColor} from 'Dashboard/Template/SimpleBlog/primary-color'
 import EditComponent from 'Dashboard/edit/views/EditComponent'
 import NewMainNavButton from 'Dashboard/Template/SimpleBlog/MainNavButtonList/MainNavButton/NewMainNavButton'
 import MainNavButtonList from 'Dashboard/Template/SimpleBlog/MainNavButtonList'
-import {Editable} from 'Dashboard'
 
 export const SIMPLE_BLOG = 'Simple Blog'
 export interface SimpleBlog {
@@ -54,15 +53,10 @@ export interface SimpleBlog {
   footerCopyrightText: string | null
 }
 
-export default function SimpleBlog(
-  props: {
-    dashboard: SimpleBlog
-    user: User
-  } & Editable,
-) {
+export default function SimpleBlog(props: {dashboard: SimpleBlog; user: User}) {
   const [menuVisible, setMenuVisible] = useState(false)
   const toggleMenu = () => setMenuVisible(!menuVisible)
-  const primaryColor = usePrimaryColor(props.isEditMode, props.dashboard)
+  const primaryColor = usePrimaryColor(props.dashboard)
 
   return (
     <Box>
@@ -73,7 +67,7 @@ export default function SimpleBlog(
         toggle={toggleMenu}
         user={props.user}
       />
-      <EditComponent type={SIMPLE_BLOG} isEditMode={props.isEditMode}>
+      <EditComponent type={SIMPLE_BLOG}>
         <Header
           logo={props.dashboard.logo}
           title={props.dashboard.title}
@@ -85,28 +79,19 @@ export default function SimpleBlog(
       </EditComponent>
       <Content>
         <StyledContainer maxWidth="lg">
-          <EditComponent type={WELCOME_TEXT} isEditMode={props.isEditMode}>
-            <WelcomeText isEditMode={props.isEditMode}>
-              {props.dashboard.welcomeText}
-            </WelcomeText>
+          <EditComponent type={WELCOME_TEXT}>
+            <WelcomeText>{props.dashboard.welcomeText}</WelcomeText>
           </EditComponent>
           <MainNavButtons>
             <Grid container spacing={2}>
-              <MainNavButtonList
-                buttons={props.dashboard.mainNavButtons}
-                isEditMode={props.isEditMode}
-              />
-              <NewMainNavButton isEditMode={props.isEditMode} />
+              <MainNavButtonList buttons={props.dashboard.mainNavButtons} />
+              <NewMainNavButton />
             </Grid>
           </MainNavButtons>
           <FullHeightGrid container spacing={4}>
             <Hidden mdUp>
               <Grid item xs={12}>
-                <Sidebar
-                  {...props.dashboard}
-                  isEditMode={props.isEditMode}
-                  primaryColor={primaryColor}
-                />
+                <Sidebar {...props.dashboard} primaryColor={primaryColor} />
               </Grid>
             </Hidden>
             <Grid item xs={12} md={8}>
@@ -114,11 +99,7 @@ export default function SimpleBlog(
             </Grid>
             <Hidden smDown>
               <Grid item xs={12} md={4}>
-                <Sidebar
-                  {...props.dashboard}
-                  isEditMode={props.isEditMode}
-                  primaryColor={primaryColor}
-                />
+                <Sidebar {...props.dashboard} primaryColor={primaryColor} />
               </Grid>
             </Hidden>
           </FullHeightGrid>

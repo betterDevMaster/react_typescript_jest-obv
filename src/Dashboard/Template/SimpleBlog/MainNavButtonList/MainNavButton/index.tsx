@@ -13,11 +13,7 @@ type MainNavButtonProps = {
 export default React.memo((props: MainNavButtonProps) => {
   return (
     <Grid item xs={12} md={props.button.size}>
-      <EditComponent
-        type={MAIN_NAV_BUTTON}
-        id={props.id}
-        isEditMode={!!props.isEditMode}
-      >
+      <EditComponent type={MAIN_NAV_BUTTON} id={props.id}>
         <NavButton
           {...props.button}
           id={props.id}
