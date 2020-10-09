@@ -3,8 +3,11 @@ import faker from 'faker'
 import {fakeSimpleBlog} from 'Dashboard/Template/SimpleBlog/__utils__/factory'
 import {fakeUser} from 'user/__utils__/factory'
 import Dashboard from 'Dashboard'
-import {render} from '__utils__/render'
-import {ALL_TICKET_RIBBONS} from 'Dashboard/components/TicketRibbon'
+import {inputElementFor, render} from '__utils__/render'
+import {
+  ALL_TICKET_RIBBONS,
+  TICKET_RIBBON,
+} from 'Dashboard/components/TicketRibbon'
 import {fireEvent} from '@testing-library/dom'
 
 it('should render ticket ribbons', () => {
@@ -23,7 +26,7 @@ it('should render ticket ribbons', () => {
   expect(queryByLabelText(new RegExp(label))).not.toBeInTheDocument()
 
   const withTicketRibbon = fakeSimpleBlog({
-    ticketRibbon,
+    ticketRibbon: ticketRibbon.name,
   })
 
   rerender(
@@ -47,4 +50,19 @@ it('should configure ticket ribbons', async () => {
   )
 
   fireEvent.click(await findByLabelText('set ticket ribbon'))
+
+  fireEvent.change(
+    inputElementFor(await findByLabelText('pick ticket ribbon')),
+    {
+      target: {
+        value: TICKET_RIBBON.GOLD.name,
+      },
+    },
+  )
+
+  fireEvent.click(await findByLabelText('close config dialog'))
+
+  const label = `${TICKET_RIBBON.GOLD.name} ticket`
+
+  expect(await findByLabelText(new RegExp(label))).toBeInTheDocument()
 })

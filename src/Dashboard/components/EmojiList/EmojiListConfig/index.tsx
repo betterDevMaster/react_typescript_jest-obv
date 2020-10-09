@@ -19,7 +19,7 @@ export default function EmojiListConfig() {
   )
 
   if (!list) {
-    throw new Error('Missing emoji list; was it correctly set via edit button?')
+    throw new Error('Missing emoji list; was dashboard set correctly?')
   }
 
   const update = <T extends keyof EmojiList>(key: T, value: EmojiList[T]) => {

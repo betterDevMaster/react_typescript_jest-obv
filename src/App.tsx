@@ -14,7 +14,6 @@ const dashboard = fakeSimpleBlog({
     background: '#000000',
     textColor: '#Ffffff',
   },
-  ticketRibbon: null,
 })
 
 export default function App() {

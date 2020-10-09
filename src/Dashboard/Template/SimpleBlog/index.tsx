@@ -34,7 +34,7 @@ export interface SimpleBlog {
   title: string
   mainNavButtons: EntityList<NavButtonWithSize>
   primaryColor: string
-  ticketRibbon: TicketRibbon | null
+  ticketRibbon: TicketRibbon['name'] | null
   logo: string
   welcomeText: string
   emojiList: EmojiList

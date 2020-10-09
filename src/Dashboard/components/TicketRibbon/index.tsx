@@ -1,4 +1,6 @@
 import SetTicketRibbonButton from 'Dashboard/components/TicketRibbon/TicketRibbonConfig/SetTicketRibbonButton'
+import {useCurrent} from 'Dashboard/edit/state/edit-mode'
+import EditComponent from 'Dashboard/edit/views/EditComponent'
 import EditModeOnly from 'Dashboard/edit/views/EditModeOnly'
 import React from 'react'
 import styled from 'styled-components'
@@ -40,8 +42,24 @@ export const TICKET_RIBBON: Record<string, TicketRibbon> = {
 
 export const ALL_TICKET_RIBBONS = Object.values(TICKET_RIBBON)
 
-export default function TicketRibbon(props: {ribbon: TicketRibbon | null}) {
-  if (!props.ribbon) {
+export const ticketRibbonWithName = (name: string) => {
+  const target = ALL_TICKET_RIBBONS.find((tr) => tr.name === name)
+  if (!target) {
+    throw new Error(`Missing ticker ribbon with name: ${name}`)
+  }
+
+  return target
+}
+
+export default function TicketRibbon(props: {
+  ribbon: TicketRibbon['name'] | null
+}) {
+  const name = useCurrent(
+    (state) => state.dashboardEditor.ticketRibbon,
+    props.ribbon,
+  )
+
+  if (!name) {
     return (
       <EditModeOnly>
         <StyledSetTicketRibbonButton />
@@ -49,11 +67,15 @@ export default function TicketRibbon(props: {ribbon: TicketRibbon | null}) {
     )
   }
 
-  const label = `${props.ribbon.name} ticket`
+  const ticketRibbon = ticketRibbonWithName(name)
+
+  const label = `${ticketRibbon.name} ticket`
   return (
-    <Box aria-label={label}>
-      <Ribbon src={props.ribbon.image} alt={label} />
-    </Box>
+    <EditComponent type={TICKET_RIBBON_TYPE}>
+      <Box aria-label={label}>
+        <Ribbon src={ticketRibbon.image} alt={label} />
+      </Box>
+    </EditComponent>
   )
 }
 

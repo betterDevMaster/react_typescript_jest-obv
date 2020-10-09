@@ -4,6 +4,6 @@ import faker from 'faker'
 export function withTicketRibbon<T>(attributes: T): T {
   return {
     ...attributes,
-    ticketRibbon: faker.random.arrayElement(ALL_TICKET_RIBBONS),
+    ticketRibbon: faker.random.arrayElement(ALL_TICKET_RIBBONS).name,
   }
 }

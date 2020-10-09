@@ -140,36 +140,6 @@ it('should render resources', async () => {
   expect(resources.length).toBe(numResources)
 })
 
-it('should render ticket ribbons', () => {
-  const dashboard = fakeSimpleBlog({
-    ticketRibbon: null,
-  })
-
-  const ticketRibbon = faker.random.arrayElement(ALL_TICKET_RIBBONS)
-
-  const {queryByLabelText, rerender} = render(
-    <Dashboard isEditMode={false} dashboard={dashboard} user={fakeUser()} />,
-  )
-
-  const label = `${ticketRibbon.name} ticket`
-
-  expect(queryByLabelText(new RegExp(label))).not.toBeInTheDocument()
-
-  const withTicketRibbon = fakeSimpleBlog({
-    ticketRibbon,
-  })
-
-  rerender(
-    <Dashboard
-      isEditMode={false}
-      dashboard={withTicketRibbon}
-      user={fakeUser()}
-    />,
-  )
-
-  expect(queryByLabelText(new RegExp(label))).toBeInTheDocument()
-})
-
 it('should render sidebarNavButtons', () => {
   const dashboard = fakeSimpleBlog({
     sidebarNavButtons: createEntityList([]),
