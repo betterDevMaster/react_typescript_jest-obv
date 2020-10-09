@@ -27,7 +27,8 @@ import EditComponent from 'Dashboard/edit/views/EditComponent'
 import NewMainNavButton from 'Dashboard/Template/SimpleBlog/MainNavButtonList/MainNavButton/NewMainNavButton'
 import MainNavButtonList from 'Dashboard/Template/SimpleBlog/MainNavButtonList'
 
-export const SIMPLE_BLOG = 'Simple Blog'
+export const SIMPLE_BLOG = 'SIMPLE_BLOG'
+
 export interface SimpleBlog {
   template: typeof SIMPLE_BLOG
   title: string

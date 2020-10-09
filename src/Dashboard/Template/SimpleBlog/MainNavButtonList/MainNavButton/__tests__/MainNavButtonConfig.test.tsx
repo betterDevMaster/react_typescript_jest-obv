@@ -53,7 +53,7 @@ it('should edit the selected button', async () => {
 })
 
 it('should remove the button', async () => {
-  const numButtons = faker.random.number({min: 1, max: 4})
+  const numButtons = faker.random.number({min: 2, max: 4})
 
   const buttons = Array.from({length: numButtons}, fakeNavButtonWithSize)
   const mainNavButtons = createEntityList(buttons)

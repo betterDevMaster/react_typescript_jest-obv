@@ -1,4 +1,5 @@
 import {EMOJI_LIST} from 'Dashboard/components/EmojiList'
+import {TICKET_RIBBON_TYPE} from 'Dashboard/components/TicketRibbon'
 import {SIMPLE_BLOG} from 'Dashboard/Template/SimpleBlog'
 import {MAIN_NAV_BUTTON} from 'Dashboard/Template/SimpleBlog/MainNavButtonList/MainNavButton'
 import {SIDEBAR_CONTAINER} from 'Dashboard/Template/SimpleBlog/Sidebar/SidebarContainer'
@@ -17,3 +18,4 @@ export type ComponentType =
   | typeof WELCOME_TEXT
   | typeof SIDEBAR_CONTAINER
   | typeof EMOJI_LIST
+  | typeof TICKET_RIBBON_TYPE

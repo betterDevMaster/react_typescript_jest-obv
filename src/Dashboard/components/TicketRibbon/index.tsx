@@ -1,3 +1,5 @@
+import SetTicketRibbonButton from 'Dashboard/components/TicketRibbon/TicketRibbonConfig/SetTicketRibbonButton'
+import EditModeOnly from 'Dashboard/edit/views/EditModeOnly'
 import React from 'react'
 import styled from 'styled-components'
 import APN_RIBBON from './ribbon/APN.png'
@@ -10,6 +12,8 @@ export interface TicketRibbon {
   name: string
   image: string
 }
+
+export const TICKET_RIBBON_TYPE = 'Ticket Ribbon'
 
 export const TICKET_RIBBON: Record<string, TicketRibbon> = {
   APN: {
@@ -38,7 +42,11 @@ export const ALL_TICKET_RIBBONS = Object.values(TICKET_RIBBON)
 
 export default function TicketRibbon(props: {ribbon: TicketRibbon | null}) {
   if (!props.ribbon) {
-    return null
+    return (
+      <EditModeOnly>
+        <StyledSetTicketRibbonButton />
+      </EditModeOnly>
+    )
   }
 
   const label = `${props.ribbon.name} ticket`
@@ -67,4 +75,7 @@ const Box = styled.div`
 const Ribbon = styled.img`
   width: 100%;
   height: 100%;
+`
+const StyledSetTicketRibbonButton = styled(SetTicketRibbonButton)`
+  margin-bottom: ${(props) => props.theme.spacing[6]}!important;
 `
