@@ -1,18 +1,17 @@
+import {useEditMode} from 'Dashboard/edit/state/edit-mode'
 import React from 'react'
 import {useSelector} from 'react-redux'
 import {RootState} from 'store'
 import styled from 'styled-components'
 
 export const WELCOME_TEXT = 'Welcome Text'
-export default function WelcomeText(props: {
-  children: string
-  isEditMode?: boolean
-}) {
+export default function WelcomeText(props: {children: string}) {
+  const isEditMode = useEditMode()
   const current = useSelector(
     (state: RootState) => state.dashboardEditor.welcomeText,
   )
 
-  const value = props.isEditMode && current ? current : props.children
+  const value = isEditMode && current ? current : props.children
   return <Text aria-label="welcome">{value}</Text>
 }
 

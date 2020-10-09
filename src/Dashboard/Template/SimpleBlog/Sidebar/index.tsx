@@ -8,12 +8,10 @@ import Section from 'Dashboard/Template/SimpleBlog/Sidebar/Section'
 import TicketRibbon from 'Dashboard/components/TicketRibbon'
 import SidebarNav from 'Dashboard/Template/SimpleBlog/Sidebar/SidebarNav'
 import SidebarContainer from 'Dashboard/Template/SimpleBlog/Sidebar/SidebarContainer'
-import {Editable} from 'Dashboard'
 
-export default function Sidebar(props: SimpleBlog & Editable) {
+export default function Sidebar(props: SimpleBlog) {
   return (
     <SidebarContainer
-      isEditMode={props.isEditMode}
       background={props.sidebar.background}
       textColor={props.sidebar.textColor}
     >

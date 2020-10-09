@@ -1,6 +1,6 @@
-import {Editable} from 'Dashboard'
 import {ComponentType} from 'Dashboard/components'
 import {setComponent} from 'Dashboard/edit/state/actions'
+import {useEditMode} from 'Dashboard/edit/state/edit-mode'
 import EditIconButton from 'lib/ui/IconButton/EditIconButton'
 import React, {useCallback} from 'react'
 import {useDispatch} from 'react-redux'
@@ -9,14 +9,13 @@ import styled from 'styled-components'
 export const EDIT_COMPONENT_CLASS = 'edit-component'
 export const EDIT_COMPONENT_BUTTON_CLASS = 'edit-component-button'
 
-export default function EditComponent(
-  props: {
-    children: React.ReactElement
-    type: ComponentType
-    id?: string
-  } & Editable,
-) {
+export default function EditComponent(props: {
+  children: React.ReactElement
+  type: ComponentType
+  id?: string
+}) {
   const dispatch = useDispatch()
+  const isEditMode = useEditMode()
   const {type, id} = props
 
   const edit = useCallback(() => {
@@ -28,7 +27,7 @@ export default function EditComponent(
     )
   }, [dispatch, type, id])
 
-  if (props.isEditMode === false) {
+  if (!isEditMode) {
     return props.children
   }
 

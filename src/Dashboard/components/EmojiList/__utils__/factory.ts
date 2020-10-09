@@ -8,13 +8,14 @@ export function withEmojiList<
   }
 >(attributes: T): T {
   const emojiList: EmojiList = {
-    emojis: Array.from({length: faker.random.number({min: 0, max: 5})}, () =>
-      faker.random.arrayElement(ALL_EMOJIS),
+    emojis: Array.from(
+      {length: faker.random.number({min: 0, max: 5})},
+      () => faker.random.arrayElement(ALL_EMOJIS).name,
     ),
   }
 
   if (faker.random.boolean()) {
-    emojiList.width = faker.random.number({min: 50, max: 100})
+    emojiList.emojiWidth = faker.random.number({min: 50, max: 100})
   }
 
   return {

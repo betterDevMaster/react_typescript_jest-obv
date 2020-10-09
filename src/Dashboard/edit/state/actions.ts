@@ -2,6 +2,23 @@ import {DashboardEditorState, defaultState} from 'Dashboard/edit/state'
 import {Dashboard} from 'Dashboard'
 import {ComponentType} from 'Dashboard/components'
 
+export const SET_EDIT_MODE = 'SET_EDIT_MODE'
+export interface SetEditModeAction {
+  type: typeof SET_EDIT_MODE
+  payload: boolean
+}
+export const setEditMode = (isEdit: boolean): SetEditModeAction => ({
+  type: SET_EDIT_MODE,
+  payload: isEdit,
+})
+export const handleSetEditMode = (
+  state: DashboardEditorState,
+  action: SetEditModeAction,
+): DashboardEditorState => ({
+  ...state,
+  isEditMode: action.payload,
+})
+
 export const SET_DASHBOARD_ACTION = 'SET_DASHBOARD'
 export interface SetDashboardAction {
   type: typeof SET_DASHBOARD_ACTION
@@ -53,4 +70,7 @@ export const handleSetComponent = (
   }
 }
 
-export type DashboardEditorAction = SetDashboardAction | SetComponentAction
+export type DashboardEditorAction =
+  | SetEditModeAction
+  | SetDashboardAction
+  | SetComponentAction

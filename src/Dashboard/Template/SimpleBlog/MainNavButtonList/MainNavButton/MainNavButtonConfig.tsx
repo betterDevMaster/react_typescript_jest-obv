@@ -19,7 +19,7 @@ import {useDispatch, useSelector} from 'react-redux'
 import {RootState} from 'store'
 import Box from '@material-ui/core/Box'
 
-export function MainNavButtonConfig(props: {id?: string}) {
+export default function MainNavButtonConfig(props: {id?: string}) {
   const buttons = useSelector(
     (state: RootState) => state.dashboardEditor.mainNavButtons,
   )

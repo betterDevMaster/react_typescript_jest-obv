@@ -20,3 +20,8 @@ export const render = (
     ...renderResult,
   }
 }
+
+// Need to use nextSibling because of material UI bug not adding label to input
+// https://github.com/mui-org/material-ui/issues/22950
+export const inputElementFor = (select: HTMLElement) =>
+  select.nextSibling as HTMLInputElement

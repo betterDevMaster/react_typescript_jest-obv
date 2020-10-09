@@ -28,7 +28,7 @@ export const fakeSimpleBlog = (overrides?: Partial<SimpleBlog>): SimpleBlog => {
     sidebarNavButtons: {entities: {}, ids: []},
     ticketRibbon: null,
     mainNavButtons: {entities: {}, ids: []},
-    emojiList: null,
+    emojiList: {emojis: []},
     blogPosts: {entities: {}, ids: []},
     agendas: [],
     points: null,

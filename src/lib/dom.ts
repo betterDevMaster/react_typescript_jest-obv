@@ -15,6 +15,12 @@ export const onChangeNumberHandler = (setter: NumberCustomSetter) => (
   setter(parseInt(e.currentTarget.value))
 }
 
+export const onChangeHandler = <T>(setter: (val: T) => void) => (
+  e: ChangeEvent<{value: unknown}>,
+) => {
+  setter(e.target.value as T)
+}
+
 type BooleanStateSetter = Dispatch<SetStateAction<boolean>>
 type BooleanCustomSetter = (val: boolean) => void
 export const onChangeCheckedHandler = (
