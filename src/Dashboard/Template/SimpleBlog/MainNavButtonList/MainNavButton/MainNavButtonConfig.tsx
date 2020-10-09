@@ -138,18 +138,24 @@ export default function MainNavButtonConfig(props: {id?: string}) {
         onPick={updateButton('hoverBorderColor')}
       />
       <TextField
-        value={button.borderWidth || 0}
-        label="Border"
+        value={button.borderWidth || ''}
+        label="Border Width"
         type="number"
+        fullWidth
+        inputProps={{
+          min: 0,
+        }}
         onChange={onChangeNumberHandler(updateButton('borderWidth'))}
       />
-      <Typography gutterBottom>Border Radius</Typography>
-      <Slider
-        min={0}
-        max={20}
-        onChange={handleChangeSlider(updateButton('borderRadius'))}
-        valueLabelDisplay="auto"
-        value={button.borderRadius || 0}
+      <TextField
+        value={button.borderRadius || ''}
+        label="Border Radius"
+        type="number"
+        fullWidth
+        inputProps={{
+          min: 0,
+        }}
+        onChange={onChangeNumberHandler(updateButton('borderRadius'))}
       />
 
       <Box mt={2} mb={3}>
