@@ -1,27 +1,71 @@
 import React from 'react'
 import styled from 'styled-components'
-import {Emoji} from 'Dashboard/components/EmojiList/emoji'
+import {Emoji, emojiWithName} from 'Dashboard/components/EmojiList/emoji'
+import EditComponent from 'Dashboard/edit/views/EditComponent'
+import AddEmojiListButton from 'Dashboard/components/EmojiList/AddEmojiListButton'
+import EditModeOnly from 'Dashboard/edit/views/EditModeOnly'
+import {RootState} from 'store'
+import {useSelector} from 'react-redux'
+
+export const EMOJI_LIST = 'Emoji List'
 
 export interface EmojiList {
-  emojis: Emoji[]
-  width?: number
+  emojis: Emoji['name'][]
+  // Manually set size of each emoji, if unset
+  // each emoji will take up all available
+  // space
+  emojiWidth?: number
 }
 
-export default function EmojiList(props: {list: EmojiList | null}) {
-  const {list} = props
-  if (!list) {
-    return null
+export default function EmojiList(props: {
+  list: EmojiList | null
+  isEditMode: boolean
+}) {
+  const list = useCurrent(
+    props.isEditMode,
+    (state: RootState) => state.dashboardEditor.emojiList,
+    props.list,
+  )
+
+  const isEmpty = list && list.emojis.length === 0
+  if (!list || isEmpty) {
+    // Add button to create emoji list
+    return (
+      <EditModeOnly isEditMode={props.isEditMode}>
+        <StyledAddEmojiListButton />
+      </EditModeOnly>
+    )
   }
 
   return (
-    <Box>
-      {list.emojis.map((emoji, index) => (
-        <Container key={index} width={list.width}>
-          <Image aria-label="event emoji" src={emoji}></Image>
-        </Container>
-      ))}
-    </Box>
+    <EditComponent type={EMOJI_LIST} isEditMode={props.isEditMode}>
+      <Box aria-label="emoji list">
+        {list.emojis.map((name, index) => (
+          <Container key={index} width={list.emojiWidth}>
+            <Image
+              aria-label="event emoji"
+              src={emojiWithName(name).image}
+              alt={name}
+            />
+          </Container>
+        ))}
+      </Box>
+    </EditComponent>
   )
+}
+
+function useCurrent<T>(
+  isEditMode: boolean,
+  currentSelector: (state: RootState) => T | undefined,
+  saved: T,
+) {
+  const current = useSelector(currentSelector)
+
+  if (!isEditMode || !current) {
+    return saved
+  }
+
+  return current
 }
 
 const Box = styled.div`
@@ -41,4 +85,8 @@ const Container = styled((props: any) => {
 const Image = styled.img`
   max-width: 100%;
   max-height: 100%;
+`
+
+const StyledAddEmojiListButton = styled(AddEmojiListButton)`
+  margin-bottom: ${(props) => props.theme.spacing[6]}!important;
 `

@@ -17,7 +17,7 @@ export default function Sidebar(props: SimpleBlog & Editable) {
       background={props.sidebar.background}
       textColor={props.sidebar.textColor}
     >
-      <EmojiList list={props.emojiList} />
+      <EmojiList list={props.emojiList} isEditMode={props.isEditMode} />
       <TicketRibbon ribbon={props.ticketRibbon} />
       <AgendaList agendas={props.agendas} component={Section} />
       <PointsSummary points={props.points} component={Section} />

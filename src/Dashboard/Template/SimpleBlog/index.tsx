@@ -37,7 +37,7 @@ export interface SimpleBlog {
   ticketRibbon: TicketRibbon | null
   logo: string
   welcomeText: string
-  emojiList: EmojiList | null
+  emojiList: EmojiList
   sidebar: {
     background: string
     textColor: string
