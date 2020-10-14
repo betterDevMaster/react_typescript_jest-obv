@@ -1,4 +1,7 @@
-import {useSelector} from 'react-redux'
+import {ComponentType} from 'Dashboard/components'
+import {setComponent} from 'Dashboard/edit/state/actions'
+import {useCallback} from 'react'
+import {useDispatch, useSelector} from 'react-redux'
 import {RootState} from 'store'
 
 export const useEditMode = () =>
@@ -16,4 +19,23 @@ export function useCurrent<T>(
   }
 
   return current
+}
+
+export function useEditComponent({
+  type,
+  id,
+}: {
+  type: ComponentType
+  id?: string
+}) {
+  const dispatch = useDispatch()
+
+  return useCallback(() => {
+    dispatch(
+      setComponent({
+        type,
+        id,
+      }),
+    )
+  }, [dispatch, type, id])
 }

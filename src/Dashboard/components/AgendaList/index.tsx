@@ -2,6 +2,9 @@ import React from 'react'
 import styled from 'styled-components'
 import Heading from 'Dashboard/Template/SimpleBlog/Sidebar/Heading'
 import moment from 'moment-timezone'
+import EditComponent from 'Dashboard/edit/views/EditComponent'
+
+export const AGENDA = 'Agenda'
 
 export interface Agenda {
   startDate: string
@@ -23,13 +26,17 @@ export default function AgendaList(props: {
 
   return (
     <Component>
-      <Heading>AGENDA:</Heading>
-      {props.agendas.map((agenda, index) => (
-        <Agenda key={index} aria-label="agenda">
-          <Times agenda={agenda} />
-          <Item>{agenda.text}</Item>
-        </Agenda>
-      ))}
+      <EditComponent type={AGENDA}>
+        <>
+          <Heading>AGENDA:</Heading>
+          {props.agendas.map((agenda, index) => (
+            <Agenda key={index} aria-label="agenda">
+              <Times agenda={agenda} />
+              <Item>{agenda.text}</Item>
+            </Agenda>
+          ))}
+        </>
+      </EditComponent>
     </Component>
   )
 }

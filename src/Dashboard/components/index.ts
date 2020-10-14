@@ -1,3 +1,4 @@
+import {AGENDA} from 'Dashboard/components/AgendaList'
 import {EMOJI_LIST} from 'Dashboard/components/EmojiList'
 import {TICKET_RIBBON_TYPE} from 'Dashboard/components/TicketRibbon'
 import {SIMPLE_BLOG} from 'Dashboard/Template/SimpleBlog'
@@ -19,3 +20,4 @@ export type ComponentType =
   | typeof SIDEBAR_CONTAINER
   | typeof EMOJI_LIST
   | typeof TICKET_RIBBON_TYPE
+  | typeof AGENDA

@@ -101,7 +101,7 @@ function Picker(props: {
   } = props.anchor.getBoundingClientRect()
 
   const topMargin = 8
-  const top = anchorTop + anchorHeight + topMargin
+  const top = anchorTop + anchorHeight + topMargin + window.scrollY
 
   return ReactDOM.createPortal(
     <Container left={anchorLeft} top={top}>
