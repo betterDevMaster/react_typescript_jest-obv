@@ -83,3 +83,33 @@ it('should add a new agenda', async () => {
 
   expect((await findAllByLabelText('agenda')).length).toBe(1)
 })
+
+it('should remove an agenda', async () => {
+  const agendas = Array.from(
+    {length: faker.random.number({min: 1, max: 4})},
+    fakeAgenda,
+  )
+
+  const dashboard = fakeSimpleBlog({agendas})
+
+  const {queryByText, findAllByLabelText, findByLabelText, findByText} = render(
+    <Dashboard isEditMode={true} dashboard={dashboard} user={fakeUser()} />,
+  )
+
+  const targetIndex = faker.random.number({min: 0, max: agendas.length - 1})
+
+  const targetText = agendas[targetIndex].text
+
+  expect(await findByText(targetText)).toBeInTheDocument()
+
+  clickEdit((await findAllByLabelText('agenda'))[targetIndex])
+
+  fireEvent.click(await findByLabelText('remove agenda'))
+
+  // one less agenda
+  expect((await findAllByLabelText('agenda event')).length).toBe(
+    agendas.length - 1,
+  )
+
+  expect(queryByText(targetText)).not.toBeInTheDocument()
+})

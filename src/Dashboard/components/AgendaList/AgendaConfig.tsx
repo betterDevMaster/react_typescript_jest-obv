@@ -1,11 +1,15 @@
 import React from 'react'
-
 import {DateTimePicker} from '@material-ui/pickers'
+import DangerButton from 'lib/ui/Button/DangerButton'
 import TextField from '@material-ui/core/TextField'
 import Grid from '@material-ui/core/Grid'
 import {useDispatch, useSelector} from 'react-redux'
 import {RootState} from 'store'
-import {Component, setDashboard} from 'Dashboard/edit/state/actions'
+import {
+  Component,
+  setComponent,
+  setDashboard,
+} from 'Dashboard/edit/state/actions'
 import {Agenda} from 'Dashboard/components/AgendaList'
 import {onChangeStringHandler} from 'lib/dom'
 import {MaterialUiPickersDate} from '@material-ui/pickers/typings/date'
@@ -45,6 +49,15 @@ export default function AgendaConfig(props: {component: Component}) {
 
           return a
         }),
+      }),
+    )
+  }
+
+  const remove = () => {
+    dispatch(setComponent(null))
+    dispatch(
+      setDashboard({
+        agendas: agendas.filter((_, index) => index !== props.component.id),
       }),
     )
   }
@@ -110,6 +123,14 @@ export default function AgendaConfig(props: {component: Component}) {
         fullWidth
         onChange={onChangeStringHandler(update('link'))}
       />
+      <DangerButton
+        fullWidth
+        variant="outlined"
+        aria-label="remove agenda"
+        onClick={remove}
+      >
+        REMOVE AGENDA
+      </DangerButton>
     </>
   )
 }
