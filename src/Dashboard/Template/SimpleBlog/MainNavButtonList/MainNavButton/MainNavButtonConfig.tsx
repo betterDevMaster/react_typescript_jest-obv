@@ -5,7 +5,11 @@ import Slider from '@material-ui/core/Slider'
 import TextField from '@material-ui/core/TextField'
 import Typography from '@material-ui/core/Typography'
 import {NavButtonWithSize} from 'Dashboard/components/NavButton'
-import {setComponent, setDashboard} from 'Dashboard/edit/state/actions'
+import {
+  Component,
+  setComponent,
+  setDashboard,
+} from 'Dashboard/edit/state/actions'
 import {
   handleChangeSlider,
   onChangeCheckedHandler,
@@ -19,7 +23,7 @@ import {useDispatch, useSelector} from 'react-redux'
 import {RootState} from 'store'
 import Box from '@material-ui/core/Box'
 
-export default function MainNavButtonConfig(props: {id?: string}) {
+export default function MainNavButtonConfig(props: {id?: Component['id']}) {
   const buttons = useSelector(
     (state: RootState) => state.dashboardEditor.mainNavButtons,
   )

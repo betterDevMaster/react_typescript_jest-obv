@@ -12,6 +12,8 @@ import {SIDEBAR_CONTAINER} from 'Dashboard/Template/SimpleBlog/Sidebar/SidebarCo
 import {EMOJI_LIST} from 'Dashboard/components/EmojiList'
 import {TICKET_RIBBON_TYPE} from 'Dashboard/components/TicketRibbon'
 import {Component} from 'Dashboard/edit/state/actions'
+import {AGENDA} from 'Dashboard/components/AgendaList'
+import AgendaConfig from 'Dashboard/components/AgendaList/AgendaConfig'
 
 export function ComponentConfig(props: {component: Component | null}) {
   if (!props.component) {
@@ -31,6 +33,8 @@ export function ComponentConfig(props: {component: Component | null}) {
       return <EmojiListConfig />
     case TICKET_RIBBON_TYPE:
       return <TicketRibbonConfig />
+    case AGENDA:
+      return <AgendaConfig component={props.component} />
     default:
       throw new Error(
         `Missing config component for type: ${props.component.type}`,

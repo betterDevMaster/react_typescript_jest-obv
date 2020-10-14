@@ -1,5 +1,5 @@
 import {ComponentType} from 'Dashboard/components'
-import {setComponent} from 'Dashboard/edit/state/actions'
+import {Component, setComponent} from 'Dashboard/edit/state/actions'
 import {useCallback} from 'react'
 import {useDispatch, useSelector} from 'react-redux'
 import {RootState} from 'store'
@@ -26,7 +26,7 @@ export function useEditComponent({
   id,
 }: {
   type: ComponentType
-  id?: string
+  id?: Component['id']
 }) {
   const dispatch = useDispatch()
 
