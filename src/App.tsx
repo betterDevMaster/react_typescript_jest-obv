@@ -1,5 +1,4 @@
 import React from 'react'
-import faker from 'faker'
 import Dashboard from 'Dashboard'
 import ThemeProvider from 'lib/ui/theme/ThemeProvider'
 import {fakeSimpleBlog} from 'Dashboard/Template/SimpleBlog/__utils__/factory'
@@ -9,7 +8,6 @@ import StoreProvider from 'store/StoreProvider'
 import {ColorPickerPopover} from 'lib/ui/ColorPicker'
 import {MuiPickersUtilsProvider} from '@material-ui/pickers'
 import MomentUtils from '@date-io/moment'
-import {fakeAgenda} from 'Dashboard/components/AgendaList/__utils__/factory'
 
 const dashboard = fakeSimpleBlog({
   primaryColor: '#ea202e',
@@ -18,10 +16,7 @@ const dashboard = fakeSimpleBlog({
     background: '#000000',
     textColor: '#Ffffff',
   },
-  agendas: Array.from(
-    {length: faker.random.number({min: 1, max: 4})},
-    fakeAgenda,
-  ),
+  agendas: [],
 })
 
 export default function App() {

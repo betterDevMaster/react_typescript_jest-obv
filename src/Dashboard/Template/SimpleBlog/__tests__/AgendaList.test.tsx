@@ -70,35 +70,16 @@ it('should edit an agenda', async () => {
   ).toBe(updatedText)
 })
 
-it('should edit an agenda', async () => {
-  const agendas = Array.from(
-    {length: faker.random.number({min: 1, max: 4})},
-    fakeAgenda,
-  )
+it('should add a new agenda', async () => {
+  const dashboard = fakeSimpleBlog({agendas: []})
 
-  const dashboard = fakeSimpleBlog({agendas})
-
-  const {findAllByLabelText, findByLabelText} = render(
+  const {findAllByLabelText, findByLabelText, queryByLabelText} = render(
     <Dashboard isEditMode={true} dashboard={dashboard} user={fakeUser()} />,
   )
 
-  const targetIndex = faker.random.number({min: 0, max: agendas.length - 1})
+  expect(queryByLabelText('agenda')).not.toBeInTheDocument()
 
-  // Renders same values as data
-  expect(
-    (await findAllByLabelText('agenda event'))[targetIndex].textContent,
-  ).toBe(agendas[targetIndex].text)
+  fireEvent.click(await findByLabelText('add agenda event'))
 
-  clickEdit((await findAllByLabelText('agenda'))[targetIndex])
-
-  const updatedText = faker.random.word()
-
-  user.type(await findByLabelText('agenda text'), updatedText)
-
-  fireEvent.click(await findByLabelText('close config dialog'))
-
-  // Has updated text
-  expect(
-    (await findAllByLabelText('agenda event'))[targetIndex].textContent,
-  ).toBe(updatedText)
+  expect((await findAllByLabelText('agenda')).length).toBe(1)
 })

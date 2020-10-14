@@ -4,6 +4,8 @@ import Heading from 'Dashboard/Template/SimpleBlog/Sidebar/Heading'
 import moment from 'moment-timezone'
 import EditComponent from 'Dashboard/edit/views/EditComponent'
 import {useCurrent} from 'Dashboard/edit/state/edit-mode'
+import EditModeOnly from 'Dashboard/edit/views/EditModeOnly'
+import AddAgendaEventButton from 'Dashboard/components/AgendaList/AddAgendaEventButton'
 
 export const AGENDA = 'Agenda'
 
@@ -25,7 +27,11 @@ export default function AgendaList(props: {
 
   const hasAgenda = agendas.length > 0
   if (!hasAgenda) {
-    return null
+    return (
+      <EditModeOnly>
+        <StyledAddAgendaEventButton />
+      </EditModeOnly>
+    )
   }
 
   const Component = props.component || 'div'
@@ -42,6 +48,7 @@ export default function AgendaList(props: {
             </Agenda>
           </EditComponent>
         ))}
+        <StyledAddAgendaEventButton />
       </>
     </Component>
   )
@@ -116,4 +123,8 @@ const TimeText = styled.span`
 
 const EventText = styled.span`
   font-size: 18px;
+`
+
+const StyledAddAgendaEventButton = styled(AddAgendaEventButton)`
+  margin-bottom: ${(props) => props.theme.spacing[6]}!important;
 `
