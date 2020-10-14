@@ -34,7 +34,7 @@ export default function SidebarContainer(props: {
           fullWidth
           size="large"
           variant="contained"
-          color="primary"
+          color="secondary"
           aria-label="edit sidebar"
         >
           Edit Sidebar

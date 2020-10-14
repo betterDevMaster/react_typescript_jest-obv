@@ -84,7 +84,7 @@ it('should pick an emoji', async () => {
 
 it('should remove an existing emoji', async () => {
   const emojis = Array.from(
-    {length: faker.random.number({min: 1, max: 5})},
+    {length: faker.random.number({min: 2, max: 5})},
     () => faker.random.arrayElement(ALL_EMOJIS).name,
   )
   const {findByLabelText, findAllByLabelText} = render(
