@@ -18,7 +18,9 @@ it('should render points', async () => {
 
   expect(queryByText(/you've earned/i)).not.toBeInTheDocument()
 
-  const points = fakePoints()
+  const points = fakePoints({
+    unit: 'foo',
+  })
   const dashboardWithPoints = fakeSimpleBlog({
     points,
   })

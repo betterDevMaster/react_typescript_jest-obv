@@ -1,8 +1,11 @@
 import React from 'react'
 import styled from 'styled-components'
 
-export default function Heading(props: {children: string}) {
-  return <Text>{props.children}</Text>
+export default function Heading(props: {
+  children: string
+  'aria-label'?: string
+}) {
+  return <Text aria-label={props['aria-label']}>{props.children}</Text>
 }
 
 const Text = styled.h2`

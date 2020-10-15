@@ -16,6 +16,9 @@ import {AGENDA} from 'Dashboard/components/AgendaList'
 import AgendaConfig from 'Dashboard/components/AgendaList/AgendaConfig'
 import {POINTS_SUMMARY} from 'Dashboard/components/PointsSummary'
 import PointsSummaryConfig from 'Dashboard/components/PointsSummary/PointsSummaryConfig'
+import {RESOURCE_ITEM, RESOURCE_LIST} from 'Dashboard/components/ResourceList'
+import ResourceListConfig from 'Dashboard/components/ResourceList/ResourceListConfig'
+import ResourceItemConfig from 'Dashboard/components/ResourceList/ResourceItemConfig'
 
 export function ComponentConfig(props: {component: Component | null}) {
   if (!props.component) {
@@ -39,6 +42,10 @@ export function ComponentConfig(props: {component: Component | null}) {
       return <AgendaConfig id={props.component.id} />
     case POINTS_SUMMARY:
       return <PointsSummaryConfig />
+    case RESOURCE_LIST:
+      return <ResourceListConfig />
+    case RESOURCE_ITEM:
+      return <ResourceItemConfig id={props.component.id} />
     default:
       throw new Error(
         `Missing config component for type: ${props.component.type}`,
