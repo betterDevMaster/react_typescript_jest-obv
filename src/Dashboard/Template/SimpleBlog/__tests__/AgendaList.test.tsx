@@ -86,7 +86,7 @@ it('should add a new agenda', async () => {
 
 it('should remove an agenda', async () => {
   const agendas = Array.from(
-    {length: faker.random.number({min: 1, max: 4})},
+    {length: faker.random.number({min: 2, max: 4})},
     fakeAgenda,
   )
 
