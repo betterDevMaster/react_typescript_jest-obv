@@ -39,7 +39,7 @@ it('should render agendas', async () => {
 
 it('should edit an agenda', async () => {
   const agendas = Array.from(
-    {length: faker.random.number({min: 1, max: 4})},
+    {length: faker.random.number({min: 2, max: 4})},
     fakeAgenda,
   )
 
