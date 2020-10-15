@@ -1,5 +1,6 @@
-import {useCurrent} from 'Dashboard/edit/state/edit-mode'
-import EditComponent from 'Dashboard/edit/views/EditComponent'
+import Button from '@material-ui/core/Button'
+import {useCurrent, useEditComponent} from 'Dashboard/edit/state/edit-mode'
+import EditModeOnly from 'Dashboard/edit/views/EditModeOnly'
 import {SimpleBlog} from 'Dashboard/Template/SimpleBlog'
 import React from 'react'
 import styled from 'styled-components'
@@ -14,6 +15,8 @@ export default function SidebarContainer(props: {
   textColor: TextColor
   children: React.ReactNode
 }) {
+  const edit = useEditComponent({type: SIDEBAR_CONTAINER})
+
   const background = useCurrent(
     (state) => state.dashboardEditor.sidebar?.background,
     props.background,
@@ -24,11 +27,21 @@ export default function SidebarContainer(props: {
   )
 
   return (
-    <EditComponent type={SIDEBAR_CONTAINER}>
-      <Box backgroundColor={background} textColor={textColor}>
-        {props.children}
-      </Box>
-    </EditComponent>
+    <Box backgroundColor={background} textColor={textColor}>
+      <EditModeOnly>
+        <EditSidebarButton
+          onClick={edit}
+          fullWidth
+          size="large"
+          variant="contained"
+          color="secondary"
+          aria-label="edit sidebar"
+        >
+          Edit Sidebar
+        </EditSidebarButton>
+      </EditModeOnly>
+      {props.children}
+    </Box>
   )
 }
 
@@ -44,4 +57,8 @@ const Box = styled.div<{backgroundColor: string; textColor: string}>`
   a {
     color: ${(props) => props.textColor};
   }
+`
+
+const EditSidebarButton = styled(Button)`
+  margin-bottom: ${(props) => props.theme.spacing[6]}!important;
 `

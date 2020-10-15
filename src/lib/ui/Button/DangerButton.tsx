@@ -4,7 +4,9 @@ import makeStyles from '@material-ui/core/styles/makeStyles'
 import React from 'react'
 import red from '@material-ui/core/colors/red'
 
-export default function DangerButton(props: ButtonProps) {
+export default function DangerButton(
+  props: ButtonProps & {className?: string},
+) {
   const isContained = props.variant === 'contained'
 
   const classes = makeStyles({
@@ -18,5 +20,9 @@ export default function DangerButton(props: ButtonProps) {
     },
   })()
 
-  return <Button {...props} className={classes.root}></Button>
+  const classNames = props.className
+    ? `${classes.root} ${props.className}`
+    : classes.root
+
+  return <Button {...props} className={classNames}></Button>
 }

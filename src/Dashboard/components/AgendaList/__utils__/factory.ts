@@ -3,11 +3,9 @@ import faker from 'faker'
 
 export const fakeAgenda = (): Agenda => ({
   startDate: faker.date.past().toISOString(),
-  endDate: faker.random.boolean()
-    ? faker.date.future().toISOString()
-    : undefined,
+  endDate: faker.random.boolean() ? faker.date.future().toISOString() : null,
   text: faker.random.words(3),
-  link: faker.random.boolean() ? faker.internet.url() : undefined,
+  link: faker.random.boolean() ? faker.internet.url() : null,
 })
 
 export function withAgendas<T>(attributes: T): T {

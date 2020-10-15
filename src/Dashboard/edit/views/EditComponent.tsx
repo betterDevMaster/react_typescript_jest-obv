@@ -1,9 +1,8 @@
 import {ComponentType} from 'Dashboard/components'
-import {setComponent} from 'Dashboard/edit/state/actions'
-import {useEditMode} from 'Dashboard/edit/state/edit-mode'
+import {Component} from 'Dashboard/edit/state/actions'
+import {useEditMode, useEditComponent} from 'Dashboard/edit/state/edit-mode'
 import EditIconButton from 'lib/ui/IconButton/EditIconButton'
-import React, {useCallback} from 'react'
-import {useDispatch} from 'react-redux'
+import React from 'react'
 import styled from 'styled-components'
 
 export const EDIT_COMPONENT_CLASS = 'edit-component'
@@ -12,20 +11,13 @@ export const EDIT_COMPONENT_BUTTON_CLASS = 'edit-component-button'
 export default function EditComponent(props: {
   children: React.ReactElement
   type: ComponentType
-  id?: string
+  id?: Component['id']
 }) {
-  const dispatch = useDispatch()
   const isEditMode = useEditMode()
-  const {type, id} = props
-
-  const edit = useCallback(() => {
-    dispatch(
-      setComponent({
-        type,
-        id,
-      }),
-    )
-  }, [dispatch, type, id])
+  const editComponent = useEditComponent({
+    type: props.type,
+    id: props.id,
+  })
 
   if (!isEditMode) {
     return props.children
@@ -34,7 +26,7 @@ export default function EditComponent(props: {
   return (
     <Box className={EDIT_COMPONENT_CLASS}>
       <StyledEditIconButton
-        onClick={edit}
+        onClick={editComponent}
         className={EDIT_COMPONENT_BUTTON_CLASS}
       />
       {props.children}

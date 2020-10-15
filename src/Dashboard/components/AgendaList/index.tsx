@@ -2,21 +2,36 @@ import React from 'react'
 import styled from 'styled-components'
 import Heading from 'Dashboard/Template/SimpleBlog/Sidebar/Heading'
 import moment from 'moment-timezone'
+import EditComponent from 'Dashboard/edit/views/EditComponent'
+import {useCurrent} from 'Dashboard/edit/state/edit-mode'
+import EditModeOnly from 'Dashboard/edit/views/EditModeOnly'
+import AddAgendaEventButton from 'Dashboard/components/AgendaList/AddAgendaEventButton'
+
+export const AGENDA = 'Agenda'
 
 export interface Agenda {
   startDate: string
-  endDate?: string
+  endDate: string | null
   text: string
-  link?: string
+  link: string | null
 }
 
 export default function AgendaList(props: {
   agendas: Agenda[]
   component?: React.FunctionComponent<any>
 }) {
-  const hasAgenda = props.agendas.length > 0
+  const agendas = useCurrent(
+    (state) => state.dashboardEditor.agendas,
+    props.agendas,
+  )
+
+  const hasAgenda = agendas.length > 0
   if (!hasAgenda) {
-    return null
+    return (
+      <EditModeOnly>
+        <StyledAddAgendaEventButton />
+      </EditModeOnly>
+    )
   }
 
   const Component = props.component || 'div'
@@ -24,12 +39,15 @@ export default function AgendaList(props: {
   return (
     <Component>
       <Heading>AGENDA:</Heading>
-      {props.agendas.map((agenda, index) => (
-        <Agenda key={index} aria-label="agenda">
-          <Times agenda={agenda} />
-          <Item>{agenda.text}</Item>
-        </Agenda>
+      {agendas.map((agenda, index) => (
+        <EditComponent type={AGENDA} id={index} key={index}>
+          <Agenda aria-label="agenda">
+            <Times agenda={agenda} />
+            <Event agenda={agenda} />
+          </Agenda>
+        </EditComponent>
       ))}
+      <StyledAddAgendaEventButton />
     </Component>
   )
 }
@@ -47,7 +65,7 @@ function Times(props: {agenda: Agenda}) {
 
   if (!props.agenda.endDate) {
     return (
-      <TimeText>
+      <TimeText aria-label="agenda event times">
         <strong>{`${getMonth(start)} ${getDay(start)}:`}</strong>{' '}
         {`${getTime(start)} ${tz}`}
       </TimeText>
@@ -59,7 +77,7 @@ function Times(props: {agenda: Agenda}) {
   const sameDay = getDay(end) === getDay(start)
   if (sameMonth && sameDay) {
     return (
-      <TimeText>
+      <TimeText aria-label="agenda event times">
         <strong>{`${getMonth(start)} ${getDay(start)}:`}</strong>{' '}
         {getTime(start)}
         {`- ${getTime(end)} ${tz}`}
@@ -68,7 +86,7 @@ function Times(props: {agenda: Agenda}) {
   }
 
   return (
-    <TimeText>
+    <TimeText aria-label="agenda event times">
       <strong>{`${getMonth(start)} ${getDay(start)}:`}</strong> {getTime(start)}
       {` - `}
       <strong>
@@ -77,6 +95,18 @@ function Times(props: {agenda: Agenda}) {
       {getTime(end)} {tz}
     </TimeText>
   )
+}
+
+function Event(props: {agenda: Agenda}) {
+  if (props.agenda.link) {
+    return (
+      <a href={props.agenda.link} target="_blank" rel="noopener noreferrer">
+        <EventText aria-label="agenda event">{props.agenda.text}</EventText>
+      </a>
+    )
+  }
+
+  return <EventText aria-label="agenda event">{props.agenda.text}</EventText>
 }
 
 const Agenda = styled.div`
@@ -89,6 +119,10 @@ const TimeText = styled.span`
   font-style: italic;
 `
 
-const Item = styled.span`
+const EventText = styled.span`
   font-size: 18px;
+`
+
+const StyledAddAgendaEventButton = styled(AddAgendaEventButton)`
+  margin-bottom: ${(props) => props.theme.spacing[6]}!important;
 `

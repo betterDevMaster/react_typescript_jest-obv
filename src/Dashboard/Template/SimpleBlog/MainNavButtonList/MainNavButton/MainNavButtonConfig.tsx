@@ -5,7 +5,11 @@ import Slider from '@material-ui/core/Slider'
 import TextField from '@material-ui/core/TextField'
 import Typography from '@material-ui/core/Typography'
 import {NavButtonWithSize} from 'Dashboard/components/NavButton'
-import {setComponent, setDashboard} from 'Dashboard/edit/state/actions'
+import {
+  Component,
+  setComponent,
+  setDashboard,
+} from 'Dashboard/edit/state/actions'
 import {
   handleChangeSlider,
   onChangeCheckedHandler,
@@ -19,7 +23,7 @@ import {useDispatch, useSelector} from 'react-redux'
 import {RootState} from 'store'
 import Box from '@material-ui/core/Box'
 
-export default function MainNavButtonConfig(props: {id?: string}) {
+export default function MainNavButtonConfig(props: {id?: Component['id']}) {
   const buttons = useSelector(
     (state: RootState) => state.dashboardEditor.mainNavButtons,
   )
@@ -138,18 +142,24 @@ export default function MainNavButtonConfig(props: {id?: string}) {
         onPick={updateButton('hoverBorderColor')}
       />
       <TextField
-        value={button.borderWidth || 0}
-        label="Border"
+        value={button.borderWidth || ''}
+        label="Border Width"
         type="number"
+        fullWidth
+        inputProps={{
+          min: 0,
+        }}
         onChange={onChangeNumberHandler(updateButton('borderWidth'))}
       />
-      <Typography gutterBottom>Border Radius</Typography>
-      <Slider
-        min={0}
-        max={20}
-        onChange={handleChangeSlider(updateButton('borderRadius'))}
-        valueLabelDisplay="auto"
-        value={button.borderRadius || 0}
+      <TextField
+        value={button.borderRadius || ''}
+        label="Border Radius"
+        type="number"
+        fullWidth
+        inputProps={{
+          min: 0,
+        }}
+        onChange={onChangeNumberHandler(updateButton('borderRadius'))}
       />
 
       <Box mt={2} mb={3}>

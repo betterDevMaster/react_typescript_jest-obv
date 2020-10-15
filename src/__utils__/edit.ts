@@ -16,7 +16,7 @@ export function clickEdit(el: HTMLElement) {
     ?.querySelector(`.${EDIT_COMPONENT_BUTTON_CLASS}`) //  edit button
 
   if (!editButton) {
-    throw new Error('Could not find edit button')
+    throw new Error('Could not find edit button; is edit mode on?')
   }
 
   fireEvent.click(editButton)

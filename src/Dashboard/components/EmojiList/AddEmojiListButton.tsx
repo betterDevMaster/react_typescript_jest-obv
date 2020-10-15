@@ -19,8 +19,8 @@ export default function AddEmojiListButton(props: {className?: string}) {
     <Button
       fullWidth
       size="large"
-      variant="outlined"
-      color="primary"
+      variant="contained"
+      color="secondary"
       aria-label="add emoji list"
       onClick={addEmojiList}
       className={props.className}
