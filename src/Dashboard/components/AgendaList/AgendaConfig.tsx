@@ -1,4 +1,5 @@
 import React from 'react'
+import styled from 'styled-components'
 import {DateTimePicker} from '@material-ui/pickers'
 import DangerButton from 'lib/ui/Button/DangerButton'
 import TextField from '@material-ui/core/TextField'
@@ -120,14 +121,19 @@ export default function AgendaConfig(props: {id: Component['id']}) {
         fullWidth
         onChange={onChangeStringHandler(update('link'))}
       />
-      <DangerButton
+      <RemoveAgendaButton
         fullWidth
         variant="outlined"
         aria-label="remove agenda"
         onClick={remove}
       >
         REMOVE AGENDA
-      </DangerButton>
+      </RemoveAgendaButton>
     </>
   )
 }
+
+const RemoveAgendaButton = styled(DangerButton)`
+  margin-top: ${(props) => props.theme.spacing[6]}!important;
+  margin-bottom: ${(props) => props.theme.spacing[5]}!important;
+`
