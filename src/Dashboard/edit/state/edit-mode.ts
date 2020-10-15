@@ -14,7 +14,10 @@ export function useCurrent<T>(
   const current = useSelector(currentSelector)
   const isEditMode = useEditMode()
 
-  if (!isEditMode || !current) {
+  // If dashboard not loaded, or does not contain component,
+  // value will be undefined. This is different from
+  // 'null'/false/0 case, which are valid values.
+  if (!isEditMode || current === undefined) {
     return saved
   }
 

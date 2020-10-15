@@ -14,7 +14,7 @@ import {Agenda} from 'Dashboard/components/AgendaList'
 import {onChangeStringHandler} from 'lib/dom'
 import {MaterialUiPickersDate} from '@material-ui/pickers/typings/date'
 
-export default function AgendaConfig(props: {component: Component}) {
+export default function AgendaConfig(props: {id: Component['id']}) {
   const agendas = useSelector(
     (state: RootState) => state.dashboardEditor.agendas,
   )
@@ -24,14 +24,11 @@ export default function AgendaConfig(props: {component: Component}) {
     throw new Error('Missing agendas; was it set properly via edit?')
   }
 
-  if (
-    props.component.id === undefined ||
-    typeof props.component.id !== 'number'
-  ) {
+  if (props.id === undefined || typeof props.id !== 'number') {
     throw new Error('Missing component id')
   }
 
-  const agenda = agendas[props.component.id]
+  const agenda = agendas[props.id]
 
   const update = <T extends keyof Agenda>(key: T) => (value: Agenda[T]) => {
     const updated = {
@@ -42,7 +39,7 @@ export default function AgendaConfig(props: {component: Component}) {
     dispatch(
       setDashboard({
         agendas: agendas.map((a, index) => {
-          const isTarget = index === props.component.id
+          const isTarget = index === props.id
           if (isTarget) {
             return updated
           }
@@ -57,7 +54,7 @@ export default function AgendaConfig(props: {component: Component}) {
     dispatch(setComponent(null))
     dispatch(
       setDashboard({
-        agendas: agendas.filter((_, index) => index !== props.component.id),
+        agendas: agendas.filter((_, index) => index !== props.id),
       }),
     )
   }

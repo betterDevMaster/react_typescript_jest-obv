@@ -38,18 +38,16 @@ export default function AgendaList(props: {
 
   return (
     <Component>
-      <>
-        <Heading>AGENDA:</Heading>
-        {agendas.map((agenda, index) => (
-          <EditComponent type={AGENDA} id={index} key={index}>
-            <Agenda aria-label="agenda">
-              <Times agenda={agenda} />
-              <Event agenda={agenda} />
-            </Agenda>
-          </EditComponent>
-        ))}
-        <StyledAddAgendaEventButton />
-      </>
+      <Heading>AGENDA:</Heading>
+      {agendas.map((agenda, index) => (
+        <EditComponent type={AGENDA} id={index} key={index}>
+          <Agenda aria-label="agenda">
+            <Times agenda={agenda} />
+            <Event agenda={agenda} />
+          </Agenda>
+        </EditComponent>
+      ))}
+      <StyledAddAgendaEventButton />
     </Component>
   )
 }

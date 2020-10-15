@@ -6,7 +6,6 @@ import {fakeUser} from 'user/__utils__/factory'
 import Dashboard from 'Dashboard'
 import {render} from '__utils__/render'
 import {fakeAgenda} from 'Dashboard/components/AgendaList/__utils__/factory'
-import {fakePoints} from 'Dashboard/components/PointsSummary/__utils__/factory'
 import {fakeResource} from 'Dashboard/components/ResourceList/__utils__/factory'
 import {fakeNavButton} from 'Dashboard/components/NavButton/__utils__/factory'
 import {fakeBlogPost} from 'Dashboard/components/BlogPost/__utils__/factory'
@@ -73,36 +72,6 @@ it('should render agendas', async () => {
   )
 
   expect((await findAllByLabelText('agenda')).length).toBe(agendas.length)
-})
-
-it('should render points', async () => {
-  const dashboard = fakeSimpleBlog({points: null})
-
-  const {queryByText, rerender, findByText} = render(
-    <Dashboard isEditMode={false} dashboard={dashboard} user={fakeUser()} />,
-  )
-
-  expect(queryByText(/you've earned/i)).not.toBeInTheDocument()
-
-  const points = fakePoints()
-  const dashboardWithPoints = fakeSimpleBlog({
-    points,
-  })
-
-  rerender(
-    <Dashboard
-      isEditMode={false}
-      dashboard={dashboardWithPoints}
-      user={fakeUser()}
-    />,
-  )
-
-  const pointsText = new RegExp(
-    `you've earned ${points.numPoints} ${points.unit}!`,
-    'i',
-  )
-
-  expect(await findByText(pointsText)).toBeInTheDocument()
 })
 
 it('should render resources', async () => {

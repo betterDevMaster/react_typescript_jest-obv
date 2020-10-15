@@ -14,6 +14,8 @@ import {TICKET_RIBBON_TYPE} from 'Dashboard/components/TicketRibbon'
 import {Component} from 'Dashboard/edit/state/actions'
 import {AGENDA} from 'Dashboard/components/AgendaList'
 import AgendaConfig from 'Dashboard/components/AgendaList/AgendaConfig'
+import {POINTS_SUMMARY} from 'Dashboard/components/PointsSummary'
+import PointsSummaryConfig from 'Dashboard/components/PointsSummary/PointsSummaryConfig'
 
 export function ComponentConfig(props: {component: Component | null}) {
   if (!props.component) {
@@ -34,7 +36,9 @@ export function ComponentConfig(props: {component: Component | null}) {
     case TICKET_RIBBON_TYPE:
       return <TicketRibbonConfig />
     case AGENDA:
-      return <AgendaConfig component={props.component} />
+      return <AgendaConfig id={props.component.id} />
+    case POINTS_SUMMARY:
+      return <PointsSummaryConfig />
     default:
       throw new Error(
         `Missing config component for type: ${props.component.type}`,
