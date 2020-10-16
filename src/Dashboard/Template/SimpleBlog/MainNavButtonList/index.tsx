@@ -1,15 +1,15 @@
-import {useEditMode} from 'Dashboard/edit/state/edit-mode'
+import {useCurrent} from 'Dashboard/edit/state/edit-mode'
 import {SimpleBlog} from 'Dashboard/Template/SimpleBlog'
 import MainNavButton from 'Dashboard/Template/SimpleBlog/MainNavButtonList/MainNavButton'
 import React from 'react'
-import {useSelector} from 'react-redux'
-import {RootState} from 'store'
 
 export default function MainNavButtonList(props: {
   buttons: SimpleBlog['mainNavButtons']
 }) {
-  const isEditMode = useEditMode()
-  const buttons = useCurrentButtons(isEditMode, props.buttons)
+  const buttons = useCurrent(
+    (state) => state.dashboardEditor.mainNavButtons,
+    props.buttons,
+  )
 
   return (
     <>
@@ -18,19 +18,4 @@ export default function MainNavButtonList(props: {
       ))}
     </>
   )
-}
-
-function useCurrentButtons(
-  isEditMode: boolean,
-  saved: SimpleBlog['mainNavButtons'],
-) {
-  const current = useSelector(
-    (state: RootState) => state.dashboardEditor.mainNavButtons,
-  )
-
-  if (!isEditMode || !current) {
-    return saved
-  }
-
-  return current
 }

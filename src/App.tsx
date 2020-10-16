@@ -16,7 +16,6 @@ const dashboard = fakeSimpleBlog({
     background: '#000000',
     textColor: '#Ffffff',
   },
-  agendas: [],
 })
 
 export default function App() {

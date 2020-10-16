@@ -15,7 +15,7 @@ export type DashboardProps = {
 }
 
 export default function Dashboard(props: DashboardProps) {
-  useEditDashboard(props.isEditMode, props.dashboard)
+  useLoadDashboard(props.isEditMode, props.dashboard)
 
   if (props.isEditMode) {
     return (
@@ -29,7 +29,7 @@ export default function Dashboard(props: DashboardProps) {
   return <Template {...props} />
 }
 
-function useEditDashboard(isEditMode: boolean, dashboard: Dashboard) {
+function useLoadDashboard(isEditMode: boolean, dashboard: Dashboard) {
   const hasSetRef = useRef(false)
   const dispatch = useDispatch()
 

@@ -1,12 +1,12 @@
-import {setDashboard} from 'Dashboard/edit/state/actions'
+import {useUpdateDashboard} from 'Dashboard/edit/state/edit-mode'
 import {SimpleBlog} from 'Dashboard/Template/SimpleBlog'
 import ColorPicker from 'lib/ui/ColorPicker'
 import React from 'react'
-import {useDispatch, useSelector} from 'react-redux'
+import {useSelector} from 'react-redux'
 import {RootState} from 'store'
 
 export default function SidebarContainerConfig() {
-  const dispatch = useDispatch()
+  const updateDashboard = useUpdateDashboard()
   const sidebar = useSelector(
     (state: RootState) => state.dashboardEditor.sidebar,
   )
@@ -20,14 +20,12 @@ export default function SidebarContainerConfig() {
   const update = <T extends keyof SimpleBlog['sidebar']>(key: T) => (
     value: SimpleBlog['sidebar'][T],
   ) =>
-    dispatch(
-      setDashboard({
-        sidebar: {
-          ...sidebar,
-          [key]: value,
-        },
-      }),
-    )
+    updateDashboard({
+      sidebar: {
+        ...sidebar,
+        [key]: value,
+      },
+    })
 
   return (
     <>

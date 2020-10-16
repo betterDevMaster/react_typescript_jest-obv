@@ -14,10 +14,8 @@ export default function EditComponent(props: {
   id?: Component['id']
 }) {
   const isEditMode = useEditMode()
-  const editComponent = useEditComponent({
-    type: props.type,
-    id: props.id,
-  })
+
+  const editComponent = useEditComponent({type: props.type, id: props.id})
 
   if (!isEditMode) {
     return props.children

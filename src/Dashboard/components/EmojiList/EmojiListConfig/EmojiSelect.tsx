@@ -4,7 +4,7 @@ import InputLabel from '@material-ui/core/InputLabel'
 import MenuItem from '@material-ui/core/MenuItem'
 import Select from '@material-ui/core/Select'
 import {Emoji, EMOJI} from 'Dashboard/components/EmojiList/emoji'
-import {onChangeHandler} from 'lib/dom'
+import {onUnknownChangeHandler} from 'lib/dom'
 import React from 'react'
 
 export default function EmojiSelect(props: {
@@ -17,7 +17,7 @@ export default function EmojiSelect(props: {
       <Select
         value={props.value}
         fullWidth
-        onChange={onChangeHandler(props.onPick)}
+        onChange={onUnknownChangeHandler(props.onPick)}
         inputProps={{
           'aria-label': 'pick emoji',
         }}

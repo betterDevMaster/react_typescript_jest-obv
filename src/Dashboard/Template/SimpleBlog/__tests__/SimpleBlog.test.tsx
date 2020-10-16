@@ -5,7 +5,6 @@ import {fakeSimpleBlog} from 'Dashboard/Template/SimpleBlog/__utils__/factory'
 import {fakeUser} from 'user/__utils__/factory'
 import Dashboard from 'Dashboard'
 import {render} from '__utils__/render'
-import {fakeAgenda} from 'Dashboard/components/AgendaList/__utils__/factory'
 import {fakeResource} from 'Dashboard/components/ResourceList/__utils__/factory'
 import {fakeNavButton} from 'Dashboard/components/NavButton/__utils__/factory'
 import {fakeBlogPost} from 'Dashboard/components/BlogPost/__utils__/factory'
@@ -44,34 +43,6 @@ it('should show the user email', async () => {
   const menuButton = await findByTestId('menu-button')
   fireEvent.click(menuButton)
   expect(await findByText(new RegExp(user.email))).toBeInTheDocument()
-})
-
-it('should render agendas', async () => {
-  const dashboard = fakeSimpleBlog({agendas: []})
-
-  const {queryByText, findAllByLabelText, rerender} = render(
-    <Dashboard isEditMode={false} dashboard={dashboard} user={fakeUser()} />,
-  )
-
-  expect(queryByText(/agenda/i)).not.toBeInTheDocument()
-
-  const agendas = Array.from(
-    {length: faker.random.number({min: 1, max: 4})},
-    fakeAgenda,
-  )
-
-  const dashboardWithAgendas = fakeSimpleBlog({
-    agendas,
-  })
-  rerender(
-    <Dashboard
-      isEditMode={false}
-      dashboard={dashboardWithAgendas}
-      user={fakeUser()}
-    />,
-  )
-
-  expect((await findAllByLabelText('agenda')).length).toBe(agendas.length)
 })
 
 it('should render resources', async () => {

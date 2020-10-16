@@ -1,6 +1,7 @@
 import {AGENDA} from 'Dashboard/components/AgendaList'
 import {EMOJI_LIST} from 'Dashboard/components/EmojiList'
 import {POINTS_SUMMARY} from 'Dashboard/components/PointsSummary'
+import {RESOURCE_ITEM, RESOURCE_LIST} from 'Dashboard/components/ResourceList'
 import {TICKET_RIBBON_TYPE} from 'Dashboard/components/TicketRibbon'
 import {SIMPLE_BLOG} from 'Dashboard/Template/SimpleBlog'
 import {MAIN_NAV_BUTTON} from 'Dashboard/Template/SimpleBlog/MainNavButtonList/MainNavButton'
@@ -23,3 +24,5 @@ export type ComponentType =
   | typeof TICKET_RIBBON_TYPE
   | typeof AGENDA
   | typeof POINTS_SUMMARY
+  | typeof RESOURCE_LIST
+  | typeof RESOURCE_ITEM
