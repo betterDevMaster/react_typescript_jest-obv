@@ -4,7 +4,7 @@ import {
   useCloseConfig,
   useUpdateDashboard,
 } from 'Dashboard/edit/state/edit-mode'
-import {onChangeHandler} from 'lib/dom'
+import {onChangeStringHandler} from 'lib/dom'
 import DangerButton from 'lib/ui/Button/DangerButton'
 import React from 'react'
 import {useSelector} from 'react-redux'
@@ -40,7 +40,7 @@ export default function PointsSummaryConfig() {
         value={points.headerImage}
         label="Image"
         fullWidth
-        onChange={onChangeHandler(update('headerImage'))}
+        onChange={onChangeStringHandler(update('headerImage'))}
         inputProps={{
           'aria-label': 'edit header image',
         }}
@@ -51,7 +51,7 @@ export default function PointsSummaryConfig() {
         multiline
         rows={4}
         fullWidth
-        onChange={onChangeHandler(update('description'))}
+        onChange={onChangeStringHandler(update('description'))}
         inputProps={{
           'aria-label': 'points description',
         }}
@@ -60,7 +60,7 @@ export default function PointsSummaryConfig() {
         value={points.unit}
         label="Unit"
         fullWidth
-        onChange={onChangeHandler(update('unit'))}
+        onChange={onChangeStringHandler(update('unit'))}
         inputProps={{
           'aria-label': 'points unit',
         }}
@@ -69,7 +69,7 @@ export default function PointsSummaryConfig() {
         value={points.leaderboardUrl}
         label="Leaderboard URL"
         fullWidth
-        onChange={onChangeHandler(update('leaderboardUrl'))}
+        onChange={onChangeStringHandler(update('leaderboardUrl'))}
         inputProps={{
           'aria-label': 'points leaderboard url',
         }}

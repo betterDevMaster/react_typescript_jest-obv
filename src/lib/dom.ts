@@ -1,9 +1,32 @@
-import {ChangeEvent} from 'react'
+import {ChangeEvent, Dispatch, SetStateAction} from 'react'
+
+type StringStateSetter = Dispatch<SetStateAction<string>>
+type StringCustomSetter = (val: string) => void
+export const onChangeStringHandler = (
+  setter: StringStateSetter | StringCustomSetter,
+) => (e: ChangeEvent<HTMLInputElement>): void => {
+  setter(e.currentTarget.value)
+}
+
+type NumberCustomSetter = (val: number) => void
+export const onChangeNumberHandler = (setter: NumberCustomSetter) => (
+  e: ChangeEvent<HTMLInputElement>,
+): void => {
+  setter(parseInt(e.currentTarget.value))
+}
 
 export const onChangeHandler = <T>(setter: (val: T) => void) => (
   e: ChangeEvent<{value: unknown}>,
 ) => {
   setter(e.target.value as T)
+}
+
+type BooleanStateSetter = Dispatch<SetStateAction<boolean>>
+type BooleanCustomSetter = (val: boolean) => void
+export const onChangeCheckedHandler = (
+  setter: BooleanStateSetter | BooleanCustomSetter,
+) => (e: ChangeEvent<HTMLInputElement>): void => {
+  setter(e.currentTarget.checked)
 }
 
 export function onKeyEvent(handlers: {

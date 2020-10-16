@@ -7,7 +7,7 @@ import Select from '@material-ui/core/Select'
 import TextField from '@material-ui/core/TextField'
 import {Resource, RESOURCE_ICON} from 'Dashboard/components/ResourceList'
 import {Component} from 'Dashboard/edit/state/actions'
-import {onChangeHandler} from 'lib/dom'
+import {onChangeHandler, onChangeStringHandler} from 'lib/dom'
 import React from 'react'
 import {useSelector} from 'react-redux'
 import {RootState} from 'store'
@@ -75,7 +75,7 @@ export default function ResourceItemConfig(props: {id: Component['id']}) {
         }}
         label="Name"
         fullWidth
-        onChange={onChangeHandler(update('name'))}
+        onChange={onChangeStringHandler(update('name'))}
       />
       <TextField
         value={resource.filePath}
@@ -84,7 +84,7 @@ export default function ResourceItemConfig(props: {id: Component['id']}) {
         }}
         label="File Path"
         fullWidth
-        onChange={onChangeHandler(update('filePath'))}
+        onChange={onChangeStringHandler(update('filePath'))}
       />
       <FormControl fullWidth>
         <InputLabel>File Icon</InputLabel>

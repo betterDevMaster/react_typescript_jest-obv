@@ -3,7 +3,7 @@ import React, {useRef, useState} from 'react'
 import {ColorChangeHandler, ChromePicker} from 'react-color'
 import ReactDOM from 'react-dom'
 import TextField from '@material-ui/core/TextField'
-import {onChangeHandler} from 'lib/dom'
+import {onChangeStringHandler} from 'lib/dom'
 import makeStyles from '@material-ui/core/styles/makeStyles'
 import ColorProperties from 'color'
 
@@ -52,7 +52,7 @@ export default function ColorPicker(props: {
         ref={anchorRef}
         onClick={toggleShowPicker}
         fullWidth
-        onChange={onChangeHandler(updateColor)}
+        onChange={onChangeStringHandler(updateColor)}
       />
       <Picker
         visible={showPicker}

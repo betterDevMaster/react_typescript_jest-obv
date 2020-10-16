@@ -1,7 +1,7 @@
 import TextField from '@material-ui/core/TextField'
 import {ResourceList} from 'Dashboard/components/ResourceList'
 import {useUpdateDashboard} from 'Dashboard/edit/state/edit-mode'
-import {onChangeHandler} from 'lib/dom'
+import {onChangeStringHandler} from 'lib/dom'
 import React from 'react'
 import {useSelector} from 'react-redux'
 import {RootState} from 'store'
@@ -37,7 +37,7 @@ export default function ResourceListConfig() {
         }}
         label="Description"
         fullWidth
-        onChange={onChangeHandler(update('description'))}
+        onChange={onChangeStringHandler(update('description'))}
       />
     </>
   )
