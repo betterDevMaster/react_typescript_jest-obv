@@ -2,17 +2,17 @@ import styled from 'styled-components'
 import {EmojiList} from 'Dashboard/components/EmojiList'
 import {Emoji} from 'Dashboard/components/EmojiList/emoji'
 import EmojiSelect from 'Dashboard/components/EmojiList/EmojiListConfig/EmojiSelect'
-import {setDashboard} from 'Dashboard/edit/state/actions'
 import React from 'react'
-import {useDispatch, useSelector} from 'react-redux'
+import {useSelector} from 'react-redux'
 import {RootState} from 'store'
 import CloseIcon from '@material-ui/icons/Close'
 import IconButton from 'lib/ui/IconButton'
 import TextField from '@material-ui/core/TextField'
 import {onChangeHandler} from 'lib/dom'
+import {useUpdateDashboard} from 'Dashboard/edit/state/edit-mode'
 
 export default function EmojiListConfig() {
-  const dispatch = useDispatch()
+  const updateDashboard = useUpdateDashboard()
 
   const list = useSelector(
     (state: RootState) => state.dashboardEditor.emojiList,
@@ -23,14 +23,12 @@ export default function EmojiListConfig() {
   }
 
   const update = <T extends keyof EmojiList>(key: T, value: EmojiList[T]) => {
-    dispatch(
-      setDashboard({
-        emojiList: {
-          ...list,
-          [key]: value,
-        },
-      }),
-    )
+    updateDashboard({
+      emojiList: {
+        ...list,
+        [key]: value,
+      },
+    })
   }
 
   const addNewEmoji = (emoji: Emoji['name']) => {

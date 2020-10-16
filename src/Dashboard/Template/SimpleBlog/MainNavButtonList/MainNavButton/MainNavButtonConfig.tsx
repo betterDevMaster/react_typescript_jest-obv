@@ -5,11 +5,7 @@ import Slider from '@material-ui/core/Slider'
 import TextField from '@material-ui/core/TextField'
 import Typography from '@material-ui/core/Typography'
 import {NavButtonWithSize} from 'Dashboard/components/NavButton'
-import {
-  Component,
-  setComponent,
-  setDashboard,
-} from 'Dashboard/edit/state/actions'
+import {Component} from 'Dashboard/edit/state/actions'
 import {
   handleChangeSlider,
   onChangeCheckedHandler,
@@ -19,16 +15,21 @@ import {
 import DangerButton from 'lib/ui/Button/DangerButton'
 import ColorPicker from 'lib/ui/ColorPicker'
 import React from 'react'
-import {useDispatch, useSelector} from 'react-redux'
+import {useSelector} from 'react-redux'
 import {RootState} from 'store'
 import Box from '@material-ui/core/Box'
+import {
+  useCloseConfig,
+  useUpdateDashboard,
+} from 'Dashboard/edit/state/edit-mode'
 
 export default function MainNavButtonConfig(props: {id?: Component['id']}) {
   const buttons = useSelector(
     (state: RootState) => state.dashboardEditor.mainNavButtons,
   )
 
-  const dispatch = useDispatch()
+  const updateDashboard = useUpdateDashboard()
+  const closeConfig = useCloseConfig()
   const {id} = props
 
   if (!id) {
@@ -41,32 +42,28 @@ export default function MainNavButtonConfig(props: {id?: Component['id']}) {
   const button = buttons.entities[id]
 
   const update = (updated: NavButtonWithSize) => {
-    dispatch(
-      setDashboard({
-        mainNavButtons: {
-          ...buttons,
-          entities: {
-            ...buttons.entities,
-            [id]: updated,
-          },
+    updateDashboard({
+      mainNavButtons: {
+        ...buttons,
+        entities: {
+          ...buttons.entities,
+          [id]: updated,
         },
-      }),
-    )
+      },
+    })
   }
 
   const removeButton = () => {
     const {[id]: target, ...otherButtons} = buttons.entities
     const updatedIds = buttons.ids.filter((i) => i !== id)
 
-    dispatch(setComponent(null))
-    dispatch(
-      setDashboard({
-        mainNavButtons: {
-          entities: otherButtons,
-          ids: updatedIds,
-        },
-      }),
-    )
+    closeConfig()
+    updateDashboard({
+      mainNavButtons: {
+        entities: otherButtons,
+        ids: updatedIds,
+      },
+    })
   }
 
   const updateButton = <T extends keyof NavButtonWithSize>(key: T) => (

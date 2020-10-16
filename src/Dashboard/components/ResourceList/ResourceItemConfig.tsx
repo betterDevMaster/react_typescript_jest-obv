@@ -6,23 +6,24 @@ import MenuItem from '@material-ui/core/MenuItem'
 import Select from '@material-ui/core/Select'
 import TextField from '@material-ui/core/TextField'
 import {Resource, RESOURCE_ICON} from 'Dashboard/components/ResourceList'
-import {
-  Component,
-  setComponent,
-  setDashboard,
-} from 'Dashboard/edit/state/actions'
+import {Component} from 'Dashboard/edit/state/actions'
 import {onChangeHandler, onChangeStringHandler} from 'lib/dom'
 import React from 'react'
-import {useDispatch, useSelector} from 'react-redux'
+import {useSelector} from 'react-redux'
 import {RootState} from 'store'
 import DangerButton from 'lib/ui/Button/DangerButton'
+import {
+  useCloseConfig,
+  useUpdateDashboard,
+} from 'Dashboard/edit/state/edit-mode'
 
 export default function ResourceItemConfig(props: {id: Component['id']}) {
   const list = useSelector(
     (state: RootState) => state.dashboardEditor.resourceList,
   )
 
-  const dispatch = useDispatch()
+  const updateDashboard = useUpdateDashboard()
+  const closeConfig = useCloseConfig()
 
   if (!list) {
     throw new Error('Missing resource list; was it set via edit?')
@@ -40,33 +41,29 @@ export default function ResourceItemConfig(props: {id: Component['id']}) {
       [key]: value,
     }
 
-    dispatch(
-      setDashboard({
-        resourceList: {
-          ...list,
-          resources: list.resources.map((r, index) => {
-            const isTarget = index === props.id
-            if (isTarget) {
-              return updated
-            }
+    updateDashboard({
+      resourceList: {
+        ...list,
+        resources: list.resources.map((r, index) => {
+          const isTarget = index === props.id
+          if (isTarget) {
+            return updated
+          }
 
-            return r
-          }),
-        },
-      }),
-    )
+          return r
+        }),
+      },
+    })
   }
 
   const remove = () => {
-    dispatch(setComponent(null))
-    dispatch(
-      setDashboard({
-        resourceList: {
-          ...list,
-          resources: list.resources.filter((_, index) => index !== props.id),
-        },
-      }),
-    )
+    closeConfig()
+    updateDashboard({
+      resourceList: {
+        ...list,
+        resources: list.resources.filter((_, index) => index !== props.id),
+      },
+    })
   }
 
   return (

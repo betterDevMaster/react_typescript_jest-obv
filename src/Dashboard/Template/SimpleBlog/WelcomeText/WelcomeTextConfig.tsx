@@ -1,22 +1,20 @@
 import TextField from '@material-ui/core/TextField'
-import {setDashboard} from 'Dashboard/edit/state/actions'
+import {useUpdateDashboard} from 'Dashboard/edit/state/edit-mode'
 import {onChangeStringHandler} from 'lib/dom'
 import React from 'react'
-import {useDispatch, useSelector} from 'react-redux'
+import {useSelector} from 'react-redux'
 import {RootState} from 'store'
 
 export default function WelcomeTextConfig() {
-  const dispatch = useDispatch()
   const value = useSelector(
     (state: RootState) => state.dashboardEditor.welcomeText,
   )
+  const updateDashboard = useUpdateDashboard()
 
   const update = (newVal: string) => {
-    dispatch(
-      setDashboard({
-        welcomeText: newVal,
-      }),
-    )
+    updateDashboard({
+      welcomeText: newVal,
+    })
   }
   return (
     <>

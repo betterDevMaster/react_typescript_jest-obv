@@ -1,11 +1,9 @@
 import {Dashboard} from 'Dashboard'
-import {ComponentType} from 'Dashboard/components'
 import {
   Component,
   setComponent,
   setDashboard,
 } from 'Dashboard/edit/state/actions'
-import {useCallback} from 'react'
 import {useDispatch, useSelector} from 'react-redux'
 import {RootState} from 'store'
 
@@ -29,25 +27,6 @@ export function useCurrent<T>(
   return current
 }
 
-export function useEditComponent({
-  type,
-  id,
-}: {
-  type: ComponentType
-  id?: Component['id']
-}) {
-  const dispatch = useDispatch()
-
-  return useCallback(() => {
-    dispatch(
-      setComponent({
-        type,
-        id,
-      }),
-    )
-  }, [dispatch, type, id])
-}
-
 export function useCloseConfig() {
   const dispatch = useDispatch()
   return () => {
@@ -60,5 +39,13 @@ export function useUpdateDashboard() {
 
   return (updates: Partial<Dashboard | null>) => {
     dispatch(setDashboard(updates))
+  }
+}
+
+export function useEditComponent(component: Component) {
+  const dispatch = useDispatch()
+
+  return () => {
+    dispatch(setComponent(component))
   }
 }

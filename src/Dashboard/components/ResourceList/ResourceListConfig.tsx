@@ -1,9 +1,9 @@
 import TextField from '@material-ui/core/TextField'
 import {ResourceList} from 'Dashboard/components/ResourceList'
-import {setDashboard} from 'Dashboard/edit/state/actions'
+import {useUpdateDashboard} from 'Dashboard/edit/state/edit-mode'
 import {onChangeStringHandler} from 'lib/dom'
 import React from 'react'
-import {useDispatch, useSelector} from 'react-redux'
+import {useSelector} from 'react-redux'
 import {RootState} from 'store'
 
 export default function ResourceListConfig() {
@@ -11,7 +11,7 @@ export default function ResourceListConfig() {
     (state: RootState) => state.dashboardEditor.resourceList,
   )
 
-  const dispatch = useDispatch()
+  const updateDashboard = useUpdateDashboard()
 
   if (!list) {
     throw new Error('Missing resource list; was it set via edit?')
@@ -20,14 +20,12 @@ export default function ResourceListConfig() {
   const update = <T extends keyof ResourceList>(key: T) => (
     value: ResourceList[T],
   ) => {
-    dispatch(
-      setDashboard({
-        resourceList: {
-          ...list,
-          [key]: value,
-        },
-      }),
-    )
+    updateDashboard({
+      resourceList: {
+        ...list,
+        [key]: value,
+      },
+    })
   }
 
   return (

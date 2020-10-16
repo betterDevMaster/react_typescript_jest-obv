@@ -1,40 +1,37 @@
 import TextField from '@material-ui/core/TextField'
 import {Points} from 'Dashboard/components/PointsSummary'
-import {setComponent, setDashboard} from 'Dashboard/edit/state/actions'
+import {
+  useCloseConfig,
+  useUpdateDashboard,
+} from 'Dashboard/edit/state/edit-mode'
 import {onChangeStringHandler} from 'lib/dom'
 import DangerButton from 'lib/ui/Button/DangerButton'
 import React from 'react'
-import {useDispatch, useSelector} from 'react-redux'
+import {useSelector} from 'react-redux'
 import {RootState} from 'store'
 import styled from 'styled-components'
 
 export default function PointsSummaryConfig() {
   const points = useSelector((state: RootState) => state.dashboardEditor.points)
-  const dispatch = useDispatch()
+  const updateDashboard = useUpdateDashboard()
+  const closeConfig = useCloseConfig()
 
   if (!points) {
     throw new Error('Missing points; was it set via edit?')
   }
 
   const update = <T extends keyof Points>(key: T) => (value: Points[T]) => {
-    dispatch(
-      setDashboard({
-        points: {
-          ...points,
-          [key]: value,
-        },
-      }),
-    )
+    updateDashboard({
+      points: {
+        ...points,
+        [key]: value,
+      },
+    })
   }
 
   const removePoints = () => {
-    dispatch(setComponent(null))
-
-    dispatch(
-      setDashboard({
-        points: null,
-      }),
-    )
+    closeConfig()
+    updateDashboard({points: null})
   }
 
   return (

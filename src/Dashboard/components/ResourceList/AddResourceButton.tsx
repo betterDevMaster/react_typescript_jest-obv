@@ -1,12 +1,13 @@
 import Button from '@material-ui/core/Button'
 import {RESOURCE_ICON} from 'Dashboard/components/ResourceList'
-import {setDashboard} from 'Dashboard/edit/state/actions'
+import {useUpdateDashboard} from 'Dashboard/edit/state/edit-mode'
 import React from 'react'
-import {useDispatch, useSelector} from 'react-redux'
+import {useSelector} from 'react-redux'
 import {RootState} from 'store'
 
 export default function AddResourceButton(props: {className?: string}) {
-  const dispatch = useDispatch()
+  const updateDashboard = useUpdateDashboard()
+
   const list = useSelector(
     (state: RootState) => state.dashboardEditor.resourceList,
   )
@@ -16,21 +17,19 @@ export default function AddResourceButton(props: {className?: string}) {
   }
 
   const addResource = () => {
-    dispatch(
-      setDashboard({
-        resourceList: {
-          ...list,
-          resources: [
-            ...list.resources,
-            {
-              name: 'Resource',
-              filePath: '',
-              icon: RESOURCE_ICON.pdf,
-            },
-          ],
-        },
-      }),
-    )
+    updateDashboard({
+      resourceList: {
+        ...list,
+        resources: [
+          ...list.resources,
+          {
+            name: 'Resource',
+            filePath: '',
+            icon: RESOURCE_ICON.pdf,
+          },
+        ],
+      },
+    })
   }
 
   return (
