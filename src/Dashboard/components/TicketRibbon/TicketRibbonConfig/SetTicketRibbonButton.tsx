@@ -1,6 +1,6 @@
 import Button from '@material-ui/core/Button'
 import {TICKET_RIBBON_TYPE} from 'Dashboard/components/TicketRibbon'
-import {setComponent} from 'Dashboard/edit/state/actions'
+import {setConfig} from 'Dashboard/edit/state/actions'
 import React from 'react'
 import {useDispatch} from 'react-redux'
 
@@ -8,7 +8,7 @@ export default function SetTicketRibbonButton(props: {className?: string}) {
   const dispatch = useDispatch()
   const setTicketRibbon = () => {
     dispatch(
-      setComponent({
+      setConfig({
         type: TICKET_RIBBON_TYPE,
       }),
     )

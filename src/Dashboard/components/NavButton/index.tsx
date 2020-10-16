@@ -1,4 +1,3 @@
-import {Component} from 'Dashboard/components'
 import React from 'react'
 import styled from 'styled-components'
 import Button from 'lib/ui/Button'
@@ -7,7 +6,7 @@ import {newTabProps} from 'lib/link'
 
 export const NAV_BUTTON = 'NAV_BUTTON'
 
-export default interface NavButton extends Component {
+export default interface NavButton {
   text: string
   link: string
   backgroundColor?: string

@@ -2,18 +2,18 @@ import Dialog from '@material-ui/core/Dialog'
 import styled from 'styled-components'
 import DialogContent from '@material-ui/core/DialogContent'
 import DialogTitle from '@material-ui/core/DialogTitle'
-import {setComponent} from 'Dashboard/edit/state/actions'
-import {ComponentConfig} from 'Dashboard/edit/views/DashboardEditDialog/ComponentConfig'
+import {setConfig} from 'Dashboard/edit/state/actions'
 import React from 'react'
 import {useDispatch, useSelector} from 'react-redux'
 import {RootState} from 'store'
 import CloseIcon from '@material-ui/icons/Close'
 import IconButton from 'lib/ui/IconButton'
 import grey from '@material-ui/core/colors/grey'
+import ConfigComponent from 'Dashboard/edit/views/DashboardEditDialog/ConfigComponent'
 
 export default function DashboardEditDialog() {
   const component = useSelector(
-    (state: RootState) => state.dashboardEditor.component,
+    (state: RootState) => state.dashboardEditor.config,
   )
 
   const dispatch = useDispatch()
@@ -21,7 +21,7 @@ export default function DashboardEditDialog() {
   const dialogVisible = Boolean(component)
 
   const stopEdit = () => {
-    dispatch(setComponent(null))
+    dispatch(setConfig(null))
   }
 
   return (
@@ -31,7 +31,7 @@ export default function DashboardEditDialog() {
       </CloseButton>
       <DialogTitle>Configure: {component?.type}</DialogTitle>
       <DialogContent>
-        <ComponentConfig component={component} />
+        <ConfigComponent component={component} />
       </DialogContent>
     </Dialog>
   )

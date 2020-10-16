@@ -3,7 +3,6 @@ import FormControl from '@material-ui/core/FormControl'
 import FormControlLabel from '@material-ui/core/FormControlLabel'
 import TextField from '@material-ui/core/TextField'
 import NavButton from 'Dashboard/components/NavButton'
-import {Component} from 'Dashboard/edit/state/actions'
 import {
   onChangeCheckedHandler,
   onChangeNumberHandler,
@@ -18,8 +17,9 @@ import {
   useCloseConfig,
   useUpdateDashboard,
 } from 'Dashboard/edit/state/edit-mode'
+import {Config} from 'Dashboard/edit/views/DashboardEditDialog/ConfigComponent'
 
-export default function SidebarNavButtonConfig(props: {id?: Component['id']}) {
+export default function SidebarNavButtonConfig(props: {id?: Config['id']}) {
   const buttons = useSelector(
     (state: RootState) => state.dashboardEditor.sidebarNavButtons,
   )

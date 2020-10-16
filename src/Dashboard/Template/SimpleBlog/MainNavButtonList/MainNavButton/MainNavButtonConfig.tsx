@@ -5,7 +5,6 @@ import Slider from '@material-ui/core/Slider'
 import TextField from '@material-ui/core/TextField'
 import Typography from '@material-ui/core/Typography'
 import {NavButtonWithSize} from 'Dashboard/components/NavButton'
-import {Component} from 'Dashboard/edit/state/actions'
 import {
   handleChangeSlider,
   onChangeCheckedHandler,
@@ -22,8 +21,9 @@ import {
   useCloseConfig,
   useUpdateDashboard,
 } from 'Dashboard/edit/state/edit-mode'
+import {Config} from 'Dashboard/edit/views/DashboardEditDialog/ConfigComponent'
 
-export default function MainNavButtonConfig(props: {id?: Component['id']}) {
+export default function MainNavButtonConfig(props: {id?: Config['id']}) {
   const buttons = useSelector(
     (state: RootState) => state.dashboardEditor.mainNavButtons,
   )

@@ -1,6 +1,5 @@
-import {ComponentType} from 'Dashboard/components'
-import {Component} from 'Dashboard/edit/state/actions'
 import {useEditMode, useEditComponent} from 'Dashboard/edit/state/edit-mode'
+import {Config} from 'Dashboard/edit/views/DashboardEditDialog/ConfigComponent'
 import EditIconButton from 'lib/ui/IconButton/EditIconButton'
 import React from 'react'
 import styled from 'styled-components'
@@ -8,11 +7,11 @@ import styled from 'styled-components'
 export const EDIT_COMPONENT_CLASS = 'edit-component'
 export const EDIT_COMPONENT_BUTTON_CLASS = 'edit-component-button'
 
-export default function EditComponent(props: {
-  children: React.ReactElement
-  type: ComponentType
-  id?: Component['id']
-}) {
+export default function EditComponent(
+  props: Config & {
+    children: React.ReactElement
+  },
+) {
   const isEditMode = useEditMode()
 
   const editComponent = useEditComponent({type: props.type, id: props.id})

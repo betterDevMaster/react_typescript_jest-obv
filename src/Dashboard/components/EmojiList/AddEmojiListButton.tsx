@@ -1,6 +1,6 @@
 import {Button} from '@material-ui/core'
 import {EMOJI_LIST} from 'Dashboard/components/EmojiList'
-import {setComponent} from 'Dashboard/edit/state/actions'
+import {setConfig} from 'Dashboard/edit/state/actions'
 import React from 'react'
 import {useDispatch} from 'react-redux'
 
@@ -9,7 +9,7 @@ export default function AddEmojiListButton(props: {className?: string}) {
 
   const addEmojiList = () => {
     dispatch(
-      setComponent({
+      setConfig({
         type: EMOJI_LIST,
       }),
     )

@@ -1,9 +1,6 @@
 import {Dashboard} from 'Dashboard'
-import {
-  Component,
-  setComponent,
-  setDashboard,
-} from 'Dashboard/edit/state/actions'
+import {setConfig, setDashboard} from 'Dashboard/edit/state/actions'
+import {Config} from 'Dashboard/edit/views/DashboardEditDialog/ConfigComponent'
 import {useDispatch, useSelector} from 'react-redux'
 import {RootState} from 'store'
 
@@ -30,7 +27,7 @@ export function useCurrent<T>(
 export function useCloseConfig() {
   const dispatch = useDispatch()
   return () => {
-    dispatch(setComponent(null))
+    dispatch(setConfig(null))
   }
 }
 
@@ -42,10 +39,10 @@ export function useUpdateDashboard() {
   }
 }
 
-export function useEditComponent(component: Component) {
+export function useEditComponent(component: Config) {
   const dispatch = useDispatch()
 
   return () => {
-    dispatch(setComponent(component))
+    dispatch(setConfig(component))
   }
 }

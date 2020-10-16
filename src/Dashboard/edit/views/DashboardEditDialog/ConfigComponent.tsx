@@ -11,7 +11,6 @@ import SimpleBlogConfig from 'Dashboard/Template/SimpleBlog/SimpleBlogConfig'
 import {SIDEBAR_CONTAINER} from 'Dashboard/Template/SimpleBlog/Sidebar/SidebarContainer'
 import {EMOJI_LIST} from 'Dashboard/components/EmojiList'
 import {TICKET_RIBBON_TYPE} from 'Dashboard/components/TicketRibbon'
-import {Component} from 'Dashboard/edit/state/actions'
 import {AGENDA} from 'Dashboard/components/AgendaList'
 import AgendaConfig from 'Dashboard/components/AgendaList/AgendaConfig'
 import {POINTS_SUMMARY} from 'Dashboard/components/PointsSummary'
@@ -22,7 +21,28 @@ import ResourceItemConfig from 'Dashboard/components/ResourceList/ResourceItemCo
 import SidebarNavButtonConfig from 'Dashboard/Template/SimpleBlog/Sidebar/SidebarNavButtonConfig'
 import {SIDEBAR_NAV_BUTTON} from 'Dashboard/Template/SimpleBlog/Sidebar/SidebarNav'
 
-export function ComponentConfig(props: {component: Component | null}) {
+export interface Config {
+  type: ComponentType
+  id?: string | number
+}
+
+// Must register config types here. This ensures wherever
+// various component types are handled, that all possible
+// components are accounted for.
+export type ComponentType =
+  | typeof SIMPLE_BLOG
+  | typeof MAIN_NAV_BUTTON
+  | typeof WELCOME_TEXT
+  | typeof SIDEBAR_CONTAINER
+  | typeof EMOJI_LIST
+  | typeof TICKET_RIBBON_TYPE
+  | typeof AGENDA
+  | typeof POINTS_SUMMARY
+  | typeof RESOURCE_LIST
+  | typeof RESOURCE_ITEM
+  | typeof SIDEBAR_NAV_BUTTON
+
+export default function ConfigComponent(props: {component: Config | null}) {
   if (!props.component) {
     return null
   }
