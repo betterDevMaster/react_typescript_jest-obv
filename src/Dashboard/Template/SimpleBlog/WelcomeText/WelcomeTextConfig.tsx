@@ -1,6 +1,6 @@
 import TextField from '@material-ui/core/TextField'
 import {useUpdateDashboard} from 'Dashboard/edit/state/edit-mode'
-import {onChangeStringHandler} from 'lib/dom'
+import {onChangeHandler} from 'lib/dom'
 import React from 'react'
 import {useSelector} from 'react-redux'
 import {RootState} from 'store'
@@ -20,7 +20,7 @@ export default function WelcomeTextConfig() {
     <>
       <TextField
         value={value}
-        onChange={onChangeStringHandler(update)}
+        onChange={onChangeHandler(update)}
         fullWidth
         label="Text"
         inputProps={{

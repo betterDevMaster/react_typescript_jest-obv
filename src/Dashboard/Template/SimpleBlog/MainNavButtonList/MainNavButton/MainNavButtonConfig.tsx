@@ -6,12 +6,7 @@ import TextField from '@material-ui/core/TextField'
 import Typography from '@material-ui/core/Typography'
 import {NavButtonWithSize} from 'Dashboard/components/NavButton'
 import {Component} from 'Dashboard/edit/state/actions'
-import {
-  handleChangeSlider,
-  onChangeCheckedHandler,
-  onChangeNumberHandler,
-  onChangeStringHandler,
-} from 'lib/dom'
+import {handleChangeSlider, onChangeHandler} from 'lib/dom'
 import DangerButton from 'lib/ui/Button/DangerButton'
 import ColorPicker from 'lib/ui/ColorPicker'
 import React from 'react'
@@ -83,7 +78,7 @@ export default function MainNavButtonConfig(props: {id?: Component['id']}) {
           'aria-label': 'button name input',
         }}
         fullWidth
-        onChange={onChangeStringHandler(updateButton('text'))}
+        onChange={onChangeHandler(updateButton('text'))}
       />
       <Typography gutterBottom>Size</Typography>
       <Slider
@@ -100,7 +95,7 @@ export default function MainNavButtonConfig(props: {id?: Component['id']}) {
           'aria-label': 'button link input',
         }}
         fullWidth
-        onChange={onChangeStringHandler(updateButton('link'))}
+        onChange={onChangeHandler(updateButton('link'))}
       />
       <FormControl>
         <FormControlLabel
@@ -108,7 +103,7 @@ export default function MainNavButtonConfig(props: {id?: Component['id']}) {
           control={
             <Checkbox
               checked={button.newTab}
-              onChange={onChangeCheckedHandler(updateButton('newTab'))}
+              onChange={onChangeHandler(updateButton('newTab'))}
             />
           }
         />
@@ -146,7 +141,7 @@ export default function MainNavButtonConfig(props: {id?: Component['id']}) {
         inputProps={{
           min: 0,
         }}
-        onChange={onChangeNumberHandler(updateButton('borderWidth'))}
+        onChange={onChangeHandler(updateButton('borderWidth'))}
       />
       <TextField
         value={button.borderRadius || ''}
@@ -156,7 +151,7 @@ export default function MainNavButtonConfig(props: {id?: Component['id']}) {
         inputProps={{
           min: 0,
         }}
-        onChange={onChangeNumberHandler(updateButton('borderRadius'))}
+        onChange={onChangeHandler(updateButton('borderRadius'))}
       />
 
       <Box mt={2} mb={3}>

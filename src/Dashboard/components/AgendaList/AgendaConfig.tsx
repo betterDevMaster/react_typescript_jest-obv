@@ -8,7 +8,7 @@ import {useSelector} from 'react-redux'
 import {RootState} from 'store'
 import {Component} from 'Dashboard/edit/state/actions'
 import {Agenda} from 'Dashboard/components/AgendaList'
-import {onChangeStringHandler} from 'lib/dom'
+import {onChangeHandler} from 'lib/dom'
 import {MaterialUiPickersDate} from '@material-ui/pickers/typings/date'
 import {
   useCloseConfig,
@@ -83,7 +83,7 @@ export default function AgendaConfig(props: {id: Component['id']}) {
         }}
         label="Event"
         fullWidth
-        onChange={onChangeStringHandler(update('text'))}
+        onChange={onChangeHandler(update('text'))}
       />
       <Grid container spacing={2}>
         <Grid item xs={6}>
@@ -117,7 +117,7 @@ export default function AgendaConfig(props: {id: Component['id']}) {
         }}
         label="Link"
         fullWidth
-        onChange={onChangeStringHandler(update('link'))}
+        onChange={onChangeHandler(update('link'))}
       />
       <RemoveAgendaButton
         fullWidth
