@@ -7,7 +7,7 @@ import Select from '@material-ui/core/Select'
 import TextField from '@material-ui/core/TextField'
 import {Resource, RESOURCE_ICON} from 'Dashboard/components/ResourceList'
 import {Component} from 'Dashboard/edit/state/actions'
-import {onChangeHandler, onChangeStringHandler} from 'lib/dom'
+import {onUnknownChangeHandler, onChangeStringHandler} from 'lib/dom'
 import React from 'react'
 import {useSelector} from 'react-redux'
 import {RootState} from 'store'
@@ -91,7 +91,7 @@ export default function ResourceItemConfig(props: {id: Component['id']}) {
         <Select
           value={resource.icon}
           fullWidth
-          onChange={onChangeHandler(update('icon'))}
+          onChange={onUnknownChangeHandler(update('icon'))}
           inputProps={{
             'aria-label': 'resource icon',
           }}

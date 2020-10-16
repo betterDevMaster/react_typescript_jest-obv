@@ -7,7 +7,7 @@ import React from 'react'
 import {useSelector} from 'react-redux'
 import {RootState} from 'store'
 import MenuItem from '@material-ui/core/MenuItem'
-import {onChangeHandler} from 'lib/dom'
+import {onUnknownChangeHandler} from 'lib/dom'
 import {useUpdateDashboard} from 'Dashboard/edit/state/edit-mode'
 
 export default function TicketRibbonConfig() {
@@ -36,7 +36,7 @@ export default function TicketRibbonConfig() {
           inputProps={{
             'aria-label': 'pick ticket ribbon',
           }}
-          onChange={onChangeHandler(update)}
+          onChange={onUnknownChangeHandler(update)}
         >
           {Object.values(TICKET_RIBBON).map((tr) => (
             <MenuItem key={tr.name} value={tr.name}>

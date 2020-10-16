@@ -8,7 +8,7 @@ import {RootState} from 'store'
 import CloseIcon from '@material-ui/icons/Close'
 import IconButton from 'lib/ui/IconButton'
 import TextField from '@material-ui/core/TextField'
-import {onChangeHandler} from 'lib/dom'
+import {onUnknownChangeHandler} from 'lib/dom'
 import {useUpdateDashboard} from 'Dashboard/edit/state/edit-mode'
 
 export default function EmojiListConfig() {
@@ -64,7 +64,7 @@ export default function EmojiListConfig() {
         type="number"
         value={list.emojiWidth || ''}
         label="Emoji Size"
-        onChange={onChangeHandler(setWidth)}
+        onChange={onUnknownChangeHandler(setWidth)}
         fullWidth
         inputProps={{
           step: 5,
