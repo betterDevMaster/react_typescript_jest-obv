@@ -4,22 +4,23 @@ import {DateTimePicker} from '@material-ui/pickers'
 import DangerButton from 'lib/ui/Button/DangerButton'
 import TextField from '@material-ui/core/TextField'
 import Grid from '@material-ui/core/Grid'
-import {useDispatch, useSelector} from 'react-redux'
+import {useSelector} from 'react-redux'
 import {RootState} from 'store'
-import {
-  Component,
-  setComponent,
-  setDashboard,
-} from 'Dashboard/edit/state/actions'
+import {Component} from 'Dashboard/edit/state/actions'
 import {Agenda} from 'Dashboard/components/AgendaList'
 import {onChangeStringHandler} from 'lib/dom'
 import {MaterialUiPickersDate} from '@material-ui/pickers/typings/date'
+import {
+  useCloseConfig,
+  useUpdateDashboard,
+} from 'Dashboard/edit/state/edit-mode'
 
 export default function AgendaConfig(props: {id: Component['id']}) {
   const agendas = useSelector(
     (state: RootState) => state.dashboardEditor.agendas,
   )
-  const dispatch = useDispatch()
+  const updateDashboard = useUpdateDashboard()
+  const closeConfig = useCloseConfig()
 
   if (!agendas) {
     throw new Error('Missing agendas; was it set properly via edit?')
@@ -37,27 +38,24 @@ export default function AgendaConfig(props: {id: Component['id']}) {
       [key]: value,
     }
 
-    dispatch(
-      setDashboard({
-        agendas: agendas.map((a, index) => {
-          const isTarget = index === props.id
-          if (isTarget) {
-            return updated
-          }
+    updateDashboard({
+      agendas: agendas.map((a, index) => {
+        const isTarget = index === props.id
+        if (isTarget) {
+          return updated
+        }
 
-          return a
-        }),
+        return a
       }),
-    )
+    })
   }
 
   const remove = () => {
-    dispatch(setComponent(null))
-    dispatch(
-      setDashboard({
-        agendas: agendas.filter((_, index) => index !== props.id),
-      }),
-    )
+    const withoutTarget = agendas.filter((_, index) => index !== props.id)
+    closeConfig()
+    updateDashboard({
+      agendas: withoutTarget,
+    })
   }
 
   const updateDate = (key: 'startDate' | 'endDate') => (

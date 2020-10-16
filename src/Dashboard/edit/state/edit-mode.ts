@@ -1,5 +1,10 @@
+import {Dashboard} from 'Dashboard'
 import {ComponentType} from 'Dashboard/components'
-import {Component, setComponent} from 'Dashboard/edit/state/actions'
+import {
+  Component,
+  setComponent,
+  setDashboard,
+} from 'Dashboard/edit/state/actions'
 import {useCallback} from 'react'
 import {useDispatch, useSelector} from 'react-redux'
 import {RootState} from 'store'
@@ -41,4 +46,19 @@ export function useEditComponent({
       }),
     )
   }, [dispatch, type, id])
+}
+
+export function useCloseConfig() {
+  const dispatch = useDispatch()
+  return () => {
+    dispatch(setComponent(null))
+  }
+}
+
+export function useUpdateDashboard() {
+  const dispatch = useDispatch()
+
+  return (updates: Partial<Dashboard | null>) => {
+    dispatch(setDashboard(updates))
+  }
 }
