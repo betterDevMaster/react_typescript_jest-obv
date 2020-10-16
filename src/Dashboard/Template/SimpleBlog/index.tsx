@@ -1,7 +1,7 @@
 import React, {useState} from 'react'
 import styled from 'styled-components'
 import SimpleBlogStyles from 'Dashboard/Template/SimpleBlog/Styles'
-import {NavButtonWithSize, NavButton} from 'Dashboard/components/NavButton'
+import NavButton, {NavButtonWithSize} from 'Dashboard/components/NavButton'
 import Grid from '@material-ui/core/Grid'
 import Container from '@material-ui/core/Container'
 import {BlogPost} from 'Dashboard/components/BlogPost'

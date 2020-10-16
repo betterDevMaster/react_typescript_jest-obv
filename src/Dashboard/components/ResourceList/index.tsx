@@ -33,7 +33,7 @@ export const RESOURCE_ICON = {
 
 export function ResourceList(props: {
   list: ResourceList
-  component?: React.FunctionComponent<any>
+  container?: React.FunctionComponent<any>
   iconColor?: string
 }) {
   const isEdit = useEditMode()
@@ -47,7 +47,7 @@ export function ResourceList(props: {
     return null
   }
 
-  const Component = props.component || 'div'
+  const Component = props.container || 'div'
 
   return (
     <Component className="resource-list">

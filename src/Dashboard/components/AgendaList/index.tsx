@@ -18,7 +18,7 @@ export interface Agenda {
 
 export default function AgendaList(props: {
   agendas: Agenda[]
-  component?: React.FunctionComponent<any>
+  container?: React.FunctionComponent<any>
 }) {
   const agendas = useCurrent(
     (state) => state.dashboardEditor.agendas,
@@ -34,7 +34,7 @@ export default function AgendaList(props: {
     )
   }
 
-  const Component = props.component || 'div'
+  const Component = props.container || 'div'
 
   return (
     <Component>

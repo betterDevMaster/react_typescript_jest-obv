@@ -14,11 +14,7 @@ export default React.memo((props: MainNavButtonProps) => {
   return (
     <Grid item xs={12} md={props.button.size}>
       <EditComponent type={MAIN_NAV_BUTTON} id={props.id}>
-        <NavButton
-          {...props.button}
-          id={props.id}
-          ariaLabel="main nav button"
-        />
+        <NavButton {...props.button} ariaLabel="main nav button" />
       </EditComponent>
     </Grid>
   )

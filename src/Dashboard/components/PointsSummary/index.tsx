@@ -17,7 +17,7 @@ export const POINTS_SUMMARY = 'Points Summary'
 
 export default function PointsSummary(props: {
   points: Points | null
-  component?: React.FunctionComponent<any>
+  container?: React.FunctionComponent<any>
 }) {
   const points = useCurrent(
     (state) => state.dashboardEditor.points,
@@ -32,7 +32,7 @@ export default function PointsSummary(props: {
     )
   }
 
-  const Component = props.component || 'div'
+  const Component = props.container || 'div'
 
   return (
     <EditComponent type={POINTS_SUMMARY}>

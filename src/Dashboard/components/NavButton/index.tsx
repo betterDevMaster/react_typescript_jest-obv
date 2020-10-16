@@ -7,7 +7,7 @@ import {newTabProps} from 'lib/link'
 
 export const NAV_BUTTON = 'NAV_BUTTON'
 
-export interface NavButton extends Component {
+export default interface NavButton extends Component {
   text: string
   link: string
   backgroundColor?: string
@@ -26,11 +26,7 @@ export type NavButtonWithSize = NavButton & {
   size: Column
 }
 
-export default function NavButton(
-  props: NavButton & {
-    id: string
-  },
-) {
+export default function NavButton(props: NavButton) {
   const tabProps = props.newTab ? newTabProps : null
 
   return (
