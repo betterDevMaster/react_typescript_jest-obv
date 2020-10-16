@@ -24,7 +24,6 @@ import {EmojiList} from 'Dashboard/components/EmojiList'
 import {EntityList} from 'lib/list'
 import {usePrimaryColor} from 'Dashboard/Template/SimpleBlog/primary-color'
 import EditComponent from 'Dashboard/edit/views/EditComponent'
-import NewMainNavButton from 'Dashboard/Template/SimpleBlog/MainNavButtonList/MainNavButton/NewMainNavButton'
 import MainNavButtonList from 'Dashboard/Template/SimpleBlog/MainNavButtonList'
 
 export const SIMPLE_BLOG = 'SIMPLE_BLOG'
@@ -86,7 +85,6 @@ export default function SimpleBlog(props: {dashboard: SimpleBlog; user: User}) {
           <MainNavButtons>
             <Grid container spacing={2}>
               <MainNavButtonList buttons={props.dashboard.mainNavButtons} />
-              <NewMainNavButton />
             </Grid>
           </MainNavButtons>
           <FullHeightGrid container spacing={4}>

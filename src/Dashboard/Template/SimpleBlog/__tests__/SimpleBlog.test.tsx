@@ -79,36 +79,6 @@ it('should render resources', async () => {
   expect(resources.length).toBe(numResources)
 })
 
-it('should render sidebarNavButtons', () => {
-  const dashboard = fakeSimpleBlog({
-    sidebarNavButtons: createEntityList([]),
-  })
-
-  const {queryByLabelText, rerender, queryAllByLabelText} = render(
-    <Dashboard isEditMode={false} dashboard={dashboard} user={fakeUser()} />,
-  )
-
-  expect(queryByLabelText(/sidebar nav/i)).not.toBeInTheDocument()
-
-  const numButtons = faker.random.number({min: 1, max: 5})
-
-  const withNavButtons = fakeSimpleBlog({
-    sidebarNavButtons: createEntityList(
-      Array.from({length: numButtons}, fakeNavButton),
-    ),
-  })
-
-  rerender(
-    <Dashboard
-      isEditMode={false}
-      dashboard={withNavButtons}
-      user={fakeUser()}
-    />,
-  )
-
-  expect(queryAllByLabelText(/sidebar nav/i).length).toBe(numButtons)
-})
-
 it('should render a footer', () => {
   const dashboard = fakeSimpleBlog({
     footerBackground: '#000000',

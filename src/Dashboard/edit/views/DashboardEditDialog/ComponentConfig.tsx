@@ -19,6 +19,8 @@ import PointsSummaryConfig from 'Dashboard/components/PointsSummary/PointsSummar
 import {RESOURCE_ITEM, RESOURCE_LIST} from 'Dashboard/components/ResourceList'
 import ResourceListConfig from 'Dashboard/components/ResourceList/ResourceListConfig'
 import ResourceItemConfig from 'Dashboard/components/ResourceList/ResourceItemConfig'
+import SidebarNavButtonConfig from 'Dashboard/Template/SimpleBlog/Sidebar/SidebarNavButtonConfig'
+import {SIDEBAR_NAV_BUTTON} from 'Dashboard/Template/SimpleBlog/Sidebar/SidebarNav'
 
 export function ComponentConfig(props: {component: Component | null}) {
   if (!props.component) {
@@ -46,6 +48,8 @@ export function ComponentConfig(props: {component: Component | null}) {
       return <ResourceListConfig />
     case RESOURCE_ITEM:
       return <ResourceItemConfig id={props.component.id} />
+    case SIDEBAR_NAV_BUTTON:
+      return <SidebarNavButtonConfig id={props.component.id} />
     default:
       throw new Error(
         `Missing config component for type: ${props.component.type}`,

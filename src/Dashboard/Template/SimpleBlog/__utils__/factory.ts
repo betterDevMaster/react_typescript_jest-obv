@@ -80,7 +80,11 @@ export function withSidebarNavButtons<
 >(attributes: T): T {
   const buttons = Array.from(
     {length: faker.random.number({min: 1, max: 5})},
-    fakeNavButton,
+    () =>
+      fakeNavButton({
+        borderRadius: 0,
+        hoverBorderColor: '#FFFFFF',
+      }),
   )
   return {
     ...attributes,
