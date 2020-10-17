@@ -20,16 +20,18 @@ import ResourceListConfig from 'Dashboard/components/ResourceList/ResourceListCo
 import ResourceItemConfig from 'Dashboard/components/ResourceList/ResourceItemConfig'
 import SidebarNavButtonConfig from 'Dashboard/Template/SimpleBlog/Sidebar/SidebarNavButtonConfig'
 import {SIDEBAR_NAV_BUTTON} from 'Dashboard/Template/SimpleBlog/Sidebar/SidebarNav'
+import {FOOTER} from 'Dashboard/Template/SimpleBlog/Footer'
+import FooterConfig from 'Dashboard/Template/SimpleBlog/Footer/FooterConfig'
 
 export interface Config {
-  type: ComponentType
+  type: ConfigType
   id?: string | number
 }
 
 // Must register config types here. This ensures wherever
 // various component types are handled, that all possible
 // components are accounted for.
-export type ComponentType =
+export type ConfigType =
   | typeof SIMPLE_BLOG
   | typeof MAIN_NAV_BUTTON
   | typeof WELCOME_TEXT
@@ -41,15 +43,16 @@ export type ComponentType =
   | typeof RESOURCE_LIST
   | typeof RESOURCE_ITEM
   | typeof SIDEBAR_NAV_BUTTON
+  | typeof FOOTER
 
-export default function ConfigComponent(props: {component: Config | null}) {
-  if (!props.component) {
+export default function ConfigComponent(props: {config: Config | null}) {
+  if (!props.config) {
     return null
   }
 
-  switch (props.component.type) {
+  switch (props.config.type) {
     case MAIN_NAV_BUTTON:
-      return <MainNavButtonConfig id={props.component.id} />
+      return <MainNavButtonConfig id={props.config.id} />
     case WELCOME_TEXT:
       return <WelcomeTextConfig />
     case SIMPLE_BLOG:
@@ -61,18 +64,18 @@ export default function ConfigComponent(props: {component: Config | null}) {
     case TICKET_RIBBON_TYPE:
       return <TicketRibbonConfig />
     case AGENDA:
-      return <AgendaConfig id={props.component.id} />
+      return <AgendaConfig id={props.config.id} />
     case POINTS_SUMMARY:
       return <PointsSummaryConfig />
     case RESOURCE_LIST:
       return <ResourceListConfig />
     case RESOURCE_ITEM:
-      return <ResourceItemConfig id={props.component.id} />
+      return <ResourceItemConfig id={props.config.id} />
     case SIDEBAR_NAV_BUTTON:
-      return <SidebarNavButtonConfig id={props.component.id} />
+      return <SidebarNavButtonConfig id={props.config.id} />
+    case FOOTER:
+      return <FooterConfig />
     default:
-      throw new Error(
-        `Missing config component for type: ${props.component.type}`,
-      )
+      throw new Error(`Missing config component for type: ${props.config.type}`)
   }
 }

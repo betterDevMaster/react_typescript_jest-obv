@@ -31,7 +31,7 @@ export default function DashboardEditDialog() {
       </CloseButton>
       <DialogTitle>Configure: {component?.type}</DialogTitle>
       <DialogContent>
-        <ConfigComponent component={component} />
+        <ConfigComponent config={component} />
       </DialogContent>
     </Dialog>
   )

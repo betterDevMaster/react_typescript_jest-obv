@@ -36,13 +36,15 @@ export const fakeSimpleBlog = (overrides?: Partial<SimpleBlog>): SimpleBlog => {
       description: '',
       resources: [],
     },
-    footerBackground: '#000000',
-    footerTextColor: '#ffffff',
-    footerTermsLink: faker.random.boolean() ? faker.internet.url() : null,
-    footerPrivacyLink: faker.random.boolean() ? faker.internet.url() : null,
-    footerCopyrightText: faker.random.boolean()
-      ? `© 2020 ${faker.company.companyName()}. All Rights Reserved.`
-      : null,
+    footer: {
+      background: '#000000',
+      textColor: '#ffffff',
+      termsLink: faker.random.boolean() ? faker.internet.url() : null,
+      privacyLink: faker.random.boolean() ? faker.internet.url() : null,
+      copyrightText: faker.random.boolean()
+        ? `© 2020 ${faker.company.companyName()}. All Rights Reserved.`
+        : null,
+    },
   }
 
   const makeAttributes: (d: SimpleBlog) => SimpleBlog = pipe(

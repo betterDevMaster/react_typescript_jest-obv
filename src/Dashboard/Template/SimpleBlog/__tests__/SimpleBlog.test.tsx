@@ -5,8 +5,6 @@ import {fakeSimpleBlog} from 'Dashboard/Template/SimpleBlog/__utils__/factory'
 import {fakeUser} from 'user/__utils__/factory'
 import Dashboard from 'Dashboard'
 import {render} from '__utils__/render'
-import {fakeResource} from 'Dashboard/components/ResourceList/__utils__/factory'
-import {fakeNavButton} from 'Dashboard/components/NavButton/__utils__/factory'
 import {fakeBlogPost} from 'Dashboard/components/BlogPost/__utils__/factory'
 import {createEntityList} from 'lib/list'
 import {clickEdit} from '__utils__/edit'
@@ -43,76 +41,6 @@ it('should show the user email', async () => {
   const menuButton = await findByTestId('menu-button')
   fireEvent.click(menuButton)
   expect(await findByText(new RegExp(user.email))).toBeInTheDocument()
-})
-
-it('should render resources', async () => {
-  const dashboard = fakeSimpleBlog({
-    resourceList: {
-      description: '',
-      resources: [],
-    },
-  })
-
-  const {queryByText, rerender, findAllByLabelText} = render(
-    <Dashboard isEditMode={false} dashboard={dashboard} user={fakeUser()} />,
-  )
-
-  expect(queryByText(/resources:/i)).not.toBeInTheDocument()
-
-  const numResources = faker.random.number({min: 1, max: 6})
-  const withResources = fakeSimpleBlog({
-    resourceList: {
-      description: '',
-      resources: Array.from({length: numResources}, fakeResource),
-    },
-  })
-
-  rerender(
-    <Dashboard
-      isEditMode={false}
-      dashboard={withResources}
-      user={fakeUser()}
-    />,
-  )
-
-  const resources = await findAllByLabelText('event resource')
-  expect(resources.length).toBe(numResources)
-})
-
-it('should render a footer', () => {
-  const dashboard = fakeSimpleBlog({
-    footerBackground: '#000000',
-    footerTextColor: '#FFFFFF',
-    footerTermsLink: null,
-    footerPrivacyLink: null,
-    footerCopyrightText: null,
-  })
-
-  const {queryByLabelText, rerender, getByText} = render(
-    <Dashboard isEditMode={false} dashboard={dashboard} user={fakeUser()} />,
-  )
-
-  expect(queryByLabelText(/terms of service/i)).not.toBeInTheDocument()
-  expect(queryByLabelText(/privacy policy/i)).not.toBeInTheDocument()
-
-  const copyrightText = faker.lorem.sentence()
-
-  const withFooter = fakeSimpleBlog({
-    footerBackground: '#000000',
-    footerTextColor: '#FFFFFF',
-    footerTermsLink: faker.internet.url(),
-    footerPrivacyLink: faker.internet.url(),
-    footerCopyrightText: copyrightText,
-  })
-
-  rerender(
-    <Dashboard isEditMode={false} dashboard={withFooter} user={fakeUser()} />,
-  )
-
-  expect(queryByLabelText(/terms of service/i)).toBeInTheDocument()
-  expect(queryByLabelText(/privacy policy/i)).toBeInTheDocument()
-
-  expect(getByText(new RegExp(copyrightText))).toBeInTheDocument()
 })
 
 it('should render blog posts', () => {

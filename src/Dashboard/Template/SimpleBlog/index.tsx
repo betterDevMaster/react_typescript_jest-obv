@@ -46,11 +46,13 @@ export interface SimpleBlog {
   agendas: Agenda[]
   points: Points | null
   resourceList: ResourceList
-  footerBackground: string
-  footerTextColor: string
-  footerTermsLink: string | null
-  footerPrivacyLink: string | null
-  footerCopyrightText: string | null
+  footer: {
+    background: string
+    textColor: string
+    termsLink: string | null
+    privacyLink: string | null
+    copyrightText: string | null
+  }
 }
 
 export default function SimpleBlog(props: {dashboard: SimpleBlog; user: User}) {
@@ -104,7 +106,7 @@ export default function SimpleBlog(props: {dashboard: SimpleBlog; user: User}) {
           </FullHeightGrid>
         </StyledContainer>
       </Content>
-      <Footer {...props.dashboard} />
+      <Footer footer={props.dashboard.footer} />
     </Box>
   )
 }
