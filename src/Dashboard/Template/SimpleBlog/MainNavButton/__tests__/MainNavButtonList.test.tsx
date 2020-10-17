@@ -22,7 +22,7 @@ it('should render main nav buttons', async () => {
     <Dashboard
       isEditMode={false}
       dashboard={fakeSimpleBlog({
-        mainNavButtons,
+        mainNav: mainNavButtons,
       })}
       user={fakeUser()}
     />,
@@ -48,7 +48,7 @@ it('should add a new main nav button', async () => {
     <Dashboard
       isEditMode={true}
       dashboard={fakeSimpleBlog({
-        mainNavButtons,
+        mainNav: mainNavButtons,
       })}
       user={fakeUser()}
     />,
@@ -76,7 +76,7 @@ it('should edit the selected button', async () => {
     <Dashboard
       isEditMode={true}
       dashboard={fakeSimpleBlog({
-        mainNavButtons,
+        mainNav: mainNavButtons,
       })}
       user={fakeUser()}
     />,
@@ -116,7 +116,7 @@ it('should remove the button', async () => {
     <Dashboard
       isEditMode={true}
       dashboard={fakeSimpleBlog({
-        mainNavButtons,
+        mainNav: mainNavButtons,
       })}
       user={fakeUser()}
     />,

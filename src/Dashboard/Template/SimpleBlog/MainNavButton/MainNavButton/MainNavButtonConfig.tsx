@@ -25,7 +25,7 @@ import {Config} from 'Dashboard/edit/views/DashboardEditDialog/ConfigComponent'
 
 export default function MainNavButtonConfig(props: {id?: Config['id']}) {
   const buttons = useSelector(
-    (state: RootState) => state.dashboardEditor.mainNavButtons,
+    (state: RootState) => state.dashboardEditor.mainNav,
   )
 
   const updateDashboard = useUpdateDashboard()
@@ -43,7 +43,7 @@ export default function MainNavButtonConfig(props: {id?: Config['id']}) {
 
   const update = (updated: NavButtonWithSize) => {
     updateDashboard({
-      mainNavButtons: {
+      mainNav: {
         ...buttons,
         entities: {
           ...buttons.entities,
@@ -59,7 +59,7 @@ export default function MainNavButtonConfig(props: {id?: Config['id']}) {
 
     closeConfig()
     updateDashboard({
-      mainNavButtons: {
+      mainNav: {
         entities: otherButtons,
         ids: updatedIds,
       },

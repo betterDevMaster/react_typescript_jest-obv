@@ -11,7 +11,7 @@ import {clickEdit} from '__utils__/edit'
 
 it('should render sidebarNavButtons', () => {
   const dashboard = fakeSimpleBlog({
-    sidebarNavButtons: createEntityList([]),
+    sidebarNav: createEntityList([]),
   })
 
   const {queryByLabelText, rerender, queryAllByLabelText} = render(
@@ -23,7 +23,7 @@ it('should render sidebarNavButtons', () => {
   const numButtons = faker.random.number({min: 1, max: 5})
 
   const withNavButtons = fakeSimpleBlog({
-    sidebarNavButtons: createEntityList(
+    sidebarNav: createEntityList(
       Array.from({length: numButtons}, fakeNavButton),
     ),
   })
@@ -55,7 +55,7 @@ it('should add a new sidebar nav button', async () => {
     <Dashboard
       isEditMode={true}
       dashboard={fakeSimpleBlog({
-        sidebarNavButtons,
+        sidebarNav: sidebarNavButtons,
       })}
       user={fakeUser()}
     />,
@@ -83,7 +83,7 @@ it('should edit the selected button', async () => {
     <Dashboard
       isEditMode={true}
       dashboard={fakeSimpleBlog({
-        sidebarNavButtons,
+        sidebarNav: sidebarNavButtons,
       })}
       user={fakeUser()}
     />,
@@ -123,7 +123,7 @@ it('should remove the button', async () => {
     <Dashboard
       isEditMode={true}
       dashboard={fakeSimpleBlog({
-        sidebarNavButtons,
+        sidebarNav: sidebarNavButtons,
       })}
       user={fakeUser()}
     />,

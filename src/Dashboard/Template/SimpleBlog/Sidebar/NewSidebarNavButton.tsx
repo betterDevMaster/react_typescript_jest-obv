@@ -9,7 +9,7 @@ import {v4 as uid} from 'uuid'
 export default function NewSidebarNavButton(props: {className?: string}) {
   const isEditMode = useEditMode()
   const buttons = useSelector(
-    (state: RootState) => state.dashboardEditor.sidebarNavButtons,
+    (state: RootState) => state.dashboardEditor.sidebarNav,
   )
   const updateDashboard = useUpdateDashboard()
 
@@ -30,7 +30,7 @@ export default function NewSidebarNavButton(props: {className?: string}) {
     const ids = [...buttons.ids, id]
 
     updateDashboard({
-      sidebarNavButtons: {
+      sidebarNav: {
         entities,
         ids,
       },

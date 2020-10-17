@@ -10,7 +10,7 @@ import {v4 as uid} from 'uuid'
 export default function NewMainNavButton() {
   const isEditMode = useEditMode()
   const buttons = useSelector(
-    (state: RootState) => state.dashboardEditor.mainNavButtons,
+    (state: RootState) => state.dashboardEditor.mainNav,
   )
   const updateDashboard = useUpdateDashboard()
 
@@ -32,7 +32,7 @@ export default function NewMainNavButton() {
     const ids = [...buttons.ids, id]
 
     updateDashboard({
-      mainNavButtons: {
+      mainNav: {
         entities,
         ids,
       },

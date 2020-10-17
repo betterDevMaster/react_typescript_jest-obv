@@ -9,12 +9,12 @@ import EditModeOnly from 'Dashboard/edit/views/EditModeOnly'
 export const SIDEBAR_NAV_BUTTON = 'Sidebar Nav Button'
 
 export default function SidebarNav(props: {
-  buttons: SimpleBlog['sidebarNavButtons']
+  buttons: SimpleBlog['sidebarNav']
   primaryColor: string
   container?: React.FunctionComponent<any>
 }) {
   const buttons = useCurrent(
-    (state) => state.dashboardEditor.sidebarNavButtons,
+    (state) => state.dashboardEditor.sidebarNav,
     props.buttons,
   )
 

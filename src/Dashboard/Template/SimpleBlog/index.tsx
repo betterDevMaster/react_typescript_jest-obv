@@ -24,14 +24,14 @@ import {EmojiList} from 'Dashboard/components/EmojiList'
 import {EntityList} from 'lib/list'
 import {usePrimaryColor} from 'Dashboard/Template/SimpleBlog/primary-color'
 import EditComponent from 'Dashboard/edit/views/EditComponent'
-import MainNavButtonList from 'Dashboard/Template/SimpleBlog/MainNavButtonList'
+import MainNav from 'Dashboard/Template/SimpleBlog/MainNavButton'
 
 export const SIMPLE_BLOG = 'SIMPLE_BLOG'
 
 export interface SimpleBlog {
   template: typeof SIMPLE_BLOG
   title: string
-  mainNavButtons: EntityList<NavButtonWithSize>
+  mainNav: EntityList<NavButtonWithSize>
   primaryColor: string
   ticketRibbon: TicketRibbon['name'] | null
   logo: string
@@ -41,7 +41,7 @@ export interface SimpleBlog {
     background: string
     textColor: string
   }
-  sidebarNavButtons: EntityList<NavButton>
+  sidebarNav: EntityList<NavButton>
   blogPosts: EntityList<BlogPost>
   agendas: Agenda[]
   points: Points | null
@@ -86,7 +86,7 @@ export default function SimpleBlog(props: {dashboard: SimpleBlog; user: User}) {
           </EditComponent>
           <MainNavButtons>
             <Grid container spacing={2}>
-              <MainNavButtonList buttons={props.dashboard.mainNavButtons} />
+              <MainNav buttons={props.dashboard.mainNav} />
             </Grid>
           </MainNavButtons>
           <FullHeightGrid container spacing={4}>

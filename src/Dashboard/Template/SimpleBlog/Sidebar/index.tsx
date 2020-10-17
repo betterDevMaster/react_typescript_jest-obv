@@ -25,7 +25,7 @@ export default function Sidebar(props: SimpleBlog) {
         iconColor={props.primaryColor}
       />
       <SidebarNav
-        buttons={props.sidebarNavButtons}
+        buttons={props.sidebarNav}
         primaryColor={props.primaryColor}
         container={Section}
       />

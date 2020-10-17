@@ -21,7 +21,7 @@ import {Config} from 'Dashboard/edit/views/DashboardEditDialog/ConfigComponent'
 
 export default function SidebarNavButtonConfig(props: {id?: Config['id']}) {
   const buttons = useSelector(
-    (state: RootState) => state.dashboardEditor.sidebarNavButtons,
+    (state: RootState) => state.dashboardEditor.sidebarNav,
   )
 
   const updateDashboard = useUpdateDashboard()
@@ -39,7 +39,7 @@ export default function SidebarNavButtonConfig(props: {id?: Config['id']}) {
 
   const update = (updated: NavButton) => {
     updateDashboard({
-      sidebarNavButtons: {
+      sidebarNav: {
         ...buttons,
         entities: {
           ...buttons.entities,
@@ -55,7 +55,7 @@ export default function SidebarNavButtonConfig(props: {id?: Config['id']}) {
 
     closeConfig()
     updateDashboard({
-      sidebarNavButtons: {
+      sidebarNav: {
         entities: otherButtons,
         ids: updatedIds,
       },
