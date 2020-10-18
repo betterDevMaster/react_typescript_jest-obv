@@ -2,8 +2,8 @@ import React from 'react'
 import SidebarContainerConfig from 'Dashboard/Template/SimpleBlog/Sidebar/SidebarContainer/SidebarContainerConfig'
 import EmojiListConfig from 'Dashboard/components/EmojiList/EmojiListConfig'
 import TicketRibbonConfig from 'Dashboard/components/TicketRibbon/TicketRibbonConfig'
-import {MAIN_NAV_BUTTON} from 'Dashboard/Template/SimpleBlog/MainNavButton/MainNavButton'
-import MainNavButtonConfig from 'Dashboard/Template/SimpleBlog/MainNavButton/MainNavButton/MainNavButtonConfig'
+import {MAIN_NAV_BUTTON} from 'Dashboard/Template/SimpleBlog/MainNav/MainNavButton'
+import MainNavButtonConfig from 'Dashboard/Template/SimpleBlog/MainNav/MainNavButton/MainNavButtonConfig'
 import {WELCOME_TEXT} from 'Dashboard/Template/SimpleBlog/WelcomeText'
 import WelcomeTextConfig from 'Dashboard/Template/SimpleBlog/WelcomeText/WelcomeTextConfig'
 import {SIMPLE_BLOG} from 'Dashboard/Template/SimpleBlog'
@@ -22,6 +22,8 @@ import SidebarNavButtonConfig from 'Dashboard/Template/SimpleBlog/Sidebar/Sideba
 import {SIDEBAR_NAV_BUTTON} from 'Dashboard/Template/SimpleBlog/Sidebar/SidebarNav'
 import {FOOTER} from 'Dashboard/Template/SimpleBlog/Footer'
 import FooterConfig from 'Dashboard/Template/SimpleBlog/Footer/FooterConfig'
+import {BLOG_POST} from 'Dashboard/components/BlogPost'
+import BlogPostConfig from 'Dashboard/components/BlogPost/BlogPostConfig'
 
 export interface Config {
   type: ConfigType
@@ -44,6 +46,7 @@ export type ConfigType =
   | typeof RESOURCE_ITEM
   | typeof SIDEBAR_NAV_BUTTON
   | typeof FOOTER
+  | typeof BLOG_POST
 
 export default function ConfigComponent(props: {config: Config | null}) {
   if (!props.config) {
@@ -75,6 +78,8 @@ export default function ConfigComponent(props: {config: Config | null}) {
       return <SidebarNavButtonConfig id={props.config.id} />
     case FOOTER:
       return <FooterConfig />
+    case BLOG_POST:
+      return <BlogPostConfig id={props.config.id} />
     default:
       throw new Error(`Missing config component for type: ${props.config.type}`)
   }

@@ -1,7 +1,7 @@
 import {useCurrent} from 'Dashboard/edit/state/edit-mode'
 import {SimpleBlog} from 'Dashboard/Template/SimpleBlog'
-import MainNavButton from 'Dashboard/Template/SimpleBlog/MainNavButton/MainNavButton'
-import NewMainNavButton from 'Dashboard/Template/SimpleBlog/MainNavButton/MainNavButton/NewMainNavButton'
+import MainNavButton from 'Dashboard/Template/SimpleBlog/MainNav/MainNavButton'
+import NewMainNavButton from 'Dashboard/Template/SimpleBlog/MainNav/MainNavButton/NewMainNavButton'
 import React from 'react'
 
 export default function MainNav(props: {buttons: SimpleBlog['mainNav']}) {

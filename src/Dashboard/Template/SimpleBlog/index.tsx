@@ -24,7 +24,7 @@ import {EmojiList} from 'Dashboard/components/EmojiList'
 import {EntityList} from 'lib/list'
 import {usePrimaryColor} from 'Dashboard/Template/SimpleBlog/primary-color'
 import EditComponent from 'Dashboard/edit/views/EditComponent'
-import MainNav from 'Dashboard/Template/SimpleBlog/MainNavButton'
+import MainNav from 'Dashboard/Template/SimpleBlog/MainNav'
 
 export const SIMPLE_BLOG = 'SIMPLE_BLOG'
 
