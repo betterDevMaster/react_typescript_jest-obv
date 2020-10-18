@@ -17,17 +17,17 @@ export default function Sidebar(props: SimpleBlog) {
     >
       <EmojiList list={props.emojiList} />
       <TicketRibbon ribbon={props.ticketRibbon} />
-      <AgendaList agendas={props.agendas} component={Section} />
-      <PointsSummary points={props.points} component={Section} />
+      <AgendaList agendas={props.agendas} container={Section} />
+      <PointsSummary points={props.points} container={Section} />
       <ResourceList
         list={props.resourceList}
-        component={Section}
+        container={Section}
         iconColor={props.primaryColor}
       />
       <SidebarNav
-        buttons={props.sidebarNavButtons}
-        buttonColor={props.primaryColor}
-        component={Section}
+        buttons={props.sidebarNav}
+        primaryColor={props.primaryColor}
+        container={Section}
       />
     </SidebarContainer>
   )

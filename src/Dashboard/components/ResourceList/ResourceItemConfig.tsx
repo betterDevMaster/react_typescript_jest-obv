@@ -6,7 +6,6 @@ import MenuItem from '@material-ui/core/MenuItem'
 import Select from '@material-ui/core/Select'
 import TextField from '@material-ui/core/TextField'
 import {Resource, RESOURCE_ICON} from 'Dashboard/components/ResourceList'
-import {Component} from 'Dashboard/edit/state/actions'
 import {onUnknownChangeHandler, onChangeStringHandler} from 'lib/dom'
 import React from 'react'
 import {useSelector} from 'react-redux'
@@ -16,8 +15,9 @@ import {
   useCloseConfig,
   useUpdateDashboard,
 } from 'Dashboard/edit/state/edit-mode'
+import {Config} from 'Dashboard/edit/views/DashboardEditDialog/ConfigComponent'
 
-export default function ResourceItemConfig(props: {id: Component['id']}) {
+export default function ResourceItemConfig(props: {id: Config['id']}) {
   const list = useSelector(
     (state: RootState) => state.dashboardEditor.resourceList,
   )

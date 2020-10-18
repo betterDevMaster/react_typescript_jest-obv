@@ -1,7 +1,7 @@
 import React, {useState} from 'react'
 import styled from 'styled-components'
 import SimpleBlogStyles from 'Dashboard/Template/SimpleBlog/Styles'
-import {NavButtonWithSize, NavButton} from 'Dashboard/components/NavButton'
+import NavButton, {NavButtonWithSize} from 'Dashboard/components/NavButton'
 import Grid from '@material-ui/core/Grid'
 import Container from '@material-ui/core/Container'
 import {BlogPost} from 'Dashboard/components/BlogPost'
@@ -24,15 +24,14 @@ import {EmojiList} from 'Dashboard/components/EmojiList'
 import {EntityList} from 'lib/list'
 import {usePrimaryColor} from 'Dashboard/Template/SimpleBlog/primary-color'
 import EditComponent from 'Dashboard/edit/views/EditComponent'
-import NewMainNavButton from 'Dashboard/Template/SimpleBlog/MainNavButtonList/MainNavButton/NewMainNavButton'
-import MainNavButtonList from 'Dashboard/Template/SimpleBlog/MainNavButtonList'
+import MainNav from 'Dashboard/Template/SimpleBlog/MainNav'
 
 export const SIMPLE_BLOG = 'SIMPLE_BLOG'
 
 export interface SimpleBlog {
   template: typeof SIMPLE_BLOG
   title: string
-  mainNavButtons: EntityList<NavButtonWithSize>
+  mainNav: EntityList<NavButtonWithSize>
   primaryColor: string
   ticketRibbon: TicketRibbon['name'] | null
   logo: string
@@ -42,16 +41,18 @@ export interface SimpleBlog {
     background: string
     textColor: string
   }
-  sidebarNavButtons: EntityList<NavButton>
+  sidebarNav: EntityList<NavButton>
   blogPosts: EntityList<BlogPost>
   agendas: Agenda[]
   points: Points | null
   resourceList: ResourceList
-  footerBackground: string
-  footerTextColor: string
-  footerTermsLink: string | null
-  footerPrivacyLink: string | null
-  footerCopyrightText: string | null
+  footer: {
+    background: string
+    textColor: string
+    termsLink: string | null
+    privacyLink: string | null
+    copyrightText: string | null
+  }
 }
 
 export default function SimpleBlog(props: {dashboard: SimpleBlog; user: User}) {
@@ -85,8 +86,7 @@ export default function SimpleBlog(props: {dashboard: SimpleBlog; user: User}) {
           </EditComponent>
           <MainNavButtons>
             <Grid container spacing={2}>
-              <MainNavButtonList buttons={props.dashboard.mainNavButtons} />
-              <NewMainNavButton />
+              <MainNav buttons={props.dashboard.mainNav} />
             </Grid>
           </MainNavButtons>
           <FullHeightGrid container spacing={4}>
@@ -106,7 +106,7 @@ export default function SimpleBlog(props: {dashboard: SimpleBlog; user: User}) {
           </FullHeightGrid>
         </StyledContainer>
       </Content>
-      <Footer {...props.dashboard} />
+      <Footer footer={props.dashboard.footer} />
     </Box>
   )
 }

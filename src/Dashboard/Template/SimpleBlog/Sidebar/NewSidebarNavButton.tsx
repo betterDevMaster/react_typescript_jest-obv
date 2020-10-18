@@ -1,16 +1,15 @@
 import Button from '@material-ui/core/Button'
-import Grid from '@material-ui/core/Grid'
-import {NavButtonWithSize} from 'Dashboard/components/NavButton'
+import NavButton from 'Dashboard/components/NavButton'
 import {useEditMode, useUpdateDashboard} from 'Dashboard/edit/state/edit-mode'
 import React from 'react'
 import {useSelector} from 'react-redux'
 import {RootState} from 'store'
 import {v4 as uid} from 'uuid'
 
-export default function NewMainNavButton() {
+export default function NewSidebarNavButton(props: {className?: string}) {
   const isEditMode = useEditMode()
   const buttons = useSelector(
-    (state: RootState) => state.dashboardEditor.mainNavButtons,
+    (state: RootState) => state.dashboardEditor.sidebarNav,
   )
   const updateDashboard = useUpdateDashboard()
 
@@ -20,10 +19,9 @@ export default function NewMainNavButton() {
 
   const addButton = () => {
     const id = uid()
-    const button: NavButtonWithSize = {
+    const button: NavButton = {
       text: 'Button',
       link: '',
-      size: 12,
     }
     const entities = {
       ...buttons.entities,
@@ -32,24 +30,23 @@ export default function NewMainNavButton() {
     const ids = [...buttons.ids, id]
 
     updateDashboard({
-      mainNavButtons: {
+      sidebarNav: {
         entities,
         ids,
       },
     })
   }
   return (
-    <Grid item xs={12}>
-      <Button
-        fullWidth
-        size="large"
-        variant="outlined"
-        color="primary"
-        aria-label="add main nav button"
-        onClick={addButton}
-      >
-        New Button
-      </Button>
-    </Grid>
+    <Button
+      fullWidth
+      size="large"
+      variant="contained"
+      color="secondary"
+      aria-label="add sidebar nav button"
+      onClick={addButton}
+      className={props.className}
+    >
+      New Button
+    </Button>
   )
 }

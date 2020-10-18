@@ -6,7 +6,6 @@ import TextField from '@material-ui/core/TextField'
 import Grid from '@material-ui/core/Grid'
 import {useSelector} from 'react-redux'
 import {RootState} from 'store'
-import {Component} from 'Dashboard/edit/state/actions'
 import {Agenda} from 'Dashboard/components/AgendaList'
 import {onChangeStringHandler} from 'lib/dom'
 import {MaterialUiPickersDate} from '@material-ui/pickers/typings/date'
@@ -14,8 +13,9 @@ import {
   useCloseConfig,
   useUpdateDashboard,
 } from 'Dashboard/edit/state/edit-mode'
+import {Config} from 'Dashboard/edit/views/DashboardEditDialog/ConfigComponent'
 
-export default function AgendaConfig(props: {id: Component['id']}) {
+export default function AgendaConfig(props: {id: Config['id']}) {
   const agendas = useSelector(
     (state: RootState) => state.dashboardEditor.agendas,
   )

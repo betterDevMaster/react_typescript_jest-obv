@@ -1,13 +1,12 @@
 import {useCurrent} from 'Dashboard/edit/state/edit-mode'
 import {SimpleBlog} from 'Dashboard/Template/SimpleBlog'
-import MainNavButton from 'Dashboard/Template/SimpleBlog/MainNavButtonList/MainNavButton'
+import MainNavButton from 'Dashboard/Template/SimpleBlog/MainNav/MainNavButton'
+import NewMainNavButton from 'Dashboard/Template/SimpleBlog/MainNav/MainNavButton/NewMainNavButton'
 import React from 'react'
 
-export default function MainNavButtonList(props: {
-  buttons: SimpleBlog['mainNavButtons']
-}) {
+export default function MainNav(props: {buttons: SimpleBlog['mainNav']}) {
   const buttons = useCurrent(
-    (state) => state.dashboardEditor.mainNavButtons,
+    (state) => state.dashboardEditor.mainNav,
     props.buttons,
   )
 
@@ -16,6 +15,7 @@ export default function MainNavButtonList(props: {
       {buttons.ids.map((id) => (
         <MainNavButton key={id} id={id} button={buttons.entities[id]} />
       ))}
+      <NewMainNavButton />
     </>
   )
 }
