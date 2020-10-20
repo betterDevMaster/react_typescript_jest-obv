@@ -7,6 +7,11 @@ import {
 } from 'Dashboard/rule/group'
 import {meetsTagsRule as matchesTagsRule, TAGS, Tags} from 'Dashboard/rule/tags'
 
+export type Rule = TagsRule | GroupRule | NestedRule
+export interface HasRules {
+  rules: Rule[]
+}
+
 export const AND = 'AND'
 export const OR = 'OR'
 export type Condition = typeof AND | typeof OR
@@ -20,8 +25,6 @@ type NestedRule = BaseRule & {
   source: typeof NESTED_RULE
   rules: Rule[]
 }
-
-export type Rule = TagsRule | GroupRule | NestedRule
 
 export const hasMatch = (
   {groups = {}, tags = []}: {groups?: Groups; tags?: Tags},
