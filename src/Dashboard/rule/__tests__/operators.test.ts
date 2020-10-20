@@ -1,4 +1,4 @@
-import {AND, hasMatch, Operator, OR} from 'Dashboard/rule'
+import {AND, hasMatch, Condition, OR} from 'Dashboard/rule'
 import {GROUP, GroupRule, IS_MATCH} from 'Dashboard/rule/group'
 import faker from 'faker'
 
@@ -92,11 +92,11 @@ it('should operate in order', () => {
   expect(hasMatch({groups: onlyLast}, rules)).toBe(false)
 })
 
-function createRule(operator: Operator) {
+function createRule(condition: Condition) {
   const key = faker.random.word()
   const target = faker.random.word()
   const rule: GroupRule = {
-    operator,
+    condition,
     source: GROUP,
     type: IS_MATCH,
     key: key,

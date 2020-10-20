@@ -14,7 +14,7 @@ it('should check for includes', () => {
   ]
 
   const rule: TagsRule = {
-    operator: AND,
+    condition: AND,
     source: TAGS,
     type: INCLUDES,
     target: tag,
@@ -32,7 +32,7 @@ it('should check for doese not include', () => {
   )
 
   const rule: TagsRule = {
-    operator: AND,
+    condition: AND,
     source: TAGS,
     type: DOES_NOT_INCLUDE,
     target: tag,

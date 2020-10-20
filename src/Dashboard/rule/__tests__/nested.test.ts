@@ -1,4 +1,4 @@
-import {AND, hasMatch, NESTED_RULE, Operator, OR, Rule} from 'Dashboard/rule'
+import {AND, hasMatch, NESTED_RULE, Condition, OR, Rule} from 'Dashboard/rule'
 import faker from 'faker'
 import {GROUP, GroupRule, IS_MATCH} from 'Dashboard/rule/group'
 
@@ -21,7 +21,7 @@ it('should evaluate nested first', () => {
       rule1,
       {
         source: NESTED_RULE,
-        operator: OR,
+        condition: OR,
         rules: [rule2, rule3],
       },
     ]),
@@ -37,17 +37,17 @@ it('should handle deeply nested rules', () => {
   const rules: Rule[] = [
     {
       source: NESTED_RULE,
-      operator: AND,
+      condition: AND,
       rules: [
         rule3,
         {
           source: NESTED_RULE,
-          operator: AND,
+          condition: AND,
           rules: [
             rule2,
             {
               source: NESTED_RULE,
-              operator: AND,
+              condition: AND,
               rules: [rule1],
             },
           ],
@@ -82,11 +82,11 @@ it('should handle deeply nested rules', () => {
   expect(hasMatch({groups: hasAll}, rules)).toBe(true)
 })
 
-function createRule(operator: Operator) {
+function createRule(condition: Condition) {
   const key = faker.random.word()
   const target = faker.random.word()
   const rule: GroupRule = {
-    operator,
+    condition,
     source: GROUP,
     type: IS_MATCH,
     key: key,

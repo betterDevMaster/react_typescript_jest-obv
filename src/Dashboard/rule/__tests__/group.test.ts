@@ -6,7 +6,7 @@ it('should check for match', () => {
   const key = faker.random.word()
   const target = faker.random.word()
   const rule: GroupRule = {
-    operator: AND,
+    condition: AND,
     source: GROUP,
     type: IS_MATCH,
     key,
@@ -24,7 +24,7 @@ it('should check for is not match', () => {
   const key = faker.random.word()
   const target = faker.random.word()
   const rule: GroupRule = {
-    operator: AND,
+    condition: AND,
     source: GROUP,
     type: DOES_NOT_MATCH,
     key,
@@ -42,7 +42,7 @@ it('should check for both groups', () => {
   const key1 = faker.random.word()
   const target1 = faker.random.word()
   const rule1: GroupRule = {
-    operator: AND,
+    condition: AND,
     source: GROUP,
     type: IS_MATCH,
     key: key1,
@@ -52,7 +52,7 @@ it('should check for both groups', () => {
   const key2 = faker.random.word()
   const target2 = faker.random.word()
   const rule2: GroupRule = {
-    operator: AND,
+    condition: AND,
     source: GROUP,
     type: IS_MATCH,
     key: key2,
@@ -86,7 +86,7 @@ it('should check if it has at least one', () => {
   const key1 = faker.random.word()
   const target1 = faker.random.word()
   const rule1: GroupRule = {
-    operator: AND,
+    condition: AND,
     source: GROUP,
     type: IS_MATCH,
     key: key1,
@@ -96,7 +96,7 @@ it('should check if it has at least one', () => {
   const key2 = faker.random.word()
   const target2 = faker.random.word()
   const rule2: GroupRule = {
-    operator: OR,
+    condition: OR,
     source: GROUP,
     type: IS_MATCH,
     key: key2,
