@@ -3,10 +3,11 @@ import styled from 'styled-components'
 import Button from 'lib/ui/Button'
 import {Column} from 'lib/ui/layout'
 import {newTabProps} from 'lib/link'
+import {HasRules} from 'Dashboard/component-rules/sources'
 
 export const NAV_BUTTON = 'NAV_BUTTON'
 
-export default interface NavButton {
+export default interface NavButton extends HasRules {
   text: string
   link: string
   backgroundColor?: string
@@ -37,7 +38,7 @@ export default function NavButton(props: NavButton) {
         textColor={props.textColor}
         className={props.className}
         hoverBackgroundColor={props.hoverBackgroundColor}
-        lightOnHover={!props.hoverBackgroundColor}
+        disableHover={!props.hoverBackgroundColor}
         borderRadius={props.borderRadius}
         borderWidth={props.borderWidth}
         borderColor={props.borderColor}

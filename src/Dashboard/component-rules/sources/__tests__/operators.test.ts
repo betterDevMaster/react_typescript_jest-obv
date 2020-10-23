@@ -1,5 +1,9 @@
-import {AND, hasMatch, Condition, OR} from 'Dashboard/rule'
-import {GROUP, GroupRule, IS_MATCH} from 'Dashboard/rule/group'
+import {AND, hasMatch, Condition, OR} from 'Dashboard/component-rules/sources'
+import {
+  GROUP,
+  GroupRule,
+  IS_MATCH,
+} from 'Dashboard/component-rules/sources/GroupRule/group-rule'
 import faker from 'faker'
 
 it('should require both conditions to pass', () => {

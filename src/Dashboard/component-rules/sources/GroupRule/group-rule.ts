@@ -1,8 +1,8 @@
-import {BaseRule} from 'Dashboard/rule'
+import {BaseRule} from 'Dashboard/component-rules/sources'
 
-export const GROUP = 'GROUP'
-export const IS_MATCH = 'IS MATCH'
-export const DOES_NOT_MATCH = 'DOES NOT MATCH'
+export const GROUP = 'Group'
+export const IS_MATCH = 'Is Match'
+export const DOES_NOT_MATCH = 'Does Not Match'
 export type GroupRule = BaseRule & {
   source: typeof GROUP
   type: typeof IS_MATCH | typeof DOES_NOT_MATCH

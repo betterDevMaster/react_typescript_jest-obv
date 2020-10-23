@@ -24,6 +24,7 @@ export default function NewMainNavButton() {
       text: 'Button',
       link: '',
       size: 12,
+      rules: [],
     }
     const entities = {
       ...buttons.entities,

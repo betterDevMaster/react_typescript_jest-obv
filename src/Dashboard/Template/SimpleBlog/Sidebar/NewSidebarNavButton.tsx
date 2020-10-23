@@ -22,6 +22,7 @@ export default function NewSidebarNavButton(props: {className?: string}) {
     const button: NavButton = {
       text: 'Button',
       link: '',
+      rules: [],
     }
     const entities = {
       ...buttons.entities,

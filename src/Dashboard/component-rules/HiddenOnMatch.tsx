@@ -1,5 +1,5 @@
-import {hasMatch, Rule} from 'Dashboard/rule'
-import {useRulesData} from 'Dashboard/rule/RulesDataProvider'
+import {hasMatch, Rule} from 'Dashboard/component-rules/sources'
+import {useRulesData} from 'Dashboard/component-rules/RulesDataProvider'
 
 export default function HiddenOnMatch(props: {
   rules: Rule[]

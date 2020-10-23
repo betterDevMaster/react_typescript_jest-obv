@@ -1,5 +1,10 @@
-import {AND, hasMatch} from 'Dashboard/rule'
-import {DOES_NOT_INCLUDE, INCLUDES, TAGS, TagsRule} from 'Dashboard/rule/tags'
+import {AND, hasMatch} from 'Dashboard/component-rules/sources'
+import {
+  DOES_NOT_INCLUDE,
+  INCLUDES,
+  TAGS,
+  TagsRule,
+} from 'Dashboard/component-rules/sources/TagsRule/tags-rule'
 import faker from 'faker'
 
 it('should check for includes', () => {

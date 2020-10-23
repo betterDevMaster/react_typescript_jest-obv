@@ -1,5 +1,10 @@
-import {AND, hasMatch, OR} from 'Dashboard/rule'
-import {DOES_NOT_MATCH, GROUP, GroupRule, IS_MATCH} from 'Dashboard/rule/group'
+import {AND, hasMatch, OR} from 'Dashboard/component-rules/sources'
+import {
+  DOES_NOT_MATCH,
+  GROUP,
+  GroupRule,
+  IS_MATCH,
+} from 'Dashboard/component-rules/sources/GroupRule/group-rule'
 import faker from 'faker'
 
 it('should check for match', () => {

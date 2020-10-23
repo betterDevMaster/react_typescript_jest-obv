@@ -1,6 +1,17 @@
-import {AND, hasMatch, NESTED_RULE, Condition, OR, Rule} from 'Dashboard/rule'
+import {
+  AND,
+  hasMatch,
+  Condition,
+  OR,
+  Rule,
+} from 'Dashboard/component-rules/sources'
 import faker from 'faker'
-import {GROUP, GroupRule, IS_MATCH} from 'Dashboard/rule/group'
+import {
+  GROUP,
+  GroupRule,
+  IS_MATCH,
+} from 'Dashboard/component-rules/sources/GroupRule/group-rule'
+import {NESTED_RULE} from 'Dashboard/component-rules/sources/NestedRule/nested-rule'
 
 it('should evaluate nested first', () => {
   const {key: key1, target: target1, rule: rule1} = createRule(OR)
