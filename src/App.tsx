@@ -8,6 +8,7 @@ import {ColorPickerPopover} from 'lib/ui/ColorPicker'
 import {MuiPickersUtilsProvider} from '@material-ui/pickers'
 import MomentUtils from '@date-io/moment'
 import {fakePoints} from 'Dashboard/components/PointsSummary/__utils__/factory'
+import RulesProvider from 'Dashboard/component-rules/RulesProvider'
 
 const dashboard = fakeSimpleBlog({
   primaryColor: '#ea202e',
@@ -18,17 +19,21 @@ const dashboard = fakeSimpleBlog({
   },
 })
 
+const user = fakeUser()
+
 export default function App() {
   return (
     <Providers>
-      <Dashboard
-        // @ts-ignore
-        dashboard={dashboard}
-        // @ts-ignore
-        user={fakeUser()}
-        isEditMode={true}
-      />
-      <ColorPickerPopover />
+      <RulesProvider tags={['foo', 'baz']} groups={user}>
+        <Dashboard
+          // @ts-ignore
+          dashboard={dashboard}
+          // @ts-ignore
+          user={user}
+          isEditMode={true}
+        />
+        <ColorPickerPopover />
+      </RulesProvider>
     </Providers>
   )
 }

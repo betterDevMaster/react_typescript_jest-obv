@@ -16,6 +16,7 @@ export const fakeNavButton = (overrides?: Partial<NavButton>): NavButton => {
     link: faker.internet.url(),
     newTab: true,
     isEditMode: false,
+    rules: [],
   }
 
   const makeAttributes: (nb: NavButton) => NavButton = pipe(

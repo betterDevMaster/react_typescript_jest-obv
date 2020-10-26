@@ -11,11 +11,12 @@ export interface ButtonProps {
   textColor?: string
   className?: string
   hoverBackgroundColor?: string
-  lightOnHover?: boolean
+  disableHover?: boolean
   borderRadius?: number
   borderWidth?: number
   borderColor?: string
   hoverBorderColor?: string
+  variant?: 'text'
 }
 
 export default function Button(props: ButtonProps) {
@@ -34,6 +35,8 @@ export default function Button(props: ButtonProps) {
       borderRadius={borderRadius(props)}
       className={props.className}
       hoverBorder={hoverBorder(props)}
+      hoverTextDecoration={hoverTextDecoration(props)}
+      onClick={props.onClick}
     >
       {props.children}
     </StyledButton>
@@ -57,6 +60,10 @@ function textTransform(props: ButtonProps) {
 }
 
 function padding(props: ButtonProps) {
+  if (isText(props.variant)) {
+    return '0'
+  }
+
   return 'auto'
 }
 
@@ -65,10 +72,18 @@ function textColor(props: ButtonProps) {
     return props.textColor
   }
 
+  if (isText(props.variant)) {
+    return '#000000'
+  }
+
   return '#FFFFFF'
 }
 
 function backgroundColor(props: ButtonProps) {
+  if (isText(props.variant)) {
+    return 'transparent'
+  }
+
   if (props.backgroundColor) {
     return props.backgroundColor
   }
@@ -81,7 +96,7 @@ function cursor(props: ButtonProps) {
 }
 
 function transition(props: ButtonProps) {
-  if (!props.lightOnHover) {
+  if (props.disableHover) {
     return 'none'
   }
 
@@ -89,7 +104,7 @@ function transition(props: ButtonProps) {
 }
 
 function hoverOpacity(props: ButtonProps) {
-  if (!props.lightOnHover) {
+  if (props.disableHover) {
     return 1
   }
 
@@ -97,7 +112,7 @@ function hoverOpacity(props: ButtonProps) {
 }
 
 function hoverBackgroundColor(props: ButtonProps) {
-  if (props.hoverBackgroundColor) {
+  if (props.hoverBackgroundColor && !props.disableHover) {
     return props.hoverBackgroundColor
   }
 
@@ -113,7 +128,7 @@ function borderRadius(props: ButtonProps) {
 }
 
 function hoverBorder(props: ButtonProps) {
-  if (!props.hoverBorderColor) {
+  if (!props.hoverBorderColor || props.disableHover) {
     return border(props)
   }
 
@@ -144,6 +159,18 @@ function hoverBorderColor(props: ButtonProps) {
   return props.hoverBorderColor
 }
 
+function hoverTextDecoration(props: ButtonProps) {
+  if (isText(props.variant) && !props.disableHover) {
+    return 'underline'
+  }
+
+  return 'none'
+}
+
+function isText(variant: ButtonProps['variant']) {
+  return variant === 'text'
+}
+
 type StyleProps = {
   width: string
   textTransform: string
@@ -157,6 +184,7 @@ type StyleProps = {
   hoverBackgroundColor: string
   borderRadius: string
   hoverBorder: string
+  hoverTextDecoration: string
 }
 
 const StyledButton = styled.button<StyleProps>`
@@ -169,9 +197,11 @@ const StyledButton = styled.button<StyleProps>`
   cursor: ${(props) => props.cursor};
   transition: ${(props) => props.transition};
   border-radius: ${(props) => props.borderRadius};
+
   &:hover {
     opacity: ${(props) => props.hoverOpacity};
     background: ${(props) => props.hoverBackgroundColor};
     border: ${(props) => props.hoverBorder};
+    text-decoration: ${(props) => props.hoverTextDecoration};
   }
 `

@@ -19,6 +19,23 @@ export const handleSetEditMode = (
   isEditMode: action.payload,
 })
 
+export const SET_PREVIEW_MODE = 'SET_PREVIEW_MODE'
+export interface SetPreviewModeAction {
+  type: typeof SET_PREVIEW_MODE
+  payload: boolean
+}
+export const setPreviewMode = (isPreview: boolean): SetPreviewModeAction => ({
+  type: SET_PREVIEW_MODE,
+  payload: isPreview,
+})
+export const handleSetPreviewMode = (
+  state: DashboardEditorState,
+  action: SetPreviewModeAction,
+): DashboardEditorState => ({
+  ...state,
+  isPreviewMode: action.payload,
+})
+
 export const SET_DASHBOARD_ACTION = 'SET_DASHBOARD'
 export interface SetDashboardAction {
   type: typeof SET_DASHBOARD_ACTION
@@ -66,5 +83,6 @@ export const handleSetConfig = (
 
 export type DashboardEditorAction =
   | SetEditModeAction
+  | SetPreviewModeAction
   | SetDashboardAction
   | SetConfigAction

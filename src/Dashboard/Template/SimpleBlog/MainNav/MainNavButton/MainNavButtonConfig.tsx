@@ -22,11 +22,20 @@ import {
   useUpdateDashboard,
 } from 'Dashboard/edit/state/edit-mode'
 import {Config} from 'Dashboard/edit/views/DashboardEditDialog/ConfigComponent'
+import RulesConfig, {
+  useRulesConfig,
+} from 'Dashboard/component-rules/RulesConfig'
+import ConfigureRulesButton from 'Dashboard/component-rules/ConfigureRulesButton'
 
 export default function MainNavButtonConfig(props: {id?: Config['id']}) {
   const buttons = useSelector(
     (state: RootState) => state.dashboardEditor.mainNav,
   )
+
+  const {
+    visible: rulesConfigVisible,
+    toggle: toggleRulesConfig,
+  } = useRulesConfig()
 
   const updateDashboard = useUpdateDashboard()
   const closeConfig = useCloseConfig()
@@ -75,100 +84,108 @@ export default function MainNavButtonConfig(props: {id?: Config['id']}) {
     })
 
   return (
-    <>
-      <TextField
-        label="Text"
-        value={button.text}
-        inputProps={{
-          'aria-label': 'button name input',
-        }}
-        fullWidth
-        onChange={onChangeStringHandler(updateButton('text'))}
-      />
-      <Typography gutterBottom>Size</Typography>
-      <Slider
-        min={1}
-        max={12}
-        onChange={handleChangeSlider(updateButton('size'))}
-        valueLabelDisplay="auto"
-        value={button.size || 0}
-      />
-      <TextField
-        label="Link URL"
-        value={button.link}
-        inputProps={{
-          'aria-label': 'button link input',
-        }}
-        fullWidth
-        onChange={onChangeStringHandler(updateButton('link'))}
-      />
-      <FormControl>
-        <FormControlLabel
-          label="New Tab"
-          control={
-            <Checkbox
-              checked={button.newTab}
-              onChange={onChangeCheckedHandler(updateButton('newTab'))}
-            />
-          }
-        />
-      </FormControl>
-      <ColorPicker
-        label="Background Color"
-        color={button.backgroundColor}
-        onPick={updateButton('backgroundColor')}
-      />
-      <ColorPicker
-        label="Hover Background Color"
-        color={button.hoverBackgroundColor}
-        onPick={updateButton('hoverBackgroundColor')}
-      />
-      <ColorPicker
-        label="Text Color"
-        color={button.textColor}
-        onPick={updateButton('textColor')}
-      />
-      <ColorPicker
-        label="Border Color"
-        color={button.borderColor}
-        onPick={updateButton('borderColor')}
-      />
-      <ColorPicker
-        label="Hover Border Color"
-        color={button.hoverBorderColor}
-        onPick={updateButton('hoverBorderColor')}
-      />
-      <TextField
-        value={button.borderWidth || ''}
-        label="Border Width"
-        type="number"
-        fullWidth
-        inputProps={{
-          min: 0,
-        }}
-        onChange={onChangeNumberHandler(updateButton('borderWidth'))}
-      />
-      <TextField
-        value={button.borderRadius || ''}
-        label="Border Radius"
-        type="number"
-        fullWidth
-        inputProps={{
-          min: 0,
-        }}
-        onChange={onChangeNumberHandler(updateButton('borderRadius'))}
-      />
-
-      <Box mt={2} mb={3}>
-        <DangerButton
+    <RulesConfig
+      visible={rulesConfigVisible}
+      close={toggleRulesConfig}
+      rules={button.rules}
+      onChange={updateButton('rules')}
+    >
+      <>
+        <ConfigureRulesButton onClick={toggleRulesConfig} />
+        <TextField
+          label="Text"
+          value={button.text}
+          inputProps={{
+            'aria-label': 'button name input',
+          }}
           fullWidth
-          variant="outlined"
-          aria-label="remove button"
-          onClick={removeButton}
-        >
-          REMOVE BUTTON
-        </DangerButton>
-      </Box>
-    </>
+          onChange={onChangeStringHandler(updateButton('text'))}
+        />
+        <Typography gutterBottom>Size</Typography>
+        <Slider
+          min={1}
+          max={12}
+          onChange={handleChangeSlider(updateButton('size'))}
+          valueLabelDisplay="auto"
+          value={button.size || 0}
+        />
+        <TextField
+          label="Link URL"
+          value={button.link}
+          inputProps={{
+            'aria-label': 'button link input',
+          }}
+          fullWidth
+          onChange={onChangeStringHandler(updateButton('link'))}
+        />
+        <FormControl>
+          <FormControlLabel
+            label="New Tab"
+            control={
+              <Checkbox
+                checked={button.newTab}
+                onChange={onChangeCheckedHandler(updateButton('newTab'))}
+              />
+            }
+          />
+        </FormControl>
+        <ColorPicker
+          label="Background Color"
+          color={button.backgroundColor}
+          onPick={updateButton('backgroundColor')}
+        />
+        <ColorPicker
+          label="Hover Background Color"
+          color={button.hoverBackgroundColor}
+          onPick={updateButton('hoverBackgroundColor')}
+        />
+        <ColorPicker
+          label="Text Color"
+          color={button.textColor}
+          onPick={updateButton('textColor')}
+        />
+        <ColorPicker
+          label="Border Color"
+          color={button.borderColor}
+          onPick={updateButton('borderColor')}
+        />
+        <ColorPicker
+          label="Hover Border Color"
+          color={button.hoverBorderColor}
+          onPick={updateButton('hoverBorderColor')}
+        />
+        <TextField
+          value={button.borderWidth || ''}
+          label="Border Width"
+          type="number"
+          fullWidth
+          inputProps={{
+            min: 0,
+          }}
+          onChange={onChangeNumberHandler(updateButton('borderWidth'))}
+        />
+        <TextField
+          value={button.borderRadius || ''}
+          label="Border Radius"
+          type="number"
+          fullWidth
+          inputProps={{
+            min: 0,
+          }}
+          onChange={onChangeNumberHandler(updateButton('borderRadius'))}
+        />
+
+        <Box mt={2} mb={3}>
+          <DangerButton
+            fullWidth
+            variant="outlined"
+            aria-label="remove button"
+            onClick={removeButton}
+          >
+            REMOVE BUTTON
+          </DangerButton>
+        </Box>
+      </>
+    </RulesConfig>
   )
 }
