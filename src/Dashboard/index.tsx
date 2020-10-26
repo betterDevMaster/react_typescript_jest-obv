@@ -5,6 +5,7 @@ import {useDispatch} from 'react-redux'
 import {setDashboard, setEditMode} from 'Dashboard/edit/state/actions'
 import DashboardEditDialog from 'Dashboard/edit/views/DashboardEditDialog'
 import Template from 'Dashboard/Template'
+import PreviewBar from 'Dashboard/edit/views/PreviewBar'
 
 export type Dashboard = SimpleBlog
 
@@ -15,11 +16,12 @@ export type DashboardProps = {
 }
 
 export default function Dashboard(props: DashboardProps) {
-  useLoadDashboard(props.isEditMode, props.dashboard)
+  useCurrentDashboard(props.isEditMode, props.dashboard)
 
   if (props.isEditMode) {
     return (
       <>
+        <PreviewBar />
         <Template {...props} />
         <DashboardEditDialog />
       </>
@@ -29,7 +31,7 @@ export default function Dashboard(props: DashboardProps) {
   return <Template {...props} />
 }
 
-function useLoadDashboard(isEditMode: boolean, dashboard: Dashboard) {
+function useCurrentDashboard(isEditMode: boolean, dashboard: Dashboard) {
   const hasSetRef = useRef(false)
   const dispatch = useDispatch()
 

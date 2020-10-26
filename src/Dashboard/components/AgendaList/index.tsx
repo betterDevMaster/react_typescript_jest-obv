@@ -47,7 +47,9 @@ export default function AgendaList(props: {
           </Agenda>
         </EditComponent>
       ))}
-      <StyledAddAgendaEventButton />
+      <EditModeOnly>
+        <StyledAddAgendaEventButton />
+      </EditModeOnly>
     </Component>
   )
 }

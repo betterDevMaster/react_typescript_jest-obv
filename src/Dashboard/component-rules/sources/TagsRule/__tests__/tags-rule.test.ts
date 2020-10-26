@@ -1,7 +1,7 @@
 import {AND, hasMatch} from 'Dashboard/component-rules/sources'
 import {
   DOES_NOT_INCLUDE,
-  INCLUDES,
+  INCLUDE,
   TAGS,
   TagsRule,
 } from 'Dashboard/component-rules/sources/TagsRule/tags-rule'
@@ -21,7 +21,7 @@ it('should check for includes', () => {
   const rule: TagsRule = {
     condition: AND,
     source: TAGS,
-    type: INCLUDES,
+    type: INCLUDE,
     target: tag,
   }
 

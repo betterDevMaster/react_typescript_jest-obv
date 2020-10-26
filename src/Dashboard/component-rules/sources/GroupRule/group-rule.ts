@@ -10,7 +10,7 @@ export type GroupRule = BaseRule & {
   target: string
 }
 
-export type Groups = Record<string, string>
+export type Groups = Record<string, any>
 
 export function meetsGroupRule(groups: Groups, rule: GroupRule) {
   if (rule.type === DOES_NOT_MATCH) {

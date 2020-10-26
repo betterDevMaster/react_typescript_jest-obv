@@ -4,11 +4,15 @@ import styled from 'styled-components'
 import ArrowBackIosIcon from '@material-ui/icons/ArrowBackIos'
 import {useTheme} from 'styled-components'
 
-export default function BackButton(props: {onClick: () => void}) {
+export default function BackButton(props: {
+  onClick: () => void
+  className?: string
+}) {
   const theme = useTheme()
 
   return (
     <StyledButton
+      className={props.className}
       variant="text"
       onClick={props.onClick}
       textColor={theme.colors.primary}

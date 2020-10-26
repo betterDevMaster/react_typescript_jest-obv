@@ -5,16 +5,18 @@ import TextField from '@material-ui/core/TextField/TextField'
 import {
   createTagsRule,
   DOES_NOT_INCLUDE,
-  INCLUDES,
+  INCLUDE,
+  TAGS,
   TagsRule,
 } from 'Dashboard/component-rules/sources/TagsRule/tags-rule'
-import {RuleConfigProps} from 'Dashboard/component-rules/RulesConfig/RuleList/NewRuleForm/SourceConfig'
+import {RuleConfigProps} from 'Dashboard/component-rules/RulesConfig/RuleList/RuleForm/SourceConfig'
 import {onChangeStringHandler, onUnknownChangeHandler} from 'lib/dom'
 import React, {useEffect, useState} from 'react'
+import {Rule} from 'Dashboard/component-rules/sources'
 
 export default function TagsRuleConfig(props: RuleConfigProps) {
-  const [type, setType] = useState<TagsRule['type']>(INCLUDES)
-  const [target, setTarget] = useState('')
+  const [type, setType] = useState<TagsRule['type']>(initialType(props.rule))
+  const [target, setTarget] = useState(initialTarget(props.rule))
   const {onSet} = props
 
   useEffect(() => {
@@ -31,7 +33,7 @@ export default function TagsRuleConfig(props: RuleConfigProps) {
           fullWidth
           onChange={onUnknownChangeHandler(setType)}
         >
-          <MenuItem value={INCLUDES}>{INCLUDES}</MenuItem>
+          <MenuItem value={INCLUDE}>{INCLUDE}</MenuItem>
           <MenuItem value={DOES_NOT_INCLUDE}>{DOES_NOT_INCLUDE}</MenuItem>
         </Select>
       </FormControl>
@@ -46,4 +48,20 @@ export default function TagsRuleConfig(props: RuleConfigProps) {
       />
     </div>
   )
+}
+
+function initialType(rule: Rule | null) {
+  if (!rule || rule.source !== TAGS) {
+    return INCLUDE
+  }
+
+  return rule.type
+}
+
+function initialTarget(rule: Rule | null) {
+  if (!rule || rule.source !== TAGS) {
+    return ''
+  }
+
+  return rule.target
 }

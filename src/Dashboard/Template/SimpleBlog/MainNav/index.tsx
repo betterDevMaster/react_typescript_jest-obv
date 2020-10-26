@@ -1,4 +1,5 @@
 import {useCurrent} from 'Dashboard/edit/state/edit-mode'
+import EditModeOnly from 'Dashboard/edit/views/EditModeOnly'
 import {SimpleBlog} from 'Dashboard/Template/SimpleBlog'
 import MainNavButton from 'Dashboard/Template/SimpleBlog/MainNav/MainNavButton'
 import NewMainNavButton from 'Dashboard/Template/SimpleBlog/MainNav/MainNavButton/NewMainNavButton'
@@ -15,7 +16,9 @@ export default function MainNav(props: {buttons: SimpleBlog['mainNav']}) {
       {buttons.ids.map((id) => (
         <MainNavButton key={id} id={id} button={buttons.entities[id]} />
       ))}
-      <NewMainNavButton />
+      <EditModeOnly>
+        <NewMainNavButton />
+      </EditModeOnly>
     </>
   )
 }

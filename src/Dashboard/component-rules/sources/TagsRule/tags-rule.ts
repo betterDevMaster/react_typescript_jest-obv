@@ -1,12 +1,12 @@
 import {AND, BaseRule} from 'Dashboard/component-rules/sources'
 
 export const TAGS = 'Tags'
-export const INCLUDES = 'includes'
+export const INCLUDE = 'include'
 export const DOES_NOT_INCLUDE = 'does not include'
 
 export type TagsRule = BaseRule & {
   source: typeof TAGS
-  type: typeof INCLUDES | typeof DOES_NOT_INCLUDE
+  type: typeof INCLUDE | typeof DOES_NOT_INCLUDE
   target: string
 }
 

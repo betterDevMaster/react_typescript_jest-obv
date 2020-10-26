@@ -8,19 +8,25 @@ import Select from '@material-ui/core/Select'
 import FormControl from '@material-ui/core/FormControl'
 import MenuItem from '@material-ui/core/MenuItem'
 import Typography from '@material-ui/core/Typography'
-import SourceConfig from 'Dashboard/component-rules/RulesConfig/RuleList/NewRuleForm/SourceConfig'
+import SourceConfig from 'Dashboard/component-rules/RulesConfig/RuleList/RuleForm/SourceConfig'
 import {GROUP} from 'Dashboard/component-rules/sources/GroupRule/group-rule'
 import {TAGS} from 'Dashboard/component-rules/sources/TagsRule/tags-rule'
 import {NESTED_RULE} from 'Dashboard/component-rules/sources/NestedRule/nested-rule'
+import DangerButton from 'lib/ui/Button/DangerButton'
 
 const ALL_SOURCES = [TAGS, GROUP, NESTED_RULE]
 
-export default function NewRuleForm(props: {
+export default function RuleForm(props: {
   close: () => void
   onCreate: (rule: Rule) => void
+  rule: Rule | null
+  onDelete: () => void
 }) {
-  const [source, setSource] = useState<null | Rule['source']>(null)
-  const [rule, setRule] = useState<null | Rule>(null)
+  const initialSource = props.rule ? props.rule.source : null
+  const initialRule = props.rule || null
+  const [source, setSource] = useState<null | Rule['source']>(initialSource)
+  const [rule, setRule] = useState<null | Rule>(initialRule)
+  const showDelete = Boolean(props.rule)
 
   const save = () => {
     if (!rule) {
@@ -31,6 +37,7 @@ export default function NewRuleForm(props: {
   }
   return (
     <Box>
+      <DeleteRuleButton visible={showDelete} onClick={props.onDelete} />
       <Typography paragraph>Hide component when</Typography>
       <FormControl fullWidth>
         <Select
@@ -46,7 +53,7 @@ export default function NewRuleForm(props: {
           ))}
         </Select>
       </FormControl>
-      <SourceConfig source={source} onSet={setRule} />
+      <SourceConfig source={source} onSet={setRule} rule={rule} />
       <Grid container spacing={2}>
         <Grid item xs={12} sm={6}>
           <Button onClick={props.close} fullWidth>
@@ -63,6 +70,27 @@ export default function NewRuleForm(props: {
   )
 }
 
+function DeleteRuleButton(props: {visible: boolean; onClick: () => void}) {
+  if (!props.visible) {
+    return null
+  }
+
+  return (
+    <StyledDangerButton
+      onClick={props.onClick}
+      variant="outlined"
+      size="small"
+      fullWidth
+    >
+      Delete
+    </StyledDangerButton>
+  )
+}
+
 const Box = styled.div`
   padding-bottom: ${(props) => props.theme.spacing[4]};
+`
+
+const StyledDangerButton = styled(DangerButton)`
+  margin-bottom: ${(props) => props.theme.spacing[3]}!important;
 `

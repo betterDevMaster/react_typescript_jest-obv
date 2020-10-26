@@ -4,35 +4,81 @@ import React, {useState} from 'react'
 import RuleComponent from 'Dashboard/component-rules/RulesConfig/RuleList/SingleRule'
 import BackButton from 'Dashboard/component-rules/RulesConfig/BackButton'
 import MuiButton from '@material-ui/core/Button'
-import NewRuleForm from 'Dashboard/component-rules/RulesConfig/RuleList/NewRuleForm'
+import RuleForm from 'Dashboard/component-rules/RulesConfig/RuleList/RuleForm'
 
 export default function RuleList(props: {
   rules: Rule[]
   close: () => void
   onChange: (rules: Rule[]) => void
 }) {
-  const [newRuleFormVisible, setNewRuleFormVisible] = useState(false)
-  const toggleNewRuleForm = () => setNewRuleFormVisible(!newRuleFormVisible)
+  const [ruleConfigVisible, setRuleConfigVisible] = useState(false)
+  const toggleRuleConfig = () => setRuleConfigVisible(!ruleConfigVisible)
+  const [selectedRuleIndex, setSelectedRuleIndex] = useState<number | null>(
+    null,
+  )
+  const rule =
+    selectedRuleIndex !== null ? props.rules[selectedRuleIndex] : null
 
-  const saveNewRule = (rule: Rule) => {
-    const updated = [...props.rules, rule]
-    props.onChange(updated)
-    toggleNewRuleForm()
+  const addNewRule = () => {
+    setSelectedRuleIndex(null)
+    toggleRuleConfig()
   }
 
-  if (newRuleFormVisible) {
-    return <NewRuleForm close={toggleNewRuleForm} onCreate={saveNewRule} />
+  const editRule = (index: number) => {
+    setSelectedRuleIndex(index)
+    toggleRuleConfig()
+  }
+
+  const createRule = (rule: Rule) => {
+    const updated = [...props.rules, rule]
+    props.onChange(updated)
+    toggleRuleConfig()
+  }
+
+  const updateRule = (index: number, rule: Rule) => {
+    const updated = props.rules.map((r, i) => (i === index ? rule : r))
+    props.onChange(updated)
+    setRuleConfigVisible(false)
+  }
+
+  const saveRule = (rule: Rule) => {
+    if (selectedRuleIndex !== null) {
+      updateRule(selectedRuleIndex, rule)
+    } else {
+      createRule(rule)
+    }
+  }
+
+  const deleteRule = () => {
+    toggleRuleConfig()
+    const removed = props.rules.filter((_, i) => i !== selectedRuleIndex)
+    props.onChange(removed)
+  }
+
+  if (ruleConfigVisible) {
+    return (
+      <RuleForm
+        close={toggleRuleConfig}
+        onDelete={deleteRule}
+        onCreate={saveRule}
+        rule={rule}
+      />
+    )
   }
 
   return (
     <Box>
-      <BackButton onClick={props.close} />
-      <Rules rules={props.rules} />
+      <StyledBackButton onClick={props.close} />
+      <Rules
+        rules={props.rules}
+        onEditRule={editRule}
+        updateRule={updateRule}
+      />
       <MuiButton
         variant="contained"
         color="primary"
         fullWidth
-        onClick={toggleNewRuleForm}
+        onClick={addNewRule}
       >
         Add Rule
       </MuiButton>
@@ -40,19 +86,32 @@ export default function RuleList(props: {
   )
 }
 
-function Rules(props: {rules: Rule[]}) {
+function Rules(props: {
+  rules: Rule[]
+  updateRule: (index: number, rule: Rule) => void
+  onEditRule: (index: number) => void
+}) {
   const hasRules = props.rules.length > 0
 
   if (!hasRules) {
     return <EmptyRulesText>No rules have been added</EmptyRulesText>
   }
 
+  const updateAtIndex = (index: number) => (rule: Rule) =>
+    props.updateRule(index, rule)
+
   return (
-    <div>
+    <RulesContainer>
       {props.rules.map((rule, index) => (
-        <RuleComponent key={index} rule={rule} />
+        <StyledRule
+          key={index}
+          rule={rule}
+          isFirstRule={index === 0}
+          onUpdate={updateAtIndex(index)}
+          onEdit={() => props.onEditRule(index)}
+        />
       ))}
-    </div>
+    </RulesContainer>
   )
 }
 
@@ -60,7 +119,18 @@ const Box = styled.div`
   padding-bottom: ${(props) => props.theme.spacing[4]};
 `
 
+const RulesContainer = styled.div`
+  margin-bottom: ${(props) => props.theme.spacing[5]};
+`
+
+const StyledBackButton = styled(BackButton)`
+  margin-bottom: ${(props) => props.theme.spacing[5]}!important;
+`
 const EmptyRulesText = styled.p`
   margin: ${(props) => props.theme.spacing[4]} 0;
   text-align: center;
+`
+
+const StyledRule = styled(RuleComponent)`
+  margin-bottom: ${(props) => props.theme.spacing[3]};
 `

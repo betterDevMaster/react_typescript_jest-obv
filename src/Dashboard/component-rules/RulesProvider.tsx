@@ -11,7 +11,7 @@ const RulesContext = React.createContext(
   (undefined as unknown) as RulesContextProps,
 )
 
-export default function RulesDataProvider(props: {
+export default function RulesProvider(props: {
   children: React.ReactNode
   groups: Groups
   tags: Tags
@@ -31,7 +31,7 @@ export default function RulesDataProvider(props: {
 export function useRulesData() {
   const context = React.useContext(RulesContext)
   if (context === undefined) {
-    throw new Error('useRules must be used within a RulesProvider')
+    throw new Error('useRulesData must be used within a RulesProvider')
   }
 
   return context

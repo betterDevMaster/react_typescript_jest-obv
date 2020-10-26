@@ -1,44 +1,44 @@
-import {render} from '@testing-library/react'
 import HiddenOnMatch from 'Dashboard/component-rules/HiddenOnMatch'
-import RulesDataProvider from 'Dashboard/component-rules/RulesDataProvider'
+import RulesProvider from 'Dashboard/component-rules/RulesProvider'
 import React from 'react'
 import faker from 'faker'
 import {AND} from 'Dashboard/component-rules/sources'
 import {
-  INCLUDES,
+  INCLUDE,
   TAGS,
 } from 'Dashboard/component-rules/sources/TagsRule/tags-rule'
+import {render} from '__utils__/render'
 
 it('should render depending on rule match', () => {
   const testId = faker.random.word()
   const TestComponent = () => <div data-testid={testId}></div>
 
   const {queryByTestId, rerender} = render(
-    <RulesDataProvider groups={{}} tags={[]}>
+    <RulesProvider groups={{}} tags={[]}>
       <HiddenOnMatch rules={[]}>
         <TestComponent />
       </HiddenOnMatch>
-    </RulesDataProvider>,
+    </RulesProvider>,
   )
 
   expect(queryByTestId(testId)).toBeInTheDocument()
 
   const targetTag = faker.random.word()
   rerender(
-    <RulesDataProvider groups={{}} tags={[targetTag]}>
+    <RulesProvider groups={{}} tags={[targetTag]}>
       <HiddenOnMatch
         rules={[
           {
             condition: AND,
             source: TAGS,
-            type: INCLUDES,
+            type: INCLUDE,
             target: targetTag,
           },
         ]}
       >
         <TestComponent />
       </HiddenOnMatch>
-    </RulesDataProvider>,
+    </RulesProvider>,
   )
 
   expect(queryByTestId(testId)).not.toBeInTheDocument()

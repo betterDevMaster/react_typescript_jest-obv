@@ -9,6 +9,7 @@ import {NESTED_RULE} from 'Dashboard/component-rules/sources/NestedRule/nested-r
 
 export type RuleConfigProps = {
   onSet: (rule: Rule | null) => void
+  rule: Rule | null
 }
 
 export default function SourceConfig(
@@ -22,10 +23,10 @@ export default function SourceConfig(
 
   switch (props.source) {
     case TAGS:
-      return <TagsRuleConfig onSet={props.onSet} />
+      return <TagsRuleConfig rule={props.rule} onSet={props.onSet} />
     case GROUP:
-      return <GroupRuleConfig onSet={props.onSet} />
+      return <GroupRuleConfig rule={props.rule} onSet={props.onSet} />
     case NESTED_RULE:
-      return <NestedRuleConfig onSet={props.onSet} />
+      return <NestedRuleConfig rule={props.rule} onSet={props.onSet} />
   }
 }
