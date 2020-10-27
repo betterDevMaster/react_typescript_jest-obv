@@ -1,11 +1,10 @@
 import React from 'react'
 import styled from 'styled-components'
 import {Emoji, emojiWithName} from 'Dashboard/components/EmojiList/emoji'
-import EditComponent from 'Dashboard/edit/views/EditComponent'
+import EditComponent from 'editor/views/EditComponent'
 import AddEmojiListButton from 'Dashboard/components/EmojiList/AddEmojiListButton'
-import EditModeOnly from 'Dashboard/edit/views/EditModeOnly'
-import {RootState} from 'store'
-import {useCurrent} from 'Dashboard/edit/state/edit-mode'
+import EditModeOnly from 'editor/views/EditModeOnly'
+import {useDashboard} from 'Dashboard/state/DashboardProvider'
 
 export const EMOJI_LIST = 'Emoji List'
 
@@ -17,11 +16,8 @@ export interface EmojiList {
   emojiWidth?: number
 }
 
-export default function EmojiList(props: {list: EmojiList}) {
-  const list = useCurrent(
-    (state: RootState) => state.dashboardEditor.emojiList,
-    props.list,
-  )
+export default function EmojiList() {
+  const {emojiList: list} = useDashboard()
 
   const isEmpty = list && list.emojis.length === 0
   if (!list || isEmpty) {

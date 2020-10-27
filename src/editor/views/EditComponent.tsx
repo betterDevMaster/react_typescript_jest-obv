@@ -1,6 +1,5 @@
-import {useEditMode, useEditComponent} from 'Dashboard/edit/state/edit-mode'
-import {Config} from 'Dashboard/edit/views/DashboardEditDialog/ConfigComponent'
-import {usePreviewMode} from 'Dashboard/edit/views/PreviewBar'
+import {useEditMode, useEditComponent} from 'editor/state/edit-mode'
+import {Config} from 'editor/views/DashboardEditDialog/ConfigComponent'
 import EditIconButton from 'lib/ui/IconButton/EditIconButton'
 import React from 'react'
 import styled from 'styled-components'
@@ -14,11 +13,10 @@ export default function EditComponent(
   },
 ) {
   const isEditMode = useEditMode()
-  const isPreviewMode = usePreviewMode()
 
   const editComponent = useEditComponent({type: props.type, id: props.id})
 
-  if (!isEditMode || isPreviewMode) {
+  if (!isEditMode) {
     return props.children
   }
 

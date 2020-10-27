@@ -1,21 +1,18 @@
 import {BlogPost} from 'Dashboard/components/BlogPost'
 import styled from 'styled-components'
-import {
-  useCloseConfig,
-  useUpdateDashboard,
-} from 'Dashboard/edit/state/edit-mode'
-import {Config} from 'Dashboard/edit/views/DashboardEditDialog/ConfigComponent'
+import {useCloseConfig} from 'editor/state/edit-mode'
+import {Config} from 'editor/views/DashboardEditDialog/ConfigComponent'
 import React from 'react'
-import {useSelector} from 'react-redux'
-import {RootState} from 'store'
 import CKEditor from '@ckeditor/ckeditor5-react'
 import ClassicEditor from '@ckeditor/ckeditor5-build-classic'
 import DangerButton from 'lib/ui/Button/DangerButton'
+import {
+  useDashboard,
+  useUpdateDashboard,
+} from 'Dashboard/state/DashboardProvider'
 
 export default function BlogPostConfig(props: {id: Config['id']}) {
-  const posts = useSelector(
-    (state: RootState) => state.dashboardEditor.blogPosts,
-  )
+  const {blogPosts: posts} = useDashboard()
 
   const {id} = props
   const updateDashboard = useUpdateDashboard()
@@ -23,10 +20,6 @@ export default function BlogPostConfig(props: {id: Config['id']}) {
 
   if (!id) {
     throw new Error('Missing post id; was it passed through when calling edit?')
-  }
-
-  if (!posts) {
-    throw new Error('Missing blog posts; was it set via edit?')
   }
 
   const post = posts.entities[id]

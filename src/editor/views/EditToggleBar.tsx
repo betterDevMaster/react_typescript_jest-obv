@@ -3,30 +3,26 @@ import grey from '@material-ui/core/colors/grey'
 import styled from 'styled-components'
 import Switch from '@material-ui/core/Switch'
 import React from 'react'
-import {useDispatch, useSelector} from 'react-redux'
-import {RootState} from 'store'
-import {setPreviewMode} from 'Dashboard/edit/state/actions'
+import {useDispatch} from 'react-redux'
+import {setEditMode} from 'editor/state/actions'
+import {useEditMode} from 'editor/state/edit-mode'
 
-export default function PreviewBar() {
-  const isPreviewMode = usePreviewMode()
+export default function EditToggleBar() {
+  const isEditMode = useEditMode()
   const dispatch = useDispatch()
 
-  const toggle = () => dispatch(setPreviewMode(!isPreviewMode))
+  const toggle = () => dispatch(setEditMode(!isEditMode))
 
   return (
     <Box>
       <FormControlLabel
         control={
-          <Switch checked={isPreviewMode} onChange={toggle} color="primary" />
+          <Switch checked={isEditMode} onChange={toggle} color="primary" />
         }
-        label="Preview"
+        label="Edit Mode"
       />
     </Box>
   )
-}
-
-export function usePreviewMode() {
-  return useSelector((state: RootState) => state.dashboardEditor.isPreviewMode)
 }
 
 const Box = styled.div`

@@ -1,7 +1,7 @@
 import Button from '@material-ui/core/Button'
 import {POINTS_SUMMARY} from 'Dashboard/components/PointsSummary'
-import {setConfig} from 'Dashboard/edit/state/actions'
-import {useUpdateDashboard} from 'Dashboard/edit/state/edit-mode'
+import {useUpdateDashboard} from 'Dashboard/state/DashboardProvider'
+import {setConfig} from 'editor/state/actions'
 import React from 'react'
 import {useDispatch} from 'react-redux'
 

@@ -22,9 +22,9 @@ import {ResourceList} from 'Dashboard/components/ResourceList'
 import {TicketRibbon} from 'Dashboard/components/TicketRibbon'
 import {EmojiList} from 'Dashboard/components/EmojiList'
 import {EntityList} from 'lib/list'
-import {usePrimaryColor} from 'Dashboard/Template/SimpleBlog/primary-color'
-import EditComponent from 'Dashboard/edit/views/EditComponent'
+import EditComponent from 'editor/views/EditComponent'
 import MainNav from 'Dashboard/Template/SimpleBlog/MainNav'
+import {useDashboard} from 'Dashboard/state/DashboardProvider'
 
 export const SIMPLE_BLOG = 'SIMPLE_BLOG'
 
@@ -55,10 +55,10 @@ export interface SimpleBlog {
   }
 }
 
-export default function SimpleBlog(props: {dashboard: SimpleBlog; user: User}) {
+export default function SimpleBlog(props: {user: User}) {
   const [menuVisible, setMenuVisible] = useState(false)
   const toggleMenu = () => setMenuVisible(!menuVisible)
-  const primaryColor = usePrimaryColor(props.dashboard)
+  const {primaryColor, welcomeText} = useDashboard()
 
   return (
     <Box>
@@ -71,8 +71,6 @@ export default function SimpleBlog(props: {dashboard: SimpleBlog; user: User}) {
       />
       <EditComponent type={SIMPLE_BLOG}>
         <Header
-          logo={props.dashboard.logo}
-          title={props.dashboard.title}
           primaryColor={primaryColor}
           menuVisible={menuVisible}
           toggleMenu={toggleMenu}
@@ -82,31 +80,31 @@ export default function SimpleBlog(props: {dashboard: SimpleBlog; user: User}) {
       <Content>
         <StyledContainer maxWidth="lg">
           <EditComponent type={WELCOME_TEXT}>
-            <WelcomeText>{props.dashboard.welcomeText}</WelcomeText>
+            <WelcomeText>{welcomeText}</WelcomeText>
           </EditComponent>
           <MainNavButtons>
             <Grid container spacing={2}>
-              <MainNav buttons={props.dashboard.mainNav} />
+              <MainNav />
             </Grid>
           </MainNavButtons>
           <FullHeightGrid container spacing={4}>
             <Hidden mdUp>
               <Grid item xs={12}>
-                <Sidebar {...props.dashboard} primaryColor={primaryColor} />
+                <Sidebar />
               </Grid>
             </Hidden>
             <Grid item xs={12} md={8}>
-              <BlogPosts posts={props.dashboard.blogPosts} />
+              <BlogPosts />
             </Grid>
             <Hidden smDown>
               <Grid item xs={12} md={4}>
-                <Sidebar {...props.dashboard} primaryColor={primaryColor} />
+                <Sidebar />
               </Grid>
             </Hidden>
           </FullHeightGrid>
         </StyledContainer>
       </Content>
-      <Footer footer={props.dashboard.footer} />
+      <Footer />
     </Box>
   )
 }

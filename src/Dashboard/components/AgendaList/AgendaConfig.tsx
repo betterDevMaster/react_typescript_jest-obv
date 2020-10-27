@@ -4,21 +4,18 @@ import {DateTimePicker} from '@material-ui/pickers'
 import DangerButton from 'lib/ui/Button/DangerButton'
 import TextField from '@material-ui/core/TextField'
 import Grid from '@material-ui/core/Grid'
-import {useSelector} from 'react-redux'
-import {RootState} from 'store'
 import {Agenda} from 'Dashboard/components/AgendaList'
 import {onChangeStringHandler} from 'lib/dom'
 import {MaterialUiPickersDate} from '@material-ui/pickers/typings/date'
+import {useCloseConfig} from 'editor/state/edit-mode'
+import {Config} from 'editor/views/DashboardEditDialog/ConfigComponent'
 import {
-  useCloseConfig,
+  useDashboard,
   useUpdateDashboard,
-} from 'Dashboard/edit/state/edit-mode'
-import {Config} from 'Dashboard/edit/views/DashboardEditDialog/ConfigComponent'
+} from 'Dashboard/state/DashboardProvider'
 
 export default function AgendaConfig(props: {id: Config['id']}) {
-  const agendas = useSelector(
-    (state: RootState) => state.dashboardEditor.agendas,
-  )
+  const {agendas} = useDashboard()
   const updateDashboard = useUpdateDashboard()
   const closeConfig = useCloseConfig()
 

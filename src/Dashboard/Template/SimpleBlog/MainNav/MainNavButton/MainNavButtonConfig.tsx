@@ -14,23 +14,20 @@ import {
 import DangerButton from 'lib/ui/Button/DangerButton'
 import ColorPicker from 'lib/ui/ColorPicker'
 import React from 'react'
-import {useSelector} from 'react-redux'
-import {RootState} from 'store'
 import Box from '@material-ui/core/Box'
-import {
-  useCloseConfig,
-  useUpdateDashboard,
-} from 'Dashboard/edit/state/edit-mode'
-import {Config} from 'Dashboard/edit/views/DashboardEditDialog/ConfigComponent'
+import {useCloseConfig} from 'editor/state/edit-mode'
+import {Config} from 'editor/views/DashboardEditDialog/ConfigComponent'
 import RulesConfig, {
   useRulesConfig,
 } from 'Dashboard/component-rules/RulesConfig'
 import ConfigureRulesButton from 'Dashboard/component-rules/ConfigureRulesButton'
+import {
+  useDashboard,
+  useUpdateDashboard,
+} from 'Dashboard/state/DashboardProvider'
 
 export default function MainNavButtonConfig(props: {id?: Config['id']}) {
-  const buttons = useSelector(
-    (state: RootState) => state.dashboardEditor.mainNav,
-  )
+  const {mainNav: buttons} = useDashboard()
 
   const {
     visible: rulesConfigVisible,

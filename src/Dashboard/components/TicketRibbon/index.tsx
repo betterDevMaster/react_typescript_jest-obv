@@ -1,7 +1,7 @@
 import SetTicketRibbonButton from 'Dashboard/components/TicketRibbon/TicketRibbonConfig/SetTicketRibbonButton'
-import {useCurrent} from 'Dashboard/edit/state/edit-mode'
-import EditComponent from 'Dashboard/edit/views/EditComponent'
-import EditModeOnly from 'Dashboard/edit/views/EditModeOnly'
+import {useDashboard} from 'Dashboard/state/DashboardProvider'
+import EditComponent from 'editor/views/EditComponent'
+import EditModeOnly from 'editor/views/EditModeOnly'
 import React from 'react'
 import styled from 'styled-components'
 import APN_RIBBON from './ribbon/APN.png'
@@ -51,13 +51,8 @@ export const ticketRibbonWithName = (name: string) => {
   return target
 }
 
-export default function TicketRibbon(props: {
-  ribbon: TicketRibbon['name'] | null
-}) {
-  const name = useCurrent(
-    (state) => state.dashboardEditor.ticketRibbon,
-    props.ribbon,
-  )
+export default function TicketRibbon() {
+  const {ticketRibbon: name} = useDashboard()
 
   if (!name) {
     return (

@@ -1,11 +1,10 @@
-import {Dashboard} from 'Dashboard'
-import {setConfig, setDashboard} from 'Dashboard/edit/state/actions'
-import {Config} from 'Dashboard/edit/views/DashboardEditDialog/ConfigComponent'
+import {setConfig} from 'editor/state/actions'
+import {Config} from 'editor/views/DashboardEditDialog/ConfigComponent'
 import {useDispatch, useSelector} from 'react-redux'
 import {RootState} from 'store'
 
 export const useEditMode = () =>
-  useSelector((state: RootState) => state.dashboardEditor.isEditMode)
+  useSelector((state: RootState) => state.editor.isEditMode)
 
 export function useCurrent<T>(
   currentSelector: (state: RootState) => T | undefined,
@@ -28,14 +27,6 @@ export function useCloseConfig() {
   const dispatch = useDispatch()
   return () => {
     dispatch(setConfig(null))
-  }
-}
-
-export function useUpdateDashboard() {
-  const dispatch = useDispatch()
-
-  return (updates: Partial<Dashboard | null>) => {
-    dispatch(setDashboard(updates))
   }
 }
 

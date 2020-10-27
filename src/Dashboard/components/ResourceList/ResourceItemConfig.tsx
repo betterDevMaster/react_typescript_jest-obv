@@ -8,26 +8,19 @@ import TextField from '@material-ui/core/TextField'
 import {Resource, RESOURCE_ICON} from 'Dashboard/components/ResourceList'
 import {onUnknownChangeHandler, onChangeStringHandler} from 'lib/dom'
 import React from 'react'
-import {useSelector} from 'react-redux'
-import {RootState} from 'store'
 import DangerButton from 'lib/ui/Button/DangerButton'
+import {useCloseConfig} from 'editor/state/edit-mode'
+import {Config} from 'editor/views/DashboardEditDialog/ConfigComponent'
 import {
-  useCloseConfig,
+  useDashboard,
   useUpdateDashboard,
-} from 'Dashboard/edit/state/edit-mode'
-import {Config} from 'Dashboard/edit/views/DashboardEditDialog/ConfigComponent'
+} from 'Dashboard/state/DashboardProvider'
 
 export default function ResourceItemConfig(props: {id: Config['id']}) {
-  const list = useSelector(
-    (state: RootState) => state.dashboardEditor.resourceList,
-  )
+  const {resourceList: list} = useDashboard()
 
   const updateDashboard = useUpdateDashboard()
   const closeConfig = useCloseConfig()
-
-  if (!list) {
-    throw new Error('Missing resource list; was it set via edit?')
-  }
 
   if (props.id === undefined || typeof props.id !== 'number') {
     throw new Error('Missing component id')
