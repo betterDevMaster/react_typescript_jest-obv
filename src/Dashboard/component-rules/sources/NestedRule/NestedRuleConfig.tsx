@@ -1,6 +1,56 @@
+import Box from '@material-ui/core/Box'
+import Typography from '@material-ui/core/Typography'
+import RuleList from 'Dashboard/component-rules/RulesConfig/RuleList'
 import {RuleConfigProps} from 'Dashboard/component-rules/RulesConfig/RuleList/RuleForm/SourceConfig'
-import React from 'react'
+import {Rule} from 'Dashboard/component-rules/sources'
+import {
+  createNestedRule,
+  NestedRule,
+  NESTED_RULE,
+} from 'Dashboard/component-rules/sources/NestedRule/nested-rule'
+import Visible from 'lib/ui/layout/Visible'
+import React, {useEffect, useState} from 'react'
 
 export default function NestedRuleConfig(props: RuleConfigProps) {
-  return <div>hello</div>
+  const [rules, setRules] = useState<NestedRule['rules']>(
+    initialRules(props.rule),
+  )
+  const {onSet} = props
+  const [descriptionVisible, setDescriptionVisible] = useState(true)
+
+  const handleShowingRuleConfig = () => {
+    if (props.onToggleNestedRule) {
+      props.onToggleNestedRule()
+    }
+
+    setDescriptionVisible(!descriptionVisible)
+  }
+
+  useEffect(() => {
+    onSet(createNestedRule(rules))
+  }, [rules, onSet])
+
+  return (
+    <>
+      <Visible when={descriptionVisible}>
+        <Box mb={3}>
+          <Typography>With these rules are true</Typography>
+        </Box>
+      </Visible>
+      <RuleList
+        rules={rules}
+        onChange={setRules}
+        onToggleRuleConfig={handleShowingRuleConfig}
+        descriptionHidden
+      />
+    </>
+  )
+}
+
+function initialRules(rule: Rule | null) {
+  if (!rule || rule.source !== NESTED_RULE) {
+    return []
+  }
+
+  return rule.rules
 }

@@ -13,6 +13,7 @@ import {GROUP} from 'Dashboard/component-rules/sources/GroupRule/group-rule'
 import {TAGS} from 'Dashboard/component-rules/sources/TagsRule/tags-rule'
 import {NESTED_RULE} from 'Dashboard/component-rules/sources/NestedRule/nested-rule'
 import DangerButton from 'lib/ui/Button/DangerButton'
+import Visible from 'lib/ui/layout/Visible'
 
 const ALL_SOURCES = [TAGS, GROUP, NESTED_RULE]
 
@@ -26,6 +27,8 @@ export default function RuleForm(props: {
   const initialRule = props.rule || null
   const [source, setSource] = useState<null | Rule['source']>(initialSource)
   const [rule, setRule] = useState<null | Rule>(initialRule)
+  const [controlsVisible, setControlsVisible] = useState(true)
+  const toggleControlVisibility = () => setControlsVisible(!controlsVisible)
   const showDelete = Boolean(props.rule)
 
   const save = () => {
@@ -37,35 +40,46 @@ export default function RuleForm(props: {
   }
   return (
     <Box>
-      <DeleteRuleButton visible={showDelete} onClick={props.onDelete} />
-      <Typography paragraph>Hide component when</Typography>
-      <FormControl fullWidth>
-        <Select
-          value={source || ''}
-          fullWidth
-          onChange={onUnknownChangeHandler(setSource)}
-          label="Source"
-        >
-          {Object.values(ALL_SOURCES).map((source) => (
-            <MenuItem key={source} value={source}>
-              {source}
-            </MenuItem>
-          ))}
-        </Select>
-      </FormControl>
-      <SourceConfig source={source} onSet={setRule} rule={rule} />
-      <Grid container spacing={2}>
-        <Grid item xs={12} sm={6}>
-          <Button onClick={props.close} fullWidth>
-            Cancel
-          </Button>
+      <Visible when={controlsVisible}>
+        <>
+          <DeleteRuleButton visible={showDelete} onClick={props.onDelete} />
+          <Typography paragraph>Hide component when</Typography>
+          <FormControl fullWidth>
+            <Select
+              value={source || ''}
+              fullWidth
+              onChange={onUnknownChangeHandler(setSource)}
+              label="Source"
+            >
+              {Object.values(ALL_SOURCES).map((source) => (
+                <MenuItem key={source} value={source}>
+                  {source}
+                </MenuItem>
+              ))}
+            </Select>
+          </FormControl>
+        </>
+      </Visible>
+      <SourceConfig
+        source={source}
+        onSet={setRule}
+        rule={rule}
+        onToggleNestedRule={toggleControlVisibility}
+      />
+      <Visible when={controlsVisible}>
+        <Grid container spacing={2}>
+          <Grid item xs={12} sm={6}>
+            <Button onClick={props.close} fullWidth>
+              Cancel
+            </Button>
+          </Grid>
+          <Grid item xs={12} sm={6}>
+            <Button color="primary" fullWidth disabled={!rule} onClick={save}>
+              Save
+            </Button>
+          </Grid>
         </Grid>
-        <Grid item xs={12} sm={6}>
-          <Button color="primary" fullWidth disabled={!rule} onClick={save}>
-            Save
-          </Button>
-        </Grid>
-      </Grid>
+      </Visible>
     </Box>
   )
 }

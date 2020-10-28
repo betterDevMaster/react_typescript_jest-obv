@@ -10,6 +10,7 @@ import {NESTED_RULE} from 'Dashboard/component-rules/sources/NestedRule/nested-r
 export type RuleConfigProps = {
   onSet: (rule: Rule | null) => void
   rule: Rule | null
+  onToggleNestedRule?: () => void
 }
 
 export default function SourceConfig(
@@ -27,6 +28,12 @@ export default function SourceConfig(
     case GROUP:
       return <GroupRuleConfig rule={props.rule} onSet={props.onSet} />
     case NESTED_RULE:
-      return <NestedRuleConfig rule={props.rule} onSet={props.onSet} />
+      return (
+        <NestedRuleConfig
+          rule={props.rule}
+          onSet={props.onSet}
+          onToggleNestedRule={props.onToggleNestedRule}
+        />
+      )
   }
 }

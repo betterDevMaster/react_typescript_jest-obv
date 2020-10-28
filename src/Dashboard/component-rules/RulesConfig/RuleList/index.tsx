@@ -8,14 +8,23 @@ import RuleForm from 'Dashboard/component-rules/RulesConfig/RuleList/RuleForm'
 import Typography from '@material-ui/core/Typography'
 import {spacing} from 'lib/ui/theme'
 import {withStyles} from '@material-ui/core'
+import Visible from 'lib/ui/layout/Visible'
 
 export default function RuleList(props: {
   rules: Rule[]
-  close: () => void
+  close?: () => void
   onChange: (rules: Rule[]) => void
+  onToggleRuleConfig?: () => void
+  descriptionHidden?: boolean
 }) {
   const [ruleConfigVisible, setRuleConfigVisible] = useState(false)
-  const toggleRuleConfig = () => setRuleConfigVisible(!ruleConfigVisible)
+  const toggleRuleConfig = () => {
+    setRuleConfigVisible(!ruleConfigVisible)
+
+    if (props.onToggleRuleConfig) {
+      props.onToggleRuleConfig()
+    }
+  }
   const [selectedRuleIndex, setSelectedRuleIndex] = useState<number | null>(
     null,
   )
@@ -71,11 +80,12 @@ export default function RuleList(props: {
 
   return (
     <Box>
-      <StyledBackButton onClick={props.close} />
+      <CloseRules onClick={props.close} />
       <Rules
         rules={props.rules}
         onEditRule={editRule}
         updateRule={updateRule}
+        descriptionHidden={props.descriptionHidden}
       />
       <MuiButton
         variant="contained"
@@ -89,14 +99,22 @@ export default function RuleList(props: {
   )
 }
 
+function CloseRules(props: {onClick?: () => void}) {
+  if (!props.onClick) {
+    return null
+  }
+  return <StyledBackButton onClick={props.onClick} />
+}
+
 function Rules(props: {
   rules: Rule[]
   updateRule: (index: number, rule: Rule) => void
   onEditRule: (index: number) => void
+  descriptionHidden?: boolean
 }) {
   const hasRules = props.rules.length > 0
 
-  if (!hasRules) {
+  if (!hasRules && !props.descriptionHidden) {
     return <EmptyRulesText>No rules have been added</EmptyRulesText>
   }
 
@@ -105,7 +123,9 @@ function Rules(props: {
 
   return (
     <RulesContainer>
-      <RulesDescription>Component will be hidden when </RulesDescription>
+      <Visible when={!props.descriptionHidden}>
+        <RulesDescription>Component will be hidden when </RulesDescription>
+      </Visible>
       {props.rules.map((rule, index) => (
         <StyledRule
           key={index}
