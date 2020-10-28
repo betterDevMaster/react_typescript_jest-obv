@@ -16,6 +16,7 @@ export default function RuleList(props: {
   onChange: (rules: Rule[]) => void
   onToggleRuleConfig?: () => void
   descriptionHidden?: boolean
+  className?: string
 }) {
   const [ruleConfigVisible, setRuleConfigVisible] = useState(false)
   const toggleRuleConfig = () => {
@@ -79,7 +80,7 @@ export default function RuleList(props: {
   }
 
   return (
-    <Box>
+    <div className={props.className}>
       <CloseRules onClick={props.close} />
       <Rules
         rules={props.rules}
@@ -95,7 +96,7 @@ export default function RuleList(props: {
       >
         Add Rule
       </MuiButton>
-    </Box>
+    </div>
   )
 }
 
@@ -138,10 +139,6 @@ function Rules(props: {
     </RulesContainer>
   )
 }
-
-const Box = styled.div`
-  padding-bottom: ${(props) => props.theme.spacing[4]};
-`
 
 const RulesContainer = styled.div`
   margin-bottom: ${(props) => props.theme.spacing[5]};

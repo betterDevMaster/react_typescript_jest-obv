@@ -1,4 +1,5 @@
 import Box from '@material-ui/core/Box'
+import styled from 'styled-components'
 import Typography from '@material-ui/core/Typography'
 import RuleList from 'Dashboard/component-rules/RulesConfig/RuleList'
 import {RuleConfigProps} from 'Dashboard/component-rules/RulesConfig/RuleList/RuleForm/SourceConfig'
@@ -37,7 +38,7 @@ export default function NestedRuleConfig(props: RuleConfigProps) {
           <Typography>With these rules are true</Typography>
         </Box>
       </Visible>
-      <RuleList
+      <StyledRuleList
         rules={rules}
         onChange={setRules}
         onToggleRuleConfig={handleShowingRuleConfig}
@@ -54,3 +55,7 @@ function initialRules(rule: Rule | null) {
 
   return rule.rules
 }
+
+const StyledRuleList = styled(RuleList)`
+  margin-bottom: ${(props) => props.theme.spacing[4]};
+`

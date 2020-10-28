@@ -39,7 +39,7 @@ export default function RuleForm(props: {
     props.onCreate(rule)
   }
   return (
-    <Box>
+    <>
       <Visible when={controlsVisible}>
         <>
           <DeleteRuleButton visible={showDelete} onClick={props.onDelete} />
@@ -80,7 +80,7 @@ export default function RuleForm(props: {
           </Grid>
         </Grid>
       </Visible>
-    </Box>
+    </>
   )
 }
 
@@ -100,10 +100,6 @@ function DeleteRuleButton(props: {visible: boolean; onClick: () => void}) {
     </StyledDangerButton>
   )
 }
-
-const Box = styled.div`
-  padding-bottom: ${(props) => props.theme.spacing[4]};
-`
 
 const StyledDangerButton = styled(DangerButton)`
   margin-bottom: ${(props) => props.theme.spacing[3]}!important;

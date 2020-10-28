@@ -1,4 +1,5 @@
 import {Rule} from 'Dashboard/component-rules/sources'
+import styled from 'styled-components'
 import React from 'react'
 import {useState} from 'react'
 import RuleList from 'Dashboard/component-rules/RulesConfig/RuleList'
@@ -15,11 +16,13 @@ export default function RulesConfig(props: {
   }
 
   return (
-    <RuleList
-      rules={props.rules}
-      close={props.close}
-      onChange={props.onChange}
-    />
+    <Box>
+      <RuleList
+        rules={props.rules}
+        close={props.close}
+        onChange={props.onChange}
+      />
+    </Box>
   )
 }
 
@@ -33,3 +36,7 @@ export function useRulesConfig() {
     toggle,
   }
 }
+
+const Box = styled.div`
+  margin-bottom: ${(props) => props.theme.spacing[4]};
+`
