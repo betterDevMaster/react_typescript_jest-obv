@@ -45,7 +45,6 @@ export default function RuleList(props: {
   const createRule = (rule: Rule) => {
     const updated = [...props.rules, rule]
     props.onChange(updated)
-    toggleRuleConfig()
   }
 
   const updateRule = (index: number, rule: Rule) => {
@@ -60,6 +59,8 @@ export default function RuleList(props: {
     } else {
       createRule(rule)
     }
+
+    toggleRuleConfig()
   }
 
   const deleteRule = () => {
@@ -89,7 +90,7 @@ export default function RuleList(props: {
         descriptionHidden={props.descriptionHidden}
       />
       <MuiButton
-        variant="contained"
+        variant="outlined"
         color="primary"
         fullWidth
         onClick={addNewRule}

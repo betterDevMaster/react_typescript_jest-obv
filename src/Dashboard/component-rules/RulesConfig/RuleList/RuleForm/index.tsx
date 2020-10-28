@@ -14,6 +14,7 @@ import {TAGS} from 'Dashboard/component-rules/sources/TagsRule/tags-rule'
 import {NESTED_RULE} from 'Dashboard/component-rules/sources/NestedRule/nested-rule'
 import DangerButton from 'lib/ui/Button/DangerButton'
 import Visible from 'lib/ui/layout/Visible'
+import Box from '@material-ui/core/Box'
 
 const ALL_SOURCES = [TAGS, GROUP, NESTED_RULE]
 
@@ -67,18 +68,26 @@ export default function RuleForm(props: {
         onToggleNestedRule={toggleControlVisibility}
       />
       <Visible when={controlsVisible}>
-        <Grid container spacing={2}>
-          <Grid item xs={12} sm={6}>
-            <Button onClick={props.close} fullWidth>
-              Cancel
-            </Button>
-          </Grid>
-          <Grid item xs={12} sm={6}>
-            <Button color="primary" fullWidth disabled={!rule} onClick={save}>
-              Save
-            </Button>
-          </Grid>
-        </Grid>
+        <Box pt={2}>
+          <Grid container spacing={2}>
+            <Grid item xs={12} sm={6}>
+              <Button onClick={props.close} fullWidth variant="outlined">
+                Cancel
+              </Button>
+            </Grid>
+            <Grid item xs={12} sm={6}>
+              <Button
+                color="primary"
+                variant="contained"
+                fullWidth
+                disabled={!rule}
+                onClick={save}
+              >
+                Save
+              </Button>
+            </Grid>
+          </Grid>{' '}
+        </Box>
       </Visible>
     </>
   )
