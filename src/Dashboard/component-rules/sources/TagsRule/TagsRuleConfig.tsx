@@ -26,7 +26,7 @@ export default function TagsRuleConfig(props: RuleConfigProps) {
   }, [type, target, onSet])
 
   return (
-    <div>
+    <>
       <FormControl fullWidth>
         <Select
           value={type}
@@ -46,7 +46,7 @@ export default function TagsRuleConfig(props: RuleConfigProps) {
         value={target}
         onChange={onChangeStringHandler(setTarget)}
       />
-    </div>
+    </>
   )
 }
 

@@ -5,6 +5,9 @@ import RuleComponent from 'Dashboard/component-rules/RulesConfig/RuleList/Single
 import BackButton from 'Dashboard/component-rules/RulesConfig/BackButton'
 import MuiButton from '@material-ui/core/Button'
 import RuleForm from 'Dashboard/component-rules/RulesConfig/RuleList/RuleForm'
+import Typography from '@material-ui/core/Typography'
+import {spacing} from 'lib/ui/theme'
+import {withStyles} from '@material-ui/core'
 
 export default function RuleList(props: {
   rules: Rule[]
@@ -102,6 +105,7 @@ function Rules(props: {
 
   return (
     <RulesContainer>
+      <RulesDescription>Component will be hidden when </RulesDescription>
       {props.rules.map((rule, index) => (
         <StyledRule
           key={index}
@@ -134,3 +138,9 @@ const EmptyRulesText = styled.p`
 const StyledRule = styled(RuleComponent)`
   margin-bottom: ${(props) => props.theme.spacing[3]};
 `
+
+const RulesDescription = withStyles({
+  root: {
+    marginBottom: spacing[3],
+  },
+})(Typography)

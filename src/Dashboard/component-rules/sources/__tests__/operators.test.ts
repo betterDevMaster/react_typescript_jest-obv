@@ -2,7 +2,7 @@ import {AND, hasMatch, Condition, OR} from 'Dashboard/component-rules/sources'
 import {
   GROUP,
   GroupRule,
-  IS_MATCH,
+  IS,
 } from 'Dashboard/component-rules/sources/GroupRule/group-rule'
 import faker from 'faker'
 
@@ -102,7 +102,7 @@ function createRule(condition: Condition) {
   const rule: GroupRule = {
     condition,
     source: GROUP,
-    type: IS_MATCH,
+    type: IS,
     key: key,
     target: target,
   }

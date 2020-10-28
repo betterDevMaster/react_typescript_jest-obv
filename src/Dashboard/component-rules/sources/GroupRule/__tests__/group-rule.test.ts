@@ -1,9 +1,9 @@
 import {AND, hasMatch, OR} from 'Dashboard/component-rules/sources'
 import {
-  DOES_NOT_MATCH,
+  IS_NOT,
   GROUP,
   GroupRule,
-  IS_MATCH,
+  IS,
 } from 'Dashboard/component-rules/sources/GroupRule/group-rule'
 import faker from 'faker'
 
@@ -13,7 +13,7 @@ it('should check for match', () => {
   const rule: GroupRule = {
     condition: AND,
     source: GROUP,
-    type: IS_MATCH,
+    type: IS,
     key,
     target,
   }
@@ -31,7 +31,7 @@ it('should check for is not match', () => {
   const rule: GroupRule = {
     condition: AND,
     source: GROUP,
-    type: DOES_NOT_MATCH,
+    type: IS_NOT,
     key,
     target,
   }
@@ -49,7 +49,7 @@ it('should check for both groups', () => {
   const rule1: GroupRule = {
     condition: AND,
     source: GROUP,
-    type: IS_MATCH,
+    type: IS,
     key: key1,
     target: target1,
   }
@@ -59,7 +59,7 @@ it('should check for both groups', () => {
   const rule2: GroupRule = {
     condition: AND,
     source: GROUP,
-    type: IS_MATCH,
+    type: IS,
     key: key2,
     target: target2,
   }
@@ -93,7 +93,7 @@ it('should check if it has at least one', () => {
   const rule1: GroupRule = {
     condition: AND,
     source: GROUP,
-    type: IS_MATCH,
+    type: IS,
     key: key1,
     target: target1,
   }
@@ -103,7 +103,7 @@ it('should check if it has at least one', () => {
   const rule2: GroupRule = {
     condition: OR,
     source: GROUP,
-    type: IS_MATCH,
+    type: IS,
     key: key2,
     target: target2,
   }

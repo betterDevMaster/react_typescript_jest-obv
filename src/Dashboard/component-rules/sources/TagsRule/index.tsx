@@ -4,7 +4,7 @@ import React from 'react'
 export default function TagsRule(props: {rule: Rule}) {
   return (
     <div>
-      Tags {props.rule.type} {props.rule.target}
+      tags {props.rule.type} {props.rule.target}
     </div>
   )
 }

@@ -9,7 +9,7 @@ import faker from 'faker'
 import {
   GROUP,
   GroupRule,
-  IS_MATCH,
+  IS,
 } from 'Dashboard/component-rules/sources/GroupRule/group-rule'
 import {NESTED_RULE} from 'Dashboard/component-rules/sources/NestedRule/nested-rule'
 
@@ -99,7 +99,7 @@ function createRule(condition: Condition) {
   const rule: GroupRule = {
     condition,
     source: GROUP,
-    type: IS_MATCH,
+    type: IS,
     key: key,
     target: target,
   }
