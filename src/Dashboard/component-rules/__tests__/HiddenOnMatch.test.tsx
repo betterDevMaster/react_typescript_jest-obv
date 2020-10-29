@@ -7,7 +7,7 @@ import {render} from '__utils__/render'
 import {
   INCLUDE,
   TAGS,
-} from 'Dashboard/component-rules/RuleConfig/RuleList/SingleRule/TagsRule/tags-rule'
+} from 'Dashboard/component-rules/RuleConfig/RuleList/SingleRule/TagsRule'
 
 it('should render depending on rule match', () => {
   const testId = faker.random.word()

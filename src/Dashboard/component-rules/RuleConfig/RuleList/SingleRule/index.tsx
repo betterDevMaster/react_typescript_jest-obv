@@ -6,7 +6,7 @@ import GroupRule, {
 import React from 'react'
 import grey from '@material-ui/core/colors/grey'
 import ConditionSelector from 'Dashboard/component-rules/RuleConfig/RuleList/SingleRule/ConditionSelector'
-import {TAGS} from 'Dashboard/component-rules/RuleConfig/RuleList/SingleRule/TagsRule/tags-rule'
+import {TAGS} from 'Dashboard/component-rules/RuleConfig/RuleList/SingleRule/TagsRule'
 import NestedRule from 'Dashboard/component-rules/RuleConfig/RuleList/SingleRule/NestedRule'
 import TagsRule from 'Dashboard/component-rules/RuleConfig/RuleList/SingleRule/TagsRule'
 import {NESTED_RULE} from 'Dashboard/component-rules/RuleConfig/RuleList/SingleRule/NestedRule'

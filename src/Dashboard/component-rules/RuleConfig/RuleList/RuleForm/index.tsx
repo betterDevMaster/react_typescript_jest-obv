@@ -12,7 +12,7 @@ import SourceConfig from 'Dashboard/component-rules/RuleConfig/RuleList/RuleForm
 import DangerButton from 'lib/ui/Button/DangerButton'
 import Visible from 'lib/ui/layout/Visible'
 import Box from '@material-ui/core/Box'
-import {TAGS} from 'Dashboard/component-rules/RuleConfig/RuleList/SingleRule/TagsRule/tags-rule'
+import {TAGS} from 'Dashboard/component-rules/RuleConfig/RuleList/SingleRule/TagsRule'
 import {NESTED_RULE} from 'Dashboard/component-rules/RuleConfig/RuleList/SingleRule/NestedRule'
 import {GROUP} from 'Dashboard/component-rules/RuleConfig/RuleList/SingleRule/GroupRule'
 

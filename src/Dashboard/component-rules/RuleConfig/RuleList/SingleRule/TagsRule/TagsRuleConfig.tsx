@@ -12,7 +12,7 @@ import {
   INCLUDE,
   TAGS,
   TagsRule,
-} from 'Dashboard/component-rules/RuleConfig/RuleList/SingleRule/TagsRule/tags-rule'
+} from 'Dashboard/component-rules/RuleConfig/RuleList/SingleRule/TagsRule'
 
 export default function TagsRuleConfig(props: RuleConfigProps) {
   const [type, setType] = useState<TagsRule['type']>(initialType(props.rule))

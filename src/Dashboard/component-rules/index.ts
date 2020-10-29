@@ -1,6 +1,6 @@
 import {GroupRule} from 'Dashboard/component-rules/RuleConfig/RuleList/SingleRule/GroupRule'
 import {NestedRule} from 'Dashboard/component-rules/RuleConfig/RuleList/SingleRule/NestedRule'
-import {TagsRule} from 'Dashboard/component-rules/RuleConfig/RuleList/SingleRule/TagsRule/tags-rule'
+import {TagsRule} from 'Dashboard/component-rules/RuleConfig/RuleList/SingleRule/TagsRule'
 
 export type Rule = TagsRule | GroupRule | NestedRule
 export interface HasRules {

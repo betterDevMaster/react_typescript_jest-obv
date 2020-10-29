@@ -1,11 +1,32 @@
+import {AND, BaseRule} from 'Dashboard/component-rules'
 import React from 'react'
 
-import {TagsRule as Rule} from 'Dashboard/component-rules/RuleConfig/RuleList/SingleRule/TagsRule/tags-rule'
+export const TAGS = 'Tags'
+export const INCLUDE = 'include'
+export const DOES_NOT_INCLUDE = 'does not include'
 
-export default function TagsRule(props: {rule: Rule}) {
+export type TagsRule = BaseRule & {
+  source: typeof TAGS
+  type: typeof INCLUDE | typeof DOES_NOT_INCLUDE
+  target: string
+}
+
+export type Tags = string[]
+
+export default function TagsRule(props: {rule: TagsRule}) {
   return (
     <div>
       tags {props.rule.type} {props.rule.target}
     </div>
   )
 }
+
+export const createTagsRule = (
+  type: TagsRule['type'],
+  target: string,
+): TagsRule => ({
+  condition: AND,
+  source: TAGS,
+  type,
+  target,
+})

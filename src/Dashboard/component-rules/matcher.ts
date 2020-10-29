@@ -1,15 +1,15 @@
 import {AND, OR, Rule} from 'Dashboard/component-rules'
-import {
-  matchesTagsRule,
-  TAGS,
-  Tags,
-} from 'Dashboard/component-rules/RuleConfig/RuleList/SingleRule/TagsRule/tags-rule'
+import {matchesTagsRule} from 'Dashboard/component-rules/RuleConfig/RuleList/SingleRule/TagsRule/matcher'
 import {NESTED_RULE} from 'Dashboard/component-rules/RuleConfig/RuleList/SingleRule/NestedRule'
 import {
   GROUP,
   Groups,
 } from 'Dashboard/component-rules/RuleConfig/RuleList/SingleRule/GroupRule'
 import {matchesGroupRule} from 'Dashboard/component-rules/RuleConfig/RuleList/SingleRule/GroupRule/matcher'
+import {
+  TAGS,
+  Tags,
+} from 'Dashboard/component-rules/RuleConfig/RuleList/SingleRule/TagsRule'
 
 export const hasMatch = (
   {groups = {}, tags = []}: {groups?: Groups; tags?: Tags},

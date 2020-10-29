@@ -8,7 +8,7 @@ import {AND} from 'Dashboard/component-rules'
 import {
   INCLUDE,
   TAGS,
-} from 'Dashboard/component-rules/RuleConfig/RuleList/SingleRule/TagsRule/tags-rule'
+} from 'Dashboard/component-rules/RuleConfig/RuleList/SingleRule/TagsRule'
 
 it('should show config, and hide child content', () => {
   const {rerender, getByTestId, queryByTestId} = render(

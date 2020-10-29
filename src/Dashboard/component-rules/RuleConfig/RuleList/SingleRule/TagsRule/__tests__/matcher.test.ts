@@ -1,12 +1,12 @@
 import {AND} from 'Dashboard/component-rules'
-import {
-  INCLUDE,
-  DOES_NOT_INCLUDE,
-  TAGS,
-  TagsRule,
-} from 'Dashboard/component-rules/RuleConfig/RuleList/SingleRule/TagsRule/tags-rule'
 import faker from 'faker'
 import {hasMatch} from 'Dashboard/component-rules/matcher'
+import {
+  DOES_NOT_INCLUDE,
+  INCLUDE,
+  TAGS,
+  TagsRule,
+} from 'Dashboard/component-rules/RuleConfig/RuleList/SingleRule/TagsRule'
 
 it('should check for includes', () => {
   const tag = faker.random.word()
