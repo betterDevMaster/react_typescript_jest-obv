@@ -51,6 +51,9 @@ export default function RuleForm(props: {
               fullWidth
               onChange={onUnknownChangeHandler(setSource)}
               label="Source"
+              inputProps={{
+                'aria-label': 'pick rule source',
+              }}
             >
               {Object.values(ALL_SOURCES).map((source) => (
                 <MenuItem key={source} value={source}>
@@ -82,6 +85,7 @@ export default function RuleForm(props: {
                 fullWidth
                 disabled={!rule}
                 onClick={save}
+                aria-label="save rule"
               >
                 Save
               </Button>
@@ -104,6 +108,7 @@ function DeleteRuleButton(props: {visible: boolean; onClick: () => void}) {
       variant="outlined"
       size="small"
       fullWidth
+      aria-label="remove rule"
     >
       Delete
     </StyledDangerButton>

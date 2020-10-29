@@ -94,6 +94,7 @@ export default function RuleList(props: {
         color="primary"
         fullWidth
         onClick={addNewRule}
+        aria-label="add rule"
       >
         Add Rule
       </MuiButton>
