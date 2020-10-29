@@ -1,8 +1,8 @@
 import Box from '@material-ui/core/Box'
 import styled from 'styled-components'
 import Typography from '@material-ui/core/Typography'
-import RuleList from 'Dashboard/component-rules/RulesConfig/RuleList'
-import {RuleConfigProps} from 'Dashboard/component-rules/RulesConfig/RuleList/RuleForm/SourceConfig'
+import RuleList from 'Dashboard/component-rules/RuleConfig/RuleList'
+import {RuleConfigProps} from 'Dashboard/component-rules/RuleConfig/RuleList/RuleForm/SourceConfig'
 import {Rule} from 'Dashboard/component-rules/sources'
 import {
   createNestedRule,

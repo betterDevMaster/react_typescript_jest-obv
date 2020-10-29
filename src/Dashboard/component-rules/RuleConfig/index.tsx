@@ -2,9 +2,9 @@ import {Rule} from 'Dashboard/component-rules/sources'
 import styled from 'styled-components'
 import React from 'react'
 import {useState} from 'react'
-import RuleList from 'Dashboard/component-rules/RulesConfig/RuleList'
+import RuleList from 'Dashboard/component-rules/RuleConfig/RuleList'
 
-export default function RulesConfig(props: {
+export default function RuleConfig(props: {
   children: React.ReactElement
   visible: boolean
   close: () => void
@@ -26,7 +26,7 @@ export default function RulesConfig(props: {
   )
 }
 
-export function useRulesConfig() {
+export function useRuleConfig() {
   const [visible, setVisible] = useState(false)
 
   const toggle = () => setVisible(!visible)

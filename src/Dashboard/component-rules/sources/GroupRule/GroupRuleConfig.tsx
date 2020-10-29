@@ -2,7 +2,7 @@ import FormControl from '@material-ui/core/FormControl'
 import MenuItem from '@material-ui/core/MenuItem'
 import Select from '@material-ui/core/Select'
 import TextField from '@material-ui/core/TextField'
-import {RuleConfigProps} from 'Dashboard/component-rules/RulesConfig/RuleList/RuleForm/SourceConfig'
+import {RuleConfigProps} from 'Dashboard/component-rules/RuleConfig/RuleList/RuleForm/SourceConfig'
 import {Rule} from 'Dashboard/component-rules/sources'
 import {
   createGroupRule,

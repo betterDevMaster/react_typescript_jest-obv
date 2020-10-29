@@ -8,7 +8,7 @@ import TagsRule from 'Dashboard/component-rules/sources/TagsRule'
 import {TAGS} from 'Dashboard/component-rules/sources/TagsRule/tags-rule'
 import React from 'react'
 import grey from '@material-ui/core/colors/grey'
-import ConditionSelector from 'Dashboard/component-rules/RulesConfig/RuleList/SingleRule/ConditionSelector'
+import ConditionSelector from 'Dashboard/component-rules/RuleConfig/RuleList/SingleRule/ConditionSelector'
 
 export default function SingleRule(props: {
   rule: Rule

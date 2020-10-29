@@ -9,7 +9,7 @@ import {
   TAGS,
   TagsRule,
 } from 'Dashboard/component-rules/sources/TagsRule/tags-rule'
-import {RuleConfigProps} from 'Dashboard/component-rules/RulesConfig/RuleList/RuleForm/SourceConfig'
+import {RuleConfigProps} from 'Dashboard/component-rules/RuleConfig/RuleList/RuleForm/SourceConfig'
 import {onChangeStringHandler, onUnknownChangeHandler} from 'lib/dom'
 import React, {useEffect, useState} from 'react'
 import {Rule} from 'Dashboard/component-rules/sources'
