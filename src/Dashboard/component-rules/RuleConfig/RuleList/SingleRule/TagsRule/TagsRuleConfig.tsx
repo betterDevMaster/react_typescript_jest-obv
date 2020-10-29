@@ -32,6 +32,9 @@ export default function TagsRuleConfig(props: RuleConfigProps) {
           value={type}
           fullWidth
           onChange={onUnknownChangeHandler(setType)}
+          inputProps={{
+            'aria-label': 'pick tags rule type',
+          }}
         >
           <MenuItem value={INCLUDE}>{INCLUDE}</MenuItem>
           <MenuItem value={DOES_NOT_INCLUDE}>{DOES_NOT_INCLUDE}</MenuItem>

@@ -9,7 +9,7 @@ export type NestedRule = BaseRule & {
 
 export default function NestedRule(props: {rule: NestedRule}) {
   const numRules = props.rule.rules.length
-  return <div>these rules ({numRules}) are true</div>
+  return <div aria-label="nested rule">these rules ({numRules}) are true</div>
 }
 
 export const createNestedRule = (rules: Rule[]): NestedRule => ({

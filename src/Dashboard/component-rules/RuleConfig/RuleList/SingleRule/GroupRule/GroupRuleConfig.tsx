@@ -45,6 +45,9 @@ export default function GroupRuleConfig(props: RuleConfigProps) {
           value={type}
           fullWidth
           onChange={onUnknownChangeHandler(setType)}
+          inputProps={{
+            'aria-label': 'pick group rule type',
+          }}
         >
           <MenuItem value={IS}>{IS}</MenuItem>
           <MenuItem value={IS_NOT}>{IS_NOT}</MenuItem>
