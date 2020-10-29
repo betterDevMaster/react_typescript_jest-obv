@@ -3,14 +3,14 @@ import styled from 'styled-components'
 import Typography from '@material-ui/core/Typography'
 import RuleList from 'Dashboard/component-rules/RuleConfig/RuleList'
 import {RuleConfigProps} from 'Dashboard/component-rules/RuleConfig/RuleList/RuleForm/SourceConfig'
-import {Rule} from 'Dashboard/component-rules/sources'
+import {Rule} from 'Dashboard/component-rules'
+import Visible from 'lib/ui/layout/Visible'
+import React, {useEffect, useState} from 'react'
 import {
   createNestedRule,
   NestedRule,
   NESTED_RULE,
-} from 'Dashboard/component-rules/sources/NestedRule/nested-rule'
-import Visible from 'lib/ui/layout/Visible'
-import React, {useEffect, useState} from 'react'
+} from 'Dashboard/component-rules/RuleConfig/RuleList/SingleRule/NestedRule/nested-rule'
 
 export default function NestedRuleConfig(props: RuleConfigProps) {
   const [rules, setRules] = useState<NestedRule['rules']>(

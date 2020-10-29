@@ -2,12 +2,12 @@ import HiddenOnMatch from 'Dashboard/component-rules/HiddenOnMatch'
 import RulesProvider from 'Dashboard/component-rules/RulesProvider'
 import React from 'react'
 import faker from 'faker'
-import {AND} from 'Dashboard/component-rules/sources'
+import {AND} from 'Dashboard/component-rules'
+import {render} from '__utils__/render'
 import {
   INCLUDE,
   TAGS,
-} from 'Dashboard/component-rules/sources/TagsRule/tags-rule'
-import {render} from '__utils__/render'
+} from 'Dashboard/component-rules/RuleConfig/RuleList/SingleRule/TagsRule/tags-rule'
 
 it('should render depending on rule match', () => {
   const testId = faker.random.word()

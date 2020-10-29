@@ -1,9 +1,10 @@
-import {AND, hasMatch, Condition, OR} from 'Dashboard/component-rules/sources'
+import {AND, Condition, OR} from 'Dashboard/component-rules'
+import {hasMatch} from 'Dashboard/component-rules/matcher'
 import {
   GROUP,
   GroupRule,
   IS,
-} from 'Dashboard/component-rules/sources/GroupRule/group-rule'
+} from 'Dashboard/component-rules/RuleConfig/RuleList/SingleRule/GroupRule/group-rule'
 import faker from 'faker'
 
 it('should require both conditions to pass', () => {

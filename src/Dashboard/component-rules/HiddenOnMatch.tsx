@@ -1,4 +1,5 @@
-import {hasMatch, Rule} from 'Dashboard/component-rules/sources'
+import {Rule} from 'Dashboard/component-rules'
+import {hasMatch} from 'Dashboard/component-rules/matcher'
 import {useRulesData} from 'Dashboard/component-rules/RulesProvider'
 import {useEditMode} from 'editor/state/edit-mode'
 

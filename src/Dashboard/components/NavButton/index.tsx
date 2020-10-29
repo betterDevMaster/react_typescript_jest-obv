@@ -3,7 +3,7 @@ import styled from 'styled-components'
 import Button from 'lib/ui/Button'
 import {Column} from 'lib/ui/layout'
 import {newTabProps} from 'lib/link'
-import {HasRules} from 'Dashboard/component-rules/sources'
+import {HasRules} from 'Dashboard/component-rules'
 
 export const NAV_BUTTON = 'NAV_BUTTON'
 

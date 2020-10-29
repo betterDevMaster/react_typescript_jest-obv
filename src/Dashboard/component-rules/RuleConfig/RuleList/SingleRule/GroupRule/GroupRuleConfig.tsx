@@ -3,14 +3,14 @@ import MenuItem from '@material-ui/core/MenuItem'
 import Select from '@material-ui/core/Select'
 import TextField from '@material-ui/core/TextField'
 import {RuleConfigProps} from 'Dashboard/component-rules/RuleConfig/RuleList/RuleForm/SourceConfig'
-import {Rule} from 'Dashboard/component-rules/sources'
+import {Rule} from 'Dashboard/component-rules'
 import {
   createGroupRule,
   IS_NOT,
   GROUP,
   GroupRule,
   IS,
-} from 'Dashboard/component-rules/sources/GroupRule/group-rule'
+} from 'Dashboard/component-rules/RuleConfig/RuleList/SingleRule/GroupRule/group-rule'
 import {onChangeStringHandler, onUnknownChangeHandler} from 'lib/dom'
 import React, {useEffect, useState} from 'react'
 

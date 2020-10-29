@@ -1,4 +1,4 @@
-import {AND, BaseRule} from 'Dashboard/component-rules/sources'
+import {AND, BaseRule} from 'Dashboard/component-rules'
 
 export const TAGS = 'Tags'
 export const INCLUDE = 'include'
@@ -12,7 +12,7 @@ export type TagsRule = BaseRule & {
 
 export type Tags = string[]
 
-export function meetsTagsRule(tags: Tags, rule: TagsRule) {
+export function matchesTagsRule(tags: Tags, rule: TagsRule) {
   if (rule.type === DOES_NOT_INCLUDE) {
     return !tags.includes(rule.target)
   }

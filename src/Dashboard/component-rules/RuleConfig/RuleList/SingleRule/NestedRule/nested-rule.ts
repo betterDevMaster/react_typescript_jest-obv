@@ -1,5 +1,4 @@
-import {AND} from './../index'
-import {BaseRule, Rule} from 'Dashboard/component-rules/sources'
+import {AND, BaseRule, Rule} from 'Dashboard/component-rules'
 
 export const NESTED_RULE = 'Nested Rule'
 export type NestedRule = BaseRule & {

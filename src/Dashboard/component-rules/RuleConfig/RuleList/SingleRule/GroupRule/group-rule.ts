@@ -1,4 +1,4 @@
-import {AND, BaseRule} from 'Dashboard/component-rules/sources'
+import {AND, BaseRule} from 'Dashboard/component-rules'
 
 export const GROUP = 'Group'
 export const IS = 'is'
@@ -12,7 +12,7 @@ export type GroupRule = BaseRule & {
 
 export type Groups = Record<string, any>
 
-export function meetsGroupRule(groups: Groups, rule: GroupRule) {
+export function matchesGroupRule(groups: Groups, rule: GroupRule) {
   if (rule.type === IS_NOT) {
     return groups[rule.key] !== rule.target
   }

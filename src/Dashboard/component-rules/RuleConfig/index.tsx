@@ -1,4 +1,4 @@
-import {Rule} from 'Dashboard/component-rules/sources'
+import {Rule} from 'Dashboard/component-rules'
 import styled from 'styled-components'
 import React from 'react'
 import {useState} from 'react'
