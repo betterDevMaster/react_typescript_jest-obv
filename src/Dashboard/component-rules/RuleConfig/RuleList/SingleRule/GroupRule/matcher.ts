@@ -1,8 +1,6 @@
-import {AND} from 'Dashboard/component-rules'
 import {
   Groups,
   GroupRule,
-  GROUP,
   IS_NOT,
 } from 'Dashboard/component-rules/RuleConfig/RuleList/SingleRule/GroupRule'
 
@@ -13,15 +11,3 @@ export function matchesGroupRule(groups: Groups, rule: GroupRule) {
 
   return groups[rule.key] === rule.target
 }
-
-export const createGroupRule = (
-  type: GroupRule['type'],
-  key: GroupRule['key'],
-  target: GroupRule['target'],
-): GroupRule => ({
-  condition: AND,
-  source: GROUP,
-  type,
-  key,
-  target,
-})

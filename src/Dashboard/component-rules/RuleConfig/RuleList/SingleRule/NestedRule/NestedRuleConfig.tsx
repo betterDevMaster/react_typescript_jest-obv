@@ -10,7 +10,7 @@ import {
   createNestedRule,
   NestedRule,
   NESTED_RULE,
-} from 'Dashboard/component-rules/RuleConfig/RuleList/SingleRule/NestedRule/nested-rule'
+} from 'Dashboard/component-rules/RuleConfig/RuleList/SingleRule/NestedRule'
 
 export default function NestedRuleConfig(props: RuleConfigProps) {
   const [rules, setRules] = useState<NestedRule['rules']>(

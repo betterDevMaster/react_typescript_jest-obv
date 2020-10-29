@@ -13,7 +13,7 @@ import DangerButton from 'lib/ui/Button/DangerButton'
 import Visible from 'lib/ui/layout/Visible'
 import Box from '@material-ui/core/Box'
 import {TAGS} from 'Dashboard/component-rules/RuleConfig/RuleList/SingleRule/TagsRule/tags-rule'
-import {NESTED_RULE} from 'Dashboard/component-rules/RuleConfig/RuleList/SingleRule/NestedRule/nested-rule'
+import {NESTED_RULE} from 'Dashboard/component-rules/RuleConfig/RuleList/SingleRule/NestedRule'
 import {GROUP} from 'Dashboard/component-rules/RuleConfig/RuleList/SingleRule/GroupRule'
 
 const ALL_SOURCES = [TAGS, GROUP, NESTED_RULE]

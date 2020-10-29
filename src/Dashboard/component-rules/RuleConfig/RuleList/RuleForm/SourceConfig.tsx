@@ -3,7 +3,7 @@ import {Rule} from 'Dashboard/component-rules'
 import GroupRuleConfig from 'Dashboard/component-rules/RuleConfig/RuleList/SingleRule/GroupRule/GroupRuleConfig'
 import {TAGS} from 'Dashboard/component-rules/RuleConfig/RuleList/SingleRule/TagsRule/tags-rule'
 import TagsRuleConfig from 'Dashboard/component-rules/RuleConfig/RuleList/SingleRule/TagsRule/TagsRuleConfig'
-import {NESTED_RULE} from 'Dashboard/component-rules/RuleConfig/RuleList/SingleRule/NestedRule/nested-rule'
+import {NESTED_RULE} from 'Dashboard/component-rules/RuleConfig/RuleList/SingleRule/NestedRule'
 import NestedRuleConfig from 'Dashboard/component-rules/RuleConfig/RuleList/SingleRule/NestedRule/NestedRuleConfig'
 import {GROUP} from 'Dashboard/component-rules/RuleConfig/RuleList/SingleRule/GroupRule'
 

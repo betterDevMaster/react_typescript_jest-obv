@@ -1,5 +1,5 @@
 import React from 'react'
-import {BaseRule} from 'Dashboard/component-rules'
+import {AND, BaseRule} from 'Dashboard/component-rules'
 
 export const GROUP = 'Group'
 export const IS = 'is'
@@ -20,3 +20,15 @@ export default function GroupRule(props: {rule: GroupRule}) {
     </div>
   )
 }
+
+export const createGroupRule = (
+  type: GroupRule['type'],
+  key: GroupRule['key'],
+  target: GroupRule['target'],
+): GroupRule => ({
+  condition: AND,
+  source: GROUP,
+  type,
+  key,
+  target,
+})

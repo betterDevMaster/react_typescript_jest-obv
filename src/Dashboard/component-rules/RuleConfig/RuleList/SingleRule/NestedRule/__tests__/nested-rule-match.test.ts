@@ -6,7 +6,7 @@ import {
   IS,
 } from 'Dashboard/component-rules/RuleConfig/RuleList/SingleRule/GroupRule'
 import {hasMatch} from 'Dashboard/component-rules/matcher'
-import {NESTED_RULE} from 'Dashboard/component-rules/RuleConfig/RuleList/SingleRule/NestedRule/nested-rule'
+import {NESTED_RULE} from 'Dashboard/component-rules/RuleConfig/RuleList/SingleRule/NestedRule'
 
 it('should evaluate nested first', () => {
   const {key: key1, target: target1, rule: rule1} = createRule(OR)

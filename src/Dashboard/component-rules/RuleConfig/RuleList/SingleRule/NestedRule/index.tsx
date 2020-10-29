@@ -1,7 +1,19 @@
-import {NestedRule as Rule} from 'Dashboard/component-rules/RuleConfig/RuleList/SingleRule/NestedRule/nested-rule'
+import {AND, BaseRule, Rule} from 'Dashboard/component-rules'
 import React from 'react'
 
-export default function NestedRule(props: {rule: Rule}) {
+export const NESTED_RULE = 'Nested Rule'
+export type NestedRule = BaseRule & {
+  source: typeof NESTED_RULE
+  rules: Rule[]
+}
+
+export default function NestedRule(props: {rule: NestedRule}) {
   const numRules = props.rule.rules.length
   return <div>these rules ({numRules}) are true</div>
 }
+
+export const createNestedRule = (rules: Rule[]): NestedRule => ({
+  condition: AND,
+  source: NESTED_RULE,
+  rules,
+})

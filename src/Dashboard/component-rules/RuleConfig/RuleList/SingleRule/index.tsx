@@ -9,7 +9,7 @@ import ConditionSelector from 'Dashboard/component-rules/RuleConfig/RuleList/Sin
 import {TAGS} from 'Dashboard/component-rules/RuleConfig/RuleList/SingleRule/TagsRule/tags-rule'
 import NestedRule from 'Dashboard/component-rules/RuleConfig/RuleList/SingleRule/NestedRule'
 import TagsRule from 'Dashboard/component-rules/RuleConfig/RuleList/SingleRule/TagsRule'
-import {NESTED_RULE} from 'Dashboard/component-rules/RuleConfig/RuleList/SingleRule/NestedRule/nested-rule'
+import {NESTED_RULE} from 'Dashboard/component-rules/RuleConfig/RuleList/SingleRule/NestedRule'
 
 export default function SingleRule(props: {
   rule: Rule

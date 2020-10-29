@@ -12,7 +12,7 @@ import {
 } from 'Dashboard/component-rules/RuleConfig/RuleList/SingleRule/GroupRule'
 import {onChangeStringHandler, onUnknownChangeHandler} from 'lib/dom'
 import React, {useEffect, useState} from 'react'
-import {createGroupRule} from 'Dashboard/component-rules/RuleConfig/RuleList/SingleRule/GroupRule/matcher'
+import {createGroupRule} from 'Dashboard/component-rules/RuleConfig/RuleList/SingleRule/GroupRule'
 
 export default function GroupRuleConfig(props: RuleConfigProps) {
   const [key, setKey] = useState<GroupRule['key']>(initialKey(props.rule))
