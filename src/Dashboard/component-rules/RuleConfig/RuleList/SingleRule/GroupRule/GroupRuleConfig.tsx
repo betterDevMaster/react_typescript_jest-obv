@@ -5,14 +5,14 @@ import TextField from '@material-ui/core/TextField'
 import {RuleConfigProps} from 'Dashboard/component-rules/RuleConfig/RuleList/RuleForm/SourceConfig'
 import {Rule} from 'Dashboard/component-rules'
 import {
-  createGroupRule,
   IS_NOT,
   GROUP,
   GroupRule,
   IS,
-} from 'Dashboard/component-rules/RuleConfig/RuleList/SingleRule/GroupRule/group-rule'
+} from 'Dashboard/component-rules/RuleConfig/RuleList/SingleRule/GroupRule'
 import {onChangeStringHandler, onUnknownChangeHandler} from 'lib/dom'
 import React, {useEffect, useState} from 'react'
+import {createGroupRule} from 'Dashboard/component-rules/RuleConfig/RuleList/SingleRule/GroupRule/matcher'
 
 export default function GroupRuleConfig(props: RuleConfigProps) {
   const [key, setKey] = useState<GroupRule['key']>(initialKey(props.rule))

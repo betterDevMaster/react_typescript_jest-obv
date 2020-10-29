@@ -1,7 +1,8 @@
 import {Rule} from 'Dashboard/component-rules'
 import styled from 'styled-components'
-import GroupRule from 'Dashboard/component-rules/RuleConfig/RuleList/SingleRule/GroupRule'
-import {GROUP} from 'Dashboard/component-rules/RuleConfig/RuleList/SingleRule/GroupRule/group-rule'
+import GroupRule, {
+  GROUP,
+} from 'Dashboard/component-rules/RuleConfig/RuleList/SingleRule/GroupRule'
 import React from 'react'
 import grey from '@material-ui/core/colors/grey'
 import ConditionSelector from 'Dashboard/component-rules/RuleConfig/RuleList/SingleRule/ConditionSelector'

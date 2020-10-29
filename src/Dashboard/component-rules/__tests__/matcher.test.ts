@@ -4,7 +4,7 @@ import {
   GROUP,
   GroupRule,
   IS,
-} from 'Dashboard/component-rules/RuleConfig/RuleList/SingleRule/GroupRule/group-rule'
+} from 'Dashboard/component-rules/RuleConfig/RuleList/SingleRule/GroupRule'
 import faker from 'faker'
 
 it('should require both conditions to pass', () => {

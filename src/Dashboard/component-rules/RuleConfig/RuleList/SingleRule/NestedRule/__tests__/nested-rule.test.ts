@@ -4,7 +4,7 @@ import {
   GROUP,
   GroupRule,
   IS,
-} from 'Dashboard/component-rules/RuleConfig/RuleList/SingleRule/GroupRule/group-rule'
+} from 'Dashboard/component-rules/RuleConfig/RuleList/SingleRule/GroupRule'
 import {hasMatch} from 'Dashboard/component-rules/matcher'
 import {NESTED_RULE} from 'Dashboard/component-rules/RuleConfig/RuleList/SingleRule/NestedRule/nested-rule'
 

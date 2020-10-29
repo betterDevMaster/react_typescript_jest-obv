@@ -1,7 +1,19 @@
-import {GroupRule as Rule} from 'Dashboard/component-rules/RuleConfig/RuleList/SingleRule/GroupRule/group-rule'
 import React from 'react'
+import {BaseRule} from 'Dashboard/component-rules'
 
-export default function GroupRule(props: {rule: Rule}) {
+export const GROUP = 'Group'
+export const IS = 'is'
+export const IS_NOT = 'is not'
+export type GroupRule = BaseRule & {
+  source: typeof GROUP
+  type: typeof IS | typeof IS_NOT
+  key: string
+  target: string
+}
+
+export type Groups = Record<string, any>
+
+export default function GroupRule(props: {rule: GroupRule}) {
   return (
     <div>
       {props.rule.key} {props.rule.type} {props.rule.target}

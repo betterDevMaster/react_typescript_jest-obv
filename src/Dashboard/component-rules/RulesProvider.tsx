@@ -1,4 +1,4 @@
-import {Groups} from 'Dashboard/component-rules/RuleConfig/RuleList/SingleRule/GroupRule/group-rule'
+import {Groups} from 'Dashboard/component-rules/RuleConfig/RuleList/SingleRule/GroupRule'
 import {Tags} from 'Dashboard/component-rules/RuleConfig/RuleList/SingleRule/TagsRule/tags-rule'
 import React from 'react'
 

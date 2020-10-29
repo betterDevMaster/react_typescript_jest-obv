@@ -5,7 +5,7 @@ import {
   GROUP,
   GroupRule,
   IS,
-} from 'Dashboard/component-rules/RuleConfig/RuleList/SingleRule/GroupRule/group-rule'
+} from 'Dashboard/component-rules/RuleConfig/RuleList/SingleRule/GroupRule'
 import faker from 'faker'
 
 it('should check for match', () => {

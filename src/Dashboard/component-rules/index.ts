@@ -1,4 +1,4 @@
-import {GroupRule} from 'Dashboard/component-rules/RuleConfig/RuleList/SingleRule/GroupRule/group-rule'
+import {GroupRule} from 'Dashboard/component-rules/RuleConfig/RuleList/SingleRule/GroupRule'
 import {NestedRule} from 'Dashboard/component-rules/RuleConfig/RuleList/SingleRule/NestedRule/nested-rule'
 import {TagsRule} from 'Dashboard/component-rules/RuleConfig/RuleList/SingleRule/TagsRule/tags-rule'
 
