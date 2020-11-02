@@ -44,5 +44,5 @@ deploy_staging:
     refs:
       - staging
   script:
-    - npm run build
+    - ls
     - aws s3 sync build/ s3:://obvio-event-web-staging
