@@ -33,9 +33,6 @@ build:
   script:
     - npm i --cache .npm --prefer-offline
     - npm run build
-  artifacts:
-    paths:
-      - build/
 
 deploy_staging:
   image: registry.gitlab.com/gitlab-org/cloud-deploy/aws-base:latest
@@ -44,4 +41,4 @@ deploy_staging:
     refs:
       - staging
   script:
-    - aws s3 sync ./build s3:://obvio-event-web-staging
+    - aws s3 sync build/ s3:://obvio-event-web-staging
