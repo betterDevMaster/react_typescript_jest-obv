@@ -27,6 +27,7 @@ build:
       - staging
       - production
   script:
+    - npm i --cache .npm --prefer-offline
     - npm run build
 
 deploy_staging:
