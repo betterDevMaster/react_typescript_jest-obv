@@ -8,6 +8,8 @@ cache:
 variables:
   AWS_ACCESS_KEY_ID: $AWS_ACCESS_KEY_ID
   AWS_SECRET_ACCESS_KEY: $AWS_SECRET_ACCESS_KEY
+  STAGING_CDN_DISTRIBUTION_ID: E1PN7CUQQZ69AV
+  PROD_CDN_DISTRIBUTION_ID: EOHRS0Q0OCXKQ
 
 stages:
   - test
@@ -45,6 +47,7 @@ deploy_staging:
       - staging
   script:
     - aws s3 sync build/ s3://obvio-event-web-staging
+    - aws cloudfront create-invalidation --distribution-id $STAGING_CDN_DISTRIBUTION_ID --paths "/*"
 
 deploy_prod:
   image: registry.gitlab.com/gitlab-org/cloud-deploy/aws-base:latest
@@ -54,3 +57,5 @@ deploy_prod:
       - production
   script:
     - aws s3 sync build/ s3://obvio-event-web
+    - aws cloudfront create-invalidation --distribution-id
+      $PROD_CDN_DISTRIBUTION_ID --paths "/*"
