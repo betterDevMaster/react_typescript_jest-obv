@@ -1,14 +1,15 @@
 import TextField from '@material-ui/core/TextField'
-import {useUpdateDashboard} from 'Dashboard/edit/state/edit-mode'
+import {
+  useDashboard,
+  useUpdateDashboard,
+} from 'Dashboard/state/DashboardProvider'
 import {SimpleBlog} from 'Dashboard/Template/SimpleBlog'
 import {onChangeStringHandler} from 'lib/dom'
 import ColorPicker from 'lib/ui/ColorPicker'
 import React from 'react'
-import {useSelector} from 'react-redux'
-import {RootState} from 'store'
 
 export default function SimpleBlogConfig() {
-  const dashboard = useSelector((state: RootState) => state.dashboardEditor)
+  const dashboard = useDashboard()
   const updateDashboard = useUpdateDashboard()
 
   const update = <T extends keyof SimpleBlog>(key: T) => (

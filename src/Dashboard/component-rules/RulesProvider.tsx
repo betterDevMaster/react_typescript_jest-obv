@@ -1,5 +1,5 @@
-import {Groups} from 'Dashboard/component-rules/sources/GroupRule/group-rule'
-import {Tags} from 'Dashboard/component-rules/sources/TagsRule/tags-rule'
+import {Groups} from 'Dashboard/component-rules/RuleConfig/RuleList/SingleRule/GroupRule'
+import {Tags} from 'Dashboard/component-rules/RuleConfig/RuleList/SingleRule/TagsRule'
 import React from 'react'
 
 interface RulesContextProps {

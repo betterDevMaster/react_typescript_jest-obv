@@ -1,19 +1,16 @@
 import {TextField} from '@material-ui/core'
-import {useUpdateDashboard} from 'Dashboard/edit/state/edit-mode'
 import {SimpleBlog} from 'Dashboard/Template/SimpleBlog'
 import {onChangeStringHandler} from 'lib/dom'
 import ColorPicker from 'lib/ui/ColorPicker'
 import React from 'react'
-import {useSelector} from 'react-redux'
-import {RootState} from 'store'
+import {
+  useDashboard,
+  useUpdateDashboard,
+} from 'Dashboard/state/DashboardProvider'
 
 export default function FooterConfig() {
-  const footer = useSelector((state: RootState) => state.dashboardEditor.footer)
+  const {footer} = useDashboard()
   const updateDashboard = useUpdateDashboard()
-
-  if (!footer) {
-    throw new Error('Missing footer; was it set via edit?')
-  }
 
   const update = <T extends keyof SimpleBlog['footer']>(key: T) => (
     value: SimpleBlog['footer'][T],

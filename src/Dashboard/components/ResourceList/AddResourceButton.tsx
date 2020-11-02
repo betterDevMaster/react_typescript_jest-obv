@@ -1,20 +1,14 @@
 import Button from '@material-ui/core/Button'
 import {RESOURCE_ICON} from 'Dashboard/components/ResourceList'
-import {useUpdateDashboard} from 'Dashboard/edit/state/edit-mode'
+import {
+  useDashboard,
+  useUpdateDashboard,
+} from 'Dashboard/state/DashboardProvider'
 import React from 'react'
-import {useSelector} from 'react-redux'
-import {RootState} from 'store'
 
 export default function AddResourceButton(props: {className?: string}) {
   const updateDashboard = useUpdateDashboard()
-
-  const list = useSelector(
-    (state: RootState) => state.dashboardEditor.resourceList,
-  )
-
-  if (!list) {
-    throw new Error('Resource list missing; was it set via edit?')
-  }
+  const {resourceList: list} = useDashboard()
 
   const addResource = () => {
     updateDashboard({

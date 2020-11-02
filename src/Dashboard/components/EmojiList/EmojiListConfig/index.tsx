@@ -3,41 +3,35 @@ import {EmojiList} from 'Dashboard/components/EmojiList'
 import {Emoji} from 'Dashboard/components/EmojiList/emoji'
 import EmojiSelect from 'Dashboard/components/EmojiList/EmojiListConfig/EmojiSelect'
 import React from 'react'
-import {useSelector} from 'react-redux'
-import {RootState} from 'store'
 import CloseIcon from '@material-ui/icons/Close'
 import IconButton from 'lib/ui/IconButton'
 import TextField from '@material-ui/core/TextField'
 import {onUnknownChangeHandler} from 'lib/dom'
-import {useUpdateDashboard} from 'Dashboard/edit/state/edit-mode'
+import {
+  useDashboard,
+  useUpdateDashboard,
+} from 'Dashboard/state/DashboardProvider'
 
 export default function EmojiListConfig() {
   const updateDashboard = useUpdateDashboard()
-
-  const list = useSelector(
-    (state: RootState) => state.dashboardEditor.emojiList,
-  )
-
-  if (!list) {
-    throw new Error('Missing emoji list; was dashboard set correctly?')
-  }
+  const {emojiList} = useDashboard()
 
   const update = <T extends keyof EmojiList>(key: T, value: EmojiList[T]) => {
     updateDashboard({
       emojiList: {
-        ...list,
+        ...emojiList,
         [key]: value,
       },
     })
   }
 
   const addNewEmoji = (emoji: Emoji['name']) => {
-    const updated = [...list.emojis, emoji]
+    const updated = [...emojiList.emojis, emoji]
     update('emojis', updated)
   }
 
   const updateEmoji = (index: number) => (updated: Emoji['name']) => {
-    const updatedEmojis = list.emojis.map((e, i) => {
+    const updatedEmojis = emojiList.emojis.map((e, i) => {
       const isTarget = i === index
       if (isTarget) {
         return updated
@@ -50,7 +44,7 @@ export default function EmojiListConfig() {
   }
 
   const remove = (index: number) => () => {
-    const updated = list.emojis.filter((e, i) => i !== index)
+    const updated = emojiList.emojis.filter((e, i) => i !== index)
     update('emojis', updated)
   }
 
@@ -62,7 +56,7 @@ export default function EmojiListConfig() {
     <>
       <TextField
         type="number"
-        value={list.emojiWidth || ''}
+        value={emojiList.emojiWidth || ''}
         label="Emoji Size"
         onChange={onUnknownChangeHandler(setWidth)}
         fullWidth
@@ -71,7 +65,7 @@ export default function EmojiListConfig() {
           min: 20,
         }}
       />
-      {list.emojis.map((emoji, index) => (
+      {emojiList.emojis.map((emoji, index) => (
         <ExistingEmoji key={index}>
           <EmojiSelect value={emoji} onPick={updateEmoji(index)} />
           <RemoveButton aria-label="remove emoji" onClick={remove(index)}>

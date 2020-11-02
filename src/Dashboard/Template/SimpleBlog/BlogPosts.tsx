@@ -1,15 +1,10 @@
 import {BlogPost, BLOG_POST} from 'Dashboard/components/BlogPost'
-import {useCurrent} from 'Dashboard/edit/state/edit-mode'
-import EditComponent from 'Dashboard/edit/views/EditComponent'
-import {EntityList} from 'lib/list'
+import {useDashboard} from 'Dashboard/state/DashboardProvider'
+import EditComponent from 'editor/views/EditComponent'
 import React from 'react'
 
-export default function BlogPosts(props: {posts: EntityList<BlogPost>}) {
-  const posts = useCurrent(
-    (state) => state.dashboardEditor.blogPosts,
-    props.posts,
-  )
-
+export default function BlogPosts() {
+  const {blogPosts: posts} = useDashboard()
   return (
     <div>
       {posts.ids.map((id) => {

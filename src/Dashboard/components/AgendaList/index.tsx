@@ -2,10 +2,10 @@ import React from 'react'
 import styled from 'styled-components'
 import Heading from 'Dashboard/Template/SimpleBlog/Sidebar/Heading'
 import moment from 'moment-timezone'
-import EditComponent from 'Dashboard/edit/views/EditComponent'
-import {useCurrent} from 'Dashboard/edit/state/edit-mode'
-import EditModeOnly from 'Dashboard/edit/views/EditModeOnly'
+import EditComponent from 'editor/views/EditComponent'
+import EditModeOnly from 'editor/views/EditModeOnly'
 import AddAgendaEventButton from 'Dashboard/components/AgendaList/AddAgendaEventButton'
+import {useDashboard} from 'Dashboard/state/DashboardProvider'
 
 export const AGENDA = 'Agenda'
 
@@ -16,14 +16,8 @@ export interface Agenda {
   link: string | null
 }
 
-export default function AgendaList(props: {
-  agendas: Agenda[]
-  container?: React.FunctionComponent<any>
-}) {
-  const agendas = useCurrent(
-    (state) => state.dashboardEditor.agendas,
-    props.agendas,
-  )
+export default function AgendaList() {
+  const {agendas} = useDashboard()
 
   const hasAgenda = agendas.length > 0
   if (!hasAgenda) {
@@ -34,10 +28,8 @@ export default function AgendaList(props: {
     )
   }
 
-  const Component = props.container || 'div'
-
   return (
-    <Component>
+    <>
       <Heading>AGENDA:</Heading>
       {agendas.map((agenda, index) => (
         <EditComponent type={AGENDA} id={index} key={index}>
@@ -50,7 +42,7 @@ export default function AgendaList(props: {
       <EditModeOnly>
         <StyledAddAgendaEventButton />
       </EditModeOnly>
-    </Component>
+    </>
   )
 }
 

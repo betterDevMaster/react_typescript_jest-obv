@@ -1,31 +1,25 @@
 import TextField from '@material-ui/core/TextField'
 import {Points} from 'Dashboard/components/PointsSummary'
 import {
-  useCloseConfig,
+  useDashboard,
   useUpdateDashboard,
-} from 'Dashboard/edit/state/edit-mode'
+} from 'Dashboard/state/DashboardProvider'
+import {useCloseConfig} from 'editor/state/edit-mode'
 import {onChangeStringHandler} from 'lib/dom'
 import DangerButton from 'lib/ui/Button/DangerButton'
 import React from 'react'
-import {useSelector} from 'react-redux'
-import {RootState} from 'store'
 import styled from 'styled-components'
 
 export default function PointsSummaryConfig() {
-  const points = useSelector((state: RootState) => state.dashboardEditor.points)
+  const {points} = useDashboard()
   const updateDashboard = useUpdateDashboard()
   const closeConfig = useCloseConfig()
 
-  if (!points) {
-    throw new Error('Missing points; was it set via edit?')
-  }
-
   const update = <T extends keyof Points>(key: T) => (value: Points[T]) => {
+    const updated = updatePoints(key, value, points)
+
     updateDashboard({
-      points: {
-        ...points,
-        [key]: value,
-      },
+      points: updated,
     })
   }
 
@@ -37,7 +31,7 @@ export default function PointsSummaryConfig() {
   return (
     <>
       <TextField
-        value={points.headerImage}
+        value={points?.headerImage || ''}
         label="Image"
         fullWidth
         onChange={onChangeStringHandler(update('headerImage'))}
@@ -46,7 +40,7 @@ export default function PointsSummaryConfig() {
         }}
       />
       <TextField
-        value={points.description}
+        value={points?.description || ''}
         label="Description"
         multiline
         rows={4}
@@ -57,7 +51,7 @@ export default function PointsSummaryConfig() {
         }}
       />
       <TextField
-        value={points.unit}
+        value={points?.unit || ''}
         label="Unit"
         fullWidth
         onChange={onChangeStringHandler(update('unit'))}
@@ -66,7 +60,7 @@ export default function PointsSummaryConfig() {
         }}
       />
       <TextField
-        value={points.leaderboardUrl}
+        value={points?.leaderboardUrl || ''}
         label="Leaderboard URL"
         fullWidth
         onChange={onChangeStringHandler(update('leaderboardUrl'))}
@@ -84,6 +78,28 @@ export default function PointsSummaryConfig() {
       </RemovePointsButton>
     </>
   )
+}
+
+function updatePoints<T extends keyof Points>(
+  key: T,
+  value: Points[T],
+  points: Points | null,
+): Points {
+  if (!points) {
+    return {
+      headerImage: '',
+      description: '',
+      unit: '',
+      leaderboardUrl: '',
+      numPoints: 0,
+      [key]: value,
+    }
+  }
+
+  return {
+    ...points,
+    [key]: value,
+  }
 }
 
 const RemovePointsButton = styled(DangerButton)`

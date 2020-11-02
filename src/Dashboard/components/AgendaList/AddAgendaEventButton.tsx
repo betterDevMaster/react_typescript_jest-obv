@@ -1,13 +1,12 @@
 import React from 'react'
 import {Button} from '@material-ui/core'
-import {RootState} from 'store'
-import {useUpdateDashboard} from 'Dashboard/edit/state/edit-mode'
-import {useSelector} from 'react-redux'
+import {
+  useDashboard,
+  useUpdateDashboard,
+} from 'Dashboard/state/DashboardProvider'
 
 export default function AddAgendaEventButton(props: {className?: string}) {
-  const agendas = useSelector(
-    (state: RootState) => state.dashboardEditor.agendas,
-  )
+  const {agendas} = useDashboard()
   const updateDashboard = useUpdateDashboard()
 
   const existingAgendas = agendas || []
