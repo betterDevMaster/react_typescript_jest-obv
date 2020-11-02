@@ -1,37 +1,22 @@
 import React from 'react'
 import styled from 'styled-components'
-import {SimpleBlog} from 'Dashboard/Template/SimpleBlog'
 import SidebarNavButton from 'Dashboard/Template/SimpleBlog/Sidebar/SidebarNav/SidebarNavButton'
-import {useCurrent} from 'Dashboard/edit/state/edit-mode'
 import NewSidebarNavButton from 'Dashboard/Template/SimpleBlog/Sidebar/NewSidebarNavButton'
-import EditModeOnly from 'Dashboard/edit/views/EditModeOnly'
+import EditModeOnly from 'editor/views/EditModeOnly'
+import {useDashboard} from 'Dashboard/state/DashboardProvider'
 
 export const SIDEBAR_NAV_BUTTON = 'Sidebar Nav Button'
 
-export default function SidebarNav(props: {
-  buttons: SimpleBlog['sidebarNav']
-  primaryColor: string
-  container?: React.FunctionComponent<any>
-}) {
-  const buttons = useCurrent(
-    (state) => state.dashboardEditor.sidebarNav,
-    props.buttons,
-  )
-
-  const buttonColor = useCurrent(
-    (state) => state.dashboardEditor.primaryColor,
-    props.primaryColor,
-  )
+export default function SidebarNav() {
+  const {sidebarNav: buttons, primaryColor} = useDashboard()
 
   const hasButtons = buttons.ids.length > 0
   if (!hasButtons) {
     return null
   }
 
-  const Component = props.container || 'div'
-
   return (
-    <Component>
+    <>
       {buttons.ids.map((id) => {
         const button = buttons.entities[id]
         return (
@@ -39,15 +24,15 @@ export default function SidebarNav(props: {
             key={id}
             {...button}
             id={id}
-            backgroundColor={buttonColor}
-            hoverBackgroundColor={buttonColor}
+            backgroundColor={primaryColor}
+            hoverBackgroundColor={primaryColor}
           />
         )
       })}
       <EditModeOnly>
         <StyledNewSidebarNavButton />
       </EditModeOnly>
-    </Component>
+    </>
   )
 }
 

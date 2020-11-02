@@ -19,7 +19,7 @@ const dashboard = fakeSimpleBlog({
   },
 })
 
-const user = fakeUser()
+const user = fakeUser({group: 'foobar'})
 
 export default function App() {
   return (

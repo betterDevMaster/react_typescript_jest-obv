@@ -1,9 +1,10 @@
 import Button from '@material-ui/core/Button'
-import {useCurrent, useEditComponent} from 'Dashboard/edit/state/edit-mode'
-import EditModeOnly from 'Dashboard/edit/views/EditModeOnly'
+import {useEditComponent} from 'editor/state/edit-mode'
+import EditModeOnly from 'editor/views/EditModeOnly'
 import {SimpleBlog} from 'Dashboard/Template/SimpleBlog'
 import React from 'react'
 import styled from 'styled-components'
+import {useDashboard} from 'Dashboard/state/DashboardProvider'
 
 export const SIDEBAR_CONTAINER = 'Sidebar'
 
@@ -16,18 +17,10 @@ export default function SidebarContainer(props: {
   children: React.ReactNode
 }) {
   const edit = useEditComponent({type: SIDEBAR_CONTAINER})
-
-  const background = useCurrent(
-    (state) => state.dashboardEditor.sidebar?.background,
-    props.background,
-  )
-  const textColor = useCurrent(
-    (state) => state.dashboardEditor.sidebar?.textColor,
-    props.textColor,
-  )
+  const {sidebar} = useDashboard()
 
   return (
-    <Box backgroundColor={background} textColor={textColor}>
+    <Box backgroundColor={sidebar.background} textColor={sidebar.textColor}>
       <EditModeOnly>
         <EditSidebarButton
           onClick={edit}

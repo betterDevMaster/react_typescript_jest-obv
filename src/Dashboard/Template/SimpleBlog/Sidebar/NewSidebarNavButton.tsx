@@ -1,19 +1,19 @@
 import Button from '@material-ui/core/Button'
 import NavButton from 'Dashboard/components/NavButton'
-import {useEditMode, useUpdateDashboard} from 'Dashboard/edit/state/edit-mode'
+import {
+  useDashboard,
+  useUpdateDashboard,
+} from 'Dashboard/state/DashboardProvider'
+import {useEditMode} from 'editor/state/edit-mode'
 import React from 'react'
-import {useSelector} from 'react-redux'
-import {RootState} from 'store'
 import {v4 as uid} from 'uuid'
 
 export default function NewSidebarNavButton(props: {className?: string}) {
   const isEditMode = useEditMode()
-  const buttons = useSelector(
-    (state: RootState) => state.dashboardEditor.sidebarNav,
-  )
+  const {sidebarNav: buttons} = useDashboard()
   const updateDashboard = useUpdateDashboard()
 
-  if (!isEditMode || !buttons) {
+  if (!isEditMode) {
     return null
   }
 

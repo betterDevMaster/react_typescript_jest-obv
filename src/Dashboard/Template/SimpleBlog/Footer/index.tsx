@@ -1,16 +1,13 @@
-import {useCurrent, useEditMode} from 'Dashboard/edit/state/edit-mode'
-import EditComponent from 'Dashboard/edit/views/EditComponent'
-import {SimpleBlog} from 'Dashboard/Template/SimpleBlog'
+import {useEditMode} from 'editor/state/edit-mode'
+import EditComponent from 'editor/views/EditComponent'
 import React from 'react'
 import styled from 'styled-components'
+import {useDashboard} from 'Dashboard/state/DashboardProvider'
 
 export const FOOTER = 'footer'
 
-export default function Footer(props: {footer: SimpleBlog['footer']}) {
-  const footer = useCurrent(
-    (state) => state.dashboardEditor.footer,
-    props.footer,
-  )
+export default function Footer() {
+  const {footer} = useDashboard()
   const isEditMode = useEditMode()
   const isEmpty =
     !footer.termsLink && !footer.privacyLink && !footer.copyrightText

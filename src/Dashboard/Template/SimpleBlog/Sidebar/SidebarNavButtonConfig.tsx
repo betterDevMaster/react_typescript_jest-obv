@@ -10,19 +10,16 @@ import {
 } from 'lib/dom'
 import DangerButton from 'lib/ui/Button/DangerButton'
 import React from 'react'
-import {useSelector} from 'react-redux'
-import {RootState} from 'store'
 import Box from '@material-ui/core/Box'
+import {useCloseConfig} from 'editor/state/edit-mode'
+import {Config} from 'editor/views/DashboardEditDialog/ConfigComponent'
 import {
-  useCloseConfig,
+  useDashboard,
   useUpdateDashboard,
-} from 'Dashboard/edit/state/edit-mode'
-import {Config} from 'Dashboard/edit/views/DashboardEditDialog/ConfigComponent'
+} from 'Dashboard/state/DashboardProvider'
 
 export default function SidebarNavButtonConfig(props: {id?: Config['id']}) {
-  const buttons = useSelector(
-    (state: RootState) => state.dashboardEditor.sidebarNav,
-  )
+  const {sidebarNav: buttons} = useDashboard()
 
   const updateDashboard = useUpdateDashboard()
   const closeConfig = useCloseConfig()
@@ -32,9 +29,6 @@ export default function SidebarNavButtonConfig(props: {id?: Config['id']}) {
     throw new Error('Missing component id')
   }
 
-  if (!buttons) {
-    throw new Error('Missing nav buttons')
-  }
   const button = buttons.entities[id]
 
   const update = (updated: NavButton) => {

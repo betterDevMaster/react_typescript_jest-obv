@@ -4,17 +4,15 @@ import InputLabel from '@material-ui/core/InputLabel'
 import Select from '@material-ui/core/Select'
 import {TICKET_RIBBON} from 'Dashboard/components/TicketRibbon'
 import React from 'react'
-import {useSelector} from 'react-redux'
-import {RootState} from 'store'
 import MenuItem from '@material-ui/core/MenuItem'
 import {onUnknownChangeHandler} from 'lib/dom'
-import {useUpdateDashboard} from 'Dashboard/edit/state/edit-mode'
+import {
+  useDashboard,
+  useUpdateDashboard,
+} from 'Dashboard/state/DashboardProvider'
 
 export default function TicketRibbonConfig() {
-  const ticketRibbon = useSelector(
-    (state: RootState) => state.dashboardEditor.ticketRibbon,
-  )
-
+  const {ticketRibbon} = useDashboard()
   const updateDashboard = useUpdateDashboard()
 
   if (ticketRibbon === undefined) {

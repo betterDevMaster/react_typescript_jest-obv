@@ -8,6 +8,14 @@ import {render} from '__utils__/render'
 import {clickEdit} from '__utils__/edit'
 import {fireEvent} from '@testing-library/react'
 
+beforeAll(() => {
+  jest.setTimeout(10000)
+})
+
+afterAll(() => {
+  jest.setTimeout(5000)
+})
+
 it('should render a footer', () => {
   const dashboard = fakeSimpleBlog({
     footer: {

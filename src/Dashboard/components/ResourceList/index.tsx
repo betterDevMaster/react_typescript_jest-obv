@@ -2,10 +2,11 @@ import React from 'react'
 import styled from 'styled-components'
 import Heading from 'Dashboard/Template/SimpleBlog/Sidebar/Heading'
 import Icon from '@material-ui/core/Icon'
-import EditComponent from 'Dashboard/edit/views/EditComponent'
-import {useCurrent, useEditMode} from 'Dashboard/edit/state/edit-mode'
-import EditModeOnly from 'Dashboard/edit/views/EditModeOnly'
+import EditComponent from 'editor/views/EditComponent'
+import {useEditMode} from 'editor/state/edit-mode'
+import EditModeOnly from 'editor/views/EditModeOnly'
 import AddResourceButton from 'Dashboard/components/ResourceList/AddResourceButton'
+import {useDashboard} from 'Dashboard/state/DashboardProvider'
 
 export interface ResourceList {
   description: string
@@ -31,26 +32,17 @@ export const RESOURCE_ICON = {
   attachment: 'attachment',
 }
 
-export function ResourceList(props: {
-  list: ResourceList
-  container?: React.FunctionComponent<any>
-  iconColor?: string
-}) {
+export function ResourceList() {
   const isEdit = useEditMode()
+  const {resourceList: list, primaryColor} = useDashboard()
 
-  const list = useCurrent(
-    (state) => state.dashboardEditor.resourceList,
-    props.list,
-  )
   const hasResources = list.resources.length > 0
   if (!hasResources && !isEdit) {
     return null
   }
 
-  const Component = props.container || 'div'
-
   return (
-    <Component className="resource-list">
+    <>
       <EditComponent type={RESOURCE_LIST}>
         <Heading aria-label="resources">RESOURCES:</Heading>
       </EditComponent>
@@ -59,7 +51,7 @@ export function ResourceList(props: {
         {list.resources.map((resource, index) => (
           <li key={index}>
             <EditComponent type={RESOURCE_ITEM} id={index}>
-              <Resource resource={resource} iconColor={props.iconColor} />
+              <Resource resource={resource} iconColor={primaryColor} />
             </EditComponent>
           </li>
         ))}
@@ -67,7 +59,7 @@ export function ResourceList(props: {
       <EditModeOnly>
         <StyledAddResourceButton />
       </EditModeOnly>
-    </Component>
+    </>
   )
 }
 

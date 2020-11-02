@@ -1,11 +1,12 @@
-import React, {useEffect, useRef} from 'react'
+import React, {useEffect} from 'react'
 import {SimpleBlog} from 'Dashboard/Template/SimpleBlog'
 import {User} from 'user'
-import {useDispatch} from 'react-redux'
-import {setDashboard, setEditMode} from 'Dashboard/edit/state/actions'
-import DashboardEditDialog from 'Dashboard/edit/views/DashboardEditDialog'
+import DashboardEditDialog from 'editor/views/DashboardEditDialog'
 import Template from 'Dashboard/Template'
-import PreviewBar from 'Dashboard/edit/views/PreviewBar'
+import EditToggleBar from 'editor/views/EditToggleBar'
+import DashboardProvider from 'Dashboard/state/DashboardProvider'
+import {useDispatch} from 'react-redux'
+import {setEditMode} from 'editor/state/actions'
 
 export type Dashboard = SimpleBlog
 
@@ -16,38 +17,25 @@ export type DashboardProps = {
 }
 
 export default function Dashboard(props: DashboardProps) {
-  useCurrentDashboard(props.isEditMode, props.dashboard)
-
-  if (props.isEditMode) {
-    return (
-      <>
-        <PreviewBar />
-        <Template {...props} />
-        <DashboardEditDialog />
-      </>
-    )
-  }
-
-  return <Template {...props} />
-}
-
-function useCurrentDashboard(isEditMode: boolean, dashboard: Dashboard) {
-  const hasSetRef = useRef(false)
   const dispatch = useDispatch()
 
   useEffect(() => {
-    dispatch(setEditMode(isEditMode))
-  }, [dispatch, isEditMode])
+    dispatch(setEditMode(props.isEditMode))
+  }, [props.isEditMode, dispatch])
 
-  useEffect(() => {
-    const shouldSetDashboardToEdit = isEditMode && !hasSetRef.current
-    if (!shouldSetDashboardToEdit) {
-      return
-    }
+  if (props.isEditMode) {
+    return (
+      <DashboardProvider saved={props.dashboard}>
+        <EditToggleBar />
+        <Template {...props} />
+        <DashboardEditDialog />
+      </DashboardProvider>
+    )
+  }
 
-    hasSetRef.current = true
-    dispatch(setDashboard(dashboard))
-  }, [dispatch, isEditMode, dashboard])
-
-  return hasSetRef.current
+  return (
+    <DashboardProvider saved={props.dashboard}>
+      <Template {...props} />
+    </DashboardProvider>
+  )
 }

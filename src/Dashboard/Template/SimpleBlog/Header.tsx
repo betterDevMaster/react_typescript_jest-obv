@@ -2,21 +2,15 @@ import React from 'react'
 import styled from 'styled-components'
 import Container from '@material-ui/core/Container'
 import {MenuIconButton} from 'lib/ui/IconButton/MenuIconButton'
-import {RootState} from 'store'
-import {useSelector} from 'react-redux'
+import {useDashboard} from 'Dashboard/state/DashboardProvider'
 
 export default function Header(props: {
-  logo: string
-  title: string
   primaryColor: string
   toggleMenu: () => void
   menuVisible: boolean
   'aria-label'?: string
 }) {
-  const currentLogo = useSelector(
-    (state: RootState) => state.dashboardEditor.logo,
-  )
-  const logo = currentLogo || props.logo
+  const {logo, title} = useDashboard()
 
   return (
     <Box aria-label={props['aria-label']}>
@@ -30,7 +24,7 @@ export default function Header(props: {
             />
           </Side>
           <Middle>
-            <Logo src={logo} alt={props.title} aria-label="logo" />
+            <Logo src={logo} alt={title} aria-label="logo" />
           </Middle>
           <Side />
         </Layout>

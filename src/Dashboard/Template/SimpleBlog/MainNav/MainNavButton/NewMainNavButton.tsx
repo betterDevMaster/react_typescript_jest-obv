@@ -1,16 +1,15 @@
 import Button from '@material-ui/core/Button'
 import Grid from '@material-ui/core/Grid'
 import {NavButtonWithSize} from 'Dashboard/components/NavButton'
-import {useUpdateDashboard} from 'Dashboard/edit/state/edit-mode'
+import {
+  useDashboard,
+  useUpdateDashboard,
+} from 'Dashboard/state/DashboardProvider'
 import React from 'react'
-import {useSelector} from 'react-redux'
-import {RootState} from 'store'
 import {v4 as uid} from 'uuid'
 
 export default function NewMainNavButton() {
-  const buttons = useSelector(
-    (state: RootState) => state.dashboardEditor.mainNav,
-  )
+  const {mainNav: buttons} = useDashboard()
   const updateDashboard = useUpdateDashboard()
 
   if (!buttons) {
