@@ -5,7 +5,12 @@ cache:
   paths:
     - .npm/
 
-test:
+stages:
+  - test
+  - build
+  - deploy
+
+unit_tests:
   stage: test
   except:
     refs:
@@ -14,3 +19,22 @@ test:
   script:
     - npm i --cache .npm --prefer-offline
     - npm test
+
+build:
+  stage: build
+  only:
+    refs:
+      - staging
+      - production
+  script:
+    - npm i --cache .npm --prefer-offline
+    - npm run build
+
+deploy_staging:
+  image: registry.gitlab.com/gitlab-org/cloud-deploy/aws-base:latest
+  stage: deploy
+  only:
+    refs:
+      - staging
+  script:
+    - aws s3 sync ./build s3:://obvio-event-web-staging

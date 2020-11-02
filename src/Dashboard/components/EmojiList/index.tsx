@@ -1,26 +1,48 @@
 import React from 'react'
 import styled from 'styled-components'
-import {Emoji} from 'Dashboard/components/EmojiList/emoji'
+import {Emoji, emojiWithName} from 'Dashboard/components/EmojiList/emoji'
+import EditComponent from 'editor/views/EditComponent'
+import AddEmojiListButton from 'Dashboard/components/EmojiList/AddEmojiListButton'
+import EditModeOnly from 'editor/views/EditModeOnly'
+import {useDashboard} from 'Dashboard/state/DashboardProvider'
+
+export const EMOJI_LIST = 'Emoji List'
 
 export interface EmojiList {
-  emojis: Emoji[]
-  width?: number
+  emojis: Emoji['name'][]
+  // Manually set size of each emoji, if unset
+  // each emoji will take up all available
+  // space
+  emojiWidth?: number
 }
 
-export default function EmojiList(props: {list: EmojiList | null}) {
-  const {list} = props
-  if (!list) {
-    return null
+export default function EmojiList() {
+  const {emojiList: list} = useDashboard()
+
+  const isEmpty = list && list.emojis.length === 0
+  if (!list || isEmpty) {
+    // Add button to create emoji list
+    return (
+      <EditModeOnly>
+        <StyledAddEmojiListButton />
+      </EditModeOnly>
+    )
   }
 
   return (
-    <Box>
-      {list.emojis.map((emoji, index) => (
-        <Container key={index} width={list.width}>
-          <Image aria-label="event emoji" src={emoji}></Image>
-        </Container>
-      ))}
-    </Box>
+    <EditComponent type={EMOJI_LIST}>
+      <Box aria-label="emoji list">
+        {list.emojis.map((name, index) => (
+          <Container key={index} width={list.emojiWidth}>
+            <Image
+              aria-label="event emoji"
+              src={emojiWithName(name).image}
+              alt={name}
+            />
+          </Container>
+        ))}
+      </Box>
+    </EditComponent>
   )
 }
 
@@ -41,4 +63,8 @@ const Container = styled((props: any) => {
 const Image = styled.img`
   max-width: 100%;
   max-height: 100%;
+`
+
+const StyledAddEmojiListButton = styled(AddEmojiListButton)`
+  margin-bottom: ${(props) => props.theme.spacing[6]}!important;
 `

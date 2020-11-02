@@ -1,3 +1,7 @@
+import SetTicketRibbonButton from 'Dashboard/components/TicketRibbon/TicketRibbonConfig/SetTicketRibbonButton'
+import {useDashboard} from 'Dashboard/state/DashboardProvider'
+import EditComponent from 'editor/views/EditComponent'
+import EditModeOnly from 'editor/views/EditModeOnly'
 import React from 'react'
 import styled from 'styled-components'
 import APN_RIBBON from './ribbon/APN.png'
@@ -10,6 +14,8 @@ export interface TicketRibbon {
   name: string
   image: string
 }
+
+export const TICKET_RIBBON_TYPE = 'Ticket Ribbon'
 
 export const TICKET_RIBBON: Record<string, TicketRibbon> = {
   APN: {
@@ -36,16 +42,35 @@ export const TICKET_RIBBON: Record<string, TicketRibbon> = {
 
 export const ALL_TICKET_RIBBONS = Object.values(TICKET_RIBBON)
 
-export default function TicketRibbon(props: {ribbon: TicketRibbon | null}) {
-  if (!props.ribbon) {
-    return null
+export const ticketRibbonWithName = (name: string) => {
+  const target = ALL_TICKET_RIBBONS.find((tr) => tr.name === name)
+  if (!target) {
+    throw new Error(`Missing ticker ribbon with name: ${name}`)
   }
 
-  const label = `${props.ribbon.name} ticket`
+  return target
+}
+
+export default function TicketRibbon() {
+  const {ticketRibbon: name} = useDashboard()
+
+  if (!name) {
+    return (
+      <EditModeOnly>
+        <StyledSetTicketRibbonButton />
+      </EditModeOnly>
+    )
+  }
+
+  const ticketRibbon = ticketRibbonWithName(name)
+
+  const label = `${ticketRibbon.name} ticket`
   return (
-    <Box aria-label={label}>
-      <Ribbon src={props.ribbon.image} alt={label} />
-    </Box>
+    <EditComponent type={TICKET_RIBBON_TYPE}>
+      <Box aria-label={label}>
+        <Ribbon src={ticketRibbon.image} alt={label} />
+      </Box>
+    </EditComponent>
   )
 }
 
@@ -67,4 +92,7 @@ const Box = styled.div`
 const Ribbon = styled.img`
   width: 100%;
   height: 100%;
+`
+const StyledSetTicketRibbonButton = styled(SetTicketRibbonButton)`
+  margin-bottom: ${(props) => props.theme.spacing[6]}!important;
 `

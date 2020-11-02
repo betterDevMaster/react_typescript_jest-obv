@@ -2,6 +2,11 @@ import React from 'react'
 import styled from 'styled-components'
 import Heading from 'Dashboard/Template/SimpleBlog/Sidebar/Heading'
 import Icon from '@material-ui/core/Icon'
+import EditComponent from 'editor/views/EditComponent'
+import {useEditMode} from 'editor/state/edit-mode'
+import EditModeOnly from 'editor/views/EditModeOnly'
+import AddResourceButton from 'Dashboard/components/ResourceList/AddResourceButton'
+import {useDashboard} from 'Dashboard/state/DashboardProvider'
 
 export interface ResourceList {
   description: string
@@ -14,6 +19,10 @@ export interface Resource {
   icon: string
 }
 
+export const RESOURCE_LIST = 'Resource List'
+
+export const RESOURCE_ITEM = 'Resource Item'
+
 /**
  * Material Design icon names
  * https://material.io/resources/icons/
@@ -23,30 +32,34 @@ export const RESOURCE_ICON = {
   attachment: 'attachment',
 }
 
-export function ResourceList(props: {
-  list: ResourceList
-  component?: React.FunctionComponent<any>
-  iconColor?: string
-}) {
-  const hasResources = props.list.resources.length > 0
-  if (!hasResources) {
+export function ResourceList() {
+  const isEdit = useEditMode()
+  const {resourceList: list, primaryColor} = useDashboard()
+
+  const hasResources = list.resources.length > 0
+  if (!hasResources && !isEdit) {
     return null
   }
 
-  const Component = props.component || 'div'
-
   return (
-    <Component className="resource-list">
-      <Heading>RESOURCES:</Heading>
-      <p>{props.list.description}</p>
+    <>
+      <EditComponent type={RESOURCE_LIST}>
+        <Heading aria-label="resources">RESOURCES:</Heading>
+      </EditComponent>
+      <p aria-label="resource description">{list.description}</p>
       <List>
-        {props.list.resources.map((resource, index) => (
+        {list.resources.map((resource, index) => (
           <li key={index}>
-            <Resource resource={resource} iconColor={props.iconColor} />
+            <EditComponent type={RESOURCE_ITEM} id={index}>
+              <Resource resource={resource} iconColor={primaryColor} />
+            </EditComponent>
           </li>
         ))}
       </List>
-    </Component>
+      <EditModeOnly>
+        <StyledAddResourceButton />
+      </EditModeOnly>
+    </>
   )
 }
 
@@ -60,7 +73,7 @@ function Resource(props: {resource: Resource; iconColor?: string}) {
       >
         {props.resource.icon}
       </StyledIcon>
-      <LinkText>{props.resource.name}</LinkText>
+      <LinkText aria-label="resource link">{props.resource.name}</LinkText>
     </ResourceLink>
   )
 }
@@ -96,4 +109,9 @@ const StyledIcon = styled((props) => {
 })`
   color: ${(props) => props.color || '#000'};
   margin-right: ${(props) => props.theme.spacing[2]};
+`
+
+const StyledAddResourceButton = styled(AddResourceButton)`
+  margin-bottom: ${(props) => props.theme.spacing[6]}!important;
+  margin-top: ${(props) => props.theme.spacing[5]}!important;
 `

@@ -8,16 +8,18 @@ export interface BlogPost {
   content: string
 }
 
-export function BlogPost(props: BlogPost) {
-  const formattedPost = blogPostTime(props.postedAt, 'America/New_York')
+export const BLOG_POST = 'Blog Post'
+
+export function BlogPost(props: {post: BlogPost}) {
+  const formattedPost = blogPostTime(props.post.postedAt, 'America/New_York')
 
   return (
     <Post aria-label="blog post">
-      <Title>{props.title}</Title>
+      <Title>{props.post.title}</Title>
       <PostDate>{formattedPost}</PostDate>
       <div
         dangerouslySetInnerHTML={{
-          __html: props.content,
+          __html: props.post.content,
         }}
       />
     </Post>

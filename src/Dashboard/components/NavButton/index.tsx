@@ -1,13 +1,13 @@
-import {Component} from 'Dashboard/components'
 import React from 'react'
 import styled from 'styled-components'
 import Button from 'lib/ui/Button'
 import {Column} from 'lib/ui/layout'
 import {newTabProps} from 'lib/link'
+import {HasRules} from 'Dashboard/component-rules'
 
 export const NAV_BUTTON = 'NAV_BUTTON'
 
-export interface NavButton extends Component {
+export default interface NavButton extends HasRules {
   text: string
   link: string
   backgroundColor?: string
@@ -23,14 +23,10 @@ export interface NavButton extends Component {
 }
 
 export type NavButtonWithSize = NavButton & {
-  size?: Column
+  size: Column
 }
 
-export default function NavButton(
-  props: NavButton & {
-    id: string
-  },
-) {
+export default function NavButton(props: NavButton) {
   const tabProps = props.newTab ? newTabProps : null
 
   return (
@@ -42,10 +38,11 @@ export default function NavButton(
         textColor={props.textColor}
         className={props.className}
         hoverBackgroundColor={props.hoverBackgroundColor}
-        lightOnHover={!props.hoverBackgroundColor}
+        disableHover={!props.hoverBackgroundColor}
         borderRadius={props.borderRadius}
         borderWidth={props.borderWidth}
         borderColor={props.borderColor}
+        hoverBorderColor={props.hoverBorderColor}
       >
         {props.text}
       </StyledButton>

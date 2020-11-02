@@ -21,12 +21,14 @@ export const fakeSimpleBlog = (overrides?: Partial<SimpleBlog>): SimpleBlog => {
     logo: 'https://tax.live/success_summit/images/virtual-2020-logo.png',
     welcomeText: 'WELCOME TO THE DASHBOARD',
     primaryColor: '#14aecf',
-    sidebarBackground: '#000000',
-    sidebarTextColor: '#FFFFFF',
-    sidebarNavButtons: {entities: {}, ids: []},
+    sidebar: {
+      background: '#000000',
+      textColor: '#FFFFFF',
+    },
+    sidebarNav: {entities: {}, ids: []},
     ticketRibbon: null,
-    mainNavButtons: {entities: {}, ids: []},
-    emojiList: null,
+    mainNav: {entities: {}, ids: []},
+    emojiList: {emojis: []},
     blogPosts: {entities: {}, ids: []},
     agendas: [],
     points: null,
@@ -34,19 +36,21 @@ export const fakeSimpleBlog = (overrides?: Partial<SimpleBlog>): SimpleBlog => {
       description: '',
       resources: [],
     },
-    footerBackground: '#000000',
-    footerTextColor: '#ffffff',
-    footerTermsLink: faker.random.boolean() ? faker.internet.url() : null,
-    footerPrivacyLink: faker.random.boolean() ? faker.internet.url() : null,
-    footerCopyrightText: faker.random.boolean()
-      ? `© 2020 ${faker.company.companyName()}. All Rights Reserved.`
-      : null,
+    footer: {
+      background: '#000000',
+      textColor: '#ffffff',
+      termsLink: faker.random.boolean() ? faker.internet.url() : null,
+      privacyLink: faker.random.boolean() ? faker.internet.url() : null,
+      copyrightText: faker.random.boolean()
+        ? `© 2020 ${faker.company.companyName()}. All Rights Reserved.`
+        : null,
+    },
   }
 
   const makeAttributes: (d: SimpleBlog) => SimpleBlog = pipe(
     withAgendas,
-    withMainNavButtons,
-    withSidebarNavButtons,
+    withMainNav,
+    withSidebarNav,
     withTicketRibbon,
     withBlogPosts,
     sometimes<SimpleBlog>(withPoints),
@@ -60,28 +64,32 @@ export const fakeSimpleBlog = (overrides?: Partial<SimpleBlog>): SimpleBlog => {
   }
 }
 
-export function withMainNavButtons<
-  T extends {mainNavButtons: SimpleBlog['mainNavButtons']}
->(attributes: T): T {
+export function withMainNav<T extends {mainNav: SimpleBlog['mainNav']}>(
+  attributes: T,
+): T {
   const buttons = Array.from(
     {length: faker.random.number({min: 1, max: 5})},
     fakeNavButtonWithSize,
   )
   return {
     ...attributes,
-    mainNavButtons: createEntityList(buttons),
+    mainNav: createEntityList(buttons),
   }
 }
 
-export function withSidebarNavButtons<
-  T extends {mainNavButtons: SimpleBlog['sidebarNavButtons']}
+export function withSidebarNav<
+  T extends {sidebarNav: SimpleBlog['sidebarNav']}
 >(attributes: T): T {
   const buttons = Array.from(
     {length: faker.random.number({min: 1, max: 5})},
-    fakeNavButton,
+    () =>
+      fakeNavButton({
+        borderRadius: 0,
+        hoverBorderColor: '#FFFFFF',
+      }),
   )
   return {
     ...attributes,
-    sidebarNavButtons: createEntityList(buttons),
+    sidebarNav: createEntityList(buttons),
   }
 }

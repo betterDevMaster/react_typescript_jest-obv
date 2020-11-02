@@ -1,3 +1,7 @@
+import SetPointsButton from 'Dashboard/components/PointsSummary/SetPointsButton'
+import {useDashboard} from 'Dashboard/state/DashboardProvider'
+import EditComponent from 'editor/views/EditComponent'
+import EditModeOnly from 'editor/views/EditModeOnly'
 import React from 'react'
 import styled from 'styled-components'
 
@@ -9,30 +13,41 @@ export type Points = {
   leaderboardUrl: string
 }
 
-export default function PointsSummary(props: {
-  points: Points | null
-  component?: React.FunctionComponent<any>
-}) {
-  if (!props.points) {
-    return null
+export const POINTS_SUMMARY = 'Points Summary'
+
+export default function PointsSummary() {
+  const {points} = useDashboard()
+
+  if (!points) {
+    return (
+      <EditModeOnly>
+        <StyledSetPointsButton />
+      </EditModeOnly>
+    )
   }
 
-  const Component = props.component || 'div'
-
   return (
-    <Component>
-      <HeaderImage src={props.points.headerImage} alt={props.points.unit} />
-      <NumPointsText>
-        You've earned {props.points.numPoints} {props.points.unit}!
-      </NumPointsText>
-      <p>{props.points.description}</p>
-      <p>
-        If you would like to see where you stand on the{' '}
-        <a href={props.points.leaderboardUrl}>
-          <strong>LEADERBOARD you can click HERE!</strong>
-        </a>
-      </p>
-    </Component>
+    <div>
+      <EditComponent type={POINTS_SUMMARY}>
+        <>
+          <HeaderImage
+            src={points.headerImage}
+            alt={points.unit}
+            aria-label="points summary"
+          />
+          <NumPointsText>
+            You've earned {points.numPoints} {points.unit}!
+          </NumPointsText>
+          <p>{points.description}</p>
+          <p>
+            If you would like to see where you stand on the{' '}
+            <a href={points.leaderboardUrl}>
+              <strong>LEADERBOARD you can click HERE!</strong>
+            </a>
+          </p>
+        </>
+      </EditComponent>
+    </div>
   )
 }
 
@@ -50,4 +65,8 @@ const NumPointsText = styled.span`
   @media (min-width: ${(props) => props.theme.breakpoints.md}) {
     text-align: center;
   }
+`
+
+const StyledSetPointsButton = styled(SetPointsButton)`
+  margin-bottom: ${(props) => props.theme.spacing[6]}!important;
 `

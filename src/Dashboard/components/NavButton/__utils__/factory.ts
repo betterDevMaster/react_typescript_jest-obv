@@ -1,4 +1,4 @@
-import {NavButtonWithSize, NavButton} from 'Dashboard/components/NavButton'
+import NavButton, {NavButtonWithSize} from 'Dashboard/components/NavButton'
 import faker from 'faker'
 import {pipe} from 'ramda'
 import {Column} from 'lib/ui/layout'
@@ -16,6 +16,7 @@ export const fakeNavButton = (overrides?: Partial<NavButton>): NavButton => {
     link: faker.internet.url(),
     newTab: true,
     isEditMode: false,
+    rules: [],
   }
 
   const makeAttributes: (nb: NavButton) => NavButton = pipe(

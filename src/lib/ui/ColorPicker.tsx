@@ -1,10 +1,11 @@
-import styled, {useTheme} from 'styled-components'
+import styled from 'styled-components'
 import React, {useRef, useState} from 'react'
 import {ColorChangeHandler, ChromePicker} from 'react-color'
 import ReactDOM from 'react-dom'
 import TextField from '@material-ui/core/TextField'
-import {onChangeHandler} from 'lib/dom'
+import {onChangeStringHandler} from 'lib/dom'
 import makeStyles from '@material-ui/core/styles/makeStyles'
+import ColorProperties from 'color'
 
 export default function ColorPicker(props: {
   label: string
@@ -12,7 +13,7 @@ export default function ColorPicker(props: {
   onPick: (color: string) => void
 }) {
   const [showPicker, setShowPicker] = useState(false)
-  const initalColor = props.color || '#000000'
+  const initalColor = props.color
   const [color, setColor] = useState(initalColor)
   const anchorRef = useRef<HTMLDivElement | null>(null)
 
@@ -20,14 +21,20 @@ export default function ColorPicker(props: {
     setShowPicker(!showPicker)
   }
 
-  const handleColorChange: ColorChangeHandler = ({hex: newColor}) => {
+  const updateColor = (newColor: string) => {
     setColor(newColor)
     props.onPick(newColor)
   }
+  const handleColorChange: ColorChangeHandler = ({hex: newColor}) => {
+    updateColor(newColor)
+  }
+
+  // Prevent white text from being invisible
+  const fontColor = !color || isWhite(color) ? '#e8e8e8' : color
 
   const useStyles = makeStyles({
     input: {
-      color,
+      color: fontColor,
     },
   })
   const classes = useStyles()
@@ -38,12 +45,14 @@ export default function ColorPicker(props: {
         InputProps={{
           className: classes.input,
         }}
-        value={color}
+        // Value must be a string (not undefined), otherwise it'll
+        // switch to being an uncontrolled input
+        value={color || ''}
         label={props.label}
         ref={anchorRef}
         onClick={toggleShowPicker}
         fullWidth
-        onChange={onChangeHandler(setColor)}
+        onChange={onChangeStringHandler(updateColor)}
       />
       <Picker
         visible={showPicker}
@@ -64,12 +73,11 @@ export function ColorPickerPopover() {
 
 function Picker(props: {
   visible: boolean
-  color: string
+  color?: string
   onChangeColor: ColorChangeHandler
   toggle: () => void
   anchor: HTMLDivElement | null
 }) {
-  const theme = useTheme()
   if (!props.visible) {
     return null
   }
@@ -92,8 +100,9 @@ function Picker(props: {
     height: anchorHeight,
   } = props.anchor.getBoundingClientRect()
 
-  const topMargin = parseInt(theme.spacing[16])
-  const top = anchorTop + anchorHeight + topMargin
+  const topMargin = 8
+  const top = anchorTop + anchorHeight + topMargin + window.scrollY
+
   return ReactDOM.createPortal(
     <Container left={anchorLeft} top={top}>
       <HideOverlay onClick={props.toggle} />
@@ -105,6 +114,11 @@ function Picker(props: {
     </Container>,
     popoverEl,
   )
+}
+
+function isWhite(color: string) {
+  const properties = ColorProperties(color)
+  return properties.luminosity() > 0.8
 }
 
 const Container = styled.div<{left: number; top: number}>`

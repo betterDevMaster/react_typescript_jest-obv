@@ -1,7 +1,9 @@
 import React from 'react'
 import {Provider} from 'react-redux'
-import {store} from 'store'
+import {createStore} from 'store'
 
 export default function StoreProvider(props: {children: React.ReactNode}) {
-  return <Provider store={store}>{props.children}</Provider>
+  // Create a store each time to prevent tests from sharing the
+  // same store
+  return <Provider store={createStore()}>{props.children}</Provider>
 }

@@ -1,14 +1,16 @@
 import React, {useState} from 'react'
 import styled from 'styled-components'
 import SimpleBlogStyles from 'Dashboard/Template/SimpleBlog/Styles'
-import {NavButtonWithSize, NavButton} from 'Dashboard/components/NavButton'
+import NavButton, {NavButtonWithSize} from 'Dashboard/components/NavButton'
 import Grid from '@material-ui/core/Grid'
 import Container from '@material-ui/core/Container'
 import {BlogPost} from 'Dashboard/components/BlogPost'
 import Header from 'Dashboard/Template/SimpleBlog/Header'
 import Menu from 'Dashboard/Template/SimpleBlog/Menu'
 import {User} from 'user'
-import WelcomeText from 'Dashboard/Template/SimpleBlog/WelcomeText'
+import WelcomeText, {
+  WELCOME_TEXT,
+} from 'Dashboard/Template/SimpleBlog/WelcomeText'
 import Hidden from '@material-ui/core/Hidden'
 import BlogPosts from 'Dashboard/Template/SimpleBlog/BlogPosts'
 import Sidebar from 'Dashboard/Template/SimpleBlog/Sidebar'
@@ -20,89 +22,89 @@ import {ResourceList} from 'Dashboard/components/ResourceList'
 import {TicketRibbon} from 'Dashboard/components/TicketRibbon'
 import {EmojiList} from 'Dashboard/components/EmojiList'
 import {EntityList} from 'lib/list'
-import MainNavButton from 'Dashboard/Template/SimpleBlog/MainNavButton'
+import EditComponent from 'editor/views/EditComponent'
+import MainNav from 'Dashboard/Template/SimpleBlog/MainNav'
+import {useDashboard} from 'Dashboard/state/DashboardProvider'
 
 export const SIMPLE_BLOG = 'SIMPLE_BLOG'
+
 export interface SimpleBlog {
   template: typeof SIMPLE_BLOG
   title: string
-  mainNavButtons: EntityList<NavButtonWithSize>
+  mainNav: EntityList<NavButtonWithSize>
   primaryColor: string
-  ticketRibbon: TicketRibbon | null
+  ticketRibbon: TicketRibbon['name'] | null
   logo: string
   welcomeText: string
-  emojiList: EmojiList | null
-  sidebarBackground: string
-  sidebarTextColor: string
-  sidebarNavButtons: EntityList<NavButton>
+  emojiList: EmojiList
+  sidebar: {
+    background: string
+    textColor: string
+  }
+  sidebarNav: EntityList<NavButton>
   blogPosts: EntityList<BlogPost>
   agendas: Agenda[]
   points: Points | null
   resourceList: ResourceList
-  footerBackground: string
-  footerTextColor: string
-  footerTermsLink: string | null
-  footerPrivacyLink: string | null
-  footerCopyrightText: string | null
+  footer: {
+    background: string
+    textColor: string
+    termsLink: string | null
+    privacyLink: string | null
+    copyrightText: string | null
+  }
 }
 
-export default function SimpleBlog(props: {
-  dashboard: SimpleBlog
-  user: User
-  isEditMode: boolean
-}) {
+export default function SimpleBlog(props: {user: User}) {
   const [menuVisible, setMenuVisible] = useState(false)
   const toggleMenu = () => setMenuVisible(!menuVisible)
+  const {primaryColor, welcomeText} = useDashboard()
 
   return (
     <Box>
-      <SimpleBlogStyles primaryColor={props.dashboard.primaryColor} />
+      <SimpleBlogStyles primaryColor={primaryColor} />
       <Menu
         visible={menuVisible}
-        background={props.dashboard.primaryColor}
+        background={primaryColor}
         toggle={toggleMenu}
         user={props.user}
       />
-      <Header
-        logo={props.dashboard.logo}
-        title={props.dashboard.title}
-        primaryColor={props.dashboard.primaryColor}
-        menuVisible={menuVisible}
-        toggleMenu={toggleMenu}
-      />
+      <EditComponent type={SIMPLE_BLOG}>
+        <Header
+          primaryColor={primaryColor}
+          menuVisible={menuVisible}
+          toggleMenu={toggleMenu}
+          aria-label="header"
+        />
+      </EditComponent>
       <Content>
         <StyledContainer maxWidth="lg">
-          <WelcomeText>{props.dashboard.welcomeText}</WelcomeText>
+          <EditComponent type={WELCOME_TEXT}>
+            <WelcomeText>{welcomeText}</WelcomeText>
+          </EditComponent>
           <MainNavButtons>
             <Grid container spacing={2}>
-              {props.dashboard.mainNavButtons.ids.map((id) => (
-                <MainNavButton
-                  key={id}
-                  id={id}
-                  buttons={props.dashboard.mainNavButtons}
-                  isEditMode={props.isEditMode}
-                />
-              ))}
+              <MainNav />
             </Grid>
           </MainNavButtons>
           <FullHeightGrid container spacing={4}>
             <Hidden mdUp>
               <Grid item xs={12}>
-                <Sidebar {...props.dashboard} />
+                <Sidebar />
               </Grid>
             </Hidden>
             <Grid item xs={12} md={8}>
-              <BlogPosts posts={props.dashboard.blogPosts} />
+              <BlogPosts />
             </Grid>
             <Hidden smDown>
               <Grid item xs={12} md={4}>
-                <Sidebar {...props.dashboard} />
+                <Sidebar />
               </Grid>
             </Hidden>
           </FullHeightGrid>
         </StyledContainer>
       </Content>
-      <Footer {...props.dashboard} />
+      <Footer />
     </Box>
   )
 }
