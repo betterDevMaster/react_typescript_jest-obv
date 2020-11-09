@@ -1,13 +1,15 @@
-import Login from 'obvio/Login'
+import Login from 'obvio/auth/Login'
 import React from 'react'
 import {useObvioAuth} from 'obvio/auth'
 import {Redirect, Route, Switch} from 'react-router-dom'
 import Home from 'obvio/Home'
+import Registration from 'obvio/auth/Registration'
 
 export const ROUTES = {
   root: '/',
   home: '/home',
   login: '/login',
+  registration: '/register',
 }
 
 export default function ObvioRoutes() {
@@ -44,6 +46,9 @@ function GuestRoutes() {
     <Switch>
       <Route path={ROUTES.login}>
         <Login />
+      </Route>
+      <Route path={ROUTES.registration}>
+        <Registration />
       </Route>
       <Redirect
         to={{
