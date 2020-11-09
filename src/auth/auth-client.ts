@@ -53,6 +53,11 @@ export const useAuthClient = (props: AuthClientProps) => {
     [dispatch, endpoints],
   )
 
+  const logout = useCallback(() => {
+    deleteToken()
+    dispatch(setUser(null))
+  }, [dispatch])
+
   return {
     user,
     loading,
@@ -79,8 +84,4 @@ export const attemptLogin = (
     email,
     password,
   })
-}
-
-export function logout() {
-  deleteToken()
 }

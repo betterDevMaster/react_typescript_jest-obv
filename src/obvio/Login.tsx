@@ -12,12 +12,18 @@ export default function Login() {
   const [password, setPassword] = useState('')
   const {login} = useObvioAuth()
   const [error, setError] = useState('')
+  const [submitting, setSubmitting] = useState(false)
 
   const tryLogin = () => {
-    login(email, password).catch((e) => {
-      const message = e.message || e
-      setError(message)
-    })
+    setSubmitting(true)
+    login(email, password)
+      .catch((e) => {
+        const message = e.message || e
+        setError(message)
+      })
+      .finally(() => {
+        setSubmitting(false)
+      })
   }
 
   return (
@@ -36,7 +42,13 @@ export default function Login() {
         variant="outlined"
         onChange={onChangeStringHandler(setPassword)}
       />
-      <Button variant="contained" fullWidth color="primary" onClick={tryLogin}>
+      <Button
+        variant="contained"
+        fullWidth
+        color="primary"
+        onClick={tryLogin}
+        disabled={submitting}
+      >
         Login
       </Button>
       <Error>{error}</Error>

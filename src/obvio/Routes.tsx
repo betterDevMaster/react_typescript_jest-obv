@@ -1,6 +1,14 @@
 import Login from 'obvio/Login'
 import React from 'react'
 import {useObvioAuth} from 'obvio/auth'
+import {Redirect, Route, Switch} from 'react-router-dom'
+import Home from 'obvio/Home'
+
+export const ROUTES = {
+  root: '/',
+  home: '/home',
+  login: '/login',
+}
 
 export default function ObvioRoutes() {
   const {user, loading} = useObvioAuth()
@@ -13,9 +21,35 @@ export default function ObvioRoutes() {
     return <AuthenticatedRoutes />
   }
 
-  return <Login />
+  return <GuestRoutes />
 }
 
 function AuthenticatedRoutes() {
-  return <div>auth</div>
+  return (
+    <Switch>
+      <Route path={ROUTES.home}>
+        <Home />
+      </Route>
+      <Redirect
+        to={{
+          pathname: ROUTES.home,
+        }}
+      />
+    </Switch>
+  )
+}
+
+function GuestRoutes() {
+  return (
+    <Switch>
+      <Route path={ROUTES.login}>
+        <Login />
+      </Route>
+      <Redirect
+        to={{
+          pathname: ROUTES.login,
+        }}
+      />
+    </Switch>
+  )
 }
