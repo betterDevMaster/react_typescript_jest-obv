@@ -1,5 +1,5 @@
 import axios from 'axios'
-import {getToken as getAuthToken} from 'auth/client'
+import {getToken as getAuthToken} from 'auth/token'
 
 const defaultHeaders = {
   'content-type': 'application/json',
@@ -44,7 +44,12 @@ async function handleAxiosResult(promise: Promise<any>) {
     const res = await promise
     return res.data
   } catch (error) {
-    const message = error.response ? error.response.data : error
-    throw new Error(message)
+    // Response object
+    if (error.response) {
+      throw error.response.data
+    }
+
+    // Text error
+    throw new Error(error)
   }
 }

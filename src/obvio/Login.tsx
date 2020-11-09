@@ -1,19 +1,23 @@
 import Button from '@material-ui/core/Button/Button'
+import styled from 'styled-components'
 import TextField from '@material-ui/core/TextField'
-import {setUser} from 'auth/actions'
 import {onChangeStringHandler} from 'lib/dom'
 import Centered from 'lib/ui/layout/Centered'
-import {login} from 'obvio/user'
 import React, {useState} from 'react'
-import {useDispatch} from 'react-redux'
+import {useObvioAuth} from 'obvio/auth'
+import Typography from '@material-ui/core/Typography'
 
 export default function Login() {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
-  const dispatch = useDispatch()
+  const {login} = useObvioAuth()
+  const [error, setError] = useState('')
 
-  const handleLogin = () => {
-    login(email, password).then((user) => dispatch(setUser(user)))
+  const tryLogin = () => {
+    login(email, password).catch((e) => {
+      const message = e.message || e
+      setError(message)
+    })
   }
 
   return (
@@ -32,14 +36,22 @@ export default function Login() {
         variant="outlined"
         onChange={onChangeStringHandler(setPassword)}
       />
-      <Button
-        variant="contained"
-        fullWidth
-        color="primary"
-        onClick={handleLogin}
-      >
+      <Button variant="contained" fullWidth color="primary" onClick={tryLogin}>
         Login
       </Button>
+      <Error>{error}</Error>
     </Centered>
   )
 }
+
+function Error(props: {children: string}) {
+  if (!props.children) {
+    return null
+  }
+
+  return <ErrorText color="error">{props.children}</ErrorText>
+}
+
+const ErrorText = styled(Typography)`
+  margin-top: ${(props) => props.theme.spacing[3]};
+`

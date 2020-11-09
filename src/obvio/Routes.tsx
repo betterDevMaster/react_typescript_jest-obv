@@ -1,11 +1,13 @@
-import {useUser} from 'auth/client'
 import Login from 'obvio/Login'
-import {useTokenAuth} from 'obvio/user'
 import React from 'react'
+import {useObvioAuth} from 'obvio/auth'
 
 export default function ObvioRoutes() {
-  const user = useUser()
-  useTokenAuth()
+  const {user, loading} = useObvioAuth()
+
+  if (loading) {
+    return <div>...loading</div>
+  }
 
   if (user) {
     return <AuthenticatedRoutes />

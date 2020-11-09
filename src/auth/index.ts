@@ -1,4 +1,10 @@
-import {AuthAction, handleSetUser, SET_USER_ACTION} from 'auth/actions'
+import {
+  AuthAction,
+  handleSetLoading,
+  handleSetUser,
+  SET_LOADING_ACTION,
+  SET_USER_ACTION,
+} from 'auth/actions'
 import {User} from 'auth/user'
 
 export interface AuthState {
@@ -18,6 +24,8 @@ export function authReducer(
   switch (action.type) {
     case SET_USER_ACTION:
       return handleSetUser(state, action)
+    case SET_LOADING_ACTION:
+      return handleSetLoading(state, action)
     default: {
       return state
     }
