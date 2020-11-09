@@ -14,20 +14,17 @@ import {ROUTES} from 'obvio/Routes'
 export default function Login() {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
-  const {login} = useObvioAuth()
   const [error, setError] = useState('')
   const [submitting, setSubmitting] = useState(false)
+  const {login} = useObvioAuth()
 
   const tryLogin = () => {
     setSubmitting(true)
-    login(email, password)
-      .catch((e) => {
-        const message = e.message || e
-        setError(message)
-      })
-      .finally(() => {
-        setSubmitting(false)
-      })
+    login(email, password).catch((e) => {
+      const message = e.message || e
+      setError(message)
+      setSubmitting(false)
+    })
   }
 
   return (
@@ -39,6 +36,7 @@ export default function Login() {
           fullWidth
           variant="outlined"
           onChange={onChangeStringHandler(setEmail)}
+          value={email}
         />
         <TextField
           label="Password"
@@ -46,6 +44,7 @@ export default function Login() {
           fullWidth
           variant="outlined"
           onChange={onChangeStringHandler(setPassword)}
+          value={password}
         />
         <Error>{error}</Error>
         <Button

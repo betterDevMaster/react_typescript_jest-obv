@@ -5,5 +5,6 @@ export const useObvioAuth = () =>
     endpoints: {
       user: '/team/user',
       login: '/team/login',
+      register: '/team/register',
     },
   })

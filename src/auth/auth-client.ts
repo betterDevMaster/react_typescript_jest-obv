@@ -11,7 +11,16 @@ export interface AuthClientProps {
   endpoints: {
     user: string
     login: string
+    register: string
   }
+}
+
+export interface RegistrationData {
+  email: string
+  firstName: string
+  lastName: string
+  password: string
+  passwordConfirmation: string
 }
 
 export const useAuthClient = (props: AuthClientProps) => {
@@ -42,14 +51,24 @@ export const useAuthClient = (props: AuthClientProps) => {
   }, [dispatch, loading, endpoints])
 
   const login = useCallback(
-    (email: string, password: string) => {
-      return attemptLogin(endpoints.login, email, password)
+    (email: string, password: string) =>
+      attemptLogin(endpoints.login, email, password)
         .then(({access_token: token}) => {
           saveToken(token)
           return fetchUser(endpoints.user)
         })
-        .then((user) => dispatch(setUser(user)))
-    },
+        .then((user) => dispatch(setUser(user))),
+    [dispatch, endpoints],
+  )
+
+  const register = useCallback(
+    (data: RegistrationData) =>
+      sendRegistrationRequest(endpoints.register, data)
+        .then(({access_token: token}) => {
+          saveToken(token)
+          return fetchUser(endpoints.user)
+        })
+        .then((user) => dispatch(setUser(user))),
     [dispatch, endpoints],
   )
 
@@ -63,6 +82,7 @@ export const useAuthClient = (props: AuthClientProps) => {
     loading,
     logout,
     login,
+    register,
   }
 }
 
@@ -83,5 +103,16 @@ export const attemptLogin = (
   return client.post(url, {
     email,
     password,
+  })
+}
+
+function sendRegistrationRequest(endpoint: string, data: RegistrationData) {
+  const url = api(endpoint)
+  return client.post(url, {
+    email: data.email,
+    first_name: data.firstName,
+    last_name: data.lastName,
+    password: data.password,
+    password_confirmation: data.passwordConfirmation,
   })
 }
