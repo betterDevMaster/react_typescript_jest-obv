@@ -8,7 +8,7 @@ import MenuItem from '@material-ui/core/MenuItem'
 import Typography from '@material-ui/core/Typography'
 import withStyles from '@material-ui/core/styles/withStyles'
 import {useObvioAuth} from 'obvio/auth'
-import {useHistory} from 'react-router-dom'
+import {Link, useHistory} from 'react-router-dom'
 import {obvioRoutes} from 'obvio/Routes'
 
 export default function AppBar() {
@@ -30,9 +30,11 @@ export default function AppBar() {
   }
 
   return (
-    <MuiAppBar position="static">
+    <MuiAppBar>
       <Toolbar>
-        <Title variant="h6">Obv.io</Title>
+        <Title variant="h6">
+          <Link to={obvioRoutes.root}>Obv.io</Link>
+        </Title>
         <div>
           <IconButton aria-haspopup="true" onClick={handleMenu} color="inherit">
             <AccountCircle />

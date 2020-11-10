@@ -3,12 +3,16 @@ import styled from 'styled-components'
 import {useOrganizations} from 'obvio/user/Organizations/OrganizationsProvider'
 import React from 'react'
 import Button from '@material-ui/core/Button'
-import { obvioRoutes } from 'obvio/Routes'
-import { Link } from 'react-router-dom'
+import {obvioRoutes} from 'obvio/Routes'
+import {Link} from 'react-router-dom'
 
 export default function Collection() {
-  const organizations = useOrganizations()
+  const {organizations, loading} = useOrganizations()
   const empty = organizations.length === 0
+
+  if (loading) {
+    return null
+  }
 
   if (empty) {
     return (

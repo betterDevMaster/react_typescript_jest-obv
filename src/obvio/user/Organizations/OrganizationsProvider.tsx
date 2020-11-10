@@ -1,15 +1,14 @@
-import {client} from 'lib/api-client'
-import {api} from 'lib/url'
-import {useObvioAuth} from 'obvio/auth'
-import React, {useEffect, useState} from 'react'
+import {useAsync} from 'lib/async'
+import {
+  fetchOrganizations,
+  Organization,
+} from 'obvio/user/Organizations/organizations-client'
+import React from 'react'
 
-export interface Organization {
-  id: number
-  name: string
-  slug: string
+interface OrganizationsContextProps {
+  organizations: Organization[]
+  loading: boolean
 }
-
-type OrganizationsContextProps = Organization[]
 
 const OrganizationsContext = React.createContext<
   OrganizationsContextProps | undefined
@@ -18,28 +17,19 @@ const OrganizationsContext = React.createContext<
 export default function OrganizationsProvier(props: {
   children: React.ReactNode
 }) {
-  const [organizations, setOrganizations] = useState<Organization[]>([])
-  const {user} = useObvioAuth()
+  const {data, loading} = useAsync(fetchOrganizations)
 
-  useEffect(() => {
-    let mounted = true
-    if (!user) {
-      return
-    }
-
-    fetchOrganizations().then((organizations) => {
-      if (mounted) {
-        setOrganizations(organizations)
-      }
-    })
-
-    return () => {
-      mounted = false
-    }
-  }, [user])
+  // data is null before request is sent, but
+  // we're expecting an array
+  const organizations = data || []
 
   return (
-    <OrganizationsContext.Provider value={organizations}>
+    <OrganizationsContext.Provider
+      value={{
+        organizations,
+        loading,
+      }}
+    >
       {props.children}
     </OrganizationsContext.Provider>
   )
@@ -54,9 +44,4 @@ export function useOrganizations() {
   }
 
   return context
-}
-
-function fetchOrganizations() {
-  const url = api('/organizations')
-  return client.get<Organization[]>(url)
 }

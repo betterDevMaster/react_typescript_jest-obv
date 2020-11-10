@@ -3,7 +3,7 @@ import {deleteToken, getToken, saveToken} from 'auth/token'
 import {User} from 'auth/user'
 import {client} from 'lib/api-client'
 import {api} from 'lib/url'
-import {useCallback, useEffect} from 'react'
+import {useCallback, useEffect, useRef} from 'react'
 import {useDispatch, useSelector} from 'react-redux'
 import {RootState} from 'store'
 
@@ -17,7 +17,8 @@ export interface AuthClientProps {
 
 interface TokenResponse {
   access_token: string
-  expiry: string
+  expires_in: string
+  token_type: string
 }
 
 export interface RegistrationData {
@@ -32,6 +33,7 @@ export const useAuthClient = (props: AuthClientProps) => {
   const {endpoints} = props
   const dispatch = useDispatch()
   const {user, loading} = useSelector((state: RootState) => state.auth)
+  const isFetching = useRef(false)
 
   useEffect(() => {
     const token = getToken()
@@ -43,10 +45,11 @@ export const useAuthClient = (props: AuthClientProps) => {
     }
 
     // No need to try fetch authenticated user
-    if (!token || !loading) {
+    if (!token || !loading || isFetching.current) {
       return
     }
 
+    isFetching.current = true
     fetchUser(endpoints.user)
       .then((user) => dispatch(setUser(user)))
       .catch(() => {

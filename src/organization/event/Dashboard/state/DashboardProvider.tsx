@@ -1,5 +1,8 @@
 import {Dashboard} from 'organization/event/Dashboard'
-import {setDashboard, updateDashboard} from 'organization/event/Dashboard/state/actions'
+import {
+  setDashboard,
+  updateDashboard,
+} from 'organization/event/Dashboard/state/actions'
 import React, {useEffect, useRef} from 'react'
 import {useDispatch, useSelector} from 'react-redux'
 import {RootState} from 'store'
@@ -12,18 +15,17 @@ export default function DashboardProvider(props: {
   children: React.ReactNode
   saved: Dashboard
 }) {
-  const hasSetRef = useRef(false)
-  const hasSet = hasSetRef.current
+  const hasSet = useRef(false)
   const dispatch = useDispatch()
 
   const current = useSelector((state: RootState) => state.dashboard)
 
   useEffect(() => {
-    if (hasSet) {
+    if (hasSet.current) {
       return
     }
 
-    hasSetRef.current = true
+    hasSet.current = true
     dispatch(setDashboard(props.saved))
   }, [dispatch, hasSet, props.saved])
 

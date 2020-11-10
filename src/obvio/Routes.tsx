@@ -2,11 +2,11 @@ import Login from 'obvio/auth/Login'
 import React from 'react'
 import {useObvioAuth} from 'obvio/auth'
 import {Redirect, Route, Switch} from 'react-router-dom'
-import Home from 'obvio/user/Home'
 import Registration from 'obvio/auth/Registration'
 import {createRoutes} from 'lib/url'
 import Layout from 'obvio/user/Layout'
 import CreateOrganizationForm from 'obvio/user/Organizations/CreateOrganizationForm'
+import Organizations from 'obvio/user/Organizations'
 
 export const obvioRoutes = createRoutes({
   home: '/home',
@@ -35,15 +35,15 @@ function AuthenticatedRoutes() {
   return (
     <Layout>
       <Switch>
-        <Route path={obvioRoutes.home}>
-          <Home />
-        </Route>
         <Route path={obvioRoutes.organizations.create}>
           <CreateOrganizationForm />
         </Route>
+        <Route path={obvioRoutes.organizations.root}>
+          <Organizations />
+        </Route>
         <Redirect
           to={{
-            pathname: obvioRoutes.home,
+            pathname: obvioRoutes.organizations.root,
           }}
         />
       </Switch>
