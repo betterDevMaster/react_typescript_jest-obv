@@ -9,7 +9,7 @@ import Typography from '@material-ui/core/Typography'
 import withStyles from '@material-ui/core/styles/withStyles'
 import {spacing} from 'lib/ui/theme'
 import {Link} from 'react-router-dom'
-import {ROUTES} from 'obvio/Routes'
+import {obvioRoutes} from 'obvio/Routes'
 
 export default function Login() {
   const [email, setEmail] = useState('')
@@ -58,7 +58,7 @@ export default function Login() {
         </Button>
         <CreateAccountText>
           Don't have an account yet?{' '}
-          <Link to={ROUTES.registration}>Create one now</Link>
+          <Link to={obvioRoutes.registration}>Create one now</Link>
         </CreateAccountText>
       </Container>
     </Centered>

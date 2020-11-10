@@ -6,14 +6,14 @@ const defaultHeaders = {
 }
 
 export const client = {
-  get: (url: string, options?: {}) =>
-    handleAxiosResult(axios.get(url, config(options))),
-  post: (url: string, data: {}, options?: {}) =>
-    handleAxiosResult(axios.post(url, data, config(options))),
-  put: (url: string, data: {}, options?: {}) =>
-    handleAxiosResult(axios.put(url, data, config(options))),
-  delete: (url: string, options?: {}) =>
-    handleAxiosResult(axios.delete(url, config(options))),
+  get: <T>(url: string, options?: {}) =>
+    handleAxiosResult<T>(axios.get(url, config(options))),
+  post: <T>(url: string, data: {}, options?: {}) =>
+    handleAxiosResult<T>(axios.post(url, data, config(options))),
+  put: <T>(url: string, data: {}, options?: {}) =>
+    handleAxiosResult<T>(axios.put(url, data, config(options))),
+  delete: <T>(url: string, options?: {}) =>
+    handleAxiosResult<T>(axios.delete(url, config(options))),
 }
 
 function config({
@@ -39,7 +39,7 @@ function headers(custom = {}) {
   return headers
 }
 
-async function handleAxiosResult(promise: Promise<any>) {
+async function handleAxiosResult<T>(promise: Promise<{data: T}>) {
   try {
     const res = await promise
     return res.data

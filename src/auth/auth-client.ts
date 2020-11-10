@@ -15,6 +15,11 @@ export interface AuthClientProps {
   }
 }
 
+interface TokenResponse {
+  access_token: string
+  expiry: string
+}
+
 export interface RegistrationData {
   email: string
   firstName: string
@@ -88,7 +93,7 @@ export const useAuthClient = (props: AuthClientProps) => {
 
 async function fetchUser(endpoint: string): Promise<User | null> {
   const url = api(endpoint)
-  return client.get(url).then((user) => {
+  return client.get<User>(url).then((user) => {
     return user
   })
 }
@@ -99,8 +104,7 @@ export const attemptLogin = (
   password: string,
 ) => {
   const url = api(endpoint)
-
-  return client.post(url, {
+  return client.post<TokenResponse>(url, {
     email,
     password,
   })
@@ -108,7 +112,7 @@ export const attemptLogin = (
 
 function sendRegistrationRequest(endpoint: string, data: RegistrationData) {
   const url = api(endpoint)
-  return client.post(url, {
+  return client.post<TokenResponse>(url, {
     email: data.email,
     first_name: data.firstName,
     last_name: data.lastName,

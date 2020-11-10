@@ -5,7 +5,7 @@ import TextField from '@material-ui/core/TextField'
 import Button from '@material-ui/core/Button'
 import {useObvioAuth} from 'obvio/auth'
 import Typography from '@material-ui/core/Typography'
-import {ROUTES} from 'obvio/Routes'
+import {obvioRoutes} from 'obvio/Routes'
 import {Link} from 'react-router-dom'
 import {spacing} from 'lib/ui/theme'
 import withStyles from '@material-ui/core/styles/withStyles'
@@ -122,7 +122,7 @@ export default function Registration() {
           </Button>
           <LoginText>
             Already have an account?{' '}
-            <Link to={ROUTES.login}>Login instead</Link>
+            <Link to={obvioRoutes.login}>Login instead</Link>
           </LoginText>
         </form>
       </Container>

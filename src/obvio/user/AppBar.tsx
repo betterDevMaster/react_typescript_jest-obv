@@ -9,7 +9,7 @@ import Typography from '@material-ui/core/Typography'
 import withStyles from '@material-ui/core/styles/withStyles'
 import {useObvioAuth} from 'obvio/auth'
 import {useHistory} from 'react-router-dom'
-import {ROUTES} from 'obvio/Routes'
+import {obvioRoutes} from 'obvio/Routes'
 
 export default function AppBar() {
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null)
@@ -26,7 +26,7 @@ export default function AppBar() {
 
   const handleLogout = () => {
     logout()
-    history.push(ROUTES.login)
+    history.push(obvioRoutes.login)
   }
 
   return (
