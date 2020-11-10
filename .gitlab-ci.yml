@@ -26,15 +26,16 @@ unit_tests:
     - npm i --cache .npm --prefer-offline
     - npm test
 
-build:
+build_staging:
   stage: build
   only:
     refs:
       - staging
-      - production
   script:
     - npm i --cache .npm --prefer-offline
     - npm run build
+  variables:
+    REACT_APP_API_URL: 'https://v1-staging.obv.io'
   artifacts:
     paths:
       - build/
@@ -47,7 +48,22 @@ deploy_staging:
       - staging
   script:
     - aws s3 sync build/ s3://obvio-event-web-staging
-    - aws cloudfront create-invalidation --distribution-id $STAGING_CDN_DISTRIBUTION_ID --paths "/*"
+    - aws cloudfront create-invalidation --distribution-id
+      $STAGING_CDN_DISTRIBUTION_ID --paths "/*"
+
+build_prod:
+  stage: build
+  only:
+    refs:
+      - production
+  script:
+    - npm i --cache .npm --prefer-offline
+    - npm run build
+  variables:
+    REACT_APP_API_URL: https://v1.obv.io
+  artifacts:
+    paths:
+      - build/
 
 deploy_prod:
   image: registry.gitlab.com/gitlab-org/cloud-deploy/aws-base:latest
