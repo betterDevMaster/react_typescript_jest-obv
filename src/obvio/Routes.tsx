@@ -9,7 +9,6 @@ import CreateOrganizationForm from 'obvio/user/Organizations/CreateOrganizationF
 import Organizations from 'obvio/user/Organizations'
 
 export const obvioRoutes = createRoutes({
-  home: '/home',
   login: '/login',
   registration: '/register',
   organizations: {
