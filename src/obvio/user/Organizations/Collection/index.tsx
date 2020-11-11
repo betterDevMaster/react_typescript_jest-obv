@@ -29,6 +29,13 @@ export default function Collection() {
 
   return (
     <div>
+      <Header>
+        <RelativeLink to={obvioRoutes.organizations.create} disableStyles>
+          <Button variant="contained" color="primary">
+            Create
+          </Button>
+        </RelativeLink>
+      </Header>
       {organizations.map((o) => (
         <Card key={o.id} organization={o} />
       ))}
@@ -39,4 +46,9 @@ export default function Collection() {
 const EmptyBox = styled.div`
   margin-top: ${(props) => props.theme.spacing[8]};
   text-align: center;
+`
+
+const Header = styled.div`
+  text-align: right;
+  margin-bottom: ${(props) => props.theme.spacing[6]};
 `

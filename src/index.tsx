@@ -5,3 +5,6 @@ import App from './App'
 import 'index.css'
 
 ReactDOM.render(<App />, document.getElementById('root'))
+
+export const isProduction = process.env.NODE_ENV === 'production'
+export const appRoot = process.env.REACT_APP_WEB_APP_ROOT

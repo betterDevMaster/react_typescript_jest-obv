@@ -3,12 +3,14 @@ import withStyles from '@material-ui/core/styles/withStyles'
 import TextField from '@material-ui/core/TextField'
 import Typography from '@material-ui/core/Typography'
 import {spacing} from 'lib/ui/theme'
+import {obvioRoutes} from 'obvio/Routes'
 import {
   createOrganization,
   CreateOrganizationData,
 } from 'obvio/user/Organizations/organizations-client'
 import React, {useState} from 'react'
 import {useForm} from 'react-hook-form'
+import {useHistory} from 'react-router-dom'
 
 export default function CreateOrganizationForm() {
   const {register, errors, handleSubmit, watch} = useForm()
@@ -16,16 +18,20 @@ export default function CreateOrganizationForm() {
     message: string
     errors: Partial<CreateOrganizationData>
   }>(null)
+  const history = useHistory()
   const [submitting, setSubmitting] = useState(false)
+  const showOrganizations = () => {
+    history.push(obvioRoutes.organizations.root)
+  }
 
   const submit = (data: CreateOrganizationData) => {
     setSubmitting(true)
     createOrganization(data)
-      .then((organization) => {
-        console.log('created', organization)
+      .then(() => {
+        showOrganizations()
       })
-      .catch(setServerError)
-      .finally(() => {
+      .catch((error) => {
+        setServerError(error)
         setSubmitting(false)
       })
   }
