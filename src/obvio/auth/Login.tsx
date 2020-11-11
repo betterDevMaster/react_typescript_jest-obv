@@ -8,8 +8,8 @@ import {useObvioAuth} from 'obvio/auth'
 import Typography from '@material-ui/core/Typography'
 import withStyles from '@material-ui/core/styles/withStyles'
 import {spacing} from 'lib/ui/theme'
-import {Link} from 'react-router-dom'
 import {obvioRoutes} from 'obvio/Routes'
+import {RelativeLink} from 'lib/ui/link/RelativeLink'
 
 export default function Login() {
   const [email, setEmail] = useState('')
@@ -58,7 +58,9 @@ export default function Login() {
         </Button>
         <CreateAccountText>
           Don't have an account yet?{' '}
-          <Link to={obvioRoutes.registration}>Create one now</Link>
+          <RelativeLink to={obvioRoutes.registration}>
+            Create one now
+          </RelativeLink>
         </CreateAccountText>
       </Container>
     </Centered>

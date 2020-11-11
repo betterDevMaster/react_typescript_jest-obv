@@ -1,4 +1,4 @@
-import {addRoots, createRoutes, getSubdomain} from 'lib/url'
+import {createRoutes, getSubdomain} from 'lib/url'
 
 it('should return the correct subdomain', () => {
   expect(getSubdomain('sage.obv.io')).toBe('sage')
@@ -31,4 +31,5 @@ it('should namespace routes', () => {
   expect(routes.bar.quex.grand_child.great_grand_child).toBe(
     '/bar/quex/grand_child/great_grand_child',
   )
+  expect(routes.bar.quex.grand_child.root).toBe('/bar/quex/grand_child')
 })

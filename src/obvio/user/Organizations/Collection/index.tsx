@@ -4,7 +4,7 @@ import {useOrganizations} from 'obvio/user/Organizations/OrganizationsProvider'
 import React from 'react'
 import Button from '@material-ui/core/Button'
 import {obvioRoutes} from 'obvio/Routes'
-import {Link} from 'react-router-dom'
+import {RelativeLink} from 'lib/ui/link/RelativeLink'
 
 export default function Collection() {
   const {organizations, loading} = useOrganizations()
@@ -18,11 +18,11 @@ export default function Collection() {
     return (
       <EmptyBox>
         <p>No organizations have been created</p>
-        <Link to={obvioRoutes.organizations.create}>
+        <RelativeLink to={obvioRoutes.organizations.create} disableStyles>
           <Button variant="outlined" color="primary">
             Create Organization
           </Button>
-        </Link>
+        </RelativeLink>
       </EmptyBox>
     )
   }

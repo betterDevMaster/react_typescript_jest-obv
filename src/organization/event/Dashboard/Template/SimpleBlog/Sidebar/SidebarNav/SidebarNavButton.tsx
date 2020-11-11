@@ -8,7 +8,7 @@ export default React.memo((props: NavButton & {id: string}) => (
   <EditComponent type={SIDEBAR_NAV_BUTTON} id={props.id}>
     <StyledNavButtonComponent
       {...props}
-      ariaLabel="sidebar nav button"
+      aria-label="sidebar nav button"
       textColor="#FFFFFF"
       borderWidth={1}
       borderColor="#FFFFFF"

@@ -2,8 +2,8 @@ import React from 'react'
 import styled from 'styled-components'
 import Button from 'lib/ui/Button'
 import {Column} from 'lib/ui/layout'
-import {newTabProps} from 'lib/link'
 import {HasRules} from 'organization/event/Dashboard/component-rules'
+import {AbsoluteLink} from 'lib/ui/link/AbsoluteLink'
 
 export const NAV_BUTTON = 'NAV_BUTTON'
 
@@ -13,7 +13,7 @@ export default interface NavButton extends HasRules {
   backgroundColor?: string
   textColor?: string
   newTab?: boolean
-  ariaLabel?: string
+  'aria-label'?: string
   className?: string
   hoverBackgroundColor?: string
   borderRadius?: number
@@ -27,35 +27,35 @@ export type NavButtonWithSize = NavButton & {
 }
 
 export default function NavButton(props: NavButton) {
-  const tabProps = props.newTab ? newTabProps : null
-
   return (
-    <Link href={props.link} {...tabProps} aria-label={props.ariaLabel}>
-      <StyledButton
-        fullWidth
-        textTransform="uppercase"
-        backgroundColor={props.backgroundColor}
-        textColor={props.textColor}
-        className={props.className}
-        hoverBackgroundColor={props.hoverBackgroundColor}
-        disableHover={!props.hoverBackgroundColor}
-        borderRadius={props.borderRadius}
-        borderWidth={props.borderWidth}
-        borderColor={props.borderColor}
-        hoverBorderColor={props.hoverBorderColor}
-      >
-        {props.text}
-      </StyledButton>
-    </Link>
+    <AbsoluteLink
+      aria-label={props['aria-label']}
+      to={props.link}
+      newTab={props.newTab}
+    >
+      <Link to={props.link} disableStyles>
+        <StyledButton
+          fullWidth
+          textTransform="uppercase"
+          backgroundColor={props.backgroundColor}
+          textColor={props.textColor}
+          className={props.className}
+          hoverBackgroundColor={props.hoverBackgroundColor}
+          disableHover={!props.hoverBackgroundColor}
+          borderRadius={props.borderRadius}
+          borderWidth={props.borderWidth}
+          borderColor={props.borderColor}
+          hoverBorderColor={props.hoverBorderColor}
+        >
+          {props.text}
+        </StyledButton>
+      </Link>
+    </AbsoluteLink>
   )
 }
 
-const Link = styled.a`
+const Link = styled(AbsoluteLink)`
   display: flex;
-
-  &:hover {
-    text-decoration: none;
-  }
 `
 
 const StyledButton = styled(Button)`

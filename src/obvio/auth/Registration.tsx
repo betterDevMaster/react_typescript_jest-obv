@@ -6,12 +6,12 @@ import Button from '@material-ui/core/Button'
 import {useObvioAuth} from 'obvio/auth'
 import Typography from '@material-ui/core/Typography'
 import {obvioRoutes} from 'obvio/Routes'
-import {Link} from 'react-router-dom'
 import {spacing} from 'lib/ui/theme'
 import withStyles from '@material-ui/core/styles/withStyles'
 import Grid from '@material-ui/core/Grid'
 import {useForm} from 'react-hook-form'
 import {RegistrationData} from 'auth/auth-client'
+import {RelativeLink} from 'lib/ui/link/RelativeLink'
 
 export default function Registration() {
   const {register: registerForm, handleSubmit, errors, watch} = useForm()
@@ -122,7 +122,7 @@ export default function Registration() {
           </Button>
           <LoginText>
             Already have an account?{' '}
-            <Link to={obvioRoutes.login}>Login instead</Link>
+            <RelativeLink to={obvioRoutes.login}>Login instead</RelativeLink>
           </LoginText>
         </form>
       </Container>

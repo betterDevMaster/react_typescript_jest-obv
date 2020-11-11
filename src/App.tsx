@@ -8,10 +8,12 @@ import {BrowserRouter as Router} from 'react-router-dom'
 import {getSubdomain} from 'lib/url'
 import ObvioRoutes from 'obvio/Routes'
 import OrganizationRoutes from 'organization/Routes'
+import {GlobalStyles} from 'lib/ui/theme/GlobalStyles'
 
 export default function App() {
   return (
     <Providers>
+      <GlobalStyles />
       <Router>
         <Routes />
       </Router>

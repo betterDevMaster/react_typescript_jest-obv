@@ -16,7 +16,7 @@ export default React.memo((props: MainNavButtonProps) => {
     <HiddenOnMatch rules={props.button.rules}>
       <Grid item xs={12} md={props.button.size}>
         <EditComponent type={MAIN_NAV_BUTTON} id={props.id}>
-          <NavButton {...props.button} ariaLabel="main nav button" />
+          <NavButton {...props.button} aria-label="main nav button" />
         </EditComponent>
       </Grid>
     </HiddenOnMatch>
