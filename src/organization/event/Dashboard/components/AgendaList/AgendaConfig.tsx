@@ -7,8 +7,8 @@ import Grid from '@material-ui/core/Grid'
 import {Agenda} from 'organization/event/Dashboard/components/AgendaList'
 import {onChangeStringHandler} from 'lib/dom'
 import {MaterialUiPickersDate} from '@material-ui/pickers/typings/date'
-import {useCloseConfig} from 'editor/state/edit-mode'
-import {Config} from 'editor/views/DashboardEditDialog/ConfigComponent'
+import {useCloseConfig} from 'organization/event/Dashboard/editor/state/edit-mode'
+import {Config} from 'organization/event/Dashboard/editor/views/DashboardEditDialog/ConfigComponent'
 import {
   useDashboard,
   useUpdateDashboard,

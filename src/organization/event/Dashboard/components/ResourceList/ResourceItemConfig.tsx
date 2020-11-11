@@ -9,8 +9,8 @@ import {Resource, RESOURCE_ICON} from 'organization/event/Dashboard/components/R
 import {onUnknownChangeHandler, onChangeStringHandler} from 'lib/dom'
 import React from 'react'
 import DangerButton from 'lib/ui/Button/DangerButton'
-import {useCloseConfig} from 'editor/state/edit-mode'
-import {Config} from 'editor/views/DashboardEditDialog/ConfigComponent'
+import {useCloseConfig} from 'organization/event/Dashboard/editor/state/edit-mode'
+import {Config} from 'organization/event/Dashboard/editor/views/DashboardEditDialog/ConfigComponent'
 import {
   useDashboard,
   useUpdateDashboard,

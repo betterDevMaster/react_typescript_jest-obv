@@ -4,8 +4,8 @@ import {
   handleSetEditMode,
   SET_CONFIG_ACTION,
   SET_EDIT_MODE,
-} from 'editor/state/actions'
-import {Config} from 'editor/views/DashboardEditDialog/ConfigComponent'
+} from 'organization/event/Dashboard/editor/state/actions'
+import {Config} from 'organization/event/Dashboard/editor/views/DashboardEditDialog/ConfigComponent'
 
 export type DashboardEditorState = {
   config: Config | null

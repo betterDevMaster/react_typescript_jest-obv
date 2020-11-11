@@ -1,7 +1,7 @@
 import SetPointsButton from 'organization/event/Dashboard/components/PointsSummary/SetPointsButton'
 import {useDashboard} from 'organization/event/Dashboard/state/DashboardProvider'
-import EditComponent from 'editor/views/EditComponent'
-import EditModeOnly from 'editor/views/EditModeOnly'
+import EditComponent from 'organization/event/Dashboard/editor/views/EditComponent'
+import EditModeOnly from 'organization/event/Dashboard/editor/views/EditModeOnly'
 import React from 'react'
 import styled from 'styled-components'
 

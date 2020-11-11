@@ -1,12 +1,12 @@
 import React, {useEffect} from 'react'
 import {SimpleBlog} from 'organization/event/Dashboard/Template/SimpleBlog'
 import {User} from 'auth/user'
-import DashboardEditDialog from 'editor/views/DashboardEditDialog'
+import DashboardEditDialog from 'organization/event/Dashboard/editor/views/DashboardEditDialog'
 import Template from 'organization/event/Dashboard/Template'
-import EditToggleBar from 'editor/views/EditToggleBar'
+import EditToggleBar from 'organization/event/Dashboard/editor/views/EditToggleBar'
 import DashboardProvider from 'organization/event/Dashboard/state/DashboardProvider'
 import {useDispatch} from 'react-redux'
-import {setEditMode} from 'editor/state/actions'
+import {setEditMode} from 'organization/event/Dashboard/editor/state/actions'
 
 export type Dashboard = SimpleBlog
 

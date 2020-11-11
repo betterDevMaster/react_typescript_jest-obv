@@ -4,7 +4,7 @@ import {
   useDashboard,
   useUpdateDashboard,
 } from 'organization/event/Dashboard/state/DashboardProvider'
-import {useCloseConfig} from 'editor/state/edit-mode'
+import {useCloseConfig} from 'organization/event/Dashboard/editor/state/edit-mode'
 import {onChangeStringHandler} from 'lib/dom'
 import DangerButton from 'lib/ui/Button/DangerButton'
 import React from 'react'

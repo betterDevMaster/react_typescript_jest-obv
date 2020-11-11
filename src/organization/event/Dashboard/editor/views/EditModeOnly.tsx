@@ -1,4 +1,4 @@
-import {useEditMode} from 'editor/state/edit-mode'
+import {useEditMode} from 'organization/event/Dashboard/editor/state/edit-mode'
 import React from 'react'
 
 export default function EditModeOnly(props: {children: React.ReactNode}) {

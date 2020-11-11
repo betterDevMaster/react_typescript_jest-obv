@@ -1,4 +1,4 @@
-import {ExtendRecursively} from 'type-utils'
+import {ExtendRecursively} from 'lib/type-utils'
 
 export const getSubdomain = (location: string) => {
   const urlParts = location.split('.')

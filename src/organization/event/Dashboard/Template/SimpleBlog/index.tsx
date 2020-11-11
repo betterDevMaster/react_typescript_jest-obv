@@ -22,7 +22,7 @@ import {ResourceList} from 'organization/event/Dashboard/components/ResourceList
 import {TicketRibbon} from 'organization/event/Dashboard/components/TicketRibbon'
 import {EmojiList} from 'organization/event/Dashboard/components/EmojiList'
 import {EntityList} from 'lib/list'
-import EditComponent from 'editor/views/EditComponent'
+import EditComponent from 'organization/event/Dashboard/editor/views/EditComponent'
 import MainNav from 'organization/event/Dashboard/Template/SimpleBlog/MainNav'
 import {useDashboard} from 'organization/event/Dashboard/state/DashboardProvider'
 

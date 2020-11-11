@@ -1,6 +1,6 @@
 import Button from '@material-ui/core/Button'
 import {TICKET_RIBBON_TYPE} from 'organization/event/Dashboard/components/TicketRibbon'
-import {setConfig} from 'editor/state/actions'
+import {setConfig} from 'organization/event/Dashboard/editor/state/actions'
 import React from 'react'
 import {useDispatch} from 'react-redux'
 

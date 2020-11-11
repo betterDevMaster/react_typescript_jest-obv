@@ -1,7 +1,7 @@
 import {Rule} from 'organization/event/Dashboard/component-rules'
 import {hasMatch} from 'organization/event/Dashboard/component-rules/matcher'
 import {useRulesData} from 'organization/event/Dashboard/component-rules/RulesProvider'
-import {useEditMode} from 'editor/state/edit-mode'
+import {useEditMode} from 'organization/event/Dashboard/editor/state/edit-mode'
 
 export default function HiddenOnMatch(props: {
   rules: Rule[]

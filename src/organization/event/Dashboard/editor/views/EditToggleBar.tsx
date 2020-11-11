@@ -4,8 +4,8 @@ import styled from 'styled-components'
 import Switch from '@material-ui/core/Switch'
 import React from 'react'
 import {useDispatch} from 'react-redux'
-import {setEditMode} from 'editor/state/actions'
-import {useEditMode} from 'editor/state/edit-mode'
+import {setEditMode} from 'organization/event/Dashboard/editor/state/actions'
+import {useEditMode} from 'organization/event/Dashboard/editor/state/edit-mode'
 
 export default function EditToggleBar() {
   const isEditMode = useEditMode()

@@ -1,6 +1,6 @@
 import {Button} from '@material-ui/core'
 import {EMOJI_LIST} from 'organization/event/Dashboard/components/EmojiList'
-import {setConfig} from 'editor/state/actions'
+import {setConfig} from 'organization/event/Dashboard/editor/state/actions'
 import React from 'react'
 import {useDispatch} from 'react-redux'
 

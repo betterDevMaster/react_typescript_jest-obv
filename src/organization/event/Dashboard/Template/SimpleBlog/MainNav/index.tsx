@@ -1,4 +1,4 @@
-import EditModeOnly from 'editor/views/EditModeOnly'
+import EditModeOnly from 'organization/event/Dashboard/editor/views/EditModeOnly'
 import MainNavButton from 'organization/event/Dashboard/Template/SimpleBlog/MainNav/MainNavButton'
 import NewMainNavButton from 'organization/event/Dashboard/Template/SimpleBlog/MainNav/MainNavButton/NewMainNavButton'
 import React from 'react'

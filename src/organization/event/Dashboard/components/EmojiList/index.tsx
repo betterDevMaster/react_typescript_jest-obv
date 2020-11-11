@@ -1,9 +1,9 @@
 import React from 'react'
 import styled from 'styled-components'
 import {Emoji, emojiWithName} from 'organization/event/Dashboard/components/EmojiList/emoji'
-import EditComponent from 'editor/views/EditComponent'
+import EditComponent from 'organization/event/Dashboard/editor/views/EditComponent'
 import AddEmojiListButton from 'organization/event/Dashboard/components/EmojiList/AddEmojiListButton'
-import EditModeOnly from 'editor/views/EditModeOnly'
+import EditModeOnly from 'organization/event/Dashboard/editor/views/EditModeOnly'
 import {useDashboard} from 'organization/event/Dashboard/state/DashboardProvider'
 
 export const EMOJI_LIST = 'Emoji List'

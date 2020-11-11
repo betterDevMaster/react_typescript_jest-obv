@@ -1,5 +1,5 @@
-import {useEditMode, useEditComponent} from 'editor/state/edit-mode'
-import {Config} from 'editor/views/DashboardEditDialog/ConfigComponent'
+import {useEditMode, useEditComponent} from 'organization/event/Dashboard/editor/state/edit-mode'
+import {Config} from 'organization/event/Dashboard/editor/views/DashboardEditDialog/ConfigComponent'
 import EditIconButton from 'lib/ui/IconButton/EditIconButton'
 import React from 'react'
 import styled from 'styled-components'

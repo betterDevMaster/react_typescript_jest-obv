@@ -9,7 +9,7 @@ import styled from 'styled-components'
 import {useObvioAuth} from 'obvio/auth'
 import {useHistory} from 'react-router-dom'
 import {obvioRoutes} from 'obvio/Routes'
-import logo from 'images/logo.png'
+import logo from 'assets/images/logo.png'
 import {RelativeLink} from 'lib/ui/link/RelativeLink'
 
 export default function AppBar() {

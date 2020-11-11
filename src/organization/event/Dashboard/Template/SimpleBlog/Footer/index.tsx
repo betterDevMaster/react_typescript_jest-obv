@@ -1,5 +1,5 @@
-import {useEditMode} from 'editor/state/edit-mode'
-import EditComponent from 'editor/views/EditComponent'
+import {useEditMode} from 'organization/event/Dashboard/editor/state/edit-mode'
+import EditComponent from 'organization/event/Dashboard/editor/views/EditComponent'
 import React from 'react'
 import styled from 'styled-components'
 import {useDashboard} from 'organization/event/Dashboard/state/DashboardProvider'

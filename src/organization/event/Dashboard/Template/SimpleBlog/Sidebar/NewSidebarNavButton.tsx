@@ -4,7 +4,7 @@ import {
   useDashboard,
   useUpdateDashboard,
 } from 'organization/event/Dashboard/state/DashboardProvider'
-import {useEditMode} from 'editor/state/edit-mode'
+import {useEditMode} from 'organization/event/Dashboard/editor/state/edit-mode'
 import React from 'react'
 import {v4 as uid} from 'uuid'
 
