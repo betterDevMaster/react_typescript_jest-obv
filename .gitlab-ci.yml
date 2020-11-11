@@ -36,6 +36,7 @@ build_staging:
     - npm run build
   variables:
     REACT_APP_API_URL: 'https://v1-staging.obv.io'
+    REACT_APP_WEB_APP_ROOT: 'staging.obv.io'
   artifacts:
     paths:
       - build/
@@ -61,6 +62,7 @@ build_prod:
     - npm run build
   variables:
     REACT_APP_API_URL: https://v1.obv.io
+    REACT_APP_WEB_APP_ROOT: 'obv.io'
   artifacts:
     paths:
       - build/
