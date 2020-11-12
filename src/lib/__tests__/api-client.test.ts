@@ -108,7 +108,7 @@ it('should throw an error from message from response', async () => {
   try {
     await client.get('/test')
   } catch (error) {
-    expect(error.message).toBe(message)
+    expect(error).toBe(message)
   }
 })
 
