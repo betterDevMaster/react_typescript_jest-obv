@@ -1,4 +1,4 @@
-import {appRoot, isProduction} from 'index'
+import {isProduction, appRoot} from 'App'
 import {Organization} from 'obvio/user/Organizations/organizations-client'
 
 export function organizationUrl(organization: Organization) {

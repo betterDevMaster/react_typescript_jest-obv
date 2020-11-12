@@ -28,29 +28,28 @@ export type NavButtonWithSize = NavButton & {
 
 export default function NavButton(props: NavButton) {
   return (
-    <AbsoluteLink
-      aria-label={props['aria-label']}
+    <Link
       to={props.link}
+      disableStyles
+      aria-label={props['aria-label']}
       newTab={props.newTab}
     >
-      <Link to={props.link} disableStyles>
-        <StyledButton
-          fullWidth
-          textTransform="uppercase"
-          backgroundColor={props.backgroundColor}
-          textColor={props.textColor}
-          className={props.className}
-          hoverBackgroundColor={props.hoverBackgroundColor}
-          disableHover={!props.hoverBackgroundColor}
-          borderRadius={props.borderRadius}
-          borderWidth={props.borderWidth}
-          borderColor={props.borderColor}
-          hoverBorderColor={props.hoverBorderColor}
-        >
-          {props.text}
-        </StyledButton>
-      </Link>
-    </AbsoluteLink>
+      <StyledButton
+        fullWidth
+        textTransform="uppercase"
+        backgroundColor={props.backgroundColor}
+        textColor={props.textColor}
+        className={props.className}
+        hoverBackgroundColor={props.hoverBackgroundColor}
+        disableHover={!props.hoverBackgroundColor}
+        borderRadius={props.borderRadius}
+        borderWidth={props.borderWidth}
+        borderColor={props.borderColor}
+        hoverBorderColor={props.hoverBorderColor}
+      >
+        {props.text}
+      </StyledButton>
+    </Link>
   )
 }
 

@@ -10,6 +10,9 @@ import ObvioRoutes from 'obvio/Routes'
 import OrganizationRoutes from 'organization/Routes'
 import {GlobalStyles} from 'lib/ui/theme/GlobalStyles'
 
+export const isProduction = process.env.NODE_ENV === 'production'
+export const appRoot = process.env.REACT_APP_WEB_APP_ROOT
+
 export default function App() {
   return (
     <Providers>
