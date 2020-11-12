@@ -1,7 +1,7 @@
 import React from 'react'
 import {render as rtlRender, RenderOptions} from '@testing-library/react'
 import {Providers} from 'App'
-import RulesProvider from 'Dashboard/component-rules/RulesProvider'
+import RulesProvider from 'organization/event/Dashboard/component-rules/RulesProvider'
 
 export const render = (
   component: React.ReactElement,
