@@ -21,7 +21,7 @@
     "react-hook-form": "^6.11.0",
     "react-redux": "^7.2.1",
     "react-router-dom": "^5.2.0",
-    "react-scripts": "3.4.3",
+    "react-scripts": "3.4.0",
     "redux": "^4.0.5",
     "styled-components": "^5.2.0",
     "typescript": "~3.8.0",
@@ -80,9 +80,8 @@
     ]
   },
   "devDependencies": {
-    "@testing-library/dom": "^7.24.3",
     "@testing-library/jest-dom": "^4.2.4",
-    "@testing-library/react": "^10.1.0",
+    "@testing-library/react": "^9.5.0",
     "@testing-library/user-event": "^7.2.1",
     "@types/axios": "^0.14.0",
     "@types/color": "^3.0.1",

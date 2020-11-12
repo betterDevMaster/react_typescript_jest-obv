@@ -5,7 +5,7 @@ import {render} from '__utils__/render'
 import user from '@testing-library/user-event'
 import mockAxios from 'axios'
 import {fakeUser} from 'auth/user/__utils__/factory'
-import {waitFor} from '@testing-library/react'
+import {wait} from '@testing-library/react'
 
 const mockPost = mockAxios.post as jest.Mock
 const mockGet = mockAxios.get as jest.Mock
@@ -63,7 +63,7 @@ it('should login a user', async () => {
   expect(data.email).toBe(email)
   expect(data.password).toBe(password)
 
-  await waitFor(() => {
+  await wait(() => {
     expect(mockGet).toHaveBeenCalledTimes(2)
   })
 

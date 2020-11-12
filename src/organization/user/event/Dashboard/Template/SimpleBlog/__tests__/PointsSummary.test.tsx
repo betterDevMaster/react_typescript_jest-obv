@@ -6,7 +6,7 @@ import {fakeUser} from 'auth/user/__utils__/factory'
 import Dashboard from 'organization/user/event/Dashboard'
 import {render} from '__utils__/render'
 import {fakePoints} from 'organization/user/event/Dashboard/components/PointsSummary/__utils__/factory'
-import {fireEvent, waitFor} from '@testing-library/dom'
+import {fireEvent, wait} from '@testing-library/dom'
 import {clickEdit} from '__utils__/edit'
 
 it('should render points', async () => {
@@ -83,7 +83,7 @@ it('should remove points', async () => {
 
   fireEvent.click(await findByLabelText('remove points'))
 
-  await waitFor(() => {
+  await wait(() => {
     expect(queryByText(/you've earned/i)).not.toBeInTheDocument()
   })
 })

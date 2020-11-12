@@ -4,7 +4,7 @@ import {render} from '__utils__/render'
 import user from '@testing-library/user-event'
 import faker from 'faker'
 import mockAxios from 'axios'
-import {waitFor} from '@testing-library/react'
+import {wait} from '@testing-library/react'
 import {fakeUser} from 'auth/user/__utils__/factory'
 
 const mockPost = mockAxios.post as jest.Mock
@@ -34,7 +34,7 @@ it('should register, and sign in', async () => {
 
   user.click(await findByLabelText('register'))
 
-  await waitFor(() => {
+  await wait(() => {
     expect(mockPost).toHaveBeenCalledTimes(1)
   })
 
@@ -46,7 +46,7 @@ it('should register, and sign in', async () => {
   expect(data.password).toBe(password)
   expect(data.password_confirmation).toBe(password)
 
-  await waitFor(() => {
+  await wait(() => {
     expect(mockGet).toHaveBeenCalledTimes(2)
   })
 
