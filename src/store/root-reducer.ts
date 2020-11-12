@@ -1,5 +1,5 @@
-import {dashboardReducer} from 'organization/user/event/Dashboard/state'
-import {editorReducer} from 'organization/user/event/Dashboard/editor/state'
+import {dashboardReducer} from 'organization/event/Dashboard/state'
+import {editorReducer} from 'organization/event/Dashboard/editor/state'
 import {combineReducers} from 'redux'
 import {authReducer} from 'auth'
 

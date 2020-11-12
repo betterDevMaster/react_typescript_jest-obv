@@ -1,5 +1,5 @@
 import {isProduction, appRoot} from 'App'
-import {Organization} from 'obvio/user/Organizations/organizations-client'
+import {Organization} from 'obvio/Organizations/organizations-client'
 
 export function organizationUrl(organization: Organization) {
   const scheme = isProduction ? 'https://' : 'http://'
