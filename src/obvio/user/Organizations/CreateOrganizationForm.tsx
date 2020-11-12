@@ -27,7 +27,7 @@ export default function CreateOrganizationForm() {
   const submit = (data: CreateOrganizationData) => {
     setSubmitting(true)
     createOrganization(data)
-      .then(() => {
+      .then((o) => {
         showOrganizations()
       })
       .catch((error) => {
@@ -86,6 +86,7 @@ export default function CreateOrganizationForm() {
             ref: register({
               required: 'Name is required',
             }),
+            'aria-label': 'organization name',
           }}
           error={!!nameError()}
           helperText={nameError()}
@@ -101,6 +102,7 @@ export default function CreateOrganizationForm() {
             ref: register({
               required: 'Slug is required',
             }),
+            'aria-label': 'domain slug',
           }}
           error={!!slugError()}
           helperText={slugHelperText()}
@@ -114,6 +116,7 @@ export default function CreateOrganizationForm() {
           color="primary"
           size="large"
           disabled={submitting}
+          aria-label="create"
         >
           Submit
         </Button>

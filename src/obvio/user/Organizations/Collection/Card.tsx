@@ -10,8 +10,9 @@ import Typography from '@material-ui/core/Typography'
 
 export default function Card(props: {organization: Organization}) {
   const url = organizationUrl(props.organization)
+  const label = `view ${props.organization.name}`
   return (
-    <Link to={url} disableStyles>
+    <Link to={url} disableStyles aria-label={label}>
       {props.organization.name}
       <URL variant="caption">{url}</URL>
     </Link>
