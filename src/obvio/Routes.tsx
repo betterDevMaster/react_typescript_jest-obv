@@ -1,12 +1,8 @@
-import Login from 'obvio/auth/Login'
 import React from 'react'
 import {useObvioAuth} from 'obvio/auth'
-import {Redirect, Route, Switch} from 'react-router-dom'
-import Registration from 'obvio/auth/Registration'
 import {createRoutes} from 'lib/url'
-import Layout from 'obvio/user/Layout'
-import CreateOrganizationForm from 'obvio/user/Organizations/CreateOrganizationForm'
-import Organizations from 'obvio/user/Organizations'
+import GuestRoutes from 'obvio/guest/GuestRoutes'
+import UserRoutes from 'obvio/user/UserRoutes'
 
 export const obvioRoutes = createRoutes({
   login: '/login',
@@ -24,46 +20,8 @@ export default function ObvioRoutes() {
   }
 
   if (user) {
-    return <AuthenticatedRoutes />
+    return <UserRoutes />
   }
 
   return <GuestRoutes />
-}
-
-function AuthenticatedRoutes() {
-  return (
-    <Layout>
-      <Switch>
-        <Route path={obvioRoutes.organizations.create}>
-          <CreateOrganizationForm />
-        </Route>
-        <Route path={obvioRoutes.organizations.root}>
-          <Organizations />
-        </Route>
-        <Redirect
-          to={{
-            pathname: obvioRoutes.organizations.root,
-          }}
-        />
-      </Switch>
-    </Layout>
-  )
-}
-
-function GuestRoutes() {
-  return (
-    <Switch>
-      <Route path={obvioRoutes.login}>
-        <Login />
-      </Route>
-      <Route path={obvioRoutes.registration}>
-        <Registration />
-      </Route>
-      <Redirect
-        to={{
-          pathname: obvioRoutes.login,
-        }}
-      />
-    </Switch>
-  )
 }

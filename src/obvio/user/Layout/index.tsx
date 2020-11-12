@@ -1,7 +1,7 @@
 import Container from '@material-ui/core/Container'
 import withStyles from '@material-ui/core/styles/withStyles'
 import {spacing} from 'lib/ui/theme'
-import AppBar from 'obvio/user/AppBar'
+import AppBar from 'obvio/user/Layout/AppBar'
 import React from 'react'
 
 export default function Layout(props: {children: React.ReactElement}) {
