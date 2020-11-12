@@ -67,6 +67,9 @@ it('should login a user', async () => {
     expect(mockGet).toHaveBeenCalledTimes(2)
   })
 
+  // token saved
+  expect(window.localStorage.getItem('__obvio_user_token__')).toBe(token)
+
   // Requested user?
   const authHeader = mockGet.mock.calls[0][1]['headers']['Authorization']
   expect(authHeader).toBe(`Bearer ${token}`)

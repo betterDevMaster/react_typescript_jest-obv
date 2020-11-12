@@ -11,5 +11,6 @@ export function saveToken(token: string) {
 }
 
 export function deleteToken() {
+  console.log('delete')
   return window.localStorage.removeItem(tokenKey)
 }
