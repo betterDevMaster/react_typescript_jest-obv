@@ -20,6 +20,7 @@ export const RelativeLink = React.forwardRef(
           ref={ref}
           className={props.className}
           onClick={handleOnClick}
+          aria-label={props['aria-label']}
         >
           {props.children}
         </DisabledLink>
@@ -33,6 +34,7 @@ export const RelativeLink = React.forwardRef(
         to={props.to}
         underline={style.underline}
         color={style.color}
+        aria-label={props['aria-label']}
       >
         {props.children}
       </StyledRouterLink>

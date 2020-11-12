@@ -43,6 +43,7 @@ export default function Registration() {
                   ref: registerForm({
                     required: 'First name is required',
                   }),
+                  'aria-label': 'first name',
                 }}
                 error={!!errors.firstName}
                 helperText={errors.firstName && errors.firstName.message}
@@ -58,6 +59,7 @@ export default function Registration() {
                   ref: registerForm({
                     required: 'Last name is required',
                   }),
+                  'aria-label': 'last name',
                 }}
                 error={!!errors.lastName}
                 helperText={errors.lastName && errors.lastName.message}
@@ -74,6 +76,7 @@ export default function Registration() {
               ref: registerForm({
                 required: 'Email is required',
               }),
+              'aria-label': 'email',
             }}
             error={!!errors.email}
             helperText={errors.email && errors.email.message}
@@ -88,6 +91,7 @@ export default function Registration() {
               ref: registerForm({
                 required: 'Password is required',
               }),
+              'aria-label': 'password',
             }}
             error={!!errors.password}
             helperText={errors.password && errors.password.message}
@@ -104,6 +108,7 @@ export default function Registration() {
                 validate: (value: any) =>
                   value === watch('password') || 'Passwords do not match',
               }),
+              'aria-label': 'password confirmation',
             }}
             error={!!errors.passwordConfirmation}
             helperText={
@@ -117,6 +122,7 @@ export default function Registration() {
             color="primary"
             type="submit"
             disabled={submitting}
+            aria-label="register"
           >
             Register
           </Button>

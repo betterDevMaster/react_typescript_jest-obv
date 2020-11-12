@@ -4,8 +4,8 @@ import React from 'react'
 import {render} from '__utils__/render'
 import user from '@testing-library/user-event'
 import mockAxios from 'axios'
-import {waitFor} from '@testing-library/dom'
 import {fakeUser} from 'auth/user/__utils__/factory'
+import {waitFor} from '@testing-library/react'
 
 const mockPost = mockAxios.post as jest.Mock
 const mockGet = mockAxios.get as jest.Mock

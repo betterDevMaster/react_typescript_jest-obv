@@ -65,7 +65,10 @@ export default function Login() {
         </Button>
         <CreateAccountText>
           Don't have an account yet?{' '}
-          <RelativeLink to={obvioRoutes.registration}>
+          <RelativeLink
+            to={obvioRoutes.registration}
+            aria-label="create account"
+          >
             Create one now
           </RelativeLink>
         </CreateAccountText>
