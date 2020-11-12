@@ -10,15 +10,13 @@ import {spacing} from 'lib/ui/theme'
 import {obvioRoutes} from 'obvio/Routes'
 import {RelativeLink} from 'lib/ui/link/RelativeLink'
 import {useOrganizationAuth} from 'organization/auth'
-import {organizationSlug} from 'organization/url'
 
 export default function Login() {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [error, setError] = useState('')
   const [submitting, setSubmitting] = useState(false)
-  const slug = organizationSlug()
-  const {login} = useOrganizationAuth(slug)
+  const {login} = useOrganizationAuth()
 
   const tryLogin = () => {
     setSubmitting(true)

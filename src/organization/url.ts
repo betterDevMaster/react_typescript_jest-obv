@@ -9,7 +9,7 @@ export function organizationUrl(organization: Organization) {
 /**
  * Parses the organization slug from the url
  */
-export function organizationSlug() {
+export function slugFromURL() {
   const host = window.location.host
   const root = appRoot ? `.${appRoot}` : ''
   return host.replace(root, '')

@@ -1,10 +1,14 @@
 import {useAuthClient} from 'auth/auth-client'
+import {slugFromURL} from 'organization/url'
 
-export const useOrganizationAuth = (organizationSlug: string) =>
-  useAuthClient({
+export const useOrganizationAuth = () => {
+  const organization = slugFromURL()
+
+  return useAuthClient({
     endpoints: {
-      user: `/organizations/${organizationSlug}/user`,
-      login: `/organizations/${organizationSlug}/login`,
+      user: `/organizations/${organization}/user`,
+      login: `/organizations/${organization}/login`,
       register: `/register`,
     },
   })
+}
