@@ -22,9 +22,12 @@ unit_tests:
     refs:
       - staging
       - production
+  artifacts:
+    paths:
+      - coverage
   script:
     - npm i --cache .npm --prefer-offline
-    - npm test
+    - npm run test:coverage
 
 build_staging:
   stage: build
