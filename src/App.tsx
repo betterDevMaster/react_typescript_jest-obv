@@ -12,6 +12,7 @@ import {GlobalStyles} from 'lib/ui/theme/GlobalStyles'
 
 export const isProduction = process.env.NODE_ENV === 'production'
 export const appRoot = process.env.REACT_APP_WEB_APP_ROOT
+export const OBVIO_SUBDOMAIN = 'app'
 
 export default function App() {
   return (
@@ -40,7 +41,7 @@ export function Providers(props: {children: React.ReactNode}) {
 function Routes() {
   const subdomain = getSubdomain(window.location.host)
 
-  const isObvio = subdomain === 'app'
+  const isObvio = subdomain === OBVIO_SUBDOMAIN
   if (!subdomain || isObvio) {
     return <ObvioRoutes />
   }

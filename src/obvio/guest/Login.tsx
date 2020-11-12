@@ -37,6 +37,9 @@ export default function Login() {
           variant="outlined"
           onChange={onChangeStringHandler(setEmail)}
           value={email}
+          inputProps={{
+            'aria-label': 'obvio account email',
+          }}
         />
         <TextField
           label="Password"
@@ -45,6 +48,9 @@ export default function Login() {
           variant="outlined"
           onChange={onChangeStringHandler(setPassword)}
           value={password}
+          inputProps={{
+            'aria-label': 'obvio account password',
+          }}
         />
         <Error>{error}</Error>
         <Button
@@ -53,6 +59,7 @@ export default function Login() {
           color="primary"
           onClick={tryLogin}
           disabled={submitting}
+          aria-label="submit login"
         >
           Login
         </Button>
