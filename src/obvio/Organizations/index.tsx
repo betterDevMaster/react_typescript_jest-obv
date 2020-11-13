@@ -1,11 +1,11 @@
 import React from 'react'
-import OrganizationsProvider from 'obvio/Organizations/OrganizationsProvider'
+import UserOrganizationsProvier from 'obvio/Organizations/UserOrganizationsProvider'
 import Collection from 'obvio/Organizations/Collection'
 
 export default function Organizations() {
   return (
-    <OrganizationsProvider>
+    <UserOrganizationsProvier>
       <Collection />
-    </OrganizationsProvider>
+    </UserOrganizationsProvier>
   )
 }

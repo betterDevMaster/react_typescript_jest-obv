@@ -9,6 +9,7 @@ import {getSubdomain} from 'lib/url'
 import ObvioRoutes from 'obvio/Routes'
 import OrganizationRoutes from 'organization/Routes'
 import {GlobalStyles} from 'lib/ui/theme/GlobalStyles'
+import OrganizationProvider from 'organization/OrganizationProvider'
 
 export const isProduction = process.env.NODE_ENV === 'production'
 export const appRoot = process.env.REACT_APP_WEB_APP_ROOT
@@ -46,5 +47,9 @@ function Routes() {
     return <ObvioRoutes />
   }
 
-  return <OrganizationRoutes />
+  return (
+    <OrganizationProvider>
+      <OrganizationRoutes />
+    </OrganizationProvider>
+  )
 }

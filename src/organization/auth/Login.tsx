@@ -37,6 +37,9 @@ export default function Login() {
           variant="outlined"
           onChange={onChangeStringHandler(setEmail)}
           value={email}
+          inputProps={{
+            'aria-label': 'email',
+          }}
         />
         <TextField
           label="Password"
@@ -45,6 +48,9 @@ export default function Login() {
           variant="outlined"
           onChange={onChangeStringHandler(setPassword)}
           value={password}
+          inputProps={{
+            'aria-label': 'password',
+          }}
         />
         <Error>{error}</Error>
         <Button

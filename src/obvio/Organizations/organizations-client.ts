@@ -15,6 +15,11 @@ export function fetchOrganizations() {
   return client.get<Organization[]>(url)
 }
 
+export function findOrganization(slug: string) {
+  const url = api(`/organizations/${slug}`)
+  return client.get<Organization>(url)
+}
+
 export interface CreateOrganizationData {
   name: string
   slug: string

@@ -1,8 +1,8 @@
 import {useAuthClient} from 'auth/auth-client'
-import {slugFromURL} from 'organization/url'
+import {organizationSlug} from 'organization/url'
 
 export const useOrganizationAuth = () => {
-  const organization = slugFromURL()
+  const organization = organizationSlug()
 
   return useAuthClient({
     endpoints: {

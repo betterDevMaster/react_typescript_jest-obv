@@ -5,16 +5,16 @@ import {
 } from 'obvio/Organizations/organizations-client'
 import React from 'react'
 
-interface OrganizationsContextProps {
+interface UserOrganizationsContextProps {
   organizations: Organization[]
   loading: boolean
 }
 
-const OrganizationsContext = React.createContext<
-  OrganizationsContextProps | undefined
+const UserOrganizationsContext = React.createContext<
+  UserOrganizationsContextProps | undefined
 >(undefined)
 
-export default function OrganizationsProvier(props: {
+export default function UserOrganizationsProvier(props: {
   children: React.ReactNode
 }) {
   const {data, loading} = useAsync(fetchOrganizations)
@@ -24,22 +24,22 @@ export default function OrganizationsProvier(props: {
   const organizations = data || []
 
   return (
-    <OrganizationsContext.Provider
+    <UserOrganizationsContext.Provider
       value={{
         organizations,
         loading,
       }}
     >
       {props.children}
-    </OrganizationsContext.Provider>
+    </UserOrganizationsContext.Provider>
   )
 }
 
-export function useOrganizations() {
-  const context = React.useContext(OrganizationsContext)
+export function useUserOrganizations() {
+  const context = React.useContext(UserOrganizationsContext)
   if (context === undefined) {
     throw new Error(
-      `useOrganizations must be used within an OrganizationsProvider`,
+      `useUserOrganizations must be used within an UserOrganizationsProvier`,
     )
   }
 

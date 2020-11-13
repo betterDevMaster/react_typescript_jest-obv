@@ -1,13 +1,13 @@
 import Card from 'obvio/Organizations/Collection/Card'
 import styled from 'styled-components'
-import {useOrganizations} from 'obvio/Organizations/OrganizationsProvider'
+import {useUserOrganizations} from 'obvio/Organizations/UserOrganizationsProvider'
 import React from 'react'
 import Button from '@material-ui/core/Button'
 import {obvioRoutes} from 'obvio/Routes'
 import {RelativeLink} from 'lib/ui/link/RelativeLink'
 
 export default function Collection() {
-  const {organizations, loading} = useOrganizations()
+  const {organizations, loading} = useUserOrganizations()
   const empty = organizations.length === 0
 
   if (loading) {
