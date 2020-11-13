@@ -5,7 +5,7 @@ import {render} from '__utils__/render'
 import user from '@testing-library/user-event'
 import mockAxios from 'axios'
 import {fakeUser} from 'auth/user/__utils__/factory'
-import {wait} from '@testing-library/react'
+import {act, wait} from '@testing-library/react'
 import {fakeOrganization} from 'obvio/Organizations/__utils__/factory'
 
 const mockPost = mockAxios.post as jest.Mock
@@ -60,7 +60,10 @@ it('should login a user', async () => {
   const password = 'secretpw'
   user.type(await findByLabelText('email'), email)
   user.type(await findByLabelText('password'), password)
-  user.click(await findByLabelText('submit login'))
+
+  await act(async () => {
+    user.click(await findByLabelText('submit login'))
+  })
 
   expect(mockPost).toHaveBeenCalledTimes(1)
 

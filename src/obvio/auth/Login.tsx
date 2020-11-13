@@ -1,7 +1,6 @@
 import Button from '@material-ui/core/Button/Button'
 import styled from 'styled-components'
 import TextField from '@material-ui/core/TextField'
-import {onChangeStringHandler} from 'lib/dom'
 import Centered from 'lib/ui/layout/Centered'
 import React, {useState} from 'react'
 import {useObvioAuth} from 'obvio/auth'
@@ -10,19 +9,18 @@ import withStyles from '@material-ui/core/styles/withStyles'
 import {spacing} from 'lib/ui/theme'
 import {obvioRoutes} from 'obvio/Routes'
 import {RelativeLink} from 'lib/ui/link/RelativeLink'
+import {useForm} from 'react-hook-form'
 
 export default function Login() {
-  const [email, setEmail] = useState('')
-  const [password, setPassword] = useState('')
+  const {register, handleSubmit, errors} = useForm()
   const [error, setError] = useState('')
   const [submitting, setSubmitting] = useState(false)
   const {login} = useObvioAuth()
 
-  const tryLogin = () => {
+  const submit = (data: {email: string; password: string}) => {
     setSubmitting(true)
-    login(email, password).catch((e) => {
-      const message = e.message || e
-      setError(message)
+    login(data.email, data.password).catch((e) => {
+      setError(e.message)
       setSubmitting(false)
     })
   }
@@ -30,39 +28,51 @@ export default function Login() {
   return (
     <Centered>
       <Container>
-        <TextField
-          label="Email"
-          type="email"
-          fullWidth
-          variant="outlined"
-          onChange={onChangeStringHandler(setEmail)}
-          value={email}
-          inputProps={{
-            'aria-label': 'obvio account email',
-          }}
-        />
-        <TextField
-          label="Password"
-          type="password"
-          fullWidth
-          variant="outlined"
-          onChange={onChangeStringHandler(setPassword)}
-          value={password}
-          inputProps={{
-            'aria-label': 'obvio account password',
-          }}
-        />
-        <Error>{error}</Error>
-        <Button
-          variant="contained"
-          fullWidth
-          color="primary"
-          onClick={tryLogin}
-          disabled={submitting}
-          aria-label="submit login"
-        >
-          Login
-        </Button>
+        <form onSubmit={handleSubmit(submit)}>
+          <TextField
+            label="Email"
+            type="email"
+            fullWidth
+            variant="outlined"
+            disabled={submitting}
+            name="email"
+            inputProps={{
+              ref: register({
+                required: 'Email is required',
+              }),
+              'aria-label': 'obvio account email',
+            }}
+            error={!!errors.email}
+            helperText={errors.email && errors.email.message}
+          />
+          <TextField
+            label="Password"
+            type="password"
+            fullWidth
+            variant="outlined"
+            disabled={submitting}
+            name="password"
+            inputProps={{
+              ref: register({
+                required: 'Password is required',
+              }),
+              'aria-label': 'obvio account password',
+            }}
+            error={!!errors.password}
+            helperText={errors.password && errors.password.message}
+          />
+          <Error>{error}</Error>
+          <Button
+            variant="contained"
+            fullWidth
+            color="primary"
+            disabled={submitting}
+            aria-label="submit login"
+            type="submit"
+          >
+            Login
+          </Button>
+        </form>
         <CreateAccountText>
           Don't have an account yet?{' '}
           <RelativeLink
