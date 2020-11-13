@@ -1,4 +1,4 @@
-import {Organization} from 'obvio/Organizations/organizations-client'
+import {Organization} from 'organization/organizations-client'
 import styled from 'styled-components'
 import React from 'react'
 import grey from '@material-ui/core/colors/grey'

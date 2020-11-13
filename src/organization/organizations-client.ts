@@ -10,7 +10,7 @@ export interface Organization {
   created_at: string
 }
 
-export function fetchOrganizations() {
+export function getUserOrganizations() {
   const url = api('/organizations')
   return client.get<Organization[]>(url)
 }

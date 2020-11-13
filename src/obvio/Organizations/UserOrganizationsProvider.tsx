@@ -1,8 +1,8 @@
 import {useAsync} from 'lib/async'
 import {
-  fetchOrganizations,
+  getUserOrganizations,
   Organization,
-} from 'obvio/Organizations/organizations-client'
+} from 'organization/organizations-client'
 import React from 'react'
 
 interface UserOrganizationsContextProps {
@@ -17,7 +17,7 @@ const UserOrganizationsContext = React.createContext<
 export default function UserOrganizationsProvier(props: {
   children: React.ReactNode
 }) {
-  const {data, loading} = useAsync(fetchOrganizations)
+  const {data, loading} = useAsync(getUserOrganizations)
 
   // data is null before request is sent, but
   // we're expecting an array

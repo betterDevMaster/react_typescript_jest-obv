@@ -1,8 +1,5 @@
 import {useAsync} from 'lib/async'
-import {
-  findOrganization,
-  Organization,
-} from 'obvio/Organizations/organizations-client'
+import {findOrganization, Organization} from 'organization/organizations-client'
 import {organizationSlug} from 'organization/url'
 import React, {useCallback} from 'react'
 

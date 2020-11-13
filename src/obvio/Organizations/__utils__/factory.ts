@@ -1,4 +1,4 @@
-import {Organization} from 'obvio/Organizations/organizations-client'
+import {Organization} from 'organization/organizations-client'
 import faker from 'faker'
 
 export const fakeOrganization = (
