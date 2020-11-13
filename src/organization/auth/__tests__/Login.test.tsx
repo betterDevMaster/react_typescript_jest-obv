@@ -7,6 +7,7 @@ import mockAxios from 'axios'
 import {fakeUser} from 'auth/user/__utils__/factory'
 import {act, wait} from '@testing-library/react'
 import {fakeOrganization} from 'obvio/Organizations/__utils__/factory'
+import {setUrlForOrganization} from 'organization/__utils__/url'
 
 const mockPost = mockAxios.post as jest.Mock
 const mockGet = mockAxios.get as jest.Mock
@@ -17,13 +18,8 @@ afterEach(() => {
 
 it('should show the organization login form', async () => {
   const organization = fakeOrganization()
+  setUrlForOrganization(organization)
   mockGet.mockImplementationOnce(() => Promise.resolve({data: organization}))
-
-  Object.defineProperty(window, 'location', {
-    value: {
-      host: `${organization.slug}.${appRoot}`, // Root, no subdomain
-    },
-  })
 
   const {findByLabelText, findByText} = render(<App />)
 
@@ -40,13 +36,8 @@ it('should show the organization login form', async () => {
 
 it('should login a user', async () => {
   const organization = fakeOrganization()
+  setUrlForOrganization(organization)
   mockGet.mockImplementationOnce(() => Promise.resolve({data: organization}))
-
-  Object.defineProperty(window, 'location', {
-    value: {
-      host: `${organization.slug}.${appRoot}`,
-    },
-  })
 
   const token = 'secrettoken'
   mockPost.mockImplementationOnce(() =>
