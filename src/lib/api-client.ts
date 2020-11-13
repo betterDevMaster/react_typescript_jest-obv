@@ -1,6 +1,11 @@
 import axios from 'axios'
 import {getToken as getAuthToken} from 'auth/token'
 
+export type ValidationError<T> = {
+  message: string
+  errors: Partial<T>
+}
+
 const defaultHeaders = {
   'content-type': 'application/json',
 }

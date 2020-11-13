@@ -1,11 +1,11 @@
-import App, {appRoot, OBVIO_SUBDOMAIN} from 'App'
+import App from 'App'
 import faker from 'faker'
 import React from 'react'
 import {render} from '__utils__/render'
 import user from '@testing-library/user-event'
 import mockAxios from 'axios'
 import {fakeUser} from 'auth/user/__utils__/factory'
-import {act, wait} from '@testing-library/react'
+import {act} from '@testing-library/react'
 import {fakeOrganization} from 'obvio/Organizations/__utils__/factory'
 import {setUrlForOrganization} from 'organization/__utils__/url'
 
@@ -62,10 +62,6 @@ it('should login a user', async () => {
   const data = mockPost.mock.calls[0][1]
   expect(data.email).toBe(email)
   expect(data.password).toBe(password)
-
-  await wait(() => {
-    expect(mockGet).toHaveBeenCalledTimes(2)
-  })
 
   // token saved
   expect(window.localStorage.getItem('__obvio_user_token__')).toBe(token)

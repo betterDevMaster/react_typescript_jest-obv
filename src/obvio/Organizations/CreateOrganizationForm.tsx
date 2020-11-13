@@ -2,6 +2,7 @@ import Button from '@material-ui/core/Button'
 import withStyles from '@material-ui/core/styles/withStyles'
 import TextField from '@material-ui/core/TextField'
 import Typography from '@material-ui/core/Typography'
+import {ValidationError} from 'lib/api-client'
 import {spacing} from 'lib/ui/theme'
 import {obvioRoutes} from 'obvio/Routes'
 import {
@@ -14,10 +15,9 @@ import {useHistory} from 'react-router-dom'
 
 export default function CreateOrganizationForm() {
   const {register, errors, handleSubmit, watch} = useForm()
-  const [serverError, setServerError] = useState<null | {
-    message: string
-    errors: Partial<CreateOrganizationData>
-  }>(null)
+  const [serverError, setServerError] = useState<null | ValidationError<
+    CreateOrganizationData
+  >>(null)
   const history = useHistory()
   const [submitting, setSubmitting] = useState(false)
   const showOrganizations = () => {
@@ -27,7 +27,7 @@ export default function CreateOrganizationForm() {
   const submit = (data: CreateOrganizationData) => {
     setSubmitting(true)
     createOrganization(data)
-      .then((o) => {
+      .then(() => {
         showOrganizations()
       })
       .catch((error) => {

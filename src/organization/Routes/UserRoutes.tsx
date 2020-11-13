@@ -1,3 +1,5 @@
+import Events from 'organization/Events'
+import CreateEventForm from 'organization/Events/CreateEventForm'
 import {organizationRoutes} from 'organization/Routes'
 import Layout from 'organization/user/Layout'
 import React from 'react'
@@ -8,10 +10,10 @@ export default function UserRoutes() {
     <Layout>
       <Switch>
         <Route path={organizationRoutes.events.create}>
-          <div>Create an event...</div>
+          <CreateEventForm />
         </Route>
         <Route path={organizationRoutes.events.root}>
-          <div>your events...</div>
+          <Events />
         </Route>
         <Redirect
           to={{
