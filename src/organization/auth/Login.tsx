@@ -5,11 +5,10 @@ import {onChangeStringHandler} from 'lib/dom'
 import Centered from 'lib/ui/layout/Centered'
 import React, {useState} from 'react'
 import Typography from '@material-ui/core/Typography'
-import withStyles from '@material-ui/core/styles/withStyles'
 import {spacing} from 'lib/ui/theme'
-import {obvioRoutes} from 'obvio/Routes'
-import {RelativeLink} from 'lib/ui/link/RelativeLink'
 import {useOrganizationAuth} from 'organization/auth'
+import {useOrganization} from 'organization/OrganizationProvider'
+import withStyles from '@material-ui/core/styles/withStyles'
 
 export default function Login() {
   const [email, setEmail] = useState('')
@@ -17,6 +16,7 @@ export default function Login() {
   const [error, setError] = useState('')
   const [submitting, setSubmitting] = useState(false)
   const {login} = useOrganizationAuth()
+  const {organization} = useOrganization()
 
   const tryLogin = () => {
     setSubmitting(true)
@@ -27,9 +27,14 @@ export default function Login() {
     })
   }
 
+  if (!organization) {
+    throw new Error('Missing Organization')
+  }
+
   return (
     <Centered>
       <Container>
+        <OrganizationName variant="h5">{organization.name}</OrganizationName>
         <TextField
           label="Email"
           type="email"
@@ -52,28 +57,23 @@ export default function Login() {
             'aria-label': 'password',
           }}
         />
-        <Error>{error}</Error>
+        <ErrorMessage>{error}</ErrorMessage>
         <Button
           variant="contained"
           fullWidth
           color="primary"
           onClick={tryLogin}
           disabled={submitting}
+          aria-label="submit login"
         >
           Login
         </Button>
-        <CreateAccountText>
-          Don't have an account yet?{' '}
-          <RelativeLink to={obvioRoutes.registration}>
-            Create one now
-          </RelativeLink>
-        </CreateAccountText>
       </Container>
     </Centered>
   )
 }
 
-function Error(props: {children: string}) {
+function ErrorMessage(props: {children: string}) {
   if (!props.children) {
     return null
   }
@@ -94,8 +94,9 @@ const ErrorText = styled(Typography)`
   margin-bottom: ${(props) => props.theme.spacing[3]};
 `
 
-const CreateAccountText = withStyles({
+const OrganizationName = withStyles({
   root: {
-    marginTop: spacing[3],
+    textAlign: 'center',
+    marginBottom: spacing[3],
   },
 })(Typography)

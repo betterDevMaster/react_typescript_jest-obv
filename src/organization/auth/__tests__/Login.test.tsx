@@ -16,62 +16,69 @@ afterEach(() => {
 })
 
 it('should show the organization login form', async () => {
-  mockGet.mockImplementationOnce(() =>
-    Promise.resolve({data: fakeOrganization()}),
-  )
+  const organization = fakeOrganization()
+  mockGet.mockImplementationOnce(() => Promise.resolve({data: organization}))
 
-  const slug = faker.internet.domainWord()
   Object.defineProperty(window, 'location', {
     value: {
-      host: `${slug}.${appRoot}`, // Root, no subdomain
+      host: `${organization.slug}.${appRoot}`, // Root, no subdomain
     },
   })
 
-  const {findByLabelText} = render(<App />)
+  const {findByLabelText, findByText} = render(<App />)
 
+  expect(await findByText(organization.name))
   expect(await findByLabelText(`email`)).toBeInTheDocument()
   expect(await findByLabelText(`password`)).toBeInTheDocument()
 
   expect(mockGet).toHaveBeenCalledTimes(1)
   const url = mockGet.mock.calls[0][0]
-  expect(url).toBe(`${process.env.REACT_APP_API_URL}/organizations/${slug}`)
+  expect(url).toBe(
+    `${process.env.REACT_APP_API_URL}/organizations/${organization.slug}`,
+  )
 })
 
-// it('should login a user', async () => {
-//   const token = 'secrettoken'
-//   mockPost.mockImplementationOnce(() =>
-//     Promise.resolve({data: {access_token: token}}),
-//   )
-//   mockGet.mockImplementationOnce(() => Promise.resolve({data: fakeUser()}))
+it('should login a user', async () => {
+  const organization = fakeOrganization()
+  mockGet.mockImplementationOnce(() => Promise.resolve({data: organization}))
 
-//   const {findByLabelText, findByText} = render(<App />)
+  Object.defineProperty(window, 'location', {
+    value: {
+      host: `${organization.slug}.${appRoot}`,
+    },
+  })
 
-//   expect(await findByLabelText('obvio account email')).toBeInTheDocument()
-//   expect(await findByLabelText('obvio account password')).toBeInTheDocument()
+  const token = 'secrettoken'
+  mockPost.mockImplementationOnce(() =>
+    Promise.resolve({data: {access_token: token}}),
+  )
+  mockGet.mockImplementationOnce(() => Promise.resolve({data: fakeUser()}))
 
-//   const email = faker.internet.email()
-//   const password = 'secretpw'
-//   user.type(await findByLabelText('obvio account email'), email)
-//   user.type(await findByLabelText('obvio account password'), password)
-//   user.click(await findByLabelText('submit login'))
+  const {findByLabelText, findByText} = render(<App />)
 
-//   expect(mockPost).toHaveBeenCalledTimes(1)
+  const email = faker.internet.email()
+  const password = 'secretpw'
+  user.type(await findByLabelText('email'), email)
+  user.type(await findByLabelText('password'), password)
+  user.click(await findByLabelText('submit login'))
 
-//   // Submitted correct data?
-//   const data = mockPost.mock.calls[0][1]
-//   expect(data.email).toBe(email)
-//   expect(data.password).toBe(password)
+  expect(mockPost).toHaveBeenCalledTimes(1)
 
-//   await wait(() => {
-//     expect(mockGet).toHaveBeenCalledTimes(2)
-//   })
+  // Submitted correct data?
+  const data = mockPost.mock.calls[0][1]
+  expect(data.email).toBe(email)
+  expect(data.password).toBe(password)
 
-//   // token saved
-//   expect(window.localStorage.getItem('__obvio_user_token__')).toBe(token)
+  await wait(() => {
+    expect(mockGet).toHaveBeenCalledTimes(2)
+  })
 
-//   // Requested user?
-//   const authHeader = mockGet.mock.calls[0][1]['headers']['Authorization']
-//   expect(authHeader).toBe(`Bearer ${token}`)
+  // token saved
+  expect(window.localStorage.getItem('__obvio_user_token__')).toBe(token)
 
-//   expect(await findByText('Logout')).toBeInTheDocument()
-// })
+  // Requested user?
+  const authHeader = mockGet.mock.calls[1][1]['headers']['Authorization']
+  expect(authHeader).toBe(`Bearer ${token}`)
+
+  expect(await findByText('Logout')).toBeInTheDocument()
+})
