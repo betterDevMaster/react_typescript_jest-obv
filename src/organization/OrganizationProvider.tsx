@@ -3,14 +3,9 @@ import {findOrganization, Organization} from 'organization/organizations-client'
 import {organizationSlug} from 'organization/url'
 import React, {useCallback} from 'react'
 
-interface OrganizationContextProps {
-  organization: Organization | null
-  loading: boolean
-}
-
-const OrganizationContext = React.createContext<
-  OrganizationContextProps | undefined
->(undefined)
+const OrganizationContext = React.createContext<Organization | undefined>(
+  undefined,
+)
 
 export default function OrganizationProvider(props: {
   children: React.ReactNode
@@ -20,15 +15,22 @@ export default function OrganizationProvider(props: {
     return findOrganization(slug)
   }, [slug])
 
-  const {data, loading} = useAsync(find)
+  const {data: organization, loading} = useAsync(find)
+
+  if (loading) {
+    return null
+  }
+
+  if (!organization) {
+    return (
+      <div>
+        <h1>404 - Organization not found</h1>
+      </div>
+    )
+  }
 
   return (
-    <OrganizationContext.Provider
-      value={{
-        organization: data,
-        loading,
-      }}
-    >
+    <OrganizationContext.Provider value={organization}>
       {props.children}
     </OrganizationContext.Provider>
   )

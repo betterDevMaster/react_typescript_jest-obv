@@ -16,7 +16,7 @@ export default function Login() {
   const [error, setError] = useState('')
   const [submitting, setSubmitting] = useState(false)
   const {login} = useOrganizationAuth()
-  const {organization} = useOrganization()
+  const organization = useOrganization()
 
   const tryLogin = () => {
     setSubmitting(true)
@@ -25,10 +25,6 @@ export default function Login() {
       setError(message)
       setSubmitting(false)
     })
-  }
-
-  if (!organization) {
-    throw new Error('Missing Organization')
   }
 
   return (

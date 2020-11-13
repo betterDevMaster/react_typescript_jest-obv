@@ -9,13 +9,14 @@ import styled from 'styled-components'
 import {useObvioAuth} from 'obvio/auth'
 import {useHistory} from 'react-router-dom'
 import {obvioRoutes} from 'obvio/Routes'
-import logo from 'assets/images/logo.png'
 import {RelativeLink} from 'lib/ui/link/RelativeLink'
+import {useOrganization} from 'organization/OrganizationProvider'
 
 export default function AppBar() {
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null)
   const {logout} = useObvioAuth()
   const history = useHistory()
+  const organization = useOrganization()
 
   const handleClose = () => {
     setAnchorEl(null)
@@ -33,11 +34,9 @@ export default function AppBar() {
   return (
     <MuiAppBar>
       <Toolbar>
-        <Logo>
-          <RelativeLink to={obvioRoutes.root} disableStyles>
-            <img src={logo} alt="Obv.io" />
-          </RelativeLink>
-        </Logo>
+        <HomeLink to={obvioRoutes.root} disableStyles>
+          {organization.name}
+        </HomeLink>
         <div>
           <IconButton aria-haspopup="true" onClick={handleMenu} color="inherit">
             <AccountCircle />
@@ -64,14 +63,6 @@ export default function AppBar() {
   )
 }
 
-const Logo = styled.div`
+const HomeLink = styled(RelativeLink)`
   flex: 1;
-  display: flex;
-
-  a {
-    width: 120px;
-    img {
-      max-width: 100%;
-    }
-  }
 `
