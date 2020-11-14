@@ -8,9 +8,9 @@ import MenuItem from '@material-ui/core/MenuItem'
 import styled from 'styled-components'
 import {useObvioAuth} from 'obvio/auth'
 import {useHistory} from 'react-router-dom'
-import {obvioRoutes} from 'obvio/Routes'
 import {RelativeLink} from 'lib/ui/link/RelativeLink'
 import {useOrganization} from 'organization/OrganizationProvider'
+import {organizationRoutes} from 'organization/Routes'
 
 export default function AppBar() {
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null)
@@ -28,13 +28,13 @@ export default function AppBar() {
 
   const handleLogout = () => {
     logout()
-    history.push(obvioRoutes.login)
+    history.push(organizationRoutes.login)
   }
 
   return (
     <MuiAppBar>
       <Toolbar>
-        <HomeLink to={obvioRoutes.root} disableStyles>
+        <HomeLink to={organizationRoutes.events.root} disableStyles>
           {organization.name}
         </HomeLink>
         <div>

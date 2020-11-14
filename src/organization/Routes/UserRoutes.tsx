@@ -16,10 +16,17 @@ export default function UserRoutes() {
           <Events />
         </Route>
         <Redirect
-          to={{
-            pathname: organizationRoutes.events.root,
-          }}
+          exact
+          path={organizationRoutes.root}
+          to={organizationRoutes.events.root}
         />
+        {/*         
+          Catch-all: treat all other urls as event routes. Avoids
+          having to define a route for every event.
+        */}
+        <Route>
+          <div>event!</div>
+        </Route>
       </Switch>
     </Layout>
   )
