@@ -3,9 +3,11 @@ import SimpleBlog, {
   SIMPLE_BLOG,
 } from 'organization/Events/Dashboard/Template/SimpleBlog'
 import {DashboardProps} from 'organization/Events/Dashboard'
+import {useDashboard} from 'organization/Events/Dashboard/state/DashboardProvider'
 
 export default function Template(props: DashboardProps) {
-  switch (props.dashboard.template) {
+  const dashboard = useDashboard()
+  switch (dashboard.template) {
     case SIMPLE_BLOG:
       return <SimpleBlog user={props.user} />
     default:

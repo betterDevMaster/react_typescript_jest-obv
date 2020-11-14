@@ -11,9 +11,9 @@ import {setEditMode} from 'organization/Events/Dashboard/editor/state/actions'
 export type Dashboard = SimpleBlog
 
 export type DashboardProps = {
-  dashboard: Dashboard
-  user: User
+  dashboard: Dashboard | null
   isEditMode: boolean
+  user: User
 }
 
 export default function Dashboard(props: DashboardProps) {

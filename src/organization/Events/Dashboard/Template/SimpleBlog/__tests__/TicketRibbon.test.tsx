@@ -10,14 +10,14 @@ import {
 } from 'organization/Events/Dashboard/components/TicketRibbon'
 import {fireEvent} from '@testing-library/dom'
 
-it('should render ticket ribbons', () => {
+it('should render ticket ribbons', async () => {
   const dashboard = fakeSimpleBlog({
     ticketRibbon: null,
   })
 
   const ticketRibbon = faker.random.arrayElement(ALL_TICKET_RIBBONS)
 
-  const {queryByLabelText, rerender} = render(
+  const {queryByLabelText, rerender, findByLabelText} = render(
     <Dashboard isEditMode={false} dashboard={dashboard} user={fakeUser()} />,
   )
 
@@ -37,7 +37,7 @@ it('should render ticket ribbons', () => {
     />,
   )
 
-  expect(queryByLabelText(new RegExp(label))).toBeInTheDocument()
+  expect(await findByLabelText(new RegExp(label))).toBeInTheDocument()
 })
 
 it('should configure ticket ribbons', async () => {

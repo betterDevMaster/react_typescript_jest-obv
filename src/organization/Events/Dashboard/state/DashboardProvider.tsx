@@ -3,36 +3,31 @@ import {
   setDashboard,
   updateDashboard,
 } from 'organization/Events/Dashboard/state/actions'
-import React, {useEffect, useRef} from 'react'
+import {createSimpleBlog} from 'organization/Events/Dashboard/Template/SimpleBlog'
+import React, {useEffect} from 'react'
 import {useDispatch, useSelector} from 'react-redux'
 import {RootState} from 'store'
 
-const DashboardContext = React.createContext(
-  (undefined as unknown) as Dashboard,
-)
+const DashboardContext = React.createContext<Dashboard | undefined>(undefined)
 
 export default function DashboardProvider(props: {
   children: React.ReactNode
-  saved: Dashboard
+  saved: Dashboard | null
 }) {
-  const hasSet = useRef(false)
   const dispatch = useDispatch()
-
   const current = useSelector((state: RootState) => state.dashboard)
 
   useEffect(() => {
-    if (hasSet.current) {
-      return
-    }
+    const dashboard = props.saved || createSimpleBlog()
+    dispatch(setDashboard(dashboard))
+  }, [dispatch, props.saved])
 
-    hasSet.current = true
-    dispatch(setDashboard(props.saved))
-  }, [dispatch, hasSet, props.saved])
-
-  const dashboard = current || props.saved
+  if (!current) {
+    return null
+  }
 
   return (
-    <DashboardContext.Provider value={dashboard}>
+    <DashboardContext.Provider value={current}>
       {props.children}
     </DashboardContext.Provider>
   )

@@ -111,6 +111,47 @@ export default function SimpleBlog(props: {user: User}) {
   )
 }
 
+export const createSimpleBlog = (): SimpleBlog => ({
+  template: SIMPLE_BLOG,
+  title: '',
+  mainNav: {
+    entities: {},
+    ids: [],
+  },
+  primaryColor: '#000000',
+  ticketRibbon: null,
+  logo: '',
+  welcomeText: 'WELCOME TO YOUR DASHBOARD',
+  emojiList: {
+    emojis: [],
+  },
+  sidebar: {
+    background: 'blue',
+    textColor: '#ffffff',
+  },
+  sidebarNav: {
+    entities: {},
+    ids: [],
+  },
+  blogPosts: {
+    entities: {},
+    ids: [],
+  },
+  agendas: [],
+  points: null,
+  resourceList: {
+    description: '',
+    resources: [],
+  },
+  footer: {
+    background: '#000000',
+    textColor: '#FFFFFF',
+    termsLink: null,
+    privacyLink: null,
+    copyrightText: null,
+  },
+})
+
 const Box = styled.div`
   height: 100%;
   display: flex;

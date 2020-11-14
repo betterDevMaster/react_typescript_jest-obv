@@ -8,13 +8,15 @@ export default function Layout(props: {children: React.ReactElement}) {
   return (
     <>
       <AppBar />
-      <StyledContainer maxWidth="lg">{props.children}</StyledContainer>
+      <StyledContainer maxWidth={false} disableGutters>
+        {props.children}
+      </StyledContainer>
     </>
   )
 }
 
 const StyledContainer = withStyles({
   root: {
-    paddingTop: spacing[24], // Account for fixed app bar height
+    paddingTop: spacing[16], // Account for fixed app bar height
   },
 })(Container)

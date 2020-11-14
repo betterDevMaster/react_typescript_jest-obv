@@ -1,5 +1,6 @@
 import Events from 'organization/Events'
 import CreateEventForm from 'organization/Events/CreateEventForm'
+import DashboardConfig from 'organization/Events/Dashboard/DashboardConfig'
 import EventConfig from 'organization/Events/EventConfig'
 import EventProvider from 'organization/Events/EventProvider'
 import {organizationRoutes} from 'organization/Routes'
@@ -35,7 +36,7 @@ export default function UserRoutes() {
           <EventProvider>
             <Switch>
               <Route path="/:event/dashboard">
-                <div>configure dashboard</div>
+                <DashboardConfig />
               </Route>
               <Route path="/:event">
                 <EventConfig />
