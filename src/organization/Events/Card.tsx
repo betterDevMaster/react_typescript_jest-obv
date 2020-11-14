@@ -1,4 +1,3 @@
-import {AbsoluteLink} from 'lib/ui/link/AbsoluteLink'
 import styled from 'styled-components'
 import {Event} from 'organization/Events'
 import grey from '@material-ui/core/colors/grey'
@@ -6,13 +5,11 @@ import React from 'react'
 import withStyles from '@material-ui/core/styles/withStyles'
 import {spacing} from 'lib/ui/theme'
 import Typography from '@material-ui/core/Typography'
-import {useOrganization} from 'organization/OrganizationProvider'
-import {organizationUrl} from 'organization/url'
+import {RelativeLink} from 'lib/ui/link/RelativeLink'
 
 export default function Card(props: {event: Event}) {
   const label = `view ${props.event.name}`
-  const organization = useOrganization()
-  const url = `${organizationUrl(organization)}/${props.event.slug}`
+  const url = `/${props.event.slug}`
 
   return (
     <Link to={url} disableStyles aria-label={label}>
@@ -22,7 +19,7 @@ export default function Card(props: {event: Event}) {
   )
 }
 
-const Link = styled(AbsoluteLink)`
+const Link = styled(RelativeLink)`
   border: 1px solid ${(props) => props.theme.colors.border};
   padding: ${(props) => props.theme.spacing[5]};
   margin-bottom: ${(props) => props.theme.spacing[4]};

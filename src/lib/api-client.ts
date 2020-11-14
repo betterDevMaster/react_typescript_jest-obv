@@ -10,23 +10,25 @@ const defaultHeaders = {
   'content-type': 'application/json',
 }
 
+type RequestOptions = {
+  headers?: Record<string, string>
+}
+
 export const client = {
-  get: <T>(url: string, options?: {}) =>
+  get: <T>(url: string, options?: RequestOptions) =>
     handleAxiosResult<T>(axios.get(url, config(options))),
-  post: <T>(url: string, data: {}, options?: {}) =>
+  post: <T>(url: string, data: {}, options?: RequestOptions) =>
     handleAxiosResult<T>(axios.post(url, data, config(options))),
-  put: <T>(url: string, data: {}, options?: {}) =>
+  put: <T>(url: string, data: {}, options?: RequestOptions) =>
     handleAxiosResult<T>(axios.put(url, data, config(options))),
-  delete: <T>(url: string, options?: {}) =>
+  delete: <T>(url: string, options?: RequestOptions) =>
     handleAxiosResult<T>(axios.delete(url, config(options))),
 }
 
 function config({
   headers: customHeaders,
   ...otherOptions
-}: {
-  headers?: {}
-} = {}) {
+}: RequestOptions = {}) {
   return {headers: headers(customHeaders), ...otherOptions}
 }
 

@@ -59,13 +59,14 @@ export const useAuthClient = (props: AuthClientProps) => {
   }, [dispatch, loading, endpoints])
 
   const login = useCallback(
-    (email: string, password: string) =>
-      attemptLogin(endpoints.login, email, password)
+    (email: string, password: string) => {
+      return attemptLogin(endpoints.login, email, password)
         .then(({access_token: token}) => {
           saveToken(token)
           return fetchUser(endpoints.user)
         })
-        .then((user) => dispatch(setUser(user))),
+        .then((user) => dispatch(setUser(user)))
+    },
     [dispatch, endpoints],
   )
 

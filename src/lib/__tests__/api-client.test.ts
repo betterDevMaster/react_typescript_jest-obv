@@ -24,12 +24,14 @@ it('should send default headers', async () => {
 it('should send custom config', async () => {
   mockGet.mockImplementation(() => Promise.resolve('ok'))
   await client.get('/test', {
-    foo: 'bar',
+    headers: {
+      foo: 'bar',
+    },
   })
 
   expect(mockGet).toHaveBeenCalledTimes(1)
   const firstCall = mockGet.mock.calls[0]
-  expect(firstCall[1].foo).toBe('bar')
+  expect(firstCall[1].headers.foo).toBe('bar')
 })
 
 it('should send a get request', async () => {
