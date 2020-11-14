@@ -6,13 +6,16 @@ import withStyles from '@material-ui/core/styles/withStyles'
 import {spacing} from 'lib/ui/theme'
 import Typography from '@material-ui/core/Typography'
 import {RelativeLink} from 'lib/ui/link/RelativeLink'
+import {useOrganization} from 'organization/OrganizationProvider'
+import {organizationUrl} from 'organization/url'
 
 export default function Card(props: {event: Event}) {
   const label = `view ${props.event.name}`
-  const url = `/${props.event.slug}`
+  const organization = useOrganization()
+  const url = `${organizationUrl(organization)}/${props.event.slug}`
 
   return (
-    <Link to={url} disableStyles aria-label={label}>
+    <Link to={`/${props.event.slug}`} disableStyles aria-label={label}>
       {props.event.name}
       <URL variant="caption">{url}</URL>
     </Link>

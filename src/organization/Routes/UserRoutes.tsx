@@ -34,10 +34,10 @@ export default function UserRoutes() {
         <Route>
           <EventProvider>
             <Switch>
-              <Route path="*/dashboard">
+              <Route path="/:event/dashboard">
                 <div>configure dashboard</div>
               </Route>
-              <Route>
+              <Route path="/:event">
                 <EventConfig />
               </Route>
             </Switch>
