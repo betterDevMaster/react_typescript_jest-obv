@@ -9,20 +9,13 @@ import {useLocation} from 'react-router-dom'
 
 const EventContext = React.createContext<Event | undefined>(undefined)
 
-export default function EventProvider(props: {
-  children: React.ReactNode
-  authenticated?: boolean
-}) {
+export default function EventProvider(props: {children: React.ReactNode}) {
   const location = useLocation()
   const slug = location.pathname.split('/')[1]
   const organization = useOrganization()
-  const {authenticated} = props
   const find = useCallback(() => {
-    return findEvent(slug, {
-      organization,
-      authenticated,
-    })
-  }, [slug, organization, authenticated])
+    return findEvent(organization, slug)
+  }, [slug, organization])
 
   const {data: event, loading} = useAsync(find)
 
@@ -54,22 +47,7 @@ export function useEvent() {
   return context
 }
 
-function findEvent(
-  slug: string,
-  {
-    organization,
-    authenticated = false,
-  }: {organization: Organization; authenticated?: boolean},
-) {
+function findEvent(organization: Organization, slug: string) {
   const url = api(`/organizations/${organization.slug}/events/${slug}`)
-
-  if (authenticated) {
-    return client.get<Event>(url, {
-      headers: {
-        Authenticated: 'true',
-      },
-    })
-  }
-
   return client.get<Event>(url)
 }

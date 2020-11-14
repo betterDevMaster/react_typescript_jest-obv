@@ -32,7 +32,7 @@ export default function UserRoutes() {
           having to define a route for every event.
         */}
         <Route>
-          <EventProvider authenticated>
+          <EventProvider>
             <Switch>
               <Route path="*/dashboard">
                 <div>configure dashboard</div>
