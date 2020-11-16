@@ -4,19 +4,12 @@ import {client} from 'lib/api-client'
 import {useAsync} from 'lib/async'
 import {RelativeLink} from 'lib/ui/link/RelativeLink'
 import {api} from 'lib/url'
-import {Dashboard} from 'organization/Events/Dashboard'
 import {useOrganization} from 'organization/OrganizationProvider'
 import {Organization} from 'organization/organizations-client'
 import {organizationRoutes} from 'organization/Routes'
 import React, {useCallback} from 'react'
 import Card from 'organization/Events/Card'
-
-export interface Event {
-  id: number
-  name: string
-  slug: string
-  dashboard: null | Dashboard
-}
+import {ObvioEvent} from 'event'
 
 export default function Events() {
   const organization = useOrganization()
@@ -61,7 +54,7 @@ export default function Events() {
 
 function fetchEvents(organization: Organization) {
   const url = api(`/organizations/${organization.slug}/events`)
-  return client.get<Event[]>(url)
+  return client.get<ObvioEvent[]>(url)
 }
 
 const EmptyBox = styled.div`

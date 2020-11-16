@@ -5,7 +5,7 @@ import Typography from '@material-ui/core/Typography'
 import {client, ValidationError} from 'lib/api-client'
 import {spacing} from 'lib/ui/theme'
 import {api} from 'lib/url'
-import {Event} from 'organization/Events'
+import {ObvioEvent} from 'event'
 import {useOrganization} from 'organization/OrganizationProvider'
 import {Organization} from 'organization/organizations-client'
 import {organizationRoutes} from 'organization/Routes'
@@ -141,7 +141,7 @@ function Error(props: {children: string | null}) {
 
 function createEvent(organization: Organization, data: CreateEventData) {
   const url = api(`/organizations/${organization.slug}/events`)
-  return client.post<Event>(url, data)
+  return client.post<ObvioEvent>(url, data)
 }
 
 const Title = withStyles({

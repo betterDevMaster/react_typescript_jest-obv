@@ -2,7 +2,7 @@ import {fireEvent} from '@testing-library/react'
 import {
   EDIT_COMPONENT_BUTTON_CLASS,
   EDIT_COMPONENT_CLASS,
-} from 'organization/Events/Dashboard/editor/views/EditComponent'
+} from 'event/Dashboard/editor/views/EditComponent'
 
 /**
  * Test helper to click the 'edit' button

@@ -1,5 +1,5 @@
 import styled from 'styled-components'
-import {Event} from 'organization/Events'
+import {ObvioEvent} from 'event'
 import grey from '@material-ui/core/colors/grey'
 import React from 'react'
 import withStyles from '@material-ui/core/styles/withStyles'
@@ -9,7 +9,7 @@ import {RelativeLink} from 'lib/ui/link/RelativeLink'
 import {useOrganization} from 'organization/OrganizationProvider'
 import {organizationUrl} from 'organization/url'
 
-export default function Card(props: {event: Event}) {
+export default function Card(props: {event: ObvioEvent}) {
   const label = `view ${props.event.name}`
   const organization = useOrganization()
   const url = `${organizationUrl(organization)}/${props.event.slug}`

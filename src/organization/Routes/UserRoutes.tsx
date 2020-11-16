@@ -1,6 +1,6 @@
 import Events from 'organization/Events'
 import CreateEventForm from 'organization/Events/CreateEventForm'
-import DashboardConfig from 'organization/Events/Dashboard/DashboardConfig'
+import DashboardConfig from 'event/Dashboard/DashboardConfig'
 import EventConfig from 'organization/Events/EventConfig'
 import EventProvider from 'organization/Events/EventProvider'
 import {organizationRoutes} from 'organization/Routes'
