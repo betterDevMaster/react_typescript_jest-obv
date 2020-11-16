@@ -7,10 +7,12 @@ import mockAxios from 'axios'
 import {fakeUser} from 'auth/user/__utils__/factory'
 import {act} from '@testing-library/react'
 import {fakeOrganization} from 'obvio/Organizations/__utils__/factory'
-import {setUrlForOrganization} from 'organization/__utils__/url'
+import {useLocation} from 'react-router-dom'
+import {organizationTokenKey} from 'organization/auth'
 
 const mockPost = mockAxios.post as jest.Mock
 const mockGet = mockAxios.get as jest.Mock
+const mockUseLocation = useLocation as jest.Mock
 
 afterEach(() => {
   jest.clearAllMocks()
@@ -18,7 +20,9 @@ afterEach(() => {
 
 it('should show the organization login form', async () => {
   const organization = fakeOrganization()
-  setUrlForOrganization(organization)
+  mockUseLocation.mockImplementation(() => ({
+    pathname: `/organization/${organization.slug}`,
+  }))
   mockGet.mockImplementationOnce(() => Promise.resolve({data: organization}))
 
   const {findByLabelText, findByText} = render(<App />)
@@ -36,7 +40,9 @@ it('should show the organization login form', async () => {
 
 it('should login a user', async () => {
   const organization = fakeOrganization()
-  setUrlForOrganization(organization)
+  mockUseLocation.mockImplementation(() => ({
+    pathname: `/organization/${organization.slug}`,
+  }))
   mockGet.mockImplementationOnce(() => Promise.resolve({data: organization}))
 
   const token = 'secrettoken'
@@ -64,7 +70,9 @@ it('should login a user', async () => {
   expect(data.password).toBe(password)
 
   // token saved
-  expect(window.localStorage.getItem('__obvio_user_token__')).toBe(token)
+  expect(
+    window.localStorage.getItem(organizationTokenKey(organization.slug)),
+  ).toBe(token)
 
   // Requested user?
   const authHeader = mockGet.mock.calls[1][1]['headers']['Authorization']

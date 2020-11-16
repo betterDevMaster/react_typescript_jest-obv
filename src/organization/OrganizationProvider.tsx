@@ -24,6 +24,7 @@ export default function OrganizationProvider(props: {
 }) {
   const location = useLocation()
   const slug = location.pathname.split('/')[2]
+
   const find = useCallback(() => {
     return findOrganization(slug)
   }, [slug])

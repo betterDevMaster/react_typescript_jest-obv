@@ -1,7 +1,7 @@
 import {client} from 'lib/api-client'
 import {useAsync} from 'lib/async'
-import {api, getSubdomain} from 'lib/url'
-import {ObvioEvent} from 'event'
+import {api} from 'lib/url'
+import {eventSlug, ObvioEvent} from 'event'
 import React, {useCallback} from 'react'
 
 const EventContext = React.createContext<ObvioEvent | undefined>(undefined)
@@ -45,8 +45,4 @@ export function useEvent() {
 function findEvent(slug: string) {
   const url = api(`/events/${slug}`)
   return client.get<ObvioEvent>(url)
-}
-
-export function eventSlug() {
-  return getSubdomain(window.location.host)
 }
