@@ -1,21 +1,16 @@
 import {client} from 'lib/api-client'
 import {useAsync} from 'lib/async'
-import {api} from 'lib/url'
+import {api, getSubdomain} from 'lib/url'
 import {ObvioEvent} from 'event'
-import {useOrganization} from 'organization/OrganizationProvider'
-import {Organization} from 'organization/organizations-client'
 import React, {useCallback} from 'react'
-import {useLocation} from 'react-router-dom'
 
 const EventContext = React.createContext<ObvioEvent | undefined>(undefined)
 
 export default function EventProvider(props: {children: React.ReactNode}) {
-  const location = useLocation()
-  const slug = location.pathname.split('/')[1]
-  const organization = useOrganization()
+  const slug = eventSlug()
   const find = useCallback(() => {
-    return findEvent(organization, slug)
-  }, [slug, organization])
+    return findEvent(slug)
+  }, [slug])
 
   const {data: event, loading} = useAsync(find)
 
@@ -47,7 +42,11 @@ export function useEvent() {
   return context
 }
 
-function findEvent(organization: Organization, slug: string) {
-  const url = api(`/organizations/${organization.slug}/events/${slug}`)
+function findEvent(slug: string) {
+  const url = api(`/events/${slug}`)
   return client.get<ObvioEvent>(url)
+}
+
+export function eventSlug() {
+  return getSubdomain(window.location.host)
 }

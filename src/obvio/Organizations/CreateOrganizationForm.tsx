@@ -8,7 +8,7 @@ import {obvioRoutes} from 'obvio/Routes'
 import {
   createOrganization,
   CreateOrganizationData,
-} from 'organization/organizations-client'
+} from 'organization/obvio-client'
 import React, {useState} from 'react'
 import {useForm} from 'react-hook-form'
 import {useHistory} from 'react-router-dom'

@@ -14,8 +14,8 @@ export default function Login() {
   const {register, handleSubmit, errors} = useForm()
   const [error, setError] = useState('')
   const [submitting, setSubmitting] = useState(false)
+  const {organization} = useOrganization()
   const {login} = useOrganizationAuth()
-  const organization = useOrganization()
 
   const submit = (data: {email: string; password: string}) => {
     setSubmitting(true)

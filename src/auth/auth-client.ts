@@ -3,11 +3,15 @@ import {deleteToken, getToken, saveToken} from 'auth/token'
 import {User} from 'auth/user'
 import {client} from 'lib/api-client'
 import {api} from 'lib/url'
+import {OBVIO_TOKEN_KEY} from 'obvio/auth'
+import {organizationTokenKey} from 'organization/auth'
+import {useOrganizationUrl} from 'organization/url'
 import {useCallback, useEffect, useRef} from 'react'
 import {useDispatch, useSelector} from 'react-redux'
 import {RootState} from 'store'
 
 export interface AuthClientProps {
+  tokenKey: string
   endpoints: {
     user: string
     login: string
@@ -30,13 +34,15 @@ export interface RegistrationData {
 }
 
 export const useAuthClient = (props: AuthClientProps) => {
-  const {endpoints} = props
+  const {endpoints, tokenKey} = props
   const dispatch = useDispatch()
   const {user, loading} = useSelector((state: RootState) => state.auth)
   const isFetching = useRef(false)
+  const {slug: organizationSlug} = useOrganizationUrl()
 
   useEffect(() => {
-    const token = getToken()
+    const tokenKey = accessToken(organizationSlug)
+    const token = getToken(tokenKey)
 
     // No token, proceed as guest
     if (!token && loading) {
@@ -50,41 +56,41 @@ export const useAuthClient = (props: AuthClientProps) => {
     }
 
     isFetching.current = true
-    fetchUser(endpoints.user)
+    fetchUser(tokenKey, endpoints.user)
       .then((user) => dispatch(setUser(user)))
       .catch(() => {
         // Token expired/invalid - do nothing, and force re-login
       })
       .finally(() => dispatch(setLoading(false)))
-  }, [dispatch, loading, endpoints])
+  }, [dispatch, loading, endpoints, tokenKey, organizationSlug])
 
   const login = useCallback(
     (email: string, password: string) => {
       return attemptLogin(endpoints.login, email, password)
         .then(({access_token: token}) => {
-          saveToken(token)
-          return fetchUser(endpoints.user)
+          saveToken(tokenKey, token)
+          return fetchUser(tokenKey, endpoints.user)
         })
         .then((user) => dispatch(setUser(user)))
     },
-    [dispatch, endpoints],
+    [dispatch, endpoints, tokenKey],
   )
 
   const register = useCallback(
     (data: RegistrationData) =>
       sendRegistrationRequest(endpoints.register, data)
         .then(({access_token: token}) => {
-          saveToken(token)
-          return fetchUser(endpoints.user)
+          saveToken(tokenKey, token)
+          return fetchUser(tokenKey, endpoints.user)
         })
         .then((user) => dispatch(setUser(user))),
-    [dispatch, endpoints],
+    [dispatch, endpoints, tokenKey],
   )
 
   const logout = useCallback(() => {
-    deleteToken()
+    deleteToken(tokenKey)
     dispatch(setUser(null))
-  }, [dispatch])
+  }, [dispatch, tokenKey])
 
   return {
     user,
@@ -95,11 +101,18 @@ export const useAuthClient = (props: AuthClientProps) => {
   }
 }
 
-async function fetchUser(endpoint: string): Promise<User | null> {
+async function fetchUser(
+  tokenKey: string,
+  endpoint: string,
+): Promise<User | null> {
   const url = api(endpoint)
-  return client.get<User>(url).then((user) => {
-    return user
-  })
+  return client
+    .get<User>(url, {
+      tokenKey,
+    })
+    .then((user) => {
+      return user
+    })
 }
 
 export const attemptLogin = (
@@ -123,4 +136,12 @@ function sendRegistrationRequest(endpoint: string, data: RegistrationData) {
     password: data.password,
     password_confirmation: data.passwordConfirmation,
   })
+}
+
+function accessToken(organizationSlug: null | string) {
+  if (!organizationSlug) {
+    return OBVIO_TOKEN_KEY
+  }
+
+  return organizationTokenKey(organizationSlug)
 }

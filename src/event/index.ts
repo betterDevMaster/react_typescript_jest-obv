@@ -1,3 +1,4 @@
+import { appRoot, isProduction } from 'App'
 import {Dashboard} from 'event/Dashboard'
 
 // Can't use 'Event' because that's already a native DOM type
@@ -7,4 +8,9 @@ export interface ObvioEvent {
   name: string
   slug: string
   dashboard: null | Dashboard
+}
+
+export function eventUrl(event: ObvioEvent) {
+  const scheme = isProduction ? 'https://' : 'http://'
+  return `${scheme}${event.slug}.${appRoot}`
 }

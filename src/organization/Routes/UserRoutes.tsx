@@ -3,12 +3,14 @@ import CreateEventForm from 'organization/Events/CreateEventForm'
 import DashboardConfig from 'event/Dashboard/DashboardConfig'
 import EventConfig from 'organization/Events/EventConfig'
 import EventProvider from 'organization/Events/EventProvider'
-import {organizationRoutes} from 'organization/Routes'
 import Layout from 'organization/user/Layout'
 import React from 'react'
 import {Redirect, Route, Switch} from 'react-router-dom'
+import {useOrganization} from 'organization/OrganizationProvider'
 
 export default function UserRoutes() {
+  const {routes} = useOrganization()
+
   return (
     <Layout>
       <Switch>
@@ -16,34 +18,25 @@ export default function UserRoutes() {
           Handle login redirect. Handle it here rather than on login success to
           avoid hitting the event catch-all below.
         */}
-        <Redirect
-          path={organizationRoutes.login}
-          to={organizationRoutes.events.root}
-        />
+        <Redirect path={routes.login} to={routes.events.root} />
 
-        <Route path={organizationRoutes.events.create}>
+        <Route path={routes.events.create}>
           <CreateEventForm />
         </Route>
-        <Route path={organizationRoutes.events.root}>
+        <Route path={routes.events.root} exact>
           <Events />
         </Route>
-
-        {/*         
-          Event Catch-all: treat all other urls as event routes. Avoids
-          having to define a route for every event.
-        */}
-        <Route>
+        <Route path={routes.events[':event'].dashboard}>
           <EventProvider>
-            <Switch>
-              <Route path="/:event/dashboard">
-                <DashboardConfig />
-              </Route>
-              <Route path="/:event">
-                <EventConfig />
-              </Route>
-            </Switch>
+            <DashboardConfig />
           </EventProvider>
         </Route>
+        <Route path={routes.events[':event'].root}>
+          <EventProvider>
+            <EventConfig />
+          </EventProvider>
+        </Route>
+        <Redirect to={routes.events.root} />
       </Switch>
     </Layout>
   )

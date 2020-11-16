@@ -10,13 +10,12 @@ import {useObvioAuth} from 'obvio/auth'
 import {useHistory} from 'react-router-dom'
 import {RelativeLink} from 'lib/ui/link/RelativeLink'
 import {useOrganization} from 'organization/OrganizationProvider'
-import {organizationRoutes} from 'organization/Routes'
 
 export default function AppBar() {
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null)
   const {logout} = useObvioAuth()
   const history = useHistory()
-  const organization = useOrganization()
+  const {routes, organization} = useOrganization()
 
   const handleClose = () => {
     setAnchorEl(null)
@@ -28,13 +27,13 @@ export default function AppBar() {
 
   const handleLogout = () => {
     logout()
-    history.push(organizationRoutes.login)
+    history.push(routes.login)
   }
 
   return (
     <MuiAppBar>
       <Toolbar>
-        <HomeLink to={organizationRoutes.events.root} disableStyles>
+        <HomeLink to={routes.events.root} disableStyles>
           {organization.name}
         </HomeLink>
         <div>

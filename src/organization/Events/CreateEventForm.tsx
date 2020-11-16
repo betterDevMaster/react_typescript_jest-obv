@@ -2,16 +2,18 @@ import Button from '@material-ui/core/Button'
 import withStyles from '@material-ui/core/styles/withStyles'
 import TextField from '@material-ui/core/TextField'
 import Typography from '@material-ui/core/Typography'
-import {client, ValidationError} from 'lib/api-client'
+import {ValidationError} from 'lib/api-client'
 import {spacing} from 'lib/ui/theme'
 import {api} from 'lib/url'
 import {ObvioEvent} from 'event'
-import {useOrganization} from 'organization/OrganizationProvider'
-import {Organization} from 'organization/organizations-client'
-import {organizationRoutes} from 'organization/Routes'
+import {
+  OrganizationClient,
+  useOrganization,
+} from 'organization/OrganizationProvider'
 import React, {useState} from 'react'
 import {useForm} from 'react-hook-form'
 import {useHistory} from 'react-router-dom'
+import {Organization} from 'organization'
 
 interface CreateEventData {
   name: string
@@ -22,19 +24,19 @@ export default function CreateEventForm() {
   const {register, errors, handleSubmit, watch} = useForm()
   const slug = watch('slug')
   const [submitting, setSubmitting] = useState(false)
-  const organization = useOrganization()
   const [serverError, setServerError] = useState<null | ValidationError<
     CreateEventData
   >>(null)
   const history = useHistory()
+  const {routes, organization, client} = useOrganization()
 
   const goToEvents = () => {
-    history.push(organizationRoutes.events.root)
+    history.push(routes.events.root)
   }
 
   const submit = (data: CreateEventData) => {
     setSubmitting(true)
-    createEvent(organization, data)
+    createEvent(client, organization, data)
       .then(() => {
         goToEvents()
       })
@@ -73,7 +75,7 @@ export default function CreateEventForm() {
       return 'Your event slug will be a part of your domain'
     }
 
-    return `Your event will be accessible at: ${organization.slug}.obv.io/${slug}`
+    return `Your event will be accessible at: ${slug}.obv.io`
   }
 
   return (
@@ -139,7 +141,11 @@ function Error(props: {children: string | null}) {
   return <ErrorText color="error">{props.children}</ErrorText>
 }
 
-function createEvent(organization: Organization, data: CreateEventData) {
+function createEvent(
+  client: OrganizationClient,
+  organization: Organization,
+  data: CreateEventData,
+) {
   const url = api(`/organizations/${organization.slug}/events`)
   return client.post<ObvioEvent>(url, data)
 }

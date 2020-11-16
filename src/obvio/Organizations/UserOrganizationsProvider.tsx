@@ -1,8 +1,6 @@
 import {useAsync} from 'lib/async'
-import {
-  getUserOrganizations,
-  Organization,
-} from 'organization/organizations-client'
+import {Organization} from 'organization'
+import {getUserOrganizations} from 'organization/obvio-client'
 import React from 'react'
 
 interface UserOrganizationsContextProps {

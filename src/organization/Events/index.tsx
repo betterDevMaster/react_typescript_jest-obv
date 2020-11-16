@@ -1,21 +1,21 @@
 import Button from '@material-ui/core/Button'
 import styled from 'styled-components'
-import {client} from 'lib/api-client'
 import {useAsync} from 'lib/async'
 import {RelativeLink} from 'lib/ui/link/RelativeLink'
-import {api} from 'lib/url'
+import {api, replaceRouteParam} from 'lib/url'
 import {useOrganization} from 'organization/OrganizationProvider'
-import {Organization} from 'organization/organizations-client'
-import {organizationRoutes} from 'organization/Routes'
 import React, {useCallback} from 'react'
 import Card from 'organization/Events/Card'
 import {ObvioEvent} from 'event'
+import {useParams} from 'react-router-dom'
 
 export default function Events() {
-  const organization = useOrganization()
+  const {organization, routes, client} = useOrganization()
+
   const fetch = useCallback(() => {
-    return fetchEvents(organization)
-  }, [organization])
+    const url = api(`/organizations/${organization.slug}/events`)
+    return client.get<ObvioEvent[]>(url)
+  }, [client, organization])
 
   const {data: events, loading} = useAsync(fetch)
   if (loading || !events) {
@@ -27,7 +27,7 @@ export default function Events() {
     return (
       <EmptyBox>
         <p>No events have been created</p>
-        <RelativeLink to={organizationRoutes.events.create} disableStyles>
+        <RelativeLink to={routes.events.create} disableStyles>
           <Button variant="outlined" color="primary">
             Create Event
           </Button>
@@ -39,7 +39,7 @@ export default function Events() {
   return (
     <div>
       <Header>
-        <RelativeLink to={organizationRoutes.events.create} disableStyles>
+        <RelativeLink to={routes.events.create} disableStyles>
           <Button variant="contained" color="primary">
             Create
           </Button>
@@ -52,9 +52,13 @@ export default function Events() {
   )
 }
 
-function fetchEvents(organization: Organization) {
-  const url = api(`/organizations/${organization.slug}/events`)
-  return client.get<ObvioEvent[]>(url)
+export function useEventRoutes(event?: ObvioEvent) {
+  const {routes: organizationRoutes} = useOrganization()
+  const {event: slug} = useParams<{event: string}>()
+
+  const value = event ? event.slug : slug
+
+  return replaceRouteParam(':event', value, organizationRoutes.events[':event'])
 }
 
 const EmptyBox = styled.div`

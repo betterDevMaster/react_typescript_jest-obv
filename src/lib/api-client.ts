@@ -10,8 +10,9 @@ const defaultHeaders = {
   'content-type': 'application/json',
 }
 
-type RequestOptions = {
+export type RequestOptions = {
   headers?: Record<string, string>
+  tokenKey?: string
 }
 
 export const client = {
@@ -27,19 +28,23 @@ export const client = {
 
 function config({
   headers: customHeaders,
+  tokenKey,
   ...otherOptions
 }: RequestOptions = {}) {
-  return {headers: headers(customHeaders), ...otherOptions}
+  return {headers: headers(tokenKey, customHeaders), ...otherOptions}
 }
 
-function headers(custom = {}) {
+function headers(
+  tokenKey: RequestOptions['tokenKey'],
+  custom: RequestOptions['headers'] = {},
+) {
   const headers: {[property: string]: string} = {
     ...defaultHeaders,
     ...custom,
   }
 
-  const token = getAuthToken()
-  if (token) {
+  if (tokenKey) {
+    const token = getAuthToken(tokenKey)
     headers.Authorization = `Bearer ${token}`
   }
 

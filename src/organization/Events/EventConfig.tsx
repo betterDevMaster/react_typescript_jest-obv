@@ -1,7 +1,7 @@
 import Button from '@material-ui/core/Button'
 import {RelativeLink} from 'lib/ui/link/RelativeLink'
+import {useEventRoutes} from 'organization/Events'
 import {useEvent} from 'organization/Events/EventProvider'
-import {useEventRoutes} from 'organization/Events/url'
 import React from 'react'
 
 export default function EventConfig() {

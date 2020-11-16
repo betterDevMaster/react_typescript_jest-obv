@@ -15,11 +15,7 @@ export default function UserRoutes() {
         <Route path={obvioRoutes.organizations.root}>
           <Organizations />
         </Route>
-        <Redirect
-          to={{
-            pathname: obvioRoutes.organizations.root,
-          }}
-        />
+        <Redirect to={obvioRoutes.organizations.root} />
       </Switch>
     </Layout>
   )

@@ -5,24 +5,27 @@ import React from 'react'
 import withStyles from '@material-ui/core/styles/withStyles'
 import {spacing} from 'lib/ui/theme'
 import Typography from '@material-ui/core/Typography'
+import {appRoot} from 'App'
+import {useEventRoutes} from 'organization/Events'
 import {RelativeLink} from 'lib/ui/link/RelativeLink'
-import {useOrganization} from 'organization/OrganizationProvider'
-import {organizationUrl} from 'organization/url'
 
 export default function Card(props: {event: ObvioEvent}) {
   const label = `view ${props.event.name}`
-  const organization = useOrganization()
-  const url = `${organizationUrl(organization)}/${props.event.slug}`
+  const routes = useEventRoutes(props.event)
 
   return (
-    <Link to={`/${props.event.slug}`} disableStyles aria-label={label}>
-      {props.event.name}
-      <URL variant="caption">{url}</URL>
-    </Link>
+    <Box>
+      <RelativeLink to={routes.root} disableStyles aria-label={label}>
+        {props.event.name}
+        <URL variant="caption">
+          {props.event.slug}.{appRoot}
+        </URL>
+      </RelativeLink>
+    </Box>
   )
 }
 
-const Link = styled(RelativeLink)`
+const Box = styled.div`
   border: 1px solid ${(props) => props.theme.colors.border};
   padding: ${(props) => props.theme.spacing[5]};
   margin-bottom: ${(props) => props.theme.spacing[4]};

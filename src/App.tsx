@@ -7,9 +7,11 @@ import MomentUtils from '@date-io/moment'
 import {BrowserRouter as Router} from 'react-router-dom'
 import {getSubdomain} from 'lib/url'
 import ObvioRoutes from 'obvio/Routes'
-import OrganizationRoutes from 'organization/Routes'
 import {GlobalStyles} from 'lib/ui/theme/GlobalStyles'
+import EventProvider from 'organization/Events/EventProvider'
+import OrganizationRoutes from 'organization/Routes'
 import OrganizationProvider from 'organization/OrganizationProvider'
+import {useOrganizationUrl} from 'organization/url'
 
 export const isProduction = process.env.NODE_ENV === 'production'
 export const appRoot = process.env.REACT_APP_WEB_APP_ROOT
@@ -42,14 +44,27 @@ export function Providers(props: {children: React.ReactNode}) {
 function Routes() {
   const subdomain = getSubdomain(window.location.host)
 
-  const isObvio = subdomain === OBVIO_SUBDOMAIN
-  if (!subdomain || isObvio) {
-    return <ObvioRoutes />
+  const isObvioAppDomain = subdomain === OBVIO_SUBDOMAIN
+  if (!subdomain || isObvioAppDomain) {
+    return <AppRoutes />
   }
 
   return (
-    <OrganizationProvider>
-      <OrganizationRoutes />
-    </OrganizationProvider>
+    <EventProvider>
+      <div>event routes...</div>
+    </EventProvider>
   )
+}
+
+function AppRoutes() {
+  const {isOrganizationRoute} = useOrganizationUrl()
+  if (isOrganizationRoute) {
+    return (
+      <OrganizationProvider>
+        <OrganizationRoutes />
+      </OrganizationProvider>
+    )
+  }
+
+  return <ObvioRoutes />
 }
