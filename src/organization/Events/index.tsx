@@ -8,6 +8,7 @@ import React, {useCallback} from 'react'
 import Card from 'organization/Events/Card'
 import {ObvioEvent} from 'event'
 import {useParams} from 'react-router-dom'
+import Page from 'organization/user/Layout/Page'
 
 export default function Events() {
   const {organization, routes, client} = useOrganization()
@@ -37,7 +38,7 @@ export default function Events() {
   }
 
   return (
-    <div>
+    <Page>
       <Header>
         <RelativeLink to={routes.events.create} disableStyles>
           <Button variant="contained" color="primary">
@@ -48,14 +49,18 @@ export default function Events() {
       {events.map((e) => (
         <Card key={e.id} event={e} />
       ))}
-    </div>
+    </Page>
   )
+}
+
+export function useParamEventSlug() {
+  const {event} = useParams<{event: string}>()
+  return event
 }
 
 export function useEventRoutes(event?: ObvioEvent) {
   const {routes: organizationRoutes} = useOrganization()
-  const {event: slug} = useParams<{event: string}>()
-
+  const slug = useParamEventSlug()
   const value = event ? event.slug : slug
 
   return replaceRouteParam(':event', value, organizationRoutes.events[':event'])

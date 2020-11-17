@@ -16,6 +16,6 @@ export function eventUrl(event: ObvioEvent) {
   return `${scheme}${event.slug}.${appRoot}`
 }
 
-export function eventSlug() {
+export function domainEventSlug() {
   return getSubdomain(window.location.host)
 }

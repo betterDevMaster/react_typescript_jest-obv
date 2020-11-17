@@ -1,13 +1,14 @@
 import {client} from 'lib/api-client'
 import {useAsync} from 'lib/async'
 import {api} from 'lib/url'
-import {eventSlug, ObvioEvent} from 'event'
+import {ObvioEvent} from 'event'
 import React, {useCallback} from 'react'
+import {useParamEventSlug} from 'organization/Events'
 
 const EventContext = React.createContext<ObvioEvent | undefined>(undefined)
 
 export default function EventProvider(props: {children: React.ReactNode}) {
-  const slug = eventSlug()
+  const slug = useParamEventSlug()
   const find = useCallback(() => {
     return findEvent(slug)
   }, [slug])

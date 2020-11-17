@@ -2,6 +2,7 @@ import Button from '@material-ui/core/Button'
 import withStyles from '@material-ui/core/styles/withStyles'
 import TextField from '@material-ui/core/TextField'
 import Typography from '@material-ui/core/Typography'
+import {appRoot} from 'App'
 import {ValidationError} from 'lib/api-client'
 import {spacing} from 'lib/ui/theme'
 import {obvioRoutes} from 'obvio/Routes'
@@ -67,7 +68,7 @@ export default function CreateOrganizationForm() {
       return 'Your organization slug will be a part of your domain'
     }
 
-    return `Your organization will be accessible at: ${slug}.obv.io`
+    return `Your organization will be accessible at: ${appRoot}/organization/${slug}`
   }
 
   return (

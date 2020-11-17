@@ -14,6 +14,7 @@ import React, {useState} from 'react'
 import {useForm} from 'react-hook-form'
 import {useHistory} from 'react-router-dom'
 import {Organization} from 'organization'
+import Page from 'organization/user/Layout/Page'
 
 interface CreateEventData {
   name: string
@@ -79,7 +80,7 @@ export default function CreateEventForm() {
   }
 
   return (
-    <div>
+    <Page>
       <Title variant="h5" align="center">
         Create Your Event
       </Title>
@@ -129,7 +130,7 @@ export default function CreateEventForm() {
           Submit
         </Button>
       </form>
-    </div>
+    </Page>
   )
 }
 

@@ -14,14 +14,14 @@ export default function Card(props: {event: ObvioEvent}) {
   const routes = useEventRoutes(props.event)
 
   return (
-    <Box>
-      <RelativeLink to={routes.root} disableStyles aria-label={label}>
+    <RelativeLink to={routes.root} disableStyles aria-label={label}>
+      <Box>
         {props.event.name}
         <URL variant="caption">
           {props.event.slug}.{appRoot}
         </URL>
-      </RelativeLink>
-    </Box>
+      </Box>
+    </RelativeLink>
   )
 }
 
