@@ -1,7 +1,7 @@
 import React from 'react'
 import {render as rtlRender, RenderOptions} from '@testing-library/react'
 import {Providers} from 'App'
-import RulesProvider from 'event/Dashboard/component-rules/RulesProvider'
+import AttendeeProfileProvider from 'event/Dashboard/component-rules/AttendeeProfileProvider'
 
 export const render = (
   component: React.ReactElement,
@@ -9,9 +9,9 @@ export const render = (
 ) => {
   const {rerender: rtlRerender, ...renderResult} = rtlRender(
     <Providers>
-      <RulesProvider tags={[]} groups={{}}>
+      <AttendeeProfileProvider tags={[]} groups={{}}>
         {component}
-      </RulesProvider>
+      </AttendeeProfileProvider>
     </Providers>,
     options,
   )
@@ -19,9 +19,9 @@ export const render = (
   const rerender = (component: React.ReactElement) => {
     return rtlRerender(
       <Providers>
-        <RulesProvider tags={[]} groups={{}}>
+        <AttendeeProfileProvider tags={[]} groups={{}}>
           {component}
-        </RulesProvider>
+        </AttendeeProfileProvider>
       </Providers>,
     )
   }

@@ -2,6 +2,7 @@ import {useOrganizationAuth} from 'organization/auth'
 import Dashboard from 'event/Dashboard'
 import {useEvent} from 'organization/Events/EventProvider'
 import React from 'react'
+import AttendeeProfileProvider from 'event/Dashboard/component-rules/AttendeeProfileProvider'
 
 export default function DashboardConfig() {
   const event = useEvent()
@@ -10,5 +11,9 @@ export default function DashboardConfig() {
     throw new Error('Missing user')
   }
 
-  return <Dashboard user={user} isEditMode={true} dashboard={event.dashboard} />
+  return (
+    <AttendeeProfileProvider groups={{}} tags={[]}>
+      <Dashboard user={user} isEditMode={true} dashboard={event.dashboard} />
+    </AttendeeProfileProvider>
+  )
 }

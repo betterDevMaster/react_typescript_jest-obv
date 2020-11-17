@@ -1,6 +1,6 @@
+import {Tags} from 'event/attendee'
 import {
   DOES_NOT_INCLUDE,
-  Tags,
   TagsRule,
 } from 'event/Dashboard/component-rules/RuleConfig/RuleList/SingleRule/TagsRule'
 

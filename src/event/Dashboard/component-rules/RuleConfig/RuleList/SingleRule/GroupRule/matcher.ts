@@ -1,5 +1,6 @@
+import {Groups} from 'event/attendee'
+
 import {
-  Groups,
   GroupRule,
   IS_NOT,
 } from 'event/Dashboard/component-rules/RuleConfig/RuleList/SingleRule/GroupRule'

@@ -11,8 +11,6 @@ export type GroupRule = BaseRule & {
   target: string
 }
 
-export type Groups = Record<string, any>
-
 export default function GroupRule(props: {rule: GroupRule}) {
   return (
     <div>

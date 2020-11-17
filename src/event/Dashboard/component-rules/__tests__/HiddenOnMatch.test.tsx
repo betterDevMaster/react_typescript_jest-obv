@@ -1,5 +1,5 @@
 import HiddenOnMatch from 'event/Dashboard/component-rules/HiddenOnMatch'
-import RulesProvider from 'event/Dashboard/component-rules/RulesProvider'
+import AttendeeProfileProvider from 'event/Dashboard/component-rules/AttendeeProfileProvider'
 import React from 'react'
 import faker from 'faker'
 import {AND} from 'event/Dashboard/component-rules'
@@ -14,18 +14,18 @@ it('should render depending on rule match', () => {
   const TestComponent = () => <div data-testid={testId}></div>
 
   const {queryByTestId, rerender} = render(
-    <RulesProvider groups={{}} tags={[]}>
+    <AttendeeProfileProvider groups={{}} tags={[]}>
       <HiddenOnMatch rules={[]}>
         <TestComponent />
       </HiddenOnMatch>
-    </RulesProvider>,
+    </AttendeeProfileProvider>,
   )
 
   expect(queryByTestId(testId)).toBeInTheDocument()
 
   const targetTag = faker.random.word()
   rerender(
-    <RulesProvider groups={{}} tags={[targetTag]}>
+    <AttendeeProfileProvider groups={{}} tags={[targetTag]}>
       <HiddenOnMatch
         rules={[
           {
@@ -38,7 +38,7 @@ it('should render depending on rule match', () => {
       >
         <TestComponent />
       </HiddenOnMatch>
-    </RulesProvider>,
+    </AttendeeProfileProvider>,
   )
 
   expect(queryByTestId(testId)).not.toBeInTheDocument()
