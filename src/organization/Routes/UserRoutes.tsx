@@ -2,7 +2,7 @@ import Events from 'organization/Events'
 import CreateEventForm from 'organization/Events/CreateEventForm'
 import DashboardConfig from 'event/Dashboard/DashboardConfig'
 import EventConfig from 'organization/Events/EventConfig'
-import EventProvider from 'organization/Events/EventProvider'
+import {RouteEventProvider} from 'organization/Events/EventProvider'
 import Layout from 'organization/user/Layout'
 import React from 'react'
 import {Redirect, Route, Switch} from 'react-router-dom'
@@ -27,14 +27,14 @@ export default function UserRoutes() {
           <Events />
         </Route>
         <Route path={routes.events[':event'].dashboard}>
-          <EventProvider>
+          <RouteEventProvider>
             <DashboardConfig />
-          </EventProvider>
+          </RouteEventProvider>
         </Route>
         <Route path={routes.events[':event'].root}>
-          <EventProvider>
+          <RouteEventProvider>
             <EventConfig />
-          </EventProvider>
+          </RouteEventProvider>
         </Route>
         <Redirect to={routes.events.root} />
       </Switch>

@@ -1,9 +1,8 @@
 import {client} from 'lib/api-client'
 import {useAsync} from 'lib/async'
 import {api} from 'lib/url'
-import {ObvioEvent} from 'event'
+import {domainEventSlug, ObvioEvent, useParamEventSlug} from 'event'
 import React, {useCallback, useEffect} from 'react'
-import {useParamEventSlug} from 'organization/Events'
 import {useDispatch} from 'react-redux'
 import {setEvent} from 'event/state/actions'
 
@@ -11,8 +10,18 @@ export const EventContext = React.createContext<ObvioEvent | undefined>(
   undefined,
 )
 
-export default function EventProvider(props: {children: React.ReactNode}) {
+export function DomainEventProvider(props: {children: React.ReactNode}) {
+  const slug = domainEventSlug()
+  return <EventProvider slug={slug} {...props} />
+}
+
+export function RouteEventProvider(props: {children: React.ReactNode}) {
   const slug = useParamEventSlug()
+  return <EventProvider slug={slug} {...props} />
+}
+
+function EventProvider(props: {children: React.ReactNode; slug: string}) {
+  const {slug} = props
   const find = useCallback(() => {
     return findEvent(slug)
   }, [slug])
