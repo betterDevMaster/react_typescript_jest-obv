@@ -37,4 +37,21 @@ export const handleSetConfig = (
   }
 }
 
-export type EditorAction = SetEditModeAction | SetConfigAction
+export const SET_SAVING_ACTION = 'SET_SAVING_DASHBOARD'
+export interface SetSavingAction {
+  type: typeof SET_SAVING_ACTION
+  payload: boolean
+}
+export const setSaving = (isSaving: boolean): SetSavingAction => ({
+  type: SET_SAVING_ACTION,
+  payload: isSaving,
+})
+export const handlesetSaving = (
+  state: DashboardEditorState,
+  action: SetSavingAction,
+): DashboardEditorState => ({
+  ...state,
+  isSaving: action.payload,
+})
+
+export type EditorAction = SetEditModeAction | SetConfigAction | SetSavingAction

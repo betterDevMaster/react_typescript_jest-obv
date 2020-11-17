@@ -1,4 +1,4 @@
-import {setLoading, setUser} from 'auth/actions'
+import {setLoading, setToken, setUser} from 'auth/actions'
 import {deleteToken, getToken, saveToken} from 'auth/token'
 import {User} from 'auth/user'
 import {client} from 'lib/api-client'
@@ -57,7 +57,10 @@ export const useAuthClient = (props: AuthClientProps) => {
 
     isFetching.current = true
     fetchUser(tokenKey, endpoints.user)
-      .then((user) => dispatch(setUser(user)))
+      .then((user) => {
+        dispatch(setUser(user))
+        dispatch(setToken(token))
+      })
       .catch(() => {
         // Token expired/invalid - do nothing, and force re-login
       })
@@ -69,9 +72,12 @@ export const useAuthClient = (props: AuthClientProps) => {
       return attemptLogin(endpoints.login, email, password)
         .then(({access_token: token}) => {
           saveToken(tokenKey, token)
+          dispatch(setToken(token))
           return fetchUser(tokenKey, endpoints.user)
         })
-        .then((user) => dispatch(setUser(user)))
+        .then((user) => {
+          dispatch(setUser(user))
+        })
     },
     [dispatch, endpoints, tokenKey],
   )
@@ -90,6 +96,7 @@ export const useAuthClient = (props: AuthClientProps) => {
   const logout = useCallback(() => {
     deleteToken(tokenKey)
     dispatch(setUser(null))
+    dispatch(setToken(null))
   }, [dispatch, tokenKey])
 
   return {

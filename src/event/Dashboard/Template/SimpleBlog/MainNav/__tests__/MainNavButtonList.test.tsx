@@ -8,6 +8,8 @@ import {fakeNavButtonWithSize} from 'event/Dashboard/components/NavButton/__util
 import {createEntityList} from 'lib/list'
 import {clickEdit} from '__utils__/edit'
 import {fireEvent} from '@testing-library/react'
+import StaticEventProvider from 'event/__utils__/StaticEventProvider'
+import {fakeEvent} from 'event/__utils__/factory'
 
 it('should render main nav buttons', async () => {
   const buttons = Array.from(
@@ -111,15 +113,18 @@ it('should remove the button', async () => {
 
   const buttons = Array.from({length: numButtons}, fakeNavButtonWithSize)
   const mainNavButtons = createEntityList(buttons)
+  const event = fakeEvent()
 
   const {findAllByLabelText, findByLabelText, queryByText} = render(
-    <Dashboard
-      isEditMode={true}
-      dashboard={fakeSimpleBlog({
-        mainNav: mainNavButtons,
-      })}
-      user={fakeUser()}
-    />,
+    <StaticEventProvider event={event}>
+      <Dashboard
+        isEditMode={true}
+        dashboard={fakeSimpleBlog({
+          mainNav: mainNavButtons,
+        })}
+        user={fakeUser()}
+      />
+    </StaticEventProvider>,
   )
 
   const buttonEls = () => findAllByLabelText('main nav button')

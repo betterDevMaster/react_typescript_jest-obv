@@ -16,18 +16,7 @@ export const handleSetDashboard = (
   state: DashboardState,
   action: SetDashboardAction,
 ): DashboardState => {
-  if (!action.payload) {
-    return action.payload
-  }
-
-  if (!state) {
-    return action.payload
-  }
-
-  return {
-    ...state,
-    ...action.payload,
-  }
+  return action.payload
 }
 
 export const UPDATE_DASHBOARD_ACTION = 'UPDATE_DASHBOARD'

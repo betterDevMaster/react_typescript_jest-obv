@@ -1,12 +1,17 @@
 import FormControlLabel from '@material-ui/core/FormControlLabel'
-import grey from '@material-ui/core/colors/grey'
 import styled from 'styled-components'
 import Switch from '@material-ui/core/Switch'
 import React from 'react'
 import {useDispatch} from 'react-redux'
 import {setEditMode} from 'event/Dashboard/editor/state/actions'
-import {useEditMode} from 'event/Dashboard/editor/state/edit-mode'
+import {useEditMode, useIsSaving} from 'event/Dashboard/editor/state/edit-mode'
 import Typography from '@material-ui/core/Typography'
+import CircularProgress, {
+  CircularProgressProps,
+} from '@material-ui/core/CircularProgress'
+import grey from '@material-ui/core/colors/grey'
+import green from '@material-ui/core/colors/green'
+import yellow from '@material-ui/core/colors/yellow'
 
 export default function ConfigBar() {
   const isEditMode = useEditMode()
@@ -17,13 +22,32 @@ export default function ConfigBar() {
   return (
     <Box>
       <Typography>Configure Dashboard</Typography>
-      <FormControlLabel
-        control={
-          <Switch checked={!isEditMode} onChange={toggle} color="primary" />
-        }
-        label="Preview"
-      />
+      <Right>
+        <FormControlLabel
+          control={
+            <Switch checked={!isEditMode} onChange={toggle} color="primary" />
+          }
+          label="Preview"
+        />
+        <SavingIndicator />
+      </Right>
     </Box>
+  )
+}
+
+function SavingIndicator() {
+  const isSaving = useIsSaving()
+  const variant: CircularProgressProps['variant'] = isSaving
+    ? 'indeterminate'
+    : 'determinate'
+  return (
+    <ProgressSpinner
+      size={18}
+      thickness={6}
+      value={100}
+      variant={variant}
+      active={isSaving}
+    />
   )
 }
 
@@ -34,4 +58,16 @@ const Box = styled.div`
   align-items: center;
   justify-content: space-between;
   padding: 0 ${(props) => props.theme.spacing[4]};
+`
+
+const Right = styled.div`
+  display: flex;
+  align-items: center;
+`
+
+const ProgressSpinner = styled((props) => {
+  const {active, ...otherProps} = props
+  return <CircularProgress {...otherProps} />
+})<{active: boolean}>`
+  color: ${(props) => (props.active ? yellow[700] : green[400])} !important;
 `

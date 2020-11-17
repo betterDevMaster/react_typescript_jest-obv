@@ -2,6 +2,7 @@ import {authReducer} from 'auth'
 import {editorReducer} from 'event/Dashboard/editor/state'
 import {dashboardReducer} from 'event/Dashboard/state'
 import {saveDashboardEpic} from 'event/Dashboard/state/epics'
+import {eventReducer} from 'event/state'
 import {
   createStore as createReduxStore,
   applyMiddleware,
@@ -14,10 +15,9 @@ export const rootReducer = combineReducers({
   dashboard: dashboardReducer,
   editor: editorReducer,
   auth: authReducer,
+  event: eventReducer,
 })
 export type RootState = ReturnType<typeof rootReducer>
-
-const epicMiddleware = createEpicMiddleware<any, any, RootState>()
 
 // If devtools is enabled, use devtool's compose. Required
 // for proper debugging.
@@ -25,15 +25,14 @@ const composeWithDevtools =
   (window as any).__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose
 
 // Make creating a store a fn to avoid tests sharing the same store
-export const createStore = () =>
-  createReduxStore(
+export const createStore = () => {
+  const epicMiddleware = createEpicMiddleware<any, any, RootState>()
+  const store = createReduxStore(
     rootReducer,
     composeWithDevtools(applyMiddleware(epicMiddleware)),
   )
-
-const rootEpic = combineEpics(saveDashboardEpic)
-
-// Also a fn to allow being called AFTER store set up
-export const runEpics = () => {
   epicMiddleware.run(rootEpic)
+
+  return store
 }
+const rootEpic = combineEpics(saveDashboardEpic)

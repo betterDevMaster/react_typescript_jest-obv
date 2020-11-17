@@ -8,6 +8,8 @@ import {render} from '__utils__/render'
 import {fakeResource} from 'event/Dashboard/components/ResourceList/__utils__/factory'
 import {fireEvent} from '@testing-library/dom'
 import {clickEdit} from '__utils__/edit'
+import {fakeEvent} from 'event/__utils__/factory'
+import StaticEventProvider from 'event/__utils__/StaticEventProvider'
 
 it('should render resources', async () => {
   const dashboard = fakeSimpleBlog({
@@ -108,8 +110,12 @@ it('should update a resource', async () => {
     },
   })
 
+  const event = fakeEvent()
+
   const {findByLabelText} = render(
-    <Dashboard isEditMode={true} dashboard={dashboard} user={fakeUser()} />,
+    <StaticEventProvider event={event}>
+      <Dashboard isEditMode={true} dashboard={dashboard} user={fakeUser()} />
+    </StaticEventProvider>,
   )
 
   expect((await findByLabelText('resource link')).textContent).toBe(name)
@@ -130,6 +136,7 @@ it('should remove a resource', async () => {
     fakeResource,
   )
 
+  const event = fakeEvent()
   const dashboard = fakeSimpleBlog({
     resourceList: {
       description: '',
@@ -138,7 +145,9 @@ it('should remove a resource', async () => {
   })
 
   const {findAllByLabelText, findByLabelText, queryByText} = render(
-    <Dashboard isEditMode={true} dashboard={dashboard} user={fakeUser()} />,
+    <StaticEventProvider event={event}>
+      <Dashboard isEditMode={true} dashboard={dashboard} user={fakeUser()} />
+    </StaticEventProvider>,
   )
 
   expect((await findAllByLabelText('event resource')).length).toBe(
