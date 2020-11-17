@@ -12,7 +12,7 @@ export type Dashboard = SimpleBlog
 
 export type DashboardProps = {
   dashboard: Dashboard | null
-  isEditMode: boolean
+  isEditMode?: boolean
   user: User
 }
 
@@ -20,7 +20,7 @@ export default function Dashboard(props: DashboardProps) {
   const dispatch = useDispatch()
 
   useEffect(() => {
-    dispatch(setEditMode(props.isEditMode))
+    dispatch(setEditMode(props.isEditMode || false))
   }, [props.isEditMode, dispatch])
 
   if (props.isEditMode) {

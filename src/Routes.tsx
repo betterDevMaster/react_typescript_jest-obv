@@ -6,6 +6,7 @@ import OrganizationProvider from 'organization/OrganizationProvider'
 import OrganizationRoutes from 'organization/Routes'
 import ObvioRoutes from 'obvio/Routes'
 import {DomainEventProvider} from 'organization/Events/EventProvider'
+import EventSite from 'event/EventSite'
 
 export default function Routes() {
   const subdomain = getSubdomain(window.location.host)
@@ -17,7 +18,7 @@ export default function Routes() {
 
   return (
     <DomainEventProvider>
-      <div>event routes...</div>
+      <EventSite />
     </DomainEventProvider>
   )
 }
