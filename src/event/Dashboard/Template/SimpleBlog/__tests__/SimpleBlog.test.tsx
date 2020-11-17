@@ -9,11 +9,16 @@ import {fakeBlogPost} from 'event/Dashboard/components/BlogPost/__utils__/factor
 import {createEntityList} from 'lib/list'
 import {clickEdit} from '__utils__/edit'
 import userEvent from '@testing-library/user-event'
+import {fakeEvent} from 'event/__utils__/factory'
+import StaticEventProvider from 'event/__utils__/StaticEventProvider'
 
 it('should update the logo', async () => {
   const dashboard = fakeSimpleBlog()
+  const event = fakeEvent()
   const {findByLabelText} = render(
-    <Dashboard isEditMode={true} dashboard={dashboard} user={fakeUser()} />,
+    <StaticEventProvider event={event}>
+      <Dashboard isEditMode={true} dashboard={dashboard} user={fakeUser()} />
+    </StaticEventProvider>,
   )
 
   expect(((await findByLabelText('logo')) as HTMLImageElement).src).toBe(

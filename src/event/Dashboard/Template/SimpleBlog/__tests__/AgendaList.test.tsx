@@ -8,6 +8,8 @@ import {render} from '__utils__/render'
 import {fakeAgenda} from 'event/Dashboard/components/AgendaList/__utils__/factory'
 import {clickEdit} from '__utils__/edit'
 import user from '@testing-library/user-event'
+import {fakeEvent} from 'event/__utils__/factory'
+import StaticEventProvider from 'event/__utils__/StaticEventProvider'
 
 it('should render agendas', async () => {
   const dashboard = fakeSimpleBlog({agendas: []})
@@ -44,9 +46,12 @@ it('should edit an agenda', async () => {
   )
 
   const dashboard = fakeSimpleBlog({agendas})
+  const event = fakeEvent()
 
   const {findAllByLabelText, findByLabelText} = render(
-    <Dashboard isEditMode={true} dashboard={dashboard} user={fakeUser()} />,
+    <StaticEventProvider event={event}>
+      <Dashboard isEditMode={true} dashboard={dashboard} user={fakeUser()} />
+    </StaticEventProvider>,
   )
 
   const targetIndex = faker.random.number({min: 0, max: agendas.length - 1})
@@ -72,9 +77,12 @@ it('should edit an agenda', async () => {
 
 it('should add a new agenda', async () => {
   const dashboard = fakeSimpleBlog({agendas: []})
+  const event = fakeEvent()
 
   const {findAllByLabelText, findByLabelText, queryByLabelText} = render(
-    <Dashboard isEditMode={true} dashboard={dashboard} user={fakeUser()} />,
+    <StaticEventProvider event={event}>
+      <Dashboard isEditMode={true} dashboard={dashboard} user={fakeUser()} />
+    </StaticEventProvider>,
   )
 
   expect(queryByLabelText('agenda')).not.toBeInTheDocument()
@@ -91,9 +99,12 @@ it('should remove an agenda', async () => {
   )
 
   const dashboard = fakeSimpleBlog({agendas})
+  const event = fakeEvent()
 
   const {queryByText, findAllByLabelText, findByLabelText, findByText} = render(
-    <Dashboard isEditMode={true} dashboard={dashboard} user={fakeUser()} />,
+    <StaticEventProvider event={event}>
+      <Dashboard isEditMode={true} dashboard={dashboard} user={fakeUser()} />
+    </StaticEventProvider>,
   )
 
   const targetIndex = faker.random.number({min: 0, max: agendas.length - 1})

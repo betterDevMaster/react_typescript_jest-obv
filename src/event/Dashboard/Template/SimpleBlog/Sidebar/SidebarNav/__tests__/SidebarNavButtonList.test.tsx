@@ -8,6 +8,8 @@ import {fakeNavButton} from 'event/Dashboard/components/NavButton/__utils__/fact
 import {createEntityList} from 'lib/list'
 import {fireEvent} from '@testing-library/react'
 import {clickEdit} from '__utils__/edit'
+import {fakeEvent} from 'event/__utils__/factory'
+import StaticEventProvider from 'event/__utils__/StaticEventProvider'
 
 it('should render sidebarNavButtons', () => {
   const dashboard = fakeSimpleBlog({
@@ -50,15 +52,18 @@ it('should add a new sidebar nav button', async () => {
   )
 
   const sidebarNavButtons = createEntityList(buttons)
+  const event = fakeEvent()
 
   const {findAllByLabelText, findByLabelText} = render(
-    <Dashboard
-      isEditMode={true}
-      dashboard={fakeSimpleBlog({
-        sidebarNav: sidebarNavButtons,
-      })}
-      user={fakeUser()}
-    />,
+    <StaticEventProvider event={event}>
+      <Dashboard
+        isEditMode={true}
+        dashboard={fakeSimpleBlog({
+          sidebarNav: sidebarNavButtons,
+        })}
+        user={fakeUser()}
+      />
+    </StaticEventProvider>,
   )
 
   const buttonEls = () => findAllByLabelText('sidebar nav button')
@@ -79,14 +84,17 @@ it('should edit the selected button', async () => {
   )
 
   const sidebarNavButtons = createEntityList(buttons)
+  const event = fakeEvent()
   const {findByLabelText, findByText} = render(
-    <Dashboard
-      isEditMode={true}
-      dashboard={fakeSimpleBlog({
-        sidebarNav: sidebarNavButtons,
-      })}
-      user={fakeUser()}
-    />,
+    <StaticEventProvider event={event}>
+      <Dashboard
+        isEditMode={true}
+        dashboard={fakeSimpleBlog({
+          sidebarNav: sidebarNavButtons,
+        })}
+        user={fakeUser()}
+      />
+    </StaticEventProvider>,
   )
 
   const button = faker.random.arrayElement(buttons)
@@ -119,14 +127,17 @@ it('should remove the button', async () => {
   const buttons = Array.from({length: numButtons}, fakeNavButton)
   const sidebarNavButtons = createEntityList(buttons)
 
+  const event = fakeEvent()
   const {findAllByLabelText, findByLabelText, queryByText} = render(
-    <Dashboard
-      isEditMode={true}
-      dashboard={fakeSimpleBlog({
-        sidebarNav: sidebarNavButtons,
-      })}
-      user={fakeUser()}
-    />,
+    <StaticEventProvider event={event}>
+      <Dashboard
+        isEditMode={true}
+        dashboard={fakeSimpleBlog({
+          sidebarNav: sidebarNavButtons,
+        })}
+        user={fakeUser()}
+      />
+    </StaticEventProvider>,
   )
 
   const buttonEls = () => findAllByLabelText('sidebar nav button')

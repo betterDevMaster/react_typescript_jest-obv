@@ -7,6 +7,8 @@ import {inputElementFor, render} from '__utils__/render'
 import {ALL_EMOJIS, EMOJI} from 'event/Dashboard/components/EmojiList/emoji'
 import {fireEvent} from '@testing-library/dom'
 import {clickEdit} from '__utils__/edit'
+import {fakeEvent} from 'event/__utils__/factory'
+import StaticEventProvider from 'event/__utils__/StaticEventProvider'
 
 it('should render emojis', async () => {
   const emojis = Array.from(
@@ -47,16 +49,19 @@ it('should render emojis', async () => {
 })
 
 it('should pick an emoji', async () => {
+  const event = fakeEvent()
   const {findByLabelText, findAllByLabelText} = render(
-    <Dashboard
-      isEditMode={true}
-      dashboard={fakeSimpleBlog({
-        emojiList: {
-          emojis: [],
-        },
-      })}
-      user={fakeUser()}
-    />,
+    <StaticEventProvider event={event}>
+      <Dashboard
+        isEditMode={true}
+        dashboard={fakeSimpleBlog({
+          emojiList: {
+            emojis: [],
+          },
+        })}
+        user={fakeUser()}
+      />
+    </StaticEventProvider>,
   )
 
   fireEvent.click(await findByLabelText('add emoji list'))
@@ -87,16 +92,19 @@ it('should remove an existing emoji', async () => {
     {length: faker.random.number({min: 2, max: 5})},
     () => faker.random.arrayElement(ALL_EMOJIS).name,
   )
+  const event = fakeEvent()
   const {findByLabelText, findAllByLabelText} = render(
-    <Dashboard
-      isEditMode={true}
-      dashboard={fakeSimpleBlog({
-        emojiList: {
-          emojis,
-        },
-      })}
-      user={fakeUser()}
-    />,
+    <StaticEventProvider event={event}>
+      <Dashboard
+        isEditMode={true}
+        dashboard={fakeSimpleBlog({
+          emojiList: {
+            emojis,
+          },
+        })}
+        user={fakeUser()}
+      />
+    </StaticEventProvider>,
   )
 
   clickEdit(await findByLabelText('emoji list'))

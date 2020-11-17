@@ -8,6 +8,8 @@ import {render} from '__utils__/render'
 import {fakePoints} from 'event/Dashboard/components/PointsSummary/__utils__/factory'
 import {fireEvent, wait} from '@testing-library/dom'
 import {clickEdit} from '__utils__/edit'
+import {fakeEvent} from 'event/__utils__/factory'
+import StaticEventProvider from 'event/__utils__/StaticEventProvider'
 
 it('should render points', async () => {
   const dashboard = fakeSimpleBlog({points: null})
@@ -42,14 +44,17 @@ it('should render points', async () => {
 })
 
 it('should configure points', async () => {
+  const event = fakeEvent()
   const {queryByText, findByLabelText, findByText} = render(
-    <Dashboard
-      isEditMode={true}
-      dashboard={fakeSimpleBlog({
-        points: null,
-      })}
-      user={fakeUser()}
-    />,
+    <StaticEventProvider event={event}>
+      <Dashboard
+        isEditMode={true}
+        dashboard={fakeSimpleBlog({
+          points: null,
+        })}
+        user={fakeUser()}
+      />
+    </StaticEventProvider>,
   )
 
   expect(queryByText(/you've earned/i)).not.toBeInTheDocument()
@@ -67,14 +72,17 @@ it('should configure points', async () => {
 })
 
 it('should remove points', async () => {
+  const event = fakeEvent()
   const {queryByText, findByLabelText, findByText} = render(
-    <Dashboard
-      isEditMode={true}
-      dashboard={fakeSimpleBlog({
-        points: fakePoints({numPoints: 0}),
-      })}
-      user={fakeUser()}
-    />,
+    <StaticEventProvider event={event}>
+      <Dashboard
+        isEditMode={true}
+        dashboard={fakeSimpleBlog({
+          points: fakePoints({numPoints: 0}),
+        })}
+        user={fakeUser()}
+      />
+    </StaticEventProvider>,
   )
 
   expect(await findByText(/you've earned 0 .*/i)).toBeInTheDocument()

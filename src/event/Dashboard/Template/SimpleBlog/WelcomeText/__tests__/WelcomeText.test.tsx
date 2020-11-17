@@ -6,6 +6,8 @@ import Dashboard from 'event/Dashboard'
 import {render} from '__utils__/render'
 import {clickEdit} from '__utils__/edit'
 import {fireEvent} from '@testing-library/react'
+import {fakeEvent} from 'event/__utils__/factory'
+import StaticEventProvider from 'event/__utils__/StaticEventProvider'
 
 it('should show the welcome text', async () => {
   const dashboard = fakeSimpleBlog()
@@ -15,12 +17,15 @@ it('should show the welcome text', async () => {
   expect(await findByText(dashboard.welcomeText)).toBeInTheDocument()
 })
 
-it('should udpate the text value', async () => {
+it('should update the text value', async () => {
   const text = faker.random.words(3)
   const dashboard = fakeSimpleBlog({welcomeText: text})
+  const event = fakeEvent()
 
   const {findByLabelText} = render(
-    <Dashboard isEditMode={true} dashboard={dashboard} user={fakeUser()} />,
+    <StaticEventProvider event={event}>
+      <Dashboard isEditMode={true} dashboard={dashboard} user={fakeUser()} />
+    </StaticEventProvider>,
   )
 
   expect((await findByLabelText('welcome')).textContent).toBe(text)

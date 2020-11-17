@@ -45,15 +45,18 @@ it('should add a new main nav button', async () => {
   )
 
   const mainNavButtons = createEntityList(buttons)
+  const event = fakeEvent()
 
   const {findAllByLabelText, findByLabelText} = render(
-    <Dashboard
-      isEditMode={true}
-      dashboard={fakeSimpleBlog({
-        mainNav: mainNavButtons,
-      })}
-      user={fakeUser()}
-    />,
+    <StaticEventProvider event={event}>
+      <Dashboard
+        isEditMode={true}
+        dashboard={fakeSimpleBlog({
+          mainNav: mainNavButtons,
+        })}
+        user={fakeUser()}
+      />
+    </StaticEventProvider>,
   )
 
   const buttonEls = () => findAllByLabelText('main nav button')
@@ -74,14 +77,17 @@ it('should edit the selected button', async () => {
   )
 
   const mainNavButtons = createEntityList(buttons)
+  const event = fakeEvent()
   const {findByLabelText, findByText} = render(
-    <Dashboard
-      isEditMode={true}
-      dashboard={fakeSimpleBlog({
-        mainNav: mainNavButtons,
-      })}
-      user={fakeUser()}
-    />,
+    <StaticEventProvider event={event}>
+      <Dashboard
+        isEditMode={true}
+        dashboard={fakeSimpleBlog({
+          mainNav: mainNavButtons,
+        })}
+        user={fakeUser()}
+      />
+    </StaticEventProvider>,
   )
 
   const button = faker.random.arrayElement(buttons)

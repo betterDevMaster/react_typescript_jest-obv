@@ -7,6 +7,8 @@ import Dashboard from 'event/Dashboard'
 import {render} from '__utils__/render'
 import {clickEdit} from '__utils__/edit'
 import {fireEvent} from '@testing-library/react'
+import {fakeEvent} from 'event/__utils__/factory'
+import StaticEventProvider from 'event/__utils__/StaticEventProvider'
 
 beforeAll(() => {
   jest.setTimeout(10000)
@@ -68,9 +70,12 @@ it('should configure the footer', async () => {
   })
 
   const copyrightText = faker.lorem.paragraph()
+  const event = fakeEvent()
 
   const {findByLabelText} = render(
-    <Dashboard isEditMode={true} dashboard={dashboard} user={fakeUser()} />,
+    <StaticEventProvider event={event}>
+      <Dashboard isEditMode={true} dashboard={dashboard} user={fakeUser()} />
+    </StaticEventProvider>,
   )
 
   clickEdit(await findByLabelText('footer'))

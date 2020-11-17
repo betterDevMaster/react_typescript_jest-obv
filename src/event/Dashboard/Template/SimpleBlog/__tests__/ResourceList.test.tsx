@@ -53,8 +53,12 @@ it('should add a new resource', async () => {
     },
   })
 
+  const event = fakeEvent()
+
   const {queryByLabelText, findByLabelText, findAllByLabelText} = render(
-    <Dashboard isEditMode={true} dashboard={dashboard} user={fakeUser()} />,
+    <StaticEventProvider event={event}>
+      <Dashboard isEditMode={true} dashboard={dashboard} user={fakeUser()} />
+    </StaticEventProvider>,
   )
 
   expect(queryByLabelText('event resource')).not.toBeInTheDocument()
@@ -76,8 +80,11 @@ it('should update resources description', async () => {
     },
   })
 
+  const event = fakeEvent()
   const {findByLabelText} = render(
-    <Dashboard isEditMode={true} dashboard={dashboard} user={fakeUser()} />,
+    <StaticEventProvider event={event}>
+      <Dashboard isEditMode={true} dashboard={dashboard} user={fakeUser()} />
+    </StaticEventProvider>,
   )
 
   expect((await findByLabelText('resource description')).textContent).toBe(

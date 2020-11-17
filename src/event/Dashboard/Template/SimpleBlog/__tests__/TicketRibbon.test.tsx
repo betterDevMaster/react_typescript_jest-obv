@@ -9,6 +9,8 @@ import {
   TICKET_RIBBON,
 } from 'event/Dashboard/components/TicketRibbon'
 import {fireEvent} from '@testing-library/dom'
+import {fakeEvent} from 'event/__utils__/factory'
+import StaticEventProvider from 'event/__utils__/StaticEventProvider'
 
 it('should render ticket ribbons', async () => {
   const dashboard = fakeSimpleBlog({
@@ -41,12 +43,16 @@ it('should render ticket ribbons', async () => {
 })
 
 it('should configure ticket ribbons', async () => {
+  const event = fakeEvent()
+
   const {findByLabelText} = render(
-    <Dashboard
-      isEditMode={true}
-      dashboard={fakeSimpleBlog({ticketRibbon: null})}
-      user={fakeUser()}
-    />,
+    <StaticEventProvider event={event}>
+      <Dashboard
+        isEditMode={true}
+        dashboard={fakeSimpleBlog({ticketRibbon: null})}
+        user={fakeUser()}
+      />
+    </StaticEventProvider>,
   )
 
   fireEvent.click(await findByLabelText('set ticket ribbon'))
