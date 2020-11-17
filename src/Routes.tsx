@@ -10,7 +10,6 @@ import EventSite from 'event/EventSite'
 
 export default function Routes() {
   const subdomain = getSubdomain(window.location.host)
-
   const isObvioAppDomain = subdomain === OBVIO_SUBDOMAIN
   if (!subdomain || isObvioAppDomain) {
     return <AppRoutes />

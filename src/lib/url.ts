@@ -7,13 +7,20 @@ export const getSubdomain = (location: string) => {
     return ''
   }
 
-  const isNested = urlParts.length > 3
-  if (isNested) {
-    const index = urlParts.length - 3
-    return urlParts[index]
+  const hasNestedSubdomains = urlParts.length > 3
+  if (!hasNestedSubdomains) {
+    return urlParts[0]
   }
 
-  return urlParts[0]
+  const index = urlParts.length - 3
+  const firstSubdomain = urlParts[index]
+  const isStaging = firstSubdomain === 'staging'
+  if (isStaging) {
+    // return next child to allow app.staging.obv.io
+    return urlParts[index - 1]
+  }
+
+  return firstSubdomain
 }
 
 export const api = (path: string) => {
@@ -56,7 +63,11 @@ export function createRoutes<T extends Routes>(
   return childRoutes
 }
 
-export function replaceRouteParam<T>(param: string, value: string, routes: T): T {
+export function replaceRouteParam<T>(
+  param: string,
+  value: string,
+  routes: T,
+): T {
   return Object.entries(routes).reduce((acc, [key, route]) => {
     if (typeof route === 'string') {
       const withParam = route.replace(param, value)
