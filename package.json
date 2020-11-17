@@ -23,6 +23,8 @@
     "react-router-dom": "^5.2.0",
     "react-scripts": "3.4.0",
     "redux": "^4.0.5",
+    "redux-observable": "^1.2.0",
+    "rxjs": "^6.6.3",
     "styled-components": "^5.2.0",
     "typescript": "~3.8.0",
     "uuid": "^8.3.0"
