@@ -1,38 +1,50 @@
 import axios from 'axios'
 import {getToken as getAuthToken} from 'auth/token'
 
+export type ValidationError<T> = {
+  message: string
+  errors: Partial<T>
+}
+
 const defaultHeaders = {
   'content-type': 'application/json',
 }
 
+export type RequestOptions = {
+  headers?: Record<string, string>
+  tokenKey?: string
+}
+
 export const client = {
-  get: <T>(url: string, options?: {}) =>
+  get: <T>(url: string, options?: RequestOptions) =>
     handleAxiosResult<T>(axios.get(url, config(options))),
-  post: <T>(url: string, data: {}, options?: {}) =>
+  post: <T>(url: string, data: {}, options?: RequestOptions) =>
     handleAxiosResult<T>(axios.post(url, data, config(options))),
-  put: <T>(url: string, data: {}, options?: {}) =>
+  put: <T>(url: string, data: {}, options?: RequestOptions) =>
     handleAxiosResult<T>(axios.put(url, data, config(options))),
-  delete: <T>(url: string, options?: {}) =>
+  delete: <T>(url: string, options?: RequestOptions) =>
     handleAxiosResult<T>(axios.delete(url, config(options))),
 }
 
 function config({
   headers: customHeaders,
+  tokenKey,
   ...otherOptions
-}: {
-  headers?: {}
-} = {}) {
-  return {headers: headers(customHeaders), ...otherOptions}
+}: RequestOptions = {}) {
+  return {headers: headers(tokenKey, customHeaders), ...otherOptions}
 }
 
-function headers(custom = {}) {
+function headers(
+  tokenKey: RequestOptions['tokenKey'],
+  custom: RequestOptions['headers'] = {},
+) {
   const headers: {[property: string]: string} = {
     ...defaultHeaders,
     ...custom,
   }
 
-  const token = getAuthToken()
-  if (token) {
+  if (tokenKey) {
+    const token = getAuthToken(tokenKey)
     headers.Authorization = `Bearer ${token}`
   }
 

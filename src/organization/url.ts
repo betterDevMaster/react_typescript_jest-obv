@@ -1,16 +1,19 @@
-import {isProduction, appRoot} from 'App'
-import {Organization} from 'obvio/Organizations/organizations-client'
+import {useLocation} from 'react-router-dom'
 
-export function organizationUrl(organization: Organization) {
-  const scheme = isProduction ? 'https://' : 'http://'
-  return `${scheme}${organization.slug}.${appRoot}`
-}
+export const useOrganizationUrl = () => {
+  const location = useLocation()
+  const paths = location.pathname.split('/')
+  if (paths.length < 3) {
+    return {
+      isOrganizationRoute: false,
+      slug: null,
+    }
+  }
 
-/**
- * Parses the organization slug from the url
- */
-export function slugFromURL() {
-  const host = window.location.host
-  const root = appRoot ? `.${appRoot}` : ''
-  return host.replace(root, '')
+  const slug = paths[2]
+  const isOrganizationRoute = paths[1] === 'organization'
+  return {
+    isOrganizationRoute,
+    slug,
+  }
 }

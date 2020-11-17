@@ -20,6 +20,25 @@ export const handleSetUser = (
   }
 }
 
+export const SET_TOKEN_ACTION = 'SET_TOKEN'
+export interface SetTokenAction {
+  type: typeof SET_TOKEN_ACTION
+  payload: string | null
+}
+export const setToken = (token: string | null): SetTokenAction => ({
+  type: SET_TOKEN_ACTION,
+  payload: token,
+})
+export const handleSetToken = (
+  state: AuthState,
+  action: SetTokenAction,
+): AuthState => {
+  return {
+    ...state,
+    token: action.payload,
+  }
+}
+
 export const SET_LOADING_ACTION = 'SET_LOADING'
 export interface SetLoadingAction {
   type: typeof SET_LOADING_ACTION
@@ -39,4 +58,4 @@ export const handleSetLoading = (
   }
 }
 
-export type AuthAction = SetUserAction | SetLoadingAction
+export type AuthAction = SetUserAction | SetLoadingAction | SetTokenAction

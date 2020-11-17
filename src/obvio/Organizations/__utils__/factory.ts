@@ -1,5 +1,5 @@
-import {Organization} from 'obvio/Organizations/organizations-client'
 import faker from 'faker'
+import {Organization} from 'organization'
 
 export const fakeOrganization = (
   overrides?: Partial<Organization>,

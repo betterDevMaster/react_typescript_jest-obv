@@ -2,22 +2,23 @@ import Button from '@material-ui/core/Button'
 import withStyles from '@material-ui/core/styles/withStyles'
 import TextField from '@material-ui/core/TextField'
 import Typography from '@material-ui/core/Typography'
+import {appRoot} from 'App'
+import {ValidationError} from 'lib/api-client'
 import {spacing} from 'lib/ui/theme'
 import {obvioRoutes} from 'obvio/Routes'
 import {
   createOrganization,
   CreateOrganizationData,
-} from 'obvio/Organizations/organizations-client'
+} from 'organization/obvio-client'
 import React, {useState} from 'react'
 import {useForm} from 'react-hook-form'
 import {useHistory} from 'react-router-dom'
 
 export default function CreateOrganizationForm() {
   const {register, errors, handleSubmit, watch} = useForm()
-  const [serverError, setServerError] = useState<null | {
-    message: string
-    errors: Partial<CreateOrganizationData>
-  }>(null)
+  const [serverError, setServerError] = useState<null | ValidationError<
+    CreateOrganizationData
+  >>(null)
   const history = useHistory()
   const [submitting, setSubmitting] = useState(false)
   const showOrganizations = () => {
@@ -27,7 +28,7 @@ export default function CreateOrganizationForm() {
   const submit = (data: CreateOrganizationData) => {
     setSubmitting(true)
     createOrganization(data)
-      .then((o) => {
+      .then(() => {
         showOrganizations()
       })
       .catch((error) => {
@@ -67,7 +68,7 @@ export default function CreateOrganizationForm() {
       return 'Your organization slug will be a part of your domain'
     }
 
-    return `Your organization will be accessible at: ${slug}.obv.io`
+    return `Your organization will be accessible at: ${appRoot}/organization/${slug}`
   }
 
   return (

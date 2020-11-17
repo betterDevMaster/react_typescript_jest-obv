@@ -1,15 +1,16 @@
-import {Organization} from 'obvio/Organizations/organizations-client'
 import styled from 'styled-components'
 import React from 'react'
 import grey from '@material-ui/core/colors/grey'
 import {AbsoluteLink} from 'lib/ui/link/AbsoluteLink'
-import {organizationUrl} from 'organization/url'
 import withStyles from '@material-ui/core/styles/withStyles'
 import {spacing} from 'lib/ui/theme'
 import Typography from '@material-ui/core/Typography'
+import {Organization} from 'organization'
+import {createRoutesFor} from 'organization/OrganizationProvider'
 
 export default function Card(props: {organization: Organization}) {
-  const url = organizationUrl(props.organization)
+  const routes = createRoutesFor(props.organization)
+  const url = routes.root
   const label = `view ${props.organization.name}`
   return (
     <Link to={url} disableStyles aria-label={label}>

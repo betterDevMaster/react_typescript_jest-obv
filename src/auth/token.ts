@@ -1,16 +1,13 @@
-const tokenKey = '__obvio_user_token__'
-
 type AuthToken = string
 
-export function getToken(): AuthToken | null {
-  return window.localStorage.getItem(tokenKey)
+export function getToken(key: string): AuthToken | null {
+  return window.localStorage.getItem(key)
 }
 
-export function saveToken(token: string) {
-  return window.localStorage.setItem(tokenKey, token)
+export function saveToken(key: string, token: string) {
+  return window.localStorage.setItem(key, token)
 }
 
-export function deleteToken() {
-  console.log('delete')
-  return window.localStorage.removeItem(tokenKey)
+export function deleteToken(key: string) {
+  return window.localStorage.removeItem(key)
 }

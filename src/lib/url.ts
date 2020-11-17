@@ -55,3 +55,16 @@ export function createRoutes<T extends Routes>(
 
   return childRoutes
 }
+
+export function replaceRouteParam<T>(param: string, value: string, routes: T): T {
+  return Object.entries(routes).reduce((acc, [key, route]) => {
+    if (typeof route === 'string') {
+      const withParam = route.replace(param, value)
+      acc[key] = withParam
+      return acc
+    }
+
+    acc[key] = replaceRouteParam(param, value, route)
+    return acc
+  }, {} as any)
+}

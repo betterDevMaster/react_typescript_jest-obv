@@ -1,28 +1,26 @@
 import Button from '@material-ui/core/Button/Button'
 import styled from 'styled-components'
 import TextField from '@material-ui/core/TextField'
-import {onChangeStringHandler} from 'lib/dom'
 import Centered from 'lib/ui/layout/Centered'
 import React, {useState} from 'react'
 import Typography from '@material-ui/core/Typography'
-import withStyles from '@material-ui/core/styles/withStyles'
 import {spacing} from 'lib/ui/theme'
-import {obvioRoutes} from 'obvio/Routes'
-import {RelativeLink} from 'lib/ui/link/RelativeLink'
 import {useOrganizationAuth} from 'organization/auth'
+import {useOrganization} from 'organization/OrganizationProvider'
+import withStyles from '@material-ui/core/styles/withStyles'
+import {useForm} from 'react-hook-form'
 
 export default function Login() {
-  const [email, setEmail] = useState('')
-  const [password, setPassword] = useState('')
+  const {register, handleSubmit, errors} = useForm()
   const [error, setError] = useState('')
   const [submitting, setSubmitting] = useState(false)
+  const {organization} = useOrganization()
   const {login} = useOrganizationAuth()
 
-  const tryLogin = () => {
+  const submit = (data: {email: string; password: string}) => {
     setSubmitting(true)
-    login(email, password).catch((e) => {
-      const message = e.message || e
-      setError(message)
+    login(data.email, data.password).catch((e) => {
+      setError(e.message)
       setSubmitting(false)
     })
   }
@@ -30,44 +28,58 @@ export default function Login() {
   return (
     <Centered>
       <Container>
-        <TextField
-          label="Email"
-          type="email"
-          fullWidth
-          variant="outlined"
-          onChange={onChangeStringHandler(setEmail)}
-          value={email}
-        />
-        <TextField
-          label="Password"
-          type="password"
-          fullWidth
-          variant="outlined"
-          onChange={onChangeStringHandler(setPassword)}
-          value={password}
-        />
-        <Error>{error}</Error>
-        <Button
-          variant="contained"
-          fullWidth
-          color="primary"
-          onClick={tryLogin}
-          disabled={submitting}
-        >
-          Login
-        </Button>
-        <CreateAccountText>
-          Don't have an account yet?{' '}
-          <RelativeLink to={obvioRoutes.registration}>
-            Create one now
-          </RelativeLink>
-        </CreateAccountText>
+        <OrganizationName variant="h5">{organization.name}</OrganizationName>
+        <form onSubmit={handleSubmit(submit)}>
+          <TextField
+            label="Email"
+            type="email"
+            fullWidth
+            variant="outlined"
+            name="email"
+            disabled={submitting}
+            inputProps={{
+              ref: register({
+                required: 'Email is required',
+              }),
+              'aria-label': 'email',
+            }}
+            error={!!errors.email}
+            helperText={errors.email && errors.email.message}
+          />
+          <TextField
+            label="Password"
+            type="password"
+            fullWidth
+            variant="outlined"
+            name="password"
+            disabled={submitting}
+            inputProps={{
+              ref: register({
+                required: 'Password is required',
+              }),
+              'aria-label': 'password',
+            }}
+            error={!!errors.password}
+            helperText={errors.password && errors.password.message}
+          />
+          <ErrorMessage>{error}</ErrorMessage>
+          <Button
+            variant="contained"
+            fullWidth
+            color="primary"
+            disabled={submitting}
+            aria-label="submit login"
+            type="submit"
+          >
+            Login
+          </Button>
+        </form>
       </Container>
     </Centered>
   )
 }
 
-function Error(props: {children: string}) {
+function ErrorMessage(props: {children: string}) {
   if (!props.children) {
     return null
   }
@@ -88,8 +100,9 @@ const ErrorText = styled(Typography)`
   margin-bottom: ${(props) => props.theme.spacing[3]};
 `
 
-const CreateAccountText = withStyles({
+const OrganizationName = withStyles({
   root: {
-    marginTop: spacing[3],
+    textAlign: 'center',
+    marginBottom: spacing[3],
   },
 })(Typography)
