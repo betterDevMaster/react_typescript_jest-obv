@@ -1,27 +1,28 @@
 import React from 'react'
 import {render as rtlRender, RenderOptions} from '@testing-library/react'
 import {Providers} from 'App'
-import RulesProvider from 'Dashboard/component-rules/RulesProvider'
+import AttendeeProfileProvider from 'event/Dashboard/component-rules/AttendeeProfileProvider'
+import MockStoreProvider from 'store/__utils__/MockStoreProvider'
 
 export const render = (
   component: React.ReactElement,
   options?: Omit<RenderOptions, 'queries'>,
 ) => {
   const {rerender: rtlRerender, ...renderResult} = rtlRender(
-    <Providers>
-      <RulesProvider tags={[]} groups={{}}>
+    <Providers storeProvider={MockStoreProvider}>
+      <AttendeeProfileProvider tags={[]} groups={{}}>
         {component}
-      </RulesProvider>
+      </AttendeeProfileProvider>
     </Providers>,
     options,
   )
 
   const rerender = (component: React.ReactElement) => {
     return rtlRerender(
-      <Providers>
-        <RulesProvider tags={[]} groups={{}}>
+      <Providers storeProvider={MockStoreProvider}>
+        <AttendeeProfileProvider tags={[]} groups={{}}>
           {component}
-        </RulesProvider>
+        </AttendeeProfileProvider>
       </Providers>,
     )
   }

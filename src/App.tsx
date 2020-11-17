@@ -1,44 +1,37 @@
 import React from 'react'
-import Dashboard from 'Dashboard'
 import ThemeProvider from 'lib/ui/theme/ThemeProvider'
-import {fakeSimpleBlog} from 'Dashboard/Template/SimpleBlog/__utils__/factory'
-import {fakeUser} from 'user/__utils__/factory'
 import StoreProvider from 'store/StoreProvider'
 import {ColorPickerPopover} from 'lib/ui/ColorPicker'
 import {MuiPickersUtilsProvider} from '@material-ui/pickers'
 import MomentUtils from '@date-io/moment'
-import {fakePoints} from 'Dashboard/components/PointsSummary/__utils__/factory'
-import RulesProvider from 'Dashboard/component-rules/RulesProvider'
+import {BrowserRouter as Router} from 'react-router-dom'
+import {GlobalStyles} from 'lib/ui/theme/GlobalStyles'
+import Routes from 'Routes'
 
-const dashboard = fakeSimpleBlog({
-  primaryColor: '#ea202e',
-  points: fakePoints(),
-  sidebar: {
-    background: '#000000',
-    textColor: '#Ffffff',
-  },
-})
-
-const user = fakeUser({group: 'foobar'})
+export const isProduction = process.env.NODE_ENV === 'production'
+export const appRoot = process.env.REACT_APP_WEB_APP_ROOT
+export const OBVIO_SUBDOMAIN = 'app'
 
 export default function App() {
   return (
-    <Providers>
-      <RulesProvider tags={['foo', 'baz']} groups={user}>
-        <Dashboard
-          // @ts-ignore
-          dashboard={dashboard}
-          // @ts-ignore
-          user={user}
-          isEditMode={true}
-        />
+    <StoreProvider>
+      <Providers storeProvider={StoreProvider}>
+        <GlobalStyles />
+        <Router>
+          <Routes />
+        </Router>
         <ColorPickerPopover />
-      </RulesProvider>
-    </Providers>
+      </Providers>
+    </StoreProvider>
   )
 }
 
-export function Providers(props: {children: React.ReactNode}) {
+export function Providers(props: {
+  children: React.ReactNode
+  // Allows passing in a mocked store provider for tests
+  storeProvider: React.FunctionComponent<{children: React.ReactNode}>
+}) {
+  const StoreProvider = props.storeProvider
   return (
     <StoreProvider>
       <ThemeProvider>
