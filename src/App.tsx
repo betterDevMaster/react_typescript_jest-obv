@@ -14,17 +14,24 @@ export const OBVIO_SUBDOMAIN = 'app'
 
 export default function App() {
   return (
-    <Providers>
-      <GlobalStyles />
-      <Router>
-        <Routes />
-      </Router>
-      <ColorPickerPopover />
-    </Providers>
+    <StoreProvider>
+      <Providers storeProvider={StoreProvider}>
+        <GlobalStyles />
+        <Router>
+          <Routes />
+        </Router>
+        <ColorPickerPopover />
+      </Providers>
+    </StoreProvider>
   )
 }
 
-export function Providers(props: {children: React.ReactNode}) {
+export function Providers(props: {
+  children: React.ReactNode
+  // Allows passing in a mocked store provider for tests
+  storeProvider: React.FunctionComponent<{children: React.ReactNode}>
+}) {
+  const StoreProvider = props.storeProvider
   return (
     <StoreProvider>
       <ThemeProvider>

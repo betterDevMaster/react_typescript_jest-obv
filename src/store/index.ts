@@ -10,6 +10,8 @@ import {
   combineReducers,
 } from 'redux'
 import {combineEpics, createEpicMiddleware} from 'redux-observable'
+import {AjaxCreationMethod} from 'rxjs/internal/observable/dom/AjaxObservable'
+import {ajax as rxJsAjax} from 'rxjs/ajax'
 
 export const rootReducer = combineReducers({
   dashboard: dashboardReducer,
@@ -24,9 +26,19 @@ export type RootState = ReturnType<typeof rootReducer>
 const composeWithDevtools =
   (window as any).__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose
 
-// Make creating a store a fn to avoid tests sharing the same store
-export const createStore = () => {
-  const epicMiddleware = createEpicMiddleware<any, any, RootState>()
+type StoreOptions = {
+  ajax: AjaxCreationMethod
+}
+
+// Make creating a store a fn to avoid tests sharing the same store. We'll also
+// accept dependencies here.
+export const createStore = ({ajax}: StoreOptions = {ajax: rxJsAjax}) => {
+  const epicMiddleware = createEpicMiddleware<any, any, RootState>({
+    dependencies: {
+      ajax,
+    },
+  })
+
   const store = createReduxStore(
     rootReducer,
     composeWithDevtools(applyMiddleware(epicMiddleware)),

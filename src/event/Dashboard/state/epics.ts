@@ -5,17 +5,17 @@ import {
 import {Epic, ofType} from 'redux-observable'
 import {RootState} from 'store'
 import {mapTo, debounceTime, switchMap} from 'rxjs/operators'
-import {ajax} from 'rxjs/ajax'
 import {api} from 'lib/url'
 import {setSaving} from 'event/Dashboard/editor/state/actions'
 import {of, concat} from 'rxjs'
+import {AjaxCreationMethod} from 'rxjs/internal/observable/dom/AjaxObservable'
 
 export const saveDashboardEpic: Epic<
   UpdateDashboardAction,
   any,
   RootState,
-  any
-> = (action$, state$) =>
+  {ajax: AjaxCreationMethod}
+> = (action$, state$, {ajax}) =>
   action$.pipe(
     ofType<UpdateDashboardAction>(UPDATE_DASHBOARD_ACTION),
     debounceTime(1000),
@@ -28,6 +28,7 @@ export const saveDashboardEpic: Epic<
 
       const url = api(`/events/${event.slug}`)
 
+      // Use dependencies.ajax to allow injecting mock ajax for tests
       const request = ajax.post(
         url,
         {
