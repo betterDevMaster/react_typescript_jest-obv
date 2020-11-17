@@ -6,8 +6,9 @@ import React from 'react'
 import {useDispatch} from 'react-redux'
 import {setEditMode} from 'event/Dashboard/editor/state/actions'
 import {useEditMode} from 'event/Dashboard/editor/state/edit-mode'
+import Typography from '@material-ui/core/Typography'
 
-export default function EditToggleBar() {
+export default function ConfigBar() {
   const isEditMode = useEditMode()
   const dispatch = useDispatch()
 
@@ -15,11 +16,12 @@ export default function EditToggleBar() {
 
   return (
     <Box>
+      <Typography>Configure Dashboard</Typography>
       <FormControlLabel
         control={
-          <Switch checked={isEditMode} onChange={toggle} color="primary" />
+          <Switch checked={!isEditMode} onChange={toggle} color="primary" />
         }
-        label="Edit Mode"
+        label="Preview"
       />
     </Box>
   )
@@ -30,5 +32,6 @@ const Box = styled.div`
   border-bottom: 1px solid ${grey[300]};
   display: flex;
   align-items: center;
-  justify-content: center;
+  justify-content: space-between;
+  padding: 0 ${(props) => props.theme.spacing[4]};
 `

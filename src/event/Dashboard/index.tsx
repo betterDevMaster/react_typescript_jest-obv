@@ -3,7 +3,7 @@ import {SimpleBlog} from 'event/Dashboard/Template/SimpleBlog'
 import {User} from 'auth/user'
 import DashboardEditDialog from 'event/Dashboard/editor/views/DashboardEditDialog'
 import Template from 'event/Dashboard/Template'
-import EditToggleBar from 'event/Dashboard/editor/views/EditToggleBar'
+import ConfigBar from 'event/Dashboard/editor/views/ConfigBar'
 import DashboardProvider from 'event/Dashboard/state/DashboardProvider'
 import {useDispatch} from 'react-redux'
 import {setEditMode} from 'event/Dashboard/editor/state/actions'
@@ -26,7 +26,7 @@ export default function Dashboard(props: DashboardProps) {
   if (props.isEditMode) {
     return (
       <DashboardProvider saved={props.dashboard}>
-        <EditToggleBar />
+        <ConfigBar />
         <Template {...props} />
         <DashboardEditDialog />
       </DashboardProvider>
