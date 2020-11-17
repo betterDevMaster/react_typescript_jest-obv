@@ -6,6 +6,7 @@ it('should return the correct subdomain', () => {
   expect(getSubdomain('obv.io')).toBe('')
   expect(getSubdomain('foo.sage.obv.io')).toBe('sage')
   expect(getSubdomain('foo.bar.baz.sage.obv.io')).toBe('sage')
+  expect(getSubdomain('app.staging.obv.io')).toBe('app')
 })
 
 it('should namespace routes', () => {
