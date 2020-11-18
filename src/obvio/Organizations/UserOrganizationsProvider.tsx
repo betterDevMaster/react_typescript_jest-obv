@@ -1,6 +1,7 @@
 import {useAsync} from 'lib/async'
+import {api} from 'lib/url'
+import {obvioClient} from 'obvio/obvio-client'
 import {Organization} from 'organization'
-import {getUserOrganizations} from 'organization/obvio-client'
 import React from 'react'
 
 interface UserOrganizationsContextProps {
@@ -42,4 +43,9 @@ export function useUserOrganizations() {
   }
 
   return context
+}
+
+function getUserOrganizations() {
+  const url = api('/organizations')
+  return obvioClient.get<Organization[]>(url)
 }
