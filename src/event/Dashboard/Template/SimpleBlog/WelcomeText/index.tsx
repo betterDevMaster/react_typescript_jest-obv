@@ -3,7 +3,7 @@ import React from 'react'
 import styled from 'styled-components'
 
 export const WELCOME_TEXT = 'Welcome Text'
-export default function WelcomeText(props: {children: string}) {
+export default function WelcomeText() {
   const {welcomeText} = useDashboard()
   return <Text aria-label="welcome">{welcomeText}</Text>
 }

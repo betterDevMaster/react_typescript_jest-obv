@@ -82,7 +82,7 @@ export default function SimpleBlog(props: {user: User}) {
       <Content>
         <StyledContainer maxWidth="lg">
           <EditComponent type={WELCOME_TEXT}>
-            <WelcomeText>{welcomeText}</WelcomeText>
+            <WelcomeText />
           </EditComponent>
           <MainNavButtons>
             <Grid container spacing={2}>

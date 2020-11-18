@@ -13,7 +13,11 @@ export default function EventConfig() {
     <Page>
       <h2>{event.name}</h2>
       <RelativeLink disableStyles to={routes.dashboard}>
-        <Button variant="contained" color="primary">
+        <Button
+          variant="contained"
+          color="primary"
+          aria-label="configure dashboard"
+        >
           Configure Dashboard
         </Button>
       </RelativeLink>
