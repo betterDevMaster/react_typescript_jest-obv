@@ -1,5 +1,5 @@
-import {setConfig} from 'event/Dashboard/editor/state/actions'
-import {Config} from 'event/Dashboard/editor/views/DashboardEditDialog/ConfigComponent'
+import {setConfig} from 'Event/Dashboard/editor/state/actions'
+import {Config} from 'Event/Dashboard/editor/views/DashboardEditDialog/ConfigComponent'
 import {useDispatch, useSelector} from 'react-redux'
 import {RootState} from 'store'
 

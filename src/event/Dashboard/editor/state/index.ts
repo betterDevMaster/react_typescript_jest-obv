@@ -6,8 +6,8 @@ import {
   SET_CONFIG_ACTION,
   SET_EDIT_MODE,
   SET_SAVING_ACTION,
-} from 'event/Dashboard/editor/state/actions'
-import {Config} from 'event/Dashboard/editor/views/DashboardEditDialog/ConfigComponent'
+} from 'Event/Dashboard/editor/state/actions'
+import {Config} from 'Event/Dashboard/editor/views/DashboardEditDialog/ConfigComponent'
 
 export type DashboardEditorState = {
   config: Config | null

@@ -1,11 +1,11 @@
 import React from 'react'
 import styled from 'styled-components'
-import Heading from 'event/Dashboard/Template/SimpleBlog/Sidebar/Heading'
+import Heading from 'Event/Dashboard/Template/SimpleBlog/Sidebar/Heading'
 import moment from 'moment-timezone'
-import EditComponent from 'event/Dashboard/editor/views/EditComponent'
-import EditModeOnly from 'event/Dashboard/editor/views/EditModeOnly'
-import AddAgendaEventButton from 'event/Dashboard/components/AgendaList/AddAgendaEventButton'
-import {useDashboard} from 'event/Dashboard/state/DashboardProvider'
+import EditComponent from 'Event/Dashboard/editor/views/EditComponent'
+import EditModeOnly from 'Event/Dashboard/editor/views/EditModeOnly'
+import AddAgendaEventButton from 'Event/Dashboard/components/AgendaList/AddAgendaEventButton'
+import {useDashboard} from 'Event/Dashboard/state/DashboardProvider'
 
 export const AGENDA = 'Agenda'
 

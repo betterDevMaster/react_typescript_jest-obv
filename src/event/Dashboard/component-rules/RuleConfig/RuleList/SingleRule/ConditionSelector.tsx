@@ -1,6 +1,6 @@
 import MenuItem from '@material-ui/core/MenuItem'
 import Select from '@material-ui/core/Select'
-import {AND, OR, Rule} from 'event/Dashboard/component-rules'
+import {AND, OR, Rule} from 'Event/Dashboard/component-rules'
 import {onUnknownChangeHandler} from 'lib/dom'
 import React from 'react'
 import {withStyles} from '@material-ui/core'

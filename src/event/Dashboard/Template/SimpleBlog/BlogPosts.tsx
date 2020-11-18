@@ -1,6 +1,6 @@
-import {BlogPost, BLOG_POST} from 'event/Dashboard/components/BlogPost'
-import {useDashboard} from 'event/Dashboard/state/DashboardProvider'
-import EditComponent from 'event/Dashboard/editor/views/EditComponent'
+import {BlogPost, BLOG_POST} from 'Event/Dashboard/components/BlogPost'
+import {useDashboard} from 'Event/Dashboard/state/DashboardProvider'
+import EditComponent from 'Event/Dashboard/editor/views/EditComponent'
 import React from 'react'
 
 export default function BlogPosts() {

@@ -4,7 +4,7 @@ import FormControlLabel from '@material-ui/core/FormControlLabel'
 import Slider from '@material-ui/core/Slider'
 import TextField from '@material-ui/core/TextField'
 import Typography from '@material-ui/core/Typography'
-import {NavButtonWithSize} from 'event/Dashboard/components/NavButton'
+import {NavButtonWithSize} from 'Event/Dashboard/components/NavButton'
 import {
   handleChangeSlider,
   onChangeCheckedHandler,
@@ -15,16 +15,16 @@ import DangerButton from 'lib/ui/Button/DangerButton'
 import ColorPicker from 'lib/ui/ColorPicker'
 import React from 'react'
 import Box from '@material-ui/core/Box'
-import {useCloseConfig} from 'event/Dashboard/editor/state/edit-mode'
-import {Config} from 'event/Dashboard/editor/views/DashboardEditDialog/ConfigComponent'
+import {useCloseConfig} from 'Event/Dashboard/editor/state/edit-mode'
+import {Config} from 'Event/Dashboard/editor/views/DashboardEditDialog/ConfigComponent'
 import RuleConfig, {
   useRuleConfig,
-} from 'event/Dashboard/component-rules/RuleConfig'
-import ConfigureRulesButton from 'event/Dashboard/component-rules/ConfigureRulesButton'
+} from 'Event/Dashboard/component-rules/RuleConfig'
+import ConfigureRulesButton from 'Event/Dashboard/component-rules/ConfigureRulesButton'
 import {
   useDashboard,
   useUpdateDashboard,
-} from 'event/Dashboard/state/DashboardProvider'
+} from 'Event/Dashboard/state/DashboardProvider'
 
 export default function MainNavButtonConfig(props: {id?: Config['id']}) {
   const {mainNav: buttons} = useDashboard()

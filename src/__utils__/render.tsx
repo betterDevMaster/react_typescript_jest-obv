@@ -1,7 +1,7 @@
 import React from 'react'
 import {render as rtlRender, RenderOptions} from '@testing-library/react'
 import {Providers} from 'App'
-import AttendeeProfileProvider from 'event/Dashboard/component-rules/AttendeeProfileProvider'
+import AttendeeProfileProvider from 'Event/Dashboard/component-rules/AttendeeProfileProvider'
 import MockStoreProvider from 'store/__utils__/MockStoreProvider'
 
 export const render = (

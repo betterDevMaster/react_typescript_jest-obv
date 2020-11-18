@@ -1,7 +1,7 @@
-import {BlogPost} from 'event/Dashboard/components/BlogPost'
+import {BlogPost} from 'Event/Dashboard/components/BlogPost'
 import styled from 'styled-components'
-import {useCloseConfig} from 'event/Dashboard/editor/state/edit-mode'
-import {Config} from 'event/Dashboard/editor/views/DashboardEditDialog/ConfigComponent'
+import {useCloseConfig} from 'Event/Dashboard/editor/state/edit-mode'
+import {Config} from 'Event/Dashboard/editor/views/DashboardEditDialog/ConfigComponent'
 import React from 'react'
 import CKEditor from '@ckeditor/ckeditor5-react'
 import ClassicEditor from '@ckeditor/ckeditor5-build-classic'
@@ -9,7 +9,7 @@ import DangerButton from 'lib/ui/Button/DangerButton'
 import {
   useDashboard,
   useUpdateDashboard,
-} from 'event/Dashboard/state/DashboardProvider'
+} from 'Event/Dashboard/state/DashboardProvider'
 
 export default function BlogPostConfig(props: {id: Config['id']}) {
   const {blogPosts: posts} = useDashboard()

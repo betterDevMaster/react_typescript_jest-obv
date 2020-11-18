@@ -1,8 +1,8 @@
-import {ObvioEvent} from 'event'
-import {setEvent} from 'event/state/actions'
-import {EventContext} from 'organization/Events/EventProvider'
+import {setEvent} from 'Event/state/actions'
+import {EventContext} from 'Event/EventProvider'
 import React, {useEffect} from 'react'
 import {useDispatch} from 'react-redux'
+import {ObvioEvent} from 'Event'
 
 export default function StaticEventProvider(props: {
   event: ObvioEvent

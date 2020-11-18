@@ -1,9 +1,9 @@
-import {Groups} from 'event/attendee'
+import {Groups} from 'Event/attendee'
 
 import {
   GroupRule,
   IS_NOT,
-} from 'event/Dashboard/component-rules/RuleConfig/RuleList/SingleRule/GroupRule'
+} from 'Event/Dashboard/component-rules/RuleConfig/RuleList/SingleRule/GroupRule'
 
 export function matchesGroupRule(groups: Groups, rule: GroupRule) {
   if (rule.type === IS_NOT) {

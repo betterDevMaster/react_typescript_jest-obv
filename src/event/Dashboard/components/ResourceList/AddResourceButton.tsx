@@ -1,9 +1,9 @@
 import Button from '@material-ui/core/Button'
-import {RESOURCE_ICON} from 'event/Dashboard/components/ResourceList'
+import {RESOURCE_ICON} from 'Event/Dashboard/components/ResourceList'
 import {
   useDashboard,
   useUpdateDashboard,
-} from 'event/Dashboard/state/DashboardProvider'
+} from 'Event/Dashboard/state/DashboardProvider'
 import React from 'react'
 
 export default function AddResourceButton(props: {className?: string}) {

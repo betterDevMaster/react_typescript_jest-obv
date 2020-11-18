@@ -1,11 +1,11 @@
 import React from 'react'
-import {Rule} from 'event/Dashboard/component-rules'
-import GroupRuleConfig from 'event/Dashboard/component-rules/RuleConfig/RuleList/SingleRule/GroupRule/GroupRuleConfig'
-import {TAGS} from 'event/Dashboard/component-rules/RuleConfig/RuleList/SingleRule/TagsRule'
-import TagsRuleConfig from 'event/Dashboard/component-rules/RuleConfig/RuleList/SingleRule/TagsRule/TagsRuleConfig'
-import {NESTED_RULE} from 'event/Dashboard/component-rules/RuleConfig/RuleList/SingleRule/NestedRule'
-import NestedRuleConfig from 'event/Dashboard/component-rules/RuleConfig/RuleList/SingleRule/NestedRule/NestedRuleConfig'
-import {GROUP} from 'event/Dashboard/component-rules/RuleConfig/RuleList/SingleRule/GroupRule'
+import {Rule} from 'Event/Dashboard/component-rules'
+import GroupRuleConfig from 'Event/Dashboard/component-rules/RuleConfig/RuleList/SingleRule/GroupRule/GroupRuleConfig'
+import {TAGS} from 'Event/Dashboard/component-rules/RuleConfig/RuleList/SingleRule/TagsRule'
+import TagsRuleConfig from 'Event/Dashboard/component-rules/RuleConfig/RuleList/SingleRule/TagsRule/TagsRuleConfig'
+import {NESTED_RULE} from 'Event/Dashboard/component-rules/RuleConfig/RuleList/SingleRule/NestedRule'
+import NestedRuleConfig from 'Event/Dashboard/component-rules/RuleConfig/RuleList/SingleRule/NestedRule/NestedRuleConfig'
+import {GROUP} from 'Event/Dashboard/component-rules/RuleConfig/RuleList/SingleRule/GroupRule'
 
 export type RuleConfigProps = {
   onSet: (rule: Rule | null) => void

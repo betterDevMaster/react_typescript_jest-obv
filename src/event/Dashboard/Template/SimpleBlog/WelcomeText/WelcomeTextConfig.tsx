@@ -2,7 +2,7 @@ import TextField from '@material-ui/core/TextField'
 import {
   useDashboard,
   useUpdateDashboard,
-} from 'event/Dashboard/state/DashboardProvider'
+} from 'Event/Dashboard/state/DashboardProvider'
 import {onChangeStringHandler} from 'lib/dom'
 import React from 'react'
 

@@ -1,5 +1,5 @@
-import {Dashboard} from 'event/Dashboard'
-import {DashboardState} from 'event/Dashboard/state'
+import {Dashboard} from 'Event/Dashboard'
+import {DashboardState} from 'Event/Dashboard/state'
 
 export const SET_DASHBOARD_ACTION = 'SET_DASHBOARD'
 export interface SetDashboardAction {

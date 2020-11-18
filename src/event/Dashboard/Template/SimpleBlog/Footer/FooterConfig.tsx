@@ -1,12 +1,12 @@
 import {TextField} from '@material-ui/core'
-import {SimpleBlog} from 'event/Dashboard/Template/SimpleBlog'
+import {SimpleBlog} from 'Event/Dashboard/Template/SimpleBlog'
 import {onChangeStringHandler} from 'lib/dom'
 import ColorPicker from 'lib/ui/ColorPicker'
 import React from 'react'
 import {
   useDashboard,
   useUpdateDashboard,
-} from 'event/Dashboard/state/DashboardProvider'
+} from 'Event/Dashboard/state/DashboardProvider'
 
 export default function FooterConfig() {
   const {footer} = useDashboard()

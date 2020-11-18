@@ -1,4 +1,4 @@
-import {useDashboard} from 'event/Dashboard/state/DashboardProvider'
+import {useDashboard} from 'Event/Dashboard/state/DashboardProvider'
 import React from 'react'
 import styled from 'styled-components'
 

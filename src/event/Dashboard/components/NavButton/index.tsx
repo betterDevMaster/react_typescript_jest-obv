@@ -2,7 +2,7 @@ import React from 'react'
 import styled from 'styled-components'
 import Button from 'lib/ui/Button'
 import {Column} from 'lib/ui/layout'
-import {HasRules} from 'event/Dashboard/component-rules'
+import {HasRules} from 'Event/Dashboard/component-rules'
 import {AbsoluteLink} from 'lib/ui/link/AbsoluteLink'
 
 export const NAV_BUTTON = 'NAV_BUTTON'

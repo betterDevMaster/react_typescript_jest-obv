@@ -2,17 +2,17 @@ import FormControl from '@material-ui/core/FormControl'
 import MenuItem from '@material-ui/core/MenuItem'
 import Select from '@material-ui/core/Select'
 import TextField from '@material-ui/core/TextField'
-import {RuleConfigProps} from 'event/Dashboard/component-rules/RuleConfig/RuleList/RuleForm/SourceConfig'
-import {Rule} from 'event/Dashboard/component-rules'
+import {RuleConfigProps} from 'Event/Dashboard/component-rules/RuleConfig/RuleList/RuleForm/SourceConfig'
+import {Rule} from 'Event/Dashboard/component-rules'
 import {
   IS_NOT,
   GROUP,
   GroupRule,
   IS,
-} from 'event/Dashboard/component-rules/RuleConfig/RuleList/SingleRule/GroupRule'
+} from 'Event/Dashboard/component-rules/RuleConfig/RuleList/SingleRule/GroupRule'
 import {onChangeStringHandler, onUnknownChangeHandler} from 'lib/dom'
 import React, {useEffect, useState} from 'react'
-import {createGroupRule} from 'event/Dashboard/component-rules/RuleConfig/RuleList/SingleRule/GroupRule'
+import {createGroupRule} from 'Event/Dashboard/component-rules/RuleConfig/RuleList/SingleRule/GroupRule'
 
 export default function GroupRuleConfig(props: RuleConfigProps) {
   const [key, setKey] = useState<GroupRule['key']>(initialKey(props.rule))

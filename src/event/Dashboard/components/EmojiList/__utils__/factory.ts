@@ -1,6 +1,6 @@
 import faker from 'faker'
-import {ALL_EMOJIS} from 'event/Dashboard/components/EmojiList/emoji'
-import {EmojiList} from 'event/Dashboard/components/EmojiList'
+import {ALL_EMOJIS} from 'Event/Dashboard/components/EmojiList/emoji'
+import {EmojiList} from 'Event/Dashboard/components/EmojiList'
 
 export function withEmojiList<
   T extends {

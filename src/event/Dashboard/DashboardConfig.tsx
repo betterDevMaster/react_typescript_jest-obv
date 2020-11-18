@@ -1,8 +1,8 @@
 import {useOrganizationAuth} from 'organization/auth'
-import Dashboard from 'event/Dashboard'
-import {useEvent} from 'organization/Events/EventProvider'
+import Dashboard from 'Event/Dashboard'
+import {useEvent} from 'Event/EventProvider'
 import React from 'react'
-import AttendeeProfileProvider from 'event/Dashboard/component-rules/AttendeeProfileProvider'
+import AttendeeProfileProvider from 'Event/Dashboard/component-rules/AttendeeProfileProvider'
 
 export default function DashboardConfig() {
   const event = useEvent()

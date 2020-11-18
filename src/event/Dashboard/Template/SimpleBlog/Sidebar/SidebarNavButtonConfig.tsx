@@ -2,7 +2,7 @@ import Checkbox from '@material-ui/core/Checkbox'
 import FormControl from '@material-ui/core/FormControl'
 import FormControlLabel from '@material-ui/core/FormControlLabel'
 import TextField from '@material-ui/core/TextField'
-import NavButton from 'event/Dashboard/components/NavButton'
+import NavButton from 'Event/Dashboard/components/NavButton'
 import {
   onChangeCheckedHandler,
   onChangeNumberHandler,
@@ -11,12 +11,12 @@ import {
 import DangerButton from 'lib/ui/Button/DangerButton'
 import React from 'react'
 import Box from '@material-ui/core/Box'
-import {useCloseConfig} from 'event/Dashboard/editor/state/edit-mode'
-import {Config} from 'event/Dashboard/editor/views/DashboardEditDialog/ConfigComponent'
+import {useCloseConfig} from 'Event/Dashboard/editor/state/edit-mode'
+import {Config} from 'Event/Dashboard/editor/views/DashboardEditDialog/ConfigComponent'
 import {
   useDashboard,
   useUpdateDashboard,
-} from 'event/Dashboard/state/DashboardProvider'
+} from 'Event/Dashboard/state/DashboardProvider'
 
 export default function SidebarNavButtonConfig(props: {id?: Config['id']}) {
   const {sidebarNav: buttons} = useDashboard()

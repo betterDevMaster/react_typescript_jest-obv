@@ -1,9 +1,9 @@
 import TextField from '@material-ui/core/TextField'
-import {ResourceList} from 'event/Dashboard/components/ResourceList'
+import {ResourceList} from 'Event/Dashboard/components/ResourceList'
 import {
   useDashboard,
   useUpdateDashboard,
-} from 'event/Dashboard/state/DashboardProvider'
+} from 'Event/Dashboard/state/DashboardProvider'
 import {onChangeStringHandler} from 'lib/dom'
 import React from 'react'
 

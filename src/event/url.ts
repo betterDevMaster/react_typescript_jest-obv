@@ -1,17 +1,8 @@
 import {useOrganization} from 'organization/OrganizationProvider'
 import {appRoot, isProduction} from 'App'
-import {Dashboard} from 'event/Dashboard'
 import {getSubdomain, replaceRouteParam} from 'lib/url'
 import {useParams} from 'react-router-dom'
-
-// Can't use 'Event' because that's already a native DOM type
-// for browser events and we'd lose TS safety/import assist.
-export interface ObvioEvent {
-  id: number
-  name: string
-  slug: string
-  dashboard: null | Dashboard
-}
+import {ObvioEvent} from 'Event'
 
 export function eventUrl(event: ObvioEvent) {
   const scheme = isProduction ? 'https://' : 'http://'

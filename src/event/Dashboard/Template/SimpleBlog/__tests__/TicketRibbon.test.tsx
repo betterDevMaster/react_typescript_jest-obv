@@ -1,16 +1,16 @@
 import React from 'react'
 import faker from 'faker'
-import {fakeSimpleBlog} from 'event/Dashboard/Template/SimpleBlog/__utils__/factory'
+import {fakeSimpleBlog} from 'Event/Dashboard/Template/SimpleBlog/__utils__/factory'
 import {fakeUser} from 'auth/user/__utils__/factory'
-import Dashboard from 'event/Dashboard'
+import Dashboard from 'Event/Dashboard'
 import {inputElementFor, render} from '__utils__/render'
 import {
   ALL_TICKET_RIBBONS,
   TICKET_RIBBON,
-} from 'event/Dashboard/components/TicketRibbon'
+} from 'Event/Dashboard/components/TicketRibbon'
 import {fireEvent} from '@testing-library/dom'
-import {fakeEvent} from 'event/__utils__/factory'
-import StaticEventProvider from 'event/__utils__/StaticEventProvider'
+import {fakeEvent} from 'Event/__utils__/factory'
+import StaticEventProvider from 'Event/__utils__/StaticEventProvider'
 
 it('should render ticket ribbons', async () => {
   const dashboard = fakeSimpleBlog({

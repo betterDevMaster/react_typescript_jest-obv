@@ -1,12 +1,12 @@
-import {AND, Condition, OR, Rule} from 'event/Dashboard/component-rules'
+import {AND, Condition, OR, Rule} from 'Event/Dashboard/component-rules'
 import faker from 'faker'
 import {
   GROUP,
   GroupRule,
   IS,
-} from 'event/Dashboard/component-rules/RuleConfig/RuleList/SingleRule/GroupRule'
-import {hasMatch} from 'event/Dashboard/component-rules/matcher'
-import {NESTED_RULE} from 'event/Dashboard/component-rules/RuleConfig/RuleList/SingleRule/NestedRule'
+} from 'Event/Dashboard/component-rules/RuleConfig/RuleList/SingleRule/GroupRule'
+import {hasMatch} from 'Event/Dashboard/component-rules/matcher'
+import {NESTED_RULE} from 'Event/Dashboard/component-rules/RuleConfig/RuleList/SingleRule/NestedRule'
 
 it('should evaluate nested first', () => {
   const {key: key1, target: target1, rule: rule1} = createRule(OR)

@@ -1,10 +1,10 @@
 import Button from '@material-ui/core/Button'
-import {useEditComponent} from 'event/Dashboard/editor/state/edit-mode'
-import EditModeOnly from 'event/Dashboard/editor/views/EditModeOnly'
-import {SimpleBlog} from 'event/Dashboard/Template/SimpleBlog'
+import {useEditComponent} from 'Event/Dashboard/editor/state/edit-mode'
+import EditModeOnly from 'Event/Dashboard/editor/views/EditModeOnly'
+import {SimpleBlog} from 'Event/Dashboard/Template/SimpleBlog'
 import React from 'react'
 import styled from 'styled-components'
-import {useDashboard} from 'event/Dashboard/state/DashboardProvider'
+import {useDashboard} from 'Event/Dashboard/state/DashboardProvider'
 
 export const SIDEBAR_CONTAINER = 'Sidebar'
 

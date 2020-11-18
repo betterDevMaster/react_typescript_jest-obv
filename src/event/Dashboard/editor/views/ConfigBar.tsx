@@ -3,8 +3,8 @@ import styled from 'styled-components'
 import Switch from '@material-ui/core/Switch'
 import React from 'react'
 import {useDispatch} from 'react-redux'
-import {setEditMode} from 'event/Dashboard/editor/state/actions'
-import {useEditMode, useIsSaving} from 'event/Dashboard/editor/state/edit-mode'
+import {setEditMode} from 'Event/Dashboard/editor/state/actions'
+import {useEditMode, useIsSaving} from 'Event/Dashboard/editor/state/edit-mode'
 import Typography from '@material-ui/core/Typography'
 import CircularProgress, {
   CircularProgressProps,

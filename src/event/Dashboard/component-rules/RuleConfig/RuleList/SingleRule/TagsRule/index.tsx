@@ -1,4 +1,4 @@
-import {AND, BaseRule} from 'event/Dashboard/component-rules'
+import {AND, BaseRule} from 'Event/Dashboard/component-rules'
 import React from 'react'
 
 export const TAGS = 'Tags'

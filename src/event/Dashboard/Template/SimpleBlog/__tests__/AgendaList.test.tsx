@@ -1,15 +1,15 @@
 import React from 'react'
 import faker from 'faker'
 import {fireEvent} from '@testing-library/react'
-import {fakeSimpleBlog} from 'event/Dashboard/Template/SimpleBlog/__utils__/factory'
+import {fakeSimpleBlog} from 'Event/Dashboard/Template/SimpleBlog/__utils__/factory'
 import {fakeUser} from 'auth/user/__utils__/factory'
-import Dashboard from 'event/Dashboard'
+import Dashboard from 'Event/Dashboard'
 import {render} from '__utils__/render'
-import {fakeAgenda} from 'event/Dashboard/components/AgendaList/__utils__/factory'
+import {fakeAgenda} from 'Event/Dashboard/components/AgendaList/__utils__/factory'
 import {clickEdit} from '__utils__/edit'
 import user from '@testing-library/user-event'
-import {fakeEvent} from 'event/__utils__/factory'
-import StaticEventProvider from 'event/__utils__/StaticEventProvider'
+import {fakeEvent} from 'Event/__utils__/factory'
+import StaticEventProvider from 'Event/__utils__/StaticEventProvider'
 
 it('should render agendas', async () => {
   const dashboard = fakeSimpleBlog({agendas: []})

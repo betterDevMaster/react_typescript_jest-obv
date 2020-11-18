@@ -1,17 +1,17 @@
-import {SimpleBlog, SIMPLE_BLOG} from 'event/Dashboard/Template/SimpleBlog'
+import {SimpleBlog, SIMPLE_BLOG} from 'Event/Dashboard/Template/SimpleBlog'
 import faker from 'faker'
 import {pipe} from 'ramda'
-import {withAgendas} from 'event/Dashboard/components/AgendaList/__utils__/factory'
-import {withPoints} from 'event/Dashboard/components/PointsSummary/__utils__/factory'
-import {withResources} from 'event/Dashboard/components/ResourceList/__utils__/factory'
+import {withAgendas} from 'Event/Dashboard/components/AgendaList/__utils__/factory'
+import {withPoints} from 'Event/Dashboard/components/PointsSummary/__utils__/factory'
+import {withResources} from 'Event/Dashboard/components/ResourceList/__utils__/factory'
 import {sometimes} from '__utils__/attributes'
-import {withTicketRibbon} from 'event/Dashboard/components/TicketRibbon/__utils__/factory'
-import {withEmojiList} from 'event/Dashboard/components/EmojiList/__utils__/factory'
-import {withBlogPosts} from 'event/Dashboard/components/BlogPost/__utils__/factory'
+import {withTicketRibbon} from 'Event/Dashboard/components/TicketRibbon/__utils__/factory'
+import {withEmojiList} from 'Event/Dashboard/components/EmojiList/__utils__/factory'
+import {withBlogPosts} from 'Event/Dashboard/components/BlogPost/__utils__/factory'
 import {
   fakeNavButton,
   fakeNavButtonWithSize,
-} from 'event/Dashboard/components/NavButton/__utils__/factory'
+} from 'Event/Dashboard/components/NavButton/__utils__/factory'
 import {createEntityList} from 'lib/list'
 
 export const fakeSimpleBlog = (overrides?: Partial<SimpleBlog>): SimpleBlog => {

@@ -1,5 +1,5 @@
 import React from 'react'
-import {AND, BaseRule} from 'event/Dashboard/component-rules'
+import {AND, BaseRule} from 'Event/Dashboard/component-rules'
 
 export const GROUP = 'Group'
 export const IS = 'is'

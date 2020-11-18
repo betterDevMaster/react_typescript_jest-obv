@@ -1,14 +1,14 @@
-import RuleConfig from 'event/Dashboard/component-rules/RuleConfig'
+import RuleConfig from 'Event/Dashboard/component-rules/RuleConfig'
 import faker from 'faker'
 import user from '@testing-library/user-event'
 import React from 'react'
 import {inputElementFor, render} from '__utils__/render'
-import {AND} from 'event/Dashboard/component-rules'
+import {AND} from 'Event/Dashboard/component-rules'
 import {fireEvent} from '@testing-library/react'
 import {
   GROUP,
   IS,
-} from 'event/Dashboard/component-rules/RuleConfig/RuleList/SingleRule/GroupRule'
+} from 'Event/Dashboard/component-rules/RuleConfig/RuleList/SingleRule/GroupRule'
 
 it('should add a group rule', () => {
   const updateRules = jest.fn()

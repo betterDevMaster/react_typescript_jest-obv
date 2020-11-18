@@ -1,10 +1,9 @@
-import {ObvioEvent} from 'event'
-
+import {ObvioEvent} from 'Event'
 import {
   EventAction,
   handleSetEvent,
   SET_EVENT_ACTION,
-} from 'event/state/actions'
+} from 'Event/state/actions'
 
 export type EventState = ObvioEvent | null
 

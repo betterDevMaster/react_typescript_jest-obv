@@ -1,7 +1,7 @@
-import {Rule} from 'event/Dashboard/component-rules'
-import {hasMatch} from 'event/Dashboard/component-rules/matcher'
-import {useAttendeeProfile} from 'event/Dashboard/component-rules/AttendeeProfileProvider'
-import {useEditMode} from 'event/Dashboard/editor/state/edit-mode'
+import {Rule} from 'Event/Dashboard/component-rules'
+import {hasMatch} from 'Event/Dashboard/component-rules/matcher'
+import {useAttendeeProfile} from 'Event/Dashboard/component-rules/AttendeeProfileProvider'
+import {useEditMode} from 'Event/Dashboard/editor/state/edit-mode'
 
 export default function HiddenOnMatch(props: {
   rules: Rule[]

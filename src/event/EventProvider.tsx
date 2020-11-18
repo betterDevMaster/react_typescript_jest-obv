@@ -1,10 +1,11 @@
 import {client} from 'lib/api-client'
 import {useAsync} from 'lib/async'
 import {api} from 'lib/url'
-import {domainEventSlug, ObvioEvent, useParamEventSlug} from 'event'
+import {domainEventSlug, useParamEventSlug} from 'Event/url'
 import React, {useCallback, useEffect} from 'react'
 import {useDispatch} from 'react-redux'
-import {setEvent} from 'event/state/actions'
+import {setEvent} from 'Event/state/actions'
+import { ObvioEvent } from 'Event'
 
 export const EventContext = React.createContext<ObvioEvent | undefined>(
   undefined,

@@ -1,16 +1,16 @@
 import Box from '@material-ui/core/Box'
 import styled from 'styled-components'
 import Typography from '@material-ui/core/Typography'
-import RuleList from 'event/Dashboard/component-rules/RuleConfig/RuleList'
-import {RuleConfigProps} from 'event/Dashboard/component-rules/RuleConfig/RuleList/RuleForm/SourceConfig'
-import {Rule} from 'event/Dashboard/component-rules'
+import RuleList from 'Event/Dashboard/component-rules/RuleConfig/RuleList'
+import {RuleConfigProps} from 'Event/Dashboard/component-rules/RuleConfig/RuleList/RuleForm/SourceConfig'
+import {Rule} from 'Event/Dashboard/component-rules'
 import Visible from 'lib/ui/layout/Visible'
 import React, {useEffect, useState} from 'react'
 import {
   createNestedRule,
   NestedRule,
   NESTED_RULE,
-} from 'event/Dashboard/component-rules/RuleConfig/RuleList/SingleRule/NestedRule'
+} from 'Event/Dashboard/component-rules/RuleConfig/RuleList/SingleRule/NestedRule'
 
 export default function NestedRuleConfig(props: RuleConfigProps) {
   const [rules, setRules] = useState<NestedRule['rules']>(

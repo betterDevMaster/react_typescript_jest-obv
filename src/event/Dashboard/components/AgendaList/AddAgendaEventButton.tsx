@@ -3,7 +3,7 @@ import {Button} from '@material-ui/core'
 import {
   useDashboard,
   useUpdateDashboard,
-} from 'event/Dashboard/state/DashboardProvider'
+} from 'Event/Dashboard/state/DashboardProvider'
 
 export default function AddAgendaEventButton(props: {className?: string}) {
   const {agendas} = useDashboard()

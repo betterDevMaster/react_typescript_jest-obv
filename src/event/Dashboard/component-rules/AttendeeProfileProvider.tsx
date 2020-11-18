@@ -1,4 +1,4 @@
-import {Groups, Tags} from 'event/attendee'
+import {Groups, Tags} from 'Event/attendee'
 import React from 'react'
 
 interface AttendeeProfileProps {

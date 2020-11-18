@@ -1,5 +1,5 @@
-import {ObvioEvent} from 'event'
-import {EventState} from 'event/state'
+import {ObvioEvent} from 'Event'
+import {EventState} from 'Event/state'
 
 export const SET_EVENT_ACTION = 'SET_EVENT'
 export interface SetEventAction {

@@ -2,14 +2,14 @@ import FormControl from '@material-ui/core/FormControl'
 import styled from 'styled-components'
 import InputLabel from '@material-ui/core/InputLabel'
 import Select from '@material-ui/core/Select'
-import {TICKET_RIBBON} from 'event/Dashboard/components/TicketRibbon'
+import {TICKET_RIBBON} from 'Event/Dashboard/components/TicketRibbon'
 import React from 'react'
 import MenuItem from '@material-ui/core/MenuItem'
 import {onUnknownChangeHandler} from 'lib/dom'
 import {
   useDashboard,
   useUpdateDashboard,
-} from 'event/Dashboard/state/DashboardProvider'
+} from 'Event/Dashboard/state/DashboardProvider'
 
 export default function TicketRibbonConfig() {
   const {ticketRibbon} = useDashboard()

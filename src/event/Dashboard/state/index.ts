@@ -1,11 +1,11 @@
-import {Dashboard} from 'event/Dashboard'
+import {Dashboard} from 'Event/Dashboard'
 import {
   DashboardAction,
   handleSetDashboard,
   handleUpdateDashboard,
   SET_DASHBOARD_ACTION,
   UPDATE_DASHBOARD_ACTION,
-} from 'event/Dashboard/state/actions'
+} from 'Event/Dashboard/state/actions'
 
 export type DashboardState = Dashboard | null
 

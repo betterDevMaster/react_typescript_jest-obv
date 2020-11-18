@@ -1,12 +1,12 @@
 import {
   UpdateDashboardAction,
   UPDATE_DASHBOARD_ACTION,
-} from 'event/Dashboard/state/actions'
+} from 'Event/Dashboard/state/actions'
 import {Epic, ofType} from 'redux-observable'
 import {RootState} from 'store'
 import {mapTo, debounceTime, switchMap} from 'rxjs/operators'
 import {api} from 'lib/url'
-import {setSaving} from 'event/Dashboard/editor/state/actions'
+import {setSaving} from 'Event/Dashboard/editor/state/actions'
 import {of, concat} from 'rxjs'
 import {AjaxCreationMethod} from 'rxjs/internal/observable/dom/AjaxObservable'
 

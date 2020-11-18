@@ -1,6 +1,6 @@
 import NavButton, {
   NavButtonWithSize,
-} from 'event/Dashboard/components/NavButton'
+} from 'Event/Dashboard/components/NavButton'
 import faker from 'faker'
 import {pipe} from 'ramda'
 import {Column} from 'lib/ui/layout'

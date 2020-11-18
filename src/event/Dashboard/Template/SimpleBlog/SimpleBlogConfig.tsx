@@ -2,8 +2,8 @@ import TextField from '@material-ui/core/TextField'
 import {
   useDashboard,
   useUpdateDashboard,
-} from 'event/Dashboard/state/DashboardProvider'
-import {SimpleBlog} from 'event/Dashboard/Template/SimpleBlog'
+} from 'Event/Dashboard/state/DashboardProvider'
+import {SimpleBlog} from 'Event/Dashboard/Template/SimpleBlog'
 import {onChangeStringHandler} from 'lib/dom'
 import ColorPicker from 'lib/ui/ColorPicker'
 import React from 'react'

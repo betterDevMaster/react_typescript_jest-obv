@@ -1,6 +1,6 @@
-import {GroupRule} from 'event/Dashboard/component-rules/RuleConfig/RuleList/SingleRule/GroupRule'
-import {NestedRule} from 'event/Dashboard/component-rules/RuleConfig/RuleList/SingleRule/NestedRule'
-import {TagsRule} from 'event/Dashboard/component-rules/RuleConfig/RuleList/SingleRule/TagsRule'
+import {GroupRule} from 'Event/Dashboard/component-rules/RuleConfig/RuleList/SingleRule/GroupRule'
+import {NestedRule} from 'Event/Dashboard/component-rules/RuleConfig/RuleList/SingleRule/NestedRule'
+import {TagsRule} from 'Event/Dashboard/component-rules/RuleConfig/RuleList/SingleRule/TagsRule'
 
 export type Rule = TagsRule | GroupRule | NestedRule
 export interface HasRules {

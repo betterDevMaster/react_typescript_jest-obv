@@ -1,13 +1,13 @@
-import RuleConfig from 'event/Dashboard/component-rules/RuleConfig'
+import RuleConfig from 'Event/Dashboard/component-rules/RuleConfig'
 import faker from 'faker'
 import user from '@testing-library/user-event'
 import React from 'react'
 import {inputElementFor, render} from '__utils__/render'
-import {AND} from 'event/Dashboard/component-rules'
+import {AND} from 'Event/Dashboard/component-rules'
 import {
   DOES_NOT_INCLUDE,
   TAGS,
-} from 'event/Dashboard/component-rules/RuleConfig/RuleList/SingleRule/TagsRule'
+} from 'Event/Dashboard/component-rules/RuleConfig/RuleList/SingleRule/TagsRule'
 import {fireEvent} from '@testing-library/react'
 
 it('should add a tag rule', () => {

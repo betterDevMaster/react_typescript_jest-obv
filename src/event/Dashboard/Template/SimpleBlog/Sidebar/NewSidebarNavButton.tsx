@@ -1,10 +1,10 @@
 import Button from '@material-ui/core/Button'
-import NavButton from 'event/Dashboard/components/NavButton'
+import NavButton from 'Event/Dashboard/components/NavButton'
 import {
   useDashboard,
   useUpdateDashboard,
-} from 'event/Dashboard/state/DashboardProvider'
-import {useEditMode} from 'event/Dashboard/editor/state/edit-mode'
+} from 'Event/Dashboard/state/DashboardProvider'
+import {useEditMode} from 'Event/Dashboard/editor/state/edit-mode'
 import React from 'react'
 import {v4 as uid} from 'uuid'
 

@@ -1,4 +1,4 @@
-import {Points} from 'event/Dashboard/components/PointsSummary'
+import {Points} from 'Event/Dashboard/components/PointsSummary'
 import faker from 'faker'
 
 export const fakePoints = (overrides?: Partial<Points>): Points => ({

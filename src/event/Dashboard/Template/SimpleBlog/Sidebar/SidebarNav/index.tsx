@@ -1,9 +1,9 @@
 import React from 'react'
 import styled from 'styled-components'
-import SidebarNavButton from 'event/Dashboard/Template/SimpleBlog/Sidebar/SidebarNav/SidebarNavButton'
-import NewSidebarNavButton from 'event/Dashboard/Template/SimpleBlog/Sidebar/NewSidebarNavButton'
-import EditModeOnly from 'event/Dashboard/editor/views/EditModeOnly'
-import {useDashboard} from 'event/Dashboard/state/DashboardProvider'
+import SidebarNavButton from 'Event/Dashboard/Template/SimpleBlog/Sidebar/SidebarNav/SidebarNavButton'
+import NewSidebarNavButton from 'Event/Dashboard/Template/SimpleBlog/Sidebar/NewSidebarNavButton'
+import EditModeOnly from 'Event/Dashboard/editor/views/EditModeOnly'
+import {useDashboard} from 'Event/Dashboard/state/DashboardProvider'
 
 export const SIDEBAR_NAV_BUTTON = 'Sidebar Nav Button'
 

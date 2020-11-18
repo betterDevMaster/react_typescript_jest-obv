@@ -1,8 +1,8 @@
 import React from 'react'
 import styled from 'styled-components'
-import NavButton from 'event/Dashboard/components/NavButton'
-import {SIDEBAR_NAV_BUTTON} from 'event/Dashboard/Template/SimpleBlog/Sidebar/SidebarNav'
-import EditComponent from 'event/Dashboard/editor/views/EditComponent'
+import NavButton from 'Event/Dashboard/components/NavButton'
+import {SIDEBAR_NAV_BUTTON} from 'Event/Dashboard/Template/SimpleBlog/Sidebar/SidebarNav'
+import EditComponent from 'Event/Dashboard/editor/views/EditComponent'
 
 export default React.memo((props: NavButton & {id: string}) => (
   <EditComponent type={SIDEBAR_NAV_BUTTON} id={props.id}>

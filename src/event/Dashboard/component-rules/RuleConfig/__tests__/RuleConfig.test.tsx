@@ -1,14 +1,14 @@
 import React from 'react'
 import faker from 'faker'
-import RuleConfig from 'event/Dashboard/component-rules/RuleConfig'
+import RuleConfig from 'Event/Dashboard/component-rules/RuleConfig'
 import {inputElementFor, render} from '__utils__/render'
 import user from '@testing-library/user-event'
 import {fireEvent} from '@testing-library/react'
-import {AND} from 'event/Dashboard/component-rules'
+import {AND} from 'Event/Dashboard/component-rules'
 import {
   INCLUDE,
   TAGS,
-} from 'event/Dashboard/component-rules/RuleConfig/RuleList/SingleRule/TagsRule'
+} from 'Event/Dashboard/component-rules/RuleConfig/RuleList/SingleRule/TagsRule'
 
 it('should show config, and hide child content', () => {
   const {rerender, getByTestId, queryByTestId} = render(

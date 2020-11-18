@@ -1,14 +1,14 @@
 import React from 'react'
 import user from '@testing-library/user-event'
 import faker from 'faker'
-import {fakeSimpleBlog} from 'event/Dashboard/Template/SimpleBlog/__utils__/factory'
+import {fakeSimpleBlog} from 'Event/Dashboard/Template/SimpleBlog/__utils__/factory'
 import {fakeUser} from 'auth/user/__utils__/factory'
-import Dashboard from 'event/Dashboard'
+import Dashboard from 'Event/Dashboard'
 import {render} from '__utils__/render'
 import {clickEdit} from '__utils__/edit'
 import {fireEvent} from '@testing-library/react'
-import {fakeEvent} from 'event/__utils__/factory'
-import StaticEventProvider from 'event/__utils__/StaticEventProvider'
+import {fakeEvent} from 'Event/__utils__/factory'
+import StaticEventProvider from 'Event/__utils__/StaticEventProvider'
 
 beforeAll(() => {
   jest.setTimeout(10000)

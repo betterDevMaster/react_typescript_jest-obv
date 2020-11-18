@@ -1,13 +1,13 @@
-import HiddenOnMatch from 'event/Dashboard/component-rules/HiddenOnMatch'
-import AttendeeProfileProvider from 'event/Dashboard/component-rules/AttendeeProfileProvider'
+import HiddenOnMatch from 'Event/Dashboard/component-rules/HiddenOnMatch'
+import AttendeeProfileProvider from 'Event/Dashboard/component-rules/AttendeeProfileProvider'
 import React from 'react'
 import faker from 'faker'
-import {AND} from 'event/Dashboard/component-rules'
+import {AND} from 'Event/Dashboard/component-rules'
 import {render} from '__utils__/render'
 import {
   INCLUDE,
   TAGS,
-} from 'event/Dashboard/component-rules/RuleConfig/RuleList/SingleRule/TagsRule'
+} from 'Event/Dashboard/component-rules/RuleConfig/RuleList/SingleRule/TagsRule'
 
 it('should render depending on rule match', () => {
   const testId = faker.random.word()

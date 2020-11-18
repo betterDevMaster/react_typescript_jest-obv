@@ -1,15 +1,15 @@
-import {Rule} from 'event/Dashboard/component-rules'
+import {Rule} from 'Event/Dashboard/component-rules'
 import styled from 'styled-components'
 import GroupRule, {
   GROUP,
-} from 'event/Dashboard/component-rules/RuleConfig/RuleList/SingleRule/GroupRule'
+} from 'Event/Dashboard/component-rules/RuleConfig/RuleList/SingleRule/GroupRule'
 import React from 'react'
 import grey from '@material-ui/core/colors/grey'
-import ConditionSelector from 'event/Dashboard/component-rules/RuleConfig/RuleList/SingleRule/ConditionSelector'
-import {TAGS} from 'event/Dashboard/component-rules/RuleConfig/RuleList/SingleRule/TagsRule'
-import NestedRule from 'event/Dashboard/component-rules/RuleConfig/RuleList/SingleRule/NestedRule'
-import TagsRule from 'event/Dashboard/component-rules/RuleConfig/RuleList/SingleRule/TagsRule'
-import {NESTED_RULE} from 'event/Dashboard/component-rules/RuleConfig/RuleList/SingleRule/NestedRule'
+import ConditionSelector from 'Event/Dashboard/component-rules/RuleConfig/RuleList/SingleRule/ConditionSelector'
+import {TAGS} from 'Event/Dashboard/component-rules/RuleConfig/RuleList/SingleRule/TagsRule'
+import NestedRule from 'Event/Dashboard/component-rules/RuleConfig/RuleList/SingleRule/NestedRule'
+import TagsRule from 'Event/Dashboard/component-rules/RuleConfig/RuleList/SingleRule/TagsRule'
+import {NESTED_RULE} from 'Event/Dashboard/component-rules/RuleConfig/RuleList/SingleRule/NestedRule'
 
 export default function SingleRule(props: {
   rule: Rule

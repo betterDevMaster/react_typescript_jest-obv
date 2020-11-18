@@ -1,4 +1,4 @@
-import {AND, BaseRule, Rule} from 'event/Dashboard/component-rules'
+import {AND, BaseRule, Rule} from 'Event/Dashboard/component-rules'
 import React from 'react'
 
 export const NESTED_RULE = 'Nested Rule'

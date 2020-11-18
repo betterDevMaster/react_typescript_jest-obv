@@ -1,10 +1,10 @@
 import Button from '@material-ui/core/Button'
 import Grid from '@material-ui/core/Grid'
-import {NavButtonWithSize} from 'event/Dashboard/components/NavButton'
+import {NavButtonWithSize} from 'Event/Dashboard/components/NavButton'
 import {
   useDashboard,
   useUpdateDashboard,
-} from 'event/Dashboard/state/DashboardProvider'
+} from 'Event/Dashboard/state/DashboardProvider'
 import React from 'react'
 import {v4 as uid} from 'uuid'
 

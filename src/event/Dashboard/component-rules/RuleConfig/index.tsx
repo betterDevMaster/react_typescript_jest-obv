@@ -1,8 +1,8 @@
-import {Rule} from 'event/Dashboard/component-rules'
+import {Rule} from 'Event/Dashboard/component-rules'
 import styled from 'styled-components'
 import React from 'react'
 import {useState} from 'react'
-import RuleList from 'event/Dashboard/component-rules/RuleConfig/RuleList'
+import RuleList from 'Event/Dashboard/component-rules/RuleConfig/RuleList'
 
 export default function RuleConfig(props: {
   children: React.ReactElement

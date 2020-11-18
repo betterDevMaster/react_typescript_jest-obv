@@ -2,7 +2,7 @@ import React from 'react'
 import styled from 'styled-components'
 import Container from '@material-ui/core/Container'
 import {MenuIconButton} from 'lib/ui/IconButton/MenuIconButton'
-import {useDashboard} from 'event/Dashboard/state/DashboardProvider'
+import {useDashboard} from 'Event/Dashboard/state/DashboardProvider'
 
 export default function Header(props: {
   primaryColor: string

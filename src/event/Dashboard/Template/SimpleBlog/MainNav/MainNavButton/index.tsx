@@ -1,9 +1,9 @@
 import Grid from '@material-ui/core/Grid'
-import HiddenOnMatch from 'event/Dashboard/component-rules/HiddenOnMatch'
+import HiddenOnMatch from 'Event/Dashboard/component-rules/HiddenOnMatch'
 import NavButton, {
   NavButtonWithSize,
-} from 'event/Dashboard/components/NavButton'
-import EditComponent from 'event/Dashboard/editor/views/EditComponent'
+} from 'Event/Dashboard/components/NavButton'
+import EditComponent from 'Event/Dashboard/editor/views/EditComponent'
 import React from 'react'
 
 export const MAIN_NAV_BUTTON = 'Main Nav Button'

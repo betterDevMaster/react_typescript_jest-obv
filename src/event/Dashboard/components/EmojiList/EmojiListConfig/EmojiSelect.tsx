@@ -3,7 +3,7 @@ import styled from 'styled-components'
 import InputLabel from '@material-ui/core/InputLabel'
 import MenuItem from '@material-ui/core/MenuItem'
 import Select from '@material-ui/core/Select'
-import {Emoji, EMOJI} from 'event/Dashboard/components/EmojiList/emoji'
+import {Emoji, EMOJI} from 'Event/Dashboard/components/EmojiList/emoji'
 import {onUnknownChangeHandler} from 'lib/dom'
 import React from 'react'
 

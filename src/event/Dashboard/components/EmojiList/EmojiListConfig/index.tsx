@@ -1,7 +1,7 @@
 import styled from 'styled-components'
-import {EmojiList} from 'event/Dashboard/components/EmojiList'
-import {Emoji} from 'event/Dashboard/components/EmojiList/emoji'
-import EmojiSelect from 'event/Dashboard/components/EmojiList/EmojiListConfig/EmojiSelect'
+import {EmojiList} from 'Event/Dashboard/components/EmojiList'
+import {Emoji} from 'Event/Dashboard/components/EmojiList/emoji'
+import EmojiSelect from 'Event/Dashboard/components/EmojiList/EmojiListConfig/EmojiSelect'
 import React from 'react'
 import CloseIcon from '@material-ui/icons/Close'
 import IconButton from 'lib/ui/IconButton'
@@ -10,7 +10,7 @@ import {onUnknownChangeHandler} from 'lib/dom'
 import {
   useDashboard,
   useUpdateDashboard,
-} from 'event/Dashboard/state/DashboardProvider'
+} from 'Event/Dashboard/state/DashboardProvider'
 
 export default function EmojiListConfig() {
   const updateDashboard = useUpdateDashboard()

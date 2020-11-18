@@ -1,4 +1,4 @@
-import {Resource, RESOURCE_ICON} from 'event/Dashboard/components/ResourceList'
+import {Resource, RESOURCE_ICON} from 'Event/Dashboard/components/ResourceList'
 import faker from 'faker'
 
 export const fakeResource = (overrides?: Partial<Resource>): Resource => ({

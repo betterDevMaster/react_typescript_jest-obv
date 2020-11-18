@@ -1,12 +1,12 @@
 import React from 'react'
 import styled from 'styled-components'
-import Heading from 'event/Dashboard/Template/SimpleBlog/Sidebar/Heading'
+import Heading from 'Event/Dashboard/Template/SimpleBlog/Sidebar/Heading'
 import Icon from '@material-ui/core/Icon'
-import EditComponent from 'event/Dashboard/editor/views/EditComponent'
-import {useEditMode} from 'event/Dashboard/editor/state/edit-mode'
-import EditModeOnly from 'event/Dashboard/editor/views/EditModeOnly'
-import AddResourceButton from 'event/Dashboard/components/ResourceList/AddResourceButton'
-import {useDashboard} from 'event/Dashboard/state/DashboardProvider'
+import EditComponent from 'Event/Dashboard/editor/views/EditComponent'
+import {useEditMode} from 'Event/Dashboard/editor/state/edit-mode'
+import EditModeOnly from 'Event/Dashboard/editor/views/EditModeOnly'
+import AddResourceButton from 'Event/Dashboard/components/ResourceList/AddResourceButton'
+import {useDashboard} from 'Event/Dashboard/state/DashboardProvider'
 
 export interface ResourceList {
   description: string

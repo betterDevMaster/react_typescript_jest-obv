@@ -1,8 +1,8 @@
 import {authReducer} from 'auth'
-import {editorReducer} from 'event/Dashboard/editor/state'
-import {dashboardReducer} from 'event/Dashboard/state'
-import {saveDashboardEpic} from 'event/Dashboard/state/epics'
-import {eventReducer} from 'event/state'
+import {editorReducer} from 'Event/Dashboard/editor/state'
+import {dashboardReducer} from 'Event/Dashboard/state'
+import {saveDashboardEpic} from 'Event/Dashboard/state/epics'
+import {eventReducer} from 'Event/state'
 import {
   createStore as createReduxStore,
   applyMiddleware,

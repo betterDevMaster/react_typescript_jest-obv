@@ -1,8 +1,8 @@
-import EditModeOnly from 'event/Dashboard/editor/views/EditModeOnly'
-import MainNavButton from 'event/Dashboard/Template/SimpleBlog/MainNav/MainNavButton'
-import NewMainNavButton from 'event/Dashboard/Template/SimpleBlog/MainNav/MainNavButton/NewMainNavButton'
+import EditModeOnly from 'Event/Dashboard/editor/views/EditModeOnly'
+import MainNavButton from 'Event/Dashboard/Template/SimpleBlog/MainNav/MainNavButton'
+import NewMainNavButton from 'Event/Dashboard/Template/SimpleBlog/MainNav/MainNavButton/NewMainNavButton'
 import React from 'react'
-import {useDashboard} from 'event/Dashboard/state/DashboardProvider'
+import {useDashboard} from 'Event/Dashboard/state/DashboardProvider'
 
 export default function MainNav() {
   const {mainNav: buttons} = useDashboard()

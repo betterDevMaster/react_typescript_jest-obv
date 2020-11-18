@@ -1,10 +1,10 @@
-import {AND, OR, Rule} from 'event/Dashboard/component-rules'
-import {matchesTagsRule} from 'event/Dashboard/component-rules/RuleConfig/RuleList/SingleRule/TagsRule/matcher'
-import {NESTED_RULE} from 'event/Dashboard/component-rules/RuleConfig/RuleList/SingleRule/NestedRule'
-import {GROUP} from 'event/Dashboard/component-rules/RuleConfig/RuleList/SingleRule/GroupRule'
-import {matchesGroupRule} from 'event/Dashboard/component-rules/RuleConfig/RuleList/SingleRule/GroupRule/matcher'
-import {TAGS} from 'event/Dashboard/component-rules/RuleConfig/RuleList/SingleRule/TagsRule'
-import {Groups, Tags} from 'event/attendee'
+import {AND, OR, Rule} from 'Event/Dashboard/component-rules'
+import {matchesTagsRule} from 'Event/Dashboard/component-rules/RuleConfig/RuleList/SingleRule/TagsRule/matcher'
+import {NESTED_RULE} from 'Event/Dashboard/component-rules/RuleConfig/RuleList/SingleRule/NestedRule'
+import {GROUP} from 'Event/Dashboard/component-rules/RuleConfig/RuleList/SingleRule/GroupRule'
+import {matchesGroupRule} from 'Event/Dashboard/component-rules/RuleConfig/RuleList/SingleRule/GroupRule/matcher'
+import {TAGS} from 'Event/Dashboard/component-rules/RuleConfig/RuleList/SingleRule/TagsRule'
+import {Groups, Tags} from 'Event/attendee'
 
 export const hasMatch = (
   {groups = {}, tags = []}: {groups?: Groups; tags?: Tags},

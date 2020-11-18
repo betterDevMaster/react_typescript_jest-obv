@@ -1,5 +1,5 @@
-import {ObvioEvent} from 'event'
-import {fakeSimpleBlog} from 'event/Dashboard/Template/SimpleBlog/__utils__/factory'
+import {ObvioEvent} from 'Event'
+import {fakeSimpleBlog} from 'Event/Dashboard/Template/SimpleBlog/__utils__/factory'
 import faker from 'faker'
 
 export const fakeEvent = (): ObvioEvent => ({

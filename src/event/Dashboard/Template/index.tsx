@@ -1,7 +1,7 @@
 import React from 'react'
-import SimpleBlog, {SIMPLE_BLOG} from 'event/Dashboard/Template/SimpleBlog'
-import {DashboardProps} from 'event/Dashboard'
-import {useDashboard} from 'event/Dashboard/state/DashboardProvider'
+import SimpleBlog, {SIMPLE_BLOG} from 'Event/Dashboard/Template/SimpleBlog'
+import {DashboardProps} from 'Event/Dashboard'
+import {useDashboard} from 'Event/Dashboard/state/DashboardProvider'
 
 export default function Template(props: DashboardProps) {
   const dashboard = useDashboard()

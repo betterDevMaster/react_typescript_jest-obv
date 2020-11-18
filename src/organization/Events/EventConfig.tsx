@@ -1,7 +1,7 @@
 import Button from '@material-ui/core/Button'
-import {useEventRoutes} from 'event'
+import {useEventRoutes} from 'Event/url'
 import {RelativeLink} from 'lib/ui/link/RelativeLink'
-import {useEvent} from 'organization/Events/EventProvider'
+import {useEvent} from 'Event/EventProvider'
 import Page from 'organization/user/Layout/Page'
 import React from 'react'
 

@@ -1,8 +1,8 @@
-import {useEditMode} from 'event/Dashboard/editor/state/edit-mode'
-import EditComponent from 'event/Dashboard/editor/views/EditComponent'
+import {useEditMode} from 'Event/Dashboard/editor/state/edit-mode'
+import EditComponent from 'Event/Dashboard/editor/views/EditComponent'
 import React from 'react'
 import styled from 'styled-components'
-import {useDashboard} from 'event/Dashboard/state/DashboardProvider'
+import {useDashboard} from 'Event/Dashboard/state/DashboardProvider'
 
 export const FOOTER = 'footer'
 

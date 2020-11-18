@@ -2,17 +2,17 @@ import {Select} from '@material-ui/core'
 import FormControl from '@material-ui/core/FormControl/FormControl'
 import MenuItem from '@material-ui/core/MenuItem/MenuItem'
 import TextField from '@material-ui/core/TextField/TextField'
-import {RuleConfigProps} from 'event/Dashboard/component-rules/RuleConfig/RuleList/RuleForm/SourceConfig'
+import {RuleConfigProps} from 'Event/Dashboard/component-rules/RuleConfig/RuleList/RuleForm/SourceConfig'
 import {onChangeStringHandler, onUnknownChangeHandler} from 'lib/dom'
 import React, {useEffect, useState} from 'react'
-import {Rule} from 'event/Dashboard/component-rules'
+import {Rule} from 'Event/Dashboard/component-rules'
 import {
   createTagsRule,
   DOES_NOT_INCLUDE,
   INCLUDE,
   TAGS,
   TagsRule,
-} from 'event/Dashboard/component-rules/RuleConfig/RuleList/SingleRule/TagsRule'
+} from 'Event/Dashboard/component-rules/RuleConfig/RuleList/SingleRule/TagsRule'
 
 export default function TagsRuleConfig(props: RuleConfigProps) {
   const [type, setType] = useState<TagsRule['type']>(initialType(props.rule))
