@@ -9,6 +9,14 @@ import {fireEvent} from '@testing-library/dom'
 import {clickEdit} from '__utils__/edit'
 import {fakeEvent} from 'Event/__utils__/factory'
 import StaticEventProvider from 'Event/__utils__/StaticEventProvider'
+import {mockRxJsAjax} from 'store/__utils__/MockStoreProvider'
+import {wait} from '@testing-library/react'
+
+const mockPost = mockRxJsAjax.post as jest.Mock
+
+afterEach(() => {
+  jest.clearAllMocks()
+})
 
 it('should render emojis', async () => {
   const emojis = Array.from(
@@ -85,6 +93,15 @@ it('should pick an emoji', async () => {
   expect(emojis.length).toBe(1)
 
   expect(emojis[0].getAttribute('alt')).toBe(emoji)
+
+  // Saved
+  await wait(() => {
+    expect(mockPost).toHaveBeenCalledTimes(1)
+  })
+
+  const [url, data] = mockPost.mock.calls[0]
+  expect(url).toMatch(`/events/${event.slug}`)
+  expect(data.dashboard.emojiList.emojis.length).toBe(1)
 })
 
 it('should remove an existing emoji', async () => {
@@ -116,4 +133,13 @@ it('should remove an existing emoji', async () => {
   expect((await findAllByLabelText('event emoji')).length).toBe(
     emojis.length - 1,
   )
+
+  // Saved
+  await wait(() => {
+    expect(mockPost).toHaveBeenCalledTimes(1)
+  })
+
+  const [url, data] = mockPost.mock.calls[0]
+  expect(url).toMatch(`/events/${event.slug}`)
+  expect(data.dashboard.emojiList.emojis.length).toBe(emojis.length - 1)
 })

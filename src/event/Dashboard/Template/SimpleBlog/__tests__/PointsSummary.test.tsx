@@ -10,6 +10,13 @@ import {fireEvent, wait} from '@testing-library/dom'
 import {clickEdit} from '__utils__/edit'
 import {fakeEvent} from 'Event/__utils__/factory'
 import StaticEventProvider from 'Event/__utils__/StaticEventProvider'
+import {mockRxJsAjax} from 'store/__utils__/MockStoreProvider'
+
+const mockPost = mockRxJsAjax.post as jest.Mock
+
+afterEach(() => {
+  jest.clearAllMocks()
+})
 
 it('should render points', async () => {
   const dashboard = fakeSimpleBlog({points: null})
@@ -69,6 +76,15 @@ it('should configure points', async () => {
   const pointsText = new RegExp(`you've earned 0 ${unit}!`, 'i')
 
   expect(await findByText(pointsText)).toBeInTheDocument()
+
+  // Saved
+  await wait(() => {
+    expect(mockPost).toHaveBeenCalledTimes(1)
+  })
+
+  const [url, data] = mockPost.mock.calls[0]
+  expect(url).toMatch(`/events/${event.slug}`)
+  expect(data.dashboard.points).not.toBeNull()
 })
 
 it('should remove points', async () => {
@@ -94,4 +110,13 @@ it('should remove points', async () => {
   await wait(() => {
     expect(queryByText(/you've earned/i)).not.toBeInTheDocument()
   })
+
+  // Saved
+  await wait(() => {
+    expect(mockPost).toHaveBeenCalledTimes(1)
+  })
+
+  const [url, data] = mockPost.mock.calls[0]
+  expect(url).toMatch(`/events/${event.slug}`)
+  expect(data.dashboard.points).toBeNull()
 })

@@ -1,6 +1,6 @@
 import React from 'react'
 import faker from 'faker'
-import {fireEvent} from '@testing-library/react'
+import {fireEvent, wait} from '@testing-library/react'
 import {fakeSimpleBlog} from 'Event/Dashboard/Template/SimpleBlog/__utils__/factory'
 import {fakeUser} from 'auth/user/__utils__/factory'
 import Dashboard from 'Event/Dashboard'
@@ -10,6 +10,13 @@ import {clickEdit} from '__utils__/edit'
 import user from '@testing-library/user-event'
 import {fakeEvent} from 'Event/__utils__/factory'
 import StaticEventProvider from 'Event/__utils__/StaticEventProvider'
+import {mockRxJsAjax} from 'store/__utils__/MockStoreProvider'
+
+const mockPost = mockRxJsAjax.post as jest.Mock
+
+afterEach(() => {
+  jest.clearAllMocks()
+})
 
 it('should render agendas', async () => {
   const dashboard = fakeSimpleBlog({agendas: []})
@@ -73,6 +80,15 @@ it('should edit an agenda', async () => {
   expect(
     (await findAllByLabelText('agenda event'))[targetIndex].textContent,
   ).toBe(updatedText)
+
+  // Saved
+  await wait(() => {
+    expect(mockRxJsAjax.post).toHaveBeenCalledTimes(1)
+  })
+
+  const [url, data] = mockPost.mock.calls[0]
+  expect(url).toMatch(`/events/${event.slug}`)
+  expect(data.dashboard.agendas[targetIndex].text).toBe(updatedText)
 })
 
 it('should add a new agenda', async () => {
@@ -90,6 +106,15 @@ it('should add a new agenda', async () => {
   fireEvent.click(await findByLabelText('add agenda event'))
 
   expect((await findAllByLabelText('agenda')).length).toBe(1)
+
+  // Saved
+  await wait(() => {
+    expect(mockRxJsAjax.post).toHaveBeenCalledTimes(1)
+  })
+
+  const [url, data] = mockPost.mock.calls[0]
+  expect(url).toMatch(`/events/${event.slug}`)
+  expect(data.dashboard.agendas.length).toBe(1)
 })
 
 it('should remove an agenda', async () => {
@@ -123,4 +148,13 @@ it('should remove an agenda', async () => {
   )
 
   expect(queryByText(targetText)).not.toBeInTheDocument()
+
+  // Saved
+  await wait(() => {
+    expect(mockPost).toHaveBeenCalledTimes(1)
+  })
+
+  const [url, data] = mockPost.mock.calls[0]
+  expect(url).toMatch(`/events/${event.slug}`)
+  expect(data.dashboard.agendas.length).toBe(agendas.length - 1)
 })

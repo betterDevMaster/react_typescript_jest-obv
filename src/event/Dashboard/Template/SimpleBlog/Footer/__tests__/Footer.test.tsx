@@ -9,6 +9,14 @@ import {clickEdit} from '__utils__/edit'
 import {fireEvent} from '@testing-library/react'
 import {fakeEvent} from 'Event/__utils__/factory'
 import StaticEventProvider from 'Event/__utils__/StaticEventProvider'
+import {mockRxJsAjax} from 'store/__utils__/MockStoreProvider'
+import {wait} from '@testing-library/react'
+
+const mockPost = mockRxJsAjax.post as jest.Mock
+
+afterEach(() => {
+  jest.clearAllMocks()
+})
 
 beforeAll(() => {
   jest.setTimeout(10000)
@@ -85,4 +93,13 @@ it('should configure the footer', async () => {
   fireEvent.click(await findByLabelText('close config dialog'))
 
   expect((await findByLabelText('copyright')).textContent).toBe(copyrightText)
+
+  // Saved
+  await wait(() => {
+    expect(mockPost).toHaveBeenCalledTimes(1)
+  })
+
+  const [url, data] = mockPost.mock.calls[0]
+  expect(url).toMatch(`/events/${event.slug}`)
+  expect(data.dashboard.footer.copyrightText).toBe(copyrightText)
 })

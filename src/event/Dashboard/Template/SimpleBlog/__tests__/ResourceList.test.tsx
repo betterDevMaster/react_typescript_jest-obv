@@ -10,6 +10,14 @@ import {fireEvent} from '@testing-library/dom'
 import {clickEdit} from '__utils__/edit'
 import {fakeEvent} from 'Event/__utils__/factory'
 import StaticEventProvider from 'Event/__utils__/StaticEventProvider'
+import {mockRxJsAjax} from 'store/__utils__/MockStoreProvider'
+import {wait} from '@testing-library/react'
+
+const mockPost = mockRxJsAjax.post as jest.Mock
+
+afterEach(() => {
+  jest.clearAllMocks()
+})
 
 it('should render resources', async () => {
   const dashboard = fakeSimpleBlog({
@@ -68,6 +76,15 @@ it('should add a new resource', async () => {
 
   fireEvent.click(await findByLabelText('add resource'))
   expect((await findAllByLabelText('event resource')).length).toBe(2)
+
+  // Saved
+  await wait(() => {
+    expect(mockPost).toHaveBeenCalledTimes(1)
+  })
+
+  const [url, data] = mockPost.mock.calls[0]
+  expect(url).toMatch(`/events/${event.slug}`)
+  expect(data.dashboard.resourceList.resources.length).toBe(2)
 })
 
 it('should update resources description', async () => {
@@ -105,6 +122,15 @@ it('should update resources description', async () => {
   expect((await findByLabelText('resource description')).textContent).toBe(
     updatedDescription,
   )
+
+  // Saved
+  await wait(() => {
+    expect(mockPost).toHaveBeenCalledTimes(1)
+  })
+
+  const [url, data] = mockPost.mock.calls[0]
+  expect(url).toMatch(`/events/${event.slug}`)
+  expect(data.dashboard.resourceList.description).toBe(updatedDescription)
 })
 
 it('should update a resource', async () => {
@@ -135,6 +161,15 @@ it('should update a resource', async () => {
   fireEvent.click(await findByLabelText('close config dialog'))
 
   expect((await findByLabelText('resource link')).textContent).toBe(updatedName)
+
+  // Saved
+  await wait(() => {
+    expect(mockPost).toHaveBeenCalledTimes(1)
+  })
+
+  const [url, data] = mockPost.mock.calls[0]
+  expect(url).toMatch(`/events/${event.slug}`)
+  expect(data.dashboard.resourceList.resources[0].name).toBe(updatedName)
 })
 
 it('should remove a resource', async () => {
@@ -173,4 +208,15 @@ it('should remove a resource', async () => {
   )
 
   expect(queryByText(targetName)).not.toBeInTheDocument()
+
+  // Saved
+  await wait(() => {
+    expect(mockPost).toHaveBeenCalledTimes(1)
+  })
+
+  const [url, data] = mockPost.mock.calls[0]
+  expect(url).toMatch(`/events/${event.slug}`)
+  expect(data.dashboard.resourceList.resources.length).toBe(
+    resources.length - 1,
+  )
 })
