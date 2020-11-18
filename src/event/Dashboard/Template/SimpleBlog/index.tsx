@@ -60,7 +60,7 @@ export interface SimpleBlog {
 export default function SimpleBlog(props: {user: User}) {
   const [menuVisible, setMenuVisible] = useState(false)
   const toggleMenu = () => setMenuVisible(!menuVisible)
-  const {primaryColor, welcomeText} = useDashboard()
+  const {primaryColor} = useDashboard()
 
   return (
     <Box>
