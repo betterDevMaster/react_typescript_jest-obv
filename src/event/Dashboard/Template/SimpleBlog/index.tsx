@@ -31,6 +31,7 @@ import {useDashboard} from 'Event/Dashboard/state/DashboardProvider'
 export const SIMPLE_BLOG = 'SIMPLE_BLOG'
 
 export interface SimpleBlog {
+  version: number
   template: typeof SIMPLE_BLOG
   title: string
   mainNav: EntityList<NavButtonWithSize>
@@ -112,6 +113,7 @@ export default function SimpleBlog(props: {user: User}) {
 }
 
 export const createSimpleBlog = (): SimpleBlog => ({
+  version: 1,
   template: SIMPLE_BLOG,
   title: '',
   mainNav: {

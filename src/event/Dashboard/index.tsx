@@ -8,7 +8,11 @@ import DashboardProvider from 'Event/Dashboard/state/DashboardProvider'
 import {useDispatch} from 'react-redux'
 import {setEditMode} from 'Event/Dashboard/editor/state/actions'
 
-export type Dashboard = SimpleBlog
+type BaseAttributes = {
+  version: number
+}
+
+export type Dashboard = BaseAttributes & SimpleBlog
 
 export type DashboardProps = {
   dashboard: Dashboard | null
