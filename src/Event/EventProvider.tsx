@@ -3,9 +3,10 @@ import {useAsync} from 'lib/async'
 import {api} from 'lib/url'
 import {domainEventSlug, useParamEventSlug} from 'Event/url'
 import React, {useCallback, useEffect} from 'react'
-import {useDispatch} from 'react-redux'
+import {useDispatch, useSelector} from 'react-redux'
 import {setEvent} from 'Event/state/actions'
-import { ObvioEvent } from 'Event'
+import {ObvioEvent} from 'Event'
+import {RootState} from 'store'
 
 export const EventContext = React.createContext<ObvioEvent | undefined>(
   undefined,
@@ -28,17 +29,18 @@ function EventProvider(props: {children: React.ReactNode; slug: string}) {
   }, [slug])
   const dispatch = useDispatch()
 
-  const {data: event, loading} = useAsync(find)
+  const {data: saved, loading} = useAsync(find)
+  const current = useSelector((state: RootState) => state.event)
 
   useEffect(() => {
-    dispatch(setEvent(event))
-  }, [event, dispatch])
+    dispatch(setEvent(saved))
+  }, [saved, dispatch])
 
-  if (loading) {
+  if (loading || !current) {
     return null
   }
 
-  if (!event) {
+  if (!saved) {
     return (
       <div>
         <h1>404 - Event not found</h1>
@@ -47,7 +49,7 @@ function EventProvider(props: {children: React.ReactNode; slug: string}) {
   }
 
   return (
-    <EventContext.Provider value={event}>
+    <EventContext.Provider value={current}>
       {props.children}
     </EventContext.Provider>
   )

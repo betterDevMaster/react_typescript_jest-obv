@@ -1,4 +1,4 @@
-import {createRoutes, getSubdomain, replaceRouteParam} from 'lib/url'
+import {createRoutes, getSubdomain, routesWithValue} from 'lib/url'
 
 it('should return the correct subdomain', () => {
   expect(getSubdomain('sage.obv.io')).toBe('sage')
@@ -37,7 +37,7 @@ it('should namespace routes', () => {
 
 it('should replace route params', () => {
   expect(
-    replaceRouteParam(':bar', 'baz', {
+    routesWithValue(':bar', 'baz', {
       foo: ':bar',
     }),
   ).toMatchObject({
@@ -46,7 +46,7 @@ it('should replace route params', () => {
 
   // Nested
   expect(
-    replaceRouteParam(':bar', 'baz', {
+    routesWithValue(':bar', 'baz', {
       foo: ':bar/baz',
       quex: {
         kwe: '/bar/foo/:bar',
