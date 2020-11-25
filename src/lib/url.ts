@@ -1,3 +1,4 @@
+import {isStaging} from 'App'
 import {ExtendRecursively} from 'lib/type-utils'
 
 export const getSubdomain = (location: string) => {
@@ -26,6 +27,15 @@ export const getSubdomain = (location: string) => {
 export const api = (path: string) => {
   const baseUrl = process.env.REACT_APP_API_URL
   return `${baseUrl}${path}`
+}
+
+export const publicAsset = (path: string) => {
+  const prodBucket = 'https://obvio-platform-public.s3.us-east-2.amazonaws.com'
+  const stagingBucket =
+    'https://obvio-platform-public-staging.s3.us-east-2.amazonaws.com'
+
+  const base = isStaging ? stagingBucket : prodBucket
+  return `${base}/${path}`
 }
 
 type Routes = {
@@ -63,11 +73,7 @@ export function createRoutes<T extends Routes>(
   return childRoutes
 }
 
-export function replaceRouteParam<T>(
-  param: string,
-  value: string,
-  routes: T,
-): T {
+export function routesWithValue<T>(param: string, value: string, routes: T): T {
   return Object.entries(routes).reduce((acc, [key, route]) => {
     if (typeof route === 'string') {
       const withParam = route.replace(param, value)
@@ -75,7 +81,7 @@ export function replaceRouteParam<T>(
       return acc
     }
 
-    acc[key] = replaceRouteParam(param, value, route)
+    acc[key] = routesWithValue(param, value, route)
     return acc
   }, {} as any)
 }

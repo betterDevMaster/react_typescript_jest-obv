@@ -1,6 +1,5 @@
 import {Dashboard} from 'Event/Dashboard'
 import {setDashboard, updateDashboard} from 'Event/Dashboard/state/actions'
-import {createSimpleBlog} from 'Event/Dashboard/Template/SimpleBlog'
 import React, {useEffect} from 'react'
 import {useDispatch, useSelector} from 'react-redux'
 import {RootState} from 'store'
@@ -9,13 +8,13 @@ const DashboardContext = React.createContext<Dashboard | undefined>(undefined)
 
 export default function DashboardProvider(props: {
   children: React.ReactNode
-  saved: Dashboard | null
+  saved: Dashboard
 }) {
   const dispatch = useDispatch()
   const current = useSelector((state: RootState) => state.dashboard)
 
   useEffect(() => {
-    const dashboard = props.saved || createSimpleBlog()
+    const dashboard = props.saved
     dispatch(setDashboard(dashboard))
   }, [dispatch, props.saved])
 

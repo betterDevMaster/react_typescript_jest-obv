@@ -16,6 +16,7 @@ import {createEntityList} from 'lib/list'
 
 export const fakeSimpleBlog = (overrides?: Partial<SimpleBlog>): SimpleBlog => {
   const defaultAttributes: SimpleBlog = {
+    version: 1,
     template: SIMPLE_BLOG,
     title: faker.company.companyName(),
     logo: 'https://tax.live/success_summit/images/virtual-2020-logo.png',
