@@ -77,9 +77,11 @@ export function createRoutesFor(organization: Organization) {
         create: '/create',
         ':event': {
           dashboard: '/dashboard',
+          waiver: '/waiver',
         },
       },
     },
+    // Namespace
     `organization/${organization.slug}`,
   )
 }

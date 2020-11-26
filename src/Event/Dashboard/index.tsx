@@ -15,7 +15,7 @@ type BaseAttributes = {
 export type Dashboard = BaseAttributes & SimpleBlog
 
 export type DashboardProps = {
-  dashboard: Dashboard | null
+  dashboard: Dashboard
   isEditMode?: boolean
   user: User
 }

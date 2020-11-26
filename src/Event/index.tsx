@@ -4,6 +4,12 @@ import AttendeeProfileProvider from 'Event/Dashboard/component-rules/AttendeePro
 import {useEvent} from 'Event/EventProvider'
 import React from 'react'
 
+export interface WaiverConfig {
+  logo: null | string
+  title: null | string
+  body: string
+}
+
 // Can't use 'Event' because that's already a native DOM type
 // for browser events and we'd lose TS safety/import assist.
 export interface ObvioEvent {
@@ -11,10 +17,15 @@ export interface ObvioEvent {
   name: string
   slug: string
   dashboard: null | DashboardData
+  waiver: null | WaiverConfig
 }
 
 export default function EventSite() {
   const event = useEvent()
+
+  if (!event.dashboard) {
+    throw new Error(`Dashboard has not been created for event: ${event.name}`)
+  }
 
   return (
     <AttendeeProfileProvider groups={{}} tags={[]}>

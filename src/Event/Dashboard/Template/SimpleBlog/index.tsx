@@ -28,7 +28,7 @@ import EditComponent from 'Event/Dashboard/editor/views/EditComponent'
 import MainNav from 'Event/Dashboard/Template/SimpleBlog/MainNav'
 import {useDashboard} from 'Event/Dashboard/state/DashboardProvider'
 
-export const SIMPLE_BLOG = 'SIMPLE_BLOG'
+export const SIMPLE_BLOG = 'Simple Blog'
 
 export interface SimpleBlog {
   version: number

@@ -1,12 +1,11 @@
 import Events from 'organization/Events'
 import CreateEventForm from 'organization/Events/CreateEventForm'
-import DashboardConfig from 'Event/Dashboard/DashboardConfig'
-import EventConfig from 'organization/Events/EventConfig'
 import {RouteEventProvider} from 'Event/EventProvider'
 import Layout from 'organization/user/Layout'
 import React from 'react'
 import {Redirect, Route, Switch} from 'react-router-dom'
 import {useOrganization} from 'organization/OrganizationProvider'
+import EventConfigRoutes from 'organization/Events/EventConfig/EventConfigRoutes'
 
 export default function UserRoutes() {
   const {routes} = useOrganization()
@@ -26,14 +25,9 @@ export default function UserRoutes() {
         <Route path={routes.events.root} exact>
           <Events />
         </Route>
-        <Route path={routes.events[':event'].dashboard}>
-          <RouteEventProvider>
-            <DashboardConfig />
-          </RouteEventProvider>
-        </Route>
         <Route path={routes.events[':event'].root}>
           <RouteEventProvider>
-            <EventConfig />
+            <EventConfigRoutes />
           </RouteEventProvider>
         </Route>
         <Redirect to={routes.events.root} />

@@ -1,7 +1,6 @@
 import {authReducer} from 'auth'
 import {editorReducer} from 'Event/Dashboard/editor/state'
 import {dashboardReducer} from 'Event/Dashboard/state'
-import {saveDashboardEpic} from 'Event/Dashboard/state/epics'
 import {eventReducer} from 'Event/state'
 import {
   createStore as createReduxStore,
@@ -12,6 +11,7 @@ import {
 import {combineEpics, createEpicMiddleware} from 'redux-observable'
 import {AjaxCreationMethod} from 'rxjs/internal/observable/dom/AjaxObservable'
 import {ajax as rxJsAjax} from 'rxjs/ajax'
+import {dashboardEpics} from 'Event/Dashboard/state/epics'
 
 export const rootReducer = combineReducers({
   dashboard: dashboardReducer,
@@ -30,6 +30,8 @@ type StoreOptions = {
   ajax: AjaxCreationMethod
 }
 
+const rootEpic = combineEpics(dashboardEpics)
+
 // Make creating a store a fn to avoid tests sharing the same store. We'll also
 // accept dependencies here.
 export const createStore = ({ajax}: StoreOptions = {ajax: rxJsAjax}) => {
@@ -47,4 +49,3 @@ export const createStore = ({ajax}: StoreOptions = {ajax: rxJsAjax}) => {
 
   return store
 }
-const rootEpic = combineEpics(saveDashboardEpic)

@@ -12,6 +12,17 @@ export default function EventConfig() {
   return (
     <Page>
       <h2>{event.name}</h2>
+
+      <RelativeLink disableStyles to={routes.waiver}>
+        <Button
+          variant="contained"
+          color="primary"
+          aria-label="configure waiver"
+        >
+          Configure Waiver
+        </Button>
+      </RelativeLink>
+
       <RelativeLink disableStyles to={routes.dashboard}>
         <Button
           variant="contained"
