@@ -1,4 +1,4 @@
-import {isStaging} from 'App'
+import {isProduction, isStaging} from 'App'
 import {ExtendRecursively} from 'lib/type-utils'
 
 export const getSubdomain = (location: string) => {
@@ -29,17 +29,37 @@ export const api = (path: string) => {
   return `${baseUrl}${path}`
 }
 
-export const publicAsset = (path: string) => {
-  const prodBucket = 'https://obvio-platform-public.s3.us-east-2.amazonaws.com'
+/**
+ * Storage path for public assets store on the server
+ *
+ * @param path
+ */
+export const storage = (path: string) => {
+  const local = `${process.env.REACT_APP_API_URL}/storage`
+  const prodBucket = 'https://obvio-platform-public.s3.us-east-2.amazonaws.com/'
   const stagingBucket =
-    'https://obvio-platform-public-staging.s3.us-east-2.amazonaws.com'
+    'https://obvio-platform-public-staging.s3.us-east-2.amazonaws.com/'
 
-  const base = isStaging ? stagingBucket : prodBucket
-  return `${base}/${path}`
+  if (!isProduction) {
+    return `${local}${path}`
+  }
+
+  const bucket = isStaging ? stagingBucket : prodBucket
+  return `${bucket}/${path}`
 }
 
 type Routes = {
   [key: string]: string | Routes
+}
+
+/**
+ * Public path for frontend assets
+ * Reference: https://create-react-app.dev/docs/using-the-public-folder/
+ *
+ * @param path
+ */
+export function publicAsset(path: string) {
+  return `${process.env.PUBLIC_URL}${path}`
 }
 
 /**

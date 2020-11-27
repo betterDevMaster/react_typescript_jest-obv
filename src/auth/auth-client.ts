@@ -110,13 +110,9 @@ async function fetchUser(
   endpoint: string,
 ): Promise<User | null> {
   const url = api(endpoint)
-  return client
-    .get<User>(url, {
-      tokenKey,
-    })
-    .then((user) => {
-      return user
-    })
+  return client.get<any>(url, {
+    tokenKey,
+  })
 }
 
 export const attemptLogin = (

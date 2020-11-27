@@ -38,7 +38,7 @@ export default function WaiverConfig() {
   const setWaiver = useSetWaiver()
   const dispatch = useDispatch()
   const routes = useEventRoutes()
-  const event = useEvent()
+  const {event} = useEvent()
   const history = useHistory()
   // Prevent updating unmounted component
   const mounted = useRef(true)
@@ -207,7 +207,7 @@ function BodyError(props: {error?: {message: string}}) {
 }
 
 function useSetWaiver() {
-  const event = useEvent()
+  const {event} = useEvent()
   const {client} = useOrganization()
   const url = api(`/events/${event.slug}/waiver`)
 

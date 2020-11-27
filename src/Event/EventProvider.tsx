@@ -7,8 +7,14 @@ import {useDispatch, useSelector} from 'react-redux'
 import {setEvent} from 'Event/state/actions'
 import {ObvioEvent} from 'Event'
 import {RootState} from 'store'
+import {EventClient, eventClient} from 'Event/api-client'
 
-export const EventContext = React.createContext<ObvioEvent | undefined>(
+interface EventContextProps {
+  event: ObvioEvent
+  client: EventClient
+}
+
+export const EventContext = React.createContext<EventContextProps | undefined>(
   undefined,
 )
 
@@ -49,7 +55,12 @@ function EventProvider(props: {children: React.ReactNode; slug: string}) {
   }
 
   return (
-    <EventContext.Provider value={current}>
+    <EventContext.Provider
+      value={{
+        event: current,
+        client: eventClient,
+      }}
+    >
       {props.children}
     </EventContext.Provider>
   )

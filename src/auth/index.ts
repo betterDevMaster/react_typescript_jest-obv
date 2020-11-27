@@ -8,9 +8,10 @@ import {
   SET_USER_ACTION,
 } from 'auth/actions'
 import {User} from 'auth/user'
+import {Attendee} from 'Event/attendee'
 
 export interface AuthState {
-  user: User | null
+  user: User | Attendee | null
   loading: boolean
   token: null | string
 }

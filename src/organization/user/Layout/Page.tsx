@@ -5,5 +5,6 @@ import {spacing} from 'lib/ui/theme'
 export default withStyles({
   root: {
     paddingTop: spacing[6],
+    paddingBottom: spacing[8],
   },
 })(Container)
