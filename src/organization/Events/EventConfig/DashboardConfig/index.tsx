@@ -6,7 +6,7 @@ import AttendeeProfileProvider from 'Event/Dashboard/component-rules/AttendeePro
 import CreateDashboardForm from 'organization/Events/EventConfig/DashboardConfig/CreateDashboardForm'
 
 export default function DashboardConfig() {
-  const event = useEvent()
+  const {event} = useEvent()
   const {user} = useOrganizationAuth()
 
   if (!user) {

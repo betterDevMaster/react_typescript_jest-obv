@@ -7,7 +7,7 @@ import React from 'react'
 
 export default function EventConfig() {
   const routes = useEventRoutes()
-  const event = useEvent()
+  const {event} = useEvent()
 
   return (
     <Page>
