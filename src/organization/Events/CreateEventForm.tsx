@@ -5,7 +5,6 @@ import Typography from '@material-ui/core/Typography'
 import {ValidationError} from 'lib/api-client'
 import {spacing} from 'lib/ui/theme'
 import {api} from 'lib/url'
-import {ObvioEvent} from 'event'
 import {
   OrganizationClient,
   useOrganization,
@@ -15,6 +14,7 @@ import {useForm} from 'react-hook-form'
 import {useHistory} from 'react-router-dom'
 import {Organization} from 'organization'
 import Page from 'organization/user/Layout/Page'
+import {ObvioEvent} from 'Event'
 
 interface CreateEventData {
   name: string

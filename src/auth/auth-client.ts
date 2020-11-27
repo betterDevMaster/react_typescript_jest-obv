@@ -3,8 +3,6 @@ import {deleteToken, getToken, saveToken} from 'auth/token'
 import {User} from 'auth/user'
 import {client} from 'lib/api-client'
 import {api} from 'lib/url'
-import {OBVIO_TOKEN_KEY} from 'obvio/auth'
-import {organizationTokenKey} from 'organization/auth'
 import {useOrganizationUrl} from 'organization/url'
 import {useCallback, useEffect, useRef} from 'react'
 import {useDispatch, useSelector} from 'react-redux'
@@ -41,7 +39,6 @@ export const useAuthClient = (props: AuthClientProps) => {
   const {slug: organizationSlug} = useOrganizationUrl()
 
   useEffect(() => {
-    const tokenKey = accessToken(organizationSlug)
     const token = getToken(tokenKey)
 
     // No token, proceed as guest
@@ -113,13 +110,9 @@ async function fetchUser(
   endpoint: string,
 ): Promise<User | null> {
   const url = api(endpoint)
-  return client
-    .get<User>(url, {
-      tokenKey,
-    })
-    .then((user) => {
-      return user
-    })
+  return client.get<any>(url, {
+    tokenKey,
+  })
 }
 
 export const attemptLogin = (
@@ -143,12 +136,4 @@ function sendRegistrationRequest(endpoint: string, data: RegistrationData) {
     password: data.password,
     password_confirmation: data.passwordConfirmation,
   })
-}
-
-function accessToken(organizationSlug: null | string) {
-  if (!organizationSlug) {
-    return OBVIO_TOKEN_KEY
-  }
-
-  return organizationTokenKey(organizationSlug)
 }

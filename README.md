@@ -6,10 +6,14 @@ This is a single app that handles requests at various subdomains:
 
 app.obv.io (obv.io Service Admin) - Handles billing, creating organizations.
 
-myorganization.obv.io (Organization Admin) - Create/manage events, invite team
-members, define roles/permisisons
+app.obv.io/organization/myorganization (Organization Admin) - Create/manage
+events, invite team members, define roles/permisisons
 
-myorganization.obv.io/myevent - Event site for attendees
+myevent.obv.io - Event site for attendees
+
+or
+
+myevent.staging.obv.io
 
 ## Testing
 
