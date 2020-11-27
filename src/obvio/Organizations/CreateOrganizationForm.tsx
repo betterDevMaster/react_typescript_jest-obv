@@ -5,29 +5,38 @@ import Typography from '@material-ui/core/Typography'
 import {appRoot} from 'App'
 import {ValidationError} from 'lib/api-client'
 import {spacing} from 'lib/ui/theme'
+import {api} from 'lib/url'
+import {obvioClient} from 'obvio/obvio-client'
 import {obvioRoutes} from 'obvio/Routes'
-import {
-  createOrganization,
-  CreateOrganizationData,
-} from 'organization/obvio-client'
+import {Organization} from 'organization'
 import React, {useState} from 'react'
 import {useForm} from 'react-hook-form'
 import {useHistory} from 'react-router-dom'
 
+export interface Data {
+  name: string
+  slug: string
+}
+
+export function sendRequest(data: Data) {
+  const url = api('/organizations')
+  return obvioClient.post<Organization>(url, data)
+}
+
 export default function CreateOrganizationForm() {
   const {register, errors, handleSubmit, watch} = useForm()
-  const [serverError, setServerError] = useState<null | ValidationError<
-    CreateOrganizationData
-  >>(null)
+  const [serverError, setServerError] = useState<null | ValidationError<Data>>(
+    null,
+  )
   const history = useHistory()
   const [submitting, setSubmitting] = useState(false)
   const showOrganizations = () => {
     history.push(obvioRoutes.organizations.root)
   }
 
-  const submit = (data: CreateOrganizationData) => {
+  const submit = (data: Data) => {
     setSubmitting(true)
-    createOrganization(data)
+    sendRequest(data)
       .then(() => {
         showOrganizations()
       })

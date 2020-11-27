@@ -1,0 +1,47 @@
+import {Dashboard} from 'Event/Dashboard'
+import {setDashboard, updateDashboard} from 'Event/Dashboard/state/actions'
+import React, {useEffect} from 'react'
+import {useDispatch, useSelector} from 'react-redux'
+import {RootState} from 'store'
+
+const DashboardContext = React.createContext<Dashboard | undefined>(undefined)
+
+export default function DashboardProvider(props: {
+  children: React.ReactNode
+  saved: Dashboard
+}) {
+  const dispatch = useDispatch()
+  const current = useSelector((state: RootState) => state.dashboard)
+
+  useEffect(() => {
+    const dashboard = props.saved
+    dispatch(setDashboard(dashboard))
+  }, [dispatch, props.saved])
+
+  if (!current) {
+    return null
+  }
+
+  return (
+    <DashboardContext.Provider value={current}>
+      {props.children}
+    </DashboardContext.Provider>
+  )
+}
+
+export function useDashboard() {
+  const context = React.useContext(DashboardContext)
+  if (context === undefined) {
+    throw new Error('useDashboard must be used within a DashboardProvider')
+  }
+
+  return context
+}
+
+export function useUpdateDashboard() {
+  const dispatch = useDispatch()
+
+  return (updates: Partial<Dashboard>) => {
+    dispatch(updateDashboard(updates))
+  }
+}

@@ -65,3 +65,25 @@ async function handleAxiosResult<T>(promise: Promise<{data: T}>) {
     throw new Error(error)
   }
 }
+
+export const jsonHeader = (token?: string | null) => {
+  const header = {
+    // Without correct Content-Type, rxjs will serialize objects into [object, object]
+    'Content-Type': 'application/json',
+  }
+
+  if (!token) {
+    return header
+  }
+
+  return {
+    ...header,
+    Authorization: `Bearer ${token}`,
+  }
+}
+
+// Helper to create PUT request data for Laravel
+export const put = (body: any) => ({
+  ...body,
+  _method: 'PUT',
+})

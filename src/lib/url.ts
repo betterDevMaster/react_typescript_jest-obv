@@ -1,3 +1,4 @@
+import {isProduction, isStaging} from 'App'
 import {ExtendRecursively} from 'lib/type-utils'
 
 export const getSubdomain = (location: string) => {
@@ -28,8 +29,37 @@ export const api = (path: string) => {
   return `${baseUrl}${path}`
 }
 
+/**
+ * Storage path for public assets store on the server
+ *
+ * @param path
+ */
+export const storage = (path: string) => {
+  const local = `${process.env.REACT_APP_API_URL}/storage`
+  const prodBucket = 'https://obvio-platform-public.s3.us-east-2.amazonaws.com/'
+  const stagingBucket =
+    'https://obvio-platform-public-staging.s3.us-east-2.amazonaws.com/'
+
+  if (!isProduction) {
+    return `${local}${path}`
+  }
+
+  const bucket = isStaging ? stagingBucket : prodBucket
+  return `${bucket}/${path}`
+}
+
 type Routes = {
   [key: string]: string | Routes
+}
+
+/**
+ * Public path for frontend assets
+ * Reference: https://create-react-app.dev/docs/using-the-public-folder/
+ *
+ * @param path
+ */
+export function publicAsset(path: string) {
+  return `${process.env.PUBLIC_URL}${path}`
 }
 
 /**
@@ -63,11 +93,7 @@ export function createRoutes<T extends Routes>(
   return childRoutes
 }
 
-export function replaceRouteParam<T>(
-  param: string,
-  value: string,
-  routes: T,
-): T {
+export function routesWithValue<T>(param: string, value: string, routes: T): T {
   return Object.entries(routes).reduce((acc, [key, route]) => {
     if (typeof route === 'string') {
       const withParam = route.replace(param, value)
@@ -75,7 +101,7 @@ export function replaceRouteParam<T>(
       return acc
     }
 
-    acc[key] = replaceRouteParam(param, value, route)
+    acc[key] = routesWithValue(param, value, route)
     return acc
   }, {} as any)
 }

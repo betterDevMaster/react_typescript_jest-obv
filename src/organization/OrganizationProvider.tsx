@@ -1,9 +1,9 @@
 import {client, RequestOptions} from 'lib/api-client'
 import {useAsync} from 'lib/async'
-import {createRoutes} from 'lib/url'
+import {api, createRoutes} from 'lib/url'
 import {Organization} from 'organization'
 import {organizationTokenKey} from 'organization/auth'
-import {findOrganization} from 'organization/obvio-client'
+import {obvioClient} from 'obvio/obvio-client'
 import React, {useCallback} from 'react'
 import {useLocation} from 'react-router-dom'
 
@@ -77,9 +77,11 @@ export function createRoutesFor(organization: Organization) {
         create: '/create',
         ':event': {
           dashboard: '/dashboard',
+          waiver: '/waiver',
         },
       },
     },
+    // Namespace
     `organization/${organization.slug}`,
   )
 }
@@ -96,4 +98,9 @@ function createClientFor(organization: Organization): typeof client {
     delete: (url: string, options?: RequestOptions) =>
       client.delete(url, {...options, tokenKey}),
   }
+}
+
+function findOrganization(slug: string) {
+  const url = api(`/organizations/${slug}`)
+  return obvioClient.get<Organization>(url)
 }

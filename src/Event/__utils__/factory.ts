@@ -1,0 +1,25 @@
+import {ObvioEvent} from 'Event'
+import {fakeSimpleBlog} from 'Event/Dashboard/Template/SimpleBlog/__utils__/factory'
+import faker from 'faker'
+
+export const fakeEvent = (overrides?: Partial<ObvioEvent>): ObvioEvent => ({
+  id: faker.random.number({min: 1000, max: 10000}),
+  name: faker.company.companyName(),
+  slug: faker.internet.domainWord(),
+  dashboard: fakeSimpleBlog(),
+  waiver: fakeWaiver(),
+  ...overrides,
+})
+
+export function fakeWaiver(
+  overrides?: Partial<ObvioEvent['waiver']>,
+): ObvioEvent['waiver'] {
+  return {
+    logo: faker.random.alphaNumeric(10) + '.png',
+    title: faker.company.companyName(),
+    body: `<html><h1>${faker.company.bsNoun()} Waiver</h1><p>${faker.lorem.paragraphs(
+      3,
+    )}</p></html>`,
+    ...overrides,
+  }
+}

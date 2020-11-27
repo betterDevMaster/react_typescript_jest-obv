@@ -6,8 +6,8 @@ import {api} from 'lib/url'
 import {useOrganization} from 'organization/OrganizationProvider'
 import React, {useCallback} from 'react'
 import Card from 'organization/Events/Card'
-import {ObvioEvent} from 'event'
 import Page from 'organization/user/Layout/Page'
+import {ObvioEvent} from 'Event'
 
 export default function Events() {
   const {organization, routes, client} = useOrganization()
