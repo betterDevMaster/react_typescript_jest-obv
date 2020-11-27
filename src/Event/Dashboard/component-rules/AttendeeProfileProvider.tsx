@@ -10,6 +10,13 @@ const AttendeeProfileContext = React.createContext(
   (undefined as unknown) as AttendeeProfileProps,
 )
 
+/**
+ * Provide Attendee specific information. These are passed explicitly
+ * instead of directly referencing the currently authenticated user
+ * to allow mocking values when configuring a dashboard.
+ *
+ * @param props
+ */
 export default function AttendeeProfileProvider(props: {
   children: React.ReactNode
   groups: Groups
