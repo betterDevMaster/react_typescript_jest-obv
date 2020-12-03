@@ -11,7 +11,7 @@ import {render} from '__utils__/render'
 import user from '@testing-library/user-event'
 import {fireEvent, wait} from '@testing-library/react'
 import {ObvioEvent} from 'Event'
-import {waiverLogoPath} from 'Event/Waiver'
+import {waiverLogoPath} from 'Event/Step2/Waiver'
 
 const mockUseLocation = useLocation as jest.Mock
 const mockGet = axios.get as jest.Mock

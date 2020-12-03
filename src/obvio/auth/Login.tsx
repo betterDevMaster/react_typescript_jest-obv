@@ -19,7 +19,10 @@ export default function Login() {
 
   const submit = (data: {email: string; password: string}) => {
     setSubmitting(true)
-    login(data.email, data.password).catch((e) => {
+    login({
+      email: data.email,
+      password: data.password,
+    }).catch((e) => {
       setError(e.message)
       setSubmitting(false)
     })

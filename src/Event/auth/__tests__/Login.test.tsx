@@ -8,10 +8,12 @@ import {fakeEvent} from 'Event/__utils__/factory'
 import {visitEventSite} from 'Event/__utils__/url'
 import faker from 'faker'
 import React from 'react'
+import {useLocation} from 'react-router-dom'
 import {render} from '__utils__/render'
 
 const mockPost = axios.post as jest.Mock
 const mockGet = axios.get as jest.Mock
+const mockUseLocation = useLocation as jest.Mock
 
 afterEach(() => {
   jest.clearAllMocks()
@@ -70,4 +72,53 @@ it('should login a user', async () => {
 
   // viewing waiver page
   expect((await findAllByText(/waiver/i)).length).toBeGreaterThan(0)
+})
+
+it('should login a user by token', async () => {
+  const attendee = fakeAttendee({has_password: false})
+  const token = 'logintoken'
+  const accessToken = faker.random.alphaNumeric(8)
+
+  visitEventSite()
+
+  mockUseLocation.mockImplementation(() => ({
+    pathname: '',
+    search: `?token=${token}`,
+  }))
+
+  mockGet.mockImplementationOnce(() => Promise.resolve({data: attendee}))
+  mockPost.mockImplementationOnce(() =>
+    Promise.resolve({data: {access_token: accessToken}}),
+  )
+
+  const {findByLabelText} = render(<App />)
+
+  expect(await findByLabelText('password input')).toBeInTheDocument()
+
+  expect(mockPost).toHaveBeenCalledTimes(1)
+  expect(mockPost.mock.calls[0][1]['login_token']).toBe(token)
+})
+
+it('should handle an invalid login token', async () => {
+  const attendee = fakeAttendee({has_password: false})
+  const token = 'logintoken'
+
+  visitEventSite()
+
+  mockUseLocation.mockImplementation(() => ({
+    pathname: '',
+    search: `?token=${token}`,
+  }))
+
+  mockGet.mockImplementationOnce(() => Promise.resolve({data: attendee}))
+  mockPost.mockImplementationOnce(() =>
+    Promise.reject({data: {message: 'bad token'}}),
+  )
+
+  const {findByLabelText} = render(<App />)
+
+  expect(await findByLabelText(/email/i)).toBeInTheDocument()
+
+  expect(mockPost).toHaveBeenCalledTimes(1)
+  expect(mockPost.mock.calls[0][1]['login_token']).toBe(token)
 })
