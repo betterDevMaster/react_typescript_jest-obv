@@ -7,6 +7,7 @@ export const fakeAttendee = (overrides?: Partial<Attendee>): Attendee => ({
   email: faker.internet.email(),
   login_token: faker.random.alphaNumeric(8),
   waiver: null,
+  has_password: true,
   groups: {},
   tags: [],
   ...overrides,

@@ -65,8 +65,8 @@ export const useAuthClient = (props: AuthClientProps) => {
   }, [dispatch, loading, endpoints, tokenKey, organizationSlug])
 
   const login = useCallback(
-    (email: string, password: string) => {
-      return attemptLogin(endpoints.login, email, password)
+    (credentials: LoginCredentials) => {
+      return attemptLogin(endpoints.login, credentials)
         .then(({access_token: token}) => {
           saveToken(tokenKey, token)
           dispatch(setToken(token))
@@ -115,16 +115,14 @@ async function fetchUser(
   })
 }
 
+export type LoginCredentials = Record<string, string>
+
 export const attemptLogin = (
   endpoint: string,
-  email: string,
-  password: string,
+  credentials: Record<string, string>,
 ) => {
   const url = api(endpoint)
-  return client.post<TokenResponse>(url, {
-    email,
-    password,
-  })
+  return client.post<TokenResponse>(url, credentials)
 }
 
 function sendRegistrationRequest(endpoint: string, data: RegistrationData) {

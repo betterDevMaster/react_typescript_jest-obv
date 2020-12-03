@@ -10,3 +10,7 @@ beforeAll(() => {
   // Required to render <Hidden/> components in tests
   setWindowMatchMedia()
 })
+
+beforeEach(() => {
+  window.localStorage.clear()
+})
