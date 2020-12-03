@@ -19,7 +19,7 @@ import {setEvent} from 'Event/state/actions'
 import {useDispatch} from 'react-redux'
 import {useEventRoutes} from 'Event/url'
 import {useHistory} from 'react-router-dom'
-import {waiverLogoPath} from 'Event/Waiver'
+import {waiverLogoPath} from 'Event/Step2/Waiver'
 import {fetchFile} from 'lib/http-client'
 
 const imageUploadId = 'waived-logo-upload'

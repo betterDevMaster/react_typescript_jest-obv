@@ -7,12 +7,14 @@ import {fakeEvent} from 'Event/__utils__/factory'
 import {fakeAttendee} from 'Event/auth/__utils__/factory'
 import {render} from '__utils__/render'
 import {act} from '@testing-library/react'
+import {Attendee} from 'Event/attendee'
 
 const mockGet = axios.get as jest.Mock
 const mockPost = axios.post as jest.Mock
 
-export function visitEventSite() {
+export function visitEventSite(url?: string) {
   const event = fakeEvent()
+
   Object.defineProperty(window, 'location', {
     value: {
       host: `${event.slug}.${appRoot}`,
@@ -23,13 +25,13 @@ export function visitEventSite() {
   return event
 }
 
-export async function loginToEventSite() {
+export async function loginToEventSite(attendee: Attendee = fakeAttendee()) {
   const event = visitEventSite()
 
   mockPost.mockImplementationOnce(() =>
     Promise.resolve({data: {access_token: faker.random.alphaNumeric(8)}}),
   )
-  mockGet.mockImplementationOnce(() => Promise.resolve({data: fakeAttendee()}))
+  mockGet.mockImplementationOnce(() => Promise.resolve({data: attendee}))
 
   const {findByLabelText, ...otherRenderResult} = render(<App />)
 

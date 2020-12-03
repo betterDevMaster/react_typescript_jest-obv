@@ -8,4 +8,5 @@ export type Attendee = User & {
   tags: Tags
   login_token: string
   waiver: string | null
+  has_password: boolean
 }

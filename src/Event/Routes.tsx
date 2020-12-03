@@ -1,13 +1,15 @@
 import Event from 'Event'
 import {useEventAuth} from 'Event/auth'
 import Login from 'Event/auth/Login'
-import Waiver from 'Event/Waiver'
+import Step1 from 'Event/Step1'
+import Step2 from 'Event/Step2'
 import {createRoutes} from 'lib/url'
 import React from 'react'
 import {Redirect, Route, Switch} from 'react-router-dom'
 
 export const eventRoutes = createRoutes({
   login: '/login',
+  step1: '/step_1',
   step2: '/step_2',
 })
 
@@ -15,7 +17,7 @@ export default function Routes() {
   const {user, loading} = useEventAuth()
 
   if (loading) {
-    return <div>...loading</div>
+    return <div>loading...</div>
   }
 
   if (user) {
@@ -28,8 +30,11 @@ export default function Routes() {
 function UserRoutes() {
   return (
     <Switch>
+      <Route path={eventRoutes.step1}>
+        <Step1 />
+      </Route>
       <Route path={eventRoutes.step2}>
-        <Waiver />
+        <Step2 />
       </Route>
       <Route path={eventRoutes.root} exact>
         <Event />

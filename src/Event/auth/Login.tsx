@@ -1,5 +1,5 @@
 import Centered from 'lib/ui/layout/Centered'
-import React, {useState} from 'react'
+import React, {useEffect, useRef, useState} from 'react'
 import styled from 'styled-components'
 import {useEvent} from 'Event/EventProvider'
 import withStyles from '@material-ui/core/styles/withStyles'
@@ -9,21 +9,42 @@ import {useForm} from 'react-hook-form'
 import {useEventAuth} from 'Event/auth'
 import TextField from '@material-ui/core/TextField'
 import Button from '@material-ui/core/Button'
+import {useSearchParams} from 'lib/url'
 
 export default function Login() {
   const {event} = useEvent()
+  const {token} = useSearchParams()
   const {register, handleSubmit, errors} = useForm()
   const [error, setError] = useState('')
   const [submitting, setSubmitting] = useState(false)
   const {login} = useEventAuth()
+  const hasAttemptedTokenLogin = useRef(false)
 
   const submit = (data: {email: string; password: string}) => {
     setSubmitting(true)
-    login(data.email, data.password).catch((e) => {
+    login({
+      email: data.email,
+      password: data.password,
+    }).catch((e) => {
       setError(e.message)
       setSubmitting(false)
     })
   }
+
+  useEffect(() => {
+    if (!token || hasAttemptedTokenLogin.current) {
+      return
+    }
+
+    hasAttemptedTokenLogin.current = true
+    setSubmitting(true)
+    login({
+      login_token: token,
+    }).catch((e) => {
+      setError(e.message)
+      setSubmitting(false)
+    })
+  }, [token, login])
 
   return (
     <Centered>

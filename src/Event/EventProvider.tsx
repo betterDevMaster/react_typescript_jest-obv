@@ -42,8 +42,8 @@ function EventProvider(props: {children: React.ReactNode; slug: string}) {
     dispatch(setEvent(saved))
   }, [saved, dispatch])
 
-  if (loading || !current) {
-    return null
+  if (loading) {
+    return <div>loading...</div>
   }
 
   if (!saved) {
@@ -52,6 +52,10 @@ function EventProvider(props: {children: React.ReactNode; slug: string}) {
         <h1>404 - Event not found</h1>
       </div>
     )
+  }
+
+  if (!current) {
+    return null
   }
 
   return (

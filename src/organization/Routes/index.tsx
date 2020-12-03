@@ -7,7 +7,7 @@ export default function OrganizationRoutes() {
   const {user, loading} = useOrganizationAuth()
 
   if (loading) {
-    return <div>...loading</div>
+    return <div>loading...</div>
   }
 
   if (user) {

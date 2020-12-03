@@ -25,6 +25,11 @@ export interface ObvioEvent {
 export default function Event() {
   const {event} = useEvent()
   const attendee = useAttendee()
+
+  if (!attendee.has_password) {
+    return <Redirect to={eventRoutes.step1} />
+  }
+
   if (!attendee.waiver) {
     return <Redirect to={eventRoutes.step2} />
   }
