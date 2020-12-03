@@ -16,7 +16,7 @@ export default function ObvioRoutes() {
   const {user, loading} = useObvioAuth()
 
   if (loading) {
-    return <div>...loading</div>
+    return <div>loading...</div>
   }
 
   if (user) {

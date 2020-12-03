@@ -8,7 +8,7 @@ import FormControl from '@material-ui/core/FormControl'
 import FormControlLabel from '@material-ui/core/FormControlLabel'
 import Checkbox from '@material-ui/core/Checkbox'
 import {useAttendee} from 'Event/auth'
-import Signature from 'Event/Waiver/Signature'
+import Signature from 'Event/Step2/Waiver/Signature'
 import Button from '@material-ui/core/Button'
 import {onChangeCheckedHandler} from 'lib/dom'
 import {Attendee} from 'Event/attendee'
@@ -68,6 +68,9 @@ export default function Waiver() {
             <Checkbox
               checked={agree}
               onChange={onChangeCheckedHandler(setAgree)}
+              inputProps={{
+                'aria-label': 'agree to waiver checkbox',
+              }}
             />
           }
           label={label}
@@ -80,6 +83,7 @@ export default function Waiver() {
           color="primary"
           disabled={!canSubmit}
           onClick={submit}
+          aria-label="submit waiver button"
         >
           Submit
         </Button>

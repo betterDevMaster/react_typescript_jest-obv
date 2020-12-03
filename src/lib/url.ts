@@ -1,5 +1,6 @@
 import {isProduction, isStaging} from 'App'
 import {ExtendRecursively} from 'lib/type-utils'
+import {useLocation} from 'react-router-dom'
 
 export const getSubdomain = (location: string) => {
   const urlParts = location.split('.')
@@ -104,4 +105,17 @@ export function routesWithValue<T>(param: string, value: string, routes: T): T {
     acc[key] = routesWithValue(param, value, route)
     return acc
   }, {} as any)
+}
+
+export function useSearchParams() {
+  const {search} = useLocation()
+  const params = new URLSearchParams(search)
+
+  const result: Record<string, string | undefined> = {}
+
+  for (const [key, val] of params.entries()) {
+    result[key] = val
+  }
+
+  return result
 }
