@@ -1,5 +1,8 @@
 import TextField from '@material-ui/core/TextField'
-import {ResourceList} from 'Event/Dashboard/components/ResourceList'
+import {
+  ResourceList,
+  RESOURCE_LIST,
+} from 'Event/Dashboard/components/ResourceList'
 import {
   useDashboard,
   useUpdateDashboard,
@@ -7,7 +10,11 @@ import {
 import {onChangeStringHandler} from 'lib/dom'
 import React from 'react'
 
-export default function ResourceListConfig() {
+export type ResourceListConfig = {
+  type: typeof RESOURCE_LIST
+}
+
+export function ResourceListConfig() {
   const {resourceList: list} = useDashboard()
   const updateDashboard = useUpdateDashboard()
 

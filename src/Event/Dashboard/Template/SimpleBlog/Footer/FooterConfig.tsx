@@ -7,8 +7,13 @@ import {
   useDashboard,
   useUpdateDashboard,
 } from 'Event/Dashboard/state/DashboardProvider'
+import {FOOTER} from 'Event/Dashboard/Template/SimpleBlog/Footer'
 
-export default function FooterConfig() {
+export type FooterConfig = {
+  type: typeof FOOTER
+}
+
+export function FooterConfig() {
   const {footer} = useDashboard()
   const updateDashboard = useUpdateDashboard()
 

@@ -12,13 +12,20 @@ import DangerButton from 'lib/ui/Button/DangerButton'
 import React from 'react'
 import Box from '@material-ui/core/Box'
 import {useCloseConfig} from 'Event/Dashboard/editor/state/edit-mode'
-import {Config} from 'Event/Dashboard/editor/views/DashboardEditDialog/ConfigComponent'
 import {
   useDashboard,
   useUpdateDashboard,
 } from 'Event/Dashboard/state/DashboardProvider'
+import {SIDEBAR_NAV_BUTTON} from 'Event/Dashboard/Template/SimpleBlog/Sidebar/SidebarNav'
 
-export default function SidebarNavButtonConfig(props: {id?: Config['id']}) {
+export type SidebarNavButtonConfig = {
+  type: typeof SIDEBAR_NAV_BUTTON
+  id: string
+}
+
+export function SidebarNavButtonConfig(props: {
+  id: SidebarNavButtonConfig['id']
+}) {
   const {sidebarNav: buttons} = useDashboard()
 
   const updateDashboard = useUpdateDashboard()

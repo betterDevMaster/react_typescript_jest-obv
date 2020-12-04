@@ -1,29 +1,39 @@
 import Button from '@material-ui/core/Button'
-import {RESOURCE_ICON} from 'Event/Dashboard/components/ResourceList'
+import {
+  RESOURCE_ICON,
+  RESOURCE_ITEM,
+} from 'Event/Dashboard/components/ResourceList'
+import {setConfig} from 'Event/Dashboard/editor/state/actions'
 import {
   useDashboard,
   useUpdateDashboard,
 } from 'Event/Dashboard/state/DashboardProvider'
 import React from 'react'
+import {useDispatch} from 'react-redux'
 
 export default function AddResourceButton(props: {className?: string}) {
   const updateDashboard = useUpdateDashboard()
   const {resourceList: list} = useDashboard()
+  const dispatch = useDispatch()
 
   const addResource = () => {
+    const resources = [
+      ...list.resources,
+      {
+        name: 'Resource',
+        filePath: '',
+        icon: RESOURCE_ICON.pdf,
+      },
+    ]
     updateDashboard({
       resourceList: {
         ...list,
-        resources: [
-          ...list.resources,
-          {
-            name: 'Resource',
-            filePath: '',
-            icon: RESOURCE_ICON.pdf,
-          },
-        ],
+        resources,
       },
     })
+
+    const lastItem = resources.length - 1
+    dispatch(setConfig({type: RESOURCE_ITEM, id: lastItem}))
   }
 
   return (

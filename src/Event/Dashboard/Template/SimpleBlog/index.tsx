@@ -72,7 +72,7 @@ export default function SimpleBlog(props: {user: User}) {
         toggle={toggleMenu}
         user={props.user}
       />
-      <EditComponent type={SIMPLE_BLOG}>
+      <EditComponent component={{type: SIMPLE_BLOG}}>
         <Header
           primaryColor={primaryColor}
           menuVisible={menuVisible}
@@ -82,7 +82,7 @@ export default function SimpleBlog(props: {user: User}) {
       </EditComponent>
       <Content>
         <StyledContainer maxWidth="lg">
-          <EditComponent type={WELCOME_TEXT}>
+          <EditComponent component={{type: WELCOME_TEXT}}>
             <WelcomeText />
           </EditComponent>
           <MainNavButtons>

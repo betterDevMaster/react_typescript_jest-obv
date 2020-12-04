@@ -2,7 +2,7 @@ import {
   useEditMode,
   useEditComponent,
 } from 'Event/Dashboard/editor/state/edit-mode'
-import {Config} from 'Event/Dashboard/editor/views/DashboardEditDialog/ConfigComponent'
+import {ComponentConfig} from 'Event/Dashboard/editor/views/DashboardEditDialog/ComponentConfig'
 import EditIconButton from 'lib/ui/IconButton/EditIconButton'
 import React from 'react'
 import styled from 'styled-components'
@@ -11,13 +11,13 @@ export const EDIT_COMPONENT_CLASS = 'edit-component'
 export const EDIT_COMPONENT_BUTTON_CLASS = 'edit-component-button'
 
 export default function EditComponent(
-  props: Config & {
+  props: {component: ComponentConfig} & {
     children: React.ReactElement
   },
 ) {
   const isEditMode = useEditMode()
 
-  const editComponent = useEditComponent({type: props.type, id: props.id})
+  const editComponent = useEditComponent(props.component)
 
   if (!isEditMode) {
     return props.children

@@ -5,7 +5,12 @@ import {SIDEBAR_NAV_BUTTON} from 'Event/Dashboard/Template/SimpleBlog/Sidebar/Si
 import EditComponent from 'Event/Dashboard/editor/views/EditComponent'
 
 export default React.memo((props: NavButton & {id: string}) => (
-  <EditComponent type={SIDEBAR_NAV_BUTTON} id={props.id}>
+  <EditComponent
+    component={{
+      type: SIDEBAR_NAV_BUTTON,
+      id: props.id,
+    }}
+  >
     <StyledNavButtonComponent
       {...props}
       aria-label="sidebar nav button"

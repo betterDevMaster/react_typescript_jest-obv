@@ -30,7 +30,7 @@ export default function EmojiList() {
   }
 
   return (
-    <EditComponent type={EMOJI_LIST}>
+    <EditComponent component={{type: EMOJI_LIST}}>
       <Box aria-label="emoji list">
         {list.emojis.map((name, index) => (
           <Container key={index} width={list.emojiWidth}>
