@@ -1,5 +1,5 @@
 import styled from 'styled-components'
-import {EmojiList} from 'Event/Dashboard/components/EmojiList'
+import {EmojiList, EMOJI_LIST} from 'Event/Dashboard/components/EmojiList'
 import {Emoji} from 'Event/Dashboard/components/EmojiList/emoji'
 import EmojiSelect from 'Event/Dashboard/components/EmojiList/EmojiListConfig/EmojiSelect'
 import React from 'react'
@@ -12,7 +12,11 @@ import {
   useUpdateDashboard,
 } from 'Event/Dashboard/state/DashboardProvider'
 
-export default function EmojiListConfig() {
+export type EmojiListConfig = {
+  type: typeof EMOJI_LIST
+}
+
+export function EmojiListConfig() {
   const updateDashboard = useUpdateDashboard()
   const {emojiList} = useDashboard()
 

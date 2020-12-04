@@ -1,5 +1,5 @@
 import {DashboardEditorState} from 'Event/Dashboard/editor/state'
-import {Config} from 'Event/Dashboard/editor/views/DashboardEditDialog/ConfigComponent'
+import {ComponentConfig} from 'Event/Dashboard/editor/views/DashboardEditDialog/ComponentConfig'
 
 export const SET_EDIT_MODE = 'SET_EDIT_MODE'
 export interface SetEditModeAction {
@@ -21,9 +21,9 @@ export const handleSetEditMode = (
 export const SET_CONFIG_ACTION = 'SET_CONFIG'
 export interface SetConfigAction {
   type: typeof SET_CONFIG_ACTION
-  payload: Config | null
+  payload: ComponentConfig | null
 }
-export const setConfig = (config: Config | null): SetConfigAction => ({
+export const setConfig = (config: ComponentConfig | null): SetConfigAction => ({
   type: SET_CONFIG_ACTION,
   payload: config,
 })

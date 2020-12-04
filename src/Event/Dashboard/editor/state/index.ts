@@ -7,10 +7,10 @@ import {
   SET_EDIT_MODE,
   SET_SAVING_ACTION,
 } from 'Event/Dashboard/editor/state/actions'
-import {Config} from 'Event/Dashboard/editor/views/DashboardEditDialog/ConfigComponent'
+import {ComponentConfig} from 'Event/Dashboard/editor/views/DashboardEditDialog/ComponentConfig'
 
 export type DashboardEditorState = {
-  config: Config | null
+  config: ComponentConfig | null
   isEditMode: boolean
   isSaving: boolean
 }

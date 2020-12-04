@@ -3,6 +3,9 @@ import {render as rtlRender, RenderOptions} from '@testing-library/react'
 import AttendeeProfileProvider from 'Event/Dashboard/component-rules/AttendeeProfileProvider'
 import MockStoreProvider from 'store/__utils__/MockStoreProvider'
 import Providers from 'Providers'
+import StaticEventProvider from 'Event/__utils__/StaticEventProvider'
+import {fakeEvent} from 'Event/__utils__/factory'
+import {ObvioEvent} from 'Event'
 
 export const render = (
   component: React.ReactElement,
@@ -31,6 +34,23 @@ export const render = (
     rerender,
     ...renderResult,
   }
+}
+
+export function renderWithEvent(
+  component: React.ReactElement,
+  {event}: {event: ObvioEvent} = {event: fakeEvent()},
+) {
+  const {rerender: rtlRerender, ...renderResult} = render(
+    <StaticEventProvider event={event}>{component}</StaticEventProvider>,
+  )
+
+  const rerender = (component: React.ReactElement) => {
+    return rtlRerender(
+      <StaticEventProvider event={event}>{component}</StaticEventProvider>,
+    )
+  }
+
+  return {...renderResult, rerender}
 }
 
 // Need to use nextSibling because of material UI bug not adding label to input

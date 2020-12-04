@@ -17,7 +17,7 @@ export default function Footer() {
   }
 
   return (
-    <EditComponent type={FOOTER}>
+    <EditComponent component={{type: FOOTER}}>
       <Box
         background={footer.background}
         textColor={footer.textColor}

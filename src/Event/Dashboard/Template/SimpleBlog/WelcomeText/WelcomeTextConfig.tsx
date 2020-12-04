@@ -3,10 +3,15 @@ import {
   useDashboard,
   useUpdateDashboard,
 } from 'Event/Dashboard/state/DashboardProvider'
+import {WELCOME_TEXT} from 'Event/Dashboard/Template/SimpleBlog/WelcomeText'
 import {onChangeStringHandler} from 'lib/dom'
 import React from 'react'
 
-export default function WelcomeTextConfig() {
+export type WelcomeTextConfig = {
+  type: typeof WELCOME_TEXT
+}
+
+export function WelcomeTextConfig() {
   const {welcomeText: value} = useDashboard()
   const updateDashboard = useUpdateDashboard()
 

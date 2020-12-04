@@ -9,6 +9,8 @@ import 'jest-canvas-mock'
 beforeAll(() => {
   // Required to render <Hidden/> components in tests
   setWindowMatchMedia()
+  // Increase timeout to avoid tests failing when running with coverage
+  jest.setTimeout(15000)
 })
 
 beforeEach(() => {
