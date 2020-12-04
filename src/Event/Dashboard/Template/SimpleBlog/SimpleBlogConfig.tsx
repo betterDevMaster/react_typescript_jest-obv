@@ -3,12 +3,16 @@ import {
   useDashboard,
   useUpdateDashboard,
 } from 'Event/Dashboard/state/DashboardProvider'
-import {SimpleBlog} from 'Event/Dashboard/Template/SimpleBlog'
+import {SimpleBlog, SIMPLE_BLOG} from 'Event/Dashboard/Template/SimpleBlog'
 import {onChangeStringHandler} from 'lib/dom'
 import ColorPicker from 'lib/ui/ColorPicker'
 import React from 'react'
 
-export default function SimpleBlogConfig() {
+export type SimpleBlogConfig = {
+  type: typeof SIMPLE_BLOG
+}
+
+export function SimpleBlogConfig() {
   const dashboard = useDashboard()
   const updateDashboard = useUpdateDashboard()
 

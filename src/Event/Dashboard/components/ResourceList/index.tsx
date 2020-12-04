@@ -43,14 +43,19 @@ export function ResourceList() {
 
   return (
     <>
-      <EditComponent type={RESOURCE_LIST}>
+      <EditComponent component={{type: RESOURCE_LIST}}>
         <Heading aria-label="resources">RESOURCES:</Heading>
       </EditComponent>
       <p aria-label="resource description">{list.description}</p>
       <List>
         {list.resources.map((resource, index) => (
           <li key={index}>
-            <EditComponent type={RESOURCE_ITEM} id={index}>
+            <EditComponent
+              component={{
+                type: RESOURCE_ITEM,
+                id: index,
+              }}
+            >
               <Resource resource={resource} iconColor={primaryColor} />
             </EditComponent>
           </li>

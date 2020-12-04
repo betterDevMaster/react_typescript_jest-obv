@@ -18,14 +18,6 @@ afterEach(() => {
   jest.clearAllMocks()
 })
 
-beforeAll(() => {
-  jest.setTimeout(10000)
-})
-
-afterAll(() => {
-  jest.setTimeout(5000)
-})
-
 it('should render a footer', () => {
   const dashboard = fakeSimpleBlog({
     footer: {

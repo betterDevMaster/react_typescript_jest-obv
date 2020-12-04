@@ -28,7 +28,7 @@ export default function PointsSummary() {
 
   return (
     <div>
-      <EditComponent type={POINTS_SUMMARY}>
+      <EditComponent component={{type: POINTS_SUMMARY}}>
         <>
           <HeaderImage
             src={points.headerImage}

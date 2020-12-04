@@ -3,10 +3,15 @@ import {
   useUpdateDashboard,
 } from 'Event/Dashboard/state/DashboardProvider'
 import {SimpleBlog} from 'Event/Dashboard/Template/SimpleBlog'
+import {SIDEBAR_CONTAINER} from 'Event/Dashboard/Template/SimpleBlog/Sidebar/SidebarContainer'
 import ColorPicker from 'lib/ui/ColorPicker'
 import React from 'react'
 
-export default function SidebarContainerConfig() {
+export type SidebarContainerConfig = {
+  type: typeof SIDEBAR_CONTAINER
+}
+
+export function SidebarContainerConfig() {
   const updateDashboard = useUpdateDashboard()
   const {sidebar} = useDashboard()
 

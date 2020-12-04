@@ -66,7 +66,7 @@ export default function TicketRibbon() {
 
   const label = `${ticketRibbon.name} ticket`
   return (
-    <EditComponent type={TICKET_RIBBON_TYPE}>
+    <EditComponent component={{type: TICKET_RIBBON_TYPE}}>
       <Box aria-label={label}>
         <Ribbon src={ticketRibbon.image} alt={label} />
       </Box>

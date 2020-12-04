@@ -1,57 +1,52 @@
 import React from 'react'
-import SidebarContainerConfig from 'Event/Dashboard/Template/SimpleBlog/Sidebar/SidebarContainer/SidebarContainerConfig'
-import EmojiListConfig from 'Event/Dashboard/components/EmojiList/EmojiListConfig'
-import TicketRibbonConfig from 'Event/Dashboard/components/TicketRibbon/TicketRibbonConfig'
+import {SidebarContainerConfig} from 'Event/Dashboard/Template/SimpleBlog/Sidebar/SidebarContainer/SidebarContainerConfig'
+import {EmojiListConfig} from 'Event/Dashboard/components/EmojiList/EmojiListConfig'
+import {TicketRibbonConfig} from 'Event/Dashboard/components/TicketRibbon/TicketRibbonConfig'
 import {MAIN_NAV_BUTTON} from 'Event/Dashboard/Template/SimpleBlog/MainNav/MainNavButton'
-import MainNavButtonConfig from 'Event/Dashboard/Template/SimpleBlog/MainNav/MainNavButton/MainNavButtonConfig'
+import {MainNavButtonConfig} from 'Event/Dashboard/Template/SimpleBlog/MainNav/MainNavButton/MainNavButtonConfig'
 import {WELCOME_TEXT} from 'Event/Dashboard/Template/SimpleBlog/WelcomeText'
-import WelcomeTextConfig from 'Event/Dashboard/Template/SimpleBlog/WelcomeText/WelcomeTextConfig'
+import {WelcomeTextConfig} from 'Event/Dashboard/Template/SimpleBlog/WelcomeText/WelcomeTextConfig'
 import {SIMPLE_BLOG} from 'Event/Dashboard/Template/SimpleBlog'
-import SimpleBlogConfig from 'Event/Dashboard/Template/SimpleBlog/SimpleBlogConfig'
+import {SimpleBlogConfig} from 'Event/Dashboard/Template/SimpleBlog/SimpleBlogConfig'
 import {SIDEBAR_CONTAINER} from 'Event/Dashboard/Template/SimpleBlog/Sidebar/SidebarContainer'
 import {EMOJI_LIST} from 'Event/Dashboard/components/EmojiList'
 import {TICKET_RIBBON_TYPE} from 'Event/Dashboard/components/TicketRibbon'
 import {AGENDA} from 'Event/Dashboard/components/AgendaList'
-import AgendaConfig from 'Event/Dashboard/components/AgendaList/AgendaConfig'
+import {AgendaConfig} from 'Event/Dashboard/components/AgendaList/AgendaConfig'
 import {POINTS_SUMMARY} from 'Event/Dashboard/components/PointsSummary'
-import PointsSummaryConfig from 'Event/Dashboard/components/PointsSummary/PointsSummaryConfig'
+import {PointsSummaryConfig} from 'Event/Dashboard/components/PointsSummary/PointsSummaryConfig'
 import {
   RESOURCE_ITEM,
   RESOURCE_LIST,
 } from 'Event/Dashboard/components/ResourceList'
-import ResourceListConfig from 'Event/Dashboard/components/ResourceList/ResourceListConfig'
-import ResourceItemConfig from 'Event/Dashboard/components/ResourceList/ResourceItemConfig'
-import SidebarNavButtonConfig from 'Event/Dashboard/Template/SimpleBlog/Sidebar/SidebarNavButtonConfig'
+import {ResourceListConfig} from 'Event/Dashboard/components/ResourceList/ResourceListConfig'
+import {ResourceItemConfig} from 'Event/Dashboard/components/ResourceList/ResourceItemConfig'
+import {SidebarNavButtonConfig} from 'Event/Dashboard/Template/SimpleBlog/Sidebar/SidebarNavButtonConfig'
 import {SIDEBAR_NAV_BUTTON} from 'Event/Dashboard/Template/SimpleBlog/Sidebar/SidebarNav'
 import {FOOTER} from 'Event/Dashboard/Template/SimpleBlog/Footer'
-import FooterConfig from 'Event/Dashboard/Template/SimpleBlog/Footer/FooterConfig'
+import {FooterConfig} from 'Event/Dashboard/Template/SimpleBlog/Footer/FooterConfig'
 import {BLOG_POST} from 'Event/Dashboard/components/BlogPost'
-import BlogPostConfig from 'Event/Dashboard/components/BlogPost/BlogPostConfig'
-
-export interface Config {
-  type: ConfigType
-  id?: string | number
-}
+import {BlogPostConfig} from 'Event/Dashboard/components/BlogPost/BlogPostConfig'
 
 // Must register config types here. This ensures wherever
 // various component types are handled, that all possible
 // components are accounted for.
-export type ConfigType =
-  | typeof SIMPLE_BLOG
-  | typeof MAIN_NAV_BUTTON
-  | typeof WELCOME_TEXT
-  | typeof SIDEBAR_CONTAINER
-  | typeof EMOJI_LIST
-  | typeof TICKET_RIBBON_TYPE
-  | typeof AGENDA
-  | typeof POINTS_SUMMARY
-  | typeof RESOURCE_LIST
-  | typeof RESOURCE_ITEM
-  | typeof SIDEBAR_NAV_BUTTON
-  | typeof FOOTER
-  | typeof BLOG_POST
+export type ComponentConfig =
+  | SimpleBlogConfig
+  | MainNavButtonConfig
+  | WelcomeTextConfig
+  | SidebarContainerConfig
+  | EmojiListConfig
+  | TicketRibbonConfig
+  | AgendaConfig
+  | PointsSummaryConfig
+  | ResourceListConfig
+  | ResourceItemConfig
+  | SidebarNavButtonConfig
+  | FooterConfig
+  | BlogPostConfig
 
-export default function ConfigComponent(props: {config: Config | null}) {
+export function ComponentConfig(props: {config: ComponentConfig | null}) {
   if (!props.config) {
     return null
   }
@@ -84,6 +79,7 @@ export default function ConfigComponent(props: {config: Config | null}) {
     case BLOG_POST:
       return <BlogPostConfig id={props.config.id} />
     default:
+      // @ts-ignore
       throw new Error(`Missing config component for type: ${props.config.type}`)
   }
 }

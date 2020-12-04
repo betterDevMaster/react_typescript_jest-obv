@@ -16,7 +16,6 @@ import ColorPicker from 'lib/ui/ColorPicker'
 import React from 'react'
 import Box from '@material-ui/core/Box'
 import {useCloseConfig} from 'Event/Dashboard/editor/state/edit-mode'
-import {Config} from 'Event/Dashboard/editor/views/DashboardEditDialog/ConfigComponent'
 import RuleConfig, {
   useRuleConfig,
 } from 'Event/Dashboard/component-rules/RuleConfig'
@@ -25,8 +24,14 @@ import {
   useDashboard,
   useUpdateDashboard,
 } from 'Event/Dashboard/state/DashboardProvider'
+import {MAIN_NAV_BUTTON} from 'Event/Dashboard/Template/SimpleBlog/MainNav/MainNavButton'
 
-export default function MainNavButtonConfig(props: {id?: Config['id']}) {
+export type MainNavButtonConfig = {
+  type: typeof MAIN_NAV_BUTTON
+  id: string
+}
+
+export function MainNavButtonConfig(props: {id: MainNavButtonConfig['id']}) {
   const {mainNav: buttons} = useDashboard()
 
   const {visible: ruleConfigVisible, toggle: toggleRuleConfig} = useRuleConfig()

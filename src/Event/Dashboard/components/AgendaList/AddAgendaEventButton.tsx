@@ -4,25 +4,33 @@ import {
   useDashboard,
   useUpdateDashboard,
 } from 'Event/Dashboard/state/DashboardProvider'
+import {setConfig} from 'Event/Dashboard/editor/state/actions'
+import {AGENDA} from 'Event/Dashboard/components/AgendaList'
+import {useDispatch} from 'react-redux'
 
 export default function AddAgendaEventButton(props: {className?: string}) {
   const {agendas} = useDashboard()
   const updateDashboard = useUpdateDashboard()
+  const dispatch = useDispatch()
 
   const existingAgendas = agendas || []
 
   const addEvent = () => {
+    const agendas = [
+      ...existingAgendas,
+      {
+        text: 'Event',
+        startDate: new Date().toISOString(),
+        endDate: null,
+        link: null,
+      },
+    ]
     updateDashboard({
-      agendas: [
-        ...existingAgendas,
-        {
-          text: 'Event',
-          startDate: new Date().toISOString(),
-          endDate: null,
-          link: null,
-        },
-      ],
+      agendas,
     })
+
+    const lastItem = agendas.length - 1
+    dispatch(setConfig({type: AGENDA, id: lastItem}))
   }
 
   return (

@@ -32,7 +32,7 @@ export default function AgendaList() {
     <>
       <Heading>AGENDA:</Heading>
       {agendas.map((agenda, index) => (
-        <EditComponent type={AGENDA} id={index} key={index}>
+        <EditComponent component={{type: AGENDA, id: index}} key={index}>
           <Agenda aria-label="agenda">
             <Times agenda={agenda} />
             <Event agenda={agenda} />
