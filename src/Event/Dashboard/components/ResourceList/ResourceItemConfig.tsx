@@ -5,19 +5,27 @@ import InputLabel from '@material-ui/core/InputLabel'
 import MenuItem from '@material-ui/core/MenuItem'
 import Select from '@material-ui/core/Select'
 import TextField from '@material-ui/core/TextField'
-import {Resource, RESOURCE_ICON} from 'Event/Dashboard/components/ResourceList'
+import {
+  Resource,
+  RESOURCE_ICON,
+  RESOURCE_ITEM,
+} from 'Event/Dashboard/components/ResourceList'
 import {onUnknownChangeHandler, onChangeStringHandler} from 'lib/dom'
 import React from 'react'
 import DangerButton from 'lib/ui/Button/DangerButton'
 import {useCloseConfig} from 'Event/Dashboard/editor/state/edit-mode'
-import {Config} from 'Event/Dashboard/editor/views/DashboardEditDialog/ConfigComponent'
 import {
-  useDashboard,
+  useTemplate,
   useUpdateDashboard,
-} from 'Event/Dashboard/state/DashboardProvider'
+} from 'Event/Dashboard/state/TemplateProvider'
 
-export default function ResourceItemConfig(props: {id: Config['id']}) {
-  const {resourceList: list} = useDashboard()
+export type ResourceItemConfig = {
+  type: typeof RESOURCE_ITEM
+  id: number
+}
+
+export function ResourceItemConfig(props: {id: ResourceItemConfig['id']}) {
+  const {resourceList: list} = useTemplate()
 
   const updateDashboard = useUpdateDashboard()
   const closeConfig = useCloseConfig()

@@ -1,5 +1,5 @@
 import styled from 'styled-components'
-import {EmojiList} from 'Event/Dashboard/components/EmojiList'
+import {EmojiList, EMOJI_LIST} from 'Event/Dashboard/components/EmojiList'
 import {Emoji} from 'Event/Dashboard/components/EmojiList/emoji'
 import EmojiSelect from 'Event/Dashboard/components/EmojiList/EmojiListConfig/EmojiSelect'
 import React from 'react'
@@ -8,13 +8,17 @@ import IconButton from 'lib/ui/IconButton'
 import TextField from '@material-ui/core/TextField'
 import {onUnknownChangeHandler} from 'lib/dom'
 import {
-  useDashboard,
+  useTemplate,
   useUpdateDashboard,
-} from 'Event/Dashboard/state/DashboardProvider'
+} from 'Event/Dashboard/state/TemplateProvider'
 
-export default function EmojiListConfig() {
+export type EmojiListConfig = {
+  type: typeof EMOJI_LIST
+}
+
+export function EmojiListConfig() {
   const updateDashboard = useUpdateDashboard()
-  const {emojiList} = useDashboard()
+  const {emojiList} = useTemplate()
 
   const update = <T extends keyof EmojiList>(key: T, value: EmojiList[T]) => {
     updateDashboard({

@@ -1,5 +1,5 @@
 import SetPointsButton from 'Event/Dashboard/components/PointsSummary/SetPointsButton'
-import {useDashboard} from 'Event/Dashboard/state/DashboardProvider'
+import {useTemplate} from 'Event/Dashboard/state/TemplateProvider'
 import EditComponent from 'Event/Dashboard/editor/views/EditComponent'
 import EditModeOnly from 'Event/Dashboard/editor/views/EditModeOnly'
 import React from 'react'
@@ -16,7 +16,7 @@ export type Points = {
 export const POINTS_SUMMARY = 'Points Summary'
 
 export default function PointsSummary() {
-  const {points} = useDashboard()
+  const {points} = useTemplate()
 
   if (!points) {
     return (
@@ -28,7 +28,7 @@ export default function PointsSummary() {
 
   return (
     <div>
-      <EditComponent type={POINTS_SUMMARY}>
+      <EditComponent component={{type: POINTS_SUMMARY}}>
         <>
           <HeaderImage
             src={points.headerImage}

@@ -1,5 +1,5 @@
 import SetTicketRibbonButton from 'Event/Dashboard/components/TicketRibbon/TicketRibbonConfig/SetTicketRibbonButton'
-import {useDashboard} from 'Event/Dashboard/state/DashboardProvider'
+import {useTemplate} from 'Event/Dashboard/state/TemplateProvider'
 import EditComponent from 'Event/Dashboard/editor/views/EditComponent'
 import EditModeOnly from 'Event/Dashboard/editor/views/EditModeOnly'
 import React from 'react'
@@ -52,7 +52,7 @@ export const ticketRibbonWithName = (name: string) => {
 }
 
 export default function TicketRibbon() {
-  const {ticketRibbon: name} = useDashboard()
+  const {ticketRibbon: name} = useTemplate()
 
   if (!name) {
     return (
@@ -66,7 +66,7 @@ export default function TicketRibbon() {
 
   const label = `${ticketRibbon.name} ticket`
   return (
-    <EditComponent type={TICKET_RIBBON_TYPE}>
+    <EditComponent component={{type: TICKET_RIBBON_TYPE}}>
       <Box aria-label={label}>
         <Ribbon src={ticketRibbon.image} alt={label} />
       </Box>

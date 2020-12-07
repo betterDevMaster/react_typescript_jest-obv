@@ -1,18 +1,23 @@
-import {BlogPost} from 'Event/Dashboard/components/BlogPost'
+import {BlogPost, BLOG_POST} from 'Event/Dashboard/components/BlogPost'
 import styled from 'styled-components'
 import {useCloseConfig} from 'Event/Dashboard/editor/state/edit-mode'
-import {Config} from 'Event/Dashboard/editor/views/DashboardEditDialog/ConfigComponent'
 import React from 'react'
 import CKEditor from '@ckeditor/ckeditor5-react'
 import ClassicEditor from '@ckeditor/ckeditor5-build-classic'
 import DangerButton from 'lib/ui/Button/DangerButton'
 import {
-  useDashboard,
+  useTemplate,
   useUpdateDashboard,
-} from 'Event/Dashboard/state/DashboardProvider'
+} from 'Event/Dashboard/state/TemplateProvider'
+import {onChangeStringHandler} from 'lib/dom'
+import TextField from '@material-ui/core/TextField'
 
-export default function BlogPostConfig(props: {id: Config['id']}) {
-  const {blogPosts: posts} = useDashboard()
+export type BlogPostConfig = {
+  type: typeof BLOG_POST
+  id: string
+}
+export function BlogPostConfig(props: {id: BlogPostConfig['id']}) {
+  const {blogPosts: posts} = useTemplate()
 
   const {id} = props
   const updateDashboard = useUpdateDashboard()
@@ -24,19 +29,22 @@ export default function BlogPostConfig(props: {id: Config['id']}) {
 
   const post = posts.entities[id]
 
-  const update = <T extends keyof BlogPost>(key: T) => (value: BlogPost[T]) =>
+  const update = <T extends keyof BlogPost>(key: T) => (value: BlogPost[T]) => {
+    const updated: BlogPost = {
+      ...post,
+      [key]: value,
+    }
+
     updateDashboard({
       blogPosts: {
         ...posts,
         entities: {
           ...posts.entities,
-          [id]: {
-            ...post,
-            [key]: value,
-          },
+          [id]: updated,
         },
       },
     })
+  }
 
   const save = (_: any, editor: any) => update('content')(editor.getData())
 
@@ -56,11 +64,20 @@ export default function BlogPostConfig(props: {id: Config['id']}) {
   return (
     <>
       <EditorContainer>
+        <TextField
+          value={post.title}
+          inputProps={{
+            'aria-label': 'blog post title',
+          }}
+          label="Title"
+          fullWidth
+          onChange={onChangeStringHandler(update('title'))}
+        />
         <CKEditor editor={ClassicEditor} data={post.content} onChange={save} />
         <RemoveButton
           fullWidth
           variant="outlined"
-          aria-label="remove button"
+          aria-label="remove blog post"
           onClick={remove}
         >
           DELETE POST

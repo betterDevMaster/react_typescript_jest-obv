@@ -5,20 +5,17 @@ import {api} from 'lib/url'
 import {setSaving} from 'Event/Dashboard/editor/state/actions'
 import {of, concat} from 'rxjs'
 import {AjaxCreationMethod} from 'rxjs/internal/observable/dom/AjaxObservable'
-import {
-  CreateDashboardAction,
-  CREATE_DASHBOARD_ACTION,
-} from 'Event/state/actions'
+import {CreateTemplateAction, CREATE_TEMPLATE_ACTION} from 'Event/state/actions'
 import {jsonHeader, put} from 'lib/api-client'
 
 export const createDashboardEpic: Epic<
-  CreateDashboardAction,
+  CreateTemplateAction,
   any,
   RootState,
   {ajax: AjaxCreationMethod}
 > = (action$, state$, {ajax}) =>
   action$.pipe(
-    ofType<CreateDashboardAction>(CREATE_DASHBOARD_ACTION),
+    ofType<CreateTemplateAction>(CREATE_TEMPLATE_ACTION),
     mapTo(setSaving(true)),
     switchMap(() => {
       const {event, auth} = state$.value

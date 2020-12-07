@@ -1,17 +1,21 @@
 import TextField from '@material-ui/core/TextField'
-import {Points} from 'Event/Dashboard/components/PointsSummary'
+import {Points, POINTS_SUMMARY} from 'Event/Dashboard/components/PointsSummary'
 import {
-  useDashboard,
+  useTemplate,
   useUpdateDashboard,
-} from 'Event/Dashboard/state/DashboardProvider'
+} from 'Event/Dashboard/state/TemplateProvider'
 import {useCloseConfig} from 'Event/Dashboard/editor/state/edit-mode'
 import {onChangeStringHandler} from 'lib/dom'
 import DangerButton from 'lib/ui/Button/DangerButton'
 import React from 'react'
 import styled from 'styled-components'
 
-export default function PointsSummaryConfig() {
-  const {points} = useDashboard()
+export type PointsSummaryConfig = {
+  type: typeof POINTS_SUMMARY
+}
+
+export function PointsSummaryConfig() {
+  const {points} = useTemplate()
   const updateDashboard = useUpdateDashboard()
   const closeConfig = useCloseConfig()
 

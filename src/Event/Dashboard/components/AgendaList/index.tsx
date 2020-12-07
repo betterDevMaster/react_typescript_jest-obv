@@ -1,11 +1,11 @@
 import React from 'react'
 import styled from 'styled-components'
-import Heading from 'Event/Dashboard/Template/SimpleBlog/Sidebar/Heading'
+import Heading from 'Event/template/SimpleBlog/Dashboard/Sidebar/Heading'
 import moment from 'moment-timezone'
 import EditComponent from 'Event/Dashboard/editor/views/EditComponent'
 import EditModeOnly from 'Event/Dashboard/editor/views/EditModeOnly'
 import AddAgendaEventButton from 'Event/Dashboard/components/AgendaList/AddAgendaEventButton'
-import {useDashboard} from 'Event/Dashboard/state/DashboardProvider'
+import {useTemplate} from 'Event/Dashboard/state/TemplateProvider'
 
 export const AGENDA = 'Agenda'
 
@@ -17,7 +17,7 @@ export interface Agenda {
 }
 
 export default function AgendaList() {
-  const {agendas} = useDashboard()
+  const {agendas} = useTemplate()
 
   const hasAgenda = agendas.length > 0
   if (!hasAgenda) {
@@ -32,7 +32,7 @@ export default function AgendaList() {
     <>
       <Heading>AGENDA:</Heading>
       {agendas.map((agenda, index) => (
-        <EditComponent type={AGENDA} id={index} key={index}>
+        <EditComponent component={{type: AGENDA, id: index}} key={index}>
           <Agenda aria-label="agenda">
             <Times agenda={agenda} />
             <Event agenda={agenda} />

@@ -9,7 +9,7 @@ import {RootState} from 'store'
 import CloseIcon from '@material-ui/icons/Close'
 import IconButton from 'lib/ui/IconButton'
 import grey from '@material-ui/core/colors/grey'
-import ConfigComponent from 'Event/Dashboard/editor/views/DashboardEditDialog/ConfigComponent'
+import {ComponentConfig} from 'Event/Dashboard/editor/views/DashboardEditDialog/ComponentConfig'
 
 export default function DashboardEditDialog() {
   const component = useSelector((state: RootState) => state.editor.config)
@@ -29,7 +29,7 @@ export default function DashboardEditDialog() {
       </CloseButton>
       <DialogTitle>{component?.type}</DialogTitle>
       <DialogContent>
-        <ConfigComponent config={component} />
+        <ComponentConfig config={component} />
       </DialogContent>
     </Dialog>
   )

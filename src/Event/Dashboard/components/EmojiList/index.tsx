@@ -4,7 +4,7 @@ import {Emoji, emojiWithName} from 'Event/Dashboard/components/EmojiList/emoji'
 import EditComponent from 'Event/Dashboard/editor/views/EditComponent'
 import AddEmojiListButton from 'Event/Dashboard/components/EmojiList/AddEmojiListButton'
 import EditModeOnly from 'Event/Dashboard/editor/views/EditModeOnly'
-import {useDashboard} from 'Event/Dashboard/state/DashboardProvider'
+import {useTemplate} from 'Event/Dashboard/state/TemplateProvider'
 
 export const EMOJI_LIST = 'Emoji List'
 
@@ -17,7 +17,7 @@ export interface EmojiList {
 }
 
 export default function EmojiList() {
-  const {emojiList: list} = useDashboard()
+  const {emojiList: list} = useTemplate()
 
   const isEmpty = list && list.emojis.length === 0
   if (!list || isEmpty) {
@@ -30,7 +30,7 @@ export default function EmojiList() {
   }
 
   return (
-    <EditComponent type={EMOJI_LIST}>
+    <EditComponent component={{type: EMOJI_LIST}}>
       <Box aria-label="emoji list">
         {list.emojis.map((name, index) => (
           <Container key={index} width={list.emojiWidth}>

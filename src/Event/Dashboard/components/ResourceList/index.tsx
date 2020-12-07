@@ -1,12 +1,12 @@
 import React from 'react'
 import styled from 'styled-components'
-import Heading from 'Event/Dashboard/Template/SimpleBlog/Sidebar/Heading'
+import Heading from 'Event/template/SimpleBlog/Dashboard/Sidebar/Heading'
 import Icon from '@material-ui/core/Icon'
 import EditComponent from 'Event/Dashboard/editor/views/EditComponent'
 import {useEditMode} from 'Event/Dashboard/editor/state/edit-mode'
 import EditModeOnly from 'Event/Dashboard/editor/views/EditModeOnly'
 import AddResourceButton from 'Event/Dashboard/components/ResourceList/AddResourceButton'
-import {useDashboard} from 'Event/Dashboard/state/DashboardProvider'
+import {useTemplate} from 'Event/Dashboard/state/TemplateProvider'
 
 export interface ResourceList {
   description: string
@@ -34,7 +34,7 @@ export const RESOURCE_ICON = {
 
 export function ResourceList() {
   const isEdit = useEditMode()
-  const {resourceList: list, primaryColor} = useDashboard()
+  const {resourceList: list, primaryColor} = useTemplate()
 
   const hasResources = list.resources.length > 0
   if (!hasResources && !isEdit) {
@@ -43,14 +43,19 @@ export function ResourceList() {
 
   return (
     <>
-      <EditComponent type={RESOURCE_LIST}>
+      <EditComponent component={{type: RESOURCE_LIST}}>
         <Heading aria-label="resources">RESOURCES:</Heading>
       </EditComponent>
       <p aria-label="resource description">{list.description}</p>
       <List>
         {list.resources.map((resource, index) => (
           <li key={index}>
-            <EditComponent type={RESOURCE_ITEM} id={index}>
+            <EditComponent
+              component={{
+                type: RESOURCE_ITEM,
+                id: index,
+              }}
+            >
               <Resource resource={resource} iconColor={primaryColor} />
             </EditComponent>
           </li>

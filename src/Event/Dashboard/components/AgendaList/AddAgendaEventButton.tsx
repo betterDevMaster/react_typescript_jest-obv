@@ -1,28 +1,36 @@
 import React from 'react'
 import {Button} from '@material-ui/core'
 import {
-  useDashboard,
+  useTemplate,
   useUpdateDashboard,
-} from 'Event/Dashboard/state/DashboardProvider'
+} from 'Event/Dashboard/state/TemplateProvider'
+import {setConfig} from 'Event/Dashboard/editor/state/actions'
+import {AGENDA} from 'Event/Dashboard/components/AgendaList'
+import {useDispatch} from 'react-redux'
 
 export default function AddAgendaEventButton(props: {className?: string}) {
-  const {agendas} = useDashboard()
+  const {agendas} = useTemplate()
   const updateDashboard = useUpdateDashboard()
+  const dispatch = useDispatch()
 
   const existingAgendas = agendas || []
 
   const addEvent = () => {
+    const agendas = [
+      ...existingAgendas,
+      {
+        text: 'Event',
+        startDate: new Date().toISOString(),
+        endDate: null,
+        link: null,
+      },
+    ]
     updateDashboard({
-      agendas: [
-        ...existingAgendas,
-        {
-          text: 'Event',
-          startDate: new Date().toISOString(),
-          endDate: null,
-          link: null,
-        },
-      ],
+      agendas,
     })
+
+    const lastItem = agendas.length - 1
+    dispatch(setConfig({type: AGENDA, id: lastItem}))
   }
 
   return (

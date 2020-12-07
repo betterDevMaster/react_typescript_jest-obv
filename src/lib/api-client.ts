@@ -4,7 +4,7 @@ import {getToken as getAuthToken} from 'auth/token'
 export type ValidationError<T> = {
   message: string
   errors: Partial<T>
-}
+} | null
 
 const defaultHeaders = {
   'content-type': 'application/json',
