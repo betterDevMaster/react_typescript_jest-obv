@@ -10,8 +10,8 @@ import App from 'App'
 import {inputElementFor, render} from '__utils__/render'
 import {fireEvent, wait} from '@testing-library/react'
 import user from '@testing-library/user-event'
-import {SIMPLE_BLOG} from 'Event/Dashboard/Template/SimpleBlog'
 import {mockRxJsAjax} from 'store/__utils__/MockStoreProvider'
+import {SIMPLE_BLOG} from 'Event/template/SimpleBlog'
 
 const mockPost = mockRxJsAjax.post as jest.Mock
 const mockUseLocation = useLocation as jest.Mock
@@ -30,7 +30,7 @@ it('should create a new dashboard', async () => {
   }))
 
   const event = fakeEvent({
-    dashboard: null,
+    template: null,
   })
   mockGet.mockImplementationOnce(() => Promise.resolve({data: organization}))
   mockGet.mockImplementationOnce(() => Promise.resolve({data: fakeUser()}))
@@ -61,7 +61,7 @@ it('should create a new dashboard', async () => {
     expect(mockPost).toHaveBeenCalledTimes(1)
   })
 
-  // const [url, data] = mockPost.mock.calls[0]
-  // expect(url).toMatch(`/events/${event.slug}`)
-  // expect(data.dashboard.welcomeText).toBe(newVal)
+  const [url, data] = mockPost.mock.calls[0]
+  expect(url).toMatch(`/events/${event.slug}`)
+  expect(data.template.welcomeText).toBe(defaultWelcomeMessage)
 })

@@ -1,15 +1,15 @@
 import withStyles from '@material-ui/core/styles/withStyles'
 import Typography from '@material-ui/core/Typography'
-import {Dashboard} from 'Event/Dashboard'
-import DashboardTemplateSelect from 'Event/Dashboard/Template/DashboardTemplateSelect'
-import {createDashboard} from 'Event/state/actions'
+import TemplateSelect from 'Event/template/TemplateSelect'
+import {createTemplate} from 'Event/state/actions'
 import {spacing} from 'lib/ui/theme'
 import Page from 'organization/user/Layout/Page'
 import React, {useEffect, useState} from 'react'
 import {useDispatch} from 'react-redux'
+import {Template} from 'Event/template'
 
-export default function CreateDashboardForm() {
-  const [template, setTemplate] = useState<Dashboard['template'] | null>(null)
+export default function CreateTemplateForm() {
+  const [template, setTemplate] = useState<Template['name'] | null>(null)
   const dispatch = useDispatch()
 
   useEffect(() => {
@@ -17,13 +17,13 @@ export default function CreateDashboardForm() {
       return
     }
 
-    dispatch(createDashboard(template))
+    dispatch(createTemplate(template))
   }, [template, dispatch])
 
   return (
     <Page>
       <Description>Pick a template below to get started...</Description>
-      <DashboardTemplateSelect value={template} onPick={setTemplate} />
+      <TemplateSelect value={template} onPick={setTemplate} />
     </Page>
   )
 }

@@ -1,15 +1,15 @@
 import React from 'react'
 import {Button} from '@material-ui/core'
 import {
-  useDashboard,
+  useTemplate,
   useUpdateDashboard,
-} from 'Event/Dashboard/state/DashboardProvider'
+} from 'Event/Dashboard/state/TemplateProvider'
 import {setConfig} from 'Event/Dashboard/editor/state/actions'
 import {AGENDA} from 'Event/Dashboard/components/AgendaList'
 import {useDispatch} from 'react-redux'
 
 export default function AddAgendaEventButton(props: {className?: string}) {
-  const {agendas} = useDashboard()
+  const {agendas} = useTemplate()
   const updateDashboard = useUpdateDashboard()
   const dispatch = useDispatch()
 

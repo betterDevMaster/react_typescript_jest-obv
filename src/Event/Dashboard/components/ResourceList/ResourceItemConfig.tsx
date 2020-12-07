@@ -15,9 +15,9 @@ import React from 'react'
 import DangerButton from 'lib/ui/Button/DangerButton'
 import {useCloseConfig} from 'Event/Dashboard/editor/state/edit-mode'
 import {
-  useDashboard,
+  useTemplate,
   useUpdateDashboard,
-} from 'Event/Dashboard/state/DashboardProvider'
+} from 'Event/Dashboard/state/TemplateProvider'
 
 export type ResourceItemConfig = {
   type: typeof RESOURCE_ITEM
@@ -25,7 +25,7 @@ export type ResourceItemConfig = {
 }
 
 export function ResourceItemConfig(props: {id: ResourceItemConfig['id']}) {
-  const {resourceList: list} = useDashboard()
+  const {resourceList: list} = useTemplate()
 
   const updateDashboard = useUpdateDashboard()
   const closeConfig = useCloseConfig()

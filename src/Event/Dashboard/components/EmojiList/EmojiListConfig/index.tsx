@@ -8,9 +8,9 @@ import IconButton from 'lib/ui/IconButton'
 import TextField from '@material-ui/core/TextField'
 import {onUnknownChangeHandler} from 'lib/dom'
 import {
-  useDashboard,
+  useTemplate,
   useUpdateDashboard,
-} from 'Event/Dashboard/state/DashboardProvider'
+} from 'Event/Dashboard/state/TemplateProvider'
 
 export type EmojiListConfig = {
   type: typeof EMOJI_LIST
@@ -18,7 +18,7 @@ export type EmojiListConfig = {
 
 export function EmojiListConfig() {
   const updateDashboard = useUpdateDashboard()
-  const {emojiList} = useDashboard()
+  const {emojiList} = useTemplate()
 
   const update = <T extends keyof EmojiList>(key: T, value: EmojiList[T]) => {
     updateDashboard({

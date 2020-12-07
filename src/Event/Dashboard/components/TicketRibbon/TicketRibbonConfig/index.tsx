@@ -10,16 +10,16 @@ import React from 'react'
 import MenuItem from '@material-ui/core/MenuItem'
 import {onUnknownChangeHandler} from 'lib/dom'
 import {
-  useDashboard,
+  useTemplate,
   useUpdateDashboard,
-} from 'Event/Dashboard/state/DashboardProvider'
+} from 'Event/Dashboard/state/TemplateProvider'
 
 export type TicketRibbonConfig = {
   type: typeof TICKET_RIBBON_TYPE
 }
 
 export function TicketRibbonConfig() {
-  const {ticketRibbon} = useDashboard()
+  const {ticketRibbon} = useTemplate()
   const updateDashboard = useUpdateDashboard()
 
   if (ticketRibbon === undefined) {

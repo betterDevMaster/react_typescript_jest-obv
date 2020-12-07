@@ -1,10 +1,12 @@
 import {ObvioEvent} from 'Event'
 import {
-  CREATE_DASHBOARD_ACTION,
+  CREATE_TEMPLATE_ACTION,
   EventAction,
-  handleCreateDashboard,
+  handleCreateTemplate,
   handleSetEvent,
+  handleUpdateDashboard,
   SET_EVENT_ACTION,
+  UPDATE_TEMPLATE_ACTION,
 } from 'Event/state/actions'
 
 export type EventState = ObvioEvent | null
@@ -14,8 +16,11 @@ export function eventReducer(state: EventState = null, action: EventAction) {
     case SET_EVENT_ACTION: {
       return handleSetEvent(state, action)
     }
-    case CREATE_DASHBOARD_ACTION: {
-      return handleCreateDashboard(state, action)
+    case CREATE_TEMPLATE_ACTION: {
+      return handleCreateTemplate(state, action)
+    }
+    case UPDATE_TEMPLATE_ACTION: {
+      return handleUpdateDashboard(state, action)
     }
     default: {
       return state

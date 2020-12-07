@@ -25,9 +25,7 @@ export function sendRequest(data: Data) {
 
 export default function CreateOrganizationForm() {
   const {register, errors, handleSubmit, watch} = useForm()
-  const [serverError, setServerError] = useState<null | ValidationError<Data>>(
-    null,
-  )
+  const [serverError, setServerError] = useState<ValidationError<Data>>(null)
   const history = useHistory()
   const [submitting, setSubmitting] = useState(false)
   const showOrganizations = () => {

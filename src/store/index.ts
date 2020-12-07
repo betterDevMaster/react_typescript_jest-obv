@@ -1,6 +1,5 @@
 import {authReducer} from 'auth'
 import {editorReducer} from 'Event/Dashboard/editor/state'
-import {dashboardReducer} from 'Event/Dashboard/state'
 import {eventReducer} from 'Event/state'
 import {
   createStore as createReduxStore,
@@ -14,7 +13,6 @@ import {ajax as rxJsAjax} from 'rxjs/ajax'
 import {dashboardEpics} from 'Event/Dashboard/state/epics'
 
 export const rootReducer = combineReducers({
-  dashboard: dashboardReducer,
   editor: editorReducer,
   auth: authReducer,
   event: eventReducer,

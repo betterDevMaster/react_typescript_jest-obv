@@ -39,6 +39,9 @@ function EventProvider(props: {children: React.ReactNode; slug: string}) {
   const current = useSelector((state: RootState) => state.event)
 
   useEffect(() => {
+    if (!saved) {
+      return
+    }
     dispatch(setEvent(saved))
   }, [saved, dispatch])
 

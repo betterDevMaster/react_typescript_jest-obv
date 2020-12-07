@@ -1,45 +1,61 @@
 import React, {useEffect} from 'react'
-import {SimpleBlog} from 'Event/Dashboard/Template/SimpleBlog'
+import SimpleBlogDashboard from 'Event/template/SimpleBlog/Dashboard'
 import {User} from 'auth/user'
 import DashboardEditDialog from 'Event/Dashboard/editor/views/DashboardEditDialog'
-import Template from 'Event/Dashboard/Template'
 import ConfigBar from 'Event/Dashboard/editor/views/ConfigBar'
-import DashboardProvider from 'Event/Dashboard/state/DashboardProvider'
+import TemplateProvider, {
+  useTemplate,
+} from 'Event/Dashboard/state/TemplateProvider'
 import {useDispatch} from 'react-redux'
 import {setEditMode} from 'Event/Dashboard/editor/state/actions'
-
-type BaseAttributes = {
-  version: number
-}
-
-export type Dashboard = BaseAttributes & SimpleBlog
+import {useEvent} from 'Event/EventProvider'
+import {SIMPLE_BLOG} from 'Event/template/SimpleBlog'
 
 export type DashboardProps = {
-  dashboard: Dashboard
   isEditMode?: boolean
   user: User
 }
 
 export default function Dashboard(props: DashboardProps) {
   const dispatch = useDispatch()
+  const {event} = useEvent()
 
   useEffect(() => {
     dispatch(setEditMode(props.isEditMode || false))
   }, [props.isEditMode, dispatch])
 
+  return (
+    <TemplateProvider template={event.template}>
+      <ConfigComponents isEditMode={props.isEditMode}>
+        <TemplateDashboard user={props.user} />
+      </ConfigComponents>
+    </TemplateProvider>
+  )
+}
+
+function ConfigComponents(props: {
+  isEditMode?: boolean
+  children: React.ReactElement
+}) {
   if (props.isEditMode) {
     return (
-      <DashboardProvider saved={props.dashboard}>
+      <>
         <ConfigBar />
-        <Template {...props} />
+        {props.children}
         <DashboardEditDialog />
-      </DashboardProvider>
+      </>
     )
   }
 
-  return (
-    <DashboardProvider saved={props.dashboard}>
-      <Template {...props} />
-    </DashboardProvider>
-  )
+  return props.children
+}
+
+function TemplateDashboard(props: {user: User}) {
+  const template = useTemplate()
+  switch (template.name) {
+    case SIMPLE_BLOG:
+      return <SimpleBlogDashboard user={props.user} />
+    default:
+      throw new Error(`Missing dashboard for template: ${template.name}`)
+  }
 }
