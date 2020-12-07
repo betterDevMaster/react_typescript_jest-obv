@@ -1,10 +1,8 @@
+import {createSimpleBlog} from './../template/SimpleBlog/index'
 import {ObvioEvent} from 'Event'
-import {Dashboard} from 'Event/Dashboard'
-import {
-  createSimpleBlog,
-  SIMPLE_BLOG,
-} from 'Event/Dashboard/Template/SimpleBlog'
 import {EventState} from 'Event/state'
+import {Template} from 'Event/template'
+import {SIMPLE_BLOG} from 'Event/template/SimpleBlog'
 
 export const SET_EVENT_ACTION = 'SET_EVENT'
 export interface SetEventAction {
@@ -22,36 +20,71 @@ export const handleSetEvent = (
   return action.payload
 }
 
-export const CREATE_DASHBOARD_ACTION = 'CREATE_DASHBOARD'
-export interface CreateDashboardAction {
-  type: typeof CREATE_DASHBOARD_ACTION
-  payload: Dashboard['template']
+export const CREATE_TEMPLATE_ACTION = 'CREATE_TEMPLATE'
+export interface CreateTemplateAction {
+  type: typeof CREATE_TEMPLATE_ACTION
+  payload: Template['name']
 }
-export const createDashboard = (
-  template: Dashboard['template'],
-): CreateDashboardAction => ({
-  type: CREATE_DASHBOARD_ACTION,
+export const createTemplate = (
+  template: Template['name'],
+): CreateTemplateAction => ({
+  type: CREATE_TEMPLATE_ACTION,
   payload: template,
 })
-export const handleCreateDashboard = (
+export const handleCreateTemplate = (
   state: EventState,
-  action: CreateDashboardAction,
+  action: CreateTemplateAction,
 ): EventState => {
   if (!state) {
     throw new Error('Missing event; was it set in the store?')
   }
 
-  const dashboard = newDashboardFromTemplate(action.payload)
+  const template = newTemplate(action.payload)
   return {
     ...state,
-    dashboard,
+    template,
   }
 }
-function newDashboardFromTemplate(template: Dashboard['template']) {
-  switch (template) {
+function newTemplate(name: Template['name']) {
+  switch (name) {
     case SIMPLE_BLOG:
       return createSimpleBlog()
   }
 }
 
-export type EventAction = SetEventAction | CreateDashboardAction
+export const UPDATE_TEMPLATE_ACTION = 'UPDATE_TEMPLATE'
+export interface UpdateDashboardAction {
+  type: typeof UPDATE_TEMPLATE_ACTION
+  payload: Partial<Template>
+}
+export const updateDashboard = (
+  updates: Partial<Template>,
+): UpdateDashboardAction => ({
+  type: UPDATE_TEMPLATE_ACTION,
+  payload: updates,
+})
+export const handleUpdateDashboard = (
+  state: EventState,
+  action: UpdateDashboardAction,
+): EventState => {
+  if (!state) {
+    throw new Error('Missing event; was it set in the store?')
+  }
+
+  if (!state.template) {
+    throw new Error('Template missing; create one before updating')
+  }
+
+  return {
+    ...state,
+    template: {
+      ...state.template,
+      ...action.payload,
+    },
+  }
+}
+
+export type EventAction =
+  | SetEventAction
+  | CreateTemplateAction
+  | UpdateDashboardAction

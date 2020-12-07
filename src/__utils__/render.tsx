@@ -38,15 +38,20 @@ export const render = (
 
 export function renderWithEvent(
   component: React.ReactElement,
-  {event}: {event: ObvioEvent} = {event: fakeEvent()},
+  event: ObvioEvent = fakeEvent(),
 ) {
   const {rerender: rtlRerender, ...renderResult} = render(
     <StaticEventProvider event={event}>{component}</StaticEventProvider>,
   )
 
-  const rerender = (component: React.ReactElement) => {
+  const rerender = (
+    component: React.ReactElement,
+    newEvent: ObvioEvent = fakeEvent(),
+  ) => {
     return rtlRerender(
-      <StaticEventProvider event={event}>{component}</StaticEventProvider>,
+      <StaticEventProvider event={newEvent || event}>
+        {component}
+      </StaticEventProvider>,
     )
   }
 

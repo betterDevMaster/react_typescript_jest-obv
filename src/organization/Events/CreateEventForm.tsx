@@ -25,9 +25,9 @@ export default function CreateEventForm() {
   const {register, errors, handleSubmit, watch} = useForm()
   const slug = watch('slug')
   const [submitting, setSubmitting] = useState(false)
-  const [serverError, setServerError] = useState<null | ValidationError<
-    CreateEventData
-  >>(null)
+  const [serverError, setServerError] = useState<
+    ValidationError<CreateEventData>
+  >(null)
   const history = useHistory()
   const {routes, organization, client} = useOrganization()
 

@@ -5,15 +5,15 @@ import {
 } from 'Event/Dashboard/components/ResourceList'
 import {setConfig} from 'Event/Dashboard/editor/state/actions'
 import {
-  useDashboard,
+  useTemplate,
   useUpdateDashboard,
-} from 'Event/Dashboard/state/DashboardProvider'
+} from 'Event/Dashboard/state/TemplateProvider'
 import React from 'react'
 import {useDispatch} from 'react-redux'
 
 export default function AddResourceButton(props: {className?: string}) {
   const updateDashboard = useUpdateDashboard()
-  const {resourceList: list} = useDashboard()
+  const {resourceList: list} = useTemplate()
   const dispatch = useDispatch()
 
   const addResource = () => {

@@ -3,7 +3,7 @@ import Dashboard from 'Event/Dashboard'
 import {useEvent} from 'Event/EventProvider'
 import React from 'react'
 import AttendeeProfileProvider from 'Event/Dashboard/component-rules/AttendeeProfileProvider'
-import CreateDashboardForm from 'organization/Events/EventConfig/DashboardConfig/CreateDashboardForm'
+import CreateTemplateForm from 'organization/Events/EventConfig/DashboardConfig/CreateDashboardForm'
 
 export default function DashboardConfig() {
   const {event} = useEvent()
@@ -13,13 +13,13 @@ export default function DashboardConfig() {
     throw new Error('Missing user')
   }
 
-  if (!event.dashboard) {
-    return <CreateDashboardForm />
+  if (!event.template) {
+    return <CreateTemplateForm />
   }
 
   return (
     <AttendeeProfileProvider groups={{}} tags={[]}>
-      <Dashboard user={user} isEditMode={true} dashboard={event.dashboard} />
+      <Dashboard user={user} isEditMode={true} />
     </AttendeeProfileProvider>
   )
 }

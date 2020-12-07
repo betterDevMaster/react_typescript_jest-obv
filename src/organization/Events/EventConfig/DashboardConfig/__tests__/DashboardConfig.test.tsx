@@ -10,7 +10,7 @@ import App from 'App'
 import {render} from '__utils__/render'
 import {wait} from '@testing-library/react'
 import user from '@testing-library/user-event'
-import {fakeSimpleBlog} from 'Event/Dashboard/Template/SimpleBlog/__utils__/factory'
+import {fakeSimpleBlog} from 'Event/template/SimpleBlog/__utils__/factory'
 
 const mockUseLocation = useLocation as jest.Mock
 const mockGet = axios.get as jest.Mock
@@ -32,7 +32,7 @@ it('should show the dashboard config for an event', async () => {
     welcomeText,
   })
   const event = fakeEvent({
-    dashboard,
+    template: dashboard,
   })
   mockGet.mockImplementationOnce(() => Promise.resolve({data: organization}))
   mockGet.mockImplementationOnce(() => Promise.resolve({data: fakeUser()}))

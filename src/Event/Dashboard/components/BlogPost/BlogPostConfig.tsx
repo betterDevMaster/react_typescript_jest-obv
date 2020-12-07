@@ -6,9 +6,9 @@ import CKEditor from '@ckeditor/ckeditor5-react'
 import ClassicEditor from '@ckeditor/ckeditor5-build-classic'
 import DangerButton from 'lib/ui/Button/DangerButton'
 import {
-  useDashboard,
+  useTemplate,
   useUpdateDashboard,
-} from 'Event/Dashboard/state/DashboardProvider'
+} from 'Event/Dashboard/state/TemplateProvider'
 import {onChangeStringHandler} from 'lib/dom'
 import TextField from '@material-ui/core/TextField'
 
@@ -17,7 +17,7 @@ export type BlogPostConfig = {
   id: string
 }
 export function BlogPostConfig(props: {id: BlogPostConfig['id']}) {
-  const {blogPosts: posts} = useDashboard()
+  const {blogPosts: posts} = useTemplate()
 
   const {id} = props
   const updateDashboard = useUpdateDashboard()

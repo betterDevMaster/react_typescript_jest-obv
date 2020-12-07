@@ -9,9 +9,9 @@ import {onChangeStringHandler} from 'lib/dom'
 import {MaterialUiPickersDate} from '@material-ui/pickers/typings/date'
 import {useCloseConfig} from 'Event/Dashboard/editor/state/edit-mode'
 import {
-  useDashboard,
+  useTemplate,
   useUpdateDashboard,
-} from 'Event/Dashboard/state/DashboardProvider'
+} from 'Event/Dashboard/state/TemplateProvider'
 
 export type AgendaConfig = {
   type: typeof AGENDA
@@ -19,7 +19,7 @@ export type AgendaConfig = {
 }
 
 export function AgendaConfig(props: {id: AgendaConfig['id']}) {
-  const {agendas} = useDashboard()
+  const {agendas} = useTemplate()
   const updateDashboard = useUpdateDashboard()
   const closeConfig = useCloseConfig()
 

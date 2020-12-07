@@ -1,21 +1,29 @@
 import {useEvent} from 'Event/EventProvider'
-import grey from '@material-ui/core/colors/grey'
-import styled from 'styled-components'
 import {api, storage} from 'lib/url'
 import React, {useState} from 'react'
-import Container from '@material-ui/core/Container'
-import FormControl from '@material-ui/core/FormControl'
-import FormControlLabel from '@material-ui/core/FormControlLabel'
-import Checkbox from '@material-ui/core/Checkbox'
 import {useAttendee} from 'Event/auth'
-import Signature from 'Event/Step2/Waiver/Signature'
-import Button from '@material-ui/core/Button'
-import {onChangeCheckedHandler} from 'lib/dom'
 import {Attendee} from 'Event/attendee'
 import {setUser} from 'auth/actions'
 import {useDispatch} from 'react-redux'
 import {Redirect} from 'react-router-dom'
 import {eventRoutes} from 'Event/Routes'
+import TemplateProvider, {
+  useTemplate,
+} from 'Event/Dashboard/state/TemplateProvider'
+import {SIMPLE_BLOG} from 'Event/template/SimpleBlog'
+import SimpleBlogWaiver from 'Event/template/SimpleBlog/Waiver'
+import {WaiverConfig} from 'Event'
+
+export interface WaiverProps {
+  submit: () => void
+  canSubmit: boolean
+  agree: boolean
+  setAgree: (agree: WaiverProps['agree']) => void
+  signature: string | null
+  setSignature: (val: WaiverProps['signature']) => void
+  waiver: WaiverConfig
+  agreeLabel: string
+}
 
 export default function Waiver() {
   const {event, client} = useEvent()
@@ -28,6 +36,7 @@ export default function Waiver() {
 
   const canSubmit = Boolean(signature) && Boolean(agree) && !submitting
   const alreadySigned = Boolean(attendee.waiver)
+  const agreeLabel = `I ${attendee.first_name} ${attendee.last_name} hereby certify that I have read the forgoing and fully understand the meaning effect thereof, and intending to be legally bound, have signed it. *`
 
   if (!waiver) {
     throw new Error(`Missing event waiver`)
@@ -36,8 +45,6 @@ export default function Waiver() {
   if (alreadySigned) {
     return <Redirect to={eventRoutes.root} />
   }
-
-  const label = `I ${attendee.first_name} ${attendee.last_name} hereby certify that I have read the forgoing and fully understand the meaning effect thereof, and intending to be legally bound, have signed it. *`
 
   const submit = () => {
     setSubmitting(true)
@@ -55,54 +62,31 @@ export default function Waiver() {
   }
 
   return (
-    <Container maxWidth="sm">
-      <Title>{event.name} Waiver</Title>
-      <Body
-        dangerouslySetInnerHTML={{
-          __html: waiver.body,
-        }}
+    <TemplateProvider template={event.template}>
+      <TemplateWaiver
+        agree={agree}
+        submit={submit}
+        canSubmit={canSubmit}
+        setAgree={setAgree}
+        signature={signature}
+        setSignature={setSignature}
+        waiver={waiver}
+        agreeLabel={agreeLabel}
       />
-      <FormControl required component="fieldset">
-        <FormControlLabel
-          control={
-            <Checkbox
-              checked={agree}
-              onChange={onChangeCheckedHandler(setAgree)}
-              inputProps={{
-                'aria-label': 'agree to waiver checkbox',
-              }}
-            />
-          }
-          label={label}
-        />
-      </FormControl>
-      <Signature value={signature} onUpdate={setSignature} />
-      <div>
-        <Button
-          variant="contained"
-          color="primary"
-          disabled={!canSubmit}
-          onClick={submit}
-          aria-label="submit waiver button"
-        >
-          Submit
-        </Button>
-      </div>
-    </Container>
+    </TemplateProvider>
   )
+}
+
+function TemplateWaiver(props: WaiverProps) {
+  const template = useTemplate()
+  const user = useAttendee()
+  switch (template.name) {
+    case SIMPLE_BLOG:
+      return <SimpleBlogWaiver user={user} {...props} />
+    default:
+      throw new Error(`Missing waiver for template: ${template.name}`)
+  }
 }
 
 export const waiverLogoPath = (logo: string) =>
   storage(`/event/waiver/logo/${logo}`)
-
-const Body = styled.div`
-  max-height: 240px;
-  overflow-y: auto;
-  border: 1px solid ${grey[300]};
-  padding: 0 ${(props) => props.theme.spacing[4]};
-  margin-bottom: ${(props) => props.theme.spacing[4]};
-`
-
-const Title = styled.h3`
-  text-align: center;
-`

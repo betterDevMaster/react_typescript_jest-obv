@@ -1,9 +1,10 @@
 import {setEvent} from 'Event/state/actions'
 import {EventContext} from 'Event/EventProvider'
 import React, {useEffect} from 'react'
-import {useDispatch} from 'react-redux'
+import {useDispatch, useSelector} from 'react-redux'
 import {ObvioEvent} from 'Event'
 import {eventClient} from 'Event/api-client'
+import {RootState} from 'store'
 
 export default function StaticEventProvider(props: {
   event: ObvioEvent
@@ -11,6 +12,7 @@ export default function StaticEventProvider(props: {
 }) {
   const {event} = props
   const dispatch = useDispatch()
+  const current = useSelector((state: RootState) => state.event)
 
   useEffect(() => {
     dispatch(setEvent(event))
@@ -19,7 +21,7 @@ export default function StaticEventProvider(props: {
   return (
     <EventContext.Provider
       value={{
-        event: event,
+        event: current || event,
         client: eventClient,
       }}
     >
