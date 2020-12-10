@@ -35,14 +35,15 @@ it('should show the dashboard config for an event', async () => {
     template: dashboard,
   })
   mockGet.mockImplementationOnce(() => Promise.resolve({data: organization}))
-  mockGet.mockImplementationOnce(() => Promise.resolve({data: fakeUser()}))
+  mockGet.mockImplementationOnce(() => Promise.resolve({data: fakeUser()})) // user
+  mockGet.mockImplementationOnce(() => Promise.resolve({data: fakeUser()})) // owner
   mockGet.mockImplementationOnce(() => Promise.resolve({data: [event]}))
   mockGet.mockImplementationOnce(() => Promise.resolve({data: event}))
 
   const {findByText, findByLabelText} = render(<App />)
 
   await wait(() => {
-    expect(mockGet).toHaveBeenCalledTimes(3)
+    expect(mockGet).toHaveBeenCalledTimes(4)
   })
   expect(await findByText(event.name)).toBeInTheDocument()
 

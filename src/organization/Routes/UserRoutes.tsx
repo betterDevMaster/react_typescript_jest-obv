@@ -6,6 +6,7 @@ import React from 'react'
 import {Redirect, Route, Switch} from 'react-router-dom'
 import {useOrganization} from 'organization/OrganizationProvider'
 import EventConfigRoutes from 'organization/Events/EventConfig/EventConfigRoutes'
+import Team from 'organization/Team'
 
 export default function UserRoutes() {
   const {routes} = useOrganization()
@@ -14,8 +15,9 @@ export default function UserRoutes() {
     <Layout>
       <Switch>
         {/*
-          Handle login redirect. Handle it here rather than on login success to
-          avoid hitting the event catch-all below.
+          Handle login redirect. Placed first here, rather than on login success to
+          avoid hitting the event catch-all below, and getting a React
+          render error .
         */}
         <Redirect path={routes.login} to={routes.events.root} />
 
@@ -24,6 +26,9 @@ export default function UserRoutes() {
         </Route>
         <Route path={routes.events.root} exact>
           <Events />
+        </Route>
+        <Route path={routes.team}>
+          <Team />
         </Route>
         <Route path={routes.events[':event'].root}>
           <RouteEventProvider>

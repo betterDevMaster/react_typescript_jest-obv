@@ -44,6 +44,7 @@ it('should login a user', async () => {
     pathname: `/organization/${organization.slug}`,
   }))
   mockGet.mockImplementationOnce(() => Promise.resolve({data: organization}))
+  mockGet.mockImplementationOnce(() => Promise.resolve({data: fakeUser()}))
 
   const token = 'secrettoken'
   mockPost.mockImplementationOnce(() =>
@@ -75,7 +76,7 @@ it('should login a user', async () => {
   ).toBe(token)
 
   // Requested user?
-  const authHeader = mockGet.mock.calls[1][1]['headers']['Authorization']
+  const authHeader = mockGet.mock.calls[2][1]['headers']['Authorization']
   expect(authHeader).toBe(`Bearer ${token}`)
 
   expect(await findByText('Logout')).toBeInTheDocument()
