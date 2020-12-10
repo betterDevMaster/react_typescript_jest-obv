@@ -55,6 +55,16 @@ export default function AppBar() {
             onClose={handleClose}
           >
             <MenuItem onClick={handleLogout}>Logout</MenuItem>
+            <MenuItem onClick={handleClose}>
+              <RelativeLink to={routes.events.root} disableStyles>
+                Events
+              </RelativeLink>
+            </MenuItem>
+            <MenuItem onClick={handleClose}>
+              <RelativeLink to={routes.team} disableStyles>
+                Team
+              </RelativeLink>
+            </MenuItem>
           </Menu>
         </div>
       </Toolbar>

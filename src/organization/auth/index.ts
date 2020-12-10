@@ -1,4 +1,5 @@
 import {useAuthClient} from 'auth/auth-client'
+import {User} from 'auth/user'
 import {Organization} from 'organization'
 import {useOrganization} from 'organization/OrganizationProvider'
 
@@ -17,4 +18,27 @@ export const useOrganizationAuth = () => {
       register: `/register`,
     },
   })
+}
+
+function isTeamMember(user: User | null): user is User {
+  if (!user) {
+    return false
+  }
+
+  const hasWaiver = Object.prototype.hasOwnProperty.call(user, 'waiver')
+  return !hasWaiver
+}
+
+export function useTeamMember() {
+  const {user} = useOrganizationAuth()
+
+  if (!user) {
+    throw new Error(`Missing user; was useTeamMember called in a guest route?`)
+  }
+
+  if (!isTeamMember(user)) {
+    throw new Error(`Invalid user; expected a team member.`)
+  }
+
+  return user
 }

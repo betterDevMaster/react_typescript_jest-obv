@@ -1,10 +1,9 @@
+import {fakeUser} from 'auth/user/__utils__/factory'
 import {Attendee} from 'Event/attendee'
 import faker from 'faker'
 
 export const fakeAttendee = (overrides?: Partial<Attendee>): Attendee => ({
-  first_name: faker.name.firstName(),
-  last_name: faker.name.lastName(),
-  email: faker.internet.email(),
+  ...fakeUser(),
   login_token: faker.random.alphaNumeric(8),
   waiver: null,
   has_password: true,

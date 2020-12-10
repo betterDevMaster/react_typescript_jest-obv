@@ -12,6 +12,7 @@ import user from '@testing-library/user-event'
 import {fireEvent, wait} from '@testing-library/react'
 import {ObvioEvent} from 'Event'
 import {waiverLogoPath} from 'Event/Step2/Waiver'
+import {signInToOrganization} from 'organization/__utils__/authenticate'
 
 const mockUseLocation = useLocation as jest.Mock
 const mockGet = axios.get as jest.Mock
@@ -22,6 +23,7 @@ afterEach(() => {
 })
 
 it('should show waiver config', async () => {
+  // Patch fetch to automatically return the existing waiver logo blob
   // @ts-ignore
   window.fetch = jest.fn(() =>
     Promise.resolve(() => ({blob: jest.fn(() => [])})),
@@ -72,28 +74,6 @@ it('should submit a waiver', async () => {
   expect(data.get('logo')).toBe(image)
 })
 
-function viewEvent(overrides: {event?: ObvioEvent} = {}) {
-  const organization = fakeOrganization()
-  const user = fakeUser()
-  const token = faker.random.alphaNumeric(8)
-  window.localStorage.setItem(organizationTokenKey(organization.slug), token)
-  mockUseLocation.mockImplementationOnce(() => ({
-    pathname: `/organization/${organization.slug}`,
-  }))
-  const event = overrides.event || fakeEvent()
-
-  // Is vaild organization slug
-  mockGet.mockImplementationOnce(() => Promise.resolve({data: organization}))
-  // Authenticated
-  mockGet.mockImplementationOnce(() => Promise.resolve({data: user}))
-  // Fetch events
-  mockGet.mockImplementationOnce(() => Promise.resolve({data: [event]}))
-  // Fetch target event
-  mockGet.mockImplementationOnce(() => Promise.resolve({data: event}))
-
-  return {event, organization, user, token}
-}
-
 async function goToWaiverConfig(overrides: {event?: ObvioEvent} = {}) {
   const data = viewEvent(overrides)
   const renderResult = render(<App />)
@@ -102,4 +82,15 @@ async function goToWaiverConfig(overrides: {event?: ObvioEvent} = {}) {
   user.click(await renderResult.findByLabelText('configure waiver'))
 
   return {...data, ...renderResult}
+}
+
+function viewEvent(overrides: {event?: ObvioEvent} = {}) {
+  const event = overrides.event || fakeEvent()
+
+  const orgData = signInToOrganization({events: [event]})
+
+  // Fetch target event
+  mockGet.mockImplementationOnce(() => Promise.resolve({data: event}))
+
+  return {event, ...orgData}
 }
