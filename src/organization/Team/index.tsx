@@ -1,62 +1,73 @@
 import {User} from 'auth/user'
 import styled from 'styled-components'
 import Page from 'organization/user/Layout/Page'
-import React, {useCallback, useState} from 'react'
+import React, {useState} from 'react'
 import TeamMemberList from 'organization/Team/TeamMemberList'
 import AddTeamMemberForm from 'organization/Team/AddTeamMemberForm'
-import {useAsync} from 'lib/async'
-import {useOrganization} from 'organization/OrganizationProvider'
-import {api} from 'lib/url'
 import IfOwner from 'organization/auth/IfOwner'
+import TeamProvider from 'organization/Team/TeamProvider'
+import Tabs from '@material-ui/core/Tabs'
+import Tab from '@material-ui/core/Tab'
+import Box from '@material-ui/core/Box'
+import Permissions from 'organization/Team/Permissions'
+import PermissionsProvider from 'organization/Team/Permissions/PermissionsProvider'
 
-export type TeamMember = User
+export type TeamMember = User & {
+  permissions: string[]
+}
 
 export default function Team() {
-  const fetchTeamMembers = useFetchTeamMembers()
-  const {data: savedMembers, loading} = useAsync(fetchTeamMembers)
-  const [newMembers, setNewMembers] = useState<TeamMember[]>([])
-  const [removedMembers, setRemovedMembers] = useState<TeamMember[]>([])
+  const [tabIndex, setTabIndex] = useState(0)
 
-  const addNewMember = (teamMember: TeamMember) => {
-    setNewMembers([teamMember, ...newMembers])
+  const changeTab = (_: React.ChangeEvent<{}>, newTabIndex: number) => {
+    setTabIndex(newTabIndex)
   }
 
-  const removeMember = (teamMember: TeamMember) => {
-    setRemovedMembers([teamMember, ...removedMembers])
-  }
+  return (
+    <TeamProvider>
+      <PermissionsProvider>
+        <Page>
+          <Title>Team</Title>
+          <Tabs
+            onChange={changeTab}
+            aria-label="simple tabs example"
+            value={tabIndex}
+          >
+            <Tab label="Members" />
+            <Tab label="Permissions" />
+          </Tabs>
+          <TabPanel index={0} currentIndex={tabIndex}>
+            <IfOwner>
+              <AddTeamMemberForm />
+            </IfOwner>
+            <TeamMemberList />
+          </TabPanel>
+          <TabPanel index={1} currentIndex={tabIndex}>
+            <Permissions />
+          </TabPanel>
+        </Page>
+      </PermissionsProvider>
+    </TeamProvider>
+  )
+}
 
-  const isRemoved = (target: TeamMember) =>
-    removedMembers.find((t) => target.email === t.email)
-
-  if (loading || !savedMembers) {
+function TabPanel(props: {
+  children: React.ReactElement | React.ReactElement[]
+  index: number
+  currentIndex: number
+}) {
+  const isVisible = props.index === props.currentIndex
+  if (!isVisible) {
     return null
   }
 
-  // Add new members, and filter out removed members
-  const teamMembers = [...newMembers, ...savedMembers].filter(
-    (t) => !isRemoved(t),
-  )
-
   return (
-    <Page>
-      <Title>Team</Title>
-      <IfOwner>
-        <AddTeamMemberForm onAdd={addNewMember} />
-      </IfOwner>
-      <TeamMemberList teamMembers={teamMembers} onRemove={removeMember} />
-    </Page>
+    <Box py={3} role="tabpanel">
+      {props.children}
+    </Box>
   )
 }
 
 const Title = styled.h3`
   text-align: center;
 `
-
-function useFetchTeamMembers() {
-  const {client, organization} = useOrganization()
-
-  return useCallback(() => {
-    const url = api(`/organizations/${organization.slug}/team_members`)
-    return client.get<TeamMember[]>(url)
-  }, [organization, client])
-}
