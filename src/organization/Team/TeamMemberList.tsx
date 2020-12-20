@@ -5,24 +5,23 @@ import DeleteIconButton from 'lib/ui/IconButton/DeleteIconButton'
 import IfOwner from 'organization/auth/IfOwner'
 import {api} from 'lib/url'
 import {useOrganization} from 'organization/OrganizationProvider'
+import {useTeam} from 'organization/Team/TeamProvider'
 
-export default function TeamMemberList(props: {
-  teamMembers: TeamMember[]
-  onRemove: (teamMember: TeamMember) => void
-}) {
-  const remove = useRemove()
+export default function TeamMemberList() {
+  const {members, remove: removeFromList} = useTeam()
+  const removeOnServer = useRemove()
   const handleRemove = (target: TeamMember) => {
-    remove(target).then(props.onRemove)
+    removeOnServer(target).then(removeFromList)
   }
 
-  const hasTeamMembers = props.teamMembers.length > 0
+  const hasTeamMembers = members.length > 0
   if (!hasTeamMembers) {
     return <EmptyPlaceholder>No team members have been added.</EmptyPlaceholder>
   }
 
   return (
     <ul>
-      {props.teamMembers.map((t) => (
+      {members.map((t) => (
         <Item key={t.email} aria-label="team member">
           <div>
             {t.first_name} {t.last_name} - {t.email}
