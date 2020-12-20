@@ -5,5 +5,6 @@ export const fakeTeamMember = (
   overrides?: Partial<TeamMember>,
 ): TeamMember => ({
   ...fakeUser(),
+  permissions: [],
   ...overrides,
 })
