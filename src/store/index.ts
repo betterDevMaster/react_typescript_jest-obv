@@ -1,6 +1,7 @@
 import {authReducer} from 'auth'
 import {editorReducer} from 'Event/Dashboard/editor/state'
 import {eventReducer} from 'Event/state'
+import {clickedEmojiReducer} from 'Event/Dashboard/components/EmojiList/state'
 import {
   createStore as createReduxStore,
   applyMiddleware,
@@ -16,6 +17,7 @@ export const rootReducer = combineReducers({
   editor: editorReducer,
   auth: authReducer,
   event: eventReducer,
+  clickedEmoji: clickedEmojiReducer,
 })
 export type RootState = ReturnType<typeof rootReducer>
 

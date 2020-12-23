@@ -6,6 +6,9 @@ import AddEmojiListButton from 'Event/Dashboard/components/EmojiList/AddEmojiLis
 import EditModeOnly from 'Event/Dashboard/editor/views/EditModeOnly'
 import {useTemplate} from 'Event/Dashboard/state/TemplateProvider'
 
+import {sendEmoji} from 'Event/state/actions'
+import {useDispatch} from 'react-redux'
+
 export const EMOJI_LIST = 'Emoji List'
 
 export interface EmojiList {
@@ -18,6 +21,7 @@ export interface EmojiList {
 
 export default function EmojiList() {
   const {emojiList: list} = useTemplate()
+  const dispatch = useDispatch();
 
   const isEmpty = list && list.emojis.length === 0
   if (!list || isEmpty) {
@@ -29,6 +33,10 @@ export default function EmojiList() {
     )
   }
 
+  const storeEmoji = (index:number, name:string) => () => {
+    dispatch( sendEmoji({id: index, name: name}) )
+  }
+
   return (
     <EditComponent component={{type: EMOJI_LIST}}>
       <Box aria-label="emoji list">
@@ -38,6 +46,7 @@ export default function EmojiList() {
               aria-label="event emoji"
               src={emojiWithName(name).image}
               alt={name}
+              onClick={storeEmoji(index, name)}
             />
           </Container>
         ))}
