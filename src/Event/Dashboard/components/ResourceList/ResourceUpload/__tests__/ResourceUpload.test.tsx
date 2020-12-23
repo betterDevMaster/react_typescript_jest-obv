@@ -12,7 +12,12 @@ import axios from 'axios'
 import {mockRxJsAjax} from 'store/__utils__/MockStoreProvider'
 
 const mockAjaxPost = axios.post as jest.Mock
+const mockAjaxDelete = axios.delete as jest.Mock
 const mockRxPost = mockRxJsAjax.post as jest.Mock
+
+beforeEach(() => {
+  jest.clearAllMocks()
+})
 
 it('should upload a file', async () => {
   const template = fakeSimpleBlog({
@@ -39,9 +44,7 @@ it('should upload a file', async () => {
   clickEdit(await findByLabelText('event resource'))
 
   const file = new File([], 'myfile.pdf')
-
   const uploadDiv = await findByLabelText('resource upload')
-
   const filePath = 'somegeneratedfilepath.pdf'
 
   // Server responds with file path
@@ -81,4 +84,68 @@ it('should upload a file', async () => {
   expect(savedData.template.resourceList.resources[0]['filePath']).toBe(
     filePath,
   )
+})
+
+it('should delete an existing file', async () => {
+  const existingFile = 'myexistingfile.pdf'
+  const withExistingFile = fakeResource({filePath: existingFile})
+
+  const template = fakeSimpleBlog({
+    resourceList: {
+      description: '',
+      resources: [withExistingFile],
+    },
+  })
+
+  const event = fakeEvent({
+    template,
+  })
+
+  const {findByLabelText} = render(
+    <Dashboard isEditMode={true} user={fakeUser()} />,
+    {
+      event,
+      organization: fakeOrganization(),
+    },
+  )
+
+  clickEdit(await findByLabelText('event resource'))
+
+  const file = new File([], 'myfile.pdf')
+  const uploadEl = await findByLabelText('resource upload')
+  const filePath = 'somegeneratedfilepath.pdf'
+
+  // Deletes existing file
+  mockAjaxDelete.mockImplementationOnce(() => Promise.resolve({data: 'ok'}))
+
+  // Server responds with file path
+  mockAjaxPost.mockImplementationOnce(() =>
+    Promise.resolve({
+      data: {
+        file: filePath,
+      },
+    }),
+  )
+
+  fireEvent.drop(uploadEl, {
+    dataTransfer: {
+      files: [file],
+    },
+  })
+
+  await wait(() => {
+    expect(mockAjaxDelete).toHaveBeenCalledTimes(1)
+  })
+
+  const [deleteUrl] = mockAjaxDelete.mock.calls[0]
+
+  expect(deleteUrl).toMatch(`/resources/${existingFile}`)
+
+  // Uploaded?
+  await wait(() => {
+    expect(mockAjaxPost).toHaveBeenCalledTimes(1)
+  })
+
+  const [url] = mockAjaxPost.mock.calls[0]
+  expect(url).toMatch(`/events/${event.slug}/resources`) // was posted to resources
 })
