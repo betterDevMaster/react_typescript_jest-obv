@@ -1,5 +1,5 @@
 import React, {ReactElement} from 'react'
-import {act, fireEvent, render, waitFor, screen} from '@testing-library/react'
+import {act, fireEvent, render, wait, screen} from '@testing-library/react'
 import ResourceUpload, {
   UploadDropzone,
 } from 'Event/Dashboard/components/ResourceList/ResourceUpload'
@@ -32,7 +32,7 @@ async function flushPromises(
   rerender: (ui: ReactElement) => void,
   ui: JSX.Element,
 ) {
-  await act(() => waitFor(() => rerender(ui)))
+  await act(() => wait(() => rerender(ui)))
 }
 
 afterEach(() => {
@@ -51,7 +51,7 @@ it('should trigger upload request', async () => {
 
   const dropzoneUI = (
     <UploadDropzone
-      uploadFileRequest={uploadFileRequest}
+      onDrop={uploadFileRequest}
       setIsUploading={setIsUploading}
       setHasUploadingError={setHasUploadingError}
     />
@@ -104,7 +104,7 @@ it('should remove the previously uploaded file', async () => {
   expect(dropzone).toBeInTheDocument()
 
   fireEvent.drop(dropzone as Element, data)
-  await waitFor(() => {
+  await wait(() => {
     console.log('hello')
     expect(mockPost).toHaveBeenCalledTimes(1)
   })

@@ -83,7 +83,7 @@ export function ResourceItemConfig(props: {id: ResourceItemConfig['id']}) {
         fullWidth
         onChange={onChangeStringHandler(update('name'))}
       />
-      <ResourceUpload resourceId={props.id} resourceUpdate={update} />
+      <ResourceUpload resource={resource} update={update} />
       <FormControl fullWidth>
         <InputLabel>File Icon</InputLabel>
         <Select

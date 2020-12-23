@@ -1,4 +1,4 @@
-import React, {ReactElement, useCallback, useState} from 'react'
+import React, {useState} from 'react'
 import {api, storage} from 'lib/url'
 import {useDropzone} from 'react-dropzone'
 import CircularProgress from '@material-ui/core/CircularProgress'
@@ -9,121 +9,107 @@ import Typography from '@material-ui/core/Typography'
 import styled from 'styled-components'
 import Paper from '@material-ui/core/Paper'
 import {useEvent} from 'Event/EventProvider'
-import {useTemplate} from 'Event/Dashboard/state/TemplateProvider'
-import {client} from 'lib/api-client'
-import {OBVIO_ORG_TOKEN_KEY} from '../../../../obvio/auth'
+import {useOrganization} from 'organization/OrganizationProvider'
+import {Resource} from 'Event/Dashboard/components/ResourceList'
+import {AbsoluteLink} from 'lib/ui/link/AbsoluteLink'
+import Button from '@material-ui/core/Button'
 
 export const ACCEPTED_FILE_TYPES = ['image/*', '.pdf']
-export const MAX_FILE_SIZE = 2000000
-export const MAX_UPLOAD_COUNT = 1
+export const MAX_FILE_SIZE_MB = 2000000
+export const MAX_NUM_FILES = 1
 
 interface ResourceUploadProps {
-  resourceUpdate: any
-  resourceId: number
+  resource: Resource
+  update: <T extends keyof Resource>(key: T) => (value: Resource[T]) => void
 }
 
 export default function ResourceUpload(props: ResourceUploadProps) {
-  const {resourceList: list} = useTemplate()
-  // const {client} = useOrganization();
+  const {client} = useOrganization()
   const {event} = useEvent()
   const [isUploading, setIsUploading] = useState(false)
-  const [hasUploadingError, setHasUploadingError] = useState(false)
+  const [error, setError] = useState(null)
+  const deleteFile = useDeleteFile()
 
-  const resource = list.resources[props.resourceId]
+  const hasExistingFile = props.resource.filePath
 
-  const uploadFileRequest = async (acceptedFile: File) => {
+  const clearError = () => setError(null)
+
+  interface ResourceUpload {
+    file: string
+  }
+
+  const upload = (file: File) => {
+    clearError()
     const formData = new FormData()
-    formData.set('file', acceptedFile)
+    formData.set('file', file)
+    const url = api(`/events/${event.slug}/resources`)
 
-    try {
-      if (resource.filePath && resource.filePath.length > 0) {
-        await props.resourceUpdate('filePath')('')
-      }
-
-      const url = api(`/events/${event.slug}/resources`)
-      const {file} = await client.post(url, formData, {
-        tokenKey: OBVIO_ORG_TOKEN_KEY,
+    client
+      .post<ResourceUpload>(url, formData, {
         headers: {
           'content-type': 'multipart/form-data',
         },
       })
-
-      if (file) {
-        await props.resourceUpdate('filePath')(file)
-      }
-    } catch (e) {
-      setHasUploadingError(true)
-      console.error(e.message)
-    }
-
-    setIsUploading(false)
+      .then((upload) => {
+        props.update('filePath')(upload.file)
+      })
+      .catch((e) => {
+        setError(e.message)
+      })
+      .finally(() => {
+        setIsUploading(false)
+      })
   }
 
-  const removeFile = async (file: string): Promise<void> => {
+  const handleUpload = async (acceptedFile: File) => {
+    if (hasExistingFile) {
+      removeFile(props.resource).then(() => {
+        upload(acceptedFile)
+      })
+      return
+    }
+
+    upload(acceptedFile)
+  }
+
+  const removeFile = async (resource: Resource): Promise<void> => {
     setIsUploading(true)
-    const url = api(`/events/${event.slug}/resources/${file}`)
-
-    await client.delete(url, {
-      tokenKey: OBVIO_ORG_TOKEN_KEY,
-    })
-
-    // TODO: Promisify this function
-    await props.resourceUpdate('filePath')('')
-    setIsUploading(false)
+    return deleteFile(resource.filePath)
+      .then(() => {
+        props.update('filePath')('')
+      })
+      .catch((e) => {
+        setError(e.message)
+      })
+      .finally(() => {
+        setIsUploading(false)
+      })
   }
 
   return (
     <>
-      <UploadDropzone
-        uploadFileRequest={uploadFileRequest}
-        setHasUploadingError={setHasUploadingError}
-        setIsUploading={setIsUploading}
-      />
-      {isUploading && (
-        <LoaderWrapper>
-          <CircularProgress />
-        </LoaderWrapper>
-      )}
-      <HasUploadedFile filePath={resource.filePath}>
-        <>
-          <DangerButton onClick={() => removeFile(resource.filePath)}>
-            Remove Image
-          </DangerButton>
-          <ResourceImageWrapper
-            bgImg={storage(`/event/resources/${resource.filePath}`)}
-          />
-        </>
-      </HasUploadedFile>
-      <HasUploadingError
-        hasError={hasUploadingError}
-        message="There was something wrong when trying to upload your file. Please try again."
-      />
+      <UploadDropzone onDrop={handleUpload} />
+      <LoadingOverlay visible={isUploading} />
+      <ExistingFile resource={props.resource} onRemoveFile={removeFile} />
+      <Error>{error}</Error>
     </>
   )
 }
 
 interface UploadDropzoneProps {
-  uploadFileRequest: (acceptedFile: File) => void
-  setHasUploadingError: (state: boolean) => void
-  setIsUploading: (state: boolean) => void
+  onDrop: (acceptedFile: File) => void
 }
 
 export function UploadDropzone(props: UploadDropzoneProps) {
-  const onDrop = async (
-    acceptedFiles: File[],
-    triggerUploadFile: (acceptedFile: File) => void,
-  ) => {
-    props.setHasUploadingError(false)
-    props.setIsUploading(true)
-    const acceptedFile = acceptedFiles[0]
-    await triggerUploadFile(acceptedFile)
+  const handleDrop = (files: File[]) => {
+    props.onDrop(files[0]) // Should only receive one file
   }
 
   const {getRootProps, getInputProps} = useDropzone({
-    onDrop: (acceptedFiles) => onDrop(acceptedFiles, props.uploadFileRequest),
+    onDrop: handleDrop,
     accept: ACCEPTED_FILE_TYPES,
-    maxSize: MAX_FILE_SIZE,
-    maxFiles: MAX_UPLOAD_COUNT,
+    maxSize: MAX_FILE_SIZE_MB,
+    maxFiles: MAX_NUM_FILES,
   })
   const {ref, ...rootProps} = getRootProps()
 
@@ -132,6 +118,65 @@ export function UploadDropzone(props: UploadDropzoneProps) {
       <input {...getInputProps()} />
       <p>Drop a file here or click to upload</p>
     </PaperDropzone>
+  )
+}
+
+function ExistingFile(props: {
+  resource: Resource
+  onRemoveFile: (resource: Resource) => void
+}) {
+  if (!props.resource.filePath) {
+    return null
+  }
+
+  const remove = () => props.onRemoveFile(props.resource)
+  const path = storage(`/event/resources/${props.resource.filePath}`)
+
+  return (
+    <>
+      <AbsoluteLink to={path} disableStyles newTab>
+        <Button variant="outlined" color="primary">
+          View Uploaded File
+        </Button>
+      </AbsoluteLink>
+      <DangerButton onClick={remove} variant="outlined">
+        Remove File
+      </DangerButton>
+    </>
+  )
+}
+
+function LoadingOverlay(props: {visible: boolean}) {
+  if (!props.visible) {
+    return null
+  }
+
+  return (
+    <LoaderWrapper>
+      <CircularProgress />
+    </LoaderWrapper>
+  )
+}
+
+function useDeleteFile() {
+  const {event} = useEvent()
+  const {client} = useOrganization()
+
+  return (file: string) => {
+    const url = api(`/events/${event.slug}/resources/${file}`)
+    return client.delete(url)
+  }
+}
+
+function Error(props: {children: string | null}) {
+  if (!props.children) {
+    return null
+  }
+
+  return (
+    <ErrorText color="error">
+      We could not upload your file: {props.children}
+    </ErrorText>
   )
 }
 
@@ -148,48 +193,14 @@ const PaperDropzone = styled(Paper)`
   }
 `
 
-const LoaderWrapper = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: center;
-`
-
-const ResourceImageWrapper = styled.div<{bgImg: string}>`
-  width: 100%;
-  height: 240px;
-  background-size: cover;
-  background-position: center;
-  background-image: url(${(props) => (props.bgImg ? props.bgImg : '')});
-`
-
 const ErrorText = withStyles({
   root: {
     marginBottom: spacing[3],
   },
 })(Typography)
 
-interface HasUploadedFileProps {
-  filePath: string
-  children: ReactElement
-}
-
-function HasUploadedFile(props: HasUploadedFileProps) {
-  if (!props.filePath) {
-    return null
-  }
-
-  return props.children
-}
-
-interface HasErrorProps {
-  message: string
-  hasError: boolean
-}
-
-function HasUploadingError({message, hasError}: HasErrorProps) {
-  if (!hasError) {
-    return null
-  }
-
-  return <ErrorText color="error">{message}</ErrorText>
-}
+const LoaderWrapper = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+`
