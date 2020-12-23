@@ -23,7 +23,11 @@ export default function ExistingFile(props: {
           View Uploaded File
         </Button>
       </AbsoluteLink>
-      <DangerButton onClick={remove} variant="outlined">
+      <DangerButton
+        onClick={remove}
+        variant="outlined"
+        aria-label="remove resource file"
+      >
         Remove File
       </DangerButton>
     </>

@@ -7,7 +7,9 @@ export const ACCEPTED_FILE_TYPES = ['image/*', '.pdf']
 export const MAX_FILE_SIZE_MB = 2000000
 export const MAX_NUM_FILES = 1
 
-export default function UploadDropzone(props: {onDrop: (acceptedFile: File) => void}) {
+export default function UploadDropzone(props: {
+  onDrop: (acceptedFile: File) => void
+}) {
   const handleDrop = (files: File[]) => {
     props.onDrop(files[0]) // Should only receive one file
   }
@@ -21,8 +23,8 @@ export default function UploadDropzone(props: {onDrop: (acceptedFile: File) => v
   const {ref, ...rootProps} = getRootProps()
 
   return (
-    <PaperDropzone {...rootProps} aria-label="resource upload">
-      <input {...getInputProps()} />
+    <PaperDropzone {...rootProps}>
+      <input {...getInputProps()} aria-label="resource upload" />
       <p>Drop a file here or click to upload</p>
     </PaperDropzone>
   )
