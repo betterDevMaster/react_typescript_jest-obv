@@ -1,22 +1,25 @@
-import styled from 'styled-components'
-import CircularProgress from '@material-ui/core/CircularProgress'
-import Paper from '@material-ui/core/Paper'
+import FormControl from '@material-ui/core/FormControl'
+import Icon from '@material-ui/core/Icon'
+import InputLabel from '@material-ui/core/InputLabel'
+import MenuItem from '@material-ui/core/MenuItem'
+import Select from '@material-ui/core/Select'
 import TextField from '@material-ui/core/TextField'
-import {Resource, RESOURCE_ITEM} from 'Event/Dashboard/components/ResourceList'
-import {onChangeStringHandler} from 'lib/dom'
-import React, {useState} from 'react'
+import {
+  Resource,
+  RESOURCE_ICON,
+  RESOURCE_ITEM,
+} from 'Event/Dashboard/components/ResourceList'
+import {onUnknownChangeHandler, onChangeStringHandler} from 'lib/dom'
+import styled from 'styled-components'
+import React from 'react'
 import DangerButton from 'lib/ui/Button/DangerButton'
 import {useCloseConfig} from 'Event/Dashboard/editor/state/edit-mode'
 import {
   useTemplate,
   useUpdateDashboard,
 } from 'Event/Dashboard/state/TemplateProvider'
-import {useDropzone} from 'react-dropzone'
-import {useCallback, Fragment} from 'react'
-import {client} from 'lib/api-client'
-import {useEvent} from 'Event/EventProvider'
-import {api, storage} from 'lib/url'
-import {OBVIO_ORG_TOKEN_KEY} from 'obvio/auth'
+import {useCallback} from 'react'
+import ResourceUpload from './ResourceUpload'
 
 export type ResourceItemConfig = {
   type: typeof RESOURCE_ITEM
@@ -25,37 +28,39 @@ export type ResourceItemConfig = {
 
 export function ResourceItemConfig(props: {id: ResourceItemConfig['id']}) {
   const {resourceList: list} = useTemplate()
-  const {event} = useEvent()
 
   const updateDashboard = useUpdateDashboard()
   const closeConfig = useCloseConfig()
 
-  if (props.id === undefined || typeof props.id !== 'number') {
+  if (typeof props.id === 'undefined') {
     throw new Error('Missing component id')
   }
 
   const resource = list.resources[props.id]
 
-  const update = <T extends keyof Resource>(key: T) => (value: Resource[T]) => {
-    const updated = {
-      ...resource,
-      [key]: value,
-    }
+  const update = useCallback(
+    <T extends keyof Resource>(key: T) => (value: Resource[T]) => {
+      const updated = {
+        ...resource,
+        [key]: value,
+      }
 
-    updateDashboard({
-      resourceList: {
-        ...list,
-        resources: list.resources.map((r, index) => {
-          const isTarget = index === props.id
-          if (isTarget) {
-            return updated
-          }
+      updateDashboard({
+        resourceList: {
+          ...list,
+          resources: list.resources.map((r, index) => {
+            const isTarget = index === props.id
+            if (isTarget) {
+              return updated
+            }
 
-          return r
-        }),
-      },
-    })
-  }
+            return r
+          }),
+        },
+      })
+    },
+    [list, props.id, resource, updateDashboard],
+  )
 
   const remove = () => {
     closeConfig()
@@ -66,63 +71,6 @@ export function ResourceItemConfig(props: {id: ResourceItemConfig['id']}) {
       },
     })
   }
-
-  const [isUploading, setIsUploading] = useState<boolean>(false)
-
-  const onDrop = useCallback(
-    (acceptedFiles) => {
-      setIsUploading(true)
-      acceptedFiles.forEach((file: File) => {
-        const reader = new FileReader()
-
-        reader.onload = async () => {
-          const formData = new FormData()
-          formData.set('file', file)
-
-          try {
-            if (resource.filePath && resource.filePath.length > 0) {
-              await update('filePath')('')
-            }
-
-            const url = api(`/events/${event.slug}/resources`)
-            const {file} = await client.post(url, formData, {
-              tokenKey: OBVIO_ORG_TOKEN_KEY,
-              headers: {
-                'content-type': 'multipart/form-data',
-              },
-            })
-
-            if (file) {
-              await update('filePath')(file)
-            }
-          } catch (e) {
-            console.error(e.message)
-          }
-          setIsUploading(false)
-        }
-        reader.readAsArrayBuffer(file)
-      })
-    },
-    [event.slug, resource.filePath],
-  ) // eslint-disable-line
-
-  const removeImage = async (file: string): Promise<void> => {
-    setIsUploading(true)
-    const url = api(`/events/${event.slug}/resources/${file}`)
-
-    await client.delete(url, {
-      tokenKey: OBVIO_ORG_TOKEN_KEY,
-    })
-
-    await update('filePath')('')
-    await setIsUploading(false)
-  }
-
-  const {getRootProps, getInputProps} = useDropzone({
-    onDrop,
-    accept: ['image/*', '.pdf'],
-  })
-  const {ref, ...rootProps} = getRootProps()
 
   return (
     <>
@@ -135,25 +83,25 @@ export function ResourceItemConfig(props: {id: ResourceItemConfig['id']}) {
         fullWidth
         onChange={onChangeStringHandler(update('name'))}
       />
-      <PaperDropzone {...rootProps}>
-        <input {...getInputProps()} />
-        <p>Drop a file here or click to upload</p>
-      </PaperDropzone>
-      {isUploading && (
-        <LoaderWrapper>
-          <CircularProgress />
-        </LoaderWrapper>
-      )}
-      {resource.filePath && (
-        <Fragment>
-          <DangerButton onClick={removeImage.bind(null, resource.filePath)}>
-            Remove Image
-          </DangerButton>
-          <ResourceImageWrapper
-            bgImg={storage(`/event/resources/${resource.filePath}`)}
-          />
-        </Fragment>
-      )}
+      <ResourceUpload resourceId={props.id} resourceUpdate={update} />
+      <FormControl fullWidth>
+        <InputLabel>File Icon</InputLabel>
+        <Select
+          value={resource.icon}
+          fullWidth
+          onChange={onUnknownChangeHandler(update('icon'))}
+          inputProps={{
+            'aria-label': 'resource icon',
+          }}
+        >
+          {Object.values(RESOURCE_ICON).map((icon) => (
+            <MenuItem key={icon} value={icon}>
+              <Icon component="i">{icon}</Icon>
+            </MenuItem>
+          ))}
+        </Select>
+      </FormControl>
+
       <RemoveButton
         fullWidth
         variant="outlined"
@@ -169,35 +117,4 @@ export function ResourceItemConfig(props: {id: ResourceItemConfig['id']}) {
 const RemoveButton = styled(DangerButton)`
   margin-top: ${(props) => props.theme.spacing[6]}!important;
   margin-bottom: ${(props) => props.theme.spacing[5]}!important;
-`
-
-interface ResourceImageWrapperProps {
-  bgImg: string
-}
-
-const PaperDropzone = styled(Paper)`
-  cursor: pointer;
-  margin-bottom: 16px;
-  padding: 16px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
-  > p {
-    margin: 0;
-  }
-`
-
-const ResourceImageWrapper = styled.div<ResourceImageWrapperProps>`
-  width: 100%;
-  height: 240px;
-  background-size: cover;
-  background-position: center;
-  background-image: url(${(props) => (props.bgImg ? props.bgImg : '')});
-`
-
-const LoaderWrapper = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: center;
 `
