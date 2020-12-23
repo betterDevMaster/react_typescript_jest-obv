@@ -1,29 +1,28 @@
 import React, {useState} from 'react'
-import {api, storage} from 'lib/url'
-import {useDropzone} from 'react-dropzone'
+import {api} from 'lib/url'
 import CircularProgress from '@material-ui/core/CircularProgress'
-import DangerButton from 'lib/ui/Button/DangerButton'
 import withStyles from '@material-ui/core/styles/withStyles'
 import {spacing} from 'lib/ui/theme'
 import Typography from '@material-ui/core/Typography'
 import styled from 'styled-components'
-import Paper from '@material-ui/core/Paper'
 import {useEvent} from 'Event/EventProvider'
 import {useOrganization} from 'organization/OrganizationProvider'
 import {Resource} from 'Event/Dashboard/components/ResourceList'
-import {AbsoluteLink} from 'lib/ui/link/AbsoluteLink'
-import Button from '@material-ui/core/Button'
+import UploadDropzone from 'Event/Dashboard/components/ResourceList/ResourceUpload/UploadDropzone'
+import UploadedFile from 'Event/Dashboard/components/ResourceList/ResourceUpload/UploadedFile'
 
 export const ACCEPTED_FILE_TYPES = ['image/*', '.pdf']
 export const MAX_FILE_SIZE_MB = 2000000
 export const MAX_NUM_FILES = 1
 
-interface ResourceUploadProps {
-  resource: Resource
-  update: <T extends keyof Resource>(key: T) => (value: Resource[T]) => void
+interface ResourceUpload {
+  file: string
 }
 
-export default function ResourceUpload(props: ResourceUploadProps) {
+export default function ResourceUpload(props: {
+  resource: Resource
+  update: <T extends keyof Resource>(key: T) => (value: Resource[T]) => void
+}) {
   const {client} = useOrganization()
   const {event} = useEvent()
   const [isUploading, setIsUploading] = useState(false)
@@ -33,10 +32,6 @@ export default function ResourceUpload(props: ResourceUploadProps) {
   const hasExistingFile = props.resource.filePath
 
   const clearError = () => setError(null)
-
-  interface ResourceUpload {
-    file: string
-  }
 
   const upload = (file: File) => {
     clearError()
@@ -90,58 +85,8 @@ export default function ResourceUpload(props: ResourceUploadProps) {
     <>
       <UploadDropzone onDrop={handleUpload} />
       <LoadingOverlay visible={isUploading} />
-      <ExistingFile resource={props.resource} onRemoveFile={removeFile} />
+      <UploadedFile resource={props.resource} onRemoveFile={removeFile} />
       <Error>{error}</Error>
-    </>
-  )
-}
-
-interface UploadDropzoneProps {
-  onDrop: (acceptedFile: File) => void
-}
-
-export function UploadDropzone(props: UploadDropzoneProps) {
-  const handleDrop = (files: File[]) => {
-    props.onDrop(files[0]) // Should only receive one file
-  }
-
-  const {getRootProps, getInputProps} = useDropzone({
-    onDrop: handleDrop,
-    accept: ACCEPTED_FILE_TYPES,
-    maxSize: MAX_FILE_SIZE_MB,
-    maxFiles: MAX_NUM_FILES,
-  })
-  const {ref, ...rootProps} = getRootProps()
-
-  return (
-    <PaperDropzone {...rootProps} aria-label="resource upload">
-      <input {...getInputProps()} />
-      <p>Drop a file here or click to upload</p>
-    </PaperDropzone>
-  )
-}
-
-function ExistingFile(props: {
-  resource: Resource
-  onRemoveFile: (resource: Resource) => void
-}) {
-  if (!props.resource.filePath) {
-    return null
-  }
-
-  const remove = () => props.onRemoveFile(props.resource)
-  const path = storage(`/event/resources/${props.resource.filePath}`)
-
-  return (
-    <>
-      <AbsoluteLink to={path} disableStyles newTab>
-        <Button variant="outlined" color="primary">
-          View Uploaded File
-        </Button>
-      </AbsoluteLink>
-      <DangerButton onClick={remove} variant="outlined">
-        Remove File
-      </DangerButton>
     </>
   )
 }
@@ -179,19 +124,6 @@ function Error(props: {children: string | null}) {
     </ErrorText>
   )
 }
-
-const PaperDropzone = styled(Paper)`
-  cursor: pointer;
-  margin-bottom: ${(props) => props.theme.spacing[6]};
-  padding: ${(props) => props.theme.spacing[6]};
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
-  > p {
-    margin: 0;
-  }
-`
 
 const ErrorText = withStyles({
   root: {
