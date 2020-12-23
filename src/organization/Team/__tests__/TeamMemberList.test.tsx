@@ -1,6 +1,5 @@
 import React from 'react'
 import axios from 'axios'
-import {fakeUser} from 'auth/user/__utils__/factory'
 import faker from 'faker'
 import {render} from '__utils__/render'
 import App from 'App'
@@ -13,7 +12,7 @@ const mockGet = axios.get as jest.Mock
 const mockDelete = axios.delete as jest.Mock
 
 it('remove a team member', async () => {
-  const authUser = fakeUser()
+  const authUser = fakeTeamMember()
   signInToOrganization({authUser, owner: authUser})
 
   const teamMembers = Array.from(

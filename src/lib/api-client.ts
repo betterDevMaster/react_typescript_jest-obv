@@ -1,6 +1,10 @@
 import axios from 'axios'
 import {getToken as getAuthToken} from 'auth/token'
 
+export type ResponseError = {
+  message: string
+}
+
 export type ValidationError<T> = {
   message: string
   errors: Partial<T>

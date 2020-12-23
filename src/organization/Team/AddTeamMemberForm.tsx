@@ -11,15 +11,15 @@ import {api} from 'lib/url'
 import {TeamMember} from 'organization/Team'
 import {withStyles} from '@material-ui/core'
 import {spacing} from 'lib/ui/theme'
+import {useTeam} from 'organization/Team/TeamProvider'
 
 interface InviteTeamMemberData {
   email: string
 }
 
-export default function AddTeamMemberForm(props: {
-  onAdd: (teamMember: TeamMember) => void
-}) {
+export default function AddTeamMemberForm() {
   const {register, handleSubmit, errors, reset: resetForm} = useForm()
+  const {add} = useTeam()
   const [submitting, setSubmitting] = useState(false)
   const [responseError, setResponseError] = useState<
     ValidationError<InviteTeamMemberData>
@@ -30,7 +30,7 @@ export default function AddTeamMemberForm(props: {
     setSubmitting(true)
     inviteTeamMember(data)
       .then((teamMember) => {
-        props.onAdd(teamMember)
+        add(teamMember)
         resetForm()
         setResponseError(null)
       })
