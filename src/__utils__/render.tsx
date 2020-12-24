@@ -1,39 +1,75 @@
 import React from 'react'
-import {render as rtlRender, RenderOptions} from '@testing-library/react'
+import {
+  render as rtlRender,
+  RenderOptions as RtlRenderOptions,
+} from '@testing-library/react'
 import AttendeeProfileProvider from 'Event/Dashboard/component-rules/AttendeeProfileProvider'
 import MockStoreProvider from 'store/__utils__/MockStoreProvider'
 import Providers from 'Providers'
 import StaticEventProvider from 'Event/__utils__/StaticEventProvider'
 import {fakeEvent} from 'Event/__utils__/factory'
 import {ObvioEvent} from 'Event'
+import {Organization} from 'organization'
+import StaticOrganizationProvider from 'organization/__utils__/StaticOrganizationProvider'
 
-export const render = (
-  component: React.ReactElement,
-  options?: Omit<RenderOptions, 'queries'>,
-) => {
-  const {rerender: rtlRerender, ...renderResult} = rtlRender(
+type Options = Omit<RtlRenderOptions, 'queries'> & {
+  event?: ObvioEvent
+  organization?: Organization
+}
+
+export const render = (component: React.ReactElement, options?: Options) => {
+  const wrapped = (target: React.ReactElement, options?: Options) => (
     <Providers storeProvider={MockStoreProvider}>
-      <AttendeeProfileProvider tags={[]} groups={{}}>
-        {component}
-      </AttendeeProfileProvider>
-    </Providers>,
+      <WithOrganization organization={options?.organization}>
+        <WithEvent event={options?.event}>
+          <AttendeeProfileProvider tags={[]} groups={{}}>
+            {target}
+          </AttendeeProfileProvider>
+        </WithEvent>
+      </WithOrganization>
+    </Providers>
+  )
+
+  const {rerender: rtlRerender, ...renderResult} = rtlRender(
+    wrapped(component, options),
     options,
   )
 
-  const rerender = (component: React.ReactElement) => {
-    return rtlRerender(
-      <Providers storeProvider={MockStoreProvider}>
-        <AttendeeProfileProvider tags={[]} groups={{}}>
-          {component}
-        </AttendeeProfileProvider>
-      </Providers>,
-    )
+  const rerender = (component: React.ReactElement, options?: Options) => {
+    return rtlRerender(wrapped(component, options))
   }
 
   return {
     rerender,
     ...renderResult,
   }
+}
+
+function WithEvent(props: {event?: ObvioEvent; children: React.ReactElement}) {
+  if (!props.event) {
+    return props.children
+  }
+
+  return (
+    <StaticEventProvider event={props.event}>
+      {props.children}
+    </StaticEventProvider>
+  )
+}
+
+function WithOrganization(props: {
+  organization?: Organization
+  children: React.ReactElement
+}) {
+  if (!props.organization) {
+    return props.children
+  }
+
+  return (
+    <StaticOrganizationProvider organization={props.organization}>
+      {props.children}
+    </StaticOrganizationProvider>
+  )
 }
 
 export function renderWithEvent(
