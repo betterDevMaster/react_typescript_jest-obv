@@ -4,14 +4,14 @@ import faker from 'faker'
 import {fakeSimpleBlog} from 'Event/template/SimpleBlog/__utils__/factory'
 import {fakeUser} from 'auth/user/__utils__/factory'
 import Dashboard from 'Event/Dashboard'
-import {render, renderWithEvent} from '__utils__/render'
+import {render} from '__utils__/render'
 import {fakeResource} from 'Event/Dashboard/components/ResourceList/__utils__/factory'
 import {fireEvent} from '@testing-library/dom'
 import {clickEdit} from '__utils__/edit'
 import {fakeEvent} from 'Event/__utils__/factory'
-import StaticEventProvider from 'Event/__utils__/StaticEventProvider'
 import {mockRxJsAjax} from 'store/__utils__/MockStoreProvider'
 import {wait} from '@testing-library/react'
+import {fakeOrganization} from 'obvio/Organizations/__utils__/factory'
 
 const mockPost = mockRxJsAjax.post as jest.Mock
 
@@ -29,9 +29,9 @@ it('should render resources', async () => {
     }),
   })
 
-  const {queryByText, rerender, findAllByLabelText} = renderWithEvent(
+  const {queryByText, rerender, findAllByLabelText} = render(
     <Dashboard isEditMode={false} user={fakeUser()} />,
-    event,
+    {event},
   )
 
   expect(queryByText(/resources:/i)).not.toBeInTheDocument()
@@ -46,7 +46,9 @@ it('should render resources', async () => {
     }),
   })
 
-  rerender(<Dashboard isEditMode={false} user={fakeUser()} />, withResources)
+  rerender(<Dashboard isEditMode={false} user={fakeUser()} />, {
+    event: withResources,
+  })
 
   const resources = await findAllByLabelText('event resource')
   expect(resources.length).toBe(numResources)
@@ -61,12 +63,15 @@ it('should add a new resource', async () => {
   })
 
   const event = fakeEvent({template: dashboard})
+  const organization = fakeOrganization()
 
-  const {
-    queryByLabelText,
-    findByLabelText,
-    findAllByLabelText,
-  } = renderWithEvent(<Dashboard isEditMode={true} user={fakeUser()} />, event)
+  const {queryByLabelText, findByLabelText, findAllByLabelText} = render(
+    <Dashboard isEditMode={true} user={fakeUser()} />,
+    {
+      event,
+      organization,
+    },
+  )
 
   expect(queryByLabelText('event resource')).not.toBeInTheDocument()
 
@@ -97,9 +102,11 @@ it('should update resources description', async () => {
   })
 
   const event = fakeEvent({template: dashboard})
-  const {findByLabelText} = renderWithEvent(
+  const {findByLabelText} = render(
     <Dashboard isEditMode={true} user={fakeUser()} />,
-    event,
+    {
+      event,
+    },
   )
 
   expect((await findByLabelText('resource description')).textContent).toBe(
@@ -142,10 +149,14 @@ it('should update a resource', async () => {
   })
 
   const event = fakeEvent({template: dashboard})
+  const organization = fakeOrganization()
 
-  const {findByLabelText} = renderWithEvent(
+  const {findByLabelText} = render(
     <Dashboard isEditMode={true} user={fakeUser()} />,
-    event,
+    {
+      event,
+      organization,
+    },
   )
 
   expect((await findByLabelText('resource link')).textContent).toBe(name)
@@ -182,10 +193,14 @@ it('should remove a resource', async () => {
     },
   })
   const event = fakeEvent({template: dashboard})
+  const organization = fakeOrganization()
 
-  const {findAllByLabelText, findByLabelText, queryByText} = renderWithEvent(
+  const {findAllByLabelText, findByLabelText, queryByText} = render(
     <Dashboard isEditMode={true} user={fakeUser()} />,
-    event,
+    {
+      event,
+      organization,
+    },
   )
 
   expect((await findAllByLabelText('event resource')).length).toBe(
