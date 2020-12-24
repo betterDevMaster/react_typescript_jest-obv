@@ -1,9 +1,5 @@
-import {fakeOrganization} from 'obvio/Organizations/__utils__/factory'
 import faker from 'faker'
-import {organizationTokenKey} from 'organization/auth'
-import {useLocation} from 'react-router-dom'
 import axios from 'axios'
-import {fakeUser} from 'auth/user/__utils__/factory'
 import {fakeEvent} from 'Event/__utils__/factory'
 import React from 'react'
 import App from 'App'
@@ -14,7 +10,6 @@ import {ObvioEvent} from 'Event'
 import {waiverLogoPath} from 'Event/Step2/Waiver'
 import {signInToOrganization} from 'organization/__utils__/authenticate'
 
-const mockUseLocation = useLocation as jest.Mock
 const mockGet = axios.get as jest.Mock
 const mockPost = axios.post as jest.Mock
 

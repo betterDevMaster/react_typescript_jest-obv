@@ -40,6 +40,7 @@ const StyledAnchor = styled.a<{
   color: ${(props) => props.color};
   cursor: pointer;
   &:hover {
-    ${(props) => (props.underline ? 'text-decoration: underline;' : null)}
+    ${(props) =>
+      props.underline ? 'text-decoration: underline' : 'text-decoration: none'};
   }
 `
