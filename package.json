@@ -11,6 +11,8 @@
     "@material-ui/pickers": "^3.2.10",
     "axios": "^0.21.0",
     "color": "^3.1.2",
+    "cross-env": "^7.0.3",
+    "js-file-download": "^0.4.12",
     "moment": "^2.29.1",
     "moment-timezone": "^0.5.31",
     "normalize.css": "^8.0.1",
@@ -34,7 +36,7 @@
   "scripts": {
     "dev": "react-scripts start",
     "build": "react-scripts build",
-    "test": "CI=true react-scripts test --env=jest-environment-jsdom-sixteen",
+    "test": "cross-env CI=true react-scripts test --env=jest-environment-jsdom-sixteen",
     "test:watch": "react-scripts test --env=jest-environment-jsdom-sixteen",
     "test:coverage": "npm run test -- --coverage",
     "test:related": "npm run test -- --passWithNoTests --findRelatedTests src/**",
@@ -58,11 +60,7 @@
       "npm run test:related"
     ]
   },
-  "husky": {
-    "hooks": {
-      "pre-commit": "npm run check-types && lint-staged"
-    }
-  },
+
   "jest": {
     "collectCoverageFrom": [
       "src/**/*.{js,jsx,ts,tsx}",

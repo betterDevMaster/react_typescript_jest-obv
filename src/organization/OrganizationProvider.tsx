@@ -80,6 +80,7 @@ export function createRoutesFor(organization: Organization) {
         ':event': {
           dashboard: '/dashboard',
           waiver: '/waiver',
+          attendee_management: '/attendee-management',
         },
       },
     },

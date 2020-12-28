@@ -32,6 +32,16 @@ export default function EventConfig() {
           Configure Dashboard
         </Button>
       </RelativeLink>
+
+        <RelativeLink disableStyles to={routes.attendee_management}>
+            <Button
+                variant="contained"
+                color="primary"
+                aria-label="attendee management "
+            >
+                Attendee Management
+            </Button>
+        </RelativeLink>
     </Page>
   )
 }
