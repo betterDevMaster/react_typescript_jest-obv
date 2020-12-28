@@ -25,7 +25,7 @@ import EmojiRender from './EmojiRender'
 import {random} from 'faker'
 
 export interface floatingEmojiData {
-  id: string
+  id: number
   content: string
   number: number
   duration: number
@@ -38,68 +38,121 @@ export interface EmojiStateType {
   isRendering: boolean
 }
 
-const mockup = [
-  {
-    content: 'heart',
-    number: 2,
-    duration: 5,
-    repeat: 2,
-    size: 1,
-  },
-  {
-    content: 'clap',
-    number: 2,
-    duration: 2,
-    repeat: 2,
-    size: 1.5,
-  },
-  {
-    content: 'laugh',
-    number: 2,
-    duration: 3,
-    repeat: 2,
-    size: 1.2,
-  },
-]
+// const mockup = [
+//   {
+//     content: 'heart',
+//     number: 2,
+//     duration: 5,
+//     repeat: 2,
+//     size: 1,
+//   },
+//   {
+//     content: 'clap',
+//     number: 2,
+//     duration: 2,
+//     repeat: 2,
+//     size: 1.5,
+//   },
+//   {
+//     content: 'laugh',
+//     number: 2,
+//     duration: 3,
+//     repeat: 2,
+//     size: 1.2,
+//   },
+// ]
+
+const injectStyle = (style: string) => {
+  const styleElement = document.createElement('style') as HTMLStyleElement
+  let styleSheet = null
+
+  document.head.appendChild(styleElement)
+
+  styleSheet = styleElement.sheet as CSSStyleSheet
+
+  styleSheet.insertRule(style, styleSheet.cssRules.length)
+}
 
 export default function Emoji() {
   const {event} = useEvent()
   const [emojiList, setEmojiList] = useState<EmojiStateType[]>([])
+  const [timer, setTimer] = useState<Number>()
 
   useEffect(() => {
+    /* initialize emoji styles */
+    const defaultEmojiStyle = `
+      default-emoji {
+        marging-top: 110%
+      }`
+    const animateBubble = `
+      @-webkit-keyframes animateBubble {
+        0% { margin-top: 110% }
+        100% { margin-top: -10% }
+      }`
+    const sideWays = `
+        @-webkit-keyframes sideWays { 
+          0% { margin-left:-50px }
+          100% { margin-left:50px }
+      }`
+
+    injectStyle(defaultEmojiStyle)
+    injectStyle(animateBubble)
+    injectStyle(sideWays)
+
+    /* fetch emoji updates */
     const interval = setInterval(() => {
-      const randomNumber = parseInt((Math.random() * 20).toString())
-      const isAdd = randomNumber > 15
-      if (isAdd) {
-        console.log('add')
-        const newEmoji: EmojiStateType = {
-          data: JSON.parse(
-            JSON.stringify({
-              ...mockup[randomNumber % 3],
-              id: Math.floor(Date.now() / 1000),
-            }),
-          ),
-          isRendering: false,
-        }
-        emojiList.push(newEmoji)
-        setEmojiList(JSON.parse(JSON.stringify(emojiList)))
-      }
-      // const url = api(`/events/${event.slug}/getEmoji`)
-      // eventClient.get(url)
-      // .then(res => {
-      //   console.log(emojiWithName('heart').image)
-      // })
-      // .catch((error) => {
-      //   // ignore errors, prevent failing to send emoji from crashing app
-      //   console.error(error)
-      // })
-      console.log('setInterval')
+      /* TODO: removed afterwards */
+      // let randomNumber = parseInt((Math.random() * 20).toString())
+      // const isAdd = randomNumber > 3
+      // if (isAdd) {
+      //   const newEmoji: EmojiStateType = {
+      //     data: JSON.parse(
+      //       JSON.stringify({
+      //         ...mockup[randomNumber % 3],
+      //         id: Date.now(),
+      //       }),
+      //     ),
+      //     isRendering: false,
+      //   }
+      //   emojiList.push(newEmoji)
+      //   setEmojiList(JSON.parse(JSON.stringify(emojiList)))
+      // }
+
+      const url = api(`/events/${event.slug}/getEmoji`)
+      eventClient
+        .get(url)
+        .then((res) => {
+          // res will josn data ex {"data":["thumb_up","thumb_up"]}
+          JSON.parse(JSON.stringify(res)).data.forEach((image: string) => {
+            const newEmoji: EmojiStateType = {
+              data: {
+                id: Date.now(),
+                content: image,
+                number: 2,
+                duration: Math.random() * 10 + 1,
+                repeat: 1,
+                size: Math.random() + 1,
+              },
+              isRendering: false,
+            }
+            emojiList.push(newEmoji)
+          })
+          setEmojiList(JSON.parse(JSON.stringify(emojiList)))
+
+          // console.log(emojiWithName('heart').image)
+        })
+        .catch((error) => {
+          // ignore errors, prevent failing to send emoji from crashing app
+          console.error(error)
+        })
     }, 1000)
-    return () => clearInterval(interval)
-  })
+    return () => {
+      clearInterval(interval)
+    }
+  }, [])
 
   const emojiRenderFinished = useCallback((emojiInfo) => {
-    console.log('delete = ', emojiInfo.data.id)
+    // console.log('delete = ', emojiInfo.data.id)
     const indexOfEmoji = emojiList.findIndex(
       (item) => item.data.id === emojiInfo.data.id,
     )
@@ -115,8 +168,6 @@ export default function Emoji() {
     setEmojiList(JSON.parse(JSON.stringify(emojiList)))
   }, [])
 
-  console.log('list = ', emojiList)
-
   return (
     <MainBody>
       <div className="float-container" id="float-container">
@@ -124,7 +175,7 @@ export default function Emoji() {
           return (
             <EmojiRender
               emojiInfo={emojiItem}
-              key={index}
+              key={emojiItem.data.id}
               finished={(emojiInfo: EmojiStateType) =>
                 emojiRenderFinished(emojiInfo)
               }

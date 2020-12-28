@@ -7,17 +7,6 @@ import {EmojiStateType} from './Emoji'
 const EMOJI_WIDTH_BIND: number = 50
 const EMOJI_DEFAULT_SIZE: number = 68
 
-const injectStyle = (style: string) => {
-  const styleElement = document.createElement('style') as HTMLStyleElement
-  let styleSheet = null
-
-  document.head.appendChild(styleElement)
-
-  styleSheet = styleElement.sheet as CSSStyleSheet
-
-  styleSheet.insertRule(style, styleSheet.cssRules.length)
-}
-
 interface EmojiRenderPropsType {
   emojiInfo: EmojiStateType
   finished: Function
@@ -30,8 +19,7 @@ function EmojiRender(props: EmojiRenderPropsType) {
   const [keyframeName, setKeyframeName] = useState('')
 
   useEffect(() => {
-    console.log('id = ', emojiInfo.data.id)
-    setTimeout(() => {
+    const timer = setTimeout(() => {
       finished(emojiInfo)
     }, emojiInfo.data.duration * 1000)
   }, [])
@@ -45,30 +33,24 @@ function EmojiRender(props: EmojiRenderPropsType) {
         return `
         ${(index + 0.5) * intervalPercent}% { transform: translateX(${
           EMOJI_WIDTH_BIND * (index % 2 ? -1 : 1)
-        }px); bottom: ${(index + 0.5) * moveHeightPerSec}%; }
+        }px);}
       `
       })
 
-    const keyframesStyle = `
-      @-webkit-keyframes bubbleKeyframe${emojiInfo.data.id} {
-        0% { transform: translateX(0); bottom: 0% }
-        ${frames.join('')}
-        100% { transform: translateX(0); bottom: 100% }
-      }
-    `
-    injectStyle(keyframesStyle)
-
-    setKeyframeName(`bubbleKeyframe${emojiInfo.data.id}`)
+    setKeyframeName(
+      `animateBubble ${emojiInfo.data.duration}s linear, sideWays 1s ease-in-out infinite alternate`,
+    )
   }, [])
 
   return (
     <EmojiRenderContainer
       style={{
-        WebkitAnimation: `${keyframeName} ${emojiInfo.data.duration}s linear`,
+        WebkitAnimation: `${keyframeName}`,
         left: `${Math.random() * 80 + 10}%`,
         width: emojiInfo.data.size * EMOJI_DEFAULT_SIZE,
         height: emojiInfo.data.size * EMOJI_DEFAULT_SIZE,
       }}
+      className="default-emoji"
     >
       <img
         aria-label="event emoji"
