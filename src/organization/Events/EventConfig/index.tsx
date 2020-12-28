@@ -32,6 +32,16 @@ export default function EventConfig() {
           Configure Dashboard
         </Button>
       </RelativeLink>
+
+      <RelativeLink disableStyles to={routes.emoji}>
+        <Button
+          variant="contained"
+          color="primary"
+          aria-label="go to emoji page"
+        >
+          Go To Emoji Page
+        </Button>
+      </RelativeLink>
     </Page>
   )
 }
