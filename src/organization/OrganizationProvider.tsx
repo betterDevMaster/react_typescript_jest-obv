@@ -16,7 +16,7 @@ interface OrganizationContextProps {
   client: OrganizationClient
 }
 
-const OrganizationContext = React.createContext<
+export const OrganizationContext = React.createContext<
   OrganizationContextProps | undefined
 >(undefined)
 
@@ -89,7 +89,9 @@ export function createRoutesFor(organization: Organization) {
   )
 }
 
-function useClient(organization: Organization | null): typeof client | null {
+export function useClient(
+  organization: Organization | null,
+): typeof client | null {
   return useMemo(() => {
     if (!organization) {
       return null

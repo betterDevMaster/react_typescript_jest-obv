@@ -1,5 +1,4 @@
 import FormControl from '@material-ui/core/FormControl'
-import styled from 'styled-components'
 import Icon from '@material-ui/core/Icon'
 import InputLabel from '@material-ui/core/InputLabel'
 import MenuItem from '@material-ui/core/MenuItem'
@@ -11,6 +10,7 @@ import {
   RESOURCE_ITEM,
 } from 'Event/Dashboard/components/ResourceList'
 import {onUnknownChangeHandler, onChangeStringHandler} from 'lib/dom'
+import styled from 'styled-components'
 import React from 'react'
 import DangerButton from 'lib/ui/Button/DangerButton'
 import {useCloseConfig} from 'Event/Dashboard/editor/state/edit-mode'
@@ -18,6 +18,8 @@ import {
   useTemplate,
   useUpdateDashboard,
 } from 'Event/Dashboard/state/TemplateProvider'
+import {useCallback} from 'react'
+import ResourceUpload from './ResourceUpload'
 
 export type ResourceItemConfig = {
   type: typeof RESOURCE_ITEM
@@ -30,32 +32,35 @@ export function ResourceItemConfig(props: {id: ResourceItemConfig['id']}) {
   const updateDashboard = useUpdateDashboard()
   const closeConfig = useCloseConfig()
 
-  if (props.id === undefined || typeof props.id !== 'number') {
+  if (typeof props.id === 'undefined') {
     throw new Error('Missing component id')
   }
 
   const resource = list.resources[props.id]
 
-  const update = <T extends keyof Resource>(key: T) => (value: Resource[T]) => {
-    const updated = {
-      ...resource,
-      [key]: value,
-    }
+  const update = useCallback(
+    <T extends keyof Resource>(key: T) => (value: Resource[T]) => {
+      const updated = {
+        ...resource,
+        [key]: value,
+      }
 
-    updateDashboard({
-      resourceList: {
-        ...list,
-        resources: list.resources.map((r, index) => {
-          const isTarget = index === props.id
-          if (isTarget) {
-            return updated
-          }
+      updateDashboard({
+        resourceList: {
+          ...list,
+          resources: list.resources.map((r, index) => {
+            const isTarget = index === props.id
+            if (isTarget) {
+              return updated
+            }
 
-          return r
-        }),
-      },
-    })
-  }
+            return r
+          }),
+        },
+      })
+    },
+    [list, props.id, resource, updateDashboard],
+  )
 
   const remove = () => {
     closeConfig()
@@ -78,15 +83,7 @@ export function ResourceItemConfig(props: {id: ResourceItemConfig['id']}) {
         fullWidth
         onChange={onChangeStringHandler(update('name'))}
       />
-      <TextField
-        value={resource.filePath}
-        inputProps={{
-          'aria-label': 'resource file path',
-        }}
-        label="File Path"
-        fullWidth
-        onChange={onChangeStringHandler(update('filePath'))}
-      />
+      <ResourceUpload resource={resource} update={update} />
       <FormControl fullWidth>
         <InputLabel>File Icon</InputLabel>
         <Select
@@ -104,6 +101,7 @@ export function ResourceItemConfig(props: {id: ResourceItemConfig['id']}) {
           ))}
         </Select>
       </FormControl>
+
       <RemoveButton
         fullWidth
         variant="outlined"
