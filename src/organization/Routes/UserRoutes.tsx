@@ -1,11 +1,11 @@
-import Events from 'organization/Events'
-import CreateEventForm from 'organization/Events/CreateEventForm'
+import Events from 'organization/EventList'
+import CreateEventForm from 'organization/EventList/CreateEventForm'
 import {RouteEventProvider} from 'Event/EventProvider'
 import Layout from 'organization/user/Layout'
 import React from 'react'
 import {Redirect, Route, Switch} from 'react-router-dom'
 import {useOrganization} from 'organization/OrganizationProvider'
-import EventConfigRoutes from 'organization/Events/EventConfig/EventConfigRoutes'
+import EventConfigRoutes from 'organization/Event/EventRoutes'
 import Team from 'organization/Team'
 
 export default function UserRoutes() {

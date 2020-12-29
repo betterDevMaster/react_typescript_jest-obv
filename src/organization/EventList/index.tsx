@@ -5,7 +5,7 @@ import {RelativeLink} from 'lib/ui/link/RelativeLink'
 import {api} from 'lib/url'
 import {useOrganization} from 'organization/OrganizationProvider'
 import React, {useCallback} from 'react'
-import Card from 'organization/Events/Card'
+import Card from 'organization/EventList/Card'
 import Page from 'organization/user/Layout/Page'
 import {ObvioEvent} from 'Event'
 
