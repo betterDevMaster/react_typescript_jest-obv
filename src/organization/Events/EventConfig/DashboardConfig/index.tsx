@@ -4,7 +4,6 @@ import {useEvent} from 'Event/EventProvider'
 import React from 'react'
 import AttendeeProfileProvider from 'Event/Dashboard/component-rules/AttendeeProfileProvider'
 import CreateTemplateForm from 'organization/Events/EventConfig/DashboardConfig/CreateDashboardForm'
-import Layout from 'organization/user/Layout'
 
 export default function DashboardConfig() {
   const {event} = useEvent()
@@ -19,10 +18,8 @@ export default function DashboardConfig() {
   }
 
   return (
-    <Layout>
-      <AttendeeProfileProvider groups={{}} tags={[]}>
-        <Dashboard user={user} isEditMode={true} />
-      </AttendeeProfileProvider>
-    </Layout>
+    <AttendeeProfileProvider groups={{}} tags={[]}>
+      <Dashboard user={user} isEditMode={true} />
+    </AttendeeProfileProvider>
   )
 }

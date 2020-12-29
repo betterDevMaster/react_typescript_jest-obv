@@ -108,6 +108,7 @@ const MainBody = styled.div`
   width: 100%;
   background: black;
   position: absolute;
+  margin-top: -64px;
   overflow: hidden;
   img {
     width: 66px;
