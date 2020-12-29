@@ -55,8 +55,7 @@
     ],
     "**/*.+(js|jsx|ts|tsx|json)": [
       "prettier --write",
-      "npm run test:related",
-      "git add"
+      "npm run test:related"
     ]
   },
   "husky": {
