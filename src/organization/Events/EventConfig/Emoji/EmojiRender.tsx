@@ -1,7 +1,7 @@
 import styled from 'styled-components'
 import React, {memo, useEffect, useState} from 'react'
 import {emojiWithName} from 'Event/Dashboard/components/EmojiList/emoji'
-import {EmojiStateType} from './Emoji'
+import {EmojiStateType} from '.'
 
 const EMOJI_DEFAULT_SIZE: number = 68
 interface EmojiRenderPropsType {
