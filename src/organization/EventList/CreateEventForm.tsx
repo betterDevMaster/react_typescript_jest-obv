@@ -15,6 +15,7 @@ import {useHistory} from 'react-router-dom'
 import {Organization} from 'organization'
 import Page from 'organization/user/Layout/Page'
 import {ObvioEvent} from 'Event'
+import Layout from 'organization/user/Layout'
 
 interface CreateEventData {
   name: string
@@ -80,57 +81,59 @@ export default function CreateEventForm() {
   }
 
   return (
-    <Page>
-      <Title variant="h5" align="center">
-        Create Your Event
-      </Title>
-      <form onSubmit={handleSubmit(submit)}>
-        <TextField
-          label="Event Name"
-          name="name"
-          required
-          fullWidth
-          variant="outlined"
-          inputProps={{
-            ref: register({
-              required: 'Name is required',
-            }),
-            'aria-label': 'event name',
-          }}
-          error={!!nameError()}
-          helperText={nameError()}
-          disabled={submitting}
-        />
-        <TextField
-          label="Unique Slug"
-          name="slug"
-          required
-          fullWidth
-          variant="outlined"
-          inputProps={{
-            ref: register({
-              required: 'Slug is required',
-            }),
-            'aria-label': 'domain slug',
-          }}
-          error={!!slugError()}
-          helperText={slugHelperText()}
-          disabled={submitting}
-        />
-        <Error>{serverError && serverError.message}</Error>
-        <Button
-          type="submit"
-          variant="contained"
-          fullWidth
-          color="primary"
-          size="large"
-          disabled={submitting}
-          aria-label="create"
-        >
-          Submit
-        </Button>
-      </form>
-    </Page>
+    <Layout>
+      <Page>
+        <Title variant="h5" align="center">
+          Create Your Event
+        </Title>
+        <form onSubmit={handleSubmit(submit)}>
+          <TextField
+            label="Event Name"
+            name="name"
+            required
+            fullWidth
+            variant="outlined"
+            inputProps={{
+              ref: register({
+                required: 'Name is required',
+              }),
+              'aria-label': 'event name',
+            }}
+            error={!!nameError()}
+            helperText={nameError()}
+            disabled={submitting}
+          />
+          <TextField
+            label="Unique Slug"
+            name="slug"
+            required
+            fullWidth
+            variant="outlined"
+            inputProps={{
+              ref: register({
+                required: 'Slug is required',
+              }),
+              'aria-label': 'domain slug',
+            }}
+            error={!!slugError()}
+            helperText={slugHelperText()}
+            disabled={submitting}
+          />
+          <Error>{serverError && serverError.message}</Error>
+          <Button
+            type="submit"
+            variant="contained"
+            fullWidth
+            color="primary"
+            size="large"
+            disabled={submitting}
+            aria-label="create"
+          >
+            Submit
+          </Button>
+        </form>
+      </Page>
+    </Layout>
   )
 }
 

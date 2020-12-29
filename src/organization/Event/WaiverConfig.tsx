@@ -21,6 +21,7 @@ import {useEventRoutes} from 'Event/url'
 import {useHistory} from 'react-router-dom'
 import {waiverLogoPath} from 'Event/Step2/Waiver'
 import {fetchFile} from 'lib/http-client'
+import Layout from 'organization/user/Layout'
 
 const imageUploadId = 'waived-logo-upload'
 
@@ -106,79 +107,81 @@ export default function WaiverConfig() {
   }
 
   return (
-    <Page>
-      <Title variant="h5">Event Waiver</Title>
-      <form onSubmit={handleSubmit(submit)}>
-        <TextField
-          name="title"
-          label="Waiver File Title (optional)"
-          fullWidth
-          inputProps={{ref: register, 'aria-label': 'waiver title'}}
-          disabled={submitting}
-          helperText="Defaults to the event name"
-        />
-        <div>
-          <LogoLabel>Logo (optional)</LogoLabel>
-          <UploadButton variant="outlined" color="primary">
-            <UploadButtonLabel htmlFor={imageUploadId}>
-              Upload Image
-            </UploadButtonLabel>
-          </UploadButton>
-          <input
-            id={imageUploadId}
-            type="file"
-            accept="image/*"
-            onChange={handleFileSelect}
-            hidden
-            aria-label="logo input"
+    <Layout>
+      <Page>
+        <Title variant="h5">Event Waiver</Title>
+        <form onSubmit={handleSubmit(submit)}>
+          <TextField
+            name="title"
+            label="Waiver File Title (optional)"
+            fullWidth
+            inputProps={{ref: register, 'aria-label': 'waiver title'}}
+            disabled={submitting}
+            helperText="Defaults to the event name"
           />
-          <UploadedLogo logo={logo} remove={removeLogo} />
-        </div>
-        <Editor>
-          <input
-            type="hidden"
-            name="body"
-            aria-label="waiver body"
-            ref={register({required: 'Body is required.'})}
-          />
-          <BodyLabel required error={!!errors.body}>
-            Body
-          </BodyLabel>
-          {loading ? null : (
-            <CKEditor
-              editor={ClassicEditor}
-              data={body}
-              onChange={setBody}
-              config={{
-                toolbar: [
-                  'heading',
-                  '|',
-                  'bold',
-                  'italic',
-                  'blockQuote',
-                  'link',
-                  'numberedList',
-                  'bulletedList',
-                  'insertTable',
-                ],
-              }}
+          <div>
+            <LogoLabel>Logo (optional)</LogoLabel>
+            <UploadButton variant="outlined" color="primary">
+              <UploadButtonLabel htmlFor={imageUploadId}>
+                Upload Image
+              </UploadButtonLabel>
+            </UploadButton>
+            <input
+              id={imageUploadId}
+              type="file"
+              accept="image/*"
+              onChange={handleFileSelect}
+              hidden
+              aria-label="logo input"
             />
-          )}
+            <UploadedLogo logo={logo} remove={removeLogo} />
+          </div>
+          <Editor>
+            <input
+              type="hidden"
+              name="body"
+              aria-label="waiver body"
+              ref={register({required: 'Body is required.'})}
+            />
+            <BodyLabel required error={!!errors.body}>
+              Body
+            </BodyLabel>
+            {loading ? null : (
+              <CKEditor
+                editor={ClassicEditor}
+                data={body}
+                onChange={setBody}
+                config={{
+                  toolbar: [
+                    'heading',
+                    '|',
+                    'bold',
+                    'italic',
+                    'blockQuote',
+                    'link',
+                    'numberedList',
+                    'bulletedList',
+                    'insertTable',
+                  ],
+                }}
+              />
+            )}
 
-          <BodyError error={errors.body} />
-        </Editor>
-        <Error>{responseError}</Error>
-        <Button
-          fullWidth
-          variant="contained"
-          color="primary"
-          type="submit"
-          aria-label="save waiver"
-        >
-          Save
-        </Button>
-      </form>
-    </Page>
+            <BodyError error={errors.body} />
+          </Editor>
+          <Error>{responseError}</Error>
+          <Button
+            fullWidth
+            variant="contained"
+            color="primary"
+            type="submit"
+            aria-label="save waiver"
+          >
+            Save
+          </Button>
+        </form>
+      </Page>
+    </Layout>
   )
 }
 

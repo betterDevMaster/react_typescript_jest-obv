@@ -4,44 +4,47 @@ import {RelativeLink} from 'lib/ui/link/RelativeLink'
 import {useEvent} from 'Event/EventProvider'
 import Page from 'organization/user/Layout/Page'
 import React from 'react'
+import Layout from 'organization/user/Layout'
 
 export default function EventConfig() {
   const routes = useEventRoutes()
   const {event} = useEvent()
 
   return (
-    <Page>
-      <h2>{event.name}</h2>
+    <Layout>
+      <Page>
+        <h2>{event.name}</h2>
 
-      <RelativeLink disableStyles to={routes.waiver}>
-        <Button
-          variant="contained"
-          color="primary"
-          aria-label="configure waiver"
-        >
-          Configure Waiver
-        </Button>
-      </RelativeLink>
+        <RelativeLink disableStyles to={routes.waiver}>
+          <Button
+            variant="contained"
+            color="primary"
+            aria-label="configure waiver"
+          >
+            Configure Waiver
+          </Button>
+        </RelativeLink>
 
-      <RelativeLink disableStyles to={routes.dashboard}>
-        <Button
-          variant="contained"
-          color="primary"
-          aria-label="configure dashboard"
-        >
-          Configure Dashboard
-        </Button>
-      </RelativeLink>
+        <RelativeLink disableStyles to={routes.dashboard}>
+          <Button
+            variant="contained"
+            color="primary"
+            aria-label="configure dashboard"
+          >
+            Configure Dashboard
+          </Button>
+        </RelativeLink>
 
-      <RelativeLink disableStyles to={routes.emoji}>
-        <Button
-          variant="contained"
-          color="primary"
-          aria-label="go to emoji page"
-        >
-          Go To Emoji Page
-        </Button>
-      </RelativeLink>
-    </Page>
+        <RelativeLink disableStyles to={routes.emoji}>
+          <Button
+            variant="contained"
+            color="primary"
+            aria-label="go to emoji page"
+          >
+            Go To Emoji Page
+          </Button>
+        </RelativeLink>
+      </Page>
+    </Layout>
   )
 }
