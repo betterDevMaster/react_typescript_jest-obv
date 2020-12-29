@@ -4,6 +4,7 @@ import {useEvent} from 'Event/EventProvider'
 import {api} from 'lib/url'
 import {eventClient} from 'Event/api-client'
 import EmojiRender from './EmojiRender'
+import {useOrganization} from 'organization/OrganizationProvider'
 
 export interface floatingEmojiData {
   id: number
@@ -31,6 +32,7 @@ export default function Emoji() {
   const {event} = useEvent()
   const [emojiList, setEmojiList] = useState<EmojiStateType[]>([])
   const [timer, setTimer] = useState<Number>()
+  const {client} = useOrganization()
   useEffect(() => {
     const animateBubble = `
       @-webkit-keyframes animateBubble {
@@ -46,8 +48,8 @@ export default function Emoji() {
     injectStyle(sideWays)
     /* fetch emoji updates */
     const interval = setInterval(() => {
-      const url = api(`/events/${event.slug}/getEmoji`)
-      eventClient
+      const url = api(`/events/${event.slug}/emoji`)
+      client
         .get(url)
         .then((res) => {
           JSON.parse(JSON.stringify(res)).data.forEach((image: string) => {
