@@ -1,9 +1,8 @@
 import styled from 'styled-components'
-import React, {memo, useEffect, useMemo, useRef, useState} from 'react'
+import React, {memo, useEffect, useState} from 'react'
 import {emojiWithName} from 'Event/Dashboard/components/EmojiList/emoji'
 import {EmojiStateType} from './Emoji'
 
-const EMOJI_WIDTH_BIND: number = 50
 const EMOJI_DEFAULT_SIZE: number = 68
 interface EmojiRenderPropsType {
   emojiInfo: EmojiStateType
@@ -13,10 +12,9 @@ interface EmojiRenderPropsType {
 
 function EmojiRender(props: EmojiRenderPropsType) {
   const {emojiInfo, finished} = props
-  const [repeat, setRepeat] = useState(1)
   const [keyframeName, setKeyframeName] = useState('')
   useEffect(() => {
-    const timer = setTimeout(() => {
+    setTimeout(() => {
       finished(emojiInfo)
     }, emojiInfo.data.duration * 1000)
   }, [])

@@ -1,8 +1,7 @@
 import styled from 'styled-components'
-import React, {useCallback, useEffect, useRef, useState} from 'react'
+import React, {useCallback, useEffect, useState} from 'react'
 import {useEvent} from 'Event/EventProvider'
 import {api} from 'lib/url'
-import {eventClient} from 'Event/api-client'
 import EmojiRender from './EmojiRender'
 import {useOrganization} from 'organization/OrganizationProvider'
 
@@ -31,7 +30,6 @@ const injectStyle = (style: string) => {
 export default function Emoji() {
   const {event} = useEvent()
   const [emojiList, setEmojiList] = useState<EmojiStateType[]>([])
-  const [timer, setTimer] = useState<Number>()
   const {client} = useOrganization()
   useEffect(() => {
     const animateBubble = `
@@ -83,14 +81,6 @@ export default function Emoji() {
       (item) => item.data.id === emojiInfo.data.id,
     )
     emojiList.splice(indexOfEmoji, 1)
-    setEmojiList(JSON.parse(JSON.stringify(emojiList)))
-  }, [])
-
-  const updateStatus = useCallback((emojiInfo) => {
-    const indexOfEmoji = emojiList.findIndex(
-      (item) => item.data.id === emojiInfo.data.id,
-    )
-    emojiList[indexOfEmoji].isRendering = true
     setEmojiList(JSON.parse(JSON.stringify(emojiList)))
   }, [])
 
