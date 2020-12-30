@@ -2,7 +2,7 @@ import styled from 'styled-components'
 import React, {useCallback, useEffect, useState} from 'react'
 import {useEvent} from 'Event/EventProvider'
 import {api} from 'lib/url'
-import EmojiRender from './EmojiRender'
+import EmojiRender from './Emoji'
 import {useOrganization} from 'organization/OrganizationProvider'
 
 export interface floatingEmojiData {

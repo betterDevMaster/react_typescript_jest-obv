@@ -1,7 +1,7 @@
 import DashboardConfig from 'organization/Event/DashboardConfig'
 import EventConfig from 'organization/Event'
 import WaiverConfig from 'organization/Event/WaiverConfig'
-import Emoji from 'organization/Event/Emoji'
+import Emoji from 'organization/Event/EmojiPage'
 import {useOrganization} from 'organization/OrganizationProvider'
 import React from 'react'
 import {Redirect, Route, Switch} from 'react-router-dom'
