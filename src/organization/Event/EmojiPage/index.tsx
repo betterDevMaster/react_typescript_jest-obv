@@ -3,17 +3,17 @@ import React, {useCallback, useEffect, useState} from 'react'
 import {useEvent} from 'Event/EventProvider'
 import {api} from 'lib/url'
 import {useOrganization} from 'organization/OrganizationProvider'
-import Emoji, {
+import EmojiIcon, {
   createEmoji,
-  EmojiStateType,
-} from 'organization/Event/EmojiPage/Emoji'
+  Emoji,
+} from 'organization/Event/EmojiPage/EmojiIcon'
 
 export type Emojis = string[]
 
 const POLL_INTERVAL_MS = 1000
 
 export default function EmojiPage() {
-  const [emojiList, setEmojiList] = useState<EmojiStateType[]>([])
+  const [emojiList, setEmojiList] = useState<Emoji[]>([])
   const fetchEmojis = useFetchEmojis()
 
   useEffect(() => {
@@ -46,7 +46,9 @@ export default function EmojiPage() {
   return (
     <Container>
       {emojiList.map((emoji) => {
-        return <Emoji emoji={emoji} key={emoji.id} onComplete={removeEmoji} />
+        return (
+          <EmojiIcon emoji={emoji} key={emoji.id} onComplete={removeEmoji} />
+        )
       })}
     </Container>
   )
