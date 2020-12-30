@@ -8,30 +8,34 @@ const DEFAULT_SIZE: number = 68
 export type Emoji = {
   id: string
   content: string
-  number: number
   duration: number
-  repeat: number
   size: number
 }
 
-interface EmojiIconProps {
+interface ClickedEmojiProps {
   emoji: Emoji
   onComplete: (emoji: Emoji) => void
 }
 
-export default React.memo<EmojiIconProps>(ClickedEmoji, (_, nextProps) => {
-  return Boolean(nextProps.emoji.id)
+// Memoize ClickedEmoji to prevent re-renders from
+// interrupting animation
+export default React.memo<ClickedEmojiProps>(ClickedEmoji, (prev, next) => {
+  return prev.emoji.id === next.emoji.id
 })
 
-function ClickedEmoji(props: EmojiIconProps) {
+function ClickedEmoji(props: ClickedEmojiProps) {
   const {emoji, onComplete} = props
+  const durationMs = emoji.duration * 1000
 
   useEffect(() => {
-    setTimeout(() => {
+    const timer = setTimeout(() => {
       onComplete(emoji)
-    }, emoji.duration * 1000)
-    // eslint-disable-next-line
-  }, [])
+    }, durationMs)
+
+    return () => {
+      clearTimeout(timer)
+    }
+  }, [emoji, durationMs, onComplete])
 
   const position = Math.random() * 80 + 10
   const size = emoji.size * DEFAULT_SIZE
@@ -50,9 +54,7 @@ function ClickedEmoji(props: EmojiIconProps) {
 export const createEmoji = (image: string): Emoji => ({
   id: uuid(),
   content: image,
-  number: 2,
   duration: Math.random() * 10 + 1,
-  repeat: 1,
   size: Math.random() + 1,
 })
 
@@ -63,11 +65,6 @@ const Box = styled.div<{duration: number; position: number; size: number}>`
   left: ${(props) => props.position}%;
   width: ${(props) => props.position}px;
   height: ${(props) => props.position}px;
-
-  img {
-    width: 66px;
-    height: 66px;
-  }
 
   @keyframes animateBubble {
     0% {

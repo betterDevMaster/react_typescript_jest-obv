@@ -1,5 +1,5 @@
 import styled from 'styled-components'
-import React, {useCallback, useEffect, useState} from 'react'
+import React, {useCallback, useState} from 'react'
 import {useEvent} from 'Event/EventProvider'
 import {api} from 'lib/url'
 import {useOrganization} from 'organization/OrganizationProvider'
@@ -7,49 +7,41 @@ import ClickedEmoji, {
   createEmoji,
   Emoji,
 } from 'organization/Event/EmojiPage/ClickedEmoji'
+import {useInterval} from 'lib/interval'
 
 export type Emojis = string[]
 
 const POLL_INTERVAL_MS = 1000
 
 export default function EmojiPage() {
-  const [emojiList, setEmojiList] = useState<Emoji[]>([])
+  const [emojis, setEmojis] = useState<Emoji[]>([])
   const fetchEmojis = useFetchEmojis()
 
-  useEffect(() => {
-    const interval = setInterval(() => {
-      fetchEmojis()
-        .then((emojis) => {
-          emojis.forEach((image: string) => {
-            const newEmoji = createEmoji(image)
-            emojiList.push(newEmoji)
-          })
-          setEmojiList(JSON.parse(JSON.stringify(emojiList)))
-        })
-        .catch((error) => {
-          // ignore errors, prevent failing to send emoji from crashing app
-          console.error(error)
-        })
-    }, POLL_INTERVAL_MS)
-    return () => {
-      clearInterval(interval)
-    }
-    // eslint-disable-next-line
-  }, [])
+  useInterval(() => {
+    fetchEmojis()
+      .then((images) => {
+        const newEmojis = images.map(createEmoji)
+        const updated = [...emojis, ...newEmojis]
+        setEmojis(updated)
+      })
+      .catch((error) => {
+        // ignore errors, prevent failing to send emoji from crashing app
+        console.error(error)
+      })
+  }, POLL_INTERVAL_MS)
 
-  const removeEmoji = useCallback((emojiInfo) => {
-    const indexOfEmoji = emojiList.findIndex((item) => item.id === emojiInfo.id)
-    emojiList.splice(indexOfEmoji, 1)
-    setEmojiList(JSON.parse(JSON.stringify(emojiList)))
-    // eslint-disable-next-line
-  }, [])
+  const remove = useCallback(
+    (target: Emoji) => {
+      const updated = emojis.filter((e) => e.id !== target.id)
+      setEmojis(updated)
+    },
+    [emojis],
+  )
 
   return (
     <Container>
-      {emojiList.map((emoji) => {
-        return (
-          <ClickedEmoji emoji={emoji} key={emoji.id} onComplete={removeEmoji} />
-        )
+      {emojis.map((emoji) => {
+        return <ClickedEmoji emoji={emoji} key={emoji.id} onComplete={remove} />
       })}
     </Container>
   )
@@ -66,7 +58,7 @@ function useFetchEmojis() {
 const Container = styled.div`
   height: 100vh;
   width: 100%;
-  background: black;
+  background: #000000;
   position: absolute;
   overflow: hidden;
 `
