@@ -39,7 +39,7 @@ export default function EventConfig() {
           <Button
             variant="contained"
             color="primary"
-            aria-label="go to emoji page"
+            aria-label="view emoji page"
           >
             Go To Emoji Page
           </Button>
