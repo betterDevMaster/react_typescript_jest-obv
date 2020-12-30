@@ -1,55 +1,62 @@
 import styled from 'styled-components'
-import React, {memo, useEffect, useState} from 'react'
+import React, {useEffect, useState} from 'react'
 import {emojiWithName} from 'Event/Dashboard/components/EmojiList/emoji'
-import {EmojiStateType} from '.'
+import {v4 as uuid} from 'uuid'
+import {EmojiStateType} from 'organization/Event/EmojiPage'
 
 const EMOJI_DEFAULT_SIZE: number = 68
-interface EmojiRenderPropsType {
-  emojiInfo: EmojiStateType
-  finished: Function
-  key: number
+interface EmojiProps {
+  emoji: EmojiStateType
+  onComplete: (emoji: EmojiStateType) => void
 }
 
-function EmojiRender(props: EmojiRenderPropsType) {
-  const {emojiInfo, finished} = props
+export default React.memo<EmojiProps>(Emoji, (_, nextProps) => {
+  return Boolean(nextProps.emoji.data.id)
+})
+
+function Emoji(props: EmojiProps) {
+  const {emoji, onComplete: finished} = props
   const [keyframeName, setKeyframeName] = useState('')
   useEffect(() => {
     setTimeout(() => {
-      finished(emojiInfo)
-    }, emojiInfo.data.duration * 1000)
+      finished(emoji)
+    }, emoji.data.duration * 1000)
   }, [])
   useEffect(() => {
     setKeyframeName(
-      `animateBubble ${emojiInfo.data.duration}s linear, sideWays 1s ease-in-out infinite alternate`,
+      `animateBubble ${emoji.data.duration}s linear, sideWays 1s ease-in-out infinite alternate`,
     )
   }, [])
   return (
-    <EmojiRenderContainer
+    <Box
       style={{
         WebkitAnimation: `${keyframeName}`,
         left: `${Math.random() * 80 + 10}%`,
-        width: emojiInfo.data.size * EMOJI_DEFAULT_SIZE,
-        height: emojiInfo.data.size * EMOJI_DEFAULT_SIZE,
+        width: emoji.data.size * EMOJI_DEFAULT_SIZE,
+        height: emoji.data.size * EMOJI_DEFAULT_SIZE,
       }}
     >
       <img
         aria-label="event emoji"
-        src={emojiWithName(emojiInfo.data.content).image}
-        alt={emojiInfo.data.content}
+        src={emojiWithName(emoji.data.content).image}
+        alt={emoji.data.content}
       />
-    </EmojiRenderContainer>
+    </Box>
   )
 }
 
-export default memo<EmojiRenderPropsType>(
-  EmojiRender,
-  (_prevProps, nextProps) => {
-    if (nextProps.emojiInfo.data.id) return true
-    return false
+export const createEmoji = (image: string): EmojiStateType => ({
+  data: {
+    id: uuid(),
+    content: image,
+    number: 2,
+    duration: Math.random() * 10 + 1,
+    repeat: 1,
+    size: Math.random() + 1,
   },
-)
+  isRendering: false,
+})
 
-const EmojiRenderContainer = styled.div`
+const Box = styled.div`
   position: absolute;
-  /* bottom: 0; */
 `

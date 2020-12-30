@@ -2,11 +2,11 @@ import styled from 'styled-components'
 import React, {useCallback, useEffect, useState} from 'react'
 import {useEvent} from 'Event/EventProvider'
 import {api} from 'lib/url'
-import EmojiRender from './Emoji'
+import Emoji, {createEmoji} from './Emoji'
 import {useOrganization} from 'organization/OrganizationProvider'
 
 export interface floatingEmojiData {
-  id: number
+  id: string
   content: string
   number: number
   duration: number
@@ -29,10 +29,12 @@ const injectStyle = (style: string) => {
   styleSheet.insertRule(style, styleSheet.cssRules.length)
 }
 
-export default function Emoji() {
-  const {event} = useEvent()
+const POLL_INTERVAL_MS = 1000
+
+export default function EmojiPage() {
   const [emojiList, setEmojiList] = useState<EmojiStateType[]>([])
-  const {client} = useOrganization()
+  const fetchEmojis = useFetchEmojis()
+
   useEffect(() => {
     const animateBubble = `
       @-webkit-keyframes animateBubble {
@@ -48,22 +50,10 @@ export default function Emoji() {
     injectStyle(sideWays)
     /* fetch emoji updates */
     const interval = setInterval(() => {
-      const url = api(`/events/${event.slug}/emoji`)
-      client
-        .get<Emojis>(url)
+      fetchEmojis()
         .then((emojis) => {
           emojis.forEach((image: string) => {
-            const newEmoji: EmojiStateType = {
-              data: {
-                id: Date.now(),
-                content: image,
-                number: 2,
-                duration: Math.random() * 10 + 1,
-                repeat: 1,
-                size: Math.random() + 1,
-              },
-              isRendering: false,
-            }
+            const newEmoji = createEmoji(image)
             emojiList.push(newEmoji)
           })
           setEmojiList(JSON.parse(JSON.stringify(emojiList)))
@@ -72,13 +62,13 @@ export default function Emoji() {
           // ignore errors, prevent failing to send emoji from crashing app
           console.error(error)
         })
-    }, 1000)
+    }, POLL_INTERVAL_MS)
     return () => {
       clearInterval(interval)
     }
   }, [])
 
-  const emojiRenderFinished = useCallback((emojiInfo) => {
+  const removeEmoji = useCallback((emojiInfo) => {
     const indexOfEmoji = emojiList.findIndex(
       (item) => item.data.id === emojiInfo.data.id,
     )
@@ -89,20 +79,22 @@ export default function Emoji() {
   return (
     <MainBody>
       <div className="float-container" id="float-container">
-        {emojiList.map((emojiItem, index) => {
+        {emojiList.map((emoji) => {
           return (
-            <EmojiRender
-              emojiInfo={emojiItem}
-              key={emojiItem.data.id}
-              finished={(emojiInfo: EmojiStateType) =>
-                emojiRenderFinished(emojiInfo)
-              }
-            />
+            <Emoji emoji={emoji} key={emoji.data.id} onComplete={removeEmoji} />
           )
         })}
       </div>
     </MainBody>
   )
+}
+
+function useFetchEmojis() {
+  const {client} = useOrganization()
+  const {event} = useEvent()
+  const url = api(`/events/${event.slug}/emoji`)
+
+  return () => client.get<Emojis>(url)
 }
 
 const MainBody = styled.div`
