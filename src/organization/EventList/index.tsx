@@ -5,9 +5,10 @@ import {RelativeLink} from 'lib/ui/link/RelativeLink'
 import {api} from 'lib/url'
 import {useOrganization} from 'organization/OrganizationProvider'
 import React, {useCallback} from 'react'
-import Card from 'organization/Events/Card'
+import Card from 'organization/EventList/Card'
 import Page from 'organization/user/Layout/Page'
 import {ObvioEvent} from 'Event'
+import Layout from 'organization/user/Layout'
 
 export default function Events() {
   const {organization, routes, client} = useOrganization()
@@ -25,30 +26,34 @@ export default function Events() {
   const empty = events.length === 0
   if (empty) {
     return (
-      <EmptyBox>
-        <p>No events have been created</p>
-        <RelativeLink to={routes.events.create} disableStyles>
-          <Button variant="outlined" color="primary">
-            Create Event
-          </Button>
-        </RelativeLink>
-      </EmptyBox>
+      <Layout>
+        <EmptyBox>
+          <p>No events have been created</p>
+          <RelativeLink to={routes.events.create} disableStyles>
+            <Button variant="outlined" color="primary">
+              Create Event
+            </Button>
+          </RelativeLink>
+        </EmptyBox>
+      </Layout>
     )
   }
 
   return (
-    <Page>
-      <Header>
-        <RelativeLink to={routes.events.create} disableStyles>
-          <Button variant="contained" color="primary">
-            Create
-          </Button>
-        </RelativeLink>
-      </Header>
-      {events.map((e) => (
-        <Card key={e.id} event={e} />
-      ))}
-    </Page>
+    <Layout>
+      <Page>
+        <Header>
+          <RelativeLink to={routes.events.create} disableStyles>
+            <Button variant="contained" color="primary">
+              Create
+            </Button>
+          </RelativeLink>
+        </Header>
+        {events.map((e) => (
+          <Card key={e.id} event={e} />
+        ))}
+      </Page>
+    </Layout>
   )
 }
 

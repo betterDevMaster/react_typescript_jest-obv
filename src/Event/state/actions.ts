@@ -84,26 +84,7 @@ export const handleUpdateDashboard = (
   }
 }
 
-export interface ClickedEmoji {
-  id: number | null
-  name: string | null
-}
-
-export const SEND_EMOJI_ACTION = 'SEND_EMOJI'
-export interface SendEmojiAction {
-  type: typeof SEND_EMOJI_ACTION
-  payload: ClickedEmoji
-}
-
-export const sendEmoji = (
-  emoji: ClickedEmoji,
-): SendEmojiAction => ({
-  type: SEND_EMOJI_ACTION,
-  payload: emoji,
-})
-
 export type EventAction =
   | SetEventAction
   | CreateTemplateAction
   | UpdateDashboardAction
-  | SendEmojiAction

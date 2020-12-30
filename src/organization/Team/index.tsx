@@ -11,6 +11,7 @@ import Tab from '@material-ui/core/Tab'
 import Box from '@material-ui/core/Box'
 import Permissions from 'organization/Team/Permissions'
 import PermissionsProvider from 'organization/Team/Permissions/PermissionsProvider'
+import Layout from 'organization/user/Layout'
 
 export type TeamMember = User & {
   permissions: string[]
@@ -24,30 +25,32 @@ export default function Team() {
   }
 
   return (
-    <TeamProvider>
-      <PermissionsProvider>
-        <Page>
-          <Title>Team</Title>
-          <Tabs
-            onChange={changeTab}
-            aria-label="simple tabs example"
-            value={tabIndex}
-          >
-            <Tab label="Members" />
-            <Tab label="Permissions" />
-          </Tabs>
-          <TabPanel index={0} currentIndex={tabIndex}>
-            <IfOwner>
-              <AddTeamMemberForm />
-            </IfOwner>
-            <TeamMemberList />
-          </TabPanel>
-          <TabPanel index={1} currentIndex={tabIndex}>
-            <Permissions />
-          </TabPanel>
-        </Page>
-      </PermissionsProvider>
-    </TeamProvider>
+    <Layout>
+      <Page>
+        <TeamProvider>
+          <PermissionsProvider>
+            <Title>Team</Title>
+            <Tabs
+              onChange={changeTab}
+              aria-label="simple tabs example"
+              value={tabIndex}
+            >
+              <Tab label="Members" />
+              <Tab label="Permissions" />
+            </Tabs>
+            <TabPanel index={0} currentIndex={tabIndex}>
+              <IfOwner>
+                <AddTeamMemberForm />
+              </IfOwner>
+              <TeamMemberList />
+            </TabPanel>
+            <TabPanel index={1} currentIndex={tabIndex}>
+              <Permissions />
+            </TabPanel>
+          </PermissionsProvider>
+        </TeamProvider>
+      </Page>
+    </Layout>
   )
 }
 
