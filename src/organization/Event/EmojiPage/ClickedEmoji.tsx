@@ -60,7 +60,7 @@ export const createEmoji = (image: string): Emoji => ({
 
 const Box = styled.div<{duration: number; position: number; size: number}>`
   position: absolute;
-  animation: animateBubble ${(props) => props.duration}s linear,
+  animation: animateBubble ${(props) => props.duration}s linear forwards,
     sideWays 1s ease-in-out infinite alternate;
   left: ${(props) => props.position}%;
   width: ${(props) => props.position}px;
@@ -68,10 +68,10 @@ const Box = styled.div<{duration: number; position: number; size: number}>`
 
   @keyframes animateBubble {
     0% {
-      top: calc(100% + 100px);
+      top: calc(100% + 200px);
     }
     100% {
-      top: -100px;
+      top: -200px;
     }
   }
 

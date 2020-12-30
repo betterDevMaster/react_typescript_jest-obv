@@ -21,8 +21,9 @@ export default function EmojiPage() {
     fetchEmojis()
       .then((images) => {
         const newEmojis = images.map(createEmoji)
-        const updated = [...emojis, ...newEmojis]
-        setEmojis(updated)
+        // Use setState's callback version to make sure
+        // we always have latest state.
+        setEmojis((current) => [...current, ...newEmojis])
       })
       .catch((error) => {
         // ignore errors, prevent failing to send emoji from crashing app
@@ -30,13 +31,9 @@ export default function EmojiPage() {
       })
   }, POLL_INTERVAL_MS)
 
-  const remove = useCallback(
-    (target: Emoji) => {
-      const updated = emojis.filter((e) => e.id !== target.id)
-      setEmojis(updated)
-    },
-    [emojis],
-  )
+  const remove = useCallback((target: Emoji) => {
+    setEmojis((current) => current.filter((e) => e.id !== target.id))
+  }, [])
 
   return (
     <Container>
