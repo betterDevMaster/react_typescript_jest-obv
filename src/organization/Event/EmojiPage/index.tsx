@@ -1,5 +1,5 @@
 import styled from 'styled-components'
-import React, {useCallback, useState} from 'react'
+import React, {useCallback, useEffect, useRef, useState} from 'react'
 import {useEvent} from 'Event/EventProvider'
 import {api} from 'lib/url'
 import {useOrganization} from 'organization/OrganizationProvider'
@@ -16,10 +16,21 @@ const POLL_INTERVAL_MS = 1000
 export default function EmojiPage() {
   const [emojis, setEmojis] = useState<Emoji[]>([])
   const fetchEmojis = useFetchEmojis()
+  const isMountedRef = useRef(true)
+
+  useEffect(() => {
+    return () => {
+      isMountedRef.current = false
+    }
+  }, [])
 
   useInterval(() => {
     fetchEmojis()
       .then((images) => {
+        if (!isMountedRef.current) {
+          return
+        }
+
         const newEmojis = images.map(createEmoji)
         // Use setState's callback version to make sure
         // we always have latest state.
