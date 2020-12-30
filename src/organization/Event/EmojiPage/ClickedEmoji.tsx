@@ -30,6 +30,7 @@ function ClickedEmoji(props: EmojiIconProps) {
     setTimeout(() => {
       onComplete(emoji)
     }, emoji.duration * 1000)
+    // eslint-disable-next-line
   }, [])
 
   const position = Math.random() * 80 + 10
