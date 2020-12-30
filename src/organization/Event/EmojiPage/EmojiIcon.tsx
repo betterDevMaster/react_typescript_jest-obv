@@ -1,11 +1,11 @@
 import styled from 'styled-components'
 import React, {useEffect} from 'react'
-import {emojiWithName} from 'Event/Dashboard/components/EmojiList/emoji'
 import {v4 as uuid} from 'uuid'
+import {emojiWithName} from 'Event/Dashboard/components/EmojiList/emoji'
 
 const DEFAULT_SIZE: number = 68
 
-export interface EmojiStateType {
+export type Emoji = {
   id: string
   content: string
   number: number
@@ -14,24 +14,23 @@ export interface EmojiStateType {
   size: number
 }
 
-interface EmojiProps {
-  emoji: EmojiStateType
-  onComplete: (emoji: EmojiStateType) => void
+interface EmojiIconProps {
+  emoji: Emoji
+  onComplete: (emoji: Emoji) => void
 }
 
-export default React.memo<EmojiProps>(Emoji, (_, nextProps) => {
+export default React.memo<EmojiIconProps>(EmojiIcon, (_, nextProps) => {
   return Boolean(nextProps.emoji.id)
 })
 
-function Emoji(props: EmojiProps) {
+function EmojiIcon(props: EmojiIconProps) {
   const {emoji, onComplete} = props
 
   useEffect(() => {
     setTimeout(() => {
       onComplete(emoji)
     }, emoji.duration * 1000)
-    // eslint-disable-next-line
-  }, [])
+  }, [emoji, onComplete])
 
   const position = Math.random() * 80 + 10
   const size = emoji.size * DEFAULT_SIZE
@@ -47,7 +46,7 @@ function Emoji(props: EmojiProps) {
   )
 }
 
-export const createEmoji = (image: string): EmojiStateType => ({
+export const createEmoji = (image: string): Emoji => ({
   id: uuid(),
   content: image,
   number: 2,

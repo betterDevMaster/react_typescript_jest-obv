@@ -34,12 +34,13 @@ export default function EmojiPage() {
     return () => {
       clearInterval(interval)
     }
-  }, [])
+  }, [fetchEmojis, emojiList])
 
   const removeEmoji = useCallback((emojiInfo) => {
     const indexOfEmoji = emojiList.findIndex((item) => item.id === emojiInfo.id)
     emojiList.splice(indexOfEmoji, 1)
     setEmojiList(JSON.parse(JSON.stringify(emojiList)))
+    // eslint-disable-next-line
   }, [])
 
   return (
