@@ -3,10 +3,10 @@ import React, {useCallback, useEffect, useState} from 'react'
 import {useEvent} from 'Event/EventProvider'
 import {api} from 'lib/url'
 import {useOrganization} from 'organization/OrganizationProvider'
-import EmojiIcon, {
+import ClickedEmoji, {
   createEmoji,
   Emoji,
-} from 'organization/Event/EmojiPage/EmojiIcon'
+} from 'organization/Event/EmojiPage/ClickedEmoji'
 
 export type Emojis = string[]
 
@@ -47,7 +47,7 @@ export default function EmojiPage() {
     <Container>
       {emojiList.map((emoji) => {
         return (
-          <EmojiIcon emoji={emoji} key={emoji.id} onComplete={removeEmoji} />
+          <ClickedEmoji emoji={emoji} key={emoji.id} onComplete={removeEmoji} />
         )
       })}
     </Container>

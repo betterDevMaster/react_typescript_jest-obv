@@ -19,11 +19,11 @@ interface EmojiIconProps {
   onComplete: (emoji: Emoji) => void
 }
 
-export default React.memo<EmojiIconProps>(EmojiIcon, (_, nextProps) => {
+export default React.memo<EmojiIconProps>(ClickedEmoji, (_, nextProps) => {
   return Boolean(nextProps.emoji.id)
 })
 
-function EmojiIcon(props: EmojiIconProps) {
+function ClickedEmoji(props: EmojiIconProps) {
   const {emoji, onComplete} = props
 
   useEffect(() => {
