@@ -19,6 +19,8 @@ export interface EmojiStateType {
   isRendering: boolean
 }
 
+export type Emojis = string[]
+
 const injectStyle = (style: string) => {
   const styleElement = document.createElement('style') as HTMLStyleElement
   let styleSheet = null
@@ -48,9 +50,9 @@ export default function Emoji() {
     const interval = setInterval(() => {
       const url = api(`/events/${event.slug}/emoji`)
       client
-        .get(url)
-        .then((res) => {
-          JSON.parse(JSON.stringify(res)).data.forEach((image: string) => {
+        .get<Emojis>(url)
+        .then((emojis) => {
+          emojis.forEach((image: string) => {
             const newEmoji: EmojiStateType = {
               data: {
                 id: Date.now(),
