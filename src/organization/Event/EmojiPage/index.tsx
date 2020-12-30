@@ -34,7 +34,8 @@ export default function EmojiPage() {
     return () => {
       clearInterval(interval)
     }
-  }, [fetchEmojis, emojiList])
+    // eslint-disable-next-line
+  }, [])
 
   const removeEmoji = useCallback((emojiInfo) => {
     const indexOfEmoji = emojiList.findIndex((item) => item.id === emojiInfo.id)

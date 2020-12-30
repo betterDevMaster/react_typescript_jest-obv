@@ -30,7 +30,7 @@ function ClickedEmoji(props: EmojiIconProps) {
     setTimeout(() => {
       onComplete(emoji)
     }, emoji.duration * 1000)
-  }, [emoji, onComplete])
+  }, [])
 
   const position = Math.random() * 80 + 10
   const size = emoji.size * DEFAULT_SIZE
@@ -70,10 +70,10 @@ const Box = styled.div<{duration: number; position: number; size: number}>`
 
   @keyframes animateBubble {
     0% {
-      top: calc(100% + 50px);
+      top: calc(100% + 100px);
     }
     100% {
-      top: -50px;
+      top: -100px;
     }
   }
 
