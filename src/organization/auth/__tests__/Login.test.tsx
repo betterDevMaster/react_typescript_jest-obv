@@ -59,6 +59,8 @@ it('should login a user', async () => {
   user.type(await findByLabelText('email'), email)
   user.type(await findByLabelText('password'), password)
 
+  mockGet.mockImplementationOnce(() => Promise.resolve({data: []})) // events
+
   await act(async () => {
     user.click(await findByLabelText('submit login'))
   })
