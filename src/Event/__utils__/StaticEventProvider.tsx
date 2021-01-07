@@ -1,5 +1,5 @@
 import {setEvent} from 'Event/state/actions'
-import {EventContext} from 'Event/EventProvider'
+import {EventContext, hasTechCheck} from 'Event/EventProvider'
 import React, {useEffect} from 'react'
 import {useDispatch, useSelector} from 'react-redux'
 import {ObvioEvent} from 'Event'
@@ -23,6 +23,7 @@ export default function StaticEventProvider(props: {
       value={{
         event: current || event,
         client: eventClient,
+        hasTechCheck: hasTechCheck(event),
       }}
     >
       {props.children}

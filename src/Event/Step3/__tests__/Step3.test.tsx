@@ -24,13 +24,53 @@ it('should show tech check page', async () => {
   expect(await findByText(content)).toBeInTheDocument()
 })
 
-it('should show dashboard', async () => {
+it('should show dashboard if completed tech check', async () => {
   const attendee = fakeAttendee({
     has_password: true,
     waiver: faker.internet.url(),
     tech_check_completed_at: faker.date.recent().toISOString(),
   })
   const {findByLabelText} = await loginToEventSite({attendee})
+
+  // Has welcome text
+  expect(await findByLabelText('welcome')).toBeInTheDocument()
+})
+
+it('should skip step 3 if disabled', async () => {
+  const completedStep2 = fakeAttendee({
+    has_password: true,
+    waiver: faker.internet.url(),
+    tech_check_completed_at: null,
+  })
+
+  const withTechCheckDisabled = fakeEvent({
+    tech_check: fakeTechCheck({is_enabled: false}),
+  })
+
+  const {findByLabelText} = await loginToEventSite({
+    attendee: completedStep2,
+    event: withTechCheckDisabled,
+  })
+
+  // Has welcome text
+  expect(await findByLabelText('welcome')).toBeInTheDocument()
+})
+
+it('should skip step 3 without config', async () => {
+  const completedStep2 = fakeAttendee({
+    has_password: true,
+    waiver: faker.internet.url(),
+    tech_check_completed_at: null,
+  })
+
+  const withoutTechCheckConfig = fakeEvent({
+    tech_check: null,
+  })
+
+  const {findByLabelText} = await loginToEventSite({
+    attendee: completedStep2,
+    event: withoutTechCheckConfig,
+  })
 
   // Has welcome text
   expect(await findByLabelText('welcome')).toBeInTheDocument()

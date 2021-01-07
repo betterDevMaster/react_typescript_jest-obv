@@ -1,6 +1,7 @@
 import {useAttendee} from 'Event/auth'
 import Dashboard from 'Event/Dashboard'
 import AttendeeProfileProvider from 'Event/Dashboard/component-rules/AttendeeProfileProvider'
+import {useEvent} from 'Event/EventProvider'
 import {eventRoutes} from 'Event/Routes'
 import {Template} from 'Event/template'
 import React from 'react'
@@ -14,6 +15,7 @@ export interface WaiverConfig {
 
 export interface TechCheckConfig {
   body: string
+  is_enabled: boolean
 }
 
 // Can't use 'Event' because that's already a native DOM type
@@ -29,6 +31,7 @@ export interface ObvioEvent {
 
 export default function Event() {
   const attendee = useAttendee()
+  const {hasTechCheck} = useEvent()
 
   if (!attendee.has_password) {
     return <Redirect to={eventRoutes.step1} />
@@ -38,7 +41,9 @@ export default function Event() {
     return <Redirect to={eventRoutes.step2} />
   }
 
-  if (!attendee.tech_check_completed_at) {
+  const shouldRedirectToStep3 =
+    hasTechCheck && !attendee.tech_check_completed_at
+  if (shouldRedirectToStep3) {
     return <Redirect to={eventRoutes.step3} />
   }
 
