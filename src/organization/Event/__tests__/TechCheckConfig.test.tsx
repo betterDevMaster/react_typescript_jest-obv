@@ -7,9 +7,8 @@ import {render} from '__utils__/render'
 import user from '@testing-library/user-event'
 import {wait} from '@testing-library/react'
 import {ObvioEvent} from 'Event'
-import {signInToOrganization} from 'organization/__utils__/authenticate'
+import {goToEventConfig} from 'organization/Event/__utils__/event-config'
 
-const mockGet = axios.get as jest.Mock
 const mockPut = axios.put as jest.Mock
 
 afterEach(() => {
@@ -52,22 +51,11 @@ it('should submit a tech check config', async () => {
 })
 
 async function goToTechCheckConfig(overrides: {event?: ObvioEvent} = {}) {
-  const data = viewEvent(overrides)
+  const data = goToEventConfig(overrides)
   const renderResult = render(<App />)
 
   user.click(await renderResult.findByLabelText(`view ${data.event.name}`))
   user.click(await renderResult.findByLabelText('configure tech check'))
 
   return {...data, ...renderResult}
-}
-
-function viewEvent(overrides: {event?: ObvioEvent} = {}) {
-  const event = overrides.event || fakeEvent()
-
-  const orgData = signInToOrganization({events: [event]})
-
-  // Fetch target event
-  mockGet.mockImplementationOnce(() => Promise.resolve({data: event}))
-
-  return {event, ...orgData}
 }
