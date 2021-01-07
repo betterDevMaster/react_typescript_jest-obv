@@ -1,6 +1,8 @@
 import DashboardConfig from 'organization/Event/DashboardConfig'
 import EventConfig from 'organization/Event'
 import WaiverConfig from 'organization/Event/WaiverConfig'
+import TechCheckConfig from 'organization/Event/TechCheckConfig'
+import AttendeeList from 'organization/Event/AttendeeList'
 import Emoji from 'organization/Event/EmojiPage'
 import {useOrganization} from 'organization/OrganizationProvider'
 import React from 'react'
@@ -19,6 +21,12 @@ export default function EventConfigRoutes() {
       </Route>
       <Route path={routes.events[':event'].waiver}>
         <WaiverConfig />
+      </Route>
+      <Route path={routes.events[':event'].tech_check}>
+        <TechCheckConfig />
+      </Route>
+      <Route path={routes.events[':event'].attendees}>
+        <AttendeeList />
       </Route>
       <Route path={routes.events[':event'].emoji}>
         <Emoji />

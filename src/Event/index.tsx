@@ -12,6 +12,10 @@ export interface WaiverConfig {
   body: string
 }
 
+export interface TechCheckConfig {
+  body: string
+}
+
 // Can't use 'Event' because that's already a native DOM type
 // for browser events and we'd lose TS safety/import assist.
 export interface ObvioEvent {
@@ -20,6 +24,7 @@ export interface ObvioEvent {
   slug: string
   template: null | Template
   waiver: null | WaiverConfig
+  tech_check: null | TechCheckConfig
 }
 
 export default function Event() {
@@ -31,6 +36,10 @@ export default function Event() {
 
   if (!attendee.waiver) {
     return <Redirect to={eventRoutes.step2} />
+  }
+
+  if (!attendee.tech_check_completed_at) {
+    return <Redirect to={eventRoutes.step3} />
   }
 
   // We fetch the user, and split the user from the attendee profile to allow

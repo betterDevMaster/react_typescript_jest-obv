@@ -8,12 +8,13 @@ import {fakeAttendee} from 'Event/auth/__utils__/factory'
 import {render} from '__utils__/render'
 import {act} from '@testing-library/react'
 import {Attendee} from 'Event/attendee'
+import {ObvioEvent} from 'Event'
 
 const mockGet = axios.get as jest.Mock
 const mockPost = axios.post as jest.Mock
 
-export function visitEventSite(url?: string) {
-  const event = fakeEvent()
+export function visitEventSite(options: {event?: ObvioEvent} = {}) {
+  const event = options.event || fakeEvent()
 
   Object.defineProperty(window, 'location', {
     value: {
@@ -25,8 +26,12 @@ export function visitEventSite(url?: string) {
   return event
 }
 
-export async function loginToEventSite(attendee: Attendee = fakeAttendee()) {
-  const event = visitEventSite()
+export async function loginToEventSite(
+  options: {attendee?: Attendee; event?: ObvioEvent} = {},
+) {
+  const attendee = options.attendee || fakeAttendee()
+  const event = options.event || fakeEvent()
+  visitEventSite({event})
 
   mockPost.mockImplementationOnce(() =>
     Promise.resolve({data: {access_token: faker.random.alphaNumeric(8)}}),
@@ -41,8 +46,6 @@ export async function loginToEventSite(attendee: Attendee = fakeAttendee()) {
   await act(async () => {
     user.click(await findByLabelText('submit login'))
   })
-
-  expect(mockPost).toHaveBeenCalledTimes(1)
 
   return {
     event,

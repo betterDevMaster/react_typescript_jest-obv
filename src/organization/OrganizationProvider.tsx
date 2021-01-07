@@ -81,6 +81,8 @@ export function createRoutesFor(organization: Organization) {
           dashboard: '/dashboard',
           waiver: '/waiver',
           emoji: '/emoji',
+          tech_check: '/tech_check',
+          attendees: '/attendees',
         },
       },
     },
@@ -105,6 +107,8 @@ export function useClient(
         client.post(url, data, {...options, tokenKey}),
       put: (url: string, data: {}, options?: RequestOptions) =>
         client.put(url, data, {...options, tokenKey}),
+      patch: (url: string, data: {}, options?: RequestOptions) =>
+        client.patch(url, data, {...options, tokenKey}),
       delete: (url: string, options?: RequestOptions) =>
         client.delete(url, {...options, tokenKey}),
     }
