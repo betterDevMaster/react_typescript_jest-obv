@@ -8,7 +8,6 @@ import {render, renderWithEvent} from '__utils__/render'
 import {clickEdit} from '__utils__/edit'
 import userEvent from '@testing-library/user-event'
 import {fakeEvent} from 'Event/__utils__/factory'
-import StaticEventProvider from 'Event/__utils__/StaticEventProvider'
 import {mockRxJsAjax} from 'store/__utils__/MockStoreProvider'
 import {wait} from '@testing-library/react'
 
@@ -53,8 +52,9 @@ it('should update the logo', async () => {
 
 it('should show the user email', async () => {
   const user = fakeUser()
-  const {findByText, findByTestId} = renderWithEvent(
+  const {findByText, findByTestId} = render(
     <Dashboard isEditMode={false} user={user} />,
+    {event: fakeEvent()},
   )
 
   const menuButton = await findByTestId('menu-button')
