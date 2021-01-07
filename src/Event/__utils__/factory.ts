@@ -32,6 +32,7 @@ export function fakeTechCheck(
     body: `<html><h1>${faker.company.bsNoun()} Tech Check</h1><p>${faker.lorem.paragraphs(
       3,
     )}</p></html>`,
+    is_enabled: true,
     ...overrides,
   }
 }

@@ -12,6 +12,7 @@ import {EventClient, eventClient} from 'Event/api-client'
 interface EventContextProps {
   event: ObvioEvent
   client: EventClient
+  hasTechCheck: boolean
 }
 
 export const EventContext = React.createContext<EventContextProps | undefined>(
@@ -66,6 +67,7 @@ function EventProvider(props: {children: React.ReactNode; slug: string}) {
       value={{
         event: current,
         client: eventClient,
+        hasTechCheck: hasTechCheck(current),
       }}
     >
       {props.children}
@@ -85,4 +87,12 @@ export function useEvent() {
 function findEvent(slug: string) {
   const url = api(`/events/${slug}`)
   return client.get<ObvioEvent>(url)
+}
+
+export function hasTechCheck(event: ObvioEvent) {
+  if (!event.tech_check) {
+    return false
+  }
+
+  return event.tech_check.is_enabled
 }
