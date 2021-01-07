@@ -35,6 +35,26 @@ export default function EventConfig() {
           </Button>
         </RelativeLink>
 
+        <RelativeLink disableStyles to={routes.tech_check}>
+          <Button
+            variant="contained"
+            color="primary"
+            aria-label="configure tech check"
+          >
+            Configure Tech Check
+          </Button>
+        </RelativeLink>
+
+        <RelativeLink disableStyles to={routes.attendees}>
+          <Button
+            variant="contained"
+            color="primary"
+            aria-label="view attendees"
+          >
+            Attendees
+          </Button>
+        </RelativeLink>
+
         <RelativeLink disableStyles to={routes.emoji}>
           <Button
             variant="contained"
