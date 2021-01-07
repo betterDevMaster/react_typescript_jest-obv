@@ -14,7 +14,7 @@ it('should show step 2 on login', async () => {
     has_password: true,
     waiver: null,
   })
-  const {findByLabelText} = await loginToEventSite(attendee)
+  const {findByLabelText} = await loginToEventSite({attendee})
 
   expect(await findByLabelText('signature canvas')).toBeInTheDocument()
 })
@@ -30,11 +30,7 @@ it('should submit attendee waiver', async () => {
     waiver: 'waiver.jpg',
   })
 
-  const {
-    findByLabelText,
-    findByText,
-    queryByLabelText,
-  } = await loginToEventSite(attendee)
+  const {findByLabelText, queryByLabelText} = await loginToEventSite({attendee})
 
   const canvas = ((await findByLabelText(
     'signature canvas',

@@ -3,6 +3,7 @@ import {useEventAuth} from 'Event/auth'
 import Login from 'Event/auth/Login'
 import Step1 from 'Event/Step1'
 import Step2 from 'Event/Step2'
+import Step3 from 'Event/Step3'
 import {createRoutes} from 'lib/url'
 import React from 'react'
 import {Redirect, Route, Switch} from 'react-router-dom'
@@ -11,6 +12,7 @@ export const eventRoutes = createRoutes({
   login: '/login',
   step1: '/step_1',
   step2: '/step_2',
+  step3: '/step_3',
 })
 
 export default function Routes() {
@@ -35,6 +37,9 @@ function UserRoutes() {
       </Route>
       <Route path={eventRoutes.step2}>
         <Step2 />
+      </Route>
+      <Route path={eventRoutes.step3}>
+        <Step3 />
       </Route>
       <Route path={eventRoutes.root} exact>
         <Event />

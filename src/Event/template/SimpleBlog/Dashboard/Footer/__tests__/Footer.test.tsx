@@ -83,16 +83,25 @@ it('should configure the footer', async () => {
 
   clickEdit(await findByLabelText('footer'))
 
-  user.type(await findByLabelText('set copyright text'), copyrightText)
+  fireEvent.change(await findByLabelText('set copyright text'), {
+    target: {
+      value: copyrightText,
+    },
+  })
 
   fireEvent.click(await findByLabelText('close config dialog'))
 
   expect((await findByLabelText('copyright')).textContent).toBe(copyrightText)
 
   // Saved
-  await wait(() => {
-    expect(mockPost).toHaveBeenCalledTimes(1)
-  })
+  await wait(
+    () => {
+      expect(mockPost).toHaveBeenCalledTimes(1)
+    },
+    {
+      timeout: 20000,
+    },
+  )
 
   const [url, data] = mockPost.mock.calls[0]
   expect(url).toMatch(`/events/${event.slug}`)
