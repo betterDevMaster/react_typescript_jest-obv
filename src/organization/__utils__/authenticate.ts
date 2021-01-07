@@ -1,4 +1,3 @@
-import {fakeUser} from 'auth/user/__utils__/factory'
 import faker from 'faker'
 import {ObvioEvent} from 'Event'
 import {fakeOrganization} from 'obvio/Organizations/__utils__/factory'

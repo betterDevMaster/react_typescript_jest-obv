@@ -22,7 +22,7 @@ export default function OwnerProvider(props: {children: React.ReactNode}) {
   const {data: owner, loading} = useAsync(fetch)
 
   if (loading) {
-    return null
+    return <div>loading...</div>
   }
 
   if (!owner) {

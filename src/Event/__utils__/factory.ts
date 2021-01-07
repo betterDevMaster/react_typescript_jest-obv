@@ -8,6 +8,7 @@ export const fakeEvent = (overrides?: Partial<ObvioEvent>): ObvioEvent => ({
   slug: faker.internet.domainWord(),
   template: fakeSimpleBlog(),
   waiver: fakeWaiver(),
+  tech_check: fakeTechCheck(),
   ...overrides,
 })
 
@@ -18,6 +19,17 @@ export function fakeWaiver(
     logo: faker.random.alphaNumeric(10) + '.png',
     title: faker.company.companyName(),
     body: `<html><h1>${faker.company.bsNoun()} Waiver</h1><p>${faker.lorem.paragraphs(
+      3,
+    )}</p></html>`,
+    ...overrides,
+  }
+}
+
+export function fakeTechCheck(
+  overrides?: Partial<ObvioEvent['tech_check']>,
+): ObvioEvent['tech_check'] {
+  return {
+    body: `<html><h1>${faker.company.bsNoun()} Tech Check</h1><p>${faker.lorem.paragraphs(
       3,
     )}</p></html>`,
     ...overrides,

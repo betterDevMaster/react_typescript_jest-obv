@@ -14,7 +14,7 @@ it('should show step 1 on login', async () => {
   const attendee = fakeAttendee({
     has_password: false,
   })
-  const {findByLabelText} = await loginToEventSite(attendee)
+  const {findByLabelText} = await loginToEventSite({attendee})
 
   expect(await findByLabelText('password input')).toBeInTheDocument()
 })
@@ -29,7 +29,7 @@ it('should set an attendee password', async () => {
     waiver: null,
   })
 
-  const {findByLabelText} = await loginToEventSite(attendee)
+  const {findByLabelText} = await loginToEventSite({attendee})
 
   mockPost.mockImplementationOnce(() =>
     Promise.resolve({
