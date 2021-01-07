@@ -9,4 +9,5 @@ export type Attendee = User & {
   login_token: string
   waiver: string | null
   has_password: boolean
+  tech_check_completed_at: string | null
 }

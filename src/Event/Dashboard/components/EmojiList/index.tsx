@@ -6,8 +6,9 @@ import AddEmojiListButton from 'Event/Dashboard/components/EmojiList/AddEmojiLis
 import EditModeOnly from 'Event/Dashboard/editor/views/EditModeOnly'
 import {useTemplate} from 'Event/Dashboard/state/TemplateProvider'
 
-import {sendEmoji} from 'Event/state/actions'
-import {useDispatch} from 'react-redux'
+import {useEvent} from 'Event/EventProvider'
+import {api} from 'lib/url'
+import {eventClient} from 'Event/api-client'
 
 export const EMOJI_LIST = 'Emoji List'
 
@@ -21,7 +22,7 @@ export interface EmojiList {
 
 export default function EmojiList() {
   const {emojiList: list} = useTemplate()
-  const dispatch = useDispatch();
+  const {event} = useEvent()
 
   const isEmpty = list && list.emojis.length === 0
   if (!list || isEmpty) {
@@ -33,8 +34,12 @@ export default function EmojiList() {
     )
   }
 
-  const storeEmoji = (index:number, name:string) => () => {
-    dispatch( sendEmoji({id: index, name: name}) )
+  const sendEmoji = (name: string) => () => {
+    const url = api(`/events/${event.slug}/emoji`)
+    eventClient.post(url, {name}).catch((error) => {
+      // ignore errors, prevent failing to send emoji from crashing app
+      console.error(error)
+    })
   }
 
   return (
@@ -46,7 +51,7 @@ export default function EmojiList() {
               aria-label="event emoji"
               src={emojiWithName(name).image}
               alt={name}
-              onClick={storeEmoji(index, name)}
+              onClick={sendEmoji(name)}
             />
           </Container>
         ))}

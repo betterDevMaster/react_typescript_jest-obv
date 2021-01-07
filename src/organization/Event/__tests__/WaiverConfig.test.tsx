@@ -9,6 +9,7 @@ import {fireEvent, wait} from '@testing-library/react'
 import {ObvioEvent} from 'Event'
 import {waiverLogoPath} from 'Event/Step2/Waiver'
 import {signInToOrganization} from 'organization/__utils__/authenticate'
+import {goToEventConfig} from 'organization/Event/__utils__/event-config'
 
 const mockGet = axios.get as jest.Mock
 const mockPost = axios.post as jest.Mock
@@ -70,22 +71,11 @@ it('should submit a waiver', async () => {
 })
 
 async function goToWaiverConfig(overrides: {event?: ObvioEvent} = {}) {
-  const data = viewEvent(overrides)
+  const data = goToEventConfig(overrides)
   const renderResult = render(<App />)
 
   user.click(await renderResult.findByLabelText(`view ${data.event.name}`))
   user.click(await renderResult.findByLabelText('configure waiver'))
 
   return {...data, ...renderResult}
-}
-
-function viewEvent(overrides: {event?: ObvioEvent} = {}) {
-  const event = overrides.event || fakeEvent()
-
-  const orgData = signInToOrganization({events: [event]})
-
-  // Fetch target event
-  mockGet.mockImplementationOnce(() => Promise.resolve({data: event}))
-
-  return {event, ...orgData}
 }
