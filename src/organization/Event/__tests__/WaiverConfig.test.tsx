@@ -8,10 +8,8 @@ import user from '@testing-library/user-event'
 import {fireEvent, wait} from '@testing-library/react'
 import {ObvioEvent} from 'Event'
 import {waiverLogoPath} from 'Event/Step2/Waiver'
-import {signInToOrganization} from 'organization/__utils__/authenticate'
 import {goToEventConfig} from 'organization/Event/__utils__/event-config'
 
-const mockGet = axios.get as jest.Mock
 const mockPost = axios.post as jest.Mock
 
 afterEach(() => {

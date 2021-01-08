@@ -58,7 +58,7 @@ export default function EmojiPage() {
 function useFetchEmojis() {
   const {client} = useOrganization()
   const {event} = useEvent()
-  const url = api(`/events/${event.slug}/emoji`)
+  const url = api(`/events/${event.slug}/emoji_page`)
 
   return () => client.get<Emojis>(url)
 }

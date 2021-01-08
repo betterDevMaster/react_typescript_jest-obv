@@ -35,7 +35,7 @@ export default function EmojiList() {
   }
 
   const sendEmoji = (name: string) => () => {
-    const url = api(`/events/${event.slug}/emoji`)
+    const url = api(`/events/${event.slug}/emoji_page`)
     eventClient.post(url, {name}).catch((error) => {
       // ignore errors, prevent failing to send emoji from crashing app
       console.error(error)

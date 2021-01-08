@@ -1,5 +1,5 @@
 import faker from 'faker'
-import {ALL_EMOJIS} from 'Event/Dashboard/components/EmojiList/emoji'
+import {DEFAULT_EMOJIS} from 'Event/Dashboard/components/EmojiList/emoji'
 import {EmojiList} from 'Event/Dashboard/components/EmojiList'
 
 export function withEmojiList<
@@ -10,7 +10,7 @@ export function withEmojiList<
   const emojiList: EmojiList = {
     emojis: Array.from(
       {length: faker.random.number({min: 0, max: 5})},
-      () => faker.random.arrayElement(ALL_EMOJIS).name,
+      () => faker.random.arrayElement(DEFAULT_EMOJIS).name,
     ),
   }
 
