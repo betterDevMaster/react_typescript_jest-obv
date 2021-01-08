@@ -37,16 +37,16 @@ export const api = (path: string) => {
  */
 export const storage = (path: string) => {
   const local = `${process.env.REACT_APP_API_URL}/storage`
-  const prodBucket = 'https://obvio-platform-public.s3.us-east-2.amazonaws.com/'
+  const prodBucket = 'https://obvio-platform-public.s3.us-east-2.amazonaws.com'
   const stagingBucket =
-    'https://obvio-platform-public-staging.s3.us-east-2.amazonaws.com/'
+    'https://obvio-platform-public-staging.s3.us-east-2.amazonaws.com'
 
   if (!isProduction) {
     return `${local}${path}`
   }
 
   const bucket = isStaging ? stagingBucket : prodBucket
-  return `${bucket}/${path}`
+  return `${bucket}${path}`
 }
 
 type Routes = {
