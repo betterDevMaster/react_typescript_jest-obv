@@ -3,13 +3,14 @@ import styled from 'styled-components'
 import InputLabel from '@material-ui/core/InputLabel'
 import MenuItem from '@material-ui/core/MenuItem'
 import Select from '@material-ui/core/Select'
-import {Emoji, EMOJI} from 'Event/Dashboard/components/EmojiList/emoji'
+import {Emoji} from 'Event/Dashboard/components/EmojiList/emoji'
 import {onUnknownChangeHandler} from 'lib/dom'
 import React from 'react'
 
 export default function EmojiSelect(props: {
   value?: Emoji['name']
   onPick: (emoji: string) => void
+  emojis: Emoji[]
 }) {
   return (
     <FormControl fullWidth>
@@ -22,9 +23,9 @@ export default function EmojiSelect(props: {
           'aria-label': 'pick emoji',
         }}
       >
-        {Object.values(EMOJI).map((emoji) => {
+        {props.emojis.map((emoji, index) => {
           return (
-            <MenuItem key={emoji.name} value={emoji.name}>
+            <MenuItem key={index} value={emoji.name}>
               <Image src={emoji.image} alt={emoji.name} />
             </MenuItem>
           )
