@@ -3,14 +3,14 @@ import faker from 'faker'
 import {fakeSimpleBlog} from 'Event/template/SimpleBlog/__utils__/factory'
 import {fakeUser} from 'auth/user/__utils__/factory'
 import Dashboard from 'Event/Dashboard'
-import {inputElementFor, render, renderWithEvent} from '__utils__/render'
-import {ALL_EMOJIS, EMOJI} from 'Event/Dashboard/components/EmojiList/emoji'
+import {inputElementFor, render} from '__utils__/render'
+import {DEFAULT_EMOJIS, EMOJI} from 'Event/Dashboard/components/EmojiList/emoji'
 import {fireEvent} from '@testing-library/dom'
 import {clickEdit} from '__utils__/edit'
 import {fakeEvent} from 'Event/__utils__/factory'
-import StaticEventProvider from 'Event/__utils__/StaticEventProvider'
 import {mockRxJsAjax} from 'store/__utils__/MockStoreProvider'
 import {wait} from '@testing-library/react'
+import {fakeOrganization} from 'obvio/Organizations/__utils__/factory'
 
 const mockPost = mockRxJsAjax.post as jest.Mock
 
@@ -21,7 +21,7 @@ afterEach(() => {
 it('should render emojis', async () => {
   const emojis = Array.from(
     {length: faker.random.number({min: 1, max: 5})},
-    () => faker.random.arrayElement(ALL_EMOJIS).name,
+    () => faker.random.arrayElement(DEFAULT_EMOJIS).name,
   )
 
   const withoutEmojis = fakeEvent({
@@ -40,14 +40,16 @@ it('should render emojis', async () => {
     }),
   })
 
-  const {findAllByLabelText, rerender, queryByLabelText} = renderWithEvent(
+  const {findAllByLabelText, rerender, queryByLabelText} = render(
     <Dashboard isEditMode={false} user={fakeUser()} />,
-    withoutEmojis,
+    {event: withoutEmojis},
   )
 
   expect(queryByLabelText('event emoji')).not.toBeInTheDocument()
 
-  rerender(<Dashboard isEditMode={false} user={fakeUser()} />, withEmojis)
+  rerender(<Dashboard isEditMode={false} user={fakeUser()} />, {
+    event: withEmojis,
+  })
 
   const emojiEl = await findAllByLabelText('event emoji')
   expect(emojiEl.length).toBe(emojis.length)
@@ -62,9 +64,9 @@ it('should pick an emoji', async () => {
     }),
   })
 
-  const {findByLabelText, findAllByLabelText} = renderWithEvent(
+  const {findByLabelText, findAllByLabelText} = render(
     <Dashboard isEditMode={true} user={fakeUser()} />,
-    event,
+    {event, organization: fakeOrganization()},
   )
 
   fireEvent.click(await findByLabelText('add emoji list'))
@@ -72,7 +74,6 @@ it('should pick an emoji', async () => {
   expect((await findAllByLabelText('pick emoji')).length).toBe(1)
 
   const emoji = EMOJI.THUNDER.name
-
   fireEvent.change(inputElementFor(await findByLabelText('pick emoji')), {
     target: {
       value: emoji,
@@ -102,12 +103,12 @@ it('should pick an emoji', async () => {
 it('should remove an existing emoji', async () => {
   const emojis = Array.from(
     {length: faker.random.number({min: 2, max: 5})},
-    () => faker.random.arrayElement(ALL_EMOJIS).name,
+    () => faker.random.arrayElement(DEFAULT_EMOJIS).name,
   )
   const event = fakeEvent({template: fakeSimpleBlog({emojiList: {emojis}})})
-  const {findByLabelText, findAllByLabelText} = renderWithEvent(
+  const {findByLabelText, findAllByLabelText} = render(
     <Dashboard isEditMode={true} user={fakeUser()} />,
-    event,
+    {event, organization: fakeOrganization()},
   )
 
   clickEdit(await findByLabelText('emoji list'))

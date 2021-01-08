@@ -3,6 +3,7 @@ import HEART_IMAGE from './heart.png'
 import LAUGH_IMAGE from './laugh.png'
 import THUMB_UP_IMAGE from './thumbup.png'
 import THUNDER_IMAGE from './thunder.png'
+import {storage} from 'lib/url'
 
 export type Emoji = {
   name: string
@@ -32,13 +33,21 @@ export const EMOJI: Record<string, Emoji> = {
   },
 }
 
-export const ALL_EMOJIS = Object.values(EMOJI)
+export const DEFAULT_EMOJIS = Object.values(EMOJI)
+
+export const isCustom = (emoji: string) =>
+  !DEFAULT_EMOJIS.find(({name}) => emoji === name)
 
 export const emojiWithName = (name: string) => {
-  const target = ALL_EMOJIS.find((e) => e.name === name)
-  if (!target) {
-    throw new Error(`Missing emoji with name: ${name}`)
+  const defaultEmoji = DEFAULT_EMOJIS.find((e) => e.name === name)
+  if (defaultEmoji) {
+    return defaultEmoji
   }
 
-  return target
+  return createCustomEmoji(name)
 }
+
+export const createCustomEmoji = (name: string): Emoji => ({
+  name,
+  image: storage(`/event/emojis/${name}`),
+})
