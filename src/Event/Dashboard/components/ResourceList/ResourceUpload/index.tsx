@@ -12,7 +12,7 @@ import UploadDropzone from 'Event/Dashboard/components/ResourceList/ResourceUplo
 import UploadedFile from 'Event/Dashboard/components/ResourceList/ResourceUpload/UploadedFile'
 
 export const ACCEPTED_FILE_TYPES = ['image/*', '.pdf']
-export const MAX_FILE_SIZE_MB = 2000000
+export const MAX_FILE_SIZE_BYTES = 20000000
 export const MAX_NUM_FILES = 1
 
 interface ResourceUpload {
