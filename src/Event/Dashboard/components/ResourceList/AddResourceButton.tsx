@@ -6,13 +6,13 @@ import {
 import {setConfig} from 'Event/Dashboard/editor/state/actions'
 import {
   useTemplate,
-  useUpdateDashboard,
+  useUpdateTemplate,
 } from 'Event/Dashboard/state/TemplateProvider'
 import React from 'react'
 import {useDispatch} from 'react-redux'
 
 export default function AddResourceButton(props: {className?: string}) {
-  const updateDashboard = useUpdateDashboard()
+  const updateTemplate = useUpdateTemplate()
   const {resourceList: list} = useTemplate()
   const dispatch = useDispatch()
 
@@ -25,7 +25,7 @@ export default function AddResourceButton(props: {className?: string}) {
         icon: RESOURCE_ICON.pdf,
       },
     ]
-    updateDashboard({
+    updateTemplate({
       resourceList: {
         ...list,
         resources,

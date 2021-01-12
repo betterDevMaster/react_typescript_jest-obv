@@ -11,24 +11,31 @@ import {fakeEvent} from 'Event/__utils__/factory'
 import {ObvioEvent} from 'Event'
 import {Organization} from 'organization'
 import StaticOrganizationProvider from 'organization/__utils__/StaticOrganizationProvider'
+import {Attendee} from 'Event/attendee'
 
 type Options = Omit<RtlRenderOptions, 'queries'> & {
   event?: ObvioEvent
   organization?: Organization
+  attendee?: Attendee
 }
 
 export const render = (component: React.ReactElement, options?: Options) => {
-  const wrapped = (target: React.ReactElement, options?: Options) => (
-    <Providers storeProvider={MockStoreProvider}>
-      <WithOrganization organization={options?.organization}>
-        <WithEvent event={options?.event}>
-          <AttendeeProfileProvider tags={[]} groups={{}}>
-            {target}
-          </AttendeeProfileProvider>
-        </WithEvent>
-      </WithOrganization>
-    </Providers>
-  )
+  const wrapped = (target: React.ReactElement, options?: Options) => {
+    const groups = options?.attendee ? options.attendee.groups : {}
+    const tags = options?.attendee ? options.attendee.tags : []
+
+    return (
+      <Providers storeProvider={MockStoreProvider}>
+        <WithOrganization organization={options?.organization}>
+          <WithEvent event={options?.event}>
+            <AttendeeProfileProvider tags={tags} groups={groups}>
+              {target}
+            </AttendeeProfileProvider>
+          </WithEvent>
+        </WithOrganization>
+      </Providers>
+    )
+  }
 
   const {rerender: rtlRerender, ...renderResult} = rtlRender(
     wrapped(component, options),

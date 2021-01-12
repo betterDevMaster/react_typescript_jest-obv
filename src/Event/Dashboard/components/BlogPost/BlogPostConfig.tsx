@@ -7,7 +7,7 @@ import ClassicEditor from '@ckeditor/ckeditor5-build-classic'
 import DangerButton from 'lib/ui/Button/DangerButton'
 import {
   useTemplate,
-  useUpdateDashboard,
+  useUpdateTemplate,
 } from 'Event/Dashboard/state/TemplateProvider'
 import {onChangeStringHandler} from 'lib/dom'
 import TextField from '@material-ui/core/TextField'
@@ -20,7 +20,7 @@ export function BlogPostConfig(props: {id: BlogPostConfig['id']}) {
   const {blogPosts: posts} = useTemplate()
 
   const {id} = props
-  const updateDashboard = useUpdateDashboard()
+  const updateTemplate = useUpdateTemplate()
   const closeConfig = useCloseConfig()
 
   if (!id) {
@@ -35,7 +35,7 @@ export function BlogPostConfig(props: {id: BlogPostConfig['id']}) {
       [key]: value,
     }
 
-    updateDashboard({
+    updateTemplate({
       blogPosts: {
         ...posts,
         entities: {
@@ -53,7 +53,7 @@ export function BlogPostConfig(props: {id: BlogPostConfig['id']}) {
     const updatedIds = posts.ids.filter((i) => i !== id)
 
     closeConfig()
-    updateDashboard({
+    updateTemplate({
       blogPosts: {
         entities: otherPosts,
         ids: updatedIds,

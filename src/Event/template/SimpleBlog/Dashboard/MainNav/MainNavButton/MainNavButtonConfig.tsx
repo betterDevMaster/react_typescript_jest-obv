@@ -22,7 +22,7 @@ import RuleConfig, {
 import ConfigureRulesButton from 'Event/Dashboard/component-rules/ConfigureRulesButton'
 import {
   useTemplate,
-  useUpdateDashboard,
+  useUpdateTemplate,
 } from 'Event/Dashboard/state/TemplateProvider'
 import {MAIN_NAV_BUTTON} from 'Event/template/SimpleBlog/Dashboard/MainNav/MainNavButton'
 
@@ -36,7 +36,7 @@ export function MainNavButtonConfig(props: {id: MainNavButtonConfig['id']}) {
 
   const {visible: ruleConfigVisible, toggle: toggleRuleConfig} = useRuleConfig()
 
-  const updateDashboard = useUpdateDashboard()
+  const updateTemplate = useUpdateTemplate()
   const closeConfig = useCloseConfig()
   const {id} = props
 
@@ -50,7 +50,7 @@ export function MainNavButtonConfig(props: {id: MainNavButtonConfig['id']}) {
   const button = buttons.entities[id]
 
   const update = (updated: NavButtonWithSize) => {
-    updateDashboard({
+    updateTemplate({
       mainNav: {
         ...buttons,
         entities: {
@@ -66,7 +66,7 @@ export function MainNavButtonConfig(props: {id: MainNavButtonConfig['id']}) {
     const updatedIds = buttons.ids.filter((i) => i !== id)
 
     closeConfig()
-    updateDashboard({
+    updateTemplate({
       mainNav: {
         entities: otherButtons,
         ids: updatedIds,

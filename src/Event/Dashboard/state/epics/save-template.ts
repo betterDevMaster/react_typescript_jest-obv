@@ -5,19 +5,16 @@ import {api} from 'lib/url'
 import {setSaving} from 'Event/Dashboard/editor/state/actions'
 import {of, concat} from 'rxjs'
 import {AjaxCreationMethod} from 'rxjs/internal/observable/dom/AjaxObservable'
-import {
-  UpdateDashboardAction,
-  UPDATE_TEMPLATE_ACTION,
-} from 'Event/state/actions'
+import {UpdateTemplateAction, UPDATE_TEMPLATE_ACTION} from 'Event/state/actions'
 
-export const saveDashboardEpic: Epic<
-  UpdateDashboardAction,
+export const saveTemplateEpic: Epic<
+  UpdateTemplateAction,
   any,
   RootState,
   {ajax: AjaxCreationMethod}
 > = (action$, state$, {ajax}) =>
   action$.pipe(
-    ofType<UpdateDashboardAction>(UPDATE_TEMPLATE_ACTION),
+    ofType<UpdateTemplateAction>(UPDATE_TEMPLATE_ACTION),
     debounceTime(1000),
     switchMap(() => {
       const {event, auth} = state$.value

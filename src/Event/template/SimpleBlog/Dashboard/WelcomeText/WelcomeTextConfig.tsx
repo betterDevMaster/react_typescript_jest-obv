@@ -1,7 +1,7 @@
 import TextField from '@material-ui/core/TextField'
 import {
   useTemplate,
-  useUpdateDashboard,
+  useUpdateTemplate,
 } from 'Event/Dashboard/state/TemplateProvider'
 import {WELCOME_TEXT} from 'Event/template/SimpleBlog/Dashboard/WelcomeText'
 import {onChangeStringHandler} from 'lib/dom'
@@ -13,10 +13,10 @@ export type WelcomeTextConfig = {
 
 export function WelcomeTextConfig() {
   const {welcomeText: value} = useTemplate()
-  const updateDashboard = useUpdateDashboard()
+  const updateTemplate = useUpdateTemplate()
 
   const update = (newVal: string) => {
-    updateDashboard({
+    updateTemplate({
       welcomeText: newVal,
     })
   }
