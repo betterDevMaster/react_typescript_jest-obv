@@ -4,7 +4,7 @@ import {NavButtonWithSize} from 'Event/Dashboard/components/NavButton'
 import {setConfig} from 'Event/Dashboard/editor/state/actions'
 import {
   useTemplate,
-  useUpdateDashboard,
+  useUpdateTemplate,
 } from 'Event/Dashboard/state/TemplateProvider'
 import {MAIN_NAV_BUTTON} from 'Event/template/SimpleBlog/Dashboard/MainNav/MainNavButton'
 import React from 'react'
@@ -13,7 +13,7 @@ import {v4 as uid} from 'uuid'
 
 export default function NewMainNavButton() {
   const {mainNav: buttons} = useTemplate()
-  const updateDashboard = useUpdateDashboard()
+  const updateTemplate = useUpdateTemplate()
   const dispatch = useDispatch()
 
   if (!buttons) {
@@ -34,7 +34,7 @@ export default function NewMainNavButton() {
     }
     const ids = [...buttons.ids, id]
 
-    updateDashboard({
+    updateTemplate({
       mainNav: {
         entities,
         ids,

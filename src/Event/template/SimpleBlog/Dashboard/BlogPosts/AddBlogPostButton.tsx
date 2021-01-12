@@ -1,6 +1,6 @@
 import {
   useTemplate,
-  useUpdateDashboard,
+  useUpdateTemplate,
 } from 'Event/Dashboard/state/TemplateProvider'
 import {v4 as uid} from 'uuid'
 import React from 'react'
@@ -12,7 +12,7 @@ import Button from '@material-ui/core/Button'
 
 export default function AddBlogPostButton(props: {className?: string}) {
   const {blogPosts} = useTemplate()
-  const updateDashboard = useUpdateDashboard()
+  const updateTemplate = useUpdateTemplate()
   const dispatch = useDispatch()
 
   const addPost = () => {
@@ -29,7 +29,7 @@ export default function AddBlogPostButton(props: {className?: string}) {
     }
     const ids = [id, ...blogPosts.ids]
 
-    updateDashboard({
+    updateTemplate({
       blogPosts: {
         entities,
         ids,

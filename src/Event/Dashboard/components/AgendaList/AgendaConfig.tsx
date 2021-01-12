@@ -10,7 +10,7 @@ import {MaterialUiPickersDate} from '@material-ui/pickers/typings/date'
 import {useCloseConfig} from 'Event/Dashboard/editor/state/edit-mode'
 import {
   useTemplate,
-  useUpdateDashboard,
+  useUpdateTemplate,
 } from 'Event/Dashboard/state/TemplateProvider'
 
 export type AgendaConfig = {
@@ -20,7 +20,7 @@ export type AgendaConfig = {
 
 export function AgendaConfig(props: {id: AgendaConfig['id']}) {
   const {agendas} = useTemplate()
-  const updateDashboard = useUpdateDashboard()
+  const updateTemplate = useUpdateTemplate()
   const closeConfig = useCloseConfig()
 
   if (!agendas) {
@@ -39,7 +39,7 @@ export function AgendaConfig(props: {id: AgendaConfig['id']}) {
       [key]: value,
     }
 
-    updateDashboard({
+    updateTemplate({
       agendas: agendas.map((a, index) => {
         const isTarget = index === props.id
         if (isTarget) {
@@ -54,7 +54,7 @@ export function AgendaConfig(props: {id: AgendaConfig['id']}) {
   const remove = () => {
     const withoutTarget = agendas.filter((_, index) => index !== props.id)
     closeConfig()
-    updateDashboard({
+    updateTemplate({
       agendas: withoutTarget,
     })
   }

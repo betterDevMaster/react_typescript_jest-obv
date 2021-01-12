@@ -14,7 +14,7 @@ import Box from '@material-ui/core/Box'
 import {useCloseConfig} from 'Event/Dashboard/editor/state/edit-mode'
 import {
   useTemplate,
-  useUpdateDashboard,
+  useUpdateTemplate,
 } from 'Event/Dashboard/state/TemplateProvider'
 import {SIDEBAR_NAV_BUTTON} from 'Event/template/SimpleBlog/Dashboard/Sidebar/SidebarNav'
 
@@ -28,7 +28,7 @@ export function SidebarNavButtonConfig(props: {
 }) {
   const {sidebarNav: buttons} = useTemplate()
 
-  const updateDashboard = useUpdateDashboard()
+  const updateTemplate = useUpdateTemplate()
   const closeConfig = useCloseConfig()
   const {id} = props
 
@@ -39,7 +39,7 @@ export function SidebarNavButtonConfig(props: {
   const button = buttons.entities[id]
 
   const update = (updated: NavButton) => {
-    updateDashboard({
+    updateTemplate({
       sidebarNav: {
         ...buttons,
         entities: {
@@ -55,7 +55,7 @@ export function SidebarNavButtonConfig(props: {
     const updatedIds = buttons.ids.filter((i) => i !== id)
 
     closeConfig()
-    updateDashboard({
+    updateTemplate({
       sidebarNav: {
         entities: otherButtons,
         ids: updatedIds,

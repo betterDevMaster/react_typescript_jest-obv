@@ -2,7 +2,7 @@ import React from 'react'
 import {Button} from '@material-ui/core'
 import {
   useTemplate,
-  useUpdateDashboard,
+  useUpdateTemplate,
 } from 'Event/Dashboard/state/TemplateProvider'
 import {setConfig} from 'Event/Dashboard/editor/state/actions'
 import {AGENDA} from 'Event/Dashboard/components/AgendaList'
@@ -10,7 +10,7 @@ import {useDispatch} from 'react-redux'
 
 export default function AddAgendaEventButton(props: {className?: string}) {
   const {agendas} = useTemplate()
-  const updateDashboard = useUpdateDashboard()
+  const updateTemplate = useUpdateTemplate()
   const dispatch = useDispatch()
 
   const existingAgendas = agendas || []
@@ -25,7 +25,7 @@ export default function AddAgendaEventButton(props: {className?: string}) {
         link: null,
       },
     ]
-    updateDashboard({
+    updateTemplate({
       agendas,
     })
 

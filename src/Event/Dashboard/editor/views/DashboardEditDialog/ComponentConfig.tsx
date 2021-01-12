@@ -1,7 +1,7 @@
 import React from 'react'
 import {SidebarContainerConfig} from 'Event/template/SimpleBlog/Dashboard/Sidebar/SidebarContainer/SidebarContainerConfig'
 import {EmojiListConfig} from 'Event/Dashboard/components/EmojiList/EmojiListConfig'
-import {TicketRibbonConfig} from 'Event/Dashboard/components/TicketRibbon/TicketRibbonConfig'
+import {TicketRibbonConfig} from 'Event/Dashboard/components/TicketRibbonList/TicketRibbonConfig'
 import {MAIN_NAV_BUTTON} from 'Event/template/SimpleBlog/Dashboard/MainNav/MainNavButton'
 import {MainNavButtonConfig} from 'Event/template/SimpleBlog/Dashboard/MainNav/MainNavButton/MainNavButtonConfig'
 import {WELCOME_TEXT} from 'Event/template/SimpleBlog/Dashboard/WelcomeText'
@@ -9,7 +9,7 @@ import {WelcomeTextConfig} from 'Event/template/SimpleBlog/Dashboard/WelcomeText
 import {SimpleBlogConfig} from 'Event/template/SimpleBlog/Dashboard/SimpleBlogConfig'
 import {SIDEBAR_CONTAINER} from 'Event/template/SimpleBlog/Dashboard/Sidebar/SidebarContainer'
 import {EMOJI_LIST} from 'Event/Dashboard/components/EmojiList'
-import {TICKET_RIBBON_TYPE} from 'Event/Dashboard/components/TicketRibbon'
+import {TICKET_RIBBON} from 'Event/Dashboard/components/TicketRibbonList/TicketRibbon'
 import {AGENDA} from 'Event/Dashboard/components/AgendaList'
 import {AgendaConfig} from 'Event/Dashboard/components/AgendaList/AgendaConfig'
 import {POINTS_SUMMARY} from 'Event/Dashboard/components/PointsSummary'
@@ -62,8 +62,8 @@ export function ComponentConfig(props: {config: ComponentConfig | null}) {
       return <SidebarContainerConfig />
     case EMOJI_LIST:
       return <EmojiListConfig />
-    case TICKET_RIBBON_TYPE:
-      return <TicketRibbonConfig />
+    case TICKET_RIBBON:
+      return <TicketRibbonConfig index={props.config.index} />
     case AGENDA:
       return <AgendaConfig id={props.config.id} />
     case POINTS_SUMMARY:
