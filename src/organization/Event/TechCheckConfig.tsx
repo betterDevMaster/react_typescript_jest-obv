@@ -18,7 +18,7 @@ import {ObvioEvent} from 'Event'
 import {useDispatch} from 'react-redux'
 import {setEvent} from 'Event/state/actions'
 import {useHistory} from 'react-router-dom'
-import {useEventRoutes} from 'Event/url'
+import {useEventRoutes} from 'organization/Event/EventRoutes'
 
 export interface TechCheckData {
   body: string

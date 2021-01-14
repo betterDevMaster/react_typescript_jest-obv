@@ -1,5 +1,4 @@
 import styled from 'styled-components'
-import {useEventRoutes} from 'Event/url'
 import grey from '@material-ui/core/colors/grey'
 import React from 'react'
 import withStyles from '@material-ui/core/styles/withStyles'
@@ -8,6 +7,7 @@ import Typography from '@material-ui/core/Typography'
 import {appRoot} from 'App'
 import {RelativeLink} from 'lib/ui/link/RelativeLink'
 import {ObvioEvent} from 'Event'
+import {useEventRoutes} from 'organization/Event/EventRoutes'
 
 export default function Card(props: {event: ObvioEvent}) {
   const label = `view ${props.event.name}`
