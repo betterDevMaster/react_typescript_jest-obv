@@ -26,7 +26,7 @@ export const client = {
     handleAxiosResult<T>(axios.post(url, data, config(options))),
   put: <T>(url: string, data: {}, options?: RequestOptions) =>
     handleAxiosResult<T>(axios.put(url, data, config(options))),
-  patch: <T>(url: string, data: {}, options?: RequestOptions) =>
+  patch: <T>(url: string, data: {} = {}, options?: RequestOptions) =>
     handleAxiosResult<T>(axios.patch(url, data, config(options))),
   delete: <T>(url: string, options?: RequestOptions) =>
     handleAxiosResult<T>(axios.delete(url, config(options))),

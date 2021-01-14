@@ -1,6 +1,5 @@
-import {useOrganization} from 'organization/OrganizationProvider'
 import {appRoot, isProduction} from 'App'
-import {getSubdomain, routesWithValue} from 'lib/url'
+import {getSubdomain} from 'lib/url'
 import {useParams} from 'react-router-dom'
 import {ObvioEvent} from 'Event'
 
@@ -16,12 +15,4 @@ export function domainEventSlug() {
 export function useParamEventSlug() {
   const {event} = useParams<{event: string}>()
   return event
-}
-
-export function useEventRoutes(event?: ObvioEvent) {
-  const {routes: organizationRoutes} = useOrganization()
-  const slug = useParamEventSlug()
-  const value = event ? event.slug : slug
-
-  return routesWithValue(':event', value, organizationRoutes.events[':event'])
 }

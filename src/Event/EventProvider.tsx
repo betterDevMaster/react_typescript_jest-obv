@@ -59,7 +59,7 @@ function EventProvider(props: {children: React.ReactNode; slug: string}) {
   }
 
   if (!current) {
-    return null
+    return <div>loading...</div>
   }
 
   return (
