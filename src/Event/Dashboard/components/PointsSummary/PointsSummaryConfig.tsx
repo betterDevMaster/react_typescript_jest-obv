@@ -2,7 +2,7 @@ import TextField from '@material-ui/core/TextField'
 import {Points, POINTS_SUMMARY} from 'Event/Dashboard/components/PointsSummary'
 import {
   useTemplate,
-  useUpdateDashboard,
+  useUpdateTemplate,
 } from 'Event/Dashboard/state/TemplateProvider'
 import {useCloseConfig} from 'Event/Dashboard/editor/state/edit-mode'
 import {onChangeStringHandler} from 'lib/dom'
@@ -16,20 +16,20 @@ export type PointsSummaryConfig = {
 
 export function PointsSummaryConfig() {
   const {points} = useTemplate()
-  const updateDashboard = useUpdateDashboard()
+  const updateTemplate = useUpdateTemplate()
   const closeConfig = useCloseConfig()
 
   const update = <T extends keyof Points>(key: T) => (value: Points[T]) => {
     const updated = updatePoints(key, value, points)
 
-    updateDashboard({
+    updateTemplate({
       points: updated,
     })
   }
 
   const removePoints = () => {
     closeConfig()
-    updateDashboard({points: null})
+    updateTemplate({points: null})
   }
 
   return (

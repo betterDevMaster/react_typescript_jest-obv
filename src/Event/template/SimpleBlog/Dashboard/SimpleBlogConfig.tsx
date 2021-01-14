@@ -1,7 +1,7 @@
 import TextField from '@material-ui/core/TextField'
 import {
   useTemplate,
-  useUpdateDashboard,
+  useUpdateTemplate,
 } from 'Event/Dashboard/state/TemplateProvider'
 import {SimpleBlog, SIMPLE_BLOG} from 'Event/template/SimpleBlog'
 import {onChangeStringHandler} from 'lib/dom'
@@ -14,12 +14,12 @@ export type SimpleBlogConfig = {
 
 export function SimpleBlogConfig() {
   const dashboard = useTemplate()
-  const updateDashboard = useUpdateDashboard()
+  const updateTemplate = useUpdateTemplate()
 
   const update = <T extends keyof SimpleBlog>(key: T) => (
     value: SimpleBlog[T],
   ) => {
-    updateDashboard({
+    updateTemplate({
       [key]: value,
     })
   }

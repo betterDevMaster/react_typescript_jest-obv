@@ -1,4 +1,4 @@
-import {updateDashboard} from 'Event/state/actions'
+import {updateTemplte} from 'Event/state/actions'
 import {Template} from 'Event/template'
 import React from 'react'
 import {useDispatch} from 'react-redux'
@@ -28,10 +28,10 @@ export function useTemplate() {
   return context
 }
 
-export function useUpdateDashboard() {
+export function useUpdateTemplate() {
   const dispatch = useDispatch()
 
   return (updates: Partial<Template>) => {
-    dispatch(updateDashboard(updates))
+    dispatch(updateTemplte(updates))
   }
 }

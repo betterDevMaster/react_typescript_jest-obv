@@ -4,7 +4,7 @@ import {withAgendas} from 'Event/Dashboard/components/AgendaList/__utils__/facto
 import {withPoints} from 'Event/Dashboard/components/PointsSummary/__utils__/factory'
 import {withResources} from 'Event/Dashboard/components/ResourceList/__utils__/factory'
 import {sometimes} from '__utils__/attributes'
-import {withTicketRibbon} from 'Event/Dashboard/components/TicketRibbon/__utils__/factory'
+import {withTicketRibbons} from 'Event/Dashboard/components/TicketRibbonList/__utils__/factory'
 import {withEmojiList} from 'Event/Dashboard/components/EmojiList/__utils__/factory'
 import {withBlogPosts} from 'Event/Dashboard/components/BlogPost/__utils__/factory'
 import {
@@ -27,7 +27,7 @@ export const fakeSimpleBlog = (overrides?: Partial<SimpleBlog>): SimpleBlog => {
       textColor: '#FFFFFF',
     },
     sidebarNav: {entities: {}, ids: []},
-    ticketRibbon: null,
+    ticketRibbons: [],
     mainNav: {entities: {}, ids: []},
     emojiList: {emojis: []},
     blogPosts: {entities: {}, ids: []},
@@ -52,7 +52,7 @@ export const fakeSimpleBlog = (overrides?: Partial<SimpleBlog>): SimpleBlog => {
     withAgendas,
     withMainNav,
     withSidebarNav,
-    withTicketRibbon,
+    withTicketRibbons,
     withBlogPosts,
     sometimes<SimpleBlog>(withPoints),
     sometimes<SimpleBlog>(withResources),

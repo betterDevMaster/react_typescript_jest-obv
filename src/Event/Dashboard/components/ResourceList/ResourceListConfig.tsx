@@ -5,7 +5,7 @@ import {
 } from 'Event/Dashboard/components/ResourceList'
 import {
   useTemplate,
-  useUpdateDashboard,
+  useUpdateTemplate,
 } from 'Event/Dashboard/state/TemplateProvider'
 import {onChangeStringHandler} from 'lib/dom'
 import React from 'react'
@@ -16,12 +16,12 @@ export type ResourceListConfig = {
 
 export function ResourceListConfig() {
   const {resourceList: list} = useTemplate()
-  const updateDashboard = useUpdateDashboard()
+  const updateTemplate = useUpdateTemplate()
 
   const update = <T extends keyof ResourceList>(key: T) => (
     value: ResourceList[T],
   ) => {
-    updateDashboard({
+    updateTemplate({
       resourceList: {
         ...list,
         [key]: value,

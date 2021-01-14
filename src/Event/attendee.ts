@@ -1,6 +1,9 @@
 import {User} from 'auth/user'
 
-export type Groups = Record<string, any>
+export type GroupKey = string
+export type GroupValue = string | number
+export type Groups = Record<GroupKey, GroupValue>
+
 export type Tags = string[]
 
 export type Attendee = User & {

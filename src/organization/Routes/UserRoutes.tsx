@@ -4,7 +4,7 @@ import {RouteEventProvider} from 'Event/EventProvider'
 import React from 'react'
 import {Redirect, Route, Switch} from 'react-router-dom'
 import {useOrganization} from 'organization/OrganizationProvider'
-import EventConfigRoutes from 'organization/Event/EventRoutes'
+import EventRoutes from 'organization/Event/EventRoutes'
 import Team from 'organization/Team'
 
 export default function UserRoutes() {
@@ -30,7 +30,7 @@ export default function UserRoutes() {
       </Route>
       <Route path={routes.events[':event'].root}>
         <RouteEventProvider>
-          <EventConfigRoutes />
+          <EventRoutes />
         </RouteEventProvider>
       </Route>
       <Redirect to={routes.events.root} />

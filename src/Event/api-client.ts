@@ -12,7 +12,7 @@ export const eventClient: EventClient = {
     client.post(url, data, {...options, tokenKey}),
   put: (url: string, data: {}, options?: RequestOptions) =>
     client.put(url, data, {...options, tokenKey}),
-  patch: (url: string, data: {}, options?: RequestOptions) =>
+  patch: (url: string, data: {} = {}, options?: RequestOptions) =>
     client.patch(url, data, {...options, tokenKey}),
   delete: (url: string, options?: RequestOptions) =>
     client.delete(url, {...options, tokenKey}),

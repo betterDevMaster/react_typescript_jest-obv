@@ -7,14 +7,14 @@ import axios from 'axios'
 import App from 'App'
 import {fakeAttendee} from 'Event/auth/__utils__/factory'
 import {Attendee} from 'Event/attendee'
-import {goToEventConfig} from 'organization/Event/__utils__/event-config'
+import {goToEvent} from 'organization/Event/__utils__/event'
 
 const mockGet = axios.get as jest.Mock
 
 export async function goToAttendeeList(
   overrides: {event?: ObvioEvent; attendees?: Attendee[]} = {},
 ) {
-  const data = goToEventConfig(overrides)
+  const data = goToEvent(overrides)
 
   const attendees =
     overrides.attendees ||

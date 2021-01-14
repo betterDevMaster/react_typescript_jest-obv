@@ -1,6 +1,6 @@
 import {
   useTemplate,
-  useUpdateDashboard,
+  useUpdateTemplate,
 } from 'Event/Dashboard/state/TemplateProvider'
 import {SimpleBlog} from 'Event/template/SimpleBlog'
 import {SIDEBAR_CONTAINER} from 'Event/template/SimpleBlog/Dashboard/Sidebar/SidebarContainer'
@@ -12,13 +12,13 @@ export type SidebarContainerConfig = {
 }
 
 export function SidebarContainerConfig() {
-  const updateDashboard = useUpdateDashboard()
+  const updateTemplate = useUpdateTemplate()
   const {sidebar} = useTemplate()
 
   const update = <T extends keyof SimpleBlog['sidebar']>(key: T) => (
     value: SimpleBlog['sidebar'][T],
   ) =>
-    updateDashboard({
+    updateTemplate({
       sidebar: {
         ...sidebar,
         [key]: value,
