@@ -16,7 +16,7 @@ import DangerButton from 'lib/ui/Button/DangerButton'
 import {useCloseConfig} from 'Event/Dashboard/editor/state/edit-mode'
 import {
   useTemplate,
-  useUpdateDashboard,
+  useUpdateTemplate,
 } from 'Event/Dashboard/state/TemplateProvider'
 import {useCallback} from 'react'
 import ResourceUpload from './ResourceUpload'
@@ -29,7 +29,7 @@ export type ResourceItemConfig = {
 export function ResourceItemConfig(props: {id: ResourceItemConfig['id']}) {
   const {resourceList: list} = useTemplate()
 
-  const updateDashboard = useUpdateDashboard()
+  const updateTemplate = useUpdateTemplate()
   const closeConfig = useCloseConfig()
 
   if (typeof props.id === 'undefined') {
@@ -45,7 +45,7 @@ export function ResourceItemConfig(props: {id: ResourceItemConfig['id']}) {
         [key]: value,
       }
 
-      updateDashboard({
+      updateTemplate({
         resourceList: {
           ...list,
           resources: list.resources.map((r, index) => {
@@ -59,12 +59,12 @@ export function ResourceItemConfig(props: {id: ResourceItemConfig['id']}) {
         },
       })
     },
-    [list, props.id, resource, updateDashboard],
+    [list, props.id, resource, updateTemplate],
   )
 
   const remove = () => {
     closeConfig()
-    updateDashboard({
+    updateTemplate({
       resourceList: {
         ...list,
         resources: list.resources.filter((_, index) => index !== props.id),

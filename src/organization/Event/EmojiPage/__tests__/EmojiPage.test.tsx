@@ -28,11 +28,13 @@ it('should show user clicked emojis', async () => {
   }))
 
   const event = fakeEvent()
+
   mockGet.mockImplementationOnce(() => Promise.resolve({data: organization}))
   mockGet.mockImplementationOnce(() => Promise.resolve({data: fakeUser()})) // user
   mockGet.mockImplementationOnce(() => Promise.resolve({data: fakeUser()})) // owner
   mockGet.mockImplementationOnce(() => Promise.resolve({data: [event]}))
   mockGet.mockImplementationOnce(() => Promise.resolve({data: event}))
+  mockGet.mockImplementationOnce(() => Promise.resolve({data: []})) // areas
 
   const {
     findByText,

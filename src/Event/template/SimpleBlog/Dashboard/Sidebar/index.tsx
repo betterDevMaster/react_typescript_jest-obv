@@ -4,7 +4,7 @@ import EmojiList from 'Event/Dashboard/components/EmojiList'
 import PointsSummary from 'Event/Dashboard/components/PointsSummary'
 import {ResourceList} from 'Event/Dashboard/components/ResourceList'
 import Section from 'Event/template/SimpleBlog/Dashboard/Sidebar/Section'
-import TicketRibbon from 'Event/Dashboard/components/TicketRibbon'
+import TicketRibbonList from 'Event/Dashboard/components/TicketRibbonList'
 import SidebarNav from 'Event/template/SimpleBlog/Dashboard/Sidebar/SidebarNav'
 import SidebarContainer from 'Event/template/SimpleBlog/Dashboard/Sidebar/SidebarContainer'
 import {useTemplate} from 'Event/Dashboard/state/TemplateProvider'
@@ -18,7 +18,7 @@ export default function Sidebar() {
       textColor={sidebar.textColor}
     >
       <EmojiList />
-      <TicketRibbon />
+      <TicketRibbonList />
       <Section>
         <AgendaList />
       </Section>

@@ -14,7 +14,7 @@ import TextField from '@material-ui/core/TextField'
 import {onUnknownChangeHandler} from 'lib/dom'
 import {
   useTemplate,
-  useUpdateDashboard,
+  useUpdateTemplate,
 } from 'Event/Dashboard/state/TemplateProvider'
 import EmojiUpload from 'Event/Dashboard/components/EmojiList/EmojiListConfig/EmojiUpload'
 import {useEvent} from 'Event/EventProvider'
@@ -26,7 +26,7 @@ export type EmojiListConfig = {
 }
 
 export function EmojiListConfig() {
-  const updateDashboard = useUpdateDashboard()
+  const updateTemplate = useUpdateTemplate()
   const {emojiList} = useTemplate()
   const deleteFile = useDeleteFile()
 
@@ -34,7 +34,7 @@ export function EmojiListConfig() {
   const availableEmojis = [...DEFAULT_EMOJIS, ...customEmojis]
 
   const update = <T extends keyof EmojiList>(key: T, value: EmojiList[T]) => {
-    updateDashboard({
+    updateTemplate({
       emojiList: {
         ...emojiList,
         [key]: value,

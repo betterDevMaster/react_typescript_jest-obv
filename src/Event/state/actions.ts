@@ -53,19 +53,19 @@ function newTemplate(name: Template['name']) {
 }
 
 export const UPDATE_TEMPLATE_ACTION = 'UPDATE_TEMPLATE'
-export interface UpdateDashboardAction {
+export interface UpdateTemplateAction {
   type: typeof UPDATE_TEMPLATE_ACTION
   payload: Partial<Template>
 }
-export const updateDashboard = (
+export const updateTemplte = (
   updates: Partial<Template>,
-): UpdateDashboardAction => ({
+): UpdateTemplateAction => ({
   type: UPDATE_TEMPLATE_ACTION,
   payload: updates,
 })
-export const handleUpdateDashboard = (
+export const handleUpdateTemplate = (
   state: EventState,
-  action: UpdateDashboardAction,
+  action: UpdateTemplateAction,
 ): EventState => {
   if (!state) {
     throw new Error('Missing event; was it set in the store?')
@@ -95,9 +95,7 @@ export interface SendEmojiAction {
   payload: ClickedEmoji
 }
 
-export const sendEmoji = (
-  emoji: ClickedEmoji,
-): SendEmojiAction => ({
+export const sendEmoji = (emoji: ClickedEmoji): SendEmojiAction => ({
   type: SEND_EMOJI_ACTION,
   payload: emoji,
 })
@@ -105,5 +103,5 @@ export const sendEmoji = (
 export type EventAction =
   | SetEventAction
   | CreateTemplateAction
-  | UpdateDashboardAction
+  | UpdateTemplateAction
   | SendEmojiAction

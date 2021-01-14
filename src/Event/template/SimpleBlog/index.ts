@@ -3,7 +3,7 @@ import {Points} from 'Event/Dashboard/components/PointsSummary'
 import {Agenda} from 'Event/Dashboard/components/AgendaList'
 import {BlogPost} from 'Event/Dashboard/components/BlogPost'
 import {EmojiList} from 'Event/Dashboard/components/EmojiList'
-import {TicketRibbon} from 'Event/Dashboard/components/TicketRibbon'
+import {TicketRibbon} from 'Event/Dashboard/components/TicketRibbonList/TicketRibbon'
 import NavButton, {
   NavButtonWithSize,
 } from 'Event/Dashboard/components/NavButton'
@@ -17,7 +17,7 @@ export interface SimpleBlog {
   title: string
   mainNav: EntityList<NavButtonWithSize>
   primaryColor: string
-  ticketRibbon: TicketRibbon['name'] | null
+  ticketRibbons: TicketRibbon[]
   logo: string
   welcomeText: string
   emojiList: EmojiList
@@ -48,7 +48,7 @@ export const createSimpleBlog = (): SimpleBlog => ({
     ids: [],
   },
   primaryColor: '#000000',
-  ticketRibbon: null,
+  ticketRibbons: [],
   logo: '',
   welcomeText: 'WELCOME TO YOUR DASHBOARD',
   emojiList: {

@@ -2,7 +2,7 @@ import Button from '@material-ui/core/Button'
 import NavButton from 'Event/Dashboard/components/NavButton'
 import {
   useTemplate,
-  useUpdateDashboard,
+  useUpdateTemplate,
 } from 'Event/Dashboard/state/TemplateProvider'
 import {useEditMode} from 'Event/Dashboard/editor/state/edit-mode'
 import React from 'react'
@@ -11,7 +11,7 @@ import {v4 as uid} from 'uuid'
 export default function NewSidebarNavButton(props: {className?: string}) {
   const isEditMode = useEditMode()
   const {sidebarNav: buttons} = useTemplate()
-  const updateDashboard = useUpdateDashboard()
+  const updateTemplate = useUpdateTemplate()
 
   if (!isEditMode) {
     return null
@@ -30,7 +30,7 @@ export default function NewSidebarNavButton(props: {className?: string}) {
     }
     const ids = [...buttons.ids, id]
 
-    updateDashboard({
+    updateTemplate({
       sidebarNav: {
         entities,
         ids,

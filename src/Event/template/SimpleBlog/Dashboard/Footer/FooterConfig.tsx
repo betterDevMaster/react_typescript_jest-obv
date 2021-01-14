@@ -4,7 +4,7 @@ import ColorPicker from 'lib/ui/ColorPicker'
 import React from 'react'
 import {
   useTemplate,
-  useUpdateDashboard,
+  useUpdateTemplate,
 } from 'Event/Dashboard/state/TemplateProvider'
 import {FOOTER} from 'Event/template/SimpleBlog/Dashboard/Footer'
 import {SimpleBlog} from 'Event/template/SimpleBlog'
@@ -15,12 +15,12 @@ export type FooterConfig = {
 
 export function FooterConfig() {
   const {footer} = useTemplate()
-  const updateDashboard = useUpdateDashboard()
+  const updateTemplate = useUpdateTemplate()
 
   const update = <T extends keyof SimpleBlog['footer']>(key: T) => (
     value: SimpleBlog['footer'][T],
   ) =>
-    updateDashboard({
+    updateTemplate({
       footer: {
         ...footer,
         [key]: value,

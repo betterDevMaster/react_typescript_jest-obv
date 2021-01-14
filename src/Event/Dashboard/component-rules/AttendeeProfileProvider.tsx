@@ -1,9 +1,10 @@
-import {Groups, Tags} from 'Event/attendee'
+import {GroupKey, Groups, GroupValue, Tags} from 'Event/attendee'
 import React from 'react'
 
 interface AttendeeProfileProps {
   groups: Groups
   tags: Tags
+  belongsToGroup: (key: GroupKey, value: GroupValue) => boolean
 }
 
 const AttendeeProfileContext = React.createContext(
@@ -22,10 +23,20 @@ export default function AttendeeProfileProvider(props: {
   groups: Groups
   tags: Tags
 }) {
+  const belongsToGroup = (key: GroupKey, value: GroupValue) => {
+    const hasKey = Object.prototype.hasOwnProperty.call(props.groups, key)
+    if (!hasKey) {
+      return false
+    }
+
+    return props.groups[key] === value
+  }
+
   return (
     <AttendeeProfileContext.Provider
       value={{
         groups: props.groups,
+        belongsToGroup,
         tags: props.tags,
       }}
     >

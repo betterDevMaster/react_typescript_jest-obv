@@ -7,7 +7,7 @@ import {render} from '__utils__/render'
 import user from '@testing-library/user-event'
 import {wait} from '@testing-library/react'
 import {ObvioEvent} from 'Event'
-import {goToEventConfig} from 'organization/Event/__utils__/event-config'
+import {goToEvent} from 'organization/Event/__utils__/event'
 
 const mockPut = axios.put as jest.Mock
 
@@ -51,7 +51,7 @@ it('should submit a tech check config', async () => {
 })
 
 async function goToTechCheckConfig(overrides: {event?: ObvioEvent} = {}) {
-  const data = goToEventConfig(overrides)
+  const data = goToEvent(overrides)
   const renderResult = render(<App />)
 
   user.click(await renderResult.findByLabelText(`view ${data.event.name}`))
