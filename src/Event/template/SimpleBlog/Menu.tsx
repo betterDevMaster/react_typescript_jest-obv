@@ -2,6 +2,8 @@ import React from 'react'
 import styled from 'styled-components'
 import Drawer from '@material-ui/core/Drawer'
 import {User} from 'auth/user'
+import {useEventAuth} from 'Event/auth'
+import Button from 'lib/ui/Button'
 
 export default function Menu(props: {
   visible: boolean
@@ -29,13 +31,22 @@ function UserInfo(props: {email: string}) {
 }
 
 function Links() {
+  const {logout} = useEventAuth()
+
   return (
     <List>
       <ListItem>
         <Link href="/change-password">Change password</Link>
       </ListItem>
       <ListItem>
-        <Link href="/logout">Logout</Link>
+        <Button
+          variant="text"
+          onClick={logout}
+          aria-label="logout"
+          textColor="#FFFFFF"
+        >
+          Logout
+        </Button>
       </ListItem>
     </List>
   )
