@@ -3,12 +3,17 @@ import styled, {css} from 'styled-components'
 import IconButton from 'lib/ui/IconButton'
 
 export function MenuIconButton(props: {
+  'aria-label'?: string
   active: boolean
   onClick?: () => void
   color: string
 }) {
   return (
-    <StyledIconButton onClick={props.onClick} dataTestId="menu-button">
+    <StyledIconButton
+      onClick={props.onClick}
+      aria-label={props['aria-label']}
+      dataTestId="menu-button"
+    >
       <Bar color={props.color} active={props.active} />
     </StyledIconButton>
   )
