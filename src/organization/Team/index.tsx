@@ -8,10 +8,10 @@ import IfOwner from 'organization/auth/IfOwner'
 import TeamProvider from 'organization/Team/TeamProvider'
 import Tabs from '@material-ui/core/Tabs'
 import Tab from '@material-ui/core/Tab'
-import Box from '@material-ui/core/Box'
 import Permissions from 'organization/Team/Permissions'
 import PermissionsProvider from 'organization/Team/Permissions/PermissionsProvider'
 import Layout from 'organization/user/Layout'
+import TabPanel from 'lib/ui/tabs/TabPanel'
 
 export type TeamMember = User & {
   permissions: string[]
@@ -30,11 +30,7 @@ export default function Team() {
         <TeamProvider>
           <PermissionsProvider>
             <Title>Team</Title>
-            <Tabs
-              onChange={changeTab}
-              aria-label="simple tabs example"
-              value={tabIndex}
-            >
+            <Tabs onChange={changeTab} value={tabIndex}>
               <Tab label="Members" />
               <Tab label="Permissions" />
             </Tabs>
@@ -51,23 +47,6 @@ export default function Team() {
         </TeamProvider>
       </Page>
     </Layout>
-  )
-}
-
-function TabPanel(props: {
-  children: React.ReactElement | React.ReactElement[]
-  index: number
-  currentIndex: number
-}) {
-  const isVisible = props.index === props.currentIndex
-  if (!isVisible) {
-    return null
-  }
-
-  return (
-    <Box py={3} role="tabpanel">
-      {props.children}
-    </Box>
   )
 }
 

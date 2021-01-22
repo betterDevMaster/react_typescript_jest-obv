@@ -22,7 +22,7 @@ export type RequestOptions = {
 export const client = {
   get: <T>(url: string, options?: RequestOptions) =>
     handleAxiosResult<T>(axios.get(url, config(options))),
-  post: <T>(url: string, data: {}, options?: RequestOptions) =>
+  post: <T>(url: string, data: {} = {}, options?: RequestOptions) =>
     handleAxiosResult<T>(axios.post(url, data, config(options))),
   put: <T>(url: string, data: {}, options?: RequestOptions) =>
     handleAxiosResult<T>(axios.put(url, data, config(options))),
