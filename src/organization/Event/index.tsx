@@ -57,7 +57,15 @@ export default function Event() {
               Attendees
             </Button>
           </RelativeLink>
-
+          <RelativeLink disableStyles to={routes.speakers}>
+            <Button
+              variant="contained"
+              color="primary"
+              aria-label="configure speakers"
+            >
+              Configure Speakers
+            </Button>
+          </RelativeLink>
           <RelativeLink disableStyles to={routes.emoji}>
             <Button
               variant="contained"

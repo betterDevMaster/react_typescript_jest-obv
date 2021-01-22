@@ -13,7 +13,7 @@ import grey from '@material-ui/core/colors/grey'
 import green from '@material-ui/core/colors/green'
 import yellow from '@material-ui/core/colors/yellow'
 
-export default function ConfigBar() {
+export default function ConfigBar({title = 'Configure Dashboard'}) {
   const isEditMode = useEditMode()
   const dispatch = useDispatch()
 
@@ -21,7 +21,7 @@ export default function ConfigBar() {
 
   return (
     <Box>
-      <Typography>Configure Dashboard</Typography>
+      <Typography>{title}</Typography>
       <Right>
         <FormControlLabel
           control={

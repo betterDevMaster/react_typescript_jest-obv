@@ -18,6 +18,23 @@ export interface TechCheckConfig {
   is_enabled: boolean
 }
 
+export interface SpeakerPage {
+  title: string
+  speakers: Speaker[]
+}
+
+export interface Speaker {
+  id: number
+  image: SpeakerImage | null
+  name: string
+  text: string
+}
+
+export interface SpeakerImage {
+  name: string
+  url: string
+}
+
 // Can't use 'Event' because that's already a native DOM type
 // for browser events and we'd lose TS safety/import assist.
 export interface ObvioEvent {
@@ -26,6 +43,7 @@ export interface ObvioEvent {
   slug: string
   template: null | Template
   waiver: null | WaiverConfig
+  speaker_page: null | SpeakerPage
   tech_check: null | TechCheckConfig
 }
 

@@ -4,6 +4,7 @@ import WaiverConfig from 'organization/Event/WaiverConfig'
 import TechCheckConfig from 'organization/Event/TechCheckConfig'
 import AttendeeList from 'organization/Event/AttendeeList'
 import Emoji from 'organization/Event/EmojiPage'
+import SpeakerConfig from 'organization/Event/SpeakersConfig'
 import {useOrganization} from 'organization/OrganizationProvider'
 import React from 'react'
 import {Redirect, Route, Switch} from 'react-router-dom'
@@ -44,6 +45,9 @@ export default function EventRoutes() {
       </Route>
       <Route path={routes.events[':event'].emoji}>
         <Emoji />
+      </Route>
+      <Route path={routes.events[':event'].speakers}>
+        <SpeakerConfig />
       </Route>
       <Route path={routes.events[':event'].areas.create}>
         <CreateAreaForm />

@@ -81,6 +81,7 @@ export function createRoutesFor(organization: Organization) {
           dashboard: '/dashboard',
           waiver: '/waiver',
           emoji: '/emoji',
+          speakers: '/speakers',
           tech_check: '/tech_check',
           attendees: '/attendees',
           areas: {
