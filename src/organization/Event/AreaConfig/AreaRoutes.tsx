@@ -4,10 +4,10 @@ import {Redirect, Route, Switch} from 'react-router-dom'
 import CreateAreaForm from 'organization/Event/AreaList/CreateAreaForm'
 import {routesWithValue} from 'lib/url'
 import {Area as AreaData} from 'organization/Event/AreaList'
-import Area, {ATTENDEES_TAB} from 'organization/Event/Area'
+import Area, {ATTENDEES_TAB} from 'organization/Event/AreaConfig'
 import {useEventRoutes} from 'organization/Event/EventRoutes'
 import RoomRoutes from 'organization/Event/Room/RoomRoutes'
-import {useArea} from 'organization/Event/Area/AreaProvider'
+import {useArea} from 'organization/Event/AreaConfig/AreaProvider'
 import {useEvent} from 'Event/EventProvider'
 
 export function useAreaRoutes() {

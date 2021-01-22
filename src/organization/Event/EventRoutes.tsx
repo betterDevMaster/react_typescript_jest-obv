@@ -12,8 +12,8 @@ import CreateAreaForm from 'organization/Event/AreaList/CreateAreaForm'
 import {ObvioEvent} from 'Event'
 import {useParamEventSlug} from 'Event/url'
 import {routesWithValue} from 'lib/url'
-import {AreaProvider} from 'organization/Event/Area/AreaProvider'
-import AreaRoutes from 'organization/Event/Area/AreaRoutes'
+import {AreaProvider} from 'organization/Event/AreaConfig/AreaProvider'
+import AreaRoutes from 'organization/Event/AreaConfig/AreaRoutes'
 
 export function useEventRoutes(event?: ObvioEvent) {
   const {routes: organizationRoutes} = useOrganization()

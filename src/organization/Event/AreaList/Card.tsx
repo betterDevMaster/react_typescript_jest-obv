@@ -4,7 +4,7 @@ import {useEventRoutes} from 'organization/Event/EventRoutes'
 import React from 'react'
 import grey from '@material-ui/core/colors/grey'
 import {Area} from 'organization/Event/AreaList'
-import {areaRoutes} from 'organization/Event/Area/AreaRoutes'
+import {areaRoutes} from 'organization/Event/AreaConfig/AreaRoutes'
 
 export default function Card(props: {area: Area}) {
   const label = `view ${props.area.name} area`

@@ -19,7 +19,7 @@ import Checkbox from '@material-ui/core/Checkbox'
 import Button from '@material-ui/core/Button'
 import {useEventRoutes} from 'organization/Event/EventRoutes'
 import {useHistory} from 'react-router-dom'
-import {areaRoutes} from 'organization/Event/Area/AreaRoutes'
+import {areaRoutes} from 'organization/Event/AreaConfig/AreaRoutes'
 
 interface CreateAreaData {
   name: string

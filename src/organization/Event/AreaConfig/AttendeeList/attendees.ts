@@ -1,7 +1,7 @@
 import {Attendee} from 'Event/attendee'
 import {useEvent} from 'Event/EventProvider'
 import {api} from 'lib/url'
-import {useArea} from 'organization/Event/Area/AreaProvider'
+import {useArea} from 'organization/Event/AreaConfig/AreaProvider'
 import {useAttendees} from 'organization/Event/AttendeeManagement/attendees'
 import {useOrganization} from 'organization/OrganizationProvider'
 
