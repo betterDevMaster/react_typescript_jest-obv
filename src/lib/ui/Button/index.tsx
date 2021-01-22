@@ -17,6 +17,7 @@ export interface ButtonProps {
   borderColor?: string
   hoverBorderColor?: string
   variant?: 'text'
+  'aria-label'?: string
 }
 
 export default function Button(props: ButtonProps) {
@@ -37,6 +38,7 @@ export default function Button(props: ButtonProps) {
       hoverBorder={hoverBorder(props)}
       hoverTextDecoration={hoverTextDecoration(props)}
       onClick={props.onClick}
+      aria-label={props['aria-label']}
     >
       {props.children}
     </StyledButton>
@@ -92,11 +94,15 @@ function backgroundColor(props: ButtonProps) {
 }
 
 function cursor(props: ButtonProps) {
+  if (props.disabled) {
+    return 'not-allowed'
+  }
+
   return 'pointer'
 }
 
 function transition(props: ButtonProps) {
-  if (props.disableHover) {
+  if (props.disableHover || props.variant === 'text') {
     return 'none'
   }
 
@@ -104,7 +110,7 @@ function transition(props: ButtonProps) {
 }
 
 function hoverOpacity(props: ButtonProps) {
-  if (props.disableHover) {
+  if (props.disableHover || props.variant === 'text') {
     return 1
   }
 

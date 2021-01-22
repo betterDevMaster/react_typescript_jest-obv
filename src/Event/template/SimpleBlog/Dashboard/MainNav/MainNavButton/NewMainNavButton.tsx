@@ -27,6 +27,8 @@ export default function NewMainNavButton() {
       link: '',
       size: 12,
       rules: [],
+      isAreaButton: false,
+      areaId: null,
     }
     const entities = {
       ...buttons.entities,

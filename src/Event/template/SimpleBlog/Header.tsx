@@ -21,6 +21,7 @@ export default function Header(props: {
               color={props.primaryColor}
               active={props.menuVisible}
               onClick={props.toggleMenu}
+              aria-label="show side menu"
             />
           </Side>
           <Middle>

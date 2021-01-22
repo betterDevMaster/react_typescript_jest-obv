@@ -2,6 +2,11 @@ import React from 'react'
 import styled from 'styled-components'
 import Drawer from '@material-ui/core/Drawer'
 import {User} from 'auth/user'
+import {useEventAuth} from 'Event/auth'
+import Button from 'lib/ui/Button'
+import {eventRoutes} from 'Event/Routes'
+import {RelativeLink} from 'lib/ui/link/RelativeLink'
+import {useEvent} from 'Event/EventProvider'
 
 export default function Menu(props: {
   visible: boolean
@@ -29,15 +34,44 @@ function UserInfo(props: {email: string}) {
 }
 
 function Links() {
+  const {logout} = useEventAuth()
+
   return (
     <List>
       <ListItem>
         <Link href="/change-password">Change password</Link>
       </ListItem>
+      <SpeakersLink />
       <ListItem>
-        <Link href="/logout">Logout</Link>
+        <Button
+          variant="text"
+          onClick={logout}
+          aria-label="logout"
+          textColor="#FFFFFF"
+        >
+          Logout
+        </Button>
       </ListItem>
     </List>
+  )
+}
+
+function SpeakersLink() {
+  const {event} = useEvent()
+  if (!event.speaker_page) {
+    return null
+  }
+
+  return (
+    <ListItem>
+      <RelativeLink
+        to={eventRoutes.speakers}
+        aria-label="view speakers"
+        disableStyles
+      >
+        Speakers
+      </RelativeLink>
+    </ListItem>
   )
 }
 

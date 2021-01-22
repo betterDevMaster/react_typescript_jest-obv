@@ -2,17 +2,18 @@ import DashboardConfig from 'organization/Event/DashboardConfig'
 import Event from 'organization/Event'
 import WaiverConfig from 'organization/Event/WaiverConfig'
 import TechCheckConfig from 'organization/Event/TechCheckConfig'
-import AttendeeList from 'organization/Event/AttendeeList'
+import AttendeeManagement from 'organization/Event/AttendeeManagement'
 import Emoji from 'organization/Event/EmojiPage'
+import SpeakerConfig from 'organization/Event/SpeakersConfig'
 import {useOrganization} from 'organization/OrganizationProvider'
 import React from 'react'
 import {Redirect, Route, Switch} from 'react-router-dom'
-import CreateAreaForm from 'organization/Event/area/CreateAreaForm'
+import CreateAreaForm from 'organization/Event/AreaList/CreateAreaForm'
 import {ObvioEvent} from 'Event'
 import {useParamEventSlug} from 'Event/url'
 import {routesWithValue} from 'lib/url'
-import {AreaProvider} from 'organization/Event/area/AreaProvider'
-import AreaRoutes from 'organization/Event/area/AreaRoutes'
+import {AreaProvider} from 'organization/Event/AreaConfig/AreaProvider'
+import AreaRoutes from 'organization/Event/AreaConfig/AreaRoutes'
 
 export function useEventRoutes(event?: ObvioEvent) {
   const {routes: organizationRoutes} = useOrganization()
@@ -40,10 +41,13 @@ export default function EventRoutes() {
         <TechCheckConfig />
       </Route>
       <Route path={routes.events[':event'].attendees}>
-        <AttendeeList />
+        <AttendeeManagement />
       </Route>
       <Route path={routes.events[':event'].emoji}>
         <Emoji />
+      </Route>
+      <Route path={routes.events[':event'].speakers}>
+        <SpeakerConfig />
       </Route>
       <Route path={routes.events[':event'].areas.create}>
         <CreateAreaForm />

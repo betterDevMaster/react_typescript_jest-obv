@@ -1,10 +1,10 @@
 import {ObvioEvent} from 'Event'
 import {
-  CREATE_TEMPLATE_ACTION,
   EventAction,
   handleCreateTemplate,
   handleSetEvent,
   handleUpdateTemplate,
+  CREATE_TEMPLATE_ACTION,
   SET_EVENT_ACTION,
   UPDATE_TEMPLATE_ACTION,
 } from 'Event/state/actions'

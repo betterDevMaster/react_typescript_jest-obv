@@ -4,7 +4,7 @@ import {OBVIO_TOKEN_KEY} from 'obvio/auth'
 export const obvioClient: typeof client = {
   get: (url: string, options?: RequestOptions) =>
     client.get(url, {...options, tokenKey: OBVIO_TOKEN_KEY}),
-  post: (url: string, data: {}, options?: RequestOptions) =>
+  post: (url: string, data: {} = {}, options?: RequestOptions) =>
     client.post(url, data, {...options, tokenKey: OBVIO_TOKEN_KEY}),
   put: (url: string, data: {}, options?: RequestOptions) =>
     client.put(url, data, {...options, tokenKey: OBVIO_TOKEN_KEY}),

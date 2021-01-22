@@ -8,7 +8,7 @@ export type EventClient = typeof client
 export const eventClient: EventClient = {
   get: (url: string, options?: RequestOptions) =>
     client.get(url, {...options, tokenKey}),
-  post: (url: string, data: {}, options?: RequestOptions) =>
+  post: (url: string, data: {} = {}, options?: RequestOptions) =>
     client.post(url, data, {...options, tokenKey}),
   put: (url: string, data: {}, options?: RequestOptions) =>
     client.put(url, data, {...options, tokenKey}),

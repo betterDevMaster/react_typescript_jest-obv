@@ -83,7 +83,6 @@ export const handleUpdateTemplate = (
     },
   }
 }
-
 export interface ClickedEmoji {
   id: number | null
   name: string | null
