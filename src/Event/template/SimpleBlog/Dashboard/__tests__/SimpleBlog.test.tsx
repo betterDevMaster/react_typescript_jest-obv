@@ -1,4 +1,5 @@
 import React from 'react'
+import user from '@testing-library/user-event'
 import faker from 'faker'
 import {fireEvent} from '@testing-library/react'
 import {fakeSimpleBlog} from 'Event/template/SimpleBlog/__utils__/factory'
@@ -10,6 +11,8 @@ import userEvent from '@testing-library/user-event'
 import {fakeEvent} from 'Event/__utils__/factory'
 import {mockRxJsAjax} from 'store/__utils__/MockStoreProvider'
 import {wait} from '@testing-library/react'
+import {loginToEventSite} from 'Event/__utils__/url'
+import {fakeAttendee} from 'Event/auth/__utils__/factory'
 
 const mockPost = mockRxJsAjax.post as jest.Mock
 
@@ -51,13 +54,15 @@ it('should update the logo', async () => {
 })
 
 it('should show the user email', async () => {
-  const user = fakeUser()
-  const {findByText, findByTestId} = render(
-    <Dashboard isEditMode={false} user={user} />,
-    {event: fakeEvent()},
-  )
+  const attendee = fakeAttendee({
+    tech_check_completed_at: 'now',
+    waiver: 'some_waiver.png',
+  })
 
-  const menuButton = await findByTestId('menu-button')
-  fireEvent.click(menuButton)
-  expect(await findByText(new RegExp(user.email))).toBeInTheDocument()
+  const {findByText, findByLabelText} = await loginToEventSite({
+    attendee,
+  })
+
+  user.click(await findByLabelText('show side menu'))
+  expect(await findByText(new RegExp(attendee.email))).toBeInTheDocument()
 })

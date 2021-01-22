@@ -1,4 +1,4 @@
-import {ObvioEvent} from 'Event'
+import {ObvioEvent, Speaker} from 'Event'
 import {fakeSimpleBlog} from 'Event/template/SimpleBlog/__utils__/factory'
 import faker from 'faker'
 
@@ -7,6 +7,7 @@ export const fakeEvent = (overrides?: Partial<ObvioEvent>): ObvioEvent => ({
   name: faker.company.companyName(),
   slug: faker.internet.domainWord(),
   template: fakeSimpleBlog(),
+  speaker_page: {title: 'SPEAKERS', speakers: []},
   waiver: fakeWaiver(),
   tech_check: fakeTechCheck(),
   ...overrides,
@@ -36,3 +37,19 @@ export function fakeTechCheck(
     ...overrides,
   }
 }
+
+export const fakeSpeakerPage = (
+  overrides?: Partial<ObvioEvent['speaker_page']>,
+): ObvioEvent['speaker_page'] => ({
+  title: `Speakers ${faker.random.words(3)}`,
+  speakers: [],
+  ...overrides,
+})
+
+export const fakeSpeaker = (overrides?: Partial<Speaker>): Speaker => ({
+  id: faker.random.number({min: 1000, max: 10000}),
+  name: `${faker.name.firstName()} ${faker.name.lastName()}`,
+  text: `<html><p>${faker.lorem.paragraphs(3)}</p></html>`,
+  image: null,
+  ...overrides,
+})

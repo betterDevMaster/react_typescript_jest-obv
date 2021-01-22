@@ -4,6 +4,9 @@ import Drawer from '@material-ui/core/Drawer'
 import {User} from 'auth/user'
 import {useEventAuth} from 'Event/auth'
 import Button from 'lib/ui/Button'
+import {eventRoutes} from 'Event/Routes'
+import {RelativeLink} from 'lib/ui/link/RelativeLink'
+import {useEvent} from 'Event/EventProvider'
 
 export default function Menu(props: {
   visible: boolean
@@ -38,6 +41,7 @@ function Links() {
       <ListItem>
         <Link href="/change-password">Change password</Link>
       </ListItem>
+      <SpeakersLink />
       <ListItem>
         <Button
           variant="text"
@@ -49,6 +53,25 @@ function Links() {
         </Button>
       </ListItem>
     </List>
+  )
+}
+
+function SpeakersLink() {
+  const {event} = useEvent()
+  if (!event.speaker_page) {
+    return null
+  }
+
+  return (
+    <ListItem>
+      <RelativeLink
+        to={eventRoutes.speakers}
+        aria-label="view speakers"
+        disableStyles
+      >
+        Speakers
+      </RelativeLink>
+    </ListItem>
   )
 }
 

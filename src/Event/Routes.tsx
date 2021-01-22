@@ -8,6 +8,7 @@ import Step3 from 'Event/Step3'
 import {createRoutes} from 'lib/url'
 import React from 'react'
 import {Redirect, Route, Switch} from 'react-router-dom'
+import Speakers from 'Event/Speakers'
 import UnderConstruction from './UnderConstruction'
 
 export const eventRoutes = createRoutes({
@@ -15,6 +16,7 @@ export const eventRoutes = createRoutes({
   step1: '/step_1',
   step2: '/step_2',
   step3: '/step_3',
+  speakers: '/speakers',
 })
 
 export default function Routes() {
@@ -50,6 +52,9 @@ function UserRoutes() {
       </Route>
       <Route path={eventRoutes.root} exact>
         <Event />
+      </Route>
+      <Route path={eventRoutes.speakers} exact>
+        <Speakers />
       </Route>
       <Redirect to={eventRoutes.root} />
     </Switch>

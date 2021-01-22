@@ -13,6 +13,7 @@ interface EventContextProps {
   event: ObvioEvent
   client: EventClient
   hasTechCheck: boolean
+  update: (event: ObvioEvent) => void
 }
 
 export const EventContext = React.createContext<EventContextProps | undefined>(
@@ -46,6 +47,13 @@ function EventProvider(props: {children: React.ReactNode; slug: string}) {
     dispatch(setEvent(saved))
   }, [saved, dispatch])
 
+  const update = useCallback(
+    (updated: ObvioEvent) => {
+      dispatch(setEvent(updated))
+    },
+    [dispatch],
+  )
+
   if (loading) {
     return <div>loading...</div>
   }
@@ -68,6 +76,7 @@ function EventProvider(props: {children: React.ReactNode; slug: string}) {
         event: current,
         client: eventClient,
         hasTechCheck: hasTechCheck(current),
+        update,
       }}
     >
       {props.children}
