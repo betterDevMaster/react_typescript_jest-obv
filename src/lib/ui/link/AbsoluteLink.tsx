@@ -25,6 +25,7 @@ export const AbsoluteLink = React.forwardRef(
         target={target}
         rel={rel}
         aria-label={props['aria-label']}
+        disabled={props.disabled}
       >
         {props.children}
       </StyledAnchor>
@@ -35,12 +36,15 @@ export const AbsoluteLink = React.forwardRef(
 const StyledAnchor = styled.a<{
   underline?: boolean
   color: string
+  disabled?: boolean
 }>`
   font-size: inherit;
   color: ${(props) => props.color};
-  cursor: pointer;
   &:hover {
     ${(props) =>
       props.underline ? 'text-decoration: underline' : 'text-decoration: none'};
   }
+  pointer-events: ${(props) => (props.disabled ? 'none' : 'auto')};
+  opacity: ${(props) => (props.disabled ? 0.8 : 1)};
+  cursor: ${(props) => (props.disabled ? 'not-allowed' : 'pointer')};
 `

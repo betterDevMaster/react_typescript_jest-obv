@@ -9,7 +9,6 @@ import React from 'react'
 export const MAIN_NAV_BUTTON = 'Main Nav Button'
 type MainNavButtonProps = {
   id: string
-  isEditMode?: boolean
   button: NavButtonWithSize
 }
 

@@ -91,6 +91,7 @@ export function createRoutesFor(organization: Organization) {
                 create: '/create',
                 ':room': {},
               },
+              attendees: '/attendees',
             },
           },
         },
@@ -113,7 +114,7 @@ export function useClient(
     return {
       get: (url: string, options?: RequestOptions) =>
         client.get(url, {...options, tokenKey}),
-      post: (url: string, data: {}, options?: RequestOptions) =>
+      post: (url: string, data: {} = {}, options?: RequestOptions) =>
         client.post(url, data, {...options, tokenKey}),
       put: (url: string, data: {}, options?: RequestOptions) =>
         client.put(url, data, {...options, tokenKey}),

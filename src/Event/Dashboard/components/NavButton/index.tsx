@@ -1,11 +1,17 @@
-import React from 'react'
+import React, {useState} from 'react'
 import styled from 'styled-components'
-import Button from 'lib/ui/Button'
+import ButtonBase from 'lib/ui/Button'
 import {Column} from 'lib/ui/layout'
 import {HasRules} from 'Event/Dashboard/component-rules'
 import {AbsoluteLink} from 'lib/ui/link/AbsoluteLink'
+import {api} from 'lib/url'
+import {useEvent} from 'Event/EventProvider'
 
 export const NAV_BUTTON = 'NAV_BUTTON'
+
+export default interface NavButtonAreaConfig {
+  areaId: number | null
+}
 
 export default interface NavButton extends HasRules {
   text: string
@@ -20,6 +26,8 @@ export default interface NavButton extends HasRules {
   borderWidth?: number
   borderColor?: string
   hoverBorderColor?: string
+  isAreaButton: boolean
+  areaId: number | null
 }
 
 export type NavButtonWithSize = NavButton & {
@@ -27,37 +35,89 @@ export type NavButtonWithSize = NavButton & {
 }
 
 export default function NavButton(props: NavButton) {
+  const {newTab, isAreaButton} = props
+
+  if (isAreaButton) {
+    return <JoinAreaLink {...props} />
+  }
+
   return (
-    <Link
+    <NormalLink
       to={props.link}
       disableStyles
       aria-label={props['aria-label']}
-      newTab={props.newTab}
+      newTab={newTab}
     >
-      <StyledButton
-        fullWidth
-        textTransform="uppercase"
-        backgroundColor={props.backgroundColor}
-        textColor={props.textColor}
-        className={props.className}
-        hoverBackgroundColor={props.hoverBackgroundColor}
-        disableHover={!props.hoverBackgroundColor}
-        borderRadius={props.borderRadius}
-        borderWidth={props.borderWidth}
-        borderColor={props.borderColor}
-        hoverBorderColor={props.hoverBorderColor}
-      >
-        {props.text}
-      </StyledButton>
-    </Link>
+      <Button {...props}>{props.text}</Button>
+    </NormalLink>
   )
 }
 
-const Link = styled(AbsoluteLink)`
+function JoinAreaLink(props: NavButton) {
+  const [processing, setProcessing] = useState(false)
+
+  const {event, client} = useEvent()
+  const {areaId} = props
+
+  const joinMeeting = () => {
+    if (processing) {
+      return
+    }
+
+    setProcessing(true)
+
+    const url = api(`/events/${event.slug}/areas/${areaId}/join`)
+    client
+      .get<{url: string}>(url)
+      .then((data) => {
+        // Got Join URL, open in new window
+        window.open(data.url, '_blank')
+      })
+      .finally(() => {
+        setProcessing(false)
+      })
+  }
+
+  return (
+    <Button {...props} disabled={processing} onClick={joinMeeting}>
+      {props.text}
+    </Button>
+  )
+}
+
+function Button(
+  props: {
+    children: string | React.ReactElement
+    disabled?: boolean
+    onClick?: () => void
+  } & NavButton,
+) {
+  return (
+    <StyledButton
+      disabled={props.disabled}
+      fullWidth
+      textTransform="uppercase"
+      backgroundColor={props.backgroundColor}
+      textColor={props.textColor}
+      className={props.className}
+      hoverBackgroundColor={props.hoverBackgroundColor}
+      disableHover={!props.hoverBackgroundColor}
+      borderRadius={props.borderRadius}
+      borderWidth={props.borderWidth}
+      borderColor={props.borderColor}
+      hoverBorderColor={props.hoverBorderColor}
+      onClick={props.onClick}
+    >
+      {props.children}
+    </StyledButton>
+  )
+}
+
+const NormalLink = styled(AbsoluteLink)`
   display: flex;
 `
 
-const StyledButton = styled(Button)`
+const StyledButton = styled(ButtonBase)`
   font-size: 29px;
   font-weight: 700;
   padding: 15px 30px;

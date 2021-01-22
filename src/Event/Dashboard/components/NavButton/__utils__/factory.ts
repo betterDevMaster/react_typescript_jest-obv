@@ -13,12 +13,13 @@ export const fakeNavButton = (overrides?: Partial<NavButton>): NavButton => {
     `${faker.random.word()} ${faker.random.word()} ${faker.random.word()}`,
   ]
 
-  const defaultAttributes = {
+  const defaultAttributes: NavButton = {
     text: faker.random.arrayElement(texts),
     link: faker.internet.url(),
     newTab: true,
-    isEditMode: false,
     rules: [],
+    isAreaButton: false,
+    areaId: null,
   }
 
   const makeAttributes: (nb: NavButton) => NavButton = pipe(
@@ -34,11 +35,14 @@ export const fakeNavButton = (overrides?: Partial<NavButton>): NavButton => {
   }
 }
 
-export const fakeNavButtonWithSize = (): NavButtonWithSize => ({
+export const fakeNavButtonWithSize = (
+  overrides?: Partial<NavButtonWithSize>,
+): NavButtonWithSize => ({
   ...fakeNavButton(),
   size: faker.random.boolean()
     ? (faker.random.number({min: 3, max: 12}) as Column)
     : 12,
+  ...overrides,
 })
 
 function withHoverBackground(button: NavButton): NavButton {

@@ -23,71 +23,6 @@ afterEach(() => {
   jest.clearAllMocks()
 })
 
-it('should render main nav buttons', async () => {
-  const buttons = Array.from(
-    {
-      length: faker.random.number({min: 1, max: 4}),
-    },
-    fakeNavButtonWithSize,
-  )
-
-  const mainNavButtons = createEntityList(buttons)
-  const {findAllByLabelText} = render(
-    <Dashboard isEditMode={false} user={fakeUser()} />,
-    {
-      event: fakeEvent({
-        template: fakeSimpleBlog({
-          mainNav: mainNavButtons,
-        }),
-      }),
-      organization: fakeOrganization(),
-    },
-  )
-
-  const buttonsEls = await findAllByLabelText('main nav button')
-  expect(buttonsEls.length).toBe(mainNavButtons.ids.length)
-})
-
-it('should add a new main nav button', async () => {
-  const numButtons = faker.random.number({min: 1, max: 4})
-
-  const buttons = Array.from(
-    {
-      length: numButtons,
-    },
-    fakeNavButtonWithSize,
-  )
-
-  const mainNavButtons = createEntityList(buttons)
-  const event = fakeEvent({
-    template: fakeSimpleBlog({
-      mainNav: mainNavButtons,
-    }),
-  })
-
-  const {findAllByLabelText, findByLabelText} = render(
-    <Dashboard isEditMode={true} user={fakeUser()} />,
-    {event, organization: fakeOrganization()},
-  )
-
-  const buttonEls = () => findAllByLabelText('main nav button')
-
-  expect((await buttonEls()).length).toBe(numButtons)
-
-  fireEvent.click(await findByLabelText('add main nav button'))
-
-  expect((await buttonEls()).length).toBe(numButtons + 1)
-
-  // Saved
-  await wait(() => {
-    expect(mockPost).toHaveBeenCalledTimes(1)
-  })
-
-  const [url, data] = mockPost.mock.calls[0]
-  expect(url).toMatch(`/events/${event.slug}`)
-  expect(data.template.mainNav.ids.length).toBe(numButtons + 1)
-})
-
 it('should edit the selected button', async () => {
   const buttons = Array.from(
     {
@@ -143,46 +78,6 @@ it('should edit the selected button', async () => {
   expect(url).toMatch(`/events/${event.slug}`)
   const id = data.template.mainNav.ids[targetIndex]
   expect(data.template.mainNav.entities[id].text).toBe(updatedValue)
-})
-
-it('should add a new main nav button', async () => {
-  const numButtons = faker.random.number({min: 1, max: 4})
-
-  const buttons = Array.from(
-    {
-      length: numButtons,
-    },
-    fakeNavButtonWithSize,
-  )
-
-  const mainNavButtons = createEntityList(buttons)
-  const event = fakeEvent({
-    template: fakeSimpleBlog({
-      mainNav: mainNavButtons,
-    }),
-  })
-
-  const {findAllByLabelText, findByLabelText} = render(
-    <Dashboard isEditMode={true} user={fakeUser()} />,
-    {event, organization: fakeOrganization()},
-  )
-
-  const buttonEls = () => findAllByLabelText('main nav button')
-
-  expect((await buttonEls()).length).toBe(numButtons)
-
-  fireEvent.click(await findByLabelText('add main nav button'))
-
-  expect((await buttonEls()).length).toBe(numButtons + 1)
-
-  // Saved
-  await wait(() => {
-    expect(mockPost).toHaveBeenCalledTimes(1)
-  })
-
-  const [url, data] = mockPost.mock.calls[0]
-  expect(url).toMatch(`/events/${event.slug}`)
-  expect(data.template.mainNav.ids.length).toBe(numButtons + 1)
 })
 
 it('should set an area button', async () => {
@@ -243,42 +138,4 @@ it('should set an area button', async () => {
   const id = data.template.mainNav.ids[targetIndex]
   expect(data.template.mainNav.entities[id]['isAreaButton']).toBe(true)
   expect(data.template.mainNav.entities[id]['areaId']).toBe(target.id) // Set area ID
-})
-
-it('should remove the button', async () => {
-  const numButtons = faker.random.number({min: 2, max: 4})
-
-  const buttons = Array.from({length: numButtons}, fakeNavButtonWithSize)
-  const mainNavButtons = createEntityList(buttons)
-  const event = fakeEvent({
-    template: fakeSimpleBlog({mainNav: mainNavButtons}),
-  })
-
-  const {findAllByLabelText, findByLabelText, queryByText} = render(
-    <Dashboard isEditMode={true} user={fakeUser()} />,
-    {event, organization: fakeOrganization()},
-  )
-
-  const buttonEls = () => findAllByLabelText('main nav button')
-  expect((await buttonEls()).length).toBe(numButtons)
-
-  const target = faker.random.arrayElement(await buttonEls())
-  expect(queryByText(target.textContent!)).toBeInTheDocument()
-
-  clickEdit(target)
-
-  fireEvent.click(await findByLabelText('remove button'))
-
-  expect((await buttonEls()).length).toBe(numButtons - 1)
-
-  expect(queryByText(target.textContent!)).not.toBeInTheDocument()
-
-  // Saved
-  await wait(() => {
-    expect(mockPost).toHaveBeenCalledTimes(1)
-  })
-
-  const [url, data] = mockPost.mock.calls[0]
-  expect(url).toMatch(`/events/${event.slug}`)
-  expect(data.template.mainNav.ids.length).toBe(numButtons - 1)
 })

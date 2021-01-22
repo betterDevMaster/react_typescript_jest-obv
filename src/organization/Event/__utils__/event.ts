@@ -3,8 +3,8 @@ import {fakeEvent} from 'Event/__utils__/factory'
 import {ObvioEvent} from 'Event'
 import {signInToOrganization} from 'organization/__utils__/authenticate'
 import faker from 'faker'
-import {fakeArea} from 'organization/Event/area/AreaList/__utils__/factory'
-import {Area} from 'organization/Event/area/AreaList'
+import {fakeArea} from 'organization/Event/AreaList/__utils__/factory'
+import {Area} from 'organization/Event/AreaList'
 
 const mockGet = axios.get as jest.Mock
 

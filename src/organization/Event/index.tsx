@@ -5,7 +5,7 @@ import {useEvent} from 'Event/EventProvider'
 import Page from 'organization/user/Layout/Page'
 import React from 'react'
 import Layout from 'organization/user/Layout'
-import AreaList from 'organization/Event/area/AreaList'
+import AreaList from 'organization/Event/AreaList'
 import {useEventRoutes} from 'organization/Event/EventRoutes'
 
 export default function Event() {

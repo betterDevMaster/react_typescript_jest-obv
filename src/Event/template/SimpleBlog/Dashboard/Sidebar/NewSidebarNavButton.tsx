@@ -23,6 +23,8 @@ export default function NewSidebarNavButton(props: {className?: string}) {
       text: 'Button',
       link: '',
       rules: [],
+      isAreaButton: false,
+      areaId: null,
     }
     const entities = {
       ...buttons.entities,

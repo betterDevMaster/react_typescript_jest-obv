@@ -94,6 +94,10 @@ function backgroundColor(props: ButtonProps) {
 }
 
 function cursor(props: ButtonProps) {
+  if (props.disabled) {
+    return 'not-allowed'
+  }
+
   return 'pointer'
 }
 
