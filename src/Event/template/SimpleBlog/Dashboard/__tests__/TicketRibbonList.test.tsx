@@ -3,10 +3,9 @@ import faker from 'faker'
 import {fakeSimpleBlog} from 'Event/template/SimpleBlog/__utils__/factory'
 import {fakeUser} from 'auth/user/__utils__/factory'
 import Dashboard from 'Event/Dashboard'
-import {inputElementFor, render} from '__utils__/render'
+import {emptyActions, inputElementFor, render} from '__utils__/render'
 import {
   BLACK_RIBBON,
-  BLUE_RIBBON,
   RIBBONS,
 } from 'Event/Dashboard/components/TicketRibbonList/TicketRibbon'
 import {fireEvent} from '@testing-library/dom'
@@ -17,6 +16,7 @@ import user from '@testing-library/user-event'
 import {mockRxJsAjax} from 'store/__utils__/MockStoreProvider'
 import {wait} from '@testing-library/react'
 import {clickEdit} from '__utils__/edit'
+import {defaultScore} from 'Event/PointsProvider/__utils__/StaticPointsProvider'
 
 const mockPost = mockRxJsAjax.post as jest.Mock
 
@@ -31,18 +31,24 @@ it('should render ticket ribbons', async () => {
 
   const name = faker.random.word()
   const value = faker.random.word()
-  const ticketRibbon = fakeTicketRibbon({group_name: name, group_value: value})
+  const target = fakeTicketRibbon({group_name: name, group_value: value})
+  const notGroup = fakeTicketRibbon()
 
   const {queryByLabelText, rerender, findByLabelText} = render(
     <Dashboard isEditMode={false} user={fakeUser()} />,
-    {event: withoutRibbons},
+    {
+      event: withoutRibbons,
+      withRouter: true,
+      actions: emptyActions,
+      score: defaultScore,
+    },
   )
 
   expect(queryByLabelText('ticket ribbon')).not.toBeInTheDocument()
 
   const withTicketRibbon = fakeEvent({
     template: fakeSimpleBlog({
-      ticketRibbons: [ticketRibbon],
+      ticketRibbons: [target, notGroup],
     }),
   })
 
@@ -56,32 +62,8 @@ it('should render ticket ribbons', async () => {
     attendee,
   })
 
+  // only found one because other was not rendered
   expect(await findByLabelText('ticket ribbon')).toBeInTheDocument()
-})
-
-it('should only render if group matches', async () => {
-  const name = faker.random.word()
-  const value = faker.random.word()
-  const ticketRibbon = fakeTicketRibbon({group_name: name, group_value: value})
-
-  const withTicketRibbon = fakeEvent({
-    template: fakeSimpleBlog({
-      ticketRibbons: [ticketRibbon],
-    }),
-  })
-
-  const attendee = fakeAttendee({
-    groups: {}, // Empty group
-  })
-  const {queryByLabelText} = render(
-    <Dashboard isEditMode={false} user={attendee} />,
-    {
-      event: withTicketRibbon,
-      attendee,
-    },
-  )
-
-  expect(queryByLabelText('ticket ribbon')).not.toBeInTheDocument()
 })
 
 it('should edit an existing ticket ribbon', async () => {
@@ -100,6 +82,9 @@ it('should edit an existing ticket ribbon', async () => {
     <Dashboard isEditMode={true} user={fakeAttendee()} />,
     {
       event,
+      withRouter: true,
+      actions: emptyActions,
+      score: defaultScore,
     },
   )
 
@@ -138,31 +123,6 @@ it('should edit an existing ticket ribbon', async () => {
   expect(data.template.ticketRibbons[targetIndex].name).toBe(ribbon)
 })
 
-it('should only render if group matches', async () => {
-  const name = faker.random.word()
-  const value = faker.random.word()
-  const ticketRibbon = fakeTicketRibbon({group_name: name, group_value: value})
-
-  const withTicketRibbon = fakeEvent({
-    template: fakeSimpleBlog({
-      ticketRibbons: [ticketRibbon],
-    }),
-  })
-
-  const attendee = fakeAttendee({
-    groups: {}, // Empty group
-  })
-  const {queryByLabelText} = render(
-    <Dashboard isEditMode={false} user={attendee} />,
-    {
-      event: withTicketRibbon,
-      attendee,
-    },
-  )
-
-  expect(queryByLabelText('ticket ribbon')).not.toBeInTheDocument()
-})
-
 it('should add a new ticket ribbon', async () => {
   const withoutRibbons = fakeEvent({
     template: fakeSimpleBlog({
@@ -172,7 +132,12 @@ it('should add a new ticket ribbon', async () => {
 
   const {findByLabelText, findByText} = render(
     <Dashboard isEditMode={true} user={fakeAttendee()} />,
-    {event: withoutRibbons},
+    {
+      event: withoutRibbons,
+      withRouter: true,
+      actions: emptyActions,
+      score: defaultScore,
+    },
   )
 
   fireEvent.click(await findByLabelText('add ticket ribbon'))
@@ -218,7 +183,7 @@ it('should remove a ticket ribbon', async () => {
 
   const {findByLabelText, findAllByLabelText, queryByText} = render(
     <Dashboard isEditMode={true} user={fakeAttendee()} />,
-    {event},
+    {event, withRouter: true, actions: emptyActions, score: defaultScore},
   )
 
   const targetIndex = faker.random.number({

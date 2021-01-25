@@ -10,10 +10,10 @@ import {
 } from 'Event/Dashboard/component-rules/RuleConfig/RuleList/SingleRule/TagsRule'
 import {fireEvent} from '@testing-library/react'
 
-it('should add a tag rule', () => {
+it('should add a tag rule', async () => {
   const updateRules = jest.fn()
 
-  const {getByLabelText} = render(
+  const {findByLabelText} = render(
     <RuleConfig
       rules={[]}
       onChange={updateRules}
@@ -24,26 +24,29 @@ it('should add a tag rule', () => {
     </RuleConfig>,
   )
 
-  user.click(getByLabelText('add rule'))
+  user.click(await findByLabelText('add rule'))
 
   // Select tags as source
-  fireEvent.change(inputElementFor(getByLabelText('pick rule source')), {
+  fireEvent.change(inputElementFor(await findByLabelText('pick rule source')), {
     target: {
       value: TAGS,
     },
   })
 
   // Select DOES_NOT_INCLUDE
-  fireEvent.change(inputElementFor(getByLabelText('pick tags rule type')), {
-    target: {
-      value: DOES_NOT_INCLUDE,
+  fireEvent.change(
+    inputElementFor(await findByLabelText('pick tags rule type')),
+    {
+      target: {
+        value: DOES_NOT_INCLUDE,
+      },
     },
-  })
+  )
 
   const target = faker.random.word()
-  user.type(getByLabelText('new tag target'), target)
+  user.type(await findByLabelText('new tag target'), target)
 
-  user.click(getByLabelText('save rule'))
+  user.click(await findByLabelText('save rule'))
 
   expect(updateRules).toHaveBeenCalledTimes(1)
   const addedRule = updateRules.mock.calls[0][0][0]

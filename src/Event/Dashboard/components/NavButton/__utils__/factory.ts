@@ -20,6 +20,7 @@ export const fakeNavButton = (overrides?: Partial<NavButton>): NavButton => {
     rules: [],
     isAreaButton: false,
     areaId: null,
+    actionId: null,
   }
 
   const makeAttributes: (nb: NavButton) => NavButton = pipe(

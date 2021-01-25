@@ -3,13 +3,13 @@ import faker from 'faker'
 import {fakeSimpleBlog} from 'Event/template/SimpleBlog/__utils__/factory'
 import {fakeUser} from 'auth/user/__utils__/factory'
 import Dashboard from 'Event/Dashboard'
-import {render, renderWithEvent} from '__utils__/render'
+import {emptyActions, render, renderWithEvent} from '__utils__/render'
 import {clickEdit} from '__utils__/edit'
 import {fireEvent} from '@testing-library/react'
 import {fakeEvent} from 'Event/__utils__/factory'
-import StaticEventProvider from 'Event/__utils__/StaticEventProvider'
 import {mockRxJsAjax} from 'store/__utils__/MockStoreProvider'
 import {wait} from '@testing-library/react'
+import {defaultScore} from 'Event/PointsProvider/__utils__/StaticPointsProvider'
 
 const mockPost = mockRxJsAjax.post as jest.Mock
 
@@ -21,9 +21,9 @@ it('should show the welcome text', async () => {
   const dashboard = fakeSimpleBlog()
   const event = fakeEvent({template: dashboard})
 
-  const {findByText} = renderWithEvent(
+  const {findByText} = render(
     <Dashboard isEditMode={false} user={fakeUser()} />,
-    event,
+    {event, withRouter: true, actions: emptyActions, score: defaultScore},
   )
 
   expect(await findByText(dashboard.welcomeText)).toBeInTheDocument()
@@ -35,9 +35,8 @@ it('should update the text value', async () => {
   const event = fakeEvent({template: dashboard})
 
   const {findByLabelText} = render(
-    <StaticEventProvider event={event}>
-      <Dashboard isEditMode={true} user={fakeUser()} />
-    </StaticEventProvider>,
+    <Dashboard isEditMode={true} user={fakeUser()} />,
+    {event, withRouter: true, actions: emptyActions, score: defaultScore},
   )
 
   expect((await findByLabelText('welcome')).textContent).toBe(text)

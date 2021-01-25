@@ -1,16 +1,15 @@
 import React from 'react'
-import user from '@testing-library/user-event'
 import faker from 'faker'
 import {fakeSimpleBlog} from 'Event/template/SimpleBlog/__utils__/factory'
 import {fakeUser} from 'auth/user/__utils__/factory'
 import Dashboard from 'Event/Dashboard'
-import {render, renderWithEvent} from '__utils__/render'
+import {emptyActions, render, renderWithEvent} from '__utils__/render'
 import {clickEdit} from '__utils__/edit'
 import {fireEvent} from '@testing-library/react'
 import {fakeEvent} from 'Event/__utils__/factory'
-import StaticEventProvider from 'Event/__utils__/StaticEventProvider'
 import {mockRxJsAjax} from 'store/__utils__/MockStoreProvider'
 import {wait} from '@testing-library/react'
+import {defaultScore} from 'Event/PointsProvider/__utils__/StaticPointsProvider'
 
 const mockPost = mockRxJsAjax.post as jest.Mock
 
@@ -18,7 +17,7 @@ afterEach(() => {
   jest.clearAllMocks()
 })
 
-it('should render a footer', () => {
+it('should render a footer', async () => {
   const withoutFields = fakeEvent({
     template: fakeSimpleBlog({
       footer: {
@@ -31,9 +30,14 @@ it('should render a footer', () => {
     }),
   })
 
-  const {queryByLabelText, rerender, getByText} = renderWithEvent(
+  const {queryByLabelText, rerender, findByText} = render(
     <Dashboard isEditMode={false} user={fakeUser()} />,
-    withoutFields,
+    {
+      event: withoutFields,
+      score: defaultScore,
+      actions: emptyActions,
+      withRouter: true,
+    },
   )
 
   expect(queryByLabelText(/terms of service/i)).not.toBeInTheDocument()
@@ -53,12 +57,17 @@ it('should render a footer', () => {
     }),
   })
 
-  rerender(<Dashboard isEditMode={false} user={fakeUser()} />, withFooter)
+  rerender(<Dashboard isEditMode={false} user={fakeUser()} />, {
+    event: withFooter,
+    score: defaultScore,
+    actions: emptyActions,
+    withRouter: true,
+  })
 
   expect(queryByLabelText(/terms of service/i)).toBeInTheDocument()
   expect(queryByLabelText(/privacy policy/i)).toBeInTheDocument()
 
-  expect(getByText(new RegExp(copyrightText))).toBeInTheDocument()
+  expect(await findByText(new RegExp(copyrightText))).toBeInTheDocument()
 })
 
 it('should configure the footer', async () => {
@@ -76,9 +85,8 @@ it('should configure the footer', async () => {
   })
 
   const {findByLabelText} = render(
-    <StaticEventProvider event={event}>
-      <Dashboard isEditMode={true} user={fakeUser()} />
-    </StaticEventProvider>,
+    <Dashboard isEditMode={true} user={fakeUser()} />,
+    {event, actions: emptyActions, score: defaultScore, withRouter: true},
   )
 
   clickEdit(await findByLabelText('footer'))

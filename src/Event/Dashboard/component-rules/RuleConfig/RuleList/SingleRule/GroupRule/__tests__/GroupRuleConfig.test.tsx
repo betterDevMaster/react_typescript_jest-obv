@@ -10,10 +10,10 @@ import {
   IS,
 } from 'Event/Dashboard/component-rules/RuleConfig/RuleList/SingleRule/GroupRule'
 
-it('should add a group rule', () => {
+it('should add a group rule', async () => {
   const updateRules = jest.fn()
 
-  const {getByLabelText} = render(
+  const {findByLabelText} = render(
     <RuleConfig
       rules={[]}
       onChange={updateRules}
@@ -24,24 +24,27 @@ it('should add a group rule', () => {
     </RuleConfig>,
   )
 
-  user.click(getByLabelText('add rule'))
+  user.click(await findByLabelText('add rule'))
 
-  fireEvent.change(inputElementFor(getByLabelText('pick rule source')), {
+  fireEvent.change(inputElementFor(await findByLabelText('pick rule source')), {
     target: {
       value: GROUP,
     },
   })
 
-  fireEvent.change(inputElementFor(getByLabelText('pick group rule type')), {
-    target: {
-      value: IS,
+  fireEvent.change(
+    inputElementFor(await findByLabelText('pick group rule type')),
+    {
+      target: {
+        value: IS,
+      },
     },
-  })
+  )
 
   const target = faker.random.word()
-  user.type(getByLabelText('new group target'), target)
+  user.type(await findByLabelText('new group target'), target)
 
-  user.click(getByLabelText('save rule'))
+  user.click(await findByLabelText('save rule'))
 
   expect(updateRules).toHaveBeenCalledTimes(1)
   const addedRule = updateRules.mock.calls[0][0][0]

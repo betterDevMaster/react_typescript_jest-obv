@@ -3,15 +3,15 @@ import faker from 'faker'
 import {fakeSimpleBlog} from 'Event/template/SimpleBlog/__utils__/factory'
 import {fakeUser} from 'auth/user/__utils__/factory'
 import Dashboard from 'Event/Dashboard'
-import {render, renderWithEvent} from '__utils__/render'
 import {fakeNavButton} from 'Event/Dashboard/components/NavButton/__utils__/factory'
 import {createEntityList} from 'lib/list'
 import {fireEvent} from '@testing-library/react'
 import {clickEdit} from '__utils__/edit'
 import {fakeEvent} from 'Event/__utils__/factory'
-import StaticEventProvider from 'Event/__utils__/StaticEventProvider'
 import {mockRxJsAjax} from 'store/__utils__/MockStoreProvider'
 import {wait} from '@testing-library/react'
+import {emptyActions, render} from '__utils__/render'
+import {defaultScore} from 'Event/PointsProvider/__utils__/StaticPointsProvider'
 
 const mockPost = mockRxJsAjax.post as jest.Mock
 
@@ -19,16 +19,21 @@ afterEach(() => {
   jest.clearAllMocks()
 })
 
-it('should render sidebarNavButtons', () => {
+it('should render sidebarNavButtons', async () => {
   const withoutButtons = fakeEvent({
     template: fakeSimpleBlog({
       sidebarNav: createEntityList([]),
     }),
   })
 
-  const {queryByLabelText, rerender, queryAllByLabelText} = renderWithEvent(
+  const {queryByLabelText, rerender, findAllByLabelText} = render(
     <Dashboard isEditMode={false} user={fakeUser()} />,
-    withoutButtons,
+    {
+      event: withoutButtons,
+      withRouter: true,
+      actions: emptyActions,
+      score: defaultScore,
+    },
   )
 
   expect(queryByLabelText(/sidebar nav/i)).not.toBeInTheDocument()
@@ -43,9 +48,11 @@ it('should render sidebarNavButtons', () => {
     }),
   })
 
-  rerender(<Dashboard isEditMode={false} user={fakeUser()} />, withNavButtons)
+  rerender(<Dashboard isEditMode={false} user={fakeUser()} />, {
+    event: withNavButtons,
+  })
 
-  expect(queryAllByLabelText(/sidebar nav/i).length).toBe(numButtons)
+  expect((await findAllByLabelText(/sidebar nav/i)).length).toBe(numButtons)
 })
 
 it('should add a new sidebar nav button', async () => {
@@ -63,9 +70,9 @@ it('should add a new sidebar nav button', async () => {
     template: fakeSimpleBlog({sidebarNav: sidebarNavButtons}),
   })
 
-  const {findAllByLabelText, findByLabelText} = renderWithEvent(
+  const {findAllByLabelText, findByLabelText} = render(
     <Dashboard isEditMode={true} user={fakeUser()} />,
-    event,
+    {event, withRouter: true, actions: emptyActions, score: defaultScore},
   )
 
   const buttonEls = () => findAllByLabelText('sidebar nav button')
@@ -98,9 +105,9 @@ it('should edit the selected button', async () => {
   const event = fakeEvent({
     template: fakeSimpleBlog({sidebarNav: sidebarNavButtons}),
   })
-  const {findByLabelText, findByText} = renderWithEvent(
+  const {findByLabelText, findByText} = render(
     <Dashboard isEditMode={true} user={fakeUser()} />,
-    event,
+    {event, withRouter: true, actions: emptyActions, score: defaultScore},
   )
 
   const targetIndex = faker.random.number({min: 0, max: buttons.length - 1})
@@ -147,9 +154,9 @@ it('should remove the button', async () => {
   const event = fakeEvent({
     template: fakeSimpleBlog({sidebarNav: sidebarNavButtons}),
   })
-  const {findAllByLabelText, findByLabelText, queryByText} = renderWithEvent(
+  const {findAllByLabelText, findByLabelText, queryByText} = render(
     <Dashboard isEditMode={true} user={fakeUser()} />,
-    event,
+    {event, withRouter: true, actions: emptyActions, score: defaultScore},
   )
 
   const buttonEls = () => findAllByLabelText('sidebar nav button')

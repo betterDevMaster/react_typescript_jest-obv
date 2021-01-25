@@ -3,6 +3,7 @@ export interface LinkBaseProps {
   children: string | React.ReactNode
   disabled?: boolean
   'aria-label'?: string
+  onClick?: () => void
 }
 
 export interface LinkStyleProps {

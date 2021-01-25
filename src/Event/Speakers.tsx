@@ -24,6 +24,6 @@ function TemplateSpeakers() {
     case SIMPLE_BLOG:
       return <SimpleBlogSpeakers user={user} />
     default:
-      throw new Error(`Missing waiver for template: ${template.name}`)
+      throw new Error(`Missing speaker page for template: ${template.name}`)
   }
 }

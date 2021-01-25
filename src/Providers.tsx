@@ -1,5 +1,6 @@
 import MomentUtils from '@date-io/moment'
 import {MuiPickersUtilsProvider} from '@material-ui/pickers'
+import SnackbarProvider from 'lib/ui/SnackbarProvider'
 import ThemeProvider from 'lib/ui/theme/ThemeProvider'
 import React from 'react'
 
@@ -14,7 +15,7 @@ export default function Providers(props: {
     <StoreProvider>
       <ThemeProvider>
         <MuiPickersUtilsProvider utils={MomentUtils}>
-          {props.children}
+          <SnackbarProvider>{props.children}</SnackbarProvider>
         </MuiPickersUtilsProvider>
       </ThemeProvider>
     </StoreProvider>

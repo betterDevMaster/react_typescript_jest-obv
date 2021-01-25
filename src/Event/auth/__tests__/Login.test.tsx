@@ -2,8 +2,10 @@ import {act, wait} from '@testing-library/react'
 import user from '@testing-library/user-event'
 import App, {appRoot} from 'App'
 import axios from 'axios'
+import {fakeAction} from 'Event/ActionsProvider/__utils__/factory'
 import {EVENT_TOKEN_KEY} from 'Event/auth'
 import {fakeAttendee} from 'Event/auth/__utils__/factory'
+import {defaultScore} from 'Event/PointsProvider/__utils__/StaticPointsProvider'
 import {fakeEvent} from 'Event/__utils__/factory'
 import {visitEventSite} from 'Event/__utils__/url'
 import faker from 'faker'
@@ -43,7 +45,13 @@ it('should login a user', async () => {
   mockPost.mockImplementationOnce(() =>
     Promise.resolve({data: {access_token: token}}),
   )
+
+  // Attendee on login
   mockGet.mockImplementationOnce(() => Promise.resolve({data: fakeAttendee()}))
+  // Dashboard requests
+  mockGet.mockImplementationOnce(() => Promise.resolve({data: [fakeAction()]})) // Platform actions
+  mockGet.mockImplementationOnce(() => Promise.resolve({data: []})) // Custom actions
+  mockGet.mockImplementationOnce(() => Promise.resolve({data: defaultScore})) // Custom actions
 
   const {findByLabelText, findAllByText} = render(<App />)
 
@@ -87,6 +95,11 @@ it('should login a user by token', async () => {
   }))
 
   mockGet.mockImplementationOnce(() => Promise.resolve({data: attendee}))
+  // Dashboard requests
+  mockGet.mockImplementationOnce(() => Promise.resolve({data: [fakeAction()]})) // Platform actions
+  mockGet.mockImplementationOnce(() => Promise.resolve({data: []})) // Custom actions
+  mockGet.mockImplementationOnce(() => Promise.resolve({data: defaultScore})) // Custom actions
+  // Token auth
   mockPost.mockImplementationOnce(() =>
     Promise.resolve({data: {access_token: accessToken}}),
   )

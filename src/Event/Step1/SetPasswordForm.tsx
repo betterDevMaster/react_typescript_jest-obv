@@ -11,6 +11,8 @@ import TemplateProvider, {
 import {useAttendee} from 'Event/auth'
 import {SIMPLE_BLOG} from 'Event/template/SimpleBlog'
 import SimpleBlogSetPasswordForm from 'Event/template/SimpleBlog/SetPasswordForm'
+import {usePoints} from 'Event/PointsProvider'
+import {usePlatformActions} from 'Event/ActionsProvider/platform-actions'
 
 interface SetPasswordData {
   password: string
@@ -31,12 +33,15 @@ export default function SetPasswordForm() {
   >(null)
   const setPassword = useSetPassword()
   const dispatch = useDispatch()
+  const {submit: submitAction} = usePoints()
+  const {CREATE_PASSWORD} = usePlatformActions()
 
   const submit = (data: SetPasswordData) => {
     setSubmitting(true)
     setPassword(data)
       .then((attendee) => {
         dispatch(setUser(attendee))
+        submitAction(CREATE_PASSWORD)
       })
       .catch((e) => {
         setResponseError(e)

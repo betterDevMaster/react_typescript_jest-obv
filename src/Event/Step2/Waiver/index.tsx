@@ -13,6 +13,8 @@ import TemplateProvider, {
 import {SIMPLE_BLOG} from 'Event/template/SimpleBlog'
 import SimpleBlogWaiver from 'Event/template/SimpleBlog/Waiver'
 import {WaiverConfig} from 'Event'
+import {usePoints} from 'Event/PointsProvider'
+import {usePlatformActions} from 'Event/ActionsProvider/platform-actions'
 
 export interface WaiverProps {
   submit: () => void
@@ -33,6 +35,8 @@ export default function Waiver() {
   const [agree, setAgree] = useState(false)
   const [submitting, setSubmitting] = useState(false)
   const dispatch = useDispatch()
+  const {submit: submitAction} = usePoints()
+  const {COMPLETE_STEP_2} = usePlatformActions()
 
   const canSubmit = Boolean(signature) && Boolean(agree) && !submitting
   const alreadySigned = Boolean(attendee.waiver)
@@ -55,6 +59,7 @@ export default function Waiver() {
       })
       .then((attendee) => {
         dispatch(setUser(attendee))
+        submitAction(COMPLETE_STEP_2)
       })
       .catch(() => {
         setSubmitting(false)

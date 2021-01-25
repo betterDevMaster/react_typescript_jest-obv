@@ -30,6 +30,7 @@ export const RelativeLink = React.forwardRef(
     return (
       <StyledRouterLink
         forwardedRef={ref}
+        onClick={props.onClick}
         className={props.className}
         to={props.to}
         underline={style.underline}

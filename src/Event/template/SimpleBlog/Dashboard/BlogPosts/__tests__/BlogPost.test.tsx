@@ -8,24 +8,25 @@ import {fakeBlogPost} from 'Event/Dashboard/components/BlogPost/__utils__/factor
 import {createEntityList} from 'lib/list'
 import {clickEdit} from '__utils__/edit'
 import {fireEvent} from '@testing-library/react'
-import {renderWithEvent} from '__utils__/render'
+import {emptyActions, render} from '__utils__/render'
 import {fakeEvent} from 'Event/__utils__/factory'
+import {defaultScore} from 'Event/PointsProvider/__utils__/StaticPointsProvider'
 
-it('should render blog posts', () => {
+it('should render blog posts', async () => {
   const withoutPosts = fakeEvent({
     template: fakeSimpleBlog({
       blogPosts: createEntityList([]),
     }),
   })
 
-  const {
-    queryByLabelText,
-    rerender,
-    getAllByLabelText,
-    getByText,
-  } = renderWithEvent(
+  const {queryByLabelText, rerender, getAllByLabelText, findByText} = render(
     <Dashboard isEditMode={false} user={fakeUser()} />,
-    withoutPosts,
+    {
+      event: withoutPosts,
+      actions: emptyActions,
+      score: defaultScore,
+      withRouter: true,
+    },
   )
 
   expect(queryByLabelText('blog post')).not.toBeInTheDocument()
@@ -41,12 +42,14 @@ it('should render blog posts', () => {
     }),
   })
 
-  rerender(<Dashboard isEditMode={false} user={fakeUser()} />, withPosts)
+  rerender(<Dashboard isEditMode={false} user={fakeUser()} />, {
+    event: withPosts,
+  })
 
   expect(getAllByLabelText('blog post').length).toBe(numPosts)
 
   for (const post of Object.values(blogPosts.entities)) {
-    expect(getByText(post.title)).toBeInTheDocument()
+    expect(await findByText(post.title)).toBeInTheDocument()
   }
 })
 
@@ -60,9 +63,9 @@ it('should edit a blog post', async () => {
     template: fakeSimpleBlog({blogPosts}),
   })
 
-  const {findAllByLabelText, findByLabelText, findByText} = renderWithEvent(
+  const {findAllByLabelText, findByLabelText, findByText} = render(
     <Dashboard isEditMode={true} user={fakeUser()} />,
-    event,
+    {event, actions: emptyActions, score: defaultScore, withRouter: true},
   )
 
   const targetIndex = faker.random.number({min: 0, max: numPosts - 1})
@@ -87,9 +90,9 @@ it('should add a new blog post', async () => {
 
   const event = fakeEvent({template: fakeSimpleBlog({blogPosts})})
 
-  const {findAllByLabelText, findByLabelText} = renderWithEvent(
+  const {findAllByLabelText, findByLabelText} = render(
     <Dashboard isEditMode={true} user={fakeUser()} />,
-    event,
+    {event, actions: emptyActions, score: defaultScore, withRouter: true},
   )
 
   fireEvent.click(await findByLabelText('add blog post'))
@@ -105,9 +108,9 @@ it('should remove a blog post', async () => {
 
   const event = fakeEvent({template: fakeSimpleBlog({blogPosts})})
 
-  const {findAllByLabelText, findByLabelText} = renderWithEvent(
+  const {findAllByLabelText, findByLabelText} = render(
     <Dashboard isEditMode={true} user={fakeUser()} />,
-    event,
+    {event, actions: emptyActions, score: defaultScore, withRouter: true},
   )
 
   const targetIndex = faker.random.number({min: 0, max: numPosts - 1})

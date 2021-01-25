@@ -12,27 +12,47 @@ import {ObvioEvent} from 'Event'
 import {Organization} from 'organization'
 import StaticOrganizationProvider from 'organization/__utils__/StaticOrganizationProvider'
 import {Attendee} from 'Event/attendee'
+import {Action} from 'Event/ActionsProvider'
+import StaticActionsProvider from 'Event/ActionsProvider/__utils__/StaticActionsProvider'
+import {Score} from 'Event/PointsProvider'
+import StaticPointsProvider from 'Event/PointsProvider/__utils__/StaticPointsProvider'
+import {BrowserRouter as Router} from 'react-router-dom'
 
 type Options = Omit<RtlRenderOptions, 'queries'> & {
   event?: ObvioEvent
   organization?: Organization
   attendee?: Attendee
+  actions?: {
+    platform: Action[]
+    custom: Action[]
+  }
+  score?: Score
+  withRouter?: boolean
 }
 
-export const render = (component: React.ReactElement, options?: Options) => {
+export const render = (
+  component: React.ReactElement,
+  options: Options = {},
+) => {
   const wrapped = (target: React.ReactElement, options?: Options) => {
     const groups = options?.attendee ? options.attendee.groups : {}
     const tags = options?.attendee ? options.attendee.tags : []
 
     return (
       <Providers storeProvider={MockStoreProvider}>
-        <WithOrganization organization={options?.organization}>
-          <WithEvent event={options?.event}>
-            <AttendeeProfileProvider tags={tags} groups={groups}>
-              {target}
-            </AttendeeProfileProvider>
-          </WithEvent>
-        </WithOrganization>
+        <WithRouter withRouter={options?.withRouter}>
+          <WithOrganization organization={options?.organization}>
+            <WithEvent event={options?.event}>
+              <WithActions actions={options?.actions}>
+                <WithPoints score={options?.score}>
+                  <AttendeeProfileProvider tags={tags} groups={groups}>
+                    {target}
+                  </AttendeeProfileProvider>
+                </WithPoints>
+              </WithActions>
+            </WithEvent>
+          </WithOrganization>
+        </WithRouter>
       </Providers>
     )
   }
@@ -42,8 +62,10 @@ export const render = (component: React.ReactElement, options?: Options) => {
     options,
   )
 
-  const rerender = (component: React.ReactElement, options?: Options) => {
-    return rtlRerender(wrapped(component, options))
+  const rerender = (component: React.ReactElement, newOptions?: Options) => {
+    const updatedOptions = {...options, ...newOptions}
+
+    return rtlRerender(wrapped(component, updatedOptions))
   }
 
   return {
@@ -64,6 +86,17 @@ function WithEvent(props: {event?: ObvioEvent; children: React.ReactElement}) {
   )
 }
 
+function WithRouter(props: {
+  withRouter?: boolean
+  children: React.ReactElement
+}) {
+  if (!props.withRouter) {
+    return props.children
+  }
+
+  return <Router>{props.children}</Router>
+}
+
 function WithOrganization(props: {
   organization?: Organization
   children: React.ReactElement
@@ -76,6 +109,38 @@ function WithOrganization(props: {
     <StaticOrganizationProvider organization={props.organization}>
       {props.children}
     </StaticOrganizationProvider>
+  )
+}
+
+export const emptyActions = {
+  platform: [],
+  custom: [],
+}
+
+function WithActions(props: {
+  actions?: {platform: Action[]; custom: Action[]}
+  children: React.ReactElement
+}) {
+  if (!props.actions) {
+    return props.children
+  }
+
+  return (
+    <StaticActionsProvider actions={props.actions}>
+      {props.children}
+    </StaticActionsProvider>
+  )
+}
+
+function WithPoints(props: {score?: Score; children: React.ReactElement}) {
+  if (!props.score) {
+    return props.children
+  }
+
+  return (
+    <StaticPointsProvider score={props.score}>
+      {props.children}
+    </StaticPointsProvider>
   )
 }
 

@@ -4,12 +4,13 @@ import {fireEvent, wait} from '@testing-library/react'
 import {fakeSimpleBlog} from 'Event/template/SimpleBlog/__utils__/factory'
 import {fakeUser} from 'auth/user/__utils__/factory'
 import Dashboard from 'Event/Dashboard'
-import {renderWithEvent} from '__utils__/render'
+import {emptyActions, render} from '__utils__/render'
 import {fakeAgenda} from 'Event/Dashboard/components/AgendaList/__utils__/factory'
 import {clickEdit} from '__utils__/edit'
 import user from '@testing-library/user-event'
 import {fakeEvent} from 'Event/__utils__/factory'
 import {mockRxJsAjax} from 'store/__utils__/MockStoreProvider'
+import {defaultScore} from 'Event/PointsProvider/__utils__/StaticPointsProvider'
 
 const mockPost = mockRxJsAjax.post as jest.Mock
 
@@ -20,9 +21,14 @@ afterEach(() => {
 it('should render agendas', async () => {
   const withoutAgendas = fakeEvent({template: fakeSimpleBlog({agendas: []})})
 
-  const {queryByText, findAllByLabelText, rerender} = renderWithEvent(
+  const {queryByText, findAllByLabelText, rerender} = render(
     <Dashboard isEditMode={false} user={fakeUser()} />,
-    withoutAgendas,
+    {
+      event: withoutAgendas,
+      withRouter: true,
+      actions: emptyActions,
+      score: defaultScore,
+    },
   )
 
   expect(queryByText(/agenda/i)).not.toBeInTheDocument()
@@ -33,7 +39,9 @@ it('should render agendas', async () => {
   )
 
   const withAgendas = fakeEvent({template: fakeSimpleBlog({agendas})})
-  rerender(<Dashboard isEditMode={false} user={fakeUser()} />, withAgendas)
+  rerender(<Dashboard isEditMode={false} user={fakeUser()} />, {
+    event: withAgendas,
+  })
 
   expect((await findAllByLabelText('agenda')).length).toBe(agendas.length)
 })
@@ -47,9 +55,9 @@ it('should edit an agenda', async () => {
   const dashboard = fakeSimpleBlog({agendas})
   const event = fakeEvent({template: dashboard})
 
-  const {findAllByLabelText, findByLabelText} = renderWithEvent(
+  const {findAllByLabelText, findByLabelText} = render(
     <Dashboard isEditMode={true} user={fakeUser()} />,
-    event,
+    {event, withRouter: true, actions: emptyActions, score: defaultScore},
   )
 
   const targetIndex = faker.random.number({min: 0, max: agendas.length - 1})
@@ -86,11 +94,15 @@ it('should add a new agenda', async () => {
   const dashboard = fakeSimpleBlog({agendas: []})
   const event = fakeEvent({template: dashboard})
 
-  const {
-    findAllByLabelText,
-    findByLabelText,
-    queryByLabelText,
-  } = renderWithEvent(<Dashboard isEditMode={true} user={fakeUser()} />, event)
+  const {findAllByLabelText, findByLabelText, queryByLabelText} = render(
+    <Dashboard isEditMode={true} user={fakeUser()} />,
+    {
+      event,
+      withRouter: true,
+      actions: emptyActions,
+      score: defaultScore,
+    },
+  )
 
   expect(queryByLabelText('agenda')).not.toBeInTheDocument()
 
@@ -117,12 +129,15 @@ it('should remove an agenda', async () => {
   const dashboard = fakeSimpleBlog({agendas})
   const event = fakeEvent({template: dashboard})
 
-  const {
-    queryByText,
-    findAllByLabelText,
-    findByLabelText,
-    findByText,
-  } = renderWithEvent(<Dashboard isEditMode={true} user={fakeUser()} />, event)
+  const {queryByText, findAllByLabelText, findByLabelText, findByText} = render(
+    <Dashboard isEditMode={true} user={fakeUser()} />,
+    {
+      event,
+      withRouter: true,
+      actions: emptyActions,
+      score: defaultScore,
+    },
+  )
 
   const targetIndex = faker.random.number({min: 0, max: agendas.length - 1})
 

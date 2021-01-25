@@ -9,11 +9,11 @@ import {
   TAGS,
 } from 'Event/Dashboard/component-rules/RuleConfig/RuleList/SingleRule/TagsRule'
 
-it('should render depending on rule match', () => {
+it('should render depending on rule match', async () => {
   const testId = faker.random.word()
   const TestComponent = () => <div data-testid={testId}></div>
 
-  const {queryByTestId, rerender} = render(
+  const {findByTestId, queryByTestId, rerender} = render(
     <AttendeeProfileProvider groups={{}} tags={[]}>
       <HiddenOnMatch rules={[]}>
         <TestComponent />
@@ -21,7 +21,7 @@ it('should render depending on rule match', () => {
     </AttendeeProfileProvider>,
   )
 
-  expect(queryByTestId(testId)).toBeInTheDocument()
+  expect(await findByTestId(testId)).toBeInTheDocument()
 
   const targetTag = faker.random.word()
   rerender(

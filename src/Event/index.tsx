@@ -2,6 +2,7 @@ import {useAttendee} from 'Event/auth'
 import Dashboard from 'Event/Dashboard'
 import AttendeeProfileProvider from 'Event/Dashboard/component-rules/AttendeeProfileProvider'
 import {useEvent} from 'Event/EventProvider'
+import PagePoints, {DASHBOARD} from 'Event/PointsProvider/PagePoints'
 import {eventRoutes} from 'Event/Routes'
 import {Template} from 'Event/template'
 import React from 'react'
@@ -69,7 +70,9 @@ export default function Event() {
   // stubbing out data for org users while configuring dashboard.
   return (
     <AttendeeProfileProvider groups={attendee.groups} tags={attendee.tags}>
-      <Dashboard user={attendee} />
+      <PagePoints page={DASHBOARD}>
+        <Dashboard user={attendee} />
+      </PagePoints>
     </AttendeeProfileProvider>
   )
 }
