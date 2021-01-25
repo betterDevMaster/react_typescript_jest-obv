@@ -10,7 +10,6 @@ import {
   onChangeCheckedHandler,
   onChangeNumberHandler,
   onChangeStringHandler,
-  onUnknownChangeHandler,
 } from 'lib/dom'
 import DangerButton from 'lib/ui/Button/DangerButton'
 import ColorPicker from 'lib/ui/ColorPicker'
@@ -28,10 +27,8 @@ import {
 import {MAIN_NAV_BUTTON} from 'Event/template/SimpleBlog/Dashboard/MainNav/MainNavButton'
 import ToggleButtonGroup from '@material-ui/lab/ToggleButtonGroup'
 import ToggleButton from '@material-ui/lab/ToggleButton'
-import {useAreas} from 'organization/Event/AreaList'
-import MenuItem from '@material-ui/core/MenuItem'
-import Select from '@material-ui/core/Select'
-import InputLabel from '@material-ui/core/InputLabel'
+import ActionConfig from 'Event/template/SimpleBlog/Dashboard/MainNav/MainNavButton/MainNavButtonConfig/ActionConfig'
+import AreaConfig from 'Event/template/SimpleBlog/Dashboard/MainNav/MainNavButton/MainNavButtonConfig/AreaConfig'
 
 export type MainNavButtonConfig = {
   type: typeof MAIN_NAV_BUTTON
@@ -108,6 +105,7 @@ export function MainNavButtonConfig(props: {id: MainNavButtonConfig['id']}) {
           fullWidth
           onChange={onChangeStringHandler(updateButton('text'))}
         />
+        <ActionConfig update={updateButton} button={button} />
         <Typography gutterBottom>Size</Typography>
         <Slider
           min={1}
@@ -213,7 +211,7 @@ function LinkConfig(props: {
     <>
       <TextField
         label="Link URL"
-        value={props.button.link}
+        value={props.button.link || ''}
         inputProps={{
           'aria-label': 'button link input',
         }}
@@ -225,55 +223,11 @@ function LinkConfig(props: {
           label="New Tab"
           control={
             <Checkbox
-              checked={props.button.newTab}
+              checked={props.button.newTab || false}
               onChange={onChangeCheckedHandler(props.update('newTab'))}
             />
           }
         />
-      </FormControl>
-    </>
-  )
-}
-
-function AreaConfig(props: {
-  button: NavButtonWithSize
-  update: <T extends keyof NavButtonWithSize>(
-    key: T,
-  ) => (value: NavButtonWithSize[T]) => void
-}) {
-  const {areas: fetchedAreas, loading} = useAreas()
-  const areas = fetchedAreas || []
-
-  if (!props.button.isAreaButton) {
-    return null
-  }
-
-  const hasSelectedArea = !!areas.find((a) => a.id === props.button.areaId)
-  const value = hasSelectedArea ? props.button.areaId : ''
-
-  return (
-    <>
-      <FormControl fullWidth disabled={loading}>
-        <InputLabel>Pick an area to join</InputLabel>
-        <Select
-          value={value}
-          fullWidth
-          onChange={onUnknownChangeHandler(props.update('areaId'))}
-          label="Source"
-          inputProps={{
-            'aria-label': 'pick area',
-          }}
-        >
-          {areas.map((area) => (
-            <MenuItem
-              key={area.id}
-              value={area.id}
-              aria-label={`pick ${area.name}`}
-            >
-              {area.name}
-            </MenuItem>
-          ))}
-        </Select>
       </FormControl>
     </>
   )

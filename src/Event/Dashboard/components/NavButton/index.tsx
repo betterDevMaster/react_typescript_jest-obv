@@ -6,6 +6,9 @@ import {HasRules} from 'Event/Dashboard/component-rules'
 import {AbsoluteLink} from 'lib/ui/link/AbsoluteLink'
 import {api} from 'lib/url'
 import {useEvent} from 'Event/EventProvider'
+import {findAction} from 'Event/ActionsProvider/platform-actions'
+import {useActions} from 'Event/ActionsProvider'
+import {usePoints} from 'Event/PointsProvider'
 
 export const NAV_BUTTON = 'NAV_BUTTON'
 
@@ -28,6 +31,7 @@ export default interface NavButton extends HasRules {
   hoverBorderColor?: string
   isAreaButton: boolean
   areaId: number | null
+  actionId: number | null
 }
 
 export type NavButtonWithSize = NavButton & {
@@ -36,9 +40,22 @@ export type NavButtonWithSize = NavButton & {
 
 export default function NavButton(props: NavButton) {
   const {newTab, isAreaButton} = props
+  const {custom} = useActions()
+  const {submit} = usePoints()
+  const submitAction = () => {
+    if (!props.actionId) {
+      return
+    }
+
+    const action = findAction(props.actionId, custom.actions)
+    if (!action) {
+      return
+    }
+    submit(action)
+  }
 
   if (isAreaButton) {
-    return <JoinAreaLink {...props} />
+    return <JoinAreaLink {...props} onJoin={submitAction} />
   }
 
   return (
@@ -47,13 +64,14 @@ export default function NavButton(props: NavButton) {
       disableStyles
       aria-label={props['aria-label']}
       newTab={newTab}
+      onClick={submitAction}
     >
       <Button {...props}>{props.text}</Button>
     </NormalLink>
   )
 }
 
-function JoinAreaLink(props: NavButton) {
+function JoinAreaLink(props: NavButton & {onJoin: () => void}) {
   const [processing, setProcessing] = useState(false)
 
   const {event, client} = useEvent()
@@ -70,6 +88,7 @@ function JoinAreaLink(props: NavButton) {
     client
       .get<{url: string}>(url)
       .then((data) => {
+        props.onJoin()
         // Got Join URL, open in new window
         window.open(data.url, '_blank')
       })

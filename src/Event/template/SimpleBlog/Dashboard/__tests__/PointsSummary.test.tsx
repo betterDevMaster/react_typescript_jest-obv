@@ -4,13 +4,13 @@ import faker from 'faker'
 import {fakeSimpleBlog} from 'Event/template/SimpleBlog/__utils__/factory'
 import {fakeUser} from 'auth/user/__utils__/factory'
 import Dashboard from 'Event/Dashboard'
-import {render, renderWithEvent} from '__utils__/render'
+import {emptyActions, render} from '__utils__/render'
 import {fakePoints} from 'Event/Dashboard/components/PointsSummary/__utils__/factory'
 import {fireEvent, wait} from '@testing-library/dom'
 import {clickEdit} from '__utils__/edit'
 import {fakeEvent} from 'Event/__utils__/factory'
-import StaticEventProvider from 'Event/__utils__/StaticEventProvider'
 import {mockRxJsAjax} from 'store/__utils__/MockStoreProvider'
+import {defaultScore} from 'Event/PointsProvider/__utils__/StaticPointsProvider'
 
 const mockPost = mockRxJsAjax.post as jest.Mock
 
@@ -21,9 +21,14 @@ afterEach(() => {
 it('should render points', async () => {
   const withoutPoints = fakeEvent({template: fakeSimpleBlog({points: null})})
 
-  const {queryByText, rerender, findByText} = renderWithEvent(
+  const {queryByText, rerender, findByText} = render(
     <Dashboard isEditMode={false} user={fakeUser()} />,
-    withoutPoints,
+    {
+      event: withoutPoints,
+      withRouter: true,
+      actions: emptyActions,
+      score: defaultScore,
+    },
   )
 
   expect(queryByText(/you've earned/i)).not.toBeInTheDocument()
@@ -36,21 +41,20 @@ it('should render points', async () => {
     }),
   })
 
-  rerender(<Dashboard isEditMode={false} user={fakeUser()} />, withPoints)
+  rerender(<Dashboard isEditMode={false} user={fakeUser()} />, {
+    event: withPoints,
+  })
 
-  const pointsText = new RegExp(
-    `you've earned ${points.numPoints} ${points.unit}!`,
-    'i',
-  )
+  const pointsText = new RegExp(`${points.unit}!`, 'i')
 
   expect(await findByText(pointsText)).toBeInTheDocument()
 })
 
 it('should configure points', async () => {
   const event = fakeEvent({template: fakeSimpleBlog({points: null})})
-  const {queryByText, findByLabelText, findByText} = renderWithEvent(
+  const {queryByText, findByLabelText, findByText} = render(
     <Dashboard isEditMode={true} user={fakeUser()} />,
-    event,
+    {event, withRouter: true, actions: emptyActions, score: defaultScore},
   )
 
   expect(queryByText(/you've earned/i)).not.toBeInTheDocument()
@@ -79,14 +83,13 @@ it('should configure points', async () => {
 it('should remove points', async () => {
   const event = fakeEvent({
     template: fakeSimpleBlog({
-      points: fakePoints({numPoints: 0}),
+      points: fakePoints(),
     }),
   })
 
   const {queryByText, findByLabelText, findByText} = render(
-    <StaticEventProvider event={event}>
-      <Dashboard isEditMode={true} user={fakeUser()} />
-    </StaticEventProvider>,
+    <Dashboard isEditMode={true} user={fakeUser()} />,
+    {event, withRouter: true, actions: emptyActions, score: defaultScore},
   )
 
   expect(await findByText(/you've earned 0 .*/i)).toBeInTheDocument()

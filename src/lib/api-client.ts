@@ -19,6 +19,8 @@ export type RequestOptions = {
   tokenKey?: string
 }
 
+export type Client = typeof client
+
 export const client = {
   get: <T>(url: string, options?: RequestOptions) =>
     handleAxiosResult<T>(axios.get(url, config(options))),

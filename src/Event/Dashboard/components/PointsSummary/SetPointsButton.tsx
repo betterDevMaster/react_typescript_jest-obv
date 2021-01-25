@@ -12,11 +12,8 @@ export default function SetPointsButton(props: {className?: string}) {
   const showPointsConfig = () => {
     updateTemplate({
       points: {
-        headerImage: '',
         description: '',
-        numPoints: 0,
-        unit: '',
-        leaderboardUrl: '',
+        unit: 'Points',
       },
     })
     dispatch(

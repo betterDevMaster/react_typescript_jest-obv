@@ -17,6 +17,7 @@ export const AbsoluteLink = React.forwardRef(
 
     return (
       <StyledAnchor
+        onClick={props.onClick}
         ref={ref}
         href={props.to}
         underline={style.underline}

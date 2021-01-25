@@ -15,10 +15,10 @@ import {
   TAGS,
 } from 'Event/Dashboard/component-rules/RuleConfig/RuleList/SingleRule/TagsRule'
 
-it('should add a nested rule', () => {
+it('should add a nested rule', async () => {
   const updateRules = jest.fn()
 
-  const {getByLabelText} = render(
+  const {findByLabelText} = render(
     <RuleConfig
       rules={[]}
       onChange={updateRules}
@@ -29,36 +29,39 @@ it('should add a nested rule', () => {
     </RuleConfig>,
   )
 
-  user.click(getByLabelText('add rule'))
+  user.click(await findByLabelText('add rule'))
 
-  fireEvent.change(inputElementFor(getByLabelText('pick rule source')), {
+  fireEvent.change(inputElementFor(await findByLabelText('pick rule source')), {
     target: {
       value: NESTED_RULE,
     },
   })
 
-  user.click(getByLabelText('add rule'))
+  user.click(await findByLabelText('add rule'))
 
   // Add child group rule
-  fireEvent.change(inputElementFor(getByLabelText('pick rule source')), {
+  fireEvent.change(inputElementFor(await findByLabelText('pick rule source')), {
     target: {
       value: GROUP,
     },
   })
 
-  fireEvent.change(inputElementFor(getByLabelText('pick group rule type')), {
-    target: {
-      value: IS,
+  fireEvent.change(
+    inputElementFor(await findByLabelText('pick group rule type')),
+    {
+      target: {
+        value: IS,
+      },
     },
-  })
+  )
 
   const target = faker.random.word()
-  user.type(getByLabelText('new group target'), target)
+  user.type(await findByLabelText('new group target'), target)
 
   // Save child rule
-  user.click(getByLabelText('save rule'))
+  user.click(await findByLabelText('save rule'))
   // Save nested rule
-  user.click(getByLabelText('save rule'))
+  user.click(await findByLabelText('save rule'))
 
   expect(updateRules).toHaveBeenCalledTimes(1)
   const addedRule = updateRules.mock.calls[0][0][0]
@@ -69,11 +72,11 @@ it('should add a nested rule', () => {
   expect(addedRule.rules[0].target).toBe(target)
 })
 
-it('should edit a nested rule', () => {
+it('should edit a nested rule', async () => {
   const updateRules = jest.fn()
   const originalTarget = faker.random.word()
 
-  const {getByLabelText, getByText} = render(
+  const {findByLabelText, getByText} = render(
     <RuleConfig
       rules={[
         {
@@ -97,17 +100,17 @@ it('should edit a nested rule', () => {
     </RuleConfig>,
   )
 
-  fireEvent.click(getByLabelText('nested rule'))
+  fireEvent.click(await findByLabelText('nested rule'))
 
   user.click(getByText(new RegExp(originalTarget)))
 
   const newTarget = faker.random.word()
-  user.type(getByLabelText('new tag target'), newTarget)
+  user.type(await findByLabelText('new tag target'), newTarget)
 
   // save child rule
-  user.click(getByLabelText('save rule'))
+  user.click(await findByLabelText('save rule'))
   // save nested rule
-  user.click(getByLabelText('save rule'))
+  user.click(await findByLabelText('save rule'))
 
   expect(updateRules).toHaveBeenCalledTimes(1)
   const updated = updateRules.mock.calls[0][0][0].rules[0]

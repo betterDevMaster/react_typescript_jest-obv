@@ -5,7 +5,7 @@ import {fireEvent} from '@testing-library/react'
 import {fakeSimpleBlog} from 'Event/template/SimpleBlog/__utils__/factory'
 import {fakeUser} from 'auth/user/__utils__/factory'
 import Dashboard from 'Event/Dashboard'
-import {render, renderWithEvent} from '__utils__/render'
+import {emptyActions, render} from '__utils__/render'
 import {clickEdit} from '__utils__/edit'
 import userEvent from '@testing-library/user-event'
 import {fakeEvent} from 'Event/__utils__/factory'
@@ -13,6 +13,7 @@ import {mockRxJsAjax} from 'store/__utils__/MockStoreProvider'
 import {wait} from '@testing-library/react'
 import {loginToEventSite} from 'Event/__utils__/url'
 import {fakeAttendee} from 'Event/auth/__utils__/factory'
+import {defaultScore} from 'Event/PointsProvider/__utils__/StaticPointsProvider'
 
 const mockPost = mockRxJsAjax.post as jest.Mock
 
@@ -23,9 +24,9 @@ afterEach(() => {
 it('should update the logo', async () => {
   const dashboard = fakeSimpleBlog()
   const event = fakeEvent({template: dashboard})
-  const {findByLabelText} = renderWithEvent(
+  const {findByLabelText} = render(
     <Dashboard isEditMode={true} user={fakeUser()} />,
-    event,
+    {event, withRouter: true, score: defaultScore, actions: emptyActions},
   )
 
   expect(((await findByLabelText('logo')) as HTMLImageElement).src).toBe(

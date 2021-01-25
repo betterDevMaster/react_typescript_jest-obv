@@ -7,8 +7,9 @@ import {fakeEvent} from 'Event/__utils__/factory'
 import {fakeOrganization} from 'obvio/Organizations/__utils__/factory'
 import React from 'react'
 import {clickEdit} from '__utils__/edit'
-import {render} from '__utils__/render'
+import {emptyActions, render} from '__utils__/render'
 import axios from 'axios'
+import { defaultScore } from 'Event/PointsProvider/__utils__/StaticPointsProvider'
 
 const mockAjaxPost = axios.post as jest.Mock
 const mockAjaxDelete = axios.delete as jest.Mock
@@ -37,6 +38,9 @@ it('should remove the existing file', async () => {
     {
       event,
       organization: fakeOrganization(),
+      withRouter: true,
+      actions: emptyActions,
+      score: defaultScore
     },
   )
   clickEdit(await findByLabelText('event resource'))

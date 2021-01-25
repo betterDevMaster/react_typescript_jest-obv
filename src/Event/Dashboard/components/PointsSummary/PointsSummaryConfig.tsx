@@ -35,15 +35,6 @@ export function PointsSummaryConfig() {
   return (
     <>
       <TextField
-        value={points?.headerImage || ''}
-        label="Image"
-        fullWidth
-        onChange={onChangeStringHandler(update('headerImage'))}
-        inputProps={{
-          'aria-label': 'edit header image',
-        }}
-      />
-      <TextField
         value={points?.description || ''}
         label="Description"
         multiline
@@ -61,15 +52,6 @@ export function PointsSummaryConfig() {
         onChange={onChangeStringHandler(update('unit'))}
         inputProps={{
           'aria-label': 'points unit',
-        }}
-      />
-      <TextField
-        value={points?.leaderboardUrl || ''}
-        label="Leaderboard URL"
-        fullWidth
-        onChange={onChangeStringHandler(update('leaderboardUrl'))}
-        inputProps={{
-          'aria-label': 'points leaderboard url',
         }}
       />
       <RemovePointsButton
@@ -91,11 +73,8 @@ function updatePoints<T extends keyof Points>(
 ): Points {
   if (!points) {
     return {
-      headerImage: '',
       description: '',
       unit: '',
-      leaderboardUrl: '',
-      numPoints: 0,
       [key]: value,
     }
   }

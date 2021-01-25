@@ -57,6 +57,15 @@ export default function Event() {
               Attendees
             </Button>
           </RelativeLink>
+          <RelativeLink disableStyles to={routes.points}>
+            <Button
+              variant="contained"
+              color="primary"
+              aria-label="configure points"
+            >
+              Configure Points
+            </Button>
+          </RelativeLink>
           <RelativeLink disableStyles to={routes.speakers}>
             <Button
               variant="contained"

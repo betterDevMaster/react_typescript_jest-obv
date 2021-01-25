@@ -3,6 +3,8 @@ import styled from 'styled-components'
 import Container from '@material-ui/core/Container'
 import {MenuIconButton} from 'lib/ui/IconButton/MenuIconButton'
 import {useTemplate} from 'Event/Dashboard/state/TemplateProvider'
+import {eventRoutes} from 'Event/Routes'
+import {RelativeLink} from 'lib/ui/link/RelativeLink'
 
 export default function Header(props: {
   primaryColor: string
@@ -25,7 +27,9 @@ export default function Header(props: {
             />
           </Side>
           <Middle>
-            <Logo src={logo} alt={title} aria-label="logo" />
+            <RelativeLink to={eventRoutes.root} disableStyles>
+              <Logo src={logo} alt={title} aria-label="logo" />
+            </RelativeLink>
           </Middle>
           <Side />
         </Layout>

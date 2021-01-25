@@ -10,14 +10,14 @@ import {
   TAGS,
 } from 'Event/Dashboard/component-rules/RuleConfig/RuleList/SingleRule/TagsRule'
 
-it('should show config, and hide child content', () => {
-  const {rerender, getByTestId, queryByTestId} = render(
+it('should show config, and hide child content', async () => {
+  const {rerender, findByTestId, queryByTestId, findByText} = render(
     <RuleConfig rules={[]} onChange={() => {}} visible={false} close={() => {}}>
       <div data-testid="child-component"></div>
     </RuleConfig>,
   )
 
-  expect(getByTestId('child-component')).toBeInTheDocument()
+  expect(await findByTestId('child-component')).toBeInTheDocument()
 
   rerender(
     <RuleConfig rules={[]} onChange={() => {}} visible={true} close={() => {}}>
@@ -26,12 +26,14 @@ it('should show config, and hide child content', () => {
   )
 
   expect(queryByTestId('child-component')).not.toBeInTheDocument()
+
+  expect(await findByText('Add Rule')).toBeInTheDocument()
 })
 
-it('should add a rule', () => {
+it('should add a rule', async () => {
   const updateRules = jest.fn()
 
-  const {getByLabelText} = render(
+  const {findByLabelText} = render(
     <RuleConfig
       rules={[]}
       onChange={updateRules}
@@ -42,19 +44,19 @@ it('should add a rule', () => {
     </RuleConfig>,
   )
 
-  user.click(getByLabelText('add rule'))
+  user.click(await findByLabelText('add rule'))
 
   // Select tags as source
-  fireEvent.change(inputElementFor(getByLabelText('pick rule source')), {
+  fireEvent.change(inputElementFor(await findByLabelText('pick rule source')), {
     target: {
       value: TAGS,
     },
   })
 
   const target = faker.random.word()
-  user.type(getByLabelText('new tag target'), target)
+  user.type(await findByLabelText('new tag target'), target)
 
-  user.click(getByLabelText('save rule'))
+  user.click(await findByLabelText('save rule'))
 
   expect(updateRules).toHaveBeenCalledTimes(1)
   const addedRule = updateRules.mock.calls[0][0][0]
@@ -63,11 +65,11 @@ it('should add a rule', () => {
   expect(addedRule.target).toBe(target)
 })
 
-it('should edit an existing rule', () => {
+it('should edit an existing rule', async () => {
   const updateRules = jest.fn()
 
   const originalTarget = faker.random.word()
-  const {getByLabelText, getByText} = render(
+  const {findByLabelText, getByText} = render(
     <RuleConfig
       rules={[
         {
@@ -88,20 +90,20 @@ it('should edit an existing rule', () => {
   user.click(getByText(new RegExp(originalTarget)))
 
   const newTarget = faker.random.word()
-  user.type(getByLabelText('new tag target'), newTarget)
+  user.type(await findByLabelText('new tag target'), newTarget)
 
-  user.click(getByLabelText('save rule'))
+  user.click(await findByLabelText('save rule'))
 
   expect(updateRules).toHaveBeenCalledTimes(1)
   const updated = updateRules.mock.calls[0][0][0]
   expect(updated.target).toBe(newTarget)
 })
 
-it('should delete an existing rule', () => {
+it('should delete an existing rule', async () => {
   const updateRules = jest.fn()
 
   const target = faker.random.word()
-  const {getByLabelText, getByText} = render(
+  const {findByLabelText, getByText} = render(
     <RuleConfig
       rules={[
         {
@@ -120,7 +122,7 @@ it('should delete an existing rule', () => {
   )
 
   user.click(getByText(new RegExp(target)))
-  user.click(getByLabelText('remove rule'))
+  user.click(await findByLabelText('remove rule'))
   const rules = updateRules.mock.calls[0][0]
   expect(rules).toMatchObject([])
 })

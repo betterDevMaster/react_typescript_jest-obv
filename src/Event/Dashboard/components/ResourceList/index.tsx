@@ -7,6 +7,10 @@ import {useEditMode} from 'Event/Dashboard/editor/state/edit-mode'
 import EditModeOnly from 'Event/Dashboard/editor/views/EditModeOnly'
 import AddResourceButton from 'Event/Dashboard/components/ResourceList/AddResourceButton'
 import {useTemplate} from 'Event/Dashboard/state/TemplateProvider'
+import {usePoints} from 'Event/PointsProvider'
+import {usePlatformActions} from 'Event/ActionsProvider/platform-actions'
+import {AbsoluteLink} from 'lib/ui/link/AbsoluteLink'
+import {storage} from 'lib/url'
 
 export interface ResourceList {
   description: string
@@ -69,8 +73,22 @@ export function ResourceList() {
 }
 
 function Resource(props: {resource: Resource; iconColor?: string}) {
+  const {DOWNLOADING_RESOURCE} = usePlatformActions()
+  const {submit} = usePoints()
+
+  const awardPoints = () => {
+    submit(DOWNLOADING_RESOURCE)
+  }
+
+  const path = storage(`/event/resources/${props.resource.filePath}`)
+
   return (
-    <ResourceLink aria-label="event resource" href={props.resource.filePath}>
+    <ResourceLink
+      aria-label="event resource"
+      to={path}
+      onClick={awardPoints}
+      newTab
+    >
       <StyledIcon
         className="resource-icon"
         component="i"
@@ -89,7 +107,7 @@ const List = styled.ul`
   margin: 0;
 `
 
-const ResourceLink = styled.a`
+const ResourceLink = styled(AbsoluteLink)`
   align-items: center;
   font-size: 20px;
   display: flex;

@@ -4,7 +4,7 @@ import faker from 'faker'
 import {fakeSimpleBlog} from 'Event/template/SimpleBlog/__utils__/factory'
 import {fakeUser} from 'auth/user/__utils__/factory'
 import Dashboard from 'Event/Dashboard'
-import {render} from '__utils__/render'
+import {emptyActions, render} from '__utils__/render'
 import {fakeResource} from 'Event/Dashboard/components/ResourceList/__utils__/factory'
 import {fireEvent} from '@testing-library/dom'
 import {clickEdit} from '__utils__/edit'
@@ -12,6 +12,7 @@ import {fakeEvent} from 'Event/__utils__/factory'
 import {mockRxJsAjax} from 'store/__utils__/MockStoreProvider'
 import {wait} from '@testing-library/react'
 import {fakeOrganization} from 'obvio/Organizations/__utils__/factory'
+import {defaultScore} from 'Event/PointsProvider/__utils__/StaticPointsProvider'
 
 const mockPost = mockRxJsAjax.post as jest.Mock
 
@@ -31,7 +32,7 @@ it('should render resources', async () => {
 
   const {queryByText, rerender, findAllByLabelText} = render(
     <Dashboard isEditMode={false} user={fakeUser()} />,
-    {event},
+    {event, withRouter: true, score: defaultScore, actions: emptyActions},
   )
 
   expect(queryByText(/resources:/i)).not.toBeInTheDocument()
@@ -70,6 +71,9 @@ it('should add a new resource', async () => {
     {
       event,
       organization,
+      withRouter: true,
+      score: defaultScore,
+      actions: emptyActions,
     },
   )
 
@@ -106,6 +110,9 @@ it('should update resources description', async () => {
     <Dashboard isEditMode={true} user={fakeUser()} />,
     {
       event,
+      withRouter: true,
+      score: defaultScore,
+      actions: emptyActions,
     },
   )
 
@@ -156,6 +163,9 @@ it('should update a resource', async () => {
     {
       event,
       organization,
+      withRouter: true,
+      score: defaultScore,
+      actions: emptyActions,
     },
   )
 
@@ -200,6 +210,9 @@ it('should remove a resource', async () => {
     {
       event,
       organization,
+      withRouter: true,
+      score: defaultScore,
+      actions: emptyActions,
     },
   )
 

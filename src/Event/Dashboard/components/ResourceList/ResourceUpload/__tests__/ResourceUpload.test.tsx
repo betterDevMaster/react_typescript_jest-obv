@@ -7,9 +7,10 @@ import {fakeEvent} from 'Event/__utils__/factory'
 import {fakeOrganization} from 'obvio/Organizations/__utils__/factory'
 import React from 'react'
 import {clickEdit} from '__utils__/edit'
-import {render} from '__utils__/render'
+import {emptyActions, render} from '__utils__/render'
 import axios from 'axios'
 import {mockRxJsAjax} from 'store/__utils__/MockStoreProvider'
+import {defaultScore} from 'Event/PointsProvider/__utils__/StaticPointsProvider'
 
 const mockAjaxPost = axios.post as jest.Mock
 const mockAjaxDelete = axios.delete as jest.Mock
@@ -38,6 +39,9 @@ it('should upload a file', async () => {
     {
       event,
       organization,
+      withRouter: true,
+      actions: emptyActions,
+      score: defaultScore,
     },
   )
 
@@ -106,6 +110,9 @@ it('should delete an existing file', async () => {
     {
       event,
       organization: fakeOrganization(),
+      withRouter: true,
+      actions: emptyActions,
+      score: defaultScore,
     },
   )
 

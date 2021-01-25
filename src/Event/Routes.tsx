@@ -10,6 +10,9 @@ import React from 'react'
 import {Redirect, Route, Switch} from 'react-router-dom'
 import Speakers from 'Event/Speakers'
 import UnderConstruction from './UnderConstruction'
+import {EventActionsProvider} from 'Event/ActionsProvider'
+import {PointsProvider} from 'Event/PointsProvider'
+import Leaderboard from 'Event/Leaderboard'
 
 export const eventRoutes = createRoutes({
   login: '/login',
@@ -17,6 +20,7 @@ export const eventRoutes = createRoutes({
   step2: '/step_2',
   step3: '/step_3',
   speakers: '/speakers',
+  leaderboard: '/leaderboard',
 })
 
 export default function Routes() {
@@ -32,7 +36,13 @@ export default function Routes() {
   }
 
   if (user) {
-    return <UserRoutes />
+    return (
+      <EventActionsProvider>
+        <PointsProvider>
+          <UserRoutes />
+        </PointsProvider>
+      </EventActionsProvider>
+    )
   }
 
   return <GuestRoutes />
@@ -55,6 +65,9 @@ function UserRoutes() {
       </Route>
       <Route path={eventRoutes.speakers} exact>
         <Speakers />
+      </Route>
+      <Route path={eventRoutes.leaderboard}>
+        <Leaderboard />
       </Route>
       <Redirect to={eventRoutes.root} />
     </Switch>
