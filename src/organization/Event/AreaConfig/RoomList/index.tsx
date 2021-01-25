@@ -14,6 +14,7 @@ import RoomOnlineSwitch from 'organization/Event/AreaConfig/RoomList/RoomOnlineS
 import {StaticRoomProvider, useRoom} from 'organization/Event/Room/RoomProvider'
 import {RelativeLink} from 'lib/ui/link/RelativeLink'
 import {useRoomRoutes} from 'organization/Event/Room/RoomRoutes'
+import StartButton from 'organization/Event/AreaConfig/RoomList/StartButton'
 
 export default function RoomList(props: {rooms: Room[]}) {
   const {rooms} = props
@@ -33,6 +34,7 @@ export default function RoomList(props: {rooms: Room[]}) {
           <TableCell>Name</TableCell>
           <TableCell>Max Num Attendees</TableCell>
           <TableCell>Online</TableCell>
+          <TableCell>{/* Start Button Column */}</TableCell>
         </TableRow>
       </TableHead>
       <TableBody>
@@ -45,6 +47,9 @@ export default function RoomList(props: {rooms: Room[]}) {
               <TableCell>{room.max_num_attendees || '-'}</TableCell>
               <TableCell>
                 <RoomOnlineSwitch />
+              </TableCell>
+              <TableCell>
+                <StartButton />
               </TableCell>
             </TableRow>
           </StaticRoomProvider>
