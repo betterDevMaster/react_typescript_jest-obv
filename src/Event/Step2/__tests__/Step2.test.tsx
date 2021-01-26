@@ -1,9 +1,11 @@
 import {fireEvent, wait} from '@testing-library/react'
+import faker from 'faker'
 import {fakeAttendee} from 'Event/auth/__utils__/factory'
 import {loginToEventSite} from 'Event/__utils__/url'
 import axios from 'axios'
 
 const mockPost = axios.post as jest.Mock
+const mockGet = axios.get as jest.Mock
 
 beforeEach(() => {
   jest.clearAllMocks()
@@ -69,6 +71,11 @@ it('should submit attendee waiver', async () => {
   mockPost.mockImplementationOnce(() => Promise.resolve({data: withWaver}))
 
   fireEvent.click(await findByLabelText('submit waiver button'))
+
+  const techCheckUrl = faker.internet.url()
+  mockGet.mockImplementationOnce(() =>
+    Promise.resolve({data: {url: techCheckUrl}}),
+  )
 
   // Moved on to next step
   await wait(async () => {

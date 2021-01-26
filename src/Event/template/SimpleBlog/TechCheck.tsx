@@ -1,4 +1,4 @@
-import React from 'react'
+import React, {useEffect, useState} from 'react'
 import SimpleBlogPage from 'Event/template/SimpleBlog/Page'
 import Container from '@material-ui/core/Container'
 import {User} from 'auth/user'
@@ -6,14 +6,35 @@ import {TechCheckProps} from 'Event/Step3/TechCheck'
 import styled from 'styled-components'
 import grey from '@material-ui/core/colors/grey'
 import {Button} from '@material-ui/core'
+import {api} from 'lib/url'
+import {useEvent} from 'Event/EventProvider'
 
-export default (props: {user: User} & TechCheckProps) => {
+export default function TechCheck(props: {user: User} & TechCheckProps) {
+  const [joinUrl, setJoinUrl] = useState<null | string>(null)
+  const {event, client} = useEvent()
+  const {techCheck} = props
+
+  useEffect(() => {
+    const url = api(`/events/${event.slug}/areas/${techCheck.area.id}/join`)
+
+    client.get<{url: string}>(url).then(({url}) => setJoinUrl(url))
+  }, [client, event, techCheck])
+
+  const launchMeeting = () => {
+    if (!joinUrl) {
+      return
+    }
+
+    // Got Join URL, open in new window
+    window.open(joinUrl, '_blank')
+  }
+
   return (
     <SimpleBlogPage user={props.user}>
       <Container maxWidth="sm">
         <Body
           dangerouslySetInnerHTML={{
-            __html: props.techCheck.body,
+            __html: techCheck.body,
           }}
         />
         <div>
@@ -22,6 +43,8 @@ export default (props: {user: User} & TechCheckProps) => {
             color="primary"
             aria-label="start tech check"
             fullWidth
+            disabled={!joinUrl}
+            onClick={launchMeeting}
           >
             Start Tech Check
           </Button>

@@ -29,7 +29,11 @@ export function visitEventSite(options: {event?: ObvioEvent} = {}) {
 }
 
 export async function loginToEventSite(
-  options: {attendee?: Attendee; event?: ObvioEvent} = {},
+  options: {
+    attendee?: Attendee
+    event?: ObvioEvent
+    beforeLogin?: () => void
+  } = {},
 ) {
   const attendee = options.attendee || fakeAttendee()
   const event = options.event || fakeEvent()
@@ -52,6 +56,8 @@ export async function loginToEventSite(
 
   user.type(await findByLabelText('email'), faker.internet.email())
   user.type(await findByLabelText('password'), faker.random.alphaNumeric(8))
+
+  options.beforeLogin && options.beforeLogin()
 
   await act(async () => {
     user.click(await findByLabelText('submit login'))

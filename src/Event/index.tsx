@@ -5,6 +5,7 @@ import {useEvent} from 'Event/EventProvider'
 import PagePoints, {DASHBOARD} from 'Event/PointsProvider/PagePoints'
 import {eventRoutes} from 'Event/Routes'
 import {Template} from 'Event/template'
+import {Area} from 'organization/Event/AreaList'
 import React from 'react'
 import {Redirect} from 'react-router-dom'
 
@@ -17,6 +18,7 @@ export interface WaiverConfig {
 export interface TechCheckConfig {
   body: string
   is_enabled: boolean
+  area: Area
 }
 
 export interface SpeakerPage {

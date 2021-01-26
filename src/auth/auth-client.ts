@@ -59,7 +59,8 @@ export const useAuthClient = (props: AuthClientProps) => {
         dispatch(setToken(token))
       })
       .catch(() => {
-        // Token expired/invalid - do nothing, and force re-login
+        // Token expired/invalid
+        deleteToken(tokenKey)
       })
       .finally(() => dispatch(setLoading(false)))
   }, [dispatch, loading, endpoints, tokenKey, organizationSlug])

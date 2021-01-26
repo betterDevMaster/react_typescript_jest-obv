@@ -130,8 +130,8 @@ it('should set an area button', async () => {
   /**
    * Material UI select expects mouseDown instead of a click
    */
-  fireEvent.mouseDown(getByLabelText('pick area'))
-  user.click(getByLabelText(`pick ${target.name}`))
+  fireEvent.mouseDown(await findByLabelText('pick area'))
+  user.click(await findByLabelText(`pick ${target.name}`))
 
   fireEvent.click(await findByLabelText('close config dialog'))
 
