@@ -1,6 +1,7 @@
 import {ObvioEvent, Speaker} from 'Event'
 import {fakeSimpleBlog} from 'Event/template/SimpleBlog/__utils__/factory'
 import faker from 'faker'
+import {fakeArea} from 'organization/Event/AreaList/__utils__/factory'
 
 export const fakeEvent = (overrides?: Partial<ObvioEvent>): ObvioEvent => ({
   id: faker.random.number({min: 1000, max: 10000}),
@@ -34,6 +35,7 @@ export function fakeTechCheck(
       3,
     )}</p></html>`,
     is_enabled: true,
+    area: fakeArea(),
     ...overrides,
   }
 }

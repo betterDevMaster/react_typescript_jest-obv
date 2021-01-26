@@ -106,6 +106,7 @@ export default function AttendeeManagement() {
                     color="primary"
                     aria-label="mark as completed tech check"
                     onClick={completeCheckIn(attendee)}
+                    disabled={Boolean(attendee.tech_check_completed_at)}
                   >
                     Check-In
                   </Button>

@@ -8,7 +8,7 @@ import Button from '@material-ui/core/Button'
 import CKEditor from '@ckeditor/ckeditor5-react'
 import ClassicEditor from '@ckeditor/ckeditor5-build-classic'
 import FormHelperText from '@material-ui/core/FormHelperText'
-import {useForm} from 'react-hook-form'
+import {useForm, Controller} from 'react-hook-form'
 import Layout from 'organization/user/Layout'
 import Page from 'organization/user/Layout/Page'
 import {useEvent} from 'Event/EventProvider'
@@ -17,31 +17,31 @@ import {api} from 'lib/url'
 import {ObvioEvent} from 'Event'
 import {useDispatch} from 'react-redux'
 import {setEvent} from 'Event/state/actions'
-import {useHistory} from 'react-router-dom'
-import {useEventRoutes} from 'organization/Event/EventRoutes'
+import FormControl from '@material-ui/core/FormControl'
+import FormControlLabel from '@material-ui/core/FormControlLabel'
+import Switch from '@material-ui/core/Switch'
+import AreaSelect from 'organization/Event/AreaConfig/AreaSelect'
 
 export interface TechCheckData {
   body: string
+  is_enabled: boolean
 }
 
-export default () => {
-  const {register, handleSubmit, watch, setValue, errors} = useForm()
+export default function TechCheckConfig() {
+  const {register, handleSubmit, watch, setValue, errors, control} = useForm()
   const [loading, setLoading] = useState(true)
   const [responseError, setResponseError] = useState('')
   const [submitting, setSubmitting] = useState(false)
   const setTechCheck = useSetTechCheck()
   const dispatch = useDispatch()
-  const history = useHistory()
-  const routes = useEventRoutes()
   const mounted = useRef(true)
   const {event} = useEvent()
 
+  const areaId = watch('area_id')
+  const canSave = !submitting && Boolean(areaId)
+
   const setBody = (_: any, editor: any) => {
     setValue('body', editor.getData())
-  }
-
-  const goToDashboardConfig = () => {
-    history.push(routes.dashboard)
   }
 
   const submit = (data: TechCheckData) => {
@@ -49,10 +49,11 @@ export default () => {
     setTechCheck(data)
       .then((event) => {
         dispatch(setEvent(event))
-        goToDashboardConfig()
       })
       .catch((e) => {
         setResponseError(e.message)
+      })
+      .finally(() => {
         setSubmitting(false)
       })
   }
@@ -68,6 +69,10 @@ export default () => {
     }
 
     setValue('body', event.tech_check.body)
+    setValue('is_enabled', event.tech_check.is_enabled)
+
+    const areaId = event.tech_check.area ? event.tech_check.area.id : null
+    setValue('area_id', areaId)
 
     setLoading(false)
     return () => {
@@ -80,6 +85,34 @@ export default () => {
       <Page>
         <Title variant="h5">Tech Check</Title>
         <form onSubmit={handleSubmit(submit)}>
+          <FormControl fullWidth disabled={submitting}>
+            <FormControlLabel
+              control={
+                <Controller
+                  type="checkbox"
+                  name="is_enabled"
+                  defaultValue={false}
+                  control={control}
+                  render={({onChange, value}) => (
+                    <Switch
+                      checked={!!value}
+                      onChange={(e) => onChange(e.target.checked)}
+                      inputProps={{'aria-label': 'toggle enabled'}}
+                    />
+                  )}
+                />
+              }
+              label="Enable"
+            />
+          </FormControl>
+          <Controller
+            control={control}
+            name="area_id"
+            defaultValue={null}
+            render={({onChange, value}) => (
+              <AreaSelect value={value} onPick={onChange} required />
+            )}
+          />
           <Editor>
             <input
               type="hidden"
@@ -120,7 +153,7 @@ export default () => {
             color="primary"
             type="submit"
             aria-label="save tech check"
-            disabled={submitting}
+            disabled={!canSave}
           >
             Save
           </Button>
