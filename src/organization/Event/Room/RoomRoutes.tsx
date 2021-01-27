@@ -5,12 +5,16 @@ import {routesWithValue} from 'lib/url'
 import {Room} from 'Event/room'
 import CreateRoomForm from 'organization/Event/Room/CreateRoomForm'
 import RoomConfig from 'organization/Event/Room'
-import {RouteRoomProvider} from 'organization/Event/Room/RoomProvider'
+import {RouteRoomProvider, useRoom} from 'organization/Event/Room/RoomProvider'
 import {useAreaRoutes} from 'organization/Event/AreaConfig/AreaRoutes'
 
-export function useRoomRoutes(room: Room) {
+export function useRoomRoutes(room?: Room) {
+  const {room: currentRoom} = useRoom()
+  const target = room || currentRoom
+
   const scopedAreaRoutes = useAreaRoutes()
-  return roomRoutes({areaRoutes: scopedAreaRoutes, room})
+
+  return roomRoutes({areaRoutes: scopedAreaRoutes, room: target})
 }
 
 export function roomRoutes({

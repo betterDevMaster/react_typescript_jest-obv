@@ -16,7 +16,7 @@ afterEach(() => {
 
 it('should create a new area', async () => {
   const {event} = goToEvent({areas: []})
-  const {findByLabelText, findByText} = render(<App />)
+  const {findByLabelText, findAllByText} = render(<App />)
 
   user.click(await findByLabelText(`view ${event.name}`))
   user.click(await findByLabelText('create area'))
@@ -49,7 +49,7 @@ it('should create a new area', async () => {
 
   user.click(await findByLabelText('create area'))
 
-  expect(await findByText(new RegExp(`Area: ${area.name}`))).toBeInTheDocument()
+  expect((await findAllByText(new RegExp(area.name))).length).toBeGreaterThan(0)
 
   expect(mockPost).toHaveBeenCalledTimes(1)
   const [url, data] = mockPost.mock.calls[0]

@@ -1,17 +1,14 @@
-import withStyles from '@material-ui/core/styles/withStyles'
 import styled from 'styled-components'
-import Typography from '@material-ui/core/Typography'
-import {spacing} from 'lib/ui/theme'
 import {useEvent} from 'Event/EventProvider'
 import React, {useEffect, useState} from 'react'
 import Layout from 'organization/user/Layout'
-import Page from 'organization/user/Layout/Page'
 import CreateSpeakerPageForm from './CreateSpeakerPageForm'
 import {Speaker} from 'Event'
 import SpeakerList from 'organization/Event/SpeakersConfig/SpeakerList'
 import AddSpeakerButton from 'organization/Event/SpeakersConfig/AddSpeakerButton'
 import SpeakerEditDialog from 'organization/Event/SpeakersConfig/SpeakerEditDialog'
 import TitleField from 'organization/Event/SpeakersConfig/TitleField'
+import Page from 'organization/Event/Page'
 
 export default function SpeakersConfig() {
   const {speakers, add, update, remove} = useSpeakers()
@@ -56,7 +53,6 @@ export default function SpeakersConfig() {
       />
       <Layout>
         <Page>
-          <Title variant="h5">Speakers</Title>
           <TitleField page={page} />
           <StyledAddSpeakerButton onAdd={handleAddedSpeaker} />
           <SpeakerList speakers={speakers} onSelect={edit} />
@@ -108,12 +104,6 @@ function useSpeakers() {
     remove,
   }
 }
-
-const Title = withStyles({
-  root: {
-    marginBottom: spacing[4],
-  },
-})(Typography)
 
 const StyledAddSpeakerButton = styled(AddSpeakerButton)`
   margin-bottom: ${(props) => props.theme.spacing[8]}!important;

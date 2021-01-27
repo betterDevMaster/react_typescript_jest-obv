@@ -16,7 +16,7 @@ export default function Card(props: {event: ObvioEvent}) {
   return (
     <RelativeLink to={routes.root} disableStyles aria-label={label}>
       <Box>
-        {props.event.name}
+        <Name>{props.event.name}</Name>
         <URL variant="caption">
           {props.event.slug}.{appRoot}
         </URL>
@@ -30,11 +30,20 @@ const Box = styled.div`
   padding: ${(props) => props.theme.spacing[5]};
   margin-bottom: ${(props) => props.theme.spacing[4]};
   border-radius: 6px;
-  display: block;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  height: 180px;
 
   &:hover {
     background: ${grey[200]};
   }
+`
+
+const Name = styled.h5`
+  margin: 0;
+  font-size: 28px;
 `
 
 const URL = withStyles({

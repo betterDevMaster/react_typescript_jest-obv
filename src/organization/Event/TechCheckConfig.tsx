@@ -10,7 +10,6 @@ import ClassicEditor from '@ckeditor/ckeditor5-build-classic'
 import FormHelperText from '@material-ui/core/FormHelperText'
 import {useForm, Controller} from 'react-hook-form'
 import Layout from 'organization/user/Layout'
-import Page from 'organization/user/Layout/Page'
 import {useEvent} from 'Event/EventProvider'
 import {useOrganization} from 'organization/OrganizationProvider'
 import {api} from 'lib/url'
@@ -21,6 +20,7 @@ import FormControl from '@material-ui/core/FormControl'
 import FormControlLabel from '@material-ui/core/FormControlLabel'
 import Switch from '@material-ui/core/Switch'
 import AreaSelect from 'organization/Event/AreaConfig/AreaSelect'
+import Page from 'organization/Event/Page'
 
 export interface TechCheckData {
   body: string
@@ -83,7 +83,6 @@ export default function TechCheckConfig() {
   return (
     <Layout>
       <Page>
-        <Title variant="h5">Tech Check</Title>
         <form onSubmit={handleSubmit(submit)}>
           <FormControl fullWidth disabled={submitting}>
             <FormControlLabel
@@ -186,12 +185,6 @@ const useSetTechCheck = () => {
 
   return (data: TechCheckData) => client.put<ObvioEvent>(url, data)
 }
-
-const Title = withStyles({
-  root: {
-    marginBottom: spacing[4],
-  },
-})(Typography)
 
 const ErrorText = withStyles({
   root: {

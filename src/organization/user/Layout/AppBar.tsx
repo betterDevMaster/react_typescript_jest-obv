@@ -1,17 +1,26 @@
 import React from 'react'
+import {makeStyles} from '@material-ui/core/styles'
 import MuiAppBar from '@material-ui/core/AppBar'
 import Toolbar from '@material-ui/core/Toolbar'
 import Menu from '@material-ui/core/Menu'
-import IconButton from '@material-ui/core/IconButton'
 import AccountCircle from '@material-ui/icons/AccountCircle'
+import People from '@material-ui/icons/People'
 import MenuItem from '@material-ui/core/MenuItem'
 import styled from 'styled-components'
 import {useHistory} from 'react-router-dom'
 import {RelativeLink} from 'lib/ui/link/RelativeLink'
 import {useOrganization} from 'organization/OrganizationProvider'
 import {useOrganizationAuth} from 'organization/auth'
+import Button from '@material-ui/core/Button'
 
 export default function AppBar() {
+  const useStyles = makeStyles((theme) => ({
+    root: {
+      backgroundColor: '#ffffff',
+    },
+  }))
+  const classes = useStyles()
+
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null)
   const {logout} = useOrganizationAuth()
   const history = useHistory()
@@ -31,15 +40,22 @@ export default function AppBar() {
   }
 
   return (
-    <MuiAppBar>
+    <MuiAppBar className={classes.root}>
       <Toolbar>
         <HomeLink to={routes.events.root} disableStyles>
           {organization.name}
         </HomeLink>
         <div>
-          <IconButton aria-haspopup="true" onClick={handleMenu} color="inherit">
-            <AccountCircle />
-          </IconButton>
+          <RelativeLink to={routes.team} disableStyles>
+            <Button startIcon={<People />}>Team</Button>
+          </RelativeLink>
+          <Button
+            startIcon={<AccountCircle />}
+            onClick={handleMenu}
+            color="default"
+          >
+            Account
+          </Button>
           <Menu
             anchorEl={anchorEl}
             anchorOrigin={{
@@ -55,16 +71,6 @@ export default function AppBar() {
             onClose={handleClose}
           >
             <MenuItem onClick={handleLogout}>Logout</MenuItem>
-            <MenuItem onClick={handleClose}>
-              <RelativeLink to={routes.events.root} disableStyles>
-                Events
-              </RelativeLink>
-            </MenuItem>
-            <MenuItem onClick={handleClose}>
-              <RelativeLink to={routes.team} disableStyles>
-                Team
-              </RelativeLink>
-            </MenuItem>
           </Menu>
         </div>
       </Toolbar>
@@ -74,4 +80,5 @@ export default function AppBar() {
 
 const HomeLink = styled(RelativeLink)`
   flex: 1;
+  color: #000000;
 `

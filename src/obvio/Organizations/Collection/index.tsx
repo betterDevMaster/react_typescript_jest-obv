@@ -28,27 +28,39 @@ export default function Collection() {
   }
 
   return (
-    <div>
-      <Header>
-        <RelativeLink to={obvioRoutes.organizations.create} disableStyles>
-          <Button variant="contained" color="primary">
-            Create
-          </Button>
-        </RelativeLink>
-      </Header>
+    <Grid>
       {organizations.map((o) => (
         <Card key={o.id} organization={o} />
       ))}
-    </div>
+    </Grid>
   )
 }
+
+const column = `minmax(270px, auto)`
+
+const Grid = styled.div`
+  display: grid;
+  grid-template-columns: auto;
+  grid-template-rows: auto;
+  grid-gap: ${(props) => props.theme.spacing[8]};
+
+  @media (min-width: ${(props) => props.theme.breakpoints.sm}) {
+    grid-template-columns: ${column} ${column};
+    grid-template-rows: auto auto;
+  }
+
+  @media (min-width: ${(props) => props.theme.breakpoints.md}) {
+    grid-template-columns: ${column} ${column} ${column};
+    grid-template-rows: auto auto auto;
+  }
+
+  @media (min-width: ${(props) => props.theme.breakpoints.lg}) {
+    grid-template-columns: ${column} ${column} ${column} ${column};
+    grid-template-rows: auto auto auto auto;
+  }
+`
 
 const EmptyBox = styled.div`
   margin-top: ${(props) => props.theme.spacing[8]};
   text-align: center;
-`
-
-const Header = styled.div`
-  text-align: right;
-  margin-bottom: ${(props) => props.theme.spacing[6]};
 `

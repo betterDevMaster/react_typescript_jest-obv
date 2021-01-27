@@ -27,7 +27,7 @@ it('should show the organization login form', async () => {
 
   const {findByLabelText, findByText} = render(<App />)
 
-  expect(await findByText(organization.name))
+  expect(await findByText(new RegExp(organization.name)))
   expect(await findByLabelText(`email`)).toBeInTheDocument()
   expect(await findByLabelText(`password`)).toBeInTheDocument()
 

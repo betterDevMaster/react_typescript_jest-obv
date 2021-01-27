@@ -1,4 +1,5 @@
 import React from 'react'
+import {makeStyles} from '@material-ui/core/styles'
 import MuiAppBar from '@material-ui/core/AppBar'
 import Toolbar from '@material-ui/core/Toolbar'
 import Menu from '@material-ui/core/Menu'
@@ -13,6 +14,13 @@ import logo from 'assets/images/logo.png'
 import {RelativeLink} from 'lib/ui/link/RelativeLink'
 
 export default function AppBar() {
+  const useStyles = makeStyles((theme) => ({
+    root: {
+      backgroundColor: '#ffffff',
+    },
+  }))
+  const classes = useStyles()
+
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null)
   const {logout} = useObvioAuth()
   const history = useHistory()
@@ -31,7 +39,7 @@ export default function AppBar() {
   }
 
   return (
-    <MuiAppBar>
+    <MuiAppBar className={classes.root}>
       <Toolbar>
         <Logo>
           <RelativeLink to={obvioRoutes.root} disableStyles>
@@ -39,7 +47,7 @@ export default function AppBar() {
           </RelativeLink>
         </Logo>
         <div>
-          <IconButton aria-haspopup="true" onClick={handleMenu} color="inherit">
+          <IconButton aria-haspopup="true" onClick={handleMenu} color="default">
             <AccountCircle />
           </IconButton>
           <Menu

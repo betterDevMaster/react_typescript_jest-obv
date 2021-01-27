@@ -1,15 +1,15 @@
-import Centered from 'lib/ui/layout/Centered'
 import React, {useEffect, useRef, useState} from 'react'
 import styled from 'styled-components'
 import {useEvent} from 'Event/EventProvider'
-import withStyles from '@material-ui/core/styles/withStyles'
-import {spacing} from 'lib/ui/theme'
+import Center from 'lib/ui/layout/Center'
 import Typography from '@material-ui/core/Typography'
 import {useForm} from 'react-hook-form'
 import {useEventAuth} from 'Event/auth'
 import TextField from '@material-ui/core/TextField'
 import Button from '@material-ui/core/Button'
 import {useSearchParams} from 'lib/url'
+import backgroundImg from 'assets/images/background_login.png'
+import logoImgVertical from 'assets/images/logo_vertical.png'
 
 export default function Login() {
   const {event} = useEvent()
@@ -47,11 +47,13 @@ export default function Login() {
   }, [token, login])
 
   return (
-    <Centered>
+    <Background>
       <Container>
-        <EventName variant="h5">{event.name}</EventName>
+        <Logo src={logoImgVertical} alt="logo_image" />
+        <div>WELCOME</div>
+        <Description>Login to your {event.name} account</Description>
         <form onSubmit={handleSubmit(submit)}>
-          <TextField
+          <StyledTextField
             label="Email"
             type="email"
             fullWidth
@@ -67,7 +69,7 @@ export default function Login() {
             error={!!errors.email}
             helperText={errors.email && errors.email.message}
           />
-          <TextField
+          <StyledTextField
             label="Password"
             type="password"
             fullWidth
@@ -84,7 +86,7 @@ export default function Login() {
             helperText={errors.password && errors.password.message}
           />
           <ErrorMessage>{error}</ErrorMessage>
-          <Button
+          <StyledButton
             variant="contained"
             fullWidth
             color="primary"
@@ -93,27 +95,12 @@ export default function Login() {
             type="submit"
           >
             Login
-          </Button>
+          </StyledButton>
         </form>
       </Container>
-    </Centered>
+    </Background>
   )
 }
-
-const Container = styled.div`
-  width: 100%;
-  padding: ${(props) => props.theme.spacing[4]};
-
-  @media (min-width: ${(props) => props.theme.breakpoints.sm}) {
-    width: 600px;
-  }
-`
-const EventName = withStyles({
-  root: {
-    textAlign: 'center',
-    marginBottom: spacing[3],
-  },
-})(Typography)
 
 function ErrorMessage(props: {children: string}) {
   if (!props.children) {
@@ -122,6 +109,48 @@ function ErrorMessage(props: {children: string}) {
 
   return <ErrorText color="error">{props.children}</ErrorText>
 }
+
+const Logo = styled.img`
+  margin-bottom: ${(props) => props.theme.spacing[12]};
+`
+
+const Description = styled.div`
+  color: ${(props) => props.theme.colors.secondary};
+  font-size: 20px;
+  font-weight: 500;
+  margin-bottom: ${(props) => props.theme.spacing[8]};
+`
+
+const Background = styled(Center)`
+  background: url(${backgroundImg});
+  background-size: cover;
+  background-position: center;
+`
+
+const StyledTextField = styled(TextField)`
+  border-radius: 14px;
+  background: #f2f5f9;
+  fieldset {
+    border: none;
+  }
+`
+
+const StyledButton = styled(Button)`
+  border-radius: 14px !important;
+  height: 50px;
+`
+
+const Container = styled.div`
+  width: 100%;
+  padding: ${(props) => props.theme.spacing[4]};
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  @media (min-width: ${(props) => props.theme.breakpoints.sm}) {
+    width: 600px;
+  }
+`
 
 const ErrorText = styled(Typography)`
   margin-bottom: ${(props) => props.theme.spacing[3]};
