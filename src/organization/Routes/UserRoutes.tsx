@@ -1,4 +1,4 @@
-import Events from 'organization/EventList'
+import EventList from 'organization/EventList'
 import CreateEventForm from 'organization/EventList/CreateEventForm'
 import {RouteEventProvider} from 'Event/EventProvider'
 import React from 'react'
@@ -23,7 +23,7 @@ export default function UserRoutes() {
         <CreateEventForm />
       </Route>
       <Route path={routes.events.root} exact>
-        <Events />
+        <EventList />
       </Route>
       <Route path={routes.team}>
         <Team />

@@ -10,9 +10,12 @@ export const breakpoints = {
 
 export const colors = {
   primary: '#3490DC',
-  secondary: '#f50057',
+  secondary: '#2066a7',
   border: '#e2e2e2',
   error: red[500],
+  text: {
+    muted: '#B1B1B1',
+  },
 }
 
 export const spacing = Array(60)
@@ -23,6 +26,9 @@ export const muiTheme = createMuiTheme({
   palette: {
     primary: {
       main: colors.primary,
+    },
+    secondary: {
+      main: colors.secondary,
     },
   },
   overrides: {

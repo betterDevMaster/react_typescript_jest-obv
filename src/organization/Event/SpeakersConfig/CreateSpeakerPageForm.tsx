@@ -7,10 +7,7 @@ import {useOrganization} from 'organization/OrganizationProvider'
 import {api} from 'lib/url'
 import {ObvioEvent} from 'Event'
 import Layout from 'organization/user/Layout'
-import Page from 'organization/user/Layout/Page'
-import {withStyles} from '@material-ui/core/styles'
-import {spacing} from 'lib/ui/theme'
-import Typography from '@material-ui/core/Typography'
+import Page from 'organization/Event/Page'
 
 type SpeakerPageData = {
   title: string
@@ -37,7 +34,6 @@ export default function CreateSpeakerPageForm() {
   return (
     <Layout>
       <Page>
-        <Title variant="h5">Speakers</Title>
         <form onSubmit={handleSubmit(submit)}>
           <TextField
             name="title"
@@ -64,9 +60,3 @@ export default function CreateSpeakerPageForm() {
     </Layout>
   )
 }
-
-const Title = withStyles({
-  root: {
-    marginBottom: spacing[4],
-  },
-})(Typography)

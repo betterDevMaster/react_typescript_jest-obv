@@ -12,13 +12,17 @@ import RoomList, {useRooms} from 'organization/Event/AreaConfig/RoomList'
 import {useArea} from 'organization/Event/AreaConfig/AreaProvider'
 import {useAreaRoutes} from 'organization/Event/AreaConfig/AreaRoutes'
 import Layout from 'organization/user/Layout'
-import Page from 'organization/user/Layout/Page'
 import React, {useEffect, useState} from 'react'
 import Tabs from '@material-ui/core/Tabs'
 import Tab from '@material-ui/core/Tab'
 import TabPanel from 'lib/ui/tabs/TabPanel'
 import AttendeeList from 'organization/Event/AreaConfig/AttendeeList'
 import {useHistory} from 'react-router-dom'
+import Page from 'organization/Event/Page'
+import {useOrganization} from 'organization/OrganizationProvider'
+import {useEventRoutes} from 'organization/Event/EventRoutes'
+import {useEvent} from 'Event/EventProvider'
+import {useBreadcrumbs} from 'lib/ui/BreadcrumbProvider'
 
 export const ATTENDEES_TAB = 'attendees'
 
@@ -28,6 +32,22 @@ export default function Area(props: {tab?: typeof ATTENDEES_TAB}) {
   const [tabIndex, setTabIndex] = useState(0)
   const history = useHistory()
   const {rooms, loading} = useRooms()
+  const {event} = useEvent()
+  const {routes: orgRoutes} = useOrganization()
+  const eventRoutes = useEventRoutes()
+  const areaRoutes = useAreaRoutes()
+
+  useBreadcrumbs([
+    {
+      title: 'Events',
+      url: orgRoutes.events.root,
+    },
+    {
+      title: event.name,
+      url: eventRoutes.root,
+    },
+    {title: area.name, url: areaRoutes.root},
+  ])
 
   useEffect(() => {
     if (props.tab === ATTENDEES_TAB) {
@@ -58,7 +78,7 @@ export default function Area(props: {tab?: typeof ATTENDEES_TAB}) {
   return (
     <Layout>
       <Page>
-        <Title variant="h5">Area: {area.name}</Title>
+        <Title variant="h5">{area.name}</Title>
         <FormControlLabel
           disabled={processing}
           control={

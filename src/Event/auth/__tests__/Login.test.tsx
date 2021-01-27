@@ -30,7 +30,7 @@ it('should show event login form', async () => {
     expect(mockGet).toBeCalledTimes(1)
   })
 
-  expect(await findByText(event.name))
+  expect(await findByText(new RegExp(event.name)))
   expect(await findByLabelText(`email`)).toBeInTheDocument()
   expect(await findByLabelText(`password`)).toBeInTheDocument()
 

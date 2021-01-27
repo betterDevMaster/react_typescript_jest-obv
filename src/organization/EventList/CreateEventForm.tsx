@@ -16,6 +16,7 @@ import {Organization} from 'organization'
 import Page from 'organization/user/Layout/Page'
 import {ObvioEvent} from 'Event'
 import Layout from 'organization/user/Layout'
+import {useBreadcrumbs} from 'lib/ui/BreadcrumbProvider'
 
 interface CreateEventData {
   name: string
@@ -31,6 +32,8 @@ export default function CreateEventForm() {
   >(null)
   const history = useHistory()
   const {routes, organization, client} = useOrganization()
+
+  useBreadcrumbs([{title: 'Events', url: routes.events.root}])
 
   const goToEvents = () => {
     history.push(routes.events.root)

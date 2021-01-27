@@ -21,15 +21,16 @@ export async function goToDashboardConfig(options: {event?: ObvioEvent} = {}) {
   // Go to event
   expect(await findByText(event.name)).toBeInTheDocument()
   mockGet.mockImplementationOnce(() => Promise.resolve({data: event}))
-  user.click(await findByLabelText(`view ${event.name}`))
-
-  // Configure dashboard
-  user.click(await findByLabelText('configure dashboard'))
 
   // Dashboard requests
+  mockGet.mockImplementationOnce(() => Promise.resolve({data: []})) // Areas
   mockGet.mockImplementationOnce(() => Promise.resolve({data: [fakeAction()]})) // Platform actions
   mockGet.mockImplementationOnce(() => Promise.resolve({data: []})) // Custom actions
   mockGet.mockImplementationOnce(() => Promise.resolve({data: defaultScore})) // Custom actions
+
+  user.click(await findByLabelText(`view ${event.name}`))
+  // Configure dashboard
+  user.click(await findByLabelText('configure dashboard'))
 
   return {findByText, findByLabelText, ...otherRes}
 }

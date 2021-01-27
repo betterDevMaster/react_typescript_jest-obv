@@ -1,4 +1,4 @@
-import Centered from 'lib/ui/layout/Centered'
+import CenteredBox from 'lib/ui/layout/Center'
 import styled from 'styled-components'
 import React, {useState} from 'react'
 import TextField from '@material-ui/core/TextField'
@@ -12,6 +12,8 @@ import Grid from '@material-ui/core/Grid'
 import {useForm} from 'react-hook-form'
 import {RegistrationData} from 'auth/auth-client'
 import {RelativeLink} from 'lib/ui/link/RelativeLink'
+import backgroundImg from 'assets/images/background_login.png'
+import logoImgVertical from 'assets/images/logo_vertical.png'
 
 export default function Registration() {
   const {register: registerForm, handleSubmit, errors, watch} = useForm()
@@ -29,12 +31,15 @@ export default function Registration() {
   }
 
   return (
-    <Centered>
+    <StyledCenteredBox>
       <Container>
+        <Logo src={logoImgVertical} alt="logo_image" />
+        <WelcomeText>WELCOME</WelcomeText>
+        <Description>Create your Obvio account</Description>
         <form onSubmit={handleSubmit(submit)}>
           <Grid container spacing={2}>
             <Grid item xs={12} sm={6}>
-              <TextField
+              <StyledTextField
                 label="First Name"
                 name="firstName"
                 fullWidth
@@ -50,7 +55,7 @@ export default function Registration() {
               />
             </Grid>
             <Grid item xs={12} sm={6}>
-              <TextField
+              <StyledTextField
                 label="Last Name"
                 name="lastName"
                 fullWidth
@@ -66,7 +71,7 @@ export default function Registration() {
               />
             </Grid>
           </Grid>
-          <TextField
+          <StyledTextField
             label="Email"
             type="email"
             fullWidth
@@ -81,7 +86,7 @@ export default function Registration() {
             error={!!errors.email}
             helperText={errors.email && errors.email.message}
           />
-          <TextField
+          <StyledTextField
             label="Password"
             type="password"
             fullWidth
@@ -96,7 +101,7 @@ export default function Registration() {
             error={!!errors.password}
             helperText={errors.password && errors.password.message}
           />
-          <TextField
+          <StyledTextField
             label="Confirm Password"
             type="password"
             fullWidth
@@ -116,7 +121,7 @@ export default function Registration() {
             }
           />
           <Error>{error}</Error>
-          <Button
+          <StyledButton
             variant="contained"
             fullWidth
             color="primary"
@@ -125,14 +130,16 @@ export default function Registration() {
             aria-label="register"
           >
             Register
-          </Button>
+          </StyledButton>
           <LoginText>
             Already have an account?{' '}
-            <RelativeLink to={obvioRoutes.login}>Login instead</RelativeLink>
+            <StyledRelativeLink to={obvioRoutes.login}>
+              Login instead
+            </StyledRelativeLink>
           </LoginText>
         </form>
       </Container>
-    </Centered>
+    </StyledCenteredBox>
   )
 }
 
@@ -144,9 +151,48 @@ function Error(props: {children: string}) {
   return <ErrorText color="error">{props.children}</ErrorText>
 }
 
+const Logo = styled.img`
+  margin-bottom: 50px;
+`
+
+const WelcomeText = styled.div``
+
+const Description = styled.div`
+  color: #2066a7;
+  font-size: 20px;
+  font-weight: 500;
+  margin-bottom: 30px;
+`
+
+const StyledCenteredBox = styled(CenteredBox)`
+  background: url(${backgroundImg});
+  background-size: cover;
+  background-position: center;
+`
+
+const StyledTextField = styled(TextField)`
+  border-radius: 14px;
+  background: #f2f5f9;
+  fieldset {
+    border: none;
+  }
+`
+
+const StyledButton = styled(Button)`
+  border-radius: 14px !important;
+  height: 50px;
+`
+
+const StyledRelativeLink = styled(RelativeLink)`
+  color: #2066a7;
+`
+
 const Container = styled.div`
   width: 100%;
   padding: ${(props) => props.theme.spacing[4]};
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 
   @media (min-width: ${(props) => props.theme.breakpoints.sm}) {
     width: 600px;

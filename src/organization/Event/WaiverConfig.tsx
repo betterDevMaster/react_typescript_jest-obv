@@ -5,7 +5,6 @@ import withStyles from '@material-ui/core/styles/withStyles'
 import TextField from '@material-ui/core/TextField'
 import Typography from '@material-ui/core/Typography'
 import {spacing} from 'lib/ui/theme'
-import Page from 'organization/user/Layout/Page'
 import React, {useEffect, useRef, useState} from 'react'
 import {useForm} from 'react-hook-form'
 import CKEditor from '@ckeditor/ckeditor5-react'
@@ -22,6 +21,7 @@ import {waiverLogoPath} from 'Event/Step2/Waiver'
 import {fetchFile} from 'lib/http-client'
 import Layout from 'organization/user/Layout'
 import {useEventRoutes} from 'organization/Event/EventRoutes'
+import Page from 'organization/Event/Page'
 
 const imageUploadId = 'waived-logo-upload'
 
@@ -109,7 +109,6 @@ export default function WaiverConfig() {
   return (
     <Layout>
       <Page>
-        <Title variant="h5">Event Waiver</Title>
         <form onSubmit={handleSubmit(submit)}>
           <TextField
             name="title"
@@ -232,12 +231,6 @@ function useSetWaiver() {
     })
   }
 }
-
-const Title = withStyles({
-  root: {
-    marginBottom: spacing[4],
-  },
-})(Typography)
 
 const LogoLabel = withStyles({
   root: {

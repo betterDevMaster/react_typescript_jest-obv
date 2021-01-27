@@ -1,8 +1,6 @@
 import React, {useState} from 'react'
 import styled from 'styled-components'
 import Layout from 'organization/user/Layout'
-import Page from 'organization/user/Layout/Page'
-import Typography from '@material-ui/core/Typography'
 import {spacing} from 'lib/ui/theme'
 import withStyles from '@material-ui/core/styles/withStyles'
 import {Attendee} from 'Event/attendee'
@@ -20,6 +18,7 @@ import {
 } from 'organization/Event/AttendeeManagement/attendees'
 import Alert from '@material-ui/lab/Alert'
 import {useExportAttendees} from 'organization/Event/AttendeeManagement/attendee-csv'
+import Page from 'organization/Event/Page'
 
 export default function AttendeeManagement() {
   const {
@@ -48,7 +47,6 @@ export default function AttendeeManagement() {
   return (
     <Layout>
       <Page>
-        <Title variant="h5">Attendee Management</Title>
         <ExportButton
           variant="outlined"
           color="primary"
@@ -141,12 +139,6 @@ function Error(props: {children: string | null; onClose: () => void}) {
     </StyledAlert>
   )
 }
-
-const Title = withStyles({
-  root: {
-    marginBottom: spacing[4],
-  },
-})(Typography)
 
 const ExportButton = withStyles({
   root: {

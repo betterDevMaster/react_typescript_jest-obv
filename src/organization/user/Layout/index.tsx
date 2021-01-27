@@ -1,22 +1,24 @@
 import Container from '@material-ui/core/Container'
-import withStyles from '@material-ui/core/styles/withStyles'
-import {spacing} from 'lib/ui/theme'
+import styled from 'styled-components'
+import NavBar from 'lib/ui/layout/NavBar'
 import AppBar from 'organization/user/Layout/AppBar'
 import React from 'react'
 
-export default function Layout(props: {children: React.ReactElement}) {
+export default function Layout(props: {
+  children: React.ReactElement
+  navbarRight?: React.ReactElement
+}) {
   return (
     <>
       <AppBar />
-      <StyledContainer maxWidth={false} disableGutters>
+      <StyledNavBar navbarRight={props.navbarRight} />
+      <Container maxWidth={false} disableGutters>
         {props.children}
-      </StyledContainer>
+      </Container>
     </>
   )
 }
 
-const StyledContainer = withStyles({
-  root: {
-    paddingTop: spacing[16], // Account for fixed app bar height
-  },
-})(Container)
+const StyledNavBar = styled(NavBar)`
+  padding-top: ${(props) => props.theme.spacing[16]};
+`
