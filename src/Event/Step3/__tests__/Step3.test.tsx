@@ -80,22 +80,30 @@ it('should skip step 3 if disabled', async () => {
   expect(await findByLabelText('welcome')).toBeInTheDocument()
 })
 
-it('should skip step 3 without config', async () => {
-  const completedStep2 = fakeAttendee({
+it('should should show join url error', async () => {
+  const attendee = fakeAttendee({
     has_password: true,
     waiver: faker.internet.url(),
     tech_check_completed_at: null,
   })
 
-  const withoutTechCheckConfig = fakeEvent({
-    tech_check: null,
+  const content = faker.lorem.paragraph()
+  const body = `<p>${content}</p>`
+  const event = fakeEvent({
+    tech_check: fakeTechCheck({body}),
   })
 
-  const {findByLabelText} = await loginToEventSite({
-    attendee: completedStep2,
-    event: withoutTechCheckConfig,
+  const error = faker.lorem.sentence()
+
+  const {findByLabelText, findByText} = await loginToEventSite({
+    attendee,
+    event,
+    beforeLogin: () => {
+      mockGet.mockImplementationOnce(() => Promise.reject(error))
+    },
   })
 
-  // Has welcome text
-  expect(await findByLabelText('welcome')).toBeInTheDocument()
+  expect(await findByLabelText('start tech check')).toBeInTheDocument()
+
+  expect(await findByText(new RegExp(error))).toBeInTheDocument()
 })

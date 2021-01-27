@@ -8,16 +8,21 @@ import grey from '@material-ui/core/colors/grey'
 import {Button} from '@material-ui/core'
 import {api} from 'lib/url'
 import {useEvent} from 'Event/EventProvider'
+import {ResponseError} from 'lib/api-client'
 
 export default function TechCheck(props: {user: User} & TechCheckProps) {
   const [joinUrl, setJoinUrl] = useState<null | string>(null)
   const {event, client} = useEvent()
   const {techCheck} = props
+  const [error, setError] = useState<ResponseError | null>(null)
 
   useEffect(() => {
     const url = api(`/events/${event.slug}/areas/${techCheck.area.id}/join`)
 
-    client.get<{url: string}>(url).then(({url}) => setJoinUrl(url))
+    client
+      .get<{url: string}>(url)
+      .then(({url}) => setJoinUrl(url))
+      .catch(setError)
   }, [client, event, techCheck])
 
   const launchMeeting = () => {
@@ -48,9 +53,25 @@ export default function TechCheck(props: {user: User} & TechCheckProps) {
           >
             Start Tech Check
           </Button>
+          <Error>{error}</Error>
         </div>
       </Container>
     </SimpleBlogPage>
+  )
+}
+
+function Error(props: {children: ResponseError | null}) {
+  if (!props.children) {
+    return null
+  }
+
+  return (
+    <ErrorText>
+      Tech Check seems to be offline at the moment. Refresh your page to try
+      again, or contact us for some help.
+      <br />
+      <ErrorReason>Reason: {props.children.message}</ErrorReason>
+    </ErrorText>
   )
 }
 
@@ -60,4 +81,15 @@ const Body = styled.div`
   border: 1px solid ${grey[300]};
   padding: 0 ${(props) => props.theme.spacing[4]};
   margin-bottom: ${(props) => props.theme.spacing[4]};
+`
+
+const ErrorText = styled.p`
+  margin-top: ${(props) => props.theme.spacing[4]};
+  text-align: center;
+  color: ${(props) => props.theme.colors.error};
+`
+
+const ErrorReason = styled.span`
+  font-size: 12px;
+  text-decoration: underline;
 `
