@@ -5,6 +5,7 @@ import Toolbar from '@material-ui/core/Toolbar'
 import Menu from '@material-ui/core/Menu'
 import AccountCircle from '@material-ui/icons/AccountCircle'
 import People from '@material-ui/icons/People'
+import Event from '@material-ui/icons/Event'
 import MenuItem from '@material-ui/core/MenuItem'
 import styled from 'styled-components'
 import {useHistory} from 'react-router-dom'
@@ -46,6 +47,9 @@ export default function AppBar() {
           {organization.name}
         </HomeLink>
         <div>
+          <RelativeLink to={routes.events.root} disableStyles>
+            <Button startIcon={<Event />}>Events</Button>
+          </RelativeLink>
           <RelativeLink to={routes.team} disableStyles>
             <Button startIcon={<People />}>Team</Button>
           </RelativeLink>
