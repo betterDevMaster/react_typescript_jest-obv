@@ -11,6 +11,7 @@ import {usePoints} from 'Event/PointsProvider'
 import {usePlatformActions} from 'Event/ActionsProvider/platform-actions'
 import {AbsoluteLink} from 'lib/ui/link/AbsoluteLink'
 import {storage} from 'lib/url'
+import Section from 'Event/template/SimpleBlog/Dashboard/Sidebar/Section'
 
 export interface ResourceList {
   description: string
@@ -46,7 +47,7 @@ export function ResourceList() {
   }
 
   return (
-    <>
+    <Section>
       <EditComponent component={{type: RESOURCE_LIST}}>
         <Heading aria-label="resources">RESOURCES:</Heading>
       </EditComponent>
@@ -68,7 +69,7 @@ export function ResourceList() {
       <EditModeOnly>
         <StyledAddResourceButton />
       </EditModeOnly>
-    </>
+    </Section>
   )
 }
 

@@ -2,7 +2,7 @@ import React from 'react'
 import styled from 'styled-components'
 
 export default function Section(props: {
-  children: React.ReactElement
+  children: React.ReactNode
   className?: string
 }) {
   return <Box className={props.className}>{props.children}</Box>

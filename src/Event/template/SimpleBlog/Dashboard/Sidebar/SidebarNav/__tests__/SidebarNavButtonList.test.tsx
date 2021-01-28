@@ -12,6 +12,7 @@ import {mockRxJsAjax} from 'store/__utils__/MockStoreProvider'
 import {wait} from '@testing-library/react'
 import {emptyActions, render} from '__utils__/render'
 import {defaultScore} from 'Event/PointsProvider/__utils__/StaticPointsProvider'
+import NavButton from 'Event/Dashboard/components/NavButton'
 
 const mockPost = mockRxJsAjax.post as jest.Mock
 
@@ -91,6 +92,35 @@ it('should add a new sidebar nav button', async () => {
   const [url, data] = mockPost.mock.calls[0]
   expect(url).toMatch(`/events/${event.slug}`)
   expect(data.template.sidebarNav.ids.length).toBe(numButtons + 1)
+})
+
+it('should add a new button when there are none', async () => {
+  const buttons: NavButton[] = []
+
+  const sidebarNavButtons = createEntityList(buttons)
+  const event = fakeEvent({
+    template: fakeSimpleBlog({sidebarNav: sidebarNavButtons}),
+  })
+
+  const {findAllByLabelText, findByLabelText} = render(
+    <Dashboard isEditMode={true} user={fakeUser()} />,
+    {event, withRouter: true, actions: emptyActions, score: defaultScore},
+  )
+
+  const buttonEls = () => findAllByLabelText('sidebar nav button')
+
+  fireEvent.click(await findByLabelText('add sidebar nav button'))
+
+  expect((await buttonEls()).length).toBe(1)
+
+  // Saved
+  await wait(() => {
+    expect(mockPost).toHaveBeenCalledTimes(1)
+  })
+
+  const [url, data] = mockPost.mock.calls[0]
+  expect(url).toMatch(`/events/${event.slug}`)
+  expect(data.template.sidebarNav.ids.length).toBe(1)
 })
 
 it('should edit the selected button', async () => {

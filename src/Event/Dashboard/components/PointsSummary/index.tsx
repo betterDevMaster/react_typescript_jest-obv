@@ -7,6 +7,7 @@ import styled from 'styled-components'
 import {eventRoutes} from 'Event/Routes'
 import {RelativeLink} from 'lib/ui/link/RelativeLink'
 import {usePoints} from 'Event/PointsProvider'
+import Section from 'Event/template/SimpleBlog/Dashboard/Sidebar/Section'
 
 export type Points = {
   description: string
@@ -28,7 +29,7 @@ export default function PointsSummary() {
   }
 
   return (
-    <div>
+    <Section>
       <EditComponent component={{type: POINTS_SUMMARY}}>
         <>
           <NumPointsText aria-label="points summary">
@@ -43,7 +44,7 @@ export default function PointsSummary() {
           </p>
         </>
       </EditComponent>
-    </div>
+    </Section>
   )
 }
 

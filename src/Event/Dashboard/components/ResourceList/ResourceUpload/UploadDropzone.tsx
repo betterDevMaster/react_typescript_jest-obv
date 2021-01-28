@@ -2,9 +2,9 @@ import React from 'react'
 import {useDropzone} from 'react-dropzone'
 import styled from 'styled-components'
 import Paper from '@material-ui/core/Paper'
+import {MAX_FILE_SIZE_BYTES} from 'Event/Dashboard/components/ResourceList/ResourceUpload'
 
 export const ACCEPTED_FILE_TYPES = ['image/*', '.pdf']
-export const MAX_FILE_SIZE_MB = 2000000
 export const MAX_NUM_FILES = 1
 
 export default function UploadDropzone(props: {
@@ -17,7 +17,7 @@ export default function UploadDropzone(props: {
   const {getRootProps, getInputProps} = useDropzone({
     onDrop: handleDrop,
     accept: ACCEPTED_FILE_TYPES,
-    maxSize: MAX_FILE_SIZE_MB,
+    maxSize: MAX_FILE_SIZE_BYTES,
     maxFiles: MAX_NUM_FILES,
   })
   const {ref, ...rootProps} = getRootProps()
