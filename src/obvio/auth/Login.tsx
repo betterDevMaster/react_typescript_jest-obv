@@ -5,10 +5,10 @@ import Center from 'lib/ui/layout/Center'
 import React, {useState} from 'react'
 import {useObvioAuth} from 'obvio/auth'
 import Typography from '@material-ui/core/Typography'
-import withStyles from '@material-ui/core/styles/withStyles'
-import {colors, spacing} from 'lib/ui/theme'
-import {obvioRoutes} from 'obvio/Routes'
-import {RelativeLink} from 'lib/ui/link/RelativeLink'
+// import withStyles from '@material-ui/core/styles/withStyles'
+// import {colors, spacing} from 'lib/ui/theme'
+// import {obvioRoutes} from 'obvio/Routes'
+// import {RelativeLink} from 'lib/ui/link/RelativeLink'
 import {useForm} from 'react-hook-form'
 import backgroundImg from 'assets/images/background_login.png'
 import logoImgVertical from 'assets/images/logo_vertical.png'
@@ -81,7 +81,7 @@ export default function Login() {
             Login
           </StyledButton>
         </form>
-        <CreateAccountText>
+        {/* <CreateAccountText>
           Don't have an account yet?{' '}
           <StyledRelativeLink
             to={obvioRoutes.registration}
@@ -89,7 +89,7 @@ export default function Login() {
           >
             Create one now
           </StyledRelativeLink>
-        </CreateAccountText>
+        </CreateAccountText> */}
       </Container>
     </Background>
   )
@@ -133,9 +133,9 @@ const StyledButton = styled(Button)`
   height: 50px;
 `
 
-const StyledRelativeLink = styled(RelativeLink)`
-  color: #2066a7;
-`
+// const StyledRelativeLink = styled(RelativeLink)`
+//   color: #2066a7;
+// `
 
 const Container = styled.div`
   width: 100%;
@@ -153,9 +153,9 @@ const ErrorText = styled(Typography)`
   margin-bottom: ${(props) => props.theme.spacing[3]};
 `
 
-const CreateAccountText = withStyles({
-  root: {
-    marginTop: spacing[3],
-    color: colors.text.muted,
-  },
-})(Typography)
+// const CreateAccountText = withStyles({
+//   root: {
+//     marginTop: spacing[3],
+//     color: colors.text.muted,
+//   },
+// })(Typography)
