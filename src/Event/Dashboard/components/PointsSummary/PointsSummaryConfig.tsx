@@ -35,6 +35,15 @@ export function PointsSummaryConfig() {
   return (
     <>
       <TextField
+        value={points?.headerImage || ''}
+        label="Image"
+        fullWidth
+        onChange={onChangeStringHandler(update('headerImage'))}
+        inputProps={{
+          'aria-label': 'edit header image',
+        }}
+      />
+      <TextField
         value={points?.description || ''}
         label="Description"
         multiline
@@ -73,6 +82,7 @@ function updatePoints<T extends keyof Points>(
 ): Points {
   if (!points) {
     return {
+      headerImage: '',
       description: '',
       unit: '',
       [key]: value,
