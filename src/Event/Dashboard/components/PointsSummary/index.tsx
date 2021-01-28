@@ -10,6 +10,7 @@ import {usePoints} from 'Event/PointsProvider'
 import Section from 'Event/template/SimpleBlog/Dashboard/Sidebar/Section'
 
 export type Points = {
+  headerImage: string
   description: string
   unit: string
 }
@@ -32,6 +33,7 @@ export default function PointsSummary() {
     <Section>
       <EditComponent component={{type: POINTS_SUMMARY}}>
         <>
+          <HeaderImage src={summary.headerImage} alt="Points Image" />
           <NumPointsText aria-label="points summary">
             You've earned {score.points} {summary.unit}!
           </NumPointsText>
@@ -56,6 +58,12 @@ const NumPointsText = styled.span`
   @media (min-width: ${(props) => props.theme.breakpoints.md}) {
     text-align: center;
   }
+`
+
+const HeaderImage = styled.img`
+  max-width: 100%;
+  max-height: 100%;
+  margin-bottom: ${(props) => props.theme.spacing[3]};
 `
 
 const StyledSetPointsButton = styled(SetPointsButton)`
