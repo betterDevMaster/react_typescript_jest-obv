@@ -35,6 +35,9 @@ export const RESOURCE_ITEM = 'Resource Item'
 export const RESOURCE_ICON = {
   pdf: 'picture_as_pdf',
   attachment: 'attachment',
+  people: 'people',
+  image: 'image',
+  photoLibrary: 'photo_library',
 }
 
 export function ResourceList() {
