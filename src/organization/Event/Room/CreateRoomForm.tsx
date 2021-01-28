@@ -6,7 +6,6 @@ import {useOrganization} from 'organization/OrganizationProvider'
 import {useState} from 'react'
 import {useForm} from 'react-hook-form'
 import Layout from 'organization/user/Layout'
-import Page from 'organization/user/Layout/Page'
 import {withStyles} from '@material-ui/core'
 import {spacing} from 'lib/ui/theme'
 import Typography from '@material-ui/core/Typography'
@@ -21,6 +20,7 @@ import FormControlLabel from '@material-ui/core/FormControlLabel'
 import {onChangeCheckedHandler} from 'lib/dom'
 import Switch from '@material-ui/core/Switch'
 import {useAreaRoutes} from 'organization/Event/AreaConfig/AreaRoutes'
+import Page from 'organization/Event/Page'
 
 interface CreateRoomData {
   name: string

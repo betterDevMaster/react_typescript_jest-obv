@@ -15,8 +15,6 @@ import {routesWithValue} from 'lib/url'
 import {AreaProvider} from 'organization/Event/AreaConfig/AreaProvider'
 import AreaRoutes from 'organization/Event/AreaConfig/AreaRoutes'
 import PointsConfig from 'organization/Event/PointsConfig'
-import {OrganizationActionsProvider} from 'Event/ActionsProvider'
-import {PointsProvider} from 'Event/PointsProvider'
 
 export function useEventRoutes(event?: ObvioEvent) {
   const {routes: organizationRoutes} = useOrganization()
@@ -35,11 +33,7 @@ export default function EventRoutes() {
         <Event />
       </Route>
       <Route path={routes.events[':event'].dashboard}>
-        <OrganizationActionsProvider>
-          <PointsProvider>
-            <DashboardConfig />
-          </PointsProvider>
-        </OrganizationActionsProvider>
+        <DashboardConfig />
       </Route>
       <Route path={routes.events[':event'].waiver}>
         <WaiverConfig />
@@ -57,9 +51,7 @@ export default function EventRoutes() {
         <SpeakerConfig />
       </Route>
       <Route path={routes.events[':event'].points}>
-        <OrganizationActionsProvider>
-          <PointsConfig />
-        </OrganizationActionsProvider>
+        <PointsConfig />
       </Route>
       <Route path={routes.events[':event'].areas.create}>
         <CreateAreaForm />

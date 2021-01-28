@@ -6,6 +6,8 @@ import AttendeeProfileProvider from 'Event/Dashboard/component-rules/AttendeePro
 import CreateTemplateForm from 'organization/Event/DashboardConfig/CreateDashboardForm'
 import Layout from 'organization/user/Layout'
 import Page from 'organization/Event/Page'
+import {PointsProvider} from 'Event/PointsProvider'
+import {OrganizationActionsProvider} from 'Event/ActionsProvider'
 
 export default function DashboardConfig() {
   const {event} = useEvent()
@@ -22,9 +24,13 @@ export default function DashboardConfig() {
   return (
     <Layout>
       <Page disablePadding>
-        <AttendeeProfileProvider groups={{}} tags={[]}>
-          <Dashboard user={user} isEditMode={true} />
-        </AttendeeProfileProvider>
+        <OrganizationActionsProvider>
+          <PointsProvider>
+            <AttendeeProfileProvider groups={{}} tags={[]}>
+              <Dashboard user={user} isEditMode={true} />
+            </AttendeeProfileProvider>
+          </PointsProvider>
+        </OrganizationActionsProvider>
       </Page>
     </Layout>
   )
