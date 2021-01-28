@@ -6,6 +6,7 @@ import EditComponent from 'Event/Dashboard/editor/views/EditComponent'
 import EditModeOnly from 'Event/Dashboard/editor/views/EditModeOnly'
 import AddAgendaEventButton from 'Event/Dashboard/components/AgendaList/AddAgendaEventButton'
 import {useTemplate} from 'Event/Dashboard/state/TemplateProvider'
+import Section from 'Event/template/SimpleBlog/Dashboard/Sidebar/Section'
 
 export const AGENDA = 'Agenda'
 
@@ -29,7 +30,8 @@ export default function AgendaList() {
   }
 
   return (
-    <>
+    <Section>
+
       <Heading>AGENDA:</Heading>
       {agendas.map((agenda, index) => (
         <EditComponent component={{type: AGENDA, id: index}} key={index}>
@@ -42,7 +44,7 @@ export default function AgendaList() {
       <EditModeOnly>
         <StyledAddAgendaEventButton />
       </EditModeOnly>
-    </>
+    </Section>
   )
 }
 
