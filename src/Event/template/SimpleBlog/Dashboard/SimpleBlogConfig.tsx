@@ -13,7 +13,7 @@ export type SimpleBlogConfig = {
 }
 
 export function SimpleBlogConfig() {
-  const dashboard = useTemplate()
+  const template = useTemplate()
   const updateTemplate = useUpdateTemplate()
 
   const update = <T extends keyof SimpleBlog>(key: T) => (
@@ -27,7 +27,16 @@ export function SimpleBlogConfig() {
   return (
     <>
       <TextField
-        value={dashboard.logo}
+        value={template.headerBackground}
+        label="Header Background"
+        fullWidth
+        onChange={onChangeStringHandler(update('headerBackground'))}
+        inputProps={{
+          'aria-label': 'header background input',
+        }}
+      />
+      <TextField
+        value={template.logo}
         label="Logo URL"
         fullWidth
         onChange={onChangeStringHandler(update('logo'))}
@@ -37,7 +46,7 @@ export function SimpleBlogConfig() {
       />
       <ColorPicker
         label="Primary Color"
-        color={dashboard.primaryColor}
+        color={template.primaryColor}
         onPick={update('primaryColor')}
       />
     </>

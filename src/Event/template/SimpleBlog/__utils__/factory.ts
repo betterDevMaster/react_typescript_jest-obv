@@ -19,6 +19,7 @@ export const fakeSimpleBlog = (overrides?: Partial<SimpleBlog>): SimpleBlog => {
     version: 1,
     name: SIMPLE_BLOG,
     title: faker.company.companyName(),
+    headerBackground: null,
     logo: 'https://tax.live/success_summit/images/virtual-2020-logo.png',
     welcomeText: 'WELCOME TO THE DASHBOARD',
     primaryColor: '#14aecf',

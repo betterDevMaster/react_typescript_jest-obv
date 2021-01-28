@@ -18,6 +18,7 @@ export interface SimpleBlog {
   mainNav: EntityList<NavButtonWithSize>
   primaryColor: string
   ticketRibbons: TicketRibbon[]
+  headerBackground: string | null
   logo: string
   welcomeText: string
   emojiList: EmojiList
@@ -49,6 +50,7 @@ export const createSimpleBlog = (): SimpleBlog => ({
   },
   primaryColor: '#000000',
   ticketRibbons: [],
+  headerBackground: null,
   logo: '',
   welcomeText: 'WELCOME TO YOUR DASHBOARD',
   emojiList: {

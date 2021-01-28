@@ -12,10 +12,10 @@ export default function Header(props: {
   menuVisible: boolean
   'aria-label'?: string
 }) {
-  const {logo, title} = useTemplate()
+  const {logo, title, headerBackground} = useTemplate()
 
   return (
-    <Box aria-label={props['aria-label']}>
+    <Box aria-label={props['aria-label']} background={headerBackground}>
       <Container maxWidth="lg">
         <Layout>
           <Side>
@@ -51,9 +51,13 @@ const Side = styled.div`
   width: 42px;
 `
 
-const Box = styled.div`
+const Box = styled.div<{background: string | null}>`
   box-shadow: 20px 20px 50px #ddd;
   margin-bottom: 60px;
+  background: ${(props) =>
+    props.background
+      ? `linear-gradient(rgba(0, 0, 0, 0.6), rgba(2, 0, 0, 0.6)), url(${props.background})`
+      : '#FFFFFF'};
 `
 
 const Middle = styled.div`
