@@ -4,6 +4,7 @@ import SidebarNavButton from 'Event/template/SimpleBlog/Dashboard/Sidebar/Sideba
 import NewSidebarNavButton from 'Event/template/SimpleBlog/Dashboard/Sidebar/NewSidebarNavButton'
 import EditModeOnly from 'Event/Dashboard/editor/views/EditModeOnly'
 import {useTemplate} from 'Event/Dashboard/state/TemplateProvider'
+import Section from 'Event/template/SimpleBlog/Dashboard/Sidebar/Section'
 
 export const SIDEBAR_NAV_BUTTON = 'Sidebar Nav Button'
 
@@ -12,11 +13,15 @@ export default function SidebarNav() {
 
   const hasButtons = buttons.ids.length > 0
   if (!hasButtons) {
-    return null
+    return (
+      <EditModeOnly>
+        <StyledNewSidebarNavButton />
+      </EditModeOnly>
+    )
   }
 
   return (
-    <>
+    <Section>
       {buttons.ids.map((id) => {
         const button = buttons.entities[id]
         return (
@@ -32,7 +37,7 @@ export default function SidebarNav() {
       <EditModeOnly>
         <StyledNewSidebarNavButton />
       </EditModeOnly>
-    </>
+    </Section>
   )
 }
 
