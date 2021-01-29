@@ -1,4 +1,5 @@
 import {useOrganizationAuth} from 'organization/auth'
+import styled from 'styled-components'
 import Dashboard from 'Event/Dashboard'
 import {useEvent} from 'Event/EventProvider'
 import React from 'react'
@@ -24,7 +25,9 @@ export default function DashboardConfig() {
   return (
     <Layout>
       <Page disablePadding>
-        <OrganizationActionsProvider>
+        <OrganizationActionsProvider
+          loader={<LoadingText>loading...</LoadingText>}
+        >
           <PointsProvider>
             <AttendeeProfileProvider groups={{}} tags={[]}>
               <Dashboard user={user} isEditMode={true} />
@@ -35,3 +38,7 @@ export default function DashboardConfig() {
     </Layout>
   )
 }
+
+const LoadingText = styled.div`
+  padding: ${(props) => props.theme.spacing[6]};
+`

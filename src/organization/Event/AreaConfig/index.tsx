@@ -68,7 +68,13 @@ export default function Area(props: {tab?: typeof ATTENDEES_TAB}) {
   }
 
   if (loading) {
-    return <div>loading...</div>
+    return (
+      <Layout>
+        <Page>
+          <div>loading...</div>
+        </Page>
+      </Layout>
+    )
   }
 
   if (!rooms) {

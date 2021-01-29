@@ -26,6 +26,7 @@ export const ActionsContext = React.createContext<
 
 export function OrganizationActionsProvider(props: {
   children: React.ReactNode
+  loader?: React.ReactElement
 }) {
   const {client} = useOrganization()
   return <ActionsProvider client={client} {...props} />
@@ -36,13 +37,17 @@ export function EventActionsProvider(props: {children: React.ReactNode}) {
   return <ActionsProvider client={client} {...props} />
 }
 
-function ActionsProvider(props: {client: Client; children: React.ReactNode}) {
+function ActionsProvider(props: {
+  client: Client
+  children: React.ReactNode
+  loader?: React.ReactElement
+}) {
   const platform = usePlatformList(props.client)
   const custom = useCustomList(props.client)
 
   const loading = platform.loading || custom.loading
   if (loading) {
-    return <div>loading...</div>
+    return props.loader || <div>loading...</div>
   }
 
   return (
