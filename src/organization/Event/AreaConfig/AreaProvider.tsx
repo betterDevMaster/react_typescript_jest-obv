@@ -2,7 +2,9 @@ import {useEvent} from 'Event/EventProvider'
 import {useAsync} from 'lib/async'
 import {api} from 'lib/url'
 import {Area} from 'organization/Event/AreaList'
+import Page from 'organization/Event/Page'
 import {useOrganization} from 'organization/OrganizationProvider'
+import Layout from 'organization/user/Layout'
 import React, {useCallback, useEffect, useState} from 'react'
 import {useParams} from 'react-router-dom'
 
@@ -30,7 +32,13 @@ export function AreaProvider(props: {children: React.ReactElement}) {
   }
 
   if (loading || !area) {
-    return <div>loading...</div>
+    return (
+      <Layout>
+        <Page>
+          <div>loading...</div>
+        </Page>
+      </Layout>
+    )
   }
 
   return (

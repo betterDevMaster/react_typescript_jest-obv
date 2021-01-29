@@ -20,7 +20,7 @@ export default function AreaList() {
   const {areas, loading} = useAreas()
 
   if (loading || !areas) {
-    return null
+    return <div>loading...</div>
   }
 
   const isEmpty = areas.length === 0
