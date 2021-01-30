@@ -24,13 +24,12 @@ afterEach(() => {
 it('should show event login form', async () => {
   const event = visitEventSite()
 
-  const {findByText, findByLabelText} = render(<App />)
+  const {findByLabelText} = render(<App />)
 
   await wait(() => {
     expect(mockGet).toBeCalledTimes(1)
   })
 
-  expect(await findByText(new RegExp(event.name)))
   expect(await findByLabelText(`email`)).toBeInTheDocument()
   expect(await findByLabelText(`password`)).toBeInTheDocument()
 
