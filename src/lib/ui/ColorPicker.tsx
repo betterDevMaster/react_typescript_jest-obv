@@ -117,8 +117,13 @@ function Picker(props: {
 }
 
 function isWhite(color: string) {
-  const properties = ColorProperties(color)
-  return properties.luminosity() > 0.8
+  try {
+    const properties = ColorProperties(color)
+    return properties.luminosity() > 0.8
+  } catch (_) {
+    // Ignore invalid color strings
+    return false
+  }
 }
 
 const Container = styled.div<{left: number; top: number}>`
@@ -126,6 +131,21 @@ const Container = styled.div<{left: number; top: number}>`
   z-index: 2000;
   left: ${(props) => `${props.left}px`};
   top: ${(props) => `${props.top}px`};
+
+  /*
+  Hide color input on picker since we already have an input,
+  and also because React portal breaks mouse events. We 
+  need the portal to render pickers inside modals.
+  */
+  .chrome-picker {
+    > div:nth-of-type(2) {
+      padding: 16px !important;
+
+      > div:nth-of-type(2) {
+        display: none !important;
+      }
+    }
+  }
 `
 
 const HideOverlay = styled.div`
