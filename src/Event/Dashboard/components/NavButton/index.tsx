@@ -48,6 +48,7 @@ export default function NavButton(props: NavButton) {
     }
 
     const action = findAction(props.actionId, custom.actions)
+
     if (!action) {
       return
     }

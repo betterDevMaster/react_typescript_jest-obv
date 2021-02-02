@@ -8,6 +8,7 @@ import {eventRoutes} from 'Event/Routes'
 import {RelativeLink} from 'lib/ui/link/RelativeLink'
 import {usePoints} from 'Event/PointsProvider'
 import Section from 'Event/template/SimpleBlog/Dashboard/Sidebar/Section'
+import {usePlatformActions} from 'Event/ActionsProvider/platform-actions'
 
 export type Points = {
   headerImage: string
@@ -19,7 +20,12 @@ export const POINTS_SUMMARY = 'Points Summary'
 
 export default function PointsSummary() {
   const {points: summary} = useTemplate()
-  const {score} = usePoints()
+  const {VISIT_LEADERBOARD} = usePlatformActions()
+  const {score, submit} = usePoints()
+
+  const awardPoints = () => {
+    submit(VISIT_LEADERBOARD)
+  }
 
   if (!summary) {
     return (
@@ -40,7 +46,11 @@ export default function PointsSummary() {
           <p>{summary.description}</p>
           <p>
             If you would like to see where you stand on the{' '}
-            <RelativeLink to={eventRoutes.leaderboard}>
+            <RelativeLink
+              to={eventRoutes.leaderboard}
+              aria-label="view leaderboard"
+              onClick={awardPoints}
+            >
               <strong>LEADERBOARD you can click HERE!</strong>
             </RelativeLink>
           </p>

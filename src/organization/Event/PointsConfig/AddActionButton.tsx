@@ -18,7 +18,12 @@ export default function AddActionButton(props: {
   const createAction = useCreateAction(props.onAdd)
 
   return (
-    <Button variant="contained" onClick={createAction} color="primary">
+    <Button
+      variant="contained"
+      onClick={createAction}
+      color="primary"
+      aria-label="add action"
+    >
       Create Action
     </Button>
   )

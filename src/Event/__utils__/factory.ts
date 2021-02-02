@@ -1,4 +1,6 @@
 import {ObvioEvent, Speaker} from 'Event'
+import {fakeAttendee} from 'Event/auth/__utils__/factory'
+import {Entry} from 'Event/Leaderboard'
 import {fakeSimpleBlog} from 'Event/template/SimpleBlog/__utils__/factory'
 import faker from 'faker'
 import {fakeArea} from 'organization/Event/AreaList/__utils__/factory'
@@ -53,5 +55,11 @@ export const fakeSpeaker = (overrides?: Partial<Speaker>): Speaker => ({
   name: `${faker.name.firstName()} ${faker.name.lastName()}`,
   text: `<html><p>${faker.lorem.paragraphs(3)}</p></html>`,
   image: null,
+  ...overrides,
+})
+
+export const fakeEntry = (overrides?: Partial<Entry>): Entry => ({
+  attendee: fakeAttendee(),
+  score: faker.random.number({min: 1000, max: 5000}),
   ...overrides,
 })

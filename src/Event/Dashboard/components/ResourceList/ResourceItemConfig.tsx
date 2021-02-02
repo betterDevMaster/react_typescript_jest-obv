@@ -5,7 +5,6 @@ import MenuItem from '@material-ui/core/MenuItem'
 import Select from '@material-ui/core/Select'
 import TextField from '@material-ui/core/TextField'
 import {
-  Resource,
   RESOURCE_ICON,
   RESOURCE_ITEM,
 } from 'Event/Dashboard/components/ResourceList'
@@ -20,6 +19,7 @@ import {
 } from 'Event/Dashboard/state/TemplateProvider'
 import {useCallback} from 'react'
 import ResourceUpload from './ResourceUpload'
+import {Resource} from 'Event/Dashboard/components/ResourceList/ResourceItem'
 
 export type ResourceItemConfig = {
   type: typeof RESOURCE_ITEM

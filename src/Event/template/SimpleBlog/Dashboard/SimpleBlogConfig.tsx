@@ -27,7 +27,7 @@ export function SimpleBlogConfig() {
   return (
     <>
       <TextField
-        value={template.headerBackground}
+        value={template.headerBackground || ''}
         label="Header Background"
         fullWidth
         onChange={onChangeStringHandler(update('headerBackground'))}

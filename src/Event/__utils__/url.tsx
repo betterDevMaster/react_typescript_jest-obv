@@ -11,6 +11,7 @@ import {Attendee} from 'Event/attendee'
 import {ObvioEvent} from 'Event'
 import {defaultScore} from 'Event/PointsProvider/__utils__/StaticPointsProvider'
 import {fakeAction} from 'Event/ActionsProvider/__utils__/factory'
+import {Action} from 'Event/ActionsProvider'
 
 const mockGet = axios.get as jest.Mock
 const mockPost = axios.post as jest.Mock
@@ -32,6 +33,8 @@ export async function loginToEventSite(
   options: {
     attendee?: Attendee
     event?: ObvioEvent
+    platformActions?: Action[]
+    customActions?: Action[]
     beforeLogin?: () => void
   } = {},
 ) {
@@ -39,17 +42,20 @@ export async function loginToEventSite(
   const event = options.event || fakeEvent()
   visitEventSite({event})
 
-  const platformActions = Array.from(
-    {length: faker.random.number({min: 3, max: 5})},
-    () => fakeAction({is_platform_action: true}),
-  )
+  const platformActions =
+    options.platformActions ||
+    Array.from({length: faker.random.number({min: 3, max: 5})}, () =>
+      fakeAction({is_platform_action: true}),
+    )
+
+  const customActions = options.customActions || []
 
   mockPost.mockImplementationOnce(() =>
     Promise.resolve({data: {access_token: faker.random.alphaNumeric(8)}}),
   )
   mockGet.mockImplementationOnce(() => Promise.resolve({data: attendee}))
   mockGet.mockImplementationOnce(() => Promise.resolve({data: platformActions}))
-  mockGet.mockImplementationOnce(() => Promise.resolve({data: []}))
+  mockGet.mockImplementationOnce(() => Promise.resolve({data: customActions}))
   mockGet.mockImplementationOnce(() => Promise.resolve({data: defaultScore}))
 
   const {findByLabelText, ...otherRenderResult} = render(<App />)
