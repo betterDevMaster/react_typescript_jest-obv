@@ -13,8 +13,10 @@ import {mockRxJsAjax} from 'store/__utils__/MockStoreProvider'
 import {wait} from '@testing-library/react'
 import {fakeOrganization} from 'obvio/Organizations/__utils__/factory'
 import {defaultScore} from 'Event/PointsProvider/__utils__/StaticPointsProvider'
+import axios from 'axios'
 
 const mockPost = mockRxJsAjax.post as jest.Mock
+const mockDelete = axios.delete as jest.Mock
 
 afterEach(() => {
   jest.clearAllMocks()
@@ -221,9 +223,14 @@ it('should remove a resource', async () => {
   )
 
   const targetIndex = faker.random.number({min: 0, max: resources.length - 1})
+  const target = resources[targetIndex]
   const targetName = resources[targetIndex].name
 
   clickEdit((await findAllByLabelText('event resource'))[targetIndex])
+
+  mockDelete.mockImplementationOnce(() =>
+    Promise.resolve({data: 'delete success'}),
+  )
 
   fireEvent.click(await findByLabelText('remove resource'))
 
@@ -241,4 +248,10 @@ it('should remove a resource', async () => {
   const [url, data] = mockPost.mock.calls[0]
   expect(url).toMatch(`/events/${event.slug}`)
   expect(data.template.resourceList.resources.length).toBe(resources.length - 1)
+
+  expect(mockDelete).toHaveBeenCalledTimes(1)
+  const [deleteUrl] = mockDelete.mock.calls[0]
+  expect(deleteUrl).toMatch(
+    `/events/${event.slug}/resources/${target.filePath}`,
+  )
 })

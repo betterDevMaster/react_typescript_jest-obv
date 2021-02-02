@@ -103,7 +103,7 @@ function LoadingOverlay(props: {visible: boolean}) {
   )
 }
 
-function useDeleteFile() {
+export function useDeleteFile() {
   const {event} = useEvent()
   const {client} = useOrganization()
 

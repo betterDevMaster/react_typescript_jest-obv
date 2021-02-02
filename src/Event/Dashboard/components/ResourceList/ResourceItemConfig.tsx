@@ -18,7 +18,7 @@ import {
   useUpdateTemplate,
 } from 'Event/Dashboard/state/TemplateProvider'
 import {useCallback} from 'react'
-import ResourceUpload from './ResourceUpload'
+import ResourceUpload, {useDeleteFile} from './ResourceUpload'
 import {Resource} from 'Event/Dashboard/components/ResourceList/ResourceItem'
 
 export type ResourceItemConfig = {
@@ -28,9 +28,9 @@ export type ResourceItemConfig = {
 
 export function ResourceItemConfig(props: {id: ResourceItemConfig['id']}) {
   const {resourceList: list} = useTemplate()
-
   const updateTemplate = useUpdateTemplate()
   const closeConfig = useCloseConfig()
+  const deleteFile = useDeleteFile()
 
   if (typeof props.id === 'undefined') {
     throw new Error('Missing component id')
@@ -63,6 +63,14 @@ export function ResourceItemConfig(props: {id: ResourceItemConfig['id']}) {
   )
 
   const remove = () => {
+    if (resource.filePath) {
+      deleteFile(resource.filePath).catch((e) => {
+        // Log error, but prevent it from crashing
+        // app
+        console.error(e)
+      })
+    }
+
     closeConfig()
     updateTemplate({
       resourceList: {
