@@ -5,7 +5,7 @@ import TableCell from '@material-ui/core/TableCell'
 import TableHead from '@material-ui/core/TableHead'
 import TableRow from '@material-ui/core/TableRow'
 import {Action} from 'Event/ActionsProvider'
-import ActiveSwitch from 'organization/Event/PointsConfig/ActiveSwitch'
+import ActiveSwitch from 'organization/Event/PointsConfig/ActionTable/ActiveSwitch'
 import Description from 'organization/Event/PointsConfig/ActionTable/Description'
 
 export default function ActionsTable(props: {
@@ -28,7 +28,7 @@ export default function ActionsTable(props: {
       </TableHead>
       <TableBody>
         {props.actions.map((action) => (
-          <TableRow key={action.id}>
+          <TableRow key={action.id} aria-label="action">
             <TableCell component="th">
               <Description action={action} onClick={select(action)} />
             </TableCell>

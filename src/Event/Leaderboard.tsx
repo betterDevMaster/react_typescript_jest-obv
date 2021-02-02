@@ -6,6 +6,12 @@ import TemplateProvider, {
 } from 'Event/Dashboard/state/TemplateProvider'
 import {SIMPLE_BLOG} from 'Event/template/SimpleBlog'
 import SimpleBlogLeaderboard from 'Event/template/SimpleBlog/Leaderboard'
+import {Attendee} from 'Event/attendee'
+
+export interface Entry {
+  attendee: Attendee
+  score: number
+}
 
 export default function Leaderboard() {
   const {event} = useEvent()

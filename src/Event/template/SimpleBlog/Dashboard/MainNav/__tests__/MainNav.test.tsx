@@ -1,5 +1,4 @@
 import React from 'react'
-import user from '@testing-library/user-event'
 import faker from 'faker'
 import {fakeSimpleBlog} from 'Event/template/SimpleBlog/__utils__/factory'
 import {fakeUser} from 'auth/user/__utils__/factory'
@@ -13,11 +12,9 @@ import {fakeEvent} from 'Event/__utils__/factory'
 import {mockRxJsAjax} from 'store/__utils__/MockStoreProvider'
 import {wait} from '@testing-library/react'
 import {fakeOrganization} from 'obvio/Organizations/__utils__/factory'
-import mockAxios from 'axios'
 import {defaultScore} from 'Event/PointsProvider/__utils__/StaticPointsProvider'
 
 const mockPost = mockRxJsAjax.post as jest.Mock
-const mockGet = mockAxios.get as jest.Mock
 
 afterEach(() => {
   jest.clearAllMocks()
@@ -49,6 +46,52 @@ it('should render main nav buttons', async () => {
 
   const buttonsEls = await findAllByLabelText('main nav button')
   expect(buttonsEls.length).toBe(mainNavButtons.ids.length)
+})
+
+it('should add a new main nav button', async () => {
+  const numButtons = faker.random.number({min: 1, max: 4})
+
+  const buttons = Array.from(
+    {
+      length: numButtons,
+    },
+    fakeNavButtonWithSize,
+  )
+
+  const mainNavButtons = createEntityList(buttons)
+  const event = fakeEvent({
+    template: fakeSimpleBlog({
+      mainNav: mainNavButtons,
+    }),
+  })
+
+  const {findAllByLabelText, findByLabelText} = render(
+    <Dashboard isEditMode={true} user={fakeUser()} />,
+    {
+      event,
+      organization: fakeOrganization(),
+      actions: emptyActions,
+      score: defaultScore,
+      withRouter: true,
+    },
+  )
+
+  const buttonEls = () => findAllByLabelText('main nav button')
+
+  expect((await buttonEls()).length).toBe(numButtons)
+
+  fireEvent.click(await findByLabelText('add main nav button'))
+
+  expect((await buttonEls()).length).toBe(numButtons + 1)
+
+  // Saved
+  await wait(() => {
+    expect(mockPost).toHaveBeenCalledTimes(1)
+  })
+
+  const [url, data] = mockPost.mock.calls[0]
+  expect(url).toMatch(`/events/${event.slug}`)
+  expect(data.template.mainNav.ids.length).toBe(numButtons + 1)
 })
 
 it('should add a new main nav button', async () => {
@@ -139,40 +182,4 @@ it('should remove the button', async () => {
   const [url, data] = mockPost.mock.calls[0]
   expect(url).toMatch(`/events/${event.slug}`)
   expect(data.template.mainNav.ids.length).toBe(numButtons - 1)
-})
-
-it('should join a room', async () => {
-  const windowOpen = (global.open = jest.fn())
-  const id = faker.random.number({min: 1, max: 1000})
-  const button = fakeNavButtonWithSize({isAreaButton: true, areaId: id})
-  const mainNav = createEntityList([button])
-
-  const event = fakeEvent({template: fakeSimpleBlog({mainNav})})
-
-  const {findByText} = render(
-    <Dashboard isEditMode={false} user={fakeUser()} />,
-    {
-      event,
-      organization: fakeOrganization(),
-      actions: emptyActions,
-      score: defaultScore,
-      withRouter: true,
-    },
-  )
-
-  const url = faker.internet.url()
-  mockGet.mockImplementationOnce(() => Promise.resolve({data: {url}}))
-
-  user.click(await findByText(button.text))
-
-  await wait(() => {
-    expect(mockGet).toHaveBeenCalledTimes(1)
-    expect(windowOpen).toHaveBeenCalledTimes(1)
-  })
-
-  const [joinUrl] = mockGet.mock.calls[0]
-  expect(joinUrl).toMatch(`events/${event.slug}/areas/${id}`)
-
-  const [openUrl] = windowOpen.mock.calls[0]
-  expect(openUrl).toBe(url)
 })

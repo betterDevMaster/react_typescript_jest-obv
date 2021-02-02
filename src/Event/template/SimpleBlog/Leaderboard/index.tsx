@@ -14,11 +14,7 @@ import {useAsync} from 'lib/async'
 import {useAttendee} from 'Event/auth'
 import {usePoints} from 'Event/PointsProvider'
 import {useTemplate} from 'Event/Dashboard/state/TemplateProvider'
-
-export interface Entry {
-  attendee: Attendee
-  score: number
-}
+import {Entry} from 'Event/Leaderboard'
 
 export default function SimpleBlogLeaderboard(props: {user: Attendee}) {
   const [entries, setEntries] = useState<Entry[]>([])
@@ -67,7 +63,7 @@ export default function SimpleBlogLeaderboard(props: {user: Attendee}) {
           </TableHead>
           <TableBody>
             {entries.map((entry, index) => (
-              <TableRow key={index}>
+              <TableRow key={index} aria-label="entry">
                 <TableCell component="th" scope="row">
                   {index + 1}
                 </TableCell>

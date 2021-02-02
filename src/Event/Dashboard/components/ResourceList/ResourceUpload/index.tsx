@@ -7,9 +7,9 @@ import Typography from '@material-ui/core/Typography'
 import styled from 'styled-components'
 import {useEvent} from 'Event/EventProvider'
 import {useOrganization} from 'organization/OrganizationProvider'
-import {Resource} from 'Event/Dashboard/components/ResourceList'
 import UploadDropzone from 'Event/Dashboard/components/ResourceList/ResourceUpload/UploadDropzone'
 import UploadedFile from 'Event/Dashboard/components/ResourceList/ResourceUpload/UploadedFile'
+import {Resource} from 'Event/Dashboard/components/ResourceList/ResourceItem'
 
 export const ACCEPTED_FILE_TYPES = ['image/*', '.pdf']
 export const MAX_FILE_SIZE_BYTES = 20971520 // 20MB

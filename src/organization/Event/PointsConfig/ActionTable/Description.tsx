@@ -15,8 +15,15 @@ export default function Description(props: {
     return <span>{props.action.description}</span>
   }
 
+  const label = `edit ${props.action.description}`
+
   return (
-    <Button variant="text" onClick={props.onClick} textColor={colors.secondary}>
+    <Button
+      variant="text"
+      onClick={props.onClick}
+      textColor={colors.secondary}
+      aria-label={label}
+    >
       {props.action.description}
     </Button>
   )

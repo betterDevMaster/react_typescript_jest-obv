@@ -16,6 +16,7 @@ import {fakeOrganization} from 'obvio/Organizations/__utils__/factory'
 import {fakeArea} from 'organization/Event/AreaList/__utils__/factory'
 import mockAxios from 'axios'
 import {defaultScore} from 'Event/PointsProvider/__utils__/StaticPointsProvider'
+import {fakeAction} from 'Event/ActionsProvider/__utils__/factory'
 
 const mockPost = mockRxJsAjax.post as jest.Mock
 const mockGet = mockAxios.get as jest.Mock
@@ -145,4 +146,56 @@ it('should set an area button', async () => {
   const id = data.template.mainNav.ids[targetIndex]
   expect(data.template.mainNav.entities[id]['isAreaButton']).toBe(true)
   expect(data.template.mainNav.entities[id]['areaId']).toBe(target.id) // Set area ID
+})
+
+it('should assign an action for points', async () => {
+  const button = fakeNavButtonWithSize()
+  const event = fakeEvent({
+    template: fakeSimpleBlog({
+      mainNav: createEntityList([button]),
+    }),
+  })
+
+  const customActions = Array.from(
+    {length: faker.random.number({min: 1, max: 3})},
+    () => fakeAction({is_platform_action: false}),
+  )
+
+  const {findByLabelText, findByText} = render(
+    <Dashboard isEditMode={true} user={fakeUser()} />,
+    {
+      event,
+      organization: fakeOrganization(),
+      actions: {platform: [], custom: customActions},
+      withRouter: true,
+      score: defaultScore,
+    },
+  )
+
+  const buttonEl = await findByText(button.text)
+
+  const target = faker.random.arrayElement(customActions)
+
+  mockGet.mockImplementationOnce(() => Promise.resolve({data: customActions}))
+
+  clickEdit(buttonEl)
+
+  /**
+   * Material UI select expects mouseDown instead of a click
+   */
+  fireEvent.mouseDown(await findByLabelText('pick action'))
+  user.click(await findByLabelText(`pick ${target.description}`))
+
+  fireEvent.click(await findByLabelText('close config dialog'))
+
+  // Saved
+  await wait(() => {
+    expect(mockPost).toHaveBeenCalledTimes(1)
+  })
+
+  const [url, data] = mockPost.mock.calls[0]
+  expect(url).toMatch(`/events/${event.slug}`)
+
+  const id = data.template.mainNav.ids[0] // only one button
+  expect(data.template.mainNav.entities[id]['actionId']).toBe(target.id) // Did assign action id
 })

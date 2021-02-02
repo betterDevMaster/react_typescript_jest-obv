@@ -1,9 +1,9 @@
 import React from 'react'
 import {storage} from 'lib/url'
 import DangerButton from 'lib/ui/Button/DangerButton'
-import {Resource} from 'Event/Dashboard/components/ResourceList'
 import {AbsoluteLink} from 'lib/ui/link/AbsoluteLink'
 import Button from '@material-ui/core/Button'
+import {Resource} from 'Event/Dashboard/components/ResourceList/ResourceItem'
 
 export default function ExistingFile(props: {
   resource: Resource
