@@ -34,6 +34,7 @@ export default function ResourceUpload(props: {
   const clearError = () => setError(null)
 
   const upload = (file: File) => {
+    setIsUploading(true)
     clearError()
     const formData = new FormData()
     formData.set('file', file)
@@ -83,8 +84,10 @@ export default function ResourceUpload(props: {
 
   return (
     <>
-      <UploadDropzone onDrop={handleUpload} />
-      <LoadingOverlay visible={isUploading} />
+      <Container>
+        <UploadDropzone onDrop={handleUpload} />
+        <LoadingOverlay visible={isUploading} />
+      </Container>
       <UploadedFile resource={props.resource} onRemoveFile={removeFile} />
       <Error>{error}</Error>
     </>
@@ -131,7 +134,17 @@ const ErrorText = withStyles({
   },
 })(Typography)
 
+const Container = styled.div`
+  position: relative;
+`
+
 const LoaderWrapper = styled.div`
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(255, 255, 255, 0.6);
   display: flex;
   align-items: center;
   justify-content: center;
