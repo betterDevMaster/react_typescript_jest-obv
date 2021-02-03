@@ -23,7 +23,12 @@ export default function DashboardEditDialog() {
   }
 
   return (
-    <Dialog open={dialogVisible} onClose={stopEdit} fullWidth>
+    <Dialog
+      open={dialogVisible}
+      onClose={stopEdit}
+      fullWidth
+      disableEnforceFocus
+    >
       <CloseButton onClick={stopEdit} aria-label="close config dialog">
         <CloseIcon fontSize="small" />
       </CloseButton>

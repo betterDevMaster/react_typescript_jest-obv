@@ -1,5 +1,5 @@
 import {BlogPost, BLOG_POST} from 'Event/Dashboard/components/BlogPost'
-import styled from 'styled-components'
+import styled, {createGlobalStyle} from 'styled-components'
 import {useCloseConfig} from 'Event/Dashboard/editor/state/edit-mode'
 import React from 'react'
 import CKEditor from '@ckeditor/ckeditor5-react'
@@ -83,6 +83,7 @@ export function BlogPostConfig(props: {id: BlogPostConfig['id']}) {
           DELETE POST
         </RemoveButton>
       </EditorContainer>
+      <CkPopupZIndex />
     </>
   )
 }
@@ -93,6 +94,17 @@ export function BlogPostConfig(props: {id: BlogPostConfig['id']}) {
 const EditorContainer = styled.div`
   overflow-x: hidden;
   margin-bottom: ${(props) => props.theme.spacing[6]};
+`
+
+/*
+Fix CKEditor link pop-up not appearing when inside a Dialog. Note that 
+this also required setting disableEnforceFocus on the Dialog
+component.
+*/
+const CkPopupZIndex = createGlobalStyle`
+  body {
+    --ck-z-modal: 1500
+  }
 `
 
 const RemoveButton = styled(DangerButton)`
