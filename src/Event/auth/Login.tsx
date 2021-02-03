@@ -1,5 +1,6 @@
 import React, {useEffect, useRef, useState} from 'react'
 import styled from 'styled-components'
+import {useEvent} from 'Event/EventProvider'
 import Center from 'lib/ui/layout/Center'
 import Typography from '@material-ui/core/Typography'
 import {useForm} from 'react-hook-form'
@@ -7,14 +8,11 @@ import {useEventAuth} from 'Event/auth'
 import TextField from '@material-ui/core/TextField'
 import Button from '@material-ui/core/Button'
 import {useSearchParams} from 'lib/url'
-
-const backgroundImg =
-  'https://obv-public.s3.amazonaws.com/the_virtual_event_on_virtual_events/images/Login/Main_Login_BG.jpg'
-
-const logoImgVertical =
-  'https://obv-public.s3.amazonaws.com/the_virtual_event_on_virtual_events/images/Logos/TVE_white_Logo.png'
+import backgroundImg from 'assets/images/background_login.png'
+import logoImgVertical from 'assets/images/logo_vertical.png'
 
 export default function Login() {
+  const {event} = useEvent()
   const {token} = useSearchParams()
   const {register, handleSubmit, errors} = useForm()
   const [error, setError] = useState('')
@@ -52,7 +50,9 @@ export default function Login() {
     <Background>
       <Container>
         <Logo src={logoImgVertical} alt="logo_image" />
-        <Form onSubmit={handleSubmit(submit)}>
+        <div>WELCOME</div>
+        <Description>Login to your {event.name} account</Description>
+        <form onSubmit={handleSubmit(submit)}>
           <StyledTextField
             label="Email"
             type="email"
@@ -89,13 +89,14 @@ export default function Login() {
           <StyledButton
             variant="contained"
             fullWidth
+            color="primary"
             disabled={submitting}
             aria-label="submit login"
             type="submit"
           >
             Login
           </StyledButton>
-        </Form>
+        </form>
       </Container>
     </Background>
   )
@@ -110,13 +111,16 @@ function ErrorMessage(props: {children: string}) {
 }
 
 const Logo = styled.img`
-  width: 100%;
   margin-bottom: ${(props) => props.theme.spacing[12]};
 `
 
-const Form = styled.form`
-  width: 100%;
+const Description = styled.div`
+  color: ${(props) => props.theme.colors.secondary};
+  font-size: 20px;
+  font-weight: 500;
+  margin-bottom: ${(props) => props.theme.spacing[8]};
 `
+
 const Background = styled(Center)`
   background: url(${backgroundImg});
   background-size: cover;
@@ -134,13 +138,10 @@ const StyledTextField = styled(TextField)`
 const StyledButton = styled(Button)`
   border-radius: 14px !important;
   height: 50px;
-  background: #f6c55c !important;
-  color: #ffffff !important;
 `
 
 const Container = styled.div`
   width: 100%;
-  max-width: 660px;
   padding: ${(props) => props.theme.spacing[4]};
   display: flex;
   flex-direction: column;
