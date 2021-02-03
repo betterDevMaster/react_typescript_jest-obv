@@ -31,13 +31,12 @@ export default function AgendaList() {
 
   return (
     <Section>
-
       <Heading>AGENDA:</Heading>
       {agendas.map((agenda, index) => (
         <EditComponent component={{type: AGENDA, id: index}} key={index}>
           <Agenda aria-label="agenda">
-            <Times agenda={agenda} />
             <Event agenda={agenda} />
+            <Times agenda={agenda} />
           </Agenda>
         </EditComponent>
       ))}
@@ -111,12 +110,12 @@ const Agenda = styled.div`
 
 const TimeText = styled.span`
   font-size: 14px;
-  display: block;
-  font-style: italic;
 `
 
 const EventText = styled.span`
   font-size: 18px;
+  display: block;
+  font-style: italic;
 `
 
 const StyledAddAgendaEventButton = styled(AddAgendaEventButton)`
