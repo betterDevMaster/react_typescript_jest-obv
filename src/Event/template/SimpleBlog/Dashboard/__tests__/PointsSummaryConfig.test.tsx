@@ -11,8 +11,13 @@ import {clickEdit} from '__utils__/edit'
 import {fakeEvent} from 'Event/__utils__/factory'
 import {mockRxJsAjax} from 'store/__utils__/MockStoreProvider'
 import {defaultScore} from 'Event/PointsProvider/__utils__/StaticPointsProvider'
+import {fakeOrganization} from 'obvio/Organizations/__utils__/factory'
+import {ObvioEvent} from 'Event'
+import axios from 'axios'
 
-const mockPost = mockRxJsAjax.post as jest.Mock
+const mockRxPost = mockRxJsAjax.post as jest.Mock
+const mockAxiosPost = axios.post as jest.Mock
+const mockPut = axios.put as jest.Mock
 
 afterEach(() => {
   jest.clearAllMocks()
@@ -28,6 +33,7 @@ it('should render points', async () => {
       withRouter: true,
       actions: emptyActions,
       score: defaultScore,
+      organization: fakeOrganization(),
     },
   )
 
@@ -54,7 +60,13 @@ it('should configure points', async () => {
   const event = fakeEvent({template: fakeSimpleBlog({points: null})})
   const {queryByText, findByLabelText, findByText} = render(
     <Dashboard isEditMode={true} user={fakeUser()} />,
-    {event, withRouter: true, actions: emptyActions, score: defaultScore},
+    {
+      event,
+      withRouter: true,
+      actions: emptyActions,
+      score: defaultScore,
+      organization: fakeOrganization(),
+    },
   )
 
   expect(queryByText(/you've earned/i)).not.toBeInTheDocument()
@@ -72,10 +84,10 @@ it('should configure points', async () => {
 
   // Saved
   await wait(() => {
-    expect(mockPost).toHaveBeenCalledTimes(1)
+    expect(mockRxPost).toHaveBeenCalledTimes(1)
   })
 
-  const [url, data] = mockPost.mock.calls[0]
+  const [url, data] = mockRxPost.mock.calls[0]
   expect(url).toMatch(`/events/${event.slug}`)
   expect(data.template.points).not.toBeNull()
 })
@@ -89,7 +101,13 @@ it('should remove points', async () => {
 
   const {queryByText, findByLabelText, findByText} = render(
     <Dashboard isEditMode={true} user={fakeUser()} />,
-    {event, withRouter: true, actions: emptyActions, score: defaultScore},
+    {
+      event,
+      withRouter: true,
+      actions: emptyActions,
+      score: defaultScore,
+      organization: fakeOrganization(),
+    },
   )
 
   expect(await findByText(/you've earned 0 .*/i)).toBeInTheDocument()
@@ -104,10 +122,96 @@ it('should remove points', async () => {
 
   // Saved
   await wait(() => {
-    expect(mockPost).toHaveBeenCalledTimes(1)
+    expect(mockRxPost).toHaveBeenCalledTimes(1)
   })
 
-  const [url, data] = mockPost.mock.calls[0]
+  const [url, data] = mockRxPost.mock.calls[0]
   expect(url).toMatch(`/events/${event.slug}`)
   expect(data.template.points).toBeNull()
+})
+
+it('should upload a logo', async () => {
+  const event = fakeEvent({
+    template: fakeSimpleBlog({
+      points: fakePoints(),
+    }),
+  })
+
+  const {findByLabelText} = render(
+    <Dashboard isEditMode={true} user={fakeUser()} />,
+    {
+      event,
+      withRouter: true,
+      actions: emptyActions,
+      score: defaultScore,
+      organization: fakeOrganization(),
+    },
+  )
+
+  clickEdit(await findByLabelText('points summary'))
+
+  const logo = new File([], 'mylogo.jpg')
+  const logoInput = await findByLabelText('points_summary_logo image input')
+  Object.defineProperty(logoInput, 'files', {
+    value: [logo],
+  })
+
+  const logoData = {
+    url: faker.internet.url(),
+    name: faker.random.word(),
+  }
+  const withLogo: ObvioEvent = {...event, points_summary_logo: logoData}
+
+  mockAxiosPost.mockImplementationOnce(() => Promise.resolve(withLogo))
+
+  fireEvent.change(logoInput)
+
+  await wait(() => {
+    expect(mockAxiosPost).toHaveBeenCalledTimes(1)
+  })
+
+  const [url, data] = mockAxiosPost.mock.calls[0]
+
+  expect(url).toMatch(`/events/${event.slug}`)
+  expect(data.get('points_summary_logo')).toBe(logo)
+})
+
+it('should remove the logo', async () => {
+  const logo = {
+    url: faker.internet.url(),
+    name: faker.random.word(),
+  }
+  const event = fakeEvent({
+    template: fakeSimpleBlog({
+      points: fakePoints(),
+    }),
+    points_summary_logo: logo,
+  })
+
+  const {findByLabelText} = render(
+    <Dashboard isEditMode={true} user={fakeUser()} />,
+    {
+      event,
+      withRouter: true,
+      actions: emptyActions,
+      score: defaultScore,
+      organization: fakeOrganization(),
+    },
+  )
+
+  clickEdit(await findByLabelText('points summary'))
+
+  const withoutLogo: ObvioEvent = {...event, points_summary_logo: null}
+  mockPut.mockImplementationOnce(() => Promise.resolve(withoutLogo))
+
+  user.click(await findByLabelText('remove points_summary_logo image'))
+
+  await wait(() => {
+    expect(mockPut).toHaveBeenCalledTimes(1)
+  })
+
+  const [url, data] = mockPut.mock.calls[0]
+
+  expect(url).toMatch(`/events/${event.slug}`)
+  expect(data.points_summary_logo).toBe(null)
 })
