@@ -9,7 +9,7 @@ import {onChangeStringHandler} from 'lib/dom'
 import DangerButton from 'lib/ui/Button/DangerButton'
 import React from 'react'
 import styled from 'styled-components'
-import ImageUpload from 'Event/template/SimpleBlog/Dashboard/SimpleBlogConfig/ImageUpload'
+import EventImageUpload from 'organization/Event/DashboardConfig/EventImageUpload'
 import {useEvent} from 'Event/EventProvider'
 
 export type PointsSummaryConfig = {
@@ -37,7 +37,7 @@ export function PointsSummaryConfig() {
 
   return (
     <>
-      <ImageUpload
+      <EventImageUpload
         label="Points Logo"
         property="points_summary_logo"
         current={event.points_summary_logo?.url}

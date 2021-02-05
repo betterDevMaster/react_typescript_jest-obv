@@ -14,7 +14,7 @@ import {Visible} from 'lib/dom'
 
 const MAX_FILE_SIZE_BYTES = 5000000 // 5MB
 
-export default function ImageUpload(props: {
+export default function EventImageUpload(props: {
   label: string
   property: keyof ObvioEvent
   current?: string
