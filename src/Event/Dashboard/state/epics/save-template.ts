@@ -22,6 +22,9 @@ export const saveTemplateEpic: Epic<
         throw new Error('Missing event, was it set properly in EventProvider?')
       }
 
+      /**
+       * Do NOT send image property data
+       */
       const {logo, points_summary_logo, header_background, ...data} = event
 
       const url = api(`/events/${event.slug}`)
