@@ -1,5 +1,6 @@
 import axios from 'axios'
 import {getToken as getAuthToken} from 'auth/token'
+import {isFormData} from 'lib/http-client'
 
 export type ResponseError = {
   message: string
@@ -24,14 +25,46 @@ export type Client = typeof client
 export const client = {
   get: <T>(url: string, options?: RequestOptions) =>
     handleAxiosResult<T>(axios.get(url, config(options))),
-  post: <T>(url: string, data: {} = {}, options?: RequestOptions) =>
+  post: <T>(url: string, data: {} | FormData = {}, options?: RequestOptions) =>
     handleAxiosResult<T>(axios.post(url, data, config(options))),
-  put: <T>(url: string, data: {}, options?: RequestOptions) =>
-    handleAxiosResult<T>(axios.put(url, data, config(options))),
+  put: <T>(url: string, data: {} | FormData, options?: RequestOptions) => {
+    if (isFormData(data)) {
+      const formDataOptions = {
+        ...options,
+        headers: {
+          ...headers,
+          'content-type': 'multipart/form-data',
+        },
+      }
+
+      return handleAxiosResult<T>(
+        axios.post(url, putData(data), config(formDataOptions)),
+      )
+    }
+
+    return handleAxiosResult<T>(axios.put(url, data, config(options)))
+  },
   patch: <T>(url: string, data: {} = {}, options?: RequestOptions) =>
     handleAxiosResult<T>(axios.patch(url, data, config(options))),
   delete: <T>(url: string, options?: RequestOptions) =>
     handleAxiosResult<T>(axios.delete(url, config(options))),
+}
+
+/**
+ * Laravel/Symfony requires method to be specified
+ *
+ * @param data
+ */
+function putData(data: {} | FormData) {
+  if (isFormData(data)) {
+    data.append('_method', 'PUT')
+    return data
+  }
+
+  return {
+    _method: 'PUT',
+    ...data,
+  }
 }
 
 function config({

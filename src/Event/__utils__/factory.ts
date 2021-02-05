@@ -13,6 +13,9 @@ export const fakeEvent = (overrides?: Partial<ObvioEvent>): ObvioEvent => ({
   speaker_page: {title: 'SPEAKERS', speakers: []},
   waiver: fakeWaiver(),
   tech_check: fakeTechCheck(),
+  logo: null,
+  header_background: null,
+  points_summary_logo: null,
   ...overrides,
 })
 

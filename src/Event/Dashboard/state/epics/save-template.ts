@@ -22,13 +22,15 @@ export const saveTemplateEpic: Epic<
         throw new Error('Missing event, was it set properly in EventProvider?')
       }
 
+      const {logo, points_summary_logo, header_background, ...data} = event
+
       const url = api(`/events/${event.slug}`)
 
       // Use dependencies.ajax to allow injecting mock ajax for tests
       const request = ajax.post(
         url,
         {
-          ...event,
+          ...data,
           _method: 'PUT', // Required to tell Laravel it's a PUT request
         },
         {

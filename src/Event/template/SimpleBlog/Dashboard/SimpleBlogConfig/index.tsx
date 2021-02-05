@@ -1,10 +1,10 @@
-import TextField from '@material-ui/core/TextField'
 import {
   useTemplate,
   useUpdateTemplate,
 } from 'Event/Dashboard/state/TemplateProvider'
+import {useEvent} from 'Event/EventProvider'
 import {SimpleBlog, SIMPLE_BLOG} from 'Event/template/SimpleBlog'
-import {onChangeStringHandler} from 'lib/dom'
+import ImageUpload from 'Event/template/SimpleBlog/Dashboard/SimpleBlogConfig/ImageUpload'
 import ColorPicker from 'lib/ui/ColorPicker'
 import React from 'react'
 
@@ -15,6 +15,7 @@ export type SimpleBlogConfig = {
 export function SimpleBlogConfig() {
   const template = useTemplate()
   const updateTemplate = useUpdateTemplate()
+  const {event} = useEvent()
 
   const update = <T extends keyof SimpleBlog>(key: T) => (
     value: SimpleBlog[T],
@@ -26,24 +27,12 @@ export function SimpleBlogConfig() {
 
   return (
     <>
-      <TextField
-        value={template.headerBackground || ''}
+      <ImageUpload
         label="Header Background"
-        fullWidth
-        onChange={onChangeStringHandler(update('headerBackground'))}
-        inputProps={{
-          'aria-label': 'header background input',
-        }}
+        property="header_background"
+        current={event.header_background?.url}
       />
-      <TextField
-        value={template.logo}
-        label="Logo URL"
-        fullWidth
-        onChange={onChangeStringHandler(update('logo'))}
-        inputProps={{
-          'aria-label': 'edit logo',
-        }}
-      />
+      <ImageUpload label="Logo" property="logo" current={event.logo?.url} />
       <ColorPicker
         label="Primary Color"
         color={template.primaryColor}

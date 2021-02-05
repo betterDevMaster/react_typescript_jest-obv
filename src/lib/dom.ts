@@ -35,3 +35,11 @@ export const handleChangeSlider = (handler: (newValue: any) => void) => (
 
   handler(value)
 }
+
+export function Visible(props: {if: boolean; children: React.ReactElement}) {
+  if (!props.if) {
+    return null
+  }
+
+  return props.children
+}

@@ -9,6 +9,8 @@ import {onChangeStringHandler} from 'lib/dom'
 import DangerButton from 'lib/ui/Button/DangerButton'
 import React from 'react'
 import styled from 'styled-components'
+import ImageUpload from 'Event/template/SimpleBlog/Dashboard/SimpleBlogConfig/ImageUpload'
+import {useEvent} from 'Event/EventProvider'
 
 export type PointsSummaryConfig = {
   type: typeof POINTS_SUMMARY
@@ -18,6 +20,7 @@ export function PointsSummaryConfig() {
   const {points} = useTemplate()
   const updateTemplate = useUpdateTemplate()
   const closeConfig = useCloseConfig()
+  const {event} = useEvent()
 
   const update = <T extends keyof Points>(key: T) => (value: Points[T]) => {
     const updated = updatePoints(key, value, points)
@@ -34,14 +37,10 @@ export function PointsSummaryConfig() {
 
   return (
     <>
-      <TextField
-        value={points?.headerImage || ''}
-        label="Image"
-        fullWidth
-        onChange={onChangeStringHandler(update('headerImage'))}
-        inputProps={{
-          'aria-label': 'edit header image',
-        }}
+      <ImageUpload
+        label="Points Logo"
+        property="points_summary_logo"
+        current={event.points_summary_logo?.url}
       />
       <TextField
         value={points?.description || ''}
@@ -82,7 +81,6 @@ function updatePoints<T extends keyof Points>(
 ): Points {
   if (!points) {
     return {
-      headerImage: '',
       description: '',
       unit: '',
       [key]: value,

@@ -5,6 +5,7 @@ import {MenuIconButton} from 'lib/ui/IconButton/MenuIconButton'
 import {useTemplate} from 'Event/Dashboard/state/TemplateProvider'
 import {eventRoutes} from 'Event/Routes'
 import {RelativeLink} from 'lib/ui/link/RelativeLink'
+import {useEvent} from 'Event/EventProvider'
 
 export default function Header(props: {
   primaryColor: string
@@ -12,7 +13,14 @@ export default function Header(props: {
   menuVisible: boolean
   'aria-label'?: string
 }) {
-  const {logo, title, headerBackground} = useTemplate()
+  const {title} = useTemplate()
+
+  const {event} = useEvent()
+
+  const logo = event.logo ? event.logo.url : ''
+  const headerBackground = event.header_background
+    ? event.header_background.url
+    : ''
 
   return (
     <Box aria-label={props['aria-label']} background={headerBackground}>

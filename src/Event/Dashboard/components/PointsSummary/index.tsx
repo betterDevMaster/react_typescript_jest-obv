@@ -9,9 +9,9 @@ import {RelativeLink} from 'lib/ui/link/RelativeLink'
 import {usePoints} from 'Event/PointsProvider'
 import Section from 'Event/template/SimpleBlog/Dashboard/Sidebar/Section'
 import {usePlatformActions} from 'Event/ActionsProvider/platform-actions'
+import {useEvent} from 'Event/EventProvider'
 
 export type Points = {
-  headerImage: string
   description: string
   unit: string
 }
@@ -22,6 +22,8 @@ export default function PointsSummary() {
   const {points: summary} = useTemplate()
   const {VISIT_LEADERBOARD} = usePlatformActions()
   const {score, submit} = usePoints()
+  const {event} = useEvent()
+  const logo = event.points_summary_logo ? event.points_summary_logo.url : ''
 
   const awardPoints = () => {
     submit(VISIT_LEADERBOARD)
@@ -39,7 +41,7 @@ export default function PointsSummary() {
     <Section>
       <EditComponent component={{type: POINTS_SUMMARY}}>
         <>
-          <HeaderImage src={summary.headerImage} alt="Points Image" />
+          <HeaderImage src={logo} alt="Points Image" />
           <NumPointsText aria-label="points summary">
             You've earned {score.points} {summary.unit}!
           </NumPointsText>

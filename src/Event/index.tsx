@@ -5,6 +5,7 @@ import {useEvent} from 'Event/EventProvider'
 import PagePoints, {DASHBOARD} from 'Event/PointsProvider/PagePoints'
 import {eventRoutes} from 'Event/Routes'
 import {Template} from 'Event/template'
+import {PublicFile} from 'lib/http-client'
 import {Area} from 'organization/Event/AreaList'
 import React from 'react'
 import {Redirect} from 'react-router-dom'
@@ -28,14 +29,9 @@ export interface SpeakerPage {
 
 export interface Speaker {
   id: number
-  image: SpeakerImage | null
+  image: PublicFile | null
   name: string
   text: string
-}
-
-export interface SpeakerImage {
-  name: string
-  url: string
 }
 
 // Can't use 'Event' because that's already a native DOM type
@@ -44,10 +40,13 @@ export interface ObvioEvent {
   id: number
   name: string
   slug: string
-  template: null | Template
-  waiver: null | WaiverConfig
-  speaker_page: null | SpeakerPage
-  tech_check: null | TechCheckConfig
+  template: Template | null
+  waiver: WaiverConfig | null
+  speaker_page: SpeakerPage | null
+  tech_check: TechCheckConfig | null
+  logo: PublicFile | null
+  header_background: PublicFile | null
+  points_summary_logo: PublicFile | null
 }
 
 export default function Event() {
