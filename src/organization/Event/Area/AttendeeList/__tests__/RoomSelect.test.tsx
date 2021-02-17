@@ -46,10 +46,10 @@ it('should assign a room', async () => {
   mockGet.mockImplementationOnce(() => Promise.resolve({data: rooms}))
   // All Attendees
   mockGet.mockImplementationOnce(() => Promise.resolve({data: attendees}))
-  // Area Attendees
-  mockGet.mockImplementationOnce(() => Promise.resolve({data: attendees}))
   // Room Assignments - start with none assigned
   mockGet.mockImplementationOnce(() => Promise.resolve({data: []}))
+  // Area Attendees
+  mockGet.mockImplementationOnce(() => Promise.resolve({data: attendees}))
 
   user.click(await findByLabelText(`view ${event.name}`))
   // go to area config
@@ -96,8 +96,6 @@ it('should unassign a room', async () => {
   mockGet.mockImplementationOnce(() => Promise.resolve({data: rooms}))
   // All Attendees
   mockGet.mockImplementationOnce(() => Promise.resolve({data: [attendee]}))
-  // Area Attendees
-  mockGet.mockImplementationOnce(() => Promise.resolve({data: [attendee]}))
   // Room Assignments - start assigned
   mockGet.mockImplementationOnce(() =>
     Promise.resolve({
@@ -109,6 +107,8 @@ it('should unassign a room', async () => {
       ],
     }),
   )
+  // Area Attendees
+  mockGet.mockImplementationOnce(() => Promise.resolve({data: [attendee]}))
 
   user.click(await findByLabelText(`view ${event.name}`))
   // go to area config
@@ -167,12 +167,12 @@ it('it should re-assign a room', async () => {
   mockGet.mockImplementationOnce(() => Promise.resolve({data: rooms}))
   // All Attendees
   mockGet.mockImplementationOnce(() => Promise.resolve({data: attendees}))
-  // Area Attendees
-  mockGet.mockImplementationOnce(() => Promise.resolve({data: attendees}))
   // Room Assignments - start wiht assigned room
   mockGet.mockImplementationOnce(() =>
     Promise.resolve({data: [{attendee, room}]}),
   )
+  // Area Attendees
+  mockGet.mockImplementationOnce(() => Promise.resolve({data: attendees}))
 
   user.click(await findByLabelText(`view ${event.name}`))
   // go to area config

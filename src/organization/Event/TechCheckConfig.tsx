@@ -19,7 +19,7 @@ import {setEvent} from 'Event/state/actions'
 import FormControl from '@material-ui/core/FormControl'
 import FormControlLabel from '@material-ui/core/FormControlLabel'
 import Switch from '@material-ui/core/Switch'
-import AreaSelect from 'organization/Event/AreaConfig/AreaSelect'
+import AreaSelect from 'organization/Event/Area/AreaSelect'
 import Page from 'organization/Event/Page'
 
 export interface TechCheckData {

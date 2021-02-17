@@ -89,6 +89,23 @@ export default function Form(props: {
       })
   }
 
+  const descriptionError = fieldError('description', {
+    form: errors,
+    server: serverError,
+  })
+
+  const pointsError = fieldError('points', {form: errors, server: serverError})
+
+  const maxPerDayError = fieldError('max_per_day', {
+    form: errors,
+    server: serverError,
+  })
+
+  const maxPerEventError = fieldError('max_per_event', {
+    form: errors,
+    server: serverError,
+  })
+
   return (
     <form onSubmit={handleSubmit(submit)} className={props.className}>
       <TextField
@@ -103,7 +120,8 @@ export default function Form(props: {
           }),
           'aria-label': 'action description',
         }}
-        error={fieldError('description', {form: errors, server: serverError})}
+        error={Boolean(descriptionError)}
+        helperText={descriptionError}
       />
       <TextField
         name="points"
@@ -118,7 +136,8 @@ export default function Form(props: {
           }),
           'aria-label': 'action points',
         }}
-        error={fieldError('points', {form: errors, server: serverError})}
+        error={Boolean(pointsError)}
+        helperText={pointsError}
       />
       <FormControl component="fieldset" fullWidth disabled={submitting}>
         <FormControlLabel
@@ -145,7 +164,8 @@ export default function Form(props: {
           'aria-label': 'action max per day',
           min: 0,
         }}
-        error={fieldError('max_per_day', {form: errors, server: serverError})}
+        error={Boolean(maxPerDayError)}
+        helperText={maxPerDayError}
         disabled={!hasMaxPerDay || submitting}
       />
       <FormControl component="fieldset" fullWidth disabled={submitting}>
@@ -173,7 +193,8 @@ export default function Form(props: {
           'aria-label': 'action max per event',
           min: 0,
         }}
-        error={fieldError('max_per_event', {form: errors, server: serverError})}
+        error={Boolean(maxPerEventError)}
+        helperText={maxPerEventError}
         disabled={!hasMaxPerEvent || submitting}
       />
       <div>

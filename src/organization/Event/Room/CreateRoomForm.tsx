@@ -13,13 +13,13 @@ import TextField from '@material-ui/core/TextField'
 import {fieldError} from 'lib/form'
 import Button from '@material-ui/core/Button'
 import {useHistory} from 'react-router-dom'
-import {useArea} from 'organization/Event/AreaConfig/AreaProvider'
+import {useArea} from 'organization/Event/Area/AreaProvider'
 import {Room} from 'Event/room'
 import FormControl from '@material-ui/core/FormControl'
 import FormControlLabel from '@material-ui/core/FormControlLabel'
 import {onChangeCheckedHandler} from 'lib/dom'
 import Switch from '@material-ui/core/Switch'
-import {useAreaRoutes} from 'organization/Event/AreaConfig/AreaRoutes'
+import {useAreaRoutes} from 'organization/Event/Area/AreaRoutes'
 import Page from 'organization/Event/Page'
 
 interface CreateRoomData {
@@ -55,6 +55,8 @@ export default function CreateRoomForm() {
       })
   }
 
+  const nameError = fieldError('name', {form: errors, server: serverError})
+
   return (
     <Layout>
       <Page>
@@ -74,7 +76,8 @@ export default function CreateRoomForm() {
               }),
               'aria-label': 'room name input',
             }}
-            error={fieldError('name', {form: errors, server: serverError})}
+            error={Boolean(nameError)}
+            helperText={nameError}
           />
           <FormControl required component="fieldset" fullWidth>
             <FormControlLabel

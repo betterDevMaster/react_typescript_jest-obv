@@ -12,9 +12,10 @@ import CreateAreaForm from 'organization/Event/AreaList/CreateAreaForm'
 import {ObvioEvent} from 'Event'
 import {useParamEventSlug} from 'Event/url'
 import {routesWithValue} from 'lib/url'
-import {AreaProvider} from 'organization/Event/AreaConfig/AreaProvider'
-import AreaRoutes from 'organization/Event/AreaConfig/AreaRoutes'
+import {AreaProvider} from 'organization/Event/Area/AreaProvider'
+import AreaRoutes from 'organization/Event/Area/AreaRoutes'
 import PointsConfig from 'organization/Event/PointsConfig'
+import AttendeesProvider from 'organization/Event/AttendeesProvider'
 
 export function useEventRoutes(event?: ObvioEvent) {
   const {routes: organizationRoutes} = useOrganization()
@@ -42,7 +43,9 @@ export default function EventRoutes() {
         <TechCheckConfig />
       </Route>
       <Route path={routes.events[':event'].attendees}>
-        <AttendeeManagement />
+        <AttendeesProvider>
+          <AttendeeManagement />
+        </AttendeesProvider>
       </Route>
       <Route path={routes.events[':event'].emoji}>
         <Emoji />

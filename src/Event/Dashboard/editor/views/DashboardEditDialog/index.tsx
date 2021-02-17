@@ -27,7 +27,7 @@ export default function DashboardEditDialog() {
       open={dialogVisible}
       onClose={stopEdit}
       fullWidth
-      disableEnforceFocus
+      disableEnforceFocus // Required for CKEditor Popups in dialog
     >
       <CloseButton onClick={stopEdit} aria-label="close config dialog">
         <CloseIcon fontSize="small" />

@@ -118,6 +118,8 @@ export default function EditSpeakerForm(props: {
     setValue('text', editor.getData())
   }
 
+  const nameError = fieldError('name', {form: errors, server: serverError})
+
   return (
     <form onSubmit={handleSubmit(submit)}>
       <TextField
@@ -129,7 +131,8 @@ export default function EditSpeakerForm(props: {
           ref: register({required: 'Speaker Name is required.'}),
           'aria-label': 'speaker name',
         }}
-        error={fieldError('name', {form: errors, server: serverError})}
+        error={Boolean(nameError)}
+        helperText={nameError}
       />
       <input
         type="hidden"

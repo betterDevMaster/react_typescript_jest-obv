@@ -49,10 +49,10 @@ it('should render attendee list', async () => {
   mockGet.mockImplementationOnce(() => Promise.resolve({data: rooms}))
   // All Attendees
   mockGet.mockImplementationOnce(() => Promise.resolve({data: allAttendees}))
-  // Area Attendees
-  mockGet.mockImplementationOnce(() => Promise.resolve({data: areaAttendees}))
   // Room Assignments
   mockGet.mockImplementationOnce(() => Promise.resolve({data: assignments}))
+  // Area Attendees
+  mockGet.mockImplementationOnce(() => Promise.resolve({data: areaAttendees}))
 
   user.click(await findByLabelText(`view ${event.name}`))
   // go to area config
@@ -101,10 +101,10 @@ it('should update attendee entry', async () => {
   mockGet.mockImplementationOnce(() => Promise.resolve({data: rooms}))
   // All Attendees
   mockGet.mockImplementationOnce(() => Promise.resolve({data: allAttendees}))
-  // Area Attendees
-  mockGet.mockImplementationOnce(() => Promise.resolve({data: areaAttendees}))
   // Room Assignments
   mockGet.mockImplementationOnce(() => Promise.resolve({data: assignments}))
+  // Area Attendees
+  mockGet.mockImplementationOnce(() => Promise.resolve({data: areaAttendees}))
 
   user.click(await findByLabelText(`view ${event.name}`))
   // go to area config

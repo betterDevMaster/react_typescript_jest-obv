@@ -4,11 +4,12 @@ import {Redirect, Route, Switch} from 'react-router-dom'
 import CreateAreaForm from 'organization/Event/AreaList/CreateAreaForm'
 import {routesWithValue} from 'lib/url'
 import {Area as AreaData} from 'organization/Event/AreaList'
-import Area, {ATTENDEES_TAB} from 'organization/Event/AreaConfig'
+import Area, {ATTENDEES_TAB} from 'organization/Event/Area'
 import {useEventRoutes} from 'organization/Event/EventRoutes'
 import RoomRoutes from 'organization/Event/Room/RoomRoutes'
-import {useArea} from 'organization/Event/AreaConfig/AreaProvider'
+import {useArea} from 'organization/Event/Area/AreaProvider'
 import {useEvent} from 'Event/EventProvider'
+import AttendeesProvider from 'organization/Event/AttendeesProvider'
 
 export function useAreaRoutes() {
   const {area} = useArea()
@@ -40,10 +41,14 @@ export default function AreaRoutes() {
         <CreateAreaForm />
       </Route>
       <Route path={routes.events[':event'].areas[':area'].attendees}>
-        <Area tab={ATTENDEES_TAB} />
+        <AttendeesProvider>
+          <Area tab={ATTENDEES_TAB} />
+        </AttendeesProvider>
       </Route>
       <Route path={routes.events[':event'].areas.root}>
-        <Area />
+        <AttendeesProvider>
+          <Area />
+        </AttendeesProvider>
       </Route>
       <Redirect to={routes.events[':event'].areas[':area'].root} />
     </Switch>

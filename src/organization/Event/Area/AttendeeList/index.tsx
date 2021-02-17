@@ -8,16 +8,18 @@ import {Attendee} from 'Event/attendee'
 import {Room} from 'Event/room'
 import {onChangeCheckedHandler} from 'lib/dom'
 import {RelativeLink} from 'lib/ui/link/RelativeLink'
-import {useRoomAssignments} from 'organization/Event/AreaConfig/AttendeeList/assignments'
-import {useAreaAttendees} from 'organization/Event/AreaConfig/AttendeeList/attendees'
-import RoomSelect from 'organization/Event/AreaConfig/AttendeeList/RoomSelect'
-import {useAttendees} from 'organization/Event/AttendeeManagement/attendees'
+import {useRoomAssignments} from 'organization/Event/Area/AttendeeList/assignments'
+import {useAreaAttendees} from 'organization/Event/Area/AttendeeList/attendees'
+import RoomSelect from 'organization/Event/Area/AttendeeList/RoomSelect'
+import {AttendeesContextProps} from 'organization/Event/AttendeesProvider'
 import {useEventRoutes} from 'organization/Event/EventRoutes'
 import React, {useState} from 'react'
 
-export default function AttendeeList(props: {rooms: Room[]}) {
-  const {rooms} = props
-  const all = useAttendees()
+export default function AttendeeList(props: {
+  rooms: Room[]
+  all: AttendeesContextProps
+}) {
+  const {rooms, all} = props
   const [processing, setProcessing] = useState(false)
   const area = useAreaAttendees()
   const assignments = useRoomAssignments()

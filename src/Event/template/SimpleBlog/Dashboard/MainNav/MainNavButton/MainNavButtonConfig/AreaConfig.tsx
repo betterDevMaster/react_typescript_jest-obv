@@ -1,6 +1,6 @@
 import {NavButtonWithSize} from 'Event/Dashboard/components/NavButton'
 import React from 'react'
-import AreaSelect from 'organization/Event/AreaConfig/AreaSelect'
+import AreaSelect from 'organization/Event/Area/AreaSelect'
 
 export default function AreaConfig(props: {
   button: NavButtonWithSize

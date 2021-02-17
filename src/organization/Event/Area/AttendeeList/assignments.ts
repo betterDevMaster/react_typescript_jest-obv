@@ -1,7 +1,7 @@
 import {Room} from 'Event/room'
 import {useEvent} from 'Event/EventProvider'
 import {api} from 'lib/url'
-import {useArea} from 'organization/Event/AreaConfig/AreaProvider'
+import {useArea} from 'organization/Event/Area/AreaProvider'
 import {useOrganization} from 'organization/OrganizationProvider'
 import {Attendee} from 'Event/attendee'
 import {useCallback, useEffect, useState} from 'react'

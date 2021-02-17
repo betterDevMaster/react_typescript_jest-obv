@@ -6,7 +6,7 @@ import {Room} from 'Event/room'
 import CreateRoomForm from 'organization/Event/Room/CreateRoomForm'
 import RoomConfig from 'organization/Event/Room'
 import {RouteRoomProvider, useRoom} from 'organization/Event/Room/RoomProvider'
-import {useAreaRoutes} from 'organization/Event/AreaConfig/AreaRoutes'
+import {useAreaRoutes} from 'organization/Event/Area/AreaRoutes'
 
 export function useRoomRoutes(room?: Room) {
   const {room: currentRoom} = useRoom()

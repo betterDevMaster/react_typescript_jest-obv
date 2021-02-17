@@ -5,7 +5,7 @@ import Select from '@material-ui/core/Select'
 import {Attendee} from 'Event/attendee'
 import {Room} from 'Event/room'
 import {onUnknownChangeHandler} from 'lib/dom'
-import {RoomAssignmentProps} from 'organization/Event/AreaConfig/AttendeeList/assignments'
+import {RoomAssignmentProps} from 'organization/Event/Area/AttendeeList/assignments'
 import React, {useState} from 'react'
 
 export default function RoomSelect(props: {

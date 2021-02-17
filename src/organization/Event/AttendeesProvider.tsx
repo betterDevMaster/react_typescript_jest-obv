@@ -4,11 +4,29 @@ import {useAsync} from 'lib/async'
 import {api} from 'lib/url'
 import {Area} from 'organization/Event/AreaList'
 import {useOrganization} from 'organization/OrganizationProvider'
+import React from 'react'
 import {useCallback, useEffect, useState} from 'react'
 
-export function useAttendees(area?: Area) {
+export interface AttendeesContextProps {
+  attendees: Attendee[]
+  update: (attendee: Attendee) => void
+  insert: (attendee: Attendee[] | Attendee) => void
+  remove: (attendee: Attendee) => void
+  loading: boolean
+  groups: string[]
+}
+
+export const AttendeesContext = React.createContext<
+  AttendeesContextProps | undefined
+>(undefined)
+
+export default function AttendeesProvider(props: {
+  children: React.ReactElement
+  area?: Area
+}) {
   const [attendees, setAttendees] = useState<Attendee[]>([])
-  const {data: fetchedAttendees, loading} = useFetchAttendees(area)
+  const {data: fetchedAttendees, loading} = useFetchAttendees(props.area)
+  const [groups, setGroups] = useState<string[]>([])
 
   useEffect(() => {
     if (!fetchedAttendees) {
@@ -17,6 +35,34 @@ export function useAttendees(area?: Area) {
 
     setAttendees(fetchedAttendees)
   }, [fetchedAttendees])
+
+  const addGroups = useCallback(
+    (attendee: Attendee) => {
+      for (const key of Object.keys(attendee.groups)) {
+        /**
+         * Checking groups as we modify it, so we'll always need the
+         * current version. ie. use callback version of setState
+         */
+        setGroups((groups) => {
+          const isNewKey = !groups.includes(key)
+          if (!isNewKey) {
+            return groups
+          }
+
+          return [...groups, key]
+        })
+      }
+    },
+    [setGroups],
+  )
+
+  useEffect(() => {
+    setGroups([])
+
+    for (const attendee of attendees) {
+      addGroups(attendee)
+    }
+  }, [attendees, addGroups])
 
   const update = (target: Attendee) => {
     const updated = attendees.map((a) => {
@@ -57,13 +103,29 @@ export function useAttendees(area?: Area) {
     setAttendees(updated)
   }
 
-  return {
-    attendees,
-    update,
-    insert,
-    remove,
-    loading,
+  return (
+    <AttendeesContext.Provider
+      value={{
+        attendees,
+        update,
+        insert,
+        remove,
+        loading,
+        groups,
+      }}
+    >
+      {props.children}
+    </AttendeesContext.Provider>
+  )
+}
+
+export function useAttendees() {
+  const context = React.useContext(AttendeesContext)
+  if (context === undefined) {
+    throw new Error('useAttendees must be used within an AttendeeListProvider')
   }
+
+  return context
 }
 
 function useFetchAttendees(area?: Area) {

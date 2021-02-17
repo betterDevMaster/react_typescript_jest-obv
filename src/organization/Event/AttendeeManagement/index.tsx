@@ -1,7 +1,7 @@
 import React, {useState} from 'react'
 import styled from 'styled-components'
 import Layout from 'organization/user/Layout'
-import {spacing} from 'lib/ui/theme'
+import {colors, spacing} from 'lib/ui/theme'
 import withStyles from '@material-ui/core/styles/withStyles'
 import {Attendee} from 'Event/attendee'
 import Table from '@material-ui/core/Table'
@@ -12,23 +12,25 @@ import TableRow from '@material-ui/core/TableRow'
 import Button from '@material-ui/core/Button'
 import {formatDate} from 'lib/date-time'
 import AttendeeImport from 'organization/Event/AttendeeManagement/AttendeeImport'
-import {
-  useAttendees,
-  useCheckIn,
-} from 'organization/Event/AttendeeManagement/attendees'
+import {useAttendees, useCheckIn} from 'organization/Event/AttendeesProvider'
 import Alert from '@material-ui/lab/Alert'
 import {useExportAttendees} from 'organization/Event/AttendeeManagement/attendee-csv'
 import Page from 'organization/Event/Page'
+import TagList from 'organization/Event/AttendeeManagement/TagList'
+import EditDialog from 'organization/Event/AttendeeManagement/EditDialog'
+import EditButton from 'lib/ui/Button'
 
 export default function AttendeeManagement() {
   const {
     attendees,
     update: updateAttendee,
     insert: insertAttendees,
+    groups,
   } = useAttendees()
   const checkIn = useCheckIn()
   const [error, setError] = useState<string | null>(null)
   const exportAttendees = useExportAttendees({onError: setError})
+  const [editing, setEditing] = useState<Attendee | null>(null)
 
   const clearError = () => setError(null)
 
@@ -44,77 +46,103 @@ export default function AttendeeManagement() {
     insertAttendees(attendees)
   }
 
-  return (
-    <Layout>
-      <Page>
-        <ExportButton
-          variant="outlined"
-          color="primary"
-          aria-label="export attendees"
-          onClick={exportAttendees}
-        >
-          Export
-        </ExportButton>
-        <AttendeeImport
-          onSuccess={handleImportedAttendees}
-          onError={setError}
-          button={(inputId, submitting) => (
-            <Button
-              variant="outlined"
-              color="primary"
-              aria-label="import attendees"
-              onClick={clearError}
-              disabled={submitting}
-            >
-              <ImportButtonLabel htmlFor={inputId}>Import</ImportButtonLabel>
-            </Button>
-          )}
-          successAlert={(numImported, onClose) => (
-            <StyledAlert severity="info" onClose={onClose}>
-              Successfully imported {numImported} attendees
-            </StyledAlert>
-          )}
-        />
+  const edit = (attendee: Attendee) => () => setEditing(attendee)
+  const stopEditing = () => setEditing(null)
 
-        <Error onClose={clearError}>{error}</Error>
-        <Table>
-          <TableHead>
-            <TableRow>
-              <TableCell>Name</TableCell>
-              <TableCell align="right">Email</TableCell>
-              <TableCell align="right">Checked-In On</TableCell>
-              <TableCell align="right">Check In</TableCell>
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {attendees.map((attendee: Attendee) => (
-              <TableRow key={attendee.id}>
-                <TableCell component="th" scope="row" aria-label="name">
-                  {`${attendee.first_name} ${attendee.last_name}`}
-                </TableCell>
-                <TableCell align="right" aria-label="email">
-                  {attendee.email}
-                </TableCell>
-                <TableCell align="right">
-                  <CheckedInAt>{attendee.tech_check_completed_at}</CheckedInAt>
-                </TableCell>
-                <TableCell align="right">
-                  <Button
-                    variant="contained"
-                    color="primary"
-                    aria-label="mark as completed tech check"
-                    onClick={completeCheckIn(attendee)}
-                    disabled={Boolean(attendee.tech_check_completed_at)}
-                  >
-                    Check-In
-                  </Button>
-                </TableCell>
-              </TableRow>
-            ))}
-          </TableBody>
-        </Table>
-      </Page>
-    </Layout>
+  return (
+    <>
+      <EditDialog attendee={editing} onClose={stopEditing} />
+      <Layout>
+        <Page>
+          <ExportButton
+            variant="outlined"
+            color="primary"
+            aria-label="export attendees"
+            onClick={exportAttendees}
+          >
+            Export
+          </ExportButton>
+          <AttendeeImport
+            onSuccess={handleImportedAttendees}
+            onError={setError}
+            button={(inputId, submitting) => (
+              <Button
+                variant="outlined"
+                color="primary"
+                aria-label="import attendees"
+                onClick={clearError}
+                disabled={submitting}
+              >
+                <ImportButtonLabel htmlFor={inputId}>Import</ImportButtonLabel>
+              </Button>
+            )}
+            successAlert={(numImported, onClose) => (
+              <StyledAlert severity="info" onClose={onClose}>
+                Successfully imported {numImported} attendees
+              </StyledAlert>
+            )}
+          />
+
+          <Error onClose={clearError}>{error}</Error>
+          <TableBox>
+            <Table>
+              <TableHead>
+                <TableRow>
+                  <TableCell>Name</TableCell>
+                  <TableCell>Email</TableCell>
+                  <TableCell>Tags</TableCell>
+                  {groups.map((group, index) => (
+                    <TableCell key={index} aria-label="group">
+                      {group}
+                    </TableCell>
+                  ))}
+                  <TableCell align="center">Check In</TableCell>
+                </TableRow>
+              </TableHead>
+              <TableBody>
+                {attendees.map((attendee: Attendee) => (
+                  <TableRow key={attendee.id}>
+                    <TableCell component="th" scope="row" aria-label="name">
+                      <EditButton
+                        variant="text"
+                        onClick={edit(attendee)}
+                        textColor={colors.primary}
+                        aria-label="edit"
+                      >
+                        {`${attendee.first_name} ${attendee.last_name}`}
+                      </EditButton>
+                    </TableCell>
+                    <TableCell aria-label="email">{attendee.email}</TableCell>
+                    <TableCell>
+                      <TagList attendee={attendee} />
+                    </TableCell>
+                    {groups.map((key, index) => (
+                      <TableCell key={index} aria-label={key}>
+                        {attendee.groups[key]}
+                      </TableCell>
+                    ))}
+                    <TableCell align="center">
+                      <Button
+                        variant="contained"
+                        color="primary"
+                        aria-label="mark as completed tech check"
+                        onClick={completeCheckIn(attendee)}
+                        disabled={Boolean(attendee.tech_check_completed_at)}
+                      >
+                        Check-In
+                      </Button>
+                      <CheckedInAt>
+                        {attendee.tech_check_completed_at}
+                      </CheckedInAt>
+                    </TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+          </TableBox>
+        </Page>
+      </Layout>
+    </>
   )
 }
 
@@ -122,10 +150,14 @@ function CheckedInAt(props: {children: Attendee['tech_check_completed_at']}) {
   const label = 'date of completing tech check'
 
   if (!props.children) {
-    return <span aria-label={label}>Not Checked-In</span>
+    return null
   }
 
-  return <span aria-label={label}>{formatDate(props.children)}</span>
+  return (
+    <CheckedInText aria-label={label}>
+      {formatDate(props.children)}
+    </CheckedInText>
+  )
 }
 
 function Error(props: {children: string | null; onClose: () => void}) {
@@ -139,6 +171,10 @@ function Error(props: {children: string | null; onClose: () => void}) {
     </StyledAlert>
   )
 }
+
+const TableBox = styled.div`
+  overflow: auto;
+`
 
 const ExportButton = withStyles({
   root: {
@@ -155,3 +191,7 @@ const StyledAlert = withStyles({
     marginBottom: spacing[2],
   },
 })(Alert)
+
+const CheckedInText = styled.div`
+  margin-top: ${(props) => props.theme.spacing[1]};
+`

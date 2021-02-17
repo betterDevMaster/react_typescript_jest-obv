@@ -8,21 +8,24 @@ import Typography from '@material-ui/core/Typography'
 import {onChangeCheckedHandler} from 'lib/dom'
 import {RelativeLink} from 'lib/ui/link/RelativeLink'
 import {spacing} from 'lib/ui/theme'
-import RoomList, {useRooms} from 'organization/Event/AreaConfig/RoomList'
-import {useArea} from 'organization/Event/AreaConfig/AreaProvider'
-import {useAreaRoutes} from 'organization/Event/AreaConfig/AreaRoutes'
+import RoomList, {useRooms} from 'organization/Event/Area/RoomList'
+import {useArea} from 'organization/Event/Area/AreaProvider'
+import {useAreaRoutes} from 'organization/Event/Area/AreaRoutes'
 import Layout from 'organization/user/Layout'
 import React, {useEffect, useState} from 'react'
 import Tabs from '@material-ui/core/Tabs'
 import Tab from '@material-ui/core/Tab'
 import TabPanel from 'lib/ui/tabs/TabPanel'
-import AttendeeList from 'organization/Event/AreaConfig/AttendeeList'
+import AttendeeList from 'organization/Event/Area/AttendeeList'
 import {useHistory} from 'react-router-dom'
 import Page from 'organization/Event/Page'
 import {useOrganization} from 'organization/OrganizationProvider'
 import {useEventRoutes} from 'organization/Event/EventRoutes'
 import {useEvent} from 'Event/EventProvider'
 import {useBreadcrumbs} from 'lib/ui/BreadcrumbProvider'
+import AttendeesProvider, {
+  useAttendees,
+} from 'organization/Event/AttendeesProvider'
 
 export const ATTENDEES_TAB = 'attendees'
 
@@ -36,6 +39,7 @@ export default function Area(props: {tab?: typeof ATTENDEES_TAB}) {
   const {routes: orgRoutes} = useOrganization()
   const eventRoutes = useEventRoutes()
   const areaRoutes = useAreaRoutes()
+  const attendees = useAttendees()
 
   useBreadcrumbs([
     {
@@ -157,7 +161,9 @@ export default function Area(props: {tab?: typeof ATTENDEES_TAB}) {
           <RoomList rooms={rooms} />
         </TabPanel>
         <TabPanel index={1} currentIndex={tabIndex} render>
-          <AttendeeList rooms={rooms} />
+          <AttendeesProvider area={area}>
+            <AttendeeList rooms={rooms} all={attendees} />
+          </AttendeesProvider>
         </TabPanel>
       </Page>
     </Layout>
