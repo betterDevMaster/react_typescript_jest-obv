@@ -15,6 +15,7 @@ import {routesWithValue} from 'lib/url'
 import {AreaProvider} from 'organization/Event/Area/AreaProvider'
 import AreaRoutes from 'organization/Event/Area/AreaRoutes'
 import PointsConfig from 'organization/Event/PointsConfig'
+import GeneralConfig from 'organization/Event/GeneralConfig'
 import AttendeesProvider from 'organization/Event/AttendeesProvider'
 
 export function useEventRoutes(event?: ObvioEvent) {
@@ -55,6 +56,9 @@ export default function EventRoutes() {
       </Route>
       <Route path={routes.events[':event'].points}>
         <PointsConfig />
+      </Route>
+      <Route path={routes.events[':event'].general}>
+        <GeneralConfig />
       </Route>
       <Route path={routes.events[':event'].areas.create}>
         <CreateAreaForm />

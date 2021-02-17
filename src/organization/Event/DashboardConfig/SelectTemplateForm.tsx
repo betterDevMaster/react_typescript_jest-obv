@@ -9,7 +9,7 @@ import {Template} from 'Event/template'
 import Layout from 'organization/user/Layout'
 import Page from 'organization/Event/Page'
 
-export default function CreateTemplateForm() {
+export default function SelectTemplateForm() {
   const [template, setTemplate] = useState<Template['name'] | null>(null)
   const dispatch = useDispatch()
 

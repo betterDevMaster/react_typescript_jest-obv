@@ -85,6 +85,7 @@ export function createRoutesFor(organization: Organization) {
           tech_check: '/tech_check',
           attendees: '/attendees',
           points: '/points',
+          general: '/general',
           areas: {
             create: '/create',
             ':area': {

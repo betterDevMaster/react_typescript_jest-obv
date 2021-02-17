@@ -36,6 +36,10 @@ export interface SimpleBlog {
     privacyLink: string | null
     copyrightText: string | null
   }
+  progressBar: {
+    barColor: string
+    textColor: string
+  }
 }
 
 export const createSimpleBlog = (): SimpleBlog => ({
@@ -76,5 +80,9 @@ export const createSimpleBlog = (): SimpleBlog => ({
     termsLink: null,
     privacyLink: null,
     copyrightText: null,
+  },
+  progressBar: {
+    barColor: '#0969d6',
+    textColor: '#000000',
   },
 })

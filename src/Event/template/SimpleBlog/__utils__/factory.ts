@@ -45,6 +45,10 @@ export const fakeSimpleBlog = (overrides?: Partial<SimpleBlog>): SimpleBlog => {
         ? `© 2020 ${faker.company.companyName()}. All Rights Reserved.`
         : null,
     },
+    progressBar: {
+      barColor: '#000000',
+      textColor: '#ffffff',
+    },
   }
 
   const makeAttributes: (d: SimpleBlog) => SimpleBlog = pipe(

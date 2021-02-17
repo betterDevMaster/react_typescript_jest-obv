@@ -11,6 +11,7 @@ export default function ColorPicker(props: {
   label: string
   color?: string
   onPick: (color: string) => void
+  'aria-label'?: string
 }) {
   const [showPicker, setShowPicker] = useState(false)
   const initalColor = props.color
@@ -53,6 +54,9 @@ export default function ColorPicker(props: {
         onClick={toggleShowPicker}
         fullWidth
         onChange={onChangeStringHandler(updateColor)}
+        inputProps={{
+          'aria-label': props['aria-label'],
+        }}
       />
       <Picker
         visible={showPicker}

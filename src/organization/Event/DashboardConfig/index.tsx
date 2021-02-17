@@ -4,7 +4,7 @@ import Dashboard from 'Event/Dashboard'
 import {useEvent} from 'Event/EventProvider'
 import React from 'react'
 import AttendeeProfileProvider from 'Event/Dashboard/component-rules/AttendeeProfileProvider'
-import CreateTemplateForm from 'organization/Event/DashboardConfig/CreateDashboardForm'
+import SelectTemplateForm from 'organization/Event/DashboardConfig/SelectTemplateForm'
 import Layout from 'organization/user/Layout'
 import Page from 'organization/Event/Page'
 import {PointsProvider} from 'Event/PointsProvider'
@@ -19,7 +19,7 @@ export default function DashboardConfig() {
   }
 
   if (!event.template) {
-    return <CreateTemplateForm />
+    return <SelectTemplateForm />
   }
 
   return (

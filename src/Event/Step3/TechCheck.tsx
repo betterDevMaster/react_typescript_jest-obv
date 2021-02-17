@@ -10,6 +10,7 @@ import SimpleBlogTechCheck from 'Event/template/SimpleBlog/TechCheck'
 
 export interface TechCheckProps {
   techCheck: TechCheckConfig
+  progress: number
 }
 
 export default () => {
@@ -22,7 +23,7 @@ export default () => {
 
   return (
     <TemplateProvider template={event.template}>
-      <TemplateTechCheck techCheck={techCheck} />
+      <TemplateTechCheck techCheck={techCheck} progress={100} />
     </TemplateProvider>
   )
 }

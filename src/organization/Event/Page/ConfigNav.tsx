@@ -32,6 +32,9 @@ export default function ConfigNav() {
       <ConfigNavItem to={routes.emoji} aria-label="view emoji page">
         Emoji Page
       </ConfigNavItem>
+      <ConfigNavItem to={routes.general} aria-label="general config">
+        General
+      </ConfigNavItem>
     </Box>
   )
 }

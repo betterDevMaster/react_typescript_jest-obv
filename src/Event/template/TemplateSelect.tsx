@@ -19,7 +19,7 @@ export default function TemplateSelect(props: {
         fullWidth
         onChange={onUnknownChangeHandler(props.onPick)}
         inputProps={{
-          'aria-label': 'dashboard select',
+          'aria-label': 'template select',
         }}
       >
         <MenuItem value={SIMPLE_BLOG}>{SIMPLE_BLOG}</MenuItem>

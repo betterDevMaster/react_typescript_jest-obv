@@ -25,10 +25,11 @@ export interface WaiverProps {
   setSignature: (val: WaiverProps['signature']) => void
   waiver: WaiverConfig
   agreeLabel: string
+  progress: number
 }
 
 export default function Waiver() {
-  const {event, client} = useEvent()
+  const {event, client, hasTechCheck} = useEvent()
   const {waiver} = event
   const attendee = useAttendee()
   const [signature, setSignature] = useState<string | null>(null)
@@ -41,6 +42,7 @@ export default function Waiver() {
   const canSubmit = Boolean(signature) && Boolean(agree) && !submitting
   const alreadySigned = Boolean(attendee.waiver)
   const agreeLabel = `I ${attendee.first_name} ${attendee.last_name} hereby certify that I have read the forgoing and fully understand the meaning effect thereof, and intending to be legally bound, have signed it. *`
+  const progress = hasTechCheck ? 66 : 100
 
   if (!waiver) {
     throw new Error(`Missing event waiver`)
@@ -77,6 +79,7 @@ export default function Waiver() {
         setSignature={setSignature}
         waiver={waiver}
         agreeLabel={agreeLabel}
+        progress={progress}
       />
     </TemplateProvider>
   )

@@ -8,12 +8,15 @@ import {Button} from '@material-ui/core'
 import {api} from 'lib/url'
 import {useEvent} from 'Event/EventProvider'
 import {ResponseError} from 'lib/api-client'
+import ProgressBar from 'lib/ui/ProgressBar'
+import {useTemplate} from 'Event/Dashboard/state/TemplateProvider'
 
 export default function TechCheck(props: {user: User} & TechCheckProps) {
   const [joinUrl, setJoinUrl] = useState<null | string>(null)
   const {event, client} = useEvent()
   const {techCheck} = props
   const [error, setError] = useState<ResponseError | null>(null)
+  const template = useTemplate()
 
   useEffect(() => {
     const url = api(`/events/${event.slug}/areas/${techCheck.area.id}/join`)
@@ -36,6 +39,11 @@ export default function TechCheck(props: {user: User} & TechCheckProps) {
   return (
     <SimpleBlogPage user={props.user}>
       <Container maxWidth="sm">
+        <ProgressBar
+          value={props.progress}
+          barColor={template.progressBar.barColor}
+          textColor={template.progressBar.textColor}
+        />
         <Body
           dangerouslySetInnerHTML={{
             __html: techCheck.body,

@@ -17,7 +17,7 @@ it('should create a new dashboard', async () => {
   })
 
   const {findByText, findByLabelText} = await goToDashboardConfig({event})
-  fireEvent.change(inputElementFor(await findByLabelText('dashboard select')), {
+  fireEvent.change(inputElementFor(await findByLabelText('template select')), {
     target: {
       value: SIMPLE_BLOG,
     },

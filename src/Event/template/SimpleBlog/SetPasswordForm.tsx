@@ -9,16 +9,24 @@ import {spacing} from 'lib/ui/theme'
 import {User} from 'auth/user'
 import {SetPasswordFormProps} from 'Event/Step1/SetPasswordForm'
 import SimpleBlogPage from 'Event/template/SimpleBlog/Page'
+import ProgressBar from 'lib/ui/ProgressBar'
+import {useTemplate} from 'Event/Dashboard/state/TemplateProvider'
 
 export default function SimpleBlogSetPasswordForm(
   props: {user: User} & SetPasswordFormProps,
 ) {
   const {register, handleSubmit, errors, watch} = useForm()
+  const template = useTemplate()
 
   const password = watch('password')
   return (
     <SimpleBlogPage user={props.user}>
       <Container maxWidth="sm">
+        <ProgressBar
+          value={props.progress}
+          barColor={template.progressBar.barColor}
+          textColor={template.progressBar.textColor}
+        />
         <Typography align="center">
           Please set a password to continue
         </Typography>

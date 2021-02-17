@@ -11,11 +11,20 @@ import {onChangeCheckedHandler} from 'lib/dom'
 import {User} from 'auth/user'
 import {WaiverProps} from 'Event/Step2/Waiver'
 import SimpleBlogPage from 'Event/template/SimpleBlog/Page'
+import ProgressBar from 'lib/ui/ProgressBar'
+import {useTemplate} from 'Event/Dashboard/state/TemplateProvider'
 
 export default function SimpleBlogWaiver(props: {user: User} & WaiverProps) {
+  const template = useTemplate()
+
   return (
     <SimpleBlogPage user={props.user}>
       <Container maxWidth="sm">
+        <ProgressBar
+          value={props.progress}
+          barColor={template.progressBar.barColor}
+          textColor={template.progressBar.textColor}
+        />
         <Body
           dangerouslySetInnerHTML={{
             __html: props.waiver.body,

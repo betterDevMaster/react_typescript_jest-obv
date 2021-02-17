@@ -23,10 +23,11 @@ export interface SetPasswordFormProps {
   submit: (data: SetPasswordData) => void
   submitting: boolean
   responseError: ValidationError<SetPasswordData>
+  progress: number
 }
 
 export default function SetPasswordForm() {
-  const {event} = useEvent()
+  const {event, hasTechCheck} = useEvent()
   const [submitting, setSubmitting] = useState(false)
   const [responseError, setResponseError] = useState<
     SetPasswordFormProps['responseError']
@@ -35,6 +36,7 @@ export default function SetPasswordForm() {
   const dispatch = useDispatch()
   const {submit: submitAction} = usePoints()
   const {CREATE_PASSWORD} = usePlatformActions()
+  const progress = hasTechCheck ? 33 : 50
 
   const submit = (data: SetPasswordData) => {
     setSubmitting(true)
@@ -55,6 +57,7 @@ export default function SetPasswordForm() {
         submit={submit}
         submitting={submitting}
         responseError={responseError}
+        progress={progress}
       />
     </TemplateProvider>
   )
