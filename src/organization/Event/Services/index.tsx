@@ -6,6 +6,7 @@ import Card from 'organization/Event/Services/Card'
 import {useEventRoutes} from 'organization/Event/EventRoutes'
 import zapierLogo from 'organization/Event/Services/logos/zapier.jpg'
 import {useServices, ZAPIER} from 'organization/Event/Services/ServicesProvider'
+import AccessTokens from 'organization/Event/Services/AccessTokens'
 
 export default function Services() {
   const routes = useEventRoutes()
@@ -14,6 +15,7 @@ export default function Services() {
   return (
     <Layout>
       <Page>
+        <AccessTokens />
         <Grid>
           <Card
             service={ZAPIER}
