@@ -86,6 +86,9 @@ export function createRoutesFor(organization: Organization) {
           attendees: '/attendees',
           points: '/points',
           general: '/general',
+          services: {
+            zapier: '/zapier',
+          },
           areas: {
             create: '/create',
             ':area': {

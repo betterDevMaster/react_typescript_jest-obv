@@ -17,6 +17,9 @@ import AreaRoutes from 'organization/Event/Area/AreaRoutes'
 import PointsConfig from 'organization/Event/PointsConfig'
 import GeneralConfig from 'organization/Event/GeneralConfig'
 import AttendeesProvider from 'organization/Event/AttendeesProvider'
+import Services from 'organization/Event/Services'
+import Zapier from 'organization/Event/Services/Zapier'
+import ServicesProvider from 'organization/Event/Services/ServicesProvider'
 
 export function useEventRoutes(event?: ObvioEvent) {
   const {routes: organizationRoutes} = useOrganization()
@@ -60,6 +63,11 @@ export default function EventRoutes() {
       <Route path={routes.events[':event'].general}>
         <GeneralConfig />
       </Route>
+      <Route path={routes.events[':event'].services.root}>
+        <ServicesProvider>
+          <ServiceRoutes />
+        </ServicesProvider>
+      </Route>
       <Route path={routes.events[':event'].areas.create}>
         <CreateAreaForm />
       </Route>
@@ -69,6 +77,21 @@ export default function EventRoutes() {
         </AreaProvider>
       </Route>
       <Redirect to={routes.events[':event'].root} />
+    </Switch>
+  )
+}
+
+function ServiceRoutes() {
+  const {routes} = useOrganization()
+
+  return (
+    <Switch>
+      <Route path={routes.events[':event'].services.zapier}>
+        <Zapier />
+      </Route>
+      <Route path={routes.events[':event'].services.root}>
+        <Services />
+      </Route>
     </Switch>
   )
 }

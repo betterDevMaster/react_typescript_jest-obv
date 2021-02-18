@@ -35,6 +35,9 @@ export default function ConfigNav() {
       <ConfigNavItem to={routes.general} aria-label="general config">
         General
       </ConfigNavItem>
+      <ConfigNavItem to={routes.services.root} aria-label="services">
+        Services
+      </ConfigNavItem>
     </Box>
   )
 }
@@ -52,7 +55,12 @@ function ConfigNavItem(props: {
   const isAreasLink = props.to === eventRoutes.root
   const isAreasSubpath = isAreasLink && isAreasLocation
 
-  const isActive = props.to === location.pathname || isAreasSubpath
+  const isServicesLocation = Boolean(paths.find((p) => p === 'services'))
+  const isServicesLink = props.to === eventRoutes.services.root
+  const isServicesSubpath = isServicesLocation && isServicesLink
+
+  const isActive =
+    props.to === location.pathname || isAreasSubpath || isServicesSubpath
 
   return (
     <ConfigLink
