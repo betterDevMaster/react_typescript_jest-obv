@@ -2,7 +2,6 @@ import {Attendee} from 'Event/attendee'
 import {useEvent} from 'Event/EventProvider'
 import {useAsync} from 'lib/async'
 import {api} from 'lib/url'
-import {Area} from 'organization/Event/AreaList'
 import {useOrganization} from 'organization/OrganizationProvider'
 import React from 'react'
 import {useCallback, useEffect, useState} from 'react'
@@ -22,10 +21,9 @@ export const AttendeesContext = React.createContext<
 
 export default function AttendeesProvider(props: {
   children: React.ReactElement
-  area?: Area
 }) {
   const [attendees, setAttendees] = useState<Attendee[]>([])
-  const {data: fetchedAttendees, loading} = useFetchAttendees(props.area)
+  const {data: fetchedAttendees, loading} = useFetchAttendees()
   const [groups, setGroups] = useState<string[]>([])
 
   useEffect(() => {
@@ -128,23 +126,13 @@ export function useAttendees() {
   return context
 }
 
-function useFetchAttendees(area?: Area) {
+function useFetchAttendees() {
   const {client} = useOrganization()
-  const url = useFetchUrl(area)
+  const {event} = useEvent()
+  const url = api(`/events/${event.slug}/attendees`)
 
   const request = useCallback(() => client.get<Attendee[]>(url), [client, url])
   return useAsync(request)
-}
-
-function useFetchUrl(area?: Area) {
-  const {event} = useEvent()
-  if (!area) {
-    // All attendees
-    return api(`/events/${event.slug}/attendees`)
-  }
-
-  // Attendees for given event
-  return api(`/events/${event.slug}/areas/${area.id}/attendees`)
 }
 
 export function useCheckIn() {

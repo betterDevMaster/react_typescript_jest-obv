@@ -1,16 +1,11 @@
-import {goToEvent} from 'organization/Event/__utils__/event'
 import user from '@testing-library/user-event'
-import React from 'react'
-import {render} from '__utils__/render'
 import axios from 'axios'
 import faker from 'faker'
-import App from 'App'
-import {fakeRoom} from 'organization/Event/AreaList/__utils__/factory'
-import {Room} from 'Event/room'
+import {fakeArea, fakeRoom} from 'organization/Event/AreaList/__utils__/factory'
 import {fireEvent, wait} from '@testing-library/react'
 import {fakeAttendee} from 'Event/auth/__utils__/factory'
+import {goToAttendeeManagement} from 'organization/Event/AttendeeManagement/__utils__/go-to-attendee-management'
 
-const mockGet = axios.get as jest.Mock
 const mockDelete = axios.delete as jest.Mock
 const mockPost = axios.post as jest.Mock
 
@@ -19,17 +14,12 @@ afterEach(() => {
 })
 
 it('should assign a room', async () => {
-  const {event, areas} = goToEvent()
-
-  const {findByLabelText, findAllByLabelText} = render(<App />)
-
-  const area = faker.random.arrayElement(areas)
-  mockGet.mockImplementationOnce(() => Promise.resolve({data: area}))
-
   const rooms = Array.from(
     {length: faker.random.number({min: 1, max: 3})},
     fakeRoom,
   )
+  const area = fakeArea({rooms})
+
   const attendees = Array.from(
     {length: faker.random.number({min: 1, max: 3})},
     fakeAttendee,
@@ -42,18 +32,14 @@ it('should assign a room', async () => {
   const attendee = attendees[targetIndex]
   const room = faker.random.arrayElement(rooms)
 
-  // Rooms
-  mockGet.mockImplementationOnce(() => Promise.resolve({data: rooms}))
-  // All Attendees
-  mockGet.mockImplementationOnce(() => Promise.resolve({data: attendees}))
-  // Room Assignments - start with none assigned
-  mockGet.mockImplementationOnce(() => Promise.resolve({data: []}))
-  // Area Attendees
-  mockGet.mockImplementationOnce(() => Promise.resolve({data: attendees}))
-
-  user.click(await findByLabelText(`view ${event.name}`))
-  // go to area config
-  user.click(await findByLabelText(`view ${area.name} area`))
+  const {
+    findAllByLabelText,
+    findByLabelText,
+    event,
+  } = await goToAttendeeManagement({
+    areas: [area],
+    attendees,
+  })
 
   fireEvent.mouseDown((await findAllByLabelText('room select'))[targetIndex])
 
@@ -77,42 +63,19 @@ it('should assign a room', async () => {
 })
 
 it('should unassign a room', async () => {
-  const {event, areas} = goToEvent()
-
-  const {findByLabelText} = render(<App />)
-
-  const area = faker.random.arrayElement(areas)
-  mockGet.mockImplementationOnce(() => Promise.resolve({data: area}))
-
   const rooms = Array.from(
     {length: faker.random.number({min: 1, max: 3})},
     fakeRoom,
   )
-
+  const area = fakeArea({rooms})
   const attendee = fakeAttendee()
+
   const room = faker.random.arrayElement(rooms)
-
-  // Rooms
-  mockGet.mockImplementationOnce(() => Promise.resolve({data: rooms}))
-  // All Attendees
-  mockGet.mockImplementationOnce(() => Promise.resolve({data: [attendee]}))
-  // Room Assignments - start assigned
-  mockGet.mockImplementationOnce(() =>
-    Promise.resolve({
-      data: [
-        {
-          attendee,
-          room,
-        },
-      ],
-    }),
-  )
-  // Area Attendees
-  mockGet.mockImplementationOnce(() => Promise.resolve({data: [attendee]}))
-
-  user.click(await findByLabelText(`view ${event.name}`))
-  // go to area config
-  user.click(await findByLabelText(`view ${area.name} area`))
+  const {findByLabelText, event} = await goToAttendeeManagement({
+    areas: [area],
+    attendees: [attendee],
+    roomAssignments: [{attendee, room}],
+  })
 
   fireEvent.mouseDown(await findByLabelText('room select'))
 
@@ -135,22 +98,15 @@ it('should unassign a room', async () => {
 })
 
 it('it should re-assign a room', async () => {
-  const {event, areas} = goToEvent()
-
-  const {findByLabelText, findAllByLabelText} = render(<App />)
-
-  const area = faker.random.arrayElement(areas)
-  mockGet.mockImplementationOnce(() => Promise.resolve({data: area}))
-
   const rooms = Array.from(
     {length: faker.random.number({min: 2, max: 3})},
     fakeRoom,
   )
+
   const attendees = Array.from(
     {length: faker.random.number({min: 1, max: 3})},
     fakeAttendee,
   )
-
   const attendeeIndex = faker.random.number({
     min: 0,
     max: attendees.length - 1,
@@ -163,20 +119,17 @@ it('it should re-assign a room', async () => {
   const otherRooms = rooms.filter((_, index) => index !== roomIndex)
   const target = faker.random.arrayElement(otherRooms)
 
-  // Rooms
-  mockGet.mockImplementationOnce(() => Promise.resolve({data: rooms}))
-  // All Attendees
-  mockGet.mockImplementationOnce(() => Promise.resolve({data: attendees}))
-  // Room Assignments - start wiht assigned room
-  mockGet.mockImplementationOnce(() =>
-    Promise.resolve({data: [{attendee, room}]}),
-  )
-  // Area Attendees
-  mockGet.mockImplementationOnce(() => Promise.resolve({data: attendees}))
+  const area = fakeArea({rooms})
 
-  user.click(await findByLabelText(`view ${event.name}`))
-  // go to area config
-  user.click(await findByLabelText(`view ${area.name} area`))
+  const {
+    findByLabelText,
+    event,
+    findAllByLabelText,
+  } = await goToAttendeeManagement({
+    areas: [area],
+    attendees,
+    roomAssignments: [{attendee, room}],
+  })
 
   fireEvent.mouseDown((await findAllByLabelText('room select'))[attendeeIndex])
 

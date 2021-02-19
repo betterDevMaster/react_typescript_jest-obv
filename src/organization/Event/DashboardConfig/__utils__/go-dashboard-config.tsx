@@ -8,29 +8,20 @@ import React from 'react'
 import user from '@testing-library/user-event'
 import {fakeAction} from 'Event/ActionsProvider/__utils__/factory'
 import {defaultScore} from 'Event/PointsProvider/__utils__/StaticPointsProvider'
+import {goToEventConfig} from 'organization/Event/__utils__/event'
 
 const mockGet = axios.get as jest.Mock
 
 export async function goToDashboardConfig(options: {event?: ObvioEvent} = {}) {
-  const event = options.event || fakeEvent()
-
-  signInToOrganization({events: [event]})
-
-  const {findByText, findByLabelText, ...otherRes} = render(<App />)
-
-  // Go to event
-  expect(await findByText(event.name)).toBeInTheDocument()
-  mockGet.mockImplementationOnce(() => Promise.resolve({data: event}))
+  const context = await goToEventConfig(options)
 
   // Dashboard requests
-  mockGet.mockImplementationOnce(() => Promise.resolve({data: []})) // Areas
   mockGet.mockImplementationOnce(() => Promise.resolve({data: [fakeAction()]})) // Platform actions
   mockGet.mockImplementationOnce(() => Promise.resolve({data: []})) // Custom actions
   mockGet.mockImplementationOnce(() => Promise.resolve({data: defaultScore})) // Custom actions
 
-  user.click(await findByLabelText(`view ${event.name}`))
   // Configure dashboard
-  user.click(await findByLabelText('configure dashboard'))
+  user.click(await context.findByLabelText('configure dashboard'))
 
-  return {findByText, findByLabelText, ...otherRes}
+  return context
 }

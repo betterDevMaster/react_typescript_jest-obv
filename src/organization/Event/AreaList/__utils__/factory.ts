@@ -1,4 +1,4 @@
-import {Area} from 'organization/Event/AreaList'
+import {Area} from 'organization/Event/AreasProvider'
 import faker from 'faker'
 import {Room} from 'Event/room'
 

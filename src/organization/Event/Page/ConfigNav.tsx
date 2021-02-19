@@ -20,7 +20,7 @@ export default function ConfigNav() {
       <ConfigNavItem to={routes.tech_check} aria-label="configure tech check">
         Tech Check
       </ConfigNavItem>
-      <ConfigNavItem to={routes.attendees} aria-label="view attendees">
+      <ConfigNavItem to={routes.attendees} aria-label="attendee management">
         Attendees
       </ConfigNavItem>
       <ConfigNavItem to={routes.points} aria-label="configure points">

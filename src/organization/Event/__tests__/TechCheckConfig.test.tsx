@@ -1,17 +1,12 @@
 import faker from 'faker'
 import axios from 'axios'
 import {fakeEvent, fakeTechCheck} from 'Event/__utils__/factory'
-import React from 'react'
-import App from 'App'
-import {render} from '__utils__/render'
 import user from '@testing-library/user-event'
 import {fireEvent, wait} from '@testing-library/react'
 import {ObvioEvent} from 'Event'
-import {goToEvent} from 'organization/Event/__utils__/event'
-import {fakeArea} from 'organization/Event/AreaList/__utils__/factory'
+import {goToEventConfig} from 'organization/Event/__utils__/event'
 
 const mockPut = axios.put as jest.Mock
-const mockGet = axios.get as jest.Mock
 
 afterEach(() => {
   jest.clearAllMocks()
@@ -59,17 +54,9 @@ it('should submit a tech check config', async () => {
 })
 
 async function goToTechCheckConfig(overrides: {event?: ObvioEvent} = {}) {
-  const data = goToEvent(overrides)
-  const renderResult = render(<App />)
+  const context = await goToEventConfig(overrides)
 
-  const areas = Array.from(
-    {length: faker.random.number({min: 1, max: 5})},
-    fakeArea,
-  )
-  mockGet.mockImplementationOnce(() => Promise.resolve({data: areas}))
+  user.click(await context.findByLabelText('configure tech check'))
 
-  user.click(await renderResult.findByLabelText(`view ${data.event.name}`))
-  user.click(await renderResult.findByLabelText('configure tech check'))
-
-  return {...data, ...renderResult, areas}
+  return context
 }

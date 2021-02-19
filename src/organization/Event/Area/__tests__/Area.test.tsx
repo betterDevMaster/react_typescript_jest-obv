@@ -5,7 +5,7 @@ import {goToEvent} from 'organization/Event/__utils__/event'
 import {render} from '__utils__/render'
 import App from 'App'
 import axios from 'axios'
-import {Area} from 'organization/Event/AreaList'
+import {Area} from 'organization/Event/AreasProvider'
 import {wait} from '@testing-library/react'
 
 const mockGet = axios.get as jest.Mock

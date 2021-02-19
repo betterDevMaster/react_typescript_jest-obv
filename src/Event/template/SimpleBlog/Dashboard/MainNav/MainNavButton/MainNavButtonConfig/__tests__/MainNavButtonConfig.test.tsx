@@ -17,6 +17,7 @@ import {fakeArea} from 'organization/Event/AreaList/__utils__/factory'
 import mockAxios from 'axios'
 import {defaultScore} from 'Event/PointsProvider/__utils__/StaticPointsProvider'
 import {fakeAction} from 'Event/ActionsProvider/__utils__/factory'
+import StaticAreasProvider from 'organization/Event/__utils__/StaticAreasProvider'
 
 const mockPost = mockRxJsAjax.post as jest.Mock
 const mockGet = mockAxios.get as jest.Mock
@@ -100,8 +101,15 @@ it('should set an area button', async () => {
     }),
   })
 
-  const {findByLabelText, findByText, getByLabelText} = render(
-    <Dashboard isEditMode={true} user={fakeUser()} />,
+  const areas = Array.from(
+    {length: faker.random.number({min: 1, max: 3})},
+    fakeArea,
+  )
+
+  const {findByLabelText, findByText} = render(
+    <StaticAreasProvider areas={areas}>
+      <Dashboard isEditMode={true} user={fakeUser()} />
+    </StaticAreasProvider>,
     {
       event,
       organization: fakeOrganization(),
@@ -114,11 +122,6 @@ it('should set an area button', async () => {
   const targetIndex = faker.random.number({min: 0, max: buttons.length - 1})
   const button = buttons[targetIndex]
   const buttonEl = await findByText(button.text)
-
-  const areas = Array.from(
-    {length: faker.random.number({min: 1, max: 3})},
-    fakeArea,
-  )
 
   const target = faker.random.arrayElement(areas)
 

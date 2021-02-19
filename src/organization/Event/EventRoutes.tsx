@@ -20,6 +20,8 @@ import AttendeesProvider from 'organization/Event/AttendeesProvider'
 import Services from 'organization/Event/Services'
 import Zapier from 'organization/Event/Services/Zapier'
 import ServicesProvider from 'organization/Event/Services/ServicesProvider'
+import RoomAssignmentsProvider from 'organization/Event/RoomAssignmentsProvider'
+import AreasProvider from 'organization/Event/AreasProvider'
 
 export function useEventRoutes(event?: ObvioEvent) {
   const {routes: organizationRoutes} = useOrganization()
@@ -35,20 +37,30 @@ export default function EventRoutes() {
   return (
     <Switch>
       <Route path={routes.events[':event'].root} exact>
-        <Event />
+        <AreasProvider>
+          <Event />
+        </AreasProvider>
       </Route>
       <Route path={routes.events[':event'].dashboard}>
-        <DashboardConfig />
+        <AreasProvider>
+          <DashboardConfig />
+        </AreasProvider>
       </Route>
       <Route path={routes.events[':event'].waiver}>
         <WaiverConfig />
       </Route>
       <Route path={routes.events[':event'].tech_check}>
-        <TechCheckConfig />
+        <AreasProvider>
+          <TechCheckConfig />
+        </AreasProvider>
       </Route>
       <Route path={routes.events[':event'].attendees}>
         <AttendeesProvider>
-          <AttendeeManagement />
+          <AreasProvider>
+            <RoomAssignmentsProvider>
+              <AttendeeManagement />
+            </RoomAssignmentsProvider>
+          </AreasProvider>
         </AttendeesProvider>
       </Route>
       <Route path={routes.events[':event'].emoji}>

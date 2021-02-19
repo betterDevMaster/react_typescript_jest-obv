@@ -1,5 +1,5 @@
 import App from 'App'
-import {goToEvent} from 'organization/Event/__utils__/event'
+import {goToEvent, goToEventConfig} from 'organization/Event/__utils__/event'
 import React from 'react'
 import {render} from '__utils__/render'
 import faker from 'faker'
@@ -13,9 +13,7 @@ const mockGet = axios.get as jest.Mock
 it('should open the returned url', async () => {
   const windowOpen = (global.open = jest.fn())
 
-  const {event, areas} = goToEvent()
-
-  const {findByLabelText} = render(<App />)
+  const {event, areas, findByLabelText} = await goToEventConfig()
 
   const area = faker.random.arrayElement(areas)
   mockGet.mockImplementationOnce(() => Promise.resolve({data: area}))
@@ -26,12 +24,7 @@ it('should open the returned url', async () => {
   mockGet.mockImplementationOnce(() => Promise.resolve({data: [room]}))
   // All Attendees
   mockGet.mockImplementationOnce(() => Promise.resolve({data: []}))
-  // Area Attendees
-  mockGet.mockImplementationOnce(() => Promise.resolve({data: []}))
-  // Assignments
-  mockGet.mockImplementationOnce(() => Promise.resolve({data: []}))
 
-  user.click(await findByLabelText(`view ${event.name}`))
   // go to area config
   user.click(await findByLabelText(`view ${area.name} area`))
 

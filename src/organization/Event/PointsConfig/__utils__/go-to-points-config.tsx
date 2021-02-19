@@ -15,7 +15,7 @@ export async function goToPointsConfig(actions?: {
   platformActions?: Action[]
   customActions?: Action[]
 }) {
-  const {event} = goToEvent()
+  const {event, areas} = goToEvent()
   const {findByLabelText, ...renderResult} = render(<App />)
 
   user.click(await findByLabelText(`view ${event.name}`))
@@ -23,14 +23,24 @@ export async function goToPointsConfig(actions?: {
   // platform actions
   const platformActions =
     actions?.platformActions ||
-    Array.from({length: faker.random.number({min: 1, max: 4})}, () => fakeAction({is_platform_action: true}))
+    Array.from({length: faker.random.number({min: 1, max: 4})}, () =>
+      fakeAction({is_platform_action: true}),
+    )
   mockGet.mockImplementationOnce(() => Promise.resolve({data: platformActions}))
 
   // Custom actions
   const customActions =
     actions?.customActions ||
-    Array.from({length: faker.random.number({min: 1, max: 4})}, () => fakeAction({is_platform_action: false}))
+    Array.from({length: faker.random.number({min: 1, max: 4})}, () =>
+      fakeAction({is_platform_action: false}),
+    )
   mockGet.mockImplementationOnce(() => Promise.resolve({data: customActions}))
+
+  // Wait for areas to finish loading or we run into hash
+  // change error
+  expect(
+    await findByLabelText(`view ${areas[0].name} area`),
+  ).toBeInTheDocument()
 
   // go to area config
   user.click(await findByLabelText(`configure points`))

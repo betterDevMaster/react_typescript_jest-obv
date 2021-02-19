@@ -19,6 +19,8 @@ import Page from 'organization/Event/Page'
 import TagList from 'organization/Event/AttendeeManagement/TagList'
 import EditDialog from 'organization/Event/AttendeeManagement/EditDialog'
 import EditButton from 'lib/ui/Button'
+import {useRoomAssignments} from 'organization/Event/RoomAssignmentsProvider'
+import RoomSelect from 'organization/Event/AttendeeManagement/RoomSelect'
 
 export default function AttendeeManagement() {
   const {
@@ -31,6 +33,7 @@ export default function AttendeeManagement() {
   const [error, setError] = useState<string | null>(null)
   const exportAttendees = useExportAttendees({onError: setError})
   const [editing, setEditing] = useState<Attendee | null>(null)
+  const {areas, loading} = useRoomAssignments()
 
   const clearError = () => setError(null)
 
@@ -48,6 +51,16 @@ export default function AttendeeManagement() {
 
   const edit = (attendee: Attendee) => () => setEditing(attendee)
   const stopEditing = () => setEditing(null)
+
+  if (loading || !areas) {
+    return (
+      <Layout>
+        <Page>
+          <div>loading...</div>
+        </Page>
+      </Layout>
+    )
+  }
 
   return (
     <>
@@ -97,6 +110,9 @@ export default function AttendeeManagement() {
                     </TableCell>
                   ))}
                   <TableCell align="center">Check In</TableCell>
+                  {areas.map((area) => (
+                    <TableCell key={area.id}>{area.name}</TableCell>
+                  ))}
                 </TableRow>
               </TableHead>
               <TableBody>
@@ -135,6 +151,11 @@ export default function AttendeeManagement() {
                         {attendee.tech_check_completed_at}
                       </CheckedInAt>
                     </TableCell>
+                    {areas.map((area) => (
+                      <TableCell key={area.id}>
+                        <RoomSelect attendee={attendee} area={area} />
+                      </TableCell>
+                    ))}
                   </TableRow>
                 ))}
               </TableBody>

@@ -12,34 +12,21 @@ import RoomList, {useRooms} from 'organization/Event/Area/RoomList'
 import {useArea} from 'organization/Event/Area/AreaProvider'
 import {useAreaRoutes} from 'organization/Event/Area/AreaRoutes'
 import Layout from 'organization/user/Layout'
-import React, {useEffect, useState} from 'react'
-import Tabs from '@material-ui/core/Tabs'
-import Tab from '@material-ui/core/Tab'
-import TabPanel from 'lib/ui/tabs/TabPanel'
-import AttendeeList from 'organization/Event/Area/AttendeeList'
-import {useHistory} from 'react-router-dom'
+import React from 'react'
 import Page from 'organization/Event/Page'
 import {useOrganization} from 'organization/OrganizationProvider'
 import {useEventRoutes} from 'organization/Event/EventRoutes'
 import {useEvent} from 'Event/EventProvider'
 import {useBreadcrumbs} from 'lib/ui/BreadcrumbProvider'
-import AttendeesProvider, {
-  useAttendees,
-} from 'organization/Event/AttendeesProvider'
 
-export const ATTENDEES_TAB = 'attendees'
-
-export default function Area(props: {tab?: typeof ATTENDEES_TAB}) {
+export default function Area() {
   const {area, update, processing} = useArea()
   const routes = useAreaRoutes()
-  const [tabIndex, setTabIndex] = useState(0)
-  const history = useHistory()
   const {rooms, loading} = useRooms()
   const {event} = useEvent()
   const {routes: orgRoutes} = useOrganization()
   const eventRoutes = useEventRoutes()
   const areaRoutes = useAreaRoutes()
-  const attendees = useAttendees()
 
   useBreadcrumbs([
     {
@@ -52,24 +39,6 @@ export default function Area(props: {tab?: typeof ATTENDEES_TAB}) {
     },
     {title: area.name, url: areaRoutes.root},
   ])
-
-  useEffect(() => {
-    if (props.tab === ATTENDEES_TAB) {
-      setTabIndex(1)
-      return
-    }
-
-    setTabIndex(0)
-  }, [props.tab])
-
-  const changeTab = (_: React.ChangeEvent<{}>, newTabIndex: number) => {
-    if (newTabIndex === 0) {
-      history.push(routes.root)
-      return
-    }
-
-    history.push(routes.attendees)
-  }
 
   if (loading) {
     return (
@@ -143,28 +112,16 @@ export default function Area(props: {tab?: typeof ATTENDEES_TAB}) {
             label="Can the same user use multiple devices to join at the same time?"
           />
         </FormControl>
-
-        <Tabs onChange={changeTab} value={tabIndex}>
-          <Tab label="Rooms" />
-          <Tab label="Attendees" />
-        </Tabs>
-        <TabPanel index={0} currentIndex={tabIndex} render>
-          <RelativeLink to={routes.rooms.create} disableStyles>
-            <CreateRoomButton
-              variant="outlined"
-              color="primary"
-              aria-label="create room"
-            >
-              Create Room
-            </CreateRoomButton>
-          </RelativeLink>
-          <RoomList rooms={rooms} />
-        </TabPanel>
-        <TabPanel index={1} currentIndex={tabIndex} render>
-          <AttendeesProvider area={area}>
-            <AttendeeList rooms={rooms} all={attendees} />
-          </AttendeesProvider>
-        </TabPanel>
+        <RelativeLink to={routes.rooms.create} disableStyles>
+          <CreateRoomButton
+            variant="outlined"
+            color="primary"
+            aria-label="create room"
+          >
+            Create Room
+          </CreateRoomButton>
+        </RelativeLink>
+        <RoomList rooms={rooms} />
       </Page>
     </Layout>
   )

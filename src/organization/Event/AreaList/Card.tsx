@@ -3,7 +3,7 @@ import styled from 'styled-components'
 import {useEventRoutes} from 'organization/Event/EventRoutes'
 import React from 'react'
 import grey from '@material-ui/core/colors/grey'
-import {Area} from 'organization/Event/AreaList'
+import {Area} from 'organization/Event/AreasProvider'
 import {areaRoutes} from 'organization/Event/Area/AreaRoutes'
 
 export default function Card(props: {area: Area}) {

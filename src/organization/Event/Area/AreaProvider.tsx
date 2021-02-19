@@ -1,7 +1,7 @@
 import {useEvent} from 'Event/EventProvider'
 import {useAsync} from 'lib/async'
 import {api} from 'lib/url'
-import {Area} from 'organization/Event/AreaList'
+import {Area} from 'organization/Event/AreasProvider'
 import Page from 'organization/Event/Page'
 import {useOrganization} from 'organization/OrganizationProvider'
 import Layout from 'organization/user/Layout'
@@ -20,7 +20,7 @@ export function AreaProvider(props: {children: React.ReactElement}) {
   const {area: routeId} = useParams<{area: string}>()
   const id = parseInt(routeId)
   const [area, setArea] = useState<Area | null>(null)
-  const {data: saved, loading, error} = useSavedArea(id)
+  const {data: saved, loading, error} = useAreaWithId(id)
   const {update, processing} = useUpdateArea(id, setArea)
 
   useEffect(() => {
@@ -48,7 +48,7 @@ export function AreaProvider(props: {children: React.ReactElement}) {
   )
 }
 
-function useSavedArea(id: number) {
+function useAreaWithId(id: number) {
   const {client} = useOrganization()
   const {event} = useEvent()
 
@@ -78,7 +78,7 @@ function useUpdateArea(id: number, setArea: (area: Area) => void) {
           })
       }
     },
-    [id, client, event, setArea],
+    [client, event, setArea, id],
   )
 
   return {processing, update}

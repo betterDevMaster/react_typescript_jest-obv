@@ -1,4 +1,4 @@
-import {goToEvent} from 'organization/Event/__utils__/event'
+import {goToEvent, goToEventConfig} from 'organization/Event/__utils__/event'
 import user from '@testing-library/user-event'
 import React from 'react'
 import {render} from '__utils__/render'
@@ -17,9 +17,7 @@ afterEach(() => {
 })
 
 it('should toggle a room on/off', async () => {
-  const {event, areas} = goToEvent()
-
-  const {findByLabelText} = render(<App />)
+  const {findByLabelText, areas} = await goToEventConfig()
 
   const area = faker.random.arrayElement(areas)
   mockGet.mockImplementationOnce(() => Promise.resolve({data: area}))
@@ -33,14 +31,9 @@ it('should toggle a room on/off', async () => {
 
   // Rooms
   mockGet.mockImplementationOnce(() => Promise.resolve({data: rooms}))
-  // All Attendees
-  mockGet.mockImplementationOnce(() => Promise.resolve({data: []}))
-  // Area Attendees
-  mockGet.mockImplementationOnce(() => Promise.resolve({data: []}))
-  // Room Assignments
+  // Attendees
   mockGet.mockImplementationOnce(() => Promise.resolve({data: []}))
 
-  user.click(await findByLabelText(`view ${event.name}`))
   // go to area config
   user.click(await findByLabelText(`view ${area.name} area`))
 
@@ -73,8 +66,7 @@ it('should toggle a room on/off', async () => {
 })
 
 it('should update room attributes', async () => {
-  const {event, areas} = goToEvent()
-  const {findByLabelText} = render(<App />)
+  const {areas, findByLabelText} = await goToEventConfig()
 
   const area = faker.random.arrayElement(areas)
   mockGet.mockImplementationOnce(() => Promise.resolve({data: area}))
@@ -90,12 +82,7 @@ it('should update room attributes', async () => {
   mockGet.mockImplementationOnce(() => Promise.resolve({data: rooms}))
   // All Attendees
   mockGet.mockImplementationOnce(() => Promise.resolve({data: []}))
-  // Area Attendees
-  mockGet.mockImplementationOnce(() => Promise.resolve({data: []}))
-  // Room Assignments
-  mockGet.mockImplementationOnce(() => Promise.resolve({data: []}))
 
-  user.click(await findByLabelText(`view ${event.name}`))
   // go to area config
   user.click(await findByLabelText(`view ${area.name} area`))
 

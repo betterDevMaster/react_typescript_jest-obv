@@ -7,7 +7,7 @@ import App from 'App'
 import axios from 'axios'
 import {fakeRoom} from 'organization/Event/AreaList/__utils__/factory'
 import {findAllByLabelText, wait} from '@testing-library/react'
-import RoomSelect from 'organization/Event/Area/AttendeeList/RoomSelect'
+import RoomSelect from 'organization/Event/AttendeeManagement/RoomSelect'
 
 const mockGet = axios.get as jest.Mock
 const mockPost = axios.post as jest.Mock

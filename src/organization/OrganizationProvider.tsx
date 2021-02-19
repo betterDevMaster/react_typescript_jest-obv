@@ -96,7 +96,6 @@ export function createRoutesFor(organization: Organization) {
                 create: '/create',
                 ':room': {},
               },
-              attendees: '/attendees',
             },
           },
         },
