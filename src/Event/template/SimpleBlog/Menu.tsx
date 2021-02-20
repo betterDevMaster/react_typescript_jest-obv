@@ -39,7 +39,13 @@ function Links() {
   return (
     <List>
       <ListItem>
-        <Link href="/change-password">Change password</Link>
+        <RelativeLink
+          to={eventRoutes.root}
+          aria-label="dashboard"
+          disableStyles
+        >
+          Dashboard
+        </RelativeLink>
       </ListItem>
       <SpeakersLink />
       <ListItem>
@@ -99,13 +105,4 @@ const List = styled.ul`
 
 const ListItem = styled.li`
   margin: ${(props) => props.theme.spacing[2]} 0;
-`
-
-const Link = styled.a`
-  text-decoration: none;
-  color: #ffffff;
-
-  &:hover {
-    text-decoration: underline;
-  }
 `
