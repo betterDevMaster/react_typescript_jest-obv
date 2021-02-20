@@ -5,7 +5,7 @@ import {fakeAttendee} from 'Event/auth/__utils__/factory'
 import {Attendee} from 'Event/attendee'
 import {formatDate, now} from 'lib/date-time'
 import {goToAttendeeManagement} from 'organization/Event/AttendeeManagement/__utils__/go-to-attendee-management'
-import {fireEvent, wait} from '@testing-library/react'
+import {findByLabelText, fireEvent, wait} from '@testing-library/react'
 
 const mockPatch = axios.patch as jest.Mock
 
@@ -240,4 +240,71 @@ it('should remove empty groups', async () => {
   await wait(async () => {
     expect((await findAllByLabelText('group')).length).toBe(groups.length - 1) // Empty group was removed
   })
+})
+
+it('should search for an attendee', async () => {
+  const noProfile = Array.from(
+    {length: faker.random.number({min: 1, max: 5})},
+    fakeAttendee,
+  )
+
+  const tag = 'Leap'
+  const hasTags = Array.from(
+    {length: faker.random.number({min: 1, max: 5})},
+    () => fakeAttendee({tags: [tag]}),
+  )
+
+  const groups = {Ticket: 'VIP'}
+  const hasGroup = Array.from(
+    {length: faker.random.number({min: 1, max: 5})},
+    () => fakeAttendee({groups}),
+  )
+
+  const attendees = [...noProfile, ...hasTags, ...hasGroup]
+
+  const {findAllByLabelText, findByLabelText} = await goToAttendeeManagement({
+    attendees,
+  })
+
+  const searchInput = await findByLabelText('search for attendee')
+
+  // matches name
+  const nameAttendee = faker.random.arrayElement(attendees)
+
+  fireEvent.change(searchInput, {
+    target: {
+      value: nameAttendee.first_name,
+    },
+  })
+
+  expect((await findAllByLabelText('name')).length).toBe(1)
+
+  // finds email
+  const emailAttendee = faker.random.arrayElement(attendees)
+
+  fireEvent.change(searchInput, {
+    target: {
+      value: emailAttendee.email,
+    },
+  })
+
+  expect((await findAllByLabelText('name')).length).toBe(1)
+
+  // filters by tags
+  fireEvent.change(searchInput, {
+    target: {
+      value: tag,
+    },
+  })
+
+  expect((await findAllByLabelText('name')).length).toBe(hasTags.length)
+
+  // filters by Group
+  fireEvent.change(searchInput, {
+    target: {
+      value: groups.Ticket,
+    },
+  })
+
+  expect((await findAllByLabelText('name')).length).toBe(hasGroup.length)
 })

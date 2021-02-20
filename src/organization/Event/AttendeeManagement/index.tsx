@@ -26,6 +26,9 @@ import EditButton from 'lib/ui/Button'
 import {useRoomAssignments} from 'organization/Event/RoomAssignmentsProvider'
 import RoomSelect from 'organization/Event/AttendeeManagement/RoomSelect'
 import DangerButton from 'lib/ui/Button/DangerButton'
+import TextField from '@material-ui/core/TextField'
+import {onChangeStringHandler} from 'lib/dom'
+import Box from '@material-ui/core/Box'
 
 export default function AttendeeManagement() {
   const {
@@ -40,6 +43,26 @@ export default function AttendeeManagement() {
   const exportAttendees = useExportAttendees({onError: setError})
   const [editing, setEditing] = useState<Attendee | null>(null)
   const {areas, loading} = useRoomAssignments()
+  const [searchTerm, setSearchTerm] = useState('')
+
+  const filteredAttendees = attendees.filter((attendee) => {
+    if (searchTerm === '') {
+      return true
+    }
+
+    const searchRegex = new RegExp(searchTerm, 'i') // i = case insensitive
+    const nameMatch = searchRegex.test(
+      `${attendee.first_name} ${attendee.last_name}`,
+    )
+    const emailMatch = searchRegex.test(attendee.email)
+
+    const hasTag = attendee.tags.includes(searchTerm)
+
+    const groupValues = Object.values(attendee.groups)
+    const hasGroup = groupValues.includes(searchTerm)
+
+    return nameMatch || emailMatch || hasTag || hasGroup
+  })
 
   const clearError = () => setError(null)
 
@@ -78,35 +101,47 @@ export default function AttendeeManagement() {
       <EditDialog attendee={editing} onClose={stopEditing} />
       <Layout>
         <Page>
-          <ExportButton
+          <Box mb={2}>
+            <ExportButton
+              variant="outlined"
+              color="primary"
+              aria-label="export attendees"
+              onClick={exportAttendees}
+            >
+              Export
+            </ExportButton>
+            <AttendeeImport
+              onSuccess={handleImportedAttendees}
+              onError={setError}
+              button={(inputId, submitting) => (
+                <Button
+                  variant="outlined"
+                  color="primary"
+                  aria-label="import attendees"
+                  onClick={clearError}
+                  disabled={submitting}
+                >
+                  <ImportButtonLabel htmlFor={inputId}>
+                    Import
+                  </ImportButtonLabel>
+                </Button>
+              )}
+              successAlert={(numImported, onClose) => (
+                <StyledAlert severity="info" onClose={onClose}>
+                  Successfully imported {numImported} attendees
+                </StyledAlert>
+              )}
+            />
+          </Box>
+          <TextField
             variant="outlined"
-            color="primary"
-            aria-label="export attendees"
-            onClick={exportAttendees}
-          >
-            Export
-          </ExportButton>
-          <AttendeeImport
-            onSuccess={handleImportedAttendees}
-            onError={setError}
-            button={(inputId, submitting) => (
-              <Button
-                variant="outlined"
-                color="primary"
-                aria-label="import attendees"
-                onClick={clearError}
-                disabled={submitting}
-              >
-                <ImportButtonLabel htmlFor={inputId}>Import</ImportButtonLabel>
-              </Button>
-            )}
-            successAlert={(numImported, onClose) => (
-              <StyledAlert severity="info" onClose={onClose}>
-                Successfully imported {numImported} attendees
-              </StyledAlert>
-            )}
+            label="Search"
+            onChange={onChangeStringHandler(setSearchTerm)}
+            fullWidth
+            inputProps={{
+              'aria-label': 'search for attendee',
+            }}
           />
-
           <Error onClose={clearError}>{error}</Error>
           <TableBox>
             <Table>
@@ -127,7 +162,7 @@ export default function AttendeeManagement() {
                 </TableRow>
               </TableHead>
               <TableBody>
-                {attendees.map((attendee: Attendee) => (
+                {filteredAttendees.map((attendee: Attendee) => (
                   <TableRow key={attendee.id}>
                     <TableCell component="th" scope="row" aria-label="name">
                       <EditButton
