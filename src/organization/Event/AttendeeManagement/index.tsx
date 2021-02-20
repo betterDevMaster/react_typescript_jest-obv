@@ -12,7 +12,11 @@ import TableRow from '@material-ui/core/TableRow'
 import Button from '@material-ui/core/Button'
 import {formatDate} from 'lib/date-time'
 import AttendeeImport from 'organization/Event/AttendeeManagement/AttendeeImport'
-import {useAttendees, useCheckIn} from 'organization/Event/AttendeesProvider'
+import {
+  useAttendees,
+  useCheckIn,
+  useCheckOut,
+} from 'organization/Event/AttendeesProvider'
 import Alert from '@material-ui/lab/Alert'
 import {useExportAttendees} from 'organization/Event/AttendeeManagement/attendee-csv'
 import Page from 'organization/Event/Page'
@@ -21,6 +25,7 @@ import EditDialog from 'organization/Event/AttendeeManagement/EditDialog'
 import EditButton from 'lib/ui/Button'
 import {useRoomAssignments} from 'organization/Event/RoomAssignmentsProvider'
 import RoomSelect from 'organization/Event/AttendeeManagement/RoomSelect'
+import DangerButton from 'lib/ui/Button/DangerButton'
 
 export default function AttendeeManagement() {
   const {
@@ -30,6 +35,7 @@ export default function AttendeeManagement() {
     groups,
   } = useAttendees()
   const checkIn = useCheckIn()
+  const checkOut = useCheckOut()
   const [error, setError] = useState<string | null>(null)
   const exportAttendees = useExportAttendees({onError: setError})
   const [editing, setEditing] = useState<Attendee | null>(null)
@@ -37,10 +43,15 @@ export default function AttendeeManagement() {
 
   const clearError = () => setError(null)
 
-  const completeCheckIn = (attendee: Attendee) => () => {
+  const isCheckedIn = (attendee: Attendee) =>
+    Boolean(attendee.tech_check_completed_at)
+
+  const toggleCheckIn = (attendee: Attendee) => () => {
+    const process = isCheckedIn(attendee) ? checkOut : checkIn
+
     clearError()
 
-    checkIn(attendee)
+    process(attendee)
       .then(updateAttendee)
       .catch((e) => setError(e.message))
   }
@@ -138,15 +149,10 @@ export default function AttendeeManagement() {
                       </TableCell>
                     ))}
                     <TableCell align="center">
-                      <Button
-                        variant="contained"
-                        color="primary"
-                        aria-label="mark as completed tech check"
-                        onClick={completeCheckIn(attendee)}
-                        disabled={Boolean(attendee.tech_check_completed_at)}
-                      >
-                        Check-In
-                      </Button>
+                      <ToggleCheckInButton
+                        isCheckedIn={isCheckedIn(attendee)}
+                        onClick={toggleCheckIn(attendee)}
+                      />
                       <CheckedInAt>
                         {attendee.tech_check_completed_at}
                       </CheckedInAt>
@@ -164,6 +170,37 @@ export default function AttendeeManagement() {
         </Page>
       </Layout>
     </>
+  )
+}
+
+function ToggleCheckInButton(props: {
+  isCheckedIn: boolean
+  onClick: () => void
+}) {
+  const label = 'toggle check in'
+
+  if (props.isCheckedIn) {
+    return (
+      <DangerButton
+        variant="outlined"
+        aria-label={label}
+        fullWidth
+        onClick={props.onClick}
+      >
+        Check-Out
+      </DangerButton>
+    )
+  }
+  return (
+    <Button
+      variant="contained"
+      color="primary"
+      aria-label={label}
+      fullWidth
+      onClick={props.onClick}
+    >
+      Check-In
+    </Button>
   )
 }
 

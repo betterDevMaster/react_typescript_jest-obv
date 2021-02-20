@@ -42,14 +42,40 @@ it('should complete tech check for an attendee', async () => {
   mockPatch.mockImplementationOnce(() => Promise.resolve({data: updated}))
 
   // Complete tech check
-  user.click(
-    (await findAllByLabelText('mark as completed tech check'))[targetIndex],
-  )
+  user.click((await findAllByLabelText('toggle check in'))[targetIndex])
 
   // checked-in shows today's date
   expect(
     (await findByLabelText('date of completing tech check')).textContent,
   ).toBe(formatDate(today))
+})
+
+it('should reverse tech check', async () => {
+  const attendees = Array.from(
+    {length: faker.random.number({min: 1, max: 5})},
+    () => fakeAttendee({tech_check_completed_at: now()}), // all completed tech check
+  )
+  const {findAllByLabelText} = await goToAttendeeManagement({
+    attendees,
+  })
+
+  const targetIndex = faker.random.number({min: 0, max: attendees.length - 1})
+  const target = attendees[targetIndex]
+  const updated: Attendee = {...target, tech_check_completed_at: null}
+
+  mockPatch.mockImplementationOnce(() => Promise.resolve({data: updated}))
+
+  // reverse tech check
+  user.click((await findAllByLabelText('toggle check in'))[targetIndex])
+
+  await wait(() => {
+    expect(mockPatch).toHaveBeenCalledTimes(1)
+  })
+
+  // checked-in shows today's date
+  expect(
+    (await findAllByLabelText('toggle check in'))[targetIndex].textContent,
+  ).toBe('Check-In')
 })
 
 it('should render attendee groups', async () => {

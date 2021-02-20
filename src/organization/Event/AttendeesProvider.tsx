@@ -63,16 +63,18 @@ export default function AttendeesProvider(props: {
   }, [attendees, addGroups])
 
   const update = (target: Attendee) => {
-    const updated = attendees.map((a) => {
-      const isTarget = a.id === target.id
-      if (isTarget) {
-        return target
-      }
+    setAttendees((current) => {
+      const updated = current.map((a) => {
+        const isTarget = a.id === target.id
+        if (isTarget) {
+          return target
+        }
 
-      return a
+        return a
+      })
+
+      return updated
     })
-
-    setAttendees(updated)
   }
 
   const isExisting = (target: Attendee) =>
@@ -145,5 +147,18 @@ export function useCheckIn() {
     )
 
     return client.patch<Attendee>(url, {})
+  }
+}
+
+export function useCheckOut() {
+  const {event} = useEvent()
+  const {client} = useOrganization()
+
+  return (attendee: Attendee) => {
+    const url = api(
+      `/events/${event.slug}/attendees/${attendee.id}/mark_tech_check_incomplete`,
+    )
+
+    return client.patch<Attendee>(url)
   }
 }
