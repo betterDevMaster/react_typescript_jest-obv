@@ -22,10 +22,7 @@ type Options = Omit<RtlRenderOptions, 'queries'> & {
   event?: ObvioEvent
   organization?: Organization
   attendee?: Attendee
-  actions?: {
-    platform: Action[]
-    custom: Action[]
-  }
+  actions?: Action[]
   score?: Score
   withRouter?: boolean
 }
@@ -112,13 +109,10 @@ function WithOrganization(props: {
   )
 }
 
-export const emptyActions = {
-  platform: [],
-  custom: [],
-}
+export const emptyActions = []
 
 function WithActions(props: {
-  actions?: {platform: Action[]; custom: Action[]}
+  actions?: Action[]
   children: React.ReactElement
 }) {
   if (!props.actions) {

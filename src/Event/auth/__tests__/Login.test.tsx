@@ -1,12 +1,10 @@
 import {act, wait} from '@testing-library/react'
 import user from '@testing-library/user-event'
-import App, {appRoot} from 'App'
+import App from 'App'
 import axios from 'axios'
-import {fakeAction} from 'Event/ActionsProvider/__utils__/factory'
 import {EVENT_TOKEN_KEY} from 'Event/auth'
 import {fakeAttendee} from 'Event/auth/__utils__/factory'
 import {defaultScore} from 'Event/PointsProvider/__utils__/StaticPointsProvider'
-import {fakeEvent} from 'Event/__utils__/factory'
 import {visitEventSite} from 'Event/__utils__/url'
 import faker from 'faker'
 import React from 'react'
@@ -17,7 +15,7 @@ const mockPost = axios.post as jest.Mock
 const mockGet = axios.get as jest.Mock
 const mockUseLocation = useLocation as jest.Mock
 
-afterEach(() => {
+beforeEach(() => {
   jest.clearAllMocks()
 })
 
@@ -49,9 +47,8 @@ it('should login a user', async () => {
   // Attendee on login
   mockGet.mockImplementationOnce(() => Promise.resolve({data: fakeAttendee()}))
   // Dashboard requests
-  mockGet.mockImplementationOnce(() => Promise.resolve({data: [fakeAction()]})) // Platform actions
-  mockGet.mockImplementationOnce(() => Promise.resolve({data: []})) // Custom actions
-  mockGet.mockImplementationOnce(() => Promise.resolve({data: defaultScore})) // Custom actions
+  mockGet.mockImplementationOnce(() => Promise.resolve({data: []}))
+  mockGet.mockImplementationOnce(() => Promise.resolve({data: defaultScore}))
 
   const {findByLabelText, findAllByText} = render(<App />)
 
@@ -96,7 +93,6 @@ it('should login a user by token', async () => {
 
   mockGet.mockImplementationOnce(() => Promise.resolve({data: attendee}))
   // Dashboard requests
-  mockGet.mockImplementationOnce(() => Promise.resolve({data: [fakeAction()]})) // Platform actions
   mockGet.mockImplementationOnce(() => Promise.resolve({data: []})) // Custom actions
   mockGet.mockImplementationOnce(() => Promise.resolve({data: defaultScore})) // Custom actions
   // Token auth
@@ -108,7 +104,10 @@ it('should login a user by token', async () => {
 
   expect(await findByLabelText('password input')).toBeInTheDocument()
 
-  expect(mockPost).toHaveBeenCalledTimes(1)
+  await wait(() => {
+    expect(mockPost).toHaveBeenCalledTimes(1)
+  })
+
   expect(mockPost.mock.calls[0][1]['login_token']).toBe(token)
 })
 

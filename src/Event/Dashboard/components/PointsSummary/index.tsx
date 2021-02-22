@@ -20,7 +20,7 @@ export const POINTS_SUMMARY = 'Points Summary'
 
 export default function PointsSummary() {
   const {points: summary} = useTemplate()
-  const {VISIT_LEADERBOARD} = usePlatformActions()
+  const {visitLeaderboard: VISIT_LEADERBOARD} = usePlatformActions()
   const {score, submit} = usePoints()
   const {event} = useEvent()
   const logo = event.points_summary_logo ? event.points_summary_logo.url : ''

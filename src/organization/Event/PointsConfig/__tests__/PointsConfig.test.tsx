@@ -5,10 +5,8 @@ afterEach(() => {
 })
 
 it('configure event points', async () => {
-  const {platformActions, customActions, findByText} = await goToPointsConfig()
+  const {actions, findByText} = await goToPointsConfig()
 
-  // Renders all actions
-  const actions = [...platformActions, ...customActions]
   for (const action of actions) {
     expect(await findByText(action.description)).toBeInTheDocument()
   }

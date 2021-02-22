@@ -5,6 +5,7 @@ import axios from 'axios'
 import {act} from 'react-dom/test-utils'
 import {fakeAction} from 'Event/ActionsProvider/__utils__/factory'
 import {wait} from '@testing-library/react'
+import {createPlatformActions, fakeEvent} from 'Event/__utils__/factory'
 
 const mockPost = axios.post as jest.Mock
 
@@ -63,12 +64,16 @@ it('should receive points', async () => {
   })
 
   // Set password = ID #1
-  const action = fakeAction({id: 1, is_platform_action: true})
-  const platformActions = [action]
+  const action = fakeAction()
 
-  const {findByLabelText, event, findByText} = await loginToEventSite({
+  const event = fakeEvent({
+    platform_actions: createPlatformActions({create_password: action}),
+  })
+
+  const {findByLabelText, findByText} = await loginToEventSite({
     attendee,
-    platformActions,
+    actions: [action],
+    event,
   })
 
   mockPost.mockImplementationOnce(() =>
@@ -95,7 +100,7 @@ it('should receive points', async () => {
   })
 
   const [url] = mockPost.mock.calls[2]
-  expect(url).toMatch(`/events/${event.slug}/actions/1`)
+  expect(url).toMatch(`/events/${event.slug}/actions/${action.id}`)
 
   // show points pop-up
   expect(await findByText(new RegExp(action.description))).toBeInTheDocument()

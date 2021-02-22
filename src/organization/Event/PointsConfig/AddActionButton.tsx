@@ -32,7 +32,7 @@ export default function AddActionButton(props: {
 function useCreateAction(onAdd: (action: Action) => void) {
   const {client} = useOrganization()
   const {event} = useEvent()
-  const {custom} = useActions()
+  const actions = useActions()
 
   const url = api(`/events/${event.slug}/actions`)
 
@@ -45,7 +45,7 @@ function useCreateAction(onAdd: (action: Action) => void) {
 
   return () =>
     client.post<Action>(url, data).then((action) => {
-      custom.add(action)
+      actions.add(action)
       onAdd(action)
     })
 }

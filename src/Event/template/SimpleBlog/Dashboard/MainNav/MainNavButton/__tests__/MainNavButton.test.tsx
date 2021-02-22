@@ -66,7 +66,7 @@ it('should receive points', async () => {
   const event = fakeEvent({template: fakeSimpleBlog({mainNav})})
 
   const {findByText} = await loginToEventSite({
-    customActions: [action],
+    actions: [action],
     attendee: fakeAttendee({
       waiver: 'waiver.png',
       tech_check_completed_at: 'now',

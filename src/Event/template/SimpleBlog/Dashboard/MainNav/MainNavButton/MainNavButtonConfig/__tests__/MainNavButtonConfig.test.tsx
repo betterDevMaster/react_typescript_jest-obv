@@ -159,9 +159,9 @@ it('should assign an action for points', async () => {
     }),
   })
 
-  const customActions = Array.from(
+  const actions = Array.from(
     {length: faker.random.number({min: 1, max: 3})},
-    () => fakeAction({is_platform_action: false}),
+    () => fakeAction(),
   )
 
   const {findByLabelText, findByText} = render(
@@ -169,7 +169,7 @@ it('should assign an action for points', async () => {
     {
       event,
       organization: fakeOrganization(),
-      actions: {platform: [], custom: customActions},
+      actions,
       withRouter: true,
       score: defaultScore,
     },
@@ -177,9 +177,9 @@ it('should assign an action for points', async () => {
 
   const buttonEl = await findByText(button.text)
 
-  const target = faker.random.arrayElement(customActions)
+  const target = faker.random.arrayElement(actions)
 
-  mockGet.mockImplementationOnce(() => Promise.resolve({data: customActions}))
+  mockGet.mockImplementationOnce(() => Promise.resolve({data: actions}))
 
   clickEdit(buttonEl)
 

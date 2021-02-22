@@ -3,7 +3,7 @@ import faker from 'faker'
 import {fakeSimpleBlog} from 'Event/template/SimpleBlog/__utils__/factory'
 import {fakeUser} from 'auth/user/__utils__/factory'
 import Dashboard from 'Event/Dashboard'
-import {emptyActions, render} from '__utils__/render'
+import {render} from '__utils__/render'
 import {fakeNavButtonWithSize} from 'Event/Dashboard/components/NavButton/__utils__/factory'
 import {createEntityList} from 'lib/list'
 import {clickEdit} from '__utils__/edit'
@@ -38,7 +38,7 @@ it('should render main nav buttons', async () => {
         }),
       }),
       organization: fakeOrganization(),
-      actions: emptyActions,
+      actions: [],
       score: defaultScore,
       withRouter: true,
     },
@@ -70,7 +70,7 @@ it('should add a new main nav button', async () => {
     {
       event,
       organization: fakeOrganization(),
-      actions: emptyActions,
+      actions: [],
       score: defaultScore,
       withRouter: true,
     },
@@ -116,7 +116,7 @@ it('should add a new main nav button', async () => {
     {
       event,
       organization: fakeOrganization(),
-      actions: emptyActions,
+      actions: [],
       score: defaultScore,
       withRouter: true,
     },
@@ -154,7 +154,7 @@ it('should remove the button', async () => {
     {
       event,
       organization: fakeOrganization(),
-      actions: emptyActions,
+      actions: [],
       score: defaultScore,
       withRouter: true,
     },

@@ -7,14 +7,6 @@ export default function Description(props: {
   action: Action
   onClick: () => void
 }) {
-  /**
-   * Platform actions are not clickable, as they
-   * cannot be edited.
-   */
-  if (props.action.is_platform_action) {
-    return <span>{props.action.description}</span>
-  }
-
   const label = `edit ${props.action.description}`
 
   return (

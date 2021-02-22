@@ -40,14 +40,14 @@ export type NavButtonWithSize = NavButton & {
 
 export default function NavButton(props: NavButton) {
   const {newTab, isAreaButton} = props
-  const {custom} = useActions()
+  const actionsList = useActions()
   const {submit} = usePoints()
   const submitAction = () => {
     if (!props.actionId) {
       return
     }
 
-    const action = findAction(props.actionId, custom.actions)
+    const action = findAction(props.actionId, actionsList.actions)
 
     if (!action) {
       return

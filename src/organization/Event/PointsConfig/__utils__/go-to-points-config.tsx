@@ -11,30 +11,19 @@ import {wait} from '@testing-library/react'
 
 const mockGet = axios.get as jest.Mock
 
-export async function goToPointsConfig(actions?: {
-  platformActions?: Action[]
-  customActions?: Action[]
-}) {
+export async function goToPointsConfig(overrides?: {actions: Action[]}) {
   const {event, areas} = goToEvent()
   const {findByLabelText, ...renderResult} = render(<App />)
 
   user.click(await findByLabelText(`view ${event.name}`))
 
-  // platform actions
-  const platformActions =
-    actions?.platformActions ||
-    Array.from({length: faker.random.number({min: 1, max: 4})}, () =>
-      fakeAction({is_platform_action: true}),
-    )
-  mockGet.mockImplementationOnce(() => Promise.resolve({data: platformActions}))
-
   // Custom actions
-  const customActions =
-    actions?.customActions ||
-    Array.from({length: faker.random.number({min: 1, max: 4})}, () =>
-      fakeAction({is_platform_action: false}),
+  const actions =
+    overrides?.actions ||
+    Array.from({length: faker.random.number({min: 2, max: 4})}, () =>
+      fakeAction(),
     )
-  mockGet.mockImplementationOnce(() => Promise.resolve({data: customActions}))
+  mockGet.mockImplementationOnce(() => Promise.resolve({data: actions}))
 
   // Wait for areas to finish loading or we run into hash
   // change error
@@ -46,14 +35,13 @@ export async function goToPointsConfig(actions?: {
   user.click(await findByLabelText(`configure points`))
 
   await wait(() => {
-    expect(mockGet).toHaveBeenCalledTimes(8)
+    expect(mockGet).toHaveBeenCalledTimes(7)
   })
 
   return {
     event,
     findByLabelText,
     ...renderResult,
-    platformActions,
-    customActions,
+    actions,
   }
 }

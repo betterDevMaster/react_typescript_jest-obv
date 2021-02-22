@@ -13,9 +13,7 @@ export default function ActionConfig(props: {
     key: T,
   ) => (value: NavButtonWithSize[T]) => void
 }) {
-  const {custom, platform} = useActions()
-
-  const actions = [...platform.actions, ...custom.actions]
+  const {actions} = useActions()
 
   const value = props.button.actionId || ''
 

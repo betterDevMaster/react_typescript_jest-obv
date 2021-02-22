@@ -13,13 +13,16 @@ import DangerButton from 'lib/ui/Button/DangerButton'
 import {api} from 'lib/url'
 import {useOrganization} from 'organization/OrganizationProvider'
 import React, {useEffect, useState} from 'react'
-import {useForm} from 'react-hook-form'
+import {useForm, UseFormMethods} from 'react-hook-form'
 
 export interface UpdateActionData {
   description: string
   points: number
   max_per_day: number | null
   max_per_event: number | null
+  has_random_points: boolean
+  random_min_points: number | null
+  random_max_points: number | null
 }
 
 export default function Form(props: {
@@ -32,12 +35,21 @@ export default function Form(props: {
   const [submitting, setSubmitting] = useState(false)
   const {client} = useOrganization()
   const {event} = useEvent()
-  const {custom} = useActions()
+  const actions = useActions()
   const [serverError, setServerError] = useState<
     ValidationError<UpdateActionData>
   >(null)
+  const [hasRandomPoints, setHasRandomPoints] = useState(false)
   const [hasMaxPerDay, setHasMaxPerDay] = useState(false)
   const [hasMaxPerEvent, setHasMaxPerEvent] = useState(false)
+
+  useEffect(() => {
+    if (!action) {
+      return
+    }
+
+    setHasRandomPoints(action.has_random_points)
+  }, [action])
 
   useEffect(() => {
     if (!action) {
@@ -50,7 +62,9 @@ export default function Form(props: {
     setValue('points', action.points)
     setValue('max_per_day', action.max_per_day)
     setValue('max_per_event', action.max_per_event)
-  }, [action, setValue])
+    setValue('random_min_points', action.random_min_points)
+    setValue('random_max_points', action.random_max_points)
+  }, [action, setValue, hasRandomPoints])
 
   if (!action) {
     return null
@@ -61,6 +75,7 @@ export default function Form(props: {
       ...input,
       max_per_day: hasMaxPerDay ? input.max_per_day : null,
       max_per_event: hasMaxPerEvent ? input.max_per_event : null,
+      has_random_points: hasRandomPoints,
     }
 
     setSubmitting(true)
@@ -68,7 +83,7 @@ export default function Form(props: {
     const url = api(`/events/${event.slug}/actions/${action.id}`)
     client
       .patch<Action>(url, data)
-      .then(custom.update)
+      .then(actions.update)
       .catch(setServerError)
       .finally(() => {
         setSubmitting(false)
@@ -81,7 +96,7 @@ export default function Form(props: {
     client
       .delete<Action>(url)
       .then(() => {
-        custom.remove(action)
+        actions.remove(action)
       })
       .finally(() => {
         setSubmitting(false)
@@ -93,8 +108,6 @@ export default function Form(props: {
     form: errors,
     server: serverError,
   })
-
-  const pointsError = fieldError('points', {form: errors, server: serverError})
 
   const maxPerDayError = fieldError('max_per_day', {
     form: errors,
@@ -123,21 +136,27 @@ export default function Form(props: {
         error={Boolean(descriptionError)}
         helperText={descriptionError}
       />
-      <TextField
-        name="points"
-        label="Points"
-        required
-        fullWidth
-        type="number"
-        disabled={submitting}
-        inputProps={{
-          ref: register({
-            required: 'Points is required',
-          }),
-          'aria-label': 'action points',
-        }}
-        error={Boolean(pointsError)}
-        helperText={pointsError}
+      <FormControl component="fieldset" fullWidth disabled={submitting}>
+        <FormControlLabel
+          control={
+            <Switch
+              checked={hasRandomPoints}
+              onChange={onChangeCheckedHandler(setHasRandomPoints)}
+              color="primary"
+              inputProps={{
+                'aria-label': 'toggle has random points',
+              }}
+            />
+          }
+          label="Randomize points?"
+        />
+      </FormControl>
+      <Points
+        hasRandomPoints={hasRandomPoints}
+        register={register}
+        submitting={submitting}
+        errors={errors}
+        serverError={serverError}
       />
       <FormControl component="fieldset" fullWidth disabled={submitting}>
         <FormControlLabel
@@ -219,6 +238,78 @@ export default function Form(props: {
         </DangerButton>
       </div>
     </form>
+  )
+}
+
+function Points(props: {
+  submitting: boolean
+  register: UseFormMethods['register']
+  errors: Record<string, string>
+  serverError: ValidationError<UpdateActionData>
+  hasRandomPoints: boolean
+}) {
+  const error = (field: keyof UpdateActionData) =>
+    fieldError(field, {
+      form: props.errors,
+      server: props.serverError,
+    })
+
+  const pointsError = error('points')
+  const randomMinPointsError = error('random_min_points')
+  const randomMaxPointsError = error('random_max_points')
+
+  return (
+    <>
+      <div hidden={!props.hasRandomPoints}>
+        <TextField
+          name="random_min_points"
+          label="Min Points"
+          required
+          fullWidth
+          type="number"
+          disabled={props.submitting}
+          inputProps={{
+            ref: props.register,
+            'aria-label': 'min action points',
+          }}
+          error={Boolean(randomMinPointsError)}
+          helperText={randomMinPointsError}
+        />
+        <TextField
+          name="random_max_points"
+          label="Max Points"
+          required
+          fullWidth
+          type="number"
+          disabled={props.submitting}
+          inputProps={{
+            ref: props.register,
+            'aria-label': 'max action points',
+          }}
+          error={Boolean(randomMaxPointsError)}
+          helperText={randomMaxPointsError}
+        />
+      </div>
+
+      <div hidden={props.hasRandomPoints}>
+        <TextField
+          name="points"
+          label="Points"
+          required
+          fullWidth
+          type="number"
+          disabled={props.submitting}
+          inputProps={{
+            ref: props.register({
+              required: 'Points is required',
+            }),
+            'aria-label': 'action points',
+          }}
+          error={Boolean(pointsError)}
+          helperText={pointsError}
+        />
+      </div>
+    </>
   )
 }
 

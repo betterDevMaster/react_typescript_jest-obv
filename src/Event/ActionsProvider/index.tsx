@@ -12,13 +12,12 @@ export interface Action {
   max_per_day: number | null
   max_per_event: number | null
   is_active: boolean
-  is_platform_action: boolean
+  has_random_points: boolean
+  random_min_points: number | null
+  random_max_points: number | null
 }
 
-export interface ActionsContextProps {
-  custom: ReturnType<typeof useActionsList>
-  platform: ReturnType<typeof useActionsList>
-}
+export type ActionsContextProps = ReturnType<typeof useActionsList>
 
 export const ActionsContext = React.createContext<
   ActionsContextProps | undefined
@@ -42,23 +41,16 @@ function ActionsProvider(props: {
   children: React.ReactNode
   loader?: React.ReactElement
 }) {
-  const platform = usePlatformList(props.client)
-  const custom = useCustomList(props.client)
+  const fetch = useFetch(props.client)
+  const list = useActionsList(fetch)
 
-  const loading = platform.loading || custom.loading
+  const loading = list.loading
   if (loading) {
     return props.loader || <div>loading...</div>
   }
 
   return (
-    <ActionsContext.Provider
-      value={{
-        // Have to rebuild object to keep TS happy with
-        // us saying actions is not NULL.
-        platform: {...platform, actions: platform.actions},
-        custom: {...custom, actions: custom.actions},
-      }}
-    >
+    <ActionsContext.Provider value={list}>
       {props.children}
     </ActionsContext.Provider>
   )
@@ -73,33 +65,7 @@ export function useActions() {
   return context
 }
 
-function usePlatformList(client: Client) {
-  const fetchPlatform = useFetchPlatform(client)
-  const list = useActionsList(fetchPlatform)
-
-  /**
-   * Always wait for platform list to have actions
-   * rendered, so they can be used immediately.
-   */
-  const empty = list.actions.length === 0
-  const loading = list.loading || empty
-
-  return {...list, loading}
-}
-
-function useFetchPlatform(client: Client) {
-  const {event} = useEvent()
-  const url = api(`/events/${event.slug}/actions/platform`)
-
-  return useCallback(() => client.get<Action[]>(url), [client, url])
-}
-
-function useCustomList(client: Client) {
-  const fetchCustom = useFetchCustom(client)
-  return useActionsList(fetchCustom)
-}
-
-function useFetchCustom(client: Client) {
+function useFetch(client: Client) {
   const {event} = useEvent()
   const url = api(`/events/${event.slug}/actions`)
 

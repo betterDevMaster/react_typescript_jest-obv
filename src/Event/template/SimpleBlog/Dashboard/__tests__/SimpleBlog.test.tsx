@@ -5,9 +5,9 @@ import {fireEvent} from '@testing-library/react'
 import {fakeSimpleBlog} from 'Event/template/SimpleBlog/__utils__/factory'
 import {fakeUser} from 'auth/user/__utils__/factory'
 import Dashboard from 'Event/Dashboard'
-import {emptyActions, render} from '__utils__/render'
+import {render} from '__utils__/render'
 import {clickEdit} from '__utils__/edit'
-import {fakeEvent} from 'Event/__utils__/factory'
+import {createPlatformActions, fakeEvent} from 'Event/__utils__/factory'
 import {loginToEventSite} from 'Event/__utils__/url'
 import {fakeAttendee} from 'Event/auth/__utils__/factory'
 import {defaultScore} from 'Event/PointsProvider/__utils__/StaticPointsProvider'
@@ -32,7 +32,7 @@ it('should upload a logo', async () => {
       event,
       withRouter: true,
       score: defaultScore,
-      actions: emptyActions,
+      actions: [],
       organization: fakeOrganization(),
     },
   )
@@ -76,7 +76,7 @@ it('should remove the logo', async () => {
       event,
       withRouter: true,
       score: defaultScore,
-      actions: emptyActions,
+      actions: [],
       organization: fakeOrganization(),
     },
   )
@@ -120,16 +120,17 @@ it('should show the user email', async () => {
 it('it should send points for visiting dashboard', async () => {
   const action = fakeAction({
     id: 3, // Dashboard has id of 3
-    is_platform_action: true,
     description: 'dashboard action',
   })
 
-  const platformActions = [action]
-
   mockPost.mockImplementationOnce(() => Promise.resolve({data: 'ok'}))
 
-  const {event, findByText} = await loginToEventSite({
-    platformActions,
+  const event = fakeEvent({
+    platform_actions: createPlatformActions({visit_dashboard: action}),
+  })
+
+  const {findByText} = await loginToEventSite({
+    event,
     attendee: fakeAttendee({
       tech_check_completed_at: 'now',
       waiver: 'some_waiver.png',
@@ -155,7 +156,7 @@ it('should upload a header background', async () => {
       event,
       withRouter: true,
       score: defaultScore,
-      actions: emptyActions,
+      actions: [],
       organization: fakeOrganization(),
     },
   )
@@ -202,7 +203,7 @@ it('should remove the header background', async () => {
       event,
       withRouter: true,
       score: defaultScore,
-      actions: emptyActions,
+      actions: [],
       organization: fakeOrganization(),
     },
   )

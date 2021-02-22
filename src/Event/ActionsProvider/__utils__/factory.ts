@@ -8,6 +8,8 @@ export const fakeAction = (overrides?: Partial<Action>): Action => ({
   max_per_day: 1,
   max_per_event: 10,
   is_active: faker.random.boolean(),
-  is_platform_action: faker.random.boolean(),
+  has_random_points: false,
+  random_min_points: null,
+  random_max_points: null,
   ...overrides,
 })

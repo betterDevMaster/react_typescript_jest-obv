@@ -37,7 +37,7 @@ export default function Waiver() {
   const [submitting, setSubmitting] = useState(false)
   const dispatch = useDispatch()
   const {submit: submitAction} = usePoints()
-  const {COMPLETE_STEP_2} = usePlatformActions()
+  const {completeCheckIn: COMPLETE_STEP_2} = usePlatformActions()
 
   const canSubmit = Boolean(signature) && Boolean(agree) && !submitting
   const alreadySigned = Boolean(attendee.waiver)

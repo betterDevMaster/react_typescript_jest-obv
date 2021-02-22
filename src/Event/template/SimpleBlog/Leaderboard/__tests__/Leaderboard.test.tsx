@@ -1,4 +1,8 @@
-import {fakeEntry, fakeEvent} from 'Event/__utils__/factory'
+import {
+  createPlatformActions,
+  fakeEntry,
+  fakeEvent,
+} from 'Event/__utils__/factory'
 import user from '@testing-library/user-event'
 import axios from 'axios'
 import {loginToEventSite} from 'Event/__utils__/url'
@@ -39,17 +43,19 @@ it('should render list of entries', async () => {
 })
 
 it('should receive points', async () => {
-  const action = fakeAction({id: 5, is_platform_action: true})
-  const platformActions = [action]
+  const action = fakeAction()
 
-  const event = fakeEvent({template: fakeSimpleBlog({points: fakePoints()})})
+  const event = fakeEvent({
+    template: fakeSimpleBlog({points: fakePoints()}),
+    platform_actions: createPlatformActions({visit_leaderboard: action}),
+  })
   const {findByLabelText, findByText} = await loginToEventSite({
     event,
     attendee: fakeAttendee({
       tech_check_completed_at: 'now',
       waiver: 'some_waiver.png',
     }),
-    platformActions,
+    actions: [action],
   })
 
   mockGet.mockImplementationOnce(() => Promise.resolve({data: []})) // entries
@@ -63,7 +69,7 @@ it('should receive points', async () => {
   })
 
   const [url] = mockPost.mock.calls[1]
-  expect(url).toMatch(`/events/${event.slug}/actions/5`)
+  expect(url).toMatch(`/events/${event.slug}/actions/${action.id}`)
 
   // show points pop-up
   expect(await findByText(new RegExp(action.description))).toBeInTheDocument()

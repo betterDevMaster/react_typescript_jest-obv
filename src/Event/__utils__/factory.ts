@@ -16,8 +16,22 @@ export const fakeEvent = (overrides?: Partial<ObvioEvent>): ObvioEvent => ({
   logo: null,
   header_background: null,
   points_summary_logo: null,
+  platform_actions: createPlatformActions(),
   ...overrides,
 })
+
+export function createPlatformActions(
+  overrides?: Partial<ObvioEvent['platform_actions']>,
+) {
+  return {
+    create_password: null,
+    complete_check_in: null,
+    visit_dashboard: null,
+    download_resource: null,
+    visit_leaderboard: null,
+    ...overrides,
+  }
+}
 
 export function fakeWaiver(
   overrides?: Partial<ObvioEvent['waiver']>,

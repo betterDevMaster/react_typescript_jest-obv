@@ -7,6 +7,7 @@ import TableRow from '@material-ui/core/TableRow'
 import {Action} from 'Event/ActionsProvider'
 import ActiveSwitch from 'organization/Event/PointsConfig/ActionTable/ActiveSwitch'
 import Description from 'organization/Event/PointsConfig/ActionTable/Description'
+import PlatformActionSelect from 'organization/Event/PointsConfig/ActionTable/PlatformActionSelect'
 
 export default function ActionsTable(props: {
   actions: Action[]
@@ -20,10 +21,11 @@ export default function ActionsTable(props: {
       <TableHead>
         <TableRow>
           <TableCell>Description</TableCell>
-          <TableCell align="right">Points</TableCell>
-          <TableCell align="right">Max per Day</TableCell>
-          <TableCell align="right">Max per Event</TableCell>
-          <TableCell align="right">Active</TableCell>
+          <TableCell align="center">Points</TableCell>
+          <TableCell align="center">Max per Day</TableCell>
+          <TableCell align="center">Max per Event</TableCell>
+          <TableCell align="center">Platform Action</TableCell>
+          <TableCell align="center">Active</TableCell>
         </TableRow>
       </TableHead>
       <TableBody>
@@ -32,10 +34,17 @@ export default function ActionsTable(props: {
             <TableCell component="th">
               <Description action={action} onClick={select(action)} />
             </TableCell>
-            <TableCell align="right">{action.points}</TableCell>
-            <TableCell align="right">{action.max_per_day || '-'}</TableCell>
-            <TableCell align="right">{action.max_per_event || '-'}</TableCell>
-            <TableCell align="right">
+            <TableCell align="center">{points(action)}</TableCell>
+            <TableCell align="center">{action.max_per_day || '-'}</TableCell>
+            <TableCell align="center">{action.max_per_event || '-'}</TableCell>
+            <TableCell align="center">
+              <PlatformActionSelect
+                action={action}
+                processing={processing}
+                setProcessing={setProcessing}
+              />
+            </TableCell>
+            <TableCell align="center">
               <ActiveSwitch
                 action={action}
                 processing={processing}
@@ -47,4 +56,12 @@ export default function ActionsTable(props: {
       </TableBody>
     </Table>
   )
+}
+
+function points(action: Action) {
+  if (action.has_random_points) {
+    return `${action.random_min_points} - ${action.random_max_points}`
+  }
+
+  return action.points
 }

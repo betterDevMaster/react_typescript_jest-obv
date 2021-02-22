@@ -20,17 +20,11 @@ export default function PointsConfig() {
 }
 
 function Content() {
-  const {platform, custom} = useActions()
+  const {actions} = useActions()
   const [editing, setEditing] = useState<Action | null>(null)
 
   const edit = (action: Action) => setEditing(action)
   const closeEditDialog = () => setEditing(null)
-
-  /**
-   * Combine actions, and make sure platform actions appear before
-   * custom ones.
-   */
-  const actions = [...platform.actions, ...custom.actions]
 
   return (
     <>

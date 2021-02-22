@@ -36,7 +36,7 @@ function usePageAction(page: Page) {
 
   switch (page) {
     case DASHBOARD:
-      return action.VISIT_DASHBOARD
+      return action.visitDashboard
     default:
       return null
   }

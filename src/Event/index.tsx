@@ -1,3 +1,4 @@
+import {PlatformActions} from 'Event/ActionsProvider/platform-actions'
 import {useAttendee} from 'Event/auth'
 import Dashboard from 'Event/Dashboard'
 import AttendeeProfileProvider from 'Event/Dashboard/component-rules/AttendeeProfileProvider'
@@ -47,6 +48,7 @@ export interface ObvioEvent {
   logo: PublicFile | null
   header_background: PublicFile | null
   points_summary_logo: PublicFile | null
+  platform_actions: PlatformActions
 }
 
 export default function Event() {

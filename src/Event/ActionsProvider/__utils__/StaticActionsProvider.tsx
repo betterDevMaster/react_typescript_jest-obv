@@ -1,36 +1,16 @@
-import {
-  Action,
-  ActionsContext,
-  useActionsList,
-} from 'Event/ActionsProvider'
+import {Action, ActionsContext, useActionsList} from 'Event/ActionsProvider'
 import React, {useCallback} from 'react'
 
 export default function StaticActionsProvider(props: {
-  actions: {
-    platform: Action[]
-    custom: Action[]
-  }
+  actions: Action[]
   children: React.ReactElement | React.ReactElement[]
 }) {
-  const platform = useActionsList(
-    useCallback(() => Promise.resolve(props.actions.platform), [
-      props.actions.platform,
-    ]),
-  )
-
-  const custom = useActionsList(
-    useCallback(() => Promise.resolve(props.actions.custom), [
-      props.actions.custom,
-    ]),
+  const list = useActionsList(
+    useCallback(() => Promise.resolve(props.actions), [props.actions]),
   )
 
   return (
-    <ActionsContext.Provider
-      value={{
-        platform,
-        custom,
-      }}
-    >
+    <ActionsContext.Provider value={list}>
       {props.children}
     </ActionsContext.Provider>
   )

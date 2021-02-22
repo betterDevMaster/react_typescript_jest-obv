@@ -4,9 +4,8 @@ import {fakeAttendee} from 'Event/auth/__utils__/factory'
 import {loginToEventSite} from 'Event/__utils__/url'
 import axios from 'axios'
 import {fakeAction} from 'Event/ActionsProvider/__utils__/factory'
-import {AwaitExpression} from 'typescript'
 import {Await} from 'lib/type-utils'
-import {Attendee} from 'Event/attendee'
+import {createPlatformActions, fakeEvent} from 'Event/__utils__/factory'
 
 const mockPost = axios.post as jest.Mock
 const mockGet = axios.get as jest.Mock
@@ -47,15 +46,17 @@ it('should received points', async () => {
     waiver: null,
   })
 
-  // Submit waiver = action id #2
-  const action = fakeAction({id: 2})
-  const platformActions = [action]
-  const context = await loginToEventSite({
-    attendee,
-    platformActions,
+  const action = fakeAction()
+
+  const event = fakeEvent({
+    platform_actions: createPlatformActions({complete_check_in: action}),
   })
 
-  const {event} = context
+  const context = await loginToEventSite({
+    attendee,
+    actions: [action],
+    event,
+  })
 
   await submitWaiver(context)
 
@@ -67,7 +68,7 @@ it('should received points', async () => {
 
   const [url] = mockPost.mock.calls[2]
 
-  expect(url).toMatch(`/events/${event.slug}/actions/2`)
+  expect(url).toMatch(`/events/${event.slug}/actions/${action.id}`)
 
   // show points pop-up
   expect(

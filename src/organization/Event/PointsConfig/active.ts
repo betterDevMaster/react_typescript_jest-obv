@@ -4,72 +4,22 @@ import {api} from 'lib/url'
 import {useOrganization} from 'organization/OrganizationProvider'
 
 export function useSetActive() {
-  const setPlatformActive = useSetPlatformActive()
-  const setCustomActive = useSetCustomActive()
-
-  return (isActive: boolean, action: Action) => {
-    if (action.is_platform_action) {
-      return setPlatformActive(isActive, action)
-    }
-
-    return setCustomActive(isActive, action)
-  }
-}
-
-function useSetPlatformActive() {
-  const activate = useActivatePlatformAction()
-  const deactivate = useDeactivatePlatformAction()
-  const {platform} = useActions()
+  const activate = useActivate()
+  const deactivate = useDeactivate()
+  const actions = useActions()
 
   return (isActive: boolean, action: Action) => {
     const send = isActive ? activate : deactivate
-    return send(action).then(platform.update)
+    return send(action).then(actions.update)
   }
 }
 
-function useSetCustomActive() {
-  const activate = useActivateCustomAction()
-  const deactivate = useDeactivateCustomAction()
-  const {custom} = useActions()
-
-  return (isActive: boolean, action: Action) => {
-    const send = isActive ? activate : deactivate
-    return send(action).then(custom.update)
-  }
-}
-
-function useActivatePlatformAction() {
-  const {client} = useOrganization()
-  const {event} = useEvent()
-
-  return (action: Action) => {
-    const url = api(
-      `/events/${event.slug}/actions/platform/${action.id}/activate`,
-    )
-
-    return client.post<Action>(url)
-  }
-}
-
-function useDeactivatePlatformAction() {
-  const {client} = useOrganization()
-  const {event} = useEvent()
-
-  return (action: Action) => {
-    const url = api(
-      `/events/${event.slug}/actions/platform/${action.id}/deactivate`,
-    )
-
-    return client.delete<Action>(url)
-  }
-}
-
-function useActivateCustomAction() {
+function useActivate() {
   const update = useUpdateAction()
   return (action: Action) => update(action, {is_active: true})
 }
 
-function useDeactivateCustomAction() {
+function useDeactivate() {
   const update = useUpdateAction()
   return (action: Action) => update(action, {is_active: false})
 }

@@ -3,9 +3,9 @@ import React from 'react'
 import user from '@testing-library/user-event'
 import faker from 'faker'
 import axios from 'axios'
-import {fakeEvent} from 'Event/__utils__/factory'
+import {fakeEvent, fakeWaiver} from 'Event/__utils__/factory'
 import {fakeAttendee} from 'Event/auth/__utils__/factory'
-import {emptyActions, render} from '__utils__/render'
+import {render} from '__utils__/render'
 import {act} from '@testing-library/react'
 import {Attendee} from 'Event/attendee'
 import {ObvioEvent} from 'Event'
@@ -33,8 +33,7 @@ export async function loginToEventSite(
   options: {
     attendee?: Attendee
     event?: ObvioEvent
-    platformActions?: Action[]
-    customActions?: Action[]
+    actions?: Action[]
     beforeLogin?: () => void
   } = {},
 ) {
@@ -42,20 +41,13 @@ export async function loginToEventSite(
   const event = options.event || fakeEvent()
   visitEventSite({event})
 
-  const platformActions =
-    options.platformActions ||
-    Array.from({length: faker.random.number({min: 3, max: 5})}, () =>
-      fakeAction({is_platform_action: true}),
-    )
-
-  const customActions = options.customActions || []
+  const actions = options.actions || []
 
   mockPost.mockImplementationOnce(() =>
     Promise.resolve({data: {access_token: faker.random.alphaNumeric(8)}}),
   )
   mockGet.mockImplementationOnce(() => Promise.resolve({data: attendee}))
-  mockGet.mockImplementationOnce(() => Promise.resolve({data: platformActions}))
-  mockGet.mockImplementationOnce(() => Promise.resolve({data: customActions}))
+  mockGet.mockImplementationOnce(() => Promise.resolve({data: actions}))
   mockGet.mockImplementationOnce(() => Promise.resolve({data: defaultScore}))
 
   const {findByLabelText, ...otherRenderResult} = render(<App />)

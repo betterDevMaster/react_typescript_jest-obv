@@ -1,12 +1,9 @@
 import user from '@testing-library/user-event'
 import faker from 'faker'
 import axios from 'axios'
-import {fakeAction} from 'Event/ActionsProvider/__utils__/factory'
-import {Action} from 'Event/ActionsProvider'
 import {wait} from '@testing-library/react'
 import {goToPointsConfig} from 'organization/Event/PointsConfig/__utils__/go-to-points-config'
 
-const mockPost = axios.post as jest.Mock
 const mockPatch = axios.patch as jest.Mock
 const mockDelete = axios.delete as jest.Mock
 
@@ -15,14 +12,9 @@ afterEach(() => {
 })
 
 it('edit an action', async () => {
-  const {
-    findByLabelText,
-    customActions,
-    findAllByLabelText,
-    event,
-  } = await goToPointsConfig()
+  const {findByLabelText, actions, event} = await goToPointsConfig()
 
-  const target = faker.random.arrayElement(customActions)
+  const target = faker.random.arrayElement(actions)
 
   user.click(await findByLabelText(new RegExp(target.description)))
 
@@ -86,15 +78,14 @@ it('edit an action', async () => {
 it('removes an action', async () => {
   const {
     findByLabelText,
-    platformActions,
-    customActions,
+    actions,
     findAllByLabelText,
     event,
   } = await goToPointsConfig()
 
-  const numOriginal = platformActions.length + customActions.length
+  const numOriginal = actions.length
 
-  const target = faker.random.arrayElement(customActions)
+  const target = faker.random.arrayElement(actions)
   user.click(await findByLabelText(new RegExp(target.description)))
 
   mockDelete.mockImplementationOnce(() => Promise.resolve({data: 'ok'}))

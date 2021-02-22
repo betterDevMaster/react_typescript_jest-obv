@@ -18,7 +18,7 @@ export default function ResourceItem(props: {
   resource: Resource
   iconColor?: string
 }) {
-  const {DOWNLOADING_RESOURCE} = usePlatformActions()
+  const {downloadResource: DOWNLOADING_RESOURCE} = usePlatformActions()
   const {submit} = usePoints()
 
   const awardPoints = () => {

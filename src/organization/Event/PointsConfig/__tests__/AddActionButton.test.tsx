@@ -10,11 +10,8 @@ it('should add a new action', async () => {
   const {
     findByLabelText,
     findAllByLabelText,
-    platformActions,
-    customActions,
+    actions,
   } = await goToPointsConfig()
-
-  const actions = [...platformActions, ...customActions]
 
   const added = fakeAction()
 

@@ -1,5 +1,13 @@
-import {isTest} from './../../App'
-import {Action, useActions} from 'Event/ActionsProvider'
+import {Action} from 'Event/ActionsProvider'
+import {useEvent} from 'Event/EventProvider'
+
+export interface PlatformActions {
+  create_password: Action | null
+  complete_check_in: Action | null
+  visit_dashboard: Action | null
+  download_resource: Action | null
+  visit_leaderboard: Action | null
+}
 
 export const findAction = (id: number, actions: Action[]) =>
   actions.find((a) => a.id === id)
@@ -10,48 +18,13 @@ export const findAction = (id: number, actions: Action[]) =>
  * corresponding ids.
  */
 export function usePlatformActions() {
-  const {platform} = useActions()
+  const {event} = useEvent()
 
   return {
-    CREATE_PASSWORD: logIfMissing(
-      'Create password',
-      findAction(1, platform.actions),
-    ),
-    COMPLETE_STEP_2: logIfMissing(
-      'Complete Step 2',
-      findAction(2, platform.actions),
-    ),
-    VISIT_DASHBOARD: logIfMissing(
-      'Visit dashboard',
-      findAction(3, platform.actions),
-    ),
-    DOWNLOADING_RESOURCE: logIfMissing(
-      'Downloading resource',
-      findAction(4, platform.actions),
-    ),
-    VISIT_LEADERBOARD: logIfMissing(
-      'Downloading resource',
-      findAction(5, platform.actions),
-    ),
+    createPassword: event.platform_actions.create_password,
+    completeCheckIn: event.platform_actions.complete_check_in,
+    visitDashboard: event.platform_actions.visit_dashboard,
+    downloadResource: event.platform_actions.download_resource,
+    visitLeaderboard: event.platform_actions.visit_leaderboard,
   }
-}
-
-/**
- * Log out an error if we expected a pre-defined platform action, but
- * none was found. Platform actions are pre-seeded, and their ids
- * should never change. This makes sure we know if they do.
- *
- * @param page
- * @param action
- */
-function logIfMissing(description: string, action?: Action) {
-  if (action) {
-    return action
-  }
-
-  if (!isTest) {
-    console.error(`Could not find platform action: '${description}'.`)
-  }
-
-  return null
 }

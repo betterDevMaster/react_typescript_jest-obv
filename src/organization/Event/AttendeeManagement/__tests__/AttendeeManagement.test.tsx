@@ -5,7 +5,7 @@ import {fakeAttendee} from 'Event/auth/__utils__/factory'
 import {Attendee} from 'Event/attendee'
 import {formatDate, now} from 'lib/date-time'
 import {goToAttendeeManagement} from 'organization/Event/AttendeeManagement/__utils__/go-to-attendee-management'
-import {findByLabelText, fireEvent, wait} from '@testing-library/react'
+import {fireEvent, wait} from '@testing-library/react'
 
 const mockPatch = axios.patch as jest.Mock
 
