@@ -264,7 +264,6 @@ function Points(props: {
         <TextField
           name="random_min_points"
           label="Min Points"
-          required
           fullWidth
           type="number"
           disabled={props.submitting}
@@ -278,7 +277,6 @@ function Points(props: {
         <TextField
           name="random_max_points"
           label="Max Points"
-          required
           fullWidth
           type="number"
           disabled={props.submitting}
