@@ -1,4 +1,5 @@
 import React from 'react'
+import styled from 'styled-components'
 import {useEvent} from 'Event/EventProvider'
 import {ValidationError} from 'lib/api-client'
 import {api} from 'lib/url'
@@ -116,10 +117,19 @@ export default function CreateRoomForm() {
               Create
             </Button>
           </div>
+          <Error>{serverError}</Error>
         </form>
       </Page>
     </Layout>
   )
+}
+
+function Error(props: {children: ValidationError<CreateRoomData> | null}) {
+  if (!props.children) {
+    return null
+  }
+
+  return <ErrorText>{props.children.message}</ErrorText>
 }
 
 function useCreateRoom() {
@@ -136,3 +146,8 @@ const Title = withStyles({
     marginBottom: spacing[4],
   },
 })(Typography)
+
+const ErrorText = styled.div`
+  margin-top: ${(props) => props.theme.spacing[4]};
+  color: ${(props) => props.theme.colors.error};
+`
