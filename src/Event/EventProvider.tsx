@@ -1,4 +1,5 @@
-import {client} from 'lib/api-client'
+import {client, RequestOptions} from 'lib/api-client'
+import {v4 as uuid} from 'uuid'
 import {useAsync} from 'lib/async'
 import {api} from 'lib/url'
 import {domainEventSlug, useParamEventSlug} from 'Event/url'
@@ -27,14 +28,18 @@ export function DomainEventProvider(props: {children: React.ReactNode}) {
 
 export function RouteEventProvider(props: {children: React.ReactNode}) {
   const slug = useParamEventSlug()
-  return <EventProvider slug={slug} {...props} />
+  return <EventProvider slug={slug} {...props} noCache />
 }
 
-function EventProvider(props: {children: React.ReactNode; slug: string}) {
-  const {slug} = props
+function EventProvider(props: {
+  children: React.ReactNode
+  slug: string
+  noCache?: boolean
+}) {
+  const {slug, noCache} = props
   const find = useCallback(() => {
-    return findEvent(slug)
-  }, [slug])
+    return findEvent(slug, {noCache})
+  }, [slug, noCache])
   const dispatch = useDispatch()
 
   const {data: saved, loading} = useAsync(find)
@@ -93,9 +98,23 @@ export function useEvent() {
   return context
 }
 
-function findEvent(slug: string) {
+function findEvent(slug: string, options: {noCache?: boolean}) {
   const url = api(`/events/${slug}`)
-  return client.get<ObvioEvent>(url)
+
+  /**
+   * Cloudfront custom NoCache policy accepts a 'No-Cache' header as key.
+   * If we pass in a different value, CLoudFront should fetch it
+   * again from.
+   */
+  const requestOptions: RequestOptions = options.noCache
+    ? {
+        headers: {
+          'No-Cache': uuid(),
+        },
+      }
+    : {}
+
+  return client.get<ObvioEvent>(url, requestOptions)
 }
 
 export function hasTechCheck(event: ObvioEvent) {
