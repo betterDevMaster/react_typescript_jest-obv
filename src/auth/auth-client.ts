@@ -4,7 +4,7 @@ import {User} from 'auth/user'
 import {client} from 'lib/api-client'
 import {api} from 'lib/url'
 import {useOrganizationUrl} from 'organization/url'
-import {useCallback, useEffect, useRef} from 'react'
+import {useCallback, useEffect} from 'react'
 import {useDispatch, useSelector} from 'react-redux'
 import {RootState} from 'store'
 
@@ -34,26 +34,21 @@ export interface RegistrationData {
 export const useAuthClient = (props: AuthClientProps) => {
   const {endpoints, tokenKey} = props
   const dispatch = useDispatch()
+  /**
+   * Loading here is the global app loading state, it should only be
+   * ever set once on initial user fetch.
+   */
   const {user, loading} = useSelector((state: RootState) => state.auth)
-  const isFetching = useRef(false)
   const {slug: organizationSlug} = useOrganizationUrl()
+  const token = getToken(tokenKey)
 
-  useEffect(() => {
-    const token = getToken(tokenKey)
-
-    // No token, proceed as guest
-    if (!token && loading) {
-      dispatch(setLoading(false))
-      return
-    }
-
+  const fetch = useCallback(() => {
     // No need to try fetch authenticated user
-    if (!token || !loading || isFetching.current) {
-      return
+    if (!token) {
+      return Promise.resolve()
     }
 
-    isFetching.current = true
-    fetchUser(tokenKey, endpoints.user)
+    return fetchUser(tokenKey, endpoints.user)
       .then((user) => {
         dispatch(setUser(user))
         dispatch(setToken(token))
@@ -62,8 +57,23 @@ export const useAuthClient = (props: AuthClientProps) => {
         // Token expired/invalid
         deleteToken(tokenKey)
       })
-      .finally(() => dispatch(setLoading(false)))
-  }, [dispatch, loading, endpoints, tokenKey, organizationSlug])
+  }, [dispatch, endpoints, token, tokenKey])
+
+  // Initial Load
+  useEffect(() => {
+    // Already finished init
+    if (!loading) {
+      return
+    }
+
+    // No token, proceed as guest
+    if (!token && loading) {
+      dispatch(setLoading(false))
+      return
+    }
+
+    fetch().finally(() => dispatch(setLoading(false)))
+  }, [fetch, token, dispatch, loading, organizationSlug]) // Explicitly re-fetch when organization changes
 
   const login = useCallback(
     (credentials: LoginCredentials) => {
@@ -103,6 +113,7 @@ export const useAuthClient = (props: AuthClientProps) => {
     logout,
     login,
     register,
+    refresh: fetch,
   }
 }
 

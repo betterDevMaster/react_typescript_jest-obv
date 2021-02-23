@@ -2,6 +2,7 @@ import {useAuthClient} from 'auth/auth-client'
 import {User} from 'auth/user'
 import {Attendee} from 'Event/attendee'
 import {useEvent} from 'Event/EventProvider'
+import {useMemo} from 'react'
 
 export const EVENT_TOKEN_KEY = `__obvio_event_user_token__`
 
@@ -9,14 +10,19 @@ export const useEventAuth = () => {
   const {event} = useEvent()
   const baseUrl = `/events/${event.slug}`
 
-  return useAuthClient({
-    tokenKey: EVENT_TOKEN_KEY,
-    endpoints: {
-      user: `${baseUrl}/user`,
-      login: `${baseUrl}/login`,
-      register: `/register`,
-    },
-  })
+  const settings = useMemo(
+    () => ({
+      tokenKey: EVENT_TOKEN_KEY,
+      endpoints: {
+        user: `${baseUrl}/user`,
+        login: `${baseUrl}/login`,
+        register: `/register`,
+      },
+    }),
+    [baseUrl],
+  )
+
+  return useAuthClient(settings)
 }
 
 function isAttendee(user: User | null): user is Attendee {

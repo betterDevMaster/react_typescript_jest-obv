@@ -1,21 +1,32 @@
-import React from 'react'
+import React, {useEffect} from 'react'
 import TemplateProvider, {
   useTemplate,
 } from 'Event/Dashboard/state/TemplateProvider'
 import {useEvent} from 'Event/EventProvider'
-import {useAttendee} from 'Event/auth'
+import {useAttendee, useEventAuth} from 'Event/auth'
 import {SIMPLE_BLOG} from 'Event/template/SimpleBlog'
 import {TechCheckConfig} from 'Event'
 import SimpleBlogTechCheck from 'Event/template/SimpleBlog/TechCheck'
+
+const TECH_CHECK_POLL_SECS = 10
 
 export interface TechCheckProps {
   techCheck: TechCheckConfig
   progress: number
 }
 
-export default () => {
+export default function TechCheck() {
   const {event} = useEvent()
   const {tech_check: techCheck} = event
+  const attendee = useEventAuth()
+
+  useEffect(() => {
+    const pollTimer = setInterval(attendee.refresh, TECH_CHECK_POLL_SECS * 1000)
+
+    return () => {
+      clearInterval(pollTimer)
+    }
+  }, [attendee])
 
   if (!techCheck) {
     throw new Error(`Missing event tech check`)
