@@ -14,11 +14,11 @@ export default function ConfigNav() {
       <ConfigNavItem to={routes.waiver} aria-label="configure waiver">
         Waiver
       </ConfigNavItem>
-      <ConfigNavItem to={routes.dashboard} aria-label="configure dashboard">
-        Dashboard
-      </ConfigNavItem>
       <ConfigNavItem to={routes.tech_check} aria-label="configure tech check">
         Tech Check
+      </ConfigNavItem>
+      <ConfigNavItem to={routes.dashboard} aria-label="configure dashboard">
+        Dashboard
       </ConfigNavItem>
       <ConfigNavItem to={routes.attendees} aria-label="attendee management">
         Attendees
