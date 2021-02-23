@@ -65,7 +65,7 @@ build_prod:
     - npm i --cache .npm --prefer-offline
     - npm run build
   variables:
-    REACT_APP_API_URL: https://v1.obv.io
+    REACT_APP_API_URL: https://v1-cdn.obv.io
     REACT_APP_WEB_APP_ROOT: 'obv.io'
   artifacts:
     paths:
