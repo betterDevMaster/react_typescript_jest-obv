@@ -142,7 +142,11 @@ export default function RoomConfig() {
           fullWidth
           variant="outlined"
           value={maxNumAttendees || ''}
-          inputProps={{'aria-label': 'set max number of attendees', min: 0}}
+          inputProps={{
+            'aria-label': 'set max number of attendees',
+            min: 0,
+            max: 1000,
+          }}
           onChange={onChangeNumberHandler(setMaxNumAttendees)}
           disabled={!canSetMaxNumAttendees}
         />

@@ -103,7 +103,11 @@ export default function CreateRoomForm() {
             fullWidth
             variant="outlined"
             defaultValue={500}
-            inputProps={{'aria-label': 'set max number of attendees', min: 0}}
+            inputProps={{
+              'aria-label': 'set max number of attendees',
+              min: 0,
+              max: 1000,
+            }}
             disabled={!hasMaxNumAttendees}
           />
           <div>
