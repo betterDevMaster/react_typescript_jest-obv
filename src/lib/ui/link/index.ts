@@ -4,6 +4,7 @@ export interface LinkBaseProps {
   disabled?: boolean
   'aria-label'?: string
   onClick?: () => void
+  newTab?: boolean
 }
 
 export interface LinkStyleProps {

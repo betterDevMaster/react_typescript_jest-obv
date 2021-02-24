@@ -29,7 +29,7 @@ export default function ConfigNav() {
       <ConfigNavItem to={routes.speakers} aria-label="configure speakers">
         Speakers
       </ConfigNavItem>
-      <ConfigNavItem to={routes.emoji} aria-label="view emoji page">
+      <ConfigNavItem to={routes.emoji} aria-label="view emoji page" newTab>
         Emoji Page
       </ConfigNavItem>
       <ConfigNavItem to={routes.general} aria-label="general config">
@@ -46,6 +46,7 @@ function ConfigNavItem(props: {
   to: string
   'aria-label': string
   children: string
+  newTab?: boolean
 }) {
   const location = useLocation()
   const paths = location.pathname.split('/')
@@ -67,6 +68,7 @@ function ConfigNavItem(props: {
       to={props.to}
       active={isActive}
       aria-label={props['aria-label']}
+      newTab={props.newTab}
     >
       {props.children}
     </ConfigLink>

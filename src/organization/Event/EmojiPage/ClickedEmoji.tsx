@@ -3,7 +3,7 @@ import React, {useEffect} from 'react'
 import {v4 as uuid} from 'uuid'
 import {emojiWithName} from 'Event/Dashboard/components/EmojiList/emoji'
 
-const DEFAULT_SIZE: number = 68
+const DEFAULT_SIZE: number = 34
 
 export type Emoji = {
   id: string
@@ -46,6 +46,8 @@ function ClickedEmoji(props: ClickedEmojiProps) {
         aria-label="emoji"
         src={emojiWithName(emoji.content).image}
         alt={emoji.content}
+        width={size}
+        height={size}
       />
     </Box>
   )

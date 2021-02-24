@@ -5,7 +5,6 @@ import {useLinkStyle} from 'lib/ui/link/style'
 
 type Props = LinkProps & {
   to: string
-  newTab?: boolean
 }
 
 export const AbsoluteLink = React.forwardRef(

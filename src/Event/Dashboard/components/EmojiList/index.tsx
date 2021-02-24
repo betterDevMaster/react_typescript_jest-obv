@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import styled from 'styled-components'
 import {Emoji, emojiWithName} from 'Event/Dashboard/components/EmojiList/emoji'
 import EditComponent from 'Event/Dashboard/editor/views/EditComponent'
@@ -22,7 +22,6 @@ export interface EmojiList {
 
 export default function EmojiList() {
   const {emojiList: list} = useTemplate()
-  const {event} = useEvent()
 
   const isEmpty = list && list.emojis.length === 0
   if (!list || isEmpty) {
@@ -34,29 +33,53 @@ export default function EmojiList() {
     )
   }
 
-  const sendEmoji = (name: string) => () => {
-    const url = api(`/events/${event.slug}/emoji_page`)
-    eventClient.post(url, {name}).catch((error) => {
-      // ignore errors, prevent failing to send emoji from crashing app
-      console.error(error)
-    })
-  }
-
   return (
     <EditComponent component={{type: EMOJI_LIST}}>
       <Box aria-label="emoji list">
         {list.emojis.map((name, index) => (
           <Container key={index} width={list.emojiWidth}>
-            <Image
-              aria-label="event emoji"
+            <EmojiImage
+              name={name}
               src={emojiWithName(name).image}
-              alt={name}
-              onClick={sendEmoji(name)}
             />
           </Container>
         ))}
       </Box>
     </EditComponent>
+  )
+}
+
+interface EmojiProps {
+  name: string
+  src: string
+}
+
+const EmojiImage = (props: EmojiProps) => {
+  const [sending, setSending] = useState(false)
+  const {name, src} = props
+
+  const {event} = useEvent()
+  const sendEmoji = (name: string) => () => {
+    if (!sending) {
+      setSending(true)
+      setTimeout(() => setSending(false), 1000)
+      const url = api(`/events/${event.slug}/emoji_page`)
+      eventClient.post(url, {name})
+        .catch((error) => {
+          // ignore errors, prevent failing to send emoji from crashing app
+          console.error(error)
+        })
+    }
+  }
+
+  return (
+    <Image
+      aria-label="event emoji"
+      src={src}
+      alt={name}
+      onClick={sendEmoji(name)}
+      style={{ opacity: sending ? .5 : 1 }}
+    />
   )
 }
 
@@ -74,9 +97,11 @@ const Container = styled((props: any) => {
   margin: 0 ${(props) => props.theme.spacing[3]};
   width: ${(props) => (props.width ? `${props.width}px` : 'auto')};
 `
+
 const Image = styled.img`
   max-width: 100%;
   max-height: 100%;
+  cursor: pointer;
 `
 
 const StyledAddEmojiListButton = styled(AddEmojiListButton)`

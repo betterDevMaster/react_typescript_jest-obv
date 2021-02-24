@@ -14,6 +14,7 @@ export const RelativeLink = React.forwardRef(
     const style = useLinkStyle(props)
     const handleOnClick = (e: React.MouseEvent) => e.preventDefault()
 
+    const target = props.newTab ? '_blank' : '_self'
     if (props.disabled) {
       return (
         <DisabledLink
@@ -36,6 +37,7 @@ export const RelativeLink = React.forwardRef(
         underline={style.underline}
         color={style.color}
         aria-label={props['aria-label']}
+        target={target}
       >
         {props.children}
       </StyledRouterLink>

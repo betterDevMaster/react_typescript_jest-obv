@@ -12,8 +12,10 @@ import {useInterval} from 'lib/interval'
 export type Emojis = string[]
 
 const POLL_INTERVAL_MS = 1000
+const MAX_COUNT = 30
 
 export default function EmojiPage() {
+  const [fetching, setFetching] = useState(false)
   const [emojis, setEmojis] = useState<Emoji[]>([])
   const fetchEmojis = useFetchEmojis()
   const isMountedRef = useRef(true)
@@ -24,14 +26,19 @@ export default function EmojiPage() {
     }
   }, [])
 
-  useInterval(() => {
+  const poll = useCallback(() => {
+    if (fetching) {
+      return
+    }
+
+    setFetching(true)
     fetchEmojis()
       .then((images) => {
         if (!isMountedRef.current) {
           return
         }
 
-        const newEmojis = images.map(createEmoji)
+        const newEmojis = images.slice(0, MAX_COUNT).map(createEmoji)
         // Use setState's callback version to make sure
         // we always have latest state.
         setEmojis((current) => [...current, ...newEmojis])
@@ -40,7 +47,16 @@ export default function EmojiPage() {
         // ignore errors, prevent failing to send emoji from crashing app
         console.error(error)
       })
-  }, POLL_INTERVAL_MS)
+      .finally(() => {
+        if (!isMountedRef.current) {
+          return
+        }
+
+        setFetching(false)
+      })
+  }, [fetchEmojis, fetching])
+
+  useInterval(poll, POLL_INTERVAL_MS)
 
   const remove = useCallback((target: Emoji) => {
     setEmojis((current) => current.filter((e) => e.id !== target.id))
@@ -60,7 +76,7 @@ function useFetchEmojis() {
   const {event} = useEvent()
   const url = api(`/events/${event.slug}/emoji_page`)
 
-  return () => client.get<Emojis>(url)
+  return useCallback(() => client.get<Emojis>(url), [client, url])
 }
 
 const Container = styled.div`
