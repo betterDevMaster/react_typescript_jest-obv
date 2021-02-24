@@ -98,8 +98,6 @@ function headers(options: RequestOptions) {
     headers['No-Cache'] = uuid()
   }
 
-  console.log('headers', headers)
-
   return headers
 }
 

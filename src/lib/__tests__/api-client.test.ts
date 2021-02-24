@@ -142,3 +142,13 @@ it('should throw a normal error', async () => {
     expect(error.message).toBe(message)
   }
 })
+
+it('should include a no-cache header', async () => {
+  mockGet.mockImplementation(() => Promise.resolve('ok'))
+  await client.get('/test', {noCache: true})
+
+  expect(mockGet).toHaveBeenCalledTimes(1)
+  const [_, options] = mockGet.mock.calls[0]
+
+  expect(options.headers['No-Cache']).toBeDefined()
+})
