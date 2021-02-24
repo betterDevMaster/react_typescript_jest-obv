@@ -1,5 +1,4 @@
-import {client, RequestOptions} from 'lib/api-client'
-import {v4 as uuid} from 'uuid'
+import {client} from 'lib/api-client'
 import {useAsync} from 'lib/async'
 import {api} from 'lib/url'
 import {domainEventSlug, useParamEventSlug} from 'Event/url'
@@ -100,21 +99,7 @@ export function useEvent() {
 
 function findEvent(slug: string, options: {noCache?: boolean}) {
   const url = api(`/events/${slug}`)
-
-  /**
-   * Cloudfront custom NoCache policy accepts a 'No-Cache' header as key.
-   * If we pass in a different value, CLoudFront should fetch it
-   * again from.
-   */
-  const requestOptions: RequestOptions = options.noCache
-    ? {
-        headers: {
-          'No-Cache': uuid(),
-        },
-      }
-    : {}
-
-  return client.get<ObvioEvent>(url, requestOptions)
+  return client.get<ObvioEvent>(url, {noCache: true})
 }
 
 export function hasTechCheck(event: ObvioEvent) {
