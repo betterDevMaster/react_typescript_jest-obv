@@ -26,7 +26,9 @@ export type Client = typeof client
 
 export const client = {
   get: <T>(url: string, options?: RequestOptions) =>
-    handleAxiosResult<T>(axios.get(url, createOptions(options))),
+    handleAxiosResult<T>(
+      axios.get(createUrl(url, options), createOptions(options)),
+    ),
   post: <T>(url: string, data: {} | FormData = {}, options?: RequestOptions) =>
     handleAxiosResult<T>(axios.post(url, data, createOptions(options))),
   put: <T>(url: string, data: {} | FormData, options?: RequestOptions) => {
@@ -67,6 +69,28 @@ function putData(data: {} | FormData) {
     _method: 'PUT',
     ...data,
   }
+}
+
+function createUrl(url: string, options?: RequestOptions) {
+  if (!options) {
+    return url
+  }
+
+  if (options.noCache) {
+    return appendNoCacheParam(url)
+  }
+
+  return url
+}
+
+function appendNoCacheParam(url: string) {
+  const param = 'no-cache=true'
+  const hasQueryString = /\?/.test(url)
+  if (hasQueryString) {
+    return `${url}&${param}`
+  }
+
+  return `${url}?${param}`
 }
 
 function createOptions(options: RequestOptions = {}) {

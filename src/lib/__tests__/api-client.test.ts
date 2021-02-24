@@ -143,12 +143,23 @@ it('should throw a normal error', async () => {
   }
 })
 
-it('should include a no-cache header', async () => {
+it('should include a no-cache header, and query', async () => {
   mockGet.mockImplementation(() => Promise.resolve('ok'))
-  await client.get('/test', {noCache: true})
 
-  expect(mockGet).toHaveBeenCalledTimes(1)
-  const [_, options] = mockGet.mock.calls[0]
+  const endpoints = [
+    ['/test', '/test?no-cache=true'],
+    ['/test?foo=bar', '/test?foo=bar&no-cache=true'],
+  ]
 
-  expect(options.headers['No-Cache']).toBeDefined()
+  for (const index of endpoints.keys()) {
+    const [endpoint, result] = endpoints[index]
+
+    await client.get(endpoint, {noCache: true})
+
+    expect(mockGet).toHaveBeenCalledTimes(index + 1)
+    const [url, options] = mockGet.mock.calls[index]
+
+    expect(options.headers['No-Cache']).toBeDefined()
+    expect(url).toBe(result)
+  }
 })
