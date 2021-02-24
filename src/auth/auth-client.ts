@@ -8,13 +8,14 @@ import {useCallback, useEffect} from 'react'
 import {useDispatch, useSelector} from 'react-redux'
 import {RootState} from 'store'
 
-export interface AuthClientProps {
+export interface AuthClientSettings {
   tokenKey: string
   endpoints: {
     user: string
     login: string
     register: string
   }
+  noCache?: boolean
 }
 
 interface TokenResponse {
@@ -31,8 +32,8 @@ export interface RegistrationData {
   passwordConfirmation: string
 }
 
-export const useAuthClient = (props: AuthClientProps) => {
-  const {endpoints, tokenKey} = props
+export const useAuthClient = (settings: AuthClientSettings) => {
+  const {endpoints, tokenKey, noCache} = settings
   const dispatch = useDispatch()
   /**
    * Loading here is the global app loading state, it should only be
@@ -48,7 +49,7 @@ export const useAuthClient = (props: AuthClientProps) => {
       return Promise.resolve()
     }
 
-    return fetchUser(tokenKey, endpoints.user)
+    return fetchUser(tokenKey, endpoints.user, noCache)
       .then((user) => {
         dispatch(setUser(user))
         dispatch(setToken(token))
@@ -57,7 +58,7 @@ export const useAuthClient = (props: AuthClientProps) => {
         // Token expired/invalid
         deleteToken(tokenKey)
       })
-  }, [dispatch, endpoints, token, tokenKey])
+  }, [dispatch, endpoints, token, tokenKey, noCache])
 
   // Initial Load
   useEffect(() => {
@@ -120,10 +121,12 @@ export const useAuthClient = (props: AuthClientProps) => {
 async function fetchUser(
   tokenKey: string,
   endpoint: string,
+  noCache?: boolean,
 ): Promise<User | null> {
   const url = api(endpoint)
   return client.get<any>(url, {
     tokenKey,
+    noCache,
   })
 }
 

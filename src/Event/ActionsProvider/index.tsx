@@ -28,7 +28,7 @@ export function OrganizationActionsProvider(props: {
   loader?: React.ReactElement
 }) {
   const {client} = useOrganization()
-  return <ActionsProvider client={client} {...props} />
+  return <ActionsProvider client={client} {...props} noCache />
 }
 
 export function EventActionsProvider(props: {children: React.ReactNode}) {
@@ -40,8 +40,9 @@ function ActionsProvider(props: {
   client: Client
   children: React.ReactNode
   loader?: React.ReactElement
+  noCache?: boolean
 }) {
-  const fetch = useFetch(props.client)
+  const fetch = useFetch(props.client, props.noCache)
   const list = useActionsList(fetch)
 
   const loading = list.loading
@@ -65,11 +66,14 @@ export function useActions() {
   return context
 }
 
-function useFetch(client: Client) {
+function useFetch(client: Client, noCache?: boolean) {
   const {event} = useEvent()
   const url = api(`/events/${event.slug}/actions`)
 
-  return useCallback(() => client.get<Action[]>(url), [client, url])
+  return useCallback(
+    () => client.get<Action[]>(url, {noCache}),
+    [client, url, noCache],
+  )
 }
 
 export function useActionsList(request: () => Promise<Action[]>) {

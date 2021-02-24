@@ -1,4 +1,4 @@
-import {useAuthClient} from 'auth/auth-client'
+import {AuthClientSettings, useAuthClient} from 'auth/auth-client'
 import {User} from 'auth/user'
 import {Organization} from 'organization'
 import {useOrganization} from 'organization/OrganizationProvider'
@@ -11,7 +11,7 @@ export const useOrganizationAuth = () => {
   const {organization} = useOrganization()
   const baseUrl = `/organizations/${organization.slug}`
 
-  const settings = useMemo(
+  const settings: AuthClientSettings = useMemo(
     () => ({
       tokenKey: organizationTokenKey(organization.slug),
       endpoints: {
@@ -19,6 +19,7 @@ export const useOrganizationAuth = () => {
         login: `${baseUrl}/login`,
         register: `/register`,
       },
+      noCache: true,
     }),
     [baseUrl, organization],
   )
