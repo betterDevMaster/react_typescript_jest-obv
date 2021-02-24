@@ -71,8 +71,8 @@ function putData(data: {} | FormData) {
 
 function createOptions(options: RequestOptions = {}) {
   return {
-    headers: headers(options),
     ...options,
+    headers: headers(options),
   }
 }
 
@@ -97,6 +97,8 @@ function headers(options: RequestOptions) {
   if (noCache) {
     headers['No-Cache'] = uuid()
   }
+
+  console.log('headers', headers)
 
   return headers
 }
