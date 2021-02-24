@@ -99,7 +99,7 @@ export function useEvent() {
 
 function findEvent(slug: string, options: {noCache?: boolean}) {
   const url = api(`/events/${slug}`)
-  return client.get<ObvioEvent>(url, {noCache: true})
+  return client.get<ObvioEvent>(url, {noCache: options.noCache})
 }
 
 export function hasTechCheck(event: ObvioEvent) {
