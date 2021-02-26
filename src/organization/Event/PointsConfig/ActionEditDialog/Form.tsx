@@ -80,7 +80,7 @@ export default function Form(props: {
 
     setSubmitting(true)
 
-    const url = api(`/events/${event.slug}/actions/${action.id}`)
+    const url = api(`/events/${event.slug}/actions/${action.key}`)
     client
       .patch<Action>(url, data)
       .then(actions.update)
@@ -92,7 +92,7 @@ export default function Form(props: {
   }
 
   const remove = () => {
-    const url = api(`/events/${event.slug}/actions/${action.id}`)
+    const url = api(`/events/${event.slug}/actions/${action.key}`)
     client
       .delete<Action>(url)
       .then(() => {

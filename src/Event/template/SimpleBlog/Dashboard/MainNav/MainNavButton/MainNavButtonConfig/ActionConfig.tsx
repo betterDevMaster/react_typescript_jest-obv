@@ -17,8 +17,8 @@ export default function ActionConfig(props: {
 
   const value = props.button.actionId || ''
 
-  const setAction = (id: number) => {
-    const val = id === 0 ? null : id
+  const setAction = (id: number | string) => {
+    const val = typeof id === 'number' ? null : id
     props.update('actionId')(val)
   }
 
@@ -36,8 +36,8 @@ export default function ActionConfig(props: {
       >
         {actions.map((action) => (
           <MenuItem
-            key={action.id}
-            value={action.id}
+            key={action.key}
+            value={action.key}
             aria-label={`pick ${action.description}`}
           >
             {action.description}

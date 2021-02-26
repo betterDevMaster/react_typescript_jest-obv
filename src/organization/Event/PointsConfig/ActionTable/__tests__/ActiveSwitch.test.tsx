@@ -39,7 +39,7 @@ it('toggles a custom action', async () => {
   })
 
   const [activateUrl] = mockPatch.mock.calls[0]
-  expect(activateUrl).toMatch(`/events/${event.slug}/actions/${target.id}`)
+  expect(activateUrl).toMatch(`/events/${event.slug}/actions/${target.key}`)
 
   const deactivated = {
     ...activated,
@@ -54,5 +54,5 @@ it('toggles a custom action', async () => {
   })
 
   const [deactivateUrl] = mockPatch.mock.calls[1]
-  expect(deactivateUrl).toMatch(`/events/${event.slug}/actions/${target.id}`)
+  expect(deactivateUrl).toMatch(`/events/${event.slug}/actions/${target.key}`)
 })

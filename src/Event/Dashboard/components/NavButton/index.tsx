@@ -31,7 +31,7 @@ export default interface NavButton extends HasRules {
   hoverBorderColor?: string
   isAreaButton: boolean
   areaId: number | null
-  actionId: number | null
+  actionId: string | null
 }
 
 export type NavButtonWithSize = NavButton & {

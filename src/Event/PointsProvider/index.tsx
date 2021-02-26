@@ -32,7 +32,7 @@ export function PointsProvider(props: {children: React.ReactElement}) {
         return
       }
 
-      const url = api(`/events/${event.slug}/actions/${action.id}`)
+      const url = api(`/events/${event.slug}/actions/${action.key}`)
 
       client
         .post(url)

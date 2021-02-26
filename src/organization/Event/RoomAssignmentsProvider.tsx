@@ -42,8 +42,7 @@ export default function RoomAssignmentsProvider(props: {
     [event],
   )
 
-  const hasAllAreas =
-    areas && areas.length > 0 && withAssignments.length === areas.length
+  const hasAllAreas = areas && withAssignments.length === areas.length
 
   const set = useCallback(
     (target: AreaWithAssignments) => {

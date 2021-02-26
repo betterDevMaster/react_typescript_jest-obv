@@ -59,8 +59,8 @@ it('should join a room', async () => {
 })
 
 it('should receive points', async () => {
-  const action = fakeAction({is_platform_action: false})
-  const button = fakeNavButtonWithSize({actionId: action.id})
+  const action = fakeAction()
+  const button = fakeNavButtonWithSize({actionId: action.key})
 
   const mainNav = createEntityList([button])
   const event = fakeEvent({template: fakeSimpleBlog({mainNav})})
@@ -83,7 +83,7 @@ it('should receive points', async () => {
   })
 
   const [url] = mockPost.mock.calls[1]
-  expect(url).toMatch(`/events/${event.slug}/actions/${action.id}`)
+  expect(url).toMatch(`/events/${event.slug}/actions/${action.key}`)
 
   // show points pop-up
   expect(await findByText(new RegExp(action.description))).toBeInTheDocument()

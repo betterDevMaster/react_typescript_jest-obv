@@ -200,5 +200,5 @@ it('should assign an action for points', async () => {
   expect(url).toMatch(`/events/${event.slug}`)
 
   const id = data.template.mainNav.ids[0] // only one button
-  expect(data.template.mainNav.entities[id]['actionId']).toBe(target.id) // Did assign action id
+  expect(data.template.mainNav.entities[id]['actionId']).toBe(target.key) // Did assign action id
 })

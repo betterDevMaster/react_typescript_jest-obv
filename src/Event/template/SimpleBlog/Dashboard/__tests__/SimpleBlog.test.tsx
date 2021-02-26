@@ -118,10 +118,7 @@ it('should show the user email', async () => {
 })
 
 it('it should send points for visiting dashboard', async () => {
-  const action = fakeAction({
-    id: 3, // Dashboard has id of 3
-    description: 'dashboard action',
-  })
+  const action = fakeAction()
 
   mockPost.mockImplementationOnce(() => Promise.resolve({data: 'ok'}))
 
@@ -142,7 +139,7 @@ it('it should send points for visiting dashboard', async () => {
   })
 
   const [url] = mockPost.mock.calls[1]
-  expect(url).toMatch(`/events/${event.slug}/actions/3`) // Fired dashboard ID
+  expect(url).toMatch(`/events/${event.slug}/actions/${action.key}`) // Fired dashboard ID
 
   // show points pop-up
   expect(await findByText(new RegExp(action.description))).toBeInTheDocument()

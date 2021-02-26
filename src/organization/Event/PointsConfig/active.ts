@@ -29,7 +29,7 @@ export function useUpdateAction() {
   const {client} = useOrganization()
 
   return (action: Action, data: Partial<Action>) => {
-    const url = api(`/events/${event.slug}/actions/${action.id}`)
+    const url = api(`/events/${event.slug}/actions/${action.key}`)
     return client.patch<Action>(url, data)
   }
 }

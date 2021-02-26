@@ -30,7 +30,7 @@ export default function ActionsTable(props: {
       </TableHead>
       <TableBody>
         {props.actions.map((action) => (
-          <TableRow key={action.id} aria-label="action">
+          <TableRow key={action.key} aria-label="action">
             <TableCell component="th">
               <Description action={action} onClick={select(action)} />
             </TableCell>

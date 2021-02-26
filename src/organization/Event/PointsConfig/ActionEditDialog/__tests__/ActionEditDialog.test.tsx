@@ -61,7 +61,7 @@ it('edit an action', async () => {
   })
 
   const [url, data] = mockPatch.mock.calls[0]
-  expect(url).toMatch(`/events/${event.slug}/actions/${target.id}`)
+  expect(url).toMatch(`/events/${event.slug}/actions/${target.key}`)
 
   expect(data.description).toBe(description)
   expect(data.points).toBe(String(points))
@@ -99,5 +99,5 @@ it('removes an action', async () => {
   expect((await findAllByLabelText('action')).length).toBe(numOriginal - 1)
 
   const [url] = mockDelete.mock.calls[0]
-  expect(url).toMatch(`/events/${event.slug}/actions/${target.id}`)
+  expect(url).toMatch(`/events/${event.slug}/actions/${target.key}`)
 })

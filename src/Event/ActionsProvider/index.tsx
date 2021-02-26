@@ -7,6 +7,7 @@ import React, {useCallback, useEffect, useState} from 'react'
 
 export interface Action {
   id: number
+  key: string
   description: string
   points: number
   max_per_day: number | null
@@ -90,7 +91,7 @@ export function useActionsList(request: () => Promise<Action[]>) {
 
   const update = (target: Action) => {
     const updated = actions.map((a) => {
-      const isTarget = a.id === target.id
+      const isTarget = a.key === target.key
       if (isTarget) {
         return target
       }
@@ -107,7 +108,7 @@ export function useActionsList(request: () => Promise<Action[]>) {
   }
 
   const remove = (target: Action) => {
-    const removed = actions.filter((a) => a.id !== target.id)
+    const removed = actions.filter((a) => a.key !== target.key)
     setActions(removed)
   }
 

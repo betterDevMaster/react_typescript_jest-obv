@@ -9,8 +9,8 @@ export interface PlatformActions {
   visit_leaderboard: Action | null
 }
 
-export const findAction = (id: number, actions: Action[]) =>
-  actions.find((a) => a.id === id)
+export const findAction = (id: string, actions: Action[]) =>
+  actions.find((a) => a.key === id)
 
 /**
  * Return platform's pre-defined actions. Action ids are hard-coded

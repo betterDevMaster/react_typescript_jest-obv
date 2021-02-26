@@ -69,7 +69,7 @@ it('should receive points', async () => {
   })
 
   const [url] = mockPost.mock.calls[1]
-  expect(url).toMatch(`/events/${event.slug}/actions/${action.id}`)
+  expect(url).toMatch(`/events/${event.slug}/actions/${action.key}`)
 
   // show points pop-up
   expect(await findByText(new RegExp(action.description))).toBeInTheDocument()
