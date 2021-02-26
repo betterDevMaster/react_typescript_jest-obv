@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, {useState} from 'react'
 import styled from 'styled-components'
 import {Emoji, emojiWithName} from 'Event/Dashboard/components/EmojiList/emoji'
 import EditComponent from 'Event/Dashboard/editor/views/EditComponent'
@@ -38,10 +38,7 @@ export default function EmojiList() {
       <Box aria-label="emoji list">
         {list.emojis.map((name, index) => (
           <Container key={index} width={list.emojiWidth}>
-            <EmojiImage
-              name={name}
-              src={emojiWithName(name).image}
-            />
+            <EmojiImage name={name} src={emojiWithName(name).image} />
           </Container>
         ))}
       </Box>
@@ -64,11 +61,10 @@ const EmojiImage = (props: EmojiProps) => {
       setSending(true)
       setTimeout(() => setSending(false), 1000)
       const url = api(`/events/${event.slug}/emoji_page`)
-      eventClient.post(url, {name})
-        .catch((error) => {
-          // ignore errors, prevent failing to send emoji from crashing app
-          console.error(error)
-        })
+      eventClient.post(url, {name}).catch((error) => {
+        // ignore errors, prevent failing to send emoji from crashing app
+        console.error(error)
+      })
     }
   }
 
@@ -78,7 +74,7 @@ const EmojiImage = (props: EmojiProps) => {
       src={src}
       alt={name}
       onClick={sendEmoji(name)}
-      style={{ opacity: sending ? .5 : 1 }}
+      style={{opacity: sending ? 0.5 : 1}}
     />
   )
 }

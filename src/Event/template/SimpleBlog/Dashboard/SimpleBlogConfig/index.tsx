@@ -32,7 +32,11 @@ export function SimpleBlogConfig() {
         property="header_background"
         current={event.header_background?.url}
       />
-      <EventImageUpload label="Logo" property="logo" current={event.logo?.url} />
+      <EventImageUpload
+        label="Logo"
+        property="logo"
+        current={event.logo?.url}
+      />
       <ColorPicker
         label="Primary Color"
         color={template.primaryColor}

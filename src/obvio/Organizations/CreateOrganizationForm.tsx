@@ -93,55 +93,55 @@ export default function CreateOrganizationForm() {
 
   return (
     <Layout>
-        <Title variant="h5" align="center">
-          Create Your Organization
-        </Title>
-        <form onSubmit={handleSubmit(submit)}>
-          <TextField
-            label="Organization Name"
-            name="name"
-            required
-            fullWidth
-            variant="outlined"
-            inputProps={{
-              ref: register({
-                required: 'Name is required',
-              }),
-              'aria-label': 'organization name',
-            }}
-            error={!!nameError()}
-            helperText={nameError()}
-            disabled={submitting}
-          />
-          <TextField
-            label="Unique Slug"
-            name="slug"
-            required
-            fullWidth
-            variant="outlined"
-            inputProps={{
-              ref: register({
-                required: 'Slug is required',
-              }),
-              'aria-label': 'domain slug',
-            }}
-            error={!!slugError()}
-            helperText={slugHelperText()}
-            disabled={submitting}
-          />
-          <Error>{serverError && serverError.message}</Error>
-          <Button
-            type="submit"
-            variant="contained"
-            fullWidth
-            color="primary"
-            size="large"
-            disabled={submitting}
-            aria-label="create"
-          >
-            Submit
-          </Button>
-        </form>
+      <Title variant="h5" align="center">
+        Create Your Organization
+      </Title>
+      <form onSubmit={handleSubmit(submit)}>
+        <TextField
+          label="Organization Name"
+          name="name"
+          required
+          fullWidth
+          variant="outlined"
+          inputProps={{
+            ref: register({
+              required: 'Name is required',
+            }),
+            'aria-label': 'organization name',
+          }}
+          error={!!nameError()}
+          helperText={nameError()}
+          disabled={submitting}
+        />
+        <TextField
+          label="Unique Slug"
+          name="slug"
+          required
+          fullWidth
+          variant="outlined"
+          inputProps={{
+            ref: register({
+              required: 'Slug is required',
+            }),
+            'aria-label': 'domain slug',
+          }}
+          error={!!slugError()}
+          helperText={slugHelperText()}
+          disabled={submitting}
+        />
+        <Error>{serverError && serverError.message}</Error>
+        <Button
+          type="submit"
+          variant="contained"
+          fullWidth
+          color="primary"
+          size="large"
+          disabled={submitting}
+          aria-label="create"
+        >
+          Submit
+        </Button>
+      </form>
     </Layout>
   )
 }

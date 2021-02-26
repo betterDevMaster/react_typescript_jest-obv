@@ -26,7 +26,6 @@ export const AreasContext = React.createContext<AreasContextProps | undefined>(
   undefined,
 )
 
-
 export default function AttendeesProvider(props: {
   children: React.ReactElement
 }) {

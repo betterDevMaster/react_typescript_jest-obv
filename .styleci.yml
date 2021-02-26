@@ -1,0 +1,16 @@
+ts:
+  arrow-parens: always
+  bracket-spacing: false
+  print-width: 80
+  semicolons: false
+  tab-width: 2
+  use-tabs: false
+  trailing-commas: all
+  double-quotes: false
+  finder:
+    exclude:
+      - 'node_modules'
+      - 'public'
+    name:
+      - '*.ts'
+      - '*.tsx'

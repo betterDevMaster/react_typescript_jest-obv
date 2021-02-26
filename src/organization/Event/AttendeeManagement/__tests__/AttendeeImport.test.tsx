@@ -12,7 +12,9 @@ it('should import attendees', async () => {
     fakeAttendee,
   )
 
-  const {findByLabelText, findByText} = await goToAttendeeManagement({attendees})
+  const {findByLabelText, findByText} = await goToAttendeeManagement({
+    attendees,
+  })
 
   const file = new File([], 'attendees.csv')
   const fileInput = await findByLabelText('attendee import input')
