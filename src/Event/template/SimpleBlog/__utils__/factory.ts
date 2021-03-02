@@ -13,6 +13,7 @@ import {
 } from 'Event/Dashboard/components/NavButton/__utils__/factory'
 import {createEntityList} from 'lib/list'
 import {SimpleBlog, SIMPLE_BLOG} from 'Event/template/SimpleBlog'
+import {colors} from 'lib/ui/theme'
 
 export const fakeSimpleBlog = (overrides?: Partial<SimpleBlog>): SimpleBlog => {
   const defaultAttributes: SimpleBlog = {
@@ -48,6 +49,18 @@ export const fakeSimpleBlog = (overrides?: Partial<SimpleBlog>): SimpleBlog => {
     progressBar: {
       barColor: '#000000',
       textColor: '#ffffff',
+    },
+    login: {
+      submitButton: {
+        backgroundColor: colors.primary,
+        textColor: '#FFFFFF',
+        label: 'Login',
+      },
+      description: {
+        text: '',
+        color: '#000000',
+        fontSize: 18,
+      },
     },
   }
 
@@ -95,5 +108,23 @@ export function withSidebarNav<
   return {
     ...attributes,
     sidebarNav: createEntityList(buttons),
+  }
+}
+
+export function fakeLogin(
+  overrides?: Partial<SimpleBlog['login']>,
+): SimpleBlog['login'] {
+  return {
+    submitButton: {
+      backgroundColor: colors.primary,
+      textColor: '#FFFFFF',
+      label: 'Login',
+    },
+    description: {
+      text: '',
+      color: '#000000',
+      fontSize: 18,
+    },
+    ...overrides,
   }
 }

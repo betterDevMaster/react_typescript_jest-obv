@@ -49,6 +49,8 @@ export interface ObvioEvent {
   header_background: PublicFile | null
   points_summary_logo: PublicFile | null
   platform_actions: PlatformActions
+  login_background: PublicFile | null
+  login_logo: PublicFile | null
 }
 
 export default function Event() {

@@ -17,6 +17,8 @@ export const fakeEvent = (overrides?: Partial<ObvioEvent>): ObvioEvent => ({
   header_background: null,
   points_summary_logo: null,
   platform_actions: createPlatformActions(),
+  login_background: null,
+  login_logo: null,
   ...overrides,
 })
 

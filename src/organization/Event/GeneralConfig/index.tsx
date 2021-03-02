@@ -1,16 +1,18 @@
 import React, {useCallback, useEffect, useState} from 'react'
-import Layout from 'organization/user/Layout'
-import Page from 'organization/Event/Page'
+import Typography from '@material-ui/core/Typography'
+import Box from '@material-ui/core/Box'
 import ColorPicker from 'lib/ui/ColorPicker'
 import {useEvent} from 'Event/EventProvider'
 import TemplateProvider, {
   useTemplate,
   useUpdateTemplate,
 } from 'Event/Dashboard/state/TemplateProvider'
-import ProgressBarPreview from 'organization/Event/GeneralConfig/ProgressBarPreview'
-import SelectTemplateForm from 'organization/Event/DashboardConfig/SelectTemplateForm'
 import {Template} from 'Event/template'
-import Typography from '@material-ui/core/Typography'
+import ProgressBarPreview from 'organization/Event/GeneralConfig/ProgressBarPreview'
+import LoginConfig from 'organization/Event/GeneralConfig/LoginConfig'
+import SelectTemplateForm from 'organization/Event/DashboardConfig/SelectTemplateForm'
+import Layout from 'organization/user/Layout'
+import Page from 'organization/Event/Page'
 
 export interface ProgressBar {
   background: string
@@ -34,6 +36,7 @@ export default function GeneralConfig() {
 function Content() {
   const updateTemplate = useUpdateTemplate()
   const {progressBar} = useTemplate()
+
   const [barColor, setBarColor] = useState(progressBar.barColor)
   const [textColor, setTextColor] = useState(progressBar.textColor)
 
@@ -63,22 +66,27 @@ function Content() {
 
   return (
     <Layout>
-      <Page>
-        <Typography variant="h6">Progress Bar</Typography>
-        <ProgressBarPreview barColor={barColor} textColor={textColor} />
-        <ColorPicker
-          label="Bar Color"
-          color={barColor}
-          onPick={setBarColor}
-          aria-label="bar color"
-        />
-        <ColorPicker
-          label="Text Color"
-          color={textColor}
-          onPick={setTextColor}
-          aria-label="text color"
-        />
-      </Page>
+      <div>
+        <Page>
+          <Box>
+            <Typography variant="h6">Progress Bar</Typography>
+            <ProgressBarPreview barColor={barColor} textColor={textColor} />
+            <ColorPicker
+              label="Bar Color"
+              color={barColor}
+              onPick={setBarColor}
+              aria-label="bar color"
+            />
+            <ColorPicker
+              label="Text Color"
+              color={textColor}
+              onPick={setTextColor}
+              aria-label="text color"
+            />
+          </Box>
+          <LoginConfig />
+        </Page>
+      </div>
     </Layout>
   )
 }

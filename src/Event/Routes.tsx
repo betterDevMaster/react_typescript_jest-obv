@@ -9,10 +9,11 @@ import {createRoutes} from 'lib/url'
 import React from 'react'
 import {Redirect, Route, Switch} from 'react-router-dom'
 import Speakers from 'Event/Speakers'
-import UnderConstruction from './UnderConstruction'
 import {EventActionsProvider} from 'Event/ActionsProvider'
 import {PointsProvider} from 'Event/PointsProvider'
 import Leaderboard from 'Event/Leaderboard'
+import UnderConstruction from 'Event/UnderConstruction'
+import TemplateProvider from 'Event/Dashboard/state/TemplateProvider'
 
 export const eventRoutes = createRoutes({
   login: '/login',
@@ -27,7 +28,7 @@ export default function Routes() {
   const {user, loading} = useEventAuth()
   const {event} = useEvent()
 
-  if (!event.waiver) {
+  if (!event.template || !event.waiver) {
     return <UnderConstruction />
   }
 
@@ -45,7 +46,11 @@ export default function Routes() {
     )
   }
 
-  return <GuestRoutes />
+  return (
+    <TemplateProvider template={event.template}>
+      <GuestRoutes />
+    </TemplateProvider>
+  )
 }
 
 function UserRoutes() {

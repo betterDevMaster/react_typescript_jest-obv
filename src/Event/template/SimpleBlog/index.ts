@@ -8,6 +8,7 @@ import NavButton, {
   NavButtonWithSize,
 } from 'Event/Dashboard/components/NavButton'
 import {EntityList} from 'lib/list'
+import {colors} from 'lib/ui/theme'
 
 export const SIMPLE_BLOG = 'Simple Blog'
 
@@ -39,6 +40,18 @@ export interface SimpleBlog {
   progressBar: {
     barColor: string
     textColor: string
+  }
+  login: {
+    submitButton: {
+      backgroundColor: string
+      textColor: string
+      label: string
+    }
+    description: {
+      text: string
+      color: string
+      fontSize: number
+    }
   }
 }
 
@@ -84,5 +97,17 @@ export const createSimpleBlog = (): SimpleBlog => ({
   progressBar: {
     barColor: '#0969d6',
     textColor: '#000000',
+  },
+  login: {
+    submitButton: {
+      backgroundColor: colors.primary,
+      textColor: '#FFFFFF',
+      label: 'Login',
+    },
+    description: {
+      text: '',
+      color: '#000000',
+      fontSize: 18,
+    },
   },
 })

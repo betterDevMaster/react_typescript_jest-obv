@@ -1,6 +1,6 @@
-import {updateTemplte} from 'Event/state/actions'
+import {updateTemplte as updateTemplate} from 'Event/state/actions'
 import {Template} from 'Event/template'
-import React from 'react'
+import React, {useCallback} from 'react'
 import {useDispatch} from 'react-redux'
 
 const TemplateContext = React.createContext<Template | undefined>(undefined)
@@ -32,6 +32,19 @@ export function useUpdateTemplate() {
   const dispatch = useDispatch()
 
   return (updates: Partial<Template>) => {
-    dispatch(updateTemplte(updates))
+    dispatch(updateTemplate(updates))
   }
+}
+
+export function useUpdateProp() {
+  const updateTemplate = useUpdateTemplate()
+
+  return useCallback(
+    <K extends keyof Template>(key: K, value: Template[K]) => {
+      updateTemplate({
+        [key]: value,
+      })
+    },
+    [updateTemplate],
+  )
 }
