@@ -21,7 +21,6 @@ import Alert from '@material-ui/lab/Alert'
 import {useExportAttendees} from 'organization/Event/AttendeeManagement/attendee-csv'
 import Page from 'organization/Event/Page'
 import TagList from 'organization/Event/AttendeeManagement/TagList'
-import EditDialog from 'organization/Event/AttendeeManagement/EditDialog'
 import EditButton from 'lib/ui/Button'
 import {useRoomAssignments} from 'organization/Event/RoomAssignmentsProvider'
 import RoomSelect from 'organization/Event/AttendeeManagement/RoomSelect'
@@ -29,6 +28,8 @@ import DangerButton from 'lib/ui/Button/DangerButton'
 import TextField from '@material-ui/core/TextField'
 import {onChangeStringHandler} from 'lib/dom'
 import Box from '@material-ui/core/Box'
+import UpdateDialog from 'organization/Event/AttendeeManagement/dialog/UpdateDialog'
+import CreateDialog from 'organization/Event/AttendeeManagement/dialog/CreateDialog'
 
 export default function AttendeeManagement() {
   const {
@@ -44,6 +45,10 @@ export default function AttendeeManagement() {
   const [editing, setEditing] = useState<Attendee | null>(null)
   const {areas, loading} = useRoomAssignments()
   const [searchTerm, setSearchTerm] = useState('')
+  const [createAttendeeVisible, setCreateAttendeeVisible] = useState(false)
+
+  const toggleCreateAttendeeVisible = () =>
+    setCreateAttendeeVisible(!createAttendeeVisible)
 
   const filteredAttendees = attendees.filter((attendee) => {
     if (searchTerm === '') {
@@ -98,7 +103,11 @@ export default function AttendeeManagement() {
 
   return (
     <>
-      <EditDialog attendee={editing} onClose={stopEditing} />
+      <UpdateDialog attendee={editing} onClose={stopEditing} />
+      <CreateDialog
+        isVisible={createAttendeeVisible}
+        onClose={toggleCreateAttendeeVisible}
+      />
       <Layout>
         <Page>
           <Box mb={2}>
@@ -132,6 +141,14 @@ export default function AttendeeManagement() {
                 </StyledAlert>
               )}
             />
+            <CreateAttendeeButton
+              variant="outlined"
+              color="primary"
+              aria-label="add attendee"
+              onClick={toggleCreateAttendeeVisible}
+            >
+              Create
+            </CreateAttendeeButton>
           </Box>
           <TextField
             variant="outlined"
@@ -288,3 +305,9 @@ const StyledAlert = withStyles({
 const CheckedInText = styled.div`
   margin-top: ${(props) => props.theme.spacing[1]};
 `
+
+const CreateAttendeeButton = withStyles({
+  root: {
+    marginLeft: spacing[2],
+  },
+})(Button)

@@ -3,8 +3,8 @@ import {Attendee} from 'Event/attendee'
 import React from 'react'
 
 export default React.forwardRef(
-  (props: {group: string; attendee: Attendee}, ref) => {
-    const value = props.attendee.groups[props.group] || ''
+  (props: {group: string; attendee?: Attendee}, ref) => {
+    const value = props.attendee?.groups[props.group] || ''
 
     return (
       <TextField

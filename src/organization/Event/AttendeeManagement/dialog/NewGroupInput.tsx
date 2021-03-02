@@ -1,7 +1,7 @@
 import Grid from '@material-ui/core/Grid'
 import TextField from '@material-ui/core/TextField'
 import {onChangeStringHandler} from 'lib/dom'
-import {NewGroup} from 'organization/Event/AttendeeManagement/EditDialog'
+import {NewGroup} from 'organization/Event/AttendeeManagement/dialog/Form'
 import React from 'react'
 
 export default function NewGroupInput(props: {
