@@ -16,7 +16,7 @@ stages:
   - build
   - deploy
 
-unit_tests:
+tests:
   stage: test
   except:
     refs:
@@ -28,6 +28,7 @@ unit_tests:
   script:
     - npm i --cache .npm --prefer-offline
     - npm run test:coverage
+  retry: 2
 
 build_staging:
   stage: build

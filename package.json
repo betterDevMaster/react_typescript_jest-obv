@@ -64,8 +64,7 @@
       "eslint"
     ],
     "**/*.+(js|jsx|ts|tsx|json)": [
-      "prettier --write",
-      "npm run test:related"
+      "prettier --write"
     ]
   },
   "jest": {
