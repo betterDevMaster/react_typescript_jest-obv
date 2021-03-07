@@ -14,6 +14,8 @@ import {PointsProvider} from 'Event/PointsProvider'
 import Leaderboard from 'Event/Leaderboard'
 import UnderConstruction from 'Event/UnderConstruction'
 import TemplateProvider from 'Event/Dashboard/state/TemplateProvider'
+import WaiverProvider from 'Event/Step2/WaiverProvider'
+import SubmissionsProvider from 'Event/SubmissionsProvider'
 
 export const eventRoutes = createRoutes({
   login: '/login',
@@ -40,7 +42,9 @@ export default function Routes() {
     return (
       <EventActionsProvider>
         <PointsProvider>
-          <UserRoutes />
+          <SubmissionsProvider>
+            <UserRoutes />
+          </SubmissionsProvider>
         </PointsProvider>
       </EventActionsProvider>
     )
@@ -60,7 +64,9 @@ function UserRoutes() {
         <Step1 />
       </Route>
       <Route path={eventRoutes.step2}>
-        <Step2 />
+        <WaiverProvider>
+          <Step2 />
+        </WaiverProvider>
       </Route>
       <Route path={eventRoutes.step3}>
         <Step3 />

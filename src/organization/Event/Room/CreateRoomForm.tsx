@@ -56,7 +56,7 @@ export default function CreateRoomForm() {
       })
   }
 
-  const nameError = fieldError('name', {form: errors, server: serverError})
+  const nameError = fieldError('name', {form: errors, response: serverError})
 
   return (
     <Layout>

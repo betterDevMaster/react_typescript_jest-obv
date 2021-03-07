@@ -4,7 +4,7 @@ import {fakeEvent} from 'Event/__utils__/factory'
 import user from '@testing-library/user-event'
 import {fireEvent, wait} from '@testing-library/react'
 import {ObvioEvent} from 'Event'
-import {waiverLogoPath} from 'Event/Step2/Waiver'
+import {waiverLogoPath} from 'Event/Step2/WaiverProvider'
 import {goToEventConfig} from 'organization/Event/__utils__/event'
 
 const mockPost = axios.post as jest.Mock

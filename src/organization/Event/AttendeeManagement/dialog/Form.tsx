@@ -101,17 +101,17 @@ export default function Form(props: {
 
   const firstNameError = fieldError('first_name', {
     form: errors,
-    server: serverError,
+    response: serverError,
   })
 
   const lastNameError = fieldError('last_name', {
     form: errors,
-    server: serverError,
+    response: serverError,
   })
 
   const emailError = fieldError('email', {
     form: errors,
-    server: serverError,
+    response: serverError,
   })
 
   return (

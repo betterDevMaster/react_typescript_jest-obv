@@ -14,6 +14,9 @@ export default function ConfigNav() {
       <ConfigNavItem to={routes.waiver} aria-label="configure waiver">
         Waiver
       </ConfigNavItem>
+      <ConfigNavItem to={routes.questions} aria-label="configure questions">
+        Questions
+      </ConfigNavItem>
       <ConfigNavItem to={routes.tech_check} aria-label="configure tech check">
         Tech Check
       </ConfigNavItem>
@@ -79,7 +82,6 @@ const Box = styled.div`
   padding: ${(props) =>
     `${props.theme.spacing[2]} 0 ${props.theme.spacing[2]} 0 `};
 `
-
 const ConfigLink = styled((props) => {
   const {active, ...otherProps} = props
   return <RelativeLink {...otherProps} />

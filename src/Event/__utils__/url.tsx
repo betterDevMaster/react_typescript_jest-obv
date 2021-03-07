@@ -48,6 +48,7 @@ export async function loginToEventSite(
   )
   mockGet.mockImplementationOnce(() => Promise.resolve({data: attendee}))
   mockGet.mockImplementationOnce(() => Promise.resolve({data: actions}))
+  mockGet.mockImplementationOnce(() => Promise.resolve({data: []})) // Question submissions
   mockGet.mockImplementationOnce(() => Promise.resolve({data: defaultScore}))
 
   const {findByLabelText, ...otherRenderResult} = render(<App />)

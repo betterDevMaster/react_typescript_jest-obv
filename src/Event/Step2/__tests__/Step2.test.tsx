@@ -1,11 +1,20 @@
-import {fireEvent, wait} from '@testing-library/react'
+import {act, findByText, fireEvent, wait} from '@testing-library/react'
+import user from '@testing-library/user-event'
 import faker from 'faker'
 import {fakeAttendee} from 'Event/auth/__utils__/factory'
 import {loginToEventSite} from 'Event/__utils__/url'
 import axios from 'axios'
-import {fakeAction} from 'Event/ActionsProvider/__utils__/factory'
 import {Await} from 'lib/type-utils'
-import {createPlatformActions, fakeEvent} from 'Event/__utils__/factory'
+import {fakeQuestion} from 'organization/Event/QuestionsProvider/__utils__/factory'
+import {
+  CHECKBOX,
+  LONG_ANSWER_TEXT,
+  Question,
+  RADIO,
+  SELECT,
+  SHORT_ANSWER_TEXT,
+} from 'organization/Event/QuestionsProvider'
+import {fakeEvent} from 'Event/__utils__/factory'
 
 const mockPost = axios.post as jest.Mock
 const mockGet = axios.get as jest.Mock
@@ -32,7 +41,9 @@ it('should submit attendee waiver', async () => {
 
   const context = await loginToEventSite({attendee})
 
-  await submitWaiver(context)
+  await act(async () => {
+    await submitWaiver(context)
+  })
 
   // Moved on to next step
   await wait(async () => {
@@ -40,40 +51,116 @@ it('should submit attendee waiver', async () => {
   })
 })
 
-it('should received points', async () => {
+it('should submit answers', async () => {
+  const shortAnswerQuestion = fakeQuestion({
+    type: SHORT_ANSWER_TEXT,
+    is_registration_question: true,
+  })
+
+  const longAnswerQuestion = fakeQuestion({
+    type: LONG_ANSWER_TEXT,
+    is_registration_question: true,
+  })
+
+  const radioQuestion = fakeQuestion({
+    type: RADIO,
+    is_registration_question: true,
+    options: Array.from(
+      {length: faker.random.number({min: 1, max: 5})},
+      () => `radio ${faker.random.word()}`,
+    ),
+  })
+
+  const selectQuestion = fakeQuestion({
+    type: SELECT,
+    is_registration_question: true,
+    options: Array.from(
+      {length: faker.random.number({min: 1, max: 5})},
+      () => `select ${faker.random.word()}`,
+    ),
+  })
+
+  const checkboxQuestion = fakeQuestion({
+    type: CHECKBOX,
+    is_registration_question: true,
+    options: Array.from(
+      {length: faker.random.number({min: 1, max: 5})},
+      () => `checkbox ${faker.random.word()}`,
+    ),
+  })
+
   const attendee = fakeAttendee({
     has_password: true,
     waiver: null,
   })
 
-  const action = fakeAction()
-
   const event = fakeEvent({
-    platform_actions: createPlatformActions({complete_check_in: action}),
+    questions: [
+      shortAnswerQuestion,
+      longAnswerQuestion,
+      radioQuestion,
+      selectQuestion,
+      checkboxQuestion,
+    ],
   })
 
   const context = await loginToEventSite({
     attendee,
-    actions: [action],
     event,
   })
 
-  await submitWaiver(context)
+  const {findByLabelText, findByText} = context
 
-  mockPost.mockImplementationOnce(() => Promise.resolve({data: 'got points'}))
+  // Answer short answer question
+  const shortAnswer = faker.random.words(3)
+  user.type(await findByLabelText(shortAnswerQuestion.label), shortAnswer)
 
-  await wait(async () => {
+  // Answer long anser question
+  const longAnswer = faker.lorem.paragraph()
+  user.type(await findByLabelText(longAnswerQuestion.label), longAnswer)
+
+  // Select a radio
+  const radioOption = faker.random.arrayElement(radioQuestion.options)
+  user.click(await findByText(radioOption))
+
+  // Select dropdown select option
+  const selectOption = faker.random.arrayElement(selectQuestion.options)
+  fireEvent.mouseDown(await findByLabelText(selectQuestion.label))
+  user.click(await findByText(selectOption))
+
+  // select all checkboxes
+  for (const option of checkboxQuestion.options) {
+    user.click(await findByLabelText(option))
+  }
+
+  // answers
+  mockPost.mockImplementationOnce(() => Promise.resolve({data: []}))
+
+  await act(async () => {
+    await submitWaiver(context)
+  })
+
+  await wait(() => {
     expect(mockPost).toHaveBeenCalledTimes(3)
   })
 
-  const [url] = mockPost.mock.calls[2]
+  const [url, data] = mockPost.mock.calls[1]
 
-  expect(url).toMatch(`/events/${event.slug}/actions/${action.key}`)
+  expect(url).toMatch(`/events/${event.slug}/questions/submissions`)
 
-  // show points pop-up
-  expect(
-    await context.findByText(new RegExp(action.description)),
-  ).toBeInTheDocument()
+  const {answers} = data
+
+  const submission = (question: Question) =>
+    answers.find((a: any) => a.question_id === String(question.id))
+
+  expect(submission(shortAnswerQuestion).value).toBe(shortAnswer)
+  expect(submission(longAnswerQuestion).value).toBe(longAnswer)
+  expect(submission(radioQuestion).value).toBe(radioOption)
+  expect(submission(selectQuestion).value).toBe(selectOption)
+  // Selected all checkbox options...
+  expect(submission(checkboxQuestion).value).toBe(
+    checkboxQuestion.options.join(', '),
+  )
 })
 
 async function submitWaiver({
@@ -119,7 +206,7 @@ async function submitWaiver({
   })
   mockPost.mockImplementationOnce(() => Promise.resolve({data: withWaver}))
 
-  fireEvent.click(await findByLabelText('submit waiver button'))
+  fireEvent.click(await findByLabelText('submit'))
 
   const techCheckUrl = faker.internet.url()
   mockGet.mockImplementationOnce(() =>

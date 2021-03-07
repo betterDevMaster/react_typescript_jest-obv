@@ -118,7 +118,7 @@ export default function EditSpeakerForm(props: {
     setValue('text', editor.getData())
   }
 
-  const nameError = fieldError('name', {form: errors, server: serverError})
+  const nameError = fieldError('name', {form: errors, response: serverError})
 
   return (
     <form onSubmit={handleSubmit(submit)}>

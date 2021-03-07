@@ -6,6 +6,7 @@ import {Redirect, Route, Switch} from 'react-router-dom'
 import {useOrganization} from 'organization/OrganizationProvider'
 import EventRoutes from 'organization/Event/EventRoutes'
 import Team from 'organization/Team'
+import QuestionsProvider from 'organization/Event/QuestionsProvider'
 
 export default function UserRoutes() {
   const {routes} = useOrganization()
@@ -30,7 +31,9 @@ export default function UserRoutes() {
       </Route>
       <Route path={routes.events[':event'].root}>
         <RouteEventProvider>
-          <EventRoutes />
+          <QuestionsProvider>
+            <EventRoutes />
+          </QuestionsProvider>
         </RouteEventProvider>
       </Route>
       <Redirect to={routes.events.root} />

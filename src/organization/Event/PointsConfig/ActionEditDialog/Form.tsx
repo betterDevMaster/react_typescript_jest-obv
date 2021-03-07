@@ -106,17 +106,17 @@ export default function Form(props: {
 
   const descriptionError = fieldError('description', {
     form: errors,
-    server: serverError,
+    response: serverError,
   })
 
   const maxPerDayError = fieldError('max_per_day', {
     form: errors,
-    server: serverError,
+    response: serverError,
   })
 
   const maxPerEventError = fieldError('max_per_event', {
     form: errors,
-    server: serverError,
+    response: serverError,
   })
 
   return (
@@ -251,7 +251,7 @@ function Points(props: {
   const error = (field: keyof UpdateActionData) =>
     fieldError(field, {
       form: props.errors,
-      server: props.serverError,
+      response: props.serverError,
     })
 
   const pointsError = error('points')

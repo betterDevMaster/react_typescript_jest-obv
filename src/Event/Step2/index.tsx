@@ -2,18 +2,45 @@ import {useAttendee} from 'Event/auth'
 import {eventRoutes} from 'Event/Routes'
 import React from 'react'
 import {Redirect} from 'react-router-dom'
-import Waiver from 'Event/Step2/Waiver'
+import {useEvent} from 'Event/EventProvider'
+import TemplateProvider, {
+  useTemplate,
+} from 'Event/Dashboard/state/TemplateProvider'
+import {SIMPLE_BLOG} from 'Event/template/SimpleBlog'
+import SimpleBlogStep2 from 'Event/template/SimpleBlog/Step2'
 
 export default function Step2() {
   const attendee = useAttendee()
+  const {event} = useEvent()
 
   if (!attendee.has_password) {
     return <Redirect to={eventRoutes.step1} />
   }
 
+  /**
+   * Form questions are optional, so we'll use
+   * completing the waiver to indicate that
+   * the user has completed the step.
+   */
   if (attendee.waiver) {
-    return <Redirect to={eventRoutes.root} />
+    return <Redirect to={eventRoutes.step3} />
   }
 
-  return <Waiver />
+  return (
+    <TemplateProvider template={event.template}>
+      <TemplateStep2 />
+    </TemplateProvider>
+  )
+}
+
+function TemplateStep2() {
+  const template = useTemplate()
+  const user = useAttendee()
+
+  switch (template.name) {
+    case SIMPLE_BLOG:
+      return <SimpleBlogStep2 user={user} />
+    default:
+      throw new Error(`Missing step 2 for template: ${template.name}`)
+  }
 }

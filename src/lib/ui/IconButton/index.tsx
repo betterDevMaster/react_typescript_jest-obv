@@ -7,9 +7,11 @@ export default function IconButton(props: {
   dataTestId?: string
   className?: string
   'aria-label'?: string
+  type?: 'button' | 'submit'
 }) {
   return (
     <Button
+      type={props.type}
       className={props.className}
       onClick={props.onClick}
       data-testid={props.dataTestId}

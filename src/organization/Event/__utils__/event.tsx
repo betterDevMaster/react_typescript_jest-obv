@@ -9,6 +9,10 @@ import {Area} from 'organization/Event/AreasProvider'
 import {render} from '__utils__/render'
 import App from 'App'
 import React from 'react'
+import {
+  QUESTION_TYPES,
+  VALIDATION_RULES,
+} from 'organization/Event/QuestionsProvider/__utils__/factory'
 
 const mockGet = axios.get as jest.Mock
 

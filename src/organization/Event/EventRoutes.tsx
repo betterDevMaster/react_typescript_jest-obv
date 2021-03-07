@@ -22,6 +22,7 @@ import Zapier from 'organization/Event/Services/Zapier'
 import ServicesProvider from 'organization/Event/Services/ServicesProvider'
 import RoomAssignmentsProvider from 'organization/Event/RoomAssignmentsProvider'
 import AreasProvider from 'organization/Event/AreasProvider'
+import QuestionsConfig from 'organization/Event/QuestionsConfig'
 
 export function useEventRoutes(event?: ObvioEvent) {
   const {routes: organizationRoutes} = useOrganization()
@@ -48,6 +49,9 @@ export default function EventRoutes() {
       </Route>
       <Route path={routes.events[':event'].waiver}>
         <WaiverConfig />
+      </Route>
+      <Route path={routes.events[':event'].questions}>
+        <QuestionsConfig />
       </Route>
       <Route path={routes.events[':event'].tech_check}>
         <AreasProvider>

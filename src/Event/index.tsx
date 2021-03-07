@@ -8,8 +8,28 @@ import {eventRoutes} from 'Event/Routes'
 import {Template} from 'Event/template'
 import {PublicFile} from 'lib/http-client'
 import {Area} from 'organization/Event/AreasProvider'
+import {Question} from 'organization/Event/QuestionsProvider'
 import React from 'react'
 import {Redirect} from 'react-router-dom'
+
+// Can't use 'Event' because that's already a native DOM type
+// for browser events and we'd lose TS safety/import assist.
+export interface ObvioEvent {
+  id: number
+  name: string
+  slug: string
+  template: Template | null
+  waiver: WaiverConfig | null
+  speaker_page: SpeakerPage | null
+  tech_check: TechCheckConfig | null
+  logo: PublicFile | null
+  header_background: PublicFile | null
+  points_summary_logo: PublicFile | null
+  platform_actions: PlatformActions
+  login_background: PublicFile | null
+  login_logo: PublicFile | null
+  questions: Question[]
+}
 
 export interface WaiverConfig {
   logo: null | string
@@ -33,24 +53,6 @@ export interface Speaker {
   image: PublicFile | null
   name: string
   text: string
-}
-
-// Can't use 'Event' because that's already a native DOM type
-// for browser events and we'd lose TS safety/import assist.
-export interface ObvioEvent {
-  id: number
-  name: string
-  slug: string
-  template: Template | null
-  waiver: WaiverConfig | null
-  speaker_page: SpeakerPage | null
-  tech_check: TechCheckConfig | null
-  logo: PublicFile | null
-  header_background: PublicFile | null
-  points_summary_logo: PublicFile | null
-  platform_actions: PlatformActions
-  login_background: PublicFile | null
-  login_logo: PublicFile | null
 }
 
 export default function Event() {
