@@ -39,6 +39,7 @@ export default function EditDialog(props: {
               variant="outlined"
               fullWidth
               onClick={remove(question)}
+              aria-label="remove question"
             >
               Remove
             </RemoveButton>
