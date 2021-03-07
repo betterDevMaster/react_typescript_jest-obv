@@ -37,6 +37,11 @@ export const fakeSimpleBlog = (overrides?: Partial<SimpleBlog>): SimpleBlog => {
       description: '',
       resources: [],
     },
+    header: {
+      backgroundColor: '#FFFFFF',
+      backgroundOpacity: 1,
+      height: 50,
+    },
     footer: {
       background: '#000000',
       textColor: '#ffffff',

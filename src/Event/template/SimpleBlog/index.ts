@@ -30,6 +30,11 @@ export interface SimpleBlog {
   agendas: Agenda[]
   points: Points | null
   resourceList: ResourceList
+  header: {
+    backgroundColor: string
+    backgroundOpacity: number
+    height: number
+  }
   footer: {
     background: string
     textColor: string
@@ -86,6 +91,11 @@ export const createSimpleBlog = (): SimpleBlog => ({
   resourceList: {
     description: '',
     resources: [],
+  },
+  header: {
+    backgroundColor: '#FFFFFF',
+    backgroundOpacity: 1.0,
+    height: 150,
   },
   footer: {
     background: '#000000',

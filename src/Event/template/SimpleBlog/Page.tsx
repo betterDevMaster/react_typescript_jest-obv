@@ -2,14 +2,12 @@ import React, {useState} from 'react'
 import styled from 'styled-components'
 import SimpleBlogStyles from 'Event/template/SimpleBlog/Styles'
 import Container from '@material-ui/core/Container'
-import Header from 'Event/template/SimpleBlog/Header'
+import Header from 'Event/template/SimpleBlog/Dashboard/Header'
 import Menu from 'Event/template/SimpleBlog/Menu'
 import {User} from 'auth/user'
 import Footer from 'Event/template/SimpleBlog/Dashboard/Footer'
 import {withStyles} from '@material-ui/core'
-import EditComponent from 'Event/Dashboard/editor/views/EditComponent'
 import {useTemplate} from 'Event/Dashboard/state/TemplateProvider'
-import {SIMPLE_BLOG} from 'Event/template/SimpleBlog'
 
 export default function SimpleBlogPage(props: {
   user: User
@@ -28,14 +26,12 @@ export default function SimpleBlogPage(props: {
         toggle={toggleMenu}
         user={props.user}
       />
-      <EditComponent component={{type: SIMPLE_BLOG}}>
-        <Header
-          primaryColor={primaryColor}
-          menuVisible={menuVisible}
-          toggleMenu={toggleMenu}
-          aria-label="header"
-        />
-      </EditComponent>
+      <Header
+        primaryColor={primaryColor}
+        menuVisible={menuVisible}
+        toggleMenu={toggleMenu}
+        aria-label="header"
+      />
       <Content>
         <StyledContainer maxWidth="lg">{props.children}</StyledContainer>
       </Content>
