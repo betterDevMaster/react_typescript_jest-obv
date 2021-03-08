@@ -8,6 +8,10 @@ import {wait} from '@testing-library/react'
 
 const mockDelete = axios.delete as jest.Mock
 
+beforeEach(() => {
+  jest.clearAllMocks()
+})
+
 it('should render questions', async () => {
   const numQuestions = faker.random.number({min: 1, max: 3})
   const questions = Array.from({length: numQuestions}, () =>

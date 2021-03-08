@@ -13,6 +13,7 @@ export const fakeBlogPost = (): BlogPost => ({
       </p>
     </div>
   `,
+  isVisible: faker.random.boolean(),
 })
 
 export function withBlogPosts<

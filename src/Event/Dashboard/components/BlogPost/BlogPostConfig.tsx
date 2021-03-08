@@ -9,13 +9,16 @@ import {
   useTemplate,
   useUpdateTemplate,
 } from 'Event/Dashboard/state/TemplateProvider'
-import {onChangeStringHandler} from 'lib/dom'
+import {onChangeStringHandler, onChangeCheckedHandler} from 'lib/dom'
 import TextField from '@material-ui/core/TextField'
+import Switch from 'lib/ui/form/Switch'
+import Box from '@material-ui/core/Box'
 
 export type BlogPostConfig = {
   type: typeof BLOG_POST
   id: string
 }
+
 export function BlogPostConfig(props: {id: BlogPostConfig['id']}) {
   const {blogPosts: posts} = useTemplate()
 
@@ -64,6 +67,16 @@ export function BlogPostConfig(props: {id: BlogPostConfig['id']}) {
   return (
     <>
       <EditorContainer>
+        <Box display="flex" justifyContent="flex-end">
+          <Switch
+            checked={post.isVisible}
+            onChange={onChangeCheckedHandler(update('isVisible'))}
+            arial-label="config switch to attendee"
+            labelPlacement="start"
+            color="primary"
+            label={post.isVisible ? 'Enable' : 'Disable'}
+          />
+        </Box>
         <TextField
           value={post.title}
           inputProps={{

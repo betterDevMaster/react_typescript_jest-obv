@@ -2,6 +2,8 @@ import {BlogPost, BLOG_POST} from 'Event/Dashboard/components/BlogPost'
 import styled from 'styled-components'
 import {useTemplate} from 'Event/Dashboard/state/TemplateProvider'
 import EditComponent from 'Event/Dashboard/editor/views/EditComponent'
+import Published from 'Event/Dashboard/editor/views/Published'
+
 import React from 'react'
 import EditModeOnly from 'Event/Dashboard/editor/views/EditModeOnly'
 import AddBlogPostButton from 'Event/template/SimpleBlog/Dashboard/BlogPosts/AddBlogPostButton'
@@ -23,7 +25,9 @@ export default function BlogPosts() {
               id,
             }}
           >
-            <BlogPost post={post} />
+            <Published component={post}>
+              <BlogPost post={post} />
+            </Published>
           </EditComponent>
         )
       })}

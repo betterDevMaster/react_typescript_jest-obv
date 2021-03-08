@@ -10,6 +10,7 @@ import Section from 'Event/template/SimpleBlog/Dashboard/Sidebar/Section'
 import ResourceItem, {
   Resource,
 } from 'Event/Dashboard/components/ResourceList/ResourceItem'
+import Published from 'Event/Dashboard/editor/views/Published'
 
 export interface ResourceList {
   description: string
@@ -56,7 +57,9 @@ export function ResourceList() {
                 id: index,
               }}
             >
-              <ResourceItem resource={resource} iconColor={primaryColor} />
+              <Published component={resource}>
+                <ResourceItem resource={resource} iconColor={primaryColor} />
+              </Published>
             </EditComponent>
           </li>
         ))}

@@ -9,6 +9,7 @@ import {useEvent} from 'Event/EventProvider'
 import {findAction} from 'Event/ActionsProvider/platform-actions'
 import {useActions} from 'Event/ActionsProvider'
 import {usePoints} from 'Event/PointsProvider'
+import {Publishable} from 'Event/Dashboard/editor/views/Published'
 
 export const NAV_BUTTON = 'NAV_BUTTON'
 
@@ -16,7 +17,7 @@ export default interface NavButtonAreaConfig {
   areaId: number | null
 }
 
-export default interface NavButton extends HasRules {
+export default interface NavButton extends HasRules, Publishable {
   text: string
   link: string
   backgroundColor?: string

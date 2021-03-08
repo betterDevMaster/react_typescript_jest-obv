@@ -1,8 +1,9 @@
 import React from 'react'
 import styled from 'styled-components'
 import {blogPostTime} from 'lib/date-time'
+import {Publishable} from 'Event/Dashboard/editor/views/Published'
 
-export interface BlogPost {
+export type BlogPost = Publishable & {
   title: string
   postedAt: string
   content: string

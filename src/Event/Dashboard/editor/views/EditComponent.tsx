@@ -11,14 +11,11 @@ export const EDIT_COMPONENT_CLASS = 'edit-component'
 export const EDIT_COMPONENT_BUTTON_CLASS = 'edit-component-button'
 
 export default function EditComponent(
-  props: {component: ComponentConfig} & {
-    children: React.ReactElement
-  },
+  props: {component: ComponentConfig} & {children: React.ReactElement},
 ) {
   const isEditMode = useEditMode()
 
   const editComponent = useEditComponent(props.component)
-
   if (!isEditMode) {
     return props.children
   }

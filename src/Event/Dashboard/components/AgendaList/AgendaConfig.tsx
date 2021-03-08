@@ -5,13 +5,15 @@ import DangerButton from 'lib/ui/Button/DangerButton'
 import TextField from '@material-ui/core/TextField'
 import Grid from '@material-ui/core/Grid'
 import {AGENDA, Agenda} from 'Event/Dashboard/components/AgendaList'
-import {onChangeStringHandler} from 'lib/dom'
+import {onChangeStringHandler, onChangeCheckedHandler} from 'lib/dom'
 import {MaterialUiPickersDate} from '@material-ui/pickers/typings/date'
 import {useCloseConfig} from 'Event/Dashboard/editor/state/edit-mode'
 import {
   useTemplate,
   useUpdateTemplate,
 } from 'Event/Dashboard/state/TemplateProvider'
+import Switch from 'lib/ui/form/Switch'
+import Box from '@material-ui/core/Box'
 
 export type AgendaConfig = {
   type: typeof AGENDA
@@ -77,6 +79,16 @@ export function AgendaConfig(props: {id: AgendaConfig['id']}) {
 
   return (
     <>
+      <Box display="flex" justifyContent="flex-end">
+        <Switch
+          checked={agenda.isVisible}
+          onChange={onChangeCheckedHandler(update('isVisible'))}
+          arial-label="config visible switch"
+          labelPlacement="start"
+          color="primary"
+          label={agenda.isVisible ? 'Enable' : 'Disable'}
+        />
+      </Box>
       <TextField
         value={agenda.text}
         inputProps={{

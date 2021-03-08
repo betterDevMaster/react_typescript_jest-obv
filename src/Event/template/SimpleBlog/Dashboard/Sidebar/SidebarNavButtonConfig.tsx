@@ -17,6 +17,8 @@ import {
   useUpdateTemplate,
 } from 'Event/Dashboard/state/TemplateProvider'
 import {SIDEBAR_NAV_BUTTON} from 'Event/template/SimpleBlog/Dashboard/Sidebar/SidebarNav'
+import Switch from 'lib/ui/form/Switch'
+import Grid from '@material-ui/core/Grid'
 
 export type SidebarNavButtonConfig = {
   type: typeof SIDEBAR_NAV_BUTTON
@@ -91,17 +93,31 @@ export function SidebarNavButtonConfig(props: {
         fullWidth
         onChange={onChangeStringHandler(updateButton('link'))}
       />
-      <FormControl>
-        <FormControlLabel
-          label="New Tab"
-          control={
-            <Checkbox
-              checked={button.newTab || false}
-              onChange={onChangeCheckedHandler(updateButton('newTab'))}
+      <Grid container spacing={2}>
+        <Grid item xs={6}>
+          <FormControl>
+            <FormControlLabel
+              label="New Tab"
+              control={
+                <Checkbox
+                  checked={button.newTab || false}
+                  onChange={onChangeCheckedHandler(updateButton('newTab'))}
+                />
+              }
             />
-          }
-        />
-      </FormControl>
+          </FormControl>
+        </Grid>
+        <Grid item xs={6}>
+          <Switch
+            checked={button.isVisible}
+            onChange={onChangeCheckedHandler(updateButton('isVisible'))}
+            arial-label="config switch to attendee"
+            labelPlacement="end"
+            color="primary"
+            label={button.isVisible ? 'Enable' : 'Disable'}
+          />
+        </Grid>
+      </Grid>
       <TextField
         value={button.borderRadius || ''}
         label="Border Radius"

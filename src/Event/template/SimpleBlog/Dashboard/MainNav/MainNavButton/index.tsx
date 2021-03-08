@@ -5,6 +5,7 @@ import NavButton, {
 } from 'Event/Dashboard/components/NavButton'
 import EditComponent from 'Event/Dashboard/editor/views/EditComponent'
 import React from 'react'
+import Published from 'Event/Dashboard/editor/views/Published'
 
 export const MAIN_NAV_BUTTON = 'Main Nav Button'
 type MainNavButtonProps = {
@@ -22,7 +23,9 @@ export default React.memo((props: MainNavButtonProps) => {
             id: props.id,
           }}
         >
-          <NavButton {...props.button} aria-label="main nav button" />
+          <Published component={props.button}>
+            <NavButton {...props.button} aria-label="main nav button" />
+          </Published>
         </EditComponent>
       </Grid>
     </HiddenOnMatch>

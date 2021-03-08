@@ -8,7 +8,11 @@ import {
   RESOURCE_ICON,
   RESOURCE_ITEM,
 } from 'Event/Dashboard/components/ResourceList'
-import {onUnknownChangeHandler, onChangeStringHandler} from 'lib/dom'
+import {
+  onUnknownChangeHandler,
+  onChangeStringHandler,
+  onChangeCheckedHandler,
+} from 'lib/dom'
 import styled from 'styled-components'
 import React from 'react'
 import DangerButton from 'lib/ui/Button/DangerButton'
@@ -20,6 +24,8 @@ import {
 import {useCallback} from 'react'
 import ResourceUpload, {useDeleteFile} from './ResourceUpload'
 import {Resource} from 'Event/Dashboard/components/ResourceList/ResourceItem'
+import Grid from '@material-ui/core/Grid'
+import Switch from 'lib/ui/form/Switch'
 
 export type ResourceItemConfig = {
   type: typeof RESOURCE_ITEM
@@ -92,23 +98,38 @@ export function ResourceItemConfig(props: {id: ResourceItemConfig['id']}) {
         onChange={onChangeStringHandler(update('name'))}
       />
       <ResourceUpload resource={resource} update={update} />
-      <FormControl fullWidth>
-        <InputLabel>File Icon</InputLabel>
-        <Select
-          value={resource.icon}
-          fullWidth
-          onChange={onUnknownChangeHandler(update('icon'))}
-          inputProps={{
-            'aria-label': 'resource icon',
-          }}
-        >
-          {Object.values(RESOURCE_ICON).map((icon) => (
-            <MenuItem key={icon} value={icon}>
-              <Icon component="i">{icon}</Icon>
-            </MenuItem>
-          ))}
-        </Select>
-      </FormControl>
+
+      <Grid container spacing={2}>
+        <Grid item xs={6}>
+          <FormControl fullWidth>
+            <InputLabel>File Icon</InputLabel>
+            <Select
+              value={resource.icon}
+              fullWidth
+              onChange={onUnknownChangeHandler(update('icon'))}
+              inputProps={{
+                'aria-label': 'resource icon',
+              }}
+            >
+              {Object.values(RESOURCE_ICON).map((icon) => (
+                <MenuItem key={icon} value={icon}>
+                  <Icon component="i">{icon}</Icon>
+                </MenuItem>
+              ))}
+            </Select>
+          </FormControl>
+        </Grid>
+        <Grid item xs={6}>
+          <Switch
+            checked={resource.isVisible}
+            onChange={onChangeCheckedHandler(update('isVisible'))}
+            arial-label="config switch to attendee"
+            labelPlacement="top"
+            color="primary"
+            label={resource.isVisible ? 'Enable' : 'Disable'}
+          />
+        </Grid>
+      </Grid>
 
       <RemoveButton
         fullWidth

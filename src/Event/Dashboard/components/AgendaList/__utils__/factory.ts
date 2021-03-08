@@ -6,6 +6,7 @@ export const fakeAgenda = (): Agenda => ({
   endDate: faker.random.boolean() ? faker.date.future().toISOString() : null,
   text: faker.random.words(3),
   link: faker.random.boolean() ? faker.internet.url() : null,
+  isVisible: faker.random.boolean(),
 })
 
 export function withAgendas<T>(attributes: T): T {

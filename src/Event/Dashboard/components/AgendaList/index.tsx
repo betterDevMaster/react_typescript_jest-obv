@@ -3,6 +3,7 @@ import styled from 'styled-components'
 import Heading from 'Event/template/SimpleBlog/Dashboard/Sidebar/Heading'
 import moment from 'moment-timezone'
 import EditComponent from 'Event/Dashboard/editor/views/EditComponent'
+import Published, {Publishable} from 'Event/Dashboard/editor/views/Published'
 import EditModeOnly from 'Event/Dashboard/editor/views/EditModeOnly'
 import AddAgendaEventButton from 'Event/Dashboard/components/AgendaList/AddAgendaEventButton'
 import {useTemplate} from 'Event/Dashboard/state/TemplateProvider'
@@ -10,7 +11,7 @@ import Section from 'Event/template/SimpleBlog/Dashboard/Sidebar/Section'
 
 export const AGENDA = 'Agenda'
 
-export interface Agenda {
+export type Agenda = Publishable & {
   startDate: string
   endDate: string | null
   text: string
@@ -34,10 +35,12 @@ export default function AgendaList() {
       <Heading>AGENDA:</Heading>
       {agendas.map((agenda, index) => (
         <EditComponent component={{type: AGENDA, id: index}} key={index}>
-          <Agenda aria-label="agenda">
-            <Event agenda={agenda} />
-            <Times agenda={agenda} />
-          </Agenda>
+          <Published component={agenda}>
+            <Agenda aria-label="agenda">
+              <Event agenda={agenda} />
+              <Times agenda={agenda} />
+            </Agenda>
+          </Published>
         </EditComponent>
       ))}
       <EditModeOnly>

@@ -117,7 +117,9 @@ it('should remove an existing emoji', async () => {
     {length: faker.random.number({min: 2, max: 5})},
     () => faker.random.arrayElement(DEFAULT_EMOJIS).name,
   )
-  const event = fakeEvent({template: fakeSimpleBlog({emojiList: {emojis}})})
+  const event = fakeEvent({
+    template: fakeSimpleBlog({emojiList: {emojis}}),
+  })
   const {findByLabelText, findAllByLabelText} = render(
     <Dashboard isEditMode={true} user={fakeUser()} />,
     {

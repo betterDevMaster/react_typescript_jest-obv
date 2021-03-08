@@ -43,7 +43,9 @@ it('should render agendas', async () => {
     event: withAgendas,
   })
 
-  expect((await findAllByLabelText('agenda')).length).toBe(agendas.length)
+  const numVisible = agendas.filter((a) => a.isVisible).length
+  if (numVisible > 0)
+    expect((await findAllByLabelText('agenda')).length).toBe(numVisible)
 })
 
 it('should edit an agenda', async () => {

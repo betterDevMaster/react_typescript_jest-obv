@@ -29,6 +29,8 @@ import ToggleButtonGroup from '@material-ui/lab/ToggleButtonGroup'
 import ToggleButton from '@material-ui/lab/ToggleButton'
 import ActionConfig from 'Event/template/SimpleBlog/Dashboard/MainNav/MainNavButton/MainNavButtonConfig/ActionConfig'
 import AreaConfig from 'Event/template/SimpleBlog/Dashboard/MainNav/MainNavButton/MainNavButtonConfig/AreaConfig'
+import Grid from '@material-ui/core/Grid'
+import Switch from 'lib/ui/form/Switch'
 
 export type MainNavButtonConfig = {
   type: typeof MAIN_NAV_BUTTON
@@ -86,7 +88,6 @@ export function MainNavButtonConfig(props: {id: MainNavButtonConfig['id']}) {
       ...button,
       [key]: value,
     })
-
   return (
     <RuleConfig
       visible={ruleConfigVisible}
@@ -95,7 +96,21 @@ export function MainNavButtonConfig(props: {id: MainNavButtonConfig['id']}) {
       onChange={updateButton('rules')}
     >
       <>
-        <ConfigureRulesButton onClick={toggleRuleConfig} />
+        <Grid container spacing={2}>
+          <Grid item xs={6}>
+            <Switch
+              checked={button.isVisible}
+              onChange={onChangeCheckedHandler(updateButton('isVisible'))}
+              arial-label="config switch to attendee"
+              labelPlacement="end"
+              color="primary"
+              label={button.isVisible ? 'Enable' : 'Disable'}
+            />
+          </Grid>
+          <Grid item xs={6}>
+            <ConfigureRulesButton onClick={toggleRuleConfig} />
+          </Grid>
+        </Grid>
         <TextField
           label="Text"
           value={button.text}
@@ -181,7 +196,6 @@ export function MainNavButtonConfig(props: {id: MainNavButtonConfig['id']}) {
           }}
           onChange={onChangeNumberHandler(updateButton('borderRadius'))}
         />
-
         <Box mt={2} mb={3}>
           <DangerButton
             fullWidth

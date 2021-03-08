@@ -26,6 +26,7 @@ export default function NewSidebarNavButton(props: {className?: string}) {
       isAreaButton: false,
       areaId: null,
       actionId: null,
+      isVisible: true,
     }
     const entities = {
       ...buttons.entities,

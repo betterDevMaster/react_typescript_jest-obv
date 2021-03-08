@@ -40,13 +40,16 @@ it('should render resources', async () => {
   expect(queryByText(/resources:/i)).not.toBeInTheDocument()
 
   const numResources = faker.random.number({min: 1, max: 6})
+  const withResourcesTemplate = fakeSimpleBlog({
+    resourceList: {
+      description: '',
+      resources: Array.from({length: numResources}, () =>
+        fakeResource({isVisible: true}),
+      ),
+    },
+  })
   const withResources = fakeEvent({
-    template: fakeSimpleBlog({
-      resourceList: {
-        description: '',
-        resources: Array.from({length: numResources}, fakeResource),
-      },
-    }),
+    template: withResourcesTemplate,
   })
 
   rerender(<Dashboard isEditMode={false} user={fakeUser()} />, {
@@ -54,7 +57,11 @@ it('should render resources', async () => {
   })
 
   const resources = await findAllByLabelText('event resource')
-  expect(resources.length).toBe(numResources)
+  const numVisible = withResourcesTemplate.resourceList.resources.filter(
+    (r) => r.isVisible,
+  ).length
+
+  expect(resources.length).toBe(numVisible)
 })
 
 it('should add a new resource', async () => {

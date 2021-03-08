@@ -46,10 +46,17 @@ it('should render blog posts', async () => {
     event: withPosts,
   })
 
-  expect(getAllByLabelText('blog post').length).toBe(numPosts)
-
   for (const post of Object.values(blogPosts.entities)) {
-    expect(await findByText(post.title)).toBeInTheDocument()
+    if (post.isVisible === true)
+      expect(await findByText(post.title)).toBeInTheDocument()
+  }
+
+  const numVisiblePosts = Object.values(blogPosts.entities).filter(
+    (i) => i.isVisible,
+  ).length
+
+  if (numVisiblePosts > 0) {
+    expect(getAllByLabelText('blog post').length).toBe(numVisiblePosts)
   }
 })
 

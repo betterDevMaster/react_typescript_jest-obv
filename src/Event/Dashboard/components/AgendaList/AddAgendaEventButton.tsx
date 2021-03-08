@@ -23,6 +23,7 @@ export default function AddAgendaEventButton(props: {className?: string}) {
         startDate: new Date().toISOString(),
         endDate: null,
         link: null,
+        isVisible: true,
       },
     ]
     updateTemplate({

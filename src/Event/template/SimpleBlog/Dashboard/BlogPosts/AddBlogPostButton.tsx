@@ -21,6 +21,7 @@ export default function AddBlogPostButton(props: {className?: string}) {
       title: 'My Post',
       postedAt: now(),
       content: '',
+      isVisible: true,
     }
 
     const entities = {

@@ -3,6 +3,7 @@ import styled from 'styled-components'
 import NavButton from 'Event/Dashboard/components/NavButton'
 import {SIDEBAR_NAV_BUTTON} from 'Event/template/SimpleBlog/Dashboard/Sidebar/SidebarNav'
 import EditComponent from 'Event/Dashboard/editor/views/EditComponent'
+import Published from 'Event/Dashboard/editor/views/Published'
 
 export default React.memo((props: NavButton & {id: string}) => (
   <EditComponent
@@ -11,13 +12,15 @@ export default React.memo((props: NavButton & {id: string}) => (
       id: props.id,
     }}
   >
-    <StyledNavButtonComponent
-      {...props}
-      aria-label="sidebar nav button"
-      textColor="#FFFFFF"
-      borderWidth={1}
-      borderColor="#FFFFFF"
-    />
+    <Published component={props}>
+      <StyledNavButtonComponent
+        {...props}
+        aria-label="sidebar nav button"
+        textColor="#FFFFFF"
+        borderWidth={1}
+        borderColor="#FFFFFF"
+      />
+    </Published>
   </EditComponent>
 ))
 

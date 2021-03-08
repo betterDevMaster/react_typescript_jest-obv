@@ -5,7 +5,6 @@ import EditComponent from 'Event/Dashboard/editor/views/EditComponent'
 import AddEmojiListButton from 'Event/Dashboard/components/EmojiList/AddEmojiListButton'
 import EditModeOnly from 'Event/Dashboard/editor/views/EditModeOnly'
 import {useTemplate} from 'Event/Dashboard/state/TemplateProvider'
-
 import {useEvent} from 'Event/EventProvider'
 import {api} from 'lib/url'
 import {eventClient} from 'Event/api-client'

@@ -22,7 +22,7 @@ it('receive points', async () => {
     template: fakeSimpleBlog({
       resourceList: {
         description: '',
-        resources: [fakeResource()],
+        resources: [fakeResource({isVisible: true})],
       },
     }),
     platform_actions: createPlatformActions({

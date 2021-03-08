@@ -5,8 +5,9 @@ import {usePoints} from 'Event/PointsProvider'
 import {usePlatformActions} from 'Event/ActionsProvider/platform-actions'
 import {AbsoluteLink} from 'lib/ui/link/AbsoluteLink'
 import {storage} from 'lib/url'
+import {Publishable} from 'Event/Dashboard/editor/views/Published'
 
-export interface Resource {
+export type Resource = Publishable & {
   name: string
   filePath: string
   icon: string

@@ -41,19 +41,27 @@ it('should render sidebarNavButtons', async () => {
 
   const numButtons = faker.random.number({min: 1, max: 5})
 
+  const template = fakeSimpleBlog({
+    sidebarNav: createEntityList(
+      Array.from({length: numButtons}, fakeNavButton),
+    ),
+  })
+
   const withNavButtons = fakeEvent({
-    template: fakeSimpleBlog({
-      sidebarNav: createEntityList(
-        Array.from({length: numButtons}, fakeNavButton),
-      ),
-    }),
+    template,
   })
 
   rerender(<Dashboard isEditMode={false} user={fakeUser()} />, {
     event: withNavButtons,
   })
 
-  expect((await findAllByLabelText(/sidebar nav/i)).length).toBe(numButtons)
+  const numVisibleButtons = Object.values(template.sidebarNav.entities).filter(
+    (b) => b.isVisible,
+  ).length
+
+  expect((await findAllByLabelText(/sidebar nav/i)).length).toBe(
+    numVisibleButtons,
+  )
 })
 
 it('should add a new sidebar nav button', async () => {
