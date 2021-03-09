@@ -3,15 +3,15 @@ import FormGroup from '@material-ui/core/FormGroup'
 import FormControlLabel, {
   FormControlLabelProps,
 } from '@material-ui/core/FormControlLabel'
-import Switch, {MuiSwitchProps} from '@material-ui/core/Switch'
+import Switch, {SwitchProps} from '@material-ui/core/Switch'
 
 type SwitchLabelsProps = {
   name?: string
-  onChange: MuiSwitchProps['onChange']
+  onChange: SwitchProps['onChange']
   label?: string | ''
-  checked: MuiSwitchProps['checked']
+  checked: SwitchProps['checked']
   labelPlacement: FormControlLabelProps['labelPlacement']
-  color: MuiSwitchProps['color']
+  color: SwitchProps['color']
   'aria-label'?: string
 }
 
