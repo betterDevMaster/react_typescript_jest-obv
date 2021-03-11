@@ -2,7 +2,15 @@ import {TextField} from '@material-ui/core'
 import Button from '@material-ui/core/Button'
 import InputAdornment from '@material-ui/core/InputAdornment'
 import {onChangeStringHandler} from 'lib/dom'
-import {ADD_ATTENDEE, Tag} from 'organization/Event/Services/Infusionsoft'
+import {
+  ADD_ATTENDEE,
+  ATTENDEE_ADDED,
+  ATTENDEE_CHECKED_IN,
+  ATTENDEE_SIGNED_WAIVER,
+  DELETE_ATTENDEE,
+  Tag,
+  UPDATE_ATTENDEE,
+} from 'organization/Event/Services/Infusionsoft'
 import React, {useEffect, useState} from 'react'
 
 export default function TagIdInput(props: {
@@ -58,8 +66,17 @@ function label(tag: Tag) {
 }
 
 function typeLabel(tag: Tag) {
-  switch (tag.type) {
-    case ADD_ATTENDEE:
-      return 'Add Attendee'
+  const labels: Record<string, string> = {
+    [ADD_ATTENDEE]: 'Add Attendee',
+    [UPDATE_ATTENDEE]: 'Update Attendee',
+    [DELETE_ATTENDEE]: 'Delete Attendee',
+    [ATTENDEE_ADDED]: 'Attendee Added',
+    [ATTENDEE_SIGNED_WAIVER]: 'Attendee Signed Waiver',
+    [ATTENDEE_CHECKED_IN]: 'Attendee Checked In',
+  }
+
+  const label = labels[tag.type]
+  if (!label) {
+    throw new Error(`Label not defined for tag type: ${tag.type}`)
   }
 }

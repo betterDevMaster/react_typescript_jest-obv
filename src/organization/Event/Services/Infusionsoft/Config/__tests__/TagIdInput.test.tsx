@@ -10,7 +10,7 @@ import {Tag} from 'organization/Event/Services/Infusionsoft'
 import axios from 'axios'
 import {wait} from '@testing-library/dom'
 
-const mockPost = axios.post as jest.Mock
+const mockPatch = axios.patch as jest.Mock
 
 afterEach(() => {
   jest.clearAllMocks()
@@ -34,18 +34,18 @@ it('should save tag id', async () => {
 
   const updated: Tag = {...target, infusionsoft_id: id, name}
 
-  mockPost.mockImplementationOnce(() => Promise.resolve({data: updated}))
+  mockPatch.mockImplementationOnce(() => Promise.resolve({data: updated}))
 
   user.type((await findAllByLabelText('tag id'))[targetIndex], String(id))
   user.click((await findAllByLabelText('save tag id'))[targetIndex])
 
   await wait(async () => {
-    expect(mockPost).toHaveBeenCalledTimes(1)
+    expect(mockPatch).toHaveBeenCalledTimes(1)
   })
 
   expect((await findAllByLabelText('save tag id'))[targetIndex]).toBeDisabled()
 
-  const [url, data] = mockPost.mock.calls[0]
+  const [url, data] = mockPatch.mock.calls[0]
 
   expect(url).toMatch(
     `/events/${event.slug}/integrations/infusionsoft/tags/${target.id}`,

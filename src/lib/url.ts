@@ -1,4 +1,4 @@
-import {appRoot, isProduction, isStaging} from 'App'
+import {appRoot, isProduction, isStaging, OBVIO_SUBDOMAIN} from 'App'
 import {ExtendRecursively} from 'lib/type-utils'
 import {useLocation} from 'react-router-dom'
 
@@ -57,7 +57,7 @@ export const storage = (path: string) => {
  */
 export const absoluteUrl = (path: string) => {
   const scheme = isProduction ? 'https://' : 'http://'
-  const absolutePath = `${appRoot}${path}`
+  const absolutePath = `${OBVIO_SUBDOMAIN}.${appRoot}${path}`
 
   return `${scheme}${absolutePath}`
 }

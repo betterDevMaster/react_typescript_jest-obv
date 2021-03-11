@@ -38,10 +38,9 @@ function useLink() {
   const {client} = useOrganization()
   const {event} = useEvent()
   const [isProcessing, setIsProcessing] = useState(false)
-  const routes = useEventRoutes()
+  const redirectUrl = useRedirectUrl()
 
   const linkUrl = api(`/events/${event.slug}/integrations/infusionsoft/link`)
-  const redirectUrl = absoluteUrl(routes.services.infusionsoft)
 
   const link = () => {
     if (isProcessing) {
@@ -60,4 +59,9 @@ function useLink() {
   }
 
   return {link, isProcessing}
+}
+
+export function useRedirectUrl() {
+  const routes = useEventRoutes()
+  return absoluteUrl(routes.services.infusionsoft)
 }

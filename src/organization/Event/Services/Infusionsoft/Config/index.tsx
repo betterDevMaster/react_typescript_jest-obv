@@ -72,8 +72,8 @@ function useTags() {
 
   const setTagId = (tag: Tag) => (infusionsoftId: string) => {
     client
-      .post<Tag>(
-        `/events/${event.slug}/integrations/infusionsoft/tags/${tag.id}`,
+      .patch<Tag>(
+        api(`/events/${event.slug}/integrations/infusionsoft/tags/${tag.id}`),
         {
           id: infusionsoftId,
         },

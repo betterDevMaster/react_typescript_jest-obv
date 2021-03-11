@@ -4,6 +4,7 @@ import {api} from 'lib/url'
 import {useEventRoutes} from 'organization/Event/EventRoutes'
 import Page from 'organization/Event/Page'
 import {InfusionsoftIntegration} from 'organization/Event/Services/Infusionsoft'
+import {useRedirectUrl} from 'organization/Event/Services/Infusionsoft/LinkPage'
 import {useServices} from 'organization/Event/Services/ServicesProvider'
 import {useOrganization} from 'organization/OrganizationProvider'
 import Layout from 'organization/user/Layout'
@@ -62,9 +63,11 @@ function useCompleteAuth() {
   const {event} = useEvent()
   const {client} = useOrganization()
   const url = api(`/events/${event.slug}/integrations/infusionsoft/auth`)
+  const redirectUrl = useRedirectUrl()
 
   return (authCode: string) =>
     client.post<InfusionsoftIntegration>(url, {
       auth_code: authCode,
+      redirect_url: redirectUrl,
     })
 }

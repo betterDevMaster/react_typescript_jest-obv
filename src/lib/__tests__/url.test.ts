@@ -73,5 +73,5 @@ it('should replace route params', () => {
 })
 
 it('should generate an absolute URL', () => {
-  expect(absoluteUrl('/foo/bar')).toBe('http://obv.localhost:3000/foo/bar')
+  expect(absoluteUrl('/foo/bar')).toBe('http://app.obv.localhost:3000/foo/bar')
 })
