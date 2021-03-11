@@ -10,6 +10,7 @@ import {withStyles} from '@material-ui/core/styles'
 import {spacing} from 'lib/ui/theme'
 
 export interface AccessToken {
+  id: number
   value: string
 }
 
