@@ -64,9 +64,23 @@ function label(tag: Tag) {
 
 function typeLabel(tag: Tag) {
   const labels: Record<string, string> = {
+<<<<<<< HEAD
     [ATTENDEE_CREATED]: 'Attendee Created',
     [ATTENDEE_SIGNED_WAIVER]: 'Attendee Signed Waiver',
     [ATTENDEE_CHECKED_IN]: 'Attendee Checked In',
+=======
+    [ADD_ATTENDEE]: 'Add Attendee',
+    [UPDATE_ATTENDEE]: 'Update Attendee',
+    [DELETE_ATTENDEE]: 'Delete Attendee',
+    [ATTENDEE_ADDED]: 'Attendee Added',
+    [ATTENDEE_SIGNED_WAIVER]: 'Attendee Signed Waiver',
+    [ATTENDEE_CHECKED_IN]: 'Attendee Checked In',
+  }
+
+  const label = labels[tag.type]
+  if (!label) {
+    throw new Error(`Label not defined for tag type: ${tag.type}`)
+>>>>>>> Fix infusionsoft auth
   }
 
   const label = labels[tag.type]
