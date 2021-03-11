@@ -8,7 +8,7 @@ export default function Card(props: {
   service: Service
   link: string
   logo: string
-  isConnected: boolean
+  isLinked: boolean
 }) {
   return (
     <div>
@@ -25,16 +25,16 @@ export default function Card(props: {
       <Bottom>
         <BottomLeft>
           <span>{props.service}</span>
-          <Status isConnected={props.isConnected} />
+          <Status isLinked={props.isLinked} />
         </BottomLeft>
       </Bottom>
     </div>
   )
 }
 
-function Status(props: {isConnected: boolean}) {
-  const label = props.isConnected ? 'Connected' : 'Not Connected'
-  return <StatusText isConnected={props.isConnected}>{label}</StatusText>
+function Status(props: {isLinked: boolean}) {
+  const label = props.isLinked ? 'Linked' : 'Not Linked'
+  return <StatusText isConnected={props.isLinked}>{label}</StatusText>
 }
 
 const CardContent = styled.div`

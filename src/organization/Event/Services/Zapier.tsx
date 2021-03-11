@@ -3,8 +3,16 @@ import {AbsoluteLink} from 'lib/ui/link/AbsoluteLink'
 import {RelativeLink} from 'lib/ui/link/RelativeLink'
 import {useEventRoutes} from 'organization/Event/EventRoutes'
 import Page from 'organization/Event/Page'
+import {
+  BaseIntegration,
+  ZAPIER,
+} from 'organization/Event/Services/ServicesProvider'
 import Layout from 'organization/user/Layout'
 import React from 'react'
+
+export type ZapierIntegration = BaseIntegration & {
+  service: typeof ZAPIER
+}
 
 export default function Zapier() {
   const routes = useEventRoutes()

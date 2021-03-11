@@ -5,12 +5,17 @@ import React from 'react'
 import Card from 'organization/Event/Services/Card'
 import {useEventRoutes} from 'organization/Event/EventRoutes'
 import zapierLogo from 'organization/Event/Services/logos/zapier.jpg'
-import {useServices, ZAPIER} from 'organization/Event/Services/ServicesProvider'
+import infusionsoftLogo from 'organization/Event/Services/logos/infusionsoft.jpg'
+import {
+  INFUSIONSOFT,
+  useServices,
+  ZAPIER,
+} from 'organization/Event/Services/ServicesProvider'
 import AccessTokens from 'organization/Event/Services/AccessTokens'
 
 export default function Services() {
   const routes = useEventRoutes()
-  const {isConnected} = useServices()
+  const {isLinked} = useServices()
 
   return (
     <Layout>
@@ -21,7 +26,13 @@ export default function Services() {
             service={ZAPIER}
             link={routes.services.zapier}
             logo={zapierLogo}
-            isConnected={isConnected(ZAPIER)}
+            isLinked={isLinked(ZAPIER)}
+          />
+          <Card
+            service={INFUSIONSOFT}
+            link={routes.services.infusionsoft}
+            logo={infusionsoftLogo}
+            isLinked={isLinked(INFUSIONSOFT)}
           />
         </Grid>
       </Page>

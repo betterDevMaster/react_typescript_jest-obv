@@ -2,22 +2,28 @@ import {useEvent} from 'Event/EventProvider'
 import {useAsync} from 'lib/async'
 import {api} from 'lib/url'
 import Page from 'organization/Event/Page'
+import {InfusionsoftIntegration} from 'organization/Event/Services/Infusionsoft'
+import {ZapierIntegration} from 'organization/Event/Services/Zapier'
 import {useOrganization} from 'organization/OrganizationProvider'
 import Layout from 'organization/user/Layout'
-import React, {useCallback} from 'react'
+import React, {useCallback, useEffect, useState} from 'react'
 
 export const ZAPIER = 'Zapier'
-export type Service = typeof ZAPIER
+export const INFUSIONSOFT = 'Infusionsoft'
 
-export interface Integration {
-  service: {
-    name: Service
-  }
+export type Service = typeof ZAPIER | typeof INFUSIONSOFT
+
+export type BaseIntegration = {
+  service: Service
+  is_linked: boolean
 }
+
+export type Integration = ZapierIntegration | InfusionsoftIntegration
 
 export interface ServicesContextProps {
   integrations: Integration[]
-  isConnected: (service: Service) => boolean
+  isLinked: (service: Service) => boolean
+  updateIntegration: (integration: Integration) => void
 }
 
 const ServicesContext = React.createContext<undefined | ServicesContextProps>(
@@ -27,9 +33,18 @@ const ServicesContext = React.createContext<undefined | ServicesContextProps>(
 export default function ServicesProvider(props: {
   children: React.ReactElement
 }) {
-  const {data: integrations, loading} = useIntegrations()
+  const {data: fetched, loading} = useIntegrations()
+  const [integrations, setIntegrations] = useState<Integration[]>([])
 
-  if (loading || !integrations) {
+  useEffect(() => {
+    if (!fetched) {
+      return
+    }
+
+    setIntegrations(fetched)
+  }, [fetched])
+
+  if (loading) {
     return (
       <Layout>
         <Page>
@@ -39,11 +54,32 @@ export default function ServicesProvider(props: {
     )
   }
 
-  const isConnected = (service: Service) =>
-    Boolean(integrations.find((i) => i.service.name === service))
+  const isLinked = (service: Service) => {
+    const integration = integrations.find((i) => i.service === service)
+    if (!integration) {
+      return false
+    }
+
+    return integration.is_linked
+  }
+
+  const updateIntegration = (target: Integration) => {
+    setIntegrations((current) => {
+      return current.map((i) => {
+        const isTarget = i.service === target.service
+        if (isTarget) {
+          return target
+        }
+
+        return i
+      })
+    })
+  }
 
   return (
-    <ServicesContext.Provider value={{isConnected, integrations}}>
+    <ServicesContext.Provider
+      value={{isLinked, integrations, updateIntegration}}
+    >
       {props.children}
     </ServicesContext.Provider>
   )

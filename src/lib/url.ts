@@ -1,4 +1,4 @@
-import {isProduction, isStaging} from 'App'
+import {appRoot, isProduction, isStaging} from 'App'
 import {ExtendRecursively} from 'lib/type-utils'
 import {useLocation} from 'react-router-dom'
 
@@ -47,6 +47,19 @@ export const storage = (path: string) => {
 
   const bucket = isStaging ? stagingBucket : prodBucket
   return `${bucket}${path}`
+}
+
+/**
+ * Generate absolute URL
+ *
+ * @param path
+ * @returns
+ */
+export const absoluteUrl = (path: string) => {
+  const scheme = isProduction ? 'https://' : 'http://'
+  const absolutePath = `${appRoot}${path}`
+
+  return `${scheme}${absolutePath}`
 }
 
 type Routes = {
@@ -107,7 +120,7 @@ export function routesWithValue<T>(param: string, value: string, routes: T): T {
   }, {} as any)
 }
 
-export function useSearchParams() {
+export function useQueryParams() {
   const {search} = useLocation()
   const params = new URLSearchParams(search)
 

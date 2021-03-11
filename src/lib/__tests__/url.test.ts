@@ -1,4 +1,4 @@
-import {createRoutes, getSubdomain, routesWithValue} from 'lib/url'
+import {absoluteUrl, createRoutes, getSubdomain, routesWithValue} from 'lib/url'
 
 it('should return the correct subdomain', () => {
   expect(getSubdomain('sage.obv.io')).toBe('sage')
@@ -70,4 +70,8 @@ it('should replace route params', () => {
       },
     },
   })
+})
+
+it('should generate an absolute URL', () => {
+  expect(absoluteUrl('/foo/bar')).toBe('http://obv.localhost:3000/foo/bar')
 })

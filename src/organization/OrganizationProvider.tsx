@@ -89,6 +89,7 @@ export function createRoutesFor(organization: Organization) {
           general: '/general',
           services: {
             zapier: '/zapier',
+            infusionsoft: '/infusionsoft',
           },
           areas: {
             create: '/create',

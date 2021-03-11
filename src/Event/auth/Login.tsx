@@ -1,7 +1,7 @@
 import React, {useEffect, useRef, useState} from 'react'
 import {useForm, UseFormMethods} from 'react-hook-form'
 import {useEventAuth} from 'Event/auth'
-import {useSearchParams} from 'lib/url'
+import {useQueryParams} from 'lib/url'
 import {useTemplate} from 'Event/Dashboard/state/TemplateProvider'
 import SimpleBlogLogin from 'Event/template/SimpleBlog/Login'
 import {SIMPLE_BLOG} from 'Event/template/SimpleBlog'
@@ -16,7 +16,7 @@ export interface LoginProps {
 }
 
 export default function Login(props: {isPreview?: boolean}) {
-  const {token} = useSearchParams()
+  const {token} = useQueryParams()
   const {register, handleSubmit, errors} = useForm()
   const [error, setError] = useState('')
   const [submitting, setSubmitting] = useState(false)

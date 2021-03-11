@@ -23,6 +23,7 @@ import ServicesProvider from 'organization/Event/Services/ServicesProvider'
 import RoomAssignmentsProvider from 'organization/Event/RoomAssignmentsProvider'
 import AreasProvider from 'organization/Event/AreasProvider'
 import QuestionsConfig from 'organization/Event/QuestionsConfig'
+import Infusionsoft from 'organization/Event/Services/Infusionsoft'
 
 export function useEventRoutes(event?: ObvioEvent) {
   const {routes: organizationRoutes} = useOrganization()
@@ -104,6 +105,9 @@ function ServiceRoutes() {
     <Switch>
       <Route path={routes.events[':event'].services.zapier}>
         <Zapier />
+      </Route>
+      <Route path={routes.events[':event'].services.infusionsoft}>
+        <Infusionsoft />
       </Route>
       <Route path={routes.events[':event'].services.root}>
         <Services />
