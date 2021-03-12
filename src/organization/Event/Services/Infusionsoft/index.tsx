@@ -25,18 +25,12 @@ export interface Tag {
  * Tag types as defined in API's InfusionsoftTagType class
  */
 
-export const ADD_ATTENDEE = 'add_attendee'
-export const UPDATE_ATTENDEE = 'update_attendee'
-export const DELETE_ATTENDEE = 'delete_attendee'
-export const ATTENDEE_ADDED = 'attendee_added'
+export const ATTENDEE_CREATED = 'attendee_created'
 export const ATTENDEE_SIGNED_WAIVER = 'attendee_signed_waiver'
 export const ATTENDEE_CHECKED_IN = 'attendee_checked_in'
 
 export type TagType =
-  | typeof ADD_ATTENDEE
-  | typeof UPDATE_ATTENDEE
-  | typeof DELETE_ATTENDEE
-  | typeof ATTENDEE_ADDED
+  | typeof ATTENDEE_CREATED
   | typeof ATTENDEE_CHECKED_IN
   | typeof ATTENDEE_SIGNED_WAIVER
 

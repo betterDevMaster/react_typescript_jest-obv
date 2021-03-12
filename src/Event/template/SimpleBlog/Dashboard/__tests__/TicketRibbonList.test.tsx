@@ -114,9 +114,12 @@ it('should edit an existing ticket ribbon', async () => {
   fireEvent.click(await findByLabelText('close config dialog'))
 
   // Saved
-  await wait(() => {
-    expect(mockRxJsAjax.post).toHaveBeenCalledTimes(1)
-  })
+  await wait(
+    () => {
+      expect(mockRxJsAjax.post).toHaveBeenCalledTimes(1)
+    },
+    {timeout: 30000},
+  )
 
   const [url, data] = mockPost.mock.calls[0]
   expect(url).toMatch(`/events/${event.slug}`)

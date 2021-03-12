@@ -88,3 +88,36 @@ it('should receive points', async () => {
   // show points pop-up
   expect(await findByText(new RegExp(action.description))).toBeInTheDocument()
 })
+
+it('should add an infusionsoft tag', async () => {
+  const action = fakeAction()
+
+  const id = faker.random.number({min: 1000, max: 10000})
+  const button = fakeNavButtonWithSize({
+    infusionsoftTag: {id, name: 'Some tag'},
+  })
+
+  const mainNav = createEntityList([button])
+  const event = fakeEvent({template: fakeSimpleBlog({mainNav})})
+
+  const {findByText} = await loginToEventSite({
+    actions: [action],
+    attendee: fakeAttendee({
+      waiver: 'waiver.png',
+      tech_check_completed_at: 'now',
+    }),
+    event,
+  })
+
+  mockPost.mockImplementationOnce(() => Promise.resolve({data: 'ok'}))
+
+  user.click(await findByText(button.text))
+
+  await wait(() => {
+    expect(mockPost).toHaveBeenCalledTimes(2)
+  })
+
+  const [url, data] = mockPost.mock.calls[1]
+  expect(url).toMatch(`/events/${event.slug}/integrations/infusionsoft/add_tag`)
+  expect(data.id).toBe(id)
+})

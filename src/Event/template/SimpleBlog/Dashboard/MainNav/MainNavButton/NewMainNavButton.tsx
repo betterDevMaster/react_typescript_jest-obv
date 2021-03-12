@@ -31,6 +31,7 @@ export default function NewMainNavButton() {
       areaId: null,
       actionId: null,
       isVisible: true,
+      infusionsoftTag: null,
     }
     const entities = {
       ...buttons.entities,

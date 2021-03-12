@@ -20,6 +20,7 @@ export const fakeEvent = (overrides?: Partial<ObvioEvent>): ObvioEvent => ({
   login_background: null,
   login_logo: null,
   questions: [],
+  has_infusionsoft: false,
   ...overrides,
 })
 

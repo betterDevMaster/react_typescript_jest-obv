@@ -19,6 +19,7 @@ import {
 import {SIDEBAR_NAV_BUTTON} from 'Event/template/SimpleBlog/Dashboard/Sidebar/SidebarNav'
 import Switch from 'lib/ui/form/Switch'
 import Grid from '@material-ui/core/Grid'
+import InfusionsoftTagInput from 'Event/Dashboard/components/NavButton/InfusionsoftTagInput'
 
 export type SidebarNavButtonConfig = {
   type: typeof SIDEBAR_NAV_BUTTON
@@ -128,7 +129,10 @@ export function SidebarNavButtonConfig(props: {
         }}
         onChange={onChangeNumberHandler(updateButton('borderRadius'))}
       />
-
+      <InfusionsoftTagInput
+        button={button}
+        onChange={updateButton('infusionsoftTag')}
+      />
       <Box mt={2} mb={3}>
         <DangerButton
           fullWidth

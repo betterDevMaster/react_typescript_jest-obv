@@ -3,13 +3,10 @@ import Button from '@material-ui/core/Button'
 import InputAdornment from '@material-ui/core/InputAdornment'
 import {onChangeStringHandler} from 'lib/dom'
 import {
-  ADD_ATTENDEE,
-  ATTENDEE_ADDED,
+  ATTENDEE_CREATED,
   ATTENDEE_CHECKED_IN,
   ATTENDEE_SIGNED_WAIVER,
-  DELETE_ATTENDEE,
   Tag,
-  UPDATE_ATTENDEE,
 } from 'organization/Event/Services/Infusionsoft'
 import React, {useEffect, useState} from 'react'
 
@@ -62,15 +59,12 @@ export default function TagIdInput(props: {
 function label(tag: Tag) {
   const isSet = Boolean(tag.name)
 
-  return isSet ? `${typeLabel(tag)}: ${tag.name}` : `${typeLabel(tag)}: Not set`
+  return isSet ? `${typeLabel(tag)} - ${tag.name}` : `${typeLabel(tag)}`
 }
 
 function typeLabel(tag: Tag) {
   const labels: Record<string, string> = {
-    [ADD_ATTENDEE]: 'Add Attendee',
-    [UPDATE_ATTENDEE]: 'Update Attendee',
-    [DELETE_ATTENDEE]: 'Delete Attendee',
-    [ATTENDEE_ADDED]: 'Attendee Added',
+    [ATTENDEE_CREATED]: 'Attendee Created',
     [ATTENDEE_SIGNED_WAIVER]: 'Attendee Signed Waiver',
     [ATTENDEE_CHECKED_IN]: 'Attendee Checked In',
   }
@@ -79,4 +73,6 @@ function typeLabel(tag: Tag) {
   if (!label) {
     throw new Error(`Label not defined for tag type: ${tag.type}`)
   }
+
+  return label
 }

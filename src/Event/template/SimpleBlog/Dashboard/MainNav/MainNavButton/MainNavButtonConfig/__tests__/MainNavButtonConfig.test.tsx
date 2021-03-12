@@ -22,7 +22,7 @@ import StaticAreasProvider from 'organization/Event/__utils__/StaticAreasProvide
 const mockPost = mockRxJsAjax.post as jest.Mock
 const mockGet = mockAxios.get as jest.Mock
 
-afterEach(() => {
+beforeEach(() => {
   jest.clearAllMocks()
 })
 
@@ -201,4 +201,52 @@ it('should assign an action for points', async () => {
 
   const id = data.template.mainNav.ids[0] // only one button
   expect(data.template.mainNav.entities[id]['actionId']).toBe(target.key) // Did assign action id
+})
+
+it('should set an infusionsoft tag', async () => {
+  const button = fakeNavButtonWithSize()
+  const event = fakeEvent({
+    template: fakeSimpleBlog({
+      mainNav: createEntityList([button]),
+    }),
+    has_infusionsoft: true,
+  })
+
+  const {findByLabelText, findByText} = render(
+    <Dashboard isEditMode={true} user={fakeUser()} />,
+    {
+      event,
+      organization: fakeOrganization(),
+      actions: [],
+      withRouter: true,
+      score: defaultScore,
+    },
+  )
+
+  const buttonEl = await findByText(button.text)
+
+  const name = faker.random.word()
+  mockGet.mockImplementationOnce(() => Promise.resolve({data: {name}}))
+
+  clickEdit(buttonEl)
+
+  const id = faker.random.number({min: 1000, max: 10000})
+
+  user.type(await findByLabelText('infusionsoft tag id'), String(id))
+  user.click(await findByLabelText('set tag id'))
+
+  await wait(() => {
+    expect(mockGet).toHaveBeenCalledTimes(1)
+  })
+
+  // Saved
+  await wait(() => {
+    expect(mockPost).toHaveBeenCalledTimes(1)
+  })
+
+  const [url, data] = mockPost.mock.calls[0]
+  expect(url).toMatch(`/events/${event.slug}`)
+
+  const saved = Object.values(data.template.mainNav.entities)[0] as any
+  expect(saved.infusionsoftTag.id).toBe(id)
 })

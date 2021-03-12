@@ -11,6 +11,7 @@ import user from '@testing-library/user-event'
 import {fakeEvent} from 'Event/__utils__/factory'
 import {mockRxJsAjax} from 'store/__utils__/MockStoreProvider'
 import {defaultScore} from 'Event/PointsProvider/__utils__/StaticPointsProvider'
+import {act} from 'react-dom/test-utils'
 
 const mockPost = mockRxJsAjax.post as jest.Mock
 
@@ -39,13 +40,17 @@ it('should render agendas', async () => {
   )
 
   const withAgendas = fakeEvent({template: fakeSimpleBlog({agendas})})
-  rerender(<Dashboard isEditMode={false} user={fakeUser()} />, {
-    event: withAgendas,
+
+  act(() => {
+    rerender(<Dashboard isEditMode={false} user={fakeUser()} />, {
+      event: withAgendas,
+    })
   })
 
   const numVisible = agendas.filter((a) => a.isVisible).length
-  if (numVisible > 0)
+  if (numVisible > 0) {
     expect((await findAllByLabelText('agenda')).length).toBe(numVisible)
+  }
 })
 
 it('should edit an agenda', async () => {

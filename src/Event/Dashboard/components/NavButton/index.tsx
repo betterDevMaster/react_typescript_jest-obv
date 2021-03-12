@@ -10,6 +10,7 @@ import {findAction} from 'Event/ActionsProvider/platform-actions'
 import {useActions} from 'Event/ActionsProvider'
 import {usePoints} from 'Event/PointsProvider'
 import {Publishable} from 'Event/Dashboard/editor/views/Published'
+import {InfusionsoftTag, useAddTag} from 'Event/infusionsoft'
 
 export const NAV_BUTTON = 'NAV_BUTTON'
 
@@ -33,6 +34,7 @@ export default interface NavButton extends HasRules, Publishable {
   isAreaButton: boolean
   areaId: number | null
   actionId: string | null
+  infusionsoftTag: InfusionsoftTag | null
 }
 
 export type NavButtonWithSize = NavButton & {
@@ -41,23 +43,16 @@ export type NavButtonWithSize = NavButton & {
 
 export default function NavButton(props: NavButton) {
   const {newTab, isAreaButton} = props
-  const actionsList = useActions()
-  const {submit} = usePoints()
-  const submitAction = () => {
-    if (!props.actionId) {
-      return
-    }
+  const submitAction = useSubmitAction(props.actionId)
+  const addInfusionsoftTag = useAddInfusionsoftTag(props.infusionsoftTag)
 
-    const action = findAction(props.actionId, actionsList.actions)
-
-    if (!action) {
-      return
-    }
-    submit(action)
+  const handleClicked = () => {
+    submitAction()
+    addInfusionsoftTag()
   }
 
   if (isAreaButton) {
-    return <JoinAreaLink {...props} onJoin={submitAction} />
+    return <JoinAreaLink {...props} onJoin={handleClicked} />
   }
 
   return (
@@ -66,11 +61,42 @@ export default function NavButton(props: NavButton) {
       disableStyles
       aria-label={props['aria-label']}
       newTab={newTab}
-      onClick={submitAction}
+      onClick={handleClicked}
     >
       <Button {...props}>{props.text}</Button>
     </NormalLink>
   )
+}
+
+function useSubmitAction(actionId: NavButton['actionId']) {
+  const actionsList = useActions()
+  const {submit} = usePoints()
+
+  return () => {
+    if (!actionId) {
+      return
+    }
+
+    const action = findAction(actionId, actionsList.actions)
+
+    if (!action) {
+      return
+    }
+
+    submit(action)
+  }
+}
+
+function useAddInfusionsoftTag(tag: NavButton['infusionsoftTag']) {
+  const addTag = useAddTag()
+
+  return () => {
+    if (!tag) {
+      return
+    }
+
+    addTag(tag)
+  }
 }
 
 function JoinAreaLink(props: NavButton & {onJoin: () => void}) {

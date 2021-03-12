@@ -1,4 +1,4 @@
-import {ChangeEvent} from 'react'
+import {ChangeEvent, useEffect, useRef} from 'react'
 
 export const onChangeStringHandler = (setter: (v: string) => void) => (
   e: ChangeEvent<HTMLInputElement>,
@@ -42,4 +42,16 @@ export function Visible(props: {if: boolean; children: React.ReactElement}) {
   }
 
   return props.children
+}
+
+export function useIsMounted() {
+  const isMounted = useRef(true)
+
+  useEffect(() => {
+    return () => {
+      isMounted.current = false
+    }
+  }, [])
+
+  return isMounted
 }

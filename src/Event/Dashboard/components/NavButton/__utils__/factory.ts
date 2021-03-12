@@ -22,6 +22,7 @@ export const fakeNavButton = (overrides?: Partial<NavButton>): NavButton => {
     areaId: null,
     actionId: null,
     isVisible: true,
+    infusionsoftTag: null,
   }
 
   const makeAttributes: (nb: NavButton) => NavButton = pipe(

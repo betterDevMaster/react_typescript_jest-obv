@@ -1,4 +1,5 @@
 import {useEvent} from 'Event/EventProvider'
+import {useIsMounted} from 'lib/dom'
 import {AbsoluteLink} from 'lib/ui/link/AbsoluteLink'
 import {api} from 'lib/url'
 import {useEventRoutes} from 'organization/Event/EventRoutes'
@@ -16,6 +17,7 @@ export default function AuthCallbackHandler(props: {authCode: string}) {
   const completeAuth = useCompleteAuth()
   const {updateIntegration} = useServices()
   const {authCode} = props
+  const isMounted = useIsMounted()
 
   const routes = useEventRoutes()
 
@@ -30,9 +32,14 @@ export default function AuthCallbackHandler(props: {authCode: string}) {
       .then(updateIntegration)
       .catch((e) => {
         console.error(e)
+
+        if (!isMounted.current) {
+          return
+        }
+
         setFailed(true)
       })
-  }, [authCode, completeAuth, hasSubmitted, updateIntegration])
+  }, [authCode, completeAuth, hasSubmitted, updateIntegration, isMounted])
 
   if (failed) {
     return (

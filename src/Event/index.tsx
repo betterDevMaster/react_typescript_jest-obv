@@ -29,6 +29,7 @@ export interface ObvioEvent {
   login_background: PublicFile | null
   login_logo: PublicFile | null
   questions: Question[]
+  has_infusionsoft: boolean
 }
 
 export interface WaiverConfig {

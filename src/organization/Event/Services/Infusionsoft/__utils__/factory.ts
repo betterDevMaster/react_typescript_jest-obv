@@ -1,13 +1,10 @@
 import {
-  ADD_ATTENDEE,
-  ATTENDEE_ADDED,
+  ATTENDEE_CREATED,
   ATTENDEE_CHECKED_IN,
   ATTENDEE_SIGNED_WAIVER,
-  DELETE_ATTENDEE,
   InfusionsoftIntegration,
   Tag,
   TagType,
-  UPDATE_ATTENDEE,
 } from 'organization/Event/Services/Infusionsoft'
 import faker from 'faker'
 import {INFUSIONSOFT} from 'organization/Event/Services/ServicesProvider'
@@ -22,10 +19,7 @@ export const fakeInsusionsoftIntegration = (
 })
 
 export const tagTypes: TagType[] = [
-  ADD_ATTENDEE,
-  UPDATE_ATTENDEE,
-  DELETE_ATTENDEE,
-  ATTENDEE_ADDED,
+  ATTENDEE_CREATED,
   ATTENDEE_CHECKED_IN,
   ATTENDEE_SIGNED_WAIVER,
 ]

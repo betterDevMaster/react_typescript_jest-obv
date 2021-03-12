@@ -13,6 +13,7 @@ import {wait} from '@testing-library/react'
 import {emptyActions, render} from '__utils__/render'
 import {defaultScore} from 'Event/PointsProvider/__utils__/StaticPointsProvider'
 import NavButton from 'Event/Dashboard/components/NavButton'
+import {fakeOrganization} from 'obvio/Organizations/__utils__/factory'
 
 const mockPost = mockRxJsAjax.post as jest.Mock
 
@@ -145,7 +146,13 @@ it('should edit the selected button', async () => {
   })
   const {findByLabelText, findByText} = render(
     <Dashboard isEditMode={true} user={fakeUser()} />,
-    {event, withRouter: true, actions: emptyActions, score: defaultScore},
+    {
+      event,
+      withRouter: true,
+      actions: emptyActions,
+      score: defaultScore,
+      organization: fakeOrganization(),
+    },
   )
 
   const targetIndex = faker.random.number({min: 0, max: buttons.length - 1})
@@ -194,7 +201,13 @@ it('should remove the button', async () => {
   })
   const {findAllByLabelText, findByLabelText, queryByText} = render(
     <Dashboard isEditMode={true} user={fakeUser()} />,
-    {event, withRouter: true, actions: emptyActions, score: defaultScore},
+    {
+      event,
+      withRouter: true,
+      actions: emptyActions,
+      score: defaultScore,
+      organization: fakeOrganization(),
+    },
   )
 
   const buttonEls = () => findAllByLabelText('sidebar nav button')

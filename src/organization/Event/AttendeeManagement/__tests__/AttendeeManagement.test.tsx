@@ -81,7 +81,7 @@ it('should reverse tech check', async () => {
 it('should render attendee groups', async () => {
   const groups = Array.from(
     {length: faker.random.number({min: 2, max: 3})},
-    faker.random.word,
+    () => `${faker.random.word()}_${faker.random.word()}`,
   )
 
   const attendeePerGroup = groups.map((group) =>

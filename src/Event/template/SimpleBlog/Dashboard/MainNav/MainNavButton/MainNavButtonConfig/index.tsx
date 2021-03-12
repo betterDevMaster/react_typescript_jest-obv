@@ -31,6 +31,7 @@ import ActionConfig from 'Event/template/SimpleBlog/Dashboard/MainNav/MainNavBut
 import AreaConfig from 'Event/template/SimpleBlog/Dashboard/MainNav/MainNavButton/MainNavButtonConfig/AreaConfig'
 import Grid from '@material-ui/core/Grid'
 import Switch from 'lib/ui/form/Switch'
+import InfusionsoftTagInput from 'Event/Dashboard/components/NavButton/InfusionsoftTagInput'
 
 export type MainNavButtonConfig = {
   type: typeof MAIN_NAV_BUTTON
@@ -195,6 +196,10 @@ export function MainNavButtonConfig(props: {id: MainNavButtonConfig['id']}) {
             min: 0,
           }}
           onChange={onChangeNumberHandler(updateButton('borderRadius'))}
+        />
+        <InfusionsoftTagInput
+          button={button}
+          onChange={updateButton('infusionsoftTag')}
         />
         <Box mt={2} mb={3}>
           <DangerButton

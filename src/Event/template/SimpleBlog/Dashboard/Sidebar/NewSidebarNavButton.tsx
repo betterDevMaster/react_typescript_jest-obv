@@ -27,6 +27,7 @@ export default function NewSidebarNavButton(props: {className?: string}) {
       areaId: null,
       actionId: null,
       isVisible: true,
+      infusionsoftTag: null,
     }
     const entities = {
       ...buttons.entities,
