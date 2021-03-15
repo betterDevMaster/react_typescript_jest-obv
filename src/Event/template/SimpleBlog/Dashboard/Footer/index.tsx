@@ -2,7 +2,7 @@ import {useEditMode} from 'Event/Dashboard/editor/state/edit-mode'
 import EditComponent from 'Event/Dashboard/editor/views/EditComponent'
 import React from 'react'
 import styled from 'styled-components'
-import {useTemplate} from 'Event/Dashboard/state/TemplateProvider'
+import {useTemplate} from 'Event/TemplateProvider'
 
 export const FOOTER = 'footer'
 

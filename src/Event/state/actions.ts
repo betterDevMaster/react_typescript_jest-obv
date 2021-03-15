@@ -57,7 +57,7 @@ export interface UpdateTemplateAction {
   type: typeof UPDATE_TEMPLATE_ACTION
   payload: Partial<Template>
 }
-export const updateTemplte = (
+export const updateTemplate = (
   updates: Partial<Template>,
 ): UpdateTemplateAction => ({
   type: UPDATE_TEMPLATE_ACTION,

@@ -1,8 +1,5 @@
 import TextField from '@material-ui/core/TextField'
-import {
-  useTemplate,
-  useUpdateTemplate,
-} from 'Event/Dashboard/state/TemplateProvider'
+import {useTemplate, useUpdateTemplate} from 'Event/TemplateProvider'
 import {WELCOME_TEXT} from 'Event/template/SimpleBlog/Dashboard/WelcomeText'
 import {onChangeStringHandler} from 'lib/dom'
 import React from 'react'

@@ -12,10 +12,7 @@ import CloseIcon from '@material-ui/icons/Close'
 import IconButton from 'lib/ui/IconButton'
 import TextField from '@material-ui/core/TextField'
 import {onUnknownChangeHandler} from 'lib/dom'
-import {
-  useTemplate,
-  useUpdateTemplate,
-} from 'Event/Dashboard/state/TemplateProvider'
+import {useTemplate, useUpdateTemplate} from 'Event/TemplateProvider'
 import EmojiUpload from 'Event/Dashboard/components/EmojiList/EmojiListConfig/EmojiUpload'
 import {useEvent} from 'Event/EventProvider'
 import {useOrganization} from 'organization/OrganizationProvider'

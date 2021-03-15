@@ -1,4 +1,4 @@
-import {updateTemplte as updateTemplate} from 'Event/state/actions'
+import {updateTemplate} from 'Event/state/actions'
 import {Template} from 'Event/template'
 import React, {useCallback} from 'react'
 import {useDispatch} from 'react-redux'
@@ -7,11 +7,8 @@ const TemplateContext = React.createContext<Template | undefined>(undefined)
 
 export default function TemplateProvider(props: {
   children: React.ReactNode
-  template: Template | null
+  template: Template
 }) {
-  if (!props.template) {
-    throw new Error(`Template has not been set for event`)
-  }
   return (
     <TemplateContext.Provider value={props.template}>
       {props.children}

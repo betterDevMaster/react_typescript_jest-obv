@@ -3,10 +3,7 @@ import {
   ResourceList,
   RESOURCE_LIST,
 } from 'Event/Dashboard/components/ResourceList'
-import {
-  useTemplate,
-  useUpdateTemplate,
-} from 'Event/Dashboard/state/TemplateProvider'
+import {useTemplate, useUpdateTemplate} from 'Event/TemplateProvider'
 import {onChangeStringHandler} from 'lib/dom'
 import React from 'react'
 

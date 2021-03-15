@@ -7,7 +7,7 @@ import TextField from '@material-ui/core/TextField'
 import Button from '@material-ui/core/Button'
 import defaultLogo from 'assets/images/logo_vertical.png'
 import defaultBackground from 'assets/images/background_login.png'
-import {useTemplate} from 'Event/Dashboard/state/TemplateProvider'
+import {useTemplate} from 'Event/TemplateProvider'
 
 export default function Login(props: LoginProps) {
   const {event} = useEvent()

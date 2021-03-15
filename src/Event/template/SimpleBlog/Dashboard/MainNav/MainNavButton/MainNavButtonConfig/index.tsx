@@ -20,10 +20,7 @@ import RuleConfig, {
   useRuleConfig,
 } from 'Event/Dashboard/component-rules/RuleConfig'
 import ConfigureRulesButton from 'Event/Dashboard/component-rules/ConfigureRulesButton'
-import {
-  useTemplate,
-  useUpdateTemplate,
-} from 'Event/Dashboard/state/TemplateProvider'
+import {useTemplate, useUpdateTemplate} from 'Event/TemplateProvider'
 import {MAIN_NAV_BUTTON} from 'Event/template/SimpleBlog/Dashboard/MainNav/MainNavButton'
 import ToggleButtonGroup from '@material-ui/lab/ToggleButtonGroup'
 import ToggleButton from '@material-ui/lab/ToggleButton'

@@ -1,9 +1,6 @@
 import Button from '@material-ui/core/Button'
 import NavButton from 'Event/Dashboard/components/NavButton'
-import {
-  useTemplate,
-  useUpdateTemplate,
-} from 'Event/Dashboard/state/TemplateProvider'
+import {useTemplate, useUpdateTemplate} from 'Event/TemplateProvider'
 import {useEditMode} from 'Event/Dashboard/editor/state/edit-mode'
 import React from 'react'
 import {v4 as uid} from 'uuid'

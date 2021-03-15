@@ -5,7 +5,7 @@ import EditComponent from 'Event/Dashboard/editor/views/EditComponent'
 import {useEditMode} from 'Event/Dashboard/editor/state/edit-mode'
 import EditModeOnly from 'Event/Dashboard/editor/views/EditModeOnly'
 import AddResourceButton from 'Event/Dashboard/components/ResourceList/AddResourceButton'
-import {useTemplate} from 'Event/Dashboard/state/TemplateProvider'
+import {useTemplate} from 'Event/TemplateProvider'
 import Section from 'Event/template/SimpleBlog/Dashboard/Sidebar/Section'
 import ResourceItem, {
   Resource,

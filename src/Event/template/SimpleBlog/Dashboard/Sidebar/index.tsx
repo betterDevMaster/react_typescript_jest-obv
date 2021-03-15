@@ -6,7 +6,7 @@ import {ResourceList} from 'Event/Dashboard/components/ResourceList'
 import TicketRibbonList from 'Event/Dashboard/components/TicketRibbonList'
 import SidebarNav from 'Event/template/SimpleBlog/Dashboard/Sidebar/SidebarNav'
 import SidebarContainer from 'Event/template/SimpleBlog/Dashboard/Sidebar/SidebarContainer'
-import {useTemplate} from 'Event/Dashboard/state/TemplateProvider'
+import {useTemplate} from 'Event/TemplateProvider'
 
 export default function Sidebar() {
   const {sidebar} = useTemplate()

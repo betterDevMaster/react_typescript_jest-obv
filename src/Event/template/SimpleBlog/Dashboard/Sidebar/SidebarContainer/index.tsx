@@ -3,7 +3,7 @@ import {useEditComponent} from 'Event/Dashboard/editor/state/edit-mode'
 import EditModeOnly from 'Event/Dashboard/editor/views/EditModeOnly'
 import React from 'react'
 import styled from 'styled-components'
-import {useTemplate} from 'Event/Dashboard/state/TemplateProvider'
+import {useTemplate} from 'Event/TemplateProvider'
 import {SimpleBlog} from 'Event/template/SimpleBlog'
 
 export const SIDEBAR_CONTAINER = 'Sidebar'

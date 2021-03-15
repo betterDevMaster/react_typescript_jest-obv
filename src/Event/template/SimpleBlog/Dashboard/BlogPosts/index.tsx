@@ -1,6 +1,6 @@
 import {BlogPost, BLOG_POST} from 'Event/Dashboard/components/BlogPost'
 import styled from 'styled-components'
-import {useTemplate} from 'Event/Dashboard/state/TemplateProvider'
+import {useTemplate} from 'Event/TemplateProvider'
 import EditComponent from 'Event/Dashboard/editor/views/EditComponent'
 import Published from 'Event/Dashboard/editor/views/Published'
 

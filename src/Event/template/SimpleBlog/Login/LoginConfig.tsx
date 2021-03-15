@@ -6,10 +6,7 @@ import TextField from '@material-ui/core/TextField'
 import Slider from '@material-ui/core/Slider'
 import {spacing} from 'lib/ui/theme'
 import ColorPicker from 'lib/ui/ColorPicker'
-import {
-  useTemplate,
-  useUpdateProp,
-} from 'Event/Dashboard/state/TemplateProvider'
+import {useTemplate, useUpdateProp} from 'Event/TemplateProvider'
 import {onChangeStringHandler} from 'lib/dom'
 
 export default function LoginFormConfig() {

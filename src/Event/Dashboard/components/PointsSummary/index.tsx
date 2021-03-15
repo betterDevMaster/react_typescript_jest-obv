@@ -1,5 +1,5 @@
 import SetPointsButton from 'Event/Dashboard/components/PointsSummary/SetPointsButton'
-import {useTemplate} from 'Event/Dashboard/state/TemplateProvider'
+import {useTemplate} from 'Event/TemplateProvider'
 import EditComponent from 'Event/Dashboard/editor/views/EditComponent'
 import EditModeOnly from 'Event/Dashboard/editor/views/EditModeOnly'
 import React from 'react'

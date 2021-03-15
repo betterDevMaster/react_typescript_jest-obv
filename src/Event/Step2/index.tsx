@@ -3,15 +3,15 @@ import {eventRoutes} from 'Event/Routes'
 import React from 'react'
 import {Redirect} from 'react-router-dom'
 import {useEvent} from 'Event/EventProvider'
-import TemplateProvider, {
-  useTemplate,
-} from 'Event/Dashboard/state/TemplateProvider'
+import TemplateProvider, {useTemplate} from 'Event/TemplateProvider'
 import {SIMPLE_BLOG} from 'Event/template/SimpleBlog'
 import SimpleBlogStep2 from 'Event/template/SimpleBlog/Step2'
 
 export default function Step2() {
   const attendee = useAttendee()
   const {event} = useEvent()
+  const template = useTemplate()
+  const user = useAttendee()
 
   if (!attendee.has_password) {
     return <Redirect to={eventRoutes.step1} />
@@ -25,17 +25,6 @@ export default function Step2() {
   if (attendee.waiver) {
     return <Redirect to={eventRoutes.step3} />
   }
-
-  return (
-    <TemplateProvider template={event.template}>
-      <TemplateStep2 />
-    </TemplateProvider>
-  )
-}
-
-function TemplateStep2() {
-  const template = useTemplate()
-  const user = useAttendee()
 
   switch (template.name) {
     case SIMPLE_BLOG:

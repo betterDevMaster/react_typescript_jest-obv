@@ -13,7 +13,7 @@ import {api} from 'lib/url'
 import {useAsync} from 'lib/async'
 import {useAttendee} from 'Event/auth'
 import {usePoints} from 'Event/PointsProvider'
-import {useTemplate} from 'Event/Dashboard/state/TemplateProvider'
+import {useTemplate} from 'Event/TemplateProvider'
 import {Entry} from 'Event/Leaderboard'
 
 export default function SimpleBlogLeaderboard(props: {user: Attendee}) {

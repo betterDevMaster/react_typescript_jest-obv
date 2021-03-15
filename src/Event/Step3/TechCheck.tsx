@@ -1,7 +1,5 @@
 import React, {useEffect} from 'react'
-import TemplateProvider, {
-  useTemplate,
-} from 'Event/Dashboard/state/TemplateProvider'
+import {useTemplate} from 'Event/TemplateProvider'
 import {useEvent} from 'Event/EventProvider'
 import {useAttendee, useEventAuth} from 'Event/auth'
 import {SIMPLE_BLOG} from 'Event/template/SimpleBlog'
@@ -23,6 +21,8 @@ export default function TechCheck() {
   const attendee = useEventAuth()
   const {completeCheckIn} = usePlatformActions()
   const {submit: submitAction} = usePoints()
+  const template = useTemplate()
+  const user = useAttendee()
 
   useEffect(() => {
     const pollTimer = setInterval(attendee.refresh, TECH_CHECK_POLL_SECS * 1000)
@@ -48,19 +48,11 @@ export default function TechCheck() {
     throw new Error(`Missing event tech check`)
   }
 
-  return (
-    <TemplateProvider template={event.template}>
-      <TemplateTechCheck techCheck={techCheck} progress={100} />
-    </TemplateProvider>
-  )
-}
-
-function TemplateTechCheck(props: TechCheckProps) {
-  const template = useTemplate()
-  const user = useAttendee()
   switch (template.name) {
     case SIMPLE_BLOG:
-      return <SimpleBlogTechCheck user={user} {...props} />
+      return (
+        <SimpleBlogTechCheck user={user} techCheck={techCheck} progress={100} />
+      )
     default:
       throw new Error(`Missing tech check for template: ${template.name}`)
   }

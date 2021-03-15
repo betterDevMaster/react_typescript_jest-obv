@@ -1,7 +1,5 @@
-import {
-  useTemplate,
-  useUpdateTemplate,
-} from 'Event/Dashboard/state/TemplateProvider'
+import {useTemplate, useUpdateTemplate} from 'Event/TemplateProvider'
+import {onChangeStringHandler} from 'lib/dom'
 import {useEvent} from 'Event/EventProvider'
 import {HEADER} from 'Event/template/SimpleBlog/Dashboard/Header'
 import EventImageUpload from 'organization/Event/DashboardConfig/EventImageUpload'
@@ -12,6 +10,7 @@ import Grid from '@material-ui/core/Grid'
 import Slider from '@material-ui/core/Slider'
 import {handleChangeSlider} from 'lib/dom'
 import InputLabel from '@material-ui/core/InputLabel'
+import {TextField} from '@material-ui/core'
 
 export type HeaderConfig = {
   type: typeof HEADER
@@ -98,6 +97,19 @@ export function HeaderConfig() {
         valueLabelDisplay="auto"
         value={template.header.height}
         aria-label="header height"
+      />
+      <TextField
+        label="Custom Code"
+        fullWidth
+        variant="outlined"
+        name="code"
+        inputProps={{
+          'aria-label': 'set header custom code',
+        }}
+        defaultValue={template.header.script || ''}
+        onChange={onChangeStringHandler(update('script'))}
+        multiline
+        rows={6}
       />
     </>
   )

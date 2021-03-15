@@ -3,9 +3,7 @@ import SimpleBlogDashboard from 'Event/template/SimpleBlog/Dashboard'
 import {User} from 'auth/user'
 import DashboardEditDialog from 'Event/Dashboard/editor/views/DashboardEditDialog'
 import ConfigBar from 'Event/Dashboard/editor/views/ConfigBar'
-import TemplateProvider, {
-  useTemplate,
-} from 'Event/Dashboard/state/TemplateProvider'
+import TemplateProvider, {useTemplate} from 'Event/TemplateProvider'
 import {useDispatch} from 'react-redux'
 import {setEditMode} from 'Event/Dashboard/editor/state/actions'
 import {useEvent} from 'Event/EventProvider'
@@ -25,11 +23,9 @@ export default function Dashboard(props: DashboardProps) {
   }, [props.isEditMode, dispatch])
 
   return (
-    <TemplateProvider template={event.template}>
-      <ConfigComponents isEditMode={props.isEditMode}>
-        <TemplateDashboard user={props.user} />
-      </ConfigComponents>
-    </TemplateProvider>
+    <ConfigComponents isEditMode={props.isEditMode}>
+      <TemplateDashboard user={props.user} />
+    </ConfigComponents>
   )
 }
 

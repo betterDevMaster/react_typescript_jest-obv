@@ -5,10 +5,7 @@ import {
   TICKET_RIBBON,
 } from 'Event/Dashboard/components/TicketRibbonList/TicketRibbon'
 import {setConfig} from 'Event/Dashboard/editor/state/actions'
-import {
-  useTemplate,
-  useUpdateTemplate,
-} from 'Event/Dashboard/state/TemplateProvider'
+import {useTemplate, useUpdateTemplate} from 'Event/TemplateProvider'
 import React from 'react'
 import {useDispatch} from 'react-redux'
 

@@ -17,10 +17,7 @@ import styled from 'styled-components'
 import React from 'react'
 import DangerButton from 'lib/ui/Button/DangerButton'
 import {useCloseConfig} from 'Event/Dashboard/editor/state/edit-mode'
-import {
-  useTemplate,
-  useUpdateTemplate,
-} from 'Event/Dashboard/state/TemplateProvider'
+import {useTemplate, useUpdateTemplate} from 'Event/TemplateProvider'
 import {useCallback} from 'react'
 import ResourceUpload, {useDeleteFile} from './ResourceUpload'
 import {Resource} from 'Event/Dashboard/components/ResourceList/ResourceItem'

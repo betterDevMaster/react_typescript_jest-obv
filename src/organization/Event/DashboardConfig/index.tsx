@@ -9,6 +9,7 @@ import Layout from 'organization/user/Layout'
 import Page from 'organization/Event/Page'
 import {PointsProvider} from 'Event/PointsProvider'
 import {OrganizationActionsProvider} from 'Event/ActionsProvider'
+import TemplateProvider from 'Event/TemplateProvider'
 
 export default function DashboardConfig() {
   const {event} = useEvent()
@@ -30,7 +31,9 @@ export default function DashboardConfig() {
         >
           <PointsProvider>
             <AttendeeProfileProvider groups={{}} tags={[]}>
-              <Dashboard user={user} isEditMode={true} />
+              <TemplateProvider template={event.template}>
+                <Dashboard user={user} isEditMode={true} />
+              </TemplateProvider>
             </AttendeeProfileProvider>
           </PointsProvider>
         </OrganizationActionsProvider>

@@ -8,10 +8,7 @@ import {AGENDA, Agenda} from 'Event/Dashboard/components/AgendaList'
 import {onChangeStringHandler, onChangeCheckedHandler} from 'lib/dom'
 import {MaterialUiPickersDate} from '@material-ui/pickers/typings/date'
 import {useCloseConfig} from 'Event/Dashboard/editor/state/edit-mode'
-import {
-  useTemplate,
-  useUpdateTemplate,
-} from 'Event/Dashboard/state/TemplateProvider'
+import {useTemplate, useUpdateTemplate} from 'Event/TemplateProvider'
 import Switch from 'lib/ui/form/Switch'
 import Box from '@material-ui/core/Box'
 

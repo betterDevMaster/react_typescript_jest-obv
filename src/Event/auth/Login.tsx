@@ -2,7 +2,7 @@ import React, {useEffect, useRef, useState} from 'react'
 import {useForm, UseFormMethods} from 'react-hook-form'
 import {useEventAuth} from 'Event/auth'
 import {useQueryParams} from 'lib/url'
-import {useTemplate} from 'Event/Dashboard/state/TemplateProvider'
+import {useTemplate} from 'Event/TemplateProvider'
 import SimpleBlogLogin from 'Event/template/SimpleBlog/Login'
 import {SIMPLE_BLOG} from 'Event/template/SimpleBlog'
 

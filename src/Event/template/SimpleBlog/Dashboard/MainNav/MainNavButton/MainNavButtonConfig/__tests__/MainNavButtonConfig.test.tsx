@@ -18,6 +18,7 @@ import mockAxios from 'axios'
 import {defaultScore} from 'Event/PointsProvider/__utils__/StaticPointsProvider'
 import {fakeAction} from 'Event/ActionsProvider/__utils__/factory'
 import StaticAreasProvider from 'organization/Event/__utils__/StaticAreasProvider'
+import TemplateProvider from 'Event/TemplateProvider'
 
 const mockPost = mockRxJsAjax.post as jest.Mock
 const mockGet = mockAxios.get as jest.Mock
@@ -40,7 +41,7 @@ it('should edit the selected button', async () => {
       mainNav: mainNavButtons,
     }),
   })
-  const {findByLabelText, findByText} = render(
+  const {findByLabelText, findByText, debug} = render(
     <Dashboard isEditMode={true} user={fakeUser()} />,
     {
       event,

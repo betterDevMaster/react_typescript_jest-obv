@@ -13,9 +13,10 @@ import {EventActionsProvider} from 'Event/ActionsProvider'
 import {PointsProvider} from 'Event/PointsProvider'
 import Leaderboard from 'Event/Leaderboard'
 import UnderConstruction from 'Event/UnderConstruction'
-import TemplateProvider from 'Event/Dashboard/state/TemplateProvider'
+import TemplateProvider from 'Event/TemplateProvider'
 import WaiverProvider from 'Event/Step2/WaiverProvider'
 import SubmissionsProvider from 'Event/SubmissionsProvider'
+import CustomScripts from 'organization/Event/CustomScripts'
 
 export const eventRoutes = createRoutes({
   login: '/login',
@@ -43,7 +44,11 @@ export default function Routes() {
       <EventActionsProvider>
         <PointsProvider>
           <SubmissionsProvider>
-            <UserRoutes />
+            <TemplateProvider template={event.template}>
+              <CustomScripts>
+                <UserRoutes />
+              </CustomScripts>
+            </TemplateProvider>
           </SubmissionsProvider>
         </PointsProvider>
       </EventActionsProvider>
@@ -52,7 +57,9 @@ export default function Routes() {
 
   return (
     <TemplateProvider template={event.template}>
-      <GuestRoutes />
+      <CustomScripts>
+        <GuestRoutes />
+      </CustomScripts>
     </TemplateProvider>
   )
 }

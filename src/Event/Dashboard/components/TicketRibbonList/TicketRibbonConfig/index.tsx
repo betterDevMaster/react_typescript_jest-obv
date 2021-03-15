@@ -11,10 +11,7 @@ import {
 } from 'Event/Dashboard/components/TicketRibbonList/TicketRibbon'
 import React from 'react'
 import MenuItem from '@material-ui/core/MenuItem'
-import {
-  useTemplate,
-  useUpdateTemplate,
-} from 'Event/Dashboard/state/TemplateProvider'
+import {useTemplate, useUpdateTemplate} from 'Event/TemplateProvider'
 import {onChangeStringHandler, onUnknownChangeHandler} from 'lib/dom'
 import Grid from '@material-ui/core/Grid'
 import DangerButton from 'lib/ui/Button/DangerButton'

@@ -41,6 +41,7 @@ export const fakeSimpleBlog = (overrides?: Partial<SimpleBlog>): SimpleBlog => {
       backgroundColor: '#FFFFFF',
       backgroundOpacity: 1,
       height: 50,
+      script: null,
     },
     footer: {
       background: '#000000',
@@ -130,6 +131,18 @@ export function fakeLogin(
       color: '#000000',
       fontSize: 18,
     },
+    ...overrides,
+  }
+}
+
+export function fakeHeader(
+  overrides?: Partial<SimpleBlog['header']>,
+): SimpleBlog['header'] {
+  return {
+    backgroundColor: '#FFFFFF',
+    backgroundOpacity: 1,
+    height: 50,
+    script: null,
     ...overrides,
   }
 }

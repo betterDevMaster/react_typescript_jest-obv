@@ -7,7 +7,7 @@ import Menu from 'Event/template/SimpleBlog/Menu'
 import {User} from 'auth/user'
 import Footer from 'Event/template/SimpleBlog/Dashboard/Footer'
 import {withStyles} from '@material-ui/core'
-import {useTemplate} from 'Event/Dashboard/state/TemplateProvider'
+import {useTemplate} from 'Event/TemplateProvider'
 
 export default function SimpleBlogPage(props: {
   user: User

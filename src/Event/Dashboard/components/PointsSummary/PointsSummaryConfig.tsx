@@ -1,9 +1,6 @@
 import TextField from '@material-ui/core/TextField'
 import {Points, POINTS_SUMMARY} from 'Event/Dashboard/components/PointsSummary'
-import {
-  useTemplate,
-  useUpdateTemplate,
-} from 'Event/Dashboard/state/TemplateProvider'
+import {useTemplate, useUpdateTemplate} from 'Event/TemplateProvider'
 import {useCloseConfig} from 'Event/Dashboard/editor/state/edit-mode'
 import {onChangeStringHandler} from 'lib/dom'
 import DangerButton from 'lib/ui/Button/DangerButton'

@@ -9,7 +9,7 @@ import {api} from 'lib/url'
 import {useEvent} from 'Event/EventProvider'
 import {ResponseError} from 'lib/api-client'
 import ProgressBar from 'lib/ui/ProgressBar'
-import {useTemplate} from 'Event/Dashboard/state/TemplateProvider'
+import {useTemplate} from 'Event/TemplateProvider'
 
 export default function TechCheck(props: {user: User} & TechCheckProps) {
   const [joinUrl, setJoinUrl] = useState<null | string>(null)

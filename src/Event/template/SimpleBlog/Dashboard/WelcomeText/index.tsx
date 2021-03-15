@@ -1,4 +1,4 @@
-import {useTemplate} from 'Event/Dashboard/state/TemplateProvider'
+import {useTemplate} from 'Event/TemplateProvider'
 import React from 'react'
 import styled from 'styled-components'
 

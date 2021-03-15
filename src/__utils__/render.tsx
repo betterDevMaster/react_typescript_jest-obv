@@ -17,6 +17,8 @@ import StaticActionsProvider from 'Event/ActionsProvider/__utils__/StaticActions
 import {Score} from 'Event/PointsProvider'
 import StaticPointsProvider from 'Event/PointsProvider/__utils__/StaticPointsProvider'
 import {BrowserRouter as Router} from 'react-router-dom'
+import TemplateProvider from 'Event/TemplateProvider'
+import {useEvent} from 'Event/EventProvider'
 
 type Options = Omit<RtlRenderOptions, 'queries'> & {
   event?: ObvioEvent
@@ -78,8 +80,22 @@ function WithEvent(props: {event?: ObvioEvent; children: React.ReactElement}) {
 
   return (
     <StaticEventProvider event={props.event}>
-      {props.children}
+      <WithTemplate>{props.children}</WithTemplate>
     </StaticEventProvider>
+  )
+}
+
+function WithTemplate(props: {children: React.ReactElement}) {
+  const {event} = useEvent()
+
+  if (!event.template) {
+    return props.children
+  }
+
+  return (
+    <TemplateProvider template={event.template}>
+      {props.children}
+    </TemplateProvider>
   )
 }
 

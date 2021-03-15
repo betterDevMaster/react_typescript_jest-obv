@@ -3,7 +3,7 @@ import styled from 'styled-components'
 import SidebarNavButton from 'Event/template/SimpleBlog/Dashboard/Sidebar/SidebarNav/SidebarNavButton'
 import NewSidebarNavButton from 'Event/template/SimpleBlog/Dashboard/Sidebar/NewSidebarNavButton'
 import EditModeOnly from 'Event/Dashboard/editor/views/EditModeOnly'
-import {useTemplate} from 'Event/Dashboard/state/TemplateProvider'
+import {useTemplate} from 'Event/TemplateProvider'
 import Section from 'Event/template/SimpleBlog/Dashboard/Sidebar/Section'
 
 export const SIDEBAR_NAV_BUTTON = 'Sidebar Nav Button'

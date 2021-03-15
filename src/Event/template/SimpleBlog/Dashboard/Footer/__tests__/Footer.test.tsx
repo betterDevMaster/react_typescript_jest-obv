@@ -10,6 +10,7 @@ import {fakeEvent} from 'Event/__utils__/factory'
 import {mockRxJsAjax} from 'store/__utils__/MockStoreProvider'
 import {wait} from '@testing-library/react'
 import {defaultScore} from 'Event/PointsProvider/__utils__/StaticPointsProvider'
+import user from '@testing-library/user-event'
 
 const mockPost = mockRxJsAjax.post as jest.Mock
 

@@ -12,10 +12,7 @@ import DangerButton from 'lib/ui/Button/DangerButton'
 import React from 'react'
 import Box from '@material-ui/core/Box'
 import {useCloseConfig} from 'Event/Dashboard/editor/state/edit-mode'
-import {
-  useTemplate,
-  useUpdateTemplate,
-} from 'Event/Dashboard/state/TemplateProvider'
+import {useTemplate, useUpdateTemplate} from 'Event/TemplateProvider'
 import {SIDEBAR_NAV_BUTTON} from 'Event/template/SimpleBlog/Dashboard/Sidebar/SidebarNav'
 import Switch from 'lib/ui/form/Switch'
 import Grid from '@material-ui/core/Grid'

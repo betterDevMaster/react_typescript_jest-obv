@@ -10,7 +10,7 @@ import {User} from 'auth/user'
 import {SetPasswordFormProps} from 'Event/Step1/SetPasswordForm'
 import SimpleBlogPage from 'Event/template/SimpleBlog/Page'
 import ProgressBar from 'lib/ui/ProgressBar'
-import {useTemplate} from 'Event/Dashboard/state/TemplateProvider'
+import {useTemplate} from 'Event/TemplateProvider'
 
 export default function SimpleBlogSetPasswordForm(
   props: {user: User} & SetPasswordFormProps,

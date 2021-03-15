@@ -6,7 +6,7 @@ import {useEvent} from 'Event/EventProvider'
 import TemplateProvider, {
   useTemplate,
   useUpdateTemplate,
-} from 'Event/Dashboard/state/TemplateProvider'
+} from 'Event/TemplateProvider'
 import {Template} from 'Event/template'
 import ProgressBarPreview from 'organization/Event/GeneralConfig/ProgressBarPreview'
 import LoginConfig from 'organization/Event/GeneralConfig/LoginConfig'

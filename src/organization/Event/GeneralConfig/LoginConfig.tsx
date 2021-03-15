@@ -1,6 +1,6 @@
 import React from 'react'
 import styled from 'styled-components'
-import {useTemplate} from 'Event/Dashboard/state/TemplateProvider'
+import {useTemplate} from 'Event/TemplateProvider'
 import {SIMPLE_BLOG} from 'Event/template/SimpleBlog'
 import SimpleBlogLoginConfig from 'Event/template/SimpleBlog/Login/LoginConfig'
 import EventImageUpload from 'organization/Event/DashboardConfig/EventImageUpload'

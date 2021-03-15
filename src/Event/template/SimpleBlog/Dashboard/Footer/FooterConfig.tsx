@@ -2,10 +2,7 @@ import {TextField} from '@material-ui/core'
 import {onChangeStringHandler} from 'lib/dom'
 import ColorPicker from 'lib/ui/ColorPicker'
 import React from 'react'
-import {
-  useTemplate,
-  useUpdateTemplate,
-} from 'Event/Dashboard/state/TemplateProvider'
+import {useTemplate, useUpdateTemplate} from 'Event/TemplateProvider'
 import {FOOTER} from 'Event/template/SimpleBlog/Dashboard/Footer'
 import {SimpleBlog} from 'Event/template/SimpleBlog'
 

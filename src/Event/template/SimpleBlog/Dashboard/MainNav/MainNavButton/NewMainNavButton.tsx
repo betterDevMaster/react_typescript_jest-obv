@@ -2,10 +2,7 @@ import Button from '@material-ui/core/Button'
 import Grid from '@material-ui/core/Grid'
 import {NavButtonWithSize} from 'Event/Dashboard/components/NavButton'
 import {setConfig} from 'Event/Dashboard/editor/state/actions'
-import {
-  useTemplate,
-  useUpdateTemplate,
-} from 'Event/Dashboard/state/TemplateProvider'
+import {useTemplate, useUpdateTemplate} from 'Event/TemplateProvider'
 import {MAIN_NAV_BUTTON} from 'Event/template/SimpleBlog/Dashboard/MainNav/MainNavButton'
 import React from 'react'
 import {useDispatch} from 'react-redux'

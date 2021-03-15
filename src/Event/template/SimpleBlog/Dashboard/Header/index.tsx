@@ -2,12 +2,13 @@ import React from 'react'
 import styled from 'styled-components'
 import Container from '@material-ui/core/Container'
 import {MenuIconButton} from 'lib/ui/IconButton/MenuIconButton'
-import {useTemplate} from 'Event/Dashboard/state/TemplateProvider'
+import {useTemplate} from 'Event/TemplateProvider'
 import {eventRoutes} from 'Event/Routes'
 import {RelativeLink} from 'lib/ui/link/RelativeLink'
 import {useEvent} from 'Event/EventProvider'
 import EditComponent from 'Event/Dashboard/editor/views/EditComponent'
 import {rgb} from 'lib/color'
+import {useEditMode} from 'Event/Dashboard/editor/state/edit-mode'
 
 export const HEADER = 'Header'
 
@@ -20,6 +21,7 @@ export default function Header(props: {
   const {title, header} = useTemplate()
 
   const {event} = useEvent()
+
   const logo = event.logo ? event.logo.url : ''
   const backgroundColor = header.backgroundColor
   const backgroundOpacity = header.backgroundOpacity

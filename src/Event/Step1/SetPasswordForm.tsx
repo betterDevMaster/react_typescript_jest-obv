@@ -5,9 +5,7 @@ import {Attendee} from 'Event/attendee'
 import {ValidationError} from 'lib/api-client'
 import {setUser} from 'auth/actions'
 import {useDispatch} from 'react-redux'
-import TemplateProvider, {
-  useTemplate,
-} from 'Event/Dashboard/state/TemplateProvider'
+import {useTemplate} from 'Event/TemplateProvider'
 import {useAttendee} from 'Event/auth'
 import {SIMPLE_BLOG} from 'Event/template/SimpleBlog'
 import SimpleBlogSetPasswordForm from 'Event/template/SimpleBlog/SetPasswordForm'
@@ -27,7 +25,7 @@ export interface SetPasswordFormProps {
 }
 
 export default function SetPasswordForm() {
-  const {event, hasTechCheck} = useEvent()
+  const {hasTechCheck} = useEvent()
   const [submitting, setSubmitting] = useState(false)
   const [responseError, setResponseError] = useState<
     SetPasswordFormProps['responseError']
@@ -37,6 +35,8 @@ export default function SetPasswordForm() {
   const {submit: submitAction} = usePoints()
   const {createPassword: CREATE_PASSWORD} = usePlatformActions()
   const progress = hasTechCheck ? 33 : 50
+  const template = useTemplate()
+  const user = useAttendee()
 
   const submit = (data: SetPasswordData) => {
     setSubmitting(true)
@@ -51,24 +51,17 @@ export default function SetPasswordForm() {
       })
   }
 
-  return (
-    <TemplateProvider template={event.template}>
-      <TemplateSetPasswordForm
-        submit={submit}
-        submitting={submitting}
-        responseError={responseError}
-        progress={progress}
-      />
-    </TemplateProvider>
-  )
-}
-
-function TemplateSetPasswordForm(props: SetPasswordFormProps) {
-  const template = useTemplate()
-  const user = useAttendee()
   switch (template.name) {
     case SIMPLE_BLOG:
-      return <SimpleBlogSetPasswordForm user={user} {...props} />
+      return (
+        <SimpleBlogSetPasswordForm
+          user={user}
+          submit={submit}
+          submitting={submitting}
+          responseError={responseError}
+          progress={progress}
+        />
+      )
     default:
       throw new Error(
         `Missing set password form for template: ${template.name}`,

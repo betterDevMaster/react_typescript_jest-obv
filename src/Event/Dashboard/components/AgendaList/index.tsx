@@ -6,7 +6,7 @@ import EditComponent from 'Event/Dashboard/editor/views/EditComponent'
 import Published, {Publishable} from 'Event/Dashboard/editor/views/Published'
 import EditModeOnly from 'Event/Dashboard/editor/views/EditModeOnly'
 import AddAgendaEventButton from 'Event/Dashboard/components/AgendaList/AddAgendaEventButton'
-import {useTemplate} from 'Event/Dashboard/state/TemplateProvider'
+import {useTemplate} from 'Event/TemplateProvider'
 import Section from 'Event/template/SimpleBlog/Dashboard/Sidebar/Section'
 
 export const AGENDA = 'Agenda'

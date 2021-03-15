@@ -1,7 +1,4 @@
-import {
-  useTemplate,
-  useUpdateTemplate,
-} from 'Event/Dashboard/state/TemplateProvider'
+import {useTemplate, useUpdateTemplate} from 'Event/TemplateProvider'
 import {v4 as uid} from 'uuid'
 import React from 'react'
 import {BlogPost, BLOG_POST} from 'Event/Dashboard/components/BlogPost'

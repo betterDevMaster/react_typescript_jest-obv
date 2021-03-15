@@ -34,6 +34,7 @@ export interface SimpleBlog {
     backgroundColor: string
     backgroundOpacity: number
     height: number
+    script: string | null
   }
   footer: {
     background: string
@@ -96,6 +97,7 @@ export const createSimpleBlog = (): SimpleBlog => ({
     backgroundColor: '#FFFFFF',
     backgroundOpacity: 1.0,
     height: 150,
+    script: null,
   },
   footer: {
     background: '#000000',

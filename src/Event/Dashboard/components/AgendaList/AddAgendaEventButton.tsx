@@ -1,9 +1,6 @@
 import React from 'react'
 import {Button} from '@material-ui/core'
-import {
-  useTemplate,
-  useUpdateTemplate,
-} from 'Event/Dashboard/state/TemplateProvider'
+import {useTemplate, useUpdateTemplate} from 'Event/TemplateProvider'
 import {setConfig} from 'Event/Dashboard/editor/state/actions'
 import {AGENDA} from 'Event/Dashboard/components/AgendaList'
 import {useDispatch} from 'react-redux'
