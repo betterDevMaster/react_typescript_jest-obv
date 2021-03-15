@@ -1,3 +1,5 @@
+import Box from '@material-ui/core/Box'
+import Typography from '@material-ui/core/Typography'
 import {useEvent} from 'Event/EventProvider'
 import {useAsync} from 'lib/async'
 import {api} from 'lib/url'
@@ -25,7 +27,40 @@ export default function Config() {
     <Layout>
       <Page>
         <div>
-          <h4>Infusionsoft</h4>
+          <Box mb={3}>
+            <Typography variant="h4">Infusionsoft</Typography>
+          </Box>
+          <Box mb={3}>
+            <Typography variant="h5">Attendee Import</Typography>
+            <em> {api('/infusionsoft/attendees/import')} (POST)</em>
+            <pre>
+              {`
+  {
+    "first_name": string,
+    "last_name": string,
+    "email": string,
+    "access_token": obv.io access token
+  }
+            `}
+            </pre>
+            <em>
+              If an attendee with the given email already exists, obv.io will
+              update the other attributes.
+            </em>
+          </Box>
+          <Typography variant="h5">Attendee Delete</Typography>
+          <em> {api('/infusionsoft/attendees/delete')} (POST)</em>
+          <pre>
+            {`
+  {
+    "email": string,
+    "access_token": obv.io access token
+  }
+            `}
+          </pre>
+          <Box mb={3}>
+            <Typography variant="h5">Tags</Typography>
+          </Box>
           {tags.map((tag) => (
             <TagIdInput tag={tag} key={tag.id} onChange={setTagId(tag)} />
           ))}
