@@ -25,7 +25,13 @@ export const saveTemplateEpic: Epic<
       /**
        * Do NOT send image property data
        */
-      const {logo, points_summary_logo, header_background, ...data} = event
+      const {
+        logo,
+        points_summary_logo,
+        header_background,
+        dashboard_background,
+        ...data
+      } = event
 
       const url = api(`/events/${event.slug}`)
 

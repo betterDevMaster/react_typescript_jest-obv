@@ -6,7 +6,7 @@ import {MAIN_NAV_BUTTON} from 'Event/template/SimpleBlog/Dashboard/MainNav/MainN
 import {MainNavButtonConfig} from 'Event/template/SimpleBlog/Dashboard/MainNav/MainNavButton/MainNavButtonConfig'
 import {WELCOME_TEXT} from 'Event/template/SimpleBlog/Dashboard/WelcomeText'
 import {WelcomeTextConfig} from 'Event/template/SimpleBlog/Dashboard/WelcomeText/WelcomeTextConfig'
-import {HeaderConfig} from 'Event/template/SimpleBlog/Dashboard/Header/HeaderConfig'
+import {SimpleBlogConfig} from 'Event/template/SimpleBlog/Config'
 import {SIDEBAR_CONTAINER} from 'Event/template/SimpleBlog/Dashboard/Sidebar/SidebarContainer'
 import {EMOJI_LIST} from 'Event/Dashboard/components/EmojiList'
 import {TICKET_RIBBON} from 'Event/Dashboard/components/TicketRibbonList/TicketRibbon'
@@ -26,13 +26,13 @@ import {FOOTER} from 'Event/template/SimpleBlog/Dashboard/Footer'
 import {FooterConfig} from 'Event/template/SimpleBlog/Dashboard/Footer/FooterConfig'
 import {BLOG_POST} from 'Event/Dashboard/components/BlogPost'
 import {BlogPostConfig} from 'Event/Dashboard/components/BlogPost/BlogPostConfig'
-import {HEADER} from 'Event/template/SimpleBlog/Dashboard/Header'
+import {SIMPLE_BLOG} from 'Event/template/SimpleBlog'
 
 // Must register config types here. This ensures wherever
 // various component types are handled, that all possible
 // components are accounted for.
 export type ComponentConfig =
-  | HeaderConfig
+  | SimpleBlogConfig
   | MainNavButtonConfig
   | WelcomeTextConfig
   | SidebarContainerConfig
@@ -56,8 +56,8 @@ export function ComponentConfig(props: {config: ComponentConfig | null}) {
       return <MainNavButtonConfig id={props.config.id} />
     case WELCOME_TEXT:
       return <WelcomeTextConfig />
-    case HEADER:
-      return <HeaderConfig />
+    case SIMPLE_BLOG:
+      return <SimpleBlogConfig />
     case SIDEBAR_CONTAINER:
       return <SidebarContainerConfig />
     case EMOJI_LIST:

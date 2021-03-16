@@ -33,15 +33,32 @@ export function useUpdateTemplate() {
   }
 }
 
-export function useUpdateProp() {
+export function useUpdatePrimitive<T extends keyof Template>(key: T) {
   const updateTemplate = useUpdateTemplate()
 
   return useCallback(
-    <K extends keyof Template>(key: K, value: Template[K]) => {
+    (value: Template[T]) => {
       updateTemplate({
         [key]: value,
       })
     },
-    [updateTemplate],
+    [updateTemplate, key],
+  )
+}
+
+export function useUpdateObject<T extends keyof Template>(key: T) {
+  const updateTemplate = useUpdateTemplate()
+  const template = useTemplate()
+
+  return useCallback(
+    <K extends keyof Template[T]>(childKey: K) => (value: Template[T][K]) => {
+      updateTemplate({
+        [key]: {
+          ...(template[key] as {}),
+          [childKey]: value,
+        },
+      })
+    },
+    [key, template, updateTemplate],
   )
 }

@@ -6,14 +6,14 @@ import TextField from '@material-ui/core/TextField'
 import Slider from '@material-ui/core/Slider'
 import {spacing} from 'lib/ui/theme'
 import ColorPicker from 'lib/ui/ColorPicker'
-import {useTemplate, useUpdateProp} from 'Event/TemplateProvider'
+import {useTemplate, useUpdatePrimitive} from 'Event/TemplateProvider'
 import {onChangeStringHandler} from 'lib/dom'
 
 export default function LoginFormConfig() {
   const template = useTemplate()
   const {login} = template
 
-  const update = useUpdateProp()
+  const updateLogin = useUpdatePrimitive('login')
 
   const [submitLabel, setSubmitLabel] = useState(login.submitButton.label)
   const [submitBackgroundColor, setSubmitBackgroundColor] = useState(
@@ -43,7 +43,7 @@ export default function LoginFormConfig() {
       return
     }
 
-    update('login', {
+    updateLogin({
       submitButton: {
         label: submitLabel,
         backgroundColor: submitBackgroundColor,
@@ -63,7 +63,7 @@ export default function LoginFormConfig() {
     descriptionColor,
     descriptionFontSize,
     descriptionText,
-    update,
+    updateLogin,
   ])
 
   const handleChangeSlider = (

@@ -8,9 +8,7 @@ import {RelativeLink} from 'lib/ui/link/RelativeLink'
 import {useEvent} from 'Event/EventProvider'
 import EditComponent from 'Event/Dashboard/editor/views/EditComponent'
 import {rgb} from 'lib/color'
-import {useEditMode} from 'Event/Dashboard/editor/state/edit-mode'
-
-export const HEADER = 'Header'
+import {SIMPLE_BLOG} from 'Event/template/SimpleBlog'
 
 export default function Header(props: {
   primaryColor: string
@@ -34,7 +32,7 @@ export default function Header(props: {
   const backgroundColorRgb = rgb(backgroundColor, backgroundOpacity)
 
   return (
-    <EditComponent component={{type: HEADER}}>
+    <EditComponent component={{type: SIMPLE_BLOG}}>
       <Box backgroundImage={backgroundImage} aria-label="header">
         <ColorOverlay color={backgroundColorRgb}>
           <Container maxWidth="lg">

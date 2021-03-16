@@ -47,6 +47,7 @@ export interface SimpleBlog {
     barColor: string
     textColor: string
   }
+  backgroundPosition: 'fixed' | 'bottom'
   login: {
     submitButton: {
       backgroundColor: string
@@ -87,6 +88,7 @@ export const createSimpleBlog = (): SimpleBlog => ({
     entities: {},
     ids: [],
   },
+  backgroundPosition: 'fixed',
   agendas: [],
   points: null,
   resourceList: {
