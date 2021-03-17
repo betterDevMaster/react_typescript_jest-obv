@@ -1,12 +1,12 @@
-import {goToInfusionsoft} from 'organization/Event/Services/Infusionsoft/__utils__/go-to-infusionsoft'
+import {goToInfusionsoft} from 'organization/Event/Services/Apps/Infusionsoft/__utils__/go-to-infusionsoft'
 import user from '@testing-library/user-event'
 import faker from 'faker'
 import {
   fakeInsusionsoftIntegration,
   fakeTag,
   tagTypes,
-} from 'organization/Event/Services/Infusionsoft/__utils__/factory'
-import {Tag} from 'organization/Event/Services/Infusionsoft'
+} from 'organization/Event/Services/Apps/Infusionsoft/__utils__/factory'
+import {Tag} from 'organization/Event/Services/Apps/Infusionsoft'
 import axios from 'axios'
 import {wait} from '@testing-library/dom'
 

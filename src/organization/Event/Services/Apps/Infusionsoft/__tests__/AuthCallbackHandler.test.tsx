@@ -12,7 +12,7 @@ import {
   fakeInsusionsoftIntegration,
   fakeTag,
   tagTypes,
-} from 'organization/Event/Services/Infusionsoft/__utils__/factory'
+} from 'organization/Event/Services/Apps/Infusionsoft/__utils__/factory'
 
 const mockGet = axios.get as jest.Mock
 const mockPost = axios.post as jest.Mock

@@ -5,7 +5,7 @@ import {
   InfusionsoftIntegration,
   Tag,
   TagType,
-} from 'organization/Event/Services/Infusionsoft'
+} from 'organization/Event/Services/Apps/Infusionsoft'
 import faker from 'faker'
 import {INFUSIONSOFT} from 'organization/Event/Services/ServicesProvider'
 

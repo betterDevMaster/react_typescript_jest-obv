@@ -1,7 +1,7 @@
 import {useQueryParams} from 'lib/url'
-import AuthCallbackHandler from 'organization/Event/Services/Infusionsoft/AuthCallbackHandler'
-import Config from 'organization/Event/Services/Infusionsoft/Config'
-import LinkPage from 'organization/Event/Services/Infusionsoft/LinkPage'
+import AuthCallbackHandler from 'organization/Event/Services/Apps/Infusionsoft/AuthCallbackHandler'
+import Config from 'organization/Event/Services/Apps/Infusionsoft/Config'
+import LinkPage from 'organization/Event/Services/Apps/Infusionsoft/LinkPage'
 import {
   BaseIntegration,
   INFUSIONSOFT,

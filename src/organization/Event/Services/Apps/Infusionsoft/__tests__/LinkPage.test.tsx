@@ -1,4 +1,4 @@
-import {goToInfusionsoft} from 'organization/Event/Services/Infusionsoft/__utils__/go-to-infusionsoft'
+import {goToInfusionsoft} from 'organization/Event/Services/Apps/Infusionsoft/__utils__/go-to-infusionsoft'
 import user from '@testing-library/user-event'
 import faker from 'faker'
 import axios from 'axios'

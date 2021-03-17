@@ -1,65 +1,51 @@
-import styled from 'styled-components'
-import Page from 'organization/Event/Page'
-import Layout from 'organization/user/Layout'
 import React from 'react'
-import Card from 'organization/Event/Services/Card'
-import {useEventRoutes} from 'organization/Event/EventRoutes'
-import zapierLogo from 'organization/Event/Services/logos/zapier.jpg'
-import infusionsoftLogo from 'organization/Event/Services/logos/infusionsoft.jpg'
-import {
-  INFUSIONSOFT,
-  useServices,
-  ZAPIER,
-} from 'organization/Event/Services/ServicesProvider'
-import AccessTokens from 'organization/Event/Services/AccessTokens'
+import styled from 'styled-components'
+
+import Tabs from '@material-ui/core/Tabs'
+import Tab from '@material-ui/core/Tab'
+import AccessTokens, {
+  ACCESS_TOKENS,
+} from 'organization/Event/Services/AccessTokens'
+import Apps, {APPS} from 'organization/Event/Services/Apps'
+import Layout from 'organization/user/Layout'
+import Page from 'organization/Event/Page'
+import TabPanel from 'lib/ui/tabs/TabPanel'
 
 export default function Services() {
-  const routes = useEventRoutes()
-  const {isLinked} = useServices()
+  const [tab, setTab] = React.useState(0)
 
+  const handleChange = (_: React.ChangeEvent<{}>, tab: number) => {
+    setTab(tab)
+  }
   return (
     <Layout>
       <Page>
-        <AccessTokens />
-        <Grid>
-          <Card
-            service={ZAPIER}
-            link={routes.services.zapier}
-            logo={zapierLogo}
-            isLinked={isLinked(ZAPIER)}
-          />
-          <Card
-            service={INFUSIONSOFT}
-            link={routes.services.infusionsoft}
-            logo={infusionsoftLogo}
-            isLinked={isLinked(INFUSIONSOFT)}
-          />
-        </Grid>
+        <ServiceTab>
+          <Tabs
+            value={tab}
+            onChange={handleChange}
+            indicatorColor="primary"
+            textColor="primary"
+            variant="scrollable"
+            scrollButtons="auto"
+            aria-label="service config tabs"
+          >
+            <Tab label={APPS} />
+            <Tab label={ACCESS_TOKENS} />
+          </Tabs>
+          <TabPanel currentIndex={tab} index={0} render>
+            <Apps />
+          </TabPanel>
+          <TabPanel currentIndex={tab} index={1} render>
+            <AccessTokens />
+          </TabPanel>
+        </ServiceTab>
       </Page>
     </Layout>
   )
 }
 
-const column = `minmax(270px, auto)`
-
-const Grid = styled.div`
-  display: grid;
-  grid-template-columns: auto;
-  grid-template-rows: auto;
-  grid-gap: ${(props) => props.theme.spacing[8]};
-
-  @media (min-width: ${(props) => props.theme.breakpoints.sm}) {
-    grid-template-columns: ${column} ${column};
-    grid-template-rows: auto auto;
-  }
-
-  @media (min-width: ${(props) => props.theme.breakpoints.md}) {
-    grid-template-columns: ${column} ${column} ${column};
-    grid-template-rows: auto auto auto;
-  }
-
-  @media (min-width: ${(props) => props.theme.breakpoints.lg}) {
-    grid-template-columns: ${column} ${column} ${column} ${column};
-    grid-template-rows: auto auto auto auto;
-  }
+const ServiceTab = styled.div`
+  flex-grow: 1;
+  width: '100%';
 `

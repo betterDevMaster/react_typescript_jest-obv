@@ -2,14 +2,12 @@ import {useAttendee} from 'Event/auth'
 import {eventRoutes} from 'Event/Routes'
 import React from 'react'
 import {Redirect} from 'react-router-dom'
-import {useEvent} from 'Event/EventProvider'
-import TemplateProvider, {useTemplate} from 'Event/TemplateProvider'
+import {useTemplate} from 'Event/TemplateProvider'
 import {SIMPLE_BLOG} from 'Event/template/SimpleBlog'
 import SimpleBlogStep2 from 'Event/template/SimpleBlog/Step2'
 
 export default function Step2() {
   const attendee = useAttendee()
-  const {event} = useEvent()
   const template = useTemplate()
   const user = useAttendee()
 

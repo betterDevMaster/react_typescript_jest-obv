@@ -4,8 +4,8 @@ import {useEvent} from 'Event/EventProvider'
 import {useAsync} from 'lib/async'
 import {api} from 'lib/url'
 import Page from 'organization/Event/Page'
-import {Tag} from 'organization/Event/Services/Infusionsoft'
-import TagIdInput from 'organization/Event/Services/Infusionsoft/Config/TagIdInput'
+import {Tag} from 'organization/Event/Services/Apps/Infusionsoft'
+import TagIdInput from 'organization/Event/Services/Apps/Infusionsoft/Config/TagIdInput'
 import {useOrganization} from 'organization/OrganizationProvider'
 import Layout from 'organization/user/Layout'
 import React, {useCallback, useEffect, useState} from 'react'
@@ -35,12 +35,12 @@ export default function Config() {
             <em> {api('/infusionsoft/attendees/import')} (POST)</em>
             <pre>
               {`
-  {
-    "first_name": string,
-    "last_name": string,
-    "email": string,
-    "access_token": obv.io access token
-  }
+                {
+                  "first_name": string,
+                  "last_name": string,
+                  "email": string,
+                  "access_token": obv.io access token
+                }
             `}
             </pre>
             <em>
@@ -52,10 +52,10 @@ export default function Config() {
           <em> {api('/infusionsoft/attendees/delete')} (POST)</em>
           <pre>
             {`
-  {
-    "email": string,
-    "access_token": obv.io access token
-  }
+              {
+                "email": string,
+                "access_token": obv.io access token
+              }
             `}
           </pre>
           <Box mb={3}>

@@ -1,9 +1,9 @@
-import {goToInfusionsoft} from 'organization/Event/Services/Infusionsoft/__utils__/go-to-infusionsoft'
+import {goToInfusionsoft} from 'organization/Event/Services/Apps/Infusionsoft/__utils__/go-to-infusionsoft'
 import {
   fakeInsusionsoftIntegration,
   fakeTag,
   tagTypes,
-} from 'organization/Event/Services/Infusionsoft/__utils__/factory'
+} from 'organization/Event/Services/Apps/Infusionsoft/__utils__/factory'
 
 afterEach(() => {
   jest.clearAllMocks()

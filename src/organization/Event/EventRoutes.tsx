@@ -18,12 +18,12 @@ import PointsConfig from 'organization/Event/PointsConfig'
 import GeneralConfig from 'organization/Event/GeneralConfig'
 import AttendeesProvider from 'organization/Event/AttendeesProvider'
 import Services from 'organization/Event/Services'
-import Zapier from 'organization/Event/Services/Zapier'
+import Zapier from 'organization/Event/Services/Apps/Zapier'
 import ServicesProvider from 'organization/Event/Services/ServicesProvider'
 import RoomAssignmentsProvider from 'organization/Event/RoomAssignmentsProvider'
 import AreasProvider from 'organization/Event/AreasProvider'
 import QuestionsConfig from 'organization/Event/QuestionsConfig'
-import Infusionsoft from 'organization/Event/Services/Infusionsoft'
+import Infusionsoft from 'organization/Event/Services/Apps/Infusionsoft'
 
 export function useEventRoutes(event?: ObvioEvent) {
   const {routes: organizationRoutes} = useOrganization()

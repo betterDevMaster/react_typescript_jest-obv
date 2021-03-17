@@ -7,7 +7,7 @@ import {
   ATTENDEE_CHECKED_IN,
   ATTENDEE_SIGNED_WAIVER,
   Tag,
-} from 'organization/Event/Services/Infusionsoft'
+} from 'organization/Event/Services/Apps/Infusionsoft'
 import React, {useEffect, useState} from 'react'
 
 export default function TagIdInput(props: {
