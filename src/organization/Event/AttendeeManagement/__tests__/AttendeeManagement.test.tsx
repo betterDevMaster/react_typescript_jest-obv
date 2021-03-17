@@ -8,6 +8,7 @@ import {goToAttendeeManagement} from 'organization/Event/AttendeeManagement/__ut
 import {fireEvent, wait} from '@testing-library/react'
 
 const mockPatch = axios.patch as jest.Mock
+const mockDelete = axios.delete as jest.Mock
 
 beforeEach(() => {
   jest.clearAllMocks()
@@ -63,13 +64,13 @@ it('should reverse tech check', async () => {
   const target = attendees[targetIndex]
   const updated: Attendee = {...target, tech_check_completed_at: null}
 
-  mockPatch.mockImplementationOnce(() => Promise.resolve({data: updated}))
+  mockDelete.mockImplementationOnce(() => Promise.resolve({data: updated}))
 
   // reverse tech check
   user.click((await findAllByLabelText('toggle check in'))[targetIndex])
 
   await wait(() => {
-    expect(mockPatch).toHaveBeenCalledTimes(1)
+    expect(mockDelete).toHaveBeenCalledTimes(1)
   })
 
   // checked-in shows today's date
