@@ -142,10 +142,7 @@ export function useCheckIn() {
   const {client} = useOrganization()
 
   return (attendee: Attendee) => {
-    const url = api(
-      `/events/${event.slug}/attendees/${attendee.id}/complete_tech_check`,
-    )
-
+    const url = api(`/events/${event.slug}/attendees/${attendee.id}/check_in`)
     return client.patch<Attendee>(url, {})
   }
 }
@@ -155,10 +152,8 @@ export function useCheckOut() {
   const {client} = useOrganization()
 
   return (attendee: Attendee) => {
-    const url = api(
-      `/events/${event.slug}/attendees/${attendee.id}/mark_tech_check_incomplete`,
-    )
+    const url = api(`/events/${event.slug}/attendees/${attendee.id}/check_in`)
 
-    return client.patch<Attendee>(url)
+    return client.delete<Attendee>(url)
   }
 }
