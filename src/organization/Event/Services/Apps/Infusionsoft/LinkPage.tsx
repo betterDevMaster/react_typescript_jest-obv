@@ -1,7 +1,7 @@
 import Button from '@material-ui/core/Button'
 import Typography from '@material-ui/core/Typography'
 import {useEvent} from 'Event/EventProvider'
-import {api, absoluteUrl} from 'lib/url'
+import {api, obvioUrl} from 'lib/url'
 import {useEventRoutes} from 'organization/Event/EventRoutes'
 import Page from 'organization/Event/Page'
 import {useOrganization} from 'organization/OrganizationProvider'
@@ -63,5 +63,5 @@ function useLink() {
 
 export function useRedirectUrl() {
   const routes = useEventRoutes()
-  return absoluteUrl(routes.services.infusionsoft)
+  return obvioUrl(routes.services.infusionsoft)
 }

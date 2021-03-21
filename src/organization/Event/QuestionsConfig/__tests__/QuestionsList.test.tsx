@@ -31,7 +31,7 @@ it('should render questions', async () => {
 it('should remove a question', async () => {
   const questions = Array.from(
     {length: faker.random.number({min: 2, max: 5})},
-    fakeQuestion,
+    () => fakeQuestion({is_registration_question: true}),
   )
 
   const event = fakeEvent({questions})

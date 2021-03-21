@@ -8,7 +8,7 @@ import React from 'react'
 import faker from 'faker'
 import {render} from '__utils__/render'
 import App from 'App'
-import {findByText, wait} from '@testing-library/react'
+import {wait} from '@testing-library/react'
 import axios from 'axios'
 
 const mockGet = axios.get as jest.Mock

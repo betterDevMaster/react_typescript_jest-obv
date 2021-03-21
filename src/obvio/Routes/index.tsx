@@ -7,6 +7,8 @@ import UserRoutes from 'obvio/Routes/UserRoutes'
 export const obvioRoutes = createRoutes({
   login: '/login',
   registration: '/register',
+  forgotPassword: '/forgot_password',
+  resetPassword: '/reset_password',
   organizations: {
     create: '/create',
   },

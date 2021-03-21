@@ -32,6 +32,18 @@ export interface RegistrationData {
   passwordConfirmation: string
 }
 
+export interface ForgotPasswordRequestData {
+  form_url?: string
+  email: string
+}
+
+export interface ResetPasswordRequestData {
+  token?: string
+  email: string
+  password: string
+  password_confirmation: string
+}
+
 export const useAuthClient = (settings: AuthClientSettings) => {
   const {endpoints, tokenKey, noCache} = settings
   const dispatch = useDispatch()

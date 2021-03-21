@@ -17,9 +17,13 @@ import TemplateProvider from 'Event/TemplateProvider'
 import WaiverProvider from 'Event/Step2/WaiverProvider'
 import SubmissionsProvider from 'Event/SubmissionsProvider'
 import CustomScripts from 'organization/Event/CustomScripts'
+import ForgotPassword from 'Event/auth/ForgotPassword'
+import ResetPassword from 'Event/auth/ResetPassword'
 
 export const eventRoutes = createRoutes({
   login: '/login',
+  forgot_password: '/forgot_password',
+  reset_password: '/reset_password',
   step1: '/step_1',
   step2: '/step_2',
   step3: '/step_3',
@@ -97,6 +101,12 @@ function GuestRoutes() {
     <Switch>
       <Route path={eventRoutes.login}>
         <Login />
+      </Route>
+      <Route path={eventRoutes.forgot_password}>
+        <ForgotPassword />
+      </Route>
+      <Route path={eventRoutes.reset_password}>
+        <ResetPassword />
       </Route>
       <Redirect to={eventRoutes.login} />
     </Switch>

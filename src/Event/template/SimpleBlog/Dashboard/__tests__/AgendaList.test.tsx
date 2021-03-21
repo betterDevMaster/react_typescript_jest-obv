@@ -34,23 +34,20 @@ it('should render agendas', async () => {
 
   expect(queryByText(/agenda/i)).not.toBeInTheDocument()
 
-  const agendas = Array.from(
-    {length: faker.random.number({min: 1, max: 4})},
-    fakeAgenda,
-  )
+  const agendas = new Array(faker.random.number({min: 1, max: 4}))
+    .fill(null)
+    .map((_, index) =>
+      fakeAgenda({isVisible: index === 0 || faker.random.boolean()}),
+    )
 
   const withAgendas = fakeEvent({template: fakeSimpleBlog({agendas})})
 
-  act(() => {
-    rerender(<Dashboard isEditMode={false} user={fakeUser()} />, {
-      event: withAgendas,
-    })
+  rerender(<Dashboard isEditMode={false} user={fakeUser()} />, {
+    event: withAgendas,
   })
 
   const numVisible = agendas.filter((a) => a.isVisible).length
-  if (numVisible > 0) {
-    expect((await findAllByLabelText('agenda')).length).toBe(numVisible)
-  }
+  expect((await findAllByLabelText('agenda')).length).toBe(numVisible)
 })
 
 it('should edit an agenda', async () => {

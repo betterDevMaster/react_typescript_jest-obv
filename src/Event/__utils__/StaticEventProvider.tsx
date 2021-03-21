@@ -5,6 +5,7 @@ import {useDispatch, useSelector} from 'react-redux'
 import {ObvioEvent} from 'Event'
 import {eventClient} from 'Event/api-client'
 import {RootState} from 'store'
+import {appRoot, isProduction} from 'App'
 
 export default function StaticEventProvider(props: {
   event: ObvioEvent
@@ -25,13 +26,21 @@ export default function StaticEventProvider(props: {
     [dispatch],
   )
 
+  if (!current) {
+    return null
+  }
+
+  const scheme = isProduction ? 'https://' : 'http://'
+  const url = `${scheme}${current.slug}.${appRoot}`
+
   return (
     <EventContext.Provider
       value={{
-        event: current || event,
+        event: current,
         client: eventClient,
         hasTechCheck: hasTechCheck(event),
         update,
+        url,
       }}
     >
       {props.children}

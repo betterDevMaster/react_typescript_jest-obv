@@ -74,6 +74,8 @@ export function createRoutesFor(organization: Organization) {
   return createRoutes(
     {
       login: '/login',
+      forgot_password: '/forgot_password',
+      reset_password: '/reset_password',
       team: '/team',
       events: {
         create: '/create',

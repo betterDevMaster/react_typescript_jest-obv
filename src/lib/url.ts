@@ -50,12 +50,12 @@ export const storage = (path: string) => {
 }
 
 /**
- * Generate absolute URL
+ * Generates an absolute URL for a given obv.io path
  *
  * @param path
  * @returns
  */
-export const absoluteUrl = (path: string) => {
+export const obvioUrl = (path: string) => {
   const scheme = isProduction ? 'https://' : 'http://'
   const absolutePath = `${OBVIO_SUBDOMAIN}.${appRoot}${path}`
 

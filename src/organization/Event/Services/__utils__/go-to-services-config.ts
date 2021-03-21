@@ -3,11 +3,16 @@ import {ObvioEvent} from 'Event'
 import user from '@testing-library/user-event'
 import axios from 'axios'
 import {Integration} from 'organization/Event/Services/ServicesProvider'
+import {AccessToken} from 'organization/Event/Services/AccessTokens'
 
 const mockGet = axios.get as jest.Mock
 
 export async function goToServices(
-  overrides: {event?: ObvioEvent; integrations?: Integration[]} = {},
+  overrides: {
+    event?: ObvioEvent
+    integrations?: Integration[]
+    tokens?: AccessToken[]
+  } = {},
 ) {
   const context = await goToEventConfig(overrides)
 
@@ -17,7 +22,9 @@ export async function goToServices(
   )
 
   // Access tokens
-  mockGet.mockImplementationOnce(() => Promise.resolve({data: []}))
+  mockGet.mockImplementationOnce(() =>
+    Promise.resolve({data: overrides.tokens || []}),
+  )
 
   user.click(await context.findByLabelText('services'))
 

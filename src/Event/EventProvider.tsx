@@ -8,12 +8,14 @@ import {setEvent} from 'Event/state/actions'
 import {ObvioEvent} from 'Event'
 import {RootState} from 'store'
 import {EventClient, eventClient} from 'Event/api-client'
+import {appRoot, isProduction} from 'App'
 
 interface EventContextProps {
   event: ObvioEvent
   client: EventClient
   hasTechCheck: boolean
   update: (event: ObvioEvent) => void
+  url: string
 }
 
 export const EventContext = React.createContext<EventContextProps | undefined>(
@@ -74,6 +76,9 @@ function EventProvider(props: {
     return <div>loading...</div>
   }
 
+  const scheme = isProduction ? 'https://' : 'http://'
+  const url = `${scheme}${current.slug}.${appRoot}`
+
   return (
     <EventContext.Provider
       value={{
@@ -81,6 +86,7 @@ function EventProvider(props: {
         client: eventClient,
         hasTechCheck: hasTechCheck(current),
         update,
+        url,
       }}
     >
       {props.children}
