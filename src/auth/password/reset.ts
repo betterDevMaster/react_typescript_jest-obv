@@ -20,9 +20,10 @@ export interface ResetPasswordProps {
 }
 
 export interface ResetPasswordData {
-  email: string
   password: string
   password_confirmation: string
+  email?: string
+  token?: string
 }
 
 export function useResetPassword(url: string) {
@@ -34,12 +35,11 @@ export function useResetPassword(url: string) {
   const [wasSuccessful, setwasSuccessful] = useState(false)
   const {email, token} = useQueryParams()
 
-  const resetPassword = (body: ResetPasswordData & {token?: string}) =>
-    client.post(url, body)
+  const resetPassword = (body: ResetPasswordData) => client.post(url, body)
 
-  const submit = (data: ResetPasswordData) => {
+  const submit = (data: {password: string; password_confirmation: string}) => {
     setSubmitting(true)
-    resetPassword({token, ...data})
+    resetPassword({email, token, ...data})
       .then(() => {
         setwasSuccessful(true)
       })
@@ -63,7 +63,6 @@ export function useResetPassword(url: string) {
     onSubmit,
     register,
     errors: {
-      email: error('email'),
       password: error('password'),
       passwordConfirmation: error('password_confirmation'),
     },

@@ -1,12 +1,11 @@
 import React from 'react'
-import {ResetPasswordProps} from 'Event/auth/ResetPassword'
-
 import Page, {
   Button,
   Description,
   TextField,
   ErrorMessage,
 } from 'Event/template/SimpleBlog/Login/Page'
+import {ResetPasswordProps} from 'auth/password'
 
 export default function ResetPassword(props: ResetPasswordProps) {
   return (
