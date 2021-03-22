@@ -1,11 +1,9 @@
-import {act, wait} from '@testing-library/react'
+import {act} from '@testing-library/react'
 import user from '@testing-library/user-event'
 import axios from 'axios'
-import {visitEventSite} from 'Event/__utils__/url'
 import faker from 'faker'
 import React from 'react'
 import {render} from '__utils__/render'
-import ResetPassword from 'Event/auth/ResetPassword'
 import {fakeOrganization} from 'obvio/Organizations/__utils__/factory'
 import {useLocation} from 'react-router-dom'
 import App, {appRoot} from 'App'
@@ -20,7 +18,7 @@ beforeEach(() => {
   jest.clearAllMocks()
 })
 
-it('should show event reset password form', async () => {
+it('should reset the user password', async () => {
   const event = fakeEvent({template: fakeSimpleBlog()})
   const email = faker.internet.email()
   const token = 'secrettoken'

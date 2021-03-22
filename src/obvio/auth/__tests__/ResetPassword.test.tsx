@@ -1,35 +1,42 @@
-import ResetPassword from 'obvio/auth/ResetPassword'
 import faker from 'faker'
 import React from 'react'
 import {render} from '__utils__/render'
 import user from '@testing-library/user-event'
 import mockAxios from 'axios'
-import {act} from '@testing-library/react'
+import {act, wait} from '@testing-library/react'
+import App, {appRoot} from 'App'
+import {useLocation} from 'react-router-dom'
 
 const mockPost = mockAxios.post as jest.Mock
+const mockUseLocation = useLocation as jest.Mock
 
 afterEach(() => {
   jest.clearAllMocks()
 })
 
-it('should show the obvio Reset Password form', async () => {
+it('should reset the user password', async () => {
   const email = faker.internet.email()
   const token = 'secrettoken'
-  const link = `obv.io/reset_password?email=${email}&token=${token}`
   const password = 'mypw'
+
+  const pathname = '/reset_password'
+  const search = `?email=${email}&token=${token}`
+
+  mockUseLocation.mockImplementation(() => ({
+    pathname,
+    search,
+  }))
 
   Object.defineProperty(window, 'location', {
     value: {
-      host: link, // Root, no subdomain
+      host: appRoot,
+      pathname,
+      search,
+      hash: '',
     },
   })
 
-  const {findByLabelText} = render(<ResetPassword />)
-
-  expect(await findByLabelText('obvio account password')).toBeInTheDocument()
-  expect(
-    await findByLabelText('obvio account password confirmation'),
-  ).toBeInTheDocument()
+  const {findByLabelText} = render(<App />)
 
   user.type(await findByLabelText('obvio account password'), password)
   user.type(
@@ -43,10 +50,17 @@ it('should show the obvio Reset Password form', async () => {
     user.click(await findByLabelText('submit reset password'))
   })
 
-  expect(mockPost).toHaveBeenCalledTimes(1)
+  await wait(() => {
+    expect(mockPost).toHaveBeenCalledTimes(1)
+  })
 
-  const url = mockPost.mock.calls[0][0]
+  const [url, data] = mockPost.mock.calls[0]
 
-  expect(url).toMatch(`reset_password`)
+  expect(url).toMatch(`/reset_password`)
   expect(await findByLabelText('back to login')).toBeInTheDocument()
+
+  expect(data.token).toBe(token)
+  expect(data.email).toBe(email)
+  expect(data.password).toBe(password)
+  expect(data.password_confirmation).toBe(password)
 })

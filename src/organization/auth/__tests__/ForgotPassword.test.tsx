@@ -4,11 +4,9 @@ import React from 'react'
 import {render} from '__utils__/render'
 import user from '@testing-library/user-event'
 import mockAxios from 'axios'
-import {fakeUser} from 'auth/user/__utils__/factory'
 import {act} from '@testing-library/react'
 import {fakeOrganization} from 'obvio/Organizations/__utils__/factory'
 import {useLocation} from 'react-router-dom'
-import {organizationTokenKey} from 'organization/auth'
 
 const mockPost = mockAxios.post as jest.Mock
 const mockGet = mockAxios.get as jest.Mock

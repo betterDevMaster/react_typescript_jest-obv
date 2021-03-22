@@ -8,7 +8,7 @@ import {spacing} from 'lib/ui/theme'
 import {RelativeLink} from 'lib/ui/link/RelativeLink'
 import backgroundImg from 'assets/images/background_login.png'
 import logoImgVertical from 'assets/images/logo_vertical.png'
-import {makeStyles} from '@material-ui/core/styles'
+import {makeStyles, withStyles} from '@material-ui/core/styles'
 
 export default function Page(props: {
   children: React.ReactElement | React.ReactElement[]
@@ -75,11 +75,6 @@ export function TextField(props: TextFieldProps) {
   )
 }
 
-export const Button = styled(MuiButton)`
-  border-radius: ${(props) => props.theme.spacing[4]} !important;
-  height: 50px;
-`
-
 export const Link = styled(RelativeLink)`
   margin-top: ${(props) => props.theme.spacing[4]};
   color: #2066a7;
@@ -100,9 +95,21 @@ const Container = styled.div`
 const ErrorText = styled(Typography)`
   margin-bottom: ${(props) => props.theme.spacing[3]};
 `
-export const BackButton = styled(MuiButton)`
-  border-radius: ${(props) => props.theme.spacing[4]} !important;
-  height: 50px;
-  margin-top: 10px !important;
-  color: #3490dc !important;
-`
+
+const buttonHeight = 50
+const buttonBorderRadius = 16
+
+export const Button = withStyles({
+  root: {
+    borderRadius: buttonBorderRadius,
+    height: buttonHeight,
+  },
+})(MuiButton)
+
+export const BackButton = withStyles({
+  root: {
+    borderRadius: buttonBorderRadius,
+    height: buttonHeight,
+    marginTop: spacing[3],
+  },
+})(MuiButton)

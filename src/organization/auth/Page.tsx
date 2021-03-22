@@ -7,7 +7,7 @@ import Typography from '@material-ui/core/Typography'
 import backgroundImg from 'assets/images/background_login.png'
 import logoImgVertical from 'assets/images/logo_vertical.png'
 import {RelativeLink} from 'lib/ui/link/RelativeLink'
-import {makeStyles} from '@material-ui/core/styles'
+import {makeStyles, withStyles} from '@material-ui/core/styles'
 import {spacing} from 'lib/ui/theme'
 
 export default function Page(props: {
@@ -75,11 +75,6 @@ export function TextField(props: TextFieldProps) {
   )
 }
 
-export const Button = styled(MuiButton)`
-  border-radius: ${(props) => props.theme.spacing[3]} !important;
-  height: ${(props) => props.theme.spacing[12]};
-`
-
 const Container = styled.div`
   width: 100%;
   padding: ${(props) => props.theme.spacing[4]};
@@ -99,3 +94,21 @@ export const Link = styled(RelativeLink)`
   margin-top: ${(props) => props.theme.spacing[10]};
   color: #2066a7;
 `
+
+const buttonHeight = 50
+const buttonBorderRadius = 16
+
+export const Button = withStyles({
+  root: {
+    borderRadius: buttonBorderRadius,
+    height: buttonHeight,
+  },
+})(MuiButton)
+
+export const BackButton = withStyles({
+  root: {
+    borderRadius: buttonBorderRadius,
+    height: buttonHeight,
+    marginTop: spacing[3],
+  },
+})(MuiButton)

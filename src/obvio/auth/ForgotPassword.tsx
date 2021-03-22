@@ -1,6 +1,5 @@
 import React from 'react'
 import {obvioUrl, api} from 'lib/url'
-import {useHistory} from 'react-router-dom'
 import {obvioRoutes} from 'obvio/Routes'
 import Page, {
   Description,
@@ -10,8 +9,18 @@ import Page, {
   BackButton,
 } from 'obvio/auth/Page'
 import {useForgotPassword} from 'auth/password'
+import Typography from '@material-ui/core/Typography'
+import {RelativeLink} from 'lib/ui/link/RelativeLink'
 
 export default function ForgotPassword() {
+  return (
+    <Page>
+      <Content />
+    </Page>
+  )
+}
+
+function Content() {
   const {
     resetLinkSent,
     onSubmit,
@@ -24,63 +33,60 @@ export default function ForgotPassword() {
     resetFormUrl: obvioUrl(obvioRoutes.resetPassword),
   })
 
-  const history = useHistory()
-
-  const goBacktoLogin = () => {
-    history.push(obvioRoutes.login)
+  if (resetLinkSent) {
+    return (
+      <Typography>
+        Password reset link sent! Check your spam folder if you don't see it
+        after a couple minutes.
+      </Typography>
+    )
   }
 
   return (
-    <Page>
-      <Description>Forgot your password?</Description>
-      {resetLinkSent === true ? (
-        <div>'Email sent Successfully.'</div>
-      ) : (
-        <>
-          <p>Please enter the email address associated with your account.</p>
-          <form onSubmit={onSubmit}>
-            <TextField
-              label="Email"
-              type="email"
-              fullWidth
-              variant="outlined"
-              disabled={submitting}
-              name="email"
-              inputProps={{
-                ref: register({
-                  required: 'Email is required',
-                }),
-                'aria-label': 'obvio account email',
-              }}
-              error={!!emailError}
-              helperText={emailError}
-            />
-            <Error>{responseError?.message}</Error>
-            <Button
-              variant="contained"
-              fullWidth
-              color="primary"
-              disabled={submitting}
-              aria-label="submit reset password"
-              type="submit"
-            >
-              Reset Password
-            </Button>
-            <BackButton
-              variant="contained"
-              fullWidth
-              color="default"
-              aria-label="back to login"
-              type="button"
-              onClick={() => {
-                goBacktoLogin()
-              }}
-            >
-              Back
-            </BackButton>
-          </form>
-        </>
-      )}
-    </Page>
+    <>
+      <Description aria-label="event login description">
+        Send password reset link
+      </Description>
+      <form onSubmit={onSubmit}>
+        <TextField
+          label="Email"
+          type="email"
+          fullWidth
+          variant="outlined"
+          disabled={submitting}
+          name="email"
+          inputProps={{
+            ref: register({
+              required: 'Email is required',
+            }),
+            'aria-label': 'obvio account email',
+          }}
+          error={!!emailError}
+          helperText={emailError}
+        />
+        <Error>{responseError?.message}</Error>
+        <Button
+          variant="contained"
+          fullWidth
+          color="primary"
+          disabled={submitting}
+          aria-label="submit reset password"
+          type="submit"
+        >
+          Reset Password
+        </Button>
+        <RelativeLink to={obvioRoutes.login} disableStyles>
+          <BackButton
+            variant="outlined"
+            fullWidth
+            color="default"
+            aria-label="back to login"
+            type="button"
+          >
+            Back
+          </BackButton>
+        </RelativeLink>
+      </form>
+    </>
   )
 }

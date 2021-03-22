@@ -1,10 +1,25 @@
 import React from 'react'
 import {useOrganization} from 'organization/OrganizationProvider'
 import {api, obvioUrl} from 'lib/url'
-import Page, {TextField, Error, Button} from 'organization/auth/Page'
+import Page, {
+  TextField,
+  Error,
+  Button,
+  BackButton,
+} from 'organization/auth/Page'
 import {useForgotPassword} from 'auth/password'
+import Typography from '@material-ui/core/Typography'
+import {RelativeLink} from 'lib/ui/link/RelativeLink'
 
 export default function ForgotPassword() {
+  return (
+    <Page>
+      <Content />
+    </Page>
+  )
+}
+
+function Content() {
   const {organization, routes} = useOrganization()
 
   const {
@@ -19,41 +34,57 @@ export default function ForgotPassword() {
     resetFormUrl: obvioUrl(routes.reset_password),
   })
 
+  if (resetLinkSent) {
+    return (
+      <Typography>
+        Password reset link sent! Check your spam folder if you don't see it
+        after a couple minutes.
+      </Typography>
+    )
+  }
+
   return (
-    <Page>
-      {resetLinkSent === true ? (
-        <div>'Email sent Successfully! Please check email.'</div>
-      ) : (
-        <form onSubmit={onSubmit}>
-          <TextField
-            label="Email"
-            type="email"
-            fullWidth
+    <>
+      <form onSubmit={onSubmit}>
+        <TextField
+          label="Email"
+          type="email"
+          fullWidth
+          variant="outlined"
+          name="email"
+          disabled={submitting}
+          inputProps={{
+            ref: register({
+              required: 'Email is required',
+            }),
+            'aria-label': 'organiztion account email',
+          }}
+          error={!!emailError}
+          helperText={emailError}
+        />
+        <Error>{responseError?.message}</Error>
+        <Button
+          variant="contained"
+          fullWidth
+          color="primary"
+          disabled={submitting}
+          aria-label="submit reset password"
+          type="submit"
+        >
+          Reset Password
+        </Button>
+        <RelativeLink to={routes.login} disableStyles>
+          <BackButton
             variant="outlined"
-            name="email"
-            disabled={submitting}
-            inputProps={{
-              ref: register({
-                required: 'Email is required',
-              }),
-              'aria-label': 'organiztion account email',
-            }}
-            error={!!emailError}
-            helperText={emailError}
-          />
-          <Error>{responseError?.message}</Error>
-          <Button
-            variant="contained"
             fullWidth
-            color="primary"
-            disabled={submitting}
-            aria-label="submit reset password"
-            type="submit"
+            color="default"
+            aria-label="back to login"
+            type="button"
           >
-            Reset Password
-          </Button>
-        </form>
-      )}
-    </Page>
+            Back
+          </BackButton>
+        </RelativeLink>
+      </form>
+    </>
   )
 }
