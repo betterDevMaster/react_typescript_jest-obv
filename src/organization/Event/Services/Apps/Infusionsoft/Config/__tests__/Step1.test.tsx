@@ -19,7 +19,7 @@ afterEach(() => {
   jest.clearAllMocks()
 })
 
-it('should save login field id', async () => {
+it('should save login field name', async () => {
   const linked = fakeInfusionsoftIntegration({
     is_linked: true,
   })
@@ -41,14 +41,14 @@ it('should save login field id', async () => {
 
   mockPatch.mockImplementationOnce(() => Promise.resolve({data: updated}))
 
-  user.type(await findByLabelText('login field id'), String(id))
-  user.click(await findByLabelText('save login field id'))
+  user.type(await findByLabelText('login field name'), String(id))
+  user.click(await findByLabelText('save login field name'))
 
   await wait(async () => {
     expect(mockPatch).toHaveBeenCalledTimes(1)
   })
 
-  expect(await findByLabelText('save login field id')).toBeDisabled()
+  expect(await findByLabelText('save login field name')).toBeDisabled()
 
   const [url, data] = mockPatch.mock.calls[0]
 

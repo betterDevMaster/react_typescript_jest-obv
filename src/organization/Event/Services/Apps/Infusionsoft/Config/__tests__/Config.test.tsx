@@ -12,5 +12,5 @@ it('should show config', async () => {
     integrations: [linked],
   })
 
-  expect(await findByLabelText('login field id')).toBeInTheDocument()
+  expect(await findByLabelText('login field name')).toBeInTheDocument()
 })

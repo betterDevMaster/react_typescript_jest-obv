@@ -79,5 +79,5 @@ it('should complete authorization', async () => {
   const {findByLabelText} = render(<App />, {withRouter: true})
 
   // Shows config on success
-  expect(await findByLabelText('login field id')).toBeInTheDocument()
+  expect(await findByLabelText('login field name')).toBeInTheDocument()
 })

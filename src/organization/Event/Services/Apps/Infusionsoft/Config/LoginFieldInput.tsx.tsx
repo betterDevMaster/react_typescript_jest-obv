@@ -12,38 +12,40 @@ import {
 import {useOrganization} from 'organization/OrganizationProvider'
 import React, {useEffect, useState} from 'react'
 
-export default function LoginFieldIdInput() {
+export default function LoginFieldInput() {
   const infusionsoft = useInfusionsoft()
-  const [id, setId] = useState('')
+  const [field, setField] = useState('')
   const {save, isProcessing, error} = useSave()
 
   useEffect(() => {
-    setId(
-      infusionsoft.login_field_id ? String(infusionsoft.login_field_id) : '',
-    )
+    if (!infusionsoft.login_field_name) {
+      return
+    }
+
+    setField(infusionsoft.login_field_name)
   }, [infusionsoft])
 
-  const hasChanges = id !== String(infusionsoft.login_field_id)
-  const canSave = Boolean(id) && hasChanges && !isProcessing
+  const hasChanges = field !== infusionsoft.login_field_name
+  const canSave = Boolean(field) && hasChanges && !isProcessing
 
   return (
     <TextField
-      value={id}
-      onChange={onChangeStringHandler(setId)}
+      value={field}
+      onChange={onChangeStringHandler(setField)}
       variant="outlined"
       label={label(infusionsoft.login_field_name)}
       fullWidth
       inputProps={{
-        'aria-label': 'login field id',
+        'aria-label': 'login field name',
       }}
       InputProps={{
         endAdornment: (
           <InputAdornment position="end">
             <Button
-              onClick={save(id)}
+              onClick={save(field)}
               disabled={!canSave}
               color="primary"
-              aria-label="save login field id"
+              aria-label="save login field name"
             >
               Save
             </Button>
@@ -72,7 +74,7 @@ function useSave() {
 
   const [error, setError] = useState<string | null>(null)
 
-  const save = (id: string) => () => {
+  const save = (field: string) => () => {
     if (isProcessing) {
       return
     }
@@ -81,7 +83,7 @@ function useSave() {
 
     client
       .patch<InfusionsoftIntegration>(url, {
-        id,
+        field_name: field,
       })
       .then(updateIntegration)
       .catch((e) => setError(e.message))
