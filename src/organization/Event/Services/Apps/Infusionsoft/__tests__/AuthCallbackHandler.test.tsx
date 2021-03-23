@@ -1,5 +1,4 @@
 import App from 'App'
-import faker from 'faker'
 import {fakeEvent} from 'Event/__utils__/factory'
 import React from 'react'
 import {render} from '__utils__/render'
@@ -8,11 +7,7 @@ import {fakeTeamMember} from 'organization/Team/__utils__/factory'
 import {fakeOrganization} from 'obvio/Organizations/__utils__/factory'
 import {organizationTokenKey} from 'organization/auth'
 import {useLocation} from 'react-router-dom'
-import {
-  fakeInsusionsoftIntegration,
-  fakeTag,
-  tagTypes,
-} from 'organization/Event/Services/Apps/Infusionsoft/__utils__/factory'
+import {fakeInfusionsoftIntegration} from 'organization/Event/Services/Apps/Infusionsoft/__utils__/factory'
 
 const mockGet = axios.get as jest.Mock
 const mockPost = axios.post as jest.Mock
@@ -69,23 +64,20 @@ it('should complete authorization', async () => {
 
   // integrations
 
-  const unlinked = fakeInsusionsoftIntegration({is_linked: false})
+  const unlinked = fakeInfusionsoftIntegration({is_linked: false})
   mockGet.mockImplementationOnce(() => Promise.resolve({data: [unlinked]}))
 
   mockPost.mockImplementationOnce(() =>
     Promise.resolve({
-      data: fakeInsusionsoftIntegration({
+      data: fakeInfusionsoftIntegration({
         has_completed_setup: true,
         is_linked: true,
       }),
     }),
   )
 
-  const tags = tagTypes.map((type) => fakeTag({type}))
-  mockGet.mockImplementationOnce(() => Promise.resolve({data: tags}))
-
-  const {findAllByLabelText} = render(<App />, {withRouter: true})
+  const {findByLabelText} = render(<App />, {withRouter: true})
 
   // Shows config on success
-  expect((await findAllByLabelText('tag id')).length).toBe(tags.length)
+  expect(await findByLabelText('login field id')).toBeInTheDocument()
 })

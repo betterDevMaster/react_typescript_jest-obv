@@ -2,7 +2,7 @@ import {goToInfusionsoft} from 'organization/Event/Services/Apps/Infusionsoft/__
 import user from '@testing-library/user-event'
 import faker from 'faker'
 import {
-  fakeInsusionsoftIntegration,
+  fakeInfusionsoftIntegration,
   fakeTag,
   tagTypes,
 } from 'organization/Event/Services/Apps/Infusionsoft/__utils__/factory'
@@ -17,7 +17,11 @@ afterEach(() => {
 })
 
 it('should save tag id', async () => {
-  const linked = fakeInsusionsoftIntegration({is_linked: true})
+  const linked = fakeInfusionsoftIntegration({
+    is_linked: true,
+    login_field_id: 5,
+    login_field_name: faker.random.word(),
+  })
   const tags = tagTypes.map((type) => fakeTag({type}))
 
   const {findAllByLabelText, event} = await goToInfusionsoft({

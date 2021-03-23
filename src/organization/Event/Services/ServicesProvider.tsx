@@ -24,6 +24,7 @@ export interface ServicesContextProps {
   integrations: Integration[]
   isLinked: (service: Service) => boolean
   updateIntegration: (integration: Integration) => void
+  infusionsoft?: InfusionsoftIntegration
 }
 
 const ServicesContext = React.createContext<undefined | ServicesContextProps>(
@@ -104,4 +105,16 @@ export function useServices() {
   }
 
   return context
+}
+
+export function useInfusionsoft() {
+  const {integrations} = useServices()
+
+  for (const integration of integrations) {
+    if (integration.service === INFUSIONSOFT) {
+      return integration
+    }
+  }
+
+  throw new Error('Infusionsoft integration has not been created')
 }

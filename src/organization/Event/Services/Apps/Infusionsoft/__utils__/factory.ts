@@ -9,12 +9,14 @@ import {
 import faker from 'faker'
 import {INFUSIONSOFT} from 'organization/Event/Services/ServicesProvider'
 
-export const fakeInsusionsoftIntegration = (
+export const fakeInfusionsoftIntegration = (
   overrides?: Partial<InfusionsoftIntegration>,
 ): InfusionsoftIntegration => ({
   service: INFUSIONSOFT,
   has_completed_setup: faker.random.boolean(),
   is_linked: faker.random.boolean(),
+  login_field_id: null,
+  login_field_name: null,
   ...overrides,
 })
 
