@@ -41,7 +41,7 @@ it('should save login field name', async () => {
 
   mockPatch.mockImplementationOnce(() => Promise.resolve({data: updated}))
 
-  user.type(await findByLabelText('login field name'), String(id))
+  user.type(await findByLabelText('login field name'), name)
   user.click(await findByLabelText('save login field name'))
 
   await wait(async () => {
@@ -56,7 +56,7 @@ it('should save login field name', async () => {
     `/events/${event.slug}/integrations/infusionsoft/login_field`,
   )
 
-  expect(data.id).toBe(String(id))
+  expect(data.field_name).toBe(name)
 
   // is showing tags in config
   expect((await findAllByLabelText('tag id')).length).toBe(tags.length)
