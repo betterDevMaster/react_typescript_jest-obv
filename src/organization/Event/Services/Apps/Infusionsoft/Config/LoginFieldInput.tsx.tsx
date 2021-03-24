@@ -18,14 +18,14 @@ export default function LoginFieldInput() {
   const {save, isProcessing, error} = useSave()
 
   useEffect(() => {
-    if (!infusionsoft.login_field_name) {
+    if (!infusionsoft.login_field_label) {
       return
     }
 
-    setField(infusionsoft.login_field_name)
+    setField(infusionsoft.login_field_label)
   }, [infusionsoft])
 
-  const hasChanges = field !== infusionsoft.login_field_name
+  const hasChanges = field !== infusionsoft.login_field_label
   const canSave = Boolean(field) && hasChanges && !isProcessing
 
   return (
@@ -33,10 +33,11 @@ export default function LoginFieldInput() {
       value={field}
       onChange={onChangeStringHandler(setField)}
       variant="outlined"
-      label={label(infusionsoft.login_field_name)}
+      label="Login Token Custom Field"
+      disabled={isProcessing}
       fullWidth
       inputProps={{
-        'aria-label': 'login field name',
+        'aria-label': 'login field label',
       }}
       InputProps={{
         endAdornment: (
@@ -45,7 +46,7 @@ export default function LoginFieldInput() {
               onClick={save(field)}
               disabled={!canSave}
               color="primary"
-              aria-label="save login field name"
+              aria-label="save login field label"
             >
               Save
             </Button>
@@ -58,12 +59,6 @@ export default function LoginFieldInput() {
   )
 }
 
-function label(name: string | null) {
-  const field = 'Login Token Custom Field'
-
-  return Boolean(name) ? `${field} - ${name}` : field
-}
-
 function useSave() {
   const {client} = useOrganization()
   const {event} = useEvent()
@@ -74,7 +69,7 @@ function useSave() {
 
   const [error, setError] = useState<string | null>(null)
 
-  const save = (field: string) => () => {
+  const save = (label: string) => () => {
     if (isProcessing) {
       return
     }
@@ -83,7 +78,7 @@ function useSave() {
 
     client
       .patch<InfusionsoftIntegration>(url, {
-        field_name: field,
+        label,
       })
       .then(updateIntegration)
       .catch((e) => setError(e.message))

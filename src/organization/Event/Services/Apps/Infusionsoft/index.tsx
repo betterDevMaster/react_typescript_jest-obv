@@ -13,7 +13,7 @@ export type InfusionsoftIntegration = BaseIntegration & {
   service: typeof INFUSIONSOFT
   has_completed_setup: boolean
   login_field_id: number | null
-  login_field_name: string | null
+  login_field_label: string | null
 }
 
 export interface Tag {
