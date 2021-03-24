@@ -19,7 +19,7 @@ afterEach(() => {
   jest.clearAllMocks()
 })
 
-it('should save login field name', async () => {
+it('should save login field label', async () => {
   const linked = fakeInfusionsoftIntegration({
     is_linked: true,
   })
@@ -31,24 +31,24 @@ it('should save login field name', async () => {
   })
 
   const id = faker.random.number({min: 10000, max: 100000})
-  const name = faker.random.word()
+  const label = faker.random.word()
 
   const updated: InfusionsoftIntegration = {
     ...linked,
     login_field_id: id,
-    login_field_name: name,
+    login_field_label: label,
   }
 
   mockPatch.mockImplementationOnce(() => Promise.resolve({data: updated}))
 
-  user.type(await findByLabelText('login field name'), name)
-  user.click(await findByLabelText('save login field name'))
+  user.type(await findByLabelText('login field label'), label)
+  user.click(await findByLabelText('save login field label'))
 
   await wait(async () => {
     expect(mockPatch).toHaveBeenCalledTimes(1)
   })
 
-  expect(await findByLabelText('save login field name')).toBeDisabled()
+  expect(await findByLabelText('save login field label')).toBeDisabled()
 
   const [url, data] = mockPatch.mock.calls[0]
 
@@ -56,7 +56,7 @@ it('should save login field name', async () => {
     `/events/${event.slug}/integrations/infusionsoft/login_field`,
   )
 
-  expect(data.field_name).toBe(name)
+  expect(data.label).toBe(label)
 
   // is showing tags in config
   expect((await findAllByLabelText('tag id')).length).toBe(tags.length)
