@@ -6,7 +6,7 @@ import React from 'react'
 export default function Config() {
   const infusionsoft = useInfusionsoft()
 
-  if (!infusionsoft.login_field_id) {
+  if (!infusionsoft.login_field_name) {
     return <LoginFieldConfig />
   }
 

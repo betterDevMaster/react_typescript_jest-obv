@@ -15,7 +15,7 @@ export const fakeInfusionsoftIntegration = (
   service: INFUSIONSOFT,
   has_completed_setup: faker.random.boolean(),
   is_linked: faker.random.boolean(),
-  login_field_id: null,
+  login_field_name: null,
   login_field_label: null,
   ...overrides,
 })

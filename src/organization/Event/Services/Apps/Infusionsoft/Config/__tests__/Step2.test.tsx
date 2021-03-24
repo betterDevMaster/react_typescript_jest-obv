@@ -19,7 +19,7 @@ afterEach(() => {
 it('should save tag id', async () => {
   const linked = fakeInfusionsoftIntegration({
     is_linked: true,
-    login_field_id: 5,
+    login_field_name: faker.random.word(),
     login_field_label: faker.random.word(),
   })
   const tags = tagTypes.map((type) => fakeTag({type}))

@@ -30,12 +30,12 @@ it('should save login field label', async () => {
     tags,
   })
 
-  const id = faker.random.number({min: 10000, max: 100000})
+  const name = faker.random.word()
   const label = faker.random.word()
 
   const updated: InfusionsoftIntegration = {
     ...linked,
-    login_field_id: id,
+    login_field_name: name,
     login_field_label: label,
   }
 
