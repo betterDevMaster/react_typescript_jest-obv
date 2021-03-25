@@ -6,6 +6,8 @@ import {useArea} from 'organization/Event/Area/AreaProvider'
 import {useOrganization} from 'organization/OrganizationProvider'
 import React, {useCallback, useEffect, useState} from 'react'
 import {useParams} from 'react-router-dom'
+import Layout from 'organization/user/Layout'
+import Page from 'organization/Event/Page'
 
 type UpdateRoom = (updates: Partial<Room>) => Promise<void>
 
@@ -53,7 +55,13 @@ export function RouteRoomProvider(props: {children: React.ReactElement}) {
   }, [saved])
 
   if (loading || !room) {
-    return null
+    return (
+      <Layout>
+        <Page>
+          <div>loading...</div>
+        </Page>
+      </Layout>
+    )
   }
 
   if (fetchError) {

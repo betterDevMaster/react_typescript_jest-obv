@@ -23,6 +23,9 @@ import {useRoomRoutes} from 'organization/Event/Room/RoomRoutes'
 import {useOrganization} from 'organization/OrganizationProvider'
 import Layout from 'organization/user/Layout'
 import React, {useState} from 'react'
+import TechCheckAttendees from 'organization/Event/Room/TechCheckAttendees'
+import StartButton from 'organization/Event/Area/RoomList/StartButton'
+import Box from '@material-ui/core/Box'
 
 export const DEFAULT_MAX_NUM_ATTENDEES = 500
 
@@ -102,6 +105,9 @@ export default function RoomConfig() {
             label="Open"
           />
         </FormControl>
+        <Box mb={3}>
+          <StartButton />
+        </Box>
         <TextField
           label="Room Name"
           required
@@ -159,6 +165,7 @@ export default function RoomConfig() {
         >
           Save
         </Button>
+        <TechCheckAttendees />
       </Page>
     </Layout>
   )

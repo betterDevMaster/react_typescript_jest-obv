@@ -17,5 +17,6 @@ export const fakeArea = (overrides?: Partial<Area>): Area => ({
   requires_approval: true,
   allows_multiple_devices: false,
   rooms: Array.from({length: faker.random.number({min: 1, max: 10})}, fakeRoom),
+  is_tech_check: false,
   ...overrides,
 })

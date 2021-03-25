@@ -15,6 +15,7 @@ export interface Area {
   requires_approval: boolean
   allows_multiple_devices: boolean
   rooms: Room[]
+  is_tech_check: boolean
 }
 
 export interface AreasContextProps {
