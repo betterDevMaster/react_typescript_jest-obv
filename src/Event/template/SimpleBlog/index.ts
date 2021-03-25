@@ -46,6 +46,8 @@ export interface SimpleBlog {
   progressBar: {
     barColor: string
     textColor: string
+    thickness: number
+    borderRadius: number
   }
   backgroundPosition: 'fixed' | 'bottom'
   login: {
@@ -111,6 +113,8 @@ export const createSimpleBlog = (): SimpleBlog => ({
   progressBar: {
     barColor: '#0969d6',
     textColor: '#000000',
+    thickness: 15,
+    borderRadius: 50,
   },
   login: {
     submitButton: {

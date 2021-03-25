@@ -1,18 +1,21 @@
-import React, {useCallback, useEffect, useState} from 'react'
+import React from 'react'
 import Typography from '@material-ui/core/Typography'
 import Box from '@material-ui/core/Box'
+import Grid from '@material-ui/core/Grid'
+import Slider from '@material-ui/core/Slider'
+
 import ColorPicker from 'lib/ui/ColorPicker'
 import {useEvent} from 'Event/EventProvider'
 import TemplateProvider, {
   useTemplate,
-  useUpdateTemplate,
+  useUpdateObject,
 } from 'Event/TemplateProvider'
-import {Template} from 'Event/template'
 import ProgressBarPreview from 'organization/Event/GeneralConfig/ProgressBarPreview'
 import LoginConfig from 'organization/Event/GeneralConfig/LoginConfig'
 import SelectTemplateForm from 'organization/Event/DashboardConfig/SelectTemplateForm'
 import Layout from 'organization/user/Layout'
 import Page from 'organization/Event/Page'
+import {handleChangeSlider} from 'lib/dom'
 
 export interface ProgressBar {
   background: string
@@ -33,36 +36,14 @@ export default function GeneralConfig() {
   )
 }
 
+const MIN_PROGRESS_BAR_THICHNESS = 5
+const MAX_PROGRESS_BAR_THICHNESS = 50
+const MIN_PROGRESS_BAR_BORDERRADIUS = 0
+const MAX_PROGRESS_BAR_BORDERRADIUS = 25
+
 function Content() {
-  const updateTemplate = useUpdateTemplate()
+  const updateProgressBar = useUpdateObject('progressBar')
   const {progressBar} = useTemplate()
-
-  const [barColor, setBarColor] = useState(progressBar.barColor)
-  const [textColor, setTextColor] = useState(progressBar.textColor)
-
-  const update = useCallback(
-    <K extends keyof Template>(key: K, value: Template[K]) => {
-      updateTemplate({
-        [key]: value,
-      })
-    },
-    [updateTemplate],
-  )
-
-  useEffect(() => {
-    const updatedBarColor = progressBar.barColor !== barColor
-    const updatedTextColor = progressBar.textColor !== textColor
-    const hasUpdate = updatedBarColor || updatedTextColor
-
-    if (!hasUpdate) {
-      return
-    }
-
-    update('progressBar', {
-      barColor,
-      textColor,
-    })
-  }, [barColor, textColor, progressBar, update])
 
   return (
     <Layout>
@@ -70,19 +51,56 @@ function Content() {
         <Page>
           <Box>
             <Typography variant="h6">Progress Bar</Typography>
-            <ProgressBarPreview barColor={barColor} textColor={textColor} />
-            <ColorPicker
-              label="Bar Color"
-              color={barColor}
-              onPick={setBarColor}
-              aria-label="bar color"
+            <ProgressBarPreview
+              barColor={progressBar.barColor}
+              textColor={progressBar.textColor}
+              thickness={progressBar.thickness}
+              borderRadius={progressBar.borderRadius}
             />
-            <ColorPicker
-              label="Text Color"
-              color={textColor}
-              onPick={setTextColor}
-              aria-label="text color"
-            />
+            <Grid container spacing={2}>
+              <Grid item xs={6}>
+                <ColorPicker
+                  label="Bar Color"
+                  color={progressBar.barColor}
+                  onPick={updateProgressBar('barColor')}
+                  aria-label="bar color"
+                />
+                <Typography variant="subtitle2" style={{opacity: 0.7}}>
+                  Thickness
+                </Typography>
+                <Slider
+                  valueLabelDisplay="auto"
+                  aria-label="progress bar thickness"
+                  value={progressBar.thickness}
+                  onChange={handleChangeSlider(updateProgressBar('thickness'))}
+                  step={1}
+                  min={MIN_PROGRESS_BAR_THICHNESS}
+                  max={MAX_PROGRESS_BAR_THICHNESS}
+                />
+              </Grid>
+              <Grid item xs={6}>
+                <ColorPicker
+                  label="Text Color"
+                  color={progressBar.textColor}
+                  onPick={updateProgressBar('textColor')}
+                  aria-label="text color"
+                />
+                <Typography variant="subtitle2" style={{opacity: 0.7}}>
+                  Border Radius
+                </Typography>
+                <Slider
+                  valueLabelDisplay="auto"
+                  aria-label="progress bar border"
+                  value={progressBar.borderRadius}
+                  onChange={handleChangeSlider(
+                    updateProgressBar('borderRadius'),
+                  )}
+                  step={1}
+                  min={MIN_PROGRESS_BAR_BORDERRADIUS}
+                  max={MAX_PROGRESS_BAR_BORDERRADIUS}
+                />
+              </Grid>
+            </Grid>
           </Box>
           <LoginConfig />
         </Page>

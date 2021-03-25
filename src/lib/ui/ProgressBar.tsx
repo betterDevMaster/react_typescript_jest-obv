@@ -9,6 +9,8 @@ import styled from 'styled-components'
 export interface ProgressBarStyleProps {
   barColor?: string
   textColor?: string
+  thickness?: number
+  borderRadius?: number
 }
 
 export type ProgressBarProps = {
@@ -35,12 +37,12 @@ export default function ProgressBar(
 
 const StyledLinearProgress = styled(
   (props: ProgressBarStyleProps & LinearProgressProps) => {
-    const {barColor, textColor: _, ...otherProps} = props
+    const {barColor, borderRadius, textColor: _, ...otherProps} = props
     return <LinearProgress {...otherProps} />
   },
 )`
-  height: 15px !important;
-  border-radius: 10px !important;
+  height: ${(props) => props.thickness}px !important;
+  border-radius: ${(props) => props.borderRadius}px !important;
   div {
     background: ${(props) => props.barColor} !important;
   }

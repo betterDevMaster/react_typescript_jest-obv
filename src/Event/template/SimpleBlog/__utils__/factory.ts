@@ -56,6 +56,8 @@ export const fakeSimpleBlog = (overrides?: Partial<SimpleBlog>): SimpleBlog => {
     progressBar: {
       barColor: '#000000',
       textColor: '#ffffff',
+      thickness: 15,
+      borderRadius: 50,
     },
     login: {
       submitButton: {
