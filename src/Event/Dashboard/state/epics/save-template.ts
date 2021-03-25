@@ -30,6 +30,8 @@ export const saveTemplateEpic: Epic<
         points_summary_logo,
         header_background,
         dashboard_background,
+        login_background,
+        login_logo,
         ...data
       } = event
 
