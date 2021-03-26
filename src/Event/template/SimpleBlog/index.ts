@@ -24,6 +24,9 @@ export interface SimpleBlog {
   sidebar: {
     background: string
     textColor: string
+    borderRadius: number
+    borderWidth: number
+    borderColor: string
   }
   sidebarNav: EntityList<NavButton>
   blogPosts: EntityList<BlogPost>
@@ -81,6 +84,9 @@ export const createSimpleBlog = (): SimpleBlog => ({
   sidebar: {
     background: 'blue',
     textColor: '#ffffff',
+    borderRadius: 0,
+    borderWidth: 0,
+    borderColor: '#000000',
   },
   sidebarNav: {
     entities: {},

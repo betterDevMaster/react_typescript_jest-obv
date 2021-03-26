@@ -25,6 +25,9 @@ export const fakeSimpleBlog = (overrides?: Partial<SimpleBlog>): SimpleBlog => {
     sidebar: {
       background: '#000000',
       textColor: '#FFFFFF',
+      borderRadius: 0,
+      borderWidth: 0,
+      borderColor: '#000000',
     },
     sidebarNav: {entities: {}, ids: []},
     ticketRibbons: [],

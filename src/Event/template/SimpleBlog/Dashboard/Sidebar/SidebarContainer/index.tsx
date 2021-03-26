@@ -20,7 +20,7 @@ export default function SidebarContainer(props: {
   const {sidebar} = useTemplate()
 
   return (
-    <Box backgroundColor={sidebar.background} textColor={sidebar.textColor}>
+    <Box sidebar={sidebar}>
       <EditModeOnly>
         <EditSidebarButton
           onClick={edit}
@@ -38,17 +38,21 @@ export default function SidebarContainer(props: {
   )
 }
 
-const Box = styled.div<{backgroundColor: string; textColor: string}>`
-  background: ${(props) => props.backgroundColor};
+const Box = styled.div<{
+  sidebar: SimpleBlog['sidebar']
+}>`
+  background: ${(props) => props.sidebar.background};
   padding: ${(props) => `${props.theme.spacing[12]} ${props.theme.spacing[8]}`};
-  color: ${(props) => props.textColor};
-
+  color: ${(props) => props.sidebar.textColor};
+  border-radius: ${(props) => props.sidebar.borderRadius}px;
+  border: ${(props) => props.sidebar.borderWidth}px solid
+    ${(props) => props.sidebar.borderColor};
   @media (min-width: ${(props) => props.theme.breakpoints.md}) {
     height: 100%;
   }
 
   a {
-    color: ${(props) => props.textColor};
+    color: ${(props) => props.sidebar.textColor};
   }
 `
 
