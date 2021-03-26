@@ -22,15 +22,18 @@ const mockGet = mockAxios.get as jest.Mock
 afterEach(() => {
   jest.clearAllMocks()
 })
+
 it('should join a room', async () => {
-  const windowOpen = (global.open = jest.fn())
   const id = faker.random.number({min: 1, max: 1000})
   const button = fakeNavButtonWithSize({isAreaButton: true, areaId: id})
   const mainNav = createEntityList([button])
 
   const event = fakeEvent({template: fakeSimpleBlog({mainNav})})
 
-  const {findByText} = render(
+  const joinUrl = faker.internet.url()
+  mockGet.mockImplementation(() => Promise.resolve({data: {url: joinUrl}}))
+
+  const {findByLabelText} = render(
     <Dashboard isEditMode={false} user={fakeUser()} />,
     {
       event,
@@ -41,21 +44,13 @@ it('should join a room', async () => {
     },
   )
 
-  const url = faker.internet.url()
-  mockGet.mockImplementationOnce(() => Promise.resolve({data: {url}}))
-
-  user.click(await findByText(button.text))
-
-  await wait(() => {
-    expect(mockGet).toHaveBeenCalledTimes(1)
-    expect(windowOpen).toHaveBeenCalledTimes(1)
+  await wait(async () => {
+    expect(
+      ((await findByLabelText(
+        'start meeting',
+      )) as HTMLLinkElement).getAttribute('href'),
+    ).toBe(joinUrl)
   })
-
-  const [joinUrl] = mockGet.mock.calls[0]
-  expect(joinUrl).toMatch(`events/${event.slug}/areas/${id}`)
-
-  const [openUrl] = windowOpen.mock.calls[0]
-  expect(openUrl).toBe(url)
 })
 
 it('should receive points', async () => {
@@ -73,6 +68,9 @@ it('should receive points', async () => {
     }),
     event,
   })
+
+  const joinUrl = faker.internet.url()
+  mockGet.mockImplementation(() => Promise.resolve({data: {url: joinUrl}}))
 
   mockPost.mockImplementationOnce(() => Promise.resolve({data: 'got points'}))
 
@@ -108,6 +106,9 @@ it('should add an infusionsoft tag', async () => {
     }),
     event,
   })
+
+  const joinUrl = faker.internet.url()
+  mockGet.mockImplementation(() => Promise.resolve({data: {url: joinUrl}}))
 
   mockPost.mockImplementationOnce(() => Promise.resolve({data: 'ok'}))
 

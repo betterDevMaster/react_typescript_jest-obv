@@ -1,23 +1,33 @@
 import {useEffect, useCallback, useRef} from 'react'
 
-export function useInterval(callback: () => void, interval: number) {
+export function useInterval(
+  callback: () => void,
+  intervalMs: number,
+  shouldTerminate: boolean = false,
+) {
   const isMountedRef = useRef(true)
+  const timer = useRef(0)
 
   const update = useCallback(() => {
     if (!isMountedRef.current) {
       return
     }
 
+    if (shouldTerminate) {
+      clearInterval(timer.current)
+      return
+    }
+
     return callback()
-  }, [callback])
+  }, [callback, shouldTerminate])
 
   useEffect(() => {
     isMountedRef.current = true
-    const timer = setInterval(update, interval)
+    timer.current = window.setInterval(update, intervalMs)
 
     return () => {
       isMountedRef.current = false
-      clearInterval(timer)
+      clearInterval(timer.current)
     }
-  }, [update, interval])
+  }, [update, intervalMs, timer])
 }

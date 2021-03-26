@@ -41,6 +41,8 @@ it('should start tech check', async () => {
       mockGet.mockImplementationOnce(() =>
         Promise.resolve({data: {url: techCheckUrl}}),
       )
+
+      mockGet.mockImplementation(() => Promise.resolve({data: attendee}))
     },
   })
 
@@ -48,14 +50,13 @@ it('should start tech check', async () => {
 
   expect(await findByText(content)).toBeInTheDocument()
 
-  user.click(await findByLabelText('start tech check'))
-
-  await wait(() => {
-    expect(windowOpen).toHaveBeenCalledTimes(1)
+  await wait(async () => {
+    expect(
+      ((await findByLabelText('join link')) as HTMLLinkElement).getAttribute(
+        'href',
+      ),
+    ).toBe(techCheckUrl)
   })
-
-  const [joinUrl] = windowOpen.mock.calls[0]
-  expect(joinUrl).toBe(techCheckUrl)
 })
 
 it('should show dashboard if completed tech check', async () => {
@@ -90,34 +91,6 @@ it('should skip step 3 if disabled', async () => {
   expect(await findByLabelText('welcome')).toBeInTheDocument()
 })
 
-it('should should show join url error', async () => {
-  const attendee = fakeAttendee({
-    has_password: true,
-    waiver: faker.internet.url(),
-    tech_check_completed_at: null,
-  })
-
-  const content = faker.lorem.paragraph()
-  const body = `<p>${content}</p>`
-  const event = fakeEvent({
-    tech_check: fakeTechCheck({body}),
-  })
-
-  const error = faker.lorem.sentence()
-
-  const {findByLabelText, findByText} = await loginToEventSite({
-    attendee,
-    event,
-    beforeLogin: () => {
-      mockGet.mockImplementationOnce(() => Promise.reject(error))
-    },
-  })
-
-  expect(await findByLabelText('start tech check')).toBeInTheDocument()
-
-  expect(await findByText(new RegExp(error))).toBeInTheDocument()
-})
-
 it('should complete tech check', async () => {
   const action = fakeAction()
 
@@ -140,12 +113,14 @@ it('should complete tech check', async () => {
     event,
   })
 
+  mockGet.mockImplementationOnce(() => Promise.resolve({data: 'joinurl'}))
+
   mockPost.mockImplementationOnce(() => Promise.resolve({data: 'got points'}))
 
   /**
    * Tech check polls, until checked in
    */
-  mockGet.mockImplementationOnce(() => Promise.resolve({data: afterCheckIn}))
+  mockGet.mockImplementation(() => Promise.resolve({data: afterCheckIn}))
 
   await wait(
     () => {

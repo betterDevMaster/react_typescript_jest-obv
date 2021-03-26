@@ -2,13 +2,14 @@ import {client} from 'lib/api-client'
 import {useAsync} from 'lib/async'
 import {api} from 'lib/url'
 import {domainEventSlug, useParamEventSlug} from 'Event/url'
-import React, {useCallback, useEffect} from 'react'
+import React, {useCallback, useEffect, useState} from 'react'
 import {useDispatch, useSelector} from 'react-redux'
 import {setEvent} from 'Event/state/actions'
 import {ObvioEvent} from 'Event'
 import {RootState} from 'store'
 import {EventClient, eventClient} from 'Event/api-client'
 import {appRoot, isProduction} from 'App'
+import {useInterval} from 'lib/interval'
 
 interface EventContextProps {
   event: ObvioEvent
@@ -114,4 +115,30 @@ export function hasTechCheck(event: ObvioEvent) {
   }
 
   return event.tech_check.is_enabled
+}
+
+// How many seconds to wait before trying to re-fetch the join url
+const FETCH_JOIN_URL_INTERVAL_MS = 5000
+
+export function useJoinUrl(areaId: number) {
+  const {event, client} = useEvent()
+  const [joinUrl, setJoinUrl] = useState<null | string>(null)
+
+  const fetchUrl = useCallback(() => {
+    const url = api(`/events/${event.slug}/areas/${areaId}/join`)
+
+    client
+      .get<{url: string | null}>(url)
+      .then(({url}) => setJoinUrl(url))
+      .catch((e) => console.error(`Could not fetch join url: ${e.message}`))
+  }, [client, event, areaId])
+
+  // Fetch once on load without waiting for interval
+  useEffect(() => {
+    fetchUrl()
+  }, [fetchUrl])
+
+  useInterval(fetchUrl, FETCH_JOIN_URL_INTERVAL_MS, Boolean(joinUrl))
+
+  return joinUrl
 }
