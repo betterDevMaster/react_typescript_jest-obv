@@ -2,19 +2,17 @@ import React from 'react'
 import {Button} from '@material-ui/core'
 import {useTemplate, useUpdateTemplate} from 'Event/TemplateProvider'
 import {setConfig} from 'Event/Dashboard/editor/state/actions'
-import {AGENDA} from 'Event/Dashboard/components/AgendaList'
+import {AGENDA_ITEM} from 'Event/Dashboard/components/AgendaList'
 import {useDispatch} from 'react-redux'
 
 export default function AddAgendaEventButton(props: {className?: string}) {
-  const {agendas} = useTemplate()
+  const {agenda: agendas} = useTemplate()
   const updateTemplate = useUpdateTemplate()
   const dispatch = useDispatch()
 
-  const existingAgendas = agendas || []
-
-  const addEvent = () => {
-    const agendas = [
-      ...existingAgendas,
+  const addAgenda = () => {
+    const list = [
+      ...agendas.items,
       {
         text: 'Event',
         startDate: new Date().toISOString(),
@@ -24,11 +22,14 @@ export default function AddAgendaEventButton(props: {className?: string}) {
       },
     ]
     updateTemplate({
-      agendas,
+      agenda: {
+        ...agendas,
+        items: list,
+      },
     })
 
-    const lastItem = agendas.length - 1
-    dispatch(setConfig({type: AGENDA, id: lastItem}))
+    const lastItem = list.length - 1
+    dispatch(setConfig({type: AGENDA_ITEM, id: lastItem}))
   }
 
   return (
@@ -38,7 +39,7 @@ export default function AddAgendaEventButton(props: {className?: string}) {
       variant="contained"
       color="secondary"
       aria-label="add agenda event"
-      onClick={addEvent}
+      onClick={addAgenda}
       className={props.className}
     >
       Add Agenda Event

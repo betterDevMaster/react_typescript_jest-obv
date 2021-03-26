@@ -24,12 +24,9 @@ it('should show permissions table', async () => {
     fakeRole,
   )
 
-  const permissions = Array.from(
-    {
-      length: faker.random.number({min: 1, max: 3}),
-    },
-    fakePermission,
-  )
+  const permissions = new Array(faker.random.number({min: 1, max: 4}))
+    .fill(null)
+    .map((_, index) => `${index}_${fakePermission()}`) // Prepend index to ensure uniqueness
 
   mockGet.mockImplementationOnce(() => Promise.resolve({data: []})) // team members
   mockGet.mockImplementationOnce(() => Promise.resolve({data: roles}))

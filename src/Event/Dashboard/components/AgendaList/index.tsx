@@ -8,8 +8,10 @@ import EditModeOnly from 'Event/Dashboard/editor/views/EditModeOnly'
 import AddAgendaEventButton from 'Event/Dashboard/components/AgendaList/AddAgendaEventButton'
 import {useTemplate} from 'Event/TemplateProvider'
 import Section from 'Event/template/SimpleBlog/Dashboard/Sidebar/Section'
+import {useEditMode} from 'Event/Dashboard/editor/state/edit-mode'
 
-export const AGENDA = 'Agenda'
+export const AGENDA_ITEM = 'Agenda Item'
+export const AGENDA_LIST = 'Agenda List'
 
 export type Agenda = Publishable & {
   startDate: string
@@ -19,30 +21,31 @@ export type Agenda = Publishable & {
 }
 
 export default function AgendaList() {
-  const {agendas} = useTemplate()
+  const {agenda} = useTemplate()
+  const isEdit = useEditMode()
 
-  const hasAgenda = agendas.length > 0
-  if (!hasAgenda) {
-    return (
-      <EditModeOnly>
-        <StyledAddAgendaEventButton />
-      </EditModeOnly>
-    )
+  const hasAgenda = agenda.items.length > 0
+  if (!hasAgenda && !isEdit) {
+    return null
   }
 
   return (
     <Section>
-      <Heading>AGENDA:</Heading>
-      {agendas.map((agenda, index) => (
-        <EditComponent component={{type: AGENDA, id: index}} key={index}>
-          <Published component={agenda}>
-            <Agenda aria-label="agenda">
-              <Event agenda={agenda} />
-              <Times agenda={agenda} />
-            </Agenda>
-          </Published>
-        </EditComponent>
-      ))}
+      <EditComponent component={{type: AGENDA_LIST}}>
+        <Heading aria-label="agendas">{agenda.title}</Heading>
+      </EditComponent>
+      <>
+        {agenda.items.map((item, index) => (
+          <EditComponent component={{type: AGENDA_ITEM, id: index}} key={index}>
+            <Published component={item}>
+              <Agenda aria-label="agenda">
+                <Event agenda={item} />
+                <Times agenda={item} />
+              </Agenda>
+            </Published>
+          </EditComponent>
+        ))}
+      </>
       <EditModeOnly>
         <StyledAddAgendaEventButton />
       </EditModeOnly>

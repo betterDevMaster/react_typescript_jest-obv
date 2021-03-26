@@ -1,9 +1,6 @@
 import TextField from '@material-ui/core/TextField'
-import {
-  ResourceList,
-  RESOURCE_LIST,
-} from 'Event/Dashboard/components/ResourceList'
-import {useTemplate, useUpdateTemplate} from 'Event/TemplateProvider'
+import {RESOURCE_LIST} from 'Event/Dashboard/components/ResourceList'
+import {useTemplate, useUpdateObject} from 'Event/TemplateProvider'
 import {onChangeStringHandler} from 'lib/dom'
 import React from 'react'
 
@@ -13,21 +10,20 @@ export type ResourceListConfig = {
 
 export function ResourceListConfig() {
   const {resourceList: list} = useTemplate()
-  const updateTemplate = useUpdateTemplate()
-
-  const update = <T extends keyof ResourceList>(key: T) => (
-    value: ResourceList[T],
-  ) => {
-    updateTemplate({
-      resourceList: {
-        ...list,
-        [key]: value,
-      },
-    })
-  }
+  const updateResourceList = useUpdateObject('resourceList')
 
   return (
     <>
+      <TextField
+        value={list.title}
+        inputProps={{
+          'aria-label': 'update resources title',
+        }}
+        label="Title"
+        fullWidth
+        onChange={onChangeStringHandler(updateResourceList('title'))}
+      />
+
       <TextField
         value={list.description}
         inputProps={{
@@ -35,7 +31,7 @@ export function ResourceListConfig() {
         }}
         label="Description"
         fullWidth
-        onChange={onChangeStringHandler(update('description'))}
+        onChange={onChangeStringHandler(updateResourceList('description'))}
       />
     </>
   )

@@ -43,7 +43,7 @@ it('should check in an attendee', async () => {
   mockGet.mockImplementationOnce(() => Promise.resolve({data: targetRoom}))
 
   // Tech Check Assignments
-  const numAssignments = faker.random.number({min: 1, max: 5})
+  const numAssignments = faker.random.number({min: 2, max: 5})
   const assignments = Array.from({length: numAssignments}, () => {
     return {
       attendee: fakeAttendee(),

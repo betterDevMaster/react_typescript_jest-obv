@@ -13,6 +13,7 @@ import ResourceItem, {
 import Published from 'Event/Dashboard/editor/views/Published'
 
 export interface ResourceList {
+  title: string
   description: string
   resources: Resource[]
 }
@@ -45,7 +46,7 @@ export function ResourceList() {
   return (
     <Section>
       <EditComponent component={{type: RESOURCE_LIST}}>
-        <Heading aria-label="resources">RESOURCES:</Heading>
+        <Heading aria-label="resources">{list.title}</Heading>
       </EditComponent>
       <p aria-label="resource description">{list.description}</p>
       <List>

@@ -23,6 +23,7 @@ beforeEach(() => {
 it('should upload a file', async () => {
   const template = fakeSimpleBlog({
     resourceList: {
+      title: '',
       description: '',
       resources: [fakeResource({filePath: ''})],
     },
@@ -96,6 +97,7 @@ it('should delete an existing file', async () => {
 
   const template = fakeSimpleBlog({
     resourceList: {
+      title: '',
       description: '',
       resources: [withExistingFile],
     },

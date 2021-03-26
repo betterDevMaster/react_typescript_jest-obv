@@ -7,6 +7,7 @@ import {fakeAction} from 'Event/ActionsProvider/__utils__/factory'
 import axios from 'axios'
 import {loginToEventSite} from 'Event/__utils__/url'
 import {fakeAttendee} from 'Event/auth/__utils__/factory'
+import faker from 'faker'
 
 const mockPost = axios.post as jest.Mock
 
@@ -21,6 +22,7 @@ it('receive points', async () => {
   const event = fakeEvent({
     template: fakeSimpleBlog({
       resourceList: {
+        title: faker.random.word(),
         description: '',
         resources: [fakeResource({isVisible: true})],
       },

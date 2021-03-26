@@ -26,6 +26,7 @@ it('should render resources', async () => {
   const event = fakeEvent({
     template: fakeSimpleBlog({
       resourceList: {
+        title: faker.random.word(),
         description: '',
         resources: [],
       },
@@ -42,6 +43,7 @@ it('should render resources', async () => {
   const numResources = faker.random.number({min: 1, max: 6})
   const withResourcesTemplate = fakeSimpleBlog({
     resourceList: {
+      title: faker.random.word(),
       description: '',
       resources: Array.from({length: numResources}, () =>
         fakeResource({isVisible: true}),
@@ -67,6 +69,7 @@ it('should render resources', async () => {
 it('should add a new resource', async () => {
   const dashboard = fakeSimpleBlog({
     resourceList: {
+      title: faker.random.word(),
       description: '',
       resources: [],
     },
@@ -91,9 +94,6 @@ it('should add a new resource', async () => {
   fireEvent.click(await findByLabelText('add resource'))
   expect((await findAllByLabelText('event resource')).length).toBe(1)
 
-  fireEvent.click(await findByLabelText('add resource'))
-  expect((await findAllByLabelText('event resource')).length).toBe(2)
-
   // Saved
   await wait(() => {
     expect(mockPost).toHaveBeenCalledTimes(1)
@@ -101,7 +101,7 @@ it('should add a new resource', async () => {
 
   const [url, data] = mockPost.mock.calls[0]
   expect(url).toMatch(`/events/${event.slug}`)
-  expect(data.template.resourceList.resources.length).toBe(2)
+  expect(data.template.resourceList.resources.length).toBe(1)
 })
 
 it('should update resources description', async () => {
@@ -109,6 +109,7 @@ it('should update resources description', async () => {
 
   const dashboard = fakeSimpleBlog({
     resourceList: {
+      title: faker.random.word(),
       description,
       resources: [],
     },
@@ -132,17 +133,21 @@ it('should update resources description', async () => {
   clickEdit(await findByLabelText('resources'))
 
   const updatedDescription = faker.random.words(5)
-
+  const upadtedTitle = faker.random.words(2)
   user.type(
     await findByLabelText('update resources description'),
     updatedDescription,
   )
+
+  user.type(await findByLabelText('update resources title'), upadtedTitle)
 
   fireEvent.click(await findByLabelText('close config dialog'))
 
   expect((await findByLabelText('resource description')).textContent).toBe(
     updatedDescription,
   )
+
+  expect((await findByLabelText('resources')).textContent).toBe(upadtedTitle)
 
   // Saved
   await wait(() => {
@@ -152,6 +157,7 @@ it('should update resources description', async () => {
   const [url, data] = mockPost.mock.calls[0]
   expect(url).toMatch(`/events/${event.slug}`)
   expect(data.template.resourceList.description).toBe(updatedDescription)
+  expect(data.template.resourceList.title).toBe(upadtedTitle)
 })
 
 it('should update a resource', async () => {
@@ -159,6 +165,7 @@ it('should update a resource', async () => {
 
   const dashboard = fakeSimpleBlog({
     resourceList: {
+      title: faker.random.word(),
       description: '',
       resources: [fakeResource({name})],
     },
@@ -207,6 +214,7 @@ it('should remove a resource', async () => {
 
   const dashboard = fakeSimpleBlog({
     resourceList: {
+      title: faker.random.word(),
       description: '',
       resources,
     },

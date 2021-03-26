@@ -10,8 +10,10 @@ import {SimpleBlogConfig} from 'Event/template/SimpleBlog/Config'
 import {SIDEBAR_CONTAINER} from 'Event/template/SimpleBlog/Dashboard/Sidebar/SidebarContainer'
 import {EMOJI_LIST} from 'Event/Dashboard/components/EmojiList'
 import {TICKET_RIBBON} from 'Event/Dashboard/components/TicketRibbonList/TicketRibbon'
-import {AGENDA} from 'Event/Dashboard/components/AgendaList'
-import {AgendaConfig} from 'Event/Dashboard/components/AgendaList/AgendaConfig'
+import {AGENDA_ITEM} from 'Event/Dashboard/components/AgendaList'
+import {AGENDA_LIST} from 'Event/Dashboard/components/AgendaList'
+import {AgendaItemConfig} from 'Event/Dashboard/components/AgendaList/AgendaItemConfig'
+import {AgendaListConfig} from 'Event/Dashboard/components/AgendaList/AgendaListConfig'
 import {POINTS_SUMMARY} from 'Event/Dashboard/components/PointsSummary'
 import {PointsSummaryConfig} from 'Event/Dashboard/components/PointsSummary/PointsSummaryConfig'
 import {
@@ -38,7 +40,8 @@ export type ComponentConfig =
   | SidebarContainerConfig
   | EmojiListConfig
   | TicketRibbonConfig
-  | AgendaConfig
+  | AgendaListConfig
+  | AgendaItemConfig
   | PointsSummaryConfig
   | ResourceListConfig
   | ResourceItemConfig
@@ -64,8 +67,10 @@ export function ComponentConfig(props: {config: ComponentConfig | null}) {
       return <EmojiListConfig />
     case TICKET_RIBBON:
       return <TicketRibbonConfig index={props.config.index} />
-    case AGENDA:
-      return <AgendaConfig id={props.config.id} />
+    case AGENDA_LIST:
+      return <AgendaListConfig />
+    case AGENDA_ITEM:
+      return <AgendaItemConfig id={props.config.id} />
     case POINTS_SUMMARY:
       return <PointsSummaryConfig />
     case RESOURCE_LIST:

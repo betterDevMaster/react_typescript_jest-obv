@@ -1,10 +1,12 @@
 import React from 'react'
+import {useCallback} from 'react'
+
 import styled from 'styled-components'
 import {DateTimePicker} from '@material-ui/pickers'
 import DangerButton from 'lib/ui/Button/DangerButton'
 import TextField from '@material-ui/core/TextField'
 import Grid from '@material-ui/core/Grid'
-import {AGENDA, Agenda} from 'Event/Dashboard/components/AgendaList'
+import {AGENDA_ITEM, Agenda} from 'Event/Dashboard/components/AgendaList'
 import {onChangeStringHandler, onChangeCheckedHandler} from 'lib/dom'
 import {MaterialUiPickersDate} from '@material-ui/pickers/typings/date'
 import {useCloseConfig} from 'Event/Dashboard/editor/state/edit-mode'
@@ -12,13 +14,13 @@ import {useTemplate, useUpdateTemplate} from 'Event/TemplateProvider'
 import Switch from 'lib/ui/form/Switch'
 import Box from '@material-ui/core/Box'
 
-export type AgendaConfig = {
-  type: typeof AGENDA
+export type AgendaItemConfig = {
+  type: typeof AGENDA_ITEM
   id: number
 }
 
-export function AgendaConfig(props: {id: AgendaConfig['id']}) {
-  const {agendas} = useTemplate()
+export function AgendaItemConfig(props: {id: AgendaItemConfig['id']}) {
+  const {agenda: agendas} = useTemplate()
   const updateTemplate = useUpdateTemplate()
   const closeConfig = useCloseConfig()
 
@@ -30,31 +32,40 @@ export function AgendaConfig(props: {id: AgendaConfig['id']}) {
     throw new Error('Missing component id')
   }
 
-  const agenda = agendas[props.id]
+  const agenda = agendas.items[props.id]
 
-  const update = <T extends keyof Agenda>(key: T) => (value: Agenda[T]) => {
-    const updated = {
-      ...agenda,
-      [key]: value,
-    }
+  const update = useCallback(
+    <T extends keyof Agenda>(key: T) => (value: Agenda[T]) => {
+      const updated = {
+        ...agenda,
+        [key]: value,
+      }
 
-    updateTemplate({
-      agendas: agendas.map((a, index) => {
-        const isTarget = index === props.id
-        if (isTarget) {
-          return updated
-        }
+      updateTemplate({
+        agenda: {
+          ...agendas,
+          items: agendas.items.map((r, index) => {
+            const isTarget = index === props.id
+            if (isTarget) {
+              return updated
+            }
 
-        return a
-      }),
-    })
-  }
+            return r
+          }),
+        },
+      })
+    },
+    [agendas, props.id, agenda, updateTemplate],
+  )
 
   const remove = () => {
-    const withoutTarget = agendas.filter((_, index) => index !== props.id)
+    const withoutTarget = agendas.items.filter((_, index) => index !== props.id)
     closeConfig()
     updateTemplate({
-      agendas: withoutTarget,
+      agenda: {
+        ...agendas,
+        items: withoutTarget,
+      },
     })
   }
 

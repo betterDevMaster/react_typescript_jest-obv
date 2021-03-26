@@ -24,6 +24,7 @@ it('should remove the existing file', async () => {
 
   const template = fakeSimpleBlog({
     resourceList: {
+      title: '',
       description: '',
       resources: [withExistingFile],
     },

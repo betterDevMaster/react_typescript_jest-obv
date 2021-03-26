@@ -13,9 +13,12 @@ export const fakeAgenda = (overrides?: Partial<Agenda>): Agenda => ({
 export function withAgendas<T>(attributes: T): T {
   return {
     ...attributes,
-    agendas: Array.from(
-      {length: faker.random.number({min: 0, max: 4})},
-      fakeAgenda,
-    ),
+    agendas: {
+      title: faker.random.word(),
+      list: Array.from(
+        {length: faker.random.number({min: 0, max: 4})},
+        fakeAgenda,
+      ),
+    },
   }
 }

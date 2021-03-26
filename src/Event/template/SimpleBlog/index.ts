@@ -30,7 +30,10 @@ export interface SimpleBlog {
   }
   sidebarNav: EntityList<NavButton>
   blogPosts: EntityList<BlogPost>
-  agendas: Agenda[]
+  agenda: {
+    title: string
+    items: Agenda[]
+  }
   points: Points | null
   resourceList: ResourceList
   header: {
@@ -97,9 +100,13 @@ export const createSimpleBlog = (): SimpleBlog => ({
     ids: [],
   },
   backgroundPosition: 'fixed',
-  agendas: [],
+  agenda: {
+    title: 'Agenda',
+    items: [],
+  },
   points: null,
   resourceList: {
+    title: 'Resources',
     description: '',
     resources: [],
   },

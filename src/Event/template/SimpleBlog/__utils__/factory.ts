@@ -34,9 +34,13 @@ export const fakeSimpleBlog = (overrides?: Partial<SimpleBlog>): SimpleBlog => {
     mainNav: {entities: {}, ids: []},
     emojiList: {emojis: []},
     blogPosts: {entities: {}, ids: []},
-    agendas: [],
+    agenda: {
+      title: 'Agenda',
+      items: [],
+    },
     points: null,
     resourceList: {
+      title: 'Resources',
       description: '',
       resources: [],
     },

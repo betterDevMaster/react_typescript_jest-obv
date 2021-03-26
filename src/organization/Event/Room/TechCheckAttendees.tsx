@@ -1,5 +1,4 @@
 import Button from '@material-ui/core/Button'
-
 import React, {useState, useEffect, useCallback} from 'react'
 import {Attendee} from 'Event/attendee'
 import Table from '@material-ui/core/Table'
