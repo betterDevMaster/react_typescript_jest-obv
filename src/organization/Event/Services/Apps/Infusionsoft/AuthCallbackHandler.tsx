@@ -15,7 +15,7 @@ export default function AuthCallbackHandler(props: {authCode: string}) {
   const [hasSubmitted, setHasSubmitted] = useState(false)
   const [failed, setFailed] = useState(false)
   const completeAuth = useCompleteAuth()
-  const {updateIntegration} = useServices()
+  const {update: updateIntegration} = useServices()
   const {authCode} = props
   const isMounted = useIsMounted()
 

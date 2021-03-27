@@ -1,4 +1,4 @@
-import {client} from 'lib/api-client'
+import {Client, client} from 'lib/api-client'
 import {useAsync} from 'lib/async'
 import {api} from 'lib/url'
 import {domainEventSlug, useParamEventSlug} from 'Event/url'
@@ -7,13 +7,13 @@ import {useDispatch, useSelector} from 'react-redux'
 import {setEvent} from 'Event/state/actions'
 import {ObvioEvent} from 'Event'
 import {RootState} from 'store'
-import {EventClient, eventClient} from 'Event/api-client'
+import {eventClient} from 'Event/api-client'
 import {appRoot, isProduction} from 'App'
 import {useInterval} from 'lib/interval'
 
 interface EventContextProps {
   event: ObvioEvent
-  client: EventClient
+  client: Client
   hasTechCheck: boolean
   update: (event: ObvioEvent) => void
   url: string

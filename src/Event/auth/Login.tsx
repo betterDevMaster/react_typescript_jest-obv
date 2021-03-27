@@ -56,6 +56,16 @@ export default function Login(props: {isPreview?: boolean}) {
     })
   }, [token, login, isPreview])
 
+  const isProcessingToken =
+    (token && !hasAttemptedTokenLogin.current) || submitting
+  if (isProcessingToken) {
+    /**
+     * Don't want to show login screen while we're trying to auto-login
+     * the Attendee.
+     */
+    return null
+  }
+
   return (
     <TemplateLogin
       onSubmit={onSubmit}

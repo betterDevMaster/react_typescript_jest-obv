@@ -1,4 +1,5 @@
 import React, {useState} from 'react'
+import download from 'js-file-download'
 import DialogTitle from '@material-ui/core/DialogTitle'
 import DialogContent from '@material-ui/core/DialogContent'
 import Dialog from 'lib/ui/Dialog'
@@ -8,8 +9,12 @@ import {api} from 'lib/url'
 import {Question, useQuestions} from 'organization/Event/QuestionsProvider'
 import Form from 'organization/Event/QuestionsConfig/Form'
 import DangerButton from 'lib/ui/Button/DangerButton'
-import {spacing} from 'lib/ui/theme'
+import {colors, spacing} from 'lib/ui/theme'
 import {withStyles} from '@material-ui/core/styles'
+import {CsvExport} from 'lib/api-client'
+import Typography from '@material-ui/core/Typography'
+import Box from '@material-ui/core/Box'
+import Button from 'lib/ui/Button'
 
 export default function EditDialog(props: {
   question: Question | null
@@ -29,6 +34,7 @@ export default function EditDialog(props: {
     <Dialog open={isVisible} onClose={props.onClose}>
       <DialogTitle>Edit Question</DialogTitle>
       <DialogContent>
+        <ExportSubmission question={question} />
         <Form
           question={question}
           submit={update.bind(null, question)}
@@ -92,3 +98,39 @@ const RemoveButton = withStyles({
     marginTop: spacing[4],
   },
 })(DangerButton)
+
+function ExportSubmission(props: {question: Question}) {
+  const [error, setError] = useState<string | null>(null)
+  const {event} = useEvent()
+  const url = api(`/events/${event.slug}/submissions/${props.question.id}`)
+  const {client} = useOrganization()
+
+  const exportSubmissions = () => {
+    client
+      .get<CsvExport>(url)
+      .then((res) => download(res.data, res.file_name))
+      .catch((e) => setError(e.message))
+  }
+
+  return (
+    <Box textAlign="right" mb={3}>
+      <Button
+        onClick={exportSubmissions}
+        variant="text"
+        textColor={colors.secondary}
+        aria-label={`export ${props.question.label} submissions`}
+      >
+        Download Answers
+      </Button>
+      <ExportError>{error}</ExportError>
+    </Box>
+  )
+}
+
+function ExportError(props: {children: string | null}) {
+  if (!props.children) {
+    return null
+  }
+
+  return <Typography color="error">{props.children}</Typography>
+}

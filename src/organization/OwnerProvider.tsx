@@ -3,6 +3,7 @@ import {useAsync} from 'lib/async'
 import {api} from 'lib/url'
 import {useOrganizationAuth} from 'organization/auth'
 import {useOrganization} from 'organization/OrganizationProvider'
+import TeamMemberOnly from 'organization/auth/TeamMemberOnly'
 import React, {useCallback} from 'react'
 
 type OwnerContextProps = User
@@ -26,9 +27,7 @@ export default function OwnerProvider(props: {children: React.ReactNode}) {
   }
 
   if (!owner) {
-    throw new Error(
-      `Failed to fetch owner for organization: ${organization.slug}`,
-    )
+    return <TeamMemberOnly />
   }
 
   return (

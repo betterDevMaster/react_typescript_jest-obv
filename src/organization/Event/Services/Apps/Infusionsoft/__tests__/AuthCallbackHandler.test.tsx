@@ -5,9 +5,9 @@ import {render} from '__utils__/render'
 import axios from 'axios'
 import {fakeTeamMember} from 'organization/Team/__utils__/factory'
 import {fakeOrganization} from 'obvio/Organizations/__utils__/factory'
-import {organizationTokenKey} from 'organization/auth'
 import {useLocation} from 'react-router-dom'
 import {fakeInfusionsoftIntegration} from 'organization/Event/Services/Apps/Infusionsoft/__utils__/factory'
+import {TEAM_MEMBER_TOKEN_KEY} from 'obvio/auth'
 
 const mockGet = axios.get as jest.Mock
 const mockPost = axios.post as jest.Mock
@@ -19,10 +19,7 @@ beforeEach(() => {
 
 it('should complete authorization', async () => {
   const organization = fakeOrganization()
-  window.localStorage.setItem(
-    organizationTokenKey(organization.slug),
-    'mytoken',
-  )
+  window.localStorage.setItem(TEAM_MEMBER_TOKEN_KEY, 'mytoken')
 
   const event = fakeEvent()
 

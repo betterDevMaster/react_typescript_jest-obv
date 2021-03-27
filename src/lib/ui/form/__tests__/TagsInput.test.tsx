@@ -6,10 +6,9 @@ import TagsInput from 'lib/ui/form/TagsInput'
 import {fireEvent} from '@testing-library/react'
 
 it('should render initial tags', async () => {
-  const tags = Array.from(
-    {length: faker.random.number({min: 2, max: 5})},
-    faker.random.word,
-  )
+  const tags = new Array(faker.random.number({min: 1, max: 4}))
+    .fill(null)
+    .map((_, index) => `${index}_${faker.random.word()}`) // Prepend index to ensure uniquenes
 
   const {findAllByLabelText, findByText} = render(
     <TagsInput value={tags} name="tags" />,

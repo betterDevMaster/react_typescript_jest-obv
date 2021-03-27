@@ -23,8 +23,10 @@ export type Integration = ZapierIntegration | InfusionsoftIntegration
 export interface ServicesContextProps {
   integrations: Integration[]
   isLinked: (service: Service) => boolean
-  updateIntegration: (integration: Integration) => void
+  update: (integration: Integration) => void
   infusionsoft?: InfusionsoftIntegration
+  unlink: (service: Service) => Promise<any>
+  remove: (service: Service) => void
 }
 
 const ServicesContext = React.createContext<undefined | ServicesContextProps>(
@@ -36,6 +38,7 @@ export default function ServicesProvider(props: {
 }) {
   const {data: fetched, loading} = useIntegrations()
   const [integrations, setIntegrations] = useState<Integration[]>([])
+  const unlink = useUnlink()
 
   useEffect(() => {
     if (!fetched) {
@@ -64,7 +67,7 @@ export default function ServicesProvider(props: {
     return integration.is_linked
   }
 
-  const updateIntegration = (target: Integration) => {
+  const update = (target: Integration) => {
     setIntegrations((current) => {
       return current.map((i) => {
         const isTarget = i.service === target.service
@@ -77,9 +80,14 @@ export default function ServicesProvider(props: {
     })
   }
 
+  const remove = (service: Service) => {
+    const removed = integrations.filter((i) => i.service !== service)
+    setIntegrations(removed)
+  }
+
   return (
     <ServicesContext.Provider
-      value={{isLinked, integrations, updateIntegration}}
+      value={{isLinked, integrations, update, unlink, remove}}
     >
       {props.children}
     </ServicesContext.Provider>
@@ -117,4 +125,22 @@ export function useInfusionsoft() {
   }
 
   throw new Error('Infusionsoft integration has not been created')
+}
+
+function useUnlink() {
+  const {event} = useEvent()
+  const {client} = useOrganization()
+
+  return (service: Service) => {
+    switch (service) {
+      case ZAPIER:
+        return client.delete(
+          api(`/events/${event.slug}/integrations/zapier/link`),
+        )
+      case INFUSIONSOFT:
+        return client.delete(
+          api(`/events/${event.slug}/integrations/infusionsoft/link`),
+        )
+    }
+  }
 }

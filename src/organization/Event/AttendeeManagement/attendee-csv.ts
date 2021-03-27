@@ -2,11 +2,7 @@ import {useEvent} from 'Event/EventProvider'
 import {api} from 'lib/url'
 import {useOrganization} from 'organization/OrganizationProvider'
 import download from 'js-file-download'
-
-export interface AttendeeExportResult {
-  data: string
-  file_name: string
-}
+import {CsvExport} from 'lib/api-client'
 
 export function useExportAttendees(options: {
   onError: (message: string) => void
@@ -17,7 +13,7 @@ export function useExportAttendees(options: {
 
   return () =>
     client
-      .get<AttendeeExportResult>(url)
+      .get<CsvExport>(url)
       .then((res) => {
         download(res.data, res.file_name)
       })

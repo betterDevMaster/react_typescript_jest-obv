@@ -1,6 +1,6 @@
 import {useAsync} from 'lib/async'
 import {api} from 'lib/url'
-import {obvioClient} from 'obvio/obvio-client'
+import {teamMemberClient} from 'obvio/obvio-client'
 import {Organization} from 'organization'
 import React from 'react'
 
@@ -47,5 +47,5 @@ export function useUserOrganizations() {
 
 function getUserOrganizations() {
   const url = api('/organizations')
-  return obvioClient.get<Organization[]>(url)
+  return teamMemberClient.get<Organization[]>(url)
 }

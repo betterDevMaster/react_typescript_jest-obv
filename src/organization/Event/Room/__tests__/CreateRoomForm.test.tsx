@@ -52,6 +52,22 @@ it('should create a room', async () => {
 
   user.click(await findByLabelText('create room'))
 
+  await wait(() => {
+    expect(mockPost).toHaveBeenCalledTimes(1)
+  })
+
+  const [url, data] = mockPost.mock.calls[0]
+
+  expect(url).toMatch(`/events/${event.slug}/areas/${area.id}/rooms`)
+
+  expect(data.name).toBe(name)
+
+  if (hasMaxNumAttendees) {
+    expect(data.max_num_attendees).toBe(String(maxNumAttendees))
+  } else {
+    expect(data.max_num_attendees).toBeUndefined()
+  }
+
   // Has new room
   expect((await findAllByLabelText('room')).length).toBe(rooms.length + 1)
 })

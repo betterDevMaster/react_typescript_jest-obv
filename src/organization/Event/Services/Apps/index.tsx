@@ -6,7 +6,6 @@ import zapierLogo from 'organization/Event/Services/Apps/logos/zapier.jpg'
 import infusionsoftLogo from 'organization/Event/Services/Apps/logos/infusionsoft.jpg'
 import {
   INFUSIONSOFT,
-  useServices,
   ZAPIER,
 } from 'organization/Event/Services/ServicesProvider'
 
@@ -14,21 +13,14 @@ export const APPS = 'Apps'
 
 export default function Apps() {
   const routes = useEventRoutes()
-  const {isLinked} = useServices()
 
   return (
     <Grid>
-      <Card
-        service={ZAPIER}
-        link={routes.services.zapier}
-        logo={zapierLogo}
-        isLinked={isLinked(ZAPIER)}
-      />
+      <Card service={ZAPIER} link={routes.services.zapier} logo={zapierLogo} />
       <Card
         service={INFUSIONSOFT}
         link={routes.services.infusionsoft}
         logo={infusionsoftLogo}
-        isLinked={isLinked(INFUSIONSOFT)}
       />
     </Grid>
   )

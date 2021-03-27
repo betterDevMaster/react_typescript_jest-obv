@@ -31,7 +31,6 @@ it('should edit an attendee', async () => {
     findAllByLabelText,
     findByLabelText,
     event,
-    queryByText,
   } = await goToAttendeeManagement({
     attendees,
   })
@@ -80,6 +79,7 @@ it('should edit an attendee', async () => {
   })
 
   const [url, data] = mockPatch.mock.calls[0]
+
   expect(url).toMatch(`/events/${event.slug}/attendees/${target.id}`)
 
   expect(data.first_name).toBe(newName)
@@ -87,4 +87,34 @@ it('should edit an attendee', async () => {
   expect(data.tags.includes(newTag)).toBe(true)
   expect(data.groups[group]).toBe(updatedGroupValue)
   expect(data.groups[newGroupKey]).toBe(newGroupValue)
+})
+
+it('should copy the login url', async () => {
+  const attendees = Array.from(
+    {length: faker.random.number({min: 1, max: 4})},
+    fakeAttendee,
+  )
+
+  const {findAllByLabelText, findByLabelText} = await goToAttendeeManagement({
+    attendees,
+  })
+
+  const targetIndex = faker.random.number({min: 0, max: attendees.length - 1})
+  const target = attendees[targetIndex]
+
+  user.click((await findAllByLabelText('edit'))[targetIndex])
+
+  const copy = jest.fn(() => Promise.resolve())
+
+  Object.assign(navigator, {
+    clipboard: {
+      writeText: copy,
+    },
+  })
+
+  user.click(await findByLabelText('copy login url'))
+
+  await wait(() => {
+    expect(copy).toHaveBeenCalledWith(target.login_url)
+  })
 })

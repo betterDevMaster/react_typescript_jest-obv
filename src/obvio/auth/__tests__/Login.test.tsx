@@ -6,6 +6,7 @@ import user from '@testing-library/user-event'
 import mockAxios from 'axios'
 import {fakeUser} from 'auth/user/__utils__/factory'
 import {act, wait} from '@testing-library/react'
+import {TEAM_MEMBER_TOKEN_KEY} from 'obvio/auth'
 
 const mockPost = mockAxios.post as jest.Mock
 const mockGet = mockAxios.get as jest.Mock
@@ -71,7 +72,7 @@ it('should login a user', async () => {
   })
 
   // token saved
-  expect(window.localStorage.getItem('__obvio_user_token__')).toBe(token)
+  expect(window.localStorage.getItem(TEAM_MEMBER_TOKEN_KEY)).toBe(token)
 
   // Requested user?
   const authHeader = mockGet.mock.calls[0][1]['headers']['Authorization']

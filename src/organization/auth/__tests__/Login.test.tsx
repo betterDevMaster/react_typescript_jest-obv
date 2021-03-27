@@ -8,7 +8,7 @@ import {fakeUser} from 'auth/user/__utils__/factory'
 import {act} from '@testing-library/react'
 import {fakeOrganization} from 'obvio/Organizations/__utils__/factory'
 import {useLocation} from 'react-router-dom'
-import {organizationTokenKey} from 'organization/auth'
+import {TEAM_MEMBER_TOKEN_KEY} from 'obvio/auth'
 
 const mockPost = mockAxios.post as jest.Mock
 const mockGet = mockAxios.get as jest.Mock
@@ -73,9 +73,7 @@ it('should login a user', async () => {
   expect(data.password).toBe(password)
 
   // token saved
-  expect(
-    window.localStorage.getItem(organizationTokenKey(organization.slug)),
-  ).toBe(token)
+  expect(window.localStorage.getItem(TEAM_MEMBER_TOKEN_KEY)).toBe(token)
 
   // Requested user?
   const authHeader = mockGet.mock.calls[2][1]['headers']['Authorization']

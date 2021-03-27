@@ -15,9 +15,9 @@ import Box from '@material-ui/core/Box'
 import {useOrganization} from 'organization/OrganizationProvider'
 import {useEvent} from 'Event/EventProvider'
 import {RoomAssignment} from 'organization/Event/RoomAssignmentsProvider'
-import {useAsync} from 'lib/async'
 import {api} from 'lib/url'
 import {useRoom} from 'organization/Event/Room/RoomProvider'
+import {useInterval} from 'lib/interval'
 
 export default function TechCheckAttendees() {
   const {area} = useArea()
@@ -30,17 +30,13 @@ export default function TechCheckAttendees() {
 }
 
 function Content() {
-  const {data: assignments, loading} = useTechCheckAssignments()
+  const assignments = useTechCheckAssignments()
   const [attendees, setAttendees] = useState<Attendee[]>([])
   const checkIn = useCheckIn()
   const [error, setError] = useState('')
   const [isProcessing, setIsProcessing] = useState(false)
 
   useEffect(() => {
-    if (!assignments) {
-      return
-    }
-
     const attendees = assignments.map(({attendee}) => attendee)
     setAttendees(attendees)
   }, [assignments])
@@ -64,10 +60,6 @@ function Content() {
       .finally(() => {
         setIsProcessing(false)
       })
-  }
-
-  if (loading) {
-    return null
   }
 
   return (
@@ -131,20 +123,30 @@ function Attendees(props: {
   )
 }
 
+const POLL_TECH_CHECK_ATTENDEES_INTERVAL_MS = 20000
+
 function useTechCheckAssignments() {
   const {client} = useOrganization()
   const {event} = useEvent()
   const {area} = useArea()
   const {room} = useRoom()
 
-  const request = useCallback(() => {
+  const [assignments, setAssignments] = useState<RoomAssignment[]>([])
+
+  const fetch = useCallback(() => {
     const url = api(
       `/events/${event.slug}/areas/${area.id}/room/${room.id}/tech_check_assignments`,
     )
-    return client.get<RoomAssignment[]>(url)
+    return client.get<RoomAssignment[]>(url).then(setAssignments)
   }, [area, event, client, room])
 
-  return useAsync(request)
+  useEffect(() => {
+    fetch()
+  }, [fetch])
+
+  useInterval(fetch, POLL_TECH_CHECK_ATTENDEES_INTERVAL_MS)
+
+  return assignments
 }
 
 function Error(props: {children: string | null}) {

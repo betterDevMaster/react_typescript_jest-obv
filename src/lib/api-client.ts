@@ -16,6 +16,11 @@ const defaultHeaders = {
   'content-type': 'application/json',
 }
 
+export interface CsvExport {
+  data: string
+  file_name: string
+}
+
 export type RequestOptions = {
   headers?: Record<string, string>
   tokenKey?: string

@@ -2,13 +2,17 @@ import styled from 'styled-components'
 import React from 'react'
 import grey from '@material-ui/core/colors/grey'
 import {RelativeLink} from 'lib/ui/link/RelativeLink'
-import {Service} from 'organization/Event/Services/ServicesProvider'
+import {
+  Service,
+  useServices,
+} from 'organization/Event/Services/ServicesProvider'
+import DangerButton from 'lib/ui/Button/DangerButton'
+import Typography from '@material-ui/core/Typography'
 
 export default function Card(props: {
   service: Service
   link: string
   logo: string
-  isLinked: boolean
 }) {
   return (
     <div>
@@ -24,17 +28,42 @@ export default function Card(props: {
       </StyledLink>
       <Bottom>
         <BottomLeft>
-          <span>{props.service}</span>
-          <Status isLinked={props.isLinked} />
+          <Typography variant="h6">{props.service}</Typography>
+          <Status service={props.service} />
         </BottomLeft>
       </Bottom>
     </div>
   )
 }
 
-function Status(props: {isLinked: boolean}) {
-  const label = props.isLinked ? 'Linked' : 'Not Linked'
-  return <StatusText isConnected={props.isLinked}>{label}</StatusText>
+function Status(props: {service: Service}) {
+  const {isLinked} = useServices()
+
+  if (isLinked(props.service)) {
+    return <UnlinkButton service={props.service} />
+  }
+
+  return <StatusText>Not Linked</StatusText>
+}
+
+function UnlinkButton(props: {service: Service}) {
+  const {service} = props
+  const {unlink, remove} = useServices()
+
+  const handleClickUnlink = () => {
+    unlink(service).then(() => remove(service))
+  }
+
+  return (
+    <DangerButton
+      variant="outlined"
+      onClick={handleClickUnlink}
+      size="small"
+      aria-label="unlink service"
+    >
+      Unlink
+    </DangerButton>
+  )
 }
 
 const CardContent = styled.div`
@@ -63,8 +92,7 @@ const StyledLink = styled(RelativeLink)`
   }
 `
 
-const StatusText = styled.div<{isConnected: boolean}>`
-  ${(props) =>
-    props.isConnected ? `color: ${props.theme.colors.primary};` : ''}
+const StatusText = styled.div`
   font-size: 16px;
+  color: ${grey[700]};
 `

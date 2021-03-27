@@ -1,19 +1,17 @@
-import {client, RequestOptions} from 'lib/api-client'
 import {useAsync} from 'lib/async'
 import {api, createRoutes} from 'lib/url'
 import {Organization} from 'organization'
-import {organizationTokenKey} from 'organization/auth'
-import {obvioClient} from 'obvio/obvio-client'
-import React, {useCallback, useMemo} from 'react'
+import {teamMemberClient} from 'obvio/obvio-client'
+import React, {useCallback} from 'react'
 import {useLocation} from 'react-router-dom'
+import {Client} from 'lib/api-client'
 
-export type OrganizationClient = NonNullable<ReturnType<typeof useClient>>
 export type OrganizationRoutes = ReturnType<typeof createRoutesFor>
 
 interface OrganizationContextProps {
   organization: Organization
   routes: OrganizationRoutes
-  client: OrganizationClient
+  client: Client
 }
 
 export const OrganizationContext = React.createContext<
@@ -30,13 +28,12 @@ export default function OrganizationProvider(props: {
     return findOrganization(slug)
   }, [slug])
   const {data: organization, loading} = useAsync(find)
-  const client = useClient(organization)
 
   if (loading) {
     return null
   }
 
-  if (!organization || !client) {
+  if (!organization) {
     return (
       <div>
         <h1>404 - Organization '{slug}' not found.</h1>
@@ -51,7 +48,7 @@ export default function OrganizationProvider(props: {
       value={{
         organization,
         routes,
-        client,
+        client: teamMemberClient,
       }}
     >
       {props.children}
@@ -110,31 +107,7 @@ export function createRoutesFor(organization: Organization) {
   )
 }
 
-export function useClient(
-  organization: Organization | null,
-): typeof client | null {
-  return useMemo(() => {
-    if (!organization) {
-      return null
-    }
-
-    const tokenKey = organizationTokenKey(organization.slug)
-    return {
-      get: (url: string, options?: RequestOptions) =>
-        client.get(url, {...options, tokenKey}),
-      post: (url: string, data: {} = {}, options?: RequestOptions) =>
-        client.post(url, data, {...options, tokenKey}),
-      put: (url: string, data: {}, options?: RequestOptions) =>
-        client.put(url, data, {...options, tokenKey}),
-      patch: (url: string, data: {} = {}, options?: RequestOptions) =>
-        client.patch(url, data, {...options, tokenKey}),
-      delete: (url: string, options?: RequestOptions) =>
-        client.delete(url, {...options, tokenKey}),
-    }
-  }, [organization])
-}
-
 function findOrganization(slug: string) {
   const url = api(`/organizations/${slug}`)
-  return obvioClient.get<Organization>(url)
+  return teamMemberClient.get<Organization>(url)
 }

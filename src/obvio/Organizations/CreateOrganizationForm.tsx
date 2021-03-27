@@ -7,7 +7,7 @@ import {ValidationError} from 'lib/api-client'
 import {useBreadcrumbs} from 'lib/ui/BreadcrumbProvider'
 import {spacing} from 'lib/ui/theme'
 import {api} from 'lib/url'
-import {obvioClient} from 'obvio/obvio-client'
+import {teamMemberClient} from 'obvio/obvio-client'
 import {obvioRoutes} from 'obvio/Routes'
 import Layout from 'obvio/user/Layout'
 import {Organization} from 'organization'
@@ -22,7 +22,7 @@ export interface Data {
 
 export function sendRequest(data: Data) {
   const url = api('/organizations')
-  return obvioClient.post<Organization>(url, data)
+  return teamMemberClient.post<Organization>(url, data)
 }
 
 export default function CreateOrganizationForm() {

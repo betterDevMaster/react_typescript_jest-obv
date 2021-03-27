@@ -107,6 +107,7 @@ export default function CreateRoomForm() {
               'aria-label': 'set max number of attendees',
               min: 0,
               max: 1000,
+              ref: register,
             }}
             disabled={!hasMaxNumAttendees}
           />

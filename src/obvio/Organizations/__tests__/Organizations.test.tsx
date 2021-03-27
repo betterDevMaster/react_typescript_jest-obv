@@ -5,12 +5,13 @@ import mockAxios from 'axios'
 import {fakeUser} from 'auth/user/__utils__/factory'
 import App from 'App'
 import {fakeOrganization} from 'obvio/Organizations/__utils__/factory'
+import {TEAM_MEMBER_TOKEN_KEY} from 'obvio/auth'
 
 const mockGet = mockAxios.get as jest.Mock
 
 it('should show the user organizations', async () => {
   const token = 'userauthtoken'
-  window.localStorage.setItem('__obvio_user_token__', token)
+  window.localStorage.setItem(TEAM_MEMBER_TOKEN_KEY, token)
   const numOrganizations = faker.random.number({min: 1, max: 3})
   const organizations = Array.from(
     {

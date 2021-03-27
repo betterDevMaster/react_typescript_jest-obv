@@ -2,13 +2,10 @@ import Button from '@material-ui/core/Button'
 import withStyles from '@material-ui/core/styles/withStyles'
 import TextField from '@material-ui/core/TextField'
 import Typography from '@material-ui/core/Typography'
-import {ValidationError} from 'lib/api-client'
+import {Client, ValidationError} from 'lib/api-client'
 import {spacing} from 'lib/ui/theme'
 import {api} from 'lib/url'
-import {
-  OrganizationClient,
-  useOrganization,
-} from 'organization/OrganizationProvider'
+import {useOrganization} from 'organization/OrganizationProvider'
 import React, {useState} from 'react'
 import {useForm} from 'react-hook-form'
 import {useHistory} from 'react-router-dom'
@@ -149,7 +146,7 @@ function Error(props: {children: string | null}) {
 }
 
 function createEvent(
-  client: OrganizationClient,
+  client: Client,
   organization: Organization,
   data: CreateEventData,
 ) {

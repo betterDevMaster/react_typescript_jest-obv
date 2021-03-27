@@ -20,7 +20,6 @@ import {
 import Alert from '@material-ui/lab/Alert'
 import {useExportAttendees} from 'organization/Event/AttendeeManagement/attendee-csv'
 import Page from 'organization/Event/Page'
-import TagList from 'organization/Event/AttendeeManagement/TagList'
 import EditButton from 'lib/ui/Button'
 import {useRoomAssignments} from 'organization/Event/RoomAssignmentsProvider'
 import RoomSelect from 'organization/Event/AttendeeManagement/RoomSelect'
@@ -166,7 +165,6 @@ export default function AttendeeManagement() {
                 <TableRow>
                   <TableCell>Name</TableCell>
                   <TableCell>Email</TableCell>
-                  <TableCell>Tags</TableCell>
                   {groups.map((group, index) => (
                     <TableCell key={index} aria-label="group">
                       {group}
@@ -192,9 +190,6 @@ export default function AttendeeManagement() {
                       </EditButton>
                     </TableCell>
                     <TableCell aria-label="email">{attendee.email}</TableCell>
-                    <TableCell>
-                      <TagList attendee={attendee} />
-                    </TableCell>
                     {groups.map((key, index) => (
                       <TableCell key={index} aria-label={key}>
                         {attendee.groups[key]}

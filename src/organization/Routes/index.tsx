@@ -11,6 +11,11 @@ export default function OrganizationRoutes() {
     return <div>loading...</div>
   }
 
+  /**
+   * Always need the owner for every organization, so OwnerProvider also
+   * serves as a guard that the current user is authorized to view
+   * the organization, ie. a team member.
+   */
   if (user) {
     return (
       <OwnerProvider>

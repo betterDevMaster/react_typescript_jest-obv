@@ -3,6 +3,7 @@ import Page from 'organization/Event/Page'
 import CreateDialog from 'organization/Event/QuestionsConfig/CreateDialog'
 import EditDialog from 'organization/Event/QuestionsConfig/EditDialog'
 import QuestionsList from 'organization/Event/QuestionsConfig/QuestionsList'
+import SubmissionsExport from 'organization/Event/QuestionsConfig/SubmissionsExport'
 import {Question} from 'organization/Event/QuestionsProvider'
 import Layout from 'organization/user/Layout'
 import React, {useState} from 'react'
@@ -26,6 +27,7 @@ export default function QuestionsConfig() {
           onClose={toggleAddQuestionDialog}
         />
         <EditDialog question={editing} onClose={stopEditing} />
+        <SubmissionsExport />
         <QuestionsList onSelect={setEditing} />
         <Button
           fullWidth

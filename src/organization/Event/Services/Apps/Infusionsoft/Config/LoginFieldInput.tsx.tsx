@@ -63,7 +63,7 @@ function useSave() {
   const {client} = useOrganization()
   const {event} = useEvent()
   const url = api(`/events/${event.slug}/integrations/infusionsoft/login_field`)
-  const {updateIntegration} = useServices()
+  const {update: updateIntegration} = useServices()
   const [isProcessing, setIsProcessing] = useState(false)
   const isMounted = useIsMounted()
 

@@ -5,10 +5,8 @@ import axios from 'axios'
 import {wait} from '@testing-library/dom'
 import {fakeEvent} from 'Event/__utils__/factory'
 import {goToServices} from 'organization/Event/Services/__utils__/go-to-services-config'
-import {act} from '@testing-library/react'
 
 const mockPost = axios.post as jest.Mock
-const mockGet = axios.get as jest.Mock
 const mockDelete = axios.delete as jest.Mock
 
 beforeEach(() => {

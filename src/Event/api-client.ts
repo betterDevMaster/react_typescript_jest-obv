@@ -1,11 +1,10 @@
-import {client} from './../lib/api-client'
+import {Client, client} from './../lib/api-client'
 import {EVENT_TOKEN_KEY} from 'Event/auth'
 import {RequestOptions} from 'lib/api-client'
 
 const tokenKey = EVENT_TOKEN_KEY
 
-export type EventClient = typeof client
-export const eventClient: EventClient = {
+export const eventClient: Client = {
   get: (url: string, options?: RequestOptions) =>
     client.get(url, {...options, tokenKey}),
   post: (url: string, data: {} = {}, options?: RequestOptions) =>
