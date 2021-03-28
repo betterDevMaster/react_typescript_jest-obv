@@ -3,11 +3,15 @@ import {ResponseError} from 'lib/api-client'
 import {onChangeCheckedHandler} from 'lib/dom'
 import {
   Permission,
+  UPDATE_TEAM,
+  usePermissions,
+} from 'organization/PermissionsProvider'
+import {
   Role,
   useAddPermission,
-  usePermissions,
+  useRoles,
   useRemovePermission,
-} from 'organization/Team/Permissions/PermissionsProvider'
+} from 'organization/Team/Roles/RolesProvider'
 import React from 'react'
 
 export default function PermissionCheckbox(props: {
@@ -17,14 +21,16 @@ export default function PermissionCheckbox(props: {
   setProcessing: (processing: boolean) => void
   onError: (error: ResponseError) => void
 }) {
-  const {updateRole} = usePermissions()
+  const {updateRole} = useRoles()
   const hasPermission = props.role.permissions.includes(props.permission)
+
+  const {can} = usePermissions()
 
   const add = useAddPermission()
   const remove = useRemovePermission()
 
   const updatePermission = (isAdd: boolean) => {
-    if (props.processing) {
+    if (props.processing || !can(UPDATE_TEAM)) {
       return
     }
     const update = isAdd ? add : remove
@@ -46,6 +52,7 @@ export default function PermissionCheckbox(props: {
       inputProps={{
         'aria-label': 'toggle permission',
       }}
+      disableRipple
     />
   )
 }

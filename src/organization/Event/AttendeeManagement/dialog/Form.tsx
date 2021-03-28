@@ -11,6 +11,11 @@ import {withStyles} from '@material-ui/core'
 import TagsInput from 'lib/ui/form/TagsInput'
 import GroupInput from 'organization/Event/AttendeeManagement/dialog/GroupInput'
 import NewGroupInput from 'organization/Event/AttendeeManagement/dialog/NewGroupInput'
+import {
+  CONFIGURE_EVENTS,
+  usePermissions,
+} from 'organization/PermissionsProvider'
+import HasPermission from 'organization/HasPermission'
 
 export interface NewGroup {
   key: string
@@ -31,6 +36,9 @@ export default function Form(props: {
   const [newGroups, setNewGroups] = useState<NewGroup[]>([])
   const {groups} = useAttendees()
   const isMounted = useRef(true)
+
+  const {can} = usePermissions()
+  const canEdit = can(CONFIGURE_EVENTS)
 
   const {isVisible, attendee} = props
 
@@ -160,6 +168,7 @@ export default function Form(props: {
         }}
         error={Boolean(emailError)}
         helperText={emailError}
+        disabled={!canEdit}
       />
       <TagsInput
         value={attendee?.tags || []}
@@ -167,6 +176,7 @@ export default function Form(props: {
         aria-label="tags"
         ref={register}
         label="Tags"
+        disabled={!canEdit}
       />
       {groups.map((group) => (
         <GroupInput
@@ -174,6 +184,7 @@ export default function Form(props: {
           group={group}
           attendee={attendee}
           ref={register}
+          disabled={!canEdit}
         />
       ))}
       {newGroups.map((group, index) => (
@@ -183,16 +194,18 @@ export default function Form(props: {
           onChange={updateNewGroup(index)}
         />
       ))}
-      <AddGroupButton
-        aria-label="add group"
-        variant="outlined"
-        color="primary"
-        onClick={addGroup}
-        fullWidth
-        size="large"
-      >
-        Add Group
-      </AddGroupButton>
+      <HasPermission permission={CONFIGURE_EVENTS}>
+        <AddGroupButton
+          aria-label="add group"
+          variant="outlined"
+          color="primary"
+          onClick={addGroup}
+          fullWidth
+          size="large"
+        >
+          Add Group
+        </AddGroupButton>
+      </HasPermission>
       <SaveButton
         type="submit"
         variant="contained"

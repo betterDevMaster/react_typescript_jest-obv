@@ -3,6 +3,7 @@ import faker from 'faker'
 import axios from 'axios'
 import {wait} from '@testing-library/react'
 import {goToPointsConfig} from 'organization/Event/PointsConfig/__utils__/go-to-points-config'
+import {CONFIGURE_EVENTS} from 'organization/PermissionsProvider'
 
 const mockPatch = axios.patch as jest.Mock
 const mockDelete = axios.delete as jest.Mock
@@ -12,7 +13,9 @@ afterEach(() => {
 })
 
 it('edit an action', async () => {
-  const {findByLabelText, actions, event} = await goToPointsConfig()
+  const {findByLabelText, actions, event} = await goToPointsConfig({
+    userPermissions: [CONFIGURE_EVENTS],
+  })
 
   const target = faker.random.arrayElement(actions)
 
@@ -81,7 +84,9 @@ it('removes an action', async () => {
     actions,
     findAllByLabelText,
     event,
-  } = await goToPointsConfig()
+  } = await goToPointsConfig({
+    userPermissions: [CONFIGURE_EVENTS],
+  })
 
   const numOriginal = actions.length
 

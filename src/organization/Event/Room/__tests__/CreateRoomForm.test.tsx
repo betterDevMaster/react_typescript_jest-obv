@@ -6,14 +6,14 @@ import {render} from '__utils__/render'
 import App from 'App'
 import axios from 'axios'
 import {fakeRoom} from 'organization/Event/AreaList/__utils__/factory'
-import {findAllByLabelText, wait} from '@testing-library/react'
-import RoomSelect from 'organization/Event/AttendeeManagement/RoomSelect'
+import {wait} from '@testing-library/react'
+import {CONFIGURE_EVENTS} from 'organization/PermissionsProvider'
 
 const mockGet = axios.get as jest.Mock
 const mockPost = axios.post as jest.Mock
 
 it('should create a room', async () => {
-  const {event, areas} = goToEvent()
+  const {event, areas} = goToEvent({userPermissions: [CONFIGURE_EVENTS]})
   const {findByLabelText, findAllByLabelText} = render(<App />)
 
   const area = faker.random.arrayElement(areas)

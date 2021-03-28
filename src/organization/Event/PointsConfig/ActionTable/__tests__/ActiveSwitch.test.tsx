@@ -5,6 +5,7 @@ import {fakeAction} from 'Event/ActionsProvider/__utils__/factory'
 import {Action} from 'Event/ActionsProvider'
 import {wait} from '@testing-library/react'
 import {goToPointsConfig} from 'organization/Event/PointsConfig/__utils__/go-to-points-config'
+import {CONFIGURE_EVENTS} from 'organization/PermissionsProvider'
 
 const mockPatch = axios.patch as jest.Mock
 
@@ -20,6 +21,7 @@ it('toggles a custom action', async () => {
 
   const {findAllByLabelText, event} = await goToPointsConfig({
     actions,
+    userPermissions: [CONFIGURE_EVENTS],
   })
 
   const targetIndex = faker.random.number({

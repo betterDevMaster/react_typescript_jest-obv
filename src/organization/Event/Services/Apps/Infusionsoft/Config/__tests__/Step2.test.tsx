@@ -9,6 +9,7 @@ import {
 import {Tag} from 'organization/Event/Services/Apps/Infusionsoft'
 import axios from 'axios'
 import {wait} from '@testing-library/dom'
+import {CONFIGURE_EVENTS} from 'organization/PermissionsProvider'
 
 const mockPatch = axios.patch as jest.Mock
 
@@ -27,6 +28,7 @@ it('should save tag id', async () => {
   const {findAllByLabelText, event} = await goToInfusionsoft({
     integrations: [linked],
     tags,
+    userPermissions: [CONFIGURE_EVENTS],
   })
 
   const id = faker.random.number({min: 10000, max: 100000})

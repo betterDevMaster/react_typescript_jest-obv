@@ -3,12 +3,16 @@ import axios from 'axios'
 import {fakeEvent, fakeTechCheck} from 'Event/__utils__/factory'
 import user from '@testing-library/user-event'
 import {fireEvent, wait} from '@testing-library/react'
-import {ObvioEvent} from 'Event'
-import {goToEventConfig} from 'organization/Event/__utils__/event'
+import {
+  EventOverrides,
+  goToEventConfig,
+} from 'organization/Event/__utils__/event'
+import {CONFIGURE_EVENTS} from 'organization/PermissionsProvider'
 
+const mockGet = axios.get as jest.Mock
 const mockPut = axios.put as jest.Mock
 
-afterEach(() => {
+beforeEach(() => {
   jest.clearAllMocks()
 })
 
@@ -16,7 +20,10 @@ it('should show tech check config', async () => {
   const body = faker.lorem.paragraph()
 
   const event = fakeEvent({tech_check: fakeTechCheck({body})})
-  const {findByLabelText} = await goToTechCheckConfig({event})
+  const {findByLabelText} = await goToTechCheckConfig({
+    event,
+    userPermissions: [CONFIGURE_EVENTS],
+  })
   expect(await findByLabelText('tech check body')).toBeInTheDocument()
 
   const editorValue = ((await findByLabelText(
@@ -28,7 +35,10 @@ it('should show tech check config', async () => {
 
 it('should submit a tech check config', async () => {
   const event = fakeEvent({tech_check: null})
-  const {findByLabelText, areas} = await goToTechCheckConfig({event})
+  const {findByLabelText, areas} = await goToTechCheckConfig({
+    event,
+    userPermissions: [CONFIGURE_EVENTS],
+  })
 
   const area = faker.random.arrayElement(areas)
 
@@ -53,8 +63,11 @@ it('should submit a tech check config', async () => {
   expect(area_id).toBe(area.id)
 })
 
-async function goToTechCheckConfig(overrides: {event?: ObvioEvent} = {}) {
+async function goToTechCheckConfig(overrides: EventOverrides = {}) {
   const context = await goToEventConfig(overrides)
+
+  // areas
+  mockGet.mockImplementationOnce(() => Promise.resolve({data: context.areas}))
 
   user.click(await context.findByLabelText('configure tech check'))
 

@@ -8,6 +8,8 @@ import {fakeOrganization} from 'obvio/Organizations/__utils__/factory'
 import {useLocation} from 'react-router-dom'
 import {fakeInfusionsoftIntegration} from 'organization/Event/Services/Apps/Infusionsoft/__utils__/factory'
 import {TEAM_MEMBER_TOKEN_KEY} from 'obvio/auth'
+import {ALL_PERMISSIONS} from 'organization/__utils__/factory'
+import {CONFIGURE_EVENTS} from 'organization/PermissionsProvider'
 
 const mockGet = axios.get as jest.Mock
 const mockPost = axios.post as jest.Mock
@@ -47,15 +49,22 @@ it('should complete authorization', async () => {
     },
   })
 
+  // Organization
   mockGet.mockImplementationOnce(() => Promise.resolve({data: organization}))
-
+  // User
   mockGet.mockImplementationOnce(() =>
     Promise.resolve({data: fakeTeamMember()}),
   )
-
+  // Owner
   mockGet.mockImplementationOnce(() =>
     Promise.resolve({data: fakeTeamMember()}),
   )
+  // User Permissions
+  mockGet.mockImplementationOnce(() =>
+    Promise.resolve({data: [CONFIGURE_EVENTS]}),
+  )
+  // All Permissions
+  mockGet.mockImplementationOnce(() => Promise.resolve({data: ALL_PERMISSIONS}))
   // event
   mockGet.mockImplementationOnce(() => Promise.resolve({data: event}))
 

@@ -7,6 +7,7 @@ import App from 'App'
 import axios from 'axios'
 import {Area} from 'organization/Event/AreasProvider'
 import {wait} from '@testing-library/react'
+import {CONFIGURE_EVENTS} from 'organization/PermissionsProvider'
 
 const mockGet = axios.get as jest.Mock
 const mockPatch = axios.patch as jest.Mock
@@ -16,7 +17,9 @@ afterEach(() => {
 })
 
 it('should update an area', async () => {
-  const {event, areas} = goToEvent()
+  const {event, areas} = goToEvent({
+    userPermissions: [CONFIGURE_EVENTS],
+  })
 
   const {findByLabelText} = render(<App />)
 

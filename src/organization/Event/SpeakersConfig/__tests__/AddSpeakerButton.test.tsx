@@ -4,6 +4,7 @@ import {fakeEvent, fakeSpeaker, fakeSpeakerPage} from 'Event/__utils__/factory'
 import {goToSpeakerConfig} from 'organization/Event/SpeakersConfig/__utils__/go-to-speaker-config'
 import axios from 'axios'
 import {wait} from '@testing-library/react'
+import {CONFIGURE_EVENTS} from 'organization/PermissionsProvider'
 
 const mockPost = axios.post as jest.Mock
 
@@ -22,7 +23,7 @@ it('should add a new speaker', async () => {
     findByLabelText,
     findByText,
     findAllByLabelText,
-  } = await goToSpeakerConfig({event})
+  } = await goToSpeakerConfig({event, userPermissions: [CONFIGURE_EVENTS]})
 
   const speaker = fakeSpeaker()
   mockPost.mockImplementationOnce(() => Promise.resolve({data: speaker}))

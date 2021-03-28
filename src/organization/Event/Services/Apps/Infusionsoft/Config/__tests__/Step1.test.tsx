@@ -12,6 +12,7 @@ import {
 } from 'organization/Event/Services/Apps/Infusionsoft'
 import axios from 'axios'
 import {wait} from '@testing-library/dom'
+import {CONFIGURE_EVENTS} from 'organization/PermissionsProvider'
 
 const mockPatch = axios.patch as jest.Mock
 
@@ -27,6 +28,7 @@ it('should save login field label', async () => {
 
   const {findAllByLabelText, event, findByLabelText} = await goToInfusionsoft({
     integrations: [linked],
+    userPermissions: [CONFIGURE_EVENTS],
     tags,
   })
 

@@ -6,16 +6,17 @@ import {render} from '__utils__/render'
 import App from 'App'
 import axios from 'axios'
 import {fakeArea} from 'organization/Event/AreaList/__utils__/factory'
+import {CONFIGURE_EVENTS} from 'organization/PermissionsProvider'
 
 const mockPost = axios.post as jest.Mock
 const mockGet = axios.get as jest.Mock
 
-afterEach(() => {
+beforeEach(() => {
   jest.clearAllMocks()
 })
 
 it('should create a new area', async () => {
-  const {event} = goToEvent({areas: []})
+  const {event} = goToEvent({areas: [], userPermissions: [CONFIGURE_EVENTS]})
   const {findByLabelText, findAllByText} = render(<App />)
 
   user.click(await findByLabelText(`view ${event.name}`))

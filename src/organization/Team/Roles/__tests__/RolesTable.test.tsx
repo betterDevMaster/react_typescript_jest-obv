@@ -5,17 +5,20 @@ import React from 'react'
 import {signInToOrganization} from 'organization/__utils__/authenticate'
 import {render} from '__utils__/render'
 import App from 'App'
-import {
-  fakePermission,
-  fakeRole,
-} from 'organization/Team/Permissions/__utils__/factory'
+import {fakeRole} from 'organization/Team/Roles/__utils__/factory'
 import {wait} from '@testing-library/react'
+import {ALL_PERMISSIONS, randomPermission} from 'organization/__utils__/factory'
+import {UPDATE_TEAM} from 'organization/PermissionsProvider'
 
 const mockGet = axios.get as jest.Mock
 const mockDelete = axios.delete as jest.Mock
 
-it('remove a role', async () => {
-  signInToOrganization()
+beforeEach(() => {
+  jest.clearAllMocks()
+})
+
+it('should remove a role', async () => {
+  signInToOrganization({userPermissions: [UPDATE_TEAM]})
 
   const {findByText, findAllByLabelText, queryByText} = render(<App />)
 
@@ -28,13 +31,10 @@ it('remove a role', async () => {
 
   mockGet.mockImplementationOnce(() => Promise.resolve({data: []})) // team members
   mockGet.mockImplementationOnce(() => Promise.resolve({data: roles}))
-  mockGet.mockImplementationOnce(() =>
-    Promise.resolve({data: [fakePermission()]}),
-  )
 
   // Go to team page
   user.click(await findByText(/team/i))
-  user.click(await findByText(/permissions/i))
+  user.click(await findByText(/roles/i))
 
   const targetIndex = faker.random.number({min: 0, max: roles.length - 1})
   const target = roles[targetIndex]
@@ -43,7 +43,7 @@ it('remove a role', async () => {
 
   // has a checkbox per role originally
   expect((await findAllByLabelText('toggle permission')).length).toBe(
-    roles.length,
+    roles.length * ALL_PERMISSIONS.length,
   )
 
   // remove target
@@ -55,6 +55,28 @@ it('remove a role', async () => {
 
   // has one less role
   expect((await findAllByLabelText('toggle permission')).length).toBe(
-    roles.length - 1,
+    roles.length * ALL_PERMISSIONS.length - ALL_PERMISSIONS.length,
   )
+})
+
+it('should check permissions', async () => {
+  signInToOrganization()
+
+  const {findByText, queryByLabelText} = render(<App />)
+
+  const roles = Array.from(
+    {
+      length: faker.random.number({min: 2, max: 5}),
+    },
+    fakeRole,
+  )
+
+  mockGet.mockImplementationOnce(() => Promise.resolve({data: []})) // team members
+  mockGet.mockImplementationOnce(() => Promise.resolve({data: roles}))
+
+  // Go to team page
+  user.click(await findByText(/team/i))
+  user.click(await findByText(/roles/i))
+
+  expect(queryByLabelText('remove role')).not.toBeInTheDocument()
 })

@@ -2,10 +2,7 @@ import {ValidationError} from 'lib/api-client'
 import styled from 'styled-components'
 import {api} from 'lib/url'
 import {useOrganization} from 'organization/OrganizationProvider'
-import {
-  Role,
-  usePermissions,
-} from 'organization/Team/Permissions/PermissionsProvider'
+import {Role, useRoles} from 'organization/Team/Roles/RolesProvider'
 import React, {useState} from 'react'
 import {useForm} from 'react-hook-form'
 import IfExists from 'lib/ui/layout/HasContent'
@@ -25,7 +22,7 @@ export default function AddRoleForm() {
   const [responseError, setResponseError] = useState<
     ValidationError<AddRoleData>
   >(null)
-  const {addRole} = usePermissions()
+  const {addRole} = useRoles()
   const save = useSaveRole()
 
   const submit = (data: AddRoleData) => {

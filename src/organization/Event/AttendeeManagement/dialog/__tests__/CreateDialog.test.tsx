@@ -4,6 +4,7 @@ import axios from 'axios'
 import {fakeAttendee} from 'Event/auth/__utils__/factory'
 import {goToAttendeeManagement} from 'organization/Event/AttendeeManagement/__utils__/go-to-attendee-management'
 import {fireEvent, wait} from '@testing-library/react'
+import {CONFIGURE_EVENTS} from 'organization/PermissionsProvider'
 
 const mockPost = axios.post as jest.Mock
 
@@ -31,7 +32,10 @@ it('should add a new', async () => {
     findByLabelText,
     event,
     findAllByLabelText,
-  } = await goToAttendeeManagement({attendees})
+  } = await goToAttendeeManagement({
+    attendees,
+    userPermissions: [CONFIGURE_EVENTS],
+  })
 
   user.click(await findByLabelText('add attendee'))
 

@@ -5,6 +5,7 @@ import {fakeQuestion} from 'organization/Event/QuestionsProvider/__utils__/facto
 import {wait} from '@testing-library/dom'
 import axios from 'axios'
 import {goToQuestionsConfig} from 'organization/Event/QuestionsConfig/__utils__/go-to-questions-config'
+import {CONFIGURE_EVENTS} from 'organization/PermissionsProvider'
 
 const mockPut = axios.put as jest.Mock
 const mockGet = axios.get as jest.Mock
@@ -29,7 +30,10 @@ it('should update an existing question', async () => {
     questions: [question],
   })
 
-  const {findByLabelText, findByText} = await goToQuestionsConfig({event})
+  const {findByLabelText, findByText} = await goToQuestionsConfig({
+    event,
+    userPermissions: [CONFIGURE_EVENTS],
+  })
 
   user.click(await findByLabelText('edit question'))
 
@@ -63,7 +67,10 @@ it('should download answers', async (done) => {
     questions: [question],
   })
 
-  const {findByLabelText} = await goToQuestionsConfig({event})
+  const {findByLabelText} = await goToQuestionsConfig({
+    event,
+    userPermissions: [CONFIGURE_EVENTS],
+  })
 
   user.click(await findByLabelText('edit question'))
 

@@ -1,9 +1,8 @@
 import {useAsync} from 'lib/async'
 import {api} from 'lib/url'
 import {useOrganization} from 'organization/OrganizationProvider'
+import {Permission} from 'organization/PermissionsProvider'
 import React, {useCallback, useEffect, useState} from 'react'
-
-export type Permission = string
 
 export interface Role {
   id: number
@@ -11,30 +10,21 @@ export interface Role {
   permissions: Permission[]
 }
 
-interface PermissionsContextProps {
-  permissions: Permission[]
+interface RolesContextProps {
   roles: Role[]
   addRole: (role: Role) => void
   removeRole: (role: Role) => void
   updateRole: (role: Role) => void
 }
 
-const PermissionsContext = React.createContext<
-  PermissionsContextProps | undefined
->(undefined)
+const RolesContext = React.createContext<RolesContextProps | undefined>(
+  undefined,
+)
 
-export default function PermissionsProvider(props: {
-  children: React.ReactNode
-}) {
+export default function RolesProvider(props: {children: React.ReactNode}) {
   const [roles, setRoles] = useState<Role[]>([])
   const fetchRoles = useFetchRoles()
-  const fetchPermissions = useFetchPermissions()
-  const {data: fetchedRoles, loading: loadingRoles} = useAsync(fetchRoles)
-  const {data: permissions, loading: loadingPermissions} = useAsync(
-    fetchPermissions,
-  )
-
-  const loading = loadingRoles || loadingPermissions
+  const {data: fetchedRoles, loading} = useAsync(fetchRoles)
 
   useEffect(() => {
     if (!fetchedRoles) {
@@ -70,9 +60,8 @@ export default function PermissionsProvider(props: {
   }
 
   return (
-    <PermissionsContext.Provider
+    <RolesContext.Provider
       value={{
-        permissions: permissions || [],
         roles,
         addRole: add,
         removeRole: remove,
@@ -80,14 +69,14 @@ export default function PermissionsProvider(props: {
       }}
     >
       {props.children}
-    </PermissionsContext.Provider>
+    </RolesContext.Provider>
   )
 }
 
-export function usePermissions() {
-  const context = React.useContext(PermissionsContext)
+export function useRoles() {
+  const context = React.useContext(RolesContext)
   if (context === undefined) {
-    throw new Error(`usePermissions must be used within a PermissionsProvider`)
+    throw new Error(`useRoles must be used within a RolesProvider`)
   }
 
   return context
@@ -100,15 +89,6 @@ function useFetchRoles() {
     const url = api(`/organizations/${organization.slug}/roles`)
     return client.get<Role[]>(url)
   }, [organization, client])
-}
-
-function useFetchPermissions() {
-  const {client} = useOrganization()
-
-  return useCallback(() => {
-    const url = api(`/permissions`)
-    return client.get<string[]>(url)
-  }, [client])
 }
 
 export function useAddPermission() {

@@ -9,18 +9,26 @@ import {Area} from 'organization/Event/AreasProvider'
 import {render} from '__utils__/render'
 import App from 'App'
 import React from 'react'
+import {Permission} from 'organization/PermissionsProvider'
 
 const mockGet = axios.get as jest.Mock
 
-export function goToEvent(
-  overrides: {event?: ObvioEvent; areas?: Area[]} = {},
-) {
+export interface EventOverrides {
+  event?: ObvioEvent
+  areas?: Area[]
+  userPermissions?: Permission[]
+}
+
+export function goToEvent(overrides: EventOverrides = {}) {
   const event = overrides.event || fakeEvent()
   const areas =
     overrides.areas ||
     Array.from({length: faker.random.number({min: 1, max: 5})}, fakeArea)
 
-  const orgData = signInToOrganization({events: [event]})
+  const orgData = signInToOrganization({
+    events: [event],
+    userPermissions: overrides.userPermissions,
+  })
 
   // Fetch target event
   mockGet.mockImplementationOnce(() => Promise.resolve({data: event}))
@@ -30,9 +38,7 @@ export function goToEvent(
   return {event, areas, ...orgData}
 }
 
-export async function goToEventConfig(
-  overrides: {event?: ObvioEvent; areas?: Area[]} = {},
-) {
+export async function goToEventConfig(overrides: EventOverrides = {}) {
   const areas =
     overrides.areas ||
     Array.from({length: faker.random.number({min: 1, max: 5})}, fakeArea)

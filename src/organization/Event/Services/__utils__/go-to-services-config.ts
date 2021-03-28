@@ -1,4 +1,7 @@
-import {goToEventConfig} from 'organization/Event/__utils__/event'
+import {
+  EventOverrides,
+  goToEventConfig,
+} from 'organization/Event/__utils__/event'
 import {ObvioEvent} from 'Event'
 import user from '@testing-library/user-event'
 import axios from 'axios'
@@ -9,10 +12,9 @@ const mockGet = axios.get as jest.Mock
 
 export async function goToServices(
   overrides: {
-    event?: ObvioEvent
     integrations?: Integration[]
     tokens?: AccessToken[]
-  } = {},
+  } & EventOverrides = {},
 ) {
   const context = await goToEventConfig(overrides)
 

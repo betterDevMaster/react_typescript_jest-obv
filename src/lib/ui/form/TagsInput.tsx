@@ -14,6 +14,7 @@ export default React.forwardRef<
     'aria-label'?: string
     name: string
     label?: string
+    disabled?: boolean
   }
 >((props, ref) => {
   const [input, setInput] = useState('')
@@ -88,6 +89,7 @@ export default React.forwardRef<
             <TextField
               onChange={onChangeStringHandler(setInput)}
               label={props.label}
+              disabled={props.disabled}
               InputProps={{
                 startAdornment: tags.map((item) => (
                   <span aria-label="tag" key={item}>

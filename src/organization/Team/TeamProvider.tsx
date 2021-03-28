@@ -8,6 +8,7 @@ interface TeamContextProps {
   loading: boolean
   members: TeamMember[]
   add: (teamMember: TeamMember) => void
+  update: (teamMember: TeamMember) => void
   remove: (teamMember: TeamMember) => void
 }
 
@@ -30,6 +31,18 @@ export default function TeamProvider(props: {children: React.ReactNode}) {
     setMembers([teamMember, ...members])
   }
 
+  const update = (teamMember: TeamMember) => {
+    const updated = members.map((tm) => {
+      const isTarget = tm.id === teamMember.id
+      if (isTarget) {
+        return teamMember
+      }
+
+      return tm
+    })
+    setMembers(updated)
+  }
+
   const remove = (target: TeamMember) => {
     const updated = members.filter((tm) => tm.id !== target.id)
     setMembers(updated)
@@ -45,6 +58,7 @@ export default function TeamProvider(props: {children: React.ReactNode}) {
         loading,
         members,
         add,
+        update,
         remove,
       }}
     >

@@ -5,15 +5,20 @@ import {render} from '__utils__/render'
 import App from 'App'
 import user from '@testing-library/user-event'
 import {fakeTeamMember} from 'organization/Team/__utils__/factory'
-import {wait} from '@testing-library/react'
+import {act, wait} from '@testing-library/react'
 import {signInToOrganization} from 'organization/__utils__/authenticate'
+import {UPDATE_TEAM} from 'organization/PermissionsProvider'
 
 const mockGet = axios.get as jest.Mock
 const mockDelete = axios.delete as jest.Mock
 
-it('remove a team member', async () => {
+it('should remove a team member', async () => {
   const authUser = fakeTeamMember()
-  signInToOrganization({authUser, owner: authUser})
+  signInToOrganization({
+    authUser,
+    owner: authUser,
+    userPermissions: [UPDATE_TEAM],
+  })
 
   const teamMembers = Array.from(
     {
@@ -43,4 +48,30 @@ it('remove a team member', async () => {
   await wait(() => {
     expect(queryByText(new RegExp(target.first_name))).not.toBeInTheDocument()
   })
+})
+
+it('should check permissions', async () => {
+  const authUser = fakeTeamMember()
+  signInToOrganization({
+    authUser,
+    owner: authUser,
+  })
+
+  const teamMembers = Array.from(
+    {
+      length: faker.random.number({min: 1, max: 5}),
+    },
+    fakeTeamMember,
+  )
+
+  const {findByText, queryByLabelText} = render(<App />)
+
+  expect(await findByText(/team/i)).toBeInTheDocument()
+
+  mockGet.mockImplementationOnce(() => Promise.resolve({data: teamMembers})) // team members
+  await act(async () => {
+    user.click(await findByText(/team/i))
+  })
+
+  expect(queryByLabelText('remove team member')).not.toBeInTheDocument()
 })

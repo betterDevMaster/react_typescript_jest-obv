@@ -3,17 +3,26 @@ import faker from 'faker'
 import axios from 'axios'
 import {fakeTeamMember} from 'organization/Team/__utils__/factory'
 import {signInToOrganization} from 'organization/__utils__/authenticate'
-import {fakeRole} from 'organization/Team/Permissions/__utils__/factory'
+import {fakeRole} from 'organization/Team/Roles/__utils__/factory'
 import user from '@testing-library/user-event'
 import {render} from '__utils__/render'
 import App from 'App'
+import {UPDATE_TEAM} from 'organization/PermissionsProvider'
 
 const mockGet = axios.get as jest.Mock
 const mockPost = axios.post as jest.Mock
 
+beforeEach(() => {
+  jest.clearAllMocks()
+})
+
 it('adds a new role', async () => {
   const authUser = fakeTeamMember()
-  signInToOrganization({authUser, owner: authUser})
+  signInToOrganization({
+    authUser,
+    owner: authUser,
+    userPermissions: [UPDATE_TEAM],
+  })
   const {findByText, findByLabelText} = render(<App />)
 
   const roles = Array.from(
@@ -25,11 +34,10 @@ it('adds a new role', async () => {
 
   mockGet.mockImplementationOnce(() => Promise.resolve({data: []})) // team members
   mockGet.mockImplementationOnce(() => Promise.resolve({data: roles}))
-  mockGet.mockImplementationOnce(() => Promise.resolve({data: []})) // permissions
 
   // Go to team page
   user.click(await findByText(/team/i))
-  user.click(await findByText(/permissions/i))
+  user.click(await findByText(/roles/i))
 
   const name = faker.random.word()
   const addedRole = fakeRole({name})
@@ -39,4 +47,33 @@ it('adds a new role', async () => {
   user.click(await findByLabelText('add role'))
 
   expect(await findByText(new RegExp(name))).toBeInTheDocument()
+})
+
+it('should check permissions', async () => {
+  const authUser = fakeTeamMember()
+  signInToOrganization({
+    authUser,
+    owner: authUser,
+  })
+  const {findByText, queryByLabelText} = render(<App />)
+
+  const roles = Array.from(
+    {
+      length: faker.random.number({min: 1, max: 5}),
+    },
+    fakeRole,
+  )
+
+  mockGet.mockImplementationOnce(() => Promise.resolve({data: []})) // team members
+  mockGet.mockImplementationOnce(() => Promise.resolve({data: roles}))
+
+  // Go to team page
+  user.click(await findByText(/team/i))
+  user.click(await findByText(/roles/i))
+
+  const name = faker.random.word()
+  const addedRole = fakeRole({name})
+  mockPost.mockImplementationOnce(() => Promise.resolve({data: addedRole}))
+
+  expect(queryByLabelText('add role')).not.toBeInTheDocument()
 })

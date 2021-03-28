@@ -6,5 +6,6 @@ export const fakeTeamMember = (
 ): TeamMember => ({
   ...fakeUser(),
   permissions: [],
+  role: null,
   ...overrides,
 })

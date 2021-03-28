@@ -1,16 +1,14 @@
-import {ObvioEvent} from 'Event'
 import user from '@testing-library/user-event'
 import {goToServices} from 'organization/Event/Services/__utils__/go-to-services-config'
 import {Integration} from 'organization/Event/Services/ServicesProvider'
 import {Tag} from 'organization/Event/Services/Apps/Infusionsoft'
 import axios from 'axios'
-import {APPS} from 'organization/Event/Services/Apps'
+import {EventOverrides} from 'organization/Event/__utils__/event'
 
 const mockGet = axios.get as jest.Mock
 
 export async function goToInfusionsoft(
-  overrides: {
-    event?: ObvioEvent
+  overrides: EventOverrides & {
     integrations?: Integration[]
     tags?: Tag[]
   } = {},

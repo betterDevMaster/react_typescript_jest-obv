@@ -3,6 +3,8 @@ import React from 'react'
 import {RelativeLink} from 'lib/ui/link/RelativeLink'
 import {useLocation} from 'react-router-dom'
 import {useEventRoutes} from 'organization/Event/EventRoutes'
+import HasPermission from 'organization/HasPermission'
+import {CONFIGURE_EVENTS} from 'organization/PermissionsProvider'
 
 export default function ConfigNav() {
   const routes = useEventRoutes()
@@ -11,37 +13,50 @@ export default function ConfigNav() {
       <ConfigNavItem to={routes.root} aria-label="areas">
         Areas
       </ConfigNavItem>
-      <ConfigNavItem to={routes.waiver} aria-label="configure waiver">
-        Waiver
-      </ConfigNavItem>
-      <ConfigNavItem to={routes.questions} aria-label="configure questions">
-        Questions
-      </ConfigNavItem>
-      <ConfigNavItem to={routes.tech_check} aria-label="configure tech check">
-        Tech Check
-      </ConfigNavItem>
-      <ConfigNavItem to={routes.dashboard} aria-label="configure dashboard">
-        Dashboard
-      </ConfigNavItem>
       <ConfigNavItem to={routes.attendees} aria-label="attendee management">
         Attendees
       </ConfigNavItem>
-      <ConfigNavItem to={routes.points} aria-label="configure points">
-        Points
-      </ConfigNavItem>
-      <ConfigNavItem to={routes.speakers} aria-label="configure speakers">
-        Speakers
-      </ConfigNavItem>
-      <ConfigNavItem to={routes.emoji} aria-label="view emoji page" newTab>
-        Emoji Page
-      </ConfigNavItem>
-      <ConfigNavItem to={routes.general} aria-label="general config">
-        General
-      </ConfigNavItem>
-      <ConfigNavItem to={routes.services.root} aria-label="services">
-        Services
-      </ConfigNavItem>
+      <AuthorizedPages />
     </Box>
+  )
+}
+
+function AuthorizedPages() {
+  const routes = useEventRoutes()
+
+  return (
+    <HasPermission permission={CONFIGURE_EVENTS}>
+      <>
+        <ConfigNavItem to={routes.waiver} aria-label="configure waiver">
+          Waiver
+        </ConfigNavItem>
+        <ConfigNavItem to={routes.questions} aria-label="configure questions">
+          Questions
+        </ConfigNavItem>
+        <ConfigNavItem to={routes.tech_check} aria-label="configure tech check">
+          Tech Check
+        </ConfigNavItem>
+        <ConfigNavItem to={routes.dashboard} aria-label="configure dashboard">
+          Dashboard
+        </ConfigNavItem>
+
+        <ConfigNavItem to={routes.points} aria-label="configure points">
+          Points
+        </ConfigNavItem>
+        <ConfigNavItem to={routes.speakers} aria-label="configure speakers">
+          Speakers
+        </ConfigNavItem>
+        <ConfigNavItem to={routes.emoji} aria-label="view emoji page" newTab>
+          Emoji Page
+        </ConfigNavItem>
+        <ConfigNavItem to={routes.general} aria-label="general config">
+          General
+        </ConfigNavItem>
+        <ConfigNavItem to={routes.services.root} aria-label="services">
+          Services
+        </ConfigNavItem>
+      </>
+    </HasPermission>
   )
 }
 

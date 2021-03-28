@@ -6,6 +6,7 @@ import {wait} from '@testing-library/react'
 import {fireEvent} from '@testing-library/react'
 import {ObvioEvent} from 'Event'
 import mockAxios from 'axios'
+import {CONFIGURE_EVENTS} from 'organization/PermissionsProvider'
 
 const mockPost = mockAxios.post as jest.Mock
 const mockPut = mockAxios.put as jest.Mock
@@ -19,7 +20,10 @@ it('should update a background', async () => {
     login_background: null,
   })
 
-  const {findByLabelText} = await goToGeneralConfig({event})
+  const {findByLabelText} = await goToGeneralConfig({
+    event,
+    userPermissions: [CONFIGURE_EVENTS],
+  })
 
   const background = new File([], 'background.jpg')
   const input = await findByLabelText('login_background image input')
@@ -67,7 +71,10 @@ it('should update a logo', async () => {
     login_background: null,
   })
 
-  const {findByLabelText} = await goToGeneralConfig({event})
+  const {findByLabelText} = await goToGeneralConfig({
+    event,
+    userPermissions: [CONFIGURE_EVENTS],
+  })
 
   const logo = new File([], 'logo.jpg')
   const input = await findByLabelText('login_logo image input')

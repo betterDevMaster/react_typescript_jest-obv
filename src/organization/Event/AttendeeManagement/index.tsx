@@ -29,6 +29,8 @@ import {onChangeStringHandler} from 'lib/dom'
 import Box from '@material-ui/core/Box'
 import UpdateDialog from 'organization/Event/AttendeeManagement/dialog/UpdateDialog'
 import CreateDialog from 'organization/Event/AttendeeManagement/dialog/CreateDialog'
+import {CONFIGURE_EVENTS} from 'organization/PermissionsProvider'
+import HasPermission from 'organization/HasPermission'
 
 export default function AttendeeManagement() {
   const {
@@ -118,36 +120,40 @@ export default function AttendeeManagement() {
             >
               Export
             </ExportButton>
-            <AttendeeImport
-              onSuccess={handleImportedAttendees}
-              onError={setError}
-              button={(inputId, submitting) => (
-                <Button
+            <HasPermission permission={CONFIGURE_EVENTS}>
+              <>
+                <AttendeeImport
+                  onSuccess={handleImportedAttendees}
+                  onError={setError}
+                  button={(inputId, submitting) => (
+                    <Button
+                      variant="outlined"
+                      color="primary"
+                      aria-label="import attendees"
+                      onClick={clearError}
+                      disabled={submitting}
+                    >
+                      <ImportButtonLabel htmlFor={inputId}>
+                        Import
+                      </ImportButtonLabel>
+                    </Button>
+                  )}
+                  successAlert={(numImported, onClose) => (
+                    <StyledAlert severity="info" onClose={onClose}>
+                      Successfully imported {numImported} attendees
+                    </StyledAlert>
+                  )}
+                />
+                <CreateAttendeeButton
                   variant="outlined"
                   color="primary"
-                  aria-label="import attendees"
-                  onClick={clearError}
-                  disabled={submitting}
+                  aria-label="add attendee"
+                  onClick={toggleCreateAttendeeVisible}
                 >
-                  <ImportButtonLabel htmlFor={inputId}>
-                    Import
-                  </ImportButtonLabel>
-                </Button>
-              )}
-              successAlert={(numImported, onClose) => (
-                <StyledAlert severity="info" onClose={onClose}>
-                  Successfully imported {numImported} attendees
-                </StyledAlert>
-              )}
-            />
-            <CreateAttendeeButton
-              variant="outlined"
-              color="primary"
-              aria-label="add attendee"
-              onClick={toggleCreateAttendeeVisible}
-            >
-              Create
-            </CreateAttendeeButton>
+                  Create
+                </CreateAttendeeButton>
+              </>
+            </HasPermission>
           </Box>
           <TextField
             variant="outlined"

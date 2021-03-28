@@ -8,6 +8,8 @@ import {useEventRoutes} from 'organization/Event/EventRoutes'
 import {useBreadcrumbs} from 'lib/ui/BreadcrumbProvider'
 import {useOrganization} from 'organization/OrganizationProvider'
 import Page from 'organization/Event/Page'
+import HasPermission from 'organization/HasPermission'
+import {CONFIGURE_EVENTS} from 'organization/PermissionsProvider'
 
 export default function Event() {
   const routes = useEventRoutes()
@@ -22,11 +24,17 @@ export default function Event() {
   return (
     <Layout
       navbarRight={
-        <RelativeLink disableStyles to={routes.areas.create}>
-          <Button variant="contained" color="primary" aria-label="create area">
-            Create Area
-          </Button>
-        </RelativeLink>
+        <HasPermission permission={CONFIGURE_EVENTS}>
+          <RelativeLink disableStyles to={routes.areas.create}>
+            <Button
+              variant="contained"
+              color="primary"
+              aria-label="create area"
+            >
+              Create Area
+            </Button>
+          </RelativeLink>
+        </HasPermission>
       }
     >
       <Page>

@@ -4,12 +4,16 @@ import user from '@testing-library/user-event'
 import faker from 'faker'
 import {mockRxJsAjax} from 'store/__utils__/MockStoreProvider'
 import {wait} from '@testing-library/react'
+import {CONFIGURE_EVENTS} from 'organization/PermissionsProvider'
 
 const mockRxPost = mockRxJsAjax.post as jest.Mock
 
 it('should configure login template', async () => {
   const event = fakeEvent()
-  const {findByLabelText} = await goToGeneralConfig({event})
+  const {findByLabelText} = await goToGeneralConfig({
+    event,
+    userPermissions: [CONFIGURE_EVENTS],
+  })
   const backgroundColor = faker.commerce.color()
 
   user.type(

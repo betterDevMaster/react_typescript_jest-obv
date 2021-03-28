@@ -5,6 +5,7 @@ import {goToQuestionsConfig} from 'organization/Event/QuestionsConfig/__utils__/
 import user from '@testing-library/user-event'
 import axios from 'axios'
 import {wait} from '@testing-library/react'
+import {CONFIGURE_EVENTS} from 'organization/PermissionsProvider'
 
 const mockDelete = axios.delete as jest.Mock
 
@@ -21,7 +22,10 @@ it('should render questions', async () => {
     questions,
   })
 
-  const {findByText} = await goToQuestionsConfig({event})
+  const {findByText} = await goToQuestionsConfig({
+    event,
+    userPermissions: [CONFIGURE_EVENTS],
+  })
 
   for (const question of questions) {
     expect(await findByText(question.label)).toBeInTheDocument()
@@ -39,7 +43,10 @@ it('should remove a question', async () => {
     findAllByLabelText,
     queryByText,
     findByLabelText,
-  } = await goToQuestionsConfig({event})
+  } = await goToQuestionsConfig({
+    event,
+    userPermissions: [CONFIGURE_EVENTS],
+  })
 
   const targetIndex = faker.random.number({min: 0, max: questions.length - 1})
   const target = questions[targetIndex]

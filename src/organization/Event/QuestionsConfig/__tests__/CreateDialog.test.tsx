@@ -12,6 +12,7 @@ import {fireEvent, wait} from '@testing-library/dom'
 import axios from 'axios'
 import {CHECKBOX, RADIO, SELECT} from 'organization/Event/QuestionsProvider'
 import {goToQuestionsConfig} from 'organization/Event/QuestionsConfig/__utils__/go-to-questions-config'
+import {CONFIGURE_EVENTS} from 'organization/PermissionsProvider'
 
 const mockPost = axios.post as jest.Mock
 
@@ -24,7 +25,10 @@ it('add a question', async () => {
     questions: [],
   })
 
-  const {findByLabelText, findByText} = await goToQuestionsConfig({event})
+  const {findByLabelText, findByText} = await goToQuestionsConfig({
+    event,
+    userPermissions: [CONFIGURE_EVENTS],
+  })
 
   user.click(await findByLabelText('add question'))
 
@@ -91,7 +95,10 @@ it('should create a question with options', async () => {
     findByLabelText,
     findByText,
     findAllByLabelText,
-  } = await goToQuestionsConfig({event})
+  } = await goToQuestionsConfig({
+    event,
+    userPermissions: [CONFIGURE_EVENTS],
+  })
 
   user.click(await findByLabelText('add question'))
 

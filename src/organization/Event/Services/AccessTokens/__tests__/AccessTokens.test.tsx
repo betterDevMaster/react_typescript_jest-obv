@@ -5,6 +5,7 @@ import axios from 'axios'
 import {wait} from '@testing-library/dom'
 import {fakeEvent} from 'Event/__utils__/factory'
 import {goToServices} from 'organization/Event/Services/__utils__/go-to-services-config'
+import {CONFIGURE_EVENTS} from 'organization/PermissionsProvider'
 
 const mockPost = axios.post as jest.Mock
 const mockDelete = axios.delete as jest.Mock
@@ -28,6 +29,7 @@ it('should render an access token', async () => {
   const {findByLabelText, findAllByLabelText} = await goToServices({
     event,
     tokens,
+    userPermissions: [CONFIGURE_EVENTS],
   })
 
   // create an access token

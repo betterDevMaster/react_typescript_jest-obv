@@ -1,7 +1,4 @@
-import {
-  Permission,
-  Role,
-} from 'organization/Team/Permissions/PermissionsProvider'
+import {Role} from 'organization/Team/Roles/RolesProvider'
 import faker from 'faker'
 
 export const fakeRole = (overrides?: Partial<Role>): Role => ({
@@ -10,5 +7,3 @@ export const fakeRole = (overrides?: Partial<Role>): Role => ({
   permissions: [],
   ...overrides,
 })
-
-export const fakePermission = (): Permission => faker.random.word()

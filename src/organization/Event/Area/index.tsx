@@ -18,6 +18,8 @@ import {useOrganization} from 'organization/OrganizationProvider'
 import {useEventRoutes} from 'organization/Event/EventRoutes'
 import {useEvent} from 'Event/EventProvider'
 import {useBreadcrumbs} from 'lib/ui/BreadcrumbProvider'
+import HasPermission from 'organization/HasPermission'
+import {CONFIGURE_EVENTS} from 'organization/PermissionsProvider'
 
 export default function Area() {
   const {area, update, processing} = useArea()
@@ -58,69 +60,76 @@ export default function Area() {
     <Layout>
       <Page>
         <Title variant="h5">{area.name}</Title>
-        <FormControlLabel
-          disabled={processing}
-          control={
-            <Switch
-              checked={area.is_open}
-              onChange={onChangeCheckedHandler(update('is_open'))}
-              color="primary"
-              inputProps={{
-                'aria-label': 'toggle area open status',
-              }}
+
+        <HasPermission permission={CONFIGURE_EVENTS}>
+          <>
+            <FormControlLabel
+              disabled={processing}
+              control={
+                <Switch
+                  checked={area.is_open}
+                  onChange={onChangeCheckedHandler(update('is_open'))}
+                  color="primary"
+                  inputProps={{
+                    'aria-label': 'toggle area open status',
+                  }}
+                />
+              }
+              label="Open"
             />
-          }
-          label="Open"
-        />
-        <FormControl
-          required
-          component="fieldset"
-          fullWidth
-          disabled={processing}
-        >
-          <FormControlLabel
-            control={
-              <Checkbox
-                checked={area.requires_approval}
-                onChange={onChangeCheckedHandler(update('requires_approval'))}
-                inputProps={{
-                  'aria-label': 'toggle requires approval',
-                }}
+            <FormControl
+              required
+              component="fieldset"
+              fullWidth
+              disabled={processing}
+            >
+              <FormControlLabel
+                control={
+                  <Checkbox
+                    checked={area.requires_approval}
+                    onChange={onChangeCheckedHandler(
+                      update('requires_approval'),
+                    )}
+                    inputProps={{
+                      'aria-label': 'toggle requires approval',
+                    }}
+                  />
+                }
+                label="Requires approval?"
               />
-            }
-            label="Requires approval?"
-          />
-        </FormControl>
-        <FormControl
-          required
-          component="fieldset"
-          fullWidth
-          disabled={processing}
-        >
-          <FormControlLabel
-            control={
-              <Checkbox
-                checked={area.allows_multiple_devices}
-                inputProps={{
-                  'aria-label': 'toggle allows multiple devices',
-                }}
-                onChange={onChangeCheckedHandler(
-                  update('allows_multiple_devices'),
-                )}
+            </FormControl>
+            <FormControl
+              required
+              component="fieldset"
+              fullWidth
+              disabled={processing}
+            >
+              <FormControlLabel
+                control={
+                  <Checkbox
+                    checked={area.allows_multiple_devices}
+                    inputProps={{
+                      'aria-label': 'toggle allows multiple devices',
+                    }}
+                    onChange={onChangeCheckedHandler(
+                      update('allows_multiple_devices'),
+                    )}
+                  />
+                }
+                label="Can the same user use multiple devices to join at the same time?"
               />
-            }
-            label="Can the same user use multiple devices to join at the same time?"
-          />
-        </FormControl>
-        <RelativeLink to={routes.rooms.create} disableStyles>
-          <CreateRoomButton
-            variant="outlined"
-            color="primary"
-            aria-label="create room"
-          >
-            Create Room
-          </CreateRoomButton>
-        </RelativeLink>
+            </FormControl>
+            <RelativeLink to={routes.rooms.create} disableStyles>
+              <CreateRoomButton
+                variant="outlined"
+                color="primary"
+                aria-label="create room"
+              >
+                Create Room
+              </CreateRoomButton>
+            </RelativeLink>
+          </>
+        </HasPermission>
         <RoomList rooms={rooms} />
       </Page>
     </Layout>

@@ -5,7 +5,11 @@ import user from '@testing-library/user-event'
 import {fireEvent, wait} from '@testing-library/react'
 import {ObvioEvent} from 'Event'
 import {waiverLogoPath} from 'Event/Step2/WaiverProvider'
-import {goToEventConfig} from 'organization/Event/__utils__/event'
+import {
+  EventOverrides,
+  goToEventConfig,
+} from 'organization/Event/__utils__/event'
+import {CONFIGURE_EVENTS} from 'organization/PermissionsProvider'
 
 const mockPost = axios.post as jest.Mock
 
@@ -21,7 +25,9 @@ it('should show waiver config', async () => {
   )
   const mockedFetch = window.fetch as jest.Mock
 
-  const {findByLabelText, event} = await goToWaiverConfig()
+  const {findByLabelText, event} = await goToWaiverConfig({
+    userPermissions: [CONFIGURE_EVENTS],
+  })
   expect(await findByLabelText('waiver body')).toBeInTheDocument()
 
   if (!event.waiver || !event.waiver.logo) {
@@ -35,7 +41,10 @@ it('should show waiver config', async () => {
 it('should submit a waiver', async () => {
   window.URL.createObjectURL = jest.fn()
   const event = fakeEvent({waiver: null})
-  const {findByLabelText} = await goToWaiverConfig({event})
+  const {findByLabelText} = await goToWaiverConfig({
+    event,
+    userPermissions: [CONFIGURE_EVENTS],
+  })
 
   const title = faker.random.words(3)
   user.type(await findByLabelText('waiver title'), title)
@@ -65,7 +74,7 @@ it('should submit a waiver', async () => {
   expect(data.get('logo')).toBe(image)
 })
 
-async function goToWaiverConfig(overrides: {event?: ObvioEvent} = {}) {
+async function goToWaiverConfig(overrides: EventOverrides = {}) {
   const context = await goToEventConfig(overrides)
 
   user.click(await context.findByLabelText('configure waiver'))

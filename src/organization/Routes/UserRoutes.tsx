@@ -7,6 +7,8 @@ import {useOrganization} from 'organization/OrganizationProvider'
 import EventRoutes from 'organization/Event/EventRoutes'
 import Team from 'organization/Team'
 import QuestionsProvider from 'organization/Event/QuestionsProvider'
+import {CREATE_EVENTS} from 'organization/PermissionsProvider'
+import AuthorizedPage from 'organization/AuthorizedPage'
 
 export default function UserRoutes() {
   const {routes} = useOrganization()
@@ -21,7 +23,9 @@ export default function UserRoutes() {
       <Redirect path={routes.login} to={routes.events.root} />
 
       <Route path={routes.events.create}>
-        <CreateEventForm />
+        <AuthorizedPage permission={CREATE_EVENTS}>
+          <CreateEventForm />
+        </AuthorizedPage>
       </Route>
       <Route path={routes.events.root} exact>
         <EventList />

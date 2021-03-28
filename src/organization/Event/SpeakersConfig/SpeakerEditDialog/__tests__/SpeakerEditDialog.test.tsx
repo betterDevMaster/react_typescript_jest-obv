@@ -5,6 +5,7 @@ import axios from 'axios'
 import user from '@testing-library/user-event'
 import {fireEvent, wait} from '@testing-library/react'
 import {Speaker} from 'Event'
+import {CONFIGURE_EVENTS} from 'organization/PermissionsProvider'
 
 const mockPost = axios.post as jest.Mock
 const mockDelete = axios.delete as jest.Mock
@@ -25,7 +26,7 @@ it('should edit a speaker', async () => {
     findAllByLabelText,
     findByText,
     findByLabelText,
-  } = await goToSpeakerConfig({event})
+  } = await goToSpeakerConfig({event, userPermissions: [CONFIGURE_EVENTS]})
 
   const targetIndex = faker.random.number({min: 0, max: speakers.length - 1})
 
@@ -93,7 +94,7 @@ it('remove a speaker', async () => {
     findAllByLabelText,
     queryByText,
     findByLabelText,
-  } = await goToSpeakerConfig({event})
+  } = await goToSpeakerConfig({event, userPermissions: [CONFIGURE_EVENTS]})
 
   const targetIndex = faker.random.number({min: 0, max: speakers.length - 1})
   const target = speakers[targetIndex]

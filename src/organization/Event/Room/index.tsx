@@ -26,6 +26,8 @@ import React, {useState} from 'react'
 import TechCheckAttendees from 'organization/Event/Room/TechCheckAttendees'
 import StartButton from 'organization/Event/Area/RoomList/StartButton'
 import Box from '@material-ui/core/Box'
+import HasPermission from 'organization/HasPermission'
+import {CONFIGURE_EVENTS} from 'organization/PermissionsProvider'
 
 export const DEFAULT_MAX_NUM_ATTENDEES = 500
 
@@ -108,63 +110,69 @@ export default function RoomConfig() {
         <Box mb={3}>
           <StartButton />
         </Box>
-        <TextField
-          label="Room Name"
-          required
-          fullWidth
-          variant="outlined"
-          inputProps={{
-            'aria-label': 'room name input',
-          }}
-          disabled={processing}
-          value={name}
-          onChange={onChangeStringHandler(setName)}
-        />
-
-        <FormControl
-          required
-          component="fieldset"
-          fullWidth
-          disabled={processing}
-        >
-          <FormControlLabel
-            control={
-              <Switch
-                checked={hasMaxNumAttendees}
-                onChange={onChangeCheckedHandler(handleToggleMaxNumAttendees)}
-                color="primary"
-                inputProps={{
-                  'aria-label': 'toggle has max num attendees',
-                }}
+        <HasPermission permission={CONFIGURE_EVENTS}>
+          <>
+            <TextField
+              label="Room Name"
+              required
+              fullWidth
+              variant="outlined"
+              inputProps={{
+                'aria-label': 'room name input',
+              }}
+              disabled={processing}
+              value={name}
+              onChange={onChangeStringHandler(setName)}
+            />
+            <FormControl
+              required
+              component="fieldset"
+              fullWidth
+              disabled={processing}
+            >
+              <FormControlLabel
+                control={
+                  <Switch
+                    checked={hasMaxNumAttendees}
+                    onChange={onChangeCheckedHandler(
+                      handleToggleMaxNumAttendees,
+                    )}
+                    color="primary"
+                    inputProps={{
+                      'aria-label': 'toggle has max num attendees',
+                    }}
+                  />
+                }
+                label="Limit maximum number of attendees in room?"
               />
-            }
-            label="Limit maximum number of attendees in room?"
-          />
-        </FormControl>
-        <TextField
-          label="Maximum number of attendees"
-          type="number"
-          name="max_num_attendees"
-          fullWidth
-          variant="outlined"
-          value={maxNumAttendees || ''}
-          inputProps={{
-            'aria-label': 'set max number of attendees',
-            min: 0,
-            max: 1000,
-          }}
-          onChange={onChangeNumberHandler(setMaxNumAttendees)}
-          disabled={!canSetMaxNumAttendees}
-        />
-        <Button
-          color="primary"
-          disabled={!canSave}
-          variant="contained"
-          onClick={saveName}
-          aria-label="update room"
-        >
-          Save
-        </Button>
+            </FormControl>
+            <TextField
+              label="Maximum number of attendees"
+              type="number"
+              name="max_num_attendees"
+              fullWidth
+              variant="outlined"
+              value={maxNumAttendees || ''}
+              inputProps={{
+                'aria-label': 'set max number of attendees',
+                min: 0,
+                max: 1000,
+              }}
+              onChange={onChangeNumberHandler(setMaxNumAttendees)}
+              disabled={!canSetMaxNumAttendees}
+            />
+            <Button
+              color="primary"
+              disabled={!canSave}
+              variant="contained"
+              onClick={saveName}
+              aria-label="update room"
+            >
+              Save
+            </Button>
+          </>
+        </HasPermission>
+
         <TechCheckAttendees />
       </Page>
     </Layout>

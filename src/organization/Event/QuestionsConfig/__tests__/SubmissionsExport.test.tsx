@@ -5,6 +5,7 @@ import faker from 'faker'
 import axios from 'axios'
 import user from '@testing-library/user-event'
 import {wait} from '@testing-library/react'
+import {CONFIGURE_EVENTS} from 'organization/PermissionsProvider'
 
 const mockGet = axios.get as jest.Mock
 
@@ -32,7 +33,10 @@ it('should download answers', async (done) => {
   window.URL.createObjectURL = jest.fn()
   window.URL.revokeObjectURL = jest.fn()
 
-  const {findByLabelText} = await goToQuestionsConfig({event})
+  const {findByLabelText} = await goToQuestionsConfig({
+    event,
+    userPermissions: [CONFIGURE_EVENTS],
+  })
 
   mockGet.mockImplementationOnce(() => Promise.resolve({data: {data: csv}}))
 

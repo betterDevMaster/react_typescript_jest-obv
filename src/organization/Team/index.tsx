@@ -1,21 +1,23 @@
 import {User} from 'auth/user'
 import Page from 'organization/user/Layout/Page'
 import React, {useState} from 'react'
-import TeamMemberList from 'organization/Team/TeamMemberList'
+import TeamMembersTable from 'organization/Team/TeamMembersTable'
 import AddTeamMemberForm from 'organization/Team/AddTeamMemberForm'
-import IfOwner from 'organization/auth/IfOwner'
 import TeamProvider from 'organization/Team/TeamProvider'
 import Tabs from '@material-ui/core/Tabs'
 import Tab from '@material-ui/core/Tab'
-import Permissions from 'organization/Team/Permissions'
-import PermissionsProvider from 'organization/Team/Permissions/PermissionsProvider'
+import Roles from 'organization/Team/Roles'
+import RolesProvider, {Role} from 'organization/Team/Roles/RolesProvider'
 import Layout from 'organization/user/Layout'
 import TabPanel from 'lib/ui/tabs/TabPanel'
 import {useBreadcrumbs} from 'lib/ui/BreadcrumbProvider'
 import {useOrganization} from 'organization/OrganizationProvider'
+import HasPermission from 'organization/HasPermission'
+import {UPDATE_TEAM} from 'organization/PermissionsProvider'
 
 export type TeamMember = User & {
   permissions: string[]
+  role: Role | null
 }
 
 export default function Team() {
@@ -37,21 +39,21 @@ export default function Team() {
     <Layout>
       <Page>
         <TeamProvider>
-          <PermissionsProvider>
+          <RolesProvider>
             <Tabs onChange={changeTab} value={tabIndex}>
               <Tab label="Members" />
-              <Tab label="Permissions" />
+              <Tab label="Roles" />
             </Tabs>
             <TabPanel index={0} currentIndex={tabIndex}>
-              <IfOwner>
+              <HasPermission permission={UPDATE_TEAM}>
                 <AddTeamMemberForm />
-              </IfOwner>
-              <TeamMemberList />
+              </HasPermission>
+              <TeamMembersTable />
             </TabPanel>
             <TabPanel index={1} currentIndex={tabIndex}>
-              <Permissions />
+              <Roles />
             </TabPanel>
-          </PermissionsProvider>
+          </RolesProvider>
         </TeamProvider>
       </Page>
     </Layout>

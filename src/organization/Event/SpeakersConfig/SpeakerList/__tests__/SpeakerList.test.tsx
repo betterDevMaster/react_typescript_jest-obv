@@ -1,6 +1,7 @@
 import faker from 'faker'
 import {fakeEvent, fakeSpeaker, fakeSpeakerPage} from 'Event/__utils__/factory'
 import {goToSpeakerConfig} from 'organization/Event/SpeakersConfig/__utils__/go-to-speaker-config'
+import {CONFIGURE_EVENTS} from 'organization/PermissionsProvider'
 afterEach(() => {
   jest.clearAllMocks()
 })
@@ -12,7 +13,10 @@ it('should render speakers', async () => {
   )
 
   const event = fakeEvent({speaker_page: fakeSpeakerPage({speakers})})
-  const {findAllByLabelText, findByText} = await goToSpeakerConfig({event})
+  const {findAllByLabelText, findByText} = await goToSpeakerConfig({
+    event,
+    userPermissions: [CONFIGURE_EVENTS],
+  })
 
   // Showing all speakers
   expect((await findAllByLabelText('speaker')).length).toBe(speakers.length)

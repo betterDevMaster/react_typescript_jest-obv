@@ -6,13 +6,20 @@ import App from 'App'
 import user from '@testing-library/user-event'
 import {fakeTeamMember} from 'organization/Team/__utils__/factory'
 import {signInToOrganization} from 'organization/__utils__/authenticate'
+import {UPDATE_TEAM} from 'organization/PermissionsProvider'
+import {queryByLabelText} from '@testing-library/dom'
+import {act} from '@testing-library/react'
 
 const mockGet = axios.get as jest.Mock
 const mockPost = axios.post as jest.Mock
 
-it('add a new team member', async () => {
+it('should add a new team member', async () => {
   const authUser = fakeTeamMember()
-  signInToOrganization({authUser, owner: authUser})
+  signInToOrganization({
+    authUser,
+    owner: authUser,
+    userPermissions: [UPDATE_TEAM],
+  })
 
   const teamMembers = Array.from(
     {
@@ -41,4 +48,30 @@ it('add a new team member', async () => {
   expect(
     await findByText(new RegExp(addedMember.first_name)),
   ).toBeInTheDocument()
+})
+
+it('should check permissions', async () => {
+  const authUser = fakeTeamMember()
+  signInToOrganization({
+    authUser,
+    owner: authUser,
+  })
+
+  const teamMembers = Array.from(
+    {
+      length: faker.random.number({min: 1, max: 5}),
+    },
+    fakeTeamMember,
+  )
+
+  const {findByText, queryByLabelText} = render(<App />)
+
+  expect(await findByText(/team/i)).toBeInTheDocument()
+  mockGet.mockImplementationOnce(() => Promise.resolve({data: teamMembers})) // team members
+
+  await act(async () => {
+    user.click(await findByText(/team/i))
+  })
+
+  expect(queryByLabelText('add team member')).not.toBeInTheDocument()
 })

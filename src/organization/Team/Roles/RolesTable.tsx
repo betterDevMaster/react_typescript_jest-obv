@@ -6,12 +6,9 @@ import TableCell from '@material-ui/core/TableCell'
 import TableContainer from '@material-ui/core/TableContainer'
 import TableHead from '@material-ui/core/TableHead'
 import TableRow from '@material-ui/core/TableRow'
-import {
-  Role,
-  usePermissions,
-} from 'organization/Team/Permissions/PermissionsProvider'
+import {Role, useRoles} from 'organization/Team/Roles/RolesProvider'
 import React, {useEffect, useState} from 'react'
-import PermissionCheckbox from 'organization/Team/Permissions/PermissionCheckbox'
+import PermissionCheckbox from 'organization/Team/Roles/PermissionCheckbox'
 import {ResponseError} from 'lib/api-client'
 import Typography from '@material-ui/core/Typography'
 import withStyles from '@material-ui/core/styles/withStyles'
@@ -19,13 +16,20 @@ import {spacing} from 'lib/ui/theme'
 import DeleteIconButton from 'lib/ui/IconButton/DeleteIconButton'
 import {useOrganization} from 'organization/OrganizationProvider'
 import {api} from 'lib/url'
+import {
+  UPDATE_TEAM,
+  usePermissions,
+  label,
+} from 'organization/PermissionsProvider'
+import HasPermission from 'organization/HasPermission'
 
-export default function Permissions() {
-  const {roles, permissions} = usePermissions()
+export default function RolesTable() {
+  const {roles} = useRoles()
+  const {all: permissions} = usePermissions()
   const [responseError, setResponseError] = useState<ResponseError | null>(null)
   const [processing, setProcessing] = useState(false)
   const removeFromServer = useRemoveRole()
-  const {removeRole: removeRoleFromList} = usePermissions()
+  const {removeRole: removeRoleFromList} = useRoles()
 
   useEffect(() => {
     if (!responseError) {
@@ -70,11 +74,13 @@ export default function Permissions() {
                 align="center"
                 aria-label="permission name"
               >
-                {permission}
+                {label(permission)}
               </TableCell>
             ))}
             {/* Delete column */}
-            <TableCell align="center"></TableCell>
+            <HasPermission permission={UPDATE_TEAM}>
+              <TableCell align="center"></TableCell>
+            </HasPermission>
           </TableRow>
         </TableHead>
         <TableBody>
@@ -94,12 +100,14 @@ export default function Permissions() {
                   />
                 </TableCell>
               ))}
-              <TableCell>
-                <DeleteIconButton
-                  onClick={() => removeRole(role)}
-                  aria-label="remove role"
-                />
-              </TableCell>
+              <HasPermission permission={UPDATE_TEAM}>
+                <TableCell>
+                  <DeleteIconButton
+                    onClick={() => removeRole(role)}
+                    aria-label="remove role"
+                  />
+                </TableCell>
+              </HasPermission>
             </TableRow>
           ))}
         </TableBody>

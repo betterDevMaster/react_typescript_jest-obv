@@ -3,6 +3,7 @@ import axios from 'axios'
 import {fakeEvent} from 'Event/__utils__/factory'
 import {ObvioEvent} from 'Event'
 import {goToSpeakerConfig} from 'organization/Event/SpeakersConfig/__utils__/go-to-speaker-config'
+import {CONFIGURE_EVENTS} from 'organization/PermissionsProvider'
 
 const mockPost = axios.post as jest.Mock
 
@@ -12,7 +13,10 @@ afterEach(() => {
 
 it('should show create speaker page form', async () => {
   const event = fakeEvent({speaker_page: null})
-  const {findByLabelText, queryByLabelText} = await goToSpeakerConfig({event})
+  const {findByLabelText, queryByLabelText} = await goToSpeakerConfig({
+    event,
+    userPermissions: [CONFIGURE_EVENTS],
+  })
 
   const title = faker.random.words(3)
 

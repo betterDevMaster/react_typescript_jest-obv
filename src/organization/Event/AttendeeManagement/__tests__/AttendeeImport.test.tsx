@@ -3,6 +3,7 @@ import axios from 'axios'
 import {fakeAttendee} from 'Event/auth/__utils__/factory'
 import {fireEvent} from '@testing-library/react'
 import {goToAttendeeManagement} from 'organization/Event/AttendeeManagement/__utils__/go-to-attendee-management'
+import {CONFIGURE_EVENTS} from 'organization/PermissionsProvider'
 
 const mockPost = axios.post as jest.Mock
 
@@ -14,6 +15,7 @@ it('should import attendees', async () => {
 
   const {findByLabelText, findByText} = await goToAttendeeManagement({
     attendees,
+    userPermissions: [CONFIGURE_EVENTS],
   })
 
   const file = new File([], 'attendees.csv')
@@ -70,6 +72,7 @@ it('it should update an existing attendee', async () => {
   const targetIndex = faker.random.number({min: 0, max: attendees.length - 1})
   const {findByLabelText, findAllByLabelText} = await goToAttendeeManagement({
     attendees,
+    userPermissions: [CONFIGURE_EVENTS],
   })
 
   const file = new File([], 'attendees.csv')

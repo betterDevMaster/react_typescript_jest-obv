@@ -4,6 +4,7 @@ import axios from 'axios'
 import {fakeAttendee} from 'Event/auth/__utils__/factory'
 import {goToAttendeeManagement} from 'organization/Event/AttendeeManagement/__utils__/go-to-attendee-management'
 import {fireEvent, wait} from '@testing-library/react'
+import {CONFIGURE_EVENTS} from 'organization/PermissionsProvider'
 
 const mockPatch = axios.patch as jest.Mock
 
@@ -32,6 +33,7 @@ it('should edit an attendee', async () => {
     findByLabelText,
     event,
   } = await goToAttendeeManagement({
+    userPermissions: [CONFIGURE_EVENTS],
     attendees,
   })
 

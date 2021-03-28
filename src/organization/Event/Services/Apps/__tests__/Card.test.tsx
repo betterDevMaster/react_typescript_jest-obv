@@ -3,6 +3,7 @@ import {goToServices} from 'organization/Event/Services/__utils__/go-to-services
 import user from '@testing-library/user-event'
 import {wait} from '@testing-library/dom'
 import axios from 'axios'
+import {CONFIGURE_EVENTS} from 'organization/PermissionsProvider'
 
 const mockDelete = axios.delete as jest.Mock
 
@@ -15,6 +16,7 @@ it('should unlink a service', async () => {
 
   const {findByLabelText, queryByLabelText} = await goToServices({
     integrations: [infusionsoft],
+    userPermissions: [CONFIGURE_EVENTS],
   })
   mockDelete.mockImplementationOnce(() => Promise.resolve({data: 'ok'}))
 

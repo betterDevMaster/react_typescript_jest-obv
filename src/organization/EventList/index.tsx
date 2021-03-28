@@ -10,6 +10,8 @@ import Page from 'organization/user/Layout/Page'
 import {ObvioEvent} from 'Event'
 import Layout from 'organization/user/Layout'
 import {useBreadcrumbs} from 'lib/ui/BreadcrumbProvider'
+import HasPermission from 'organization/HasPermission'
+import {CREATE_EVENTS} from 'organization/PermissionsProvider'
 
 export default function EventList() {
   const {organization, routes, client} = useOrganization()
@@ -27,11 +29,13 @@ export default function EventList() {
   }
 
   const createButton = (
-    <RelativeLink to={routes.events.create} disableStyles>
-      <Button variant="contained" color="primary">
-        Create Event
-      </Button>
-    </RelativeLink>
+    <HasPermission permission={CREATE_EVENTS}>
+      <RelativeLink to={routes.events.create} disableStyles>
+        <Button variant="contained" color="primary" aria-label="create event">
+          Create Event
+        </Button>
+      </RelativeLink>
+    </HasPermission>
   )
 
   const empty = events.length === 0

@@ -3,6 +3,7 @@ import React from 'react'
 import UserRoutes from 'organization/Routes/UserRoutes'
 import GuestRoutes from 'organization/Routes/GuestRoutes'
 import OwnerProvider from 'organization/OwnerProvider'
+import PermissionsProvider from 'organization/PermissionsProvider'
 
 export default function OrganizationRoutes() {
   const {user, loading} = useOrganizationAuth()
@@ -19,7 +20,9 @@ export default function OrganizationRoutes() {
   if (user) {
     return (
       <OwnerProvider>
-        <UserRoutes />
+        <PermissionsProvider>
+          <UserRoutes />
+        </PermissionsProvider>
       </OwnerProvider>
     )
   }

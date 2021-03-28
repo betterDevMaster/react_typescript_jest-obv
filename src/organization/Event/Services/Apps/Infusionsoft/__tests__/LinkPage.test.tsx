@@ -3,6 +3,7 @@ import user from '@testing-library/user-event'
 import faker from 'faker'
 import axios from 'axios'
 import {wait} from '@testing-library/dom'
+import {CONFIGURE_EVENTS} from 'organization/PermissionsProvider'
 
 const mockPost = axios.post as jest.Mock
 
@@ -19,7 +20,9 @@ it('should redirect to infusionsoft', async () => {
     },
   })
 
-  const {findByLabelText} = await goToInfusionsoft()
+  const {findByLabelText} = await goToInfusionsoft({
+    userPermissions: [CONFIGURE_EVENTS],
+  })
 
   const url = faker.internet.url()
   mockPost.mockImplementationOnce(() =>
