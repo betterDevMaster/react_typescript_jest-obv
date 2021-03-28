@@ -1,5 +1,5 @@
 import {AuthClientSettings, useAuthClient} from 'auth/auth-client'
-import {User} from 'auth/user'
+import {isTeamMember} from 'auth/user'
 import {TEAM_MEMBER_TOKEN_KEY} from 'obvio/auth'
 import {useOrganization} from 'organization/OrganizationProvider'
 import {useMemo} from 'react'
@@ -22,15 +22,6 @@ export const useOrganizationAuth = () => {
   )
 
   return useAuthClient(settings)
-}
-
-function isTeamMember(user: User | null): user is User {
-  if (!user) {
-    return false
-  }
-
-  const hasWaiver = Object.prototype.hasOwnProperty.call(user, 'waiver')
-  return !hasWaiver
 }
 
 export function useTeamMember() {

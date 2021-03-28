@@ -1,4 +1,3 @@
-import {User} from 'auth/user'
 import Page from 'organization/user/Layout/Page'
 import React, {useState} from 'react'
 import TeamMembersTable from 'organization/Team/TeamMembersTable'
@@ -7,18 +6,13 @@ import TeamProvider from 'organization/Team/TeamProvider'
 import Tabs from '@material-ui/core/Tabs'
 import Tab from '@material-ui/core/Tab'
 import Roles from 'organization/Team/Roles'
-import RolesProvider, {Role} from 'organization/Team/Roles/RolesProvider'
+import RolesProvider from 'organization/Team/Roles/RolesProvider'
 import Layout from 'organization/user/Layout'
 import TabPanel from 'lib/ui/tabs/TabPanel'
 import {useBreadcrumbs} from 'lib/ui/BreadcrumbProvider'
 import {useOrganization} from 'organization/OrganizationProvider'
 import HasPermission from 'organization/HasPermission'
 import {UPDATE_TEAM} from 'organization/PermissionsProvider'
-
-export type TeamMember = User & {
-  permissions: string[]
-  role: Role | null
-}
 
 export default function Team() {
   const [tabIndex, setTabIndex] = useState(0)

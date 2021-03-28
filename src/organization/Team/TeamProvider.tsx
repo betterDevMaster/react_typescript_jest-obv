@@ -1,7 +1,7 @@
 import {useAsync} from 'lib/async'
 import {api} from 'lib/url'
 import {useOrganization} from 'organization/OrganizationProvider'
-import {TeamMember} from 'organization/Team'
+import {TeamMember} from 'auth/user'
 import React, {useCallback, useEffect, useState} from 'react'
 
 interface TeamContextProps {

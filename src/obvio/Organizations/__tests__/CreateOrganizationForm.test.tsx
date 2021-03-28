@@ -7,6 +7,7 @@ import App from 'App'
 import user from '@testing-library/user-event'
 import {fakeOrganization} from 'obvio/Organizations/__utils__/factory'
 import {act} from '@testing-library/react'
+import {fakeTeamMember} from 'organization/Team/__utils__/factory'
 
 const mockGet = mockAxios.get as jest.Mock
 const mockPost = mockAxios.post as jest.Mock
@@ -16,7 +17,7 @@ beforeEach(() => {
 })
 
 it('should create a new organization', async () => {
-  authenticate()
+  authenticate(fakeTeamMember({has_paid: true}))
   mockGet.mockImplementationOnce(() =>
     Promise.resolve({
       data: [],

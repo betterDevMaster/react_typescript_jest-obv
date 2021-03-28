@@ -1,5 +1,5 @@
+import {TeamMember} from 'auth/user'
 import {fakeUser} from 'auth/user/__utils__/factory'
-import {TeamMember} from 'organization/Team'
 
 export const fakeTeamMember = (
   overrides?: Partial<TeamMember>,
@@ -7,5 +7,6 @@ export const fakeTeamMember = (
   ...fakeUser(),
   permissions: [],
   role: null,
+  has_paid: false,
   ...overrides,
 })

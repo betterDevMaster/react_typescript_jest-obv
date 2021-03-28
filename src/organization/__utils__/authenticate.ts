@@ -4,10 +4,10 @@ import {ObvioEvent} from 'Event'
 import {fakeOrganization} from 'obvio/Organizations/__utils__/factory'
 import {useLocation} from 'react-router-dom'
 import axios from 'axios'
-import {TeamMember} from 'organization/Team'
 import {fakeTeamMember} from 'organization/Team/__utils__/factory'
 import {TEAM_MEMBER_TOKEN_KEY} from 'obvio/auth'
 import {Permission} from 'organization/PermissionsProvider'
+import {TeamMember} from 'auth/user'
 
 const mockUseLocation = useLocation as jest.Mock
 const mockGet = axios.get as jest.Mock

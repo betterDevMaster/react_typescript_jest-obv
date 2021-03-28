@@ -9,7 +9,7 @@ import {act, fireEvent, wait} from '@testing-library/react'
 import {signInToOrganization} from 'organization/__utils__/authenticate'
 import {UPDATE_TEAM} from 'organization/PermissionsProvider'
 import {fakeRole} from 'organization/Team/Roles/__utils__/factory'
-import {TeamMember} from 'organization/Team'
+import {TeamMember} from 'auth/user'
 
 const mockGet = axios.get as jest.Mock
 const mockPut = axios.put as jest.Mock

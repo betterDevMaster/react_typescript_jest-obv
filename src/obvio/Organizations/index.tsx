@@ -6,6 +6,7 @@ import {useBreadcrumbs} from 'lib/ui/BreadcrumbProvider'
 import Layout from 'obvio/user/Layout'
 import {RelativeLink} from 'lib/ui/link/RelativeLink'
 import Button from '@material-ui/core/Button'
+import {useObvioUser} from 'obvio/auth'
 
 export default function Organizations() {
   useBreadcrumbs([
@@ -17,17 +18,24 @@ export default function Organizations() {
 
   return (
     <UserOrganizationsProvier>
-      <Layout
-        navbarRight={
-          <RelativeLink to={obvioRoutes.organizations.create} disableStyles>
-            <Button variant="contained" color="primary">
-              New Organization
-            </Button>
-          </RelativeLink>
-        }
-      >
+      <Layout navbarRight={<CreateOrganizationButton />}>
         <Collection />
       </Layout>
     </UserOrganizationsProvier>
+  )
+}
+
+function CreateOrganizationButton() {
+  const user = useObvioUser()
+  if (!user.has_paid) {
+    return null
+  }
+
+  return (
+    <RelativeLink to={obvioRoutes.organizations.create} disableStyles>
+      <Button variant="contained" color="primary">
+        Create Organization
+      </Button>
+    </RelativeLink>
   )
 }

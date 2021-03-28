@@ -30,6 +30,7 @@ export interface RegistrationData {
   lastName: string
   password: string
   passwordConfirmation: string
+  token?: string
 }
 
 export interface ForgotPasswordRequestData {
@@ -160,5 +161,6 @@ function sendRegistrationRequest(endpoint: string, data: RegistrationData) {
     last_name: data.lastName,
     password: data.password,
     password_confirmation: data.passwordConfirmation,
+    token: data.token,
   })
 }

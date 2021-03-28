@@ -1,5 +1,4 @@
 import styled from 'styled-components'
-import {TeamMember} from 'organization/Team'
 import React from 'react'
 import DeleteIconButton from 'lib/ui/IconButton/DeleteIconButton'
 import {api} from 'lib/url'
@@ -13,6 +12,7 @@ import TableRow from '@material-ui/core/TableRow'
 import TableCell from '@material-ui/core/TableCell'
 import TableBody from '@material-ui/core/TableBody'
 import Role from 'organization/Team/TeamMembersTable/Role'
+import {TeamMember} from 'auth/user'
 
 export default function TeamMemberList() {
   const {members, remove: removeFromList} = useTeam()

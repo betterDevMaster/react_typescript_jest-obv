@@ -14,21 +14,41 @@ import {RegistrationData} from 'auth/auth-client'
 import {RelativeLink} from 'lib/ui/link/RelativeLink'
 import backgroundImg from 'assets/images/background_login.png'
 import logoImgVertical from 'assets/images/logo_vertical.png'
+import {useQueryParams} from 'lib/url'
+import {fieldError} from 'lib/form'
+import {ValidationError} from 'lib/api-client'
+import ErrorAlert from 'lib/ui/alerts/ErrorAlert'
 
 export default function Registration() {
   const {register: registerForm, handleSubmit, errors, watch} = useForm()
-  const [error, setError] = useState('')
+  const [error, setError] = useState<ValidationError<RegistrationData> | null>(
+    null,
+  )
+  const {token} = useQueryParams()
 
   const [submitting, setSubmitting] = useState(false)
   const {register} = useObvioAuth()
 
   const submit = (data: RegistrationData) => {
     setSubmitting(true)
-    register(data).catch((e) => {
-      setError(e.message)
+    register({...data, token}).catch((e) => {
+      setError(e)
       setSubmitting(false)
     })
   }
+
+  const getError = (field: keyof RegistrationData) =>
+    fieldError(field, {
+      form: errors,
+      response: error,
+    })
+
+  const tokenError = getError('token')
+  const firstNameError = getError('firstName')
+  const lastNameError = getError('lastName')
+  const emailError = getError('email')
+  const passwordError = getError('password')
+  const passwordConfirmationError = getError('passwordConfirmation')
 
   return (
     <StyledCenteredBox>
@@ -37,6 +57,7 @@ export default function Registration() {
         <WelcomeText>WELCOME</WelcomeText>
         <Description>Create your Obvio account</Description>
         <form onSubmit={handleSubmit(submit)}>
+          <StyledError>{tokenError}</StyledError>
           <Grid container spacing={2}>
             <Grid item xs={12} sm={6}>
               <StyledTextField
@@ -50,8 +71,8 @@ export default function Registration() {
                   }),
                   'aria-label': 'first name',
                 }}
-                error={!!errors.firstName}
-                helperText={errors.firstName && errors.firstName.message}
+                error={!!firstNameError}
+                helperText={firstNameError}
               />
             </Grid>
             <Grid item xs={12} sm={6}>
@@ -66,8 +87,8 @@ export default function Registration() {
                   }),
                   'aria-label': 'last name',
                 }}
-                error={!!errors.lastName}
-                helperText={errors.lastName && errors.lastName.message}
+                error={!!lastNameError}
+                helperText={lastNameError}
               />
             </Grid>
           </Grid>
@@ -83,8 +104,8 @@ export default function Registration() {
               }),
               'aria-label': 'email',
             }}
-            error={!!errors.email}
-            helperText={errors.email && errors.email.message}
+            error={!!emailError}
+            helperText={emailError}
           />
           <StyledTextField
             label="Password"
@@ -98,8 +119,8 @@ export default function Registration() {
               }),
               'aria-label': 'password',
             }}
-            error={!!errors.password}
-            helperText={errors.password && errors.password.message}
+            error={!!passwordError}
+            helperText={passwordError}
           />
           <StyledTextField
             label="Confirm Password"
@@ -115,12 +136,9 @@ export default function Registration() {
               }),
               'aria-label': 'password confirmation',
             }}
-            error={!!errors.passwordConfirmation}
-            helperText={
-              errors.passwordConfirmation && errors.passwordConfirmation.message
-            }
+            error={!!passwordConfirmationError}
+            helperText={passwordConfirmationError}
           />
-          <Error>{error}</Error>
           <StyledButton
             variant="contained"
             fullWidth
@@ -141,14 +159,6 @@ export default function Registration() {
       </Container>
     </StyledCenteredBox>
   )
-}
-
-function Error(props: {children: string}) {
-  if (!props.children) {
-    return null
-  }
-
-  return <ErrorText color="error">{props.children}</ErrorText>
 }
 
 const Logo = styled.img`
@@ -199,12 +209,12 @@ const Container = styled.div`
   }
 `
 
-const ErrorText = styled(Typography)`
-  margin-bottom: ${(props) => props.theme.spacing[3]};
-`
-
 const LoginText = withStyles({
   root: {
     marginTop: spacing[3],
   },
 })(Typography)
+
+const StyledError = styled(ErrorAlert)`
+  margin-bottom: ${(props) => props.theme.spacing[6]};
+`

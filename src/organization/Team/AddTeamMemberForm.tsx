@@ -8,10 +8,10 @@ import {ValidationError} from 'lib/api-client'
 import Button from '@material-ui/core/Button'
 import {useOrganization} from 'organization/OrganizationProvider'
 import {api} from 'lib/url'
-import {TeamMember} from 'organization/Team'
 import {withStyles} from '@material-ui/core'
 import {spacing} from 'lib/ui/theme'
 import {useTeam} from 'organization/Team/TeamProvider'
+import {TeamMember} from 'auth/user'
 
 interface InviteTeamMemberData {
   email: string
