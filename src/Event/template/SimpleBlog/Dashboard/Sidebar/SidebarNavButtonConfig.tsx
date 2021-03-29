@@ -17,6 +17,16 @@ import {SIDEBAR_NAV_BUTTON} from 'Event/template/SimpleBlog/Dashboard/Sidebar/Si
 import Switch from 'lib/ui/form/Switch'
 import Grid from '@material-ui/core/Grid'
 import InfusionsoftTagInput from 'Event/Dashboard/components/NavButton/InfusionsoftTagInput'
+import ColorPicker from 'lib/ui/ColorPicker'
+import {handleChangeSlider} from 'lib/dom'
+import InputLabel from '@material-ui/core/InputLabel'
+import Slider from '@material-ui/core/Slider'
+
+const MIN_BORDER_WIDTH = 0
+const MAX_BORDER_WIDTH = 50
+
+const MIN_BORDER_RADIUS = 0
+const MAX_BORDER_RADIUS = 25
 
 export type SidebarNavButtonConfig = {
   type: typeof SIDEBAR_NAV_BUTTON
@@ -84,7 +94,7 @@ export function SidebarNavButtonConfig(props: {
       />
       <TextField
         label="Link URL"
-        value={button.link}
+        value={button.link ? button.link : ''}
         inputProps={{
           'aria-label': 'button link input',
         }}
@@ -109,23 +119,63 @@ export function SidebarNavButtonConfig(props: {
           <Switch
             checked={button.isVisible}
             onChange={onChangeCheckedHandler(updateButton('isVisible'))}
-            arial-label="config switch to attendee"
+            arial-label="config switch sidebar"
             labelPlacement="end"
             color="primary"
             label={button.isVisible ? 'Enable' : 'Disable'}
           />
         </Grid>
+        <Grid item xs={6}>
+          <ColorPicker
+            label="Background Color"
+            color={button.backgroundColor}
+            onPick={updateButton('backgroundColor')}
+            aria-label="background color"
+          />
+        </Grid>
+        <Grid item xs={6}>
+          <ColorPicker
+            label="Text Color"
+            color={button.textColor}
+            onPick={updateButton('textColor')}
+            aria-label="text color color"
+          />
+        </Grid>
+        <Grid item xs={6}>
+          <ColorPicker
+            label="Border  Color"
+            color={button.borderColor}
+            onPick={updateButton('borderColor')}
+            aria-label="border color"
+          />
+        </Grid>
+        <Grid item xs={6}>
+          <TextField
+            value={button.borderRadius || ''}
+            label="Border Radius"
+            type="number"
+            fullWidth
+            inputProps={{
+              min: MIN_BORDER_RADIUS,
+              max: MAX_BORDER_RADIUS,
+            }}
+            onChange={onChangeNumberHandler(updateButton('borderRadius'))}
+          />
+        </Grid>
+        <Grid item xs={12}>
+          <InputLabel>Border Thickness</InputLabel>
+          <Slider
+            min={MIN_BORDER_WIDTH}
+            max={MAX_BORDER_WIDTH}
+            step={1}
+            onChange={handleChangeSlider(updateButton('borderWidth'))}
+            valueLabelDisplay="auto"
+            value={button.borderWidth ? button.borderWidth : 1}
+            aria-label="border thickness"
+          />
+        </Grid>
       </Grid>
-      <TextField
-        value={button.borderRadius || ''}
-        label="Border Radius"
-        type="number"
-        fullWidth
-        inputProps={{
-          min: 0,
-        }}
-        onChange={onChangeNumberHandler(updateButton('borderRadius'))}
-      />
+
       <InfusionsoftTagInput
         button={button}
         onChange={updateButton('infusionsoftTag')}

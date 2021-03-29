@@ -22,6 +22,8 @@ export default function TechCheck(props: {user: User} & TechCheckProps) {
           value={props.progress}
           barColor={template.progressBar.barColor}
           textColor={template.progressBar.textColor}
+          borderRadius={template.progressBar.borderRadius}
+          thickness={template.progressBar.thickness}
         />
         <Body
           dangerouslySetInnerHTML={{

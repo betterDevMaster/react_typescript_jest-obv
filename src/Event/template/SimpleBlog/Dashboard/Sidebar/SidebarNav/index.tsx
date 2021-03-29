@@ -9,7 +9,7 @@ import Section from 'Event/template/SimpleBlog/Dashboard/Sidebar/Section'
 export const SIDEBAR_NAV_BUTTON = 'Sidebar Nav Button'
 
 export default function SidebarNav() {
-  const {sidebarNav: buttons, primaryColor} = useTemplate()
+  const {sidebarNav: buttons} = useTemplate()
 
   const hasButtons = buttons.ids.length > 0
   if (!hasButtons) {
@@ -29,8 +29,12 @@ export default function SidebarNav() {
             key={id}
             {...button}
             id={id}
-            backgroundColor={primaryColor}
-            hoverBackgroundColor={primaryColor}
+            backgroundColor={button.backgroundColor}
+            hoverBackgroundColor={button.backgroundColor}
+            textColor={button.textColor}
+            borderWidth={button.borderWidth}
+            borderRadius={button.borderRadius}
+            borderColor={button.borderColor}
           />
         )
       })}

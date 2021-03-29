@@ -14,18 +14,17 @@ export default React.memo((props: NavButton & {id: string}) => (
   >
     <Published component={props}>
       <StyledNavButtonComponent
-        {...props}
         aria-label="sidebar nav button"
         textColor="#FFFFFF"
         borderWidth={1}
         borderColor="#FFFFFF"
+        {...props}
       />
     </Published>
   </EditComponent>
 ))
 
 const StyledNavButtonComponent = styled(NavButton)`
-  border: 1px solid #ffffff;
   font-size: 14px;
   padding: ${(props) => `${props.theme.spacing[3]} ${props.theme.spacing[4]}`};
   margin: ${(props) => props.theme.spacing[3]} 0;

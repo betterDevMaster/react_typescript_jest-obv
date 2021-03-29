@@ -68,6 +68,8 @@ export default function Step2(props: {user: User}) {
             value={progress}
             barColor={progressBar.barColor}
             textColor={progressBar.textColor}
+            borderRadius={progressBar.borderRadius}
+            thickness={progressBar.thickness}
           />
           {questions.map((question, index) => (
             <Question

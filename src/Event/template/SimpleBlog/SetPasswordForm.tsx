@@ -26,6 +26,8 @@ export default function SimpleBlogSetPasswordForm(
           value={props.progress}
           barColor={template.progressBar.barColor}
           textColor={template.progressBar.textColor}
+          borderRadius={template.progressBar.borderRadius}
+          thickness={template.progressBar.thickness}
         />
         <Typography align="center">
           Please set a password to continue
