@@ -6,6 +6,10 @@ import {createEntityList, EntityList} from 'lib/list'
 export const fakeBlogPost = (): BlogPost => ({
   title: faker.lorem.lines(1),
   postedAt: faker.date.past().toISOString(),
+  publishAt:
+    faker.random.boolean() === true
+      ? faker.date.past().toISOString()
+      : faker.date.future().toISOString(),
   content: `
     <div>
       <p>

@@ -11,6 +11,7 @@ import {fireEvent} from '@testing-library/react'
 import {emptyActions, render} from '__utils__/render'
 import {fakeEvent} from 'Event/__utils__/factory'
 import {defaultScore} from 'Event/PointsProvider/__utils__/StaticPointsProvider'
+import {getDiffDatetime, now} from 'lib/date-time'
 
 it('should render blog posts', async () => {
   const withoutPosts = fakeEvent({
@@ -47,12 +48,17 @@ it('should render blog posts', async () => {
   })
 
   for (const post of Object.values(blogPosts.entities)) {
-    if (post.isVisible === true)
+    if (
+      post.isVisible === true &&
+      post.publishAt &&
+      getDiffDatetime(post.publishAt, now()) < 0
+    )
       expect(await findByText(post.title)).toBeInTheDocument()
   }
 
   const numVisiblePosts = Object.values(blogPosts.entities).filter(
-    (i) => i.isVisible,
+    (i) =>
+      i.isVisible && i.publishAt && getDiffDatetime(i.publishAt, now()) < 0,
   ).length
 
   if (numVisiblePosts > 0) {

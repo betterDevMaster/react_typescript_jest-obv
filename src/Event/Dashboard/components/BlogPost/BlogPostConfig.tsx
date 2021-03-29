@@ -10,6 +10,8 @@ import {onChangeStringHandler, onChangeCheckedHandler} from 'lib/dom'
 import TextField from '@material-ui/core/TextField'
 import Switch from 'lib/ui/form/Switch'
 import Box from '@material-ui/core/Box'
+import {DateTimePicker} from '@material-ui/pickers'
+import {MaterialUiPickersDate} from '@material-ui/pickers/typings/date'
 
 export type BlogPostConfig = {
   type: typeof BLOG_POST
@@ -61,6 +63,11 @@ export function BlogPostConfig(props: {id: BlogPostConfig['id']}) {
     })
   }
 
+  const updatePublishAt = (date: MaterialUiPickersDate) => {
+    const value = date ? date.toISOString() : null
+    update('publishAt')(value)
+  }
+
   return (
     <>
       <EditorContainer>
@@ -83,6 +90,17 @@ export function BlogPostConfig(props: {id: BlogPostConfig['id']}) {
           fullWidth
           onChange={onChangeStringHandler(update('title'))}
         />
+        <DateTimePicker
+          clearable
+          value={post.publishAt}
+          onChange={updatePublishAt}
+          fullWidth
+          label="Publish Date"
+          inputProps={{
+            'aria-label': 'post publish at',
+          }}
+        />
+
         <CKEditor editor={ClassicEditor} data={post.content} onChange={save} />
         <RemoveButton
           fullWidth

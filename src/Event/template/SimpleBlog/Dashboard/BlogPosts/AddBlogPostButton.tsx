@@ -17,6 +17,7 @@ export default function AddBlogPostButton(props: {className?: string}) {
     const post: BlogPost = {
       title: 'My Post',
       postedAt: now(),
+      publishAt: null,
       content: '',
       isVisible: true,
     }

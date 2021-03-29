@@ -1,23 +1,33 @@
 import React from 'react'
 import styled from 'styled-components'
-import {blogPostTime} from 'lib/date-time'
+import {blogPostTime, getDiffDatetime, now} from 'lib/date-time'
 import {Publishable} from 'Event/Dashboard/editor/views/Published'
+import {useEditMode} from 'Event/Dashboard/editor/state/edit-mode'
 
 export type BlogPost = Publishable & {
   title: string
   postedAt: string
+  publishAt: string | null
   content: string
 }
 
 export const BLOG_POST = 'Blog Post'
 
 export function BlogPost(props: {post: BlogPost}) {
-  const formattedPost = blogPostTime(props.post.postedAt, 'America/New_York')
+  const isEdit = useEditMode()
+  const {post} = props
+
+  const date = post.publishAt || post.postedAt
+  const formattedDate = blogPostTime(date)
+
+  if (!isEdit && !shouldPublish(post)) {
+    return null
+  }
 
   return (
     <Post aria-label="blog post">
       <Title>{props.post.title}</Title>
-      <PostDate>{formattedPost}</PostDate>
+      <PostDate>{formattedDate}</PostDate>
       <div
         dangerouslySetInnerHTML={{
           __html: props.post.content,
@@ -25,6 +35,15 @@ export function BlogPost(props: {post: BlogPost}) {
       />
     </Post>
   )
+}
+
+function shouldPublish(post: BlogPost) {
+  if (!post.publishAt) {
+    return true
+  }
+
+  // is past publish date
+  return getDiffDatetime(post.publishAt, now()) < 0
 }
 
 const Post = styled.div`
