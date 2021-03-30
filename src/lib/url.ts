@@ -25,9 +25,30 @@ export const getSubdomain = (location: string) => {
   return firstSubdomain
 }
 
+export const isObvioApp = () => {
+  const subdomain = getSubdomain(window.location.host)
+  if (!subdomain) {
+    return true
+  }
+
+  return subdomain === OBVIO_SUBDOMAIN
+}
+
 export const api = (path: string) => {
-  const baseUrl = process.env.REACT_APP_API_URL
-  return `${baseUrl}${path}`
+  return `${ApiBaseUrl()}${path}`
+}
+
+function ApiBaseUrl() {
+  if (!isProduction) {
+    // Single API url for dev/staging
+    return process.env.REACT_APP_API_URL
+  }
+
+  if (isObvioApp()) {
+    return process.env.REACT_APP_ADMIN_API_URL
+  }
+
+  return process.env.REACT_APP_EVENT_API_URL
 }
 
 /**
