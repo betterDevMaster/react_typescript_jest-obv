@@ -39,7 +39,7 @@ export const api = (path: string) => {
 }
 
 function ApiBaseUrl() {
-  if (!isProduction) {
+  if (!isProduction || isStaging) {
     // Single API url for dev/staging
     return process.env.REACT_APP_API_URL
   }
