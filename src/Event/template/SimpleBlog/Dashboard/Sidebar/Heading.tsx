@@ -13,4 +13,9 @@ const Text = styled.h2`
   font-size: 30px;
   font-weight: bold;
   font-style: italic;
+
+  &:empty {
+    width: ${(props) => props.theme.spacing[14]};
+    height: ${(props) => props.theme.spacing[8]};
+  }
 `
