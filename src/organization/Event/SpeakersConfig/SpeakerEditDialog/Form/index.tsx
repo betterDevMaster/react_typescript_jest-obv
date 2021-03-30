@@ -5,8 +5,6 @@ import {useForm} from 'react-hook-form'
 import TextField from '@material-ui/core/TextField'
 import Button from '@material-ui/core/Button'
 import withStyles from '@material-ui/core/styles/withStyles'
-import CKEditor from '@ckeditor/ckeditor5-react'
-import ClassicEditor from '@ckeditor/ckeditor5-build-classic'
 import {Speaker} from 'Event'
 import {useEvent} from 'Event/EventProvider'
 import {useOrganization} from 'organization/OrganizationProvider'
@@ -15,6 +13,7 @@ import {fieldError} from 'lib/form'
 import {ValidationError} from 'lib/api-client'
 import UploadedImage from 'organization/Event/SpeakersConfig/SpeakerEditDialog/Form/UploadedImage'
 import {fetchFile} from 'lib/http-client'
+import TextEditor from 'lib/ui/form/TextEditor'
 
 const imageUploadId = 'speaker-image-upload'
 
@@ -114,10 +113,6 @@ export default function EditSpeakerForm(props: {
       })
   }
 
-  const setText = (_: any, editor: any) => {
-    setValue('text', editor.getData())
-  }
-
   const nameError = fieldError('name', {form: errors, response: serverError})
 
   return (
@@ -141,10 +136,9 @@ export default function EditSpeakerForm(props: {
         ref={register}
       />
       <EditorContainer>
-        <CKEditor
-          editor={ClassicEditor}
+        <TextEditor
           data={watch('text')}
-          onChange={setText}
+          onChange={(val) => setValue('text', val)}
         />
       </EditorContainer>
       <ImageContainer>

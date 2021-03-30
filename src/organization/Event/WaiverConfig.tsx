@@ -7,8 +7,6 @@ import Typography from '@material-ui/core/Typography'
 import {spacing} from 'lib/ui/theme'
 import React, {useEffect, useRef, useState} from 'react'
 import {useForm} from 'react-hook-form'
-import CKEditor from '@ckeditor/ckeditor5-react'
-import ClassicEditor from '@ckeditor/ckeditor5-build-classic'
 import FormHelperText from '@material-ui/core/FormHelperText'
 import {useEvent} from 'Event/EventProvider'
 import {api} from 'lib/url'
@@ -22,6 +20,7 @@ import {fetchFile} from 'lib/http-client'
 import Layout from 'organization/user/Layout'
 import {useEventRoutes} from 'organization/Event/EventRoutes'
 import Page from 'organization/Event/Page'
+import TextEditor from 'lib/ui/form/TextEditor'
 
 const imageUploadId = 'waived-logo-upload'
 
@@ -79,10 +78,6 @@ export default function WaiverConfig() {
       mounted.current = false
     }
   }, [event, setValue])
-
-  const setBody = (_: any, editor: any) => {
-    setValue('body', editor.getData())
-  }
 
   const submit = (data: WaiverData) => {
     setSubmitting(true)
@@ -146,23 +141,9 @@ export default function WaiverConfig() {
               Body
             </BodyLabel>
             {loading ? null : (
-              <CKEditor
-                editor={ClassicEditor}
+              <TextEditor
                 data={body}
-                onChange={setBody}
-                config={{
-                  toolbar: [
-                    'heading',
-                    '|',
-                    'bold',
-                    'italic',
-                    'blockQuote',
-                    'link',
-                    'numberedList',
-                    'bulletedList',
-                    'insertTable',
-                  ],
-                }}
+                onChange={(value) => setValue('body', value)}
               />
             )}
 

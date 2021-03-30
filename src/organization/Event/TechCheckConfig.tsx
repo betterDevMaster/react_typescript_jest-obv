@@ -5,8 +5,6 @@ import InputLabel from '@material-ui/core/InputLabel'
 import Typography from '@material-ui/core/Typography'
 import {spacing} from 'lib/ui/theme'
 import Button from '@material-ui/core/Button'
-import CKEditor from '@ckeditor/ckeditor5-react'
-import ClassicEditor from '@ckeditor/ckeditor5-build-classic'
 import FormHelperText from '@material-ui/core/FormHelperText'
 import {useForm, Controller} from 'react-hook-form'
 import Layout from 'organization/user/Layout'
@@ -21,6 +19,7 @@ import FormControlLabel from '@material-ui/core/FormControlLabel'
 import Switch from '@material-ui/core/Switch'
 import AreaSelect from 'organization/Event/Area/AreaSelect'
 import Page from 'organization/Event/Page'
+import TextEditor from 'lib/ui/form/TextEditor'
 
 export interface TechCheckData {
   body: string
@@ -39,10 +38,6 @@ export default function TechCheckConfig() {
 
   const areaId = watch('area_id')
   const canSave = !submitting && Boolean(areaId)
-
-  const setBody = (_: any, editor: any) => {
-    setValue('body', editor.getData())
-  }
 
   const submit = (data: TechCheckData) => {
     setSubmitting(true)
@@ -123,23 +118,9 @@ export default function TechCheckConfig() {
               Body
             </BodyLabel>
             {loading ? null : (
-              <CKEditor
-                editor={ClassicEditor}
+              <TextEditor
                 data={watch('body')}
-                onChange={setBody}
-                config={{
-                  toolbar: [
-                    'heading',
-                    '|',
-                    'bold',
-                    'italic',
-                    'blockQuote',
-                    'link',
-                    'numberedList',
-                    'bulletedList',
-                    'insertTable',
-                  ],
-                }}
+                onChange={(val) => setValue('body', val)}
               />
             )}
 

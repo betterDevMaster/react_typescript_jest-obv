@@ -2,8 +2,6 @@ import {BlogPost, BLOG_POST} from 'Event/Dashboard/components/BlogPost'
 import styled, {createGlobalStyle} from 'styled-components'
 import {useCloseConfig} from 'Event/Dashboard/editor/state/edit-mode'
 import React from 'react'
-import CKEditor from '@ckeditor/ckeditor5-react'
-import ClassicEditor from '@ckeditor/ckeditor5-build-classic'
 import DangerButton from 'lib/ui/Button/DangerButton'
 import {useTemplate, useUpdateTemplate} from 'Event/TemplateProvider'
 import {onChangeStringHandler, onChangeCheckedHandler} from 'lib/dom'
@@ -12,6 +10,7 @@ import Switch from 'lib/ui/form/Switch'
 import Box from '@material-ui/core/Box'
 import {DateTimePicker} from '@material-ui/pickers'
 import {MaterialUiPickersDate} from '@material-ui/pickers/typings/date'
+import TextEditor from 'lib/ui/form/TextEditor'
 
 export type BlogPostConfig = {
   type: typeof BLOG_POST
@@ -47,8 +46,6 @@ export function BlogPostConfig(props: {id: BlogPostConfig['id']}) {
       },
     })
   }
-
-  const save = (_: any, editor: any) => update('content')(editor.getData())
 
   const remove = () => {
     const {[id]: target, ...otherPosts} = posts.entities
@@ -101,7 +98,7 @@ export function BlogPostConfig(props: {id: BlogPostConfig['id']}) {
           }}
         />
 
-        <CKEditor editor={ClassicEditor} data={post.content} onChange={save} />
+        <TextEditor data={post.content} onChange={update('content')} />
         <RemoveButton
           fullWidth
           variant="outlined"
