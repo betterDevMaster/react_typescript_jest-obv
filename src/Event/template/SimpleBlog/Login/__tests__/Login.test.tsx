@@ -17,7 +17,7 @@ it('render login page', async () => {
   const background = faker.internet.url()
   const logo = faker.internet.url()
   const descriptionText = faker.lorem.sentence()
-
+  const logoSizeValue = 50
   const event = fakeEvent({
     login_background: {
       url: background,
@@ -33,6 +33,10 @@ it('render login page', async () => {
           text: descriptionText,
           color: '#000000',
           fontSize: 18,
+        },
+        size: {
+          width: logoSizeValue,
+          height: logoSizeValue,
         },
       }),
     }),
@@ -51,6 +55,12 @@ it('render login page', async () => {
   )
 
   expect((await findByLabelText('login logo')).getAttribute('src')).toBe(logo)
+  expect((await findByLabelText('login logo')).getAttribute('height')).toBe(
+    logoSizeValue.toString(),
+  )
+  expect((await findByLabelText('login logo')).getAttribute('width')).toBe(
+    logoSizeValue.toString(),
+  )
 
   expect(await findByText(descriptionText)).toBeInTheDocument()
 })

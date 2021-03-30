@@ -67,6 +67,10 @@ export interface SimpleBlog {
       color: string
       fontSize: number
     }
+    size: {
+      width: number
+      height: number
+    }
   }
 }
 
@@ -139,6 +143,10 @@ export const createSimpleBlog = (): SimpleBlog => ({
       text: '',
       color: '#000000',
       fontSize: 18,
+    },
+    size: {
+      width: 100,
+      height: 100,
     },
   },
 })

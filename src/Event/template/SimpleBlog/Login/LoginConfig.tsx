@@ -8,6 +8,13 @@ import {spacing} from 'lib/ui/theme'
 import ColorPicker from 'lib/ui/ColorPicker'
 import {useTemplate, useUpdatePrimitive} from 'Event/TemplateProvider'
 import {onChangeStringHandler} from 'lib/dom'
+import {handleChangeSlider} from 'lib/dom'
+
+const MAX_LOGO_SIZE_HEIGHT = 200
+const MIN_LOGO_SIZE_HEIGHT = 1
+
+const MAX_LOGO_SIZE_WIDTH = 150
+const MIN_LOGO_SIZE_WIDTH = 1
 
 export default function LoginFormConfig() {
   const template = useTemplate()
@@ -30,6 +37,9 @@ export default function LoginFormConfig() {
     login.description.fontSize,
   )
 
+  const [logoSizeWidth, setLogoSizeWidth] = useState(login.size.width)
+  const [logoSizeHeight, setLogoSizeHeight] = useState(login.size.height)
+
   useEffect(() => {
     const hasChanges =
       login.submitButton.label !== submitLabel ||
@@ -37,7 +47,9 @@ export default function LoginFormConfig() {
       login.submitButton.textColor !== submitTextColor ||
       login.description.color !== descriptionColor ||
       login.description.fontSize !== descriptionFontSize ||
-      login.description.text !== descriptionText
+      login.description.text !== descriptionText ||
+      login.size.width !== logoSizeWidth ||
+      login.size.height !== logoSizeHeight
 
     if (!hasChanges) {
       return
@@ -54,6 +66,10 @@ export default function LoginFormConfig() {
         color: descriptionColor,
         fontSize: descriptionFontSize,
       },
+      size: {
+        width: logoSizeWidth,
+        height: logoSizeHeight,
+      },
     })
   }, [
     login,
@@ -63,20 +79,39 @@ export default function LoginFormConfig() {
     descriptionColor,
     descriptionFontSize,
     descriptionText,
+    logoSizeWidth,
+    logoSizeHeight,
     updateLogin,
   ])
-
-  const handleChangeSlider = (
-    evt: React.ChangeEvent<{}>,
-    value: number | number[],
-  ) => {
-    setDescriptionFontSize(value as number)
-  }
 
   return (
     <>
       <Box display="flex" flexDirection="row" flex="2">
         <Box m={1} display="flex" flexDirection="column" flex="1">
+          <Typography variant="subtitle2" style={{opacity: 0.7}}>
+            Logo Width
+          </Typography>
+          <StyledSlider
+            valueLabelDisplay="auto"
+            aria-label="logo weight"
+            value={logoSizeWidth ? logoSizeWidth : 100}
+            onChange={handleChangeSlider(setLogoSizeWidth)}
+            step={1}
+            min={MIN_LOGO_SIZE_WIDTH}
+            max={MAX_LOGO_SIZE_WIDTH}
+          />
+          <Typography variant="subtitle2" style={{opacity: 0.7}}>
+            Logo Height
+          </Typography>
+          <StyledSlider
+            valueLabelDisplay="auto"
+            aria-label="logo height"
+            value={logoSizeHeight ? logoSizeHeight : 150}
+            onChange={handleChangeSlider(setLogoSizeHeight)}
+            step={1}
+            min={MIN_LOGO_SIZE_HEIGHT}
+            max={MAX_LOGO_SIZE_HEIGHT}
+          />
           <TextField
             label="Submit Label"
             value={submitLabel}
@@ -114,8 +149,8 @@ export default function LoginFormConfig() {
           <StyledSlider
             valueLabelDisplay="auto"
             aria-label="description font size"
-            defaultValue={!descriptionFontSize ? descriptionFontSize : 20}
-            onChangeCommitted={handleChangeSlider}
+            value={descriptionFontSize ? descriptionFontSize : 20}
+            onChange={handleChangeSlider(setDescriptionFontSize)}
             step={1}
             min={5}
             max={50}

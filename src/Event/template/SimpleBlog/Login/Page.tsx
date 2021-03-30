@@ -38,7 +38,17 @@ export default function Page(props: {
 function Logo() {
   const {event} = useEvent()
   const logo = event.login_logo ? event.login_logo.url : defaultLogo
-  return <LogoImage src={logo} alt={event.name} aria-label="login logo" />
+  const {login} = useTemplate()
+
+  return (
+    <LogoImage
+      src={logo}
+      alt={event.name}
+      aria-label="login logo"
+      height={`${login.size.height}`}
+      width={`${login.size.width}`}
+    />
+  )
 }
 
 export function Description(props: {children: string; 'aria-label'?: string}) {

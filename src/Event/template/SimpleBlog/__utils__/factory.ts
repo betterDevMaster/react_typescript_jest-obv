@@ -77,6 +77,10 @@ export const fakeSimpleBlog = (overrides?: Partial<SimpleBlog>): SimpleBlog => {
         color: '#000000',
         fontSize: 18,
       },
+      size: {
+        width: 100,
+        height: 100,
+      },
     },
   }
 
@@ -140,6 +144,10 @@ export function fakeLogin(
       text: '',
       color: '#000000',
       fontSize: 18,
+    },
+    size: {
+      width: 50,
+      height: 50,
     },
     ...overrides,
   }
