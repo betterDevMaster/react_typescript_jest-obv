@@ -111,7 +111,7 @@ function Picker(props: {
     <Container left={anchorLeft} top={top}>
       <HideOverlay onClick={props.toggle} />
       <ChromePicker
-        color={props.color}
+        color={props.color || undefined}
         onChange={props.onChangeColor}
         disableAlpha={true}
       />

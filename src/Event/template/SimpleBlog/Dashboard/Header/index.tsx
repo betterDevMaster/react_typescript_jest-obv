@@ -86,6 +86,10 @@ const Box = styled.div<{
     props.backgroundImage
       ? `background-image: url(${props.backgroundImage});`
       : null}
+
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
 `
 
 const ColorOverlay = styled.div<{
