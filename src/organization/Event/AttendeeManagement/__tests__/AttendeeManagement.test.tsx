@@ -6,6 +6,7 @@ import {Attendee} from 'Event/attendee'
 import {formatDate, now} from 'lib/date-time'
 import {goToAttendeeManagement} from 'organization/Event/AttendeeManagement/__utils__/go-to-attendee-management'
 import {fireEvent, wait} from '@testing-library/react'
+import {CHECK_IN_ATTENDEES} from 'organization/PermissionsProvider'
 
 const mockPatch = axios.patch as jest.Mock
 const mockDelete = axios.delete as jest.Mock
@@ -33,6 +34,7 @@ it('should complete tech check for an attendee', async () => {
   )
   const {findAllByLabelText, findByLabelText} = await goToAttendeeManagement({
     attendees,
+    userPermissions: [CHECK_IN_ATTENDEES],
   })
 
   const targetIndex = faker.random.number({min: 0, max: attendees.length - 1})
@@ -58,6 +60,7 @@ it('should reverse tech check', async () => {
   )
   const {findAllByLabelText} = await goToAttendeeManagement({
     attendees,
+    userPermissions: [CHECK_IN_ATTENDEES],
   })
 
   const targetIndex = faker.random.number({min: 0, max: attendees.length - 1})

@@ -15,6 +15,8 @@ import {StaticRoomProvider, useRoom} from 'organization/Event/Room/RoomProvider'
 import {RelativeLink} from 'lib/ui/link/RelativeLink'
 import {useRoomRoutes} from 'organization/Event/Room/RoomRoutes'
 import StartButton from 'organization/Event/Area/RoomList/StartButton'
+import HasPermission from 'organization/HasPermission'
+import {START_ROOMS} from 'organization/PermissionsProvider'
 
 export default function RoomList(props: {rooms: Room[]}) {
   const {rooms} = props
@@ -34,7 +36,9 @@ export default function RoomList(props: {rooms: Room[]}) {
           <TableCell>Name</TableCell>
           <TableCell>Max Num Attendees</TableCell>
           <TableCell>Online</TableCell>
-          <TableCell>{/* Start Button Column */}</TableCell>
+          <HasPermission permission={START_ROOMS}>
+            <TableCell>{/* Start Button Column */}</TableCell>
+          </HasPermission>
         </TableRow>
       </TableHead>
       <TableBody>
@@ -48,9 +52,11 @@ export default function RoomList(props: {rooms: Room[]}) {
               <TableCell>
                 <RoomOnlineSwitch />
               </TableCell>
-              <TableCell>
-                <StartButton />
-              </TableCell>
+              <HasPermission permission={START_ROOMS}>
+                <TableCell>
+                  <StartButton />
+                </TableCell>
+              </HasPermission>
             </TableRow>
           </StaticRoomProvider>
         ))}

@@ -7,6 +7,7 @@ import {wait} from '@testing-library/react'
 import {fakeAttendee} from 'Event/auth/__utils__/factory'
 import {now} from 'lib/date-time'
 import {Attendee} from 'Event/attendee'
+import {CHECK_IN_ATTENDEES} from 'organization/PermissionsProvider'
 
 const mockGet = axios.get as jest.Mock
 const mockPatch = axios.patch as jest.Mock
@@ -19,6 +20,7 @@ it('should check in an attendee', async () => {
   const area = fakeArea({is_tech_check: true})
 
   const {findByLabelText, findAllByLabelText} = await goToEventConfig({
+    userPermissions: [CHECK_IN_ATTENDEES],
     areas: [area],
   })
 

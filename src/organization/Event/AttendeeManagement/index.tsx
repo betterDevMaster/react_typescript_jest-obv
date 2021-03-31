@@ -29,7 +29,10 @@ import {onChangeStringHandler} from 'lib/dom'
 import Box from '@material-ui/core/Box'
 import UpdateDialog from 'organization/Event/AttendeeManagement/dialog/UpdateDialog'
 import CreateDialog from 'organization/Event/AttendeeManagement/dialog/CreateDialog'
-import {CONFIGURE_EVENTS} from 'organization/PermissionsProvider'
+import {
+  CHECK_IN_ATTENDEES,
+  CONFIGURE_EVENTS,
+} from 'organization/PermissionsProvider'
 import HasPermission from 'organization/HasPermission'
 
 export default function AttendeeManagement() {
@@ -176,7 +179,9 @@ export default function AttendeeManagement() {
                       {group}
                     </TableCell>
                   ))}
-                  <TableCell align="center">Check In</TableCell>
+                  <HasPermission permission={CHECK_IN_ATTENDEES}>
+                    <TableCell align="center">Check In</TableCell>
+                  </HasPermission>
                   {areas.map((area) => (
                     <TableCell key={area.id}>{area.name}</TableCell>
                   ))}
@@ -201,15 +206,17 @@ export default function AttendeeManagement() {
                         {attendee.groups[key]}
                       </TableCell>
                     ))}
-                    <TableCell align="center">
-                      <ToggleCheckInButton
-                        isCheckedIn={isCheckedIn(attendee)}
-                        onClick={toggleCheckIn(attendee)}
-                      />
-                      <CheckedInAt>
-                        {attendee.tech_check_completed_at}
-                      </CheckedInAt>
-                    </TableCell>
+                    <HasPermission permission={CHECK_IN_ATTENDEES}>
+                      <TableCell align="center">
+                        <ToggleCheckInButton
+                          isCheckedIn={isCheckedIn(attendee)}
+                          onClick={toggleCheckIn(attendee)}
+                        />
+                        <CheckedInAt>
+                          {attendee.tech_check_completed_at}
+                        </CheckedInAt>
+                      </TableCell>
+                    </HasPermission>
                     {areas.map((area) => (
                       <TableCell key={area.id}>
                         <RoomSelect attendee={attendee} area={area} />

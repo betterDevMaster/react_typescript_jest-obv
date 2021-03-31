@@ -8,7 +8,7 @@ import App from 'App'
 import {fakeRoom} from 'organization/Event/AreaList/__utils__/factory'
 import {Room} from 'Event/room'
 import {wait} from '@testing-library/react'
-import {CONFIGURE_EVENTS} from 'organization/PermissionsProvider'
+import {CONFIGURE_EVENTS, START_ROOMS} from 'organization/PermissionsProvider'
 
 const mockGet = axios.get as jest.Mock
 const mockPatch = axios.patch as jest.Mock
@@ -18,7 +18,9 @@ afterEach(() => {
 })
 
 it('should toggle a room on/off', async () => {
-  const {findByLabelText, areas} = await goToEventConfig()
+  const {findByLabelText, areas} = await goToEventConfig({
+    userPermissions: [START_ROOMS],
+  })
 
   const area = faker.random.arrayElement(areas)
   mockGet.mockImplementationOnce(() => Promise.resolve({data: area}))

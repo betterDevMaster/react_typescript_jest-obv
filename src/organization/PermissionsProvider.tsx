@@ -11,11 +11,15 @@ import React, {useCallback} from 'react'
 export const CREATE_EVENTS = 'events.create'
 export const CONFIGURE_EVENTS = 'events.configure'
 export const UPDATE_TEAM = 'team.update'
+export const START_ROOMS = 'rooms.start'
+export const CHECK_IN_ATTENDEES = 'attendees.check_in'
 
 export type Permission =
   | typeof CREATE_EVENTS
   | typeof CONFIGURE_EVENTS
   | typeof UPDATE_TEAM
+  | typeof START_ROOMS
+  | typeof CHECK_IN_ATTENDEES
 
 interface PermissionsContextProps {
   user: Permission[]
@@ -86,6 +90,10 @@ export function label(permission: Permission) {
       return 'Configure Events'
     case UPDATE_TEAM:
       return 'Update Team'
+    case START_ROOMS:
+      return 'Start Rooms'
+    case CHECK_IN_ATTENDEES:
+      return 'Check-In Attendees'
     default:
       throw new Error(
         `Unhandled permission: ${permission}; was it added to the Permission type?`,

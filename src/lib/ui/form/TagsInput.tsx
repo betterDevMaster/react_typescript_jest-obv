@@ -99,6 +99,7 @@ export default React.forwardRef<
                       label={item}
                       onDelete={() => deleteTag(item)}
                       className={classes.chip}
+                      disabled={props.disabled}
                     />
                   </span>
                 )),

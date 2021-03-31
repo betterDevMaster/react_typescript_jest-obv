@@ -27,7 +27,12 @@ import TechCheckAttendees from 'organization/Event/Room/TechCheckAttendees'
 import StartButton from 'organization/Event/Area/RoomList/StartButton'
 import Box from '@material-ui/core/Box'
 import HasPermission from 'organization/HasPermission'
-import {CONFIGURE_EVENTS} from 'organization/PermissionsProvider'
+import {
+  CHECK_IN_ATTENDEES,
+  CONFIGURE_EVENTS,
+  START_ROOMS,
+  usePermissions,
+} from 'organization/PermissionsProvider'
 
 export const DEFAULT_MAX_NUM_ATTENDEES = 500
 
@@ -45,6 +50,8 @@ export default function RoomConfig() {
   const hasUpdatedMaxNumAttendees = maxNumAttendees !== room.max_num_attendees
   const hasUpdates = hasUpdatedName || hasUpdatedMaxNumAttendees
   const roomRoutes = useRoomRoutes()
+
+  const {can} = usePermissions()
 
   useBreadcrumbs([
     {
@@ -93,7 +100,7 @@ export default function RoomConfig() {
         <Title variant="h5">{room.name}</Title>
         <FormControl>
           <FormControlLabel
-            disabled={processing}
+            disabled={processing || !can(START_ROOMS)}
             control={
               <Switch
                 checked={room.is_online}
@@ -107,9 +114,11 @@ export default function RoomConfig() {
             label="Open"
           />
         </FormControl>
-        <Box mb={3}>
-          <StartButton />
-        </Box>
+        <HasPermission permission={START_ROOMS}>
+          <Box mb={3}>
+            <StartButton />
+          </Box>
+        </HasPermission>
         <HasPermission permission={CONFIGURE_EVENTS}>
           <>
             <TextField
@@ -173,7 +182,9 @@ export default function RoomConfig() {
           </>
         </HasPermission>
 
-        <TechCheckAttendees />
+        <HasPermission permission={CHECK_IN_ATTENDEES}>
+          <TechCheckAttendees />
+        </HasPermission>
       </Page>
     </Layout>
   )
