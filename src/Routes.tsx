@@ -6,10 +6,16 @@ import OrganizationRoutes from 'organization/Routes'
 import ObvioRoutes from 'obvio/Routes'
 import {DomainEventProvider} from 'Event/EventProvider'
 import EventRoutes from 'Event/Routes'
+import HelpDesk from 'lib/HelpDesk'
 
 export default function Routes() {
   if (isObvioApp()) {
-    return <AppRoutes />
+    return (
+      <>
+        <HelpDesk />
+        <AdminRoutes />
+      </>
+    )
   }
 
   return (
@@ -19,7 +25,7 @@ export default function Routes() {
   )
 }
 
-function AppRoutes() {
+function AdminRoutes() {
   const {isOrganizationRoute} = useOrganizationUrl()
   if (isOrganizationRoute) {
     return (
