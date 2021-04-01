@@ -11,6 +11,7 @@ import {CONFIGURE_EVENTS} from 'organization/PermissionsProvider'
 import {now} from 'lib/date-time'
 import {Area} from 'organization/Event/AreasProvider'
 import {fakeArea} from 'organization/Event/AreaList/__utils__/factory'
+import moment from 'moment'
 
 const mockGet = axios.get as jest.Mock
 const mockPut = axios.put as jest.Mock
@@ -48,8 +49,11 @@ it('should submit a tech check config', async () => {
   fireEvent.mouseDown(await findByLabelText('pick area'))
   user.click(await findByLabelText(`pick ${area.name}`))
 
-  const startDate = now()
-  user.type(await findByLabelText('tech check start'), startDate)
+  fireEvent.change(await findByLabelText('tech check start'), {
+    target: {
+      value: now(),
+    },
+  })
 
   // Manually set body input because we can't type into CKEditor
   const body = faker.lorem.paragraph()

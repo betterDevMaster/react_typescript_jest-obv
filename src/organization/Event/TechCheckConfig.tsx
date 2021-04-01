@@ -20,10 +20,9 @@ import Switch from '@material-ui/core/Switch'
 import AreaSelect from 'organization/Event/Area/AreaSelect'
 import Page from 'organization/Event/Page'
 import TextEditor from 'lib/ui/form/TextEditor'
-import TextField from '@material-ui/core/TextField'
 import {fieldError} from 'lib/form'
 import {ValidationError} from 'lib/api-client'
-import {upToMinutes} from 'lib/date-time'
+import {DateTimePicker} from '@material-ui/pickers'
 
 export interface TechCheckData {
   body: string
@@ -89,7 +88,7 @@ export default function TechCheckConfig() {
     }
 
     setValue('body', event.tech_check.body)
-    setValue('start', upToMinutes(event.tech_check.start))
+    setValue('start', event.tech_check.start)
     setValue('is_enabled', event.tech_check.is_enabled)
 
     const areaId = event.tech_check.area ? event.tech_check.area.id : null
@@ -143,6 +142,29 @@ export default function TechCheckConfig() {
             error={!!errors.start}
             helperText={errors.start}
             disabled={submitting}
+          />
+          <Controller
+            name="start"
+            control={control}
+            defaultValue=""
+            rules={{
+              required: 'Start is required',
+            }}
+            render={({onChange, value}) => (
+              <DateTimePicker
+                disabled={submitting}
+                value={value}
+                onChange={(date) => {
+                  onChange(date?.toISOString() || '')
+                }}
+                inputProps={{
+                  'aria-label': 'tech check start',
+                  onChange,
+                }}
+                fullWidth
+                label="Start"
+              />
+            )}
           />
           <Controller
             control={control}

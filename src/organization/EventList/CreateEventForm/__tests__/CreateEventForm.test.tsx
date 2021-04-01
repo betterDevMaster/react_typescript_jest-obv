@@ -11,6 +11,7 @@ import axios from 'axios'
 import {act} from 'react-dom/test-utils'
 import moment from 'moment'
 import {now, MINUTE_PRECISION_FORMAT} from 'lib/date-time'
+import {fireEvent} from '@testing-library/react'
 
 const mockGet = axios.get as jest.Mock
 const mockPost = axios.post as jest.Mock
@@ -46,8 +47,19 @@ it('should add an event', async () => {
   await act(async () => {
     user.type(await findByLabelText('event name'), name)
     user.type(await findByLabelText('domain slug'), slug)
-    user.type(await findByLabelText('start'), startDate)
-    user.type(await findByLabelText('end'), endDate)
+
+    fireEvent.change(await findByLabelText('start'), {
+      target: {
+        value: startDate,
+      },
+    })
+
+    fireEvent.change(await findByLabelText('end'), {
+      target: {
+        value: endDate,
+      },
+    })
+
     user.type(
       await findByLabelText('expected number of atttendees'),
       `${count}`,

@@ -15,7 +15,7 @@ import {useBreadcrumbs} from 'lib/ui/BreadcrumbProvider'
 import Form, {EventData} from 'organization/EventList/CreateEventForm/Form'
 
 export default function CreateEventForm() {
-  const {register, errors: formErrors, handleSubmit, watch} = useForm()
+  const {register, errors: formErrors, handleSubmit, watch, control} = useForm()
   const slug = watch('slug')
   const [submitting, setSubmitting] = useState(false)
   const [responseError, setResponseError] = useState<
@@ -56,6 +56,7 @@ export default function CreateEventForm() {
           formErrors={formErrors}
           responseError={responseError}
           submitLabel="Submit"
+          control={control}
         />
       </Page>
     </Layout>

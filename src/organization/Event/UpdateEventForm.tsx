@@ -6,7 +6,6 @@ import {useForm} from 'react-hook-form'
 import {useIsMounted} from 'lib/dom'
 import Form, {EventData} from 'organization/EventList/CreateEventForm/Form'
 import {ValidationError} from 'lib/api-client'
-import {upToMinutes} from 'lib/date-time'
 import {useOrganization} from 'organization/OrganizationProvider'
 import {api, routesWithValue} from 'lib/url'
 import {ObvioEvent} from 'Event'
@@ -27,6 +26,7 @@ export default function UpdateEventForm() {
     watch,
     setValue,
     errors: formErrors,
+    control,
   } = useForm()
   const {set: setBreadcrumbs} = useBreadcrumbs()
   const update = useUpdate()
@@ -38,8 +38,8 @@ export default function UpdateEventForm() {
 
     setValue('name', event.name)
     setValue('slug', event.slug)
-    setValue('start', upToMinutes(event.start))
-    setValue('end', upToMinutes(event.end))
+    setValue('start', event.start)
+    setValue('end', event.end)
     setValue('num_attendees', event.num_attendees)
   }, [event, setValue, isMounted])
 
@@ -82,8 +82,8 @@ export default function UpdateEventForm() {
   const hasChanges =
     name !== event.name ||
     slug !== event.slug ||
-    start !== upToMinutes(event.start) ||
-    end !== upToMinutes(event.end) ||
+    start !== event.start ||
+    end !== event.end ||
     numAttendees !== String(event.num_attendees)
 
   return (
@@ -98,6 +98,7 @@ export default function UpdateEventForm() {
           submitLabel="Save"
           submitting={submitting}
           canSave={hasChanges}
+          control={control}
         />
       </Page>
     </Layout>

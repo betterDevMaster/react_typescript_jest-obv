@@ -14,8 +14,6 @@ export const formatDate = (value: string, format = 'DD-MM-YYYY') =>
 export const DATE_TIME_FORMAT = 'Do MMMM h:mma'
 
 export const MINUTE_PRECISION_FORMAT = 'YYYY-MM-DDTHH:mm'
-export const upToMinutes = (date: string) =>
-  moment(date).format(MINUTE_PRECISION_FORMAT)
 
 export const getDiffDatetime = (
   d1: string,

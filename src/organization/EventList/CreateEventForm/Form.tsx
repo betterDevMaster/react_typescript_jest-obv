@@ -5,9 +5,10 @@ import Typography from '@material-ui/core/Typography'
 import {ValidationError} from 'lib/api-client'
 import {spacing} from 'lib/ui/theme'
 import React from 'react'
-import {UseFormMethods} from 'react-hook-form'
+import {Controller, UseFormMethods} from 'react-hook-form'
 import {ObvioEvent} from 'Event'
 import {fieldError} from 'lib/form'
+import {DateTimePicker} from '@material-ui/pickers'
 
 export type EventData = Pick<
   ObvioEvent,
@@ -23,6 +24,7 @@ export default function Form(props: {
   responseError: ValidationError<EventData>
   slug?: string
   submitLabel: string
+  control: UseFormMethods['control']
 }) {
   const {
     submitting,
@@ -69,7 +71,6 @@ export default function Form(props: {
         name="name"
         required
         fullWidth
-        variant="outlined"
         inputProps={{
           ref: register({
             required: 'Name is required',
@@ -85,7 +86,6 @@ export default function Form(props: {
         name="slug"
         required
         fullWidth
-        variant="outlined"
         inputProps={{
           ref: register({
             required: 'Slug is required',
@@ -96,45 +96,47 @@ export default function Form(props: {
         disabled={submitting}
         helperText={slugHelperText()}
       />
-      <TextField
-        type="datetime-local"
-        label="Start"
+      <Controller
         name="start"
-        required
-        fullWidth
-        variant="outlined"
-        inputProps={{
-          ref: register({
-            required: 'Start is required',
-          }),
-          'aria-label': 'start',
+        control={props.control}
+        defaultValue=""
+        rules={{
+          required: 'Start is required',
         }}
-        error={!!errors.start}
-        helperText={errors.start}
-        disabled={submitting}
-        InputLabelProps={{
-          shrink: true,
-        }}
+        render={({onChange, value}) => (
+          <DateTimePicker
+            disabled={submitting}
+            value={value}
+            onChange={(date) => onChange(date?.toISOString() || '')}
+            fullWidth
+            label="Start"
+            inputProps={{
+              'aria-label': 'start',
+              onChange,
+            }}
+          />
+        )}
       />
-      <TextField
-        type="datetime-local"
-        label="End"
+      <Controller
         name="end"
-        required
-        fullWidth
-        variant="outlined"
-        InputLabelProps={{
-          shrink: true,
+        control={props.control}
+        defaultValue=""
+        rules={{
+          required: 'End is required',
         }}
-        inputProps={{
-          ref: register({
-            required: 'End Time is required',
-          }),
-          'aria-label': 'end',
-        }}
-        error={!!errors.end}
-        helperText={errors.end}
-        disabled={submitting}
+        render={({onChange, value}) => (
+          <DateTimePicker
+            disabled={submitting}
+            value={value}
+            onChange={(date) => onChange(date?.toISOString() || '')}
+            fullWidth
+            label="End"
+            inputProps={{
+              'aria-label': 'end',
+              onChange,
+            }}
+          />
+        )}
       />
       <TextField
         required
@@ -142,7 +144,6 @@ export default function Form(props: {
         type="number"
         name="num_attendees"
         fullWidth
-        variant="outlined"
         inputProps={{
           ref: register({
             required: 'Expected Number of Attendees is required',
