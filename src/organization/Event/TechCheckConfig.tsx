@@ -124,24 +124,28 @@ export default function TechCheckConfig() {
               label="Enable"
             />
           </FormControl>
-          <TextField
-            type="datetime-local"
-            label="Start"
+          <Controller
             name="start"
-            required
-            fullWidth
-            inputProps={{
-              ref: register({
-                required: 'Start is required',
-              }),
-              'aria-label': 'tech check start',
+            control={control}
+            defaultValue=""
+            rules={{
+              required: 'Start is required',
             }}
-            InputLabelProps={{
-              shrink: true,
-            }}
-            error={!!errors.start}
-            helperText={errors.start}
-            disabled={submitting}
+            render={({onChange, value}) => (
+              <DateTimePicker
+                disabled={submitting}
+                value={value}
+                onChange={(date) => {
+                  onChange(date?.toISOString() || '')
+                }}
+                inputProps={{
+                  'aria-label': 'tech check start',
+                  onChange,
+                }}
+                fullWidth
+                label="Start"
+              />
+            )}
           />
           <Controller
             name="start"
