@@ -20,16 +20,30 @@ import Switch from '@material-ui/core/Switch'
 import AreaSelect from 'organization/Event/Area/AreaSelect'
 import Page from 'organization/Event/Page'
 import TextEditor from 'lib/ui/form/TextEditor'
+import TextField from '@material-ui/core/TextField'
+import {fieldError} from 'lib/form'
+import {ValidationError} from 'lib/api-client'
+import {upToMinutes} from 'lib/date-time'
 
 export interface TechCheckData {
   body: string
+  start: string
   is_enabled: boolean
 }
 
 export default function TechCheckConfig() {
-  const {register, handleSubmit, watch, setValue, errors, control} = useForm()
+  const {
+    register,
+    handleSubmit,
+    watch,
+    setValue,
+    errors: formErrors,
+    control,
+  } = useForm()
   const [loading, setLoading] = useState(true)
-  const [responseError, setResponseError] = useState('')
+  const [responseError, setResponseError] = useState<
+    ValidationError<TechCheckData>
+  >(null)
   const [submitting, setSubmitting] = useState(false)
   const setTechCheck = useSetTechCheck()
   const dispatch = useDispatch()
@@ -39,6 +53,17 @@ export default function TechCheckConfig() {
   const areaId = watch('area_id')
   const canSave = !submitting && Boolean(areaId)
 
+  const error = (key: keyof TechCheckData) =>
+    fieldError(key, {
+      form: formErrors,
+      response: responseError,
+    })
+
+  const errors = {
+    body: error('body'),
+    start: error('start'),
+  }
+
   const submit = (data: TechCheckData) => {
     setSubmitting(true)
     setTechCheck(data)
@@ -46,7 +71,7 @@ export default function TechCheckConfig() {
         dispatch(setEvent(event))
       })
       .catch((e) => {
-        setResponseError(e.message)
+        setResponseError(e)
       })
       .finally(() => {
         setSubmitting(false)
@@ -64,6 +89,7 @@ export default function TechCheckConfig() {
     }
 
     setValue('body', event.tech_check.body)
+    setValue('start', upToMinutes(event.tech_check.start))
     setValue('is_enabled', event.tech_check.is_enabled)
 
     const areaId = event.tech_check.area ? event.tech_check.area.id : null
@@ -99,6 +125,25 @@ export default function TechCheckConfig() {
               label="Enable"
             />
           </FormControl>
+          <TextField
+            type="datetime-local"
+            label="Start"
+            name="start"
+            required
+            fullWidth
+            inputProps={{
+              ref: register({
+                required: 'Start is required',
+              }),
+              'aria-label': 'tech check start',
+            }}
+            InputLabelProps={{
+              shrink: true,
+            }}
+            error={!!errors.start}
+            helperText={errors.start}
+            disabled={submitting}
+          />
           <Controller
             control={control}
             name="area_id"
@@ -126,7 +171,7 @@ export default function TechCheckConfig() {
 
             <BodyError error={errors.body} />
           </Editor>
-          <Error>{responseError}</Error>
+          <Error>{responseError?.message}</Error>
           <Button
             fullWidth
             variant="contained"
@@ -143,15 +188,15 @@ export default function TechCheckConfig() {
   )
 }
 
-const BodyError = (props: {error?: {message: string}}) => {
+const BodyError = (props: {error?: string}) => {
   if (!props.error) {
     return null
   }
 
-  return <FormHelperText error>{props.error.message}</FormHelperText>
+  return <FormHelperText error>{props.error}</FormHelperText>
 }
 
-const Error = (props: {children: string}) => {
+const Error = (props: {children?: string}) => {
   if (!props.children) {
     return null
   }

@@ -8,6 +8,9 @@ import {
   goToEventConfig,
 } from 'organization/Event/__utils__/event'
 import {CONFIGURE_EVENTS} from 'organization/PermissionsProvider'
+import {now} from 'lib/date-time'
+import {Area} from 'organization/Event/AreasProvider'
+import {fakeArea} from 'organization/Event/AreaList/__utils__/factory'
 
 const mockGet = axios.get as jest.Mock
 const mockPut = axios.put as jest.Mock
@@ -45,6 +48,9 @@ it('should submit a tech check config', async () => {
   fireEvent.mouseDown(await findByLabelText('pick area'))
   user.click(await findByLabelText(`pick ${area.name}`))
 
+  const startDate = now()
+  user.type(await findByLabelText('tech check start'), startDate)
+
   // Manually set body input because we can't type into CKEditor
   const body = faker.lorem.paragraph()
   const bodyEl = (await findByLabelText('tech check body')) as HTMLInputElement
@@ -63,13 +69,19 @@ it('should submit a tech check config', async () => {
   expect(area_id).toBe(area.id)
 })
 
-async function goToTechCheckConfig(overrides: EventOverrides = {}) {
+async function goToTechCheckConfig(
+  overrides: EventOverrides & {areas?: Area[]} = {},
+) {
   const context = await goToEventConfig(overrides)
 
+  const areas =
+    overrides.areas ||
+    Array.from({length: faker.random.number({min: 1, max: 5})}, fakeArea)
+
   // areas
-  mockGet.mockImplementationOnce(() => Promise.resolve({data: context.areas}))
+  mockGet.mockImplementationOnce(() => Promise.resolve({data: areas}))
 
   user.click(await context.findByLabelText('configure tech check'))
 
-  return context
+  return {...context, areas}
 }

@@ -1,5 +1,4 @@
 import DashboardConfig from 'organization/Event/DashboardConfig'
-import Event from 'organization/Event'
 import WaiverConfig from 'organization/Event/WaiverConfig'
 import TechCheckConfig from 'organization/Event/TechCheckConfig'
 import AttendeeManagement from 'organization/Event/AttendeeManagement'
@@ -26,6 +25,10 @@ import QuestionsConfig from 'organization/Event/QuestionsConfig'
 import Infusionsoft from 'organization/Event/Services/Apps/Infusionsoft'
 import AuthorizedPage from 'organization/AuthorizedPage'
 import {CONFIGURE_EVENTS} from 'organization/PermissionsProvider'
+import Event from 'organization/Event'
+import AreaList from 'organization/Event/AreaList'
+
+export type EventRoutes = ReturnType<typeof useEventRoutes>
 
 export function useEventRoutes(event?: ObvioEvent) {
   const {routes: organizationRoutes} = useOrganization()
@@ -41,8 +44,11 @@ export default function EventRoutes() {
   return (
     <Switch>
       <Route path={routes.events[':event'].root} exact>
+        <Event />
+      </Route>
+      <Route path={routes.events[':event'].areas.root} exact>
         <AreasProvider>
-          <Event />
+          <AreaList />
         </AreasProvider>
       </Route>
       <Route path={routes.events[':event'].dashboard}>

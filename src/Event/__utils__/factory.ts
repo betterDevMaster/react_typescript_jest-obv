@@ -3,12 +3,16 @@ import {fakeAttendee} from 'Event/auth/__utils__/factory'
 import {Entry} from 'Event/Leaderboard'
 import {fakeSimpleBlog} from 'Event/template/SimpleBlog/__utils__/factory'
 import faker from 'faker'
+import {now} from 'lib/date-time'
 import {fakeArea} from 'organization/Event/AreaList/__utils__/factory'
 
 export const fakeEvent = (overrides?: Partial<ObvioEvent>): ObvioEvent => ({
   id: faker.random.number({min: 1000, max: 10000}),
   name: faker.company.companyName(),
   slug: faker.internet.domainWord(),
+  start: now(),
+  end: faker.date.future().toISOString(),
+  num_attendees: 10,
   template: fakeSimpleBlog(),
   speaker_page: {title: 'SPEAKERS', speakers: []},
   waiver: fakeWaiver(),
@@ -58,6 +62,7 @@ export function fakeTechCheck(
     body: `<html><h1>${faker.company.bsNoun()} Tech Check</h1><p>${faker.lorem.paragraphs(
       3,
     )}</p></html>`,
+    start: now(),
     is_enabled: true,
     area: fakeArea(),
     ...overrides,

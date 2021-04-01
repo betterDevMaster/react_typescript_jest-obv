@@ -1,13 +1,10 @@
-import React from 'react'
 import user from '@testing-library/user-event'
 import faker from 'faker'
-import {goToEvent} from 'organization/Event/__utils__/event'
-import {render} from '__utils__/render'
-import App from 'App'
 import axios from 'axios'
 import {Area} from 'organization/Event/AreasProvider'
 import {wait} from '@testing-library/react'
 import {CONFIGURE_EVENTS} from 'organization/PermissionsProvider'
+import {goToAreas} from 'organization/Event/AreaList/__utils__/go-to-areas'
 
 const mockGet = axios.get as jest.Mock
 const mockPatch = axios.patch as jest.Mock
@@ -17,11 +14,9 @@ afterEach(() => {
 })
 
 it('should update an area', async () => {
-  const {event, areas} = goToEvent({
+  const {areas, findByLabelText} = await goToAreas({
     userPermissions: [CONFIGURE_EVENTS],
   })
-
-  const {findByLabelText} = render(<App />)
 
   const targetIndex = faker.random.number({min: 0, max: areas.length - 1})
   const target = areas[targetIndex]
@@ -31,7 +26,6 @@ it('should update an area', async () => {
   // Rooms
   mockGet.mockImplementationOnce(() => Promise.resolve({data: []}))
 
-  user.click(await findByLabelText(`view ${event.name}`))
   // go to area config
   user.click(await findByLabelText(`view ${target.name} area`))
 

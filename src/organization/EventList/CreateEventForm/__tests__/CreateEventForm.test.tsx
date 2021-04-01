@@ -9,6 +9,8 @@ import {CREATE_EVENTS} from 'organization/PermissionsProvider'
 import {wait} from '@testing-library/dom'
 import axios from 'axios'
 import {act} from 'react-dom/test-utils'
+import moment from 'moment'
+import {now, MINUTE_PRECISION_FORMAT} from 'lib/date-time'
 
 const mockGet = axios.get as jest.Mock
 const mockPost = axios.post as jest.Mock
@@ -36,17 +38,27 @@ it('should add an event', async () => {
 
   const name = faker.random.words(3)
   const slug = faker.random.word()
+  const startDate = now()
+  const endDate = moment().add(3, 'days').format(MINUTE_PRECISION_FORMAT)
+
+  const count = 10
 
   await act(async () => {
     user.type(await findByLabelText('event name'), name)
     user.type(await findByLabelText('domain slug'), slug)
+    user.type(await findByLabelText('start'), startDate)
+    user.type(await findByLabelText('end'), endDate)
+    user.type(
+      await findByLabelText('expected number of atttendees'),
+      `${count}`,
+    )
   })
 
   mockPost.mockImplementationOnce(() => Promise.resolve({data: newEvent}))
   const withNewEvent = [...events, newEvent]
   mockGet.mockImplementationOnce(() => Promise.resolve({data: withNewEvent}))
 
-  user.click(await findByLabelText('create'))
+  user.click(await findByLabelText('submit'))
 
   await wait(() => {
     expect(mockPost).toHaveBeenCalledTimes(1)
@@ -57,6 +69,10 @@ it('should add an event', async () => {
   expect(url).toMatch(`/organizations/${organization.slug}/events`)
   expect(data.name).toBe(name)
   expect(data.slug).toBe(slug)
+  expect(data.start).toMatch(startDate)
+
+  expect(data.end).toMatch(endDate)
+  expect(data.num_attendees).toBe(`${count}`)
 
   // Rendered in list
   expect(await findByText(newEvent.name)).toBeInTheDocument()

@@ -10,7 +10,7 @@ export default function ConfigNav() {
   const routes = useEventRoutes()
   return (
     <Box>
-      <ConfigNavItem to={routes.root} aria-label="areas">
+      <ConfigNavItem to={routes.areas.root} aria-label="areas">
         Areas
       </ConfigNavItem>
       <ConfigNavItem to={routes.attendees} aria-label="attendee management">

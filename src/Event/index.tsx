@@ -18,6 +18,9 @@ export interface ObvioEvent {
   id: number
   name: string
   slug: string
+  start: string
+  end: string
+  num_attendees: number
   template: Template | null
   waiver: WaiverConfig | null
   speaker_page: SpeakerPage | null
@@ -41,6 +44,7 @@ export interface WaiverConfig {
 
 export interface TechCheckConfig {
   body: string
+  start: string
   is_enabled: boolean
   area: Area
 }

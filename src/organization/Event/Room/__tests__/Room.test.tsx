@@ -1,14 +1,12 @@
-import {goToEvent, goToEventConfig} from 'organization/Event/__utils__/event'
+import {goToEventConfig} from 'organization/Event/__utils__/event'
 import user from '@testing-library/user-event'
-import React from 'react'
-import {render} from '__utils__/render'
 import axios from 'axios'
 import faker from 'faker'
-import App from 'App'
 import {fakeRoom} from 'organization/Event/AreaList/__utils__/factory'
 import {Room} from 'Event/room'
 import {wait} from '@testing-library/react'
 import {CONFIGURE_EVENTS, START_ROOMS} from 'organization/PermissionsProvider'
+import {goToAreas} from 'organization/Event/AreaList/__utils__/go-to-areas'
 
 const mockGet = axios.get as jest.Mock
 const mockPatch = axios.patch as jest.Mock
@@ -18,7 +16,7 @@ afterEach(() => {
 })
 
 it('should toggle a room on/off', async () => {
-  const {findByLabelText, areas} = await goToEventConfig({
+  const {findByLabelText, areas} = await goToAreas({
     userPermissions: [START_ROOMS],
   })
 
@@ -69,7 +67,7 @@ it('should toggle a room on/off', async () => {
 })
 
 it('should update room attributes', async () => {
-  const {areas, findByLabelText} = await goToEventConfig({
+  const {areas, findByLabelText} = await goToAreas({
     userPermissions: [CONFIGURE_EVENTS],
   })
 

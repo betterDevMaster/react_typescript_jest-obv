@@ -1,10 +1,6 @@
-import React from 'react'
 import faker from 'faker'
 import {fakeArea} from 'organization/Event/AreaList/__utils__/factory'
-import {goToEvent} from 'organization/Event/__utils__/event'
-import {render} from '__utils__/render'
-import App from 'App'
-import user from '@testing-library/user-event'
+import {goToAreas} from 'organization/Event/AreaList/__utils__/go-to-areas'
 
 it('should render list of areas', async () => {
   const areas = Array.from(
@@ -12,11 +8,7 @@ it('should render list of areas', async () => {
     fakeArea,
   )
 
-  const {event} = goToEvent({areas})
-
-  const {findByText, findByLabelText} = render(<App />)
-
-  user.click(await findByLabelText(`view ${event.name}`))
+  const {findByText} = await goToAreas({areas})
 
   for (const area of areas) {
     expect(await findByText(area.name)).toBeInTheDocument()
