@@ -148,29 +148,6 @@ export default function TechCheckConfig() {
             )}
           />
           <Controller
-            name="start"
-            control={control}
-            defaultValue=""
-            rules={{
-              required: 'Start is required',
-            }}
-            render={({onChange, value}) => (
-              <DateTimePicker
-                disabled={submitting}
-                value={value}
-                onChange={(date) => {
-                  onChange(date?.toISOString() || '')
-                }}
-                inputProps={{
-                  'aria-label': 'tech check start',
-                  onChange,
-                }}
-                fullWidth
-                label="Start"
-              />
-            )}
-          />
-          <Controller
             control={control}
             name="area_id"
             defaultValue={null}
