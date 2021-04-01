@@ -1,6 +1,7 @@
 import React from 'react'
 import styled from 'styled-components'
 import {Speaker as SpeakerData} from 'Event'
+import Grid from '@material-ui/core/Grid'
 
 export const SPEAKER_PLACEHOLDER_IMG_URL = 'http://placehold.jp/200x200.png'
 
@@ -10,17 +11,23 @@ export default function Card(props: {
 }) {
   return (
     <Box onClick={props.onClick} aria-label="speaker">
-      <ImageContainer>
-        <Image image={props.speaker.image} alt={props.speaker.name} />
-      </ImageContainer>
-      <Body>
-        <Name>{props.speaker.name}</Name>
-        <div
-          dangerouslySetInnerHTML={{
-            __html: props.speaker.text,
-          }}
-        />
-      </Body>
+      <Grid container spacing={3}>
+        <Grid item xs={12} sm={2} justify="center">
+          <ImageContainer>
+            <Image image={props.speaker.image} alt={props.speaker.name} />
+          </ImageContainer>
+        </Grid>
+        <Grid item xs={12} sm={10} justify="center">
+          <Body>
+            <Name>{props.speaker.name}</Name>
+            <div
+              dangerouslySetInnerHTML={{
+                __html: props.speaker.text,
+              }}
+            />
+          </Body>
+        </Grid>
+      </Grid>
     </Box>
   )
 }

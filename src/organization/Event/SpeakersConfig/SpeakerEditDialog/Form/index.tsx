@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react'
+import React, {useState, useEffect, useRef} from 'react'
 import styled from 'styled-components'
 import DangerButton from 'lib/ui/Button/DangerButton'
 import {useForm} from 'react-hook-form'
@@ -34,12 +34,15 @@ export default function EditSpeakerForm(props: {
   const {event} = useEvent()
   const {client} = useOrganization()
   const [serverError, setServerError] = useState<ValidationError<any>>(null)
+  const [loading, setLoading] = useState(true)
+
+  const mounted = useRef(true)
 
   useEffect(() => {
     if (!speaker) {
       return
     }
-
+    setLoading(false)
     setValue('name', speaker.name)
     setValue('text', speaker.text)
 
@@ -49,6 +52,9 @@ export default function EditSpeakerForm(props: {
         .catch(() => {
           // ignore invalid image
         })
+    }
+    return () => {
+      mounted.current = false
     }
   }, [speaker, setValue])
 
@@ -136,10 +142,12 @@ export default function EditSpeakerForm(props: {
         ref={register}
       />
       <EditorContainer>
-        <TextEditor
-          data={watch('text')}
-          onChange={(val) => setValue('text', val)}
-        />
+        {loading ? null : (
+          <TextEditor
+            data={watch('text')}
+            onChange={(val) => setValue('text', val)}
+          />
+        )}
       </EditorContainer>
       <ImageContainer>
         <UploadButton variant="outlined" color="primary">

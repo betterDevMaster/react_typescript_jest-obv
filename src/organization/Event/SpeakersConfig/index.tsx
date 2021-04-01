@@ -42,7 +42,6 @@ export default function SpeakersConfig() {
   if (!page) {
     return <CreateSpeakerPageForm />
   }
-
   return (
     <>
       <SpeakerEditDialog

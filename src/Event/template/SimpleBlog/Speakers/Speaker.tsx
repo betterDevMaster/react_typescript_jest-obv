@@ -2,21 +2,28 @@ import React from 'react'
 import styled from 'styled-components'
 import {Speaker as SpeakerData} from 'Event'
 import {SPEAKER_PLACEHOLDER_IMG_URL} from 'organization/Event/SpeakersConfig/SpeakerList/Card'
+import Grid from '@material-ui/core/Grid'
 
 export default function Speaker(props: {speaker: SpeakerData}) {
   return (
     <Box aria-label="speaker">
-      <ImageContainer>
-        <Image image={props.speaker.image} alt={props.speaker.name} />
-      </ImageContainer>
-      <Body>
-        <Name>{props.speaker.name}</Name>
-        <div
-          dangerouslySetInnerHTML={{
-            __html: props.speaker.text,
-          }}
-        />
-      </Body>
+      <Grid container spacing={3}>
+        <Grid item xs={12} sm={2} justify="center">
+          <ImageContainer>
+            <Image image={props.speaker.image} alt={props.speaker.name} />
+          </ImageContainer>
+        </Grid>
+        <Grid item xs={12} sm={10} justify="center">
+          <Body>
+            <Name>{props.speaker.name}</Name>
+            <div
+              dangerouslySetInnerHTML={{
+                __html: props.speaker.text,
+              }}
+            />
+          </Body>
+        </Grid>
+      </Grid>
     </Box>
   )
 }
