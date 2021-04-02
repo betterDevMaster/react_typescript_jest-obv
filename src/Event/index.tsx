@@ -35,6 +35,8 @@ export interface ObvioEvent {
   has_infusionsoft: boolean
   dashboard_background: PublicFile | null
   welcome_image: PublicFile | null
+  sidebar_background: PublicFile | null
+  footer_image: PublicFile | null
 }
 
 export interface WaiverConfig {

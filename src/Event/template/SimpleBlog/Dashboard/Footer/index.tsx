@@ -3,6 +3,7 @@ import EditComponent from 'Event/Dashboard/editor/views/EditComponent'
 import React from 'react'
 import styled from 'styled-components'
 import {useTemplate} from 'Event/TemplateProvider'
+import Image from 'Event/template/SimpleBlog/Dashboard/Footer/Image'
 
 export const FOOTER = 'footer'
 
@@ -24,6 +25,8 @@ export default function Footer() {
         aria-label="footer"
       >
         <div>
+          <Image />
+
           {footer.termsLink ? (
             <a href={footer.termsLink} aria-label="terms of service">
               Terms of Service

@@ -26,6 +26,7 @@ export interface SimpleBlog {
     borderRadius: number
     borderWidth: number
     borderColor: string
+    paddingTop?: number
   }
   sidebarNav: EntityList<NavButton>
   blogPosts: EntityList<BlogPost>
@@ -92,6 +93,7 @@ export const createSimpleBlog = (): SimpleBlog => ({
     borderRadius: 0,
     borderWidth: 0,
     borderColor: '#000000',
+    paddingTop: 48,
   },
   sidebarNav: {
     entities: {},

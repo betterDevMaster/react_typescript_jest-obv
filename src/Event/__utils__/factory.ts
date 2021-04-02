@@ -25,6 +25,8 @@ export const fakeEvent = (overrides?: Partial<ObvioEvent>): ObvioEvent => ({
   login_background: null,
   login_logo: null,
   dashboard_background: null,
+  sidebar_background: null,
+  footer_image: null,
   questions: [],
   has_infusionsoft: false,
   ...overrides,

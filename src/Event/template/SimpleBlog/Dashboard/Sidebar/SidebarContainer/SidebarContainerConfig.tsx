@@ -5,10 +5,15 @@ import React from 'react'
 import InputLabel from '@material-ui/core/InputLabel'
 import Slider from '@material-ui/core/Slider'
 import {handleChangeSlider} from 'lib/dom'
+import EventImageUpload from 'organization/Event/DashboardConfig/EventImageUpload'
+import {useEvent} from 'Event/EventProvider'
 
 export type SidebarContainerConfig = {
   type: typeof SIDEBAR_CONTAINER
 }
+
+const MIN_SIDEBAR_PADDING_TOP = 0
+const MAX_SIDEBAR_PADDING_TOP = 720
 
 const MIN_SIDEBAR_BORDER_WIDTH = 0
 const MAX_SIDEBAR_BORDER_WIDTH = 50
@@ -19,9 +24,25 @@ const MAX_SIDEBAR_BORDER_RADIUS = 25
 export function SidebarContainerConfig() {
   const {sidebar} = useTemplate()
   const updateSideBar = useUpdateObject('sidebar')
+  const {event} = useEvent()
 
   return (
     <>
+      <EventImageUpload
+        label="Background Image"
+        property="sidebar_background"
+        current={event.sidebar_background?.url}
+      />
+      <InputLabel>Top Padding</InputLabel>
+      <Slider
+        min={MIN_SIDEBAR_PADDING_TOP}
+        max={MAX_SIDEBAR_PADDING_TOP}
+        step={4}
+        onChange={handleChangeSlider(updateSideBar('paddingTop'))}
+        valueLabelDisplay="auto"
+        value={sidebar.paddingTop || 48}
+        aria-label="padding top"
+      />
       <ColorPicker
         label="Background Color"
         color={sidebar.background}

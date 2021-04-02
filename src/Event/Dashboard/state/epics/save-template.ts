@@ -32,7 +32,9 @@ export const saveTemplateEpic: Epic<
         dashboard_background,
         login_background,
         login_logo,
-        welcome_image: dashboard_welcome,
+        welcome_image,
+        sidebar_background,
+        footer_image,
         ...data
       } = event
 

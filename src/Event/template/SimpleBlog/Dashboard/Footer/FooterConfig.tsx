@@ -5,6 +5,8 @@ import React from 'react'
 import {useTemplate, useUpdateTemplate} from 'Event/TemplateProvider'
 import {FOOTER} from 'Event/template/SimpleBlog/Dashboard/Footer'
 import {SimpleBlog} from 'Event/template/SimpleBlog'
+import EventImageUpload from 'organization/Event/DashboardConfig/EventImageUpload'
+import {useEvent} from 'Event/EventProvider'
 
 export type FooterConfig = {
   type: typeof FOOTER
@@ -13,6 +15,7 @@ export type FooterConfig = {
 export function FooterConfig() {
   const {footer} = useTemplate()
   const updateTemplate = useUpdateTemplate()
+  const {event} = useEvent()
 
   const update = <T extends keyof SimpleBlog['footer']>(key: T) => (
     value: SimpleBlog['footer'][T],
@@ -35,6 +38,11 @@ export function FooterConfig() {
         label="Text Color"
         color={footer.textColor}
         onPick={update('textColor')}
+      />
+      <EventImageUpload
+        label="Image"
+        property="footer_image"
+        current={event.footer_image?.url}
       />
       <TextField
         label="Terms Link"
