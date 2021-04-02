@@ -34,6 +34,7 @@ export interface ObvioEvent {
   questions: Question[]
   has_infusionsoft: boolean
   dashboard_background: PublicFile | null
+  welcome_image: PublicFile | null
 }
 
 export interface WaiverConfig {

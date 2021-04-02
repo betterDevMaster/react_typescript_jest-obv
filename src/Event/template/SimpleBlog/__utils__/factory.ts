@@ -20,7 +20,6 @@ export const fakeSimpleBlog = (overrides?: Partial<SimpleBlog>): SimpleBlog => {
     version: 1,
     name: SIMPLE_BLOG,
     title: faker.company.companyName(),
-    welcomeText: 'WELCOME TO THE DASHBOARD',
     primaryColor: '#14aecf',
     sidebar: {
       background: '#000000',

@@ -1,5 +1,4 @@
 import {fakeAttendee} from 'Event/auth/__utils__/factory'
-import user from '@testing-library/user-event'
 import {
   createPlatformActions,
   fakeEvent,
@@ -19,7 +18,6 @@ beforeEach(() => {
 })
 
 it('should start tech check', async () => {
-  const windowOpen = (global.open = jest.fn())
   const attendee = fakeAttendee({
     has_password: true,
     waiver: faker.internet.url(),
@@ -67,8 +65,8 @@ it('should show dashboard if completed tech check', async () => {
   })
   const {findByLabelText} = await loginToEventSite({attendee})
 
-  // Has welcome text
-  expect(await findByLabelText('welcome')).toBeInTheDocument()
+  // Has welcome image
+  expect(await findByLabelText('welcome image')).toBeInTheDocument()
 })
 
 it('should skip step 3 if disabled', async () => {
@@ -87,8 +85,8 @@ it('should skip step 3 if disabled', async () => {
     event: withTechCheckDisabled,
   })
 
-  // Has welcome text
-  expect(await findByLabelText('welcome')).toBeInTheDocument()
+  // Has welcome image
+  expect(await findByLabelText('welcome image')).toBeInTheDocument()
 })
 
 it('should complete tech check', async () => {
@@ -140,7 +138,7 @@ it('should complete tech check', async () => {
   // Has finished tech check, and is showing dashboard
   await wait(
     async () => {
-      expect(await findByLabelText('welcome')).toBeInTheDocument()
+      expect(await findByLabelText('welcome image')).toBeInTheDocument()
     },
     {
       timeout: 30000,

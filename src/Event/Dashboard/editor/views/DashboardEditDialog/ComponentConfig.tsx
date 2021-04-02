@@ -4,8 +4,6 @@ import {EmojiListConfig} from 'Event/Dashboard/components/EmojiList/EmojiListCon
 import {TicketRibbonConfig} from 'Event/Dashboard/components/TicketRibbonList/TicketRibbonConfig'
 import {MAIN_NAV_BUTTON} from 'Event/template/SimpleBlog/Dashboard/MainNav/MainNavButton'
 import {MainNavButtonConfig} from 'Event/template/SimpleBlog/Dashboard/MainNav/MainNavButton/MainNavButtonConfig'
-import {WELCOME_TEXT} from 'Event/template/SimpleBlog/Dashboard/WelcomeText'
-import {WelcomeTextConfig} from 'Event/template/SimpleBlog/Dashboard/WelcomeText/WelcomeTextConfig'
 import {SimpleBlogConfig} from 'Event/template/SimpleBlog/Config'
 import {SIDEBAR_CONTAINER} from 'Event/template/SimpleBlog/Dashboard/Sidebar/SidebarContainer'
 import {EMOJI_LIST} from 'Event/Dashboard/components/EmojiList'
@@ -36,7 +34,6 @@ import {SIMPLE_BLOG} from 'Event/template/SimpleBlog'
 export type ComponentConfig =
   | SimpleBlogConfig
   | MainNavButtonConfig
-  | WelcomeTextConfig
   | SidebarContainerConfig
   | EmojiListConfig
   | TicketRibbonConfig
@@ -57,8 +54,6 @@ export function ComponentConfig(props: {config: ComponentConfig | null}) {
   switch (props.config.type) {
     case MAIN_NAV_BUTTON:
       return <MainNavButtonConfig id={props.config.id} />
-    case WELCOME_TEXT:
-      return <WelcomeTextConfig />
     case SIMPLE_BLOG:
       return <SimpleBlogConfig />
     case SIDEBAR_CONTAINER:
