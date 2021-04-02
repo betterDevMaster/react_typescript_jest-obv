@@ -36,7 +36,7 @@ export const RESOURCE_ICON = {
 
 export function ResourceList() {
   const isEdit = useEditMode()
-  const {resourceList: list, primaryColor} = useTemplate()
+  const {resourceList: list, sidebar} = useTemplate()
 
   const hasResources = list.resources.length > 0
   if (!hasResources && !isEdit) {
@@ -59,7 +59,10 @@ export function ResourceList() {
               }}
             >
               <Published component={resource}>
-                <ResourceItem resource={resource} iconColor={primaryColor} />
+                <ResourceItem
+                  resource={resource}
+                  iconColor={sidebar.textColor}
+                />
               </Published>
             </EditComponent>
           </li>
