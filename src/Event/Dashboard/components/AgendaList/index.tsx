@@ -82,7 +82,7 @@ function Times(props: {agenda: Agenda}) {
       <TimeText aria-label="agenda event times">
         <strong>{`${getMonth(start)} ${getDay(start)}:`}</strong>{' '}
         {getTime(start)}
-        {`- ${getTime(end)} ${tz}`}
+        {` - ${getTime(end)} ${tz}`}
       </TimeText>
     )
   }
