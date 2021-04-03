@@ -10,13 +10,10 @@ import TableHead from '@material-ui/core/TableHead'
 import TableRow from '@material-ui/core/TableRow'
 import TableCell from '@material-ui/core/TableCell'
 import TableBody from '@material-ui/core/TableBody'
-import RoomOnlineSwitch from 'organization/Event/Area/RoomList/RoomOnlineSwitch'
+import OnlineSwitch from 'organization/Event/Room/OnlineSwitch'
 import {StaticRoomProvider, useRoom} from 'organization/Event/Room/RoomProvider'
 import {RelativeLink} from 'lib/ui/link/RelativeLink'
 import {useRoomRoutes} from 'organization/Event/Room/RoomRoutes'
-import StartButton from 'organization/Event/Area/RoomList/StartButton'
-import HasPermission from 'organization/HasPermission'
-import {START_ROOMS} from 'organization/PermissionsProvider'
 
 export default function RoomList(props: {rooms: Room[]}) {
   const {rooms} = props
@@ -36,9 +33,6 @@ export default function RoomList(props: {rooms: Room[]}) {
           <TableCell>Name</TableCell>
           <TableCell>Max Num Attendees</TableCell>
           <TableCell>Online</TableCell>
-          <HasPermission permission={START_ROOMS}>
-            <TableCell>{/* Start Button Column */}</TableCell>
-          </HasPermission>
         </TableRow>
       </TableHead>
       <TableBody>
@@ -50,13 +44,8 @@ export default function RoomList(props: {rooms: Room[]}) {
               </TableCell>
               <TableCell>{room.max_num_attendees || '-'}</TableCell>
               <TableCell>
-                <RoomOnlineSwitch />
+                <OnlineSwitch />
               </TableCell>
-              <HasPermission permission={START_ROOMS}>
-                <TableCell>
-                  <StartButton />
-                </TableCell>
-              </HasPermission>
             </TableRow>
           </StaticRoomProvider>
         ))}

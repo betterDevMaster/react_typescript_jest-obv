@@ -27,6 +27,7 @@ import AuthorizedPage from 'organization/AuthorizedPage'
 import {CONFIGURE_EVENTS} from 'organization/PermissionsProvider'
 import Event from 'organization/Event'
 import AreaList from 'organization/Event/AreaList'
+import {HideLiveChatSupport} from 'lib/WithLiveChatSupport'
 
 export type EventRoutes = ReturnType<typeof useEventRoutes>
 
@@ -86,7 +87,9 @@ export default function EventRoutes() {
       </Route>
       <Route path={routes.events[':event'].emoji}>
         <AuthorizedPage permission={CONFIGURE_EVENTS}>
-          <Emoji />
+          <HideLiveChatSupport>
+            <Emoji />
+          </HideLiveChatSupport>
         </AuthorizedPage>
       </Route>
       <Route path={routes.events[':event'].speakers}>

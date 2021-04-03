@@ -12,6 +12,7 @@ export const fakeEvent = (overrides?: Partial<ObvioEvent>): ObvioEvent => ({
   slug: faker.internet.domainWord(),
   start: now(),
   end: faker.date.future().toISOString(),
+  has_ended: false,
   num_attendees: 10,
   template: fakeSimpleBlog(),
   speaker_page: {title: 'SPEAKERS', speakers: []},

@@ -20,6 +20,7 @@ export interface ObvioEvent {
   slug: string
   start: string
   end: string
+  has_ended: boolean
   num_attendees: number
   template: Template | null
   waiver: WaiverConfig | null

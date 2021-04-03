@@ -16,7 +16,6 @@ type RoomContextProps = {
   update: UpdateRoom
   setOnline: (online: boolean) => void
   processing: boolean
-  start: () => void
 }
 
 const RoomContext = React.createContext<RoomContextProps | undefined>(undefined)
@@ -29,12 +28,9 @@ export function StaticRoomProvider(props: {
   const [processing, setProcessing] = useState(false)
   const update = useUpdateRoom(props.room.id, setRoom, setProcessing)
   const setOnline = useSetOnline(props.room.id, setRoom, setProcessing)
-  const start = useStart(room)
 
   return (
-    <RoomContext.Provider
-      value={{room: room, update, processing, setOnline, start}}
-    >
+    <RoomContext.Provider value={{room: room, update, processing, setOnline}}>
       {props.children}
     </RoomContext.Provider>
   )
@@ -48,7 +44,6 @@ export function RouteRoomProvider(props: {children: React.ReactElement}) {
   const [processing, setProcessing] = useState(false)
   const update = useUpdateRoom(id, setRoom, setProcessing)
   const setOnline = useSetOnline(id, setRoom, setProcessing)
-  const start = useStart(room)
 
   useEffect(() => {
     setRoom(saved)
@@ -69,9 +64,7 @@ export function RouteRoomProvider(props: {children: React.ReactElement}) {
   }
 
   return (
-    <RoomContext.Provider
-      value={{room: room, update, processing, setOnline, start}}
-    >
+    <RoomContext.Provider value={{room: room, update, processing, setOnline}}>
       {props.children}
     </RoomContext.Provider>
   )
@@ -142,26 +135,6 @@ function useSetOnline(
     },
     [id, client, event, setRoom, area, setProcessing],
   )
-}
-
-function useStart(room: Room | null) {
-  const {client} = useOrganization()
-  const {event} = useEvent()
-  const {area} = useArea()
-
-  return () => {
-    if (!room) {
-      return
-    }
-
-    const url = api(
-      `/events/${event.slug}/areas/${area.id}/rooms/${room.id}/start_url`,
-    )
-
-    client.get<{url: string}>(url).then(({url}) => {
-      window.open(url, '_blank')
-    })
-  }
 }
 
 export function useRoom() {

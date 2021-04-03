@@ -1,4 +1,3 @@
-import {goToEventConfig} from 'organization/Event/__utils__/event'
 import user from '@testing-library/user-event'
 import axios from 'axios'
 import faker from 'faker'
@@ -40,6 +39,9 @@ it('should toggle a room on/off', async () => {
 
   // Room to be configured
   mockGet.mockImplementationOnce(() => Promise.resolve({data: target}))
+  // Start url
+  const url = faker.internet.url()
+  mockGet.mockImplementationOnce(() => Promise.resolve({data: {url}}))
 
   // go to room config
   user.click(await findByLabelText(`view ${target.name} room`))
@@ -47,6 +49,8 @@ it('should toggle a room on/off', async () => {
   expect(
     ((await findByLabelText('toggle online')) as HTMLInputElement).checked,
   ).toBe(target.is_online)
+
+  expect(await findByLabelText('start room')).not.toBeDisabled()
 
   const updated: Room = {
     ...target,
@@ -60,10 +64,12 @@ it('should toggle a room on/off', async () => {
     expect(mockPatch).toHaveBeenCalledTimes(1)
   })
 
-  const [url] = mockPatch.mock.calls[0]
+  const [updateUrl] = mockPatch.mock.calls[0]
 
   const endpoint = target.is_online ? 'stop' : 'start'
-  expect(url).toMatch(`/rooms/${target.id}/${endpoint}`)
+  expect(updateUrl).toMatch(`/rooms/${target.id}/${endpoint}`)
+
+  expect(await findByLabelText('start room')).toBeDisabled()
 })
 
 it('should update room attributes', async () => {
