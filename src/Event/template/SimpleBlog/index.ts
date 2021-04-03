@@ -71,6 +71,7 @@ export interface SimpleBlog {
     }
     logoSize?: number
   }
+  bodyHTMLEmbed?: string | null
 }
 
 export const createSimpleBlog = (): SimpleBlog => ({
@@ -146,4 +147,5 @@ export const createSimpleBlog = (): SimpleBlog => ({
     },
     logoSize: DEFAULT_LOGO_SIZE,
   },
+  bodyHTMLEmbed: null,
 })

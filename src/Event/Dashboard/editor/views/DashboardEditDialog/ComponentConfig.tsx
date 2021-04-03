@@ -29,6 +29,8 @@ import {BlogPostConfig} from 'Event/Dashboard/components/BlogPost/BlogPostConfig
 import {SIMPLE_BLOG} from 'Event/template/SimpleBlog'
 import {HeroConfig} from 'Event/template/SimpleBlog/Dashboard/Hero/HeroConfig'
 import {HERO} from 'Event/template/SimpleBlog/Dashboard/Hero'
+import {BodyHTMLEmbedConfig} from 'Event/template/SimpleBlog/Dashboard/BodyHTMLEmbed/BodyHTMLEmbedConfig'
+import {BODY_HTML_EMBED} from 'Event/template/SimpleBlog/Dashboard/BodyHTMLEmbed'
 
 // Must register config types here. This ensures wherever
 // various component types are handled, that all possible
@@ -48,6 +50,7 @@ export type ComponentConfig =
   | SidebarNavButtonConfig
   | FooterConfig
   | BlogPostConfig
+  | BodyHTMLEmbedConfig
 
 export function ComponentConfig(props: {config: ComponentConfig | null}) {
   if (!props.config) {
@@ -83,6 +86,8 @@ export function ComponentConfig(props: {config: ComponentConfig | null}) {
       return <FooterConfig />
     case BLOG_POST:
       return <BlogPostConfig id={props.config.id} />
+    case BODY_HTML_EMBED:
+      return <BodyHTMLEmbedConfig />
     default:
       // @ts-ignore
       throw new Error(`Missing config component for type: ${props.config.type}`)

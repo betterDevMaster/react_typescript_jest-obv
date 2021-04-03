@@ -8,8 +8,8 @@ import Sidebar from 'Event/template/SimpleBlog/Dashboard/Sidebar'
 import {withStyles} from '@material-ui/core'
 import MainNav from 'Event/template/SimpleBlog/Dashboard/MainNav'
 import SimpleBlogPage from 'Event/template/SimpleBlog/Page'
-
 import Hero from 'Event/template/SimpleBlog/Dashboard/Hero'
+import BodyHTMLEmbed from 'Event/template/SimpleBlog/Dashboard/BodyHTMLEmbed'
 
 export default function SimpleBlogDashboard(props: {user: User}) {
   return (
@@ -35,6 +35,7 @@ export default function SimpleBlogDashboard(props: {user: User}) {
           </Grid>
         </Hidden>
       </FullHeightGrid>
+      <BodyHTMLEmbed />
     </SimpleBlogPage>
   )
 }
