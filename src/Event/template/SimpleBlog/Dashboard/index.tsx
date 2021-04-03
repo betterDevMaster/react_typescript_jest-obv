@@ -8,12 +8,13 @@ import Sidebar from 'Event/template/SimpleBlog/Dashboard/Sidebar'
 import {withStyles} from '@material-ui/core'
 import MainNav from 'Event/template/SimpleBlog/Dashboard/MainNav'
 import SimpleBlogPage from 'Event/template/SimpleBlog/Page'
-import WelcomeImage from 'Event/template/SimpleBlog/WelcomeImage'
+
+import Hero from 'Event/template/SimpleBlog/Dashboard/Hero'
 
 export default function SimpleBlogDashboard(props: {user: User}) {
   return (
     <SimpleBlogPage user={props.user}>
-      <WelcomeImage />
+      <Hero />
       <MainNavButtons>
         <Grid container spacing={2}>
           <MainNav />

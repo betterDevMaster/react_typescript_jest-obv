@@ -66,7 +66,7 @@ it('should show dashboard if completed tech check', async () => {
   const {findByLabelText} = await loginToEventSite({attendee})
 
   // Has welcome image
-  expect(await findByLabelText('welcome image')).toBeInTheDocument()
+  expect(await findByLabelText('welcome')).toBeInTheDocument()
 })
 
 it('should skip step 3 if disabled', async () => {
@@ -86,7 +86,7 @@ it('should skip step 3 if disabled', async () => {
   })
 
   // Has welcome image
-  expect(await findByLabelText('welcome image')).toBeInTheDocument()
+  expect(await findByLabelText('welcome')).toBeInTheDocument()
 })
 
 it('should complete tech check', async () => {
@@ -138,7 +138,7 @@ it('should complete tech check', async () => {
   // Has finished tech check, and is showing dashboard
   await wait(
     async () => {
-      expect(await findByLabelText('welcome image')).toBeInTheDocument()
+      expect(await findByLabelText('welcome')).toBeInTheDocument()
     },
     {
       timeout: 30000,

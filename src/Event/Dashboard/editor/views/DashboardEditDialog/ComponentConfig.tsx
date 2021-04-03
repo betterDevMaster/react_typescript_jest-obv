@@ -27,6 +27,8 @@ import {FooterConfig} from 'Event/template/SimpleBlog/Dashboard/Footer/FooterCon
 import {BLOG_POST} from 'Event/Dashboard/components/BlogPost'
 import {BlogPostConfig} from 'Event/Dashboard/components/BlogPost/BlogPostConfig'
 import {SIMPLE_BLOG} from 'Event/template/SimpleBlog'
+import {HeroConfig} from 'Event/template/SimpleBlog/Dashboard/Hero/HeroConfig'
+import {HERO} from 'Event/template/SimpleBlog/Dashboard/Hero'
 
 // Must register config types here. This ensures wherever
 // various component types are handled, that all possible
@@ -34,6 +36,7 @@ import {SIMPLE_BLOG} from 'Event/template/SimpleBlog'
 export type ComponentConfig =
   | SimpleBlogConfig
   | MainNavButtonConfig
+  | HeroConfig
   | SidebarContainerConfig
   | EmojiListConfig
   | TicketRibbonConfig
@@ -54,6 +57,8 @@ export function ComponentConfig(props: {config: ComponentConfig | null}) {
   switch (props.config.type) {
     case MAIN_NAV_BUTTON:
       return <MainNavButtonConfig id={props.config.id} />
+    case HERO:
+      return <HeroConfig />
     case SIMPLE_BLOG:
       return <SimpleBlogConfig />
     case SIDEBAR_CONTAINER:

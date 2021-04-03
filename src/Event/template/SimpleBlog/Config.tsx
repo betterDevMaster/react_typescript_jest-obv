@@ -44,13 +44,6 @@ export function SimpleBlogConfig() {
       </Box>
       <Box mb={2}>
         <EventImageUpload
-          label="Welcome Image"
-          property="welcome_image"
-          current={event.welcome_image?.url}
-        />
-      </Box>
-      <Box mb={2}>
-        <EventImageUpload
           label="Header Background"
           property="header_background"
           current={event.header_background?.url}

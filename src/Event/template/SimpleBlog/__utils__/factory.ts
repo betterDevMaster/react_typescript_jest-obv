@@ -34,6 +34,7 @@ export const fakeSimpleBlog = (overrides?: Partial<SimpleBlog>): SimpleBlog => {
     mainNav: {entities: {}, ids: []},
     emojiList: {emojis: []},
     blogPosts: {entities: {}, ids: []},
+    welcomeText: 'WELCOME TO YOUR DASHBOARD',
     agenda: {
       title: 'Agenda',
       items: [],
