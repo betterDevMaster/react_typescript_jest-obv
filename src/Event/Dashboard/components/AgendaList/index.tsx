@@ -9,6 +9,7 @@ import AddAgendaEventButton from 'Event/Dashboard/components/AgendaList/AddAgend
 import {useTemplate} from 'Event/TemplateProvider'
 import Section from 'Event/template/SimpleBlog/Dashboard/Sidebar/Section'
 import {useEditMode} from 'Event/Dashboard/editor/state/edit-mode'
+import {AbsoluteLink} from 'lib/ui/link/AbsoluteLink'
 
 export const AGENDA_ITEM = 'Agenda Item'
 export const AGENDA_LIST = 'Agenda List'
@@ -99,15 +100,27 @@ function Times(props: {agenda: Agenda}) {
 }
 
 function Event(props: {agenda: Agenda}) {
+  const {sidebar} = useTemplate()
+
   if (props.agenda.link) {
     return (
-      <a href={props.agenda.link} target="_blank" rel="noopener noreferrer">
-        <EventText aria-label="agenda event">{props.agenda.text}</EventText>
-      </a>
+      <StyledAbsoluteLink
+        newTab
+        to={props.agenda.link}
+        color={sidebar.textColor}
+      >
+        <EventText aria-label="agenda event" color={sidebar.textColor}>
+          {props.agenda.text}
+        </EventText>
+      </StyledAbsoluteLink>
     )
   }
 
-  return <EventText aria-label="agenda event">{props.agenda.text}</EventText>
+  return (
+    <EventText aria-label="agenda event" color={sidebar.textColor}>
+      {props.agenda.text}
+    </EventText>
+  )
 }
 
 const Agenda = styled.div`
@@ -118,12 +131,17 @@ const TimeText = styled.span`
   font-size: 14px;
 `
 
-const EventText = styled.span`
+const EventText = styled.span<{color: string}>`
   font-size: 18px;
   display: block;
   font-style: italic;
+  color: ${(props) => props.color};
 `
 
 const StyledAddAgendaEventButton = styled(AddAgendaEventButton)`
   margin-bottom: ${(props) => props.theme.spacing[6]}!important;
+`
+
+const StyledAbsoluteLink = styled(AbsoluteLink)<{color: string}>`
+  color: ${(props) => props.color};
 `

@@ -9,12 +9,11 @@ import ColorPicker from 'lib/ui/ColorPicker'
 import {useTemplate, useUpdatePrimitive} from 'Event/TemplateProvider'
 import {onChangeStringHandler} from 'lib/dom'
 import {handleChangeSlider} from 'lib/dom'
+import InputLabel from '@material-ui/core/InputLabel'
+import {DEFAULT_LOGO_SIZE} from 'Event/template/SimpleBlog/Login/Logo'
 
-const MAX_LOGO_SIZE_HEIGHT = 200
-const MIN_LOGO_SIZE_HEIGHT = 1
-
-const MAX_LOGO_SIZE_WIDTH = 150
-const MIN_LOGO_SIZE_WIDTH = 1
+const MAX_LOGO_SIZE_WIDTH = 200
+const MIN_LOGO_SIZE_WIDTH = 50
 
 export default function LoginFormConfig() {
   const template = useTemplate()
@@ -37,8 +36,7 @@ export default function LoginFormConfig() {
     login.description.fontSize,
   )
 
-  const [logoSizeWidth, setLogoSizeWidth] = useState(login.size.width)
-  const [logoSizeHeight, setLogoSizeHeight] = useState(login.size.height)
+  const [logoSize, setLogoSize] = useState(login.logoSize || DEFAULT_LOGO_SIZE)
 
   useEffect(() => {
     const hasChanges =
@@ -48,8 +46,7 @@ export default function LoginFormConfig() {
       login.description.color !== descriptionColor ||
       login.description.fontSize !== descriptionFontSize ||
       login.description.text !== descriptionText ||
-      login.size.width !== logoSizeWidth ||
-      login.size.height !== logoSizeHeight
+      login.logoSize !== logoSize
 
     if (!hasChanges) {
       return
@@ -66,10 +63,7 @@ export default function LoginFormConfig() {
         color: descriptionColor,
         fontSize: descriptionFontSize,
       },
-      size: {
-        width: logoSizeWidth,
-        height: logoSizeHeight,
-      },
+      logoSize,
     })
   }, [
     login,
@@ -79,39 +73,26 @@ export default function LoginFormConfig() {
     descriptionColor,
     descriptionFontSize,
     descriptionText,
-    logoSizeWidth,
-    logoSizeHeight,
+    logoSize,
     updateLogin,
   ])
 
   return (
     <>
       <Box display="flex" flexDirection="row" flex="2">
-        <Box m={1} display="flex" flexDirection="column" flex="1">
-          <Typography variant="subtitle2" style={{opacity: 0.7}}>
-            Logo Width
-          </Typography>
-          <StyledSlider
-            valueLabelDisplay="auto"
-            aria-label="logo weight"
-            value={logoSizeWidth ? logoSizeWidth : 100}
-            onChange={handleChangeSlider(setLogoSizeWidth)}
-            step={1}
-            min={MIN_LOGO_SIZE_WIDTH}
-            max={MAX_LOGO_SIZE_WIDTH}
-          />
-          <Typography variant="subtitle2" style={{opacity: 0.7}}>
-            Logo Height
-          </Typography>
-          <StyledSlider
-            valueLabelDisplay="auto"
-            aria-label="logo height"
-            value={logoSizeHeight ? logoSizeHeight : 150}
-            onChange={handleChangeSlider(setLogoSizeHeight)}
-            step={1}
-            min={MIN_LOGO_SIZE_HEIGHT}
-            max={MAX_LOGO_SIZE_HEIGHT}
-          />
+        <Box my={1} display="flex" flexDirection="column" flex="1">
+          <Box mb={1}>
+            <InputLabel>Logo Size</InputLabel>
+            <StyledSlider
+              valueLabelDisplay="auto"
+              aria-label="logo weight"
+              value={logoSize ? logoSize : 100}
+              onChange={handleChangeSlider(setLogoSize)}
+              step={1}
+              min={MIN_LOGO_SIZE_WIDTH}
+              max={MAX_LOGO_SIZE_WIDTH}
+            />
+          </Box>
           <TextField
             label="Submit Label"
             value={submitLabel}

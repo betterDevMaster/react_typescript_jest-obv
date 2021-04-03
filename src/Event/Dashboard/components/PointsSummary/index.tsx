@@ -19,7 +19,7 @@ export type Points = {
 export const POINTS_SUMMARY = 'Points Summary'
 
 export default function PointsSummary() {
-  const {points: summary} = useTemplate()
+  const {points: summary, sidebar} = useTemplate()
   const {visitLeaderboard: VISIT_LEADERBOARD} = usePlatformActions()
   const {score, submit} = usePoints()
   const {event} = useEvent()
@@ -42,25 +42,36 @@ export default function PointsSummary() {
       <EditComponent component={{type: POINTS_SUMMARY}}>
         <>
           <HeaderImage src={logo} alt="Points Image" />
-          <NumPointsText aria-label="points summary">
-            You've earned {score.points} {summary.unit}!
-          </NumPointsText>
-          <p>{summary.description}</p>
-          <p>
-            If you would like to see where you stand on the{' '}
-            <RelativeLink
-              to={eventRoutes.leaderboard}
-              aria-label="view leaderboard"
-              onClick={awardPoints}
-            >
-              <strong>LEADERBOARD you can click HERE!</strong>
-            </RelativeLink>
-          </p>
+          <Box color={sidebar.textColor}>
+            <NumPointsText aria-label="points summary">
+              You've earned {score.points} {summary.unit}!
+            </NumPointsText>
+            <p>{summary.description}</p>
+            <p>
+              If you would like to see where you stand on the{' '}
+              <StyledLink
+                color={sidebar.textColor}
+                to={eventRoutes.leaderboard}
+                aria-label="view leaderboard"
+                onClick={awardPoints}
+              >
+                <strong>LEADERBOARD you can click HERE!</strong>
+              </StyledLink>
+            </p>
+          </Box>
         </>
       </EditComponent>
     </Section>
   )
 }
+
+const Box = styled.div<{color: string}>`
+  color: ${(props) => props.color};
+`
+
+const StyledLink = styled(RelativeLink)<{color: string}>`
+  color: ${(props) => props.color};
+`
 
 const NumPointsText = styled.span`
   font-weight: bold;

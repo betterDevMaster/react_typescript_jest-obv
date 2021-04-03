@@ -48,7 +48,9 @@ export function ResourceList() {
       <EditComponent component={{type: RESOURCE_LIST}}>
         <Heading aria-label="resources">{list.title}</Heading>
       </EditComponent>
-      <p aria-label="resource description">{list.description}</p>
+      <Description aria-label="resource description" color={sidebar.textColor}>
+        {list.description}
+      </Description>
       <List>
         {list.resources.map((resource, index) => (
           <li key={index}>
@@ -84,4 +86,8 @@ const List = styled.ul`
 const StyledAddResourceButton = styled(AddResourceButton)`
   margin-bottom: ${(props) => props.theme.spacing[6]}!important;
   margin-top: ${(props) => props.theme.spacing[5]}!important;
+`
+
+const Description = styled.p<{color: string}>`
+  color: ${(props) => props.color};
 `

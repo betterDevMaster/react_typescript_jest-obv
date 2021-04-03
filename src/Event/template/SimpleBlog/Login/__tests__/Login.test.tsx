@@ -10,6 +10,7 @@ import {render} from '__utils__/render'
 import App from 'App'
 import {wait} from '@testing-library/react'
 import axios from 'axios'
+import {DEFAULT_LOGO_SIZE} from 'Event/template/SimpleBlog/Login/Logo'
 
 const mockGet = axios.get as jest.Mock
 
@@ -34,10 +35,7 @@ it('render login page', async () => {
           color: '#000000',
           fontSize: 18,
         },
-        size: {
-          width: logoSizeValue,
-          height: logoSizeValue,
-        },
+        logoSize: DEFAULT_LOGO_SIZE,
       }),
     }),
   })
@@ -55,12 +53,6 @@ it('render login page', async () => {
   )
 
   expect((await findByLabelText('login logo')).getAttribute('src')).toBe(logo)
-  expect((await findByLabelText('login logo')).getAttribute('height')).toBe(
-    logoSizeValue.toString(),
-  )
-  expect((await findByLabelText('login logo')).getAttribute('width')).toBe(
-    logoSizeValue.toString(),
-  )
 
   expect(await findByText(descriptionText)).toBeInTheDocument()
 })

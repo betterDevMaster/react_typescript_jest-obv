@@ -5,11 +5,11 @@ import React from 'react'
 import Typography from '@material-ui/core/Typography'
 import MuiTextField, {TextFieldProps} from '@material-ui/core/TextField'
 import MuiButton, {ButtonProps} from '@material-ui/core/Button'
-import defaultLogo from 'assets/images/logo_vertical.png'
 import defaultBackground from 'assets/images/background_login.png'
 import {useTemplate} from 'Event/TemplateProvider'
 import {makeStyles} from '@material-ui/core/styles'
 import {spacing} from 'lib/ui/theme'
+import Logo from 'Event/template/SimpleBlog/Login/Logo'
 
 export default function Page(props: {
   isPreview: LoginProps['isPreview']
@@ -32,22 +32,6 @@ export default function Page(props: {
         {props.children}
       </Container>
     </Background>
-  )
-}
-
-function Logo() {
-  const {event} = useEvent()
-  const logo = event.login_logo ? event.login_logo.url : defaultLogo
-  const {login} = useTemplate()
-
-  return (
-    <LogoImage
-      src={logo}
-      alt={event.name}
-      aria-label="login logo"
-      height={`${login.size.height}`}
-      width={`${login.size.width}`}
-    />
   )
 }
 
@@ -92,12 +76,6 @@ export function Button(props: ButtonProps) {
     />
   )
 }
-
-export const LogoImage = styled.img`
-  margin-bottom: ${(props) => props.theme.spacing[12]};
-  max-height: 150px;
-  max-width: 200px;
-`
 
 export const DescriptionText = styled.div<{
   color?: string | null

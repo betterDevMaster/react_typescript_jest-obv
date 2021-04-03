@@ -50,7 +50,7 @@ export function SidebarContainerConfig() {
         aria-label="background color"
       />
       <ColorPicker
-        label="Color"
+        label="Text Color"
         color={sidebar.textColor}
         onPick={updateSideBar('textColor')}
         aria-label="color"

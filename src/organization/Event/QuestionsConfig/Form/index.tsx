@@ -55,6 +55,7 @@ export default function Form(props: {
     }
 
     setValue('type', question.type)
+    setValue('is_required', question.is_required)
   }, [question, setValue])
 
   useEffect(() => {

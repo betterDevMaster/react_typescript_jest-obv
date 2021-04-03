@@ -44,16 +44,11 @@ const Box = styled.div<SimpleBlog['sidebar']>`
     props.paddingTop !== undefined
       ? `padding-top: ${props.paddingTop}px;`
       : `${props.theme.spacing[12]}px`}
-  color: ${(props) => props.textColor};
   border-radius: ${(props) => props.borderRadius}px;
   border: ${(props) => props.borderWidth}px solid
     ${(props) => props.borderColor};
   @media (min-width: ${(props) => props.theme.breakpoints.md}) {
     height: 100%;
-  }
-
-  a {
-    color: ${(props) => props.textColor};
   }
 `
 
