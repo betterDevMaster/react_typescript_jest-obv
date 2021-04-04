@@ -80,7 +80,7 @@ export default function Login() {
         </Button>
       </form>
       <Link to={obvioRoutes.forgotPassword} aria-label="forgot password">
-        <Description>Forgot Password?</Description>
+        Forgot Password?
       </Link>
       <CreateAccountText>
         Don't have an account yet?{' '}
