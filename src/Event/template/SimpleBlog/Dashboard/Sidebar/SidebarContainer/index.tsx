@@ -40,6 +40,8 @@ const Box = styled.div<SimpleBlog['sidebar']>`
   position: relative;
   overflow: hidden;
   padding: ${(props) => `${props.theme.spacing[12]} ${props.theme.spacing[8]}`};
+  /* Show overflow to allow ticket ribbon outside of sidebar effect */
+  overflow: visible;
   ${(props) =>
     props.paddingTop !== undefined
       ? `padding-top: ${props.paddingTop}px;`
