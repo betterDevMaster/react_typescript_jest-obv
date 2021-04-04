@@ -4,8 +4,7 @@ export const blogPostTime = (date: string) =>
   moment(date).tz(moment.tz.guess()).format('MMMM Do h:mma z')
 
 export const now = () => {
-  const date = new Date().toISOString()
-  return date.split('.')[0] // without ms, and 'Z'
+  return new Date().toISOString()
 }
 
 export const formatDate = (value: string, format = 'DD-MM-YYYY') =>
