@@ -62,12 +62,13 @@ function Times(props: {agenda: Agenda}) {
   const getTime = (date: moment.Moment) => date.format('h:mma')
   const getTimezone = (date: moment.Moment) =>
     date.tz(moment.tz.guess()).format('z')
+  const {sidebar} = useTemplate()
 
   const tz = getTimezone(start)
 
   if (!props.agenda.endDate) {
     return (
-      <TimeText aria-label="agenda event times">
+      <TimeText aria-label="agenda event times" color={sidebar.textColor}>
         <strong>{`${getMonth(start)} ${getDay(start)}:`}</strong>{' '}
         {`${getTime(start)} ${tz}`}
       </TimeText>
@@ -79,7 +80,7 @@ function Times(props: {agenda: Agenda}) {
   const sameDay = getDay(end) === getDay(start)
   if (sameMonth && sameDay) {
     return (
-      <TimeText aria-label="agenda event times">
+      <TimeText aria-label="agenda event times" color={sidebar.textColor}>
         <strong>{`${getMonth(start)} ${getDay(start)}:`}</strong>{' '}
         {getTime(start)}
         {` - ${getTime(end)} ${tz}`}
@@ -88,7 +89,7 @@ function Times(props: {agenda: Agenda}) {
   }
 
   return (
-    <TimeText aria-label="agenda event times">
+    <TimeText aria-label="agenda event times" color={sidebar.textColor}>
       <strong>{`${getMonth(start)} ${getDay(start)}:`}</strong> {getTime(start)}
       {` - `}
       <strong>
@@ -127,8 +128,9 @@ const Agenda = styled.div`
   margin-bottom: ${(props) => props.theme.spacing[3]};
 `
 
-const TimeText = styled.span`
+const TimeText = styled.span<{color: string}>`
   font-size: 14px;
+  color: ${(props) => props.color};
 `
 
 const EventText = styled.span<{color: string}>`
