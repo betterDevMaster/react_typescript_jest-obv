@@ -10,7 +10,7 @@ import {render} from '__utils__/render'
 import App from 'App'
 import {wait} from '@testing-library/react'
 import axios from 'axios'
-import {DEFAULT_LOGO_SIZE} from 'Event/template/SimpleBlog/Login/Logo'
+import {DEFAULT_LOGO_SIZE_PERCENT} from 'Event/template/SimpleBlog/Login/LoginConfig'
 
 const mockGet = axios.get as jest.Mock
 
@@ -18,7 +18,6 @@ it('render login page', async () => {
   const background = faker.internet.url()
   const logo = faker.internet.url()
   const descriptionText = faker.lorem.sentence()
-  const logoSizeValue = 50
   const event = fakeEvent({
     login_background: {
       url: background,
@@ -35,7 +34,7 @@ it('render login page', async () => {
           color: '#000000',
           fontSize: 18,
         },
-        logoSize: DEFAULT_LOGO_SIZE,
+        logoSize: DEFAULT_LOGO_SIZE_PERCENT,
       }),
     }),
   })

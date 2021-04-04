@@ -10,10 +10,10 @@ import {useTemplate, useUpdatePrimitive} from 'Event/TemplateProvider'
 import {onChangeStringHandler} from 'lib/dom'
 import {handleChangeSlider} from 'lib/dom'
 import InputLabel from '@material-ui/core/InputLabel'
-import {DEFAULT_LOGO_SIZE} from 'Event/template/SimpleBlog/Login/Logo'
 
-const MAX_LOGO_SIZE_WIDTH = 200
-const MIN_LOGO_SIZE_WIDTH = 50
+const MAX_LOGO_SIZE_PERCENT = 100
+const MIN_LOGO_SIZE_PERCENT = 20
+export const DEFAULT_LOGO_SIZE_PERCENT = 20
 
 export default function LoginFormConfig() {
   const template = useTemplate()
@@ -36,7 +36,9 @@ export default function LoginFormConfig() {
     login.description.fontSize,
   )
 
-  const [logoSize, setLogoSize] = useState(login.logoSize || DEFAULT_LOGO_SIZE)
+  const [logoSize, setLogoSize] = useState(
+    login.logoSize || DEFAULT_LOGO_SIZE_PERCENT,
+  )
 
   useEffect(() => {
     const hasChanges =
@@ -86,11 +88,11 @@ export default function LoginFormConfig() {
             <StyledSlider
               valueLabelDisplay="auto"
               aria-label="logo weight"
-              value={logoSize ? logoSize : 100}
+              value={logoSize ? logoSize : DEFAULT_LOGO_SIZE_PERCENT}
               onChange={handleChangeSlider(setLogoSize)}
               step={1}
-              min={MIN_LOGO_SIZE_WIDTH}
-              max={MAX_LOGO_SIZE_WIDTH}
+              min={MIN_LOGO_SIZE_PERCENT}
+              max={MAX_LOGO_SIZE_PERCENT}
             />
           </Box>
           <TextField

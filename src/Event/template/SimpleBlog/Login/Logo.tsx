@@ -3,28 +3,35 @@ import defaultLogo from 'assets/images/logo_vertical.png'
 import {useEvent} from 'Event/EventProvider'
 import {useTemplate} from 'Event/TemplateProvider'
 import styled from 'styled-components'
-
-export const DEFAULT_LOGO_SIZE = 150
+import {DEFAULT_LOGO_SIZE_PERCENT} from 'Event/template/SimpleBlog/Login/LoginConfig'
 
 export default function Logo() {
   const {event} = useEvent()
   const logo = event.login_logo ? event.login_logo.url : defaultLogo
   const {login} = useTemplate()
 
-  const size = login.logoSize || DEFAULT_LOGO_SIZE
+  const size = login.logoSize || DEFAULT_LOGO_SIZE_PERCENT
 
   return (
-    <Box size={size}>
-      <LogoImage src={logo} alt={event.name} aria-label="login logo" />
+    <Box>
+      <LogoImage
+        src={logo}
+        alt={event.name}
+        aria-label="login logo"
+        size={size}
+      />
     </Box>
   )
 }
 
-const Box = styled.div<{size: number}>`
-  width: ${(props) => props.size}px;
-  margin-bottom: ${(props) => props.theme.spacing[12]};
+const Box = styled.div`
+  margin-bottom: ${(props) => props.theme.spacing[6]};
+  width: 100%;
+  text-align: center;
+  padding: ${(props) => props.theme.spacing[4]};
 `
 
-export const LogoImage = styled.img`
-  width: 100%;
+export const LogoImage = styled.img<{size: number}>`
+  max-width: 100%;
+  width: ${(props) => props.size}%;
 `

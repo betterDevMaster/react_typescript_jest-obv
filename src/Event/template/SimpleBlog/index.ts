@@ -9,7 +9,7 @@ import NavButton, {
 } from 'Event/Dashboard/components/NavButton'
 import {EntityList} from 'lib/list'
 import {colors} from 'lib/ui/theme'
-import {DEFAULT_LOGO_SIZE} from 'Event/template/SimpleBlog/Login/Logo'
+import {DEFAULT_LOGO_SIZE_PERCENT} from 'Event/template/SimpleBlog/Login/LoginConfig'
 
 export const SIMPLE_BLOG = 'Simple Blog'
 
@@ -145,7 +145,7 @@ export const createSimpleBlog = (): SimpleBlog => ({
       color: '#000000',
       fontSize: 18,
     },
-    logoSize: DEFAULT_LOGO_SIZE,
+    logoSize: DEFAULT_LOGO_SIZE_PERCENT,
   },
   bodyHTMLEmbed: null,
 })
