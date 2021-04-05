@@ -7,7 +7,7 @@ import {useOrganization} from 'organization/OrganizationProvider'
 import EventRoutes from 'organization/Event/EventRoutes'
 import Team from 'organization/Team'
 import QuestionsProvider from 'organization/Event/QuestionsProvider'
-import {CREATE_EVENTS} from 'organization/PermissionsProvider'
+import {CREATE_EVENTS, UPDATE_TEAM} from 'organization/PermissionsProvider'
 import AuthorizedPage from 'organization/AuthorizedPage'
 
 export default function UserRoutes() {
@@ -31,7 +31,9 @@ export default function UserRoutes() {
         <EventList />
       </Route>
       <Route path={routes.team}>
-        <Team />
+        <AuthorizedPage permission={UPDATE_TEAM}>
+          <Team />
+        </AuthorizedPage>
       </Route>
       <Route path={routes.events[':event'].root}>
         <RouteEventProvider>

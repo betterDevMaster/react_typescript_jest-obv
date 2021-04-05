@@ -49,29 +49,3 @@ it('should remove a team member', async () => {
     expect(queryByText(new RegExp(target.first_name))).not.toBeInTheDocument()
   })
 })
-
-it('should check permissions', async () => {
-  const authUser = fakeTeamMember()
-  signInToOrganization({
-    authUser,
-    owner: authUser,
-  })
-
-  const teamMembers = Array.from(
-    {
-      length: faker.random.number({min: 1, max: 5}),
-    },
-    fakeTeamMember,
-  )
-
-  const {findByText, queryByLabelText} = render(<App />)
-
-  expect(await findByText(/team/i)).toBeInTheDocument()
-
-  mockGet.mockImplementationOnce(() => Promise.resolve({data: teamMembers})) // team members
-  await act(async () => {
-    user.click(await findByText(/team/i))
-  })
-
-  expect(queryByLabelText('remove team member')).not.toBeInTheDocument()
-})

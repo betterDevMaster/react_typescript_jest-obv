@@ -48,32 +48,3 @@ it('adds a new role', async () => {
 
   expect(await findByText(new RegExp(name))).toBeInTheDocument()
 })
-
-it('should check permissions', async () => {
-  const authUser = fakeTeamMember()
-  signInToOrganization({
-    authUser,
-    owner: authUser,
-  })
-  const {findByText, queryByLabelText} = render(<App />)
-
-  const roles = Array.from(
-    {
-      length: faker.random.number({min: 1, max: 5}),
-    },
-    fakeRole,
-  )
-
-  mockGet.mockImplementationOnce(() => Promise.resolve({data: []})) // team members
-  mockGet.mockImplementationOnce(() => Promise.resolve({data: roles}))
-
-  // Go to team page
-  user.click(await findByText(/team/i))
-  user.click(await findByText(/roles/i))
-
-  const name = faker.random.word()
-  const addedRole = fakeRole({name})
-  mockPost.mockImplementationOnce(() => Promise.resolve({data: addedRole}))
-
-  expect(queryByLabelText('add role')).not.toBeInTheDocument()
-})

@@ -7,12 +7,14 @@ import {render} from '__utils__/render'
 import App from 'App'
 import {fakeRole} from 'organization/Team/Roles/__utils__/factory'
 import {ALL_PERMISSIONS} from 'organization/__utils__/factory'
-import {label} from 'organization/PermissionsProvider'
+import {label, UPDATE_TEAM} from 'organization/PermissionsProvider'
 
 const mockGet = axios.get as jest.Mock
 
 it('should show permissions table', async () => {
-  signInToOrganization()
+  signInToOrganization({
+    userPermissions: [UPDATE_TEAM],
+  })
 
   const {findByText, findAllByLabelText} = render(<App />)
 
