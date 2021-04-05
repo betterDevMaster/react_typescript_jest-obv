@@ -54,6 +54,7 @@ export const fakeSimpleBlog = (overrides?: Partial<SimpleBlog>): SimpleBlog => {
     footer: {
       background: '#000000',
       textColor: '#ffffff',
+      imageSize: 100,
       termsLink: faker.random.boolean() ? faker.internet.url() : null,
       privacyLink: faker.random.boolean() ? faker.internet.url() : null,
       copyrightText: faker.random.boolean()
