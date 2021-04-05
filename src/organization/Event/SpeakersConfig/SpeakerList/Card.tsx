@@ -11,13 +11,13 @@ export default function Card(props: {
 }) {
   return (
     <Box onClick={props.onClick} aria-label="speaker">
-      <Grid container spacing={3}>
-        <Grid item xs={12} sm={2} justify="center">
+      <Grid container spacing={3} justify="center">
+        <Grid item xs={12} sm={2}>
           <ImageContainer>
             <Image image={props.speaker.image} alt={props.speaker.name} />
           </ImageContainer>
         </Grid>
-        <Grid item xs={12} sm={10} justify="center">
+        <Grid item xs={12} sm={10}>
           <Body>
             <Name>{props.speaker.name}</Name>
             <div
