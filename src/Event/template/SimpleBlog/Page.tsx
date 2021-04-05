@@ -47,6 +47,7 @@ const Box = styled.div<{
   height: 100%;
   display: flex;
   flex-direction: column;
+  overflow: auto;
   background: ${(props) =>
     props.background ? `url(${props.background})` : '#FFFFFF'};
   ${(props) =>
