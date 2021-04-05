@@ -4,14 +4,19 @@ import React from 'react'
 import styled from 'styled-components'
 import {useTemplate} from 'Event/TemplateProvider'
 import Image from 'Event/template/SimpleBlog/Dashboard/Footer/Image'
+import {useEvent} from 'Event/EventProvider'
 
 export const FOOTER = 'footer'
 
 export default function Footer() {
   const {footer} = useTemplate()
+  const {event} = useEvent()
   const isEditMode = useEditMode()
   const isEmpty =
-    !footer.termsLink && !footer.privacyLink && !footer.copyrightText
+    !footer.termsLink &&
+    !footer.privacyLink &&
+    !footer.copyrightText &&
+    !event.footer_image
 
   if (isEmpty && !isEditMode) {
     return null
