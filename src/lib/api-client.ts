@@ -3,6 +3,21 @@ import {getToken as getAuthToken} from 'auth/token'
 import {isFormData} from 'lib/http-client'
 import {v4 as uuid} from 'uuid'
 
+export interface PaginatedCollection<T> {
+  current_page: number
+  data: T[]
+  first_page_url: string
+  from: number
+  last_page: number
+  last_page_url: string
+  next_page_url: string | null
+  path: string
+  per_page: number
+  prev_page_url: string | null
+  to: number
+  total: number
+}
+
 export type ResponseError = {
   message: string
 }

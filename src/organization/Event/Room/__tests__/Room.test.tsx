@@ -31,8 +31,6 @@ it('should toggle a room on/off', async () => {
 
   // Rooms
   mockGet.mockImplementationOnce(() => Promise.resolve({data: rooms}))
-  // Attendees
-  mockGet.mockImplementationOnce(() => Promise.resolve({data: []}))
 
   // go to area config
   user.click(await findByLabelText(`view ${area.name} area`))
@@ -89,8 +87,6 @@ it('should update room attributes', async () => {
 
   // Rooms
   mockGet.mockImplementationOnce(() => Promise.resolve({data: rooms}))
-  // All Attendees
-  mockGet.mockImplementationOnce(() => Promise.resolve({data: []}))
 
   // go to area config
   user.click(await findByLabelText(`view ${area.name} area`))

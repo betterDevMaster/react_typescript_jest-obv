@@ -9,13 +9,13 @@ import Button from '@material-ui/core/Button'
 import {spacing} from 'lib/ui/theme'
 import {withStyles} from '@material-ui/core'
 import TagsInput from 'lib/ui/form/TagsInput'
-import GroupInput from 'organization/Event/AttendeeManagement/dialog/GroupInput'
-import NewGroupInput from 'organization/Event/AttendeeManagement/dialog/NewGroupInput'
+import GroupInput from 'organization/Event/AttendeeManagement/CreateDialog/Form/GroupInput'
 import {
   CONFIGURE_EVENTS,
   usePermissions,
 } from 'organization/PermissionsProvider'
 import HasPermission from 'organization/HasPermission'
+import NewGroupInput from 'organization/Event/AttendeeManagement/CreateDialog/Form/NewGroupInput'
 
 export interface NewGroup {
   key: string

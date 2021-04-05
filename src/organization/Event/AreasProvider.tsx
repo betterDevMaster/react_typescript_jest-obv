@@ -27,9 +27,7 @@ export const AreasContext = React.createContext<AreasContextProps | undefined>(
   undefined,
 )
 
-export default function AttendeesProvider(props: {
-  children: React.ReactElement
-}) {
+export default function AreasProvider(props: {children: React.ReactElement}) {
   const fetch = useFetchAreas()
 
   const {data: areas, loading} = useAsync(fetch)

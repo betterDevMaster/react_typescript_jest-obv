@@ -19,7 +19,6 @@ import AttendeesProvider from 'organization/Event/AttendeesProvider'
 import Services from 'organization/Event/Services'
 import Zapier from 'organization/Event/Services/Apps/Zapier'
 import ServicesProvider from 'organization/Event/Services/ServicesProvider'
-import RoomAssignmentsProvider from 'organization/Event/RoomAssignmentsProvider'
 import AreasProvider from 'organization/Event/AreasProvider'
 import QuestionsConfig from 'organization/Event/QuestionsConfig'
 import Infusionsoft from 'organization/Event/Services/Apps/Infusionsoft'
@@ -79,9 +78,7 @@ export default function EventRoutes() {
       <Route path={routes.events[':event'].attendees}>
         <AttendeesProvider>
           <AreasProvider>
-            <RoomAssignmentsProvider>
-              <AttendeeManagement />
-            </RoomAssignmentsProvider>
+            <AttendeeManagement />
           </AreasProvider>
         </AttendeesProvider>
       </Route>

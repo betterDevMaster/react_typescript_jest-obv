@@ -35,8 +35,6 @@ it('should check in an attendee', async () => {
 
   // Rooms
   mockGet.mockImplementationOnce(() => Promise.resolve({data: rooms}))
-  // All Attendees
-  mockGet.mockImplementationOnce(() => Promise.resolve({data: []}))
 
   // go to area config
   user.click(await findByLabelText(`view ${area.name} area`))

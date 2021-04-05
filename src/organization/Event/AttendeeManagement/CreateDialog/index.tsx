@@ -7,7 +7,7 @@ import {useAttendees} from 'organization/Event/AttendeesProvider'
 import {useEvent} from 'Event/EventProvider'
 import {useOrganization} from 'organization/OrganizationProvider'
 import {api} from 'lib/url'
-import Form from 'organization/Event/AttendeeManagement/dialog/Form'
+import Form from 'organization/Event/AttendeeManagement/CreateDialog/Form'
 
 export default function CreateDialog(props: {
   isVisible: boolean

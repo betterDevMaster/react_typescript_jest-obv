@@ -4,54 +4,43 @@ import MenuItem from '@material-ui/core/MenuItem'
 import Select from '@material-ui/core/Select'
 import {Attendee} from 'Event/attendee'
 import {onUnknownChangeHandler} from 'lib/dom'
-import React, {useEffect, useState} from 'react'
-import {
-  AreaWithAssignments,
-  RoomAssignment,
-} from 'organization/Event/RoomAssignmentsProvider'
+import React, {useState} from 'react'
 import {useOrganization} from 'organization/OrganizationProvider'
 import {useEvent} from 'Event/EventProvider'
 import {Room} from 'Event/room'
 import {api} from 'lib/url'
+import {Area} from 'organization/Event/AreasProvider'
+import {withStyles} from '@material-ui/core/styles'
+
+export interface RoomAssignment {
+  area_id: number
+  attendee_id: number
+  room_id: number
+}
 
 export default function RoomSelect(props: {
+  area: Area
   attendee: Attendee
-  area: AreaWithAssignments
+  assignments: RoomAssignment[]
+  addAssignment: (assignment: RoomAssignment) => void
+  removeAssignment: (attendee: Attendee) => void
 }) {
-  const [assignments, setAssignments] = useState<RoomAssignment[]>([])
   const [processing, setProcessing] = useState(false)
+  const assigned = getAssignedRoom(
+    props.attendee,
+    props.area,
+    props.assignments,
+  )
   const {area} = props
-  const assigned = getAssignedRoom(props.attendee, assignments)
 
-  const addAssignment = (assignment: RoomAssignment) => {
-    setAssignments((current) => [...current, assignment])
-  }
-
-  const findAssignment = (attendee: Attendee, assignments: RoomAssignment[]) =>
-    assignments.find((assignment) => assignment.attendee.id === attendee.id)
-
-  const removeAssignment = (attendee: Attendee) => {
-    const target = findAssignment(attendee, assignments)
-    if (!target) {
-      throw new Error(`Missing assignment for attendee: ${attendee.id}`)
-    }
-
-    setAssignments((current) => current.filter((a) => !isEqual(target, a)))
-  }
-
-  const assign = useAssign(props.area, addAssignment)
-  const unassign = useUnassign(props.area, removeAssignment)
-
-  useEffect(() => {
-    setAssignments(area.assignments)
-  }, [area])
-
+  const assign = useAssign(props.area, props.addAssignment)
+  const unassign = useUnassign(props.area, props.removeAssignment)
   /**
    * Use 0 to indicate unassigned value as Material UI select expects a
    * string/number, and since ids will never be 0, it should be
    * safe to use to represent no room assigned.
    */
-  const value = assigned ? assigned.id : 0
+  const value = assigned || 0
 
   const handleRoomSelect = async (roomId: number) => {
     if (processing) {
@@ -82,7 +71,7 @@ export default function RoomSelect(props: {
   }
 
   return (
-    <Select
+    <StyledSelect
       fullWidth
       value={value}
       variant="outlined"
@@ -104,7 +93,7 @@ export default function RoomSelect(props: {
       <MenuItem value={0} aria-label="unassign room">
         <NotAssignedText>Not Assigned</NotAssignedText>
       </MenuItem>
-    </Select>
+    </StyledSelect>
   )
 }
 
@@ -113,7 +102,7 @@ const NotAssignedText = styled.span`
 `
 
 function useAssign(
-  area: AreaWithAssignments,
+  area: Area,
   addAssignment: (assignment: RoomAssignment) => void,
 ) {
   const {client} = useOrganization()
@@ -123,19 +112,12 @@ function useAssign(
     const url = api(
       `/events/${event.slug}/areas/${area.id}/room_assignments/attendees/${attendee.id}/rooms/${room.id}`,
     )
-    return client.post(url).then(() => {
-      const assignment: RoomAssignment = {
-        attendee,
-        room,
-      }
-
-      addAssignment(assignment)
-    })
+    return client.post<RoomAssignment>(url).then(addAssignment)
   }
 }
 
 function useUnassign(
-  area: AreaWithAssignments,
+  area: Area,
   removeAssignment: (attendee: Attendee) => void,
 ) {
   const {client} = useOrganization()
@@ -149,20 +131,25 @@ function useUnassign(
   }
 }
 
-function getAssignedRoom(attendee: Attendee, assignments: RoomAssignment[]) {
+function getAssignedRoom(
+  attendee: Attendee,
+  area: Area,
+  assignments: RoomAssignment[],
+) {
   const target = assignments.find(
-    (assignment) => assignment.attendee.id === attendee.id,
+    (assignment) =>
+      assignment.attendee_id === attendee.id && assignment.area_id === area.id,
   )
 
   if (!target) {
     return null
   }
 
-  return target.room
+  return target.room_id
 }
 
-function isEqual(a: RoomAssignment, b: RoomAssignment) {
-  const sameAttendee = a.attendee.id === b.attendee.id
-  const sameRoom = a.room.id === b.room.id
-  return sameAttendee && sameRoom
-}
+const StyledSelect = withStyles({
+  root: {
+    minWidth: 160,
+  },
+})(Select)
