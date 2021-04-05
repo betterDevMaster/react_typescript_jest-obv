@@ -34,7 +34,7 @@ export default function SetPasswordForm() {
   const dispatch = useDispatch()
   const {submit: submitAction} = usePoints()
   const {createPassword: CREATE_PASSWORD} = usePlatformActions()
-  const progress = hasTechCheck ? 33 : 50
+  const progress = hasTechCheck ? 25 : 33
   const template = useTemplate()
   const user = useAttendee()
 

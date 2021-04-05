@@ -27,7 +27,7 @@ export default function Step2(props: {user: User}) {
   const {submit: submitWaiver, canSubmit: canSubmitWaiver} = useWaiver()
   const {submit: submitAnswers, responseError, answers} = useSubmissions()
 
-  const progress = hasTechCheck ? 66 : 100
+  const progress = hasTechCheck ? 50 : 67
   const questions = registrationOnly(event.questions)
   const hasQuestions = questions.length > 0
 

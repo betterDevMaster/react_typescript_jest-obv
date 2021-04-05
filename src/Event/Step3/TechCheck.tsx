@@ -51,7 +51,7 @@ export default function TechCheck() {
   switch (template.name) {
     case SIMPLE_BLOG:
       return (
-        <SimpleBlogTechCheck user={user} techCheck={techCheck} progress={100} />
+        <SimpleBlogTechCheck user={user} techCheck={techCheck} progress={75} />
       )
     default:
       throw new Error(`Missing tech check for template: ${template.name}`)
