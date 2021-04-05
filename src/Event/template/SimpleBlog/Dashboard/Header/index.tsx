@@ -11,7 +11,6 @@ import {rgb} from 'lib/color'
 import {SIMPLE_BLOG} from 'Event/template/SimpleBlog'
 
 export default function Header(props: {
-  primaryColor: string
   toggleMenu: () => void
   menuVisible: boolean
   'aria-label'?: string
@@ -43,7 +42,6 @@ export default function Header(props: {
             >
               <Side>
                 <MenuIconButton
-                  color={props.primaryColor}
                   active={props.menuVisible}
                   onClick={props.toggleMenu}
                   aria-label="show side menu"

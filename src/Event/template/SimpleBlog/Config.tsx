@@ -29,8 +29,9 @@ export function SimpleBlogConfig() {
   const template = useTemplate()
   const {event} = useEvent()
 
-  const updatePrimary = useUpdatePrimitive('primaryColor')
   const updateHeader = useUpdateObject('header')
+  const updateMenu = useUpdateObject('menu')
+
   const updateBackgroundPosition = useUpdatePrimitive('backgroundPosition')
 
   return (
@@ -67,25 +68,12 @@ export function SimpleBlogConfig() {
           <MenuItem value="bottom">Bottom</MenuItem>
         </Select>
       </Box>
-
-      <Grid container item justify="center" spacing={3} xs={12}>
-        <Grid item xs={6}>
-          <ColorPicker
-            label="Primary Color"
-            color={template.primaryColor}
-            onPick={updatePrimary}
-            aria-label="primary color"
-          />
-        </Grid>
-        <Grid item xs={6}>
-          <ColorPicker
-            label="Header Background Color"
-            color={template.header?.backgroundColor}
-            onPick={updateHeader('backgroundColor')}
-            aria-label="header background color"
-          />
-        </Grid>
-      </Grid>
+      <ColorPicker
+        label="Header Background Color"
+        color={template.header?.backgroundColor}
+        onPick={updateHeader('backgroundColor')}
+        aria-label="header background color"
+      />
       <InputLabel>Header Background Opacity</InputLabel>
       <Slider
         min={0}
@@ -106,6 +94,33 @@ export function SimpleBlogConfig() {
         value={template.header.height}
         aria-label="header height"
       />
+      <Grid container item justify="center" spacing={3} xs={12}>
+        <Grid item xs={6}>
+          <ColorPicker
+            label="Menu Background Color"
+            color={template.menu?.backgroundColor}
+            onPick={updateMenu('backgroundColor')}
+            aria-label="menu background color"
+          />
+        </Grid>
+        <Grid item xs={6}>
+          <ColorPicker
+            label="Menu Text Color"
+            color={template.menu?.textColor}
+            onPick={updateMenu('textColor')}
+            aria-label="menu text color"
+          />
+        </Grid>
+        <Grid item xs={6}>
+          <ColorPicker
+            label="Menu Icon Color"
+            color={template.menu?.iconColor}
+            onPick={updateMenu('iconColor')}
+            aria-label="menu icon color"
+          />
+        </Grid>
+      </Grid>
+
       <TextField
         label="Custom Code"
         fullWidth

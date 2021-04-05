@@ -20,7 +20,6 @@ export const fakeSimpleBlog = (overrides?: Partial<SimpleBlog>): SimpleBlog => {
     version: 1,
     name: SIMPLE_BLOG,
     title: faker.company.companyName(),
-    primaryColor: '#14aecf',
     sidebar: {
       background: '#000000',
       textColor: '#FFFFFF',
@@ -66,6 +65,11 @@ export const fakeSimpleBlog = (overrides?: Partial<SimpleBlog>): SimpleBlog => {
       textColor: '#ffffff',
       thickness: 15,
       borderRadius: 50,
+    },
+    menu: {
+      backgroundColor: '#000000',
+      iconColor: '#0969d6',
+      textColor: '#FFFFFF',
     },
     login: {
       submitButton: {

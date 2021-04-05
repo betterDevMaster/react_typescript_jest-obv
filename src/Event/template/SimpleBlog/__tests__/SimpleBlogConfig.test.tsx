@@ -116,13 +116,7 @@ it('should configure a header color settings', async () => {
 
   clickEdit(await findByLabelText('header'))
 
-  expect(await findByLabelText('primary color')).toBeInTheDocument()
-  expect(await findByLabelText('header background color')).toBeInTheDocument()
-  expect(await findByLabelText('background opacity')).toBeInTheDocument()
-  expect(await findByLabelText('header height')).toBeInTheDocument()
-
   const color = faker.commerce.color()
-  user.type(await findByLabelText('primary color'), color)
   user.type(await findByLabelText('header background color'), color)
 
   await wait(async () => {

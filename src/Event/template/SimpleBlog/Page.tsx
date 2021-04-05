@@ -17,7 +17,7 @@ export default function SimpleBlogPage(props: {
 }) {
   const [menuVisible, setMenuVisible] = useState(false)
   const toggleMenu = () => setMenuVisible(!menuVisible)
-  const {primaryColor, backgroundPosition} = useTemplate()
+  const {backgroundPosition} = useTemplate()
   const {event} = useEvent()
   const dashboardBackground = event.dashboard_background
     ? event.dashboard_background.url
@@ -25,15 +25,9 @@ export default function SimpleBlogPage(props: {
 
   return (
     <Box background={dashboardBackground} position={backgroundPosition}>
-      <SimpleBlogStyles primaryColor={primaryColor} />
-      <Menu
-        visible={menuVisible}
-        background={primaryColor}
-        toggle={toggleMenu}
-        user={props.user}
-      />
+      <SimpleBlogStyles />
+      <Menu visible={menuVisible} toggle={toggleMenu} user={props.user} />
       <Header
-        primaryColor={primaryColor}
         menuVisible={menuVisible}
         toggleMenu={toggleMenu}
         aria-label="header"

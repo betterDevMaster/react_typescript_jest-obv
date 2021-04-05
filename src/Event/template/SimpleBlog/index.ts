@@ -18,7 +18,6 @@ export interface SimpleBlog {
   name: typeof SIMPLE_BLOG
   title: string
   mainNav: EntityList<NavButtonWithSize>
-  primaryColor: string
   ticketRibbons: TicketRibbon[]
   welcomeText?: string
   emojiList: EmojiList
@@ -57,6 +56,11 @@ export interface SimpleBlog {
     thickness: number
     borderRadius: number
   }
+  menu: {
+    backgroundColor: string
+    iconColor: string
+    textColor: string
+  }
   backgroundPosition: 'fixed' | 'bottom'
   login: {
     submitButton: {
@@ -82,7 +86,6 @@ export const createSimpleBlog = (): SimpleBlog => ({
     entities: {},
     ids: [],
   },
-  primaryColor: '#000000',
   ticketRibbons: [],
   welcomeText: 'WELCOME TO YOUR DASHBOARD',
   emojiList: {
@@ -133,6 +136,11 @@ export const createSimpleBlog = (): SimpleBlog => ({
     textColor: '#000000',
     thickness: 15,
     borderRadius: 50,
+  },
+  menu: {
+    backgroundColor: '#000000',
+    iconColor: '#0969d6',
+    textColor: '#FFFFFF',
   },
   login: {
     submitButton: {
