@@ -1,6 +1,6 @@
 import {Attendee} from 'Event/attendee'
 import React, {useState} from 'react'
-import {useAreas} from 'organization/Event/AreasProvider'
+import {Area, useAreas} from 'organization/Event/AreasProvider'
 import RoomSelect, {
   RoomAssignment,
 } from 'organization/Event/AttendeeManagement/AssignmentsDialog/RoomSelect'
@@ -57,11 +57,19 @@ function useCurrentAssignments(savedAssignments: RoomAssignment[]) {
     setAssignments((current) => [...current, assignment])
   }
 
-  const findAssignment = (attendee: Attendee, assignments: RoomAssignment[]) =>
-    assignments.find((assignment) => assignment.attendee_id === attendee.id)
+  const findAssignment = (
+    attendee: Attendee,
+    area: Area,
+    assignments: RoomAssignment[],
+  ) =>
+    assignments.find(
+      (assignment) =>
+        assignment.attendee_id === attendee.id &&
+        assignment.area_id === area.id,
+    )
 
-  const removeAssignment = (attendee: Attendee) => {
-    const target = findAssignment(attendee, assignments)
+  const removeAssignment = (attendee: Attendee, area: Area) => {
+    const target = findAssignment(attendee, area, assignments)
     if (!target) {
       throw new Error(`Missing assignment for attendee: ${attendee.id}`)
     }

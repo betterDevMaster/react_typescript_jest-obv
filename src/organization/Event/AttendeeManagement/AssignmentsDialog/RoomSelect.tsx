@@ -23,7 +23,7 @@ export default function RoomSelect(props: {
   attendee: Attendee
   assignments: RoomAssignment[]
   addAssignment: (assignment: RoomAssignment) => void
-  removeAssignment: (attendee: Attendee) => void
+  removeAssignment: (attendee: Attendee, area: Area) => void
 }) {
   const [processing, setProcessing] = useState(false)
   const assigned = getAssignedRoom(
@@ -118,7 +118,7 @@ function useAssign(
 
 function useUnassign(
   area: Area,
-  removeAssignment: (attendee: Attendee) => void,
+  removeAssignment: (attendee: Attendee, area: Area) => void,
 ) {
   const {client} = useOrganization()
   const {event} = useEvent()
@@ -127,7 +127,7 @@ function useUnassign(
     const url = api(
       `/events/${event.slug}/areas/${area.id}/room_assignments/attendees/${attendee.id}`,
     )
-    return client.delete(url).then(() => removeAssignment(attendee))
+    return client.delete(url).then(() => removeAssignment(attendee, area))
   }
 }
 
