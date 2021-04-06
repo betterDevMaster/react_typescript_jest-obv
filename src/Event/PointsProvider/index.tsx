@@ -4,6 +4,7 @@ import {useSnackbar} from 'notistack'
 import {api} from 'lib/url'
 import {useEvent} from 'Event/EventProvider'
 import {useAsync} from 'lib/async'
+import {useEditMode} from 'Event/Dashboard/editor/state/edit-mode'
 
 export interface Score {
   points: number
@@ -25,10 +26,11 @@ export function PointsProvider(props: {children: React.ReactElement}) {
   const fetchScore = useFetchScore()
   const {score, add} = useAttendeeScore(fetchScore)
   const showReceived = useShowReceived()
+  const isEditMode = useEditMode()
 
   const submit = useCallback(
     (action: Action | null) => {
-      if (!action) {
+      if (!action || isEditMode) {
         return
       }
 
@@ -48,7 +50,7 @@ export function PointsProvider(props: {children: React.ReactElement}) {
            */
         })
     },
-    [client, event.slug, showReceived, add],
+    [client, event.slug, showReceived, add, isEditMode],
   )
 
   return (

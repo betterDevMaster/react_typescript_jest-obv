@@ -10,6 +10,7 @@ import {RootState} from 'store'
 import {eventClient} from 'Event/api-client'
 import {appRoot, isProduction} from 'App'
 import {useInterval} from 'lib/interval'
+import {useEditMode} from 'Event/Dashboard/editor/state/edit-mode'
 
 interface EventContextProps {
   event: ObvioEvent
@@ -123,15 +124,20 @@ const FETCH_JOIN_URL_INTERVAL_MS = 5000
 export function useJoinUrl(areaId: number) {
   const {event, client} = useEvent()
   const [joinUrl, setJoinUrl] = useState<null | string>(null)
+  const isEditMode = useEditMode()
 
   const fetchUrl = useCallback(() => {
+    if (isEditMode) {
+      return
+    }
+
     const url = api(`/events/${event.slug}/areas/${areaId}/join`)
 
     client
       .get<{url: string | null}>(url)
       .then(({url}) => setJoinUrl(url))
       .catch((e) => console.error(`Could not fetch join url: ${e.message}`))
-  }, [client, event, areaId])
+  }, [client, event, areaId, isEditMode])
 
   // Fetch once on load without waiting for interval
   useEffect(() => {

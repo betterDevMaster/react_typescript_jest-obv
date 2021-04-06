@@ -1,14 +1,20 @@
 import {fakeAttendee} from 'Event/auth/__utils__/factory'
+import user from '@testing-library/user-event'
 import {
   createPlatformActions,
   fakeEvent,
   fakeTechCheck,
+  fakeWaiver,
 } from 'Event/__utils__/factory'
 import {loginToEventSite} from 'Event/__utils__/url'
 import faker from 'faker'
 import axios from 'axios'
 import {wait} from '@testing-library/react'
 import {fakeAction} from 'Event/ActionsProvider/__utils__/factory'
+import {
+  fakeSimpleBlog,
+  fakeTemplateTechCheck,
+} from 'Event/template/SimpleBlog/__utils__/factory'
 
 const mockGet = axios.get as jest.Mock
 const mockPost = axios.post as jest.Mock
@@ -144,4 +150,78 @@ it('should complete tech check', async () => {
       timeout: 30000,
     },
   )
+})
+
+it('should show generic offline message', async () => {
+  const attendee = fakeAttendee({
+    has_password: true,
+    waiver: faker.internet.url(),
+    tech_check_completed_at: null,
+  })
+
+  const content = faker.lorem.paragraph()
+  const body = `<p>${content}</p>`
+  const event = fakeEvent({
+    tech_check: fakeTechCheck({body}),
+    template: fakeSimpleBlog({
+      techCheck: undefined,
+    }),
+  })
+
+  const {findByLabelText, findByText} = await loginToEventSite({
+    attendee,
+    event,
+    beforeLogin: () => {
+      mockGet.mockImplementationOnce(
+        () => Promise.resolve({data: {url: null}}), // Returned null
+      )
+    },
+  })
+
+  expect(await findByLabelText('start tech check')).toBeInTheDocument()
+
+  expect(await findByText(content)).toBeInTheDocument()
+
+  user.click(await findByLabelText('start tech check'))
+
+  expect(await findByText(/currently offline/i)).toBeInTheDocument()
+})
+
+it('should show defined offline message', async () => {
+  const attendee = fakeAttendee({
+    has_password: true,
+    waiver: faker.internet.url(),
+    tech_check_completed_at: null,
+  })
+
+  const offlineTitle = faker.random.words(3)
+
+  const content = faker.lorem.paragraph()
+  const body = `<p>${content}</p>`
+  const event = fakeEvent({
+    tech_check: fakeTechCheck({body}),
+    template: fakeSimpleBlog({
+      techCheck: fakeTemplateTechCheck({
+        offlineTitle,
+      }),
+    }),
+  })
+
+  const {findByLabelText, findByText} = await loginToEventSite({
+    attendee,
+    event,
+    beforeLogin: () => {
+      mockGet.mockImplementationOnce(
+        () => Promise.resolve({data: {url: null}}), // Returned null
+      )
+    },
+  })
+
+  expect(await findByLabelText('start tech check')).toBeInTheDocument()
+
+  expect(await findByText(content)).toBeInTheDocument()
+
+  user.click(await findByLabelText('start tech check'))
+
+  expect(await findByText(offlineTitle)).toBeInTheDocument()
 })

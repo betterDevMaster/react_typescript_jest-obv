@@ -36,6 +36,7 @@ export default function Routes() {
   const {event} = useEvent()
 
   if (!event.template || !event.waiver) {
+    console.log(event)
     return <UnderConstruction />
   }
 

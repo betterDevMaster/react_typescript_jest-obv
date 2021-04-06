@@ -10,6 +10,7 @@ import NavButton, {
 import {EntityList} from 'lib/list'
 import {colors} from 'lib/ui/theme'
 import {DEFAULT_LOGO_SIZE_PERCENT} from 'Event/template/SimpleBlog/Login/LoginConfig'
+import {GridSize} from '@material-ui/core'
 
 export const SIMPLE_BLOG = 'Simple Blog'
 
@@ -57,6 +58,17 @@ export interface SimpleBlog {
     thickness: number
     borderRadius: number
   }
+  techCheck?: {
+    buttonText: string
+    buttonBackground: string
+    buttonTextColor: string
+    buttonBorderRadius: number
+    buttonBorderWidth: number
+    buttonBorderColor: string
+    buttonWidth: GridSize
+    offlineTitle: string
+    offlineDescription: string
+  }
   menu: {
     backgroundColor: string
     iconColor: string
@@ -99,6 +111,17 @@ export const createSimpleBlog = (): SimpleBlog => ({
     borderWidth: 0,
     borderColor: '#000000',
     paddingTop: 48,
+  },
+  techCheck: {
+    buttonText: 'submit',
+    buttonBackground: 'blue',
+    buttonTextColor: '#ffffff',
+    buttonBorderRadius: 0,
+    buttonBorderWidth: 0,
+    buttonBorderColor: '#ffffff',
+    buttonWidth: 12,
+    offlineTitle: '',
+    offlineDescription: '',
   },
   sidebarNav: {
     entities: {},

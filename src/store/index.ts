@@ -1,6 +1,7 @@
 import {authReducer} from 'auth'
 import {editorReducer} from 'Event/Dashboard/editor/state'
 import {eventReducer} from 'Event/state'
+
 import {
   createStore as createReduxStore,
   applyMiddleware,

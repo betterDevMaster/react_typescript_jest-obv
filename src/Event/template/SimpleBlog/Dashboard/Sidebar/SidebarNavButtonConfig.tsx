@@ -174,6 +174,31 @@ export function SidebarNavButtonConfig(props: {
             aria-label="border thickness"
           />
         </Grid>
+        <Grid item xs={12}>
+          <TextField
+            value={button.offlineTitle || ''}
+            label="Offline Title"
+            fullWidth
+            inputProps={{
+              'aria-label': 'main nav button offline title',
+            }}
+            onChange={onChangeStringHandler(updateButton('offlineTitle'))}
+          />
+        </Grid>
+        <Grid item xs={12}>
+          <TextField
+            value={button.offlineDescription || ''}
+            label="Offline Description"
+            fullWidth
+            variant="outlined"
+            inputProps={{
+              'aria-label': 'main nav button offline description',
+            }}
+            multiline
+            rows="2"
+            onChange={onChangeStringHandler(updateButton('offlineDescription'))}
+          />
+        </Grid>
       </Grid>
 
       <InfusionsoftTagInput

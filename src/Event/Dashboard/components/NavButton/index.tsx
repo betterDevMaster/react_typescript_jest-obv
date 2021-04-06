@@ -1,4 +1,4 @@
-import React from 'react'
+import React, {useState} from 'react'
 import styled from 'styled-components'
 import ButtonBase from 'lib/ui/Button'
 import {Column} from 'lib/ui/layout'
@@ -10,6 +10,8 @@ import {useActions} from 'Event/ActionsProvider'
 import {usePoints} from 'Event/PointsProvider'
 import {Publishable} from 'Event/Dashboard/editor/views/Published'
 import {InfusionsoftTag, useAddTag} from 'Event/infusionsoft'
+
+import OfflineDialog from 'lib/ui/OfflineDialog'
 
 export const NAV_BUTTON = 'NAV_BUTTON'
 
@@ -34,6 +36,8 @@ export default interface NavButton extends HasRules, Publishable {
   areaId: number | null
   actionId: string | null
   infusionsoftTag: InfusionsoftTag | null
+  offlineTitle?: string
+  offlineDescription?: string
 }
 
 export type NavButtonWithSize = NavButton & {
@@ -49,7 +53,6 @@ export default function NavButton(props: NavButton) {
     submitAction()
     addInfusionsoftTag()
   }
-
   if (isAreaButton && props.areaId) {
     return (
       <JoinAreaButton {...props} areaId={props.areaId} onJoin={handleClicked} />
@@ -105,17 +108,28 @@ function JoinAreaButton(
 ) {
   const {areaId} = props
   const joinUrl = useJoinUrl(areaId)
+  const [offlineDialogVisible, setOfflineDialogVisible] = useState(false)
 
-  const button = (
-    <Button {...props} disabled={!joinUrl}>
-      {props.text}
-    </Button>
-  )
+  const toggleOfflineDialog = () =>
+    setOfflineDialogVisible(!offlineDialogVisible)
+
+  const defaultOfflineTitle = `${props.text} Is Currently Offline`
 
   if (!joinUrl) {
-    return button
+    return (
+      <>
+        <OfflineDialog
+          isOpen={offlineDialogVisible}
+          title={props.offlineTitle || defaultOfflineTitle}
+          description={props.offlineDescription || ''}
+          onClose={toggleOfflineDialog}
+        />
+        <Button {...props} onClick={toggleOfflineDialog} isPending>
+          {props.text}
+        </Button>
+      </>
+    )
   }
-
   return (
     <AbsoluteLink
       aria-label="start meeting"
@@ -125,7 +139,7 @@ function JoinAreaButton(
       disableStyles
       onClick={props.onJoin}
     >
-      {button}
+      <Button {...props}>{props.text}</Button>
     </AbsoluteLink>
   )
 }
@@ -135,8 +149,11 @@ function Button(
     children: string | React.ReactElement
     disabled?: boolean
     onClick?: () => void
+    isPending?: boolean
   } & NavButton,
 ) {
+  const opacity = props.isPending ? 0.8 : 1
+
   return (
     <StyledButton
       disabled={props.disabled}
@@ -152,6 +169,7 @@ function Button(
       borderColor={props.borderColor}
       hoverBorderColor={props.hoverBorderColor}
       onClick={props.onClick}
+      opacity={opacity}
     >
       {props.children}
     </StyledButton>

@@ -17,6 +17,7 @@ export interface ButtonProps {
   borderColor?: string
   hoverBorderColor?: string
   variant?: 'text'
+  opacity?: number
   'aria-label'?: string
 }
 
@@ -39,6 +40,7 @@ export default function Button(props: ButtonProps) {
       hoverTextDecoration={hoverTextDecoration(props)}
       onClick={props.onClick}
       aria-label={props['aria-label']}
+      opacity={opacity(props)}
     >
       {props.children}
     </StyledButton>
@@ -177,6 +179,14 @@ function isText(variant: ButtonProps['variant']) {
   return variant === 'text'
 }
 
+function opacity(props: ButtonProps) {
+  if (props.opacity === undefined) {
+    return 1
+  }
+
+  return props.opacity
+}
+
 type StyleProps = {
   width: string
   textTransform: string
@@ -191,6 +201,7 @@ type StyleProps = {
   borderRadius: string
   hoverBorder: string
   hoverTextDecoration: string
+  opacity: number
 }
 
 const StyledButton = styled.button<StyleProps>`
@@ -203,6 +214,7 @@ const StyledButton = styled.button<StyleProps>`
   cursor: ${(props) => props.cursor};
   transition: ${(props) => props.transition};
   border-radius: ${(props) => props.borderRadius};
+  opacity: ${(props) => props.opacity};
 
   &:hover {
     opacity: ${(props) => props.hoverOpacity};

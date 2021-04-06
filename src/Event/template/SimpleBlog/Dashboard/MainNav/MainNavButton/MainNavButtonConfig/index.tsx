@@ -198,6 +198,7 @@ export function MainNavButtonConfig(props: {id: MainNavButtonConfig['id']}) {
           button={button}
           onChange={updateButton('infusionsoftTag')}
         />
+
         <Box mt={2} mb={3}>
           <DangerButton
             fullWidth

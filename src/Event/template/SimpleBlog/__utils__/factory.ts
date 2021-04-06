@@ -29,6 +29,17 @@ export const fakeSimpleBlog = (overrides?: Partial<SimpleBlog>): SimpleBlog => {
       paddingTop: 0,
     },
     sidebarNav: {entities: {}, ids: []},
+    techCheck: {
+      buttonText: 'submit',
+      buttonBackground: 'blue',
+      buttonTextColor: '#ffffff',
+      buttonBorderRadius: 0,
+      buttonBorderWidth: 0,
+      buttonBorderColor: '#ffffff',
+      buttonWidth: 12,
+      offlineTitle: '',
+      offlineDescription: '',
+    },
     ticketRibbons: [],
     mainNav: {entities: {}, ids: []},
     emojiList: {emojis: []},
@@ -161,6 +172,23 @@ export function fakeHeader(
     backgroundOpacity: 1,
     height: 50,
     script: null,
+    ...overrides,
+  }
+}
+
+export function fakeTemplateTechCheck(
+  overrides?: Partial<SimpleBlog['techCheck']>,
+): SimpleBlog['techCheck'] {
+  return {
+    buttonText: 'submit',
+    buttonBackground: 'blue',
+    buttonTextColor: '#ffffff',
+    buttonBorderRadius: 0,
+    buttonBorderWidth: 0,
+    buttonBorderColor: '#ffffff',
+    buttonWidth: 12,
+    offlineTitle: '',
+    offlineDescription: '',
     ...overrides,
   }
 }
