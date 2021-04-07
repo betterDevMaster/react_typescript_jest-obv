@@ -16,6 +16,7 @@ export default function Page(props: {
   children: React.ReactElement | React.ReactElement[]
 }) {
   const {event} = useEvent()
+  const {login} = useTemplate()
 
   const background = event.login_background
     ? event.login_background.url
@@ -26,9 +27,10 @@ export default function Page(props: {
       background={background}
       isPreview={props.isPreview}
       aria-label="login background"
+      isHidden={login.backgroundHidden}
     >
       <Container>
-        <Logo />
+        <Logo isHidden={login.logoHidden} />
         {props.children}
       </Container>
     </Background>
@@ -65,6 +67,7 @@ export function ErrorMessage(props: {children?: string}) {
 
 export function Button(props: ButtonProps) {
   const {login} = useTemplate()
+  const borderRadius = `${login.submitButton.borderRadius}px` || spacing[14]
 
   return (
     <StyledButton
@@ -72,6 +75,7 @@ export function Button(props: ButtonProps) {
       fullWidth
       backgroundColor={login.submitButton.backgroundColor}
       color={login.submitButton.textColor}
+      borderRadius={borderRadius}
       {...props}
     />
   )
@@ -90,8 +94,10 @@ export const DescriptionText = styled.div<{
 export const Background = styled.div<{
   background: string
   isPreview?: boolean
+  isHidden?: boolean
 }>`
-  background: url(${(props) => props.background});
+  ${(props) => (props.isHidden ? '' : `background: url(${props.background});`)}
+  display: flex;
   background-size: cover;
   background-position: center;
   position: ${(props) => (props.isPreview ? 'inherit' : 'absolute')};
@@ -99,16 +105,17 @@ export const Background = styled.div<{
   height: 100%;
   top: 0;
   left: 0;
-  display: flex;
   justify-content: center;
   align-items: center;
 `
 
 export function TextField(props: TextFieldProps) {
+  const {login} = useTemplate()
+
   const useStyles = makeStyles({
     root: {
       backgroundColor: '#f2f5f9',
-      borderRadius: spacing[14],
+      borderRadius: `${login.inputBorderRadius}px` || spacing[14],
     },
     outline: {
       border: 'none',
@@ -132,13 +139,16 @@ export function TextField(props: TextFieldProps) {
 }
 
 export const StyledButton = styled(
-  ({color, backgroundColor, ...otherProps}) => <MuiButton {...otherProps} />,
+  ({color, backgroundColor, borderRadius, ...otherProps}) => (
+    <MuiButton {...otherProps} />
+  ),
 )`
-  border-radius: ${(props) => props.theme.spacing[14]} !important;
+  border-radius: ${(props) => props.borderRadius} !important;
   height: 50px;
   color: ${(props) => props.color} !important;
   background-color: ${(props) => props.backgroundColor} !important;
 `
+
 export const Container = styled.div`
   width: auto;
   padding: ${(props) => props.theme.spacing[4]};

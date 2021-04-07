@@ -80,6 +80,7 @@ export interface SimpleBlog {
       backgroundColor: string
       textColor: string
       label: string
+      borderRadius?: number
     }
     description: {
       text: string
@@ -87,6 +88,9 @@ export interface SimpleBlog {
       fontSize: number
     }
     logoSize?: number
+    inputBorderRadius?: number
+    logoHidden?: boolean
+    backgroundHidden?: boolean
   }
   bodyHTMLEmbed?: string | null
 }

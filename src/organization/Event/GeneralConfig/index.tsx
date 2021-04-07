@@ -36,10 +36,10 @@ export default function GeneralConfig() {
   )
 }
 
-const MIN_PROGRESS_BAR_THICHNESS = 5
-const MAX_PROGRESS_BAR_THICHNESS = 50
-const MIN_PROGRESS_BAR_BORDERRADIUS = 0
-const MAX_PROGRESS_BAR_BORDERRADIUS = 25
+const MIN_PROGRESS_BAR_THICKNESS = 5
+const MAX_PROGRESS_BAR_THICKNESS = 50
+const MIN_PROGRESS_BAR_BORDER_RADIUS = 0
+const MAX_PROGRESS_BAR_BORDER_RADIUS = 25
 
 function Content() {
   const updateProgressBar = useUpdateObject('progressBar')
@@ -71,11 +71,11 @@ function Content() {
                 <Slider
                   valueLabelDisplay="auto"
                   aria-label="progress bar thickness"
-                  value={progressBar.thickness}
+                  value={progressBar.thickness || 0}
                   onChange={handleChangeSlider(updateProgressBar('thickness'))}
                   step={1}
-                  min={MIN_PROGRESS_BAR_THICHNESS}
-                  max={MAX_PROGRESS_BAR_THICHNESS}
+                  min={MIN_PROGRESS_BAR_THICKNESS}
+                  max={MAX_PROGRESS_BAR_THICKNESS}
                 />
               </Grid>
               <Grid item xs={6}>
@@ -91,13 +91,13 @@ function Content() {
                 <Slider
                   valueLabelDisplay="auto"
                   aria-label="progress bar border"
-                  value={progressBar.borderRadius}
+                  value={progressBar.borderRadius || 0}
                   onChange={handleChangeSlider(
                     updateProgressBar('borderRadius'),
                   )}
                   step={1}
-                  min={MIN_PROGRESS_BAR_BORDERRADIUS}
-                  max={MAX_PROGRESS_BAR_BORDERRADIUS}
+                  min={MIN_PROGRESS_BAR_BORDER_RADIUS}
+                  max={MAX_PROGRESS_BAR_BORDER_RADIUS}
                 />
               </Grid>
             </Grid>

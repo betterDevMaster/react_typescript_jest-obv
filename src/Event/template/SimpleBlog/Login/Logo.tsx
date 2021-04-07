@@ -5,7 +5,7 @@ import {useTemplate} from 'Event/TemplateProvider'
 import styled from 'styled-components'
 import {DEFAULT_LOGO_SIZE_PERCENT} from 'Event/template/SimpleBlog/Login/LoginConfig'
 
-export default function Logo() {
+export default function Logo(props: {isHidden?: boolean}) {
   const {event} = useEvent()
   const logo = event.login_logo ? event.login_logo.url : defaultLogo
   const {login} = useTemplate()
@@ -13,7 +13,7 @@ export default function Logo() {
   const size = login.logoSize || DEFAULT_LOGO_SIZE_PERCENT
 
   return (
-    <Box>
+    <Box isHidden={props.isHidden}>
       <LogoImage
         src={logo}
         alt={event.name}
@@ -24,7 +24,10 @@ export default function Logo() {
   )
 }
 
-const Box = styled.div`
+const Box = styled.div<{
+  isHidden?: boolean
+}>`
+  display: ${(props) => (props.isHidden ? 'none' : 'block')};
   margin-bottom: ${(props) => props.theme.spacing[6]};
   width: 100%;
   text-align: center;
