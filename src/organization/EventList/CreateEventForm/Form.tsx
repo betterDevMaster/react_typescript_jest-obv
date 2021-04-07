@@ -9,7 +9,8 @@ import {Controller, UseFormMethods} from 'react-hook-form'
 import {ObvioEvent} from 'Event'
 import {fieldError} from 'lib/form'
 import {DateTimePicker} from '@material-ui/pickers'
-import {now} from 'lodash'
+import {now} from 'lib/date-time'
+import moment from 'moment'
 
 export type EventData = Pick<
   ObvioEvent,
@@ -36,6 +37,8 @@ export default function Form(props: {
     onSubmit,
     submitLabel,
   } = props
+  const inThreeDays = moment().add(3, 'days').toISOString()
+  const inSixDays = moment().add(6, 'days').toISOString()
 
   const canSave = props.canSave === undefined ? true : props.canSave
 
@@ -100,7 +103,7 @@ export default function Form(props: {
       <Controller
         name="start"
         control={props.control}
-        defaultValue={now()}
+        defaultValue={inThreeDays}
         rules={{
           required: 'Start is required',
         }}
@@ -121,7 +124,7 @@ export default function Form(props: {
       <Controller
         name="end"
         control={props.control}
-        defaultValue={now()}
+        defaultValue={inSixDays}
         rules={{
           required: 'End is required',
         }}
