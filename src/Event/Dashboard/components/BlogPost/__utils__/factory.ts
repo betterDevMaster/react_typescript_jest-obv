@@ -3,7 +3,7 @@ import {BlogPost} from 'Event/Dashboard/components/BlogPost'
 import faker from 'faker'
 import {createEntityList, EntityList} from 'lib/list'
 
-export const fakeBlogPost = (): BlogPost => ({
+export const fakeBlogPost = (overrides?: Partial<BlogPost>): BlogPost => ({
   title: faker.lorem.lines(1),
   postedAt: faker.date.past().toISOString(),
   publishAt:
@@ -18,6 +18,7 @@ export const fakeBlogPost = (): BlogPost => ({
     </div>
   `,
   isVisible: faker.random.boolean(),
+  ...overrides,
 })
 
 export function withBlogPosts<
