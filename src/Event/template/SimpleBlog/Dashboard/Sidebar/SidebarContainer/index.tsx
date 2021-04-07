@@ -15,7 +15,6 @@ export default function SidebarContainer(props: {children: React.ReactNode}) {
 
   return (
     <Box {...sidebar}>
-      <BackgroundImage />
       <TopLayer>
         <EditModeOnly>
           <EditSidebarButton
@@ -31,6 +30,7 @@ export default function SidebarContainer(props: {children: React.ReactNode}) {
         </EditModeOnly>
         {props.children}
       </TopLayer>
+      <BackgroundImage />
     </Box>
   )
 }
@@ -38,14 +38,9 @@ export default function SidebarContainer(props: {children: React.ReactNode}) {
 const Box = styled.div<SimpleBlog['sidebar']>`
   background: ${(props) => props.background};
   position: relative;
-  overflow: hidden;
   padding: ${(props) => `${props.theme.spacing[12]} ${props.theme.spacing[8]}`};
-  /* Show overflow to allow ticket ribbon outside of sidebar effect */
-  overflow: visible;
   ${(props) =>
-    props.paddingTop !== undefined
-      ? `padding-top: ${props.paddingTop}px;`
-      : `${props.theme.spacing[12]}px`}
+    props.paddingTop !== undefined ? `padding-top: ${props.paddingTop}px;` : ``}
   border-radius: ${(props) => props.borderRadius}px;
   border: ${(props) => props.borderWidth}px solid
     ${(props) => props.borderColor};
