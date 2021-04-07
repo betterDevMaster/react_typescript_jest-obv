@@ -1,15 +1,13 @@
-import {NavButtonWithSize} from 'Event/Dashboard/components/NavButton'
 import React from 'react'
 import AreaSelect from 'organization/Event/Area/AreaSelect'
 import {onChangeStringHandler} from 'lib/dom'
 import TextField from '@material-ui/core/TextField'
+import {ButtonConfigProps} from 'Event/template/SimpleBlog/Dashboard/MainNav/MainNavButton/MainNavButtonConfig'
+import NavButton from 'Event/Dashboard/components/NavButton'
 
-export default function AreaConfig(props: {
-  button: NavButtonWithSize
-  update: <T extends keyof NavButtonWithSize>(
-    key: T,
-  ) => (value: NavButtonWithSize[T]) => void
-}) {
+export default function AreaConfig<T extends NavButton>(
+  props: ButtonConfigProps<T>,
+) {
   const {button, update} = props
   if (!button.isAreaButton) {
     return null

@@ -40,7 +40,7 @@ it('should edit the selected button', async () => {
       mainNav: mainNavButtons,
     }),
   })
-  const {findByLabelText, findByText, debug} = render(
+  const {findByLabelText, findByText} = render(
     <Dashboard isEditMode={true} user={fakeUser()} />,
     {
       event,
@@ -249,4 +249,49 @@ it('should set an infusionsoft tag', async () => {
 
   const saved = Object.values(data.template.mainNav.entities)[0] as any
   expect(saved.infusionsoftTag.id).toBe(id)
+})
+
+it('should set a link to an event page', async () => {
+  const externalLink = faker.internet.url()
+  const button = fakeNavButtonWithSize({
+    page: undefined,
+    link: externalLink,
+  })
+  const buttons = [button]
+  const mainNavButtons = createEntityList(buttons)
+
+  const event = fakeEvent({
+    template: fakeSimpleBlog({
+      mainNav: mainNavButtons,
+    }),
+  })
+
+  const {findByLabelText, findByText} = render(
+    <Dashboard isEditMode={true} user={fakeUser()} />,
+    {
+      event,
+      organization: fakeOrganization(),
+      actions: emptyActions,
+      withRouter: true,
+      score: defaultScore,
+    },
+  )
+
+  const buttonEl = async () => await findByText(button.text)
+
+  // Started with absolute link
+  const href = async () => {
+    return (await buttonEl()).parentElement?.getAttribute('href')
+  }
+  expect(await href()).toBe(externalLink)
+
+  clickEdit(await buttonEl())
+
+  // Select speakers
+  fireEvent.mouseDown(await findByLabelText('pick page'))
+  user.click(await findByLabelText(/speakers page/i))
+
+  fireEvent.click(await findByLabelText('close config dialog'))
+
+  expect(await href()).toBe('/speakers')
 })

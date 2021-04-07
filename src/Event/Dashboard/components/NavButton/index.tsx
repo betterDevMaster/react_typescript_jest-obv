@@ -12,6 +12,7 @@ import {Publishable} from 'Event/Dashboard/editor/views/Published'
 import {InfusionsoftTag, useAddTag} from 'Event/infusionsoft'
 
 import OfflineDialog from 'lib/ui/OfflineDialog'
+import {RelativeLink} from 'lib/ui/link/RelativeLink'
 
 export const NAV_BUTTON = 'NAV_BUTTON'
 
@@ -38,6 +39,7 @@ export default interface NavButton extends HasRules, Publishable {
   infusionsoftTag: InfusionsoftTag | null
   offlineTitle?: string
   offlineDescription?: string
+  page?: string | null
 }
 
 export type NavButtonWithSize = NavButton & {
@@ -53,14 +55,28 @@ export default function NavButton(props: NavButton) {
     submitAction()
     addInfusionsoftTag()
   }
+
   if (isAreaButton && props.areaId) {
     return (
       <JoinAreaButton {...props} areaId={props.areaId} onJoin={handleClicked} />
     )
   }
 
+  if (props.page) {
+    return (
+      <RelativeLink
+        to={props.page}
+        disableStyles
+        aria-label={props['aria-label']}
+        onClick={handleClicked}
+      >
+        <Button {...props}>{props.text}</Button>
+      </RelativeLink>
+    )
+  }
+
   return (
-    <NormalLink
+    <StyledAbsoluteLink
       to={props.link}
       disableStyles
       aria-label={props['aria-label']}
@@ -68,7 +84,7 @@ export default function NavButton(props: NavButton) {
       onClick={handleClicked}
     >
       <Button {...props}>{props.text}</Button>
-    </NormalLink>
+    </StyledAbsoluteLink>
   )
 }
 
@@ -176,7 +192,7 @@ function Button(
   )
 }
 
-const NormalLink = styled(AbsoluteLink)`
+const StyledAbsoluteLink = styled(AbsoluteLink)`
   display: flex;
 `
 

@@ -1,6 +1,3 @@
-import Checkbox from '@material-ui/core/Checkbox'
-import FormControl from '@material-ui/core/FormControl'
-import FormControlLabel from '@material-ui/core/FormControlLabel'
 import TextField from '@material-ui/core/TextField'
 import NavButton from 'Event/Dashboard/components/NavButton'
 import {
@@ -21,6 +18,7 @@ import ColorPicker from 'lib/ui/ColorPicker'
 import {handleChangeSlider} from 'lib/dom'
 import InputLabel from '@material-ui/core/InputLabel'
 import Slider from '@material-ui/core/Slider'
+import TargetConfig from 'Event/template/SimpleBlog/Dashboard/MainNav/MainNavButton/MainNavButtonConfig/TargetConfig'
 
 const MIN_BORDER_WIDTH = 0
 const MAX_BORDER_WIDTH = 50
@@ -83,6 +81,14 @@ export function SidebarNavButtonConfig(props: {
 
   return (
     <>
+      <Switch
+        checked={button.isVisible}
+        onChange={onChangeCheckedHandler(updateButton('isVisible'))}
+        arial-label="config switch sidebar"
+        labelPlacement="end"
+        color="primary"
+        label={button.isVisible ? 'Enable' : 'Disable'}
+      />
       <TextField
         label="Text"
         value={button.text}
@@ -92,39 +98,8 @@ export function SidebarNavButtonConfig(props: {
         fullWidth
         onChange={onChangeStringHandler(updateButton('text'))}
       />
-      <TextField
-        label="Link URL"
-        value={button.link ? button.link : ''}
-        inputProps={{
-          'aria-label': 'button link input',
-        }}
-        fullWidth
-        onChange={onChangeStringHandler(updateButton('link'))}
-      />
+      <TargetConfig update={updateButton} button={button} />
       <Grid container spacing={2}>
-        <Grid item xs={6}>
-          <FormControl>
-            <FormControlLabel
-              label="New Tab"
-              control={
-                <Checkbox
-                  checked={button.newTab || false}
-                  onChange={onChangeCheckedHandler(updateButton('newTab'))}
-                />
-              }
-            />
-          </FormControl>
-        </Grid>
-        <Grid item xs={6}>
-          <Switch
-            checked={button.isVisible}
-            onChange={onChangeCheckedHandler(updateButton('isVisible'))}
-            arial-label="config switch sidebar"
-            labelPlacement="end"
-            color="primary"
-            label={button.isVisible ? 'Enable' : 'Disable'}
-          />
-        </Grid>
         <Grid item xs={6}>
           <ColorPicker
             label="Background Color"
@@ -172,31 +147,6 @@ export function SidebarNavButtonConfig(props: {
             valueLabelDisplay="auto"
             value={button.borderWidth ? button.borderWidth : 1}
             aria-label="border thickness"
-          />
-        </Grid>
-        <Grid item xs={12}>
-          <TextField
-            value={button.offlineTitle || ''}
-            label="Offline Title"
-            fullWidth
-            inputProps={{
-              'aria-label': 'main nav button offline title',
-            }}
-            onChange={onChangeStringHandler(updateButton('offlineTitle'))}
-          />
-        </Grid>
-        <Grid item xs={12}>
-          <TextField
-            value={button.offlineDescription || ''}
-            label="Offline Description"
-            fullWidth
-            variant="outlined"
-            inputProps={{
-              'aria-label': 'main nav button offline description',
-            }}
-            multiline
-            rows="2"
-            onChange={onChangeStringHandler(updateButton('offlineDescription'))}
           />
         </Grid>
       </Grid>
