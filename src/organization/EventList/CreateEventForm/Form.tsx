@@ -9,7 +9,6 @@ import {Controller, UseFormMethods} from 'react-hook-form'
 import {ObvioEvent} from 'Event'
 import {fieldError} from 'lib/form'
 import {DateTimePicker} from '@material-ui/pickers'
-import {now} from 'lib/date-time'
 import moment from 'moment'
 
 export type EventData = Pick<
