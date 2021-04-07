@@ -24,6 +24,7 @@ import {DateTimePicker} from '@material-ui/pickers'
 import {useTemplate} from 'Event/TemplateProvider'
 import {Template} from 'Event/template'
 import TemplateFields from 'organization/Event/TechCheckConfig/Form/TemplateFields'
+import {now} from 'lib/date-time'
 
 /**
  * Default props to use for techCheck. These will be set when an
@@ -166,7 +167,7 @@ export default function Form() {
       <Controller
         name="start"
         control={control}
-        defaultValue=""
+        defaultValue={now()}
         rules={{
           required: 'Start is required',
         }}

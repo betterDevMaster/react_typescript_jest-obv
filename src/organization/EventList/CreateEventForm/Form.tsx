@@ -9,6 +9,7 @@ import {Controller, UseFormMethods} from 'react-hook-form'
 import {ObvioEvent} from 'Event'
 import {fieldError} from 'lib/form'
 import {DateTimePicker} from '@material-ui/pickers'
+import {now} from 'lodash'
 
 export type EventData = Pick<
   ObvioEvent,
@@ -99,7 +100,7 @@ export default function Form(props: {
       <Controller
         name="start"
         control={props.control}
-        defaultValue=""
+        defaultValue={now()}
         rules={{
           required: 'Start is required',
         }}
@@ -120,7 +121,7 @@ export default function Form(props: {
       <Controller
         name="end"
         control={props.control}
-        defaultValue=""
+        defaultValue={now()}
         rules={{
           required: 'End is required',
         }}
