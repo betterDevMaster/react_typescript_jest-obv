@@ -7,6 +7,7 @@ import {AbsoluteLink} from 'lib/ui/link/AbsoluteLink'
 import {storage} from 'lib/url'
 import {Publishable} from 'Event/Dashboard/editor/views/Published'
 import {useTemplate} from 'Event/TemplateProvider'
+import {useWithAttendeeData} from 'Event/auth/data'
 
 export type Resource = Publishable & {
   name: string
@@ -23,6 +24,7 @@ export default function ResourceItem(props: {
   const {downloadResource: DOWNLOADING_RESOURCE} = usePlatformActions()
   const {submit} = usePoints()
   const {sidebar} = useTemplate()
+  const withAttendeeData = useWithAttendeeData()
 
   const awardPoints = () => {
     submit(DOWNLOADING_RESOURCE)
@@ -45,7 +47,9 @@ export default function ResourceItem(props: {
       >
         {props.resource.icon}
       </StyledIcon>
-      <LinkText aria-label="resource link">{props.resource.name}</LinkText>
+      <LinkText aria-label="resource link">
+        {withAttendeeData(props.resource.name)}
+      </LinkText>
     </ResourceLink>
   )
 }

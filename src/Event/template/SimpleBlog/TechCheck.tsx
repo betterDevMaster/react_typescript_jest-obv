@@ -13,6 +13,7 @@ import OfflineDialog from 'lib/ui/OfflineDialog'
 import {colors} from 'lib/ui/theme'
 import Grid from '@material-ui/core/Grid'
 import grey from '@material-ui/core/colors/grey'
+import {useWithAttendeeData} from 'Event/auth/data'
 
 const DEFAULT_OFFLINE_TITLE = 'Tech Check Is Currently Offline'
 const DISABLED_GREY = grey[400]
@@ -21,6 +22,7 @@ export default function TechCheck(props: {user: User} & TechCheckProps) {
   const {techCheck} = props
   const template = useTemplate()
   const joinUrl = useJoinUrl(techCheck.area.id)
+  const withAttendeeData = useWithAttendeeData()
 
   return (
     <SimpleBlogPage user={props.user}>
@@ -34,7 +36,7 @@ export default function TechCheck(props: {user: User} & TechCheckProps) {
         />
         <Body
           dangerouslySetInnerHTML={{
-            __html: techCheck.body,
+            __html: withAttendeeData(techCheck.body),
           }}
         />
         <StyledDiv>
@@ -52,6 +54,8 @@ export default function TechCheck(props: {user: User} & TechCheckProps) {
 function StartButton(props: {url: string | null}) {
   const {url} = props
   const {techCheck} = useTemplate()
+  const withAttendeeData = useWithAttendeeData()
+
   const [offlineDialogVisible, setOfflineDialogVisible] = useState(false)
   const toggleOfflineDialog = () =>
     setOfflineDialogVisible(!offlineDialogVisible)
@@ -78,7 +82,7 @@ function StartButton(props: {url: string | null}) {
       onClick={onClick}
       fullWidth
     >
-      {techCheck?.buttonText || 'Start Tech Check'}
+      {withAttendeeData(techCheck?.buttonText || 'Start Tech Check')}
     </StyledButton>
   )
 
@@ -87,8 +91,10 @@ function StartButton(props: {url: string | null}) {
       <>
         <OfflineDialog
           isOpen={offlineDialogVisible}
-          title={techCheck?.offlineTitle || DEFAULT_OFFLINE_TITLE}
-          description={techCheck?.offlineDescription || ''}
+          title={withAttendeeData(
+            techCheck?.offlineTitle || DEFAULT_OFFLINE_TITLE,
+          )}
+          description={withAttendeeData(techCheck?.offlineDescription || '')}
           onClose={toggleOfflineDialog}
         />
         {button}

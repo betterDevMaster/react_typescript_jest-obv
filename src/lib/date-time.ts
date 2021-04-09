@@ -7,6 +7,10 @@ export const now = () => {
   return new Date().toISOString()
 }
 
+export const time = () => formatDate(now(), 'HH:mm')
+
+export const today = () => formatDate(now())
+
 export const formatDate = (value: string, format = 'DD-MM-YYYY') =>
   moment(value).format(format)
 

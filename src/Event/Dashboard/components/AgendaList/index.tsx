@@ -10,6 +10,7 @@ import {useTemplate} from 'Event/TemplateProvider'
 import Section from 'Event/template/SimpleBlog/Dashboard/Sidebar/Section'
 import {useEditMode} from 'Event/Dashboard/editor/state/edit-mode'
 import {AbsoluteLink} from 'lib/ui/link/AbsoluteLink'
+import {useWithAttendeeData} from 'Event/auth/data'
 
 export const AGENDA_ITEM = 'Agenda Item'
 export const AGENDA_LIST = 'Agenda List'
@@ -24,6 +25,7 @@ export type Agenda = Publishable & {
 export default function AgendaList() {
   const {agenda} = useTemplate()
   const isEdit = useEditMode()
+  const withAttendeeData = useWithAttendeeData()
 
   const hasAgenda = agenda.items.length > 0
   if (!hasAgenda && !isEdit) {
@@ -33,7 +35,7 @@ export default function AgendaList() {
   return (
     <Section>
       <EditComponent component={{type: AGENDA_LIST}}>
-        <Heading aria-label="agendas">{agenda.title}</Heading>
+        <Heading aria-label="agendas">{withAttendeeData(agenda.title)}</Heading>
       </EditComponent>
       <>
         {agenda.items.map((item, index) => (
@@ -56,19 +58,19 @@ export default function AgendaList() {
 
 function Times(props: {agenda: Agenda}) {
   const start = moment(props.agenda.startDate)
-
   const getMonth = (date: moment.Moment) => date.format('MMMM')
   const getDay = (date: moment.Moment) => date.format('Do')
   const getTime = (date: moment.Moment) => date.format('h:mma')
   const getTimezone = (date: moment.Moment) =>
     date.tz(moment.tz.guess()).format('z')
   const {sidebar} = useTemplate()
+  const sidebarTextColor = sidebar.textColor
 
   const tz = getTimezone(start)
 
   if (!props.agenda.endDate) {
     return (
-      <TimeText aria-label="agenda event times" color={sidebar.textColor}>
+      <TimeText aria-label="agenda event times" color={sidebarTextColor}>
         <strong>{`${getMonth(start)} ${getDay(start)}:`}</strong>{' '}
         {`${getTime(start)} ${tz}`}
       </TimeText>
@@ -80,7 +82,7 @@ function Times(props: {agenda: Agenda}) {
   const sameDay = getDay(end) === getDay(start)
   if (sameMonth && sameDay) {
     return (
-      <TimeText aria-label="agenda event times" color={sidebar.textColor}>
+      <TimeText aria-label="agenda event times" color={sidebarTextColor}>
         <strong>{`${getMonth(start)} ${getDay(start)}:`}</strong>{' '}
         {getTime(start)}
         {` - ${getTime(end)} ${tz}`}
@@ -89,7 +91,7 @@ function Times(props: {agenda: Agenda}) {
   }
 
   return (
-    <TimeText aria-label="agenda event times" color={sidebar.textColor}>
+    <TimeText aria-label="agenda event times" color={sidebarTextColor}>
       <strong>{`${getMonth(start)} ${getDay(start)}:`}</strong> {getTime(start)}
       {` - `}
       <strong>
@@ -102,16 +104,17 @@ function Times(props: {agenda: Agenda}) {
 
 function Event(props: {agenda: Agenda}) {
   const {sidebar} = useTemplate()
+  const withAttendeeData = useWithAttendeeData()
 
   if (props.agenda.link) {
     return (
       <StyledAbsoluteLink
         newTab
-        to={props.agenda.link}
+        to={withAttendeeData(props.agenda.link)}
         color={sidebar.textColor}
       >
         <EventText aria-label="agenda event" color={sidebar.textColor}>
-          {props.agenda.text}
+          {withAttendeeData(props.agenda.text)}
         </EventText>
       </StyledAbsoluteLink>
     )
@@ -119,7 +122,7 @@ function Event(props: {agenda: Agenda}) {
 
   return (
     <EventText aria-label="agenda event" color={sidebar.textColor}>
-      {props.agenda.text}
+      {withAttendeeData(props.agenda.text)}
     </EventText>
   )
 }

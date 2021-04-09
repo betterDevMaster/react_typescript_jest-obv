@@ -3,7 +3,7 @@ import styled from 'styled-components'
 import {blogPostTime, getDiffDatetime, now} from 'lib/date-time'
 import {Publishable} from 'Event/Dashboard/editor/views/Published'
 import {useEditMode} from 'Event/Dashboard/editor/state/edit-mode'
-
+import {useWithAttendeeData} from 'Event/auth/data'
 export type BlogPost = Publishable & {
   title: string
   postedAt: string
@@ -15,22 +15,22 @@ export const BLOG_POST = 'Blog Post'
 
 export function BlogPost(props: {post: BlogPost}) {
   const isEdit = useEditMode()
-  const {post} = props
+  const withAttendeeData = useWithAttendeeData()
 
-  const date = post.publishAt || post.postedAt
+  const date = props.post.publishAt || props.post.postedAt
   const formattedDate = blogPostTime(date)
 
-  if (!isEdit && !shouldPublish(post)) {
+  if (!isEdit && !shouldPublish(props.post)) {
     return null
   }
 
   return (
     <Post aria-label="blog post">
-      <Title>{props.post.title}</Title>
+      <Title>{withAttendeeData(props.post.title)}</Title>
       <PostDate>{formattedDate}</PostDate>
       <div
         dangerouslySetInnerHTML={{
-          __html: props.post.content,
+          __html: withAttendeeData(props.post.content),
         }}
       />
     </Post>

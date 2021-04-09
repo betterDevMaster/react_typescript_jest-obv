@@ -9,6 +9,7 @@ import {withStyles} from '@material-ui/core'
 import {spacing} from 'lib/ui/theme'
 import Button from '@material-ui/core/Button'
 import {useTemplate} from 'Event/TemplateProvider'
+import {useWithAttendeeData} from 'Event/auth/data'
 
 export const BODY_HTML_EMBED = 'Embed HTML'
 
@@ -18,8 +19,9 @@ export default function BodyHTMLEmbed() {
   const [scriptElements, setScriptElements] = useState<HTMLElement[]>([])
   const {bodyHTMLEmbed: bodyEmbed} = useTemplate()
   const isEditMode = useEditMode()
+  const withAttendeeData = useWithAttendeeData()
 
-  const html = bodyEmbed || ''
+  const html = bodyEmbed ? withAttendeeData(bodyEmbed) : ''
 
   const el = useRef<HTMLElement | null>(null)
 

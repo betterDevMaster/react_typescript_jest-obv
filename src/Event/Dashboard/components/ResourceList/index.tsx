@@ -11,6 +11,7 @@ import ResourceItem, {
   Resource,
 } from 'Event/Dashboard/components/ResourceList/ResourceItem'
 import Published from 'Event/Dashboard/editor/views/Published'
+import {useWithAttendeeData} from 'Event/auth/data'
 
 export interface ResourceList {
   title: string
@@ -37,6 +38,7 @@ export const RESOURCE_ICON = {
 export function ResourceList() {
   const isEdit = useEditMode()
   const {resourceList: list, sidebar} = useTemplate()
+  const withAttendeeData = useWithAttendeeData()
 
   const hasResources = list.resources.length > 0
   if (!hasResources && !isEdit) {
@@ -46,13 +48,13 @@ export function ResourceList() {
   return (
     <Section>
       <EditComponent component={{type: RESOURCE_LIST}}>
-        <Heading aria-label="resources">{list.title}</Heading>
+        <Heading aria-label="resources">{withAttendeeData(list.title)}</Heading>
       </EditComponent>
       <Description aria-label="resource description" color={sidebar.textColor}>
-        {list.description}
+        {withAttendeeData(list.description)}
       </Description>
       <List>
-        {list.resources.map((resource, index) => (
+        {list.resources.map((resource: Resource, index: number) => (
           <li key={index}>
             <EditComponent
               component={{

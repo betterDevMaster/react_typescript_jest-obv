@@ -1,10 +1,9 @@
-import {act, findByText, fireEvent, wait} from '@testing-library/react'
+import {act, fireEvent, wait} from '@testing-library/react'
 import user from '@testing-library/user-event'
 import faker from 'faker'
 import {fakeAttendee} from 'Event/auth/__utils__/factory'
 import {loginToEventSite} from 'Event/__utils__/url'
 import axios from 'axios'
-import {Await} from 'lib/type-utils'
 import {fakeQuestion} from 'organization/Event/QuestionsProvider/__utils__/factory'
 import {
   CHECKBOX,
@@ -15,9 +14,9 @@ import {
   SHORT_ANSWER_TEXT,
 } from 'organization/Event/QuestionsProvider'
 import {fakeEvent} from 'Event/__utils__/factory'
+import {submitWaiver} from 'Event/Step2/__utils__/submit-waiver'
 
 const mockPost = axios.post as jest.Mock
-const mockGet = axios.get as jest.Mock
 
 beforeEach(() => {
   jest.clearAllMocks()
@@ -162,54 +161,3 @@ it('should submit answers', async () => {
     checkboxQuestion.options.join(', '),
   )
 })
-
-async function submitWaiver({
-  findByLabelText,
-}: Await<ReturnType<typeof loginToEventSite>>) {
-  const canvas = ((await findByLabelText(
-    'signature canvas',
-  )) as unknown) as HTMLCanvasElement
-
-  const signature = 'data:image/png;base64'
-  //@ts-ignore
-  canvas.toDataURL.mockReturnValueOnce(signature) // mocked via jest-canvas-mock
-
-  const down = new MouseEvent('mousedown', {
-    button: 1,
-    bubbles: true,
-  })
-
-  Object.defineProperty(down, 'which', {
-    value: 1,
-  })
-
-  fireEvent(canvas, down)
-
-  const up = new MouseEvent('mouseup', {
-    button: 1,
-    bubbles: true,
-  })
-
-  // Have to manually set 'which' because that's what SignaturePad uses
-  // to check the mouse button
-  Object.defineProperty(up, 'which', {
-    value: 1,
-  })
-
-  fireEvent(canvas, up)
-
-  fireEvent.click(await findByLabelText('agree to waiver checkbox'))
-
-  const withWaver = fakeAttendee({
-    has_password: true,
-    waiver: 'waiver.jpg',
-  })
-  mockPost.mockImplementationOnce(() => Promise.resolve({data: withWaver}))
-
-  fireEvent.click(await findByLabelText('submit'))
-
-  const techCheckUrl = faker.internet.url()
-  mockGet.mockImplementationOnce(() =>
-    Promise.resolve({data: {url: techCheckUrl}}),
-  )
-}

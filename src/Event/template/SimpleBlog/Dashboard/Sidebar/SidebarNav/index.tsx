@@ -5,12 +5,10 @@ import NewSidebarNavButton from 'Event/template/SimpleBlog/Dashboard/Sidebar/New
 import EditModeOnly from 'Event/Dashboard/editor/views/EditModeOnly'
 import {useTemplate} from 'Event/TemplateProvider'
 import Section from 'Event/template/SimpleBlog/Dashboard/Sidebar/Section'
-
 export const SIDEBAR_NAV_BUTTON = 'Sidebar Nav Button'
 
 export default function SidebarNav() {
   const {sidebarNav: buttons} = useTemplate()
-
   const hasButtons = buttons.ids.length > 0
   if (!hasButtons) {
     return (

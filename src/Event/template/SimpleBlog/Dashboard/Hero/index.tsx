@@ -7,6 +7,7 @@ import EditModeOnly from 'Event/Dashboard/editor/views/EditModeOnly'
 import {withStyles} from '@material-ui/core'
 import {spacing} from 'lib/ui/theme'
 import Button from '@material-ui/core/Button'
+import {useWithAttendeeData} from 'Event/auth/data'
 
 export const HERO = 'Hero'
 
@@ -41,12 +42,21 @@ function EditButton() {
 
 function WelcomeText() {
   const {welcomeText} = useTemplate()
+  const withAttendeeData = useWithAttendeeData()
 
   if (!welcomeText) {
     return null
   }
 
-  return <Text aria-label="welcome">{welcomeText}</Text>
+  return (
+    <Text aria-label="welcome">
+      <div
+        dangerouslySetInnerHTML={{
+          __html: withAttendeeData(welcomeText),
+        }}
+      />
+    </Text>
+  )
 }
 
 function Image() {

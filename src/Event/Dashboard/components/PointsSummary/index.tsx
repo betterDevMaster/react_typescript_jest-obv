@@ -10,7 +10,7 @@ import {usePoints} from 'Event/PointsProvider'
 import Section from 'Event/template/SimpleBlog/Dashboard/Sidebar/Section'
 import {usePlatformActions} from 'Event/ActionsProvider/platform-actions'
 import {useEvent} from 'Event/EventProvider'
-
+import {useWithAttendeeData} from 'Event/auth/data'
 export type Points = {
   description: string
   unit: string
@@ -24,6 +24,7 @@ export default function PointsSummary() {
   const {score, submit} = usePoints()
   const {event} = useEvent()
   const logo = event.points_summary_logo ? event.points_summary_logo.url : ''
+  const withAttendeeData = useWithAttendeeData()
 
   const awardPoints = () => {
     submit(VISIT_LEADERBOARD)
@@ -46,7 +47,7 @@ export default function PointsSummary() {
             <NumPointsText aria-label="points summary">
               You've earned {score.points} {summary.unit}!
             </NumPointsText>
-            <p>{summary.description}</p>
+            <p>{withAttendeeData(summary.description)}</p>
             <p>
               If you would like to see where you stand on the{' '}
               <StyledLink

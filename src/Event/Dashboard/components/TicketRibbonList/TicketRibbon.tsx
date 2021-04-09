@@ -13,6 +13,7 @@ import PURPLE_RIBBON_IMAGE from 'Event/Dashboard/components/TicketRibbonList/rib
 import RED_RIBBON_IMAGE from 'Event/Dashboard/components/TicketRibbonList/ribbons/red.png'
 import WHITE_RIBBON_IMAGE from 'Event/Dashboard/components/TicketRibbonList/ribbons/white.png'
 import YELLOW_RIBBON_IMAGE from 'Event/Dashboard/components/TicketRibbonList/ribbons/yellow.png'
+import {useWithAttendeeData} from 'Event/auth/data'
 
 export const TICKET_RIBBON = 'Ticket Ribbon'
 
@@ -65,6 +66,7 @@ export const IMAGES = Object.values(TICKET_RIBBON_IMAGE)
 
 export default (props: {ticketRibbon: TicketRibbon; index: number}) => {
   const image = TICKET_RIBBON_IMAGE[props.ticketRibbon.name]
+  const withAttendeeData = useWithAttendeeData()
 
   return (
     <VisibleRibbon ticketRibbon={props.ticketRibbon}>
@@ -72,7 +74,7 @@ export default (props: {ticketRibbon: TicketRibbon; index: number}) => {
         <Box aria-label="ticket ribbon">
           <Ribbon background={`url(${image})`} color={props.ticketRibbon.color}>
             <RibbonText aria-label="ticket ribbon text">
-              {props.ticketRibbon.text}
+              {withAttendeeData(props.ticketRibbon.text)}
             </RibbonText>
           </Ribbon>
         </Box>
