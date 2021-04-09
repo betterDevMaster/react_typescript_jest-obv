@@ -112,3 +112,41 @@ it('should render with attendee data', async () => {
     ),
   ).toBe(groupUrl)
 })
+
+it('should replace multiple groups', async () => {
+  const group1 = 'first'
+  const group2 = 'second'
+
+  const attendee = fakeAttendee({
+    has_password: true,
+    waiver: null,
+    groups: {
+      group1,
+      group2,
+    },
+  })
+
+  const groupLinkButton = fakeNavButtonWithSize({
+    link: '{{group1}}{{group2}}',
+    text: '',
+  })
+
+  const buttons = [groupLinkButton]
+
+  const event = fakeEvent({
+    waiver: fakeWaiver({
+      body: '{{group1}} {{group2}}',
+    }),
+    template: fakeSimpleBlog({
+      welcomeText: 'welcome {{email}}',
+      mainNav: createEntityList(buttons),
+    }),
+  })
+
+  const context = await loginToEventSite({attendee, event})
+
+  const {findByText} = context
+
+  // Replaced first name in waiver
+  expect(await findByText(`${group1} ${group2}`)).toBeInTheDocument()
+})

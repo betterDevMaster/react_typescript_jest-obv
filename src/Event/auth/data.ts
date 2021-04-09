@@ -96,7 +96,7 @@ export function useWithAttendeeData() {
  */
 
 function variables(text: string) {
-  const matches = text.match(/{{(.*)}}/g)
+  const matches = text.match(/{{([^}]+)}}/g)
 
   if (!matches) {
     return []
