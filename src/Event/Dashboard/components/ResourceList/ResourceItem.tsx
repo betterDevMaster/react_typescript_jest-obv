@@ -7,13 +7,15 @@ import {AbsoluteLink} from 'lib/ui/link/AbsoluteLink'
 import {storage} from 'lib/url'
 import {Publishable} from 'Event/Dashboard/editor/views/Published'
 import {useTemplate} from 'Event/TemplateProvider'
+import {HasRules} from 'Event/Dashboard/component-rules'
 import {useWithAttendeeData} from 'Event/auth/data'
 
-export type Resource = Publishable & {
-  name: string
-  filePath: string
-  icon: string
-}
+export type Resource = Publishable &
+  HasRules & {
+    name: string
+    filePath: string
+    icon: string
+  }
 
 export const RESOURCE_ITEM = 'Resource Item'
 

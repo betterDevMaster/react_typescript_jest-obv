@@ -11,6 +11,7 @@ import ResourceItem, {
   Resource,
 } from 'Event/Dashboard/components/ResourceList/ResourceItem'
 import Published from 'Event/Dashboard/editor/views/Published'
+import HiddenOnMatch from 'Event/Dashboard/component-rules/HiddenOnMatch'
 import {useWithAttendeeData} from 'Event/auth/data'
 
 export interface ResourceList {
@@ -56,19 +57,21 @@ export function ResourceList() {
       <List>
         {list.resources.map((resource: Resource, index: number) => (
           <li key={index}>
-            <EditComponent
-              component={{
-                type: RESOURCE_ITEM,
-                id: index,
-              }}
-            >
-              <Published component={resource}>
-                <ResourceItem
-                  resource={resource}
-                  iconColor={sidebar.textColor}
-                />
-              </Published>
-            </EditComponent>
+            <HiddenOnMatch rules={resource.rules}>
+              <EditComponent
+                component={{
+                  type: RESOURCE_ITEM,
+                  id: index,
+                }}
+              >
+                <Published component={resource}>
+                  <ResourceItem
+                    resource={resource}
+                    iconColor={sidebar.textColor}
+                  />
+                </Published>
+              </EditComponent>
+            </HiddenOnMatch>
           </li>
         ))}
       </List>

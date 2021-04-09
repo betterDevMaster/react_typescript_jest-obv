@@ -7,6 +7,7 @@ export const fakeResource = (overrides?: Partial<Resource>): Resource => ({
   filePath: faker.internet.url(),
   icon: faker.random.arrayElement(Object.values(RESOURCE_ICON)),
   isVisible: faker.random.boolean(),
+  rules: [],
   ...overrides,
 })
 

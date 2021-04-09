@@ -21,6 +21,7 @@ export default function AddResourceButton(props: {className?: string}) {
         filePath: '',
         icon: RESOURCE_ICON.pdf,
         isVisible: true,
+        rules: [],
       },
     ]
     updateTemplate({
