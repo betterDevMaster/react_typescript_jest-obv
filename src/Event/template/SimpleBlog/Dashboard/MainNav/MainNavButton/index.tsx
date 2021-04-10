@@ -7,7 +7,11 @@ import NavButton, {
 import EditComponent from 'Event/Dashboard/editor/views/EditComponent'
 import React from 'react'
 import Published from 'Event/Dashboard/editor/views/Published'
-import {Draggable, DraggableProvidedDragHandleProps} from 'react-beautiful-dnd'
+import {
+  Draggable,
+  DraggableProvidedDraggableProps,
+  DraggableProvidedDragHandleProps,
+} from 'react-beautiful-dnd'
 import DragHandleIcon from '@material-ui/icons/DragHandle'
 import {useEditMode} from 'Event/Dashboard/editor/state/edit-mode'
 
@@ -21,60 +25,65 @@ type MainNavButtonProps = {
 export default React.memo((props: MainNavButtonProps) => {
   const isEditMode = useEditMode()
 
-  /**
-   * There is a lot of duplication here to check whether to include the
-   * drag components. Not ideal, but not sure there is a better way
-   * due to props being required at different level components.
-   */
+  const button = <NavButton {...props.button} aria-label="main nav button" />
 
   if (!isEditMode) {
-    return (
-      <HiddenOnMatch rules={props.button.rules}>
-        <Grid item xs={12} md={props.button.size}>
-          <Published component={props.button}>
-            <NavButton {...props.button} aria-label="main nav button" />
-          </Published>
-        </Grid>
-      </HiddenOnMatch>
-    )
+    return <Container button={props.button}>{button}</Container>
   }
 
   return (
     <Draggable draggableId={props.id} index={props.index}>
       {(provided) => (
-        <HiddenOnMatch rules={props.button.rules}>
-          <Grid
-            item
-            xs={12}
-            md={props.button.size}
-            {...provided.draggableProps}
-            ref={provided.innerRef}
-          >
-            <DraggableOverlay>
-              <EditComponent
-                component={{
-                  type: MAIN_NAV_BUTTON,
-                  id: props.id,
-                }}
-              >
-                <>
-                  <DragHandle handleProps={provided.dragHandleProps} />
-                  <Published component={props.button}>
-                    <NavButton {...props.button} aria-label="main nav button" />
-                  </Published>
-                </>
-              </EditComponent>
-            </DraggableOverlay>
-          </Grid>
-        </HiddenOnMatch>
+        <Container
+          button={props.button}
+          ref={provided.innerRef}
+          draggableProps={provided.draggableProps}
+        >
+          <DraggableOverlay>
+            <EditComponent
+              component={{
+                type: MAIN_NAV_BUTTON,
+                id: props.id,
+              }}
+            >
+              <>
+                <DragHandle handleProps={provided.dragHandleProps} />
+                {button}
+              </>
+            </EditComponent>
+          </DraggableOverlay>
+        </Container>
       )}
     </Draggable>
   )
 })
 
+const Container = React.forwardRef<
+  HTMLDivElement,
+  {
+    children: React.ReactElement
+    button: NavButtonWithSize
+    draggableProps?: DraggableProvidedDraggableProps
+  }
+>((props, ref) => (
+  <HiddenOnMatch rules={props.button.rules}>
+    <Published component={props.button}>
+      <Grid
+        item
+        xs={12}
+        md={props.button.size}
+        ref={ref}
+        {...props.draggableProps}
+      >
+        {props.children}
+      </Grid>
+    </Published>
+  </HiddenOnMatch>
+))
+
 function DragHandle(props: {handleProps?: DraggableProvidedDragHandleProps}) {
   return (
-    <DragHandleBox {...props.handleProps} aria-label="item drag handle">
+    <DragHandleBox {...props.handleProps} aria-label="button drag handle">
       <DragHandleIcon />
     </DragHandleBox>
   )
@@ -97,6 +106,10 @@ const DragHandleBox = styled.div`
     color: ${(props) => props.theme.colors.primary};
   }
 `
+
+/**
+ * Handle the show drag handle on hover
+ */
 
 const DraggableOverlay = styled.div`
   position: relative;

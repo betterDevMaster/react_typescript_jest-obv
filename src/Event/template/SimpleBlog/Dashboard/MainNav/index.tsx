@@ -1,60 +1,65 @@
 import MainNavButton from 'Event/template/SimpleBlog/Dashboard/MainNav/MainNavButton'
-import NewMainNavButton from 'Event/template/SimpleBlog/Dashboard/MainNav/MainNavButton/NewMainNavButton'
 import React from 'react'
 import {useTemplate, useUpdateTemplate} from 'Event/TemplateProvider'
-import {DragDropContext, Droppable, DropResult} from 'react-beautiful-dnd'
+import {
+  DragDropContext,
+  Droppable,
+  DroppableProvidedProps,
+  DropResult,
+} from 'react-beautiful-dnd'
 import Grid from '@material-ui/core/Grid'
 import {useEditMode} from 'Event/Dashboard/editor/state/edit-mode'
+import NewMainNavButton from 'Event/template/SimpleBlog/Dashboard/MainNav/MainNavButton/NewMainNavButton'
 
 export default function MainNav(props: {className?: string}) {
-  const {mainNav: buttons} = useTemplate()
+  const {mainNav} = useTemplate()
   const isEditMode = useEditMode()
   const handleDrag = useHandleDrag()
 
+  const {ids, entities} = mainNav
+
+  const buttons = ids.map((id, index) => (
+    <MainNavButton id={id} index={index} key={id} button={entities[id]} />
+  ))
+
   if (!isEditMode) {
-    return (
-      <div className={props.className}>
-        <Grid container spacing={2} justify="center">
-          {buttons.ids.map((id, index) => (
-            <MainNavButton
-              id={id}
-              index={index}
-              key={id}
-              button={buttons.entities[id]}
-            />
-          ))}
-        </Grid>
-      </div>
-    )
+    return <Container className={props.className}>{buttons}</Container>
   }
 
   return (
     <DragDropContext onDragEnd={handleDrag}>
       <Droppable droppableId="main_nav_buttons">
         {(provided) => (
-          <div
-            {...provided.droppableProps}
-            ref={provided.innerRef}
+          <Container
             className={props.className}
+            ref={provided.innerRef}
+            {...provided.droppableProps}
           >
-            <Grid container spacing={2} justify="center">
-              {buttons.ids.map((id, index) => (
-                <MainNavButton
-                  id={id}
-                  index={index}
-                  key={id}
-                  button={buttons.entities[id]}
-                />
-              ))}
+            <>
+              {buttons}
               {provided.placeholder}
               <NewMainNavButton />
-            </Grid>
-          </div>
+            </>
+          </Container>
         )}
       </Droppable>
     </DragDropContext>
   )
 }
+
+const Container = React.forwardRef<
+  HTMLDivElement,
+  {
+    className?: string
+    children: React.ReactElement | React.ReactElement[]
+  } & Partial<DroppableProvidedProps>
+>((props, ref) => (
+  <div className={props.className} ref={ref} {...props}>
+    <Grid container spacing={2} justify="center">
+      {props.children}
+    </Grid>
+  </div>
+))
 
 function useHandleDrag() {
   const {mainNav: buttons} = useTemplate()
