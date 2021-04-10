@@ -15,11 +15,7 @@ export default function SimpleBlogDashboard(props: {user: User}) {
   return (
     <SimpleBlogPage user={props.user}>
       <Hero />
-      <MainNavButtons>
-        <Grid container spacing={2}>
-          <MainNav />
-        </Grid>
-      </MainNavButtons>
+      <StyledMainNav />
       <FullHeightGrid container spacing={4}>
         <Hidden mdUp>
           <Grid item xs={12}>
@@ -40,7 +36,7 @@ export default function SimpleBlogDashboard(props: {user: User}) {
   )
 }
 
-const MainNavButtons = styled.div`
+const StyledMainNav = styled(MainNav)`
   margin-bottom: 30px;
 `
 
