@@ -43,27 +43,29 @@ export default React.memo((props: MainNavButtonProps) => {
     <Draggable draggableId={props.id} index={props.index}>
       {(provided) => (
         <HiddenOnMatch rules={props.button.rules}>
-          <DraggableGrid
+          <Grid
             item
             xs={12}
             md={props.button.size}
             {...provided.draggableProps}
             ref={provided.innerRef}
           >
-            <EditComponent
-              component={{
-                type: MAIN_NAV_BUTTON,
-                id: props.id,
-              }}
-            >
-              <>
-                <DragHandle handleProps={provided.dragHandleProps} />
-                <Published component={props.button}>
-                  <NavButton {...props.button} aria-label="main nav button" />
-                </Published>
-              </>
-            </EditComponent>
-          </DraggableGrid>
+            <DraggableOverlay>
+              <EditComponent
+                component={{
+                  type: MAIN_NAV_BUTTON,
+                  id: props.id,
+                }}
+              >
+                <>
+                  <DragHandle handleProps={provided.dragHandleProps} />
+                  <Published component={props.button}>
+                    <NavButton {...props.button} aria-label="main nav button" />
+                  </Published>
+                </>
+              </EditComponent>
+            </DraggableOverlay>
+          </Grid>
         </HiddenOnMatch>
       )}
     </Draggable>
@@ -96,7 +98,7 @@ const DragHandleBox = styled.div`
   }
 `
 
-const DraggableGrid = styled(Grid)`
+const DraggableOverlay = styled.div`
   position: relative;
 
   &:hover ${DragHandleBox} {
