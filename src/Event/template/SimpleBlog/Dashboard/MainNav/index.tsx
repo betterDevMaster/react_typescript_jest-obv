@@ -14,7 +14,7 @@ export default function MainNav(props: {className?: string}) {
   if (!isEditMode) {
     return (
       <div className={props.className}>
-        <Grid container spacing={2}>
+        <Grid container spacing={2} justify="center">
           {buttons.ids.map((id, index) => (
             <MainNavButton
               id={id}
@@ -37,7 +37,7 @@ export default function MainNav(props: {className?: string}) {
             ref={provided.innerRef}
             className={props.className}
           >
-            <Grid container spacing={2}>
+            <Grid container spacing={2} justify="center">
               {buttons.ids.map((id, index) => (
                 <MainNavButton
                   id={id}
