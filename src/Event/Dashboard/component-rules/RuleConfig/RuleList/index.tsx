@@ -11,7 +11,7 @@ import {withStyles} from '@material-ui/core'
 import Visible from 'lib/ui/layout/Visible'
 
 export default function RuleList(props: {
-  rules: Rule[]
+  rules?: Rule[]
   close?: () => void
   onChange: (rules: Rule[]) => void
   onToggleRuleConfig?: () => void
@@ -26,11 +26,14 @@ export default function RuleList(props: {
       props.onToggleRuleConfig()
     }
   }
+
   const [selectedRuleIndex, setSelectedRuleIndex] = useState<number | null>(
     null,
   )
-  const rule =
-    selectedRuleIndex !== null ? props.rules[selectedRuleIndex] : null
+
+  const rules = props.rules || []
+
+  const rule = selectedRuleIndex !== null ? rules[selectedRuleIndex] : null
 
   const addNewRule = () => {
     setSelectedRuleIndex(null)
@@ -43,12 +46,12 @@ export default function RuleList(props: {
   }
 
   const createRule = (rule: Rule) => {
-    const updated = [...props.rules, rule]
+    const updated = [...rules, rule]
     props.onChange(updated)
   }
 
   const updateRule = (index: number, rule: Rule) => {
-    const updated = props.rules.map((r, i) => (i === index ? rule : r))
+    const updated = rules.map((r, i) => (i === index ? rule : r))
     props.onChange(updated)
     setRuleConfigVisible(false)
   }
@@ -65,7 +68,7 @@ export default function RuleList(props: {
 
   const deleteRule = () => {
     toggleRuleConfig()
-    const removed = props.rules.filter((_, i) => i !== selectedRuleIndex)
+    const removed = rules.filter((_, i) => i !== selectedRuleIndex)
     props.onChange(removed)
   }
 
@@ -84,7 +87,7 @@ export default function RuleList(props: {
     <div className={props.className}>
       <CloseRules onClick={props.close} />
       <Rules
-        rules={props.rules}
+        rules={rules}
         onEditRule={editRule}
         updateRule={updateRule}
         descriptionHidden={props.descriptionHidden}
