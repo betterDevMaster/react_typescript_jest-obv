@@ -81,7 +81,10 @@ export function SimpleBlogConfig() {
         step={0.1}
         onChange={handleChangeSlider(updateHeader('backgroundOpacity'))}
         valueLabelDisplay="auto"
-        value={template.header?.backgroundOpacity || 1}
+        valueLabelFormat={() => (
+          <div>{template.header?.backgroundOpacity * 100}%</div>
+        )}
+        value={template.header?.backgroundOpacity || 0}
         aria-label="background opacity"
       />
       <InputLabel>Header Height</InputLabel>
