@@ -17,6 +17,7 @@ export default function RuleList(props: {
   onToggleRuleConfig?: () => void
   descriptionHidden?: boolean
   className?: string
+  description?: string
 }) {
   const [ruleConfigVisible, setRuleConfigVisible] = useState(false)
   const toggleRuleConfig = () => {
@@ -76,6 +77,7 @@ export default function RuleList(props: {
         onDelete={deleteRule}
         onCreate={saveRule}
         rule={rule}
+        description={props.description}
       />
     )
   }
@@ -88,6 +90,7 @@ export default function RuleList(props: {
         onEditRule={editRule}
         updateRule={updateRule}
         descriptionHidden={props.descriptionHidden}
+        description={props.description}
       />
       <MuiButton
         variant="outlined"
@@ -114,6 +117,7 @@ function Rules(props: {
   updateRule: (index: number, rule: Rule) => void
   onEditRule: (index: number) => void
   descriptionHidden?: boolean
+  description?: string
 }) {
   const hasRules = props.rules.length > 0
 
@@ -127,7 +131,7 @@ function Rules(props: {
   return (
     <RulesContainer>
       <Visible when={!props.descriptionHidden}>
-        <RulesDescription>Component will be hidden when </RulesDescription>
+        <RulesDescription>{ props.description ? props.description : "Component will be hidden when"} </RulesDescription>
       </Visible>
       {props.rules.map((rule, index) => (
         <StyledRule
