@@ -128,7 +128,7 @@ export default function NameAppendageListTable(props: {
         }
     };
 
-    return (<SortableList {...props } onSortEnd={onSortEnd} distance={5} />)
+    return (<SortableList {...props } onSortEnd={onSortEnd} distance={10} />)
 }
 
 function reorderNameAppendage(nameAppendages: NameAppendage[], oldIndex : any, newIndex : any) {
