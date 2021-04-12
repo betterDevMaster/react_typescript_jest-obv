@@ -26,8 +26,8 @@ import QuestionsConfig from 'organization/Event/QuestionsConfig'
 import Infusionsoft from 'organization/Event/Services/Apps/Infusionsoft'
 import AuthorizedPage from 'organization/AuthorizedPage'
 import {CONFIGURE_EVENTS} from 'organization/PermissionsProvider'
-import NameAppendageConfig from "organization/Event/NameAppendageConfig";
-import NameAppendageProvider from "./NameAppendageConfig/NameAppendageProvider";
+import NameAppendageConfig from 'organization/Event/NameAppendageConfig'
+import NameAppendageProvider from './NameAppendageConfig/NameAppendageProvider'
 
 export function useEventRoutes(event?: ObvioEvent) {
   const {routes: organizationRoutes} = useOrganization()
@@ -117,13 +117,13 @@ export default function EventRoutes() {
           <AreaRoutes />
         </AreaProvider>
       </Route>
-        <Route path={routes.events[':event'].name_appendage}>
-            <AuthorizedPage permission={CONFIGURE_EVENTS}>
-                <NameAppendageProvider>
-                    <NameAppendageConfig />
-                </NameAppendageProvider>
-            </AuthorizedPage>
-        </Route>
+      <Route path={routes.events[':event'].name_appendage}>
+        <AuthorizedPage permission={CONFIGURE_EVENTS}>
+          <NameAppendageProvider>
+            <NameAppendageConfig />
+          </NameAppendageProvider>
+        </AuthorizedPage>
+      </Route>
       <Redirect to={routes.events[':event'].root} />
     </Switch>
   )

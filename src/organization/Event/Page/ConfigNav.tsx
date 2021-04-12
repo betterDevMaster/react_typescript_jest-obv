@@ -55,7 +55,10 @@ function AuthorizedPages() {
         <ConfigNavItem to={routes.services.root} aria-label="services">
           Services
         </ConfigNavItem>
-        <ConfigNavItem to={routes.name_appendage} aria-label="name appendage page">
+        <ConfigNavItem
+          to={routes.name_appendage}
+          aria-label="name appendage page"
+        >
           Name appendage
         </ConfigNavItem>
       </>
