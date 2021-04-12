@@ -72,7 +72,7 @@ export function BlogPostConfig(props: {id: BlogPostConfig['id']}) {
           <Switch
             checked={post.isVisible}
             onChange={onChangeCheckedHandler(update('isVisible'))}
-            arial-label="config switch to attendee"
+            arial-label="config visible switch"
             labelPlacement="start"
             color="primary"
             label={post.isVisible ? 'Enable' : 'Disable'}

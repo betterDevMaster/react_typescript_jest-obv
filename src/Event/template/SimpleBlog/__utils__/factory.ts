@@ -20,14 +20,7 @@ export const fakeSimpleBlog = (overrides?: Partial<SimpleBlog>): SimpleBlog => {
     version: 1,
     name: SIMPLE_BLOG,
     title: faker.company.companyName(),
-    sidebar: {
-      background: '#000000',
-      textColor: '#FFFFFF',
-      borderRadius: 0,
-      borderWidth: 0,
-      borderColor: '#000000',
-      paddingTop: 0,
-    },
+    sidebar: fakeSideBarContainer(),
     sidebarNav: {entities: {}, ids: []},
     techCheck: {
       buttonText: 'submit',
@@ -189,6 +182,21 @@ export function fakeTemplateTechCheck(
     buttonWidth: 12,
     offlineTitle: '',
     offlineDescription: '',
+    ...overrides,
+  }
+}
+
+export function fakeSideBarContainer(
+  overrides?: Partial<SimpleBlog['sidebar']>,
+): SimpleBlog['sidebar'] {
+  return {
+    background: '#000000',
+    textColor: '#FFFFFF',
+    borderRadius: 0,
+    borderWidth: 0,
+    borderColor: '#000000',
+    paddingTop: 0,
+    isVisible: true,
     ...overrides,
   }
 }

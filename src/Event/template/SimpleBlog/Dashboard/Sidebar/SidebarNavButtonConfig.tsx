@@ -84,7 +84,7 @@ export function SidebarNavButtonConfig(props: {
       <Switch
         checked={button.isVisible}
         onChange={onChangeCheckedHandler(updateButton('isVisible'))}
-        arial-label="config switch sidebar"
+        arial-label="config visible switch"
         labelPlacement="end"
         color="primary"
         label={button.isVisible ? 'Enable' : 'Disable'}

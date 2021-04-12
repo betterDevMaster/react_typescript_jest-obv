@@ -132,7 +132,7 @@ export function ResourceItemConfig(props: {id: ResourceItemConfig['id']}) {
             <Switch
               checked={resource.isVisible}
               onChange={onChangeCheckedHandler(update('isVisible'))}
-              arial-label="config switch to attendee"
+              arial-label="config visible switch"
               labelPlacement="top"
               color="primary"
               label={resource.isVisible ? 'Enable' : 'Disable'}

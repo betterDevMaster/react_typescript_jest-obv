@@ -4,9 +4,11 @@ import ColorPicker from 'lib/ui/ColorPicker'
 import React from 'react'
 import InputLabel from '@material-ui/core/InputLabel'
 import Slider from '@material-ui/core/Slider'
-import {handleChangeSlider} from 'lib/dom'
+import {handleChangeSlider, onChangeCheckedHandler} from 'lib/dom'
 import EventImageUpload from 'organization/Event/DashboardConfig/EventImageUpload'
 import {useEvent} from 'Event/EventProvider'
+import Switch from 'lib/ui/form/Switch'
+import Box from '@material-ui/core/Box'
 
 export type SidebarContainerConfig = {
   type: typeof SIDEBAR_CONTAINER
@@ -28,6 +30,16 @@ export function SidebarContainerConfig() {
 
   return (
     <>
+      <Box display="flex" justifyContent="flex-end">
+        <Switch
+          checked={sidebar.isVisible}
+          onChange={onChangeCheckedHandler(updateSideBar('isVisible'))}
+          arial-label="config visible switch"
+          labelPlacement="start"
+          color="primary"
+          label={sidebar.isVisible ? 'Enabled' : 'Disabled'}
+        />
+      </Box>
       <EventImageUpload
         label="Background Image"
         property="sidebar_background"

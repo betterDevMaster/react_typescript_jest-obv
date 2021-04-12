@@ -101,7 +101,7 @@ export function MainNavButtonConfig(props: {id: MainNavButtonConfig['id']}) {
             <Switch
               checked={button.isVisible}
               onChange={onChangeCheckedHandler(updateButton('isVisible'))}
-              arial-label="config switch to attendee"
+              arial-label="config visible switch"
               labelPlacement="end"
               color="primary"
               label={button.isVisible ? 'Enable' : 'Disable'}

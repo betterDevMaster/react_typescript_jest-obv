@@ -3,6 +3,7 @@ import {Points} from 'Event/Dashboard/components/PointsSummary'
 import {Agenda} from 'Event/Dashboard/components/AgendaList'
 import {BlogPost} from 'Event/Dashboard/components/BlogPost'
 import {EmojiList} from 'Event/Dashboard/components/EmojiList'
+import {Sidebar} from 'Event/template/SimpleBlog/Dashboard/Sidebar/SidebarContainer'
 import {TicketRibbon} from 'Event/Dashboard/components/TicketRibbonList/TicketRibbon'
 import NavButton, {
   NavButtonWithSize,
@@ -23,14 +24,7 @@ export interface SimpleBlog {
   welcomeText?: string
   heroImageSize?: number
   emojiList: EmojiList
-  sidebar: {
-    background: string
-    textColor: string
-    borderRadius: number
-    borderWidth: number
-    borderColor: string
-    paddingTop?: number
-  }
+  sidebar: Sidebar
   sidebarNav: EntityList<NavButton>
   blogPosts: EntityList<BlogPost>
   agenda: {
@@ -116,6 +110,7 @@ export const createSimpleBlog = (): SimpleBlog => ({
     borderWidth: 0,
     borderColor: '#000000',
     paddingTop: 48,
+    isVisible: true,
   },
   techCheck: {
     buttonText: 'submit',
