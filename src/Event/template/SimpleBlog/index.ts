@@ -21,6 +21,7 @@ export interface SimpleBlog {
   mainNav: EntityList<NavButtonWithSize>
   ticketRibbons: TicketRibbon[]
   welcomeText?: string
+  heroImageSize?: number
   emojiList: EmojiList
   sidebar: {
     background: string

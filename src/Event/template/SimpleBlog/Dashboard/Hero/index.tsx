@@ -8,6 +8,7 @@ import {withStyles} from '@material-ui/core'
 import {spacing} from 'lib/ui/theme'
 import Button from '@material-ui/core/Button'
 import {useWithAttendeeData} from 'Event/auth/data'
+import {DEFAULT_HERO_IMAGE_SIZE_PERCENT} from 'Event/template/SimpleBlog/Dashboard/Hero/HeroConfig'
 
 export const HERO = 'Hero'
 
@@ -61,6 +62,9 @@ function WelcomeText() {
 
 function Image() {
   const {event} = useEvent()
+  const {heroImageSize} = useTemplate()
+
+  const size = heroImageSize || DEFAULT_HERO_IMAGE_SIZE_PERCENT
 
   if (!event.welcome_image) {
     return null
@@ -68,13 +72,20 @@ function Image() {
 
   return (
     <ImageBox>
-      <StyledImg src={event.welcome_image.url} />
+      <ImageSizer size={size}>
+        <StyledImg src={event.welcome_image.url} />
+      </ImageSizer>
     </ImageBox>
   )
 }
 
 const ImageBox = styled.div`
   padding: ${(props) => props.theme.spacing[5]} 0;
+`
+
+const ImageSizer = styled.div<{size: number}>`
+  width: ${(props) => props.size}%;
+  margin: 0 auto;
 `
 const StyledImg = styled.img`
   width: 100%;
