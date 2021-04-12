@@ -131,7 +131,11 @@ function Rules(props: {
   return (
     <RulesContainer>
       <Visible when={!props.descriptionHidden}>
-        <RulesDescription>{ props.description ? props.description : "Component will be hidden when"} </RulesDescription>
+        <RulesDescription>
+          {props.description
+            ? props.description
+            : 'Component will be hidden when'}{' '}
+        </RulesDescription>
       </Visible>
       {props.rules.map((rule, index) => (
         <StyledRule

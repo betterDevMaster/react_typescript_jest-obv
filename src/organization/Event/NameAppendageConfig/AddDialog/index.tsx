@@ -6,30 +6,30 @@ import CloseIcon from '@material-ui/icons/Close'
 import grey from '@material-ui/core/colors/grey'
 import IconButton from 'lib/ui/IconButton'
 import styled from 'styled-components'
-import {NameAppendage} from "organization/Event/NameAppendageConfig/NameAppendageProvider";
-import NameAppendageAddForm from "organization/Event/NameAppendageConfig/AddDialog/addForm";
+import {NameAppendage} from 'organization/Event/NameAppendageConfig/NameAppendageProvider'
+import NameAppendageAddForm from 'organization/Event/NameAppendageConfig/AddDialog/addForm'
 
 export default function NameAppendageAddDialog(props: {
-    isOpen: boolean
-    onClose: () => void
-    nameAppendages: NameAppendage[]
-    setNameAppendages: (name_appendage: NameAppendage[]) => void
+  isOpen: boolean
+  onClose: () => void
+  nameAppendages: NameAppendage[]
+  setNameAppendages: (name_appendage: NameAppendage[]) => void
 }) {
-    const visible = Boolean(props.isOpen)
-    return (
-        <Dialog open={visible} onClose={props.onClose} fullWidth>
-            <CloseButton
-                onClick={props.onClose}
-                aria-label="close edit action dialog"
-            >
-                <CloseIcon fontSize="small" />
-            </CloseButton>
-            <DialogTitle>Add name appendage</DialogTitle>
-            <DialogContent>
-                <NameAppendageAddForm {...props}/>
-            </DialogContent>
-        </Dialog>
-    )
+  const visible = Boolean(props.isOpen)
+  return (
+    <Dialog open={visible} onClose={props.onClose} fullWidth>
+      <CloseButton
+        onClick={props.onClose}
+        aria-label="close edit action dialog"
+      >
+        <CloseIcon fontSize="small" />
+      </CloseButton>
+      <DialogTitle>Add name appendage</DialogTitle>
+      <DialogContent>
+        <NameAppendageAddForm {...props} />
+      </DialogContent>
+    </Dialog>
+  )
 }
 
 const CloseButton = styled(IconButton)`
