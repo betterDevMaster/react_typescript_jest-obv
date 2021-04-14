@@ -11,6 +11,8 @@ import {Area} from 'organization/Event/AreasProvider'
 import {Question} from 'organization/Event/QuestionsProvider'
 import React from 'react'
 import {Redirect} from 'react-router-dom'
+import {EntityList} from 'lib/list'
+import NavButton from 'Event/Dashboard/components/NavButton'
 
 // Can't use 'Event' because that's already a native DOM type
 // for browser events and we'd lose TS safety/import assist.
@@ -38,6 +40,8 @@ export interface ObvioEvent {
   welcome_image: PublicFile | null
   sidebar_background: PublicFile | null
   footer_image: PublicFile | null
+  sponsor_page_title: string
+  sponsor_question_icon: PublicFile | null
 }
 
 export interface WaiverConfig {
@@ -63,6 +67,14 @@ export interface Speaker {
   image: PublicFile | null
   name: string
   text: string
+}
+
+export interface Sponsor {
+  id: number
+  image: PublicFile | null
+  name: string
+  description: string
+  buttons: EntityList<NavButton> | null
 }
 
 export default function Event() {

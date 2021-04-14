@@ -27,6 +27,7 @@ import {CONFIGURE_EVENTS} from 'organization/PermissionsProvider'
 import Event from 'organization/Event'
 import AreaList from 'organization/Event/AreaList'
 import {HideLiveChatSupport} from 'lib/WithLiveChatSupport'
+import SponsorPageConfig from 'organization/Event/SponsorPageConfig'
 
 export type EventRoutes = ReturnType<typeof useEventRoutes>
 
@@ -92,6 +93,13 @@ export default function EventRoutes() {
       <Route path={routes.events[':event'].speakers}>
         <AuthorizedPage permission={CONFIGURE_EVENTS}>
           <SpeakerConfig />
+        </AuthorizedPage>
+      </Route>
+      <Route path={routes.events[':event'].sponsors}>
+        <AuthorizedPage permission={CONFIGURE_EVENTS}>
+          <AreasProvider>
+            <SponsorPageConfig />
+          </AreasProvider>
         </AuthorizedPage>
       </Route>
       <Route path={routes.events[':event'].points}>

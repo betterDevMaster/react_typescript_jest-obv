@@ -1,4 +1,4 @@
-import {ObvioEvent, Speaker} from 'Event'
+import {ObvioEvent, Speaker, Sponsor} from 'Event'
 import {fakeAttendee} from 'Event/auth/__utils__/factory'
 import {Entry} from 'Event/Leaderboard'
 import {fakeSimpleBlog} from 'Event/template/SimpleBlog/__utils__/factory'
@@ -30,6 +30,8 @@ export const fakeEvent = (overrides?: Partial<ObvioEvent>): ObvioEvent => ({
   footer_image: null,
   questions: [],
   has_infusionsoft: false,
+  sponsor_page_title: 'Our Sponsors',
+  sponsor_question_icon: null,
   ...overrides,
 })
 
@@ -92,5 +94,14 @@ export const fakeSpeaker = (overrides?: Partial<Speaker>): Speaker => ({
 export const fakeEntry = (overrides?: Partial<Entry>): Entry => ({
   attendee: fakeAttendee(),
   score: faker.random.number({min: 1000, max: 5000}),
+  ...overrides,
+})
+
+export const fakeSponsor = (overrides?: Partial<Sponsor>): Sponsor => ({
+  id: faker.random.number({min: 1000, max: 10000}),
+  name: `${faker.name.firstName()} ${faker.name.lastName()}`,
+  description: `<html><p>${faker.lorem.paragraphs(3)}</p></html>`,
+  image: null,
+  buttons: null,
   ...overrides,
 })

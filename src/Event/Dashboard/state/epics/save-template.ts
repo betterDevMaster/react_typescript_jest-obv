@@ -23,8 +23,10 @@ export const saveTemplateEpic: Epic<
       }
 
       /**
-       * Do NOT send image property data
+       * Do NOT send image property data, or we'll run into a
+       * 'property should be a file' 422 error.
        */
+
       const {
         logo,
         points_summary_logo,
@@ -35,6 +37,7 @@ export const saveTemplateEpic: Epic<
         welcome_image,
         sidebar_background,
         footer_image,
+        sponsor_question_icon,
         ...data
       } = event
 

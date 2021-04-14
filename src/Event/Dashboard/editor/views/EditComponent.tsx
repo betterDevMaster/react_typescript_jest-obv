@@ -21,19 +21,44 @@ export default function EditComponent(
   }
 
   return (
+    <EditComponentOverlay onClick={editComponent}>
+      {props.children}
+    </EditComponentOverlay>
+  )
+}
+
+export function EditComponentOverlay(props: {
+  onClick: () => void
+  children: React.ReactElement
+  disableChildInteraction?: boolean
+}) {
+  return (
     <Box className={EDIT_COMPONENT_CLASS}>
+      <InteractionOverlay disable={props.disableChildInteraction} />
       <StyledEditIconButton
-        onClick={editComponent}
+        onClick={props.onClick}
         className={EDIT_COMPONENT_BUTTON_CLASS}
+        type="button"
+        aria-label="edit component"
       />
       {props.children}
     </Box>
   )
 }
 
+const InteractionOverlay = styled.div<{disable?: boolean}>`
+  display: ${(props) => (props.disable ? 'block' : 'none')};
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 2;
+`
+
 const StyledEditIconButton = styled(EditIconButton)`
   position: absolute;
-  z-index: 2;
+  z-index: 3;
   right: ${(props) => props.theme.spacing[1]};
   top: ${(props) => props.theme.spacing[1]};
   display: none;

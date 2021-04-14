@@ -25,7 +25,7 @@ import ActionConfig from 'Event/template/SimpleBlog/Dashboard/MainNav/MainNavBut
 import Grid from '@material-ui/core/Grid'
 import Switch from 'lib/ui/form/Switch'
 import InfusionsoftTagInput from 'Event/Dashboard/components/NavButton/InfusionsoftTagInput'
-import TargetConfig from 'Event/template/SimpleBlog/Dashboard/MainNav/MainNavButton/MainNavButtonConfig/TargetConfig'
+import TargetConfig from 'Event/Dashboard/components/NavButton/NavButtonConfig/TargetConfig'
 
 export type MainNavButtonConfig = {
   type: typeof MAIN_NAV_BUTTON
@@ -179,7 +179,6 @@ export function MainNavButtonConfig(props: {id: MainNavButtonConfig['id']}) {
           button={button}
           onChange={updateButton('infusionsoftTag')}
         />
-
         <Box mt={2} mb={3}>
           <DangerButton
             fullWidth

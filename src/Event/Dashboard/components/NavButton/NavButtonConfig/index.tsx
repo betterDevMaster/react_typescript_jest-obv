@@ -5,12 +5,7 @@ import {
   onChangeNumberHandler,
   onChangeStringHandler,
 } from 'lib/dom'
-import DangerButton from 'lib/ui/Button/DangerButton'
 import React from 'react'
-import Box from '@material-ui/core/Box'
-import {useCloseConfig} from 'Event/Dashboard/editor/state/edit-mode'
-import {useTemplate, useUpdateTemplate} from 'Event/TemplateProvider'
-import {SIDEBAR_NAV_BUTTON} from 'Event/template/SimpleBlog/Dashboard/Sidebar/SidebarNav'
 import Switch from 'lib/ui/form/Switch'
 import Grid from '@material-ui/core/Grid'
 import InfusionsoftTagInput from 'Event/Dashboard/components/NavButton/InfusionsoftTagInput'
@@ -24,57 +19,19 @@ const MIN_BORDER_WIDTH = 0
 const MAX_BORDER_WIDTH = 50
 
 const MIN_BORDER_RADIUS = 0
-const MAX_BORDER_RADIUS = 25
+const MAX_BORDER_RADIUS = 50
 
-export type SidebarNavButtonConfig = {
-  type: typeof SIDEBAR_NAV_BUTTON
-  id: string
-}
-
-export function SidebarNavButtonConfig(props: {
-  id: SidebarNavButtonConfig['id']
+export default function NavButtonConfig(props: {
+  button: NavButton
+  onUpdate: (button: NavButton) => void
+  onRemove: () => void
 }) {
-  const {sidebarNav: buttons} = useTemplate()
-
-  const updateTemplate = useUpdateTemplate()
-  const closeConfig = useCloseConfig()
-  const {id} = props
-
-  if (!id) {
-    throw new Error('Missing component id')
-  }
-
-  const button = buttons.entities[id]
-
-  const update = (updated: NavButton) => {
-    updateTemplate({
-      sidebarNav: {
-        ...buttons,
-        entities: {
-          ...buttons.entities,
-          [id]: updated,
-        },
-      },
-    })
-  }
-
-  const removeButton = () => {
-    const {[id]: target, ...otherButtons} = buttons.entities
-    const updatedIds = buttons.ids.filter((i) => i !== id)
-
-    closeConfig()
-    updateTemplate({
-      sidebarNav: {
-        entities: otherButtons,
-        ids: updatedIds,
-      },
-    })
-  }
+  const {onUpdate, button} = props
 
   const updateButton = <T extends keyof NavButton>(key: T) => (
     value: NavButton[T],
   ) =>
-    update({
+    onUpdate({
       ...button,
       [key]: value,
     })
@@ -150,21 +107,10 @@ export function SidebarNavButtonConfig(props: {
           />
         </Grid>
       </Grid>
-
       <InfusionsoftTagInput
         button={button}
         onChange={updateButton('infusionsoftTag')}
       />
-      <Box mt={2} mb={3}>
-        <DangerButton
-          fullWidth
-          variant="outlined"
-          aria-label="remove button"
-          onClick={removeButton}
-        >
-          REMOVE BUTTON
-        </DangerButton>
-      </Box>
     </>
   )
 }

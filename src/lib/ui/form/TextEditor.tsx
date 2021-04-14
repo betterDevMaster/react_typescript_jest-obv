@@ -1,4 +1,5 @@
 import React from 'react'
+import styled, {createGlobalStyle} from 'styled-components'
 import CKEditor from '@ckeditor/ckeditor5-react'
 import ClassicEditor from 'obvio-ckeditor'
 
@@ -29,13 +30,38 @@ export default function TextEditor(props: {
   }
 
   return (
-    <CKEditor
-      editor={ClassicEditor}
-      data={props.data}
-      onChange={updateValue}
-      config={{
-        toolbar,
-      }}
-    />
+    <>
+      <CKEditor
+        editor={ClassicEditor}
+        data={props.data}
+        onChange={updateValue}
+        config={{
+          toolbar,
+        }}
+      />
+      <CkPopupZIndex />
+    </>
   )
 }
+
+/**
+ * Fix CKEditor scroll when within a dialog. CKEditor has a min-width, and
+ * anything below will show blank whitespace with scroll. This container
+ * will fix alignment, and hide whitespace.
+ */
+
+export const TextEditorContainer = styled.div`
+  overflow-x: hidden;
+  margin-bottom: ${(props) => props.theme.spacing[5]};
+`
+
+/*
+Fix CKEditor link pop-up not appearing when inside a Dialog. Note that 
+this also required setting disableEnforceFocus on the Dialog
+component.
+*/
+const CkPopupZIndex = createGlobalStyle`
+  body {
+    --ck-z-modal: 1500
+  }
+`

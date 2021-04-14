@@ -1,5 +1,5 @@
 import {BlogPost, BLOG_POST} from 'Event/Dashboard/components/BlogPost'
-import styled, {createGlobalStyle} from 'styled-components'
+import styled from 'styled-components'
 import {useCloseConfig} from 'Event/Dashboard/editor/state/edit-mode'
 import React from 'react'
 import DangerButton from 'lib/ui/Button/DangerButton'
@@ -10,7 +10,7 @@ import Switch from 'lib/ui/form/Switch'
 import Box from '@material-ui/core/Box'
 import {DateTimePicker} from '@material-ui/pickers'
 import {MaterialUiPickersDate} from '@material-ui/pickers/typings/date'
-import TextEditor from 'lib/ui/form/TextEditor'
+import TextEditor, {TextEditorContainer} from 'lib/ui/form/TextEditor'
 
 export type BlogPostConfig = {
   type: typeof BLOG_POST
@@ -67,7 +67,7 @@ export function BlogPostConfig(props: {id: BlogPostConfig['id']}) {
 
   return (
     <>
-      <EditorContainer>
+      <TextEditorContainer>
         <Box display="flex" justifyContent="flex-end">
           <Switch
             checked={post.isVisible}
@@ -107,30 +107,10 @@ export function BlogPostConfig(props: {id: BlogPostConfig['id']}) {
         >
           DELETE POST
         </RemoveButton>
-      </EditorContainer>
-      <CkPopupZIndex />
+      </TextEditorContainer>
     </>
   )
 }
-
-// CKEditor has a min-width, anything less will show blank whitespace
-// with scroll. So we'll add a container to hide unneeded
-// whitespace
-const EditorContainer = styled.div`
-  overflow-x: hidden;
-  margin-bottom: ${(props) => props.theme.spacing[6]};
-`
-
-/*
-Fix CKEditor link pop-up not appearing when inside a Dialog. Note that 
-this also required setting disableEnforceFocus on the Dialog
-component.
-*/
-const CkPopupZIndex = createGlobalStyle`
-  body {
-    --ck-z-modal: 1500
-  }
-`
 
 const RemoveButton = styled(DangerButton)`
   margin-top: ${(props) => props.theme.spacing[5]}!important;

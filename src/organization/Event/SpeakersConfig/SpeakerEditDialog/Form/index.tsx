@@ -13,7 +13,7 @@ import {fieldError} from 'lib/form'
 import {ValidationError} from 'lib/api-client'
 import UploadedImage from 'organization/Event/SpeakersConfig/SpeakerEditDialog/Form/UploadedImage'
 import {fetchFile} from 'lib/http-client'
-import TextEditor from 'lib/ui/form/TextEditor'
+import TextEditor, {TextEditorContainer} from 'lib/ui/form/TextEditor'
 
 const imageUploadId = 'speaker-image-upload'
 
@@ -141,14 +141,14 @@ export default function EditSpeakerForm(props: {
         aria-label="speaker text"
         ref={register}
       />
-      <EditorContainer>
+      <TextEditorContainer>
         {loading ? null : (
           <TextEditor
             data={watch('text')}
             onChange={(val) => setValue('text', val)}
           />
         )}
-      </EditorContainer>
+      </TextEditorContainer>
       <ImageContainer>
         <UploadButton variant="outlined" color="primary">
           <UploadButtonLabel htmlFor={imageUploadId}>
@@ -209,12 +209,4 @@ const SaveButton = styled(Button)`
 
 const RemoveButton = styled(DangerButton)`
   margin-bottom: ${(props) => props.theme.spacing[4]}!important;
-`
-
-// CKEditor has a min-width, anything less will show blank whitespace
-// with scroll. So we'll add a container to hide unneeded
-// whitespace
-const EditorContainer = styled.div`
-  overflow-x: hidden;
-  margin-bottom: ${(props) => props.theme.spacing[6]};
 `

@@ -46,6 +46,9 @@ function AuthorizedPages() {
         <ConfigNavItem to={routes.speakers} aria-label="configure speakers">
           Speakers
         </ConfigNavItem>
+        <ConfigNavItem to={routes.sponsors} aria-label="configure sponsors">
+          Sponsors
+        </ConfigNavItem>
         <ConfigNavItem to={routes.emoji} aria-label="view emoji page" newTab>
           Emoji Page
         </ConfigNavItem>

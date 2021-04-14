@@ -19,6 +19,7 @@ import SubmissionsProvider from 'Event/SubmissionsProvider'
 import CustomScripts from 'organization/Event/CustomScripts'
 import ForgotPassword from 'Event/auth/ForgotPassword'
 import ResetPassword from 'Event/auth/ResetPassword'
+import SponsorPage from 'Event/SponsorPage'
 
 export const eventRoutes = createRoutes({
   login: '/login',
@@ -28,6 +29,7 @@ export const eventRoutes = createRoutes({
   step2: '/step_2',
   step3: '/step_3',
   speakers: '/speakers',
+  sponsors: '/sponsors',
   leaderboard: '/leaderboard',
 })
 
@@ -87,6 +89,9 @@ function UserRoutes() {
       </Route>
       <Route path={eventRoutes.speakers} exact>
         <Speakers />
+      </Route>
+      <Route path={eventRoutes.sponsors} exact>
+        <SponsorPage />
       </Route>
       <Route path={eventRoutes.leaderboard}>
         <Leaderboard />
