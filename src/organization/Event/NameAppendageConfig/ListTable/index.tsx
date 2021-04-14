@@ -10,9 +10,9 @@ import {SortableContainer, SortableElement} from 'react-sortable-hoc'
 import {Button, Table} from '@material-ui/core'
 import {api} from 'lib/url'
 import '../sorting.css'
-import styled from "styled-components";
-import {GenerateTextForVisibilityRules} from "organization/Event/NameAppendageConfig/GenerateTextForVisibilityRules";
-import {LabelPreview} from "organization/Event/NameAppendageConfig/LabelPreview";
+import styled from 'styled-components'
+import {GenerateTextForVisibilityRules} from 'organization/Event/NameAppendageConfig/GenerateTextForVisibilityRules'
+import {LabelPreview} from 'organization/Event/NameAppendageConfig/LabelPreview'
 
 export default function NameAppendageListTable(props: {
   nameAppendages: NameAppendage[]
@@ -23,15 +23,28 @@ export default function NameAppendageListTable(props: {
   const {event} = useEvent()
   const {client} = useOrganization()
 
-    if (!props.nameAppendages) {
-        return <>Loading ...</>
-    }
+  if (!props.nameAppendages) {
+    return <>Loading ...</>
+  }
 
   const SortableItem = SortableElement((nameAppendage: NameAppendage) => (
     <TableRow aria-label="name appendage">
       <TableCell align="center">{nameAppendage.order}</TableCell>
-      <TableCell ><LabelPreview withoutDash={true} text={ nameAppendage.appendage_text } emoji={nameAppendage.appendage_emoji}/></TableCell>
-      <TableCell align="center" width={"500px"} > <GenerateTextForVisibilityRules rules={JSON.parse(nameAppendage.rules)} cropText={true} seeMoreCallback={() => props.setEditing(nameAppendage)}/> </TableCell>
+      <TableCell>
+        <LabelPreview
+          withoutDash={true}
+          text={nameAppendage.appendage_text}
+          emoji={nameAppendage.appendage_emoji}
+        />
+      </TableCell>
+      <TableCell align="center" width={'500px'}>
+        {' '}
+        <GenerateTextForVisibilityRules
+          rules={JSON.parse(nameAppendage.rules)}
+          cropText={true}
+          seeMoreCallback={() => props.setEditing(nameAppendage)}
+        />{' '}
+      </TableCell>
       <TableCell align="center">
         <Button
           fullWidth
@@ -121,7 +134,6 @@ export default function NameAppendageListTable(props: {
       )
     },
   )
-
 
   const onSortEnd = ({oldIndex, newIndex}: any) => {
     if (oldIndex != newIndex) {

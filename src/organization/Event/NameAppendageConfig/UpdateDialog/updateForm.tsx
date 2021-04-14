@@ -8,11 +8,13 @@ import {Rule} from 'Event/Dashboard/component-rules'
 import {api} from 'lib/url'
 import {useEvent} from 'Event/EventProvider'
 import {useOrganization} from 'organization/OrganizationProvider'
-import RuleConfig, {useRuleConfig} from 'Event/Dashboard/component-rules/RuleConfig'
-import ConfigureRulesButton from "Event/Dashboard/component-rules/ConfigureRulesButton";
-import EmojiesSelector from "organization/Event/NameAppendageConfig/emojiSelector";
-import {GenerateTextForVisibilityRules} from "organization/Event/NameAppendageConfig/GenerateTextForVisibilityRules";
-import {LabelPreview} from "organization/Event/NameAppendageConfig/LabelPreview";
+import RuleConfig, {
+  useRuleConfig,
+} from 'Event/Dashboard/component-rules/RuleConfig'
+import ConfigureRulesButton from 'Event/Dashboard/component-rules/ConfigureRulesButton'
+import EmojiesSelector from 'organization/Event/NameAppendageConfig/emojiSelector'
+import {GenerateTextForVisibilityRules} from 'organization/Event/NameAppendageConfig/GenerateTextForVisibilityRules'
+import {LabelPreview} from 'organization/Event/NameAppendageConfig/LabelPreview'
 export default function NameAppendageUpdateForm(props: {
   onClose: () => void
   nameAppendage: NameAppendage | null
@@ -55,49 +57,48 @@ export default function NameAppendageUpdateForm(props: {
     confirmWithoutRuleText: string
     rules: Rule[]
   }) => {
-
-    let pass = false;
+    let pass = false
 
     setSubmitting(true)
     data.rules = rules
     data.appendage_emoji = emoji
 
-    if(!data.appendage_emoji && !data.appendage_text){
+    if (!data.appendage_emoji && !data.appendage_text) {
       setError('Enter at least your Label text OR select a Label emoji.')
       pass = false
-    }else{
-      setError(null )
+    } else {
+      setError(null)
       pass = true
     }
 
-    if(!rules.length && pass){
-      if(data.confirmWithoutRuleText === "YES"){
+    if (!rules.length && pass) {
+      if (data.confirmWithoutRuleText === 'YES') {
         pass = true
-        setError(null )
-      }else{
+        setError(null)
+      } else {
         pass = false
         setConfirmWithoutRules(true)
-        setError('WARNING: You have not set up visibility rules for this label.  That means that ALL attendees will have this Label at the end of their name in zoom.  If this was your intention, type YES in the box below, otherwise click cancel and add a visibility rule to this label.')
+        setError(
+          'WARNING: You have not set up visibility rules for this label.  That means that ALL attendees will have this Label at the end of their name in zoom.  If this was your intention, type YES in the box below, otherwise click cancel and add a visibility rule to this label.',
+        )
       }
-
     }
 
-    if(pass){
+    if (pass) {
       client
-          .post<NameAppendage>(updateURL, data)
-          .then((nameAppendage) => {
-            props.setNameAppendages(
-                updateNameAppendageFromList(props.nameAppendages, nameAppendage),
-            )
-          })
-          .finally(() => {
-            props.onClose()
-            setSubmitting(false)
-          })
-    }else{
+        .post<NameAppendage>(updateURL, data)
+        .then((nameAppendage) => {
+          props.setNameAppendages(
+            updateNameAppendageFromList(props.nameAppendages, nameAppendage),
+          )
+        })
+        .finally(() => {
+          props.onClose()
+          setSubmitting(false)
+        })
+    } else {
       setSubmitting(false)
     }
-
   }
 
   function updateNameAppendageFromList(
@@ -118,71 +119,72 @@ export default function NameAppendageUpdateForm(props: {
   }
 
   const ConfirmWithoutRules = () => {
-
-    if(confirmWithoutRules){
+    if (confirmWithoutRules) {
       return (
-          <>
-            <TextField
-                name="confirmWithoutRuleText"
-                label="Type YES to confirm"
-                fullWidth
-                disabled={submitting}
-                inputProps={{
-                  ref: register(),
-                  'aria-label': 'confirmWithoutRuleText',
-                }}
-            />
-          </>
+        <>
+          <TextField
+            name="confirmWithoutRuleText"
+            label="Type YES to confirm"
+            fullWidth
+            disabled={submitting}
+            inputProps={{
+              ref: register(),
+              'aria-label': 'confirmWithoutRuleText',
+            }}
+          />
+        </>
       )
-    }else{
-      return (
-          <></>
-      )
+    } else {
+      return <></>
     }
-
   }
 
   return (
     <>
       <RuleConfig
-          visible={ruleConfigVisible}
-          onChange={updateRules()}
-          rules={rules}
-          close={toggleRuleConfig}
-          description={'Attendee label will be added when'}
+        visible={ruleConfigVisible}
+        onChange={updateRules()}
+        rules={rules}
+        close={toggleRuleConfig}
+        description={'Attendee label will be added when'}
       >
         <form onSubmit={handleSubmit(submit)}>
           <ConfigureRulesButton onClick={toggleRuleConfig} />
 
-          <p><b>Visibility Rules:</b> <GenerateTextForVisibilityRules rules={rules}/> </p>
-          <p><b>Generated label:</b> <LabelPreview text={ text } emoji={emoji}/></p>
+          <p>
+            <b>Visibility Rules:</b>{' '}
+            <GenerateTextForVisibilityRules rules={rules} />{' '}
+          </p>
+          <p>
+            <b>Generated label:</b> <LabelPreview text={text} emoji={emoji} />
+          </p>
 
           <TextField
-              name="appendage_text"
-              label="Label Text"
-              onChange={(e) => setText(e.target.value)}
-              value={text}
-              fullWidth
-              disabled={submitting}
-              inputProps={{
-                ref: register(),
-                'aria-label': 'Appendage Text',
-              }}
+            name="appendage_text"
+            label="Label Text"
+            onChange={(e) => setText(e.target.value)}
+            value={text}
+            fullWidth
+            disabled={submitting}
+            inputProps={{
+              ref: register(),
+              'aria-label': 'Appendage Text',
+            }}
           />
 
-          <EmojiesSelector selected={emoji} callback={onEmojiSelected}  />
+          <EmojiesSelector selected={emoji} callback={onEmojiSelected} />
 
           <div>
             <Error>{error}</Error>
-            <br/>
+            <br />
             <ConfirmWithoutRules />
             <SaveButton
-                variant="contained"
-                color="primary"
-                fullWidth
-                disabled={submitting}
-                type="submit"
-                aria-label="save action"
+              variant="contained"
+              color="primary"
+              fullWidth
+              disabled={submitting}
+              type="submit"
+              aria-label="save action"
             >
               Update attendee label
             </SaveButton>
