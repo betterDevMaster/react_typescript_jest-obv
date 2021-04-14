@@ -24,7 +24,7 @@ export default function NameAppendageAddDialog(props: {
       >
         <CloseIcon fontSize="small" />
       </CloseButton>
-      <DialogTitle>Add name appendage</DialogTitle>
+      <DialogTitle>Add attendee label</DialogTitle>
       <DialogContent>
         <NameAppendageAddForm {...props} />
       </DialogContent>

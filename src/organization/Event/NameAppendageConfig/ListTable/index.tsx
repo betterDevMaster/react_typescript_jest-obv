@@ -5,12 +5,14 @@ import TableRow from '@material-ui/core/TableRow'
 import DangerButton from 'lib/ui/Button/DangerButton'
 import {useEvent} from 'Event/EventProvider'
 import {useOrganization} from 'organization/OrganizationProvider'
-import moment from 'moment/moment'
 import {NameAppendage} from 'organization/Event/NameAppendageConfig/NameAppendageProvider'
 import {SortableContainer, SortableElement} from 'react-sortable-hoc'
 import {Button, Table} from '@material-ui/core'
 import {api} from 'lib/url'
 import '../sorting.css'
+import styled from "styled-components";
+import {GenerateTextForVisibilityRules} from "organization/Event/NameAppendageConfig/GenerateTextForVisibilityRules";
+import {LabelPreview} from "organization/Event/NameAppendageConfig/LabelPreview";
 
 export default function NameAppendageListTable(props: {
   nameAppendages: NameAppendage[]
@@ -21,14 +23,15 @@ export default function NameAppendageListTable(props: {
   const {event} = useEvent()
   const {client} = useOrganization()
 
+    if (!props.nameAppendages) {
+        return <>Loading ...</>
+    }
+
   const SortableItem = SortableElement((nameAppendage: NameAppendage) => (
     <TableRow aria-label="name appendage">
-      <TableCell>{nameAppendage.appendage_text}</TableCell>
-      <TableCell align="center">{nameAppendage.appendage_emoji}</TableCell>
       <TableCell align="center">{nameAppendage.order}</TableCell>
-      <TableCell align="center">
-        {moment(nameAppendage.created_at).format('MM/DD/YYYY HH:mm')}
-      </TableCell>
+      <TableCell ><LabelPreview withoutDash={true} text={ nameAppendage.appendage_text } emoji={nameAppendage.appendage_emoji}/></TableCell>
+      <TableCell align="center" width={"500px"} > <GenerateTextForVisibilityRules rules={JSON.parse(nameAppendage.rules)} cropText={true} seeMoreCallback={() => props.setEditing(nameAppendage)}/> </TableCell>
       <TableCell align="center">
         <Button
           fullWidth
@@ -59,7 +62,6 @@ export default function NameAppendageListTable(props: {
   ))
 
   const removeNameAppendage = (nameAppendage: NameAppendage) => {
-    console.log('here')
     setSubmitting(true)
     const url = api(
       `/events/${event.slug}/name-appendage/remove/${nameAppendage.id}`,
@@ -94,37 +96,35 @@ export default function NameAppendageListTable(props: {
     (props: {nameAppendages: NameAppendage[]}) => {
       return (
         <>
-          <Table>
-            <TableHead>
-              <TableRow>
-                <TableCell>Appendage Text</TableCell>
-                <TableCell align="center">Appendage Emoji</TableCell>
-                <TableCell align="center">Priority</TableCell>
-                <TableCell align="center">Created at</TableCell>
-                <TableCell align="center">{/* Actions */}</TableCell>
-                <TableCell align="center">{/* Actions */}</TableCell>
-              </TableRow>
-              {props.nameAppendages.map((value, index) => (
-                <SortableItem
-                  key={`item-${value.id}`}
-                  index={index}
-                  {...value}
-                />
-              ))}
-            </TableHead>
-          </Table>
+          <TableBox>
+            <Table>
+              <TableHead>
+                <TableRow>
+                  <TableCell align="center">Priority</TableCell>
+
+                  <TableCell align="center">Label</TableCell>
+                  <TableCell align="center">Visibility Rules</TableCell>
+                  <TableCell align="center">{/* Actions */}</TableCell>
+                  <TableCell align="center">{/* Actions */}</TableCell>
+                </TableRow>
+                {props.nameAppendages.map((value, index) => (
+                  <SortableItem
+                    key={`item-${value.id}`}
+                    index={index}
+                    {...value}
+                  />
+                ))}
+              </TableHead>
+            </Table>
+          </TableBox>
         </>
       )
     },
   )
 
-  if (!props.nameAppendages) {
-    return <>Loading ...</>
-  }
 
   const onSortEnd = ({oldIndex, newIndex}: any) => {
     if (oldIndex != newIndex) {
-      console.log('here1')
       props.setNameAppendages(
         reorderNameAppendage(props.nameAppendages, oldIndex, newIndex),
       )
@@ -157,3 +157,7 @@ function reorderNameAppendage(
 
   return nameAppendages
 }
+
+const TableBox = styled.div`
+  overflow: auto;
+`

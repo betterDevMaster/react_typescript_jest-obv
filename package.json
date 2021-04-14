@@ -99,6 +99,7 @@
     "@types/axios": "^0.14.0",
     "@types/color": "^3.0.1",
     "@types/css-mediaquery": "^0.1.0",
+    "@types/emoji-mart": "^3.0.4",
     "@types/faker": "^4.1.12",
     "@types/jest": "^24.0.0",
     "@types/lodash": "^4.14.168",

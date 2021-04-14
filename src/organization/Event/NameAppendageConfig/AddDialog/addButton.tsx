@@ -9,7 +9,7 @@ export default function NameAppendageAddButton(props: {openAdd: () => void}) {
       onClick={props.openAdd}
       aria-label="add name appendage"
     >
-      Add name appendage
+      Add attendee label
     </Button>
   )
 }

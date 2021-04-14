@@ -1,9 +1,6 @@
 import React, {useEffect, useRef, useState} from 'react'
 import {NameAppendage} from '../NameAppendageProvider'
 import TextField from '@material-ui/core/TextField'
-import Select from '@material-ui/core/Select'
-import {onUnknownChangeHandler} from 'lib/dom'
-import MenuItem from '@material-ui/core/MenuItem'
 import {useForm} from 'react-hook-form'
 import styled from 'styled-components'
 import Button from '@material-ui/core/Button'
@@ -11,8 +8,11 @@ import {Rule} from 'Event/Dashboard/component-rules'
 import {api} from 'lib/url'
 import {useEvent} from 'Event/EventProvider'
 import {useOrganization} from 'organization/OrganizationProvider'
-import RuleConfig from 'Event/Dashboard/component-rules/RuleConfig'
-import {emojiesList} from 'organization/Event/NameAppendageConfig/emojiesList'
+import RuleConfig, {useRuleConfig} from 'Event/Dashboard/component-rules/RuleConfig'
+import ConfigureRulesButton from "Event/Dashboard/component-rules/ConfigureRulesButton";
+import EmojiesSelector from "organization/Event/NameAppendageConfig/emojiSelector";
+import {GenerateTextForVisibilityRules} from "organization/Event/NameAppendageConfig/GenerateTextForVisibilityRules";
+import {LabelPreview} from "organization/Event/NameAppendageConfig/LabelPreview";
 export default function NameAppendageUpdateForm(props: {
   onClose: () => void
   nameAppendage: NameAppendage | null
@@ -25,15 +25,19 @@ export default function NameAppendageUpdateForm(props: {
   const {register, handleSubmit, setValue, errors} = useForm()
   const [emoji, setEmoji] = useState<string>('')
   const [error, setError] = useState<string | null>(null)
+  const [text, setText] = useState<string>('')
   const [rules, setRules] = useState<Rule[]>([])
   const updateRules = () => (value: Rule[]) => setRules(value)
   const mounted = useRef(true)
+  const [confirmWithoutRules, setConfirmWithoutRules] = useState<boolean>(false)
+  const {visible: ruleConfigVisible, toggle: toggleRuleConfig} = useRuleConfig()
 
   useEffect(() => {
     if (mounted.current) {
       if (props.nameAppendage) {
         setRules(JSON.parse(props.nameAppendage.rules))
         setEmoji(props.nameAppendage.appendage_emoji)
+        setText(props.nameAppendage.appendage_text)
       }
     }
   }, [mounted])
@@ -48,22 +52,52 @@ export default function NameAppendageUpdateForm(props: {
   const submit = (data: {
     appendage_text: string
     appendage_emoji: string
+    confirmWithoutRuleText: string
     rules: Rule[]
   }) => {
+
+    let pass = false;
+
     setSubmitting(true)
     data.rules = rules
     data.appendage_emoji = emoji
-    client
-      .post<NameAppendage>(updateURL, data)
-      .then((nameAppendage) => {
-        props.setNameAppendages(
-          updateNameAppendageFromList(props.nameAppendages, nameAppendage),
-        )
-      })
-      .finally(() => {
-        props.onClose()
-        setSubmitting(false)
-      })
+
+    if(!data.appendage_emoji && !data.appendage_text){
+      setError('Enter at least your Label text OR select a Label emoji.')
+      pass = false
+    }else{
+      setError(null )
+      pass = true
+    }
+
+    if(!rules.length && pass){
+      if(data.confirmWithoutRuleText === "YES"){
+        pass = true
+        setError(null )
+      }else{
+        pass = false
+        setConfirmWithoutRules(true)
+        setError('WARNING: You have not set up visibility rules for this label.  That means that ALL attendees will have this Label at the end of their name in zoom.  If this was your intention, type YES in the box below, otherwise click cancel and add a visibility rule to this label.')
+      }
+
+    }
+
+    if(pass){
+      client
+          .post<NameAppendage>(updateURL, data)
+          .then((nameAppendage) => {
+            props.setNameAppendages(
+                updateNameAppendageFromList(props.nameAppendages, nameAppendage),
+            )
+          })
+          .finally(() => {
+            props.onClose()
+            setSubmitting(false)
+          })
+    }else{
+      setSubmitting(false)
+    }
+
   }
 
   function updateNameAppendageFromList(
@@ -79,65 +113,82 @@ export default function NameAppendageUpdateForm(props: {
     return nameAppendagesList
   }
 
+  const onEmojiSelected = (emoji: string) => {
+    setEmoji(emoji)
+  }
+
+  const ConfirmWithoutRules = () => {
+
+    if(confirmWithoutRules){
+      return (
+          <>
+            <TextField
+                name="confirmWithoutRuleText"
+                label="Type YES to confirm"
+                fullWidth
+                disabled={submitting}
+                inputProps={{
+                  ref: register(),
+                  'aria-label': 'confirmWithoutRuleText',
+                }}
+            />
+          </>
+      )
+    }else{
+      return (
+          <></>
+      )
+    }
+
+  }
+
   return (
     <>
-      <form onSubmit={handleSubmit(submit)}>
-        <RuleConfig
-          visible={true}
+      <RuleConfig
+          visible={ruleConfigVisible}
           onChange={updateRules()}
           rules={rules}
-          description={'Appendage will be added when'}
-        >
-          <></>
-        </RuleConfig>
+          close={toggleRuleConfig}
+          description={'Attendee label will be added when'}
+      >
+        <form onSubmit={handleSubmit(submit)}>
+          <ConfigureRulesButton onClick={toggleRuleConfig} />
 
-        <TextField
-          name="appendage_text"
-          label="Appendage Text"
-          defaultValue={props.nameAppendage.appendage_text}
-          fullWidth
-          disabled={submitting}
-          inputProps={{
-            ref: register(),
-            'aria-label': 'Appendage Text',
-          }}
-        />
-        <Select
-          fullWidth
-          displayEmpty
-          defaultValue={props.nameAppendage.appendage_emoji}
-          disabled={submitting}
-          label="Appendage emoji"
-          value={emoji}
-          onChange={onUnknownChangeHandler(setEmoji)}
-          inputProps={{
-            ref: register(),
-            'aria-label': 'Appendage emoji',
-          }}
-        >
-          <MenuItem value="">Select appendage emoji</MenuItem>
-          {emojiesList.map((emoji, index) => (
-            <MenuItem key={index} value={emoji}>
-              {emoji}
-            </MenuItem>
-          ))}
-        </Select>
+          <p><b>Visibility Rules:</b> <GenerateTextForVisibilityRules rules={rules}/> </p>
+          <p><b>Generated label:</b> <LabelPreview text={ text } emoji={emoji}/></p>
 
-        <div>
-          <Error>{error}</Error>
-          <br />
-          <SaveButton
-            variant="contained"
-            color="primary"
-            fullWidth
-            disabled={submitting}
-            type="submit"
-            aria-label="save action"
-          >
-            Update name appendage
-          </SaveButton>
-        </div>
-      </form>
+          <TextField
+              name="appendage_text"
+              label="Label Text"
+              onChange={(e) => setText(e.target.value)}
+              value={text}
+              fullWidth
+              disabled={submitting}
+              inputProps={{
+                ref: register(),
+                'aria-label': 'Appendage Text',
+              }}
+          />
+
+          <EmojiesSelector selected={emoji} callback={onEmojiSelected}  />
+
+          <div>
+            <Error>{error}</Error>
+            <br/>
+            <ConfirmWithoutRules />
+            <SaveButton
+                variant="contained"
+                color="primary"
+                fullWidth
+                disabled={submitting}
+                type="submit"
+                aria-label="save action"
+            >
+              Update attendee label
+            </SaveButton>
+          </div>
+        </form>
+      </RuleConfig>
     </>
   )
 }

@@ -57,9 +57,9 @@ function AuthorizedPages() {
         </ConfigNavItem>
         <ConfigNavItem
           to={routes.name_appendage}
-          aria-label="name appendage page"
+          aria-label="attendee label page"
         >
-          Name appendage
+          Attendee label
         </ConfigNavItem>
       </>
     </HasPermission>
