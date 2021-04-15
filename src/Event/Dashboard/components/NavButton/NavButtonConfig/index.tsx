@@ -24,7 +24,6 @@ const MAX_BORDER_RADIUS = 50
 export default function NavButtonConfig(props: {
   button: NavButton
   onUpdate: (button: NavButton) => void
-  onRemove: () => void
 }) {
   const {onUpdate, button} = props
 

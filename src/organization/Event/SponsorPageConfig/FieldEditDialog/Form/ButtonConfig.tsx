@@ -24,11 +24,7 @@ export default function ButtonConfig(props: {
     <>
       <StyledBackButton onClick={props.onClose} />
       <Box mb={3}>
-        <NavButtonConfig
-          button={button}
-          onUpdate={props.onChange}
-          onRemove={props.onRemove}
-        />
+        <NavButtonConfig button={button} onUpdate={props.onChange} />
       </Box>
       <Box mb={2}>
         <Button
