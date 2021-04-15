@@ -3,7 +3,7 @@ import {useEvent} from 'Event/EventProvider'
 import React, {useEffect, useState} from 'react'
 import Layout from 'organization/user/Layout'
 import CreateSpeakerPageForm from './CreateSpeakerPageForm'
-import {Speaker} from 'Event'
+import {ObvioEvent, Speaker} from 'Event'
 import SpeakerList from 'organization/Event/SpeakersConfig/SpeakerList'
 import AddSpeakerButton from 'organization/Event/SpeakersConfig/AddSpeakerButton'
 import SpeakerEditDialog from 'organization/Event/SpeakersConfig/SpeakerEditDialog'
@@ -34,7 +34,6 @@ export default function SpeakersConfig() {
     if (!editing) {
       throw new Error(`Could not remove speaker; none was selected.`)
     }
-
     remove(editing)
     closeEditDialog()
   }
@@ -62,7 +61,7 @@ export default function SpeakersConfig() {
 }
 
 function useSpeakers() {
-  const {event} = useEvent()
+  const {event, update: updateOvioEvent} = useEvent()
   const {speaker_page: page} = event
   const [speakers, setSpeakers] = useState<Speaker[]>([])
 
@@ -75,6 +74,7 @@ function useSpeakers() {
 
   const add = (newSpeaker: Speaker) => {
     const added = [...speakers, newSpeaker]
+    updateEvent(added)
     setSpeakers(added)
   }
 
@@ -87,13 +87,25 @@ function useSpeakers() {
 
       return s
     })
-
+    updateEvent(updated)
     setSpeakers(updated)
   }
 
   const remove = (target: Speaker) => {
     const removed = speakers.filter((s) => s.id !== target.id)
+    updateEvent(removed)
     setSpeakers(removed)
+  }
+
+  const updateEvent = (updated: Speaker[]) => {
+    const updatedEvent: ObvioEvent = {
+      ...event,
+      speaker_page: {
+        title: event.speaker_page?.title || '',
+        speakers: updated,
+      },
+    }
+    updateOvioEvent(updatedEvent)
   }
 
   return {
