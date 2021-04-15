@@ -10,6 +10,7 @@ import {withStyles} from '@material-ui/core'
 import {useTemplate} from 'Event/TemplateProvider'
 import {useEvent} from 'Event/EventProvider'
 import {SimpleBlog} from 'Event/template/SimpleBlog'
+import {rgb} from 'lib/color'
 
 export default function SimpleBlogPage(props: {
   user: User
@@ -17,11 +18,13 @@ export default function SimpleBlogPage(props: {
 }) {
   const [menuVisible, setMenuVisible] = useState(false)
   const toggleMenu = () => setMenuVisible(!menuVisible)
-  const {backgroundPosition} = useTemplate()
+  const {backgroundPosition, dashboardBackground: dashboard} = useTemplate()
   const {event} = useEvent()
   const dashboardBackground = event.dashboard_background
-    ? event.dashboard_background.url
-    : ''
+    ? `url(${event.dashboard_background.url})`
+    : dashboard
+    ? rgb(dashboard.color || '#FFFFFF', dashboard.opacity || 1)
+    : '#FFFFFF'
 
   return (
     <Box background={dashboardBackground} position={backgroundPosition}>
@@ -41,25 +44,26 @@ export default function SimpleBlogPage(props: {
 }
 
 const Box = styled.div<{
-  background: string | null
+  background: string
   position: SimpleBlog['backgroundPosition']
 }>`
   height: 100%;
   display: flex;
   flex-direction: column;
   overflow: auto;
-  background: ${(props) =>
-    props.background ? `url(${props.background})` : '#FFFFFF'};
+  background: ${(props) => props.background};
   ${(props) =>
     props.position === 'bottom' &&
     `
       background-position: bottom;
+      background-size: cover;
     `}
   ${(props) =>
     props.position === 'fixed' &&
     `
       background-position: bottom;
       background-attachment: fixed;
+      background-size: cover;
     `}
   background-repeat: no-repeat;
 `

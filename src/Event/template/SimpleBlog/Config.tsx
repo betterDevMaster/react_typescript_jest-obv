@@ -31,6 +31,7 @@ export function SimpleBlogConfig() {
 
   const updateHeader = useUpdateObject('header')
   const updateMenu = useUpdateObject('menu')
+  const updateDashboardBackground = useUpdateObject('dashboardBackground')
 
   const updateBackgroundPosition = useUpdatePrimitive('backgroundPosition')
 
@@ -57,6 +58,22 @@ export function SimpleBlogConfig() {
           current={event.dashboard_background?.url}
         />
       </Box>
+      <ColorPicker
+        label="Dashboard Background Color"
+        color={template.dashboardBackground?.color}
+        onPick={updateDashboardBackground('color')}
+        aria-label="dashboard background color"
+      />
+      <InputLabel>Dashboard Background Color Opacity</InputLabel>
+      <Slider
+        min={0}
+        max={1}
+        step={0.1}
+        onChange={handleChangeSlider(updateDashboardBackground('opacity'))}
+        valueLabelDisplay="auto"
+        value={template.dashboardBackground?.opacity || 1}
+        aria-label="dashboard background color opacity"
+      />
       <Box mb={2}>
         <InputLabel>Background Position</InputLabel>
         <Select

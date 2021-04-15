@@ -39,6 +39,10 @@ export interface SimpleBlog {
     height: number
     script: string | null
   }
+  dashboardBackground?: {
+    color: string
+    opacity: number
+  }
   footer: {
     background: string
     textColor: string
