@@ -24,48 +24,6 @@ beforeEach(() => {
   jest.clearAllMocks()
 })
 
-it('should render ticket ribbons', async () => {
-  const withoutRibbons = fakeEvent({
-    template: fakeSimpleBlog({ticketRibbons: []}),
-  })
-
-  const name = faker.random.word()
-  const value = faker.random.word()
-  const target = fakeTicketRibbon({group_name: name, group_value: value})
-  const notGroup = fakeTicketRibbon()
-
-  const {queryByLabelText, rerender, findByLabelText} = render(
-    <Dashboard isEditMode={false} user={fakeUser()} />,
-    {
-      event: withoutRibbons,
-      withRouter: true,
-      actions: emptyActions,
-      score: defaultScore,
-    },
-  )
-
-  expect(queryByLabelText('ticket ribbon')).not.toBeInTheDocument()
-
-  const withTicketRibbon = fakeEvent({
-    template: fakeSimpleBlog({
-      ticketRibbons: [target, notGroup],
-    }),
-  })
-
-  const attendee = fakeAttendee({
-    groups: {
-      [name]: value,
-    },
-  })
-  rerender(<Dashboard isEditMode={false} user={attendee} />, {
-    event: withTicketRibbon,
-    attendee,
-  })
-
-  // only found one because other was not rendered
-  expect(await findByLabelText('ticket ribbon')).toBeInTheDocument()
-})
-
 it('should edit an existing ticket ribbon', async () => {
   const ticketRibbons = Array.from(
     {length: faker.random.number({min: 2, max: 5})},

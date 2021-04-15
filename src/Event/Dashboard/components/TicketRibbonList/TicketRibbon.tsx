@@ -1,5 +1,3 @@
-import {useAttendeeProfile} from 'Event/Dashboard/component-rules/AttendeeProfileProvider'
-import {useEditMode} from 'Event/Dashboard/editor/state/edit-mode'
 import EditComponent from 'Event/Dashboard/editor/views/EditComponent'
 import React from 'react'
 import styled from 'styled-components'
@@ -14,6 +12,7 @@ import RED_RIBBON_IMAGE from 'Event/Dashboard/components/TicketRibbonList/ribbon
 import WHITE_RIBBON_IMAGE from 'Event/Dashboard/components/TicketRibbonList/ribbons/white.png'
 import YELLOW_RIBBON_IMAGE from 'Event/Dashboard/components/TicketRibbonList/ribbons/yellow.png'
 import {useWithAttendeeData} from 'Event/auth/data'
+import {HasRules} from 'Event/Dashboard/component-rules'
 
 export const TICKET_RIBBON = 'Ticket Ribbon'
 
@@ -40,12 +39,10 @@ export type TicketRibbonName =
   | typeof WHITE_RIBBON
   | typeof YELLOW_RIBBON
 
-export interface TicketRibbon {
+export type TicketRibbon = HasRules & {
   name: TicketRibbonName
   text: string
   color: string
-  group_name: string
-  group_value: string | number
 }
 
 export const TICKET_RIBBON_IMAGE: Record<TicketRibbonName, string> = {
@@ -69,41 +66,18 @@ export default (props: {ticketRibbon: TicketRibbon; index: number}) => {
   const withAttendeeData = useWithAttendeeData()
 
   return (
-    <VisibleRibbon ticketRibbon={props.ticketRibbon}>
-      <EditComponent component={{type: TICKET_RIBBON, index: props.index}}>
-        <Box aria-label="ticket ribbon">
-          <Ribbon background={`url(${image})`} color={props.ticketRibbon.color}>
-            <RibbonText aria-label="ticket ribbon text">
-              {withAttendeeData(props.ticketRibbon.text)}
-            </RibbonText>
-          </Ribbon>
-        </Box>
-      </EditComponent>
-    </VisibleRibbon>
+    <EditComponent component={{type: TICKET_RIBBON, index: props.index}}>
+      <Box aria-label="ticket ribbon">
+        <Ribbon background={`url(${image})`} color={props.ticketRibbon.color}>
+          <RibbonText aria-label="ticket ribbon text">
+            {withAttendeeData(props.ticketRibbon.text)}
+          </RibbonText>
+        </Ribbon>
+      </Box>
+    </EditComponent>
   )
 }
 
-function VisibleRibbon(props: {
-  ticketRibbon: TicketRibbon
-  children: React.ReactElement
-}) {
-  const {belongsToGroup} = useAttendeeProfile()
-
-  const isEditMode = useEditMode()
-  if (isEditMode) {
-    return props.children
-  }
-
-  const isTargetGroup = belongsToGroup(
-    props.ticketRibbon.group_name,
-    props.ticketRibbon.group_value,
-  )
-  if (!isTargetGroup) {
-    return null
-  }
-
-  return props.children
-}
 const Box = styled.div`
   margin: ${(props) =>
     `-${props.theme.spacing[6]} 0 ${props.theme.spacing[8]}`};
