@@ -33,6 +33,7 @@ export default interface NavButton extends HasRules, Publishable {
   borderRadius?: number
   borderWidth?: number
   borderColor?: string
+  height?: number
   hoverBorderColor?: string
   isAreaButton: boolean
   areaId: number | null
@@ -45,7 +46,9 @@ export default interface NavButton extends HasRules, Publishable {
 
 export type NavButtonWithSize = NavButton & {
   size: Column
+  newLine?: boolean
 }
+export const DEFAULT_BUTTON_HEIGHT = 64
 
 export default function NavButton(props: NavButton) {
   const {newTab, isAreaButton} = props
@@ -189,6 +192,7 @@ function Button(
       borderWidth={props.borderWidth}
       borderColor={props.borderColor}
       hoverBorderColor={props.hoverBorderColor}
+      height={props.height || DEFAULT_BUTTON_HEIGHT}
       onClick={props.onClick}
       opacity={opacity}
     >

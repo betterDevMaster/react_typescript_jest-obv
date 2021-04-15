@@ -1,4 +1,5 @@
 import MainNavButton from 'Event/template/SimpleBlog/Dashboard/MainNav/MainNavButton'
+import styled from 'styled-components'
 import React from 'react'
 import {useTemplate, useUpdateTemplate} from 'Event/TemplateProvider'
 import {
@@ -38,7 +39,7 @@ export default function MainNav(props: {className?: string}) {
             <>
               {buttons}
               {provided.placeholder}
-              <NewMainNavButton />
+              <StyledNewMainNavButton />
             </>
           </Container>
         )}
@@ -54,11 +55,11 @@ const Container = React.forwardRef<
     children: React.ReactElement | React.ReactElement[]
   } & Partial<DroppableProvidedProps>
 >((props, ref) => (
-  <div className={props.className} ref={ref} {...props}>
-    <Grid container spacing={2} justify="center">
+  <Box className={props.className} ref={ref} {...props}>
+    <Grid container justify="center" spacing={2}>
       {props.children}
     </Grid>
-  </div>
+  </Box>
 ))
 
 function useHandleDrag() {
@@ -86,3 +87,11 @@ function useHandleDrag() {
     })
   }
 }
+
+const Box = styled.div`
+  margin-bottom: 30px;
+`
+
+const StyledNewMainNavButton = styled(NewMainNavButton)`
+  padding-top: ${(props) => props.theme.spacing[2]}!important;
+`

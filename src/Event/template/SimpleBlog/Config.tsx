@@ -9,7 +9,6 @@ import EventImageUpload from 'organization/Event/DashboardConfig/EventImageUploa
 import ColorPicker from 'lib/ui/ColorPicker'
 import React from 'react'
 import {SIMPLE_BLOG} from 'Event/template/SimpleBlog'
-import Grid from '@material-ui/core/Grid'
 import Slider from '@material-ui/core/Slider'
 import {handleChangeSlider} from 'lib/dom'
 import {TextField} from '@material-ui/core'
@@ -114,33 +113,24 @@ export function SimpleBlogConfig() {
         value={template.header.height}
         aria-label="header height"
       />
-      <Grid container item justify="center" spacing={3} xs={12}>
-        <Grid item xs={6}>
-          <ColorPicker
-            label="Menu Background Color"
-            color={template.menu?.backgroundColor}
-            onPick={updateMenu('backgroundColor')}
-            aria-label="menu background color"
-          />
-        </Grid>
-        <Grid item xs={6}>
-          <ColorPicker
-            label="Menu Text Color"
-            color={template.menu?.textColor}
-            onPick={updateMenu('textColor')}
-            aria-label="menu text color"
-          />
-        </Grid>
-        <Grid item xs={6}>
-          <ColorPicker
-            label="Menu Icon Color"
-            color={template.menu?.iconColor}
-            onPick={updateMenu('iconColor')}
-            aria-label="menu icon color"
-          />
-        </Grid>
-      </Grid>
-
+      <ColorPicker
+        label="Menu Background Color"
+        color={template.menu?.backgroundColor}
+        onPick={updateMenu('backgroundColor')}
+        aria-label="menu background color"
+      />
+      <ColorPicker
+        label="Menu Text Color"
+        color={template.menu?.textColor}
+        onPick={updateMenu('textColor')}
+        aria-label="menu text color"
+      />
+      <ColorPicker
+        label="Menu Icon Color"
+        color={template.menu?.iconColor}
+        onPick={updateMenu('iconColor')}
+        aria-label="menu icon color"
+      />
       <TextField
         label="Custom Code"
         fullWidth

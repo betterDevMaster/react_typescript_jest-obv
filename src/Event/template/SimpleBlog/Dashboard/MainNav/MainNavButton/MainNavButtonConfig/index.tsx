@@ -3,6 +3,7 @@ import TextField from '@material-ui/core/TextField'
 import Typography from '@material-ui/core/Typography'
 import NavButton, {
   NavButtonWithSize,
+  DEFAULT_BUTTON_HEIGHT,
 } from 'Event/Dashboard/components/NavButton'
 import {
   handleChangeSlider,
@@ -25,6 +26,8 @@ import ActionConfig from 'Event/template/SimpleBlog/Dashboard/MainNav/MainNavBut
 import Grid from '@material-ui/core/Grid'
 import Switch from 'lib/ui/form/Switch'
 import InfusionsoftTagInput from 'Event/Dashboard/components/NavButton/InfusionsoftTagInput'
+import Checkbox from '@material-ui/core/Checkbox'
+import FormControlLabel from '@material-ui/core/FormControlLabel'
 import TargetConfig from 'Event/Dashboard/components/NavButton/NavButtonConfig/TargetConfig'
 
 export type MainNavButtonConfig = {
@@ -97,15 +100,28 @@ export function MainNavButtonConfig(props: {id: MainNavButtonConfig['id']}) {
     >
       <>
         <Grid container spacing={2}>
-          <Grid item xs={6}>
-            <Switch
-              checked={button.isVisible}
-              onChange={onChangeCheckedHandler(updateButton('isVisible'))}
-              arial-label="config visible switch"
-              labelPlacement="end"
-              color="primary"
-              label={button.isVisible ? 'Enable' : 'Disable'}
-            />
+          <Grid container xs={6}>
+            <Grid item md={6} xs={12}>
+              <Switch
+                checked={button.isVisible}
+                onChange={onChangeCheckedHandler(updateButton('isVisible'))}
+                arial-label="config switch to attendee"
+                labelPlacement="end"
+                color="primary"
+                label={button.isVisible ? 'Enable' : 'Disable'}
+              />
+            </Grid>
+            <Grid item md={6} xs={12}>
+              <FormControlLabel
+                label="New Line"
+                control={
+                  <Checkbox
+                    checked={button.newLine || false}
+                    onChange={onChangeCheckedHandler(updateButton('newLine'))}
+                  />
+                }
+              />
+            </Grid>
           </Grid>
           <Grid item xs={6}>
             <ConfigureRulesButton onClick={toggleRuleConfig} />
@@ -128,6 +144,14 @@ export function MainNavButtonConfig(props: {id: MainNavButtonConfig['id']}) {
           onChange={handleChangeSlider(updateButton('size'))}
           valueLabelDisplay="auto"
           value={button.size || 0}
+        />
+        <Typography gutterBottom>Height</Typography>
+        <Slider
+          min={1}
+          max={400}
+          onChange={handleChangeSlider(updateButton('height'))}
+          valueLabelDisplay="auto"
+          value={button.height || DEFAULT_BUTTON_HEIGHT}
         />
         <TargetConfig update={updateButton} button={button} />
         <ColorPicker

@@ -1,3 +1,4 @@
+import {DEFAULT_BUTTON_HEIGHT} from 'Event/Dashboard/components/NavButton'
 import React from 'react'
 import styled from 'styled-components'
 
@@ -18,6 +19,7 @@ export interface ButtonProps {
   hoverBorderColor?: string
   variant?: 'text'
   opacity?: number
+  height?: number
   'aria-label'?: string
 }
 
@@ -41,6 +43,7 @@ export default function Button(props: ButtonProps) {
       onClick={props.onClick}
       aria-label={props['aria-label']}
       opacity={opacity(props)}
+      height={height(props)}
     >
       {props.children}
     </StyledButton>
@@ -53,6 +56,10 @@ function width(props: ButtonProps) {
   }
 
   return 'auto'
+}
+
+function height(props: ButtonProps) {
+  return props.height || DEFAULT_BUTTON_HEIGHT
 }
 
 function textTransform(props: ButtonProps) {
@@ -189,6 +196,7 @@ function opacity(props: ButtonProps) {
 
 type StyleProps = {
   width: string
+  height: number
   textTransform: string
   padding: string
   backgroundColor: string
@@ -215,7 +223,7 @@ const StyledButton = styled.button<StyleProps>`
   transition: ${(props) => props.transition};
   border-radius: ${(props) => props.borderRadius};
   opacity: ${(props) => props.opacity};
-
+  height: ${(props) => props.height}px !important;
   &:hover {
     opacity: ${(props) => props.hoverOpacity};
     background: ${(props) => props.hoverBackgroundColor};

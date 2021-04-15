@@ -1,5 +1,4 @@
 import React from 'react'
-import styled from 'styled-components'
 import Grid from '@material-ui/core/Grid'
 import {User} from 'auth/user'
 import Hidden from '@material-ui/core/Hidden'
@@ -16,11 +15,10 @@ import {useEditMode} from 'Event/Dashboard/editor/state/edit-mode'
 export default function SimpleBlogDashboard(props: {user: User}) {
   const sidebarWidth = useSidebarWidth()
   const mainWidth = useMainWidth()
-
   return (
     <SimpleBlogPage user={props.user}>
       <Hero />
-      <StyledMainNav />
+      <MainNav />
       <FullHeightGrid container spacing={4}>
         <Hidden mdUp>
           <Grid item xs={12}>
@@ -60,10 +58,6 @@ function useMainWidth() {
 
   return 8
 }
-
-const StyledMainNav = styled(MainNav)`
-  margin-bottom: 30px;
-`
 
 const FullHeightGrid = withStyles({
   root: {

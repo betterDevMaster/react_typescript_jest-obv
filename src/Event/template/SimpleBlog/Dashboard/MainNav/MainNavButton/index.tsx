@@ -65,21 +65,54 @@ const Container = React.forwardRef<
     button: NavButtonWithSize
     draggableProps?: DraggableProvidedDraggableProps
   }
->((props, ref) => (
-  <HiddenOnMatch rules={props.button.rules}>
-    <Published component={props.button}>
-      <Grid
-        item
-        xs={12}
-        md={props.button.size}
-        ref={ref}
-        {...props.draggableProps}
-      >
-        {props.children}
+>((props, ref) => {
+  return (
+    <HiddenOnMatch rules={props.button.rules}>
+      <Published component={props.button}>
+        <NewLine ref={ref} {...props} />
+      </Published>
+    </HiddenOnMatch>
+  )
+})
+
+const NewLine = React.forwardRef<
+  HTMLDivElement,
+  {
+    children: React.ReactElement
+    button: NavButtonWithSize
+    draggableProps?: DraggableProvidedDraggableProps
+  }
+>((props, ref) => {
+  if (props.button.newLine) {
+    return (
+      <Grid item xs={12}>
+        <Grid container justify="center">
+          <Grid
+            item
+            xs={12}
+            md={props.button.size}
+            {...props.draggableProps}
+            ref={ref}
+          >
+            {props.children}
+          </Grid>
+        </Grid>
       </Grid>
-    </Published>
-  </HiddenOnMatch>
-))
+    )
+  }
+
+  return (
+    <Grid
+      item
+      xs={12}
+      md={props.button.size}
+      ref={ref}
+      {...props.draggableProps}
+    >
+      {props.children}
+    </Grid>
+  )
+})
 
 function DragHandle(props: {handleProps?: DraggableProvidedDragHandleProps}) {
   return (

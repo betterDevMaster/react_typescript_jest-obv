@@ -78,5 +78,6 @@ const StyledContainer = withStyles({
   root: {
     display: 'flex',
     flexDirection: 'column',
+    alignItems: 'center',
   },
 })(Container)
