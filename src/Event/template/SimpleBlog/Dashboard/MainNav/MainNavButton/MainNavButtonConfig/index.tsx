@@ -100,7 +100,7 @@ export function MainNavButtonConfig(props: {id: MainNavButtonConfig['id']}) {
     >
       <>
         <Grid container spacing={2}>
-          <Grid container xs={6}>
+          <Grid container>
             <Grid item md={6} xs={12}>
               <Switch
                 checked={button.isVisible}
