@@ -57,6 +57,7 @@ export function fakeWaiver(
     body: `<html><h1>${faker.company.bsNoun()} Waiver</h1><p>${faker.lorem.paragraphs(
       3,
     )}</p></html>`,
+    is_enabled: true,
     ...overrides,
   }
 }

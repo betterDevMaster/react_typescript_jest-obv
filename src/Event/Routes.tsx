@@ -14,7 +14,6 @@ import {PointsProvider} from 'Event/PointsProvider'
 import Leaderboard from 'Event/Leaderboard'
 import UnderConstruction from 'Event/UnderConstruction'
 import TemplateProvider from 'Event/TemplateProvider'
-import WaiverProvider from 'Event/Step2/WaiverProvider'
 import SubmissionsProvider from 'Event/SubmissionsProvider'
 import CustomScripts from 'organization/Event/CustomScripts'
 import ForgotPassword from 'Event/auth/ForgotPassword'
@@ -37,7 +36,7 @@ export default function Routes() {
   const {user, loading} = useEventAuth()
   const {event} = useEvent()
 
-  if (!event.template || !event.waiver) {
+  if (!event.template) {
     return <UnderConstruction />
   }
 
@@ -77,9 +76,7 @@ function UserRoutes() {
         <Step1 />
       </Route>
       <Route path={eventRoutes.step2}>
-        <WaiverProvider>
-          <Step2 />
-        </WaiverProvider>
+        <Step2 />
       </Route>
       <Route path={eventRoutes.step3}>
         <Step3 />

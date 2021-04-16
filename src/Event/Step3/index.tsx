@@ -7,13 +7,14 @@ import {useEvent} from 'Event/EventProvider'
 
 export default function Step3() {
   const attendee = useAttendee()
-  const {hasTechCheck} = useEvent()
+  const {hasTechCheck, hasWaiver} = useEvent()
 
   if (!attendee.has_password) {
     return <Redirect to={eventRoutes.step1} />
   }
 
-  if (!attendee.waiver) {
+  const needWaiver = hasWaiver && !attendee.waiver
+  if (needWaiver) {
     return <Redirect to={eventRoutes.step2} />
   }
 

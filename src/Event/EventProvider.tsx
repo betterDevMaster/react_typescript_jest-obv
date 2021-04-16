@@ -16,6 +16,7 @@ interface EventContextProps {
   event: ObvioEvent
   client: Client
   hasTechCheck: boolean
+  hasWaiver: boolean
   update: (event: ObvioEvent) => void
   url: string
 }
@@ -87,6 +88,7 @@ function EventProvider(props: {
         event: current,
         client: eventClient,
         hasTechCheck: hasTechCheck(current),
+        hasWaiver: hasWaiver(current),
         update,
         url,
       }}
@@ -116,6 +118,14 @@ export function hasTechCheck(event: ObvioEvent) {
   }
 
   return event.tech_check.is_enabled
+}
+
+export function hasWaiver(event: ObvioEvent) {
+  if (!event.waiver) {
+    return false
+  }
+
+  return event.waiver.is_enabled
 }
 
 // How many seconds to wait before trying to re-fetch the join url

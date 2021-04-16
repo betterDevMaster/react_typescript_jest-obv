@@ -48,6 +48,7 @@ export interface WaiverConfig {
   logo: null | string
   title: null | string
   body: string
+  is_enabled: boolean
 }
 
 export interface TechCheckConfig {
@@ -79,13 +80,14 @@ export interface Sponsor {
 
 export default function Event() {
   const attendee = useAttendee()
-  const {hasTechCheck} = useEvent()
+  const {hasTechCheck, hasWaiver} = useEvent()
 
   if (!attendee.has_password) {
     return <Redirect to={eventRoutes.step1} />
   }
 
-  if (!attendee.waiver) {
+  const shouldGoToStep2 = hasWaiver && !attendee.waiver
+  if (shouldGoToStep2) {
     return <Redirect to={eventRoutes.step2} />
   }
 

@@ -1,5 +1,5 @@
 import {setEvent} from 'Event/state/actions'
-import {EventContext, hasTechCheck} from 'Event/EventProvider'
+import {EventContext, hasTechCheck, hasWaiver} from 'Event/EventProvider'
 import React, {useCallback, useEffect} from 'react'
 import {useDispatch, useSelector} from 'react-redux'
 import {ObvioEvent} from 'Event'
@@ -39,6 +39,7 @@ export default function StaticEventProvider(props: {
         event: current,
         client: eventClient,
         hasTechCheck: hasTechCheck(event),
+        hasWaiver: hasWaiver(event),
         update,
         url,
       }}
