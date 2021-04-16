@@ -23,7 +23,7 @@ export default function SimpleBlogPage(props: {
   const dashboardBackground = event.dashboard_background
     ? `url(${event.dashboard_background.url})`
     : dashboard
-    ? rgb(dashboard.color || '#FFFFFF', dashboard.opacity || 1)
+    ? rgb(dashboard.color || '#FFFFFF', dashboard.opacity || 0)
     : '#FFFFFF'
 
   return (

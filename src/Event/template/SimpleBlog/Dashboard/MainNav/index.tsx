@@ -90,6 +90,7 @@ function useHandleDrag() {
 
 const Box = styled.div`
   margin-bottom: 30px;
+  width: 100%;
 `
 
 const StyledNewMainNavButton = styled(NewMainNavButton)`

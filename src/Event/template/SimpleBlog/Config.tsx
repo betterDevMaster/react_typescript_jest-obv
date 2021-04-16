@@ -70,7 +70,10 @@ export function SimpleBlogConfig() {
         step={0.1}
         onChange={handleChangeSlider(updateDashboardBackground('opacity'))}
         valueLabelDisplay="auto"
-        value={template.dashboardBackground?.opacity || 1}
+        value={template.dashboardBackground?.opacity || 0}
+        valueLabelFormat={() => (
+          <div>{(template.dashboardBackground?.opacity || 0) * 100}</div>
+        )}
         aria-label="dashboard background color opacity"
       />
       <Box mb={2}>
@@ -98,7 +101,7 @@ export function SimpleBlogConfig() {
         onChange={handleChangeSlider(updateHeader('backgroundOpacity'))}
         valueLabelDisplay="auto"
         valueLabelFormat={() => (
-          <div>{template.header?.backgroundOpacity * 100}%</div>
+          <div>{template.header?.backgroundOpacity * 100}</div>
         )}
         value={template.header?.backgroundOpacity || 0}
         aria-label="background opacity"

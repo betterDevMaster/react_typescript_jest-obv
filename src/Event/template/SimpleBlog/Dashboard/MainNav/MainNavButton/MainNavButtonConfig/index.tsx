@@ -23,7 +23,6 @@ import ConfigureRulesButton from 'Event/Dashboard/component-rules/ConfigureRules
 import {useTemplate, useUpdateTemplate} from 'Event/TemplateProvider'
 import {MAIN_NAV_BUTTON} from 'Event/template/SimpleBlog/Dashboard/MainNav/MainNavButton'
 import ActionConfig from 'Event/template/SimpleBlog/Dashboard/MainNav/MainNavButton/MainNavButtonConfig/ActionConfig'
-import Grid from '@material-ui/core/Grid'
 import Switch from 'lib/ui/form/Switch'
 import InfusionsoftTagInput from 'Event/Dashboard/components/NavButton/InfusionsoftTagInput'
 import Checkbox from '@material-ui/core/Checkbox'
@@ -99,34 +98,15 @@ export function MainNavButtonConfig(props: {id: MainNavButtonConfig['id']}) {
       onChange={updateButton('rules')}
     >
       <>
-        <Grid container spacing={2}>
-          <Grid container>
-            <Grid item md={6} xs={12}>
-              <Switch
-                checked={button.isVisible}
-                onChange={onChangeCheckedHandler(updateButton('isVisible'))}
-                arial-label="config switch to attendee"
-                labelPlacement="end"
-                color="primary"
-                label={button.isVisible ? 'Enable' : 'Disable'}
-              />
-            </Grid>
-            <Grid item md={6} xs={12}>
-              <FormControlLabel
-                label="New Line"
-                control={
-                  <Checkbox
-                    checked={button.newLine || false}
-                    onChange={onChangeCheckedHandler(updateButton('newLine'))}
-                  />
-                }
-              />
-            </Grid>
-          </Grid>
-          <Grid item xs={6}>
-            <ConfigureRulesButton onClick={toggleRuleConfig} />
-          </Grid>
-        </Grid>
+        <ConfigureRulesButton onClick={toggleRuleConfig} />
+        <Switch
+          checked={button.isVisible}
+          onChange={onChangeCheckedHandler(updateButton('isVisible'))}
+          arial-label="config switch to attendee"
+          labelPlacement="end"
+          color="primary"
+          label={button.isVisible ? 'Enable' : 'Disable'}
+        />
         <TextField
           label="Text"
           value={button.text}
@@ -144,6 +124,15 @@ export function MainNavButtonConfig(props: {id: MainNavButtonConfig['id']}) {
           onChange={handleChangeSlider(updateButton('size'))}
           valueLabelDisplay="auto"
           value={button.size || 0}
+        />
+        <FormControlLabel
+          label="New Line"
+          control={
+            <Checkbox
+              checked={button.newLine || false}
+              onChange={onChangeCheckedHandler(updateButton('newLine'))}
+            />
+          }
         />
         <Typography gutterBottom>Height</Typography>
         <Slider
