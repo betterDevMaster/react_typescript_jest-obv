@@ -1,6 +1,7 @@
 import React, {useEffect, useState} from 'react'
 import Switch from '@material-ui/core/Switch'
 import Box from '@material-ui/core/Box'
+import Grid from '@material-ui/core/Grid'
 import TextField from '@material-ui/core/TextField'
 import Slider from '@material-ui/core/Slider'
 import ColorPicker from 'lib/ui/ColorPicker'
@@ -53,6 +54,15 @@ export default function LoginFormConfig() {
     login.logoSize || DEFAULT_LOGO_SIZE_PERCENT,
   )
 
+  const [backgroundColor, setBackgroundColor] = useState(login.backgroundColor)
+  const [backgroundOpacity, setBackgroundOpacity] = useState(
+    login.backgroundOpacity,
+  )
+
+  const [submitHoverColor, setSubmitHoverColor] = useState(
+    login.submitButton.hoverColor,
+  )
+
   useEffect(() => {
     const hasChanges =
       login.submitButton.label !== submitLabel ||
@@ -65,6 +75,9 @@ export default function LoginFormConfig() {
       login.inputBorderRadius !== inputBorderRadius ||
       login.logoHidden !== logoHidden ||
       login.backgroundHidden !== backgroundHidden ||
+      login.backgroundColor !== backgroundColor ||
+      login.backgroundOpacity !== backgroundOpacity ||
+      login.submitButton.hoverColor !== submitHoverColor ||
       login.submitButton.borderRadius !== buttonBorderRadius
 
     if (!hasChanges) {
@@ -77,12 +90,15 @@ export default function LoginFormConfig() {
         backgroundColor: submitBackgroundColor,
         textColor: submitTextColor,
         borderRadius: buttonBorderRadius,
+        hoverColor: submitHoverColor,
       },
       description: {
         text: descriptionText,
         color: descriptionColor,
         fontSize: descriptionFontSize,
       },
+      backgroundColor,
+      backgroundOpacity,
       logoSize,
       inputBorderRadius,
       logoHidden: logoHidden,
@@ -102,44 +118,54 @@ export default function LoginFormConfig() {
     logoHidden,
     backgroundHidden,
     buttonBorderRadius,
+    backgroundColor,
+    backgroundOpacity,
+    submitHoverColor,
   ])
 
   return (
     <>
       <Box display="flex" flexDirection="row" flex="2">
         <Box my={1} display="flex" flexDirection="column" flex="1">
-          <EventImageUpload
-            label="Background"
-            property="login_background"
-            current={event.login_background?.url}
-          />
-          <Box display="flex" flexDirection="column" flex="1" mb={2}>
-            <InputLabel>Hide Background</InputLabel>
-            <Switch
-              checked={backgroundHidden}
-              onChange={onChangeCheckedHandler(setBackgroundHidden)}
-              color="primary"
-              inputProps={{
-                'aria-label': 'toggle background visible',
-              }}
-            />
-          </Box>
-          <EventImageUpload
-            label="Logo"
-            property="login_logo"
-            current={event.login_logo?.url}
-          />
-          <Box display="flex" flexDirection="column" flex="1" mb={2}>
-            <InputLabel>Hide Logo</InputLabel>
-            <Switch
-              checked={logoHidden}
-              onChange={onChangeCheckedHandler(setLogoHidden)}
-              color="primary"
-              inputProps={{
-                'aria-label': 'toggle logo visible',
-              }}
-            />
-          </Box>
+          <Grid container spacing={3}>
+            <Grid item xs={12} md={6}>
+              <EventImageUpload
+                label="Background"
+                property="login_background"
+                current={event.login_background?.url}
+              />
+              <Box display="flex" flexDirection="column" flex="1" mb={2}>
+                <InputLabel>Hide Background</InputLabel>
+                <Switch
+                  checked={backgroundHidden}
+                  onChange={onChangeCheckedHandler(setBackgroundHidden)}
+                  color="primary"
+                  inputProps={{
+                    'aria-label': 'toggle background visible',
+                  }}
+                />
+              </Box>
+            </Grid>
+            <Grid item xs={12} md={6}>
+              <EventImageUpload
+                label="Logo"
+                property="login_logo"
+                current={event.login_logo?.url}
+              />
+              <Box display="flex" flexDirection="column" flex="1" mb={2}>
+                <InputLabel>Hide Logo</InputLabel>
+                <Switch
+                  checked={logoHidden}
+                  onChange={onChangeCheckedHandler(setLogoHidden)}
+                  color="primary"
+                  inputProps={{
+                    'aria-label': 'toggle logo visible',
+                  }}
+                />
+              </Box>
+            </Grid>
+          </Grid>
+
           <Box mb={1}>
             <InputLabel>Logo Size</InputLabel>
             <Slider
@@ -152,6 +178,28 @@ export default function LoginFormConfig() {
               max={MAX_LOGO_SIZE_PERCENT}
             />
           </Box>
+          <ColorPicker
+            label="Background Color"
+            color={login.backgroundColor || '#FFFFFF'}
+            onPick={setBackgroundColor}
+            aria-label="login background color"
+          />
+          <Box mb={1}>
+            <InputLabel>Background Opacity</InputLabel>
+            <Slider
+              valueLabelDisplay="auto"
+              aria-label="logo background opacity"
+              value={login.backgroundOpacity || 0}
+              valueLabelFormat={() => (
+                <div>{(login.backgroundOpacity || 0) * 100}</div>
+              )}
+              onChange={handleChangeSlider(setBackgroundOpacity)}
+              step={0.01}
+              min={0}
+              max={1}
+            />
+          </Box>
+
           <TextField
             label="Submit Label"
             value={submitLabel}
@@ -168,6 +216,12 @@ export default function LoginFormConfig() {
             label="Submit Button Color"
             color={submitTextColor}
             onPick={setSubmitTextColor}
+            aria-label="submit button color"
+          />
+          <ColorPicker
+            label="Submit Button Hover Color"
+            color={submitHoverColor || submitBackgroundColor}
+            onPick={setSubmitHoverColor}
             aria-label="submit button color"
           />
           <TextField

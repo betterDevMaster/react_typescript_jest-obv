@@ -78,6 +78,7 @@ export interface SimpleBlog {
     submitButton: {
       backgroundColor: string
       textColor: string
+      hoverColor?: string
       label: string
       borderRadius?: number
     }
@@ -86,6 +87,8 @@ export interface SimpleBlog {
       color: string
       fontSize: number
     }
+    backgroundColor?: string
+    backgroundOpacity?: number
     logoSize?: number
     inputBorderRadius?: number
     logoHidden?: boolean
@@ -182,6 +185,8 @@ export const createSimpleBlog = (): SimpleBlog => ({
       color: '#000000',
       fontSize: 18,
     },
+    backgroundColor: '#FFFFFF',
+    backgroundOpacity: 0,
     logoSize: DEFAULT_LOGO_SIZE_PERCENT,
   },
   bodyHTMLEmbed: null,
