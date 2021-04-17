@@ -22,23 +22,27 @@ export default function SimpleBlogPage(props: {
   const {event} = useEvent()
   const dashboardBackground = event.dashboard_background
     ? `url(${event.dashboard_background.url})`
-    : dashboard
+    : '#FFFFFF'
+
+  const backgroundRGBColor = dashboard
     ? rgb(dashboard.color || '#FFFFFF', dashboard.opacity || 0)
     : '#FFFFFF'
 
   return (
     <Box background={dashboardBackground} position={backgroundPosition}>
-      <SimpleBlogStyles />
-      <Menu visible={menuVisible} toggle={toggleMenu} user={props.user} />
-      <Header
-        menuVisible={menuVisible}
-        toggleMenu={toggleMenu}
-        aria-label="header"
-      />
-      <Content>
-        <StyledContainer maxWidth="lg">{props.children}</StyledContainer>
-      </Content>
-      <Footer />
+      <ColorOverlay color={backgroundRGBColor}>
+        <SimpleBlogStyles />
+        <Menu visible={menuVisible} toggle={toggleMenu} user={props.user} />
+        <Header
+          menuVisible={menuVisible}
+          toggleMenu={toggleMenu}
+          aria-label="header"
+        />
+        <Content>
+          <StyledContainer maxWidth="lg">{props.children}</StyledContainer>
+        </Content>
+        <Footer />
+      </ColorOverlay>
     </Box>
   )
 }
@@ -72,6 +76,11 @@ const Content = styled.div`
   flex: 1;
   margin-bottom: 20px;
   display: flex;
+`
+const ColorOverlay = styled.div<{
+  color: string
+}>`
+  background-color: ${(props) => props.color};
 `
 
 const StyledContainer = withStyles({
