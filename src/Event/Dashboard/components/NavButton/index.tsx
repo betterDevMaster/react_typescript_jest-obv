@@ -192,7 +192,7 @@ function Button(
       borderWidth={props.borderWidth}
       borderColor={props.borderColor}
       hoverBorderColor={props.hoverBorderColor}
-      height={props.height || DEFAULT_BUTTON_HEIGHT}
+      minHeight={props.height || DEFAULT_BUTTON_HEIGHT}
       onClick={props.onClick}
       opacity={opacity}
     >

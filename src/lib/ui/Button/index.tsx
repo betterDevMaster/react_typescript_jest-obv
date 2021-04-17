@@ -1,4 +1,3 @@
-import {DEFAULT_BUTTON_HEIGHT} from 'Event/Dashboard/components/NavButton'
 import React from 'react'
 import styled from 'styled-components'
 
@@ -20,6 +19,7 @@ export interface ButtonProps {
   variant?: 'text'
   opacity?: number
   height?: number
+  minHeight?: number
   'aria-label'?: string
 }
 
@@ -44,6 +44,7 @@ export default function Button(props: ButtonProps) {
       aria-label={props['aria-label']}
       opacity={opacity(props)}
       height={height(props)}
+      minHeight={minHeight(props)}
     >
       {props.children}
     </StyledButton>
@@ -59,7 +60,19 @@ function width(props: ButtonProps) {
 }
 
 function height(props: ButtonProps) {
-  return props.height || DEFAULT_BUTTON_HEIGHT
+  if (!props.height) {
+    return 'auto'
+  }
+
+  return props.height + 'px'
+}
+
+function minHeight(props: ButtonProps) {
+  if (!props.minHeight) {
+    return 'auto'
+  }
+
+  return props.minHeight + 'px'
 }
 
 function textTransform(props: ButtonProps) {
@@ -196,7 +209,8 @@ function opacity(props: ButtonProps) {
 
 type StyleProps = {
   width: string
-  height: number
+  height: string
+  minHeight: string
   textTransform: string
   padding: string
   backgroundColor: string
@@ -223,7 +237,9 @@ const StyledButton = styled.button<StyleProps>`
   transition: ${(props) => props.transition};
   border-radius: ${(props) => props.borderRadius};
   opacity: ${(props) => props.opacity};
-  height: ${(props) => props.height}px !important;
+  height: ${(props) => props.height} !important;
+  min-height: ${(props) => props.minHeight} !important;
+
   &:hover {
     opacity: ${(props) => props.hoverOpacity};
     background: ${(props) => props.hoverBackgroundColor};
