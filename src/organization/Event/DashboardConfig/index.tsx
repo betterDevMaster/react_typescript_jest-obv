@@ -10,6 +10,7 @@ import Page from 'organization/Event/Page'
 import {PointsProvider} from 'Event/PointsProvider'
 import {OrganizationActionsProvider} from 'Event/ActionsProvider'
 import TemplateProvider from 'Event/TemplateProvider'
+import {StaticSubmissionsProvider} from 'Event/SubmissionsProvider'
 
 export default function DashboardConfig() {
   const {event} = useEvent()
@@ -32,7 +33,9 @@ export default function DashboardConfig() {
           <PointsProvider>
             <AttendeeProfileProvider groups={{}} tags={[]}>
               <TemplateProvider template={event.template}>
-                <Dashboard user={user} isEditMode={true} />
+                <StaticSubmissionsProvider>
+                  <Dashboard user={user} isEditMode={true} />
+                </StaticSubmissionsProvider>
               </TemplateProvider>
             </AttendeeProfileProvider>
           </PointsProvider>

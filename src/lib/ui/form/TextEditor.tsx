@@ -24,13 +24,14 @@ const toolbar = [
 export default function TextEditor(props: {
   data: string
   onChange: (value: string) => void
+  className?: string
 }) {
   const updateValue = (_: any, editor: any) => {
     props.onChange(editor.getData())
   }
 
   return (
-    <>
+    <div className={props.className}>
       <CKEditor
         editor={ClassicEditor}
         data={props.data}
@@ -40,7 +41,7 @@ export default function TextEditor(props: {
         }}
       />
       <CkPopupZIndex />
-    </>
+    </div>
   )
 }
 

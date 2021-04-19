@@ -1,11 +1,11 @@
-import {fakeEvent} from 'Event/__utils__/factory'
-import {goToQuestionsConfig} from 'organization/Event/QuestionsConfig/__utils__/go-to-questions-config'
 import {fakeQuestion} from 'organization/Event/QuestionsProvider/__utils__/factory'
 import faker from 'faker'
 import axios from 'axios'
 import user from '@testing-library/user-event'
 import {wait} from '@testing-library/react'
 import {CONFIGURE_EVENTS} from 'organization/PermissionsProvider'
+import {fakeForm} from 'organization/Event/FormsProvider/__utils__/factory'
+import {goToForm} from 'organization/Event/Form/__utils__/go-to-form'
 
 const mockGet = axios.get as jest.Mock
 
@@ -21,20 +21,16 @@ afterAll(() => {
 
 it('should download answers', async (done) => {
   const numQuestions = faker.random.number({min: 1, max: 3})
-  const questions = Array.from({length: numQuestions}, () =>
-    fakeQuestion({is_registration_question: true}),
-  )
-  const event = fakeEvent({
-    questions,
-  })
+  const questions = Array.from({length: numQuestions}, fakeQuestion)
+  const form = fakeForm({questions})
 
   const csv = faker.random.alphaNumeric(20)
 
   window.URL.createObjectURL = jest.fn()
   window.URL.revokeObjectURL = jest.fn()
 
-  const {findByLabelText} = await goToQuestionsConfig({
-    event,
+  const {findByLabelText} = await goToForm({
+    form,
     userPermissions: [CONFIGURE_EVENTS],
   })
 

@@ -1,5 +1,5 @@
-import {useEvent} from 'Event/EventProvider'
-import React, {useEffect, useState} from 'react'
+import {Form, useForms} from 'organization/Event/FormsProvider'
+import React from 'react'
 
 export interface Question {
   id: number
@@ -10,7 +10,6 @@ export interface Question {
   type: QuestionType
   options: string[]
   validation_rule: string | null
-  is_registration_question: boolean
 }
 
 /**
@@ -52,21 +51,25 @@ export const QuestionsContext = React.createContext<
 
 export default function QuestionsProvider(props: {
   children: React.ReactElement
+  form: Form
 }) {
-  const [questions, setQuestions] = useState<Question[]>([])
-  const {event} = useEvent()
+  const {update: updateForm} = useForms()
+  const {form} = props
 
-  useEffect(() => {
-    setQuestions(event.questions)
-  }, [event])
+  const setQuestions = (questions: Question[]) => {
+    updateForm({
+      ...form,
+      questions,
+    })
+  }
 
   const add = (question: Question) => {
-    const added = [...questions, question]
+    const added = [...form.questions, question]
     setQuestions(added)
   }
 
   const update = (target: Question) => {
-    const updated = questions.map((q) => {
+    const updated = form.questions.map((q) => {
       const isTarget = q.id === target.id
       if (isTarget) {
         return target
@@ -79,12 +82,14 @@ export default function QuestionsProvider(props: {
   }
 
   const remove = (target: Question) => {
-    const remaining = questions.filter((q) => q.id !== target.id)
+    const remaining = form.questions.filter((q) => q.id !== target.id)
     setQuestions(remaining)
   }
 
   return (
-    <QuestionsContext.Provider value={{questions, add, update, remove}}>
+    <QuestionsContext.Provider
+      value={{questions: form.questions, add, update, remove}}
+    >
       {props.children}
     </QuestionsContext.Provider>
   )
@@ -97,8 +102,4 @@ export function useQuestions() {
   }
 
   return context
-}
-
-export function registrationOnly(questions: Question[]) {
-  return questions.filter((q) => q.is_registration_question)
 }

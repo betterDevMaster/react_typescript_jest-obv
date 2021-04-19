@@ -2,6 +2,7 @@ import {useEvent} from 'Event/EventProvider'
 import {ValidationError} from 'lib/api-client'
 import {useAsync} from 'lib/async'
 import {api} from 'lib/url'
+import {Form} from 'organization/Event/FormsProvider'
 import React, {useCallback, useEffect, useState} from 'react'
 
 export interface Answer {
@@ -10,12 +11,12 @@ export interface Answer {
 }
 
 interface SubmissionsContextProps {
-  submit: (answers: Answer[]) => Promise<void>
+  submit: (form: Form, answers: Answer[]) => Promise<void>
   answers: Answer[]
   responseError: ValidationError<any> | null
 }
 
-const SubmissionsContext = React.createContext<
+export const SubmissionsContext = React.createContext<
   undefined | SubmissionsContextProps
 >(undefined)
 
@@ -29,12 +30,31 @@ export default function SubmissionsProvider(props: {
     setResponseError,
   ] = useState<ValidationError<any> | null>(null)
 
-  const addAnswers = (newAnswers: Answer[]) => {
-    const added = [...answers, ...newAnswers]
-    setAnswers(added)
-  }
+  const submit = useSubmit()
 
-  const submit = useSubmit(addAnswers, setResponseError)
+  const onSubmit = (form: Form, data: Answer[]) => {
+    setResponseError(null)
+
+    return submit(form, data)
+      .then((newAnswers) => {
+        const existing = answers.filter(
+          (a) => !newAnswers.find((na) => na.question_id === a.question_id),
+        )
+
+        const updated = [...existing, ...newAnswers]
+        setAnswers(updated)
+      })
+      .catch((e) => {
+        setResponseError(e)
+
+        /**
+         * Re-throw error in case there's a request expecting this
+         * to success (ie. submitting waiver).
+         */
+
+        throw e
+      })
+  }
 
   useEffect(() => {
     if (!fetchedAnswers) {
@@ -49,7 +69,26 @@ export default function SubmissionsProvider(props: {
   }
 
   return (
-    <SubmissionsContext.Provider value={{submit, answers, responseError}}>
+    <SubmissionsContext.Provider
+      value={{submit: onSubmit, answers, responseError}}
+    >
+      {props.children}
+    </SubmissionsContext.Provider>
+  )
+}
+
+export function StaticSubmissionsProvider(props: {
+  answers?: Answer[]
+  children: React.ReactNode
+}) {
+  return (
+    <SubmissionsContext.Provider
+      value={{
+        answers: props.answers || [],
+        responseError: null,
+        submit: (_form: Form, _answers: Answer[]) => Promise.resolve(),
+      }}
+    >
       {props.children}
     </SubmissionsContext.Provider>
   )
@@ -57,32 +96,18 @@ export default function SubmissionsProvider(props: {
 
 function useAnswers() {
   const {client, event} = useEvent()
-  const url = api(`/events/${event.slug}/questions/submissions`)
+  const url = api(`/events/${event.slug}/submissions`)
 
   const request = useCallback(() => client.get<Answer[]>(url), [client, url])
   return useAsync(request)
 }
 
-function useSubmit(
-  addAnswers: (answers: Answer[]) => void,
-  setResponseError: (error: ValidationError<any> | null) => void,
-) {
-  const {client, event} = useEvent()
-  const url = api(`/events/${event.slug}/questions/submissions`)
+function useSubmit() {
+  const {client} = useEvent()
 
-  return (data: Answer[]) => {
-    setResponseError(null)
-    return client
-      .post<Answer[]>(url, data)
-      .then(addAnswers)
-      .catch((e) => {
-        setResponseError(e)
-        /**
-         * Re-throw error in case there's a request expecting this
-         * to success (ie. submitting waiver).
-         */
-        throw e
-      })
+  return (form: Form, data: Answer[]) => {
+    const url = api(`/forms/${form.id}/submissions`)
+    return client.post<Answer[]>(url, data)
   }
 }
 

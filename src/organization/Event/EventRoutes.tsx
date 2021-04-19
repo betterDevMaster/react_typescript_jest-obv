@@ -20,7 +20,7 @@ import Services from 'organization/Event/Services'
 import Zapier from 'organization/Event/Services/Apps/Zapier'
 import ServicesProvider from 'organization/Event/Services/ServicesProvider'
 import AreasProvider from 'organization/Event/AreasProvider'
-import QuestionsConfig from 'organization/Event/QuestionsConfig'
+import FormsConfig from 'organization/Event/FormsConfig'
 import Infusionsoft from 'organization/Event/Services/Apps/Infusionsoft'
 import AuthorizedPage from 'organization/AuthorizedPage'
 import {CONFIGURE_EVENTS} from 'organization/PermissionsProvider'
@@ -28,6 +28,8 @@ import Event from 'organization/Event'
 import AreaList from 'organization/Event/AreaList'
 import {HideLiveChatSupport} from 'lib/WithLiveChatSupport'
 import SponsorPageConfig from 'organization/Event/SponsorPageConfig'
+import Form from 'organization/Event/Form'
+import {FormProvider} from 'organization/Event/Form/FormProvider'
 
 export type EventRoutes = ReturnType<typeof useEventRoutes>
 
@@ -64,9 +66,16 @@ export default function EventRoutes() {
           <WaiverConfig />
         </AuthorizedPage>
       </Route>
-      <Route path={routes.events[':event'].questions}>
+      <Route path={routes.events[':event'].forms[':form'].root}>
         <AuthorizedPage permission={CONFIGURE_EVENTS}>
-          <QuestionsConfig />
+          <FormProvider>
+            <Form />
+          </FormProvider>
+        </AuthorizedPage>
+      </Route>
+      <Route path={routes.events[':event'].forms.root}>
+        <AuthorizedPage permission={CONFIGURE_EVENTS}>
+          <FormsConfig />
         </AuthorizedPage>
       </Route>
       <Route path={routes.events[':event'].tech_check}>

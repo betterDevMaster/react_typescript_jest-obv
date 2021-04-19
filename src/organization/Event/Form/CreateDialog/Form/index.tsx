@@ -12,8 +12,8 @@ import {ValidationError} from 'lib/api-client'
 import {onUnknownChangeHandler} from 'lib/dom'
 import {fieldError} from 'lib/form'
 import {spacing} from 'lib/ui/theme'
-import AllowsMultipleSwitch from 'organization/Event/QuestionsConfig/Form/AllowsMultipleSwitch'
-import OptionsInput from 'organization/Event/QuestionsConfig/Form/OptionsInput'
+import AllowsMultipleSwitch from 'organization/Event/Form/CreateDialog/Form/AllowsMultipleSwitch'
+import OptionsInput from 'organization/Event/Form/CreateDialog/Form/OptionsInput'
 import {
   ALPHA_NUMERIC,
   CHECKBOX,
@@ -35,7 +35,6 @@ const RULE_SELECT_ID = 'question-rule-select'
 export default function Form(props: {
   submit: (data: Partial<Question>) => Promise<void>
   onClose: () => void
-  isRegistrationQuestion?: boolean
   question?: Question
   footer?: React.ReactElement
 }) {
@@ -74,7 +73,6 @@ export default function Form(props: {
 
     const data: Partial<Question> = {
       ...input,
-      is_registration_question: Boolean(props.isRegistrationQuestion),
     }
 
     props

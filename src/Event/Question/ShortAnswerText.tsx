@@ -18,6 +18,7 @@ export default function ShortAnswerText(props: FieldProps) {
       helperText={props.error || props.question.helper_text}
       required={props.question.is_required}
       error={Boolean(props.error)}
+      disabled={props.disabled}
     />
   )
 }

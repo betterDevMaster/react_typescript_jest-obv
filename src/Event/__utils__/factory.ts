@@ -28,7 +28,7 @@ export const fakeEvent = (overrides?: Partial<ObvioEvent>): ObvioEvent => ({
   dashboard_background: null,
   sidebar_background: null,
   footer_image: null,
-  questions: [],
+  forms: [],
   has_infusionsoft: false,
   sponsor_page_title: 'Our Sponsors',
   sponsor_question_icon: null,
@@ -58,6 +58,7 @@ export function fakeWaiver(
       3,
     )}</p></html>`,
     is_enabled: true,
+    form: null,
     ...overrides,
   }
 }

@@ -1,7 +1,6 @@
 import React from 'react'
 import faker from 'faker'
 import {fakeSimpleBlog} from 'Event/template/SimpleBlog/__utils__/factory'
-import {fakeUser} from 'auth/user/__utils__/factory'
 import Dashboard from 'Event/Dashboard'
 import {emptyActions, inputElementFor, render} from '__utils__/render'
 import {

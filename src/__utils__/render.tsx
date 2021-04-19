@@ -19,6 +19,7 @@ import StaticPointsProvider from 'Event/PointsProvider/__utils__/StaticPointsPro
 import {BrowserRouter as Router} from 'react-router-dom'
 import TemplateProvider from 'Event/TemplateProvider'
 import {useEvent} from 'Event/EventProvider'
+import FormsProvider from 'organization/Event/FormsProvider'
 
 type Options = Omit<RtlRenderOptions, 'queries'> & {
   event?: ObvioEvent
@@ -80,7 +81,9 @@ function WithEvent(props: {event?: ObvioEvent; children: React.ReactElement}) {
 
   return (
     <StaticEventProvider event={props.event}>
-      <WithTemplate>{props.children}</WithTemplate>
+      <FormsProvider>
+        <WithTemplate>{props.children}</WithTemplate>
+      </FormsProvider>
     </StaticEventProvider>
   )
 }

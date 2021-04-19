@@ -36,7 +36,6 @@ export const fakeQuestion = (overrides?: Partial<Question>): Question => ({
   type: randomType(),
   options: [],
   validation_rule: null,
-  is_registration_question: faker.random.boolean(),
   ...overrides,
 })
 

@@ -39,6 +39,7 @@ export default function Select(props: FieldProps) {
       fullWidth
       required={props.question.is_required}
       error={props.hasError}
+      disabled={props.disabled}
     >
       <InputLabel>{props.question.label}</InputLabel>
       <Controller

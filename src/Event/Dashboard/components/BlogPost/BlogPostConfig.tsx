@@ -11,6 +11,15 @@ import Box from '@material-ui/core/Box'
 import {DateTimePicker} from '@material-ui/pickers'
 import {MaterialUiPickersDate} from '@material-ui/pickers/typings/date'
 import TextEditor, {TextEditorContainer} from 'lib/ui/form/TextEditor'
+import FormSelect from 'organization/Event/FormsProvider/FormSelect'
+import FormControl from '@material-ui/core/FormControl'
+import InputLabel from '@material-ui/core/InputLabel'
+import Checkbox from '@material-ui/core/Checkbox'
+import FormControlLabel from '@material-ui/core/FormControlLabel'
+import ActionSelect from 'Event/ActionsProvider/ActionConfig'
+import InfusionsoftTagInput from 'organization/Event/DashboardConfig/InfusionsoftTagInput'
+
+export const DEFAULT_MODAL_BUTTON_TEXT = 'Submit'
 
 export type BlogPostConfig = {
   type: typeof BLOG_POST
@@ -97,8 +106,77 @@ export function BlogPostConfig(props: {id: BlogPostConfig['id']}) {
             'aria-label': 'post publish at',
           }}
         />
-
-        <TextEditor data={post.content} onChange={update('content')} />
+        <StyledTextEditor data={post.content} onChange={update('content')} />
+        <FormControl fullWidth>
+          <InputLabel>Form</InputLabel>
+          <FormSelect value={post.formId} onChange={update('formId')} />
+        </FormControl>
+        <FormFields post={post}>
+          <FormControl>
+            <FormControlLabel
+              label="Open in modal?"
+              control={
+                <Checkbox
+                  disableRipple
+                  checked={post.isModalForm || false}
+                  onChange={onChangeCheckedHandler(update('isModalForm'))}
+                />
+              }
+            />
+          </FormControl>
+          <IfModalForm post={post}>
+            <TextField
+              label="Modal Button Text"
+              value={post.modalButtonText || DEFAULT_MODAL_BUTTON_TEXT}
+              inputProps={{
+                'aria-label': 'open form modal text',
+              }}
+              fullWidth
+              onChange={onChangeStringHandler(update('modalButtonText'))}
+            />
+          </IfModalForm>
+          <TextField
+            value={post.formSubmittedText || ''}
+            label="Submitted Message"
+            fullWidth
+            inputProps={{
+              'aria-label': 'submitted message',
+            }}
+            multiline
+            rows="2"
+            onChange={onChangeStringHandler(update('formSubmittedText'))}
+          />
+          <FormControl>
+            <FormControlLabel
+              label="Can Edit Answer?"
+              control={
+                <Checkbox
+                  disableRipple
+                  checked={post.canResubmitForm || false}
+                  onChange={onChangeCheckedHandler(update('canResubmitForm'))}
+                />
+              }
+            />
+          </FormControl>
+          <TextField
+            label="Redirect URL"
+            value={post.onSubmitRedirectUrl || ''}
+            inputProps={{
+              'aria-label': 'redirect url after submit',
+            }}
+            fullWidth
+            onChange={onChangeStringHandler(update('onSubmitRedirectUrl'))}
+            helperText="URL to redirect to after completing form. Starting with https:// or http://."
+          />
+        </FormFields>
+        <ActionSelect
+          value={post.formActionId}
+          onChange={update('formActionId')}
+        />
+        <InfusionsoftTagInput
+          value={post.infusionsoftTag}
+          onChange={update('infusionsoftTag')}
+        />
         <RemoveButton
           fullWidth
           variant="outlined"
@@ -112,7 +190,30 @@ export function BlogPostConfig(props: {id: BlogPostConfig['id']}) {
   )
 }
 
+function FormFields(props: {
+  post: BlogPost
+  children: React.ReactElement | React.ReactElement[]
+}) {
+  if (!props.post.formId) {
+    return null
+  }
+
+  return <>{props.children}</>
+}
+
+function IfModalForm(props: {post: BlogPost; children: React.ReactElement}) {
+  if (!props.post.isModalForm) {
+    return null
+  }
+
+  return props.children
+}
+
 const RemoveButton = styled(DangerButton)`
   margin-top: ${(props) => props.theme.spacing[5]}!important;
   margin-bottom: ${(props) => props.theme.spacing[6]}!important;
+`
+
+const StyledTextEditor = styled(TextEditor)`
+  margin-bottom: ${(props) => props.theme.spacing[4]};
 `

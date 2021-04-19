@@ -14,11 +14,11 @@ import {PointsProvider} from 'Event/PointsProvider'
 import Leaderboard from 'Event/Leaderboard'
 import UnderConstruction from 'Event/UnderConstruction'
 import TemplateProvider from 'Event/TemplateProvider'
-import SubmissionsProvider from 'Event/SubmissionsProvider'
 import CustomScripts from 'organization/Event/CustomScripts'
 import ForgotPassword from 'Event/auth/ForgotPassword'
 import ResetPassword from 'Event/auth/ResetPassword'
 import SponsorPage from 'Event/SponsorPage'
+import SubmissionsProvider from 'Event/SubmissionsProvider'
 
 export const eventRoutes = createRoutes({
   login: '/login',
@@ -48,13 +48,13 @@ export default function Routes() {
     return (
       <EventActionsProvider>
         <PointsProvider>
-          <SubmissionsProvider>
-            <TemplateProvider template={event.template}>
-              <CustomScripts>
+          <TemplateProvider template={event.template}>
+            <CustomScripts>
+              <SubmissionsProvider>
                 <UserRoutes />
-              </CustomScripts>
-            </TemplateProvider>
-          </SubmissionsProvider>
+              </SubmissionsProvider>
+            </CustomScripts>
+          </TemplateProvider>
         </PointsProvider>
       </EventActionsProvider>
     )

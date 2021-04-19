@@ -13,8 +13,9 @@ import {
   SELECT,
   SHORT_ANSWER_TEXT,
 } from 'organization/Event/QuestionsProvider'
-import {fakeEvent} from 'Event/__utils__/factory'
+import {fakeEvent, fakeWaiver} from 'Event/__utils__/factory'
 import {submitWaiver} from 'Event/Step2/__utils__/submit-waiver'
+import {fakeForm} from 'organization/Event/FormsProvider/__utils__/factory'
 
 const mockPost = axios.post as jest.Mock
 
@@ -53,17 +54,14 @@ it('should submit attendee waiver', async () => {
 it('should submit answers', async () => {
   const shortAnswerQuestion = fakeQuestion({
     type: SHORT_ANSWER_TEXT,
-    is_registration_question: true,
   })
 
   const longAnswerQuestion = fakeQuestion({
     type: LONG_ANSWER_TEXT,
-    is_registration_question: true,
   })
 
   const radioQuestion = fakeQuestion({
     type: RADIO,
-    is_registration_question: true,
     options: Array.from(
       {length: faker.random.number({min: 1, max: 5})},
       () => `radio ${faker.random.word()}`,
@@ -72,7 +70,6 @@ it('should submit answers', async () => {
 
   const selectQuestion = fakeQuestion({
     type: SELECT,
-    is_registration_question: true,
     options: Array.from(
       {length: faker.random.number({min: 1, max: 5})},
       () => `select ${faker.random.word()}`,
@@ -81,7 +78,6 @@ it('should submit answers', async () => {
 
   const checkboxQuestion = fakeQuestion({
     type: CHECKBOX,
-    is_registration_question: true,
     options: Array.from(
       {length: faker.random.number({min: 1, max: 5})},
       () => `checkbox ${faker.random.word()}`,
@@ -93,7 +89,7 @@ it('should submit answers', async () => {
     waiver: null,
   })
 
-  const event = fakeEvent({
+  const form = fakeForm({
     questions: [
       shortAnswerQuestion,
       longAnswerQuestion,
@@ -103,9 +99,15 @@ it('should submit answers', async () => {
     ],
   })
 
+  const event = fakeEvent({
+    forms: [form],
+    waiver: fakeWaiver({form}),
+  })
+
   const context = await loginToEventSite({
     attendee,
     event,
+    submissions: [],
   })
 
   const {findByLabelText, findByText} = context
@@ -145,7 +147,7 @@ it('should submit answers', async () => {
 
   const [url, data] = mockPost.mock.calls[1]
 
-  expect(url).toMatch(`/events/${event.slug}/questions/submissions`)
+  expect(url).toMatch(`/forms/${form.id}/submissions`)
 
   const {answers} = data
 

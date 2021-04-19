@@ -3,11 +3,10 @@ import download from 'js-file-download'
 import DialogTitle from '@material-ui/core/DialogTitle'
 import DialogContent from '@material-ui/core/DialogContent'
 import Dialog from 'lib/ui/Dialog'
-import {useEvent} from 'Event/EventProvider'
 import {useOrganization} from 'organization/OrganizationProvider'
 import {api} from 'lib/url'
 import {Question, useQuestions} from 'organization/Event/QuestionsProvider'
-import Form from 'organization/Event/QuestionsConfig/Form'
+import Form from 'organization/Event/Form/CreateDialog/Form'
 import DangerButton from 'lib/ui/Button/DangerButton'
 import {colors, spacing} from 'lib/ui/theme'
 import {withStyles} from '@material-ui/core/styles'
@@ -39,7 +38,6 @@ export default function EditDialog(props: {
           question={question}
           submit={update.bind(null, question)}
           onClose={props.onClose}
-          isRegistrationQuestion={true}
           footer={
             <RemoveButton
               variant="outlined"
@@ -58,18 +56,16 @@ export default function EditDialog(props: {
 
 function useUpdate() {
   const list = useQuestions()
-  const {event} = useEvent()
   const {client} = useOrganization()
 
   return (question: Question, data: Partial<Question>) => {
-    const url = api(`/events/${event.slug}/questions/${question.id}`)
+    const url = api(`/questions/${question.id}`)
     return client.put<Question>(url, data).then(list.update)
   }
 }
 
 function useRemove(onDone: () => void) {
   const list = useQuestions()
-  const {event} = useEvent()
   const {client} = useOrganization()
   const [processing, setProcessing] = useState(false)
 
@@ -80,7 +76,7 @@ function useRemove(onDone: () => void) {
 
     setProcessing(true)
 
-    const url = api(`/events/${event.slug}/questions/${question.id}`)
+    const url = api(`/questions/${question.id}`)
     return client
       .delete(url)
       .then(() => {
@@ -101,8 +97,7 @@ const RemoveButton = withStyles({
 
 function ExportSubmission(props: {question: Question}) {
   const [error, setError] = useState<string | null>(null)
-  const {event} = useEvent()
-  const url = api(`/events/${event.slug}/submissions/${props.question.id}`)
+  const url = api(`/questions/${props.question.id}/submissions`)
   const {client} = useOrganization()
 
   const exportSubmissions = () => {
@@ -120,7 +115,7 @@ function ExportSubmission(props: {question: Question}) {
         textColor={colors.secondary}
         aria-label={`export ${props.question.label} submissions`}
       >
-        Download Answers
+        Download Submissions
       </Button>
       <ExportError>{error}</ExportError>
     </Box>

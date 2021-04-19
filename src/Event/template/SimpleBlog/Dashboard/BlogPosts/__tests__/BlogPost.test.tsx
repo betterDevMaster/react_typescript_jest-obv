@@ -13,6 +13,7 @@ import {fakeEvent} from 'Event/__utils__/factory'
 import {defaultScore} from 'Event/PointsProvider/__utils__/StaticPointsProvider'
 import {getDiffDatetime, now} from 'lib/date-time'
 import moment from 'moment'
+import {fakeOrganization} from 'obvio/Organizations/__utils__/factory'
 
 it('should render blog posts', async () => {
   const withoutPosts = fakeEvent({
@@ -79,7 +80,13 @@ it('should edit a blog post', async () => {
 
   const {findAllByLabelText, findByLabelText, findByText} = render(
     <Dashboard isEditMode={true} user={fakeUser()} />,
-    {event, actions: emptyActions, score: defaultScore, withRouter: true},
+    {
+      event,
+      actions: emptyActions,
+      score: defaultScore,
+      withRouter: true,
+      organization: fakeOrganization(),
+    },
   )
 
   const targetIndex = faker.random.number({min: 0, max: numPosts - 1})
@@ -106,7 +113,13 @@ it('should add a new blog post', async () => {
 
   const {findAllByLabelText, findByLabelText} = render(
     <Dashboard isEditMode={true} user={fakeUser()} />,
-    {event, actions: emptyActions, score: defaultScore, withRouter: true},
+    {
+      event,
+      actions: emptyActions,
+      score: defaultScore,
+      withRouter: true,
+      organization: fakeOrganization(),
+    },
   )
 
   fireEvent.click(await findByLabelText('add blog post'))
@@ -124,7 +137,13 @@ it('should remove a blog post', async () => {
 
   const {findAllByLabelText, findByLabelText} = render(
     <Dashboard isEditMode={true} user={fakeUser()} />,
-    {event, actions: emptyActions, score: defaultScore, withRouter: true},
+    {
+      event,
+      actions: emptyActions,
+      score: defaultScore,
+      withRouter: true,
+      organization: fakeOrganization(),
+    },
   )
 
   const targetIndex = faker.random.number({min: 0, max: numPosts - 1})

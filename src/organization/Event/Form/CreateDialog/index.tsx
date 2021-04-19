@@ -1,9 +1,9 @@
 import Dialog from '@material-ui/core/Dialog'
 import DialogContent from '@material-ui/core/DialogContent'
 import DialogTitle from '@material-ui/core/DialogTitle'
-import {useEvent} from 'Event/EventProvider'
 import {api} from 'lib/url'
-import Form from 'organization/Event/QuestionsConfig/Form'
+import Form from 'organization/Event/Form/CreateDialog/Form'
+import {useForm} from 'organization/Event/Form/FormProvider'
 import {Question, useQuestions} from 'organization/Event/QuestionsProvider'
 import {useOrganization} from 'organization/OrganizationProvider'
 import React from 'react'
@@ -18,7 +18,7 @@ export default function CreateDialog(props: {
     <Dialog open={props.isVisible} onClose={props.onClose}>
       <DialogTitle>Add Question</DialogTitle>
       <DialogContent>
-        <Form submit={create} onClose={props.onClose} isRegistrationQuestion />
+        <Form submit={create} onClose={props.onClose} />
       </DialogContent>
     </Dialog>
   )
@@ -27,12 +27,12 @@ export default function CreateDialog(props: {
 export interface CreateQuestionData {}
 
 function useCreate() {
-  const {event} = useEvent()
   const {client} = useOrganization()
   const questions = useQuestions()
+  const {form} = useForm()
 
   return (data: CreateQuestionData) => {
-    const url = api(`/events/${event.slug}/questions`)
+    const url = api(`/forms/${form.id}/questions`)
     return client.post<Question>(url, data).then(questions.add)
   }
 }

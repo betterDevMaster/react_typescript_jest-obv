@@ -22,6 +22,8 @@ import TextEditor from 'lib/ui/form/TextEditor'
 import FormControl from '@material-ui/core/FormControl'
 import FormControlLabel from '@material-ui/core/FormControlLabel'
 import Switch from '@material-ui/core/Switch'
+import FormSelect from 'organization/Event/FormsProvider/FormSelect'
+import Box from '@material-ui/core/Box'
 
 const imageUploadId = 'waived-logo-upload'
 
@@ -39,6 +41,7 @@ export default function WaiverConfig() {
   const setWaiver = useSetWaiver()
   const dispatch = useDispatch()
   const {event} = useEvent()
+
   // Prevent updating unmounted component
   const mounted = useRef(true)
   // Manual loading state required to trigger CKEditor load
@@ -129,7 +132,7 @@ export default function WaiverConfig() {
             disabled={submitting}
             helperText="Defaults to the event name"
           />
-          <div>
+          <Box mb={2}>
             <LogoLabel>Logo (optional)</LogoLabel>
             <UploadButton variant="outlined" color="primary">
               <UploadButtonLabel htmlFor={imageUploadId}>
@@ -145,7 +148,18 @@ export default function WaiverConfig() {
               aria-label="logo input"
             />
             <UploadedLogo logo={logo} remove={removeLogo} />
-          </div>
+          </Box>
+          <FormControl fullWidth>
+            <InputLabel>Form</InputLabel>
+            <Controller
+              name="form_id"
+              control={control}
+              defaultValue={event.waiver?.form?.id || ''}
+              render={({onChange, value}) => (
+                <FormSelect onChange={onChange} value={value} />
+              )}
+            />
+          </FormControl>
           <Editor>
             <input
               type="hidden"
@@ -214,6 +228,14 @@ function useSetWaiver() {
     const formData = new FormData()
 
     for (const [key, val] of Object.entries(data)) {
+      if (val === null || val === undefined) {
+        /**
+         * FormData sends everything as strings, so we'll have to explicitly
+         * skip sending values on null, ie. un-setting a form_id.
+         */
+        continue
+      }
+
       formData.set(key, val)
     }
 

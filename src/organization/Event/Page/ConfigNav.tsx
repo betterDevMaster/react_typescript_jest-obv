@@ -30,8 +30,8 @@ function AuthorizedPages() {
         <ConfigNavItem to={routes.waiver} aria-label="configure waiver">
           Waiver
         </ConfigNavItem>
-        <ConfigNavItem to={routes.questions} aria-label="configure questions">
-          Questions
+        <ConfigNavItem to={routes.forms.root} aria-label="configure forms">
+          Forms
         </ConfigNavItem>
         <ConfigNavItem to={routes.tech_check} aria-label="configure tech check">
           Tech Check
@@ -39,7 +39,6 @@ function AuthorizedPages() {
         <ConfigNavItem to={routes.dashboard} aria-label="configure dashboard">
           Dashboard
         </ConfigNavItem>
-
         <ConfigNavItem to={routes.points} aria-label="configure points">
           Points
         </ConfigNavItem>
@@ -69,20 +68,17 @@ function ConfigNavItem(props: {
   children: string
   newTab?: boolean
 }) {
+  const {to} = props
+  const isSubpath = useIsSubpath()
+
   const location = useLocation()
-  const paths = location.pathname.split('/')
   const eventRoutes = useEventRoutes()
 
-  const isAreasLocation = Boolean(paths.find((p) => p === 'areas'))
-  const isAreasLink = props.to === eventRoutes.root
-  const isAreasSubpath = isAreasLink && isAreasLocation
-
-  const isServicesLocation = Boolean(paths.find((p) => p === 'services'))
-  const isServicesLink = props.to === eventRoutes.services.root
-  const isServicesSubpath = isServicesLocation && isServicesLink
-
   const isActive =
-    props.to === location.pathname || isAreasSubpath || isServicesSubpath
+    props.to === location.pathname ||
+    isSubpath(to === eventRoutes.areas.root, 'areas') ||
+    isSubpath(to === eventRoutes.services.root, 'services') ||
+    isSubpath(to === eventRoutes.forms.root, 'forms')
 
   return (
     <ConfigLink
@@ -94,6 +90,23 @@ function ConfigNavItem(props: {
       {props.children}
     </ConfigLink>
   )
+}
+
+/**
+ * Check if the current URL location is a child of the config nav
+ * item. ie. If we're viewing a nested area, we'd like to
+ * highlight the 'areas' link.
+ *
+ * @returns
+ */
+function useIsSubpath() {
+  const location = useLocation()
+  const paths = location.pathname.split('/')
+
+  return (isLink: boolean, key: string) => {
+    const isLocation = Boolean(paths.find((p) => p === key))
+    return isLocation && isLink
+  }
 }
 
 const Box = styled.div`

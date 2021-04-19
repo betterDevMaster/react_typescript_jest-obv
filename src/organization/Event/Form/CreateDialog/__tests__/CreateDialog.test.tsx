@@ -1,4 +1,3 @@
-import {fakeEvent} from 'Event/__utils__/factory'
 import user from '@testing-library/user-event'
 import faker from 'faker'
 import {
@@ -11,8 +10,9 @@ import {
 import {fireEvent, wait} from '@testing-library/dom'
 import axios from 'axios'
 import {CHECKBOX, RADIO, SELECT} from 'organization/Event/QuestionsProvider'
-import {goToQuestionsConfig} from 'organization/Event/QuestionsConfig/__utils__/go-to-questions-config'
 import {CONFIGURE_EVENTS} from 'organization/PermissionsProvider'
+import {fakeForm} from 'organization/Event/FormsProvider/__utils__/factory'
+import {goToForm} from 'organization/Event/Form/__utils__/go-to-form'
 
 const mockPost = axios.post as jest.Mock
 
@@ -20,13 +20,11 @@ afterEach(() => {
   jest.clearAllMocks()
 })
 
-it('add a question', async () => {
-  const event = fakeEvent({
-    questions: [],
-  })
+it('should add a question', async () => {
+  const form = fakeForm({questions: []})
 
-  const {findByLabelText, findByText} = await goToQuestionsConfig({
-    event,
+  const {findByLabelText, findByText} = await goToForm({
+    form,
     userPermissions: [CONFIGURE_EVENTS],
   })
 
@@ -55,9 +53,7 @@ it('add a question', async () => {
     user.click(await findByLabelText('is optional'))
   }
 
-  const question = fakeQuestion({
-    is_registration_question: true,
-  })
+  const question = fakeQuestion({})
 
   mockPost.mockImplementation(() => Promise.resolve({data: question}))
 
@@ -69,7 +65,7 @@ it('add a question', async () => {
 
   const [url, data] = mockPost.mock.calls[0]
 
-  expect(url).toMatch(`/events/${event.slug}/questions`)
+  expect(url).toMatch(`forms/${form.id}/questions`)
 
   expect(data.label).toBe(label)
   expect(data.helper_text).toBe(helperText)
@@ -80,23 +76,16 @@ it('add a question', async () => {
   }
 
   expect(data.is_required).toBe(isRequired)
-  expect(data.is_registration_question).toBe(true)
 
   // Added created queston
   expect(await findByText(question.label)).toBeInTheDocument()
 })
 
 it('should create a question with options', async () => {
-  const event = fakeEvent({
-    questions: [],
-  })
+  const form = fakeForm({questions: []})
 
-  const {
-    findByLabelText,
-    findByText,
-    findAllByLabelText,
-  } = await goToQuestionsConfig({
-    event,
+  const {findByLabelText, findByText, findAllByLabelText} = await goToForm({
+    form,
     userPermissions: [CONFIGURE_EVENTS],
   })
 

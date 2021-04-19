@@ -8,7 +8,7 @@ import {
 import React from 'react'
 import Switch from 'lib/ui/form/Switch'
 import Grid from '@material-ui/core/Grid'
-import InfusionsoftTagInput from 'Event/Dashboard/components/NavButton/InfusionsoftTagInput'
+import InfusionsoftTagInput from 'organization/Event/DashboardConfig/InfusionsoftTagInput'
 import ColorPicker from 'lib/ui/ColorPicker'
 import {handleChangeSlider} from 'lib/dom'
 import InputLabel from '@material-ui/core/InputLabel'
@@ -107,7 +107,7 @@ export default function NavButtonConfig(props: {
         </Grid>
       </Grid>
       <InfusionsoftTagInput
-        button={button}
+        value={button.infusionsoftTag}
         onChange={updateButton('infusionsoftTag')}
       />
     </>

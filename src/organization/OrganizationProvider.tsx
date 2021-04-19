@@ -79,7 +79,9 @@ export function createRoutesFor(organization: Organization) {
         ':event': {
           dashboard: '/dashboard',
           waiver: '/waiver',
-          questions: '/questions',
+          forms: {
+            ':form': {},
+          },
           emoji: '/emoji',
           speakers: '/speakers',
           sponsors: '/sponsors',

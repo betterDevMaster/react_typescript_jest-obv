@@ -1,11 +1,11 @@
-import {fakeEvent} from 'Event/__utils__/factory'
 import user from '@testing-library/user-event'
 import faker from 'faker'
 import {fakeQuestion} from 'organization/Event/QuestionsProvider/__utils__/factory'
 import {wait} from '@testing-library/dom'
 import axios from 'axios'
-import {goToQuestionsConfig} from 'organization/Event/QuestionsConfig/__utils__/go-to-questions-config'
 import {CONFIGURE_EVENTS} from 'organization/PermissionsProvider'
+import {fakeForm} from 'organization/Event/FormsProvider/__utils__/factory'
+import {goToForm} from 'organization/Event/Form/__utils__/go-to-form'
 
 const mockPut = axios.put as jest.Mock
 const mockGet = axios.get as jest.Mock
@@ -25,13 +25,14 @@ afterAll(() => {
 })
 
 it('should update an existing question', async () => {
-  const question = fakeQuestion({is_registration_question: true})
-  const event = fakeEvent({
+  const question = fakeQuestion()
+
+  const form = fakeForm({
     questions: [question],
   })
 
-  const {findByLabelText, findByText} = await goToQuestionsConfig({
-    event,
+  const {findByLabelText, findByText} = await goToForm({
+    form,
     userPermissions: [CONFIGURE_EVENTS],
   })
 
@@ -55,20 +56,20 @@ it('should update an existing question', async () => {
 
   const [url, data] = mockPut.mock.calls[0]
 
-  expect(url).toMatch(`/events/${event.slug}/questions/${question.id}`)
+  expect(url).toMatch(`/questions/${question.id}`)
   expect(data.label).toBe(label)
 
   expect(await findByText(label)).toBeInTheDocument()
 })
 
 it('should download answers', async (done) => {
-  const question = fakeQuestion({is_registration_question: true})
-  const event = fakeEvent({
+  const question = fakeQuestion()
+  const form = fakeForm({
     questions: [question],
   })
 
-  const {findByLabelText} = await goToQuestionsConfig({
-    event,
+  const {findByLabelText} = await goToForm({
+    form,
     userPermissions: [CONFIGURE_EVENTS],
   })
 

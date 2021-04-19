@@ -1,11 +1,11 @@
-import {fakeEvent} from 'Event/__utils__/factory'
 import faker from 'faker'
 import {fakeQuestion} from 'organization/Event/QuestionsProvider/__utils__/factory'
-import {goToQuestionsConfig} from 'organization/Event/QuestionsConfig/__utils__/go-to-questions-config'
 import user from '@testing-library/user-event'
 import axios from 'axios'
 import {wait} from '@testing-library/react'
 import {CONFIGURE_EVENTS} from 'organization/PermissionsProvider'
+import {fakeForm} from 'organization/Event/FormsProvider/__utils__/factory'
+import {goToForm} from 'organization/Event/Form/__utils__/go-to-form'
 
 const mockDelete = axios.delete as jest.Mock
 
@@ -15,15 +15,14 @@ beforeEach(() => {
 
 it('should render questions', async () => {
   const numQuestions = faker.random.number({min: 1, max: 3})
-  const questions = Array.from({length: numQuestions}, () =>
-    fakeQuestion({is_registration_question: true}),
-  )
-  const event = fakeEvent({
+  const questions = Array.from({length: numQuestions}, fakeQuestion)
+
+  const form = fakeForm({
     questions,
   })
 
-  const {findByText} = await goToQuestionsConfig({
-    event,
+  const {findByText} = await goToForm({
+    form,
     userPermissions: [CONFIGURE_EVENTS],
   })
 
@@ -35,16 +34,15 @@ it('should render questions', async () => {
 it('should remove a question', async () => {
   const questions = Array.from(
     {length: faker.random.number({min: 2, max: 5})},
-    () => fakeQuestion({is_registration_question: true}),
+    fakeQuestion,
   )
 
-  const event = fakeEvent({questions})
-  const {
-    findAllByLabelText,
-    queryByText,
-    findByLabelText,
-  } = await goToQuestionsConfig({
-    event,
+  const form = fakeForm({
+    questions,
+  })
+
+  const {findAllByLabelText, queryByText, findByLabelText} = await goToForm({
+    form,
     userPermissions: [CONFIGURE_EVENTS],
   })
 

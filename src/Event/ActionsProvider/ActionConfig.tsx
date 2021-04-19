@@ -3,30 +3,25 @@ import InputLabel from '@material-ui/core/InputLabel'
 import MenuItem from '@material-ui/core/MenuItem'
 import Select from '@material-ui/core/Select'
 import {useActions} from 'Event/ActionsProvider'
-import {NavButtonWithSize} from 'Event/Dashboard/components/NavButton'
 import {onUnknownChangeHandler} from 'lib/dom'
 import React from 'react'
 
-export default function ActionConfig(props: {
-  button: NavButtonWithSize
-  update: <T extends keyof NavButtonWithSize>(
-    key: T,
-  ) => (value: NavButtonWithSize[T]) => void
+export default function ActionSelect(props: {
+  value?: string | null
+  onChange: (id: string | null) => void
 }) {
   const {actions} = useActions()
 
-  const value = props.button.actionId || ''
-
   const setAction = (id: number | string) => {
-    const val = typeof id === 'number' ? null : id
-    props.update('actionId')(val)
+    const value = typeof id === 'number' ? null : id
+    props.onChange(value)
   }
 
   return (
     <FormControl fullWidth>
       <InputLabel>Pick an action for points</InputLabel>
       <Select
-        value={value}
+        value={props.value || ''}
         fullWidth
         onChange={onUnknownChangeHandler(setAction)}
         label="Source"

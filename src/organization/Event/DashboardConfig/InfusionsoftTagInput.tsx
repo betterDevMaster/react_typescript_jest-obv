@@ -1,7 +1,6 @@
 import Button from '@material-ui/core/Button'
 import InputAdornment from '@material-ui/core/InputAdornment'
 import TextField from '@material-ui/core/TextField'
-import NavButton from 'Event/Dashboard/components/NavButton'
 import {useEvent} from 'Event/EventProvider'
 import {InfusionsoftTag} from 'Event/infusionsoft'
 import {onChangeStringHandler} from 'lib/dom'
@@ -13,35 +12,33 @@ import {useForm} from 'react-hook-form'
 
 export default function InfusionsoftTagInput(props: {
   onChange: (tag: InfusionsoftTag | null) => void
-  button: NavButton
+  value?: InfusionsoftTag | null
 }) {
+  const {value} = props
   const {event} = useEvent()
-  const {button} = props
   const [id, setId] = useState('')
   const getTagName = useGetTagName()
   const [failed, setFailed] = useState(false)
   const [processing, setProcessing] = useState(false)
   const {handleSubmit} = useForm()
 
-  const hasChanges = parseInt(id) !== button.infusionsoftTag?.id
+  const hasChanges = parseInt(id) !== value?.id
   const canSet = Boolean(id) && hasChanges && !processing
   const canClear = Boolean(id) && !hasChanges
 
   useEffect(() => {
-    if (!button.infusionsoftTag) {
+    if (!value) {
       return
     }
 
-    setId(String(button.infusionsoftTag.id))
-  }, [button])
+    setId(String(value.id))
+  }, [value])
 
   useEffect(() => {
     setFailed(false)
   }, [id])
 
-  const label = button.infusionsoftTag
-    ? `Infusionsoft - ${button.infusionsoftTag.name}`
-    : 'Infusionsoft Tag ID'
+  const label = value ? `Infusionsoft - ${value.name}` : 'Infusionsoft Tag ID'
 
   const set = () => {
     if (!canSet) {

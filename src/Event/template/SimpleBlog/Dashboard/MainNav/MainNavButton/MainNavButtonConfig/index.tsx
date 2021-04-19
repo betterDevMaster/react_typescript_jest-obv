@@ -22,9 +22,9 @@ import RuleConfig, {
 import ConfigureRulesButton from 'Event/Dashboard/component-rules/ConfigureRulesButton'
 import {useTemplate, useUpdateTemplate} from 'Event/TemplateProvider'
 import {MAIN_NAV_BUTTON} from 'Event/template/SimpleBlog/Dashboard/MainNav/MainNavButton'
-import ActionConfig from 'Event/template/SimpleBlog/Dashboard/MainNav/MainNavButton/MainNavButtonConfig/ActionConfig'
+import ActionSelect from 'Event/ActionsProvider/ActionConfig'
 import Switch from 'lib/ui/form/Switch'
-import InfusionsoftTagInput from 'Event/Dashboard/components/NavButton/InfusionsoftTagInput'
+import InfusionsoftTagInput from 'organization/Event/DashboardConfig/InfusionsoftTagInput'
 import Checkbox from '@material-ui/core/Checkbox'
 import FormControlLabel from '@material-ui/core/FormControlLabel'
 import TargetConfig from 'Event/Dashboard/components/NavButton/NavButtonConfig/TargetConfig'
@@ -116,7 +116,10 @@ export function MainNavButtonConfig(props: {id: MainNavButtonConfig['id']}) {
           fullWidth
           onChange={onChangeStringHandler(updateButton('text'))}
         />
-        <ActionConfig update={updateButton} button={button} />
+        <ActionSelect
+          value={button.actionId}
+          onChange={updateButton('actionId')}
+        />
         <Typography gutterBottom>Size</Typography>
         <Slider
           min={1}
@@ -189,7 +192,7 @@ export function MainNavButtonConfig(props: {id: MainNavButtonConfig['id']}) {
           onChange={onChangeNumberHandler(updateButton('borderRadius'))}
         />
         <InfusionsoftTagInput
-          button={button}
+          value={button.infusionsoftTag}
           onChange={updateButton('infusionsoftTag')}
         />
         <Box mt={2} mb={3}>

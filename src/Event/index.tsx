@@ -8,11 +8,11 @@ import {eventRoutes} from 'Event/Routes'
 import {Template} from 'Event/template'
 import {PublicFile} from 'lib/http-client'
 import {Area} from 'organization/Event/AreasProvider'
-import {Question} from 'organization/Event/QuestionsProvider'
 import React from 'react'
 import {Redirect} from 'react-router-dom'
 import {EntityList} from 'lib/list'
 import NavButton from 'Event/Dashboard/components/NavButton'
+import {Form} from 'organization/Event/FormsProvider'
 
 // Can't use 'Event' because that's already a native DOM type
 // for browser events and we'd lose TS safety/import assist.
@@ -34,7 +34,7 @@ export interface ObvioEvent {
   platform_actions: PlatformActions
   login_background: PublicFile | null
   login_logo: PublicFile | null
-  questions: Question[]
+  forms: Form[]
   has_infusionsoft: boolean
   dashboard_background: PublicFile | null
   welcome_image: PublicFile | null
@@ -49,6 +49,7 @@ export interface WaiverConfig {
   title: null | string
   body: string
   is_enabled: boolean
+  form: Form | null
 }
 
 export interface TechCheckConfig {
