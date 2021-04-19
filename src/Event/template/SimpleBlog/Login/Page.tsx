@@ -98,6 +98,7 @@ export const DescriptionText = styled.div<{
   font-size: ${(props) => props.fontSize}px;
   font-weight: 500;
   margin-bottom: ${(props) => props.theme.spacing[8]};
+  text-align: center;
 `
 
 export const Background = styled.div<{
@@ -138,6 +139,12 @@ export function TextField(props: TextFieldProps) {
       '& .MuiFilledInput-input': {
         borderRadius: `${login.inputBorderRadius}px !important;` || spacing[14],
       },
+      '&::before': {
+        content: 'unset',
+      },
+      '&::after': {
+        content: 'unset',
+      },
     },
   })
 
@@ -177,7 +184,7 @@ export const Container = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-
+  margin: auto;
   @media (min-width: ${(props) => props.theme.breakpoints.sm}) {
     width: 600px;
   }

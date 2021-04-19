@@ -7,7 +7,6 @@ import Page, {
   ErrorMessage,
 } from 'Event/template/SimpleBlog/Login/Page'
 import {ForgotPasswordProps} from 'auth/password'
-import Typography from '@material-ui/core/Typography'
 
 export default function ForgotPassword(props: ForgotPasswordProps) {
   return (
@@ -20,10 +19,10 @@ export default function ForgotPassword(props: ForgotPasswordProps) {
 export function Content(props: ForgotPasswordProps) {
   if (props.resetLinkSent) {
     return (
-      <Typography>
+      <Description aria-label="password reset link sent">
         Password reset link sent! Check your spam folder if you don't see it
         after a couple minutes.
-      </Typography>
+      </Description>
     )
   }
 
