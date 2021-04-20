@@ -7,19 +7,18 @@ import {Controller, UseFormMethods} from 'react-hook-form'
 
 export default function AllowsMultipleSwitch(props: {
   questionType: string
-  submitting: boolean
   register: UseFormMethods['register']
   control: UseFormMethods['control']
   question?: Question
 }) {
-  const {questionType, question, submitting, control} = props
+  const {questionType, question, control} = props
 
   if (!canSelectMultiple(questionType)) {
     return null
   }
 
   return (
-    <FormControl fullWidth disabled={submitting}>
+    <FormControl fullWidth>
       <FormControlLabel
         control={
           <Controller

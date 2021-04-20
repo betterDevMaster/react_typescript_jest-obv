@@ -7,7 +7,7 @@ import {CONFIGURE_EVENTS} from 'organization/PermissionsProvider'
 import {fakeForm} from 'organization/Event/FormsProvider/__utils__/factory'
 import {goToForm} from 'organization/Event/Form/__utils__/go-to-form'
 
-const mockDelete = axios.delete as jest.Mock
+const mockPatch = axios.patch as jest.Mock
 
 beforeEach(() => {
   jest.clearAllMocks()
@@ -51,13 +51,25 @@ it('should remove a question', async () => {
 
   user.click((await findAllByLabelText('edit question'))[targetIndex])
 
-  mockDelete.mockImplementationOnce(() => Promise.resolve({data: 'ok'}))
+  const removed = {
+    ...form,
+    questions: form.questions.filter((q) => q.id !== target.id),
+  }
+
+  mockPatch.mockImplementationOnce(() => Promise.resolve({data: removed}))
 
   user.click(await findByLabelText('remove question'))
 
+  user.click(await findByLabelText('save form'))
+
   await wait(() => {
-    expect(mockDelete).toHaveBeenCalledTimes(1)
+    expect(mockPatch).toHaveBeenCalledTimes(1)
   })
+
+  const [url, data] = mockPatch.mock.calls[0]
+
+  expect(url).toMatch(`/forms/${form.id}`)
+  expect(data.questions.length).toBe(questions.length - 1)
 
   expect(queryByText(target.label)).not.toBeInTheDocument()
 })

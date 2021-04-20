@@ -15,7 +15,6 @@ import {UseFormMethods} from 'react-hook-form'
 
 export default function OptionsInput(props: {
   questionType: string
-  submitting: boolean
   register: UseFormMethods['register']
   question?: Question
 }) {
@@ -77,7 +76,6 @@ export default function OptionsInput(props: {
           variant="outlined"
           onClick={addOption}
           color="primary"
-          disabled={props.submitting}
           type="button"
           aria-label="add option"
         >

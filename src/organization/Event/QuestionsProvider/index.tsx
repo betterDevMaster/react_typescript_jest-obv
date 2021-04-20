@@ -2,7 +2,11 @@ import {Form, useForms} from 'organization/Event/FormsProvider'
 import React from 'react'
 
 export interface Question {
-  id: number
+  /**
+   * ID can be a number (saved), or a string for an unsaved question
+   * with a UUID
+   */
+  id: number | string
   label: string
   helper_text: string | null
   is_required: boolean

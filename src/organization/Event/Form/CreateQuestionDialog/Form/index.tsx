@@ -7,13 +7,10 @@ import InputLabel from '@material-ui/core/InputLabel'
 import MenuItem from '@material-ui/core/MenuItem'
 import Select from '@material-ui/core/Select'
 import Switch from '@material-ui/core/Switch'
-import Typography from '@material-ui/core/Typography'
-import {ValidationError} from 'lib/api-client'
 import {onUnknownChangeHandler} from 'lib/dom'
 import {fieldError} from 'lib/form'
-import {spacing} from 'lib/ui/theme'
-import AllowsMultipleSwitch from 'organization/Event/Form/CreateDialog/Form/AllowsMultipleSwitch'
-import OptionsInput from 'organization/Event/Form/CreateDialog/Form/OptionsInput'
+import AllowsMultipleSwitch from 'organization/Event/Form/CreateQuestionDialog/Form/AllowsMultipleSwitch'
+import OptionsInput from 'organization/Event/Form/CreateQuestionDialog/Form/OptionsInput'
 import {
   ALPHA_NUMERIC,
   CHECKBOX,
@@ -26,24 +23,20 @@ import {
   SELECT,
   SHORT_ANSWER_TEXT,
 } from 'organization/Event/QuestionsProvider'
-import React, {useEffect, useRef, useState} from 'react'
+import React, {useEffect} from 'react'
 import {Controller, useForm} from 'react-hook-form'
+import {v4 as uuid} from 'uuid'
 
 const TYPE_SELECT_ID = 'question-type-select'
 const RULE_SELECT_ID = 'question-rule-select'
 
 export default function Form(props: {
-  submit: (data: Partial<Question>) => Promise<void>
+  onComplete: (data: Question) => void
   onClose: () => void
   question?: Question
   footer?: React.ReactElement
 }) {
   const {register, handleSubmit, errors, control, watch, setValue} = useForm()
-  const [submitting, setSubmitting] = useState(false)
-  const [responseError, setReponseError] = useState<
-    ValidationError<Partial<Question>>
-  >(null)
-  const isMounted = useRef(true)
   const {question} = props
 
   const selectedType = watch('type')
@@ -57,39 +50,21 @@ export default function Form(props: {
     setValue('is_required', question.is_required)
   }, [question, setValue])
 
-  useEffect(() => {
-    return () => {
-      isMounted.current = false
-    }
-  }, [])
-
-  const submit = (input: Partial<Question>) => {
-    if (submitting) {
-      return
+  const submit = (data: Question) => {
+    const withDefaults = {
+      ...data,
+      options: data.options || [],
+      id: question?.id || uuid(),
     }
 
-    setReponseError(null)
-    setSubmitting(true)
-
-    const data: Partial<Question> = {
-      ...input,
-    }
-
-    props
-      .submit(data)
-      .then(props.onClose)
-      .catch(setReponseError)
-      .finally(() => {
-        if (isMounted.current) {
-          setSubmitting(false)
-        }
-      })
+    props.onComplete(withDefaults)
+    props.onClose()
   }
 
   const error = (field: keyof Question) => {
     const value = fieldError(field, {
       form: errors,
-      response: responseError,
+      response: null,
     })
 
     return {
@@ -115,7 +90,7 @@ export default function Form(props: {
           error={error('label').exists}
           helperText={error('label').value}
         />
-        <FormControl fullWidth disabled={submitting}>
+        <FormControl fullWidth>
           <StyledInputLabel
             htmlFor={TYPE_SELECT_ID}
             required
@@ -135,6 +110,7 @@ export default function Form(props: {
                 fullWidth
                 onChange={onUnknownChangeHandler(onChange)}
                 variant="outlined"
+                required
                 inputProps={{
                   'aria-label': 'question type',
                 }}
@@ -153,13 +129,11 @@ export default function Form(props: {
           questionType={selectedType}
           register={register}
           question={question}
-          submitting={submitting}
         />
         <OptionsInput
           questionType={selectedType}
           register={register}
           question={question}
-          submitting={submitting}
         />
         <TextField
           label="Helper Text"
@@ -176,7 +150,7 @@ export default function Form(props: {
           error={error('helper_text').exists}
           helperText={error('helper_text').value}
         />
-        <FormControl fullWidth disabled={submitting}>
+        <FormControl fullWidth>
           <StyledInputLabel htmlFor={RULE_SELECT_ID} variant="outlined" filled>
             Validation
           </StyledInputLabel>
@@ -214,7 +188,7 @@ export default function Form(props: {
             )}
           />
         </FormControl>
-        <FormControl fullWidth disabled={submitting}>
+        <FormControl fullWidth>
           <FormControlLabel
             control={
               <Controller
@@ -237,36 +211,16 @@ export default function Form(props: {
           variant="contained"
           color="primary"
           fullWidth
-          disabled={submitting}
           type="submit"
           aria-label="save"
         >
           Save
         </Button>
-        <ResponseError>{responseError}</ResponseError>
       </form>
       {props.footer || null}
     </Box>
   )
 }
-
-function ResponseError(props: {children: ValidationError<Question> | null}) {
-  if (!props.children) {
-    return null
-  }
-
-  return (
-    <ErrorText color="error" align="center">
-      {props.children.message}
-    </ErrorText>
-  )
-}
-
-const ErrorText = withStyles({
-  root: {
-    marginY: spacing[3],
-  },
-})(Typography)
 
 export function ruleLabel(name: string) {
   const labels: Record<string, string> = {

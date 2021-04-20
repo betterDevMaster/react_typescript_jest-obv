@@ -1,3 +1,4 @@
+import {Action} from 'Event/ActionsProvider'
 import {useEvent} from 'Event/EventProvider'
 import {Question} from 'organization/Event/QuestionsProvider'
 import React from 'react'
@@ -6,6 +7,12 @@ export interface Form {
   id: number
   name: string
   questions: Question[]
+  can_resubmit: boolean
+  submission_webhook_url: string | null
+  on_submit_redirect_url: string | null
+  action: Action | null
+  infusionsoft_tag_name: string | null
+  infusionsoft_tag_id: number | null
 }
 
 export interface FormsContextProps {
