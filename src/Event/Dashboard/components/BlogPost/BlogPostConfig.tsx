@@ -7,7 +7,6 @@ import {useTemplate, useUpdateTemplate} from 'Event/TemplateProvider'
 import {onChangeStringHandler, onChangeCheckedHandler} from 'lib/dom'
 import TextField from '@material-ui/core/TextField'
 import Switch from 'lib/ui/form/Switch'
-import Box from '@material-ui/core/Box'
 import {DateTimePicker} from '@material-ui/pickers'
 import {MaterialUiPickersDate} from '@material-ui/pickers/typings/date'
 import TextEditor, {TextEditorContainer} from 'lib/ui/form/TextEditor'
@@ -18,6 +17,10 @@ import Checkbox from '@material-ui/core/Checkbox'
 import FormControlLabel from '@material-ui/core/FormControlLabel'
 import ActionSelect from 'Event/ActionsProvider/ActionConfig'
 import InfusionsoftTagInput from 'organization/Event/DashboardConfig/InfusionsoftTagInput'
+import RuleConfig, {
+  useRuleConfig,
+} from 'Event/Dashboard/component-rules/RuleConfig'
+import ConfigureRulesButton from 'Event/Dashboard/component-rules/ConfigureRulesButton'
 
 export const DEFAULT_MODAL_BUTTON_TEXT = 'Submit'
 
@@ -28,7 +31,7 @@ export type BlogPostConfig = {
 
 export function BlogPostConfig(props: {id: BlogPostConfig['id']}) {
   const {blogPosts: posts} = useTemplate()
-
+  const {visible: ruleConfigVisible, toggle: toggleRuleConfig} = useRuleConfig()
   const {id} = props
   const updateTemplate = useUpdateTemplate()
   const closeConfig = useCloseConfig()
@@ -75,118 +78,124 @@ export function BlogPostConfig(props: {id: BlogPostConfig['id']}) {
   }
 
   return (
-    <>
-      <TextEditorContainer>
-        <Box display="flex" justifyContent="flex-end">
+    <RuleConfig
+      visible={ruleConfigVisible}
+      close={toggleRuleConfig}
+      rules={post.rules}
+      onChange={update('rules')}
+    >
+      <>
+        <TextEditorContainer>
+          <ConfigureRulesButton onClick={toggleRuleConfig} />
           <Switch
             checked={post.isVisible}
             onChange={onChangeCheckedHandler(update('isVisible'))}
             arial-label="config visible switch"
-            labelPlacement="start"
+            labelPlacement="end"
             color="primary"
             label={post.isVisible ? 'Enable' : 'Disable'}
           />
-        </Box>
-        <TextField
-          value={post.title}
-          inputProps={{
-            'aria-label': 'blog post title',
-          }}
-          label="Title"
-          fullWidth
-          onChange={onChangeStringHandler(update('title'))}
-        />
-        <DateTimePicker
-          clearable
-          value={post.publishAt}
-          onChange={updatePublishAt}
-          fullWidth
-          label="Publish Date"
-          inputProps={{
-            'aria-label': 'post publish at',
-          }}
-        />
-        <StyledTextEditor data={post.content} onChange={update('content')} />
-        <FormControl fullWidth>
-          <InputLabel>Form</InputLabel>
-          <FormSelect value={post.formId} onChange={update('formId')} />
-        </FormControl>
-        <FormFields post={post}>
-          <FormControl>
-            <FormControlLabel
-              label="Open in modal?"
-              control={
-                <Checkbox
-                  disableRipple
-                  checked={post.isModalForm || false}
-                  onChange={onChangeCheckedHandler(update('isModalForm'))}
-                />
-              }
-            />
+          <TextField
+            value={post.title}
+            inputProps={{
+              'aria-label': 'blog post title',
+            }}
+            label="Title"
+            fullWidth
+            onChange={onChangeStringHandler(update('title'))}
+          />
+          <DateTimePicker
+            clearable
+            value={post.publishAt}
+            onChange={updatePublishAt}
+            fullWidth
+            label="Publish Date"
+            inputProps={{
+              'aria-label': 'post publish at',
+            }}
+          />
+          <StyledTextEditor data={post.content} onChange={update('content')} />
+          <FormControl fullWidth>
+            <InputLabel>Form</InputLabel>
+            <FormSelect value={post.formId} onChange={update('formId')} />
           </FormControl>
-          <IfModalForm post={post}>
+          <FormFields post={post}>
+            <FormControl>
+              <FormControlLabel
+                label="Open in modal?"
+                control={
+                  <Checkbox
+                    disableRipple
+                    checked={post.isModalForm || false}
+                    onChange={onChangeCheckedHandler(update('isModalForm'))}
+                  />
+                }
+              />
+            </FormControl>
+            <IfModalForm post={post}>
+              <TextField
+                label="Modal Button Text"
+                value={post.modalButtonText || DEFAULT_MODAL_BUTTON_TEXT}
+                inputProps={{
+                  'aria-label': 'open form modal text',
+                }}
+                fullWidth
+                onChange={onChangeStringHandler(update('modalButtonText'))}
+              />
+            </IfModalForm>
             <TextField
-              label="Modal Button Text"
-              value={post.modalButtonText || DEFAULT_MODAL_BUTTON_TEXT}
+              value={post.formSubmittedText || ''}
+              label="Submitted Message"
+              fullWidth
               inputProps={{
-                'aria-label': 'open form modal text',
+                'aria-label': 'submitted message',
+              }}
+              multiline
+              rows="2"
+              onChange={onChangeStringHandler(update('formSubmittedText'))}
+            />
+            <FormControl>
+              <FormControlLabel
+                label="Can Edit Answer?"
+                control={
+                  <Checkbox
+                    disableRipple
+                    checked={post.canResubmitForm || false}
+                    onChange={onChangeCheckedHandler(update('canResubmitForm'))}
+                  />
+                }
+              />
+            </FormControl>
+            <TextField
+              label="Redirect URL"
+              value={post.onSubmitRedirectUrl || ''}
+              inputProps={{
+                'aria-label': 'redirect url after submit',
               }}
               fullWidth
-              onChange={onChangeStringHandler(update('modalButtonText'))}
+              onChange={onChangeStringHandler(update('onSubmitRedirectUrl'))}
+              helperText="URL to redirect to after completing form. Starting with https:// or http://."
             />
-          </IfModalForm>
-          <TextField
-            value={post.formSubmittedText || ''}
-            label="Submitted Message"
-            fullWidth
-            inputProps={{
-              'aria-label': 'submitted message',
-            }}
-            multiline
-            rows="2"
-            onChange={onChangeStringHandler(update('formSubmittedText'))}
+          </FormFields>
+          <ActionSelect
+            value={post.formActionId}
+            onChange={update('formActionId')}
           />
-          <FormControl>
-            <FormControlLabel
-              label="Can Edit Answer?"
-              control={
-                <Checkbox
-                  disableRipple
-                  checked={post.canResubmitForm || false}
-                  onChange={onChangeCheckedHandler(update('canResubmitForm'))}
-                />
-              }
-            />
-          </FormControl>
-          <TextField
-            label="Redirect URL"
-            value={post.onSubmitRedirectUrl || ''}
-            inputProps={{
-              'aria-label': 'redirect url after submit',
-            }}
-            fullWidth
-            onChange={onChangeStringHandler(update('onSubmitRedirectUrl'))}
-            helperText="URL to redirect to after completing form. Starting with https:// or http://."
+          <InfusionsoftTagInput
+            value={post.infusionsoftTag}
+            onChange={update('infusionsoftTag')}
           />
-        </FormFields>
-        <ActionSelect
-          value={post.formActionId}
-          onChange={update('formActionId')}
-        />
-        <InfusionsoftTagInput
-          value={post.infusionsoftTag}
-          onChange={update('infusionsoftTag')}
-        />
-        <RemoveButton
-          fullWidth
-          variant="outlined"
-          aria-label="remove blog post"
-          onClick={remove}
-        >
-          DELETE POST
-        </RemoveButton>
-      </TextEditorContainer>
-    </>
+          <RemoveButton
+            fullWidth
+            variant="outlined"
+            aria-label="remove blog post"
+            onClick={remove}
+          >
+            DELETE POST
+          </RemoveButton>
+        </TextEditorContainer>
+      </>
+    </RuleConfig>
   )
 }
 

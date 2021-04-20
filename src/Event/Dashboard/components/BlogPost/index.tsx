@@ -6,21 +6,23 @@ import {useEditMode} from 'Event/Dashboard/editor/state/edit-mode'
 import {useWithAttendeeData} from 'Event/auth/data'
 import PostForm from 'Event/Dashboard/components/BlogPost/PostForm'
 import {InfusionsoftTag} from 'Event/infusionsoft'
+import {HasRules} from 'Event/Dashboard/component-rules'
 
-export type BlogPost = Publishable & {
-  title: string
-  postedAt: string
-  publishAt: string | null
-  content: string
-  formId?: number | null
-  canResubmitForm?: boolean
-  onSubmitRedirectUrl?: string
-  formSubmittedText?: string
-  isModalForm?: boolean
-  modalButtonText?: string
-  formActionId?: string | null
-  infusionsoftTag?: InfusionsoftTag | null
-}
+export type BlogPost = Publishable &
+  HasRules & {
+    title: string
+    postedAt: string
+    publishAt: string | null
+    content: string
+    formId?: number | null
+    canResubmitForm?: boolean
+    onSubmitRedirectUrl?: string
+    formSubmittedText?: string
+    isModalForm?: boolean
+    modalButtonText?: string
+    formActionId?: string | null
+    infusionsoftTag?: InfusionsoftTag | null
+  }
 
 export const BLOG_POST = 'Blog Post'
 
