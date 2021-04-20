@@ -94,6 +94,19 @@ export interface SimpleBlog {
     logoHidden?: boolean
     backgroundHidden?: boolean
   }
+  setPasswordForm?: {
+    title?: string
+    description?: string
+    passwordLabel?: string
+    confirmPasswordLabel?: string
+    button?: {
+      text?: string
+      textColor?: string
+      backgroundColor?: string
+      hoverBackgroundColor?: string
+      borderRadius?: number
+    }
+  }
   bodyHTMLEmbed?: string | null
 }
 

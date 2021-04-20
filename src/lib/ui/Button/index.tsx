@@ -20,6 +20,7 @@ export interface ButtonProps {
   opacity?: number
   height?: number
   minHeight?: number
+  type?: 'submit' | 'button' | 'reset'
   'aria-label'?: string
 }
 
@@ -45,6 +46,7 @@ export default function Button(props: ButtonProps) {
       opacity={opacity(props)}
       height={height(props)}
       minHeight={minHeight(props)}
+      type={props.type || 'button'}
     >
       {props.children}
     </StyledButton>

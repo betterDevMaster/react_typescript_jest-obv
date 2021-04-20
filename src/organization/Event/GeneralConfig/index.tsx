@@ -16,6 +16,7 @@ import SelectTemplateForm from 'organization/Event/DashboardConfig/SelectTemplat
 import Layout from 'organization/user/Layout'
 import Page from 'organization/Event/Page'
 import {handleChangeSlider} from 'lib/dom'
+import SetPasswordConfig from 'organization/Event/GeneralConfig/SetPasswordConfig'
 
 export interface ProgressBar {
   background: string
@@ -103,6 +104,7 @@ function Content() {
             </Grid>
           </Box>
           <LoginConfig />
+          <SetPasswordConfig />
         </Page>
       </div>
     </Layout>

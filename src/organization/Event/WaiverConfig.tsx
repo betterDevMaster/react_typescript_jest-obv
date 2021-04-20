@@ -110,7 +110,7 @@ export default function WaiverConfig() {
                 <Controller
                   type="checkbox"
                   name="is_enabled"
-                  defaultValue={event.waiver?.is_enabled}
+                  defaultValue={event.waiver?.is_enabled || true}
                   control={control}
                   render={({onChange, value}) => (
                     <Switch
