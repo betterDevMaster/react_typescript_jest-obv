@@ -14,7 +14,7 @@ import {CONFIGURE_EVENTS} from 'organization/PermissionsProvider'
 import {fakeForm} from 'organization/Event/FormsProvider/__utils__/factory'
 import {goToForm} from 'organization/Event/Form/__utils__/go-to-form'
 
-const mockPost = axios.post as jest.Mock
+const mockPatch = axios.patch as jest.Mock
 
 afterEach(() => {
   jest.clearAllMocks()
@@ -55,27 +55,35 @@ it('should add a question', async () => {
 
   const question = fakeQuestion({})
 
-  mockPost.mockImplementation(() => Promise.resolve({data: question}))
-
   user.click(await findByLabelText('save'))
 
-  await wait(() => {
-    expect(mockPost).toHaveBeenCalledTimes(1)
-  })
-
-  const [url, data] = mockPost.mock.calls[0]
-
-  expect(url).toMatch(`forms/${form.id}/questions`)
-
-  expect(data.label).toBe(label)
-  expect(data.helper_text).toBe(helperText)
-  expect(data.type).toBe(type)
-
-  if (hasRule) {
-    expect(data.validation_rule).toBe(rule)
+  const added = {
+    ...form,
+    questions: [...form.questions, question],
   }
 
-  expect(data.is_required).toBe(isRequired)
+  mockPatch.mockImplementation(() => Promise.resolve({data: added}))
+
+  user.click(await findByLabelText('save form'))
+
+  await wait(() => {
+    expect(mockPatch).toHaveBeenCalledTimes(1)
+  })
+
+  const [url, data] = mockPatch.mock.calls[0]
+
+  expect(url).toMatch(`forms/${form.id}`)
+  expect(data.questions.length).toBe(1)
+
+  expect(data.questions[0].label).toBe(label)
+  expect(data.questions[0].helper_text).toBe(helperText)
+  expect(data.questions[0].type).toBe(type)
+
+  if (hasRule) {
+    expect(data.questions[0].validation_rule).toBe(rule)
+  }
+
+  expect(data.questions[0].is_required).toBe(isRequired)
 
   // Added created queston
   expect(await findByText(question.label)).toBeInTheDocument()
@@ -114,18 +122,19 @@ it('should create a question with options', async () => {
   user.click((await findAllByLabelText('remove option'))[removeTargetIndex])
 
   user.click(await findByLabelText('save'))
+  user.click(await findByLabelText('save form'))
 
   await wait(() => {
-    expect(mockPost).toHaveBeenCalledTimes(1)
+    expect(mockPatch).toHaveBeenCalledTimes(1)
   })
 
-  const [_, data] = mockPost.mock.calls[0]
+  const [_, data] = mockPatch.mock.calls[0]
 
   // Did remove option
-  expect(data.options.length).toBe(numOptions - 1)
+  expect(data.questions[0].options.length).toBe(numOptions - 1)
 
   // Did save correct options
-  for (const savedOption of data.options) {
+  for (const savedOption of data.questions[0].options) {
     expect(options.includes(savedOption)).toBe(true)
   }
 })

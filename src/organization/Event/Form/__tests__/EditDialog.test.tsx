@@ -7,8 +7,8 @@ import {CONFIGURE_EVENTS} from 'organization/PermissionsProvider'
 import {fakeForm} from 'organization/Event/FormsProvider/__utils__/factory'
 import {goToForm} from 'organization/Event/Form/__utils__/go-to-form'
 
-const mockPut = axios.put as jest.Mock
 const mockGet = axios.get as jest.Mock
+const mockPatch = axios.patch as jest.Mock
 
 afterEach(() => {
   jest.clearAllMocks()
@@ -46,18 +46,24 @@ it('should update an existing question', async () => {
     label,
   }
 
-  mockPut.mockImplementation(() => Promise.resolve({data: updated}))
+  const updatedForm = {
+    ...form,
+    questions: [updated],
+  }
+
+  mockPatch.mockImplementation(() => Promise.resolve({data: updatedForm}))
 
   user.click(await findByLabelText('save'))
+  user.click(await findByLabelText('save form'))
 
   await wait(() => {
-    expect(mockPut).toHaveBeenCalledTimes(1)
+    expect(mockPatch).toHaveBeenCalledTimes(1)
   })
 
-  const [url, data] = mockPut.mock.calls[0]
+  const [url, data] = mockPatch.mock.calls[0]
 
-  expect(url).toMatch(`/questions/${question.id}`)
-  expect(data.label).toBe(label)
+  expect(url).toMatch(`/forms/${form.id}`)
+  expect(data.questions[0].label).toBe(label)
 
   expect(await findByText(label)).toBeInTheDocument()
 })

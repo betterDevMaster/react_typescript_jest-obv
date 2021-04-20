@@ -13,6 +13,7 @@ import {useForm} from 'react-hook-form'
 export default function InfusionsoftTagInput(props: {
   onChange: (tag: InfusionsoftTag | null) => void
   value?: InfusionsoftTag | null
+  disabled?: boolean
 }) {
   const {value} = props
   const {event} = useEvent()
@@ -87,7 +88,7 @@ export default function InfusionsoftTagInput(props: {
         }}
         onChange={onChangeStringHandler(setId)}
         error={failed}
-        disabled={processing}
+        disabled={processing || props.disabled}
         helperText={helperText}
         InputProps={{
           endAdornment: (

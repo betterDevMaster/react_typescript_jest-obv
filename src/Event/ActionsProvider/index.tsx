@@ -78,16 +78,23 @@ function useFetch(client: Client, noCache?: boolean) {
 }
 
 export function useActionsList(request: () => Promise<Action[]>) {
-  const {data: saved, loading, error} = useAsync(request)
+  const {data: saved, loading: fetching, error} = useAsync(request)
   const [actions, setActions] = useState<Action[]>([])
+  const [loading, setLoading] = useState(true)
 
   useEffect(() => {
+    if (fetching) {
+      return
+    }
+
     if (!saved) {
+      setLoading(false)
       return
     }
 
     setActions(saved)
-  }, [saved])
+    setLoading(false)
+  }, [saved, fetching])
 
   const update = (target: Action) => {
     const updated = actions.map((a) => {

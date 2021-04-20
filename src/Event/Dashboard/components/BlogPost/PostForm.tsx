@@ -11,7 +11,6 @@ import {useForm} from 'react-hook-form'
 import {DEFAULT_MODAL_BUTTON_TEXT} from 'Event/Dashboard/components/BlogPost/BlogPostConfig'
 import Box from '@material-ui/core/Box'
 import {usePoints} from 'Event/PointsProvider'
-import {useActions} from 'Event/ActionsProvider'
 import {useAddTag} from 'Event/infusionsoft'
 import {useSubmissions} from 'Event/SubmissionsProvider'
 
@@ -34,7 +33,6 @@ function Content(props: {form: Form; post: BlogPost}) {
   const [dialogVisible, setDialogVisible] = useState(false)
   const {submit: submitAnswers, responseError, answers} = useSubmissions()
   const {submit: submitAction} = usePoints()
-  const {actions} = useActions()
   const addInfusionsoftTag = useAddTag()
 
   const toggleDialog = () => setDialogVisible(!dialogVisible)
@@ -73,17 +71,19 @@ function Content(props: {form: Form; post: BlogPost}) {
       .then(() => {
         setIsResubmitting(false)
 
-        const action = actions.find((a) => a.key === post.formActionId)
-        if (action) {
-          submitAction(action)
+        if (form.action) {
+          submitAction(form.action)
         }
 
-        if (post.infusionsoftTag) {
-          addInfusionsoftTag(post.infusionsoftTag)
+        if (form.infusionsoft_tag_id && form.infusionsoft_tag_name) {
+          addInfusionsoftTag({
+            id: form.infusionsoft_tag_id,
+            name: form.infusionsoft_tag_name,
+          })
         }
 
-        if (post.onSubmitRedirectUrl) {
-          window.location.href = post.onSubmitRedirectUrl
+        if (form.on_submit_redirect_url) {
+          window.location.href = form.on_submit_redirect_url
         }
       })
       .finally(() => {
@@ -99,7 +99,9 @@ function Content(props: {form: Form; post: BlogPost}) {
   const hasSubmitted = numAnswered > 0
 
   if (hasSubmitted && !isResubmitting) {
-    return <SubmittedMessage post={post} resubmit={handleResubmit} />
+    return (
+      <SubmittedMessage post={post} resubmit={handleResubmit} form={form} />
+    )
   }
 
   const body = (
@@ -143,8 +145,12 @@ function Content(props: {form: Form; post: BlogPost}) {
   )
 }
 
-function SubmittedMessage(props: {post: BlogPost; resubmit: () => void}) {
-  if (!props.post.canResubmitForm) {
+function SubmittedMessage(props: {
+  post: BlogPost
+  resubmit: () => void
+  form: Form
+}) {
+  if (!props.form.can_resubmit) {
     return <div>{props.post.formSubmittedText}</div>
   }
 

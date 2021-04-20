@@ -15,8 +15,6 @@ import FormControl from '@material-ui/core/FormControl'
 import InputLabel from '@material-ui/core/InputLabel'
 import Checkbox from '@material-ui/core/Checkbox'
 import FormControlLabel from '@material-ui/core/FormControlLabel'
-import ActionSelect from 'Event/ActionsProvider/ActionConfig'
-import InfusionsoftTagInput from 'organization/Event/DashboardConfig/InfusionsoftTagInput'
 import RuleConfig, {
   useRuleConfig,
 } from 'Event/Dashboard/component-rules/RuleConfig'
@@ -154,37 +152,7 @@ export function BlogPostConfig(props: {id: BlogPostConfig['id']}) {
               rows="2"
               onChange={onChangeStringHandler(update('formSubmittedText'))}
             />
-            <FormControl>
-              <FormControlLabel
-                label="Can Edit Answer?"
-                control={
-                  <Checkbox
-                    disableRipple
-                    checked={post.canResubmitForm || false}
-                    onChange={onChangeCheckedHandler(update('canResubmitForm'))}
-                  />
-                }
-              />
-            </FormControl>
-            <TextField
-              label="Redirect URL"
-              value={post.onSubmitRedirectUrl || ''}
-              inputProps={{
-                'aria-label': 'redirect url after submit',
-              }}
-              fullWidth
-              onChange={onChangeStringHandler(update('onSubmitRedirectUrl'))}
-              helperText="URL to redirect to after completing form. Starting with https:// or http://."
-            />
           </FormFields>
-          <ActionSelect
-            value={post.formActionId}
-            onChange={update('formActionId')}
-          />
-          <InfusionsoftTagInput
-            value={post.infusionsoftTag}
-            onChange={update('infusionsoftTag')}
-          />
           <RemoveButton
             fullWidth
             variant="outlined"

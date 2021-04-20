@@ -9,7 +9,7 @@ import {Redirect, useParams} from 'react-router-dom'
 
 type FormContextProps = {
   form: Form
-  update: <T extends keyof Pick<Form, 'name'>>(key: T) => (val: Form[T]) => void
+  update: (data: Partial<Form>) => void
   processing: boolean
 }
 
@@ -61,21 +61,19 @@ function useUpdateForm(id: number) {
   const {update: updateForm} = useForms()
 
   const update = useCallback(
-    <T extends keyof Form>(key: T) => {
+    (data: Partial<Form>) => {
       const url = api(`/forms/${id}`)
-      return (value: Form[T]) => {
-        if (processing) {
-          return
-        }
-
-        setProcessing(true)
-        client
-          .patch<Form>(url, {[key]: value})
-          .then(updateForm)
-          .finally(() => {
-            setProcessing(false)
-          })
+      if (processing) {
+        return
       }
+
+      setProcessing(true)
+      client
+        .patch<Form>(url, data)
+        .then(updateForm)
+        .finally(() => {
+          setProcessing(false)
+        })
     },
     [client, id, processing, updateForm],
   )

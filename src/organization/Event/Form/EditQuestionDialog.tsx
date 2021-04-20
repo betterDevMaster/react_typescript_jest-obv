@@ -6,7 +6,7 @@ import Dialog from 'lib/ui/Dialog'
 import {useOrganization} from 'organization/OrganizationProvider'
 import {api} from 'lib/url'
 import {Question, useQuestions} from 'organization/Event/QuestionsProvider'
-import Form from 'organization/Event/Form/CreateDialog/Form'
+import Form from 'organization/Event/Form/CreateQuestionDialog/Form'
 import DangerButton from 'lib/ui/Button/DangerButton'
 import {colors, spacing} from 'lib/ui/theme'
 import {withStyles} from '@material-ui/core/styles'
@@ -15,13 +15,20 @@ import Typography from '@material-ui/core/Typography'
 import Box from '@material-ui/core/Box'
 import Button from 'lib/ui/Button'
 
-export default function EditDialog(props: {
+export default function QuestionEditDialog(props: {
   question: Question | null
   onClose: () => void
 }) {
   const {question} = props
-  const update = useUpdate()
-  const remove = useRemove(props.onClose)
+  const list = useQuestions()
+  const remove = () => {
+    if (!question) {
+      return
+    }
+
+    list.remove(question)
+    props.onClose()
+  }
 
   const isVisible = Boolean(question)
 
@@ -36,13 +43,13 @@ export default function EditDialog(props: {
         <ExportSubmission question={question} />
         <Form
           question={question}
-          submit={update.bind(null, question)}
+          onComplete={list.update}
           onClose={props.onClose}
           footer={
             <RemoveButton
               variant="outlined"
               fullWidth
-              onClick={remove(question)}
+              onClick={remove}
               aria-label="remove question"
             >
               Remove
@@ -52,41 +59,6 @@ export default function EditDialog(props: {
       </DialogContent>
     </Dialog>
   )
-}
-
-function useUpdate() {
-  const list = useQuestions()
-  const {client} = useOrganization()
-
-  return (question: Question, data: Partial<Question>) => {
-    const url = api(`/questions/${question.id}`)
-    return client.put<Question>(url, data).then(list.update)
-  }
-}
-
-function useRemove(onDone: () => void) {
-  const list = useQuestions()
-  const {client} = useOrganization()
-  const [processing, setProcessing] = useState(false)
-
-  return (question: Question) => () => {
-    if (processing) {
-      return
-    }
-
-    setProcessing(true)
-
-    const url = api(`/questions/${question.id}`)
-    return client
-      .delete(url)
-      .then(() => {
-        list.remove(question)
-        onDone()
-      })
-      .finally(() => {
-        setProcessing(false)
-      })
-  }
 }
 
 const RemoveButton = withStyles({

@@ -7,14 +7,16 @@ import {onUnknownChangeHandler} from 'lib/dom'
 import React from 'react'
 
 export default function ActionSelect(props: {
-  value?: string | null
+  value?: string | number | null
   onChange: (id: string | null) => void
+  useId?: boolean
+  disabled?: boolean
 }) {
   const {actions} = useActions()
 
   const setAction = (id: number | string) => {
-    const value = typeof id === 'number' ? null : id
-    props.onChange(value)
+    const value = id === 0 ? null : id
+    props.onChange(String(value))
   }
 
   return (
@@ -28,11 +30,12 @@ export default function ActionSelect(props: {
         inputProps={{
           'aria-label': 'pick action',
         }}
+        disabled={props.disabled}
       >
         {actions.map((action) => (
           <MenuItem
-            key={action.key}
-            value={action.key}
+            key={action.id}
+            value={props.useId ? action.id : action.key}
             aria-label={`pick ${action.description}`}
           >
             {action.description}

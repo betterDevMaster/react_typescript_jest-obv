@@ -1,55 +1,224 @@
 import Button from '@material-ui/core/Button'
 import styled from 'styled-components'
 import Page from 'organization/Event/Page'
-import CreateDialog from 'organization/Event/Form/CreateDialog'
+import CreateQuestionDialog from 'organization/Event/Form/CreateQuestionDialog'
 import FormActions from 'organization/Event/Form/FormActions'
-import QuestionsProvider, {Question} from 'organization/Event/QuestionsProvider'
+import QuestionsProvider, {
+  Question,
+  useQuestions,
+} from 'organization/Event/QuestionsProvider'
 import Layout from 'organization/user/Layout'
-import React, {useState} from 'react'
-import EditDialog from 'organization/Event/Form/EditDialog'
+import React, {useEffect, useRef, useState} from 'react'
+import QuestionEditDialog from 'organization/Event/Form/EditQuestionDialog'
 import QuestionsList from 'organization/Event/Form/QuestionsList'
-import {useForm} from 'organization/Event/Form/FormProvider'
-import NameField from 'organization/Event/Form/NameField'
+import {useForm as useEventForm} from 'organization/Event/Form/FormProvider'
+import {Form as FormData} from 'organization/Event/FormsProvider'
+import {Controller, useForm as useHookForm} from 'react-hook-form'
+import TextField from '@material-ui/core/TextField'
+import Box from '@material-ui/core/Box'
+import Checkbox from '@material-ui/core/Checkbox'
+import {onChangeCheckedHandler} from 'lib/dom'
+import FormControl from '@material-ui/core/FormControl'
+import FormControlLabel from '@material-ui/core/FormControlLabel'
+import ActionSelect from 'Event/ActionsProvider/ActionConfig'
+import {OrganizationActionsProvider} from 'Event/ActionsProvider'
+import Typography from '@material-ui/core/Typography'
+import {InfusionsoftTag} from 'Event/infusionsoft'
+import InfusionsoftTagInput from 'organization/Event/DashboardConfig/InfusionsoftTagInput'
 
 export default function Form() {
-  const {form} = useForm()
+  const {form, processing} = useEventForm()
   const [editing, setEditing] = useState<Question | null>(null)
   const [addQuestionDialogVisible, setAddQuestionDialogVisible] = useState(
     false,
   )
-
+  const formRef = useRef<HTMLFormElement>(null)
   const toggleAddQuestionDialog = () =>
     setAddQuestionDialogVisible(!addQuestionDialogVisible)
 
   const stopEditing = () => setEditing(null)
 
+  /**
+   * Save the form config. We want the question list OUTSIDE of the
+   * html form to avoid triggering validation, so this is the
+   * workaround to allow that.
+   */
+  const save = () => {
+    if (!formRef.current) {
+      return
+    }
+
+    formRef.current.dispatchEvent(new Event('submit'))
+  }
+
   return (
-    <QuestionsProvider form={form}>
-      <Layout>
-        <Page>
-          <CreateDialog
-            isVisible={addQuestionDialogVisible}
-            onClose={toggleAddQuestionDialog}
-          />
-          <EditDialog question={editing} onClose={stopEditing} />
-          <StyledFormActions />
-          <NameField />
-          <QuestionsList onSelect={setEditing} />
-          <Button
-            fullWidth
-            size="large"
-            variant="contained"
-            color="primary"
-            aria-label="add question"
-            onClick={toggleAddQuestionDialog}
-          >
-            Add Question
-          </Button>
-        </Page>
-      </Layout>
-    </QuestionsProvider>
+    <OrganizationActionsProvider
+      loader={
+        <Layout>
+          <Page>
+            <div>loading...</div>
+          </Page>
+        </Layout>
+      }
+    >
+      <QuestionsProvider form={form}>
+        <Layout>
+          <Page>
+            <CreateQuestionDialog
+              isVisible={addQuestionDialogVisible}
+              onClose={toggleAddQuestionDialog}
+            />
+            <QuestionEditDialog question={editing} onClose={stopEditing} />
+            <StyledFormActions />
+            <Box mb={2}>
+              <FormConfig ref={formRef} setEditing={setEditing} />
+            </Box>
+            <Typography variant="h6">Questions</Typography>
+            <Box display="flex" justifyContent="flex-end">
+              <Button
+                variant="outlined"
+                color="primary"
+                aria-label="add question"
+                onClick={toggleAddQuestionDialog}
+                disabled={processing}
+              >
+                Add Question
+              </Button>
+            </Box>
+            <QuestionsList onSelect={setEditing} />
+            <Button
+              onClick={save}
+              fullWidth
+              color="primary"
+              variant="contained"
+              disabled={processing}
+              aria-label="save form"
+            >
+              Save
+            </Button>
+          </Page>
+        </Layout>
+      </QuestionsProvider>
+    </OrganizationActionsProvider>
   )
 }
+
+const FormConfig = React.forwardRef<
+  HTMLFormElement,
+  {
+    setEditing: (question: Question | null) => void
+  }
+>((props, ref) => {
+  const {handleSubmit, register, control} = useHookForm()
+  const {form, update, processing} = useEventForm()
+  const {questions} = useQuestions()
+  const [
+    infusionsoftTag,
+    setInfusionsoftTag,
+  ] = useState<InfusionsoftTag | null>(null)
+
+  useEffect(() => {
+    if (form.infusionsoft_tag_id && form.infusionsoft_tag_name) {
+      setInfusionsoftTag({
+        name: form.infusionsoft_tag_name,
+        id: form.infusionsoft_tag_id,
+      })
+    }
+  }, [form])
+
+  const submit = (data: Partial<FormData>) => {
+    const withAttributes: Partial<FormData> = {
+      ...data,
+      questions: [...questions],
+      infusionsoft_tag_name: infusionsoftTag?.name || null,
+      infusionsoft_tag_id: infusionsoftTag?.id || null,
+    }
+
+    update(withAttributes)
+  }
+
+  return (
+    <>
+      <form onSubmit={handleSubmit(submit)} ref={ref}>
+        <TextField
+          defaultValue={form.name}
+          variant="outlined"
+          fullWidth
+          required
+          name="name"
+          inputProps={{'aria-label': 'form name', ref: register}}
+          disabled={processing}
+        />
+        <Controller
+          control={control}
+          name="can_resubmit"
+          defaultValue={form.can_resubmit}
+          render={({onChange, value}) => (
+            <FormControl>
+              <FormControlLabel
+                label="Can Edit Answer?"
+                control={
+                  <Checkbox
+                    checked={!!value}
+                    disabled={processing}
+                    onChange={onChangeCheckedHandler(onChange)}
+                    color="primary"
+                    inputProps={{
+                      'aria-label': 'toggle can re-submit',
+                    }}
+                    disableRipple
+                  />
+                }
+              />
+            </FormControl>
+          )}
+        />
+        <TextField
+          label="Redirect URL"
+          name="on_submit_redirect_url"
+          defaultValue={form.on_submit_redirect_url}
+          inputProps={{
+            'aria-label': 'redirect url after submit',
+            ref: register,
+          }}
+          fullWidth
+          disabled={processing}
+          helperText="URL to redirect to after completing form. Starting with https:// or http://."
+        />
+        <TextField
+          label="Submission Webhook URL"
+          name="on_submit_redirect_url"
+          defaultValue={form.submission_webhook_url}
+          inputProps={{
+            'aria-label': 'submission webhook url',
+            ref: register,
+          }}
+          disabled={processing}
+          fullWidth
+          helperText="Webhook URL to send submissions. Starting with https:// or http://."
+        />
+        <Controller
+          control={control}
+          name="action_id"
+          defaultValue={form.action?.id || ''}
+          render={({onChange, value}) => (
+            <ActionSelect
+              value={value}
+              onChange={onChange}
+              useId
+              disabled={processing}
+            />
+          )}
+        />
+      </form>
+      <InfusionsoftTagInput
+        value={infusionsoftTag}
+        onChange={setInfusionsoftTag}
+        disabled={processing}
+      />
+    </>
+  )
+})
 
 const StyledFormActions = styled(FormActions)`
   margin-bottom: ${(props) => props.theme.spacing[4]};
