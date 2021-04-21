@@ -26,39 +26,38 @@ export default function NameAppendageListTable(props: {
 
   const {nameAppendages, remove, reorder} = useNameAppendages()
 
-    const removeNameAppendage = (nameAppendage: NameAppendage) => {
-        setSubmitting(true)
-        const url = api(
-            `/events/${event.slug}/name-appendage/remove/${nameAppendage.id}`,
-        )
+  const removeNameAppendage = (nameAppendage: NameAppendage) => {
+    setSubmitting(true)
+    const url = api(
+      `/events/${event.slug}/name-appendage/remove/${nameAppendage.id}`,
+    )
 
-        client
-            .delete(url)
-            .then(() => {})
-            .finally(() => {
-                remove(nameAppendage)
-                setSubmitting(false)
-            })
+    client
+      .delete(url)
+      .then(() => {})
+      .finally(() => {
+        remove(nameAppendage)
+        setSubmitting(false)
+      })
+  }
+
+  const onSortEnd = ({oldIndex, newIndex}: any) => {
+    if (oldIndex != newIndex) {
+      reorder(reorderNameAppendage(nameAppendages, oldIndex, newIndex))
+
+      setSubmitting(true)
+      const url = api(`/events/${event.slug}/name-appendage/sort`)
+
+      client
+        .post(url, {nameAppendagesList: nameAppendages})
+        .then(() => {})
+        .finally(() => {
+          setSubmitting(false)
+        })
     }
+  }
 
-    const onSortEnd = ({oldIndex, newIndex}: any) => {
-        if (oldIndex != newIndex) {
-            reorder(reorderNameAppendage(nameAppendages, oldIndex, newIndex))
-
-            setSubmitting(true)
-            const url = api(`/events/${event.slug}/name-appendage/sort`)
-
-            client
-                .post(url, {nameAppendagesList: nameAppendages})
-                .then(() => {})
-                .finally(() => {
-                    setSubmitting(false)
-                })
-        }
-    }
-
-
-    if (!nameAppendages) {
+  if (!nameAppendages) {
     return <>Loading ...</>
   }
 
