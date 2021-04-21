@@ -13,6 +13,7 @@ import Box from '@material-ui/core/Box'
 import {usePoints} from 'Event/PointsProvider'
 import {useAddTag} from 'Event/infusionsoft'
 import {useSubmissions} from 'Event/SubmissionsProvider'
+import {useWithAttendeeData} from 'Event/auth/data'
 
 export default function PostForm(props: {post: BlogPost}) {
   const {post} = props
@@ -34,6 +35,7 @@ function Content(props: {form: Form; post: BlogPost}) {
   const {submit: submitAnswers, responseError, answers} = useSubmissions()
   const {submit: submitAction} = usePoints()
   const addInfusionsoftTag = useAddTag()
+  const withAttendeeData = useWithAttendeeData()
 
   const toggleDialog = () => setDialogVisible(!dialogVisible)
 
@@ -83,7 +85,7 @@ function Content(props: {form: Form; post: BlogPost}) {
         }
 
         if (form.on_submit_redirect_url) {
-          window.location.href = form.on_submit_redirect_url
+          window.location.href = withAttendeeData(form.on_submit_redirect_url)
         }
       })
       .finally(() => {
