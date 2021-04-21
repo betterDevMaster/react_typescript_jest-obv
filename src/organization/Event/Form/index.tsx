@@ -73,9 +73,7 @@ export default function Form() {
             <QuestionEditDialog question={editing} onClose={stopEditing} />
             <StyledFormActions />
             <StyledErrorAlert>{responseError?.message}</StyledErrorAlert>
-            <Box mb={2}>
-              <FormConfig ref={formRef} setEditing={setEditing} />
-            </Box>
+
             <Typography variant="h6">Questions</Typography>
             <Box display="flex" justifyContent="flex-end">
               <Button
@@ -89,6 +87,9 @@ export default function Form() {
               </Button>
             </Box>
             <QuestionsList onSelect={setEditing} />
+            <Box mb={2}>
+              <FormConfig ref={formRef} setEditing={setEditing} />
+            </Box>
             <Button
               onClick={save}
               fullWidth
@@ -189,7 +190,7 @@ const FormConfig = React.forwardRef<
           )}
         />
         <TextField
-          label="Redirect URL"
+          label="Redirect URL (optional)"
           name="on_submit_redirect_url"
           defaultValue={form.on_submit_redirect_url}
           inputProps={{
@@ -205,7 +206,7 @@ const FormConfig = React.forwardRef<
           }
         />
         <TextField
-          label="Submission Webhook URL"
+          label="Submission Webhook URL (optional)"
           name="submission_webhook_url"
           defaultValue={form.submission_webhook_url}
           inputProps={{
