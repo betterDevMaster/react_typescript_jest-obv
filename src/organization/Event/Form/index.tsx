@@ -25,9 +25,11 @@ import {OrganizationActionsProvider} from 'Event/ActionsProvider'
 import Typography from '@material-ui/core/Typography'
 import {InfusionsoftTag} from 'Event/infusionsoft'
 import InfusionsoftTagInput from 'organization/Event/DashboardConfig/InfusionsoftTagInput'
+import {fieldError} from 'lib/form'
+import ErrorAlert from 'lib/ui/alerts/ErrorAlert'
 
 export default function Form() {
-  const {form, processing} = useEventForm()
+  const {form, processing, responseError} = useEventForm()
   const [editing, setEditing] = useState<Question | null>(null)
   const [addQuestionDialogVisible, setAddQuestionDialogVisible] = useState(
     false,
@@ -70,6 +72,7 @@ export default function Form() {
             />
             <QuestionEditDialog question={editing} onClose={stopEditing} />
             <StyledFormActions />
+            <StyledErrorAlert>{responseError?.message}</StyledErrorAlert>
             <Box mb={2}>
               <FormConfig ref={formRef} setEditing={setEditing} />
             </Box>
@@ -109,8 +112,8 @@ const FormConfig = React.forwardRef<
     setEditing: (question: Question | null) => void
   }
 >((props, ref) => {
-  const {handleSubmit, register, control} = useHookForm()
-  const {form, update, processing} = useEventForm()
+  const {handleSubmit, register, control, errors: formErrors} = useHookForm()
+  const {form, update, processing, responseError} = useEventForm()
   const {questions} = useQuestions()
   const [
     infusionsoftTag,
@@ -137,6 +140,16 @@ const FormConfig = React.forwardRef<
     update(withAttributes)
   }
 
+  const error = (key: keyof FormData) =>
+    fieldError(key, {
+      response: responseError,
+      form: formErrors,
+    })
+
+  const nameError = error('name')
+  const onSubmitRedirectUrlError = error('on_submit_redirect_url')
+  const submissionWebhookUrlError = error('submission_webhook_url')
+
   return (
     <>
       <form onSubmit={handleSubmit(submit)} ref={ref}>
@@ -148,11 +161,13 @@ const FormConfig = React.forwardRef<
           name="name"
           inputProps={{'aria-label': 'form name', ref: register}}
           disabled={processing}
+          error={!!nameError}
+          helperText={nameError}
         />
         <Controller
           control={control}
           name="can_resubmit"
-          defaultValue={form.can_resubmit}
+          defaultValue={form.can_resubmit || false}
           render={({onChange, value}) => (
             <FormControl>
               <FormControlLabel
@@ -183,11 +198,15 @@ const FormConfig = React.forwardRef<
           }}
           fullWidth
           disabled={processing}
-          helperText="URL to redirect to after completing form. Starting with https:// or http://."
+          error={!!onSubmitRedirectUrlError}
+          helperText={
+            onSubmitRedirectUrlError ||
+            'URL to redirect to after completing form. Starting with https:// or http://.'
+          }
         />
         <TextField
           label="Submission Webhook URL"
-          name="on_submit_redirect_url"
+          name="submission_webhook_url"
           defaultValue={form.submission_webhook_url}
           inputProps={{
             'aria-label': 'submission webhook url',
@@ -195,7 +214,11 @@ const FormConfig = React.forwardRef<
           }}
           disabled={processing}
           fullWidth
-          helperText="Webhook URL to send submissions. Starting with https:// or http://."
+          helperText={
+            submissionWebhookUrlError ||
+            'Webhook URL to send submissions. Starting with https:// or http://.'
+          }
+          error={!!submissionWebhookUrlError}
         />
         <Controller
           control={control}
@@ -221,5 +244,9 @@ const FormConfig = React.forwardRef<
 })
 
 const StyledFormActions = styled(FormActions)`
+  margin-bottom: ${(props) => props.theme.spacing[4]};
+`
+
+const StyledErrorAlert = styled(ErrorAlert)`
   margin-bottom: ${(props) => props.theme.spacing[4]};
 `
