@@ -7,7 +7,7 @@ import grey from '@material-ui/core/colors/grey'
 import IconButton from 'lib/ui/IconButton'
 import styled from 'styled-components'
 import {NameAppendage} from 'organization/Event/NameAppendageConfig/NameAppendageProvider'
-import NameAppendageUpdateForm from "organization/Event/NameAppendageConfig/UpdateDialog/form";
+import NameAppendageUpdateForm from 'organization/Event/NameAppendageConfig/UpdateDialog/form'
 
 export default function NameAppendageUpdateDialog(props: {
   onClose: () => void

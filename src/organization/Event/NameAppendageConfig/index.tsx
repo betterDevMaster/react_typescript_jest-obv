@@ -1,11 +1,11 @@
 import Page from 'organization/Event/Page'
 import Layout from 'organization/user/Layout'
 import React, {useState} from 'react'
-import { NameAppendage } from 'organization/Event/NameAppendageConfig/NameAppendageProvider'
+import {NameAppendage} from 'organization/Event/NameAppendageConfig/NameAppendageProvider'
 import NameAppendageAddDialog from 'organization/Event/NameAppendageConfig/AddDialog'
 import NameAppendageUpdateDialog from 'organization/Event/NameAppendageConfig/UpdateDialog'
 import NameAppendageListTable from 'organization/Event/NameAppendageConfig/ListTable'
-import NameAppendageAddButton from "organization/Event/NameAppendageConfig/AddDialog/button";
+import NameAppendageAddButton from 'organization/Event/NameAppendageConfig/AddDialog/button'
 
 export default function NameAppendageConfig() {
   const [adding, setAdding] = useState<boolean>(false)
@@ -14,7 +14,7 @@ export default function NameAppendageConfig() {
   const add = () => setAdding(true)
   const closeAddDialog = () => setAdding(false)
   const setEditDialog = (nameAppendage: NameAppendage) =>
-      setEditing(nameAppendage)
+    setEditing(nameAppendage)
   const closeEditDialog = () => setEditing(null)
 
   return (
@@ -23,7 +23,10 @@ export default function NameAppendageConfig() {
         <NameAppendageAddButton openAdd={add} />
 
         <NameAppendageAddDialog isOpen={adding} onClose={closeAddDialog} />
-        <NameAppendageUpdateDialog nameAppendage={editing} onClose={closeEditDialog} />
+        <NameAppendageUpdateDialog
+          nameAppendage={editing}
+          onClose={closeEditDialog}
+        />
 
         <NameAppendageListTable setEditing={setEditDialog} />
       </Page>

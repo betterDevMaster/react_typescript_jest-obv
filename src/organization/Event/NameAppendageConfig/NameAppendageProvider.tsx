@@ -30,7 +30,6 @@ export const NameAppendageContext = React.createContext<
 export default function NameAppendageProvider(props: {
   children: React.ReactElement
 }) {
-
   const fetch = useFetchNameAppendage()
   const list = useNameAppendagesList(fetch)
   const nameAppendages = list.nameAppendages
@@ -52,7 +51,7 @@ export default function NameAppendageProvider(props: {
         add,
         remove,
         update,
-        reorder
+        reorder,
       }}
     >
       {props.children}
@@ -81,7 +80,6 @@ export function useNameAppendages() {
 
   return context
 }
-
 
 export function useNameAppendagesList(request: () => Promise<NameAppendage[]>) {
   const {data: saved, loading, error} = useAsync(request)
@@ -118,7 +116,7 @@ export function useNameAppendagesList(request: () => Promise<NameAppendage[]>) {
     setNameAppendages(removed)
   }
 
-  const reorder =  (nameAppendages: NameAppendage[]) => {
+  const reorder = (nameAppendages: NameAppendage[]) => {
     setNameAppendages(nameAppendages)
   }
 

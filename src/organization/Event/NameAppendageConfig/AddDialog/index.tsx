@@ -6,7 +6,7 @@ import CloseIcon from '@material-ui/icons/Close'
 import grey from '@material-ui/core/colors/grey'
 import IconButton from 'lib/ui/IconButton'
 import styled from 'styled-components'
-import NameAppendageAddForm from "organization/Event/NameAppendageConfig/AddDialog/form";
+import NameAppendageAddForm from 'organization/Event/NameAppendageConfig/AddDialog/form'
 
 export default function NameAppendageAddDialog(props: {
   isOpen: boolean

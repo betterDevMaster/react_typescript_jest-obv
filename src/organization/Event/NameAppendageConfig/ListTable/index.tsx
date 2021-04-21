@@ -5,7 +5,10 @@ import TableRow from '@material-ui/core/TableRow'
 import DangerButton from 'lib/ui/Button/DangerButton'
 import {useEvent} from 'Event/EventProvider'
 import {useOrganization} from 'organization/OrganizationProvider'
-import {NameAppendage, useNameAppendages} from 'organization/Event/NameAppendageConfig/NameAppendageProvider'
+import {
+  NameAppendage,
+  useNameAppendages,
+} from 'organization/Event/NameAppendageConfig/NameAppendageProvider'
 import {SortableContainer, SortableElement} from 'react-sortable-hoc'
 import {Button, Table} from '@material-ui/core'
 import {api} from 'lib/url'
@@ -89,7 +92,6 @@ export default function NameAppendageListTable(props: {
       })
   }
 
-
   const SortableList = SortableContainer(
     (props: {nameAppendages: NameAppendage[]}) => {
       return (
@@ -122,7 +124,6 @@ export default function NameAppendageListTable(props: {
 
   const onSortEnd = ({oldIndex, newIndex}: any) => {
     if (oldIndex != newIndex) {
-
       reorder(reorderNameAppendage(nameAppendages, oldIndex, newIndex))
 
       setSubmitting(true)
@@ -137,7 +138,13 @@ export default function NameAppendageListTable(props: {
     }
   }
 
-  return <SortableList nameAppendages={nameAppendages} onSortEnd={onSortEnd} distance={10} />
+  return (
+    <SortableList
+      nameAppendages={nameAppendages}
+      onSortEnd={onSortEnd}
+      distance={10}
+    />
+  )
 }
 
 function reorderNameAppendage(

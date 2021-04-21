@@ -14,7 +14,7 @@ import RuleConfig, {
 import ConfigureRulesButton from 'Event/Dashboard/component-rules/ConfigureRulesButton'
 import {GenerateTextForVisibilityRules} from 'organization/Event/NameAppendageConfig/GenerateTextForVisibilityRules'
 import {LabelPreview} from 'organization/Event/NameAppendageConfig/LabelPreview'
-import EmojiesSelector from "organization/Event/NameAppendageConfig/EmojiSelector";
+import EmojiesSelector from 'organization/Event/NameAppendageConfig/EmojiSelector'
 export default function NameAppendageUpdateForm(props: {
   onClose: () => void
   nameAppendage: NameAppendage | null

@@ -2,108 +2,108 @@ import Grid from '@material-ui/core/Grid'
 import React, {useState} from 'react'
 import {Button} from '@material-ui/core'
 import styled from 'styled-components'
-import {emojiesList} from "organization/Event/NameAppendageConfig/EmojiSelector/emojiesList";
+import {emojiesList} from 'organization/Event/NameAppendageConfig/EmojiSelector/emojiesList'
 
 export default function EmojiesSelector(props: {
-    selected?: string
-    callback: (emoji: string) => void
+  selected?: string
+  callback: (emoji: string) => void
 }) {
-    const [showEmojies, setShowEmojies] = useState<boolean>(false)
-    const toggleButtonHandle = () => {
-        if (showEmojies) {
-            setShowEmojies(false)
-        } else {
-            setShowEmojies(true)
-        }
+  const [showEmojies, setShowEmojies] = useState<boolean>(false)
+  const toggleButtonHandle = () => {
+    if (showEmojies) {
+      setShowEmojies(false)
+    } else {
+      setShowEmojies(true)
     }
+  }
 
-    const HandleSelect = (emoji: string) => {
-        if (props.selected == emoji) {
-            props.callback('')
-        } else {
-            setShowEmojies(false)
-            props.callback(emoji)
-        }
+  const HandleSelect = (emoji: string) => {
+    if (props.selected == emoji) {
+      props.callback('')
+    } else {
+      setShowEmojies(false)
+      props.callback(emoji)
     }
+  }
 
-    const CleanSelectedEmoji = () => {
-        props.callback('')
+  const CleanSelectedEmoji = () => {
+    props.callback('')
+  }
+
+  const ToggleButton = () => {
+    return (
+      <>
+        <StyledToggleButton onClick={() => toggleButtonHandle()}>
+          {' '}
+          {showEmojies
+            ? 'Hide label emojies list'
+            : props.selected
+            ? 'Selected emoji: ' + props.selected
+            : 'Select label emoji'}{' '}
+        </StyledToggleButton>
+        <StyledCloseButton onClick={CleanSelectedEmoji}>X</StyledCloseButton>
+      </>
+    )
+  }
+
+  function GenerateEmojiWithButton(props: {
+    emoji: string
+    onSelect: () => void
+    selected?: string
+  }) {
+    if (props.emoji === props.selected) {
+      return (
+        <Button
+          variant="contained"
+          color="primary"
+          onClick={() => {
+            props.onSelect()
+          }}
+        >
+          {props.emoji}
+        </Button>
+      )
+    } else {
+      return (
+        <Button
+          onClick={() => {
+            props.onSelect()
+          }}
+        >
+          {props.emoji}
+        </Button>
+      )
     }
+  }
 
-    const ToggleButton = () => {
-        return (
-            <>
-                <StyledToggleButton onClick={() => toggleButtonHandle()}>
-                    {' '}
-                    {showEmojies
-                        ? 'Hide label emojies list'
-                        : props.selected
-                            ? 'Selected emoji: ' + props.selected
-                            : 'Select label emoji'}{' '}
-                </StyledToggleButton>
-                <StyledCloseButton onClick={CleanSelectedEmoji}>X</StyledCloseButton>
-            </>
-        )
-    }
+  const ShowEmojiSelector = () => {
+    return (
+      <EmojiSelectorContainer>
+        <ToggleButton />
+        <EmojiSelectorGrid container>
+          {emojiesList.map((emoji, index) => (
+            <Grid item sm={1} key={index}>
+              <GenerateEmojiWithButton
+                emoji={emoji}
+                onSelect={() => HandleSelect(emoji)}
+                selected={props.selected}
+              />
+            </Grid>
+          ))}
+        </EmojiSelectorGrid>
+      </EmojiSelectorContainer>
+    )
+  }
 
-    function GenerateEmojiWithButton(props: {
-        emoji: string
-        onSelect: () => void
-        selected?: string
-    }) {
-        if (props.emoji === props.selected) {
-            return (
-                <Button
-                    variant="contained"
-                    color="primary"
-                    onClick={() => {
-                        props.onSelect()
-                    }}
-                >
-                    {props.emoji}
-                </Button>
-            )
-        } else {
-            return (
-                <Button
-                    onClick={() => {
-                        props.onSelect()
-                    }}
-                >
-                    {props.emoji}
-                </Button>
-            )
-        }
-    }
+  const HideEmojiSelector = () => {
+    return (
+      <>
+        <ToggleButton />
+      </>
+    )
+  }
 
-    const ShowEmojiSelector = () => {
-        return (
-            <EmojiSelectorContainer>
-                <ToggleButton />
-                <EmojiSelectorGrid container>
-                    {emojiesList.map((emoji, index) => (
-                        <Grid item sm={1} key={index}>
-                            <GenerateEmojiWithButton
-                                emoji={emoji}
-                                onSelect={() => HandleSelect(emoji)}
-                                selected={props.selected}
-                            />
-                        </Grid>
-                    ))}
-                </EmojiSelectorGrid>
-            </EmojiSelectorContainer>
-        )
-    }
-
-    const HideEmojiSelector = () => {
-        return (
-            <>
-                <ToggleButton />
-            </>
-        )
-    }
-
-    return <>{showEmojies ? <ShowEmojiSelector /> : <HideEmojiSelector />}</>
+  return <>{showEmojies ? <ShowEmojiSelector /> : <HideEmojiSelector />}</>
 }
 
 const StyledToggleButton = styled(Button)`
