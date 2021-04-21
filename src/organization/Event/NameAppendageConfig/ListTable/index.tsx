@@ -14,8 +14,8 @@ import {Button, Table} from '@material-ui/core'
 import {api} from 'lib/url'
 import 'organization/Event/NameAppendageConfig/sorting.css'
 import styled from 'styled-components'
-import {GenerateTextForVisibilityRules} from 'organization/Event/NameAppendageConfig/GenerateTextForVisibilityRules'
-import {LabelPreview} from 'organization/Event/NameAppendageConfig/LabelPreview'
+import {GenerateTextForVisibilityRules} from 'organization/Event/NameAppendageConfig/Helpers/GenerateTextForVisibilityRules'
+import {LabelPreview} from 'organization/Event/NameAppendageConfig/Helpers/LabelPreview'
 
 export default function NameAppendageListTable(props: {
   setEditing: (nameAppendage: NameAppendage) => void
@@ -26,7 +26,39 @@ export default function NameAppendageListTable(props: {
 
   const {nameAppendages, remove, reorder} = useNameAppendages()
 
-  if (!nameAppendages) {
+    const removeNameAppendage = (nameAppendage: NameAppendage) => {
+        setSubmitting(true)
+        const url = api(
+            `/events/${event.slug}/name-appendage/remove/${nameAppendage.id}`,
+        )
+
+        client
+            .delete(url)
+            .then(() => {})
+            .finally(() => {
+                remove(nameAppendage)
+                setSubmitting(false)
+            })
+    }
+
+    const onSortEnd = ({oldIndex, newIndex}: any) => {
+        if (oldIndex != newIndex) {
+            reorder(reorderNameAppendage(nameAppendages, oldIndex, newIndex))
+
+            setSubmitting(true)
+            const url = api(`/events/${event.slug}/name-appendage/sort`)
+
+            client
+                .post(url, {nameAppendagesList: nameAppendages})
+                .then(() => {})
+                .finally(() => {
+                    setSubmitting(false)
+                })
+        }
+    }
+
+
+    if (!nameAppendages) {
     return <>Loading ...</>
   }
 
@@ -77,21 +109,6 @@ export default function NameAppendageListTable(props: {
     </TableRow>
   ))
 
-  const removeNameAppendage = (nameAppendage: NameAppendage) => {
-    setSubmitting(true)
-    const url = api(
-      `/events/${event.slug}/name-appendage/remove/${nameAppendage.id}`,
-    )
-
-    client
-      .delete(url)
-      .then(() => {})
-      .finally(() => {
-        remove(nameAppendage)
-        setSubmitting(false)
-      })
-  }
-
   const SortableList = SortableContainer(
     (props: {nameAppendages: NameAppendage[]}) => {
       return (
@@ -121,22 +138,6 @@ export default function NameAppendageListTable(props: {
       )
     },
   )
-
-  const onSortEnd = ({oldIndex, newIndex}: any) => {
-    if (oldIndex != newIndex) {
-      reorder(reorderNameAppendage(nameAppendages, oldIndex, newIndex))
-
-      setSubmitting(true)
-      const url = api(`/events/${event.slug}/name-appendage/sort`)
-
-      client
-        .post(url, {nameAppendagesList: nameAppendages})
-        .then(() => {})
-        .finally(() => {
-          setSubmitting(false)
-        })
-    }
-  }
 
   return (
     <SortableList
