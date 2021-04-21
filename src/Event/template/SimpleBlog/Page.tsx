@@ -52,9 +52,6 @@ const Box = styled.div<{
   position: SimpleBlog['backgroundPosition']
 }>`
   height: 100%;
-  display: flex;
-  flex-direction: column;
-  overflow: auto;
   background: ${(props) => props.background};
   ${(props) =>
     props.position === 'bottom' &&
@@ -81,6 +78,10 @@ const ColorOverlay = styled.div<{
   color: string
 }>`
   background-color: ${(props) => props.color};
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  overflow: auto;
 `
 
 const StyledContainer = withStyles({
