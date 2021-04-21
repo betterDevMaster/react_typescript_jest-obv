@@ -1,5 +1,5 @@
 import React, {useEffect, useRef, useState} from 'react'
-import {NameAppendage} from '../NameAppendageProvider'
+import {NameAppendage, useNameAppendages} from '../NameAppendageProvider'
 import TextField from '@material-ui/core/TextField'
 import {useForm} from 'react-hook-form'
 import styled from 'styled-components'
@@ -12,14 +12,12 @@ import RuleConfig, {
   useRuleConfig,
 } from 'Event/Dashboard/component-rules/RuleConfig'
 import ConfigureRulesButton from 'Event/Dashboard/component-rules/ConfigureRulesButton'
-import EmojiesSelector from 'organization/Event/NameAppendageConfig/emojiSelector'
 import {GenerateTextForVisibilityRules} from 'organization/Event/NameAppendageConfig/GenerateTextForVisibilityRules'
 import {LabelPreview} from 'organization/Event/NameAppendageConfig/LabelPreview'
+import EmojiesSelector from "organization/Event/NameAppendageConfig/EmojiSelector";
 export default function NameAppendageUpdateForm(props: {
   onClose: () => void
   nameAppendage: NameAppendage | null
-  nameAppendages: NameAppendage[]
-  setNameAppendages: (nameAppendage: NameAppendage[]) => void
 }) {
   const {event} = useEvent()
   const {client} = useOrganization()
@@ -33,6 +31,8 @@ export default function NameAppendageUpdateForm(props: {
   const mounted = useRef(true)
   const [confirmWithoutRules, setConfirmWithoutRules] = useState<boolean>(false)
   const {visible: ruleConfigVisible, toggle: toggleRuleConfig} = useRuleConfig()
+
+  const {update} = useNameAppendages()
 
   useEffect(() => {
     if (mounted.current) {
@@ -88,9 +88,7 @@ export default function NameAppendageUpdateForm(props: {
       client
         .post<NameAppendage>(updateURL, data)
         .then((nameAppendage) => {
-          props.setNameAppendages(
-            updateNameAppendageFromList(props.nameAppendages, nameAppendage),
-          )
+          update(nameAppendage)
         })
         .finally(() => {
           props.onClose()
@@ -99,19 +97,6 @@ export default function NameAppendageUpdateForm(props: {
     } else {
       setSubmitting(false)
     }
-  }
-
-  function updateNameAppendageFromList(
-    nameAppendagesList: NameAppendage[],
-    nameAppendage: NameAppendage,
-  ) {
-    nameAppendagesList.map((value, index) => {
-      if (value.id == nameAppendage.id) {
-        nameAppendagesList[index] = nameAppendage
-      }
-    })
-
-    return nameAppendagesList
   }
 
   const onEmojiSelected = (emoji: string) => {

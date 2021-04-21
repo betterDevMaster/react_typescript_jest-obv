@@ -5,25 +5,25 @@ import TableRow from '@material-ui/core/TableRow'
 import DangerButton from 'lib/ui/Button/DangerButton'
 import {useEvent} from 'Event/EventProvider'
 import {useOrganization} from 'organization/OrganizationProvider'
-import {NameAppendage} from 'organization/Event/NameAppendageConfig/NameAppendageProvider'
+import {NameAppendage, useNameAppendages} from 'organization/Event/NameAppendageConfig/NameAppendageProvider'
 import {SortableContainer, SortableElement} from 'react-sortable-hoc'
 import {Button, Table} from '@material-ui/core'
 import {api} from 'lib/url'
-import '../sorting.css'
+import 'organization/Event/NameAppendageConfig/sorting.css'
 import styled from 'styled-components'
 import {GenerateTextForVisibilityRules} from 'organization/Event/NameAppendageConfig/GenerateTextForVisibilityRules'
 import {LabelPreview} from 'organization/Event/NameAppendageConfig/LabelPreview'
 
 export default function NameAppendageListTable(props: {
-  nameAppendages: NameAppendage[]
   setEditing: (nameAppendage: NameAppendage) => void
-  setNameAppendages: (nameAppendage: NameAppendage[]) => void
 }) {
   const [submitting, setSubmitting] = useState(false)
   const {event} = useEvent()
   const {client} = useOrganization()
 
-  if (!props.nameAppendages) {
+  const {nameAppendages, remove, reorder} = useNameAppendages()
+
+  if (!nameAppendages) {
     return <>Loading ...</>
   }
 
@@ -84,26 +84,11 @@ export default function NameAppendageListTable(props: {
       .delete(url)
       .then(() => {})
       .finally(() => {
-        props.setNameAppendages(
-          removeNameAppendageFromList(props.nameAppendages, nameAppendage),
-        )
+        remove(nameAppendage)
         setSubmitting(false)
       })
   }
 
-  function removeNameAppendageFromList(
-    nameAppendagesList: NameAppendage[],
-    nameAppendage: NameAppendage,
-  ) {
-    nameAppendagesList = nameAppendagesList.filter(
-      (nameAppendagesList) => nameAppendagesList.id !== nameAppendage.id,
-    )
-    nameAppendagesList.map((value, index) => {
-      nameAppendagesList[index].order = index + 1
-    })
-
-    return nameAppendagesList
-  }
 
   const SortableList = SortableContainer(
     (props: {nameAppendages: NameAppendage[]}) => {
@@ -120,7 +105,7 @@ export default function NameAppendageListTable(props: {
                   <TableCell align="center">{/* Actions */}</TableCell>
                   <TableCell align="center">{/* Actions */}</TableCell>
                 </TableRow>
-                {props.nameAppendages.map((value, index) => (
+                {nameAppendages.map((value, index) => (
                   <SortableItem
                     key={`item-${value.id}`}
                     index={index}
@@ -137,15 +122,14 @@ export default function NameAppendageListTable(props: {
 
   const onSortEnd = ({oldIndex, newIndex}: any) => {
     if (oldIndex != newIndex) {
-      props.setNameAppendages(
-        reorderNameAppendage(props.nameAppendages, oldIndex, newIndex),
-      )
+
+      reorder(reorderNameAppendage(nameAppendages, oldIndex, newIndex))
 
       setSubmitting(true)
       const url = api(`/events/${event.slug}/name-appendage/sort`)
 
       client
-        .post(url, {nameAppendagesList: props.nameAppendages})
+        .post(url, {nameAppendagesList: nameAppendages})
         .then(() => {})
         .finally(() => {
           setSubmitting(false)
@@ -153,7 +137,7 @@ export default function NameAppendageListTable(props: {
     }
   }
 
-  return <SortableList {...props} onSortEnd={onSortEnd} distance={10} />
+  return <SortableList nameAppendages={nameAppendages} onSortEnd={onSortEnd} distance={10} />
 }
 
 function reorderNameAppendage(

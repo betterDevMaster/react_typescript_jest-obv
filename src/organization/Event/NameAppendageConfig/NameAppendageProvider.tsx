@@ -2,7 +2,7 @@ import {useEvent} from 'Event/EventProvider'
 import {useAsync} from 'lib/async'
 import {api} from 'lib/url'
 import {useOrganization} from 'organization/OrganizationProvider'
-import React from 'react'
+import React, {useEffect, useState} from 'react'
 import {useCallback} from 'react'
 
 export interface NameAppendage {
@@ -15,7 +15,11 @@ export interface NameAppendage {
 }
 
 export interface NameAppendageContextProps {
-  name_appendages: NameAppendage[]
+  add: (nameAppendage: NameAppendage) => void
+  update: (nameAppendage: NameAppendage) => void
+  remove: (nameAppendage: NameAppendage) => void
+  reorder: (nameAppendages: NameAppendage[]) => void
+  nameAppendages: NameAppendage[]
   loading: boolean
 }
 
@@ -26,19 +30,29 @@ export const NameAppendageContext = React.createContext<
 export default function NameAppendageProvider(props: {
   children: React.ReactElement
 }) {
-  const fetch = useFetchNameAppedange()
 
-  const {data: name_appendages, loading} = useAsync(fetch)
+  const fetch = useFetchNameAppendage()
+  const list = useNameAppendagesList(fetch)
+  const nameAppendages = list.nameAppendages
+  const loading = list.loading
+  const add = list.add
+  const remove = list.remove
+  const update = list.update
+  const reorder = list.reorder
 
-  if (loading || !name_appendages) {
+  if (loading || !nameAppendages) {
     return <div>loading...</div>
   }
 
   return (
     <NameAppendageContext.Provider
       value={{
-        name_appendages,
+        nameAppendages,
         loading,
+        add,
+        remove,
+        update,
+        reorder
       }}
     >
       {props.children}
@@ -46,7 +60,7 @@ export default function NameAppendageProvider(props: {
   )
 }
 
-export function useFetchNameAppedange() {
+export function useFetchNameAppendage() {
   const {client} = useOrganization()
   const {event} = useEvent()
   const {slug} = event
@@ -66,4 +80,47 @@ export function useNameAppendages() {
   }
 
   return context
+}
+
+
+export function useNameAppendagesList(request: () => Promise<NameAppendage[]>) {
+  const {data: saved, loading, error} = useAsync(request)
+  const [nameAppendages, setNameAppendages] = useState<NameAppendage[]>([])
+
+  useEffect(() => {
+    if (!saved) {
+      return
+    }
+
+    setNameAppendages(saved)
+  }, [saved])
+
+  const update = (nameAppendage: NameAppendage) => {
+    const updated = nameAppendages.map((a) => {
+      const isTarget = a.id === nameAppendage.id
+      if (isTarget) {
+        return nameAppendage
+      }
+
+      return a
+    })
+
+    setNameAppendages(updated)
+  }
+
+  const add = (nameAppendage: NameAppendage) => {
+    const appended = [...nameAppendages, nameAppendage]
+    setNameAppendages(appended)
+  }
+
+  const remove = (nameAppendage: NameAppendage) => {
+    const removed = nameAppendages.filter((a) => a.id !== nameAppendage.id)
+    setNameAppendages(removed)
+  }
+
+  const reorder =  (nameAppendages: NameAppendage[]) => {
+    setNameAppendages(nameAppendages)
+  }
+
+  return {nameAppendages, update, loading, error, add, remove, reorder}
 }

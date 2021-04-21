@@ -6,22 +6,20 @@ import Button from '@material-ui/core/Button'
 import {api} from 'lib/url'
 import {useEvent} from 'Event/EventProvider'
 import {useOrganization} from 'organization/OrganizationProvider'
-import {NameAppendage} from '../NameAppendageProvider'
+import {NameAppendage, useNameAppendages} from '../NameAppendageProvider'
 import {Rule} from 'Event/Dashboard/component-rules'
 import RuleConfig, {
   useRuleConfig,
 } from 'Event/Dashboard/component-rules/RuleConfig'
 import ConfigureRulesButton from 'Event/Dashboard/component-rules/ConfigureRulesButton'
-import EmojiesSelector from 'organization/Event/NameAppendageConfig/emojiSelector'
 import {GenerateTextForVisibilityRules} from 'organization/Event/NameAppendageConfig/GenerateTextForVisibilityRules'
 import {LabelPreview} from 'organization/Event/NameAppendageConfig/LabelPreview'
+import EmojiesSelector from "organization/Event/NameAppendageConfig/EmojiSelector";
 
 export default function NameAppendageAddForm(props: {
   onClose: () => void
-  nameAppendages: NameAppendage[]
-  setNameAppendages: (name_appendage: NameAppendage[]) => void
 }) {
-  const {register, handleSubmit, setValue, errors} = useForm()
+  const {register, handleSubmit} = useForm()
   const [submitting, setSubmitting] = useState(false)
   const {event} = useEvent()
   const {client} = useOrganization()
@@ -31,6 +29,8 @@ export default function NameAppendageAddForm(props: {
   const [text, setText] = useState<string>('')
   const [confirmWithoutRules, setConfirmWithoutRules] = useState<boolean>(false)
   const {visible: ruleConfigVisible, toggle: toggleRuleConfig} = useRuleConfig()
+
+  const {add} = useNameAppendages()
 
   const submit = (data: {
     appendage_text: string
@@ -70,7 +70,7 @@ export default function NameAppendageAddForm(props: {
       client
         .post<NameAppendage>(url, data)
         .then((nameAppendage) => {
-          props.setNameAppendages([...props.nameAppendages, nameAppendage])
+          add(nameAppendage)
         })
         .finally(() => {
           props.onClose()
