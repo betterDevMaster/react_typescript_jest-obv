@@ -11,6 +11,13 @@ import PURPLE_RIBBON_IMAGE from 'Event/Dashboard/components/TicketRibbonList/rib
 import RED_RIBBON_IMAGE from 'Event/Dashboard/components/TicketRibbonList/ribbons/red.png'
 import WHITE_RIBBON_IMAGE from 'Event/Dashboard/components/TicketRibbonList/ribbons/white.png'
 import YELLOW_RIBBON_IMAGE from 'Event/Dashboard/components/TicketRibbonList/ribbons/yellow.png'
+import DARK_BLUE_RIBBON_IMAGE from 'Event/Dashboard/components/TicketRibbonList/ribbons/dark_blue.png'
+import DARK_TEAL_RIBBON_IMAGE from 'Event/Dashboard/components/TicketRibbonList/ribbons/dark_teal.png'
+import PURPLISH_BLUE_RIBBON_IMAGE from 'Event/Dashboard/components/TicketRibbonList/ribbons/purplish_blue.png'
+import TEAL_RIBBON_IMAGE from 'Event/Dashboard/components/TicketRibbonList/ribbons/teal.png'
+import MAGENTA_RIBBON_IMAGE from 'Event/Dashboard/components/TicketRibbonList/ribbons/magenta.png'
+import LIGHT_BLUE_RIBBON_IMAGE from 'Event/Dashboard/components/TicketRibbonList/ribbons/light_blue.png'
+import LIGHT_PURPLE_RIBBON_IMAGE from 'Event/Dashboard/components/TicketRibbonList/ribbons/light_purple.png'
 import {useWithAttendeeData} from 'Event/auth/data'
 import {HasRules} from 'Event/Dashboard/component-rules'
 
@@ -18,24 +25,38 @@ export const TICKET_RIBBON = 'Ticket Ribbon'
 
 export const BLACK_RIBBON = 'Black'
 export const BLUE_RIBBON = 'Blue'
+export const LIGHT_BLUE_RIBBON = 'Light Blue'
+export const DARK_BLUE_RIBBON = 'Dark Blue'
+export const TEAL_RIBBON = 'Teal'
+export const DARK_TEAL_RIBBON = 'Dark Teal'
 export const BROWN_RIBBON = 'Brown'
 export const GREEN_RIBBON = 'Green'
 export const GREY_RIBBON = 'Grey'
 export const ORANGE_RIBBON = 'Orange'
 export const PURPLE_RIBBON = 'Purple'
+export const LIGHT_PURPLE_RIBBON = 'Light Purple'
+export const PURPLISH_BLUE_RIBBON = 'Purplish Blue'
 export const RED_RIBBON = 'Red'
+export const MAGENTA_RIBBON = 'Magenta'
 export const WHITE_RIBBON = 'White'
 export const YELLOW_RIBBON = 'Yellow'
 
 export type TicketRibbonName =
   | typeof BLACK_RIBBON
   | typeof BLUE_RIBBON
+  | typeof LIGHT_BLUE_RIBBON
+  | typeof DARK_BLUE_RIBBON
+  | typeof TEAL_RIBBON
+  | typeof DARK_TEAL_RIBBON
   | typeof BROWN_RIBBON
   | typeof GREEN_RIBBON
   | typeof GREY_RIBBON
   | typeof ORANGE_RIBBON
   | typeof PURPLE_RIBBON
+  | typeof LIGHT_PURPLE_RIBBON
+  | typeof PURPLISH_BLUE_RIBBON
   | typeof RED_RIBBON
+  | typeof MAGENTA_RIBBON
   | typeof WHITE_RIBBON
   | typeof YELLOW_RIBBON
 
@@ -47,13 +68,20 @@ export type TicketRibbon = HasRules & {
 
 export const TICKET_RIBBON_IMAGE: Record<TicketRibbonName, string> = {
   [BLACK_RIBBON]: BLACK_RIBBON_IMAGE,
+  [LIGHT_BLUE_RIBBON]: LIGHT_BLUE_RIBBON_IMAGE,
   [BLUE_RIBBON]: BLUE_RIBBON_IMAGE,
+  [DARK_BLUE_RIBBON]: DARK_BLUE_RIBBON_IMAGE,
+  [TEAL_RIBBON]: TEAL_RIBBON_IMAGE,
+  [DARK_TEAL_RIBBON]: DARK_TEAL_RIBBON_IMAGE,
   [BROWN_RIBBON]: BROWN_RIBBON_IMAGE,
   [GREEN_RIBBON]: GREEN_RIBBON_IMAGE,
   [GREY_RIBBON]: GREY_RIBBON_IMAGE,
   [ORANGE_RIBBON]: ORANGE_RIBBON_IMAGE,
+  [LIGHT_PURPLE_RIBBON]: LIGHT_PURPLE_RIBBON_IMAGE,
   [PURPLE_RIBBON]: PURPLE_RIBBON_IMAGE,
+  [PURPLISH_BLUE_RIBBON]: PURPLISH_BLUE_RIBBON_IMAGE,
   [RED_RIBBON]: RED_RIBBON_IMAGE,
+  [MAGENTA_RIBBON]: MAGENTA_RIBBON_IMAGE,
   [WHITE_RIBBON]: WHITE_RIBBON_IMAGE,
   [YELLOW_RIBBON]: YELLOW_RIBBON_IMAGE,
 }
