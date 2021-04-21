@@ -11,7 +11,6 @@ import {useForm} from 'react-hook-form'
 import {DEFAULT_MODAL_BUTTON_TEXT} from 'Event/Dashboard/components/BlogPost/BlogPostConfig'
 import Box from '@material-ui/core/Box'
 import {usePoints} from 'Event/PointsProvider'
-import {useAddTag} from 'Event/infusionsoft'
 import {useSubmissions} from 'Event/SubmissionsProvider'
 import {useWithAttendeeData} from 'Event/auth/data'
 
@@ -34,7 +33,6 @@ function Content(props: {form: Form; post: BlogPost}) {
   const [dialogVisible, setDialogVisible] = useState(false)
   const {submit: submitAnswers, responseError, answers} = useSubmissions()
   const {submit: submitAction} = usePoints()
-  const addInfusionsoftTag = useAddTag()
   const withAttendeeData = useWithAttendeeData()
 
   const toggleDialog = () => setDialogVisible(!dialogVisible)
@@ -75,13 +73,6 @@ function Content(props: {form: Form; post: BlogPost}) {
 
         if (form.action) {
           submitAction(form.action)
-        }
-
-        if (form.infusionsoft_tag_id && form.infusionsoft_tag_name) {
-          addInfusionsoftTag({
-            id: form.infusionsoft_tag_id,
-            name: form.infusionsoft_tag_name,
-          })
         }
 
         if (form.on_submit_redirect_url) {
