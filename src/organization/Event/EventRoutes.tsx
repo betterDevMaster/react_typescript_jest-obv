@@ -24,6 +24,8 @@ import FormsConfig from 'organization/Event/FormsConfig'
 import Infusionsoft from 'organization/Event/Services/Apps/Infusionsoft'
 import AuthorizedPage from 'organization/AuthorizedPage'
 import {CONFIGURE_EVENTS} from 'organization/PermissionsProvider'
+import NameAppendageConfig from 'organization/Event/NameAppendageConfig'
+import NameAppendageProvider from './NameAppendageConfig/NameAppendageProvider'
 import Event from 'organization/Event'
 import AreaList from 'organization/Event/AreaList'
 import {HideLiveChatSupport} from 'lib/WithLiveChatSupport'
@@ -149,6 +151,13 @@ export default function EventRoutes() {
           <AreaProvider>
             <AreaRoutes />
           </AreaProvider>
+        </Route>
+        <Route path={routes.events[':event'].name_appendage}>
+          <AuthorizedPage permission={CONFIGURE_EVENTS}>
+            <NameAppendageProvider>
+              <NameAppendageConfig />
+            </NameAppendageProvider>
+          </AuthorizedPage>
         </Route>
         <Redirect to={routes.events[':event'].root} />
       </Switch>

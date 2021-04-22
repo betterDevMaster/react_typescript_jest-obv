@@ -93,6 +93,7 @@ export function createRoutesFor(organization: Organization) {
             zapier: '/zapier',
             infusionsoft: '/infusionsoft',
           },
+          name_appendage: '/name_appendage',
           areas: {
             create: '/create',
             ':area': {

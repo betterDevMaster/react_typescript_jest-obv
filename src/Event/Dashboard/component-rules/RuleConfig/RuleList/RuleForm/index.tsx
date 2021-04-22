@@ -23,6 +23,7 @@ export default function RuleForm(props: {
   onCreate: (rule: Rule) => void
   rule: Rule | null
   onDelete: () => void
+  description?: string
 }) {
   const initialSource = props.rule ? props.rule.source : null
   const initialRule = props.rule || null
@@ -44,7 +45,9 @@ export default function RuleForm(props: {
       <Visible when={controlsVisible}>
         <>
           <DeleteRuleButton visible={showDelete} onClick={props.onDelete} />
-          <Typography paragraph>Hide component when</Typography>
+          <Typography paragraph>
+            {props.description ? props.description : 'Hide component when'}
+          </Typography>
           <FormControl fullWidth>
             <Select
               value={source || ''}

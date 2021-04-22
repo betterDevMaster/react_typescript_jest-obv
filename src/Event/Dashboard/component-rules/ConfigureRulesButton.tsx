@@ -2,7 +2,10 @@ import React from 'react'
 import styled from 'styled-components'
 import Button from '@material-ui/core/Button'
 
-export default function ConfigureRulesButton(props: {onClick: () => void}) {
+export default function ConfigureRulesButton(props: {
+  onClick: () => void
+  buttonText?: string
+}) {
   return (
     <Box>
       <Button
@@ -11,7 +14,7 @@ export default function ConfigureRulesButton(props: {onClick: () => void}) {
         size="small"
         onClick={props.onClick}
       >
-        Visibility Rules
+        {props.buttonText ? props.buttonText : 'Visibility Rules'}
       </Button>
     </Box>
   )

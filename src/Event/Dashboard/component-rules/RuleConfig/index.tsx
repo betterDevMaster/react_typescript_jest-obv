@@ -7,9 +7,10 @@ import RuleList from 'Event/Dashboard/component-rules/RuleConfig/RuleList'
 export default function RuleConfig(props: {
   children: React.ReactElement
   visible: boolean
-  close: () => void
+  close?: () => void
   onChange: (rules: Rule[]) => void
   rules?: Rule[]
+  description?: string
 }) {
   if (!props.visible) {
     return props.children
@@ -21,6 +22,7 @@ export default function RuleConfig(props: {
         rules={props.rules}
         close={props.close}
         onChange={props.onChange}
+        description={props.description}
       />
     </Box>
   )
