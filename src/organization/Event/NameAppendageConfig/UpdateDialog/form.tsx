@@ -19,10 +19,9 @@ export default function NameAppendageUpdateForm(props: {
   onClose: () => void
   nameAppendage: NameAppendage | null
 }) {
-  const {event} = useEvent()
   const {client} = useOrganization()
   const [submitting, setSubmitting] = useState(false)
-  const {register, handleSubmit, setValue, errors} = useForm()
+  const {register, handleSubmit} = useForm()
   const [emoji, setEmoji] = useState<string>('')
   const [error, setError] = useState<string | null>(null)
   const [text, setText] = useState<string>('')
@@ -37,9 +36,9 @@ export default function NameAppendageUpdateForm(props: {
   useEffect(() => {
     if (mounted.current) {
       if (props.nameAppendage) {
-        setRules(JSON.parse(props.nameAppendage.rules))
-        setEmoji(props.nameAppendage.appendage_emoji)
-        setText(props.nameAppendage.appendage_text)
+        setRules(props.nameAppendage.rules)
+        setEmoji(props.nameAppendage.emoji)
+        setText(props.nameAppendage.text)
       }
     }
   }, [mounted])
@@ -48,12 +47,10 @@ export default function NameAppendageUpdateForm(props: {
     return null
   }
 
-  const updateURL = api(
-    `/events/${event.slug}/name-appendage/update/${props.nameAppendage.id}`,
-  )
+  const updateURL = api(`/attendee_labels/${props.nameAppendage.id}`)
   const submit = (data: {
-    appendage_text: string
-    appendage_emoji: string
+    text: string
+    emoji: string
     confirmWithoutRuleText: string
     rules: Rule[]
   }) => {
@@ -61,9 +58,9 @@ export default function NameAppendageUpdateForm(props: {
 
     setSubmitting(true)
     data.rules = rules
-    data.appendage_emoji = emoji
+    data.emoji = emoji
 
-    if (!data.appendage_emoji && !data.appendage_text) {
+    if (!data.emoji && !data.text) {
       setError('Enter at least your Label text OR select a Label emoji.')
       pass = false
     } else {
@@ -86,7 +83,7 @@ export default function NameAppendageUpdateForm(props: {
 
     if (pass) {
       client
-        .post<NameAppendage>(updateURL, data)
+        .put<NameAppendage>(updateURL, data)
         .then((nameAppendage) => {
           update(nameAppendage)
         })
@@ -145,7 +142,7 @@ export default function NameAppendageUpdateForm(props: {
           </p>
 
           <TextField
-            name="appendage_text"
+            name="text"
             label="Label Text"
             onChange={(e) => setText(e.target.value)}
             value={text}

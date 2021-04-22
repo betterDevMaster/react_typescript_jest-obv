@@ -28,9 +28,7 @@ export default function NameAppendageListTable(props: {
 
   const removeNameAppendage = (nameAppendage: NameAppendage) => {
     setSubmitting(true)
-    const url = api(
-      `/events/${event.slug}/name-appendage/remove/${nameAppendage.id}`,
-    )
+    const url = api(`/attendee_labels/${nameAppendage.id}`)
 
     client
       .delete(url)
@@ -42,7 +40,7 @@ export default function NameAppendageListTable(props: {
   }
 
   const onSortEnd = ({oldIndex, newIndex}: any) => {
-    if (oldIndex != newIndex) {
+    if (oldIndex !== newIndex) {
       reorder(reorderNameAppendage(nameAppendages, oldIndex, newIndex))
 
       setSubmitting(true)
@@ -63,18 +61,18 @@ export default function NameAppendageListTable(props: {
 
   const SortableItem = SortableElement((nameAppendage: NameAppendage) => (
     <TableRow aria-label="name appendage">
-      <TableCell align="center">{nameAppendage.order}</TableCell>
+      <TableCell align="center">{nameAppendage.priority}</TableCell>
       <TableCell>
         <LabelPreview
           withoutDash={true}
-          text={nameAppendage.appendage_text}
-          emoji={nameAppendage.appendage_emoji}
+          text={nameAppendage.text}
+          emoji={nameAppendage.emoji}
         />
       </TableCell>
       <TableCell align="center" width={'500px'}>
         {' '}
         <GenerateTextForVisibilityRules
-          rules={JSON.parse(nameAppendage.rules)}
+          rules={nameAppendage.rules}
           cropText={true}
           seeMoreCallback={() => props.setEditing(nameAppendage)}
         />{' '}
@@ -155,7 +153,7 @@ function reorderNameAppendage(
   nameAppendages.splice(newIndex, 0, nameAppendages.splice(oldIndex, 1)[0])
 
   nameAppendages.map((value, index) => {
-    nameAppendages[index].order = index + 1
+    nameAppendages[index].priority = index + 1
   })
 
   return nameAppendages

@@ -31,8 +31,8 @@ export default function NameAppendageAddForm(props: {onClose: () => void}) {
   const {add} = useNameAppendages()
 
   const submit = (data: {
-    appendage_text: string
-    appendage_emoji: string
+    text: string
+    emoji: string
     confirmWithoutRuleText: string
     rules: Rule[]
   }) => {
@@ -40,9 +40,9 @@ export default function NameAppendageAddForm(props: {onClose: () => void}) {
 
     setSubmitting(true)
     data.rules = rules
-    data.appendage_emoji = emoji
+    data.emoji = emoji
 
-    if (!data.appendage_emoji && !data.appendage_text) {
+    if (!data.emoji && !data.text) {
       setError('Enter at least your Label text OR select a Label emoji.')
       pass = false
     } else {
@@ -64,7 +64,7 @@ export default function NameAppendageAddForm(props: {onClose: () => void}) {
     }
 
     if (pass) {
-      const url = api(`/events/${event.slug}/name-appendage/create`)
+      const url = api(`/events/${event.slug}/attendee_labels`)
       client
         .post<NameAppendage>(url, data)
         .then((nameAppendage) => {
@@ -125,7 +125,7 @@ export default function NameAppendageAddForm(props: {onClose: () => void}) {
             <b>Generated label:</b> <LabelPreview text={text} emoji={emoji} />
           </p>
           <TextField
-            name="appendage_text"
+            name="text"
             label="Label Text"
             fullWidth
             disabled={submitting}

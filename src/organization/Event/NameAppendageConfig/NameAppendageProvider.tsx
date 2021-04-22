@@ -1,3 +1,4 @@
+import {Rule} from 'Event/Dashboard/component-rules'
 import {useEvent} from 'Event/EventProvider'
 import {useAsync} from 'lib/async'
 import {api} from 'lib/url'
@@ -7,10 +8,10 @@ import {useCallback} from 'react'
 
 export interface NameAppendage {
   created_at: string
-  appendage_text: string
-  appendage_emoji: string
-  rules: string
-  order: number
+  text: string
+  emoji: string
+  rules: Rule[]
+  priority: number
   id: number
 }
 
@@ -65,7 +66,7 @@ export function useFetchNameAppendage() {
   const {slug} = event
 
   return useCallback(() => {
-    const url = api(`/events/${slug}/name-appendage/list`)
+    const url = api(`/events/${slug}/attendee_labels`)
     return client.get<NameAppendage[]>(url)
   }, [client, slug])
 }

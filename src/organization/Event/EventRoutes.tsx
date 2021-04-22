@@ -101,58 +101,6 @@ export default function EventRoutes() {
           <AttendeesProvider>
             <AreasProvider>
               <AttendeeManagement />
-<<<<<<< HEAD
-            </RoomAssignmentsProvider>
-          </AreasProvider>
-        </AttendeesProvider>
-      </Route>
-      <Route path={routes.events[':event'].emoji}>
-        <AuthorizedPage permission={CONFIGURE_EVENTS}>
-          <Emoji />
-        </AuthorizedPage>
-      </Route>
-      <Route path={routes.events[':event'].speakers}>
-        <AuthorizedPage permission={CONFIGURE_EVENTS}>
-          <SpeakerConfig />
-        </AuthorizedPage>
-      </Route>
-      <Route path={routes.events[':event'].points}>
-        <AuthorizedPage permission={CONFIGURE_EVENTS}>
-          <PointsConfig />
-        </AuthorizedPage>
-      </Route>
-      <Route path={routes.events[':event'].general}>
-        <AuthorizedPage permission={CONFIGURE_EVENTS}>
-          <GeneralConfig />
-        </AuthorizedPage>
-      </Route>
-      <Route path={routes.events[':event'].services.root}>
-        <AuthorizedPage permission={CONFIGURE_EVENTS}>
-          <ServicesProvider>
-            <ServiceRoutes />
-          </ServicesProvider>
-        </AuthorizedPage>
-      </Route>
-      <Route path={routes.events[':event'].areas.create}>
-        <AuthorizedPage permission={CONFIGURE_EVENTS}>
-          <CreateAreaForm />
-        </AuthorizedPage>
-      </Route>
-      <Route path={routes.events[':event'].areas[':area'].root}>
-        <AreaProvider>
-          <AreaRoutes />
-        </AreaProvider>
-      </Route>
-      <Route path={routes.events[':event'].name_appendage}>
-        <AuthorizedPage permission={CONFIGURE_EVENTS}>
-          <NameAppendageProvider>
-            <NameAppendageConfig />
-          </NameAppendageProvider>
-        </AuthorizedPage>
-      </Route>
-      <Redirect to={routes.events[':event'].root} />
-    </Switch>
-=======
             </AreasProvider>
           </AttendeesProvider>
         </Route>
@@ -204,10 +152,16 @@ export default function EventRoutes() {
             <AreaRoutes />
           </AreaProvider>
         </Route>
+        <Route path={routes.events[':event'].name_appendage}>
+          <AuthorizedPage permission={CONFIGURE_EVENTS}>
+            <NameAppendageProvider>
+              <NameAppendageConfig />
+            </NameAppendageProvider>
+          </AuthorizedPage>
+        </Route>
         <Redirect to={routes.events[':event'].root} />
       </Switch>
     </TemplateProvider>
->>>>>>> develop
   )
 }
 

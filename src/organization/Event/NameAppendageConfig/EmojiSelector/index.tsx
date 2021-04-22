@@ -18,7 +18,7 @@ export default function EmojiesSelector(props: {
   }
 
   const HandleSelect = (emoji: string) => {
-    if (props.selected == emoji) {
+    if (props.selected === emoji) {
       props.callback('')
     } else {
       setShowEmojies(false)
