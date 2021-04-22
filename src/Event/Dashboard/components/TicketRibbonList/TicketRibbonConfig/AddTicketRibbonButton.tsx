@@ -21,8 +21,7 @@ export default function AddTicketRibbonButton(props: {className?: string}) {
       name: BLUE_RIBBON,
       text: '',
       color: '#ffffff',
-      group_name: '',
-      group_value: '',
+      rules: [],
     }
 
     const ticketRibbons = [...existingRibbons, newRibbon]

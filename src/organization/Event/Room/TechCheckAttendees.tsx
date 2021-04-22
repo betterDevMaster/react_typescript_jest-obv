@@ -14,10 +14,10 @@ import {useArea} from 'organization/Event/Area/AreaProvider'
 import Box from '@material-ui/core/Box'
 import {useOrganization} from 'organization/OrganizationProvider'
 import {useEvent} from 'Event/EventProvider'
-import {RoomAssignment} from 'organization/Event/RoomAssignmentsProvider'
 import {api} from 'lib/url'
 import {useRoom} from 'organization/Event/Room/RoomProvider'
 import {useInterval} from 'lib/interval'
+import {Room} from 'Event/room'
 
 export default function TechCheckAttendees() {
   const {area} = useArea()
@@ -125,19 +125,24 @@ function Attendees(props: {
 
 const POLL_TECH_CHECK_ATTENDEES_INTERVAL_MS = 20000
 
+export interface TechCheckAssignment {
+  attendee: Attendee
+  room: Room
+}
+
 function useTechCheckAssignments() {
   const {client} = useOrganization()
   const {event} = useEvent()
   const {area} = useArea()
   const {room} = useRoom()
 
-  const [assignments, setAssignments] = useState<RoomAssignment[]>([])
+  const [assignments, setAssignments] = useState<TechCheckAssignment[]>([])
 
   const fetch = useCallback(() => {
     const url = api(
       `/events/${event.slug}/areas/${area.id}/room/${room.id}/tech_check_assignments`,
     )
-    return client.get<RoomAssignment[]>(url).then(setAssignments)
+    return client.get<TechCheckAssignment[]>(url).then(setAssignments)
   }, [area, event, client, room])
 
   useEffect(() => {

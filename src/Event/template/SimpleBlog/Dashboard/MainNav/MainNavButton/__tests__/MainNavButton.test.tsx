@@ -33,7 +33,7 @@ it('should join a room', async () => {
   const joinUrl = faker.internet.url()
   mockGet.mockImplementation(() => Promise.resolve({data: {url: joinUrl}}))
 
-  const {findByLabelText} = render(
+  const {findByLabelText, findByText} = render(
     <Dashboard isEditMode={false} user={fakeUser()} />,
     {
       event,
@@ -44,6 +44,8 @@ it('should join a room', async () => {
     },
   )
 
+  user.click(await findByText(button.text))
+
   await wait(async () => {
     expect(
       ((await findByLabelText(
@@ -51,6 +53,66 @@ it('should join a room', async () => {
       )) as HTMLLinkElement).getAttribute('href'),
     ).toBe(joinUrl)
   })
+})
+
+it('should show generic offline message', async () => {
+  const id = faker.random.number({min: 1, max: 1000})
+  const button = fakeNavButtonWithSize({
+    isAreaButton: true,
+    areaId: id,
+    offlineTitle: undefined,
+    offlineDescription: undefined,
+  })
+  const mainNav = createEntityList([button])
+
+  const event = fakeEvent({template: fakeSimpleBlog({mainNav})})
+
+  mockGet.mockImplementation(() => Promise.resolve({data: {url: null}}))
+
+  const {findByText} = render(
+    <Dashboard isEditMode={false} user={fakeUser()} />,
+    {
+      event,
+      organization: fakeOrganization(),
+      actions: emptyActions,
+      score: defaultScore,
+      withRouter: true,
+    },
+  )
+  user.click(await findByText(button.text))
+
+  expect(await findByText(/offline/i)).toBeInTheDocument()
+})
+
+it('should show defined offline message', async () => {
+  const id = faker.random.number({min: 1, max: 1000})
+
+  const offlineTitle = faker.random.words()
+
+  const button = fakeNavButtonWithSize({
+    isAreaButton: true,
+    areaId: id,
+    offlineTitle,
+  })
+  const mainNav = createEntityList([button])
+
+  const event = fakeEvent({template: fakeSimpleBlog({mainNav})})
+
+  mockGet.mockImplementation(() => Promise.resolve({data: {url: null}}))
+
+  const {findByText} = render(
+    <Dashboard isEditMode={false} user={fakeUser()} />,
+    {
+      event,
+      organization: fakeOrganization(),
+      actions: emptyActions,
+      score: defaultScore,
+      withRouter: true,
+    },
+  )
+  user.click(await findByText(button.text))
+
+  expect(await findByText(offlineTitle)).toBeInTheDocument()
 })
 
 it('should receive points', async () => {

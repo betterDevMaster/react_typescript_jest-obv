@@ -1,20 +1,18 @@
-import React from 'react'
 import faker from 'faker'
 import user from '@testing-library/user-event'
-import {goToEvent} from 'organization/Event/__utils__/event'
-import {render} from '__utils__/render'
-import App from 'App'
 import axios from 'axios'
 import {fakeRoom} from 'organization/Event/AreaList/__utils__/factory'
 import {wait} from '@testing-library/react'
 import {CONFIGURE_EVENTS} from 'organization/PermissionsProvider'
+import {goToAreas} from 'organization/Event/AreaList/__utils__/go-to-areas'
 
 const mockGet = axios.get as jest.Mock
 const mockPost = axios.post as jest.Mock
 
 it('should create a room', async () => {
-  const {event, areas} = goToEvent({userPermissions: [CONFIGURE_EVENTS]})
-  const {findByLabelText, findAllByLabelText} = render(<App />)
+  const {event, areas, findByLabelText, findAllByLabelText} = await goToAreas({
+    userPermissions: [CONFIGURE_EVENTS],
+  })
 
   const area = faker.random.arrayElement(areas)
   mockGet.mockImplementationOnce(() => Promise.resolve({data: area}))
@@ -26,7 +24,6 @@ it('should create a room', async () => {
   )
   mockGet.mockImplementationOnce(() => Promise.resolve({data: rooms}))
 
-  user.click(await findByLabelText(`view ${event.name}`))
   user.click(await findByLabelText(`view ${area.name} area`))
   user.click(await findByLabelText(`create room`))
 

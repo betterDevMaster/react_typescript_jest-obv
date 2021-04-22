@@ -19,7 +19,9 @@ function Content(props: ResetPasswordProps) {
   if (props.wasSuccessful) {
     return (
       <>
-        <h2>Password reset successfully</h2>
+        <Description aria-label="event login description">
+          Password reset Successfully
+        </Description>
         <Button
           variant="contained"
           fullWidth

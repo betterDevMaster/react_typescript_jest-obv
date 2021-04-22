@@ -1,12 +1,9 @@
-import {goToEvent} from 'organization/Event/__utils__/event'
 import faker from 'faker'
 import user from '@testing-library/user-event'
-import React from 'react'
-import {render} from '__utils__/render'
-import App from 'App'
 import axios from 'axios'
 import {fakeArea} from 'organization/Event/AreaList/__utils__/factory'
 import {CONFIGURE_EVENTS} from 'organization/PermissionsProvider'
+import {goToAreas} from 'organization/Event/AreaList/__utils__/go-to-areas'
 
 const mockPost = axios.post as jest.Mock
 const mockGet = axios.get as jest.Mock
@@ -16,10 +13,11 @@ beforeEach(() => {
 })
 
 it('should create a new area', async () => {
-  const {event} = goToEvent({areas: [], userPermissions: [CONFIGURE_EVENTS]})
-  const {findByLabelText, findAllByText} = render(<App />)
+  const {event, findByLabelText, findAllByText} = await goToAreas({
+    areas: [],
+    userPermissions: [CONFIGURE_EVENTS],
+  })
 
-  user.click(await findByLabelText(`view ${event.name}`))
   user.click(await findByLabelText('create area'))
 
   const name = faker.random.word()

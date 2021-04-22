@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react'
+import React, {useState, useEffect, useRef} from 'react'
 import styled from 'styled-components'
 import DangerButton from 'lib/ui/Button/DangerButton'
 import {useForm} from 'react-hook-form'
@@ -13,7 +13,7 @@ import {fieldError} from 'lib/form'
 import {ValidationError} from 'lib/api-client'
 import UploadedImage from 'organization/Event/SpeakersConfig/SpeakerEditDialog/Form/UploadedImage'
 import {fetchFile} from 'lib/http-client'
-import TextEditor from 'lib/ui/form/TextEditor'
+import TextEditor, {TextEditorContainer} from 'lib/ui/form/TextEditor'
 
 const imageUploadId = 'speaker-image-upload'
 
@@ -34,12 +34,15 @@ export default function EditSpeakerForm(props: {
   const {event} = useEvent()
   const {client} = useOrganization()
   const [serverError, setServerError] = useState<ValidationError<any>>(null)
+  const [loading, setLoading] = useState(true)
+
+  const mounted = useRef(true)
 
   useEffect(() => {
     if (!speaker) {
       return
     }
-
+    setLoading(false)
     setValue('name', speaker.name)
     setValue('text', speaker.text)
 
@@ -49,6 +52,9 @@ export default function EditSpeakerForm(props: {
         .catch(() => {
           // ignore invalid image
         })
+    }
+    return () => {
+      mounted.current = false
     }
   }, [speaker, setValue])
 
@@ -135,12 +141,14 @@ export default function EditSpeakerForm(props: {
         aria-label="speaker text"
         ref={register}
       />
-      <EditorContainer>
-        <TextEditor
-          data={watch('text')}
-          onChange={(val) => setValue('text', val)}
-        />
-      </EditorContainer>
+      <TextEditorContainer>
+        {loading ? null : (
+          <TextEditor
+            data={watch('text')}
+            onChange={(val) => setValue('text', val)}
+          />
+        )}
+      </TextEditorContainer>
       <ImageContainer>
         <UploadButton variant="outlined" color="primary">
           <UploadButtonLabel htmlFor={imageUploadId}>
@@ -201,12 +209,4 @@ const SaveButton = styled(Button)`
 
 const RemoveButton = styled(DangerButton)`
   margin-bottom: ${(props) => props.theme.spacing[4]}!important;
-`
-
-// CKEditor has a min-width, anything less will show blank whitespace
-// with scroll. So we'll add a container to hide unneeded
-// whitespace
-const EditorContainer = styled.div`
-  overflow-x: hidden;
-  margin-bottom: ${(props) => props.theme.spacing[6]};
 `

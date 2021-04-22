@@ -1,10 +1,10 @@
 import FormControl from '@material-ui/core/FormControl'
-import {onUnknownChangeHandler} from 'lib/dom'
 import React from 'react'
 import MenuItem from '@material-ui/core/MenuItem'
 import Select from '@material-ui/core/Select'
 import InputLabel from '@material-ui/core/InputLabel'
 import {useAreas} from 'organization/Event/AreasProvider'
+import {onUnknownChangeHandler} from 'lib/dom'
 
 export default function AreaSelect(props: {
   onPick: (id: number) => void

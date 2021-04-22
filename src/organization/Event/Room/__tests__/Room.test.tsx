@@ -1,14 +1,11 @@
-import {goToEvent, goToEventConfig} from 'organization/Event/__utils__/event'
 import user from '@testing-library/user-event'
-import React from 'react'
-import {render} from '__utils__/render'
 import axios from 'axios'
 import faker from 'faker'
-import App from 'App'
 import {fakeRoom} from 'organization/Event/AreaList/__utils__/factory'
 import {Room} from 'Event/room'
 import {wait} from '@testing-library/react'
 import {CONFIGURE_EVENTS, START_ROOMS} from 'organization/PermissionsProvider'
+import {goToAreas} from 'organization/Event/AreaList/__utils__/go-to-areas'
 
 const mockGet = axios.get as jest.Mock
 const mockPatch = axios.patch as jest.Mock
@@ -18,7 +15,7 @@ afterEach(() => {
 })
 
 it('should toggle a room on/off', async () => {
-  const {findByLabelText, areas} = await goToEventConfig({
+  const {findByLabelText, areas} = await goToAreas({
     userPermissions: [START_ROOMS],
   })
 
@@ -34,14 +31,15 @@ it('should toggle a room on/off', async () => {
 
   // Rooms
   mockGet.mockImplementationOnce(() => Promise.resolve({data: rooms}))
-  // Attendees
-  mockGet.mockImplementationOnce(() => Promise.resolve({data: []}))
 
   // go to area config
   user.click(await findByLabelText(`view ${area.name} area`))
 
   // Room to be configured
   mockGet.mockImplementationOnce(() => Promise.resolve({data: target}))
+  // Start url
+  const url = faker.internet.url()
+  mockGet.mockImplementationOnce(() => Promise.resolve({data: {url}}))
 
   // go to room config
   user.click(await findByLabelText(`view ${target.name} room`))
@@ -49,6 +47,8 @@ it('should toggle a room on/off', async () => {
   expect(
     ((await findByLabelText('toggle online')) as HTMLInputElement).checked,
   ).toBe(target.is_online)
+
+  expect(await findByLabelText('start room')).not.toBeDisabled()
 
   const updated: Room = {
     ...target,
@@ -62,14 +62,16 @@ it('should toggle a room on/off', async () => {
     expect(mockPatch).toHaveBeenCalledTimes(1)
   })
 
-  const [url] = mockPatch.mock.calls[0]
+  const [updateUrl] = mockPatch.mock.calls[0]
 
   const endpoint = target.is_online ? 'stop' : 'start'
-  expect(url).toMatch(`/rooms/${target.id}/${endpoint}`)
+  expect(updateUrl).toMatch(`/rooms/${target.id}/${endpoint}`)
+
+  expect(await findByLabelText('start room')).toBeDisabled()
 })
 
 it('should update room attributes', async () => {
-  const {areas, findByLabelText} = await goToEventConfig({
+  const {areas, findByLabelText} = await goToAreas({
     userPermissions: [CONFIGURE_EVENTS],
   })
 
@@ -85,8 +87,6 @@ it('should update room attributes', async () => {
 
   // Rooms
   mockGet.mockImplementationOnce(() => Promise.resolve({data: rooms}))
-  // All Attendees
-  mockGet.mockImplementationOnce(() => Promise.resolve({data: []}))
 
   // go to area config
   user.click(await findByLabelText(`view ${area.name} area`))

@@ -6,7 +6,7 @@ import TextField from '@material-ui/core/TextField'
 import Typography from '@material-ui/core/Typography'
 import {spacing} from 'lib/ui/theme'
 import React, {useEffect, useRef, useState} from 'react'
-import {useForm} from 'react-hook-form'
+import {Controller, useForm} from 'react-hook-form'
 import FormHelperText from '@material-ui/core/FormHelperText'
 import {useEvent} from 'Event/EventProvider'
 import {api} from 'lib/url'
@@ -14,13 +14,16 @@ import {useOrganization} from 'organization/OrganizationProvider'
 import {ObvioEvent} from 'Event'
 import {setEvent} from 'Event/state/actions'
 import {useDispatch} from 'react-redux'
-import {useHistory} from 'react-router-dom'
 import {waiverLogoPath} from 'Event/Step2/WaiverProvider'
 import {fetchFile} from 'lib/http-client'
 import Layout from 'organization/user/Layout'
-import {useEventRoutes} from 'organization/Event/EventRoutes'
 import Page from 'organization/Event/Page'
 import TextEditor from 'lib/ui/form/TextEditor'
+import FormControl from '@material-ui/core/FormControl'
+import FormControlLabel from '@material-ui/core/FormControlLabel'
+import Switch from '@material-ui/core/Switch'
+import FormSelect from 'organization/Event/FormsProvider/FormSelect'
+import Box from '@material-ui/core/Box'
 
 const imageUploadId = 'waived-logo-upload'
 
@@ -30,26 +33,21 @@ type WaiverData = {
 }
 
 export default function WaiverConfig() {
-  const {register, handleSubmit, watch, setValue, errors} = useForm()
+  const {register, handleSubmit, watch, setValue, errors, control} = useForm()
   const [submitting, setSubmitting] = useState(false)
   const [logo, setLogo] = useState<null | File>(null)
   const body = watch('body')
   const [responseError, setResponseError] = useState('')
   const setWaiver = useSetWaiver()
   const dispatch = useDispatch()
-  const routes = useEventRoutes()
   const {event} = useEvent()
-  const history = useHistory()
+
   // Prevent updating unmounted component
   const mounted = useRef(true)
   // Manual loading state required to trigger CKEditor load
   // on browser 'back', or else the body would not be
   // set.
   const [loading, setLoading] = useState(true)
-
-  const goToDashboardConfig = () => {
-    history.push(routes.dashboard)
-  }
 
   useEffect(() => {
     if (!mounted.current) {
@@ -84,10 +82,11 @@ export default function WaiverConfig() {
     setWaiver(data, logo)
       .then((event) => {
         dispatch(setEvent(event))
-        goToDashboardConfig()
       })
       .catch((e) => {
         setResponseError(e.message)
+      })
+      .finally(() => {
         setSubmitting(false)
       })
   }
@@ -105,6 +104,26 @@ export default function WaiverConfig() {
     <Layout>
       <Page>
         <form onSubmit={handleSubmit(submit)}>
+          <FormControl fullWidth disabled={submitting}>
+            <FormControlLabel
+              control={
+                <Controller
+                  type="checkbox"
+                  name="is_enabled"
+                  defaultValue={event.waiver?.is_enabled || true}
+                  control={control}
+                  render={({onChange, value}) => (
+                    <Switch
+                      checked={!!value}
+                      onChange={(e) => onChange(e.target.checked)}
+                      inputProps={{'aria-label': 'toggle enabled'}}
+                    />
+                  )}
+                />
+              }
+              label="Enable"
+            />
+          </FormControl>
           <TextField
             name="title"
             label="Waiver File Title (optional)"
@@ -113,7 +132,7 @@ export default function WaiverConfig() {
             disabled={submitting}
             helperText="Defaults to the event name"
           />
-          <div>
+          <Box mb={2}>
             <LogoLabel>Logo (optional)</LogoLabel>
             <UploadButton variant="outlined" color="primary">
               <UploadButtonLabel htmlFor={imageUploadId}>
@@ -129,7 +148,18 @@ export default function WaiverConfig() {
               aria-label="logo input"
             />
             <UploadedLogo logo={logo} remove={removeLogo} />
-          </div>
+          </Box>
+          <FormControl fullWidth>
+            <InputLabel>Form</InputLabel>
+            <Controller
+              name="form_id"
+              control={control}
+              defaultValue={event.waiver?.form?.id || ''}
+              render={({onChange, value}) => (
+                <FormSelect onChange={onChange} value={value} />
+              )}
+            />
+          </FormControl>
           <Editor>
             <input
               type="hidden"
@@ -198,6 +228,14 @@ function useSetWaiver() {
     const formData = new FormData()
 
     for (const [key, val] of Object.entries(data)) {
+      if (val === null || val === undefined) {
+        /**
+         * FormData sends everything as strings, so we'll have to explicitly
+         * skip sending values on null, ie. un-setting a form_id.
+         */
+        continue
+      }
+
       formData.set(key, val)
     }
 

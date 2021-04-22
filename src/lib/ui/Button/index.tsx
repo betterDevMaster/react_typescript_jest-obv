@@ -17,6 +17,13 @@ export interface ButtonProps {
   borderColor?: string
   hoverBorderColor?: string
   variant?: 'text'
+  opacity?: number
+  height?: number
+  minHeight?: number
+  type?: 'submit' | 'button' | 'reset'
+  width?: number
+  fontSize?: number
+  padding?: number
   'aria-label'?: string
 }
 
@@ -39,6 +46,11 @@ export default function Button(props: ButtonProps) {
       hoverTextDecoration={hoverTextDecoration(props)}
       onClick={props.onClick}
       aria-label={props['aria-label']}
+      opacity={opacity(props)}
+      height={height(props)}
+      minHeight={minHeight(props)}
+      fontSize={fontSize(props)}
+      type={props.type || 'button'}
     >
       {props.children}
     </StyledButton>
@@ -46,11 +58,31 @@ export default function Button(props: ButtonProps) {
 }
 
 function width(props: ButtonProps) {
+  if (props.width) {
+    return `${props.width}%`
+  }
+
   if (props.fullWidth) {
     return '100%'
   }
 
   return 'auto'
+}
+
+function height(props: ButtonProps) {
+  if (!props.height) {
+    return 'auto'
+  }
+
+  return props.height + 'px'
+}
+
+function minHeight(props: ButtonProps) {
+  if (!props.minHeight) {
+    return 'auto'
+  }
+
+  return props.minHeight + 'px'
 }
 
 function textTransform(props: ButtonProps) {
@@ -62,11 +94,15 @@ function textTransform(props: ButtonProps) {
 }
 
 function padding(props: ButtonProps) {
+  if (props.padding) {
+    return `${props.padding}px!important`
+  }
+
   if (isText(props.variant)) {
     return '0'
   }
 
-  return 'auto'
+  return 'inherit'
 }
 
 function textColor(props: ButtonProps) {
@@ -177,8 +213,24 @@ function isText(variant: ButtonProps['variant']) {
   return variant === 'text'
 }
 
+function fontSize(props: ButtonProps) {
+  if (props.fontSize) {
+    return `${props.fontSize}px`
+  }
+}
+
+function opacity(props: ButtonProps) {
+  if (props.opacity === undefined) {
+    return 1
+  }
+
+  return props.opacity
+}
+
 type StyleProps = {
   width: string
+  height: string
+  minHeight: string
   textTransform: string
   padding: string
   backgroundColor: string
@@ -191,6 +243,8 @@ type StyleProps = {
   borderRadius: string
   hoverBorder: string
   hoverTextDecoration: string
+  opacity: number
+  fontSize?: string
 }
 
 const StyledButton = styled.button<StyleProps>`
@@ -203,6 +257,11 @@ const StyledButton = styled.button<StyleProps>`
   cursor: ${(props) => props.cursor};
   transition: ${(props) => props.transition};
   border-radius: ${(props) => props.borderRadius};
+  opacity: ${(props) => props.opacity};
+  height: ${(props) => props.height} !important;
+  min-height: ${(props) => props.minHeight} !important;
+  ${(props) =>
+    props.fontSize ? `font-size: ${props.fontSize}!important;` : ''}
 
   &:hover {
     opacity: ${(props) => props.hoverOpacity};

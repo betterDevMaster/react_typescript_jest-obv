@@ -4,8 +4,6 @@ import {EmojiListConfig} from 'Event/Dashboard/components/EmojiList/EmojiListCon
 import {TicketRibbonConfig} from 'Event/Dashboard/components/TicketRibbonList/TicketRibbonConfig'
 import {MAIN_NAV_BUTTON} from 'Event/template/SimpleBlog/Dashboard/MainNav/MainNavButton'
 import {MainNavButtonConfig} from 'Event/template/SimpleBlog/Dashboard/MainNav/MainNavButton/MainNavButtonConfig'
-import {WELCOME_TEXT} from 'Event/template/SimpleBlog/Dashboard/WelcomeText'
-import {WelcomeTextConfig} from 'Event/template/SimpleBlog/Dashboard/WelcomeText/WelcomeTextConfig'
 import {SimpleBlogConfig} from 'Event/template/SimpleBlog/Config'
 import {SIDEBAR_CONTAINER} from 'Event/template/SimpleBlog/Dashboard/Sidebar/SidebarContainer'
 import {EMOJI_LIST} from 'Event/Dashboard/components/EmojiList'
@@ -29,6 +27,10 @@ import {FooterConfig} from 'Event/template/SimpleBlog/Dashboard/Footer/FooterCon
 import {BLOG_POST} from 'Event/Dashboard/components/BlogPost'
 import {BlogPostConfig} from 'Event/Dashboard/components/BlogPost/BlogPostConfig'
 import {SIMPLE_BLOG} from 'Event/template/SimpleBlog'
+import {HeroConfig} from 'Event/template/SimpleBlog/Dashboard/Hero/HeroConfig'
+import {HERO} from 'Event/template/SimpleBlog/Dashboard/Hero'
+import {BodyHTMLEmbedConfig} from 'Event/template/SimpleBlog/Dashboard/BodyHTMLEmbed/BodyHTMLEmbedConfig'
+import {BODY_HTML_EMBED} from 'Event/template/SimpleBlog/Dashboard/BodyHTMLEmbed'
 
 // Must register config types here. This ensures wherever
 // various component types are handled, that all possible
@@ -36,7 +38,7 @@ import {SIMPLE_BLOG} from 'Event/template/SimpleBlog'
 export type ComponentConfig =
   | SimpleBlogConfig
   | MainNavButtonConfig
-  | WelcomeTextConfig
+  | HeroConfig
   | SidebarContainerConfig
   | EmojiListConfig
   | TicketRibbonConfig
@@ -48,6 +50,7 @@ export type ComponentConfig =
   | SidebarNavButtonConfig
   | FooterConfig
   | BlogPostConfig
+  | BodyHTMLEmbedConfig
 
 export function ComponentConfig(props: {config: ComponentConfig | null}) {
   if (!props.config) {
@@ -57,8 +60,8 @@ export function ComponentConfig(props: {config: ComponentConfig | null}) {
   switch (props.config.type) {
     case MAIN_NAV_BUTTON:
       return <MainNavButtonConfig id={props.config.id} />
-    case WELCOME_TEXT:
-      return <WelcomeTextConfig />
+    case HERO:
+      return <HeroConfig />
     case SIMPLE_BLOG:
       return <SimpleBlogConfig />
     case SIDEBAR_CONTAINER:
@@ -83,6 +86,8 @@ export function ComponentConfig(props: {config: ComponentConfig | null}) {
       return <FooterConfig />
     case BLOG_POST:
       return <BlogPostConfig id={props.config.id} />
+    case BODY_HTML_EMBED:
+      return <BodyHTMLEmbedConfig />
     default:
       // @ts-ignore
       throw new Error(`Missing config component for type: ${props.config.type}`)

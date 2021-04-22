@@ -12,7 +12,7 @@ import UploadedFile from 'Event/Dashboard/components/ResourceList/ResourceUpload
 import {Resource} from 'Event/Dashboard/components/ResourceList/ResourceItem'
 
 export const ACCEPTED_FILE_TYPES = ['image/*', '.pdf']
-export const MAX_FILE_SIZE_BYTES = 20971520 // 20MB
+export const MAX_FILE_SIZE_BYTES = 150000000 // bytes
 export const MAX_NUM_FILES = 1
 
 interface ResourceUpload {

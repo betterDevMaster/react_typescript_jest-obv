@@ -16,6 +16,7 @@ export default function Radio(props: FieldProps) {
       component="fieldset"
       fullWidth
       required={props.question.is_required}
+      disabled={props.disabled}
     >
       <FormLabel component="legend">{props.question.label}</FormLabel>
       <Controller

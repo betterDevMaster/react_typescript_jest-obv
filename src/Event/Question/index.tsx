@@ -27,6 +27,7 @@ export interface QuestionProps {
   setValue?: UseFormMethods['setValue']
   responseError?: ValidationError<any>
   answers?: Answer[]
+  disabled?: boolean
 }
 
 export type FieldProps = QuestionProps & {
@@ -70,6 +71,7 @@ export default function Question(props: QuestionProps) {
         hasError={hasError}
         HelperText={HelperText}
         answer={answer}
+        disabled={props.disabled}
       />
     </>
   )
@@ -94,7 +96,7 @@ function Field(props: FieldProps) {
   }
 }
 
-function findAnswer(question: QuestionDefinition, answers?: Answer[]) {
+export function findAnswer(question: QuestionDefinition, answers?: Answer[]) {
   if (!answers) {
     return null
   }

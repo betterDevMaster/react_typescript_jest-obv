@@ -13,9 +13,12 @@ import React from 'react'
 import MenuItem from '@material-ui/core/MenuItem'
 import {useTemplate, useUpdateTemplate} from 'Event/TemplateProvider'
 import {onChangeStringHandler, onUnknownChangeHandler} from 'lib/dom'
-import Grid from '@material-ui/core/Grid'
 import DangerButton from 'lib/ui/Button/DangerButton'
 import {useCloseConfig} from 'Event/Dashboard/editor/state/edit-mode'
+import RuleConfig, {
+  useRuleConfig,
+} from 'Event/Dashboard/component-rules/RuleConfig'
+import ConfigureRulesButton from 'Event/Dashboard/component-rules/ConfigureRulesButton'
 
 export type TicketRibbonConfig = {
   type: typeof TICKET_RIBBON
@@ -27,7 +30,7 @@ export function TicketRibbonConfig(props: {index: number}) {
   const ticketRibbon = ticketRibbons[props.index]
   const updateTemplate = useUpdateTemplate()
   const closeConfig = useCloseConfig()
-
+  const {visible: ruleConfigVisible, toggle: toggleRuleConfig} = useRuleConfig()
   const {register, errors} = useForm()
 
   if (ticketRibbon === undefined) {
@@ -63,70 +66,59 @@ export function TicketRibbonConfig(props: {index: number}) {
   }
 
   return (
-    <>
-      <FormControl fullWidth>
-        <Select
-          value={ticketRibbon.name}
+    <RuleConfig
+      visible={ruleConfigVisible}
+      close={toggleRuleConfig}
+      rules={ticketRibbon.rules}
+      onChange={update('rules')}
+    >
+      <>
+        <ConfigureRulesButton onClick={toggleRuleConfig} />
+        <FormControl fullWidth>
+          <Select
+            value={ticketRibbon.name}
+            inputProps={{
+              'aria-label': 'pick ticket ribbon',
+            }}
+            onChange={onUnknownChangeHandler(update('name'))}
+          >
+            {Object.entries(TICKET_RIBBON_IMAGE).map(([name, image]) => (
+              <MenuItem key={name} value={name}>
+                <Image src={image} alt={name} />
+                <span>{name}</span>
+              </MenuItem>
+            ))}
+          </Select>
+        </FormControl>
+        <TextField
+          name="text"
+          defaultValue={ticketRibbon.text}
+          fullWidth
+          onChange={onChangeStringHandler(update('text'))}
           inputProps={{
-            'aria-label': 'pick ticket ribbon',
+            ref: register({
+              maxLength: 8,
+            }),
+            'aria-label': 'ticket ribbon text input',
           }}
-          onChange={onUnknownChangeHandler(update('name'))}
+          error={!!errors.text}
+          helperText={errors.text && errors.text.message}
+        />
+        <ColorPicker
+          label="Ribbon Text Color"
+          color={ticketRibbon.color}
+          onPick={update('color')}
+        />
+        <RemoveButton
+          fullWidth
+          variant="outlined"
+          aria-label="remove ticket ribbon"
+          onClick={remove}
         >
-          {Object.entries(TICKET_RIBBON_IMAGE).map(([name, image]) => (
-            <MenuItem key={name} value={name}>
-              <Image src={image} alt={name} />
-              <span>{name}</span>
-            </MenuItem>
-          ))}
-        </Select>
-      </FormControl>
-      <TextField
-        name="text"
-        defaultValue={ticketRibbon.text}
-        fullWidth
-        onChange={onChangeStringHandler(update('text'))}
-        inputProps={{
-          ref: register({
-            maxLength: 8,
-          }),
-          'aria-label': 'ticket ribbon text input',
-        }}
-        error={!!errors.text}
-        helperText={errors.text && errors.text.message}
-      />
-      <ColorPicker
-        label="Ribbon Text Color"
-        color={ticketRibbon.color}
-        onPick={update('color')}
-      />
-      <Grid container spacing={2}>
-        <Grid item xs={12} sm={6}>
-          <TextField
-            label="Group Name"
-            value={ticketRibbon.group_name}
-            fullWidth
-            onChange={onChangeStringHandler(update('group_name'))}
-          />
-        </Grid>
-        <Grid item xs={12} sm={6}>
-          <TextField
-            name="group_value"
-            label="Group Value"
-            value={ticketRibbon.group_value}
-            fullWidth
-            onChange={onChangeStringHandler(update('group_value'))}
-          />
-        </Grid>
-      </Grid>
-      <RemoveButton
-        fullWidth
-        variant="outlined"
-        aria-label="remove ticket ribbon"
-        onClick={remove}
-      >
-        REMOVE TICKET RIBBON
-      </RemoveButton>
-    </>
+          REMOVE TICKET RIBBON
+        </RemoveButton>
+      </>
+    </RuleConfig>
   )
 }
 

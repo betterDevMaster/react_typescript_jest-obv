@@ -1,5 +1,4 @@
 import DashboardConfig from 'organization/Event/DashboardConfig'
-import Event from 'organization/Event'
 import WaiverConfig from 'organization/Event/WaiverConfig'
 import TechCheckConfig from 'organization/Event/TechCheckConfig'
 import AttendeeManagement from 'organization/Event/AttendeeManagement'
@@ -20,14 +19,25 @@ import AttendeesProvider from 'organization/Event/AttendeesProvider'
 import Services from 'organization/Event/Services'
 import Zapier from 'organization/Event/Services/Apps/Zapier'
 import ServicesProvider from 'organization/Event/Services/ServicesProvider'
-import RoomAssignmentsProvider from 'organization/Event/RoomAssignmentsProvider'
 import AreasProvider from 'organization/Event/AreasProvider'
-import QuestionsConfig from 'organization/Event/QuestionsConfig'
+import FormsConfig from 'organization/Event/FormsConfig'
 import Infusionsoft from 'organization/Event/Services/Apps/Infusionsoft'
 import AuthorizedPage from 'organization/AuthorizedPage'
 import {CONFIGURE_EVENTS} from 'organization/PermissionsProvider'
 import NameAppendageConfig from 'organization/Event/NameAppendageConfig'
 import NameAppendageProvider from './NameAppendageConfig/NameAppendageProvider'
+import Event from 'organization/Event'
+import AreaList from 'organization/Event/AreaList'
+import {HideLiveChatSupport} from 'lib/WithLiveChatSupport'
+import SponsorPageConfig from 'organization/Event/SponsorPageConfig'
+import Form from 'organization/Event/Form'
+import {FormProvider} from 'organization/Event/Form/FormProvider'
+import {useEvent} from 'Event/EventProvider'
+import SelectTemplateForm from 'organization/Event/SelectTemplateForm'
+import TemplateProvider from 'Event/TemplateProvider'
+import SponsorsProvider from 'organization/Event/SponsorsProvider'
+
+export type EventRoutes = ReturnType<typeof useEventRoutes>
 
 export function useEventRoutes(event?: ObvioEvent) {
   const {routes: organizationRoutes} = useOrganization()
@@ -39,43 +49,59 @@ export function useEventRoutes(event?: ObvioEvent) {
 
 export default function EventRoutes() {
   const {routes} = useOrganization()
+  const {event} = useEvent()
+
+  if (!event.template) {
+    return <SelectTemplateForm />
+  }
 
   return (
-    <Switch>
-      <Route path={routes.events[':event'].root} exact>
-        <AreasProvider>
+    <TemplateProvider template={event.template}>
+      <Switch>
+        <Route path={routes.events[':event'].root} exact>
           <Event />
-        </AreasProvider>
-      </Route>
-      <Route path={routes.events[':event'].dashboard}>
-        <AuthorizedPage permission={CONFIGURE_EVENTS}>
+        </Route>
+        <Route path={routes.events[':event'].areas.root} exact>
           <AreasProvider>
-            <DashboardConfig />
+            <AreaList />
           </AreasProvider>
-        </AuthorizedPage>
-      </Route>
-      <Route path={routes.events[':event'].waiver}>
-        <AuthorizedPage permission={CONFIGURE_EVENTS}>
-          <WaiverConfig />
-        </AuthorizedPage>
-      </Route>
-      <Route path={routes.events[':event'].questions}>
-        <AuthorizedPage permission={CONFIGURE_EVENTS}>
-          <QuestionsConfig />
-        </AuthorizedPage>
-      </Route>
-      <Route path={routes.events[':event'].tech_check}>
-        <AuthorizedPage permission={CONFIGURE_EVENTS}>
-          <AreasProvider>
-            <TechCheckConfig />
-          </AreasProvider>
-        </AuthorizedPage>
-      </Route>
-      <Route path={routes.events[':event'].attendees}>
-        <AttendeesProvider>
-          <AreasProvider>
-            <RoomAssignmentsProvider>
+        </Route>
+        <Route path={routes.events[':event'].dashboard}>
+          <AuthorizedPage permission={CONFIGURE_EVENTS}>
+            <AreasProvider>
+              <DashboardConfig />
+            </AreasProvider>
+          </AuthorizedPage>
+        </Route>
+        <Route path={routes.events[':event'].waiver}>
+          <AuthorizedPage permission={CONFIGURE_EVENTS}>
+            <WaiverConfig />
+          </AuthorizedPage>
+        </Route>
+        <Route path={routes.events[':event'].forms[':form'].root}>
+          <AuthorizedPage permission={CONFIGURE_EVENTS}>
+            <FormProvider>
+              <Form />
+            </FormProvider>
+          </AuthorizedPage>
+        </Route>
+        <Route path={routes.events[':event'].forms.root}>
+          <AuthorizedPage permission={CONFIGURE_EVENTS}>
+            <FormsConfig />
+          </AuthorizedPage>
+        </Route>
+        <Route path={routes.events[':event'].tech_check}>
+          <AuthorizedPage permission={CONFIGURE_EVENTS}>
+            <AreasProvider>
+              <TechCheckConfig />
+            </AreasProvider>
+          </AuthorizedPage>
+        </Route>
+        <Route path={routes.events[':event'].attendees}>
+          <AttendeesProvider>
+            <AreasProvider>
               <AttendeeManagement />
+<<<<<<< HEAD
             </RoomAssignmentsProvider>
           </AreasProvider>
         </AttendeesProvider>
@@ -126,6 +152,62 @@ export default function EventRoutes() {
       </Route>
       <Redirect to={routes.events[':event'].root} />
     </Switch>
+=======
+            </AreasProvider>
+          </AttendeesProvider>
+        </Route>
+        <Route path={routes.events[':event'].emoji}>
+          <AuthorizedPage permission={CONFIGURE_EVENTS}>
+            <HideLiveChatSupport>
+              <Emoji />
+            </HideLiveChatSupport>
+          </AuthorizedPage>
+        </Route>
+        <Route path={routes.events[':event'].speakers}>
+          <AuthorizedPage permission={CONFIGURE_EVENTS}>
+            <SpeakerConfig />
+          </AuthorizedPage>
+        </Route>
+        <Route path={routes.events[':event'].sponsors}>
+          <AuthorizedPage permission={CONFIGURE_EVENTS}>
+            <AreasProvider>
+              <SponsorsProvider>
+                <SponsorPageConfig />
+              </SponsorsProvider>
+            </AreasProvider>
+          </AuthorizedPage>
+        </Route>
+        <Route path={routes.events[':event'].points}>
+          <AuthorizedPage permission={CONFIGURE_EVENTS}>
+            <PointsConfig />
+          </AuthorizedPage>
+        </Route>
+        <Route path={routes.events[':event'].general}>
+          <AuthorizedPage permission={CONFIGURE_EVENTS}>
+            <GeneralConfig />
+          </AuthorizedPage>
+        </Route>
+        <Route path={routes.events[':event'].services.root}>
+          <AuthorizedPage permission={CONFIGURE_EVENTS}>
+            <ServicesProvider>
+              <ServiceRoutes />
+            </ServicesProvider>
+          </AuthorizedPage>
+        </Route>
+        <Route path={routes.events[':event'].areas.create}>
+          <AuthorizedPage permission={CONFIGURE_EVENTS}>
+            <CreateAreaForm />
+          </AuthorizedPage>
+        </Route>
+        <Route path={routes.events[':event'].areas[':area'].root}>
+          <AreaProvider>
+            <AreaRoutes />
+          </AreaProvider>
+        </Route>
+        <Redirect to={routes.events[':event'].root} />
+      </Switch>
+    </TemplateProvider>
+>>>>>>> develop
   )
 }
 

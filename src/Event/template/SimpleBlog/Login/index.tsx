@@ -68,6 +68,7 @@ export default function Login(props: LoginProps) {
           <StyledRelativeLink
             to={eventRoutes.forgot_password}
             aria-label="forgot password"
+            color={template.login.description.color}
           >
             Forgot Password?
           </StyledRelativeLink>
@@ -77,7 +78,7 @@ export default function Login(props: LoginProps) {
   )
 }
 
-export const StyledRelativeLink = styled(RelativeLink)`
+export const StyledRelativeLink = styled(RelativeLink)<{color: string}>`
   margin-top: ${(props) => props.theme.spacing[10]};
-  color: #2066a7;
+  color: ${(props) => props.color};
 `

@@ -20,20 +20,24 @@ export const fakeSimpleBlog = (overrides?: Partial<SimpleBlog>): SimpleBlog => {
     version: 1,
     name: SIMPLE_BLOG,
     title: faker.company.companyName(),
-    welcomeText: 'WELCOME TO THE DASHBOARD',
-    primaryColor: '#14aecf',
-    sidebar: {
-      background: '#000000',
-      textColor: '#FFFFFF',
-      borderRadius: 0,
-      borderWidth: 0,
-      borderColor: '#000000',
-    },
+    sidebar: fakeSideBarContainer(),
     sidebarNav: {entities: {}, ids: []},
+    techCheck: {
+      buttonText: 'submit',
+      buttonBackground: 'blue',
+      buttonTextColor: '#ffffff',
+      buttonBorderRadius: 0,
+      buttonBorderWidth: 0,
+      buttonBorderColor: '#ffffff',
+      buttonWidth: 12,
+      offlineTitle: '',
+      offlineDescription: '',
+    },
     ticketRibbons: [],
     mainNav: {entities: {}, ids: []},
     emojiList: {emojis: []},
     blogPosts: {entities: {}, ids: []},
+    welcomeText: 'WELCOME TO YOUR DASHBOARD',
     agenda: {
       title: 'Agenda',
       items: [],
@@ -54,6 +58,7 @@ export const fakeSimpleBlog = (overrides?: Partial<SimpleBlog>): SimpleBlog => {
     footer: {
       background: '#000000',
       textColor: '#ffffff',
+      imageSize: 100,
       termsLink: faker.random.boolean() ? faker.internet.url() : null,
       privacyLink: faker.random.boolean() ? faker.internet.url() : null,
       copyrightText: faker.random.boolean()
@@ -66,6 +71,11 @@ export const fakeSimpleBlog = (overrides?: Partial<SimpleBlog>): SimpleBlog => {
       thickness: 15,
       borderRadius: 50,
     },
+    menu: {
+      backgroundColor: '#000000',
+      iconColor: '#0969d6',
+      textColor: '#FFFFFF',
+    },
     login: {
       submitButton: {
         backgroundColor: colors.primary,
@@ -77,10 +87,7 @@ export const fakeSimpleBlog = (overrides?: Partial<SimpleBlog>): SimpleBlog => {
         color: '#000000',
         fontSize: 18,
       },
-      size: {
-        width: 100,
-        height: 100,
-      },
+      logoSize: 100,
     },
   }
 
@@ -145,10 +152,7 @@ export function fakeLogin(
       color: '#000000',
       fontSize: 18,
     },
-    size: {
-      width: 50,
-      height: 50,
-    },
+    logoSize: 100,
     ...overrides,
   }
 }
@@ -161,6 +165,38 @@ export function fakeHeader(
     backgroundOpacity: 1,
     height: 50,
     script: null,
+    ...overrides,
+  }
+}
+
+export function fakeTemplateTechCheck(
+  overrides?: Partial<SimpleBlog['techCheck']>,
+): SimpleBlog['techCheck'] {
+  return {
+    buttonText: 'submit',
+    buttonBackground: 'blue',
+    buttonTextColor: '#ffffff',
+    buttonBorderRadius: 0,
+    buttonBorderWidth: 0,
+    buttonBorderColor: '#ffffff',
+    buttonWidth: 12,
+    offlineTitle: '',
+    offlineDescription: '',
+    ...overrides,
+  }
+}
+
+export function fakeSideBarContainer(
+  overrides?: Partial<SimpleBlog['sidebar']>,
+): SimpleBlog['sidebar'] {
+  return {
+    background: '#000000',
+    textColor: '#FFFFFF',
+    borderRadius: 0,
+    borderWidth: 0,
+    borderColor: '#000000',
+    paddingTop: 0,
+    isVisible: true,
     ...overrides,
   }
 }

@@ -35,10 +35,10 @@ it('should add a new tag', async () => {
 
 it('should remove the last tag', async () => {
   const label = 'my tags'
-  const tags = Array.from(
-    {length: faker.random.number({min: 2, max: 5})},
-    faker.random.word,
-  )
+
+  const tags = new Array(faker.random.number({min: 2, max: 4}))
+    .fill(null)
+    .map((_, index) => `${index}_${faker.random.word()}`)
 
   const {findAllByLabelText, findByLabelText} = render(
     <TagsInput value={tags} name="tags" aria-label={label} />,
@@ -51,10 +51,10 @@ it('should remove the last tag', async () => {
 
 it('should remove a specific tag', async () => {
   const label = 'my tags'
-  const tags = Array.from(
-    {length: faker.random.number({min: 2, max: 5})},
-    faker.random.word,
-  )
+
+  const tags = new Array(faker.random.number({min: 2, max: 5}))
+    .fill(null)
+    .map((_, index) => `${index}_${faker.random.word()}`)
 
   const {findAllByLabelText, findByText, queryByText} = render(
     <TagsInput value={tags} name="tags" aria-label={label} />,

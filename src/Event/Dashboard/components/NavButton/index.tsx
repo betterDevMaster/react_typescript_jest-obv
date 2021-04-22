@@ -1,4 +1,4 @@
-import React from 'react'
+import React, {useState} from 'react'
 import styled from 'styled-components'
 import ButtonBase from 'lib/ui/Button'
 import {Column} from 'lib/ui/layout'
@@ -10,6 +10,10 @@ import {useActions} from 'Event/ActionsProvider'
 import {usePoints} from 'Event/PointsProvider'
 import {Publishable} from 'Event/Dashboard/editor/views/Published'
 import {InfusionsoftTag, useAddTag} from 'Event/infusionsoft'
+
+import OfflineDialog from 'lib/ui/OfflineDialog'
+import {RelativeLink} from 'lib/ui/link/RelativeLink'
+import {useWithAttendeeData} from 'Event/auth/data'
 
 export const NAV_BUTTON = 'NAV_BUTTON'
 
@@ -29,21 +33,31 @@ export default interface NavButton extends HasRules, Publishable {
   borderRadius?: number
   borderWidth?: number
   borderColor?: string
+  height?: number
   hoverBorderColor?: string
   isAreaButton: boolean
   areaId: number | null
   actionId: string | null
   infusionsoftTag: InfusionsoftTag | null
+  offlineTitle?: string
+  offlineDescription?: string
+  page?: string | null
+  fontSize?: number
+  padding?: number
+  width?: number
 }
 
 export type NavButtonWithSize = NavButton & {
   size: Column
+  newLine?: boolean
 }
+export const DEFAULT_BUTTON_HEIGHT = 64
 
 export default function NavButton(props: NavButton) {
   const {newTab, isAreaButton} = props
   const submitAction = useSubmitAction(props.actionId)
   const addInfusionsoftTag = useAddInfusionsoftTag(props.infusionsoftTag)
+  const withAttendeeData = useWithAttendeeData()
 
   const handleClicked = () => {
     submitAction()
@@ -56,16 +70,29 @@ export default function NavButton(props: NavButton) {
     )
   }
 
+  if (props.page) {
+    return (
+      <RelativeLink
+        to={props.page}
+        disableStyles
+        aria-label={props['aria-label']}
+        onClick={handleClicked}
+      >
+        <Button {...props}>{withAttendeeData(props.text)}</Button>
+      </RelativeLink>
+    )
+  }
+
   return (
-    <NormalLink
-      to={props.link}
+    <StyledAbsoluteLink
+      to={withAttendeeData(props.link)}
       disableStyles
       aria-label={props['aria-label']}
       newTab={newTab}
       onClick={handleClicked}
     >
-      <Button {...props}>{props.text}</Button>
-    </NormalLink>
+      <Button {...props}>{withAttendeeData(props.text)}</Button>
+    </StyledAbsoluteLink>
   )
 }
 
@@ -105,17 +132,31 @@ function JoinAreaButton(
 ) {
   const {areaId} = props
   const joinUrl = useJoinUrl(areaId)
+  const [offlineDialogVisible, setOfflineDialogVisible] = useState(false)
+  const withAttendeeData = useWithAttendeeData()
 
-  const button = (
-    <Button {...props} disabled={!joinUrl}>
-      {props.text}
-    </Button>
-  )
+  const toggleOfflineDialog = () =>
+    setOfflineDialogVisible(!offlineDialogVisible)
+
+  const defaultOfflineTitle = `${withAttendeeData(
+    props.text,
+  )} Is Currently Offline`
 
   if (!joinUrl) {
-    return button
+    return (
+      <>
+        <OfflineDialog
+          isOpen={offlineDialogVisible}
+          title={withAttendeeData(props.offlineTitle || defaultOfflineTitle)}
+          description={withAttendeeData(props.offlineDescription || '')}
+          onClose={toggleOfflineDialog}
+        />
+        <Button {...props} onClick={toggleOfflineDialog} isPending>
+          {withAttendeeData(props.text)}
+        </Button>
+      </>
+    )
   }
-
   return (
     <AbsoluteLink
       aria-label="start meeting"
@@ -125,7 +166,7 @@ function JoinAreaButton(
       disableStyles
       onClick={props.onJoin}
     >
-      {button}
+      <Button {...props}>{withAttendeeData(props.text)}</Button>
     </AbsoluteLink>
   )
 }
@@ -135,8 +176,11 @@ function Button(
     children: string | React.ReactElement
     disabled?: boolean
     onClick?: () => void
+    isPending?: boolean
   } & NavButton,
 ) {
+  const opacity = props.isPending ? 0.8 : 1
+
   return (
     <StyledButton
       disabled={props.disabled}
@@ -151,15 +195,21 @@ function Button(
       borderWidth={props.borderWidth}
       borderColor={props.borderColor}
       hoverBorderColor={props.hoverBorderColor}
+      height={props.height}
       onClick={props.onClick}
+      opacity={opacity}
+      padding={props.padding}
+      width={props.width}
+      fontSize={props.fontSize}
     >
       {props.children}
     </StyledButton>
   )
 }
 
-const NormalLink = styled(AbsoluteLink)`
+const StyledAbsoluteLink = styled(AbsoluteLink)`
   display: flex;
+  justify-content: center;
 `
 
 const StyledButton = styled(ButtonBase)`

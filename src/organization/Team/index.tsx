@@ -11,8 +11,6 @@ import Layout from 'organization/user/Layout'
 import TabPanel from 'lib/ui/tabs/TabPanel'
 import {useBreadcrumbs} from 'lib/ui/BreadcrumbProvider'
 import {useOrganization} from 'organization/OrganizationProvider'
-import HasPermission from 'organization/HasPermission'
-import {UPDATE_TEAM} from 'organization/PermissionsProvider'
 
 export default function Team() {
   const [tabIndex, setTabIndex] = useState(0)
@@ -39,9 +37,7 @@ export default function Team() {
               <Tab label="Roles" />
             </Tabs>
             <TabPanel index={0} currentIndex={tabIndex}>
-              <HasPermission permission={UPDATE_TEAM}>
-                <AddTeamMemberForm />
-              </HasPermission>
+              <AddTeamMemberForm />
               <TeamMembersTable />
             </TabPanel>
             <TabPanel index={1} currentIndex={tabIndex}>

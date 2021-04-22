@@ -6,9 +6,13 @@ import withStyles from '@material-ui/core/styles/withStyles'
 import {spacing} from 'lib/ui/theme'
 import ConfigNav from 'organization/Event/Page/ConfigNav'
 import {useBreadcrumbs} from 'lib/ui/BreadcrumbProvider'
-import {useOrganization} from 'organization/OrganizationProvider'
-import {useEventRoutes} from 'organization/Event/EventRoutes'
+import {
+  OrganizationRoutes,
+  useOrganization,
+} from 'organization/OrganizationProvider'
+import {EventRoutes, useEventRoutes} from 'organization/Event/EventRoutes'
 import {useEvent} from 'Event/EventProvider'
+import {ObvioEvent} from 'Event'
 
 export default function EventPage(props: {
   children: React.ReactElement | React.ReactElement[]
@@ -18,16 +22,7 @@ export default function EventPage(props: {
   const eventRoutes = useEventRoutes()
   const {event} = useEvent()
 
-  useBreadcrumbs([
-    {
-      title: 'Events',
-      url: orgRoutes.events.root,
-    },
-    {
-      title: event.name,
-      url: eventRoutes.root,
-    },
-  ])
+  useBreadcrumbs(rootEventBreadcrumbs(orgRoutes, eventRoutes, event))
 
   return (
     <>
@@ -40,6 +35,23 @@ export default function EventPage(props: {
       </StyledContainer>
     </>
   )
+}
+
+export function rootEventBreadcrumbs(
+  organizationRoutes: OrganizationRoutes,
+  eventRoutes: EventRoutes,
+  event: ObvioEvent,
+) {
+  return [
+    {
+      title: 'Events',
+      url: organizationRoutes.events.root,
+    },
+    {
+      title: event.name,
+      url: eventRoutes.root,
+    },
+  ]
 }
 
 const Background = createGlobalStyle`

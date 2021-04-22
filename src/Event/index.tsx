@@ -8,9 +8,9 @@ import {eventRoutes} from 'Event/Routes'
 import {Template} from 'Event/template'
 import {PublicFile} from 'lib/http-client'
 import {Area} from 'organization/Event/AreasProvider'
-import {Question} from 'organization/Event/QuestionsProvider'
 import React from 'react'
 import {Redirect} from 'react-router-dom'
+import {Form} from 'organization/Event/FormsProvider'
 
 // Can't use 'Event' because that's already a native DOM type
 // for browser events and we'd lose TS safety/import assist.
@@ -18,6 +18,10 @@ export interface ObvioEvent {
   id: number
   name: string
   slug: string
+  start: string
+  end: string
+  has_ended: boolean
+  num_attendees: number
   template: Template | null
   waiver: WaiverConfig | null
   speaker_page: SpeakerPage | null
@@ -28,19 +32,27 @@ export interface ObvioEvent {
   platform_actions: PlatformActions
   login_background: PublicFile | null
   login_logo: PublicFile | null
-  questions: Question[]
+  forms: Form[]
   has_infusionsoft: boolean
   dashboard_background: PublicFile | null
+  welcome_image: PublicFile | null
+  sidebar_background: PublicFile | null
+  footer_image: PublicFile | null
+  sponsor_page_title: string
+  sponsor_question_icon: PublicFile | null
 }
 
 export interface WaiverConfig {
   logo: null | string
   title: null | string
   body: string
+  is_enabled: boolean
+  form: Form | null
 }
 
 export interface TechCheckConfig {
   body: string
+  start: string
   is_enabled: boolean
   area: Area
 }
@@ -59,13 +71,14 @@ export interface Speaker {
 
 export default function Event() {
   const attendee = useAttendee()
-  const {hasTechCheck} = useEvent()
+  const {hasTechCheck, hasWaiver} = useEvent()
 
   if (!attendee.has_password) {
     return <Redirect to={eventRoutes.step1} />
   }
 
-  if (!attendee.waiver) {
+  const shouldGoToStep2 = hasWaiver && !attendee.waiver
+  if (shouldGoToStep2) {
     return <Redirect to={eventRoutes.step2} />
   }
 

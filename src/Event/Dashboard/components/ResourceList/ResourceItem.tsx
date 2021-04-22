@@ -6,12 +6,16 @@ import {usePlatformActions} from 'Event/ActionsProvider/platform-actions'
 import {AbsoluteLink} from 'lib/ui/link/AbsoluteLink'
 import {storage} from 'lib/url'
 import {Publishable} from 'Event/Dashboard/editor/views/Published'
+import {useTemplate} from 'Event/TemplateProvider'
+import {HasRules} from 'Event/Dashboard/component-rules'
+import {useWithAttendeeData} from 'Event/auth/data'
 
-export type Resource = Publishable & {
-  name: string
-  filePath: string
-  icon: string
-}
+export type Resource = Publishable &
+  HasRules & {
+    name: string
+    filePath: string
+    icon: string
+  }
 
 export const RESOURCE_ITEM = 'Resource Item'
 
@@ -21,6 +25,8 @@ export default function ResourceItem(props: {
 }) {
   const {downloadResource: DOWNLOADING_RESOURCE} = usePlatformActions()
   const {submit} = usePoints()
+  const {sidebar} = useTemplate()
+  const withAttendeeData = useWithAttendeeData()
 
   const awardPoints = () => {
     submit(DOWNLOADING_RESOURCE)
@@ -30,6 +36,7 @@ export default function ResourceItem(props: {
 
   return (
     <ResourceLink
+      color={sidebar.textColor}
       aria-label="event resource"
       to={path}
       onClick={awardPoints}
@@ -42,16 +49,19 @@ export default function ResourceItem(props: {
       >
         {props.resource.icon}
       </StyledIcon>
-      <LinkText aria-label="resource link">{props.resource.name}</LinkText>
+      <LinkText aria-label="resource link">
+        {withAttendeeData(props.resource.name)}
+      </LinkText>
     </ResourceLink>
   )
 }
 
-const ResourceLink = styled(AbsoluteLink)`
+const ResourceLink = styled(AbsoluteLink)<{color: string}>`
   align-items: center;
   font-size: 20px;
   display: flex;
   margin-bottom: ${(props) => props.theme.spacing[1]};
+  color: ${(props) => props.color};
 
   &:hover {
     text-decoration: none;

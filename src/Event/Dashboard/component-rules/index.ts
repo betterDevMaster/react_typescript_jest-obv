@@ -4,7 +4,7 @@ import {TagsRule} from 'Event/Dashboard/component-rules/RuleConfig/RuleList/Sing
 
 export type Rule = TagsRule | GroupRule | NestedRule
 export interface HasRules {
-  rules: Rule[]
+  rules?: Rule[]
 }
 
 export const AND = 'And'

@@ -10,8 +10,7 @@ export const fakeTicketRibbon = (
   name: faker.random.arrayElement(RIBBONS),
   text: faker.random.word(),
   color: '#FFFFFF',
-  group_name: '',
-  group_value: '',
+  rules: [],
   ...overrides,
 })
 

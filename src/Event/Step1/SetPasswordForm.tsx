@@ -11,6 +11,7 @@ import {SIMPLE_BLOG} from 'Event/template/SimpleBlog'
 import SimpleBlogSetPasswordForm from 'Event/template/SimpleBlog/SetPasswordForm'
 import {usePoints} from 'Event/PointsProvider'
 import {usePlatformActions} from 'Event/ActionsProvider/platform-actions'
+import {User} from 'auth/user'
 
 interface SetPasswordData {
   password: string
@@ -22,6 +23,7 @@ export interface SetPasswordFormProps {
   submitting: boolean
   responseError: ValidationError<SetPasswordData>
   progress: number
+  user: User
 }
 
 export default function SetPasswordForm() {
@@ -34,8 +36,7 @@ export default function SetPasswordForm() {
   const dispatch = useDispatch()
   const {submit: submitAction} = usePoints()
   const {createPassword: CREATE_PASSWORD} = usePlatformActions()
-  const progress = hasTechCheck ? 33 : 50
-  const template = useTemplate()
+  const progress = hasTechCheck ? 25 : 33
   const user = useAttendee()
 
   const submit = (data: SetPasswordData) => {
@@ -51,17 +52,23 @@ export default function SetPasswordForm() {
       })
   }
 
+  return (
+    <TemplateSetPasswordForm
+      user={user}
+      submit={submit}
+      submitting={submitting}
+      responseError={responseError}
+      progress={progress}
+    />
+  )
+}
+
+export function TemplateSetPasswordForm(props: SetPasswordFormProps) {
+  const template = useTemplate()
+
   switch (template.name) {
     case SIMPLE_BLOG:
-      return (
-        <SimpleBlogSetPasswordForm
-          user={user}
-          submit={submit}
-          submitting={submitting}
-          responseError={responseError}
-          progress={progress}
-        />
-      )
+      return <SimpleBlogSetPasswordForm {...props} />
     default:
       throw new Error(
         `Missing set password form for template: ${template.name}`,

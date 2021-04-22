@@ -4,6 +4,7 @@ import TicketRibbonItem, {TicketRibbon} from './TicketRibbon'
 import EditModeOnly from 'Event/Dashboard/editor/views/EditModeOnly'
 import React from 'react'
 import styled from 'styled-components'
+import HiddenOnMatch from 'Event/Dashboard/component-rules/HiddenOnMatch'
 
 export default () => {
   const {ticketRibbons} = useTemplate()
@@ -17,11 +18,9 @@ export default () => {
         {ticketRibbons &&
           ticketRibbons.map((ticketRibbon: TicketRibbon, index: number) => {
             return (
-              <TicketRibbonItem
-                ticketRibbon={ticketRibbon}
-                key={index}
-                index={index}
-              />
+              <HiddenOnMatch rules={ticketRibbon.rules} key={index}>
+                <TicketRibbonItem ticketRibbon={ticketRibbon} index={index} />
+              </HiddenOnMatch>
             )
           })}
       </RibbonsContainer>

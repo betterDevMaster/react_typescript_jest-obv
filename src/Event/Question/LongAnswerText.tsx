@@ -18,6 +18,7 @@ export default function LongAnswerText(props: FieldProps) {
       rows={4}
       helperText={props.error || props.question.helper_text}
       required={props.question.is_required}
+      disabled={props.disabled}
       error={Boolean(props.error)}
     />
   )

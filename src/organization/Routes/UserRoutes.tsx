@@ -6,9 +6,9 @@ import {Redirect, Route, Switch} from 'react-router-dom'
 import {useOrganization} from 'organization/OrganizationProvider'
 import EventRoutes from 'organization/Event/EventRoutes'
 import Team from 'organization/Team'
-import QuestionsProvider from 'organization/Event/QuestionsProvider'
-import {CREATE_EVENTS} from 'organization/PermissionsProvider'
+import {CREATE_EVENTS, UPDATE_TEAM} from 'organization/PermissionsProvider'
 import AuthorizedPage from 'organization/AuthorizedPage'
+import FormsProvider from 'organization/Event/FormsProvider'
 
 export default function UserRoutes() {
   const {routes} = useOrganization()
@@ -31,13 +31,15 @@ export default function UserRoutes() {
         <EventList />
       </Route>
       <Route path={routes.team}>
-        <Team />
+        <AuthorizedPage permission={UPDATE_TEAM}>
+          <Team />
+        </AuthorizedPage>
       </Route>
       <Route path={routes.events[':event'].root}>
         <RouteEventProvider>
-          <QuestionsProvider>
+          <FormsProvider>
             <EventRoutes />
-          </QuestionsProvider>
+          </FormsProvider>
         </RouteEventProvider>
       </Route>
       <Redirect to={routes.events.root} />

@@ -5,12 +5,11 @@ import NewSidebarNavButton from 'Event/template/SimpleBlog/Dashboard/Sidebar/New
 import EditModeOnly from 'Event/Dashboard/editor/views/EditModeOnly'
 import {useTemplate} from 'Event/TemplateProvider'
 import Section from 'Event/template/SimpleBlog/Dashboard/Sidebar/Section'
-
+import HiddenOnMatch from 'Event/Dashboard/component-rules/HiddenOnMatch'
 export const SIDEBAR_NAV_BUTTON = 'Sidebar Nav Button'
 
 export default function SidebarNav() {
   const {sidebarNav: buttons} = useTemplate()
-
   const hasButtons = buttons.ids.length > 0
   if (!hasButtons) {
     return (
@@ -25,17 +24,18 @@ export default function SidebarNav() {
       {buttons.ids.map((id) => {
         const button = buttons.entities[id]
         return (
-          <SidebarNavButton
-            key={id}
-            {...button}
-            id={id}
-            backgroundColor={button.backgroundColor}
-            hoverBackgroundColor={button.backgroundColor}
-            textColor={button.textColor}
-            borderWidth={button.borderWidth}
-            borderRadius={button.borderRadius}
-            borderColor={button.borderColor}
-          />
+          <HiddenOnMatch rules={button.rules} key={id}>
+            <SidebarNavButton
+              {...button}
+              id={id}
+              backgroundColor={button.backgroundColor}
+              hoverBackgroundColor={button.backgroundColor}
+              textColor={button.textColor}
+              borderWidth={button.borderWidth}
+              borderRadius={button.borderRadius}
+              borderColor={button.borderColor}
+            />
+          </HiddenOnMatch>
         )
       })}
       <EditModeOnly>

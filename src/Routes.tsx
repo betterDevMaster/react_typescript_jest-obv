@@ -6,15 +6,14 @@ import OrganizationRoutes from 'organization/Routes'
 import ObvioRoutes from 'obvio/Routes'
 import {DomainEventProvider} from 'Event/EventProvider'
 import EventRoutes from 'Event/Routes'
-import HelpDesk from 'lib/HelpDesk'
+import WithLiveChatSupport from 'lib/WithLiveChatSupport'
 
 export default function Routes() {
   if (isObvioApp()) {
     return (
-      <>
-        <HelpDesk />
+      <WithLiveChatSupport>
         <AdminRoutes />
-      </>
+      </WithLiveChatSupport>
     )
   }
 

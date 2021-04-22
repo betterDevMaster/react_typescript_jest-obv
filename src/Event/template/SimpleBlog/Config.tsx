@@ -9,7 +9,6 @@ import EventImageUpload from 'organization/Event/DashboardConfig/EventImageUploa
 import ColorPicker from 'lib/ui/ColorPicker'
 import React from 'react'
 import {SIMPLE_BLOG} from 'Event/template/SimpleBlog'
-import Grid from '@material-ui/core/Grid'
 import Slider from '@material-ui/core/Slider'
 import {handleChangeSlider} from 'lib/dom'
 import {TextField} from '@material-ui/core'
@@ -29,8 +28,10 @@ export function SimpleBlogConfig() {
   const template = useTemplate()
   const {event} = useEvent()
 
-  const updatePrimary = useUpdatePrimitive('primaryColor')
   const updateHeader = useUpdateObject('header')
+  const updateMenu = useUpdateObject('menu')
+  const updateDashboardBackground = useUpdateObject('dashboardBackground')
+
   const updateBackgroundPosition = useUpdatePrimitive('backgroundPosition')
 
   return (
@@ -56,6 +57,25 @@ export function SimpleBlogConfig() {
           current={event.dashboard_background?.url}
         />
       </Box>
+      <ColorPicker
+        label="Dashboard Background Color"
+        color={template.dashboardBackground?.color}
+        onPick={updateDashboardBackground('color')}
+        aria-label="dashboard background color"
+      />
+      <InputLabel>Dashboard Background Color Opacity</InputLabel>
+      <Slider
+        min={0}
+        max={1}
+        step={0.1}
+        onChange={handleChangeSlider(updateDashboardBackground('opacity'))}
+        valueLabelDisplay="auto"
+        value={template.dashboardBackground?.opacity || 0}
+        valueLabelFormat={() => (
+          <div>{(template.dashboardBackground?.opacity || 0) * 100}</div>
+        )}
+        aria-label="dashboard background color opacity"
+      />
       <Box mb={2}>
         <InputLabel>Background Position</InputLabel>
         <Select
@@ -67,25 +87,12 @@ export function SimpleBlogConfig() {
           <MenuItem value="bottom">Bottom</MenuItem>
         </Select>
       </Box>
-
-      <Grid container item justify="center" spacing={3} xs={12}>
-        <Grid item xs={6}>
-          <ColorPicker
-            label="Primary Color"
-            color={template.primaryColor}
-            onPick={updatePrimary}
-            aria-label="primary color"
-          />
-        </Grid>
-        <Grid item xs={6}>
-          <ColorPicker
-            label="Header Background Color"
-            color={template.header?.backgroundColor}
-            onPick={updateHeader('backgroundColor')}
-            aria-label="header background color"
-          />
-        </Grid>
-      </Grid>
+      <ColorPicker
+        label="Header Background Color"
+        color={template.header?.backgroundColor}
+        onPick={updateHeader('backgroundColor')}
+        aria-label="header background color"
+      />
       <InputLabel>Header Background Opacity</InputLabel>
       <Slider
         min={0}
@@ -93,7 +100,10 @@ export function SimpleBlogConfig() {
         step={0.1}
         onChange={handleChangeSlider(updateHeader('backgroundOpacity'))}
         valueLabelDisplay="auto"
-        value={template.header?.backgroundOpacity || 1}
+        valueLabelFormat={() => (
+          <div>{template.header?.backgroundOpacity * 100}</div>
+        )}
+        value={template.header?.backgroundOpacity || 0}
         aria-label="background opacity"
       />
       <InputLabel>Header Height</InputLabel>
@@ -105,6 +115,24 @@ export function SimpleBlogConfig() {
         valueLabelDisplay="auto"
         value={template.header.height}
         aria-label="header height"
+      />
+      <ColorPicker
+        label="Menu Background Color"
+        color={template.menu?.backgroundColor}
+        onPick={updateMenu('backgroundColor')}
+        aria-label="menu background color"
+      />
+      <ColorPicker
+        label="Menu Text Color"
+        color={template.menu?.textColor}
+        onPick={updateMenu('textColor')}
+        aria-label="menu text color"
+      />
+      <ColorPicker
+        label="Menu Icon Color"
+        color={template.menu?.iconColor}
+        onPick={updateMenu('iconColor')}
+        aria-label="menu icon color"
       />
       <TextField
         label="Custom Code"

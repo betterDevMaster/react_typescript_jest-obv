@@ -9,6 +9,8 @@ import AddAgendaEventButton from 'Event/Dashboard/components/AgendaList/AddAgend
 import {useTemplate} from 'Event/TemplateProvider'
 import Section from 'Event/template/SimpleBlog/Dashboard/Sidebar/Section'
 import {useEditMode} from 'Event/Dashboard/editor/state/edit-mode'
+import {AbsoluteLink} from 'lib/ui/link/AbsoluteLink'
+import {useWithAttendeeData} from 'Event/auth/data'
 
 export const AGENDA_ITEM = 'Agenda Item'
 export const AGENDA_LIST = 'Agenda List'
@@ -23,6 +25,7 @@ export type Agenda = Publishable & {
 export default function AgendaList() {
   const {agenda} = useTemplate()
   const isEdit = useEditMode()
+  const withAttendeeData = useWithAttendeeData()
 
   const hasAgenda = agenda.items.length > 0
   if (!hasAgenda && !isEdit) {
@@ -32,7 +35,7 @@ export default function AgendaList() {
   return (
     <Section>
       <EditComponent component={{type: AGENDA_LIST}}>
-        <Heading aria-label="agendas">{agenda.title}</Heading>
+        <Heading aria-label="agendas">{withAttendeeData(agenda.title)}</Heading>
       </EditComponent>
       <>
         {agenda.items.map((item, index) => (
@@ -55,18 +58,19 @@ export default function AgendaList() {
 
 function Times(props: {agenda: Agenda}) {
   const start = moment(props.agenda.startDate)
-
   const getMonth = (date: moment.Moment) => date.format('MMMM')
   const getDay = (date: moment.Moment) => date.format('Do')
   const getTime = (date: moment.Moment) => date.format('h:mma')
   const getTimezone = (date: moment.Moment) =>
     date.tz(moment.tz.guess()).format('z')
+  const {sidebar} = useTemplate()
+  const sidebarTextColor = sidebar.textColor
 
   const tz = getTimezone(start)
 
   if (!props.agenda.endDate) {
     return (
-      <TimeText aria-label="agenda event times">
+      <TimeText aria-label="agenda event times" color={sidebarTextColor}>
         <strong>{`${getMonth(start)} ${getDay(start)}:`}</strong>{' '}
         {`${getTime(start)} ${tz}`}
       </TimeText>
@@ -78,16 +82,16 @@ function Times(props: {agenda: Agenda}) {
   const sameDay = getDay(end) === getDay(start)
   if (sameMonth && sameDay) {
     return (
-      <TimeText aria-label="agenda event times">
+      <TimeText aria-label="agenda event times" color={sidebarTextColor}>
         <strong>{`${getMonth(start)} ${getDay(start)}:`}</strong>{' '}
         {getTime(start)}
-        {`- ${getTime(end)} ${tz}`}
+        {` - ${getTime(end)} ${tz}`}
       </TimeText>
     )
   }
 
   return (
-    <TimeText aria-label="agenda event times">
+    <TimeText aria-label="agenda event times" color={sidebarTextColor}>
       <strong>{`${getMonth(start)} ${getDay(start)}:`}</strong> {getTime(start)}
       {` - `}
       <strong>
@@ -99,31 +103,50 @@ function Times(props: {agenda: Agenda}) {
 }
 
 function Event(props: {agenda: Agenda}) {
+  const {sidebar} = useTemplate()
+  const withAttendeeData = useWithAttendeeData()
+
   if (props.agenda.link) {
     return (
-      <a href={props.agenda.link} target="_blank" rel="noopener noreferrer">
-        <EventText aria-label="agenda event">{props.agenda.text}</EventText>
-      </a>
+      <StyledAbsoluteLink
+        newTab
+        to={withAttendeeData(props.agenda.link)}
+        color={sidebar.textColor}
+      >
+        <EventText aria-label="agenda event" color={sidebar.textColor}>
+          {withAttendeeData(props.agenda.text)}
+        </EventText>
+      </StyledAbsoluteLink>
     )
   }
 
-  return <EventText aria-label="agenda event">{props.agenda.text}</EventText>
+  return (
+    <EventText aria-label="agenda event" color={sidebar.textColor}>
+      {withAttendeeData(props.agenda.text)}
+    </EventText>
+  )
 }
 
 const Agenda = styled.div`
   margin-bottom: ${(props) => props.theme.spacing[3]};
 `
 
-const TimeText = styled.span`
+const TimeText = styled.span<{color: string}>`
   font-size: 14px;
+  color: ${(props) => props.color};
 `
 
-const EventText = styled.span`
+const EventText = styled.span<{color: string}>`
   font-size: 18px;
   display: block;
   font-style: italic;
+  color: ${(props) => props.color};
 `
 
 const StyledAddAgendaEventButton = styled(AddAgendaEventButton)`
   margin-bottom: ${(props) => props.theme.spacing[6]}!important;
+`
+
+const StyledAbsoluteLink = styled(AbsoluteLink)<{color: string}>`
+  color: ${(props) => props.color};
 `

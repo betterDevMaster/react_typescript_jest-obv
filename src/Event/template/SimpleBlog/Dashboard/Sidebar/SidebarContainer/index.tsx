@@ -5,55 +5,66 @@ import React from 'react'
 import styled from 'styled-components'
 import {useTemplate} from 'Event/TemplateProvider'
 import {SimpleBlog} from 'Event/template/SimpleBlog'
+import BackgroundImage from 'Event/template/SimpleBlog/Dashboard/Sidebar/SidebarContainer/BackgroundImage'
+import {Publishable} from 'Event/Dashboard/editor/views/Published'
+import Published from 'Event/Dashboard/editor/views/Published'
 
 export const SIDEBAR_CONTAINER = 'Sidebar'
 
-type Background = SimpleBlog['sidebar']['background']
-type TextColor = SimpleBlog['sidebar']['textColor']
+export type Sidebar = Publishable & {
+  background: string
+  textColor: string
+  borderRadius: number
+  borderWidth: number
+  borderColor: string
+  paddingTop?: number
+}
 
-export default function SidebarContainer(props: {
-  background: Background
-  textColor: TextColor
-  children: React.ReactNode
-}) {
+export default function SidebarContainer(props: {children: React.ReactNode}) {
   const edit = useEditComponent({type: SIDEBAR_CONTAINER})
   const {sidebar} = useTemplate()
 
   return (
-    <Box sidebar={sidebar}>
-      <EditModeOnly>
-        <EditSidebarButton
-          onClick={edit}
-          fullWidth
-          size="large"
-          variant="contained"
-          color="secondary"
-          aria-label="edit sidebar"
-        >
-          Edit Sidebar
-        </EditSidebarButton>
-      </EditModeOnly>
-      {props.children}
-    </Box>
+    <Published component={sidebar}>
+      <Box {...sidebar}>
+        <TopLayer>
+          <EditModeOnly>
+            <EditSidebarButton
+              onClick={edit}
+              fullWidth
+              size="large"
+              variant="contained"
+              color="secondary"
+              aria-label="edit sidebar"
+            >
+              Edit Sidebar
+            </EditSidebarButton>
+          </EditModeOnly>
+          {props.children}
+        </TopLayer>
+        <BackgroundImage />
+      </Box>
+    </Published>
   )
 }
 
-const Box = styled.div<{
-  sidebar: SimpleBlog['sidebar']
-}>`
-  background: ${(props) => props.sidebar.background};
+const Box = styled.div<SimpleBlog['sidebar']>`
+  background: ${(props) => props.background};
+  position: relative;
   padding: ${(props) => `${props.theme.spacing[12]} ${props.theme.spacing[8]}`};
-  color: ${(props) => props.sidebar.textColor};
-  border-radius: ${(props) => props.sidebar.borderRadius}px;
-  border: ${(props) => props.sidebar.borderWidth}px solid
-    ${(props) => props.sidebar.borderColor};
+  ${(props) =>
+    props.paddingTop !== undefined ? `padding-top: ${props.paddingTop}px;` : ``}
+  border-radius: ${(props) => props.borderRadius}px;
+  border: ${(props) => props.borderWidth}px solid
+    ${(props) => props.borderColor};
   @media (min-width: ${(props) => props.theme.breakpoints.md}) {
     height: 100%;
   }
+`
 
-  a {
-    color: ${(props) => props.sidebar.textColor};
-  }
+const TopLayer = styled.div`
+  position: relative;
+  z-index: 2;
 `
 
 const EditSidebarButton = styled(Button)`

@@ -9,7 +9,7 @@ export default function RuleConfig(props: {
   visible: boolean
   close?: () => void
   onChange: (rules: Rule[]) => void
-  rules: Rule[]
+  rules?: Rule[]
   description?: string
 }) {
   if (!props.visible) {

@@ -8,7 +8,7 @@ export default function NavBar(props: {
   className?: string
   navbarRight?: React.ReactElement
 }) {
-  const breadcrumbs = useBreadcrumbs()
+  const {breadcrumbs} = useBreadcrumbs()
 
   return (
     <Box className={props.className}>

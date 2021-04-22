@@ -25,7 +25,7 @@ export const useEventAuth = () => {
   return useAuthClient(settings)
 }
 
-function isAttendee(user: User | null): user is Attendee {
+export function isAttendee(user: User | null): user is Attendee {
   if (!user) {
     return false
   }

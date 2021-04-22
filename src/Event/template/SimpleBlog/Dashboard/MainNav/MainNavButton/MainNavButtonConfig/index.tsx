@@ -1,10 +1,10 @@
-import Checkbox from '@material-ui/core/Checkbox'
-import FormControl from '@material-ui/core/FormControl'
-import FormControlLabel from '@material-ui/core/FormControlLabel'
 import Slider from '@material-ui/core/Slider'
 import TextField from '@material-ui/core/TextField'
 import Typography from '@material-ui/core/Typography'
-import {NavButtonWithSize} from 'Event/Dashboard/components/NavButton'
+import NavButton, {
+  NavButtonWithSize,
+  DEFAULT_BUTTON_HEIGHT,
+} from 'Event/Dashboard/components/NavButton'
 import {
   handleChangeSlider,
   onChangeCheckedHandler,
@@ -22,17 +22,21 @@ import RuleConfig, {
 import ConfigureRulesButton from 'Event/Dashboard/component-rules/ConfigureRulesButton'
 import {useTemplate, useUpdateTemplate} from 'Event/TemplateProvider'
 import {MAIN_NAV_BUTTON} from 'Event/template/SimpleBlog/Dashboard/MainNav/MainNavButton'
-import ToggleButtonGroup from '@material-ui/lab/ToggleButtonGroup'
-import ToggleButton from '@material-ui/lab/ToggleButton'
-import ActionConfig from 'Event/template/SimpleBlog/Dashboard/MainNav/MainNavButton/MainNavButtonConfig/ActionConfig'
-import AreaConfig from 'Event/template/SimpleBlog/Dashboard/MainNav/MainNavButton/MainNavButtonConfig/AreaConfig'
-import Grid from '@material-ui/core/Grid'
+import ActionSelect from 'Event/ActionsProvider/ActionConfig'
 import Switch from 'lib/ui/form/Switch'
-import InfusionsoftTagInput from 'Event/Dashboard/components/NavButton/InfusionsoftTagInput'
+import InfusionsoftTagInput from 'organization/Event/DashboardConfig/InfusionsoftTagInput'
+import Checkbox from '@material-ui/core/Checkbox'
+import FormControlLabel from '@material-ui/core/FormControlLabel'
+import TargetConfig from 'Event/Dashboard/components/NavButton/NavButtonConfig/TargetConfig'
 
 export type MainNavButtonConfig = {
   type: typeof MAIN_NAV_BUTTON
   id: string
+}
+
+export type ButtonConfigProps<K extends NavButton> = {
+  button: K
+  update: <T extends keyof K>(key: T) => (value: K[T]) => void
 }
 
 export function MainNavButtonConfig(props: {id: MainNavButtonConfig['id']}) {
@@ -94,21 +98,15 @@ export function MainNavButtonConfig(props: {id: MainNavButtonConfig['id']}) {
       onChange={updateButton('rules')}
     >
       <>
-        <Grid container spacing={2}>
-          <Grid item xs={6}>
-            <Switch
-              checked={button.isVisible}
-              onChange={onChangeCheckedHandler(updateButton('isVisible'))}
-              arial-label="config switch to attendee"
-              labelPlacement="end"
-              color="primary"
-              label={button.isVisible ? 'Enable' : 'Disable'}
-            />
-          </Grid>
-          <Grid item xs={6}>
-            <ConfigureRulesButton onClick={toggleRuleConfig} />
-          </Grid>
-        </Grid>
+        <ConfigureRulesButton onClick={toggleRuleConfig} />
+        <Switch
+          checked={button.isVisible}
+          onChange={onChangeCheckedHandler(updateButton('isVisible'))}
+          arial-label="config switch to attendee"
+          labelPlacement="end"
+          color="primary"
+          label={button.isVisible ? 'Enable' : 'Disable'}
+        />
         <TextField
           label="Text"
           value={button.text}
@@ -118,7 +116,10 @@ export function MainNavButtonConfig(props: {id: MainNavButtonConfig['id']}) {
           fullWidth
           onChange={onChangeStringHandler(updateButton('text'))}
         />
-        <ActionConfig update={updateButton} button={button} />
+        <ActionSelect
+          value={button.actionId}
+          onChange={updateButton('actionId')}
+        />
         <Typography gutterBottom>Size</Typography>
         <Slider
           min={1}
@@ -127,28 +128,24 @@ export function MainNavButtonConfig(props: {id: MainNavButtonConfig['id']}) {
           valueLabelDisplay="auto"
           value={button.size || 0}
         />
-        <FormControl>
-          <ToggleButtonGroup
-            value={button.isAreaButton ? 'true' : 'false'}
-            exclusive
-          >
-            <ToggleButton
-              value="false"
-              onClick={() => updateButton('isAreaButton')(false)}
-            >
-              Link
-            </ToggleButton>
-            <ToggleButton
-              value="true"
-              aria-label="configure button to join room"
-              onClick={() => updateButton('isAreaButton')(true)}
-            >
-              Join Room
-            </ToggleButton>
-          </ToggleButtonGroup>
-        </FormControl>
-        <LinkConfig update={updateButton} button={button} />
-        <AreaConfig update={updateButton} button={button} />
+        <FormControlLabel
+          label="New Line"
+          control={
+            <Checkbox
+              checked={button.newLine || false}
+              onChange={onChangeCheckedHandler(updateButton('newLine'))}
+            />
+          }
+        />
+        <Typography gutterBottom>Height</Typography>
+        <Slider
+          min={1}
+          max={400}
+          onChange={handleChangeSlider(updateButton('height'))}
+          valueLabelDisplay="auto"
+          value={button.height || DEFAULT_BUTTON_HEIGHT}
+        />
+        <TargetConfig update={updateButton} button={button} />
         <ColorPicker
           label="Background Color"
           color={button.backgroundColor}
@@ -195,7 +192,7 @@ export function MainNavButtonConfig(props: {id: MainNavButtonConfig['id']}) {
           onChange={onChangeNumberHandler(updateButton('borderRadius'))}
         />
         <InfusionsoftTagInput
-          button={button}
+          value={button.infusionsoftTag}
           onChange={updateButton('infusionsoftTag')}
         />
         <Box mt={2} mb={3}>
@@ -210,41 +207,5 @@ export function MainNavButtonConfig(props: {id: MainNavButtonConfig['id']}) {
         </Box>
       </>
     </RuleConfig>
-  )
-}
-
-function LinkConfig(props: {
-  button: NavButtonWithSize
-  update: <T extends keyof NavButtonWithSize>(
-    key: T,
-  ) => (value: NavButtonWithSize[T]) => void
-}) {
-  if (props.button.isAreaButton) {
-    return null
-  }
-
-  return (
-    <>
-      <TextField
-        label="Link URL"
-        value={props.button.link || ''}
-        inputProps={{
-          'aria-label': 'button link input',
-        }}
-        fullWidth
-        onChange={onChangeStringHandler(props.update('link'))}
-      />
-      <FormControl>
-        <FormControlLabel
-          label="New Tab"
-          control={
-            <Checkbox
-              checked={props.button.newTab || false}
-              onChange={onChangeCheckedHandler(props.update('newTab'))}
-            />
-          }
-        />
-      </FormControl>
-    </>
   )
 }

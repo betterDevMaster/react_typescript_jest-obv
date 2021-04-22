@@ -7,7 +7,9 @@ import {formatDate, now} from 'lib/date-time'
 import {goToAttendeeManagement} from 'organization/Event/AttendeeManagement/__utils__/go-to-attendee-management'
 import {fireEvent, wait} from '@testing-library/react'
 import {CHECK_IN_ATTENDEES} from 'organization/PermissionsProvider'
+import {fakePaginate} from 'lib/__utils__/pagination-factory'
 
+const mockGet = axios.get as jest.Mock
 const mockPatch = axios.patch as jest.Mock
 const mockDelete = axios.delete as jest.Mock
 
@@ -170,24 +172,12 @@ it('should remove empty groups', async () => {
 })
 
 it('should search for an attendee', async () => {
-  const noProfile = Array.from(
+  const attendees = Array.from(
     {length: faker.random.number({min: 1, max: 5})},
     fakeAttendee,
   )
 
-  const tag = 'Leap'
-  const hasTags = Array.from(
-    {length: faker.random.number({min: 1, max: 5})},
-    () => fakeAttendee({tags: [tag]}),
-  )
-
-  const groups = {Ticket: 'VIP'}
-  const hasGroup = Array.from(
-    {length: faker.random.number({min: 1, max: 5})},
-    () => fakeAttendee({groups}),
-  )
-
-  const attendees = [...noProfile, ...hasTags, ...hasGroup]
+  const target = faker.random.arrayElement(attendees)
 
   const {findAllByLabelText, findByLabelText} = await goToAttendeeManagement({
     attendees,
@@ -195,43 +185,24 @@ it('should search for an attendee', async () => {
 
   const searchInput = await findByLabelText('search for attendee')
 
-  // matches name
-  const nameAttendee = faker.random.arrayElement(attendees)
+  mockGet.mockImplementationOnce(() =>
+    Promise.resolve({data: fakePaginate({data: [target]})}),
+  )
 
   fireEvent.change(searchInput, {
     target: {
-      value: nameAttendee.first_name,
+      value: target.first_name,
     },
   })
 
+  await wait(() => {
+    expect(mockGet).toHaveBeenCalledTimes(10)
+  })
+
+  const [url] = mockGet.mock.calls[9]
+
+  expect(url).toMatch(`search=${target.first_name}`)
+
+  // Updated list to only show results
   expect((await findAllByLabelText('name')).length).toBe(1)
-
-  // finds email
-  const emailAttendee = faker.random.arrayElement(attendees)
-
-  fireEvent.change(searchInput, {
-    target: {
-      value: emailAttendee.email,
-    },
-  })
-
-  expect((await findAllByLabelText('name')).length).toBe(1)
-
-  // filters by tags
-  fireEvent.change(searchInput, {
-    target: {
-      value: tag,
-    },
-  })
-
-  expect((await findAllByLabelText('name')).length).toBe(hasTags.length)
-
-  // filters by Group
-  fireEvent.change(searchInput, {
-    target: {
-      value: groups.Ticket,
-    },
-  })
-
-  expect((await findAllByLabelText('name')).length).toBe(hasGroup.length)
 })

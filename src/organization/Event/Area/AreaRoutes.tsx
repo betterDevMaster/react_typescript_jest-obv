@@ -9,7 +9,6 @@ import {useEventRoutes} from 'organization/Event/EventRoutes'
 import RoomRoutes from 'organization/Event/Room/RoomRoutes'
 import {useArea} from 'organization/Event/Area/AreaProvider'
 import {useEvent} from 'Event/EventProvider'
-import AttendeesProvider from 'organization/Event/AttendeesProvider'
 
 export function useAreaRoutes() {
   const {area} = useArea()
@@ -41,9 +40,7 @@ export default function AreaRoutes() {
         <CreateAreaForm />
       </Route>
       <Route path={routes.events[':event'].areas.root}>
-        <AttendeesProvider>
-          <Area />
-        </AttendeesProvider>
+        <Area />
       </Route>
       <Redirect to={routes.events[':event'].areas[':area'].root} />
     </Switch>

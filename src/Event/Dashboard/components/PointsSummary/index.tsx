@@ -10,7 +10,7 @@ import {usePoints} from 'Event/PointsProvider'
 import Section from 'Event/template/SimpleBlog/Dashboard/Sidebar/Section'
 import {usePlatformActions} from 'Event/ActionsProvider/platform-actions'
 import {useEvent} from 'Event/EventProvider'
-
+import {useWithAttendeeData} from 'Event/auth/data'
 export type Points = {
   description: string
   unit: string
@@ -19,11 +19,12 @@ export type Points = {
 export const POINTS_SUMMARY = 'Points Summary'
 
 export default function PointsSummary() {
-  const {points: summary} = useTemplate()
+  const {points: summary, sidebar} = useTemplate()
   const {visitLeaderboard: VISIT_LEADERBOARD} = usePlatformActions()
   const {score, submit} = usePoints()
   const {event} = useEvent()
   const logo = event.points_summary_logo ? event.points_summary_logo.url : ''
+  const withAttendeeData = useWithAttendeeData()
 
   const awardPoints = () => {
     submit(VISIT_LEADERBOARD)
@@ -42,25 +43,36 @@ export default function PointsSummary() {
       <EditComponent component={{type: POINTS_SUMMARY}}>
         <>
           <HeaderImage src={logo} alt="Points Image" />
-          <NumPointsText aria-label="points summary">
-            You've earned {score.points} {summary.unit}!
-          </NumPointsText>
-          <p>{summary.description}</p>
-          <p>
-            If you would like to see where you stand on the{' '}
-            <RelativeLink
-              to={eventRoutes.leaderboard}
-              aria-label="view leaderboard"
-              onClick={awardPoints}
-            >
-              <strong>LEADERBOARD you can click HERE!</strong>
-            </RelativeLink>
-          </p>
+          <Box color={sidebar.textColor}>
+            <NumPointsText aria-label="points summary">
+              You've earned {score.points} {summary.unit}!
+            </NumPointsText>
+            <p>{withAttendeeData(summary.description)}</p>
+            <p>
+              If you would like to see where you stand on the{' '}
+              <StyledLink
+                color={sidebar.textColor}
+                to={eventRoutes.leaderboard}
+                aria-label="view leaderboard"
+                onClick={awardPoints}
+              >
+                <strong>LEADERBOARD you can click HERE!</strong>
+              </StyledLink>
+            </p>
+          </Box>
         </>
       </EditComponent>
     </Section>
   )
 }
+
+const Box = styled.div<{color: string}>`
+  color: ${(props) => props.color};
+`
+
+const StyledLink = styled(RelativeLink)<{color: string}>`
+  color: ${(props) => props.color};
+`
 
 const NumPointsText = styled.span`
   font-weight: bold;

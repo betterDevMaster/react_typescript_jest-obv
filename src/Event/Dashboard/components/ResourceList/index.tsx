@@ -11,6 +11,8 @@ import ResourceItem, {
   Resource,
 } from 'Event/Dashboard/components/ResourceList/ResourceItem'
 import Published from 'Event/Dashboard/editor/views/Published'
+import HiddenOnMatch from 'Event/Dashboard/component-rules/HiddenOnMatch'
+import {useWithAttendeeData} from 'Event/auth/data'
 
 export interface ResourceList {
   title: string
@@ -36,7 +38,8 @@ export const RESOURCE_ICON = {
 
 export function ResourceList() {
   const isEdit = useEditMode()
-  const {resourceList: list, primaryColor} = useTemplate()
+  const {resourceList: list, sidebar} = useTemplate()
+  const withAttendeeData = useWithAttendeeData()
 
   const hasResources = list.resources.length > 0
   if (!hasResources && !isEdit) {
@@ -46,22 +49,29 @@ export function ResourceList() {
   return (
     <Section>
       <EditComponent component={{type: RESOURCE_LIST}}>
-        <Heading aria-label="resources">{list.title}</Heading>
+        <Heading aria-label="resources">{withAttendeeData(list.title)}</Heading>
       </EditComponent>
-      <p aria-label="resource description">{list.description}</p>
+      <Description aria-label="resource description" color={sidebar.textColor}>
+        {withAttendeeData(list.description)}
+      </Description>
       <List>
-        {list.resources.map((resource, index) => (
+        {list.resources.map((resource: Resource, index: number) => (
           <li key={index}>
-            <EditComponent
-              component={{
-                type: RESOURCE_ITEM,
-                id: index,
-              }}
-            >
-              <Published component={resource}>
-                <ResourceItem resource={resource} iconColor={primaryColor} />
-              </Published>
-            </EditComponent>
+            <HiddenOnMatch rules={resource.rules}>
+              <EditComponent
+                component={{
+                  type: RESOURCE_ITEM,
+                  id: index,
+                }}
+              >
+                <Published component={resource}>
+                  <ResourceItem
+                    resource={resource}
+                    iconColor={sidebar.textColor}
+                  />
+                </Published>
+              </EditComponent>
+            </HiddenOnMatch>
           </li>
         ))}
       </List>
@@ -81,4 +91,8 @@ const List = styled.ul`
 const StyledAddResourceButton = styled(AddResourceButton)`
   margin-bottom: ${(props) => props.theme.spacing[6]}!important;
   margin-top: ${(props) => props.theme.spacing[5]}!important;
+`
+
+const Description = styled.p<{color: string}>`
+  color: ${(props) => props.color};
 `

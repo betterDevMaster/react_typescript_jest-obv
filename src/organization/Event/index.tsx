@@ -1,44 +1,43 @@
-import Button from '@material-ui/core/Button'
-import {RelativeLink} from 'lib/ui/link/RelativeLink'
-import {useEvent} from 'Event/EventProvider'
 import React from 'react'
 import Layout from 'organization/user/Layout'
-import AreaList from 'organization/Event/AreaList'
-import {useEventRoutes} from 'organization/Event/EventRoutes'
-import {useBreadcrumbs} from 'lib/ui/BreadcrumbProvider'
-import {useOrganization} from 'organization/OrganizationProvider'
 import Page from 'organization/Event/Page'
-import HasPermission from 'organization/HasPermission'
-import {CONFIGURE_EVENTS} from 'organization/PermissionsProvider'
+import {useEvent} from 'Event/EventProvider'
+import {
+  CONFIGURE_EVENTS,
+  usePermissions,
+} from 'organization/PermissionsProvider'
+import Typography from '@material-ui/core/Typography'
+import {AbsoluteLink} from 'lib/ui/link/AbsoluteLink'
+import {DATE_TIME_FORMAT, formatDate} from 'lib/date-time'
+import Box from '@material-ui/core/Box'
+import UpdateEventForm from 'organization/Event/UpdateEventForm'
 
 export default function Event() {
-  const routes = useEventRoutes()
-  const {event} = useEvent()
-  const {routes: organizationRoutes} = useOrganization()
+  const {can} = usePermissions()
+  const {event, url} = useEvent()
 
-  useBreadcrumbs([
-    {title: 'Events', url: organizationRoutes.events.root},
-    {title: event.name, url: routes.root},
-  ])
+  if (can(CONFIGURE_EVENTS)) {
+    return <UpdateEventForm />
+  }
 
   return (
-    <Layout
-      navbarRight={
-        <HasPermission permission={CONFIGURE_EVENTS}>
-          <RelativeLink disableStyles to={routes.areas.create}>
-            <Button
-              variant="contained"
-              color="primary"
-              aria-label="create area"
-            >
-              Create Area
-            </Button>
-          </RelativeLink>
-        </HasPermission>
-      }
-    >
+    <Layout>
       <Page>
-        <AreaList />
+        <Box mb={2}>
+          <Typography variant="h4">{event.name}</Typography>
+          <AbsoluteLink to={url} newTab>
+            <Typography>{url}</Typography>
+          </AbsoluteLink>
+        </Box>
+        <Box mb={1}>
+          <Typography variant="h6">Times</Typography>
+          <Typography>
+            {formatDate(event.start, DATE_TIME_FORMAT)} -{' '}
+            {formatDate(event.end, DATE_TIME_FORMAT)}
+          </Typography>
+        </Box>
+        <Typography variant="h6">Expected Number of Attendees</Typography>
+        <Typography>{event.num_attendees}</Typography>
       </Page>
     </Layout>
   )

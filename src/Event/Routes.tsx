@@ -14,11 +14,11 @@ import {PointsProvider} from 'Event/PointsProvider'
 import Leaderboard from 'Event/Leaderboard'
 import UnderConstruction from 'Event/UnderConstruction'
 import TemplateProvider from 'Event/TemplateProvider'
-import WaiverProvider from 'Event/Step2/WaiverProvider'
-import SubmissionsProvider from 'Event/SubmissionsProvider'
 import CustomScripts from 'organization/Event/CustomScripts'
 import ForgotPassword from 'Event/auth/ForgotPassword'
 import ResetPassword from 'Event/auth/ResetPassword'
+import SponsorPage from 'Event/SponsorPage'
+import SubmissionsProvider from 'Event/SubmissionsProvider'
 
 export const eventRoutes = createRoutes({
   login: '/login',
@@ -28,14 +28,26 @@ export const eventRoutes = createRoutes({
   step2: '/step_2',
   step3: '/step_3',
   speakers: '/speakers',
+  sponsors: '/sponsors',
   leaderboard: '/leaderboard',
 })
+
+/**
+ * Event pages that a button/link may navigate to as a
+ * relative link.
+ */
+
+export const EVENT_PAGES = {
+  [eventRoutes.speakers]: 'Speakers',
+  [eventRoutes.sponsors]: 'Sponsors',
+  [eventRoutes.leaderboard]: 'Leaderboard',
+}
 
 export default function Routes() {
   const {user, loading} = useEventAuth()
   const {event} = useEvent()
 
-  if (!event.template || !event.waiver) {
+  if (!event.template) {
     return <UnderConstruction />
   }
 
@@ -47,13 +59,13 @@ export default function Routes() {
     return (
       <EventActionsProvider>
         <PointsProvider>
-          <SubmissionsProvider>
-            <TemplateProvider template={event.template}>
-              <CustomScripts>
+          <TemplateProvider template={event.template}>
+            <CustomScripts>
+              <SubmissionsProvider>
                 <UserRoutes />
-              </CustomScripts>
-            </TemplateProvider>
-          </SubmissionsProvider>
+              </SubmissionsProvider>
+            </CustomScripts>
+          </TemplateProvider>
         </PointsProvider>
       </EventActionsProvider>
     )
@@ -75,9 +87,7 @@ function UserRoutes() {
         <Step1 />
       </Route>
       <Route path={eventRoutes.step2}>
-        <WaiverProvider>
-          <Step2 />
-        </WaiverProvider>
+        <Step2 />
       </Route>
       <Route path={eventRoutes.step3}>
         <Step3 />
@@ -87,6 +97,9 @@ function UserRoutes() {
       </Route>
       <Route path={eventRoutes.speakers} exact>
         <Speakers />
+      </Route>
+      <Route path={eventRoutes.sponsors} exact>
+        <SponsorPage />
       </Route>
       <Route path={eventRoutes.leaderboard}>
         <Leaderboard />

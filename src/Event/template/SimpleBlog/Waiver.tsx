@@ -7,6 +7,7 @@ import Checkbox from '@material-ui/core/Checkbox'
 import Signature from 'lib/ui/form/Signature'
 import {onChangeCheckedHandler} from 'lib/dom'
 import {useWaiver} from 'Event/Step2/WaiverProvider'
+import {useWithAttendeeData} from 'Event/auth/data'
 
 export default function Waiver() {
   const {
@@ -18,11 +19,13 @@ export default function Waiver() {
     setSignature,
   } = useWaiver()
 
+  const withAttendeeData = useWithAttendeeData()
+
   return (
     <>
       <Body
         dangerouslySetInnerHTML={{
-          __html: waiver.body,
+          __html: withAttendeeData(waiver.body),
         }}
       />
       <FormControl required component="fieldset">

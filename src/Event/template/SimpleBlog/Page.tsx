@@ -10,6 +10,7 @@ import {withStyles} from '@material-ui/core'
 import {useTemplate} from 'Event/TemplateProvider'
 import {useEvent} from 'Event/EventProvider'
 import {SimpleBlog} from 'Event/template/SimpleBlog'
+import {rgb} from 'lib/color'
 
 export default function SimpleBlogPage(props: {
   user: User
@@ -17,54 +18,53 @@ export default function SimpleBlogPage(props: {
 }) {
   const [menuVisible, setMenuVisible] = useState(false)
   const toggleMenu = () => setMenuVisible(!menuVisible)
-  const {primaryColor, backgroundPosition} = useTemplate()
+  const {backgroundPosition, dashboardBackground: dashboard} = useTemplate()
   const {event} = useEvent()
   const dashboardBackground = event.dashboard_background
-    ? event.dashboard_background.url
-    : ''
+    ? `url(${event.dashboard_background.url})`
+    : '#FFFFFF'
+
+  const backgroundRGBColor = dashboard
+    ? rgb(dashboard.color || '#FFFFFF', dashboard.opacity || 0)
+    : '#FFFFFF'
 
   return (
     <Box background={dashboardBackground} position={backgroundPosition}>
-      <SimpleBlogStyles primaryColor={primaryColor} />
-      <Menu
-        visible={menuVisible}
-        background={primaryColor}
-        toggle={toggleMenu}
-        user={props.user}
-      />
-      <Header
-        primaryColor={primaryColor}
-        menuVisible={menuVisible}
-        toggleMenu={toggleMenu}
-        aria-label="header"
-      />
-      <Content>
-        <StyledContainer maxWidth="lg">{props.children}</StyledContainer>
-      </Content>
-      <Footer />
+      <ColorOverlay color={backgroundRGBColor}>
+        <SimpleBlogStyles />
+        <Menu visible={menuVisible} toggle={toggleMenu} user={props.user} />
+        <Header
+          menuVisible={menuVisible}
+          toggleMenu={toggleMenu}
+          aria-label="header"
+        />
+        <Content>
+          <StyledContainer maxWidth="lg">{props.children}</StyledContainer>
+        </Content>
+        <Footer />
+      </ColorOverlay>
     </Box>
   )
 }
 
 const Box = styled.div<{
-  background: string | null
+  background: string
   position: SimpleBlog['backgroundPosition']
 }>`
   height: 100%;
-  display: flex;
-  flex-direction: column;
-  background: ${(props) =>
-    props.background ? `url(${props.background})` : '#FFFFFF'};
+  background: ${(props) => props.background};
   ${(props) =>
     props.position === 'bottom' &&
     `
       background-position: bottom;
+      background-size: cover;
     `}
   ${(props) =>
     props.position === 'fixed' &&
     `
       background-position: bottom;
       background-attachment: fixed;
+      background-size: cover;
     `}
   background-repeat: no-repeat;
 `
@@ -74,10 +74,20 @@ const Content = styled.div`
   margin-bottom: 20px;
   display: flex;
 `
+const ColorOverlay = styled.div<{
+  color: string
+}>`
+  background-color: ${(props) => props.color};
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  overflow: auto;
+`
 
 const StyledContainer = withStyles({
   root: {
     display: 'flex',
     flexDirection: 'column',
+    alignItems: 'center',
   },
 })(Container)

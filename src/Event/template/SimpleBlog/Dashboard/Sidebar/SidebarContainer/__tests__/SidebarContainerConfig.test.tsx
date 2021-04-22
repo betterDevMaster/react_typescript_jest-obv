@@ -10,6 +10,7 @@ import {wait} from '@testing-library/react'
 import {emptyActions, render} from '__utils__/render'
 import {defaultScore} from 'Event/PointsProvider/__utils__/StaticPointsProvider'
 import user from '@testing-library/user-event'
+import {fakeOrganization} from 'obvio/Organizations/__utils__/factory'
 
 const mockPost = mockRxJsAjax.post as jest.Mock
 
@@ -25,7 +26,13 @@ it('should render sidebar config', async () => {
   })
   const {findByLabelText} = render(
     <Dashboard isEditMode={true} user={fakeUser()} />,
-    {event, withRouter: true, actions: emptyActions, score: defaultScore},
+    {
+      event,
+      withRouter: true,
+      actions: emptyActions,
+      score: defaultScore,
+      organization: fakeOrganization(),
+    },
   )
 
   fireEvent.click(await findByLabelText('edit sidebar'))

@@ -13,6 +13,8 @@ import {RelativeLink} from 'lib/ui/link/RelativeLink'
 import {useOrganization} from 'organization/OrganizationProvider'
 import {useOrganizationAuth} from 'organization/auth'
 import Button from '@material-ui/core/Button'
+import HasPermission from 'organization/HasPermission'
+import {UPDATE_TEAM} from 'organization/PermissionsProvider'
 
 export default function AppBar() {
   const useStyles = makeStyles((theme) => ({
@@ -50,9 +52,11 @@ export default function AppBar() {
           <RelativeLink to={routes.events.root} disableStyles>
             <Button startIcon={<Event />}>Events</Button>
           </RelativeLink>
-          <RelativeLink to={routes.team} disableStyles>
-            <Button startIcon={<People />}>Team</Button>
-          </RelativeLink>
+          <HasPermission permission={UPDATE_TEAM}>
+            <RelativeLink to={routes.team} disableStyles>
+              <Button startIcon={<People />}>Team</Button>
+            </RelativeLink>
+          </HasPermission>
           <Button
             startIcon={<AccountCircle />}
             onClick={handleMenu}

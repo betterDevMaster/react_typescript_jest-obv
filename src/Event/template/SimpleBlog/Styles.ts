@@ -1,6 +1,6 @@
 import {createGlobalStyle} from 'styled-components'
 
-const SimpleBlogStyles = createGlobalStyle<{primaryColor: string}>`
+const SimpleBlogStyles = createGlobalStyle`
 
 html, body, #root {
   height: 100%;

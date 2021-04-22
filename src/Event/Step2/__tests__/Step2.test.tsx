@@ -1,10 +1,9 @@
-import {act, findByText, fireEvent, wait} from '@testing-library/react'
+import {act, fireEvent, wait} from '@testing-library/react'
 import user from '@testing-library/user-event'
 import faker from 'faker'
 import {fakeAttendee} from 'Event/auth/__utils__/factory'
 import {loginToEventSite} from 'Event/__utils__/url'
 import axios from 'axios'
-import {Await} from 'lib/type-utils'
 import {fakeQuestion} from 'organization/Event/QuestionsProvider/__utils__/factory'
 import {
   CHECKBOX,
@@ -14,10 +13,11 @@ import {
   SELECT,
   SHORT_ANSWER_TEXT,
 } from 'organization/Event/QuestionsProvider'
-import {fakeEvent} from 'Event/__utils__/factory'
+import {fakeEvent, fakeWaiver} from 'Event/__utils__/factory'
+import {submitWaiver} from 'Event/Step2/__utils__/submit-waiver'
+import {fakeForm} from 'organization/Event/FormsProvider/__utils__/factory'
 
 const mockPost = axios.post as jest.Mock
-const mockGet = axios.get as jest.Mock
 
 beforeEach(() => {
   jest.clearAllMocks()
@@ -54,17 +54,14 @@ it('should submit attendee waiver', async () => {
 it('should submit answers', async () => {
   const shortAnswerQuestion = fakeQuestion({
     type: SHORT_ANSWER_TEXT,
-    is_registration_question: true,
   })
 
   const longAnswerQuestion = fakeQuestion({
     type: LONG_ANSWER_TEXT,
-    is_registration_question: true,
   })
 
   const radioQuestion = fakeQuestion({
     type: RADIO,
-    is_registration_question: true,
     options: Array.from(
       {length: faker.random.number({min: 1, max: 5})},
       () => `radio ${faker.random.word()}`,
@@ -73,7 +70,6 @@ it('should submit answers', async () => {
 
   const selectQuestion = fakeQuestion({
     type: SELECT,
-    is_registration_question: true,
     options: Array.from(
       {length: faker.random.number({min: 1, max: 5})},
       () => `select ${faker.random.word()}`,
@@ -82,7 +78,6 @@ it('should submit answers', async () => {
 
   const checkboxQuestion = fakeQuestion({
     type: CHECKBOX,
-    is_registration_question: true,
     options: Array.from(
       {length: faker.random.number({min: 1, max: 5})},
       () => `checkbox ${faker.random.word()}`,
@@ -94,7 +89,7 @@ it('should submit answers', async () => {
     waiver: null,
   })
 
-  const event = fakeEvent({
+  const form = fakeForm({
     questions: [
       shortAnswerQuestion,
       longAnswerQuestion,
@@ -104,9 +99,15 @@ it('should submit answers', async () => {
     ],
   })
 
+  const event = fakeEvent({
+    forms: [form],
+    waiver: fakeWaiver({form}),
+  })
+
   const context = await loginToEventSite({
     attendee,
     event,
+    submissions: [],
   })
 
   const {findByLabelText, findByText} = context
@@ -146,7 +147,7 @@ it('should submit answers', async () => {
 
   const [url, data] = mockPost.mock.calls[1]
 
-  expect(url).toMatch(`/events/${event.slug}/questions/submissions`)
+  expect(url).toMatch(`/forms/${form.id}/submissions`)
 
   const {answers} = data
 
@@ -162,54 +163,3 @@ it('should submit answers', async () => {
     checkboxQuestion.options.join(', '),
   )
 })
-
-async function submitWaiver({
-  findByLabelText,
-}: Await<ReturnType<typeof loginToEventSite>>) {
-  const canvas = ((await findByLabelText(
-    'signature canvas',
-  )) as unknown) as HTMLCanvasElement
-
-  const signature = 'data:image/png;base64'
-  //@ts-ignore
-  canvas.toDataURL.mockReturnValueOnce(signature) // mocked via jest-canvas-mock
-
-  const down = new MouseEvent('mousedown', {
-    button: 1,
-    bubbles: true,
-  })
-
-  Object.defineProperty(down, 'which', {
-    value: 1,
-  })
-
-  fireEvent(canvas, down)
-
-  const up = new MouseEvent('mouseup', {
-    button: 1,
-    bubbles: true,
-  })
-
-  // Have to manually set 'which' because that's what SignaturePad uses
-  // to check the mouse button
-  Object.defineProperty(up, 'which', {
-    value: 1,
-  })
-
-  fireEvent(canvas, up)
-
-  fireEvent.click(await findByLabelText('agree to waiver checkbox'))
-
-  const withWaver = fakeAttendee({
-    has_password: true,
-    waiver: 'waiver.jpg',
-  })
-  mockPost.mockImplementationOnce(() => Promise.resolve({data: withWaver}))
-
-  fireEvent.click(await findByLabelText('submit'))
-
-  const techCheckUrl = faker.internet.url()
-  mockGet.mockImplementationOnce(() =>
-    Promise.resolve({data: {url: techCheckUrl}}),
-  )
-}

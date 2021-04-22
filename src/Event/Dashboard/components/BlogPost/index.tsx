@@ -3,19 +3,28 @@ import styled from 'styled-components'
 import {blogPostTime, getDiffDatetime, now} from 'lib/date-time'
 import {Publishable} from 'Event/Dashboard/editor/views/Published'
 import {useEditMode} from 'Event/Dashboard/editor/state/edit-mode'
+import {useWithAttendeeData} from 'Event/auth/data'
+import PostForm from 'Event/Dashboard/components/BlogPost/PostForm'
+import {HasRules} from 'Event/Dashboard/component-rules'
 
-export type BlogPost = Publishable & {
-  title: string
-  postedAt: string
-  publishAt: string | null
-  content: string
-}
+export type BlogPost = Publishable &
+  HasRules & {
+    title: string
+    postedAt: string
+    publishAt: string | null
+    content: string
+    formId?: number | null
+    formSubmittedText?: string
+    isModalForm?: boolean
+    modalButtonText?: string
+  }
 
 export const BLOG_POST = 'Blog Post'
 
 export function BlogPost(props: {post: BlogPost}) {
-  const isEdit = useEditMode()
   const {post} = props
+  const isEdit = useEditMode()
+  const withAttendeeData = useWithAttendeeData()
 
   const date = post.publishAt || post.postedAt
   const formattedDate = blogPostTime(date)
@@ -26,13 +35,14 @@ export function BlogPost(props: {post: BlogPost}) {
 
   return (
     <Post aria-label="blog post">
-      <Title>{props.post.title}</Title>
+      <Title>{withAttendeeData(post.title)}</Title>
       <PostDate>{formattedDate}</PostDate>
       <div
         dangerouslySetInnerHTML={{
-          __html: props.post.content,
+          __html: withAttendeeData(post.content),
         }}
       />
+      <PostForm post={post} />
     </Post>
   )
 }

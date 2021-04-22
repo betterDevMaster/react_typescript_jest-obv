@@ -8,7 +8,7 @@ import React from 'react'
 import {useDispatch} from 'react-redux'
 import {v4 as uid} from 'uuid'
 
-export default function NewMainNavButton() {
+export default function NewMainNavButton(props: {className?: string}) {
   const {mainNav: buttons} = useTemplate()
   const updateTemplate = useUpdateTemplate()
   const dispatch = useDispatch()
@@ -47,7 +47,7 @@ export default function NewMainNavButton() {
     dispatch(setConfig({type: MAIN_NAV_BUTTON, id}))
   }
   return (
-    <Grid item xs={12}>
+    <Grid item xs={12} className={props.className}>
       <Button
         fullWidth
         size="large"

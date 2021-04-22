@@ -1,5 +1,5 @@
 import {BlogPost, BLOG_POST} from 'Event/Dashboard/components/BlogPost'
-import styled, {createGlobalStyle} from 'styled-components'
+import styled from 'styled-components'
 import {useCloseConfig} from 'Event/Dashboard/editor/state/edit-mode'
 import React from 'react'
 import DangerButton from 'lib/ui/Button/DangerButton'
@@ -7,10 +7,20 @@ import {useTemplate, useUpdateTemplate} from 'Event/TemplateProvider'
 import {onChangeStringHandler, onChangeCheckedHandler} from 'lib/dom'
 import TextField from '@material-ui/core/TextField'
 import Switch from 'lib/ui/form/Switch'
-import Box from '@material-ui/core/Box'
 import {DateTimePicker} from '@material-ui/pickers'
 import {MaterialUiPickersDate} from '@material-ui/pickers/typings/date'
-import TextEditor from 'lib/ui/form/TextEditor'
+import TextEditor, {TextEditorContainer} from 'lib/ui/form/TextEditor'
+import FormSelect from 'organization/Event/FormsProvider/FormSelect'
+import FormControl from '@material-ui/core/FormControl'
+import InputLabel from '@material-ui/core/InputLabel'
+import Checkbox from '@material-ui/core/Checkbox'
+import FormControlLabel from '@material-ui/core/FormControlLabel'
+import RuleConfig, {
+  useRuleConfig,
+} from 'Event/Dashboard/component-rules/RuleConfig'
+import ConfigureRulesButton from 'Event/Dashboard/component-rules/ConfigureRulesButton'
+
+export const DEFAULT_MODAL_BUTTON_TEXT = 'Submit'
 
 export type BlogPostConfig = {
   type: typeof BLOG_POST
@@ -19,7 +29,7 @@ export type BlogPostConfig = {
 
 export function BlogPostConfig(props: {id: BlogPostConfig['id']}) {
   const {blogPosts: posts} = useTemplate()
-
+  const {visible: ruleConfigVisible, toggle: toggleRuleConfig} = useRuleConfig()
   const {id} = props
   const updateTemplate = useUpdateTemplate()
   const closeConfig = useCloseConfig()
@@ -66,73 +76,121 @@ export function BlogPostConfig(props: {id: BlogPostConfig['id']}) {
   }
 
   return (
-    <>
-      <EditorContainer>
-        <Box display="flex" justifyContent="flex-end">
+    <RuleConfig
+      visible={ruleConfigVisible}
+      close={toggleRuleConfig}
+      rules={post.rules}
+      onChange={update('rules')}
+    >
+      <>
+        <TextEditorContainer>
+          <ConfigureRulesButton onClick={toggleRuleConfig} />
           <Switch
             checked={post.isVisible}
             onChange={onChangeCheckedHandler(update('isVisible'))}
-            arial-label="config switch to attendee"
-            labelPlacement="start"
+            arial-label="config visible switch"
+            labelPlacement="end"
             color="primary"
             label={post.isVisible ? 'Enable' : 'Disable'}
           />
-        </Box>
-        <TextField
-          value={post.title}
-          inputProps={{
-            'aria-label': 'blog post title',
-          }}
-          label="Title"
-          fullWidth
-          onChange={onChangeStringHandler(update('title'))}
-        />
-        <DateTimePicker
-          clearable
-          value={post.publishAt}
-          onChange={updatePublishAt}
-          fullWidth
-          label="Publish Date"
-          inputProps={{
-            'aria-label': 'post publish at',
-          }}
-        />
-
-        <TextEditor data={post.content} onChange={update('content')} />
-        <RemoveButton
-          fullWidth
-          variant="outlined"
-          aria-label="remove blog post"
-          onClick={remove}
-        >
-          DELETE POST
-        </RemoveButton>
-      </EditorContainer>
-      <CkPopupZIndex />
-    </>
+          <TextField
+            value={post.title}
+            inputProps={{
+              'aria-label': 'blog post title',
+            }}
+            label="Title"
+            fullWidth
+            onChange={onChangeStringHandler(update('title'))}
+          />
+          <DateTimePicker
+            clearable
+            value={post.publishAt}
+            onChange={updatePublishAt}
+            fullWidth
+            label="Publish Date"
+            inputProps={{
+              'aria-label': 'post publish at',
+            }}
+          />
+          <StyledTextEditor data={post.content} onChange={update('content')} />
+          <FormControl fullWidth>
+            <InputLabel>Form</InputLabel>
+            <FormSelect value={post.formId} onChange={update('formId')} />
+          </FormControl>
+          <FormFields post={post}>
+            <FormControl>
+              <FormControlLabel
+                label="Open in modal?"
+                control={
+                  <Checkbox
+                    disableRipple
+                    checked={post.isModalForm || false}
+                    onChange={onChangeCheckedHandler(update('isModalForm'))}
+                  />
+                }
+              />
+            </FormControl>
+            <IfModalForm post={post}>
+              <TextField
+                label="Modal Button Text"
+                value={post.modalButtonText || DEFAULT_MODAL_BUTTON_TEXT}
+                inputProps={{
+                  'aria-label': 'open form modal text',
+                }}
+                fullWidth
+                onChange={onChangeStringHandler(update('modalButtonText'))}
+              />
+            </IfModalForm>
+            <TextField
+              value={post.formSubmittedText || ''}
+              label="Submitted Message"
+              fullWidth
+              inputProps={{
+                'aria-label': 'submitted message',
+              }}
+              multiline
+              rows="2"
+              onChange={onChangeStringHandler(update('formSubmittedText'))}
+            />
+          </FormFields>
+          <RemoveButton
+            fullWidth
+            variant="outlined"
+            aria-label="remove blog post"
+            onClick={remove}
+          >
+            DELETE POST
+          </RemoveButton>
+        </TextEditorContainer>
+      </>
+    </RuleConfig>
   )
 }
 
-// CKEditor has a min-width, anything less will show blank whitespace
-// with scroll. So we'll add a container to hide unneeded
-// whitespace
-const EditorContainer = styled.div`
-  overflow-x: hidden;
-  margin-bottom: ${(props) => props.theme.spacing[6]};
-`
-
-/*
-Fix CKEditor link pop-up not appearing when inside a Dialog. Note that 
-this also required setting disableEnforceFocus on the Dialog
-component.
-*/
-const CkPopupZIndex = createGlobalStyle`
-  body {
-    --ck-z-modal: 1500
+function FormFields(props: {
+  post: BlogPost
+  children: React.ReactElement | React.ReactElement[]
+}) {
+  if (!props.post.formId) {
+    return null
   }
-`
+
+  return <>{props.children}</>
+}
+
+function IfModalForm(props: {post: BlogPost; children: React.ReactElement}) {
+  if (!props.post.isModalForm) {
+    return null
+  }
+
+  return props.children
+}
 
 const RemoveButton = styled(DangerButton)`
   margin-top: ${(props) => props.theme.spacing[5]}!important;
   margin-bottom: ${(props) => props.theme.spacing[6]}!important;
+`
+
+const StyledTextEditor = styled(TextEditor)`
+  margin-bottom: ${(props) => props.theme.spacing[4]};
 `

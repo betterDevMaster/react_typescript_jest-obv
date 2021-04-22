@@ -8,15 +8,18 @@ export default function EditIconButton(props: {
   className?: string
   color?: string
   ['aria-label']?: string
+  type?: 'button' | 'submit'
 }) {
   const theme = useTheme()
   const color = props.color || theme.colors.primary
+  const type = props.type || 'submit'
 
   return (
     <IconButton
       className={props.className}
       onClick={props.onClick}
       aria-label={props['aria-label']}
+      type={type}
     >
       <Box>
         <StyledSettingsIcon color={color} />

@@ -17,7 +17,7 @@ it('should create a new dashboard', async () => {
     template: null,
   })
 
-  const {findByText, findByLabelText} = await goToDashboardConfig({
+  const {findByLabelText} = await goToDashboardConfig({
     event,
     userPermissions: [CONFIGURE_EVENTS],
   })
@@ -27,9 +27,6 @@ it('should create a new dashboard', async () => {
     },
   })
 
-  const defaultWelcomeMessage = 'WELCOME TO YOUR DASHBOARD'
-  expect(await findByText(defaultWelcomeMessage)).toBeInTheDocument()
-
   // Saved
   await wait(() => {
     expect(mockPost).toHaveBeenCalledTimes(1)
@@ -37,5 +34,4 @@ it('should create a new dashboard', async () => {
 
   const [url, data] = mockPost.mock.calls[0]
   expect(url).toMatch(`/events/${event.slug}`)
-  expect(data.template.welcomeText).toBe(defaultWelcomeMessage)
 })

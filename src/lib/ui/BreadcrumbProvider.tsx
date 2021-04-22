@@ -1,4 +1,4 @@
-import React, {useCallback, useEffect, useMemo, useState} from 'react'
+import React, {useCallback, useEffect, useState} from 'react'
 
 export interface Breadcrumb {
   title: string
@@ -34,24 +34,26 @@ export function useBreadcrumbs(breadcrumbs?: Breadcrumb[]) {
   const set = context?.set
   const clear = context?.clear
 
-  // Prevent render loop by only setting breadcrumb on first call
-  // eslint-disable-next-line
-  const memoized = useMemo(() => breadcrumbs || [], [])
-
   useEffect(() => {
     if (!breadcrumbs || !set || !clear) {
       return
     }
-
-    set(memoized)
+    set(breadcrumbs)
 
     // Clear when navigating to another page
     return clear
-  }, [memoized, set, clear, breadcrumbs])
+
+    /**
+     * Only want to set on first call to let last call win. If we
+     * re-set on every breadcrumbs change, we would get a loop
+     * when a parent, and child both set the breadcrumbs.
+     */
+    // eslint-disable-next-line
+  }, [])
 
   if (context === undefined) {
     throw new Error('useBreadcrumbs must be used within a BreadcrumbProvider')
   }
 
-  return context.breadcrumbs
+  return context
 }

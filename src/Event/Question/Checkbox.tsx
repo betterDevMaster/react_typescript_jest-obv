@@ -16,6 +16,7 @@ export default function Checkbox(props: FieldProps) {
       component="fieldset"
       required={props.question.is_required}
       error={props.hasError}
+      disabled={props.disabled}
     >
       <FormLabel component="legend">{props.question.label}</FormLabel>
       <Controller

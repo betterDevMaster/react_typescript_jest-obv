@@ -23,6 +23,10 @@ import ResourceUpload, {useDeleteFile} from './ResourceUpload'
 import {Resource} from 'Event/Dashboard/components/ResourceList/ResourceItem'
 import Grid from '@material-ui/core/Grid'
 import Switch from 'lib/ui/form/Switch'
+import RuleConfig, {
+  useRuleConfig,
+} from 'Event/Dashboard/component-rules/RuleConfig'
+import ConfigureRulesButton from 'Event/Dashboard/component-rules/ConfigureRulesButton'
 
 export type ResourceItemConfig = {
   type: typeof RESOURCE_ITEM
@@ -34,6 +38,7 @@ export function ResourceItemConfig(props: {id: ResourceItemConfig['id']}) {
   const updateTemplate = useUpdateTemplate()
   const closeConfig = useCloseConfig()
   const deleteFile = useDeleteFile()
+  const {visible: ruleConfigVisible, toggle: toggleRuleConfig} = useRuleConfig()
 
   if (typeof props.id === 'undefined') {
     throw new Error('Missing component id')
@@ -84,59 +89,67 @@ export function ResourceItemConfig(props: {id: ResourceItemConfig['id']}) {
   }
 
   return (
-    <>
-      <TextField
-        value={resource.name}
-        inputProps={{
-          'aria-label': 'resource name',
-        }}
-        label="Name"
-        fullWidth
-        onChange={onChangeStringHandler(update('name'))}
-      />
-      <ResourceUpload resource={resource} update={update} />
+    <RuleConfig
+      visible={ruleConfigVisible}
+      close={toggleRuleConfig}
+      rules={resource.rules}
+      onChange={update('rules')}
+    >
+      <>
+        <ConfigureRulesButton onClick={toggleRuleConfig} />
+        <TextField
+          value={resource.name}
+          inputProps={{
+            'aria-label': 'resource name',
+          }}
+          label="Name"
+          fullWidth
+          onChange={onChangeStringHandler(update('name'))}
+        />
+        <ResourceUpload resource={resource} update={update} />
 
-      <Grid container spacing={2}>
-        <Grid item xs={6}>
-          <FormControl fullWidth>
-            <InputLabel>File Icon</InputLabel>
-            <Select
-              value={resource.icon}
-              fullWidth
-              onChange={onUnknownChangeHandler(update('icon'))}
-              inputProps={{
-                'aria-label': 'resource icon',
-              }}
-            >
-              {Object.values(RESOURCE_ICON).map((icon) => (
-                <MenuItem key={icon} value={icon}>
-                  <Icon component="i">{icon}</Icon>
-                </MenuItem>
-              ))}
-            </Select>
-          </FormControl>
+        <Grid container spacing={2}>
+          <Grid item xs={6}>
+            <FormControl fullWidth>
+              <InputLabel>File Icon</InputLabel>
+              <Select
+                value={resource.icon}
+                fullWidth
+                onChange={onUnknownChangeHandler(update('icon'))}
+                inputProps={{
+                  'aria-label': 'resource icon',
+                }}
+              >
+                {Object.values(RESOURCE_ICON).map((icon) => (
+                  <MenuItem key={icon} value={icon}>
+                    <Icon component="i">{icon}</Icon>
+                  </MenuItem>
+                ))}
+              </Select>
+            </FormControl>
+          </Grid>
+          <Grid item xs={6}>
+            <Switch
+              checked={resource.isVisible}
+              onChange={onChangeCheckedHandler(update('isVisible'))}
+              arial-label="config visible switch"
+              labelPlacement="top"
+              color="primary"
+              label={resource.isVisible ? 'Enable' : 'Disable'}
+            />
+          </Grid>
         </Grid>
-        <Grid item xs={6}>
-          <Switch
-            checked={resource.isVisible}
-            onChange={onChangeCheckedHandler(update('isVisible'))}
-            arial-label="config switch to attendee"
-            labelPlacement="top"
-            color="primary"
-            label={resource.isVisible ? 'Enable' : 'Disable'}
-          />
-        </Grid>
-      </Grid>
 
-      <RemoveButton
-        fullWidth
-        variant="outlined"
-        aria-label="remove resource"
-        onClick={remove}
-      >
-        REMOVE RESOURCE
-      </RemoveButton>
-    </>
+        <RemoveButton
+          fullWidth
+          variant="outlined"
+          aria-label="remove resource"
+          onClick={remove}
+        >
+          REMOVE RESOURCE
+        </RemoveButton>
+      </>
+    </RuleConfig>
   )
 }
 

@@ -3,14 +3,14 @@ import faker from 'faker'
 import {fakeSimpleBlog} from 'Event/template/SimpleBlog/__utils__/factory'
 import {fakeUser} from 'auth/user/__utils__/factory'
 import Dashboard from 'Event/Dashboard'
-import {emptyActions, render, renderWithEvent} from '__utils__/render'
+import {emptyActions, render} from '__utils__/render'
 import {clickEdit} from '__utils__/edit'
 import {fireEvent} from '@testing-library/react'
 import {fakeEvent} from 'Event/__utils__/factory'
 import {mockRxJsAjax} from 'store/__utils__/MockStoreProvider'
 import {wait} from '@testing-library/react'
 import {defaultScore} from 'Event/PointsProvider/__utils__/StaticPointsProvider'
-import user from '@testing-library/user-event'
+import {fakeOrganization} from 'obvio/Organizations/__utils__/factory'
 
 const mockPost = mockRxJsAjax.post as jest.Mock
 
@@ -87,7 +87,14 @@ it('should configure the footer', async () => {
 
   const {findByLabelText} = render(
     <Dashboard isEditMode={true} user={fakeUser()} />,
-    {event, actions: emptyActions, score: defaultScore, withRouter: true},
+    {
+      event,
+      actions: emptyActions,
+      score: defaultScore,
+      withRouter: true,
+
+      organization: fakeOrganization(),
+    },
   )
 
   clickEdit(await findByLabelText('footer'))

@@ -7,21 +7,20 @@ import {render} from '__utils__/render'
 import App from 'App'
 import {fakeRole} from 'organization/Team/Roles/__utils__/factory'
 import {ALL_PERMISSIONS} from 'organization/__utils__/factory'
-import {label} from 'organization/PermissionsProvider'
+import {label, UPDATE_TEAM} from 'organization/PermissionsProvider'
 
 const mockGet = axios.get as jest.Mock
 
 it('should show permissions table', async () => {
-  signInToOrganization()
+  signInToOrganization({
+    userPermissions: [UPDATE_TEAM],
+  })
 
   const {findByText, findAllByLabelText} = render(<App />)
 
-  const roles = Array.from(
-    {
-      length: faker.random.number({min: 1, max: 5}),
-    },
-    fakeRole,
-  )
+  const roles = new Array(faker.random.number({min: 1, max: 4}))
+    .fill(null)
+    .map((_, index) => fakeRole({name: `${index}_${faker.random.word()}`}))
 
   mockGet.mockImplementationOnce(() => Promise.resolve({data: []})) // team members
   mockGet.mockImplementationOnce(() => Promise.resolve({data: roles}))
