@@ -3,7 +3,7 @@ import {Button} from '@material-ui/core'
 import {useEvent} from 'Event/EventProvider'
 import {useOrganization} from 'organization/OrganizationProvider'
 import {api} from 'lib/url'
-import {Sponsor} from 'Event'
+import {Sponsor} from 'Event/SponsorPage'
 
 export interface AddSponsorData {
   name: string

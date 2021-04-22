@@ -12,6 +12,8 @@ import {EntityList} from 'lib/list'
 import {colors} from 'lib/ui/theme'
 import {DEFAULT_LOGO_SIZE_PERCENT} from 'Event/template/SimpleBlog/Login/LoginConfig'
 import {GridSize} from '@material-ui/core'
+import {Column} from 'lib/ui/layout'
+import {DEFAULT_SPONSOR_IMAGE_SIZE} from 'Event/template/SimpleBlog/SponsorPage/SponsorList/Card'
 
 export const SIMPLE_BLOG = 'Simple Blog'
 
@@ -108,6 +110,9 @@ export interface SimpleBlog {
     }
   }
   bodyHTMLEmbed?: string | null
+  sponsors?: {
+    imageSize?: Column
+  }
 }
 
 export const createSimpleBlog = (): SimpleBlog => ({
@@ -203,4 +208,7 @@ export const createSimpleBlog = (): SimpleBlog => ({
     logoSize: DEFAULT_LOGO_SIZE_PERCENT,
   },
   bodyHTMLEmbed: null,
+  sponsors: {
+    imageSize: DEFAULT_SPONSOR_IMAGE_SIZE,
+  },
 })

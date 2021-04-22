@@ -10,8 +10,6 @@ import {PublicFile} from 'lib/http-client'
 import {Area} from 'organization/Event/AreasProvider'
 import React from 'react'
 import {Redirect} from 'react-router-dom'
-import {EntityList} from 'lib/list'
-import NavButton from 'Event/Dashboard/components/NavButton'
 import {Form} from 'organization/Event/FormsProvider'
 
 // Can't use 'Event' because that's already a native DOM type
@@ -69,14 +67,6 @@ export interface Speaker {
   image: PublicFile | null
   name: string
   text: string
-}
-
-export interface Sponsor {
-  id: number
-  image: PublicFile | null
-  name: string
-  description: string
-  buttons: EntityList<NavButton> | null
 }
 
 export default function Event() {

@@ -7,7 +7,7 @@ import {
 } from 'organization/Event/__utils__/event'
 import {fakeAction} from 'Event/ActionsProvider/__utils__/factory'
 import {defaultScore} from 'Event/PointsProvider/__utils__/StaticPointsProvider'
-import {Sponsor} from 'Event'
+import {Sponsor} from 'Event/SponsorPage'
 import {fakeArea} from 'organization/Event/AreaList/__utils__/factory'
 import {fakeSponsor} from 'Event/__utils__/factory'
 

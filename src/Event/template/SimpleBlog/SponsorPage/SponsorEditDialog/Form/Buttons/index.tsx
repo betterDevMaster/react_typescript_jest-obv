@@ -1,6 +1,6 @@
 import styled from 'styled-components'
 import React from 'react'
-import {Sponsor} from 'Event'
+import {Sponsor} from 'Event/SponsorPage'
 import {createEntityList} from 'lib/list'
 import {useEffect, useState} from 'react'
 import Box from '@material-ui/core/Box'
@@ -8,10 +8,12 @@ import InputLabel from '@material-ui/core/InputLabel'
 import NavButton from 'Event/Dashboard/components/NavButton'
 import {v4 as uid} from 'uuid'
 import {EditComponentOverlay} from 'Event/Dashboard/editor/views/EditComponent'
-import AddButton from 'organization/Event/SponsorPageConfig/FieldEditDialog/Form/Buttons/AddButton'
+import AddButton from 'Event/template/SimpleBlog/SponsorPage/SponsorEditDialog/Form/Buttons/AddButton'
+
+type Buttons = NonNullable<NonNullable<Sponsor['settings']>['buttons']>
 
 export default function Buttons(props: {
-  buttons: NonNullable<Sponsor['buttons']>
+  buttons: Buttons
   edit: ReturnType<typeof useButtons>['edit']
   onAdd: ReturnType<typeof useButtons>['add']
   loading: ReturnType<typeof useButtons>['loading']
@@ -39,7 +41,7 @@ export default function Buttons(props: {
 }
 
 function ButtonList(props: {
-  buttons: NonNullable<Sponsor['buttons']>
+  buttons: Buttons
   edit: ReturnType<typeof useButtons>['edit']
 }) {
   const {buttons, edit} = props
@@ -63,15 +65,14 @@ function ButtonList(props: {
 }
 
 export function useButtons(sponsor: Sponsor) {
-  const [buttons, setButtons] = useState<NonNullable<Sponsor['buttons']>>(
-    createEntityList([]),
-  )
+  const [buttons, setButtons] = useState<Buttons>(createEntityList([]))
   const [loading, setLoading] = useState(true)
   const [editingId, setEditingId] = useState<string | null>(null)
 
   useEffect(() => {
-    if (sponsor.buttons) {
-      setButtons(sponsor.buttons)
+    const existing = sponsor.settings?.buttons
+    if (existing) {
+      setButtons(existing)
     }
 
     setLoading(false)

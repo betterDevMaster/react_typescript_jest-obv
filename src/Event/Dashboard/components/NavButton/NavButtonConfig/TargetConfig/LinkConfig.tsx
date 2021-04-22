@@ -8,23 +8,12 @@ import {
   onUnknownChangeHandler,
 } from 'lib/dom'
 import React from 'react'
-import {eventRoutes} from 'Event/Routes'
 import MenuItem from '@material-ui/core/MenuItem'
 import Select from '@material-ui/core/Select'
 import InputLabel from '@material-ui/core/InputLabel'
 import {ButtonConfigProps} from 'Event/template/SimpleBlog/Dashboard/MainNav/MainNavButton/MainNavButtonConfig'
 import NavButton from 'Event/Dashboard/components/NavButton'
-
-/**
- * Event pages that a button/link may navigate to as a
- * relative link.
- */
-
-const EVENT_PAGES = {
-  [eventRoutes.speakers]: 'Speakers',
-  [eventRoutes.sponsors]: 'Sponsors',
-  [eventRoutes.leaderboard]: 'Leaderboard',
-}
+import {EVENT_PAGES} from 'Event/Routes'
 
 export default function LinkConfig<T extends NavButton>(
   props: ButtonConfigProps<T>,

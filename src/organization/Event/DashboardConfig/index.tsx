@@ -1,27 +1,19 @@
 import {useOrganizationAuth} from 'organization/auth'
 import styled from 'styled-components'
 import Dashboard from 'Event/Dashboard'
-import {useEvent} from 'Event/EventProvider'
 import React from 'react'
 import AttendeeProfileProvider from 'Event/Dashboard/component-rules/AttendeeProfileProvider'
-import SelectTemplateForm from 'organization/Event/DashboardConfig/SelectTemplateForm'
 import Layout from 'organization/user/Layout'
 import Page from 'organization/Event/Page'
 import {PointsProvider} from 'Event/PointsProvider'
 import {OrganizationActionsProvider} from 'Event/ActionsProvider'
-import TemplateProvider from 'Event/TemplateProvider'
 import {StaticSubmissionsProvider} from 'Event/SubmissionsProvider'
 
 export default function DashboardConfig() {
-  const {event} = useEvent()
   const {user} = useOrganizationAuth()
 
   if (!user) {
     throw new Error('Missing user')
-  }
-
-  if (!event.template) {
-    return <SelectTemplateForm />
   }
 
   return (
@@ -32,11 +24,9 @@ export default function DashboardConfig() {
         >
           <PointsProvider>
             <AttendeeProfileProvider groups={{}} tags={[]}>
-              <TemplateProvider template={event.template}>
-                <StaticSubmissionsProvider>
-                  <Dashboard user={user} isEditMode={true} />
-                </StaticSubmissionsProvider>
-              </TemplateProvider>
+              <StaticSubmissionsProvider>
+                <Dashboard user={user} isEditMode={true} />
+              </StaticSubmissionsProvider>
             </AttendeeProfileProvider>
           </PointsProvider>
         </OrganizationActionsProvider>

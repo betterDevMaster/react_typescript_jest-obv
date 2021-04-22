@@ -7,20 +7,43 @@ import {useEvent} from 'Event/EventProvider'
 import {useAsync} from 'lib/async'
 import {api} from 'lib/url'
 import {Client} from 'lib/api-client'
-import {Sponsor} from 'Event'
+import {PublicFile} from 'lib/http-client'
+import {EntityList} from 'lib/list'
+import NavButton from 'Event/Dashboard/components/NavButton'
 
-export default function SponsorPage() {
+export interface Sponsor {
+  id: number
+  image: PublicFile | null
+  name: string
+  description: string
+  settings: null | {
+    buttons?: EntityList<NavButton>
+    formId?: number
+  }
+}
+
+export default function SponsorPage(props: {isEditMode?: boolean}) {
   const template = useTemplate()
   const user = useAttendee()
+
+  const {client} = useEvent()
+  const {data, loading} = useFetchSponsors(client)
+
+  if (loading) {
+    return null
+  }
+
+  const sponsors = data || []
+
   switch (template.name) {
     case SIMPLE_BLOG:
-      return <SimpleBlogSponsorPage user={user} />
+      return <SimpleBlogSponsorPage user={user} sponsors={sponsors} />
     default:
       throw new Error(`Missing sponsor page for template: ${template.name}`)
   }
 }
 
-export function useSponsors(client: Client) {
+export function useFetchSponsors(client: Client) {
   const {event} = useEvent()
   const url = api(`/events/${event.slug}/sponsors`)
   const request = useCallback(() => client.get<Sponsor[]>(url), [url, client])

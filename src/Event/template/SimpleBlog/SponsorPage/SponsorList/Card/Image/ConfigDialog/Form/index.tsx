@@ -1,6 +1,6 @@
 import styled from 'styled-components'
 import React from 'react'
-import {Sponsor} from 'Event'
+import {Sponsor} from 'Event/SponsorPage'
 import {fetchFile} from 'lib/http-client'
 import {api} from 'lib/url'
 import {useOrganization} from 'organization/OrganizationProvider'
@@ -8,15 +8,16 @@ import {useEffect, useState} from 'react'
 import {useForm} from 'react-hook-form'
 import {withStyles} from '@material-ui/core/styles'
 import Button from '@material-ui/core/Button'
-import UploadedImage from 'organization/Event/SponsorPageConfig/ImageEditDialog/Form/UploadedImage'
+import UploadedImage from 'Event/template/SimpleBlog/SponsorPage/SponsorList/Card/Image/ConfigDialog/Form/UploadedImage'
 import {ValidationError} from 'lib/api-client'
 import ErrorAlert from 'lib/ui/alerts/ErrorAlert'
+import {useSponsors} from 'organization/Event/SponsorsProvider'
 
 const imageUploadId = 'sponsor-image-upload'
 
 export default function EditSponsorForm(props: {
   sponsor: Sponsor
-  onUpdate: (sponsor: Sponsor) => void
+  onDone: () => void
 }) {
   const {handleSubmit} = useForm()
   const [submitting, setSubmitting] = useState(false)
@@ -24,6 +25,7 @@ export default function EditSponsorForm(props: {
   const {sponsor} = props
   const {client} = useOrganization()
   const [serverError, setServerError] = useState<ValidationError<any>>(null)
+  const {update: updateSponsor} = useSponsors()
 
   useEffect(() => {
     if (sponsor.image) {
@@ -62,7 +64,10 @@ export default function EditSponsorForm(props: {
           'content-type': contentType,
         },
       })
-      .then(props.onUpdate)
+      .then((sponsor) => {
+        updateSponsor(sponsor)
+        props.onDone()
+      })
       .catch((e) => {
         setServerError(e)
         setSubmitting(false)
@@ -79,7 +84,6 @@ export default function EditSponsorForm(props: {
   const removeImage = () => {
     setImage(null)
   }
-
   return (
     <>
       <ErrorAlert onClose={clearError}>{serverError?.message}</ErrorAlert>

@@ -1,49 +1,33 @@
 import React from 'react'
-import {Attendee} from 'Event/attendee'
 import Page from 'Event/template/SimpleBlog/Page'
 import styled from 'styled-components'
+import {Sponsor} from 'Event/SponsorPage'
+import SponsorList from 'Event/template/SimpleBlog/SponsorPage/SponsorList'
+import {User} from 'auth/user'
 import {useEvent} from 'Event/EventProvider'
-import Grid from '@material-ui/core/Grid'
-import {useSponsors} from 'Event/SponsorPage'
-import Sponsor from 'Event/template/SimpleBlog/SponsorPage/Sponsor'
-import grey from '@material-ui/core/colors/grey'
+import SponsorEditDialog from 'Event/template/SimpleBlog/SponsorPage/SponsorEditDialog'
 
-export default function SimpleBlogSponsorPage(props: {user: Attendee}) {
+export default function SimpleBlogSponsorPage(props: {
+  user: User
+  isEditMode?: boolean
+  sponsors: Sponsor[]
+}) {
+  const {sponsors} = props
   const {event} = useEvent()
-  const {sponsor_page_title: title} = event
 
-  return (
-    <Page user={props.user}>
-      <Title aria-label="sponsors title">{title}</Title>
-      <Sponsors />
-    </Page>
+  const content = (
+    <>
+      <Title aria-label="sponsors title">{event.sponsor_page_title}</Title>
+      <SponsorEditDialog isEditMode={props.isEditMode} />
+      <SponsorList sponsors={sponsors} isEditMode={props.isEditMode} />
+    </>
   )
-}
 
-function Sponsors() {
-  const {client} = useEvent()
-  const {data, loading} = useSponsors(client)
-
-  if (loading) {
-    return null
+  if (props.isEditMode) {
+    return content
   }
 
-  const sponsors = data || []
-  const hasSponsors = sponsors.length > 0
-  if (!hasSponsors) {
-    return <div>No sponsors have been added</div>
-  }
-
-  return (
-    <Grid container>
-      {sponsors &&
-        sponsors.map((sponsor) => (
-          <SponsorGridItem item xs={12} key={sponsor.id}>
-            <Sponsor key={sponsor.id} sponsor={sponsor} />
-          </SponsorGridItem>
-        ))}
-    </Grid>
-  )
+  return <Page user={props.user}>{content}</Page>
 }
 
 const Title = styled.h2`
@@ -52,10 +36,4 @@ const Title = styled.h2`
   line-height: 1.5;
   text-transform: uppercase;
   text-align: center;
-`
-
-const SponsorGridItem = styled(Grid)`
-  &:not(:last-child) {
-    border-bottom: 1px solid ${grey[500]};
-  }
 `

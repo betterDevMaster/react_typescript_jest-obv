@@ -1,13 +1,9 @@
-import DangerButton from 'lib/ui/Button/DangerButton'
+import styled from 'styled-components'
 import React from 'react'
+import BackButton from 'lib/ui/Button/BackButton'
 import Box from '@material-ui/core/Box'
-import {useCloseConfig} from 'Event/Dashboard/editor/state/edit-mode'
-import {useTemplate, useUpdateTemplate} from 'Event/TemplateProvider'
-import {SIDEBAR_NAV_BUTTON} from 'Event/template/SimpleBlog/Dashboard/Sidebar/SidebarNav'
-import RuleConfig, {
-  useRuleConfig,
-} from 'Event/Dashboard/component-rules/RuleConfig'
-import ConfigureRulesButton from 'Event/Dashboard/component-rules/ConfigureRulesButton'
+import DangerButton from 'lib/ui/Button/DangerButton'
+import Button from '@material-ui/core/Button'
 import TextField from '@material-ui/core/TextField'
 import {
   onChangeCheckedHandler,
@@ -31,68 +27,31 @@ const MAX_BORDER_WIDTH = 50
 const MIN_BORDER_RADIUS = 0
 const MAX_BORDER_RADIUS = 50
 
-export type SidebarNavButtonConfig = {
-  type: typeof SIDEBAR_NAV_BUTTON
-  id: string
-}
+export const DEFAULT_BUTTON_WIDTH_PERCENT = 100
 
-export function SidebarNavButtonConfig(props: {
-  id: SidebarNavButtonConfig['id']
+export default function ButtonConfig(props: {
+  onClose: () => void
+  onChange: (button: NavButton) => void
+  onRemove: () => void
+  button: NavButton | null
 }) {
-  const {sidebarNav: buttons} = useTemplate()
-  const {visible: ruleConfigVisible, toggle: toggleRuleConfig} = useRuleConfig()
-  const updateTemplate = useUpdateTemplate()
-  const closeConfig = useCloseConfig()
-  const {id} = props
-
-  if (!id) {
-    throw new Error('Missing component id')
-  }
-
-  const button = buttons.entities[id]
-
-  const update = (updated: NavButton) => {
-    updateTemplate({
-      sidebarNav: {
-        ...buttons,
-        entities: {
-          ...buttons.entities,
-          [id]: updated,
-        },
-      },
-    })
-  }
-
-  const removeButton = () => {
-    const {[id]: target, ...otherButtons} = buttons.entities
-    const updatedIds = buttons.ids.filter((i) => i !== id)
-
-    closeConfig()
-    updateTemplate({
-      sidebarNav: {
-        entities: otherButtons,
-        ids: updatedIds,
-      },
-    })
+  const {button} = props
+  if (!button) {
+    return null
   }
 
   const updateButton = <T extends keyof NavButton>(key: T) => (
     value: NavButton[T],
   ) =>
-    update({
+    props.onChange({
       ...button,
       [key]: value,
     })
 
   return (
-    <RuleConfig
-      visible={ruleConfigVisible}
-      close={toggleRuleConfig}
-      rules={button.rules}
-      onChange={updateButton('rules')}
-    >
-      <>
-        <ConfigureRulesButton onClick={toggleRuleConfig} />
+    <>
+      <StyledBackButton onClick={props.onClose} />
+      <Box mb={3}>
         <Switch
           checked={button.isVisible}
           onChange={onChangeCheckedHandler(updateButton('isVisible'))}
@@ -116,6 +75,18 @@ export function SidebarNavButtonConfig(props: {
         />
         <TargetConfig update={updateButton} button={button} />
         <Grid container spacing={2}>
+          <Grid item xs={12}>
+            <InputLabel>Width</InputLabel>
+            <Slider
+              min={0}
+              max={100}
+              step={1}
+              onChange={handleChangeSlider(updateButton('width'))}
+              valueLabelDisplay="auto"
+              value={button.width || DEFAULT_BUTTON_WIDTH_PERCENT}
+              aria-label="button width"
+            />
+          </Grid>
           <Grid item xs={6}>
             <ColorPicker
               label="Background Color"
@@ -161,8 +132,26 @@ export function SidebarNavButtonConfig(props: {
               step={1}
               onChange={handleChangeSlider(updateButton('borderWidth'))}
               valueLabelDisplay="auto"
-              value={button.borderWidth ? button.borderWidth : 1}
+              value={button.borderWidth ? button.borderWidth : 0}
               aria-label="border thickness"
+            />
+          </Grid>
+          <Grid item xs={12}>
+            <TextField
+              value={button.padding || ''}
+              label="Padding"
+              type="number"
+              fullWidth
+              onChange={onChangeNumberHandler(updateButton('padding'))}
+            />
+          </Grid>
+          <Grid item xs={12}>
+            <TextField
+              value={button.fontSize || ''}
+              label="Font Size"
+              type="number"
+              fullWidth
+              onChange={onChangeNumberHandler(updateButton('fontSize'))}
             />
           </Grid>
         </Grid>
@@ -170,18 +159,31 @@ export function SidebarNavButtonConfig(props: {
           value={button.infusionsoftTag}
           onChange={updateButton('infusionsoftTag')}
         />
-
-        <Box mt={2} mb={3}>
-          <DangerButton
-            fullWidth
-            variant="outlined"
-            aria-label="remove button"
-            onClick={removeButton}
-          >
-            REMOVE BUTTON
-          </DangerButton>
-        </Box>
-      </>
-    </RuleConfig>
+      </Box>
+      <Box mb={2}>
+        <Button
+          color="primary"
+          variant="outlined"
+          onClick={props.onClose}
+          fullWidth
+        >
+          DONE
+        </Button>
+      </Box>
+      <Box mb={2}>
+        <DangerButton
+          fullWidth
+          variant="outlined"
+          aria-label="remove button"
+          onClick={props.onRemove}
+        >
+          REMOVE BUTTON
+        </DangerButton>
+      </Box>
+    </>
   )
 }
+
+const StyledBackButton = styled(BackButton)`
+  margin-bottom: ${(props) => props.theme.spacing[5]}!important;
+`

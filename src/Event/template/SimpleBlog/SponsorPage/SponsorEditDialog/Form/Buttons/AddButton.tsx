@@ -2,6 +2,7 @@ import styled from 'styled-components'
 import React from 'react'
 import Button from '@material-ui/core/Button'
 import NavButton from 'Event/Dashboard/components/NavButton'
+import {DEFAULT_BUTTON_WIDTH_PERCENT} from 'Event/template/SimpleBlog/SponsorPage/SponsorEditDialog/Form/ButtonConfig'
 
 export default function AddButton(props: {
   className?: string
@@ -17,6 +18,9 @@ export default function AddButton(props: {
       actionId: null,
       isVisible: true,
       infusionsoftTag: null,
+      width: DEFAULT_BUTTON_WIDTH_PERCENT,
+      fontSize: 16,
+      padding: 8,
     }
 
     props.onAdd(button)

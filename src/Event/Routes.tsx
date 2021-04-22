@@ -32,6 +32,17 @@ export const eventRoutes = createRoutes({
   leaderboard: '/leaderboard',
 })
 
+/**
+ * Event pages that a button/link may navigate to as a
+ * relative link.
+ */
+
+export const EVENT_PAGES = {
+  [eventRoutes.speakers]: 'Speakers',
+  [eventRoutes.sponsors]: 'Sponsors',
+  [eventRoutes.leaderboard]: 'Leaderboard',
+}
+
 export default function Routes() {
   const {user, loading} = useEventAuth()
   const {event} = useEvent()

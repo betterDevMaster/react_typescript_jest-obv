@@ -1,6 +1,7 @@
-import {ObvioEvent, Speaker, Sponsor} from 'Event'
+import {ObvioEvent, Speaker} from 'Event'
 import {fakeAttendee} from 'Event/auth/__utils__/factory'
 import {Entry} from 'Event/Leaderboard'
+import {Sponsor} from 'Event/SponsorPage'
 import {fakeSimpleBlog} from 'Event/template/SimpleBlog/__utils__/factory'
 import faker from 'faker'
 import {now} from 'lib/date-time'
@@ -104,6 +105,6 @@ export const fakeSponsor = (overrides?: Partial<Sponsor>): Sponsor => ({
   name: `${faker.name.firstName()} ${faker.name.lastName()}`,
   description: `<html><p>${faker.lorem.paragraphs(3)}</p></html>`,
   image: null,
-  buttons: null,
+  settings: null,
   ...overrides,
 })

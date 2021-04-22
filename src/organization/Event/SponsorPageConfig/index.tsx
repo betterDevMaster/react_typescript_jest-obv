@@ -1,45 +1,30 @@
 import styled from 'styled-components'
-import React, {useEffect, useState} from 'react'
+import React, {useState} from 'react'
 import Layout from 'organization/user/Layout'
-import {Sponsor} from 'Event'
-import {useSponsors} from 'Event/SponsorPage'
-import {useOrganization} from 'organization/OrganizationProvider'
+import {Sponsor} from 'Event/SponsorPage'
 import {OrganizationActionsProvider} from 'Event/ActionsProvider'
 import Page from 'organization/Event/Page'
 import AddSponsorButton from 'organization/Event/SponsorPageConfig/AddSponsorButton'
-import FieldEditDialog from 'organization/Event/SponsorPageConfig/FieldEditDialog'
-import TitleField from 'organization/Event/SponsorPageConfig/TitleField'
-import SponsorList from 'organization/Event/SponsorPageConfig/SponsorList'
 import {PointsProvider} from 'Event/PointsProvider'
-import ImageEditDialog from 'organization/Event/SponsorPageConfig/ImageEditDialog'
-import QuestionIconUpload from 'organization/Event/SponsorPageConfig/QuestionIconUpload'
+import Button from '@material-ui/core/Button'
+import Box from '@material-ui/core/Box'
+import PageSettingsDialog from 'organization/Event/SponsorPageConfig/PageSettingsDialog'
+import {useTeamMember} from 'organization/auth'
+import {useTemplate} from 'Event/TemplateProvider'
+import SimpleBlogSponsorPage from 'Event/template/SimpleBlog/SponsorPage'
+import {SIMPLE_BLOG} from 'Event/template/SimpleBlog'
+import {useSponsors} from 'organization/Event/SponsorsProvider'
 
 export default function SponsorPageConfig() {
-  const {sponsors, add, update, remove, loading} = useSponsorList()
-  const [fieldEditSponsor, setFieldEditSponsor] = useState<Sponsor | null>(null)
-  const [imageEditSponsor, setImageEditSponsor] = useState<Sponsor | null>(null)
-
-  const editFields = (sponsor: Sponsor) => setFieldEditSponsor(sponsor)
-  const editImage = (sponsor: Sponsor) => setImageEditSponsor(sponsor)
+  const {add, loading, edit} = useSponsors()
+  const [pageSettingsVisible, setPageSettingsVisible] = useState(false)
 
   const handleAddedSponsor = (newSponsor: Sponsor) => {
     add(newSponsor)
-    editFields(newSponsor)
+    edit(newSponsor)
   }
 
-  const closeFieldDialog = () => setFieldEditSponsor(null)
-  const closeImageDialog = () => setImageEditSponsor(null)
-
-  const handleUpdatedSponsor = (target: Sponsor) => {
-    update(target)
-    closeFieldDialog()
-    closeImageDialog()
-  }
-
-  const handleRemove = (sponsor: Sponsor) => {
-    remove(sponsor)
-    closeFieldDialog()
-  }
+  const togglePageSettings = () => setPageSettingsVisible(!pageSettingsVisible)
 
   const loader = (
     <Layout>
@@ -57,28 +42,23 @@ export default function SponsorPageConfig() {
     <OrganizationActionsProvider loader={loader}>
       <PointsProvider>
         <>
-          <FieldEditDialog
-            sponsor={fieldEditSponsor}
-            onClose={closeFieldDialog}
-            onUpdate={handleUpdatedSponsor}
-            onRemove={handleRemove}
-          />
-          <ImageEditDialog
-            sponsor={imageEditSponsor}
-            onClose={closeImageDialog}
-            onUpdate={handleUpdatedSponsor}
+          <PageSettingsDialog
+            visible={pageSettingsVisible}
+            onClose={togglePageSettings}
           />
           <Layout>
             <Page>
-              <TitleField />
-              <StyledQuestionIconUpload />
+              <Box display="flex" justifyContent="flex-end" mb={2}>
+                <Button
+                  variant="outlined"
+                  color="primary"
+                  onClick={togglePageSettings}
+                >
+                  Page Settings
+                </Button>
+              </Box>
               <StyledAddSponsorButton onAdd={handleAddedSponsor} />
-              <SponsorList
-                sponsors={sponsors}
-                onEditField={editFields}
-                onEditImage={editImage}
-                onUpdate={handleUpdatedSponsor}
-              />
+              <SponsorPage />
             </Page>
           </Layout>
         </>
@@ -87,57 +67,22 @@ export default function SponsorPageConfig() {
   )
 }
 
-function useSponsorList() {
-  const {client} = useOrganization()
+function SponsorPage() {
+  const template = useTemplate()
 
-  const {data: saved, loading} = useSponsors(client)
+  const user = useTeamMember()
+  const {sponsors} = useSponsors()
 
-  const [sponsors, setSponsors] = useState<Sponsor[]>([])
-
-  useEffect(() => {
-    if (!saved) {
-      return
-    }
-
-    setSponsors(saved)
-  }, [saved])
-
-  const add = (newSponsor: Sponsor) => {
-    const added = [...sponsors, newSponsor]
-    setSponsors(added)
-  }
-
-  const update = (target: Sponsor) => {
-    const updated = sponsors.map((s) => {
-      const isTarget = s.id === target.id
-      if (isTarget) {
-        return target
-      }
-
-      return s
-    })
-
-    setSponsors(updated)
-  }
-
-  const remove = (target: Sponsor) => {
-    const removed = sponsors.filter((s) => s.id !== target.id)
-    setSponsors(removed)
-  }
-
-  return {
-    sponsors,
-    add,
-    update,
-    remove,
-    loading,
+  switch (template.name) {
+    case SIMPLE_BLOG:
+      return (
+        <SimpleBlogSponsorPage user={user} isEditMode sponsors={sponsors} />
+      )
+    default:
+      throw new Error(`Missing sponsor page for template: ${template.name}`)
   }
 }
 
 const StyledAddSponsorButton = styled(AddSponsorButton)`
   margin-bottom: ${(props) => props.theme.spacing[8]}!important;
-`
-
-const StyledQuestionIconUpload = styled(QuestionIconUpload)`
-  margin-bottom: ${(props) => props.theme.spacing[4]}!important;
 `

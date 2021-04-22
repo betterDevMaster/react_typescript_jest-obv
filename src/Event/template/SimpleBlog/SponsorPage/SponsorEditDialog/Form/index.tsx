@@ -1,6 +1,6 @@
 import styled from 'styled-components'
 import React from 'react'
-import {Sponsor} from 'Event'
+import {Sponsor} from 'Event/SponsorPage'
 import {api} from 'lib/url'
 import {useOrganization} from 'organization/OrganizationProvider'
 import {useState} from 'react'
@@ -14,19 +14,20 @@ import {fieldError} from 'lib/form'
 import Box from '@material-ui/core/Box'
 import Buttons, {
   useButtons,
-} from 'organization/Event/SponsorPageConfig/FieldEditDialog/Form/Buttons'
-import ButtonConfig from 'organization/Event/SponsorPageConfig/FieldEditDialog/Form/ButtonConfig'
+} from 'Event/template/SimpleBlog/SponsorPage/SponsorEditDialog/Form/Buttons'
+import ButtonConfig from 'Event/template/SimpleBlog/SponsorPage/SponsorEditDialog/Form/ButtonConfig'
+import {useSponsors} from 'organization/Event/SponsorsProvider'
 
 export default function EditSponsorForm(props: {
   sponsor: Sponsor
-  onUpdate: (sponsor: Sponsor) => void
-  onRemove: (sponsor: Sponsor) => void
+  onDone: () => void
 }) {
   const {register, handleSubmit, control, errors} = useForm()
   const [submitting, setSubmitting] = useState(false)
   const {sponsor} = props
   const {client} = useOrganization()
   const [serverError, setServerError] = useState<ValidationError<any>>(null)
+  const {update, remove} = useSponsors()
 
   const {
     buttons,
@@ -42,29 +43,34 @@ export default function EditSponsorForm(props: {
   const submit = (data: Sponsor) => {
     setSubmitting(true)
 
-    const dataWithButtons = {
+    const dataWithButtons: Sponsor = {
       ...data,
-      buttons,
+      settings: {
+        buttons,
+      },
     }
 
     const url = api(`/sponsors/${sponsor.id}`)
 
     client
       .put<Sponsor>(url, dataWithButtons)
-      .then(props.onUpdate)
+      .then((sponsor) => {
+        update(sponsor)
+        props.onDone()
+      })
       .catch((e) => {
         setServerError(e)
         setSubmitting(false)
       })
   }
 
-  const remove = () => {
+  const handleRemove = () => {
     setSubmitting(true)
     const url = api(`/sponsors/${sponsor.id}`)
 
     client
       .delete<Sponsor>(url)
-      .then(() => props.onRemove(sponsor))
+      .then(() => remove(sponsor))
       .catch(() => {
         setSubmitting(false)
       })
@@ -126,7 +132,7 @@ export default function EditSponsorForm(props: {
           fullWidth
           variant="outlined"
           aria-label="remove sponsor"
-          onClick={remove}
+          onClick={handleRemove}
           disabled={submitting}
         >
           REMOVE

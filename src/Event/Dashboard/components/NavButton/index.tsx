@@ -42,6 +42,9 @@ export default interface NavButton extends HasRules, Publishable {
   offlineTitle?: string
   offlineDescription?: string
   page?: string | null
+  fontSize?: number
+  padding?: number
+  width?: number
 }
 
 export type NavButtonWithSize = NavButton & {
@@ -192,9 +195,12 @@ function Button(
       borderWidth={props.borderWidth}
       borderColor={props.borderColor}
       hoverBorderColor={props.hoverBorderColor}
-      minHeight={props.height || DEFAULT_BUTTON_HEIGHT}
+      height={props.height}
       onClick={props.onClick}
       opacity={opacity}
+      padding={props.padding}
+      width={props.width}
+      fontSize={props.fontSize}
     >
       {props.children}
     </StyledButton>
@@ -203,6 +209,7 @@ function Button(
 
 const StyledAbsoluteLink = styled(AbsoluteLink)`
   display: flex;
+  justify-content: center;
 `
 
 const StyledButton = styled(ButtonBase)`

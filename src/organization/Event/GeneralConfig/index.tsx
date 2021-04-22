@@ -5,14 +5,9 @@ import Grid from '@material-ui/core/Grid'
 import Slider from '@material-ui/core/Slider'
 
 import ColorPicker from 'lib/ui/ColorPicker'
-import {useEvent} from 'Event/EventProvider'
-import TemplateProvider, {
-  useTemplate,
-  useUpdateObject,
-} from 'Event/TemplateProvider'
+import {useTemplate, useUpdateObject} from 'Event/TemplateProvider'
 import ProgressBarPreview from 'organization/Event/GeneralConfig/ProgressBarPreview'
 import LoginConfig from 'organization/Event/GeneralConfig/LoginConfig'
-import SelectTemplateForm from 'organization/Event/DashboardConfig/SelectTemplateForm'
 import Layout from 'organization/user/Layout'
 import Page from 'organization/Event/Page'
 import {handleChangeSlider} from 'lib/dom'
@@ -23,26 +18,12 @@ export interface ProgressBar {
   textColor: string
 }
 
-export default function GeneralConfig() {
-  const {event} = useEvent()
-
-  if (!event.template) {
-    return <SelectTemplateForm />
-  }
-
-  return (
-    <TemplateProvider template={event.template}>
-      <Content />
-    </TemplateProvider>
-  )
-}
-
 const MIN_PROGRESS_BAR_THICKNESS = 5
 const MAX_PROGRESS_BAR_THICKNESS = 50
 const MIN_PROGRESS_BAR_BORDER_RADIUS = 0
 const MAX_PROGRESS_BAR_BORDER_RADIUS = 25
 
-function Content() {
+export default function GeneralConfig() {
   const updateProgressBar = useUpdateObject('progressBar')
   const {progressBar} = useTemplate()
 
