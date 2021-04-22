@@ -1,5 +1,6 @@
 import React from 'react'
 import {Rule} from 'Event/Dashboard/component-rules'
+import Button from 'lib/ui/Button'
 
 export function GenerateTextForVisibilityRules(props: {
   rules: Rule[]
@@ -25,6 +26,8 @@ export function GenerateTextForVisibilityRules(props: {
         generatedText += value.type + ' '
         generatedText += value.target + ' '
       }
+
+      return null
     })
 
     generatedText =
@@ -37,9 +40,9 @@ export function GenerateTextForVisibilityRules(props: {
     return (
       <>
         <span>{generatedText.substring(0, 110)} ... </span>
-        <a href={'javascript:void(0)'} onClick={props.seeMoreCallback}>
+        <Button variant="text" onClick={props.seeMoreCallback}>
           (See more)
-        </a>
+        </Button>
       </>
     )
   }

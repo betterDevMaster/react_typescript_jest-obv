@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react'
+import React, {useState} from 'react'
 import TableCell from '@material-ui/core/TableCell'
 import TableHead from '@material-ui/core/TableHead'
 import TableRow from '@material-ui/core/TableRow'
@@ -151,9 +151,8 @@ function reorderNameAppendage(
   newIndex: any,
 ) {
   nameAppendages.splice(newIndex, 0, nameAppendages.splice(oldIndex, 1)[0])
-
-  nameAppendages.map((value, index) => {
-    nameAppendages[index].priority = index + 1
+  nameAppendages.map((_, index) => {
+    return (nameAppendages[index].priority = index + 1)
   })
 
   return nameAppendages

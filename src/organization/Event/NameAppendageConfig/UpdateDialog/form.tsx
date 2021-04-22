@@ -6,7 +6,6 @@ import styled from 'styled-components'
 import Button from '@material-ui/core/Button'
 import {Rule} from 'Event/Dashboard/component-rules'
 import {api} from 'lib/url'
-import {useEvent} from 'Event/EventProvider'
 import {useOrganization} from 'organization/OrganizationProvider'
 import RuleConfig, {
   useRuleConfig,
@@ -41,6 +40,7 @@ export default function NameAppendageUpdateForm(props: {
         setText(props.nameAppendage.text)
       }
     }
+    // eslint-disable-next-line
   }, [mounted])
 
   if (!props.nameAppendage) {
