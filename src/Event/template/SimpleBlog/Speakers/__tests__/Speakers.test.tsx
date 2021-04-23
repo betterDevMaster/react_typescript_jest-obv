@@ -3,6 +3,10 @@ import {fakeEvent, fakeSpeaker, fakeSpeakerPage} from 'Event/__utils__/factory'
 import {loginToEventSite} from 'Event/__utils__/url'
 import user from '@testing-library/user-event'
 import {fakeAttendee} from 'Event/auth/__utils__/factory'
+import {fakeSimpleBlog} from 'Event/template/SimpleBlog/__utils__/factory'
+import {createEntityList} from 'lib/list'
+import {fakeNavButtonWithSize} from 'Event/Dashboard/components/NavButton/__utils__/factory'
+import {eventRoutes, EVENT_PAGES} from 'Event/Routes'
 
 it('should render speakers', async () => {
   const speakers = Array.from(
@@ -10,9 +14,19 @@ it('should render speakers', async () => {
     fakeSpeaker,
   )
 
-  const event = fakeEvent({speaker_page: fakeSpeakerPage({speakers})})
+  const button = fakeNavButtonWithSize({
+    page: EVENT_PAGES[eventRoutes.speakers],
+    text: 'speakers',
+  })
 
-  const {findByLabelText, findAllByLabelText} = await loginToEventSite({
+  const event = fakeEvent({
+    speaker_page: fakeSpeakerPage({speakers}),
+    template: fakeSimpleBlog({
+      mainNav: createEntityList([button]),
+    }),
+  })
+
+  const {findByText, findAllByLabelText} = await loginToEventSite({
     event,
     attendee: fakeAttendee({
       tech_check_completed_at: 'now',
@@ -20,24 +34,8 @@ it('should render speakers', async () => {
     }),
   })
 
-  user.click(await findByLabelText('show side menu'))
-  user.click(await findByLabelText('view speakers'))
+  user.click(await findByText('speakers'))
 
   // Showing all speakers
   expect((await findAllByLabelText('speaker')).length).toBe(speakers.length)
-})
-
-it('should hide speaker link', async () => {
-  const withoutSpeakerPage = fakeEvent({speaker_page: null})
-
-  const {queryByLabelText, findByLabelText} = await loginToEventSite({
-    event: withoutSpeakerPage,
-    attendee: fakeAttendee({
-      tech_check_completed_at: 'now',
-      waiver: 'some_waiver.png',
-    }),
-  })
-
-  user.click(await findByLabelText('show side menu'))
-  expect(queryByLabelText('view speakers')).not.toBeInTheDocument()
 })
