@@ -1,5 +1,4 @@
 import Grid from '@material-ui/core/Grid'
-import styled from 'styled-components'
 import HiddenOnMatch from 'Event/Dashboard/component-rules/HiddenOnMatch'
 import NavButton, {
   NavButtonWithSize,
@@ -7,13 +6,9 @@ import NavButton, {
 import EditComponent from 'Event/Dashboard/editor/views/EditComponent'
 import React from 'react'
 import Published from 'Event/Dashboard/editor/views/Published'
-import {
-  Draggable,
-  DraggableProvidedDraggableProps,
-  DraggableProvidedDragHandleProps,
-} from 'react-beautiful-dnd'
-import DragHandleIcon from '@material-ui/icons/DragHandle'
+import {Draggable, DraggableProvidedDraggableProps} from 'react-beautiful-dnd'
 import {useEditMode} from 'Event/Dashboard/editor/state/edit-mode'
+import {DraggableOverlay, DragHandle} from 'lib/ui/drag-and-drop'
 
 export const MAIN_NAV_BUTTON = 'Main Nav Button'
 type MainNavButtonProps = {
@@ -113,41 +108,3 @@ const NewLine = React.forwardRef<
     </Grid>
   )
 })
-
-function DragHandle(props: {handleProps?: DraggableProvidedDragHandleProps}) {
-  return (
-    <DragHandleBox {...props.handleProps} aria-label="button drag handle">
-      <DragHandleIcon />
-    </DragHandleBox>
-  )
-}
-
-const DragHandleBox = styled.div`
-  position: absolute;
-  left: ${(props) => props.theme.spacing[1]};
-  top: ${(props) => props.theme.spacing[1]};
-  z-index: 2;
-  background: #ffffff;
-  display: none;
-  border-radius: 4px;
-
-  &:hover {
-    opacity: 0.8;
-  }
-
-  svg {
-    color: ${(props) => props.theme.colors.primary};
-  }
-`
-
-/**
- * Handle the show drag handle on hover
- */
-
-const DraggableOverlay = styled.div`
-  position: relative;
-
-  &:hover ${DragHandleBox} {
-    display: inline-flex;
-  }
-`

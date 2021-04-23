@@ -9,6 +9,13 @@ import {Publishable} from 'Event/Dashboard/editor/views/Published'
 import {useTemplate} from 'Event/TemplateProvider'
 import {HasRules} from 'Event/Dashboard/component-rules'
 import {useWithAttendeeData} from 'Event/auth/data'
+import HiddenOnMatch from 'Event/Dashboard/component-rules/HiddenOnMatch'
+import EditComponent from 'Event/Dashboard/editor/views/EditComponent'
+import Published from 'Event/Dashboard/editor/views/Published'
+import {Draggable, DraggableProvidedDraggableProps} from 'react-beautiful-dnd'
+import Grid from '@material-ui/core/Grid'
+import {useEditMode} from 'Event/Dashboard/editor/state/edit-mode'
+import {DragHandle, DraggableOverlay} from 'lib/ui/drag-and-drop'
 
 export type Resource = Publishable &
   HasRules & {
@@ -18,22 +25,64 @@ export type Resource = Publishable &
   }
 
 export const RESOURCE_ITEM = 'Resource Item'
-
-export default function ResourceItem(props: {
+type ResourceItemProps = {
+  id: string
   resource: Resource
   iconColor?: string
-}) {
+  index: number
+}
+
+export default React.memo((props: ResourceItemProps) => {
+  const {resource, index} = props
+  const isEdit = useEditMode()
+
+  if (!isEdit)
+    return (
+      <Container resource={resource}>
+        <ResourceItemLink resource={resource} iconColor={props.iconColor} />
+      </Container>
+    )
+
+  return (
+    <Draggable draggableId={props.id} index={index}>
+      {(provided) => (
+        <Container
+          resource={resource}
+          ref={provided.innerRef}
+          draggableProps={provided.draggableProps}
+        >
+          <DraggableOverlay>
+            <EditComponent
+              component={{
+                type: RESOURCE_ITEM,
+                id: index,
+              }}
+            >
+              <>
+                <DragHandle handleProps={provided.dragHandleProps} />
+                <ResourceItemLink
+                  resource={resource}
+                  iconColor={props.iconColor}
+                />
+              </>
+            </EditComponent>
+          </DraggableOverlay>
+        </Container>
+      )}
+    </Draggable>
+  )
+})
+
+function ResourceItemLink(props: {resource: Resource; iconColor?: string}) {
   const {downloadResource: DOWNLOADING_RESOURCE} = usePlatformActions()
   const {submit} = usePoints()
   const {sidebar} = useTemplate()
   const withAttendeeData = useWithAttendeeData()
+  const path = storage(`/event/resources/${props.resource.filePath}`)
 
   const awardPoints = () => {
     submit(DOWNLOADING_RESOURCE)
   }
-
-  const path = storage(`/event/resources/${props.resource.filePath}`)
-
   return (
     <ResourceLink
       color={sidebar.textColor}
@@ -55,6 +104,42 @@ export default function ResourceItem(props: {
     </ResourceLink>
   )
 }
+
+const Container = React.forwardRef<
+  HTMLDivElement,
+  {
+    children: React.ReactElement
+    resource: Resource
+    draggableProps?: DraggableProvidedDraggableProps
+  }
+>((props, ref) => {
+  return (
+    <HiddenOnMatch rules={props.resource.rules}>
+      <Published component={props.resource}>
+        <Item ref={ref} {...props} />
+      </Published>
+    </HiddenOnMatch>
+  )
+})
+
+const Item = React.forwardRef<
+  HTMLDivElement,
+  {
+    children: React.ReactElement
+    resource: Resource
+    draggableProps?: DraggableProvidedDraggableProps
+  }
+>((props, ref) => {
+  return (
+    <Grid item xs={12} md={12}>
+      <Grid container>
+        <Grid item xs={12} md={12} {...props.draggableProps} ref={ref}>
+          {props.children}
+        </Grid>
+      </Grid>
+    </Grid>
+  )
+})
 
 const ResourceLink = styled(AbsoluteLink)<{color: string}>`
   align-items: center;
