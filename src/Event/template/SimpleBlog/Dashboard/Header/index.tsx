@@ -54,10 +54,19 @@ export default function Header(props: {
 function CollapsableBackground(props: {children: React.ReactElement}) {
   const {event} = useEvent()
   const {header} = useTemplate()
-  const backgroundImage = header.isCollapsed ? '' : event.header_background
+  const backgroundImage = header.isCollapsed
+    ? ''
+    : event.header_background
     ? event.header_background.url
     : ''
-  return <Box backgroundImage={backgroundImage} disableShadow={header.disableShadow || header.isCollapsed}>{props.children}</Box>
+  return (
+    <Box
+      backgroundImage={backgroundImage}
+      disableShadow={header.disableShadow || header.isCollapsed}
+    >
+      {props.children}
+    </Box>
+  )
 }
 
 function CollapsableLogo() {
@@ -100,10 +109,7 @@ function CollapsableColorOverlay(props: {children: React.ReactElement}) {
   }
 
   return (
-    <ColorOverlay
-      color={backgroundColorRgb}
-      aria-label="header"
-    >
+    <ColorOverlay color={backgroundColorRgb} aria-label="header">
       {props.children}
     </ColorOverlay>
   )
@@ -134,9 +140,7 @@ const Box = styled.div<{
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
-  ${(props) =>
-    props.disableShadow ? '' : `box-shadow: 20px 20px 20px #ddd;`}
-
+  ${(props) => (props.disableShadow ? '' : `box-shadow: 20px 20px 20px #ddd;`)}
 `
 
 const ColorOverlay = styled.div<{

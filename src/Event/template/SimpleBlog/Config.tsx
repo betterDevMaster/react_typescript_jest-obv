@@ -11,7 +11,7 @@ import {
 import {useEvent} from 'Event/EventProvider'
 import EventImageUpload from 'organization/Event/DashboardConfig/EventImageUpload'
 import ColorPicker from 'lib/ui/ColorPicker'
-import React, { useState } from 'react'
+import React, {useState} from 'react'
 import {SIMPLE_BLOG} from 'Event/template/SimpleBlog'
 import Grid from '@material-ui/core/Grid'
 import Slider from '@material-ui/core/Slider'
@@ -39,7 +39,7 @@ export function SimpleBlogConfig() {
   const updateDashboardBackground = useUpdateObject('dashboardBackground')
   const updateBackgroundPosition = useUpdatePrimitive('backgroundPosition')
 
-  const handleSwitchCollapsed = ()=>{
+  const handleSwitchCollapsed = () => {
     updateHeader('isCollapsed')(template.header.isCollapsed !== true)
   }
 
@@ -181,7 +181,7 @@ function DropShawdowToggle() {
   const template = useTemplate()
   const updateHeader = useUpdateObject('header')
 
-  const handleSwitchCollapsed = ()=>{
+  const handleSwitchCollapsed = () => {
     updateHeader('disableShadow')(template.header.disableShadow !== true)
   }
 
