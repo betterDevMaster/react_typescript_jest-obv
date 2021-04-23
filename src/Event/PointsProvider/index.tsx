@@ -12,7 +12,7 @@ export interface Score {
 }
 
 export interface PointsContextProps {
-  showReceived: (action: Action) => void
+  showReceived: (action: Action, unit: string) => void
   submit: (action: Action | null) => void
   score: Score
 }
@@ -23,6 +23,7 @@ export const PointsContext = React.createContext<
 
 export function PointsProvider(props: {children: React.ReactElement}) {
   const {client, event} = useEvent()
+  const unit = event.template?.points?.unit
   const fetchScore = useFetchScore()
   const {score, add} = useAttendeeScore(fetchScore)
   const showReceived = useShowReceived()
@@ -39,7 +40,7 @@ export function PointsProvider(props: {children: React.ReactElement}) {
       client
         .post(url)
         .then(() => {
-          showReceived(action)
+          showReceived(action, unit || null)
           add(action.points)
         })
         .catch((e) => {
@@ -50,7 +51,7 @@ export function PointsProvider(props: {children: React.ReactElement}) {
            */
         })
     },
-    [client, event.slug, showReceived, add, isEditMode],
+    [client, event.slug, showReceived, add, isEditMode, unit],
   )
 
   return (
@@ -72,16 +73,18 @@ export function usePoints() {
 export function useShowReceived() {
   const {enqueueSnackbar} = useSnackbar()
   return useCallback(
-    (action: Action) => {
-      const text = rewardText(action)
+    (action: Action, unit: string | null) => {
+      const text = rewardText(action, unit)
       enqueueSnackbar(text, {variant: 'success'})
     },
     [enqueueSnackbar],
   )
 }
 
-function rewardText(action: Action) {
-  return `Yay! You have received ${action.points} points for ${action.description}`
+function rewardText(action: Action, unit: string | null) {
+  return `Yay! You have received ${action.points} ${unit || 'points'} for ${
+    action.description
+  }`
 }
 
 function useFetchScore() {
