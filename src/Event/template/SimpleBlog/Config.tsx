@@ -11,7 +11,7 @@ import {
 import {useEvent} from 'Event/EventProvider'
 import EventImageUpload from 'organization/Event/DashboardConfig/EventImageUpload'
 import ColorPicker from 'lib/ui/ColorPicker'
-import React from 'react'
+import React, { useState } from 'react'
 import {SIMPLE_BLOG} from 'Event/template/SimpleBlog'
 import Grid from '@material-ui/core/Grid'
 import Slider from '@material-ui/core/Slider'
@@ -37,8 +37,11 @@ export function SimpleBlogConfig() {
   const updateHeader = useUpdateObject('header')
   const updateMenu = useUpdateObject('menu')
   const updateDashboardBackground = useUpdateObject('dashboardBackground')
-
   const updateBackgroundPosition = useUpdatePrimitive('backgroundPosition')
+
+  const handleSwitchCollapsed = ()=>{
+    updateHeader('isCollapsed')(template.header.isCollapsed !== true)
+  }
 
   return (
     <>
@@ -53,8 +56,8 @@ export function SimpleBlogConfig() {
         <Grid container>
           <Grid item xs={12} md={6}>
             <Switch
-              checked={Boolean(template.header.isCollapsed)}
-              onChange={onChangeCheckedHandler(updateHeader('isCollapsed'))}
+              checked={template.header.isCollapsed !== true}
+              onChange={handleSwitchCollapsed}
               arial-label="config header background image visible switch"
               labelPlacement="start"
               color="primary"
@@ -178,11 +181,15 @@ function DropShawdowToggle() {
   const template = useTemplate()
   const updateHeader = useUpdateObject('header')
 
+  const handleSwitchCollapsed = ()=>{
+    updateHeader('disableShadow')(template.header.disableShadow !== true)
+  }
+
   if (Boolean(template.header.isCollapsed)) return null
   return (
     <Switch
-      checked={Boolean(template.header.disableShadow)}
-      onChange={onChangeCheckedHandler(updateHeader('disableShadow'))}
+      checked={template.header.disableShadow !== true}
+      onChange={handleSwitchCollapsed}
       arial-label="config header dropShawdowVisible visible switch"
       labelPlacement="start"
       color="primary"
