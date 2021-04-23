@@ -120,7 +120,7 @@ it('should configure a header color settings', async () => {
   user.type(await findByLabelText('header background color'), color)
 
   await wait(async () => {
-    expect((await findByLabelText('header')).firstChild).toHaveStyle(
+    expect(await findByLabelText('header')).toHaveStyle(
       `background-color: ${rgb(color)}`,
     )
   })

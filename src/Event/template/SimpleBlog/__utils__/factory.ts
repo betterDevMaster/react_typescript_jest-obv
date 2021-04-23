@@ -54,6 +54,8 @@ export const fakeSimpleBlog = (overrides?: Partial<SimpleBlog>): SimpleBlog => {
       backgroundOpacity: 1,
       height: 50,
       script: null,
+      isCollapsed: false,
+      disableShadow: false,
     },
     footer: {
       background: '#000000',
@@ -165,6 +167,8 @@ export function fakeHeader(
     backgroundOpacity: 1,
     height: 50,
     script: null,
+    isCollapsed: false,
+    disableShadow: false,
     ...overrides,
   }
 }

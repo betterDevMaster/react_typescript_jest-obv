@@ -90,21 +90,28 @@ const ImageSizer = styled.div<{size: number}>`
 const StyledImg = styled.img`
   width: 100%;
 `
-const Text = styled.h2`
+const Text = styled.div`
   color: #000;
-  font-size: 42px;
-  line-height: 1.5;
+  font-size: 29px;
+  font-weight: 400;
+  line-height: 1;
   text-transform: uppercase;
   text-align: center;
-
+  margin-top: ${(props) => props.theme.spacing[7]};
   &:empty {
     height: ${(props) => props.theme.spacing[5]};
     width: 100%;
+  }
+
+  @media (min-width: ${(props) => props.theme.breakpoints.md}) {
+    font-size: 42px;
+    font-weight: 700;
+    line-height: 1.5;
   }
 `
 
 const StyledEditButton = withStyles({
   root: {
-    marginBottom: spacing[6],
+    marginTop: spacing[6],
   },
 })(Button)

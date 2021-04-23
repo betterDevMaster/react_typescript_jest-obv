@@ -4,6 +4,8 @@ import {Agenda} from 'Event/Dashboard/components/AgendaList'
 import {BlogPost} from 'Event/Dashboard/components/BlogPost'
 import {EmojiList} from 'Event/Dashboard/components/EmojiList'
 import {Sidebar} from 'Event/template/SimpleBlog/Dashboard/Sidebar/SidebarContainer'
+import {Header} from 'Event/template/SimpleBlog/Dashboard/Header'
+
 import {TicketRibbon} from 'Event/Dashboard/components/TicketRibbonList/TicketRibbon'
 import NavButton, {
   NavButtonWithSize,
@@ -35,12 +37,7 @@ export interface SimpleBlog {
   }
   points: Points | null
   resourceList: ResourceList
-  header: {
-    backgroundColor: string
-    backgroundOpacity: number
-    height: number
-    script: string | null
-  }
+  header: Header
   dashboardBackground?: {
     color: string
     opacity: number
@@ -172,9 +169,11 @@ export const createSimpleBlog = (): SimpleBlog => ({
     backgroundOpacity: 1.0,
     height: 150,
     script: null,
+    isCollapsed: false,
+    disableShadow: false,
   },
   footer: {
-    background: '#000000',
+    background: '#00e0000',
     textColor: '#FFFFFF',
     termsLink: null,
     privacyLink: null,

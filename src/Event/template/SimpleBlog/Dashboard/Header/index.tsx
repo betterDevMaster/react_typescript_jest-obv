@@ -10,36 +10,26 @@ import EditComponent from 'Event/Dashboard/editor/views/EditComponent'
 import {rgb} from 'lib/color'
 import {SIMPLE_BLOG} from 'Event/template/SimpleBlog'
 
+export type Header = {
+  backgroundColor: string
+  backgroundOpacity: number
+  height: number
+  script: string | null
+  isCollapsed?: boolean
+  disableShadow?: boolean
+}
+
 export default function Header(props: {
   toggleMenu: () => void
   menuVisible: boolean
   'aria-label'?: string
 }) {
-  const {title, header} = useTemplate()
-
-  const {event} = useEvent()
-
-  const logo = event.logo ? event.logo.url : ''
-  const backgroundColor = header.backgroundColor
-  const backgroundOpacity = header.backgroundOpacity
-  const backgroundImage = event.header_background
-    ? event.header_background.url
-    : ''
-  const height = header.height
-  const mobileHeight = Math.round(height * 0.7)
-
-  const backgroundColorRgb = rgb(backgroundColor, backgroundOpacity)
-
   return (
     <EditComponent component={{type: SIMPLE_BLOG}}>
-      <Box backgroundImage={backgroundImage} aria-label="header">
-        <ColorOverlay color={backgroundColorRgb}>
+      <CollapsableBackground>
+        <CollapsableColorOverlay>
           <Container maxWidth="lg">
-            <Layout
-              desktopHeight={height}
-              mobileHeight={mobileHeight}
-              arial-label="header layout"
-            >
+            <Layout>
               <Side>
                 <MenuIconButton
                   active={props.menuVisible}
@@ -49,19 +39,83 @@ export default function Header(props: {
               </Side>
               <Middle>
                 <RelativeLink to={eventRoutes.root} disableStyles>
-                  <Logo src={logo} alt={title} aria-label="logo" />
+                  <CollapsableLogo />
                 </RelativeLink>
               </Middle>
               <Side />
             </Layout>
           </Container>
-        </ColorOverlay>
-      </Box>
+        </CollapsableColorOverlay>
+      </CollapsableBackground>
     </EditComponent>
   )
 }
 
-const Layout = styled.div<{desktopHeight: number; mobileHeight: number}>`
+function CollapsableBackground(props: {children: React.ReactElement}) {
+  const {event} = useEvent()
+  const {header} = useTemplate()
+  const backgroundImage = event.header_background
+    ? event.header_background.url
+    : ''
+
+  if (header.isCollapsed) {
+    return props.children
+  }
+
+  return <Box backgroundImage={backgroundImage}>{props.children}</Box>
+}
+
+function CollapsableLogo() {
+  const {event} = useEvent()
+  const {title, header} = useTemplate()
+  const logo = event.logo ? event.logo.url : ''
+
+  if (header.isCollapsed) {
+    return null
+  }
+  return <Logo src={logo} alt={title} aria-label="logo" />
+}
+
+function Layout(props: {children: React.ReactElement | React.ReactElement[]}) {
+  const {header} = useTemplate()
+
+  const height = header.height
+  const mobileHeight = Math.round(height * 0.7)
+
+  return (
+    <LayoutBox
+      desktopHeight={height}
+      mobileHeight={mobileHeight}
+      arial-label="header layout"
+    >
+      {props.children}
+    </LayoutBox>
+  )
+}
+
+function CollapsableColorOverlay(props: {children: React.ReactElement}) {
+  const {header} = useTemplate()
+  const backgroundColorRgb = rgb(
+    header.backgroundColor,
+    header.backgroundOpacity,
+  )
+
+  if (header.isCollapsed) {
+    return props.children
+  }
+
+  return (
+    <ColorOverlay
+      color={backgroundColorRgb}
+      disableShadow={header.disableShadow}
+      aria-label="header"
+    >
+      {props.children}
+    </ColorOverlay>
+  )
+}
+
+const LayoutBox = styled.div<{desktopHeight: number; mobileHeight: number}>`
   height: ${(props) => props.mobileHeight}px;
   display: flex;
 
@@ -77,9 +131,6 @@ const Side = styled.div`
 const Box = styled.div<{
   backgroundImage: string | null
 }>`
-  box-shadow: 20px 20px 50px #ddd;
-  margin-bottom: 60px;
-
   ${(props) =>
     props.backgroundImage
       ? `background-image: url(${props.backgroundImage});`
@@ -92,8 +143,11 @@ const Box = styled.div<{
 
 const ColorOverlay = styled.div<{
   color: string
+  disableShadow?: boolean
 }>`
   background-color: ${(props) => props.color};
+  ${(props) =>
+    props.disableShadow ? '' : `box-shadow: 20px 20px 20px ${props.color};`}
 `
 
 const Middle = styled.div`
