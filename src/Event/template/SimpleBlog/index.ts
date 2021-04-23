@@ -33,6 +33,8 @@ export interface SimpleBlog {
   blogPosts: EntityList<BlogPost>
   agenda: {
     title: string
+    description?: string
+    footer?: string
     items: Agenda[]
   }
   points: Points | null
@@ -156,6 +158,8 @@ export const createSimpleBlog = (): SimpleBlog => ({
   backgroundPosition: 'fixed',
   agenda: {
     title: 'Agenda',
+    description: '',
+    footer: 'Agenda Time is in YOUR time zone, not ours',
     items: [],
   },
   points: null,

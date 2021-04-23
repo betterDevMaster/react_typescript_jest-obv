@@ -23,6 +23,24 @@ export function AgendaListConfig() {
         fullWidth
         onChange={onChangeStringHandler(updateAgendasList('title'))}
       />
+      <TextField
+        value={agendas.description || ''}
+        inputProps={{
+          'aria-label': 'update agendas description',
+        }}
+        label="Description"
+        fullWidth
+        onChange={onChangeStringHandler(updateAgendasList('description'))}
+      />
+      <TextField
+        value={agendas.footer || ''}
+        inputProps={{
+          'aria-label': 'update agendas footer',
+        }}
+        label="Footer"
+        fullWidth
+        onChange={onChangeStringHandler(updateAgendasList('footer'))}
+      />
     </>
   )
 }

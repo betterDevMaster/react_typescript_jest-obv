@@ -23,7 +23,7 @@ export type Agenda = Publishable & {
 }
 
 export default function AgendaList() {
-  const {agenda} = useTemplate()
+  const {agenda, sidebar} = useTemplate()
   const isEdit = useEditMode()
   const withAttendeeData = useWithAttendeeData()
 
@@ -37,6 +37,9 @@ export default function AgendaList() {
       <EditComponent component={{type: AGENDA_LIST}}>
         <Heading aria-label="agendas">{withAttendeeData(agenda.title)}</Heading>
       </EditComponent>
+      <Description aria-label="agendas description" color={sidebar.textColor}>
+        {withAttendeeData(agenda.description || '')}
+      </Description>
       <>
         {agenda.items.map((item, index) => (
           <EditComponent component={{type: AGENDA_ITEM, id: index}} key={index}>
@@ -49,6 +52,12 @@ export default function AgendaList() {
           </EditComponent>
         ))}
       </>
+      <Description
+        aria-label="agendas footer description"
+        color={sidebar.textColor}
+      >
+        {withAttendeeData(agenda.footer || '')}
+      </Description>
       <EditModeOnly>
         <StyledAddAgendaEventButton />
       </EditModeOnly>
@@ -148,5 +157,8 @@ const StyledAddAgendaEventButton = styled(AddAgendaEventButton)`
 `
 
 const StyledAbsoluteLink = styled(AbsoluteLink)<{color: string}>`
+  color: ${(props) => props.color};
+`
+const Description = styled.p<{color: string}>`
   color: ${(props) => props.color};
 `
