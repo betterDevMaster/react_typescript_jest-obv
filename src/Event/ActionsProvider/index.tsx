@@ -119,5 +119,5 @@ export function useActionsList(request: () => Promise<Action[]>) {
     setActions(removed)
   }
 
-  return {actions, update, loading, error, add, remove}
+  return {actions, update, loading, error, add, remove, setActions}
 }

@@ -33,3 +33,13 @@ export function useUpdateAction() {
     return client.patch<Action>(url, data)
   }
 }
+
+export function useToggleActions() {
+  const {event} = useEvent()
+  const {client} = useOrganization()
+
+  return (active: boolean) => {
+    const url = api(`/events/${event.slug}/actions/toggle`)
+    return client.put<Action[]>(url, {is_active: active})
+  }
+}
