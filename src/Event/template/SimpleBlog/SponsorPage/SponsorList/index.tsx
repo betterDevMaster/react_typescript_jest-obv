@@ -32,7 +32,11 @@ const Box = styled.div`
   width: 100%;
 `
 
-const StyledCard = styled(Card)`
+/**
+ * Fixes fowarding props (isEditMode) with undefined causing
+ * app to crash
+ */
+const StyledCard = styled((props) => <Card {...props} />)`
   &:not(:last-child) {
     padding-bottom: ${(props) => props.theme.spacing[2]};
     margin-bottom: ${(props) => props.theme.spacing[8]};
