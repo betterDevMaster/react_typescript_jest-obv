@@ -11,13 +11,14 @@ import {eventClient} from 'Event/api-client'
 import {appRoot, isProduction} from 'App'
 import {useInterval} from 'lib/interval'
 import {useEditMode} from 'Event/Dashboard/editor/state/edit-mode'
+import {useOrganization} from 'organization/OrganizationProvider'
 
 interface EventContextProps {
   event: ObvioEvent
   client: Client
   hasTechCheck: boolean
   hasWaiver: boolean
-  update: (event: ObvioEvent) => void
+  set: (event: ObvioEvent) => void
   url: string
 }
 
@@ -89,7 +90,7 @@ function EventProvider(props: {
         client: eventClient,
         hasTechCheck: hasTechCheck(current),
         hasWaiver: hasWaiver(current),
-        update,
+        set: update,
         url,
       }}
     >
@@ -157,4 +158,14 @@ export function useJoinUrl(areaId: number) {
   useInterval(fetchUrl, FETCH_JOIN_URL_INTERVAL_MS, Boolean(joinUrl))
 
   return joinUrl
+}
+
+export function useUpdate() {
+  const {client} = useOrganization()
+  const {event, set: setEvent} = useEvent()
+
+  const url = api(`/events/${event.slug}`)
+
+  return (data: Partial<ObvioEvent>) =>
+    client.put<ObvioEvent>(url, data).then(setEvent)
 }

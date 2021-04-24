@@ -33,7 +33,7 @@ export default function PageSettingsDialog(props: {
   visible: boolean
 }) {
   const {visible, onClose} = props
-  const {event, update: updateEvent} = useEvent()
+  const {event, set: updateEvent} = useEvent()
   const {handleSubmit, register} = useForm()
   const [processing, setProcessing] = useState(false)
   const template = useTemplate()

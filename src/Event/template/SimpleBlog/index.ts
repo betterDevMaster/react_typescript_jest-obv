@@ -109,6 +109,12 @@ export interface SimpleBlog {
     }
   }
   bodyHTMLEmbed?: string | null
+  leaderboard?: {
+    title?: string
+    description?: string
+    backToDashboardText?: string
+    backToDashboardTextColor?: string
+  }
   sponsors?: {
     imageSize?: Column
   }

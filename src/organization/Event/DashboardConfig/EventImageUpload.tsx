@@ -121,7 +121,7 @@ const ErrorText = withStyles({
 })(Typography)
 
 function useUpload() {
-  const {event, update: updateEvent} = useEvent()
+  const {event, set: setEvent} = useEvent()
   const {client} = useOrganization()
   const [isUploading, setIsUploading] = useState(false)
   const [error, setError] = useState<string | null>(null)
@@ -139,7 +139,7 @@ function useUpload() {
 
     client
       .put<ObvioEvent>(url, data)
-      .then(updateEvent)
+      .then(setEvent)
       .catch((e) => {
         setError(e.message)
       })

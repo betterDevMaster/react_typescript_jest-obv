@@ -40,7 +40,7 @@ export default function StaticEventProvider(props: {
         client: eventClient,
         hasTechCheck: hasTechCheck(event),
         hasWaiver: hasWaiver(event),
-        update,
+        set: update,
         url,
       }}
     >

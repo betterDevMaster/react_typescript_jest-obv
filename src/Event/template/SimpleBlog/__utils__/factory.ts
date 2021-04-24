@@ -91,6 +91,12 @@ export const fakeSimpleBlog = (overrides?: Partial<SimpleBlog>): SimpleBlog => {
       },
       logoSize: 100,
     },
+    leaderboard: {
+      title: 'Leaderboard',
+      description: '',
+      backToDashboardText: 'Back to Dashboard',
+      backToDashboardTextColor: '#000000',
+    },
   }
 
   const makeAttributes: (d: SimpleBlog) => SimpleBlog = pipe(

@@ -25,6 +25,7 @@ export default function TextEditor(props: {
   data: string
   onChange: (value: string) => void
   className?: string
+  disabled?: boolean
 }) {
   const updateValue = (_: any, editor: any) => {
     props.onChange(editor.getData())
@@ -33,6 +34,7 @@ export default function TextEditor(props: {
   return (
     <div className={props.className}>
       <CKEditor
+        disabled={props.disabled}
         editor={ClassicEditor}
         data={props.data}
         onChange={updateValue}

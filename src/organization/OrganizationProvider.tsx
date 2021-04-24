@@ -103,6 +103,7 @@ export function createRoutesFor(organization: Organization) {
               },
             },
           },
+          leaderboard: '/leaderboard',
         },
       },
     },

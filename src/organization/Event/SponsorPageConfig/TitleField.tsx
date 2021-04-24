@@ -9,7 +9,7 @@ import {useOrganization} from 'organization/OrganizationProvider'
 import {onChangeStringHandler} from 'lib/dom'
 
 export default function TitleField() {
-  const {event, update: updateEvent} = useEvent()
+  const {event, set: setEvent} = useEvent()
   const [title, setTitle] = useState(event.sponsor_page_title)
   const {client} = useOrganization()
   const [processing, setProcessing] = useState(false)
@@ -28,7 +28,7 @@ export default function TitleField() {
       .put<ObvioEvent>(url, {
         sponsor_page_title: title,
       })
-      .then(updateEvent)
+      .then(setEvent)
       .catch(() => {
         setProcessing(false)
       })
