@@ -14,141 +14,124 @@ beforeEach(() => {
   jest.clearAllMocks()
 })
 
-it('should work', () => {
-  expect(true).toBe(true)
+it('should set sponsor page settings', async () => {
+  window.URL.createObjectURL = jest.fn()
+  const sponsors = Array.from(
+    {length: faker.random.number({min: 2, max: 5})},
+    () => fakeSponsor({image: null}),
+  )
+
+  const event = fakeEvent({
+    sponsor_question_icon: {
+      url: 'http://s3.com/existingicon.png',
+      name: 'existingicon.png',
+    },
+  })
+  const {findByText, findByLabelText} = await goToSponsorConfig({
+    event,
+    userPermissions: [CONFIGURE_EVENTS],
+    sponsors,
+  })
+
+  for (const sponsor of sponsors) {
+    expect(await findByText(sponsor.name)).toBeInTheDocument()
+  }
+
+  const title = faker.random.words(3)
+
+  fireEvent.click(await findByLabelText('configure sponsor page'))
+
+  fireEvent.change(await findByLabelText('sponsor page title'), {
+    target: {
+      value: title,
+    },
+  })
+
+  // Remove existing icon...
+  fireEvent.click(await findByLabelText('remove sponsor question icon'))
+
+  const image = new File([], 'image.jpg')
+  const imageInput = await findByLabelText('question icon input')
+  Object.defineProperty(imageInput, 'files', {
+    value: [image],
+  })
+  fireEvent.change(imageInput)
+
+  const url = faker.internet.url()
+
+  const updated: ObvioEvent = {
+    ...event,
+    sponsor_page_title: title,
+    sponsor_question_icon: {
+      url,
+      name: 'icon.png',
+    },
+  }
+
+  mockPost.mockImplementationOnce(() => Promise.resolve({data: updated}))
+
+  user.click(await findByLabelText('save'))
+
+  await wait(() => {
+    expect(mockPost).toHaveBeenCalledTimes(1)
+  })
+
+  const [postUrl, postData] = mockPost.mock.calls[0]
+
+  expect(postUrl).toMatch(`/events/${event.slug}`)
+  expect(postData.get('sponsor_page_title')).toBe(title)
+  expect(postData.get('sponsor_question_icon')).toBe(image)
+
+  fireEvent.click(await findByLabelText('configure sponsor page'))
+  fireEvent.click(await findByLabelText('remove sponsor question icon'))
+
+  user.click(await findByLabelText('save'))
+
+  const withoutIcon: ObvioEvent = {
+    ...updated,
+    sponsor_question_icon: null,
+  }
+
+  mockPut.mockImplementationOnce(() => Promise.resolve({data: withoutIcon}))
+
+  await wait(() => {
+    expect(mockPut).toHaveBeenCalledTimes(1)
+  })
+
+  const [_, putData] = mockPut.mock.calls[0]
+
+  // Sent request to remove image
+  expect(putData.sponsor_question_icon).toBe(null)
 })
 
-// it('should edit the page title', async () => {
-//   const sponsors = Array.from(
-//     {length: faker.random.number({min: 2, max: 5})},
-//     () => fakeSponsor({image: null}),
-//   )
+it('should add a sponsor', async () => {
+  const numSponsors = faker.random.number({min: 2, max: 5})
 
-//   const event = fakeEvent()
-//   const {findByText, findByLabelText} = await goToSponsorConfig({
-//     event,
-//     userPermissions: [CONFIGURE_EVENTS],
-//     sponsors,
-//   })
+  const sponsors = Array.from({length: numSponsors}, () =>
+    fakeSponsor({image: null}),
+  )
 
-//   for (const sponsor of sponsors) {
-//     expect(await findByText(sponsor.name)).toBeInTheDocument()
-//   }
+  const event = fakeEvent()
+  const {findByText, findByLabelText} = await goToSponsorConfig({
+    event,
+    userPermissions: [CONFIGURE_EVENTS],
+    sponsors,
+  })
 
-//   const title = faker.random.words(3)
+  for (const sponsor of sponsors) {
+    expect(await findByText(sponsor.name)).toBeInTheDocument()
+  }
 
-//   fireEvent.change(await findByLabelText('sponsor page title'), {
-//     target: {
-//       value: title,
-//     },
-//   })
+  const newSponsor = fakeSponsor()
 
-//   const updated: ObvioEvent = {
-//     ...event,
-//     sponsor_page_title: title,
-//   }
+  mockPost.mockImplementationOnce(() => Promise.resolve({data: newSponsor}))
 
-//   mockPut.mockImplementationOnce(() => Promise.resolve({data: updated}))
+  user.click(await findByLabelText('add sponsor'))
+  await wait(() => {
+    expect(mockPost).toHaveBeenCalledTimes(1)
+  })
 
-//   user.click(await findByLabelText('save sponsor page title'))
+  user.click(await findByLabelText('close dialog'))
 
-//   await wait(() => {
-//     expect(mockPut).toHaveBeenCalledTimes(1)
-//   })
-
-//   const [url, data] = mockPut.mock.calls[0]
-
-//   expect(url).toMatch(`/events/${event.slug}`)
-//   expect(data.sponsor_page_title).toBe(title)
-// })
-
-// it('should upload an image', async () => {
-//   const sponsors = Array.from(
-//     {length: faker.random.number({min: 2, max: 5})},
-//     () => fakeSponsor({image: null}),
-//   )
-
-//   const event = fakeEvent()
-//   const {findByText, findByLabelText} = await goToSponsorConfig({
-//     event,
-//     userPermissions: [CONFIGURE_EVENTS],
-//     sponsors,
-//   })
-
-//   for (const sponsor of sponsors) {
-//     expect(await findByText(sponsor.name)).toBeInTheDocument()
-//   }
-
-//   const iconData = {
-//     url: faker.internet.url(),
-//     name: faker.random.word(),
-//   }
-//   const withIcon: ObvioEvent = {...event, sponsor_question_icon: iconData}
-//   mockPost.mockImplementationOnce(() => Promise.resolve({data: withIcon}))
-
-//   const icon = new File([], 'question_icon.png')
-//   const iconInput = await findByLabelText('question icon input')
-//   Object.defineProperty(iconInput, 'files', {
-//     value: [icon],
-//   })
-//   fireEvent.change(iconInput)
-
-//   await wait(() => {
-//     expect(mockPost).toHaveBeenCalledTimes(1)
-//   })
-
-//   const [uploadUrl, uploadData] = mockPost.mock.calls[0]
-
-//   expect(uploadUrl).toMatch(`/events/${event.slug}`)
-//   expect(uploadData.get('sponsor_question_icon')).toBe(icon)
-
-//   const iconRemoved = {
-//     ...event,
-//     sponsor_question_icon: null,
-//   }
-
-//   mockPut.mockImplementationOnce(() => Promise.resolve(iconRemoved))
-
-//   user.click(await findByLabelText('remove sponsor question icon'))
-
-//   await wait(() => {
-//     expect(mockPut).toHaveBeenCalledTimes(1)
-//   })
-
-//   const [removeUrl, removeData] = mockPut.mock.calls[0]
-
-//   expect(removeUrl).toMatch(`/events/${event.slug}`)
-//   expect(removeData.sponsor_question_icon).toBe(null)
-// })
-
-// it('should add a sponsor', async () => {
-//   const numSponsors = faker.random.number({min: 2, max: 5})
-
-//   const sponsors = Array.from({length: numSponsors}, () =>
-//     fakeSponsor({image: null}),
-//   )
-
-//   const event = fakeEvent()
-//   const {findByText, findByLabelText} = await goToSponsorConfig({
-//     event,
-//     userPermissions: [CONFIGURE_EVENTS],
-//     sponsors,
-//   })
-
-//   for (const sponsor of sponsors) {
-//     expect(await findByText(sponsor.name)).toBeInTheDocument()
-//   }
-
-//   const newSponsor = fakeSponsor()
-
-//   mockPost.mockImplementationOnce(() => Promise.resolve({data: newSponsor}))
-
-//   user.click(await findByLabelText('add sponsor'))
-//   await wait(() => {
-//     expect(mockPost).toHaveBeenCalledTimes(1)
-//   })
-
-//   user.click(await findByLabelText('close dialog'))
-
-//   expect(await findByText(newSponsor.name)).toBeInTheDocument()
-// })
+  expect(await findByText(newSponsor.name)).toBeInTheDocument()
+})

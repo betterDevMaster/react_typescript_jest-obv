@@ -5,17 +5,19 @@ import IconButton from 'lib/ui/IconButton'
 import {grey} from '@material-ui/core/colors'
 import MuiDialog, {DialogProps} from '@material-ui/core/Dialog'
 
-export default function Dialog(props: {
-  children: React.ReactElement | React.ReactElement[]
-  open: boolean
-  onClose: () => void
-  fullWidth?: DialogProps['fullWidth']
-}) {
+export default function Dialog(
+  props: {
+    children: React.ReactElement | React.ReactElement[]
+    open: boolean
+    onClose: () => void
+  } & DialogProps,
+) {
   return (
     <MuiDialog
       open={props.open}
       onClose={props.onClose}
       fullWidth={props.fullWidth}
+      disableEnforceFocus={props.disableEnforceFocus}
     >
       <CloseButton onClick={props.onClose} aria-label="close dialog">
         <CloseIcon fontSize="small" />

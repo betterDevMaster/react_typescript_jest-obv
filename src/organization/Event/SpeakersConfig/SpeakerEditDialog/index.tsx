@@ -17,7 +17,12 @@ export default function SpeakerEditDialog(props: {
 }) {
   const visible = Boolean(props.speaker)
   return (
-    <Dialog open={visible} onClose={props.onClose} fullWidth>
+    <Dialog
+      open={visible}
+      onClose={props.onClose}
+      fullWidth
+      disableEnforceFocus
+    >
       <CloseButton onClick={props.onClose} aria-label="close config dialog">
         <CloseIcon fontSize="small" />
       </CloseButton>
