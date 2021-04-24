@@ -24,6 +24,7 @@ export default function ActionsTable(props: {
           <TableCell align="center">Points</TableCell>
           <TableCell align="center">Max per Day</TableCell>
           <TableCell align="center">Max per Event</TableCell>
+          <TableCell align="center">Min Interval (Minutes)</TableCell>
           <TableCell align="center">Platform Action</TableCell>
           <TableCell align="center">Active</TableCell>
         </TableRow>
@@ -37,6 +38,9 @@ export default function ActionsTable(props: {
             <TableCell align="center">{points(action)}</TableCell>
             <TableCell align="center">{action.max_per_day || '-'}</TableCell>
             <TableCell align="center">{action.max_per_event || '-'}</TableCell>
+            <TableCell align="center">
+              {action.min_interval_minutes || '-'}
+            </TableCell>
             <TableCell align="center">
               <PlatformActionSelect
                 action={action}

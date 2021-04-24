@@ -12,5 +12,6 @@ export const fakeAction = (overrides?: Partial<Action>): Action => ({
   has_random_points: false,
   random_min_points: null,
   random_max_points: null,
+  min_interval_minutes: null,
   ...overrides,
 })

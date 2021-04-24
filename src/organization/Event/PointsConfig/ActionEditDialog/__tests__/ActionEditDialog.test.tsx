@@ -27,6 +27,9 @@ it('edit an action', async () => {
   const points = faker.random.number({min: 1, max: 100})
   user.type(await findByLabelText('action points'), String(points))
 
+  const minInterval = faker.random.number({min: 1, max: 100})
+  user.type(await findByLabelText('action min interval'), String(minInterval))
+
   const hasMaxPerDay = faker.random.boolean()
 
   const shouldToggleMaxPerDay = hasMaxPerDay && !target.max_per_day
@@ -68,6 +71,7 @@ it('edit an action', async () => {
 
   expect(data.description).toBe(description)
   expect(data.points).toBe(String(points))
+  expect(data.min_interval_minutes).toBe(String(minInterval))
 
   if (hasMaxPerDay) {
     expect(data.max_per_day).toBe(String(numTimesPerDay))
