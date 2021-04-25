@@ -9,9 +9,9 @@ import ClassicEditor from 'obvio-ckeditor'
  * resource: https://ckeditor.com/docs/ckeditor5/latest/builds/guides/integration/configuration.html
  */
 const toolbar = [
-  'mediaEmbed',
   'heading',
   '|',
+  'mediaEmbed',
   'bold',
   'italic',
   'blockQuote',
