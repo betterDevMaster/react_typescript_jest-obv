@@ -41,6 +41,14 @@ export default function TextEditor(props: {
         onChange={updateValue}
         config={{
           toolbar,
+
+          /**
+           * Required for media embed to render in HTML
+           */
+
+          mediaEmbed: {
+            previewsInData: true,
+          },
         }}
       />
       <CkPopupZIndex />
