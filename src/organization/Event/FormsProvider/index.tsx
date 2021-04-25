@@ -27,7 +27,7 @@ export const FormsContext = React.createContext<FormsContextProps | undefined>(
 )
 
 export default function FormsProvider(props: {children: React.ReactElement}) {
-  const {event, update: updateEvent} = useEvent()
+  const {event, set: updateEvent} = useEvent()
 
   const setForms = (forms: Form[]) => {
     updateEvent({

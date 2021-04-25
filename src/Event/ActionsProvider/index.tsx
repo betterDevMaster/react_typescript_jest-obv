@@ -16,6 +16,7 @@ export interface Action {
   has_random_points: boolean
   random_min_points: number | null
   random_max_points: number | null
+  min_interval_minutes: number | null
 }
 
 export type ActionsContextProps = ReturnType<typeof useActionsList>

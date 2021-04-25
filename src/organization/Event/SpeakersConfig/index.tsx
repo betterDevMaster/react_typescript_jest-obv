@@ -61,7 +61,7 @@ export default function SpeakersConfig() {
 }
 
 function useSpeakers() {
-  const {event, update: updateOvioEvent} = useEvent()
+  const {event, set: updateOvioEvent} = useEvent()
   const {speaker_page: page} = event
   const [speakers, setSpeakers] = useState<Speaker[]>([])
 

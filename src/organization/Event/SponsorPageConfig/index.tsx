@@ -53,6 +53,7 @@ export default function SponsorPageConfig() {
                   variant="outlined"
                   color="primary"
                   onClick={togglePageSettings}
+                  aria-label="configure sponsor page"
                 >
                   Page Settings
                 </Button>

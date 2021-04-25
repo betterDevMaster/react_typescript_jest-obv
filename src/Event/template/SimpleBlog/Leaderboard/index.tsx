@@ -1,7 +1,7 @@
 import {Attendee} from 'Event/attendee'
 import styled from 'styled-components'
 import Page from 'Event/template/SimpleBlog/Page'
-
+import {Link} from 'react-router-dom'
 import React, {useCallback, useEffect, useState} from 'react'
 import Table from '@material-ui/core/Table'
 import TableHead from '@material-ui/core/TableHead'
@@ -11,19 +11,35 @@ import TableBody from '@material-ui/core/TableBody'
 import {useEvent} from 'Event/EventProvider'
 import {api} from 'lib/url'
 import {useAsync} from 'lib/async'
-import {useAttendee} from 'Event/auth'
 import {usePoints} from 'Event/PointsProvider'
 import {useTemplate} from 'Event/TemplateProvider'
 import {Entry} from 'Event/Leaderboard'
+import {useWithAttendeeData} from 'Event/auth/data'
+import {
+  DEFAULT_TITLE,
+  DEFAULT_DESCRIPTION,
+  DEFAULT_BACK_TO_DASHBOARD_TEXT_COLOR,
+  DEFAULT_BACK_TO_DASHBOARD_TEXT,
+} from 'Event/template/SimpleBlog/Leaderboard/LeaderboardConfig'
+
+const replace = (key: string, value: string, text: string) => {
+  const match = new RegExp(`{{${key}}}`, 'gi')
+  return text.replace(match, value)
+}
 
 export default function SimpleBlogLeaderboard(props: {user: Attendee}) {
   const [entries, setEntries] = useState<Entry[]>([])
   const {data: fetched} = useEntries()
-  const attendee = useAttendee()
   const {score} = usePoints()
-  const {points} = useTemplate()
-
+  const {points, leaderboard: leaderboardPage} = useTemplate()
   const unit = points ? points.unit : 'Points'
+
+  const withAttendeeData = useWithAttendeeData()
+  let description = leaderboardPage?.description || DEFAULT_DESCRIPTION
+  description = withAttendeeData(description)
+  description = replace('points', `${score.points}`, description)
+  description = replace('unit', unit, description)
+  description = replace('position', `${score.position}`, description)
 
   useEffect(() => {
     if (!fetched) {
@@ -35,21 +51,24 @@ export default function SimpleBlogLeaderboard(props: {user: Attendee}) {
 
   return (
     <Page user={props.user}>
-      <Title>Leaderboard</Title>
-      <Description>
-        <DescriptionText>
-          {attendee.first_name}, you have earned{' '}
-          <strong>
-            {score.points} {unit}
-          </strong>
-          , and you are currently number <strong>{score.position}</strong>.
-          Great Job!
-        </DescriptionText>
-        <DescriptionText em>
-          The list below is the top 200 point earners! If you don’t see your
-          name listed, there’s still time!
-        </DescriptionText>
-      </Description>
+      <Title>{leaderboardPage?.title || DEFAULT_TITLE}</Title>
+      <Description
+        dangerouslySetInnerHTML={{
+          __html: description,
+        }}
+      />
+      <Link
+        to="/"
+        style={{
+          color:
+            leaderboardPage?.backToDashboardTextColor ||
+            DEFAULT_BACK_TO_DASHBOARD_TEXT_COLOR,
+          lineHeight: 1.5,
+          marginBottom: 20,
+        }}
+      >
+        {leaderboardPage?.backToDashboardText || DEFAULT_BACK_TO_DASHBOARD_TEXT}
+      </Link>
       <Container>
         <Table>
           <TableHead>
@@ -97,22 +116,14 @@ const Title = styled.h2`
   text-align: center;
 `
 
+const Description = styled.div`
+  text-align: center;
+`
+
 const Container = styled.div`
   margin-bottom: ${(props) => props.theme.spacing[8]};
   display: flex;
   flex-direction: row;
   align-items: center;
   justify-content: center;
-`
-
-const Description = styled.div`
-  margin-bottom: ${(props) => props.theme.spacing[5]};
-`
-
-const DescriptionText = styled.p<{em?: boolean}>`
-  color: #000;
-  font-size: 21px;
-  line-height: 1.5;
-  text-align: center;
-  font-style: ${(props) => (props.em ? 'italic' : 'normal')};
 `

@@ -16,7 +16,7 @@ type SpeakerPageData = {
 export default function CreateSpeakerPageForm() {
   const [submitting, setSubmitting] = useState(false)
   const {register, handleSubmit} = useForm()
-  const {event, update: updateEvent} = useEvent()
+  const {event, set: setEvent} = useEvent()
   const {client} = useOrganization()
 
   const submit = (data: SpeakerPageData) => {
@@ -25,7 +25,7 @@ export default function CreateSpeakerPageForm() {
 
     client
       .post<ObvioEvent>(url, data)
-      .then(updateEvent)
+      .then(setEvent)
       .catch(() => {
         setSubmitting(false)
       })

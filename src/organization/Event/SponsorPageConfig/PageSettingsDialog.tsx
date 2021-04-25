@@ -33,7 +33,7 @@ export default function PageSettingsDialog(props: {
   visible: boolean
 }) {
   const {visible, onClose} = props
-  const {event, update: updateEvent} = useEvent()
+  const {event, set: updateEvent} = useEvent()
   const {handleSubmit, register} = useForm()
   const [processing, setProcessing] = useState(false)
   const template = useTemplate()
@@ -158,6 +158,7 @@ export default function PageSettingsDialog(props: {
               color="primary"
               fullWidth
               disabled={processing}
+              aria-label="save"
             >
               Save
             </Button>
@@ -267,7 +268,7 @@ function RemoveQuestionIconButton(props: {
   return (
     <DangerButton
       variant="outlined"
-      aria-label={`remove sponsor question icon`}
+      aria-label="remove sponsor question icon"
       onClick={props.onClick}
       disabled={props.disabled}
     >

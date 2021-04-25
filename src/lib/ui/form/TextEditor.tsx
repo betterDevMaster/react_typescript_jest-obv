@@ -11,6 +11,7 @@ import ClassicEditor from 'obvio-ckeditor'
 const toolbar = [
   'heading',
   '|',
+  'mediaEmbed',
   'bold',
   'italic',
   'blockQuote',
@@ -25,6 +26,7 @@ export default function TextEditor(props: {
   data: string
   onChange: (value: string) => void
   className?: string
+  disabled?: boolean
 }) {
   const updateValue = (_: any, editor: any) => {
     props.onChange(editor.getData())
@@ -33,11 +35,20 @@ export default function TextEditor(props: {
   return (
     <div className={props.className}>
       <CKEditor
+        disabled={props.disabled}
         editor={ClassicEditor}
         data={props.data}
         onChange={updateValue}
         config={{
           toolbar,
+
+          /**
+           * Required for media embed to render in HTML
+           */
+
+          mediaEmbed: {
+            previewsInData: true,
+          },
         }}
       />
       <CkPopupZIndex />

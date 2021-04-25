@@ -17,7 +17,7 @@ export default function UpdateEventForm() {
   const [responseError, setResponseError] = useState<
     ValidationError<EventData>
   >(null)
-  const {update: setEvent} = useEvent()
+  const {set: setEvent} = useEvent()
   const {event} = useEvent()
   const {routes: organizationRoutes} = useOrganization()
   const {

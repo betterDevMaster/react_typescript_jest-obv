@@ -9,7 +9,11 @@ import Body from 'Event/template/SimpleBlog/SponsorPage/SponsorList/Card/Body'
 
 export const DEFAULT_SPONSOR_IMAGE_SIZE = 4
 
-export default function Card(props: {sponsor: Sponsor; isEditMode?: boolean}) {
+export default function Card(props: {
+  sponsor: Sponsor
+  isEditMode?: boolean
+  className?: string
+}) {
   const {sponsor} = props
 
   const template = useTemplate()
@@ -18,7 +22,7 @@ export default function Card(props: {sponsor: Sponsor; isEditMode?: boolean}) {
   const contentSize = (12 - imageSize) as GridSize
 
   return (
-    <Box aria-label="sponsor">
+    <Box aria-label="sponsor" className={props.className}>
       <Grid container spacing={2}>
         <Left item xs={12} sm={imageSize}>
           <StyledImage sponsor={sponsor} isEditMode={props.isEditMode} />
@@ -51,7 +55,6 @@ function Buttons(props: {sponsor: Sponsor}) {
 }
 
 const Box = styled.div`
-  margin-bottom: ${(props) => props.theme.spacing[8]};
   display: flex;
   flex-direction: row;
   align-items: center;

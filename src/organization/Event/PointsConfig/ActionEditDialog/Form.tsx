@@ -23,6 +23,7 @@ export interface UpdateActionData {
   has_random_points: boolean
   random_min_points: number | null
   random_max_points: number | null
+  min_interval_minutes: number | null
 }
 
 export default function Form(props: {
@@ -64,6 +65,7 @@ export default function Form(props: {
     setValue('max_per_event', action.max_per_event)
     setValue('random_min_points', action.random_min_points)
     setValue('random_max_points', action.random_max_points)
+    setValue('min_interval_minutes', action.min_interval_minutes)
   }, [action, setValue, hasRandomPoints])
 
   if (!action) {
@@ -76,6 +78,7 @@ export default function Form(props: {
       max_per_day: hasMaxPerDay ? input.max_per_day : null,
       max_per_event: hasMaxPerEvent ? input.max_per_event : null,
       has_random_points: hasRandomPoints,
+      min_interval_minutes: input.min_interval_minutes,
     }
 
     setSubmitting(true)
@@ -115,6 +118,11 @@ export default function Form(props: {
   })
 
   const maxPerEventError = fieldError('max_per_event', {
+    form: errors,
+    response: serverError,
+  })
+
+  const minIntervalError = fieldError('min_interval_minutes', {
     form: errors,
     response: serverError,
   })
@@ -215,6 +223,20 @@ export default function Form(props: {
         error={Boolean(maxPerEventError)}
         helperText={maxPerEventError}
         disabled={!hasMaxPerEvent || submitting}
+      />
+      <TextField
+        name="min_interval_minutes"
+        label="Min interval (minutes) between earning points"
+        fullWidth
+        type="number"
+        inputProps={{
+          ref: register,
+          'aria-label': 'action min interval',
+          min: 1,
+        }}
+        error={Boolean(minIntervalError)}
+        helperText={minIntervalError}
+        disabled={submitting}
       />
       <div>
         <SaveButton

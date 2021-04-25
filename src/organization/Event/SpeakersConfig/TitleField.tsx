@@ -10,7 +10,7 @@ import {onChangeStringHandler} from 'lib/dom'
 
 export default function TitleField(props: {page: SpeakerPage}) {
   const [title, setTitle] = useState(props.page.title)
-  const {event, update: updateEvent} = useEvent()
+  const {event, set: setEvent} = useEvent()
   const {client} = useOrganization()
   const [processing, setProcessing] = useState(false)
   const hasUpdate = title !== props.page.title
@@ -28,7 +28,7 @@ export default function TitleField(props: {page: SpeakerPage}) {
       .post<ObvioEvent>(url, {
         title,
       })
-      .then(updateEvent)
+      .then(setEvent)
       .catch(() => {
         setProcessing(false)
       })
