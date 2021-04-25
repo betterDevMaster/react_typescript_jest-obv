@@ -140,7 +140,7 @@ const Box = styled.div<{
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
-  ${(props) => (props.disableShadow ? '' : `box-shadow: 20px 20px 20px #ddd;`)}
+  ${(props) => (props.disableShadow ? '' : `box-shadow: 20px 20px 50px #ddd;`)}
 `
 
 const ColorOverlay = styled.div<{
