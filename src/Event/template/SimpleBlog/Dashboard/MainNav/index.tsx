@@ -89,8 +89,8 @@ function useHandleDrag() {
 }
 
 const Box = styled.div`
-  margin-bottom: ${(props)=>props.theme.spacing[7]};
-  margin-top: ${(props)=>props.theme.spacing[7]};
+  margin-bottom: ${(props) => props.theme.spacing[7]};
+  margin-top: ${(props) => props.theme.spacing[7]};
   width: 100%;
 `
 
