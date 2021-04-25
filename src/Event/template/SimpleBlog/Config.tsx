@@ -3,15 +3,11 @@ import {
   useUpdateObject,
   useUpdatePrimitive,
 } from 'Event/TemplateProvider'
-import {
-  onChangeStringHandler,
-  onUnknownChangeHandler,
-  onChangeCheckedHandler,
-} from 'lib/dom'
+import {onChangeStringHandler, onUnknownChangeHandler} from 'lib/dom'
 import {useEvent} from 'Event/EventProvider'
 import EventImageUpload from 'organization/Event/DashboardConfig/EventImageUpload'
 import ColorPicker from 'lib/ui/ColorPicker'
-import React, {useState} from 'react'
+import React from 'react'
 import {SIMPLE_BLOG} from 'Event/template/SimpleBlog'
 import Grid from '@material-ui/core/Grid'
 import Slider from '@material-ui/core/Slider'
@@ -40,7 +36,7 @@ export function SimpleBlogConfig() {
   const updateBackgroundPosition = useUpdatePrimitive('backgroundPosition')
 
   const handleSwitchCollapsed = () => {
-    updateHeader('isCollapsed')(template.header.isCollapsed !== true)
+    updateHeader('isCollapsed')(!template.header.isCollapsed)
   }
 
   return (
@@ -56,7 +52,7 @@ export function SimpleBlogConfig() {
         <Grid container>
           <Grid item xs={12} md={6}>
             <Switch
-              checked={template.header.isCollapsed !== true}
+              checked={!template.header.isCollapsed}
               onChange={handleSwitchCollapsed}
               arial-label="config header background image visible switch"
               labelPlacement="start"
@@ -182,13 +178,13 @@ function DropShawdowToggle() {
   const updateHeader = useUpdateObject('header')
 
   const handleSwitchCollapsed = () => {
-    updateHeader('disableShadow')(template.header.disableShadow !== true)
+    updateHeader('disableShadow')(!template.header.disableShadow)
   }
 
   if (Boolean(template.header.isCollapsed)) return null
   return (
     <Switch
-      checked={template.header.disableShadow !== true}
+      checked={!template.header.disableShadow}
       onChange={handleSwitchCollapsed}
       arial-label="config header dropShawdowVisible visible switch"
       labelPlacement="start"
