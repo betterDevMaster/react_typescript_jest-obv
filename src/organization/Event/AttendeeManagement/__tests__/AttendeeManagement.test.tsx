@@ -196,10 +196,10 @@ it('should search for an attendee', async () => {
   })
 
   await wait(() => {
-    expect(mockGet).toHaveBeenCalledTimes(10)
+    expect(mockGet).toHaveBeenCalledTimes(11)
   })
 
-  const [url] = mockGet.mock.calls[9]
+  const [url] = mockGet.mock.calls[10]
 
   expect(url).toMatch(`search=${target.first_name}`)
 
