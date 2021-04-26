@@ -11,6 +11,7 @@ import {Area} from 'organization/Event/AreasProvider'
 import React from 'react'
 import {Redirect} from 'react-router-dom'
 import {Form} from 'organization/Event/FormsProvider'
+import {Speaker} from './SpeakerPage'
 
 // Can't use 'Event' because that's already a native DOM type
 // for browser events and we'd lose TS safety/import assist.
@@ -24,7 +25,6 @@ export interface ObvioEvent {
   num_attendees: number
   template: Template | null
   waiver: WaiverConfig | null
-  speaker_page: SpeakerPage | null
   tech_check: TechCheckConfig | null
   logo: PublicFile | null
   header_background: PublicFile | null
@@ -41,6 +41,7 @@ export interface ObvioEvent {
   footer_image: PublicFile | null
   sponsor_page_title: string
   sponsor_question_icon: PublicFile | null
+  speakers: Speaker[]
 }
 
 export interface WaiverConfig {
@@ -56,18 +57,6 @@ export interface TechCheckConfig {
   start: string
   is_enabled: boolean
   area: Area
-}
-
-export interface SpeakerPage {
-  title: string
-  speakers: Speaker[]
-}
-
-export interface Speaker {
-  id: number
-  image: PublicFile | null
-  name: string
-  text: string
 }
 
 export default function Event() {

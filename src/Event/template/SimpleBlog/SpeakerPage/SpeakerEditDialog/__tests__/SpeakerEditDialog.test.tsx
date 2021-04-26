@@ -1,11 +1,11 @@
 import faker from 'faker'
-import {fakeEvent, fakeSpeaker, fakeSpeakerPage} from 'Event/__utils__/factory'
-import {goToSpeakerConfig} from 'organization/Event/SpeakersConfig/__utils__/go-to-speaker-config'
+import {fakeEvent, fakeSpeaker} from 'Event/__utils__/factory'
+import {goToSpeakerConfig} from 'organization/Event/SpeakerPageConfig/__utils__/go-to-speaker-config'
 import axios from 'axios'
 import user from '@testing-library/user-event'
 import {fireEvent, wait} from '@testing-library/react'
-import {Speaker} from 'Event'
 import {CONFIGURE_EVENTS} from 'organization/PermissionsProvider'
+import {Speaker} from 'Event/SpeakerPage'
 
 const mockPost = axios.post as jest.Mock
 const mockDelete = axios.delete as jest.Mock
@@ -21,7 +21,7 @@ it('should edit a speaker', async () => {
     () => fakeSpeaker({image: null}),
   )
 
-  const event = fakeEvent({speaker_page: fakeSpeakerPage({speakers})})
+  const event = fakeEvent({speakers})
   const {
     findAllByLabelText,
     findByText,
@@ -72,7 +72,7 @@ it('should edit a speaker', async () => {
 
   // Updated image
   const numPlaceholderImages = speakers.length - 1
-  expect((await findAllByLabelText('placeholder image')).length).toBe(
+  expect((await findAllByLabelText('speaker placeholder image')).length).toBe(
     numPlaceholderImages,
   )
 
@@ -89,7 +89,7 @@ it('remove a speaker', async () => {
     () => fakeSpeaker({image: null}),
   )
 
-  const event = fakeEvent({speaker_page: fakeSpeakerPage({speakers})})
+  const event = fakeEvent({speakers})
   const {
     findAllByLabelText,
     queryByText,

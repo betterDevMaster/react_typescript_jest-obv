@@ -5,15 +5,15 @@ import {useForm} from 'react-hook-form'
 import TextField from '@material-ui/core/TextField'
 import Button from '@material-ui/core/Button'
 import withStyles from '@material-ui/core/styles/withStyles'
-import {Speaker} from 'Event'
-import {useEvent} from 'Event/EventProvider'
 import {useOrganization} from 'organization/OrganizationProvider'
 import {api} from 'lib/url'
 import {fieldError} from 'lib/form'
 import {ValidationError} from 'lib/api-client'
-import UploadedImage from 'organization/Event/SpeakersConfig/SpeakerEditDialog/Form/UploadedImage'
 import {fetchFile} from 'lib/http-client'
+import UploadedImage from 'Event/template/SimpleBlog/SpeakerPage/SpeakerEditDialog/Form/UploadedImage'
 import TextEditor, {TextEditorContainer} from 'lib/ui/form/TextEditor'
+import {Speaker} from 'Event/SpeakerPage'
+import {useSpeakers} from 'organization/Event/SpeakersProvider'
 
 const imageUploadId = 'speaker-image-upload'
 
@@ -24,17 +24,17 @@ export interface UpdateSpeakerData {
 
 export default function EditSpeakerForm(props: {
   speaker: Speaker | null
-  onComplete: (speaker: Speaker) => void
-  onRemove: () => void
+  onDone: () => void
 }) {
   const {register, handleSubmit, watch, setValue, errors} = useForm()
   const [submitting, setSubmitting] = useState(false)
   const [image, setImage] = useState<null | File>(null)
   const {speaker} = props
-  const {event} = useEvent()
   const {client} = useOrganization()
   const [serverError, setServerError] = useState<ValidationError<any>>(null)
   const [loading, setLoading] = useState(true)
+
+  const {update, remove} = useSpeakers()
 
   const mounted = useRef(true)
 
@@ -77,7 +77,7 @@ export default function EditSpeakerForm(props: {
       formData.set('text', data.text)
     }
 
-    const url = api(`/events/${event.slug}/speaker_page/speaker/${speaker.id}`)
+    const url = api(`/speakers/${speaker.id}`)
 
     client
       .post<Speaker>(url, formData, {
@@ -85,9 +85,12 @@ export default function EditSpeakerForm(props: {
           'content-type': 'multipart/form-data',
         },
       })
-      .then(props.onComplete)
-      .catch(setServerError)
-      .finally(() => {
+      .then((speaker) => {
+        update(speaker)
+        props.onDone()
+      })
+      .catch((e) => {
+        setServerError(e)
         setSubmitting(false)
       })
   }
@@ -107,14 +110,17 @@ export default function EditSpeakerForm(props: {
     return null
   }
 
-  const remove = () => {
+  const handleRemove = () => {
     setSubmitting(true)
-    const url = api(`/events/${event.slug}/speaker_page/speaker/${speaker.id}`)
+    const url = api(`/speakers/${speaker.id}`)
 
     client
       .delete<Speaker>(url)
-      .then(props.onRemove)
-      .finally(() => {
+      .then(() => {
+        remove(speaker)
+        props.onDone()
+      })
+      .catch(() => {
         setSubmitting(false)
       })
   }
@@ -179,7 +185,7 @@ export default function EditSpeakerForm(props: {
         fullWidth
         variant="outlined"
         aria-label="remove speaker"
-        onClick={remove}
+        onClick={handleRemove}
         disabled={submitting}
       >
         REMOVE

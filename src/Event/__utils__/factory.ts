@@ -1,6 +1,7 @@
-import {ObvioEvent, Speaker} from 'Event'
+import {ObvioEvent} from 'Event'
 import {fakeAttendee} from 'Event/auth/__utils__/factory'
 import {Entry} from 'Event/Leaderboard'
+import {Speaker} from 'Event/SpeakerPage'
 import {Sponsor} from 'Event/SponsorPage'
 import {fakeSimpleBlog} from 'Event/template/SimpleBlog/__utils__/factory'
 import faker from 'faker'
@@ -16,7 +17,7 @@ export const fakeEvent = (overrides?: Partial<ObvioEvent>): ObvioEvent => ({
   has_ended: false,
   num_attendees: 10,
   template: fakeSimpleBlog(),
-  speaker_page: {title: 'SPEAKERS', speakers: []},
+  speakers: [],
   waiver: fakeWaiver(),
   tech_check: fakeTechCheck(),
   logo: null,
@@ -78,14 +79,6 @@ export function fakeTechCheck(
     ...overrides,
   }
 }
-
-export const fakeSpeakerPage = (
-  overrides?: Partial<ObvioEvent['speaker_page']>,
-): ObvioEvent['speaker_page'] => ({
-  title: `Speakers ${faker.random.words(3)}`,
-  speakers: [],
-  ...overrides,
-})
 
 export const fakeSpeaker = (overrides?: Partial<Speaker>): Speaker => ({
   id: faker.random.number({min: 1000, max: 10000}),

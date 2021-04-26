@@ -3,7 +3,7 @@ import WaiverConfig from 'organization/Event/WaiverConfig'
 import TechCheckConfig from 'organization/Event/TechCheckConfig'
 import AttendeeManagement from 'organization/Event/AttendeeManagement'
 import Emoji from 'organization/Event/EmojiPage'
-import SpeakerConfig from 'organization/Event/SpeakersConfig'
+import SpeakerPageConfig from 'organization/Event/SpeakerPageConfig'
 import {useOrganization} from 'organization/OrganizationProvider'
 import React from 'react'
 import {Redirect, Route, Switch} from 'react-router-dom'
@@ -37,6 +37,7 @@ import {useEvent} from 'Event/EventProvider'
 import SelectTemplateForm from 'organization/Event/SelectTemplateForm'
 import TemplateProvider from 'Event/TemplateProvider'
 import SponsorsProvider from 'organization/Event/SponsorsProvider'
+import SpeakersProvider from 'organization/Event/SpeakersProvider'
 
 export type EventRoutes = ReturnType<typeof useEventRoutes>
 
@@ -114,7 +115,9 @@ export default function EventRoutes() {
         </Route>
         <Route path={routes.events[':event'].speakers}>
           <AuthorizedPage permission={CONFIGURE_EVENTS}>
-            <SpeakerConfig />
+            <SpeakersProvider>
+              <SpeakerPageConfig />
+            </SpeakersProvider>
           </AuthorizedPage>
         </Route>
         <Route path={routes.events[':event'].sponsors}>

@@ -1,7 +1,7 @@
 import faker from 'faker'
 import user from '@testing-library/user-event'
-import {fakeEvent, fakeSpeaker, fakeSpeakerPage} from 'Event/__utils__/factory'
-import {goToSpeakerConfig} from 'organization/Event/SpeakersConfig/__utils__/go-to-speaker-config'
+import {fakeEvent, fakeSpeaker} from 'Event/__utils__/factory'
+import {goToSpeakerConfig} from 'organization/Event/SpeakerPageConfig/__utils__/go-to-speaker-config'
 import axios from 'axios'
 import {wait} from '@testing-library/react'
 import {CONFIGURE_EVENTS} from 'organization/PermissionsProvider'
@@ -18,7 +18,7 @@ it('should add a new speaker', async () => {
     fakeSpeaker,
   )
 
-  const event = fakeEvent({speaker_page: fakeSpeakerPage({speakers})})
+  const event = fakeEvent({speakers})
   const {
     findByLabelText,
     findByText,

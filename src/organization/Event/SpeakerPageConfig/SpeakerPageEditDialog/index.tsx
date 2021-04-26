@@ -6,16 +6,14 @@ import DialogTitle from '@material-ui/core/DialogTitle'
 import CloseIcon from '@material-ui/icons/Close'
 import grey from '@material-ui/core/colors/grey'
 import IconButton from 'lib/ui/IconButton'
-import {Speaker} from 'Event'
-import EditSpeakerForm from 'organization/Event/SpeakersConfig/SpeakerEditDialog/Form'
+import EditSpeakerPageForm from 'organization/Event/SpeakerPageConfig/SpeakerPageEditDialog/Form'
 
-export default function SpeakerEditDialog(props: {
+export default function SpeakerPageEditDialog(props: {
   onClose: () => void
-  speaker: Speaker | null
-  onComplete: (speaker: Speaker) => void
-  onRemove: () => void
+  visible: boolean
 }) {
-  const visible = Boolean(props.speaker)
+  const {visible, onClose} = props
+
   return (
     <Dialog
       open={visible}
@@ -26,13 +24,9 @@ export default function SpeakerEditDialog(props: {
       <CloseButton onClick={props.onClose} aria-label="close config dialog">
         <CloseIcon fontSize="small" />
       </CloseButton>
-      <DialogTitle>Edit</DialogTitle>
+      <DialogTitle>Speakers Page</DialogTitle>
       <DialogContent>
-        <EditSpeakerForm
-          speaker={props.speaker}
-          onComplete={props.onComplete}
-          onRemove={props.onRemove}
-        />
+        <EditSpeakerPageForm onClose={onClose} />
       </DialogContent>
     </Dialog>
   )

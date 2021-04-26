@@ -3,7 +3,7 @@ import {Button} from '@material-ui/core'
 import {useEvent} from 'Event/EventProvider'
 import {useOrganization} from 'organization/OrganizationProvider'
 import {api} from 'lib/url'
-import {Speaker} from 'Event'
+import {Speaker} from 'Event/SpeakerPage'
 
 export interface AddSpeakerData {
   name: string
@@ -49,7 +49,7 @@ export default function AddSpeakerButton(props: {
 function useAddSpeaker() {
   const {event} = useEvent()
   const {client} = useOrganization()
-  const url = api(`/events/${event.slug}/speaker_page/speaker`)
+  const url = api(`/events/${event.slug}/speakers`)
 
   const data: AddSpeakerData = {
     name: 'Speaker',

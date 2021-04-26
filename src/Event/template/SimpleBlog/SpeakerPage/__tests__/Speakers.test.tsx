@@ -1,5 +1,5 @@
 import faker from 'faker'
-import {fakeEvent, fakeSpeaker, fakeSpeakerPage} from 'Event/__utils__/factory'
+import {fakeEvent, fakeSpeaker} from 'Event/__utils__/factory'
 import {loginToEventSite} from 'Event/__utils__/url'
 import user from '@testing-library/user-event'
 import {fakeAttendee} from 'Event/auth/__utils__/factory'
@@ -20,10 +20,10 @@ it('should render speakers', async () => {
   })
 
   const event = fakeEvent({
-    speaker_page: fakeSpeakerPage({speakers}),
     template: fakeSimpleBlog({
       mainNav: createEntityList([button]),
     }),
+    speakers,
   })
 
   const {findByText, findAllByLabelText} = await loginToEventSite({

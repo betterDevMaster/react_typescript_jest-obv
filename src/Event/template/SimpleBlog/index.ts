@@ -1,3 +1,7 @@
+import {
+  DEFAULT_TITLE as DEFAULT_SPEAKER_PAGE_TITLE,
+  DEFAULT_BACK_TO_DASHBOARD_TEXT as DEFAULT_SPEAKER_PAGE_BACK_TO_DASHBOARD_TEXT,
+} from 'organization/Event/SpeakerPageConfig/SpeakerPageEditDialog/Form/index'
 import {ResourceList} from 'Event/Dashboard/components/ResourceList'
 import {Points} from 'Event/Dashboard/components/PointsSummary'
 import {Agenda} from 'Event/Dashboard/components/AgendaList'
@@ -5,7 +9,6 @@ import {BlogPost} from 'Event/Dashboard/components/BlogPost'
 import {EmojiList} from 'Event/Dashboard/components/EmojiList'
 import {Sidebar} from 'Event/template/SimpleBlog/Dashboard/Sidebar/SidebarContainer'
 import {Header} from 'Event/template/SimpleBlog/Dashboard/Header'
-
 import {TicketRibbon} from 'Event/Dashboard/components/TicketRibbonList/TicketRibbon'
 import NavButton, {
   NavButtonWithSize,
@@ -118,6 +121,14 @@ export interface SimpleBlog {
   sponsors?: {
     imageSize?: Column
   }
+  speakers?: {
+    title?: string
+    description?: string
+    backToDashboardText?: string
+    backToDashboardTextColor?: string
+    speakerImageSize?: Column
+    speakersSpace?: number
+  }
 }
 
 export const createSimpleBlog = (): SimpleBlog => ({
@@ -219,5 +230,9 @@ export const createSimpleBlog = (): SimpleBlog => ({
   bodyHTMLEmbed: null,
   sponsors: {
     imageSize: DEFAULT_SPONSOR_IMAGE_SIZE,
+  },
+  speakers: {
+    title: DEFAULT_SPEAKER_PAGE_TITLE,
+    backToDashboardText: DEFAULT_SPEAKER_PAGE_BACK_TO_DASHBOARD_TEXT,
   },
 })
