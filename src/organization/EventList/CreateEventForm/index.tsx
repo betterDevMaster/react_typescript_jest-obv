@@ -12,14 +12,16 @@ import Page from 'organization/user/Layout/Page'
 import {ObvioEvent} from 'Event'
 import Layout from 'organization/user/Layout'
 import {useBreadcrumbs} from 'lib/ui/BreadcrumbProvider'
-import Form, {EventData} from 'organization/EventList/CreateEventForm/Form'
+import Form, {
+  CreateEventData,
+} from 'organization/EventList/CreateEventForm/Form'
 
 export default function CreateEventForm() {
   const {register, errors: formErrors, handleSubmit, watch, control} = useForm()
   const slug = watch('slug')
   const [submitting, setSubmitting] = useState(false)
   const [responseError, setResponseError] = useState<
-    ValidationError<EventData>
+    ValidationError<CreateEventData>
   >(null)
   const history = useHistory()
   const {routes, organization, client} = useOrganization()
@@ -30,7 +32,7 @@ export default function CreateEventForm() {
     history.push(routes.events.root)
   }
 
-  const submit = (data: EventData) => {
+  const submit = (data: CreateEventData) => {
     setSubmitting(true)
     createEvent(client, organization, data)
       .then(() => {
@@ -66,7 +68,7 @@ export default function CreateEventForm() {
 function createEvent(
   client: Client,
   organization: Organization,
-  data: EventData,
+  data: CreateEventData,
 ) {
   const url = api(`/organizations/${organization.slug}/events`)
   return client.post<ObvioEvent>(url, data)

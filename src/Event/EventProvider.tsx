@@ -166,6 +166,9 @@ export function useUpdate() {
 
   const url = api(`/events/${event.slug}`)
 
-  return (data: Partial<ObvioEvent>) =>
-    client.put<ObvioEvent>(url, data).then(setEvent)
+  return (data: Partial<ObvioEvent> | FormData) =>
+    client.put<ObvioEvent>(url, data).then((updated) => {
+      setEvent(updated)
+      return updated
+    })
 }

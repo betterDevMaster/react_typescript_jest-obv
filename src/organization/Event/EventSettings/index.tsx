@@ -1,23 +1,22 @@
 import React, {useEffect, useState} from 'react'
 import Layout from 'organization/user/Layout'
 import Page, {rootEventBreadcrumbs} from 'organization/Event/Page'
-import {useEvent} from 'Event/EventProvider'
+import {useEvent, useUpdate} from 'Event/EventProvider'
 import {useForm} from 'react-hook-form'
 import {useIsMounted} from 'lib/dom'
-import Form, {EventData} from 'organization/EventList/CreateEventForm/Form'
 import {ValidationError} from 'lib/api-client'
 import {useOrganization} from 'organization/OrganizationProvider'
-import {api, routesWithValue} from 'lib/url'
-import {ObvioEvent} from 'Event'
+import {routesWithValue} from 'lib/url'
 import {useBreadcrumbs} from 'lib/ui/BreadcrumbProvider'
+import Form, {UpdateEventData} from 'organization/Event/EventSettings/Form'
+import {useFileSelect} from 'lib/ui/form/file'
 
 export default function UpdateEventForm() {
   const [submitting, setSubmitting] = useState(false)
   const isMounted = useIsMounted()
   const [responseError, setResponseError] = useState<
-    ValidationError<EventData>
+    ValidationError<UpdateEventData>
   >(null)
-  const {set: setEvent} = useEvent()
   const {event} = useEvent()
   const {routes: organizationRoutes} = useOrganization()
   const {
@@ -31,6 +30,8 @@ export default function UpdateEventForm() {
   const {set: setBreadcrumbs} = useBreadcrumbs()
   const update = useUpdate()
 
+  const favicon = useFileSelect(event.favicon)
+
   useEffect(() => {
     if (!isMounted.current) {
       return
@@ -43,21 +44,41 @@ export default function UpdateEventForm() {
     setValue('num_attendees', event.num_attendees)
   }, [event, setValue, isMounted])
 
-  const submit = (data: EventData) => {
+  const data = (form: UpdateEventData) => {
+    if (favicon.selected) {
+      const formData = new FormData()
+      for (const [key, value] of Object.entries(form)) {
+        formData.set(key, String(value))
+      }
+
+      formData.set('favicon', favicon.selected)
+      return formData
+    }
+
+    if (favicon.wasRemoved) {
+      return {
+        ...form,
+        favicon: null,
+      }
+    }
+
+    return form
+  }
+
+  const submit = (form: UpdateEventData) => {
     if (submitting) {
       return
     }
 
     setSubmitting(true)
 
-    update(data)
+    update(data(form))
       .then((updated) => {
         const routes = routesWithValue(
           ':event',
           updated.slug,
           organizationRoutes.events[':event'],
         )
-        setEvent(updated)
 
         setBreadcrumbs(
           rootEventBreadcrumbs(organizationRoutes, routes, updated),
@@ -84,7 +105,9 @@ export default function UpdateEventForm() {
     slug !== event.slug ||
     start !== event.start ||
     end !== event.end ||
-    numAttendees !== String(event.num_attendees)
+    numAttendees !== String(event.num_attendees) ||
+    Boolean(favicon.selected) ||
+    favicon.wasRemoved
 
   return (
     <Layout>
@@ -99,16 +122,9 @@ export default function UpdateEventForm() {
           submitting={submitting}
           canSave={hasChanges}
           control={control}
+          favicon={favicon}
         />
       </Page>
     </Layout>
   )
-}
-
-function useUpdate() {
-  const {client} = useOrganization()
-  const {event} = useEvent()
-  const url = api(`/events/${event.slug}`)
-
-  return (data: Partial<ObvioEvent>) => client.put<ObvioEvent>(url, data)
 }

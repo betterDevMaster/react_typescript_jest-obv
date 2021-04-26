@@ -15,6 +15,7 @@ import Leaderboard from 'Event/Leaderboard'
 import UnderConstruction from 'Event/UnderConstruction'
 import TemplateProvider from 'Event/TemplateProvider'
 import CustomScripts from 'organization/Event/CustomScripts'
+import HTMLHead from 'Event/HTMLHead'
 import ForgotPassword from 'Event/auth/ForgotPassword'
 import ResetPassword from 'Event/auth/ResetPassword'
 import SponsorPage from 'Event/SponsorPage'
@@ -62,7 +63,9 @@ export default function Routes() {
           <TemplateProvider template={event.template}>
             <CustomScripts>
               <SubmissionsProvider>
-                <UserRoutes />
+                <HTMLHead>
+                  <UserRoutes />
+                </HTMLHead>
               </SubmissionsProvider>
             </CustomScripts>
           </TemplateProvider>
@@ -74,7 +77,9 @@ export default function Routes() {
   return (
     <TemplateProvider template={event.template}>
       <CustomScripts>
-        <GuestRoutes />
+        <HTMLHead>
+          <GuestRoutes />
+        </HTMLHead>
       </CustomScripts>
     </TemplateProvider>
   )

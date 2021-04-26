@@ -60,10 +60,7 @@ it('should add an event', async () => {
       },
     })
 
-    user.type(
-      await findByLabelText('expected number of atttendees'),
-      `${count}`,
-    )
+    user.type(await findByLabelText('expected number of attendees'), `${count}`)
   })
 
   mockPost.mockImplementationOnce(() => Promise.resolve({data: newEvent}))

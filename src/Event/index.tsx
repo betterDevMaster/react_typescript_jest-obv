@@ -32,6 +32,7 @@ export interface ObvioEvent {
   platform_actions: PlatformActions
   login_background: PublicFile | null
   login_logo: PublicFile | null
+  favicon: PublicFile | null
   forms: Form[]
   has_infusionsoft: boolean
   dashboard_background: PublicFile | null

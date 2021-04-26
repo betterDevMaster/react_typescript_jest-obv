@@ -10,7 +10,7 @@ import Typography from '@material-ui/core/Typography'
 import {AbsoluteLink} from 'lib/ui/link/AbsoluteLink'
 import {DATE_TIME_FORMAT, formatDate} from 'lib/date-time'
 import Box from '@material-ui/core/Box'
-import UpdateEventForm from 'organization/Event/UpdateEventForm'
+import UpdateEventForm from 'organization/Event/EventSettings'
 
 export default function Event() {
   const {can} = usePermissions()

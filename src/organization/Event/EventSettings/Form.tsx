@@ -1,4 +1,5 @@
 import Button from '@material-ui/core/Button'
+import styled from 'styled-components'
 import withStyles from '@material-ui/core/styles/withStyles'
 import TextField from '@material-ui/core/TextField'
 import Typography from '@material-ui/core/Typography'
@@ -10,8 +11,16 @@ import {ObvioEvent} from 'Event'
 import {fieldError} from 'lib/form'
 import {DateTimePicker} from '@material-ui/pickers'
 import moment from 'moment'
+import {FileSelect} from 'lib/ui/form/file'
+import ImageUpload, {
+  Image,
+  Label,
+  RemoveButton,
+  UploadButton,
+} from 'lib/ui/form/ImageUpload'
+import Box from '@material-ui/core/Box'
 
-export type CreateEventData = Pick<
+export type UpdateEventData = Pick<
   ObvioEvent,
   'name' | 'slug' | 'start' | 'end' | 'num_attendees'
 >
@@ -22,10 +31,11 @@ export default function Form(props: {
   formErrors: UseFormMethods['errors']
   submitting: boolean
   canSave?: boolean
-  responseError: ValidationError<CreateEventData>
+  responseError: ValidationError<UpdateEventData>
   slug?: string
   submitLabel: string
   control: UseFormMethods['control']
+  favicon: FileSelect
 }) {
   const {
     submitting,
@@ -41,7 +51,7 @@ export default function Form(props: {
 
   const canSave = props.canSave === undefined ? true : props.canSave
 
-  const error = (key: keyof CreateEventData) =>
+  const error = (key: keyof UpdateEventData) =>
     fieldError(key, {
       form: formErrors,
       response: responseError,
@@ -157,6 +167,20 @@ export default function Form(props: {
         helperText={errors.numAttendees}
         disabled={submitting}
       />
+      <Box mb={2}>
+        <ImageUpload file={props.favicon} disabled={submitting}>
+          <Label>Favicon</Label>
+          <FaviconBox>
+            <Image alt="favicon" />
+          </FaviconBox>
+          <UploadButton
+            inputProps={{
+              'aria-label': 'favicon input',
+            }}
+          />
+          <RemoveButton aria-label="remove favicon" />
+        </ImageUpload>
+      </Box>
       <Error>{responseError && responseError.message}</Error>
       <Button
         type="submit"
@@ -186,3 +210,7 @@ const ErrorText = withStyles({
     marginBottom: spacing[3],
   },
 })(Typography)
+
+const FaviconBox = styled.div`
+  width: 32px;
+`
