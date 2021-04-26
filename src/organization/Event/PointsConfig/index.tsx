@@ -54,7 +54,10 @@ function Content() {
   return (
     <>
       <ActionEditDialog action={editing} onClose={closeEditDialog} />
-      <LeaderboardPageSettingsDialog visible={pageSettingsVisible} onClose={togglePageSettings} />
+      <LeaderboardPageSettingsDialog
+        visible={pageSettingsVisible}
+        onClose={togglePageSettings}
+      />
       <Box>
         <ButtonContainer>
           <AddActionButton onAdd={edit} />

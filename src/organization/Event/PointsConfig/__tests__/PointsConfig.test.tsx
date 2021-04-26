@@ -32,7 +32,9 @@ it('should configure the leaderboard', async () => {
     userPermissions: [CONFIGURE_EVENTS],
   })
 
-  expect(await findByLabelText('configure leaderboard page')).toBeInTheDocument()
+  expect(
+    await findByLabelText('configure leaderboard page'),
+  ).toBeInTheDocument()
   user.click(await findByLabelText('configure leaderboard page'))
 
   const title = faker.random.words(3)
