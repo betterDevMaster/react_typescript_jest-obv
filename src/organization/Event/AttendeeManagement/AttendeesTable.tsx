@@ -1,4 +1,4 @@
-import React from 'react'
+import React, {useCallback} from 'react'
 import styled from 'styled-components'
 import {colors} from 'lib/ui/theme'
 import {Attendee} from 'Event/attendee'
@@ -19,6 +19,10 @@ import AssignmentOutlined from '@material-ui/icons/AssignmentOutlined'
 import Box from '@material-ui/core/Box'
 import CircularProgress from '@material-ui/core/CircularProgress'
 import Typography from '@material-ui/core/Typography'
+import {useEvent} from 'Event/EventProvider'
+import {useAsync} from 'lib/async'
+import {api} from 'lib/url'
+import {useOrganization} from 'organization/OrganizationProvider'
 
 export default function AttendeesTable(props: {
   onSelectEdit: (attendee: Attendee) => () => void
@@ -29,10 +33,14 @@ export default function AttendeesTable(props: {
     groups,
     isCheckedIn,
     toggleCheckIn,
-    loading,
+    loading: loadingAttendees,
   } = useAttendees()
 
+  const numAttendees = useNumAttendees()
+
   const hasAttendees = attendees.length > 0
+
+  const loading = loadingAttendees || numAttendees.loading
 
   if (loading) {
     return (
@@ -51,65 +59,73 @@ export default function AttendeesTable(props: {
   }
 
   return (
-    <TableBox>
-      <Table>
-        <TableHead>
-          <TableRow>
-            <TableCell>Name</TableCell>
-            <TableCell>Email</TableCell>
-            {groups.map((group, index) => (
-              <TableCell key={index} aria-label="group">
-                {group}
-              </TableCell>
-            ))}
-            <HasPermission permission={CHECK_IN_ATTENDEES}>
-              <TableCell align="center">Check In</TableCell>
-            </HasPermission>
-            <TableCell>{/* Room Assignments Cell */}</TableCell>
-          </TableRow>
-        </TableHead>
-        <TableBody>
-          {attendees.map((attendee: Attendee) => (
-            <TableRow key={attendee.id}>
-              <TableCell component="th" scope="row" aria-label="name">
-                <EditButton
-                  variant="text"
-                  onClick={props.onSelectEdit(attendee)}
-                  textColor={colors.primary}
-                  aria-label="edit"
-                >
-                  {`${attendee.first_name} ${attendee.last_name}`}
-                </EditButton>
-              </TableCell>
-              <TableCell aria-label="email">{attendee.email}</TableCell>
-              {groups.map((key, index) => (
-                <TableCell key={index} aria-label={key}>
-                  {attendee.groups[key]}
+    <>
+      <Typography align="right" variant="subtitle1">
+        Showing {attendees.length} of {numAttendees.data?.num_attendees}{' '}
+        attendees
+      </Typography>
+      <TableBox>
+        <Table>
+          <TableHead>
+            <TableRow>
+              <TableCell>Name</TableCell>
+              <TableCell>Email</TableCell>
+              {groups.map((group, index) => (
+                <TableCell key={index} aria-label="group">
+                  {group}
                 </TableCell>
               ))}
               <HasPermission permission={CHECK_IN_ATTENDEES}>
-                <TableCell align="center">
-                  <ToggleCheckInButton
-                    isCheckedIn={isCheckedIn(attendee)}
-                    onClick={toggleCheckIn(attendee)}
-                  />
-                  <CheckedInAt>{attendee.tech_check_completed_at}</CheckedInAt>
-                </TableCell>
+                <TableCell align="center">Check In</TableCell>
               </HasPermission>
-              <TableCell>
-                <IconButton
-                  color="primary"
-                  onClick={props.onSelectAssignments(attendee)}
-                  aria-label="view room assignments"
-                >
-                  <AssignmentOutlined />
-                </IconButton>
-              </TableCell>
+              <TableCell>{/* Room Assignments Cell */}</TableCell>
             </TableRow>
-          ))}
-        </TableBody>
-      </Table>
-    </TableBox>
+          </TableHead>
+          <TableBody>
+            {attendees.map((attendee: Attendee) => (
+              <TableRow key={attendee.id}>
+                <TableCell component="th" scope="row" aria-label="name">
+                  <EditButton
+                    variant="text"
+                    onClick={props.onSelectEdit(attendee)}
+                    textColor={colors.primary}
+                    aria-label="edit"
+                  >
+                    {`${attendee.first_name} ${attendee.last_name}`}
+                  </EditButton>
+                </TableCell>
+                <TableCell aria-label="email">{attendee.email}</TableCell>
+                {groups.map((key, index) => (
+                  <TableCell key={index} aria-label={key}>
+                    {attendee.groups[key]}
+                  </TableCell>
+                ))}
+                <HasPermission permission={CHECK_IN_ATTENDEES}>
+                  <TableCell align="center">
+                    <ToggleCheckInButton
+                      isCheckedIn={isCheckedIn(attendee)}
+                      onClick={toggleCheckIn(attendee)}
+                    />
+                    <CheckedInAt>
+                      {attendee.tech_check_completed_at}
+                    </CheckedInAt>
+                  </TableCell>
+                </HasPermission>
+                <TableCell>
+                  <IconButton
+                    color="primary"
+                    onClick={props.onSelectAssignments(attendee)}
+                    aria-label="view room assignments"
+                  >
+                    <AssignmentOutlined />
+                  </IconButton>
+                </TableCell>
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
+      </TableBox>
+    </>
   )
 }
 
@@ -142,6 +158,21 @@ function ToggleCheckInButton(props: {
       Check-In
     </Button>
   )
+}
+
+function useNumAttendees() {
+  const {event} = useEvent()
+  const {client} = useOrganization()
+
+  const request = useCallback(
+    () =>
+      client.get<{num_attendees: number}>(
+        api(`/events/${event.slug}/attendees/count`),
+      ),
+    [event, client],
+  )
+
+  return useAsync(request)
 }
 
 function CheckedInAt(props: {children: Attendee['tech_check_completed_at']}) {
