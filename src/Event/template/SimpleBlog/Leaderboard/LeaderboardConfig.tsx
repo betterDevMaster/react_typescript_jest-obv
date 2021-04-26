@@ -17,7 +17,7 @@ export const DEFAULT_BACK_TO_DASHBOARD_TEXT_COLOR = '#000000'
 
 export type LeaderboardConfigData = NonNullable<SimpleBlog['leaderboard']>
 
-export default function LeaderboardConfig() {
+export default function LeaderboardConfig(props: {onComplete?: () => void}) {
   const template = useTemplate()
   const {leaderboard} = template
   const {register, control, handleSubmit} = useForm()
@@ -43,6 +43,7 @@ export default function LeaderboardConfig() {
 
     updateEvent({template: updated}).finally(() => {
       setProcessing(false)
+      props.onComplete && props.onComplete()
     })
   }
 

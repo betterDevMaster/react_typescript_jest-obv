@@ -48,12 +48,6 @@ function AuthorizedPages() {
         <ConfigNavItem to={routes.sponsors} aria-label="configure sponsors">
           Sponsors
         </ConfigNavItem>
-        <ConfigNavItem
-          to={routes.leaderboard}
-          aria-label="configure leaderboard"
-        >
-          Leaderboard
-        </ConfigNavItem>
         <ConfigNavItem to={routes.emoji} aria-label="view emoji page" newTab>
           Emoji Page
         </ConfigNavItem>
