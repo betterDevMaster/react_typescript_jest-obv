@@ -8,6 +8,10 @@ import Image from 'Event/template/SimpleBlog/SponsorPage/SponsorList/Card/Image'
 import Body from 'Event/template/SimpleBlog/SponsorPage/SponsorList/Card/Body'
 
 export const DEFAULT_SPONSOR_IMAGE_SIZE = 4
+export const DEFAULT_DESCRIPTION = ''
+export const DEFAULT_BACK_TO_DASHBOARD_TEXT = 'Back to Dashboard'
+export const DEFAULT_BACK_TO_DASHBOARD_TEXT_COLOR = '#000000'
+export const DEFAULT_SPONSORS_SPACE = 0
 
 export default function Card(props: {
   sponsor: Sponsor
