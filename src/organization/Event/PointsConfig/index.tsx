@@ -11,8 +11,8 @@ import ActionEditDialog from 'organization/Event/PointsConfig/ActionEditDialog'
 import Page from 'organization/Event/Page'
 import {OrganizationActionsProvider} from 'Event/ActionsProvider'
 import {onChangeCheckedHandler} from 'lib/dom'
-import {useToggleActions} from './active'
-import LeaderboardPageSettingsDialog from './LeaderboardPageSettingsDialog'
+import {useToggleActions} from 'organization/Event/PointsConfig/active'
+import LeaderboardSettingsDialog from 'organization/Event/PointsConfig/LeaderboardSettingsDialog'
 
 export default function PointsConfig() {
   return (
@@ -54,7 +54,7 @@ function Content() {
   return (
     <>
       <ActionEditDialog action={editing} onClose={closeEditDialog} />
-      <LeaderboardPageSettingsDialog
+      <LeaderboardSettingsDialog
         visible={pageSettingsVisible}
         onClose={togglePageSettings}
       />
@@ -67,7 +67,7 @@ function Content() {
             onClick={togglePageSettings}
             aria-label="configure leaderboard page"
           >
-            Leaderboard Page Settings
+            Leaderboard Settings
           </Button>
         </ButtonContainer>
         <Box>

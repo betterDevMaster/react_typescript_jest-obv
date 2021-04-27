@@ -5,7 +5,7 @@ import DialogTitle from '@material-ui/core/DialogTitle'
 import Dialog from 'lib/ui/Dialog'
 import LeaderboardConfig from 'Event/template/SimpleBlog/Leaderboard/LeaderboardConfig'
 
-export default function LeaderboardPageSettingsDialog(props: {
+export default function LeaderboardSettingsDialog(props: {
   onClose: () => void
   visible: boolean
 }) {
