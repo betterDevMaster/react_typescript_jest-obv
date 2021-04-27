@@ -8,8 +8,6 @@ import {Controller, useForm} from 'react-hook-form'
 import TextEditor from 'lib/ui/form/TextEditor'
 import Button from '@material-ui/core/Button'
 import TextField from '@material-ui/core/TextField'
-import MenuItem from '@material-ui/core/MenuItem'
-import Select from '@material-ui/core/Select'
 import InputLabel from '@material-ui/core/InputLabel'
 import FormControl from '@material-ui/core/FormControl'
 import DangerButton from 'lib/ui/Button/DangerButton'
@@ -21,14 +19,12 @@ import Buttons, {
 } from 'Event/template/SimpleBlog/SponsorPage/SponsorEditDialog/Form/Buttons'
 import ButtonConfig from 'Event/template/SimpleBlog/SponsorPage/SponsorEditDialog/Form/ButtonConfig'
 import {useSponsors} from 'organization/Event/SponsorsProvider'
-import {onUnknownChangeHandler} from 'lib/dom'
-import {useForms} from 'organization/Event/FormsProvider'
+import FormSelect from 'organization/Event/FormsProvider/FormSelect'
 
 export default function EditSponsorForm(props: {
   sponsor: Sponsor
   onDone: () => void
 }) {
-  const {forms} = useForms()
   const [formId, setFormId] = useState(0)
   const {register, handleSubmit, control, errors} = useForm()
   const [submitting, setSubmitting] = useState(false)
@@ -85,6 +81,12 @@ export default function EditSponsorForm(props: {
       })
   }
 
+  const handleSelectFormId = (formId: number | null) => {
+    if (formId) {
+      setFormId(formId)
+    }
+  }
+
   const nameError = fieldError('name', {form: errors, response: serverError})
 
   useEffect(() => {
@@ -135,22 +137,8 @@ export default function EditSponsorForm(props: {
         </Box>
         <Box mb={2}>
           <FormControl fullWidth>
-            <InputLabel htmlFor="question-form">
-                Question Form
-            </InputLabel>
-            <Select
-              value={formId}
-              fullWidth
-              onChange={onUnknownChangeHandler(
-                setFormId,
-              )}
-              inputProps={{
-                'aria-label': 'pick question form',
-              }}
-            >
-              <MenuItem value={0}>Select</MenuItem>
-              {forms.map((form) => <MenuItem value={form.id} key={form.id}>{form.name}</MenuItem>)}
-            </Select>
+            <InputLabel>Form</InputLabel>
+            <FormSelect value={formId} onChange={handleSelectFormId} />
           </FormControl>
         </Box>
         <SaveButton
