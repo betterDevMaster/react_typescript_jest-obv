@@ -27,7 +27,7 @@ import {
   DEFAULT_DESCRIPTION,
   DEFAULT_BACK_TO_DASHBOARD_TEXT,
   DEFAULT_BACK_TO_DASHBOARD_TEXT_COLOR,
-  DEFAULT_SPONSORS_SPACE
+  DEFAULT_SPONSORS_SPACE,
 } from 'Event/template/SimpleBlog/SponsorPage/SponsorList/Card'
 import ColorPicker from 'lib/ui/ColorPicker'
 
@@ -69,7 +69,7 @@ export default function PageSettingsDialog(props: {
     backToDashboardText,
     backToDashboardTextColor,
     sponsorsSpace,
-    sponsorsSeperator
+    sponsorsSeperator,
   }: SettingsFormData) => {
     const required = {
       sponsor_page_title,
@@ -81,7 +81,7 @@ export default function PageSettingsDialog(props: {
           backToDashboardText,
           backToDashboardTextColor,
           sponsorsSpace,
-          sponsorsSeperator
+          sponsorsSeperator,
         },
       },
     }
@@ -158,7 +158,9 @@ export default function PageSettingsDialog(props: {
             />
             <Controller
               name="description"
-              defaultValue={sponsorsPageSettings?.description || DEFAULT_DESCRIPTION}
+              defaultValue={
+                sponsorsPageSettings?.description || DEFAULT_DESCRIPTION
+              }
               control={control}
               render={({onChange, value}) => (
                 <TextEditorContainer>

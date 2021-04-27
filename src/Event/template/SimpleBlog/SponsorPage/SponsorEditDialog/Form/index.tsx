@@ -55,7 +55,7 @@ export default function EditSponsorForm(props: {
       ...data,
       settings: {
         buttons,
-        formId
+        formId,
       },
     }
 
@@ -135,21 +135,21 @@ export default function EditSponsorForm(props: {
         </Box>
         <Box mb={2}>
           <FormControl fullWidth>
-            <InputLabel htmlFor="question-form">
-                Question Form
-            </InputLabel>
+            <InputLabel htmlFor="question-form">Question Form</InputLabel>
             <Select
               value={formId}
               fullWidth
-              onChange={onUnknownChangeHandler(
-                setFormId,
-              )}
+              onChange={onUnknownChangeHandler(setFormId)}
               inputProps={{
                 'aria-label': 'pick question form',
               }}
             >
               <MenuItem value={0}>Select</MenuItem>
-              {forms.map((form) => <MenuItem value={form.id} key={form.id}>{form.name}</MenuItem>)}
+              {forms.map((form) => (
+                <MenuItem value={form.id} key={form.id}>
+                  {form.name}
+                </MenuItem>
+              ))}
             </Select>
           </FormControl>
         </Box>
