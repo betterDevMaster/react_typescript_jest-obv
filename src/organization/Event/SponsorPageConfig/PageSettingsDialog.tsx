@@ -4,28 +4,45 @@ import DialogContent from '@material-ui/core/DialogContent'
 import DialogTitle from '@material-ui/core/DialogTitle'
 import Dialog from 'lib/ui/Dialog'
 import Box from '@material-ui/core/Box'
-import {useForm} from 'react-hook-form'
 import TextField from '@material-ui/core/TextField'
+import Grid from '@material-ui/core/Grid'
+import {Controller, useForm} from 'react-hook-form'
 import {useEvent} from 'Event/EventProvider'
 import {ObvioEvent} from 'Event'
 import Button from '@material-ui/core/Button'
-import {handleChangeSlider} from 'lib/dom'
+import {handleChangeSlider, onChangeCheckedHandler} from 'lib/dom'
 import {useTemplate} from 'Event/TemplateProvider'
 import InputLabel from '@material-ui/core/InputLabel'
 import Slider from '@material-ui/core/Slider'
 import withStyles from '@material-ui/core/styles/withStyles'
+import Switch from '@material-ui/core/Switch'
 import {spacing} from 'lib/ui/theme'
 import DangerButton from 'lib/ui/Button/DangerButton'
+import TextEditor, {TextEditorContainer} from 'lib/ui/form/TextEditor'
 import Typography from '@material-ui/core/Typography'
 import {useOrganization} from 'organization/OrganizationProvider'
 import {api} from 'lib/url'
-import {DEFAULT_SPONSOR_IMAGE_SIZE} from 'Event/template/SimpleBlog/SponsorPage/SponsorList/Card'
+import {
+  DEFAULT_SPONSOR_IMAGE_SIZE,
+  DEFAULT_DESCRIPTION,
+  DEFAULT_BACK_TO_DASHBOARD_TEXT,
+  DEFAULT_BACK_TO_DASHBOARD_TEXT_COLOR,
+  DEFAULT_SPONSORS_SPACE
+} from 'Event/template/SimpleBlog/SponsorPage/SponsorList/Card'
+import ColorPicker from 'lib/ui/ColorPicker'
 
 const imageUploadId = `sponsor-question-icon-upload`
 const MAX_FILE_SIZE_BYTES = 5000000 // 5MB
+const MIN_SPACE_SIZE = 0
+const MAX_SPACE_SIZE = 10
 
 type SettingsFormData = {
   sponsor_page_title: string
+  description: string
+  backToDashboardText: string
+  backToDashboardTextColor: string
+  sponsorsSpace: number
+  sponsorsSeperator: boolean
 }
 
 export default function PageSettingsDialog(props: {
@@ -34,7 +51,7 @@ export default function PageSettingsDialog(props: {
 }) {
   const {visible, onClose} = props
   const {event, set: updateEvent} = useEvent()
-  const {handleSubmit, register} = useForm()
+  const {handleSubmit, register, control} = useForm()
   const [processing, setProcessing] = useState(false)
   const template = useTemplate()
   const [imageSize, setImageSize] = useState(
@@ -44,13 +61,27 @@ export default function PageSettingsDialog(props: {
   const [image, setImage] = useState<null | File>(null)
   const [shouldRemoveImage, setShouldRemoveImage] = useState(false)
 
-  const data = ({sponsor_page_title}: SettingsFormData) => {
+  const {sponsors: sponsorsPageSettings} = template
+
+  const data = ({
+    sponsor_page_title,
+    description,
+    backToDashboardText,
+    backToDashboardTextColor,
+    sponsorsSpace,
+    sponsorsSeperator
+  }: SettingsFormData) => {
     const required = {
       sponsor_page_title,
       template: {
         ...template,
         sponsors: {
           imageSize,
+          description,
+          backToDashboardText,
+          backToDashboardTextColor,
+          sponsorsSpace,
+          sponsorsSeperator
         },
       },
     }
@@ -125,7 +156,48 @@ export default function PageSettingsDialog(props: {
               inputProps={{'aria-label': 'sponsor page title', ref: register}}
               disabled={processing}
             />
-            <InputLabel>Image Size</InputLabel>
+            <Controller
+              name="description"
+              defaultValue={sponsorsPageSettings?.description || DEFAULT_DESCRIPTION}
+              control={control}
+              render={({onChange, value}) => (
+                <TextEditorContainer>
+                  <TextEditor data={value} onChange={onChange} />
+                </TextEditorContainer>
+              )}
+            />
+            <TextField
+              defaultValue={
+                sponsorsPageSettings?.backToDashboardText ||
+                DEFAULT_BACK_TO_DASHBOARD_TEXT
+              }
+              name="backToDashboardText"
+              label="Back to Dashboard Text"
+              fullWidth
+              inputProps={{
+                ref: register,
+                'aria-label': 'back to dashboard text',
+              }}
+            />
+            <Grid item xs={12}>
+              <Controller
+                name="backToDashboardTextColor"
+                defaultValue={
+                  sponsorsPageSettings?.backToDashboardTextColor ||
+                  DEFAULT_BACK_TO_DASHBOARD_TEXT_COLOR
+                }
+                control={control}
+                render={({onChange, value}) => (
+                  <ColorPicker
+                    label="Back to Dashboard Text Color"
+                    color={value}
+                    onPick={onChange}
+                    aria-label="text color"
+                  />
+                )}
+              />
+            </Grid>
+            <InputLabel>Sponsor Logo Size</InputLabel>
             <Slider
               min={1}
               max={11}
@@ -135,6 +207,37 @@ export default function PageSettingsDialog(props: {
               valueLabelDisplay="auto"
               aria-label="sponsor image size"
               disabled={processing}
+            />
+            <InputLabel>Space Between Sponsors</InputLabel>
+            <Controller
+              name="sponsorsSpace"
+              defaultValue={
+                sponsorsPageSettings?.sponsorsSpace || DEFAULT_SPONSORS_SPACE
+              }
+              control={control}
+              render={({onChange, value}) => (
+                <Slider
+                  min={MIN_SPACE_SIZE}
+                  max={MAX_SPACE_SIZE}
+                  step={1}
+                  onChange={handleChangeSlider(onChange)}
+                  valueLabelDisplay="auto"
+                  value={value}
+                />
+              )}
+            />
+            <InputLabel>Sponsors Seperator</InputLabel>
+            <Controller
+              name="sponsorsSeperator"
+              defaultValue={sponsorsPageSettings?.sponsorsSeperator}
+              control={control}
+              render={({onChange, value}) => (
+                <Switch
+                  onChange={onChangeCheckedHandler(onChange)}
+                  color="primary"
+                  checked={value}
+                />
+              )}
             />
             <Box mb={2}>
               <Label>Question Icon</Label>

@@ -120,6 +120,11 @@ export interface SimpleBlog {
   }
   sponsors?: {
     imageSize?: Column
+    description?: string
+    backToDashboardText?: string
+    backToDashboardTextColor?: string
+    sponsorsSpace?: number
+    sponsorsSeperator?: boolean
   }
   speakers?: {
     title?: string
