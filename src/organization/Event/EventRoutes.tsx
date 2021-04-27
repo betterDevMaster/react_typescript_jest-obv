@@ -30,7 +30,6 @@ import Event from 'organization/Event'
 import AreaList from 'organization/Event/AreaList'
 import {HideLiveChatSupport} from 'lib/WithLiveChatSupport'
 import SponsorPageConfig from 'organization/Event/SponsorPageConfig'
-import LeaderboardPageConfig from 'organization/Event/LeaderboardConfig'
 import Form from 'organization/Event/Form'
 import {FormProvider} from 'organization/Event/Form/FormProvider'
 import {useEvent} from 'Event/EventProvider'
@@ -127,11 +126,6 @@ export default function EventRoutes() {
                 <SponsorPageConfig />
               </SponsorsProvider>
             </AreasProvider>
-          </AuthorizedPage>
-        </Route>
-        <Route path={routes.events[':event'].leaderboard}>
-          <AuthorizedPage permission={CONFIGURE_EVENTS}>
-            <LeaderboardPageConfig />
           </AuthorizedPage>
         </Route>
         <Route path={routes.events[':event'].points}>

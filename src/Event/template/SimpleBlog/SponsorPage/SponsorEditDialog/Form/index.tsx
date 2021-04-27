@@ -51,7 +51,7 @@ export default function EditSponsorForm(props: {
       ...data,
       settings: {
         buttons,
-        formId
+        formId,
       },
     }
 

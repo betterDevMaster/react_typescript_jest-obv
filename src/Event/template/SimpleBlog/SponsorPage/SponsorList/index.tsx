@@ -45,6 +45,10 @@ const StyledCard = styled((props) => <Card {...props} />)`
   &:not(:last-child) {
     padding-bottom: ${(props) => props.theme.spacing[2]};
     margin-bottom: ${(props) => props.theme.spacing[8]};
+<<<<<<< HEAD
     border-bottom: ${(props) => props.border ? '1px' : '0'} solid ${grey[300]};
+=======
+    border-bottom: ${(props) => (props.border ? '1px' : '0')} solid ${grey[300]};
+>>>>>>> 0dd25d34b9df63914fd6bc67adee1214538de955
   }
 `

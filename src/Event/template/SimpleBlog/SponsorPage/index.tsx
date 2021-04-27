@@ -8,7 +8,11 @@ import {User} from 'auth/user'
 import {useEvent} from 'Event/EventProvider'
 import SponsorEditDialog from 'Event/template/SimpleBlog/SponsorPage/SponsorEditDialog'
 import {useTemplate} from 'Event/TemplateProvider'
-import {DEFAULT_BACK_TO_DASHBOARD_TEXT_COLOR, DEFAULT_DESCRIPTION, DEFAULT_BACK_TO_DASHBOARD_TEXT} from 'Event/template/SimpleBlog/SponsorPage/SponsorList/Card'
+import {
+  DEFAULT_BACK_TO_DASHBOARD_TEXT_COLOR,
+  DEFAULT_DESCRIPTION,
+  DEFAULT_BACK_TO_DASHBOARD_TEXT,
+} from './SponsorList/Card'
 
 export default function SimpleBlogSponsorPage(props: {
   user: User
