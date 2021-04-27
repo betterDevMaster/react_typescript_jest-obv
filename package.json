@@ -20,7 +20,7 @@
     "moment-timezone": "^0.5.31",
     "normalize.css": "^8.0.1",
     "notistack": "^1.0.3",
-    "obvio-ckeditor": "^1.1.7",
+    "obvio-ckeditor": "^1.2.0",
     "ramda": "^0.27.1",
     "react": "^16.13.1",
     "react-beautiful-dnd": "^13.1.0",

@@ -12,6 +12,7 @@ const toolbar = [
   'heading',
   '|',
   'mediaEmbed',
+  'htmlEmbed',
   'bold',
   'italic',
   'blockQuote',
