@@ -13,6 +13,7 @@ import {OrganizationActionsProvider} from 'Event/ActionsProvider'
 import {onChangeCheckedHandler} from 'lib/dom'
 import {useToggleActions} from 'organization/Event/PointsConfig/active'
 import LeaderboardSettingsDialog from 'organization/Event/PointsConfig/LeaderboardSettingsDialog'
+import Box from '@material-ui/core/Box'
 
 export default function PointsConfig() {
   return (
@@ -58,50 +59,42 @@ function Content() {
         visible={pageSettingsVisible}
         onClose={togglePageSettings}
       />
-      <Box>
-        <ButtonContainer>
-          <AddActionButton onAdd={edit} />
-          <Button
-            variant="outlined"
-            color="primary"
-            onClick={togglePageSettings}
-            aria-label="configure leaderboard page"
-          >
-            Leaderboard Settings
-          </Button>
-        </ButtonContainer>
-        <Box>
-          <FormControlLabel
-            control={
-              <Switch
-                checked={checked}
-                disabled={processing}
-                inputProps={{
-                  'aria-label': 'toggle all',
-                }}
-                onChange={onChangeCheckedHandler(toggleAll)}
-              />
-            }
-            label={`${checked ? 'Disable' : 'Enable'} All`}
-            labelPlacement="start"
-          />
-        </Box>
+      <ButtonContainer>
+        <AddActionButton onAdd={edit} />
+        <Button
+          variant="outlined"
+          color="primary"
+          onClick={togglePageSettings}
+          aria-label="configure leaderboard page"
+        >
+          Leaderboard Settings
+        </Button>
+      </ButtonContainer>
+      <Box display="flex" justifyContent="flex-end">
+        <FormControlLabel
+          control={
+            <Switch
+              checked={checked}
+              disabled={processing}
+              inputProps={{
+                'aria-label': 'toggle all',
+              }}
+              onChange={onChangeCheckedHandler(toggleAll)}
+            />
+          }
+          label={`${checked ? 'Disable' : 'Enable'} All`}
+          labelPlacement="start"
+        />
       </Box>
       <ActionsTable actions={actions} onSelect={edit} />
     </>
   )
 }
 
-const Box = styled.div`
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  align-items: center;
-`
 const ButtonContainer = styled.div`
   display: flex;
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
-  min-width: 500px;
+  margin-bottom: ${(props) => props.theme.spacing[4]};
 `
