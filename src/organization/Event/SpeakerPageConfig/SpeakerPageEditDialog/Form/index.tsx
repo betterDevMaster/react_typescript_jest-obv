@@ -17,9 +17,6 @@ import {api} from 'lib/url'
 import {ValidationError} from 'lib/api-client'
 import {useTemplate} from 'Event/TemplateProvider'
 
-const MIN_IMAGE_SIZE = 2
-const MAX_IMAGE_SIZE = 6
-
 const MIN_SPACE_SIZE = 0
 const MAX_SPACE_SIZE = 10
 
@@ -137,8 +134,8 @@ export default function SpeakerPageConfigForm(props: {onClose: () => void}) {
           control={control}
           render={({onChange, value}) => (
             <Slider
-              min={MIN_IMAGE_SIZE}
-              max={MAX_IMAGE_SIZE}
+              min={1}
+              max={11}
               step={1}
               onChange={handleChangeSlider(onChange)}
               valueLabelDisplay="auto"
