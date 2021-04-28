@@ -24,7 +24,7 @@ function Content() {
   }
 
   return (
-    <Dialog open={visible} onClose={stopEditing} fullWidth>
+    <Dialog open={visible} onClose={stopEditing} fullWidth disableEnforceFocus>
       <DialogTitle>Edit</DialogTitle>
       <DialogContent>
         <Form speaker={editing} onDone={stopEditing} />

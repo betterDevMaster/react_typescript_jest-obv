@@ -142,7 +142,7 @@ export default function PageSettingsDialog(props: {
   }
 
   return (
-    <Dialog open={visible} onClose={onClose} fullWidth>
+    <Dialog open={visible} onClose={onClose} fullWidth disableEnforceFocus>
       <DialogTitle>Sponsor Page</DialogTitle>
       <DialogContent>
         <Box pb={2}>
