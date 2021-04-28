@@ -1,8 +1,7 @@
-import {createSimpleBlog} from './../template/SimpleBlog/index'
 import {ObvioEvent} from 'Event'
 import {EventState} from 'Event/state'
 import {Template} from 'Event/template'
-import {SIMPLE_BLOG} from 'Event/template/SimpleBlog'
+import {createSimpleBlog, SIMPLE_BLOG} from 'Event/template/SimpleBlog'
 
 export const SET_EVENT_ACTION = 'SET_EVENT'
 export interface SetEventAction {

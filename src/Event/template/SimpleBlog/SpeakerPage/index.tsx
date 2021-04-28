@@ -11,7 +11,7 @@ import {
   DEFAULT_BACK_TO_DASHBOARD_TEXT_COLOR,
 } from 'organization/Event/SpeakerPageConfig/SpeakerPageEditDialog/Form'
 import {Speaker} from 'Event/SpeakerPage'
-import SpeakerList from './SpeakerList'
+import SpeakerList from 'Event/template/SimpleBlog/SpeakerPage/SpeakerList'
 import SpeakerEditDialog from 'Event/template/SimpleBlog/SpeakerPage/SpeakerEditDialog'
 
 export default function SimpleBlogSpeakerPage(props: {

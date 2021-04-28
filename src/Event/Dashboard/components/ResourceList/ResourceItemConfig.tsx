@@ -19,7 +19,9 @@ import DangerButton from 'lib/ui/Button/DangerButton'
 import {useCloseConfig} from 'Event/Dashboard/editor/state/edit-mode'
 import {useTemplate, useUpdateTemplate} from 'Event/TemplateProvider'
 import {useCallback} from 'react'
-import ResourceUpload, {useDeleteFile} from './ResourceUpload'
+import ResourceUpload, {
+  useDeleteFile,
+} from 'Event/Dashboard/components/ResourceList/ResourceUpload'
 import {Resource} from 'Event/Dashboard/components/ResourceList/ResourceItem'
 import Grid from '@material-ui/core/Grid'
 import Switch from 'lib/ui/form/Switch'

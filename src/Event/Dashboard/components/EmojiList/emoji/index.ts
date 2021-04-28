@@ -1,8 +1,8 @@
-import CLAP_IMAGE from './clap.png'
-import HEART_IMAGE from './heart.png'
-import LAUGH_IMAGE from './laugh.png'
-import THUMB_UP_IMAGE from './thumbup.png'
-import THUNDER_IMAGE from './thunder.png'
+import CLAP_IMAGE from 'Event/Dashboard/components/EmojiList/emoji/clap.png'
+import HEART_IMAGE from 'Event/Dashboard/components/EmojiList/emoji/heart.png'
+import LAUGH_IMAGE from 'Event/Dashboard/components/EmojiList/emoji/laugh.png'
+import THUMB_UP_IMAGE from 'Event/Dashboard/components/EmojiList/emoji/thumbup.png'
+import THUNDER_IMAGE from 'Event/Dashboard/components/EmojiList/emoji/thunder.png'
 import {storage} from 'lib/url'
 
 export type Emoji = {

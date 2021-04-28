@@ -26,7 +26,7 @@ export default function SponsorList(props: {
           key={sponsor.id}
           sponsor={sponsor}
           isEditMode={props.isEditMode}
-          border={sponsorPageSettings?.sponsorsSeperator}
+          border={sponsorPageSettings?.sponsorSeparator}
         />
       ))}
     </Box>

@@ -123,8 +123,8 @@ export interface SimpleBlog {
     description?: string
     backToDashboardText?: string
     backToDashboardTextColor?: string
-    sponsorsSpace?: number
-    sponsorsSeperator?: boolean
+    sponsorSpace?: number
+    sponsorSeparator?: boolean
   }
   speakers?: {
     title?: string

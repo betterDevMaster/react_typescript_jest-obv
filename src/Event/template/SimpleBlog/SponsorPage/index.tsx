@@ -12,7 +12,7 @@ import {
   DEFAULT_BACK_TO_DASHBOARD_TEXT_COLOR,
   DEFAULT_DESCRIPTION,
   DEFAULT_BACK_TO_DASHBOARD_TEXT,
-} from './SponsorList/Card'
+} from 'Event/template/SimpleBlog/SponsorPage/SponsorList/Card'
 
 export default function SimpleBlogSponsorPage(props: {
   user: User

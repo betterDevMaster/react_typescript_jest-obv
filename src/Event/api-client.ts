@@ -1,6 +1,5 @@
-import {Client, client} from './../lib/api-client'
 import {EVENT_TOKEN_KEY} from 'Event/auth'
-import {RequestOptions} from 'lib/api-client'
+import {RequestOptions, Client, client} from 'lib/api-client'
 
 export const eventClient: Client = {
   get: (url: string, options?: RequestOptions) =>

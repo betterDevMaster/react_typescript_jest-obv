@@ -11,7 +11,7 @@ import {Area} from 'organization/Event/AreasProvider'
 import React from 'react'
 import {Redirect} from 'react-router-dom'
 import {Form} from 'organization/Event/FormsProvider'
-import {Speaker} from './SpeakerPage'
+import {Speaker} from 'Event/SpeakerPage'
 
 // Can't use 'Event' because that's already a native DOM type
 // for browser events and we'd lose TS safety/import assist.

@@ -1,4 +1,4 @@
-import {ALL_PERMISSIONS} from './factory'
+import {ALL_PERMISSIONS} from 'organization/__utils__/factory'
 import faker from 'faker'
 import {ObvioEvent} from 'Event'
 import {fakeOrganization} from 'obvio/Organizations/__utils__/factory'

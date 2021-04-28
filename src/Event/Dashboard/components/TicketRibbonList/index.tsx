@@ -1,6 +1,8 @@
 import AddTicketRibbonButton from 'Event/Dashboard/components/TicketRibbonList/TicketRibbonConfig/AddTicketRibbonButton'
 import {useTemplate} from 'Event/TemplateProvider'
-import TicketRibbonItem, {TicketRibbon} from './TicketRibbon'
+import TicketRibbonItem, {
+  TicketRibbon,
+} from 'Event/Dashboard/components/TicketRibbonList/TicketRibbon'
 import EditModeOnly from 'Event/Dashboard/editor/views/EditModeOnly'
 import React from 'react'
 import styled from 'styled-components'

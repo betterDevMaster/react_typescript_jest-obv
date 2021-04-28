@@ -41,8 +41,8 @@ type SettingsFormData = {
   description: string
   backToDashboardText: string
   backToDashboardTextColor: string
-  sponsorsSpace: number
-  sponsorsSeperator: boolean
+  sponsorSpace: number
+  sponsorSeperator: boolean
 }
 
 export default function PageSettingsDialog(props: {
@@ -68,8 +68,8 @@ export default function PageSettingsDialog(props: {
     description,
     backToDashboardText,
     backToDashboardTextColor,
-    sponsorsSpace,
-    sponsorsSeperator,
+    sponsorSpace,
+    sponsorSeperator,
   }: SettingsFormData) => {
     const required = {
       sponsor_page_title,
@@ -80,8 +80,8 @@ export default function PageSettingsDialog(props: {
           description,
           backToDashboardText,
           backToDashboardTextColor,
-          sponsorsSpace,
-          sponsorsSeperator,
+          sponsorSpace,
+          sponsorSeperator,
         },
       },
     }
@@ -212,9 +212,9 @@ export default function PageSettingsDialog(props: {
             />
             <InputLabel>Space Between Sponsors</InputLabel>
             <Controller
-              name="sponsorsSpace"
+              name="sponsorSpace"
               defaultValue={
-                sponsorsPageSettings?.sponsorsSpace || DEFAULT_SPONSORS_SPACE
+                sponsorsPageSettings?.sponsorSpace || DEFAULT_SPONSORS_SPACE
               }
               control={control}
               render={({onChange, value}) => (
@@ -231,7 +231,7 @@ export default function PageSettingsDialog(props: {
             <InputLabel>Sponsors Seperator</InputLabel>
             <Controller
               name="sponsorsSeperator"
-              defaultValue={sponsorsPageSettings?.sponsorsSeperator}
+              defaultValue={sponsorsPageSettings?.sponsorSeparator}
               control={control}
               render={({onChange, value}) => (
                 <Switch
