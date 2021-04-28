@@ -1,5 +1,5 @@
 import styled from 'styled-components'
-import React, {useEffect} from 'react'
+import React from 'react'
 import {Sponsor} from 'Event/SponsorPage'
 import {api} from 'lib/url'
 import {useOrganization} from 'organization/OrganizationProvider'
@@ -8,8 +8,6 @@ import {Controller, useForm} from 'react-hook-form'
 import TextEditor from 'lib/ui/form/TextEditor'
 import Button from '@material-ui/core/Button'
 import TextField from '@material-ui/core/TextField'
-import InputLabel from '@material-ui/core/InputLabel'
-import FormControl from '@material-ui/core/FormControl'
 import DangerButton from 'lib/ui/Button/DangerButton'
 import {ValidationError} from 'lib/api-client'
 import {fieldError} from 'lib/form'
@@ -19,13 +17,11 @@ import Buttons, {
 } from 'Event/template/SimpleBlog/SponsorPage/SponsorEditDialog/Form/Buttons'
 import ButtonConfig from 'Event/template/SimpleBlog/SponsorPage/SponsorEditDialog/Form/ButtonConfig'
 import {useSponsors} from 'organization/Event/SponsorsProvider'
-import FormSelect from 'organization/Event/FormsProvider/FormSelect'
 
 export default function EditSponsorForm(props: {
   sponsor: Sponsor
   onDone: () => void
 }) {
-  const [formId, setFormId] = useState(0)
   const {register, handleSubmit, control, errors} = useForm()
   const [submitting, setSubmitting] = useState(false)
   const {sponsor} = props
@@ -51,7 +47,6 @@ export default function EditSponsorForm(props: {
       ...data,
       settings: {
         buttons,
-        formId,
       },
     }
 
@@ -81,19 +76,7 @@ export default function EditSponsorForm(props: {
       })
   }
 
-  const handleSelectFormId = (formId: number | null) => {
-    if (formId) {
-      setFormId(formId)
-    }
-  }
-
   const nameError = fieldError('name', {form: errors, response: serverError})
-
-  useEffect(() => {
-    if (sponsor.settings?.formId) {
-      setFormId(sponsor.settings?.formId)
-    }
-  }, [sponsor.settings])
 
   return (
     <>
@@ -134,12 +117,6 @@ export default function EditSponsorForm(props: {
             edit={editButton}
             loading={loadingButtons}
           />
-        </Box>
-        <Box mb={2}>
-          <FormControl fullWidth>
-            <InputLabel>Form</InputLabel>
-            <FormSelect value={formId} onChange={handleSelectFormId} />
-          </FormControl>
         </Box>
         <SaveButton
           fullWidth
