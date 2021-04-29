@@ -39,8 +39,6 @@ const DEFAULT_TECH_CHECK_PROPS: NonNullable<Template['techCheck']> = {
   buttonBorderRadius: 4,
   buttonBorderWidth: 0,
   buttonWidth: 12,
-  offlineTitle: '',
-  offlineDescription: '',
 }
 
 type TechCheckTemplateProps = NonNullable<Template['techCheck']>

@@ -56,9 +56,4 @@ export async function submitWaiver({
   mockPost.mockImplementationOnce(() => Promise.resolve({data: withWaver}))
 
   fireEvent.click(await findByLabelText('submit'))
-
-  const techCheckUrl = faker.internet.url()
-  mockGet.mockImplementationOnce(() =>
-    Promise.resolve({data: {url: techCheckUrl}}),
-  )
 }

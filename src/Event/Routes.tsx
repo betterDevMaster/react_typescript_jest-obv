@@ -9,7 +9,7 @@ import {createRoutes, routesWithValue} from 'lib/url'
 import React from 'react'
 import {Redirect, Route, Switch} from 'react-router-dom'
 import Speakers from 'Event/SpeakerPage'
-import {EventActionsProvider} from 'Event/ActionsProvider'
+import {AutoRefreshActions, EventActionsProvider} from 'Event/ActionsProvider'
 import {PointsProvider} from 'Event/PointsProvider'
 import Leaderboard from 'Event/Leaderboard'
 import UnderConstruction from 'Event/UnderConstruction'
@@ -66,17 +66,19 @@ export default function Routes() {
   if (user) {
     return (
       <EventActionsProvider>
-        <PointsProvider>
-          <TemplateProvider template={event.template}>
-            <CustomScripts>
-              <SubmissionsProvider>
-                <HTMLHead>
-                  <UserRoutes />
-                </HTMLHead>
-              </SubmissionsProvider>
-            </CustomScripts>
-          </TemplateProvider>
-        </PointsProvider>
+        <AutoRefreshActions>
+          <PointsProvider>
+            <TemplateProvider template={event.template}>
+              <CustomScripts>
+                <SubmissionsProvider>
+                  <HTMLHead>
+                    <UserRoutes />
+                  </HTMLHead>
+                </SubmissionsProvider>
+              </CustomScripts>
+            </TemplateProvider>
+          </PointsProvider>
+        </AutoRefreshActions>
       </EventActionsProvider>
     )
   }

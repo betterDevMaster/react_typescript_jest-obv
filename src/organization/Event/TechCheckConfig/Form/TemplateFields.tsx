@@ -115,31 +115,6 @@ export default function TemplateFields(props: {
           />
         </Grid>
       </Grid>
-      <Box mb={1}>
-        <Typography variant="h6">Offline Dialog</Typography>
-      </Box>
-      <TextField
-        value={techCheck.offlineTitle}
-        label="Title"
-        fullWidth
-        inputProps={{
-          'aria-label': 'tech check offline title',
-        }}
-        onChange={onChangeStringHandler(set('offlineTitle'))}
-        disabled={submitting}
-      />
-      <TextField
-        value={techCheck.offlineDescription}
-        label="Description"
-        fullWidth
-        inputProps={{
-          'aria-label': 'tech check offline description',
-        }}
-        multiline
-        rows="4"
-        onChange={onChangeStringHandler(set('offlineDescription'))}
-        disabled={submitting}
-      />
     </>
   )
 }

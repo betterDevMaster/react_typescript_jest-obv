@@ -69,8 +69,6 @@ export interface SimpleBlog {
     buttonBorderWidth: number
     buttonBorderColor: string
     buttonWidth: GridSize
-    offlineTitle: string
-    offlineDescription: string
   }
   menu: {
     backgroundColor: string
@@ -166,8 +164,6 @@ export const createSimpleBlog = (): SimpleBlog => ({
     buttonBorderWidth: 0,
     buttonBorderColor: '#ffffff',
     buttonWidth: 12,
-    offlineTitle: '',
-    offlineDescription: '',
   },
   sidebarNav: {
     entities: {},

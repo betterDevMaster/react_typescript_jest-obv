@@ -188,7 +188,7 @@ export function useUpdate() {
  * value should be at least greater than the cached value.
  */
 
-const AUTO_REFRESH_EVENT_INTERVAL_SEC = 100
+export const AUTO_REFRESH_EVENT_INTERVAL_SEC = 100
 
 export function AutoRefreshEvent(props: {children: React.ReactElement}) {
   const {event, set} = useEvent()

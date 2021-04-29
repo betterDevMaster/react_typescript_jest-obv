@@ -66,9 +66,6 @@ it('should submit a tech check config', async () => {
   const bodyEl = (await findByLabelText('tech check body')) as HTMLInputElement
   bodyEl.value = body
 
-  const offlineTitle = faker.random.words(3)
-  user.type(await findByLabelText('tech check offline title'), offlineTitle)
-
   user.click(await findByLabelText('save tech check'))
 
   await wait(() => {
@@ -84,7 +81,6 @@ it('should submit a tech check config', async () => {
   /**
    * Saved template fields
    */
-  expect(data.template.techCheck.offlineTitle).toBe(offlineTitle)
   expect(data.template.techCheck.buttonTextColor).toBeTruthy() // has defaults
 })
 

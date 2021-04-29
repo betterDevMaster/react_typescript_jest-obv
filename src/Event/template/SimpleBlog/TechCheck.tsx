@@ -1,4 +1,4 @@
-import React, {useState} from 'react'
+import React from 'react'
 import SimpleBlogPage from 'Event/template/SimpleBlog/Page'
 import Container from '@material-ui/core/Container'
 import {User} from 'auth/user'
@@ -6,22 +6,17 @@ import {TechCheckProps} from 'Event/Step3/TechCheck'
 import styled from 'styled-components'
 import ProgressBar from 'lib/ui/ProgressBar'
 import {useTemplate} from 'Event/TemplateProvider'
-import {AbsoluteLink} from 'lib/ui/link/AbsoluteLink'
-import {useJoinUrl} from 'Event/EventProvider'
 import MuiButton, {ButtonProps} from '@material-ui/core/Button'
-import OfflineDialog from 'lib/ui/OfflineDialog'
 import {colors} from 'lib/ui/theme'
 import Grid from '@material-ui/core/Grid'
-import grey from '@material-ui/core/colors/grey'
 import {useWithAttendeeData} from 'Event/auth/data'
-
-const DEFAULT_OFFLINE_TITLE = 'Tech Check Is Currently Offline'
-const DISABLED_GREY = grey[400]
+import {areaRoutes} from 'Event/Routes'
+import {TechCheckConfig} from 'Event'
+import {RelativeLink} from 'lib/ui/link/RelativeLink'
 
 export default function TechCheck(props: {user: User} & TechCheckProps) {
   const {techCheck} = props
   const template = useTemplate()
-  const {joinUrl} = useJoinUrl(techCheck.area.id)
   const withAttendeeData = useWithAttendeeData()
 
   return (
@@ -42,7 +37,7 @@ export default function TechCheck(props: {user: User} & TechCheckProps) {
         <StyledDiv>
           <Grid container justify="center">
             <Grid item xs={12} md={template.techCheck?.buttonWidth || 12}>
-              <StartButton url={joinUrl} />
+              <StartButton techCheck={props.techCheck} />
             </Grid>
           </Grid>
         </StyledDiv>
@@ -51,89 +46,31 @@ export default function TechCheck(props: {user: User} & TechCheckProps) {
   )
 }
 
-function StartButton(props: {url: string | null}) {
-  const {url} = props
-  const {techCheck} = useTemplate()
+function StartButton(props: {techCheck: TechCheckConfig}) {
+  const {techCheck: settings} = useTemplate()
   const withAttendeeData = useWithAttendeeData()
 
-  const [offlineDialogVisible, setOfflineDialogVisible] = useState(false)
-  const toggleOfflineDialog = () =>
-    setOfflineDialogVisible(!offlineDialogVisible)
+  const textColor = settings?.buttonTextColor || '#FFFFFF'
+  const backgroundColor = settings?.buttonBackground || colors.primary
+  const borderColor = settings?.buttonBorderColor || colors.primary
 
-  const textColor = useTextColor(url)
-  const backgroundColor = useBackgroundColor(url)
-  const borderColor = useBorderColor(url)
-
-  const onClick = () => {
-    if (url) {
-      return
-    }
-
-    toggleOfflineDialog()
-  }
-  const button = (
-    <StyledButton
-      textColor={textColor}
-      backgroundColor={backgroundColor}
-      borderColor={borderColor}
-      borderRadius={techCheck?.buttonBorderRadius || 0}
-      borderWidth={techCheck?.buttonBorderWidth || 0}
-      aria-label="start tech check"
-      onClick={onClick}
-      fullWidth
-    >
-      {withAttendeeData(techCheck?.buttonText || 'Start Tech Check')}
-    </StyledButton>
-  )
-
-  if (!url) {
-    return (
-      <>
-        <OfflineDialog
-          isOpen={offlineDialogVisible}
-          title={withAttendeeData(
-            techCheck?.offlineTitle || DEFAULT_OFFLINE_TITLE,
-          )}
-          description={withAttendeeData(techCheck?.offlineDescription || '')}
-          onClose={toggleOfflineDialog}
-        />
-        {button}
-      </>
-    )
-  }
+  const joinLink = areaRoutes(props.techCheck.area.id).root
 
   return (
-    <AbsoluteLink to={url} newTab disableStyles aria-label="join link">
-      {button}
-    </AbsoluteLink>
+    <RelativeLink to={joinLink} newTab>
+      <StyledButton
+        textColor={textColor}
+        backgroundColor={backgroundColor}
+        borderColor={borderColor}
+        borderRadius={settings?.buttonBorderRadius || 0}
+        borderWidth={settings?.buttonBorderWidth || 0}
+        aria-label="start tech check"
+        fullWidth
+      >
+        {withAttendeeData(settings?.buttonText || 'Start Tech Check')}
+      </StyledButton>
+    </RelativeLink>
   )
-}
-
-function useTextColor(url: string | null) {
-  const {techCheck} = useTemplate()
-  if (!url) {
-    return '#FFFFFF'
-  }
-
-  return techCheck?.buttonTextColor || '#FFFFFF'
-}
-
-function useBackgroundColor(url: string | null) {
-  const {techCheck} = useTemplate()
-  if (!url) {
-    return DISABLED_GREY
-  }
-
-  return techCheck?.buttonBackground || colors.primary
-}
-
-function useBorderColor(url: string | null) {
-  const {techCheck} = useTemplate()
-  if (!url) {
-    return DISABLED_GREY
-  }
-
-  return techCheck?.buttonBorderColor || colors.primary
 }
 
 const Body = styled.div`

@@ -30,8 +30,6 @@ export const fakeSimpleBlog = (overrides?: Partial<SimpleBlog>): SimpleBlog => {
       buttonBorderWidth: 0,
       buttonBorderColor: '#ffffff',
       buttonWidth: 12,
-      offlineTitle: '',
-      offlineDescription: '',
     },
     ticketRibbons: [],
     mainNav: {entities: {}, ids: []},
@@ -190,8 +188,6 @@ export function fakeTemplateTechCheck(
     buttonBorderWidth: 0,
     buttonBorderColor: '#ffffff',
     buttonWidth: 12,
-    offlineTitle: '',
-    offlineDescription: '',
     ...overrides,
   }
 }
