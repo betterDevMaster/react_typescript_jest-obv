@@ -137,13 +137,22 @@ function useTechCheckAssignments() {
   const {room} = useRoom()
 
   const [assignments, setAssignments] = useState<TechCheckAssignment[]>([])
+  const [shouldAutoRefresh, setShouldAutoRefresh] = useState(true)
+
+  useEffect(() => {
+    setShouldAutoRefresh(room.is_online)
+  }, [room])
 
   const fetch = useCallback(() => {
+    if (!shouldAutoRefresh) {
+      return
+    }
+
     const url = api(
       `/events/${event.slug}/areas/${area.id}/room/${room.id}/tech_check_assignments`,
     )
     return client.get<TechCheckAssignment[]>(url).then(setAssignments)
-  }, [area, event, client, room])
+  }, [area, event, client, room, shouldAutoRefresh])
 
   useEffect(() => {
     fetch()
