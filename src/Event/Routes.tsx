@@ -20,7 +20,7 @@ import ForgotPassword from 'Event/auth/ForgotPassword'
 import ResetPassword from 'Event/auth/ResetPassword'
 import SponsorPage from 'Event/SponsorPage'
 import SubmissionsProvider from 'Event/SubmissionsProvider'
-import JoinArea from 'Event/JoinArea'
+import JoinArea from 'Event/JoinArea/JoinArea'
 
 export const eventRoutes = createRoutes({
   login: '/login',
