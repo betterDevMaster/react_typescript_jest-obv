@@ -71,8 +71,6 @@ it('should complete tech check', async () => {
     event,
   })
 
-  mockGet.mockImplementationOnce(() => Promise.resolve({data: 'joinurl'}))
-
   mockPost.mockImplementationOnce(() => Promise.resolve({data: 'got points'}))
 
   /**
