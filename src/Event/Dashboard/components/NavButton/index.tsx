@@ -1,19 +1,18 @@
-import React, {useState} from 'react'
+import React from 'react'
 import styled from 'styled-components'
 import ButtonBase from 'lib/ui/Button'
 import {Column} from 'lib/ui/layout'
 import {HasRules} from 'Event/Dashboard/component-rules'
 import {AbsoluteLink} from 'lib/ui/link/AbsoluteLink'
-import {useJoinUrl} from 'Event/EventProvider'
 import {findAction} from 'Event/ActionsProvider/platform-actions'
 import {useActions} from 'Event/ActionsProvider'
 import {usePoints} from 'Event/PointsProvider'
 import {Publishable} from 'Event/Dashboard/editor/views/Published'
 import {InfusionsoftTag, useAddTag} from 'Event/infusionsoft'
 
-import OfflineDialog from 'lib/ui/OfflineDialog'
 import {RelativeLink} from 'lib/ui/link/RelativeLink'
 import {useWithAttendeeData} from 'Event/auth/data'
+import {areaRoutes} from 'Event/Routes'
 
 export const NAV_BUTTON = 'NAV_BUTTON'
 
@@ -39,8 +38,6 @@ export default interface NavButton extends HasRules, Publishable {
   areaId: number | null
   actionId: string | null
   infusionsoftTag: InfusionsoftTag | null
-  offlineTitle?: string
-  offlineDescription?: string
   page?: string | null
   fontSize?: number
   padding?: number
@@ -131,43 +128,17 @@ function JoinAreaButton(
   props: NavButton & {areaId: number; onJoin: () => void},
 ) {
   const {areaId} = props
-  const joinUrl = useJoinUrl(areaId)
-  const [offlineDialogVisible, setOfflineDialogVisible] = useState(false)
+
+  const joinLink = areaRoutes(areaId).root
+
   const withAttendeeData = useWithAttendeeData()
 
-  const toggleOfflineDialog = () =>
-    setOfflineDialogVisible(!offlineDialogVisible)
-
-  const defaultOfflineTitle = `${withAttendeeData(
-    props.text,
-  )} Is Currently Offline`
-
-  if (!joinUrl) {
-    return (
-      <>
-        <OfflineDialog
-          isOpen={offlineDialogVisible}
-          title={withAttendeeData(props.offlineTitle || defaultOfflineTitle)}
-          description={withAttendeeData(props.offlineDescription || '')}
-          onClose={toggleOfflineDialog}
-        />
-        <Button {...props} onClick={toggleOfflineDialog} isPending>
-          {withAttendeeData(props.text)}
-        </Button>
-      </>
-    )
-  }
   return (
-    <AbsoluteLink
-      aria-label="start meeting"
-      to={joinUrl}
-      disabled={!joinUrl}
-      newTab
-      disableStyles
-      onClick={props.onJoin}
-    >
-      <Button {...props}>{withAttendeeData(props.text)}</Button>
-    </AbsoluteLink>
+    <RelativeLink to={joinLink} newTab>
+      <Button {...props} onClick={props.onJoin}>
+        {withAttendeeData(props.text)}
+      </Button>
+    </RelativeLink>
   )
 }
 

@@ -1,123 +1,33 @@
-import React from 'react'
 import user from '@testing-library/user-event'
 import faker from 'faker'
 import {fakeSimpleBlog} from 'Event/template/SimpleBlog/__utils__/factory'
-import {fakeUser} from 'auth/user/__utils__/factory'
-import Dashboard from 'Event/Dashboard'
-import {emptyActions, render} from '__utils__/render'
 import {fakeNavButtonWithSize} from 'Event/Dashboard/components/NavButton/__utils__/factory'
 import {createEntityList} from 'lib/list'
 import {fakeEvent} from 'Event/__utils__/factory'
 import {wait} from '@testing-library/react'
-import {fakeOrganization} from 'obvio/Organizations/__utils__/factory'
 import mockAxios from 'axios'
-import {defaultScore} from 'Event/PointsProvider/__utils__/StaticPointsProvider'
 import {loginToEventSite} from 'Event/__utils__/url'
 import {fakeAction} from 'Event/ActionsProvider/__utils__/factory'
 import {fakeAttendee} from 'Event/auth/__utils__/factory'
 
 const mockPost = mockAxios.post as jest.Mock
-const mockGet = mockAxios.get as jest.Mock
 
 afterEach(() => {
   jest.clearAllMocks()
 })
 
-it('should join a room', async () => {
-  const id = faker.random.number({min: 1, max: 1000})
-  const button = fakeNavButtonWithSize({isAreaButton: true, areaId: id})
-  const mainNav = createEntityList([button])
-
-  const event = fakeEvent({template: fakeSimpleBlog({mainNav})})
-
-  const joinUrl = faker.internet.url()
-  mockGet.mockImplementation(() => Promise.resolve({data: {url: joinUrl}}))
-
-  const {findByLabelText, findByText} = render(
-    <Dashboard isEditMode={false} user={fakeUser()} />,
-    {
-      event,
-      organization: fakeOrganization(),
-      actions: emptyActions,
-      score: defaultScore,
-      withRouter: true,
-    },
-  )
-
-  user.click(await findByText(button.text))
-
-  await wait(async () => {
-    expect(
-      ((await findByLabelText(
-        'start meeting',
-      )) as HTMLLinkElement).getAttribute('href'),
-    ).toBe(joinUrl)
-  })
-})
-
-it('should show generic offline message', async () => {
-  const id = faker.random.number({min: 1, max: 1000})
-  const button = fakeNavButtonWithSize({
-    isAreaButton: true,
-    areaId: id,
-    offlineTitle: undefined,
-    offlineDescription: undefined,
-  })
-  const mainNav = createEntityList([button])
-
-  const event = fakeEvent({template: fakeSimpleBlog({mainNav})})
-
-  mockGet.mockImplementation(() => Promise.resolve({data: {url: null}}))
-
-  const {findByText} = render(
-    <Dashboard isEditMode={false} user={fakeUser()} />,
-    {
-      event,
-      organization: fakeOrganization(),
-      actions: emptyActions,
-      score: defaultScore,
-      withRouter: true,
-    },
-  )
-  user.click(await findByText(button.text))
-
-  expect(await findByText(/offline/i)).toBeInTheDocument()
-})
-
-it('should show defined offline message', async () => {
-  const id = faker.random.number({min: 1, max: 1000})
-
-  const offlineTitle = faker.random.words()
-
-  const button = fakeNavButtonWithSize({
-    isAreaButton: true,
-    areaId: id,
-    offlineTitle,
-  })
-  const mainNav = createEntityList([button])
-
-  const event = fakeEvent({template: fakeSimpleBlog({mainNav})})
-
-  mockGet.mockImplementation(() => Promise.resolve({data: {url: null}}))
-
-  const {findByText} = render(
-    <Dashboard isEditMode={false} user={fakeUser()} />,
-    {
-      event,
-      organization: fakeOrganization(),
-      actions: emptyActions,
-      score: defaultScore,
-      withRouter: true,
-    },
-  )
-  user.click(await findByText(button.text))
-
-  expect(await findByText(offlineTitle)).toBeInTheDocument()
-})
-
 it('should receive points', async () => {
   const action = fakeAction()
-  const button = fakeNavButtonWithSize({actionId: action.key})
+  const button = fakeNavButtonWithSize({
+    actionId: action.key,
+
+    /**
+     * Will still receive points even for area buttons
+     */
+
+    areaId: 1,
+    isAreaButton: true,
+  })
 
   const mainNav = createEntityList([button])
   const event = fakeEvent({template: fakeSimpleBlog({mainNav})})
@@ -130,9 +40,6 @@ it('should receive points', async () => {
     }),
     event,
   })
-
-  const joinUrl = faker.internet.url()
-  mockGet.mockImplementation(() => Promise.resolve({data: {url: joinUrl}}))
 
   mockPost.mockImplementationOnce(() => Promise.resolve({data: 'got points'}))
 
@@ -168,9 +75,6 @@ it('should add an infusionsoft tag', async () => {
     }),
     event,
   })
-
-  const joinUrl = faker.internet.url()
-  mockGet.mockImplementation(() => Promise.resolve({data: {url: joinUrl}}))
 
   mockPost.mockImplementationOnce(() => Promise.resolve({data: 'ok'}))
 

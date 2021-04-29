@@ -21,7 +21,7 @@ const DISABLED_GREY = grey[400]
 export default function TechCheck(props: {user: User} & TechCheckProps) {
   const {techCheck} = props
   const template = useTemplate()
-  const joinUrl = useJoinUrl(techCheck.area.id)
+  const {joinUrl} = useJoinUrl(techCheck.area.id)
   const withAttendeeData = useWithAttendeeData()
 
   return (

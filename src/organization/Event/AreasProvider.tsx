@@ -16,6 +16,8 @@ export interface Area {
   allows_multiple_devices: boolean
   rooms: Room[]
   is_tech_check: boolean
+  offline_title: string | null
+  offline_description: string | null
 }
 
 export interface AreasContextProps {

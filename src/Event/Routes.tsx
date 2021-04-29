@@ -5,7 +5,7 @@ import {useEvent} from 'Event/EventProvider'
 import Step1 from 'Event/Step1'
 import Step2 from 'Event/Step2'
 import Step3 from 'Event/Step3'
-import {createRoutes} from 'lib/url'
+import {createRoutes, routesWithValue} from 'lib/url'
 import React from 'react'
 import {Redirect, Route, Switch} from 'react-router-dom'
 import Speakers from 'Event/SpeakerPage'
@@ -20,6 +20,7 @@ import ForgotPassword from 'Event/auth/ForgotPassword'
 import ResetPassword from 'Event/auth/ResetPassword'
 import SponsorPage from 'Event/SponsorPage'
 import SubmissionsProvider from 'Event/SubmissionsProvider'
+import JoinArea from 'Event/JoinArea'
 
 export const eventRoutes = createRoutes({
   login: '/login',
@@ -31,6 +32,9 @@ export const eventRoutes = createRoutes({
   speakers: '/speakers',
   sponsors: '/sponsors',
   leaderboard: '/leaderboard',
+  area: {
+    ':area': {},
+  },
 })
 
 /**
@@ -43,6 +47,9 @@ export const EVENT_PAGES = {
   [eventRoutes.sponsors]: 'Sponsors',
   [eventRoutes.leaderboard]: 'Leaderboard',
 }
+
+export const areaRoutes = (id: number) =>
+  routesWithValue(':area', String(id), eventRoutes.area[':area'])
 
 export default function Routes() {
   const {user, loading} = useEventAuth()
@@ -108,6 +115,9 @@ function UserRoutes() {
       </Route>
       <Route path={eventRoutes.leaderboard}>
         <Leaderboard />
+      </Route>
+      <Route path={eventRoutes.area[':area'].root}>
+        <JoinArea />
       </Route>
       <Redirect to={eventRoutes.root} />
     </Switch>

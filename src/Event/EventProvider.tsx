@@ -132,10 +132,17 @@ export function hasWaiver(event: ObvioEvent) {
 // How many seconds to wait before trying to re-fetch the join url
 const FETCH_JOIN_URL_INTERVAL_MS = 5000
 
+export interface RequestJoinUrlError {
+  message: string
+  offline_title?: string | null
+  offline_description?: string | null
+}
+
 export function useJoinUrl(areaId: number) {
   const {event, client} = useEvent()
   const [joinUrl, setJoinUrl] = useState<null | string>(null)
   const isEditMode = useEditMode()
+  const [error, setError] = useState<RequestJoinUrlError | null>(null)
 
   const fetchUrl = useCallback(() => {
     if (isEditMode) {
@@ -147,7 +154,10 @@ export function useJoinUrl(areaId: number) {
     client
       .get<{url: string | null}>(url)
       .then(({url}) => setJoinUrl(url))
-      .catch((e) => console.error(`Could not fetch join url: ${e.message}`))
+      .catch((e) => {
+        setError(e)
+        console.error(`Could not fetch join url: ${e.message}`)
+      })
   }, [client, event, areaId, isEditMode])
 
   // Fetch once on load without waiting for interval
@@ -157,7 +167,7 @@ export function useJoinUrl(areaId: number) {
 
   useInterval(fetchUrl, FETCH_JOIN_URL_INTERVAL_MS, Boolean(joinUrl))
 
-  return joinUrl
+  return {error, joinUrl}
 }
 
 export function useUpdate() {

@@ -231,7 +231,7 @@ export default function PageSettingsDialog(props: {
             <InputLabel>Sponsors Seperator</InputLabel>
             <Controller
               name="sponsorsSeperator"
-              defaultValue={sponsorsPageSettings?.sponsorSeparator}
+              defaultValue={sponsorsPageSettings?.sponsorSeparator || true}
               control={control}
               render={({onChange, value}) => (
                 <Switch

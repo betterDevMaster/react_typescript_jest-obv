@@ -136,7 +136,7 @@ export default function TemplateFields(props: {
           'aria-label': 'tech check offline description',
         }}
         multiline
-        rows="2"
+        rows="4"
         onChange={onChangeStringHandler(set('offlineDescription'))}
         disabled={submitting}
       />

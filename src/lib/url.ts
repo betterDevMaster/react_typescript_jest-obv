@@ -83,7 +83,7 @@ export const obvioUrl = (path: string) => {
   return `${scheme}${absolutePath}`
 }
 
-type Routes = {
+export type Routes = {
   [key: string]: string | Routes
 }
 
