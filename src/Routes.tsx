@@ -4,7 +4,7 @@ import {useOrganizationUrl} from 'organization/url'
 import OrganizationProvider from 'organization/OrganizationProvider'
 import OrganizationRoutes from 'organization/Routes'
 import ObvioRoutes from 'obvio/Routes'
-import {DomainEventProvider} from 'Event/EventProvider'
+import {AutoRefreshEvent, DomainEventProvider} from 'Event/EventProvider'
 import EventRoutes from 'Event/Routes'
 import WithLiveChatSupport from 'lib/WithLiveChatSupport'
 
@@ -19,7 +19,9 @@ export default function Routes() {
 
   return (
     <DomainEventProvider>
-      <EventRoutes />
+      <AutoRefreshEvent>
+        <EventRoutes />
+      </AutoRefreshEvent>
     </DomainEventProvider>
   )
 }

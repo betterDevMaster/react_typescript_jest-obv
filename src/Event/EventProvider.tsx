@@ -108,7 +108,7 @@ export function useEvent() {
   return context
 }
 
-function findEvent(slug: string, options: {noCache?: boolean}) {
+function findEvent(slug: string, options: {noCache?: boolean} = {}) {
   const url = api(`/events/${slug}`)
   return client.get<ObvioEvent>(url, {noCache: options.noCache})
 }
@@ -181,4 +181,23 @@ export function useUpdate() {
       setEvent(updated)
       return updated
     })
+}
+
+/**
+ * Auto-refresh event interval will fetch the event every x seconds. This
+ * value should be at least greater than the cached value.
+ */
+
+const AUTO_REFRESH_EVENT_INTERVAL_SEC = 100
+
+export function AutoRefreshEvent(props: {children: React.ReactElement}) {
+  const {event, set} = useEvent()
+
+  const refresh = useCallback(() => {
+    findEvent(event.slug).then(set)
+  }, [event, set])
+
+  useInterval(refresh, AUTO_REFRESH_EVENT_INTERVAL_SEC * 1000)
+
+  return props.children
 }
