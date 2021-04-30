@@ -76,7 +76,7 @@ it('should submit a tech check config', async () => {
   const {body: submitted, area_id} = data
 
   expect(submitted).toMatch(body) // CKEditor automatically converts to HTML
-  expect(area_id).toBe(area.id)
+  expect(area_id).toBe(area.key)
 
   /**
    * Saved template fields

@@ -148,7 +148,7 @@ it('should set an area button', async () => {
   expect(url).toMatch(`/events/${event.slug}`)
   const id = data.template.mainNav.ids[targetIndex]
   expect(data.template.mainNav.entities[id]['isAreaButton']).toBe(true)
-  expect(data.template.mainNav.entities[id]['areaId']).toBe(target.id) // Set area ID
+  expect(data.template.mainNav.entities[id]['areaId']).toBe(target.key) // Set area ID
 })
 
 it('should assign an action for points', async () => {
