@@ -5,7 +5,7 @@ import user from '@testing-library/user-event'
 import mockAxios from 'axios'
 import {fakeOrganization} from 'obvio/Organizations/__utils__/factory'
 import {useLocation} from 'react-router-dom'
-import App, {appRoot} from 'App'
+import App from 'App'
 import {wait} from '@testing-library/react'
 
 const mockPost = mockAxios.post as jest.Mock
@@ -32,7 +32,7 @@ it('should reset the password', async () => {
 
   Object.defineProperty(window, 'location', {
     value: {
-      host: appRoot,
+      host: 'app.obv.io',
       pathname,
       search,
       hash: '',

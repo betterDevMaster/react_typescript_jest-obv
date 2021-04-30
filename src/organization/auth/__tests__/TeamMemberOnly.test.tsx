@@ -1,11 +1,9 @@
-import {signInToOrganization} from 'organization/__utils__/authenticate'
+import {setObvioAppUrl} from 'organization/__utils__/authenticate'
 import React from 'react'
 import faker from 'faker'
-import {ObvioEvent} from 'Event'
 import {fakeOrganization} from 'obvio/Organizations/__utils__/factory'
 import {useLocation} from 'react-router-dom'
 import axios from 'axios'
-import {TeamMember} from 'auth/user'
 import {fakeTeamMember} from 'organization/Team/__utils__/factory'
 import {TEAM_MEMBER_TOKEN_KEY} from 'obvio/auth'
 import {render} from '__utils__/render'
@@ -15,6 +13,8 @@ const mockUseLocation = useLocation as jest.Mock
 const mockGet = axios.get as jest.Mock
 
 it('should show team member only page', async () => {
+  setObvioAppUrl()
+
   const organization = fakeOrganization()
   const token = faker.random.alphaNumeric(8)
   // is already logged in user

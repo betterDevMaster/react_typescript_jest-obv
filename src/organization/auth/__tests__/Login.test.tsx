@@ -10,6 +10,7 @@ import {fakeOrganization} from 'obvio/Organizations/__utils__/factory'
 import {useLocation} from 'react-router-dom'
 import {TEAM_MEMBER_TOKEN_KEY} from 'obvio/auth'
 import {ALL_PERMISSIONS} from 'organization/__utils__/factory'
+import {setObvioAppUrl} from 'organization/__utils__/authenticate'
 
 const mockPost = mockAxios.post as jest.Mock
 const mockGet = mockAxios.get as jest.Mock
@@ -20,6 +21,7 @@ afterEach(() => {
 })
 
 it('should show the organization login form', async () => {
+  setObvioAppUrl()
   const organization = fakeOrganization()
   mockUseLocation.mockImplementation(() => ({
     pathname: `/organization/${organization.slug}`,
@@ -40,6 +42,7 @@ it('should show the organization login form', async () => {
 })
 
 it('should login a user', async () => {
+  setObvioAppUrl()
   const organization = fakeOrganization()
   mockUseLocation.mockImplementation(() => ({
     pathname: `/organization/${organization.slug}`,

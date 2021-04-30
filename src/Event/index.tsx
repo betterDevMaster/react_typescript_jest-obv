@@ -42,6 +42,7 @@ export interface ObvioEvent {
   sponsor_page_title: string
   sponsor_question_icon: PublicFile | null
   speakers: Speaker[]
+  domains: Domain[]
 }
 
 export interface WaiverConfig {
@@ -57,6 +58,11 @@ export interface TechCheckConfig {
   start: string
   is_enabled: boolean
   area: Area
+}
+
+export interface Domain {
+  id: number
+  url: string
 }
 
 export default function Event() {

@@ -36,7 +36,7 @@ it('should complete authorization', async () => {
   // react-router uses the history.location to determine the URL to match the Route paths...
   Object.defineProperty(window, 'location', {
     value: {
-      host: `obv.io`,
+      host: `app.obv.io`,
       pathname,
 
       /**

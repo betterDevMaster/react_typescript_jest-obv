@@ -1,4 +1,19 @@
-import {obvioUrl, createRoutes, getSubdomain, routesWithValue} from 'lib/url'
+import {
+  createRoutes,
+  getDomain,
+  getSubdomain,
+  obvioUrl,
+  routesWithValue,
+} from 'lib/url'
+
+it('should return the correct domains', () => {
+  expect(getDomain('obv.io')).toBe('obv.io')
+  expect(getDomain('virtual.io')).toBe('virtual.io')
+  expect(getDomain('app.obv.io')).toBe('obv.io')
+  expect(getDomain('foo.sage.obv.io')).toBe('obv.io')
+  expect(getDomain('custom.com')).toBe('custom.com')
+  expect(getDomain('domain.io')).toBe('domain.io')
+})
 
 it('should return the correct subdomain', () => {
   expect(getSubdomain('sage.obv.io')).toBe('sage')

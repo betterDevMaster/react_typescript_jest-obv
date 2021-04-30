@@ -2,6 +2,12 @@ import {appRoot, isProduction, isStaging, OBVIO_SUBDOMAIN} from 'App'
 import {ExtendRecursively} from 'lib/type-utils'
 import {useLocation} from 'react-router-dom'
 
+/**
+ * obv.io Domains
+ */
+
+const OBVIO_DOMAINS = ['obv.io', 'obv.localhost:3000', 'obv.localhost']
+
 export const getSubdomain = (location: string) => {
   const urlParts = location.split('.')
   const missingSubdomain = urlParts.length < 3
@@ -25,13 +31,48 @@ export const getSubdomain = (location: string) => {
   return firstSubdomain
 }
 
+export const getDomain = (location: string) => {
+  const urlParts = location.split('.')
+
+  /**
+   * If we have multiple subdomains (app.staging.obv.io), we only want the
+   * domain, and TLD
+   */
+
+  if (urlParts.length > 2) {
+    return [urlParts[urlParts.length - 2], urlParts[urlParts.length - 1]].join(
+      '.',
+    )
+  }
+
+  return location
+}
+
+/**
+ * Check whether showing obv.io app ie. app.obv.io, or app.staging.obv.io
+ * @returns
+ */
+
 export const isObvioApp = () => {
+  /**
+   * Is this a custom event domain?
+   */
+
+  const domain = getDomain(window.location.host)
+  if (!isObvioDomain(domain)) {
+    return false
+  }
+
   const subdomain = getSubdomain(window.location.host)
   if (!subdomain) {
-    return true
+    return false
   }
 
   return subdomain === OBVIO_SUBDOMAIN
+}
+
+export function isObvioDomain(value: string) {
+  return OBVIO_DOMAINS.includes(value)
 }
 
 export const api = (path: string) => {

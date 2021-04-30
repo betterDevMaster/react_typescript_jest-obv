@@ -12,6 +12,17 @@ import {TeamMember} from 'auth/user'
 const mockUseLocation = useLocation as jest.Mock
 const mockGet = axios.get as jest.Mock
 
+export function setObvioAppUrl() {
+  Object.defineProperty(window, 'location', {
+    value: {
+      host: `app.obv.io`,
+      pathname: '',
+      search: '',
+      hash: '',
+    },
+  })
+}
+
 export function signInToOrganization(
   overrides: {
     events?: ObvioEvent[]
@@ -20,6 +31,8 @@ export function signInToOrganization(
     userPermissions?: Permission[]
   } = {},
 ) {
+  setObvioAppUrl()
+
   const events = overrides.events || []
   const authUser = overrides.authUser || fakeTeamMember()
   const owner = overrides.owner || fakeTeamMember()
@@ -27,6 +40,7 @@ export function signInToOrganization(
 
   const organization = fakeOrganization()
   const token = faker.random.alphaNumeric(8)
+
   // is already logged in user
   window.localStorage.setItem(TEAM_MEMBER_TOKEN_KEY, token)
   mockUseLocation.mockImplementationOnce(() => ({

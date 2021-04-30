@@ -29,7 +29,7 @@ it('should reset the user password', async () => {
 
   Object.defineProperty(window, 'location', {
     value: {
-      host: appRoot,
+      host: 'app.obv.io',
       pathname,
       search,
       hash: '',

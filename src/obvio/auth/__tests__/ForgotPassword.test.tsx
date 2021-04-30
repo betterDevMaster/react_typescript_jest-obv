@@ -15,7 +15,7 @@ afterEach(() => {
 it('should show the obvio forgot form', async () => {
   Object.defineProperty(window, 'location', {
     value: {
-      host: `obv.io`, // Root, no subdomain
+      host: `app.obv.io`,
     },
   })
 

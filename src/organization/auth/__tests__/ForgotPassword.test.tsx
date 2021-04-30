@@ -7,6 +7,7 @@ import mockAxios from 'axios'
 import {act} from '@testing-library/react'
 import {fakeOrganization} from 'obvio/Organizations/__utils__/factory'
 import {useLocation} from 'react-router-dom'
+import {setObvioAppUrl} from 'organization/__utils__/authenticate'
 
 const mockPost = mockAxios.post as jest.Mock
 const mockGet = mockAxios.get as jest.Mock
@@ -17,6 +18,7 @@ afterEach(() => {
 })
 
 it('should show the organiztion forgot form', async () => {
+  setObvioAppUrl()
   const organization = fakeOrganization()
   const email = faker.internet.email()
   mockUseLocation.mockImplementation(() => ({

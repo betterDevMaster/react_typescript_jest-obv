@@ -1,4 +1,4 @@
-import App, {appRoot} from 'App'
+import App from 'App'
 import React from 'react'
 import {render} from '__utils__/render'
 import user from '@testing-library/user-event'
@@ -8,6 +8,7 @@ import {wait} from '@testing-library/react'
 import {fakeUser} from 'auth/user/__utils__/factory'
 import {TEAM_MEMBER_TOKEN_KEY} from 'obvio/auth'
 import {useLocation} from 'react-router-dom'
+import {setObvioAppUrl} from 'organization/__utils__/authenticate'
 
 const mockPost = mockAxios.post as jest.Mock
 const mockGet = mockAxios.get as jest.Mock
@@ -18,6 +19,7 @@ beforeEach(() => {
 })
 
 it('should register, and sign in', async () => {
+  setObvioAppUrl()
   const token = 'thesecrettoken'
   mockPost.mockImplementationOnce(() =>
     Promise.resolve({data: {access_token: token}}),
@@ -79,7 +81,7 @@ it('should send registration token', async () => {
 
   Object.defineProperty(window, 'location', {
     value: {
-      host: appRoot,
+      host: 'app.obv.io',
       pathname,
       search,
       hash: '',

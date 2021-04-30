@@ -1,6 +1,6 @@
 import {Client, client} from 'lib/api-client'
 import {useAsync} from 'lib/async'
-import {api} from 'lib/url'
+import {api, getDomain, isObvioApp, isObvioDomain} from 'lib/url'
 import {domainEventSlug, useParamEventSlug} from 'Event/url'
 import React, {useCallback, useEffect, useState} from 'react'
 import {useDispatch, useSelector} from 'react-redux'
@@ -27,7 +27,13 @@ export const EventContext = React.createContext<EventContextProps | undefined>(
 )
 
 export function DomainEventProvider(props: {children: React.ReactNode}) {
+  const domain = getDomain(window.location.host)
   const slug = domainEventSlug()
+
+  if (!isObvioApp() && !isObvioDomain(domain)) {
+    return <EventProvider domain={domain} slug={slug} {...props} />
+  }
+
   return <EventProvider slug={slug} {...props} />
 }
 
@@ -39,12 +45,19 @@ export function RouteEventProvider(props: {children: React.ReactNode}) {
 function EventProvider(props: {
   children: React.ReactNode
   slug: string
+  domain?: string
   noCache?: boolean
 }) {
-  const {slug, noCache} = props
+  const {slug, domain, noCache} = props
+
   const find = useCallback(() => {
+    if (domain) {
+      return findEventByDomain(domain, {noCache})
+    }
+
     return findEvent(slug, {noCache})
-  }, [slug, noCache])
+  }, [slug, domain, noCache])
+
   const dispatch = useDispatch()
 
   const {data: saved, loading} = useAsync(find)
@@ -110,6 +123,11 @@ export function useEvent() {
 
 function findEvent(slug: string, options: {noCache?: boolean} = {}) {
   const url = api(`/events/${slug}`)
+  return client.get<ObvioEvent>(url, {noCache: options.noCache})
+}
+
+function findEventByDomain(domain: string, options: {noCache?: boolean}) {
+  const url = api(`/events/domain/${domain}`)
   return client.get<ObvioEvent>(url, {noCache: options.noCache})
 }
 

@@ -18,22 +18,11 @@ afterEach(() => {
 it('should show the obvio login form', async () => {
   Object.defineProperty(window, 'location', {
     value: {
-      host: `obv.io`, // Root, no subdomain
+      host: `app.obv.io`, // Root, no subdomain
     },
   })
 
-  const {findByLabelText, rerender} = render(<App />)
-
-  expect(await findByLabelText('obvio account email')).toBeInTheDocument()
-  expect(await findByLabelText('obvio account password')).toBeInTheDocument()
-
-  Object.defineProperty(window, 'location', {
-    value: {
-      host: `${OBVIO_SUBDOMAIN}.obv.io`,
-    },
-  })
-
-  rerender(<App />)
+  const {findByLabelText} = render(<App />)
 
   expect(await findByLabelText('obvio account email')).toBeInTheDocument()
   expect(await findByLabelText('obvio account password')).toBeInTheDocument()

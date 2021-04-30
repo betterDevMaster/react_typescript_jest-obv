@@ -15,7 +15,7 @@ it('should redirect to infusionsoft', async () => {
   // Overwrite window.location to check that it was changed
   Object.defineProperty(window, 'location', {
     value: {
-      host: `obv.io`,
+      host: `app.obv.io`,
       href: window.location.href,
     },
   })

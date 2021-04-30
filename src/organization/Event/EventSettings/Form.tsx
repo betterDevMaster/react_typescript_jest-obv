@@ -19,6 +19,7 @@ import ImageUpload, {
   UploadButton,
 } from 'lib/ui/form/ImageUpload'
 import Box from '@material-ui/core/Box'
+import {useEvent} from 'Event/EventProvider'
 
 export type UpdateEventData = Pick<
   ObvioEvent,
@@ -48,6 +49,8 @@ export default function Form(props: {
   } = props
   const inThreeDays = moment().add(3, 'days').toISOString()
   const inSixDays = moment().add(6, 'days').toISOString()
+
+  const {event} = useEvent()
 
   const canSave = props.canSave === undefined ? true : props.canSave
 
@@ -167,6 +170,16 @@ export default function Form(props: {
         helperText={errors.numAttendees}
         disabled={submitting}
       />
+      <TextField
+        label="Custom Domain"
+        fullWidth
+        name="domain"
+        defaultValue={event.domains[0]?.url || ''}
+        inputProps={{
+          ref: register,
+        }}
+        disabled={submitting}
+      />
       <Box mb={2}>
         <ImageUpload file={props.favicon} disabled={submitting}>
           <Label>Favicon</Label>
@@ -181,6 +194,7 @@ export default function Form(props: {
           <RemoveButton aria-label="remove favicon" />
         </ImageUpload>
       </Box>
+
       <Error>{responseError && responseError.message}</Error>
       <Button
         type="submit"
