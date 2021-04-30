@@ -17,7 +17,7 @@ import {areaRoutes} from 'Event/Routes'
 export const NAV_BUTTON = 'NAV_BUTTON'
 
 export default interface NavButtonAreaConfig {
-  areaId: number | null
+  areaId: string | null
 }
 
 export default interface NavButton extends HasRules, Publishable {
@@ -35,7 +35,7 @@ export default interface NavButton extends HasRules, Publishable {
   height?: number
   hoverBorderColor?: string
   isAreaButton: boolean
-  areaId: number | null
+  areaId: string | null
   actionId: string | null
   infusionsoftTag: InfusionsoftTag | null
   page?: string | null
@@ -125,7 +125,7 @@ function useAddInfusionsoftTag(tag: NavButton['infusionsoftTag']) {
 }
 
 function JoinAreaButton(
-  props: NavButton & {areaId: number; onJoin: () => void},
+  props: NavButton & {areaId: string; onJoin: () => void},
 ) {
   const {areaId} = props
 

@@ -54,7 +54,7 @@ function StartButton(props: {techCheck: TechCheckConfig}) {
   const backgroundColor = settings?.buttonBackground || colors.primary
   const borderColor = settings?.buttonBorderColor || colors.primary
 
-  const joinLink = areaRoutes(props.techCheck.area.id).root
+  const joinLink = areaRoutes(props.techCheck.area.key).root
 
   return (
     <RelativeLink to={joinLink} newTab>

@@ -48,8 +48,8 @@ export const EVENT_PAGES = {
   [eventRoutes.leaderboard]: 'Leaderboard',
 }
 
-export const areaRoutes = (id: number) =>
-  routesWithValue(':area', String(id), eventRoutes.area[':area'])
+export const areaRoutes = (key: string) =>
+  routesWithValue(':area', key, eventRoutes.area[':area'])
 
 export default function Routes() {
   const {user, loading} = useEventAuth()

@@ -25,7 +25,7 @@ it('should receive points', async () => {
      * Will still receive points even for area buttons
      */
 
-    areaId: 1,
+    areaId: faker.random.alphaNumeric(16),
     isAreaButton: true,
   })
 

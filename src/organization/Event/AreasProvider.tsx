@@ -18,6 +18,7 @@ export interface Area {
   is_tech_check: boolean
   offline_title: string | null
   offline_description: string | null
+  key: string
 }
 
 export interface AreasContextProps {

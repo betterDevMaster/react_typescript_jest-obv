@@ -7,14 +7,14 @@ import {useAreas} from 'organization/Event/AreasProvider'
 import {onUnknownChangeHandler} from 'lib/dom'
 
 export default function AreaSelect(props: {
-  onPick: (id: number) => void
-  value: number | null
+  onPick: (id: string) => void
+  value: string | null
   required?: boolean
 }) {
   const {areas: fetchedAreas, loading} = useAreas()
   const areas = fetchedAreas || []
 
-  const hasSelectedArea = !!areas.find((a) => a.id === props.value)
+  const hasSelectedArea = !!areas.find((a) => a.key === props.value)
   const value = hasSelectedArea ? props.value : ''
 
   return (
@@ -31,8 +31,8 @@ export default function AreaSelect(props: {
       >
         {areas.map((area) => (
           <MenuItem
-            key={area.id}
-            value={area.id}
+            key={area.key}
+            value={area.key}
             aria-label={`pick ${area.name}`}
           >
             {area.name}

@@ -156,7 +156,7 @@ export interface RequestJoinUrlError {
   offline_description?: string | null
 }
 
-export function useJoinUrl(areaId: number) {
+export function useJoinUrl(areaId: string) {
   const {event, client} = useEvent()
   const [joinUrl, setJoinUrl] = useState<null | string>(null)
   const isEditMode = useEditMode()

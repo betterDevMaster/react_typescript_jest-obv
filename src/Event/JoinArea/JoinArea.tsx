@@ -4,9 +4,8 @@ import {useParams} from 'react-router-dom'
 import OfflinePage from 'Event/JoinArea/OfflinePage'
 
 export default function JoinArea() {
-  const {area: routeId} = useParams<{area: string}>()
-  const id = parseInt(routeId)
-  const {joinUrl, error} = useJoinUrl(id)
+  const {area: areaKey} = useParams<{area: string}>()
+  const {joinUrl, error} = useJoinUrl(areaKey)
 
   useEffect(() => {
     if (!joinUrl) {
