@@ -2,6 +2,7 @@ import {AUTO_REFRESH_EVENT_INTERVAL_SEC, useEvent} from 'Event/EventProvider'
 import {Client} from 'lib/api-client'
 import {useAsync} from 'lib/async'
 import {useInterval} from 'lib/interval'
+import FullPageLoader from 'lib/ui/layout/FullPageLoader'
 import {api} from 'lib/url'
 import {useOrganization} from 'organization/OrganizationProvider'
 import React, {useCallback, useEffect, useState} from 'react'
@@ -36,7 +37,9 @@ export function OrganizationActionsProvider(props: {
 
 export function EventActionsProvider(props: {children: React.ReactNode}) {
   const {client} = useEvent()
-  return <ActionsProvider client={client} {...props} />
+  return (
+    <ActionsProvider client={client} {...props} loader={<FullPageLoader />} />
+  )
 }
 
 function ActionsProvider(props: {
