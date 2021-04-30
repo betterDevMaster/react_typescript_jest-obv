@@ -12,6 +12,7 @@ import {appRoot, isProduction} from 'App'
 import {useInterval} from 'lib/interval'
 import {useEditMode} from 'Event/Dashboard/editor/state/edit-mode'
 import {useOrganization} from 'organization/OrganizationProvider'
+import FullPageLoader from 'lib/ui/layout/FullPageLoader'
 
 interface EventContextProps {
   event: ObvioEvent
@@ -78,7 +79,7 @@ function EventProvider(props: {
   )
 
   if (loading) {
-    return <div>loading...</div>
+    return <FullPageLoader />
   }
 
   if (!saved) {
@@ -90,7 +91,7 @@ function EventProvider(props: {
   }
 
   if (!current) {
-    return <div>loading...</div>
+    return <FullPageLoader />
   }
 
   const scheme = isProduction ? 'https://' : 'http://'

@@ -1,4 +1,5 @@
 import {useAsync} from 'lib/async'
+import FullPageLoader from 'lib/ui/layout/FullPageLoader'
 import {api} from 'lib/url'
 import {useOrganization} from 'organization/OrganizationProvider'
 import React, {useCallback} from 'react'
@@ -43,7 +44,7 @@ export default function PermissionsProvider(props: {
   const loading = loadingUser || loadingAll
 
   if (loading || !user || !all) {
-    return <div>loading...</div>
+    return <FullPageLoader />
   }
 
   const can = (permission: Permission) => user.includes(permission)

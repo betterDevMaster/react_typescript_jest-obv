@@ -3,6 +3,7 @@ import {useObvioAuth} from 'obvio/auth'
 import {createRoutes} from 'lib/url'
 import GuestRoutes from 'obvio/Routes/GuestRoutes'
 import UserRoutes from 'obvio/Routes/UserRoutes'
+import FullPageLoader from 'lib/ui/layout/FullPageLoader'
 
 export const obvioRoutes = createRoutes({
   login: '/login',
@@ -18,7 +19,7 @@ export default function ObvioRoutes() {
   const {user, loading} = useObvioAuth()
 
   if (loading) {
-    return <div>loading...</div>
+    return <FullPageLoader />
   }
 
   if (user) {

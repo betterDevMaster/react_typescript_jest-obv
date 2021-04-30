@@ -21,6 +21,7 @@ import ResetPassword from 'Event/auth/ResetPassword'
 import SponsorPage from 'Event/SponsorPage'
 import SubmissionsProvider from 'Event/SubmissionsProvider'
 import JoinArea from 'Event/JoinArea/JoinArea'
+import FullPageLoader from 'lib/ui/layout/FullPageLoader'
 
 export const eventRoutes = createRoutes({
   login: '/login',
@@ -60,7 +61,7 @@ export default function Routes() {
   }
 
   if (loading) {
-    return <div>loading...</div>
+    return <FullPageLoader />
   }
 
   if (user) {

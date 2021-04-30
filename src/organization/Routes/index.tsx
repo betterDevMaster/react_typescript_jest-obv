@@ -4,12 +4,13 @@ import UserRoutes from 'organization/Routes/UserRoutes'
 import GuestRoutes from 'organization/Routes/GuestRoutes'
 import OwnerProvider from 'organization/OwnerProvider'
 import PermissionsProvider from 'organization/PermissionsProvider'
+import FullPageLoader from 'lib/ui/layout/FullPageLoader'
 
 export default function OrganizationRoutes() {
   const {user, loading} = useOrganizationAuth()
 
   if (loading) {
-    return <div>loading...</div>
+    return <FullPageLoader />
   }
 
   /**

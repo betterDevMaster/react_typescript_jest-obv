@@ -1,6 +1,7 @@
 import {useEvent} from 'Event/EventProvider'
 import {ValidationError} from 'lib/api-client'
 import {useAsync} from 'lib/async'
+import FullPageLoader from 'lib/ui/layout/FullPageLoader'
 import {api} from 'lib/url'
 import {Form} from 'organization/Event/FormsProvider'
 import React, {useCallback, useEffect, useState} from 'react'
@@ -65,7 +66,7 @@ export default function SubmissionsProvider(props: {
   }, [fetchedAnswers])
 
   if (loading) {
-    return <div>loading...</div>
+    return <FullPageLoader />
   }
 
   return (

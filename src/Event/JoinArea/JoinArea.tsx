@@ -2,6 +2,7 @@ import {useJoinUrl} from 'Event/EventProvider'
 import React, {useEffect} from 'react'
 import {useParams} from 'react-router-dom'
 import OfflinePage from 'Event/JoinArea/OfflinePage'
+import FullPageLoader from 'lib/ui/layout/FullPageLoader'
 
 export default function JoinArea() {
   const {area: areaKey} = useParams<{area: string}>()
@@ -19,5 +20,5 @@ export default function JoinArea() {
     return <OfflinePage error={error} />
   }
 
-  return <div>loading...</div>
+  return <FullPageLoader />
 }

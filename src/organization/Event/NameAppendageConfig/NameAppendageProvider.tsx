@@ -1,6 +1,7 @@
 import {Rule} from 'Event/Dashboard/component-rules'
 import {useEvent} from 'Event/EventProvider'
 import {useAsync} from 'lib/async'
+import FullPageLoader from 'lib/ui/layout/FullPageLoader'
 import {api} from 'lib/url'
 import {useOrganization} from 'organization/OrganizationProvider'
 import React, {useEffect, useState} from 'react'
@@ -41,7 +42,7 @@ export default function NameAppendageProvider(props: {
   const reorder = list.reorder
 
   if (loading || !nameAppendages) {
-    return <div>loading...</div>
+    return <FullPageLoader />
   }
 
   return (

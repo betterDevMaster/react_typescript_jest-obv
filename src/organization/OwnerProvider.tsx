@@ -5,6 +5,7 @@ import {useOrganizationAuth} from 'organization/auth'
 import {useOrganization} from 'organization/OrganizationProvider'
 import TeamMemberOnly from 'organization/auth/TeamMemberOnly'
 import React, {useCallback} from 'react'
+import FullPageLoader from 'lib/ui/layout/FullPageLoader'
 
 type OwnerContextProps = User
 
@@ -23,7 +24,7 @@ export default function OwnerProvider(props: {children: React.ReactNode}) {
   const {data: owner, loading} = useAsync(fetch)
 
   if (loading) {
-    return <div>loading...</div>
+    return <FullPageLoader />
   }
 
   if (!owner) {
