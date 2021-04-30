@@ -100,16 +100,6 @@ export default function UpdateEventForm() {
   const start = watch('start')
   const end = watch('end')
   const numAttendees = watch('num_attendees')
-  const domain = watch('domain')
-
-  const hasUpdatedDomain = () => {
-    const current = event.domains[0]?.url
-    if (current) {
-      return domain !== current
-    }
-
-    return domain && domain !== current
-  }
 
   const hasChanges =
     name !== event.name ||
@@ -118,8 +108,7 @@ export default function UpdateEventForm() {
     end !== event.end ||
     numAttendees !== String(event.num_attendees) ||
     Boolean(favicon.selected) ||
-    favicon.wasRemoved ||
-    hasUpdatedDomain()
+    favicon.wasRemoved
 
   return (
     <Layout>
