@@ -9,7 +9,7 @@ const mockPut = axios.put as jest.Mock
 const mockPost = axios.post as jest.Mock
 
 it('should update event values', async () => {
-  window.URL.createObjectURL = jest.fn()
+  window.URL.createObjectURL = jest.fn(() => 'blob://foo')
 
   const {event, findByLabelText, findByText} = await goToEventConfig({
     userPermissions: [CONFIGURE_EVENTS],
@@ -55,6 +55,12 @@ it('should update event values', async () => {
       name: 'favicon.png',
     },
   }
+
+  /**
+   * Cancel cropping image to make sure we still get the image uploaded
+   */
+
+  user.click(await findByLabelText('cancel image resize'))
 
   mockPost.mockImplementationOnce(() => Promise.resolve({data: withFavicon}))
 

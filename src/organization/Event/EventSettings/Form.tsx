@@ -1,5 +1,4 @@
 import Button from '@material-ui/core/Button'
-import styled from 'styled-components'
 import withStyles from '@material-ui/core/styles/withStyles'
 import TextField from '@material-ui/core/TextField'
 import Typography from '@material-ui/core/Typography'
@@ -12,13 +11,13 @@ import {fieldError} from 'lib/form'
 import {DateTimePicker} from '@material-ui/pickers'
 import moment from 'moment'
 import {FileSelect} from 'lib/ui/form/file'
-import ImageUpload, {
-  Image,
-  Label,
-  RemoveButton,
-  UploadButton,
-} from 'lib/ui/form/ImageUpload'
+import ImageUpload from 'lib/ui/form/ImageUpload'
+import Label from 'lib/ui/form/ImageUpload/Label'
+import RemoveButton from 'lib/ui/form/ImageUpload/RemoveButton'
+import UploadButton from 'lib/ui/form/ImageUpload/UploadButton'
+import Image from 'lib/ui/form/ImageUpload/Image'
 import Box from '@material-ui/core/Box'
+import Cropper from 'lib/ui/form/ImageUpload/Cropper'
 
 export type UpdateEventData = Pick<
   ObvioEvent,
@@ -169,10 +168,9 @@ export default function Form(props: {
       />
       <Box mb={2}>
         <ImageUpload file={props.favicon} disabled={submitting}>
+          <Cropper width={32} height={32} />
           <Label>Favicon</Label>
-          <FaviconBox>
-            <Image alt="favicon" />
-          </FaviconBox>
+          <Image alt="favicon" width={32} />
           <UploadButton
             inputProps={{
               'aria-label': 'favicon input',
@@ -211,7 +209,3 @@ const ErrorText = withStyles({
     marginBottom: spacing[3],
   },
 })(Typography)
-
-const FaviconBox = styled.div`
-  width: 32px;
-`
