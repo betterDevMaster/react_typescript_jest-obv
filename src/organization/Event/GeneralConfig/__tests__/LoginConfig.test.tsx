@@ -16,6 +16,8 @@ beforeEach(() => {
 })
 
 it('should update a background', async () => {
+  window.URL.createObjectURL = jest.fn(() => 'blob://foo')
+
   const event = fakeEvent({
     login_background: null,
   })

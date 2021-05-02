@@ -1,5 +1,5 @@
 import {PublicFile} from 'lib/http-client'
-import {useState} from 'react'
+import {useEffect, useState} from 'react'
 
 export type FileSelect = ReturnType<typeof useFileSelect>
 
@@ -17,6 +17,11 @@ export type FileSelect = ReturnType<typeof useFileSelect>
 export function useFileSelect(current?: PublicFile | null) {
   const [file, setFile] = useState<null | File>(null)
   const [wasRemoved, setWasRemoved] = useState(false)
+
+  useEffect(() => {
+    setFile(null)
+    setWasRemoved(false)
+  }, [current])
 
   const select = (image: File) => {
     setFile(image)

@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react'
+import React, {useState} from 'react'
 import Image from 'lib/ui/form/ImageUpload/Image'
 import UploadButton from 'lib/ui/form/ImageUpload/UploadButton'
 import RemoveButton from 'lib/ui/form/ImageUpload/RemoveButton'
@@ -8,29 +8,46 @@ export const MAX_FILE_SIZE_BYTES = 5000000 // 5MB
 
 export default function ImageUpload(props) {
   const {file, disabled} = props
-  const [cropDialogVisible, setCropDialogVisible] = useState(false)
+  const [cropTarget, setCropTarget] = useState(null)
 
-  const {selected} = file
+  const hasCropper = hasComponent(Cropper, props.children)
 
-  const toggleCropDialog = () => setCropDialogVisible(!cropDialogVisible)
-
-  useEffect(() => {
-    if (!selected) {
+  const handleSelected = (image) => {
+    if (!hasCropper) {
+      file.select(image)
       return
     }
 
-    setCropDialogVisible(true)
-  }, [selected])
+    setCropTarget(image)
+  }
+
+  const handleCancelledCrop = () => {
+    file.select(cropTarget)
+    setCropTarget(null)
+  }
+
+  const handleCrop = (cropped) => {
+    file.select(cropped)
+    setCropTarget(null)
+  }
 
   const withProps = (children) => {
     const components = Array.isArray(children) ? children : [children]
 
     return components.map((component, index) => {
+      /**
+       * Handle 'null's
+       */
+
+      if (!component) {
+        return component
+      }
+
       if (is(UploadButton, component)) {
         return (
           <UploadButton
             {...component.props}
-            onSelect={file.select}
+            onSelect={handleSelected}
             selected={file.selected}
             isVisible={file.canUpload}
             disabled={disabled}
@@ -69,10 +86,10 @@ export default function ImageUpload(props) {
           <Cropper
             key={index}
             {...component.props}
-            image={file.selected}
-            isOpen={cropDialogVisible}
-            onClose={toggleCropDialog}
-            onDone={file.select}
+            image={cropTarget}
+            isOpen={Boolean(cropTarget)}
+            onCancel={handleCancelledCrop}
+            onCrop={handleCrop}
           />
         )
       }
@@ -106,4 +123,23 @@ export default function ImageUpload(props) {
 function is(fn, component) {
   const componentName = component.type ? component.type.name : null
   return fn.name === componentName
+}
+
+function hasComponent(target, components) {
+  return !!components.find((component) => {
+    if (!component) {
+      return false
+    }
+
+    if (is(target, component)) {
+      return true
+    }
+
+    const hasChildren = typeof component.props.children === 'object'
+    if (hasChildren) {
+      return hasComponent(component, component.props.children)
+    }
+
+    return false
+  })
 }

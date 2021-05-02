@@ -131,6 +131,8 @@ it('should remove points', async () => {
 })
 
 it('should upload a logo', async () => {
+  window.URL.createObjectURL = jest.fn(() => 'blob://foo')
+
   const event = fakeEvent({
     template: fakeSimpleBlog({
       points: fakePoints(),

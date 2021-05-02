@@ -37,7 +37,7 @@ export function PointsSummaryConfig() {
       <EventImageUpload
         label="Points Logo"
         property="points_summary_logo"
-        current={event.points_summary_logo?.url}
+        current={event.points_summary_logo}
       />
       <TextField
         value={points?.description || ''}

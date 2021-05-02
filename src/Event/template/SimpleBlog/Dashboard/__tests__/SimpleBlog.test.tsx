@@ -25,6 +25,8 @@ afterEach(() => {
 })
 
 it('should upload a logo', async () => {
+  window.URL.createObjectURL = jest.fn(() => 'blob://foo')
+
   const event = fakeEvent({template: fakeSimpleBlog(), logo: null})
   const {findByLabelText} = render(
     <Dashboard isEditMode={true} user={fakeUser()} />,
@@ -53,6 +55,8 @@ it('should upload a logo', async () => {
   mockPost.mockImplementationOnce(() => Promise.resolve(withLogo))
 
   fireEvent.change(logoInput)
+
+  user.click(await findByLabelText('cancel image resize'))
 
   await wait(() => {
     expect(mockPost).toHaveBeenCalledTimes(1)

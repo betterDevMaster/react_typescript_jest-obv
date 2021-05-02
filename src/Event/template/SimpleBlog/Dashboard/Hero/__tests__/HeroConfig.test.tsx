@@ -20,6 +20,7 @@ afterEach(() => {
 const mockPost = axios.post as jest.Mock
 
 it('should upload a welcome image', async () => {
+  window.URL.createObjectURL = jest.fn(() => 'blob://foo')
   const event = fakeEvent({template: fakeSimpleBlog(), header_background: null})
   const {findByLabelText} = render(
     <Dashboard isEditMode={true} user={fakeUser()} />,

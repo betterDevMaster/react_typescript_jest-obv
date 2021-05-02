@@ -23,6 +23,8 @@ afterEach(() => {
 })
 
 it('should upload a header background', async () => {
+  window.URL.createObjectURL = jest.fn(() => 'blob://foo')
+
   const event = fakeEvent({template: fakeSimpleBlog(), header_background: null})
   const {findByLabelText} = render(
     <Dashboard isEditMode={true} user={fakeUser()} />,
@@ -51,6 +53,8 @@ it('should upload a header background', async () => {
   mockPost.mockImplementationOnce(() => Promise.resolve(withHeaderBg))
 
   fireEvent.change(headerBgInput)
+
+  user.click(await findByLabelText('cancel image resize'))
 
   await wait(() => {
     expect(mockPost).toHaveBeenCalledTimes(1)

@@ -4,7 +4,7 @@ import React, {useState} from 'react'
 import ConfigDialog from 'Event/template/SimpleBlog/SponsorPage/SponsorList/Card/Image/ConfigDialog'
 import Clickable from 'lib/ui/Editable'
 
-export const SPONSOR_PLACEHOLDER = 'http://placehold.jp/600x600.png'
+export const SPONSOR_PLACEHOLDER = 'http://placehold.jp/300x100.png'
 
 type ImageProps = {
   sponsor: Sponsor

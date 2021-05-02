@@ -132,7 +132,7 @@ export default function LoginFormConfig() {
               <EventImageUpload
                 label="Background"
                 property="login_background"
-                current={event.login_background?.url}
+                current={event.login_background}
               />
               <Box display="flex" flexDirection="column" flex="1" mb={2}>
                 <InputLabel>Hide Background</InputLabel>
@@ -150,7 +150,7 @@ export default function LoginFormConfig() {
               <EventImageUpload
                 label="Logo"
                 property="login_logo"
-                current={event.login_logo?.url}
+                current={event.login_logo}
               />
               <Box display="flex" flexDirection="column" flex="1" mb={2}>
                 <InputLabel>Hide Logo</InputLabel>

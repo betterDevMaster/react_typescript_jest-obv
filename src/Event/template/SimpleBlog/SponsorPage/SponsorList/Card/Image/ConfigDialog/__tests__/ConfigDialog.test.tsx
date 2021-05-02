@@ -15,12 +15,12 @@ beforeEach(() => {
 })
 
 it('should upload an image', async () => {
+  window.URL.createObjectURL = jest.fn(() => 'blob://foo')
   // Patch fetch to automatically return the existing waiver logo blob
   // @ts-ignore
   window.fetch = jest.fn(() =>
     Promise.resolve(() => ({blob: jest.fn(() => [])})),
   )
-  window.URL.createObjectURL = jest.fn()
 
   // start with no image
   const sponsor = fakeSponsor({image: null})
@@ -48,6 +48,8 @@ it('should upload an image', async () => {
     value: [image],
   })
   fireEvent.change(imageInput)
+
+  user.click(await findByLabelText('cancel image resize'))
 
   mockPost.mockImplementationOnce(() => Promise.resolve({data: withImage}))
 
@@ -95,7 +97,7 @@ it('should remove an image', async () => {
   )
 
   user.click(await findByLabelText('sponsor image'))
-  user.click(await findByText('clear'))
+  user.click(await findByLabelText('remove sponsor image'))
 
   const withOutImage = {
     ...sponsor,

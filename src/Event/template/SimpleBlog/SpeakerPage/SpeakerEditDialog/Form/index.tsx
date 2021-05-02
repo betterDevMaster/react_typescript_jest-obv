@@ -1,21 +1,23 @@
-import React, {useState, useEffect, useRef} from 'react'
+import React, {useState} from 'react'
 import styled from 'styled-components'
 import DangerButton from 'lib/ui/Button/DangerButton'
-import {useForm} from 'react-hook-form'
+import {Controller, useForm} from 'react-hook-form'
 import TextField from '@material-ui/core/TextField'
 import Button from '@material-ui/core/Button'
-import withStyles from '@material-ui/core/styles/withStyles'
 import {useOrganization} from 'organization/OrganizationProvider'
 import {api} from 'lib/url'
 import {fieldError} from 'lib/form'
 import {ValidationError} from 'lib/api-client'
-import {fetchFile} from 'lib/http-client'
-import UploadedImage from 'Event/template/SimpleBlog/SpeakerPage/SpeakerEditDialog/Form/UploadedImage'
 import TextEditor, {TextEditorContainer} from 'lib/ui/form/TextEditor'
 import {Speaker} from 'Event/SpeakerPage'
 import {useSpeakers} from 'organization/Event/SpeakersProvider'
-
-const imageUploadId = 'speaker-image-upload'
+import {useFileSelect} from 'lib/ui/form/file'
+import Cropper from 'lib/ui/form/ImageUpload/Cropper'
+import Label from 'lib/ui/form/ImageUpload/Label'
+import ImageUpload from 'lib/ui/form/ImageUpload'
+import RemoveImageButton from 'lib/ui/form/ImageUpload/RemoveButton'
+import UploadButton from 'lib/ui/form/ImageUpload/UploadButton'
+import Image from 'lib/ui/form/ImageUpload/Image'
 
 export interface UpdateSpeakerData {
   name: string
@@ -26,39 +28,37 @@ export default function EditSpeakerForm(props: {
   speaker: Speaker | null
   onDone: () => void
 }) {
-  const {register, handleSubmit, watch, setValue, errors} = useForm()
+  const {register, handleSubmit, control, errors} = useForm()
   const [submitting, setSubmitting] = useState(false)
-  const [image, setImage] = useState<null | File>(null)
   const {speaker} = props
   const {client} = useOrganization()
   const [serverError, setServerError] = useState<ValidationError<any>>(null)
-  const [loading, setLoading] = useState(true)
-
+  const image = useFileSelect(speaker?.image)
   const {update, remove} = useSpeakers()
 
-  const mounted = useRef(true)
+  const data = (form: UpdateSpeakerData) => {
+    if (image.selected) {
+      const formData = new FormData()
+      for (const [key, value] of Object.entries(form)) {
+        formData.set(key, String(value))
+      }
 
-  useEffect(() => {
-    if (!speaker) {
-      return
-    }
-    setLoading(false)
-    setValue('name', speaker.name)
-    setValue('text', speaker.text)
+      formData.set('image', image.selected)
 
-    if (speaker.image) {
-      fetchFile(speaker.image.name, speaker.image.url)
-        .then(setImage)
-        .catch(() => {
-          // ignore invalid image
-        })
+      return formData
     }
-    return () => {
-      mounted.current = false
-    }
-  }, [speaker, setValue])
 
-  const submit = (data: UpdateSpeakerData) => {
+    if (image.wasRemoved) {
+      return {
+        ...form,
+        image: null,
+      }
+    }
+
+    return form
+  }
+
+  const submit = (form: UpdateSpeakerData) => {
     if (!speaker) {
       throw new Error(
         'Missing speaker; was the speaker set as editing correctly?',
@@ -66,25 +66,11 @@ export default function EditSpeakerForm(props: {
     }
 
     setSubmitting(true)
-    const formData = new FormData()
-    if (image) {
-      formData.set('image', image)
-    }
-
-    formData.set('name', data.name)
-
-    if (data.text) {
-      formData.set('text', data.text)
-    }
 
     const url = api(`/speakers/${speaker.id}`)
 
     client
-      .post<Speaker>(url, formData, {
-        headers: {
-          'content-type': 'multipart/form-data',
-        },
-      })
+      .put<Speaker>(url, data(form))
       .then((speaker) => {
         update(speaker)
         props.onDone()
@@ -93,17 +79,6 @@ export default function EditSpeakerForm(props: {
         setServerError(e)
         setSubmitting(false)
       })
-  }
-
-  const handleFileSelect = (evt: React.ChangeEvent<HTMLInputElement>) => {
-    const file = evt.target.files ? evt.target.files[0] : null
-    if (file) {
-      setImage(file)
-    }
-  }
-
-  const removeImage = () => {
-    setImage(null)
   }
 
   if (!speaker) {
@@ -134,6 +109,7 @@ export default function EditSpeakerForm(props: {
         label="Speaker Name"
         required
         fullWidth
+        defaultValue={speaker.name}
         inputProps={{
           ref: register({required: 'Speaker Name is required.'}),
           'aria-label': 'speaker name',
@@ -141,35 +117,28 @@ export default function EditSpeakerForm(props: {
         error={Boolean(nameError)}
         helperText={nameError}
       />
-      <input
-        type="hidden"
+      <Controller
         name="text"
-        aria-label="speaker text"
-        ref={register}
-      />
-      <TextEditorContainer>
-        {loading ? null : (
-          <TextEditor
-            data={watch('text')}
-            onChange={(val) => setValue('text', val)}
-          />
+        control={control}
+        defaultValue={speaker.text}
+        render={({value, onChange}) => (
+          <TextEditorContainer>
+            <TextEditor data={value} onChange={onChange} />
+          </TextEditorContainer>
         )}
-      </TextEditorContainer>
+      ></Controller>
       <ImageContainer>
-        <UploadButton variant="outlined" color="primary">
-          <UploadButtonLabel htmlFor={imageUploadId}>
-            Upload Image
-          </UploadButtonLabel>
-        </UploadButton>
-        <input
-          id={imageUploadId}
-          type="file"
-          accept="image/*"
-          onChange={handleFileSelect}
-          hidden
-          aria-label="speaker image input"
-        />
-        <UploadedImage image={image} onRemove={removeImage} speaker={speaker} />
+        <ImageUpload file={image} disabled={submitting}>
+          <Cropper width={300} height={300} canResize />
+          <Label>Image</Label>
+          <Image alt="favicon" width={100} />
+          <UploadButton
+            inputProps={{
+              'aria-label': 'speaker image input',
+            }}
+          />
+          <RemoveImageButton aria-label="remove speaker image" />
+        </ImageUpload>
       </ImageContainer>
       <SaveButton
         fullWidth
@@ -193,17 +162,6 @@ export default function EditSpeakerForm(props: {
     </form>
   )
 }
-
-const UploadButton = withStyles({
-  root: {
-    padding: 0,
-  },
-})(Button)
-
-const UploadButtonLabel = styled.label`
-  padding: 5px 15px;
-  cursor: pointer;
-`
 
 const ImageContainer = styled.div`
   margin-bottom: ${(props) => props.theme.spacing[6]}!important;

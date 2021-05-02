@@ -1,104 +1,141 @@
-import React, {useState} from 'react'
-import Button from '@material-ui/core/Button'
+import React, {useCallback, useEffect, useMemo, useState} from 'react'
 import styled from 'styled-components'
 import {useEvent} from 'Event/EventProvider'
 import {api} from 'lib/url'
-import {withStyles} from '@material-ui/core'
-import {spacing} from 'lib/ui/theme'
-import Typography from '@material-ui/core/Typography'
 import {useOrganization} from 'organization/OrganizationProvider'
 import {ObvioEvent} from 'Event'
-import InputLabel from '@material-ui/core/InputLabel'
-import DangerButton from 'lib/ui/Button/DangerButton'
-import {Visible} from 'lib/dom'
+import {PublicFile} from 'lib/http-client'
+import Label from 'lib/ui/form/ImageUpload/Label'
+import ImageUpload from 'lib/ui/form/ImageUpload'
+import RemoveImageButton from 'lib/ui/form/ImageUpload/RemoveButton'
+import UploadButton from 'lib/ui/form/ImageUpload/UploadButton'
+import Image from 'lib/ui/form/ImageUpload/Image'
+import {FileSelect, useFileSelect} from 'lib/ui/form/file'
+import {withStyles} from '@material-ui/core/styles'
+import {spacing} from 'lib/ui/theme'
+import Typography from '@material-ui/core/Typography'
+import Cropper, {CropperProps} from 'lib/ui/form/ImageUpload/Cropper'
 
-const MAX_FILE_SIZE_BYTES = 5000000 // 5MB
-
-export default function EventImageUpload(props: {
+interface EventImageUploadProps {
   label: string
   property: keyof ObvioEvent
-  current?: string
-}) {
-  const {upload, isUploading, error, setError} = useUpload()
-  const imageUploadId = `event-${props.property}-image-upload`
-  const inputLabel = `${props.property} image input`
+  current?: PublicFile | null
+  width?: CropperProps['width']
+  height?: CropperProps['height']
+  canResize?: CropperProps['canResize']
+}
 
-  const handleFileSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files ? e.target.files[0] : null
-    if (file && file.size > MAX_FILE_SIZE_BYTES) {
-      setError('Image too large. Please select an image smaller than 5MB.')
+export default function EventImageUpload(props: EventImageUploadProps) {
+  const {property, current, width, height, canResize, label} = props
+
+  const image = useFileSelect(current)
+  const {selected, wasRemoved} = image
+  const upload = useUpload()
+  const {set: setEvent} = useEvent()
+  const [isUploading, setIsUploading] = useState(false)
+  const [error, setError] = useState<string | null>(null)
+
+  const clearError = () => setError(null)
+
+  const data = useMemo(() => {
+    if (selected) {
+      const formData = new FormData()
+      formData.set(property, selected)
+      return formData
+    }
+
+    if (wasRemoved) {
+      return {
+        [property]: null,
+      }
+    }
+
+    return null
+  }, [property, selected, wasRemoved])
+
+  useEffect(() => {
+    if (!data) {
       return
     }
 
-    if (isUploading || !file) {
-      return
-    }
+    setIsUploading(true)
 
-    const formData = new FormData()
-    formData.set(props.property, file)
-
-    upload(formData)
-  }
-
-  const remove = () => {
-    const data = {
-      [props.property]: null,
-    }
+    clearError()
 
     upload(data)
+      .then((event) => {
+        setEvent(event)
+      })
+      .catch((e) => {
+        setError(e.message)
+      })
+      .finally(() => {
+        setIsUploading(false)
+      })
+  }, [selected, wasRemoved, upload, data, setEvent])
+
+  const hasCropSettings =
+    width !== undefined || height !== undefined || canResize !== undefined
+
+  const imageComponentProps = {
+    image,
+    isUploading,
+    property,
+    label,
+    error,
   }
 
-  const hasCurrent = Boolean(props.current)
+  if (hasCropSettings) {
+    return (
+      <ImageComponents {...imageComponentProps}>
+        <Cropper width={width} height={height} canResize={canResize} />
+      </ImageComponents>
+    )
+  }
+
+  return <ImageComponents {...imageComponentProps} />
+}
+
+function ImageComponents(props: {
+  children?: React.ReactElement
+  image: FileSelect
+  isUploading: boolean
+  property: EventImageUploadProps['property']
+  label: EventImageUploadProps['label']
+  error: string | null
+}) {
+  const {image, isUploading, property, label, error} = props
+  const inputLabel = `${property} image input`
 
   return (
     <Box>
-      <Label>{props.label}</Label>
-      <Image current={props.current} property={props.property} />
-      <Visible if={!hasCurrent}>
-        <Button
-          variant="outlined"
-          color="primary"
-          disabled={isUploading}
-          aria-label="select image to upload"
-        >
-          <UploadButtonLabel htmlFor={imageUploadId}>Upload</UploadButtonLabel>
-        </Button>
-      </Visible>
-      <Visible if={hasCurrent}>
-        <DangerButton
-          variant="outlined"
-          aria-label={`remove ${props.property} image`}
-          onClick={remove}
-          disabled={isUploading}
-        >
-          Remove
-        </DangerButton>
-      </Visible>
-      <input
-        id={imageUploadId}
-        type="file"
-        accept="image/*"
-        onChange={handleFileSelect}
-        value="" // Required to allow uploading multiple times
-        hidden
-        aria-label={inputLabel}
-      />
+      <ImageUpload file={image} disabled={isUploading}>
+        {props.children || null}
+        <Label>{label}</Label>
+        <Image alt={`current ${property}`} width={200} />
+        <UploadButton
+          inputProps={{
+            'aria-label': inputLabel,
+          }}
+        />
+        <RemoveImageButton aria-label={`remove ${property} image`} />
+      </ImageUpload>
       <Error>{error}</Error>
     </Box>
   )
 }
 
-function Image(props: {current?: string; property: string}) {
-  if (!props.current) {
-    return null
-  }
+function useUpload() {
+  const {event} = useEvent()
+  const {client} = useOrganization()
 
-  const alt = `current ${props.property}`
+  const url = api(`/events/${event.slug}`)
 
-  return (
-    <ImageBox>
-      <img src={props.current} alt={alt} />
-    </ImageBox>
+  return useCallback(
+    (data: {} | FormData) => {
+      return client.put<ObvioEvent>(url, data)
+    },
+    [client, url],
   )
 }
 
@@ -120,57 +157,6 @@ const ErrorText = withStyles({
   },
 })(Typography)
 
-function useUpload() {
-  const {event, set: setEvent} = useEvent()
-  const {client} = useOrganization()
-  const [isUploading, setIsUploading] = useState(false)
-  const [error, setError] = useState<string | null>(null)
-
-  const url = api(`/events/${event.slug}`)
-  const clearError = () => setError(null)
-
-  const upload = (data: {} | FormData) => {
-    if (isUploading) {
-      return
-    }
-
-    setIsUploading(true)
-    clearError()
-
-    client
-      .put<ObvioEvent>(url, data)
-      .then(setEvent)
-      .catch((e) => {
-        setError(e.message)
-      })
-      .finally(() => {
-        setIsUploading(false)
-      })
-  }
-
-  return {error, upload, isUploading, setError}
-}
-
-const UploadButtonLabel = styled.label`
-  cursor: pointer;
-`
-
 const Box = styled.div`
   margin-bottom: ${(props) => props.theme.spacing[3]};
-`
-
-const Label = withStyles({
-  root: {
-    marginBottom: spacing[3],
-  },
-})(InputLabel)
-
-const ImageBox = styled.div`
-  width: 200px;
-  margin: ${(props) => props.theme.spacing[3]} 0;
-
-  img {
-    width: 100%;
-    max-height: 100%;
-  }
 `

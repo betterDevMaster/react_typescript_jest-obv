@@ -6,6 +6,8 @@ import Croppie from 'croppie'
 import Dialog from '@material-ui/core/Dialog'
 import DialogContent from '@material-ui/core/DialogContent'
 import DialogTitle from '@material-ui/core/DialogTitle'
+import Typography from '@material-ui/core/Typography'
+import Container from '@material-ui/core/Container'
 
 import 'croppie/croppie.css'
 
@@ -31,10 +33,11 @@ const DEFAULT_OPTIONS = {
 export default function Cropper({
   image,
   isOpen,
-  onClose,
-  onDone,
+  onCancel,
+  onCrop,
   width,
   height,
+  canResize,
 }) {
   const [croppie, setCroppie] = useState(null)
   const [el, setEl] = useState(null)
@@ -48,6 +51,13 @@ export default function Cropper({
       return
     }
 
+    const activeWidth = width || DEFAULT_WIDTH
+    const activeHeight = height || DEFAULT_HEIGHT
+
+    const longestEdge = Math.max(activeWidth, activeHeight)
+
+    const boundaryLength = longestEdge + 100
+
     const options = {
       ...DEFAULT_OPTIONS,
       viewport: {
@@ -55,6 +65,11 @@ export default function Cropper({
         width: width || DEFAULT_WIDTH,
         height: height || DEFAULT_HEIGHT,
       },
+      boundary: {
+        width: boundaryLength,
+        height: boundaryLength,
+      },
+      enableResize: Boolean(canResize),
     }
 
     const c = new Croppie(el, options)
@@ -63,7 +78,7 @@ export default function Cropper({
     })
 
     setCroppie(c)
-  }, [el, croppie, isOpen, image, width, height])
+  }, [el, croppie, isOpen, image, width, height, canResize])
 
   /**
    * Clean-up instance on close
@@ -80,45 +95,50 @@ export default function Cropper({
 
   const submitCroppedImage = () => {
     if (croppie === null) {
-      onClose()
+      onCancel()
       return
     }
 
     croppie.result({type: 'blob'}).then((blob) => {
       const cropped = blobToFile(blob, image.name)
-      onDone(cropped)
-      onClose()
+      onCrop(cropped)
     })
   }
 
   return (
-    <Dialog open={isOpen} onClose={onClose} fullWidth disableEnforceFocus>
-      <DialogTitle>Re-size Image</DialogTitle>
+    <Dialog open={!!isOpen} onClose={onCancel} fullScreen disableEnforceFocus>
+      <DialogTitle disableTypography>
+        <Typography align="center" variant="h5">
+          Re-size Image
+        </Typography>
+      </DialogTitle>
       <DialogContent>
         <CroppyContainer>
           <div ref={setEl}></div>
         </CroppyContainer>
-        <Box mb={2}>
-          <Button
-            color="primary"
-            variant="contained"
-            onClick={submitCroppedImage}
-            aria-label="update image size"
-            fullWidth
-          >
-            Done
-          </Button>
-        </Box>
-        <Box mb={2}>
-          <Button
-            variant="outlined"
-            onClick={onClose}
-            fullWidth
-            aria-label="cancel image resize"
-          >
-            Cancel
-          </Button>
-        </Box>
+        <Container maxWidth="sm">
+          <Box mb={2}>
+            <Button
+              color="primary"
+              variant="contained"
+              onClick={submitCroppedImage}
+              aria-label="update image size"
+              fullWidth
+            >
+              Done
+            </Button>
+          </Box>
+          <Box mb={2}>
+            <Button
+              variant="outlined"
+              onClick={onCancel}
+              fullWidth
+              aria-label="cancel image resize"
+            >
+              Cancel
+            </Button>
+          </Box>
+        </Container>
       </DialogContent>
     </Dialog>
   )

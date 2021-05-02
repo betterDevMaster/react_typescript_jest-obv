@@ -29,7 +29,7 @@ export function HeroConfig() {
         <EventImageUpload
           label="Image"
           property="welcome_image"
-          current={event.welcome_image?.url}
+          current={event.welcome_image}
         />
       </Box>
       <InputLabel>Image Size</InputLabel>

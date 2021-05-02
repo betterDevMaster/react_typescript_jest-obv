@@ -15,7 +15,7 @@ afterEach(() => {
 })
 
 it('should edit a speaker', async () => {
-  window.URL.createObjectURL = jest.fn()
+  window.URL.createObjectURL = jest.fn(() => 'blob://foo')
   const speakers = Array.from(
     {length: faker.random.number({min: 2, max: 5})},
     () => fakeSpeaker({image: null}),
@@ -35,10 +35,6 @@ it('should edit a speaker', async () => {
   const name = faker.name.firstName()
   user.type(await findByLabelText('speaker name'), name)
 
-  const text = faker.lorem.paragraph()
-  const textEl = (await findByLabelText('speaker text')) as HTMLInputElement
-  textEl.value = text
-
   const image = new File([], 'image.jpg')
   const imageInput = await findByLabelText('speaker image input')
   Object.defineProperty(imageInput, 'files', {
@@ -46,13 +42,15 @@ it('should edit a speaker', async () => {
   })
   fireEvent.change(imageInput)
 
+  user.click(await findByLabelText('cancel image resize'))
+
   const target = speakers[targetIndex]
 
   const url = faker.internet.url()
   const updated: Speaker = {
     ...target,
     name,
-    text,
+    text: 'sometext',
     image: {
       url,
       name: 'image.jpeg',

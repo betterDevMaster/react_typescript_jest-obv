@@ -45,7 +45,10 @@ export function SimpleBlogConfig() {
         <EventImageUpload
           label="Logo"
           property="logo"
-          current={event.logo?.url}
+          current={event.logo}
+          width={450}
+          height={150}
+          canResize
         />
       </Box>
       <Box mb={2}>
@@ -69,7 +72,9 @@ export function SimpleBlogConfig() {
         <EventImageUpload
           label="Header Background"
           property="header_background"
-          current={event.header_background?.url}
+          current={event.header_background}
+          width={1200}
+          height={150}
         />
       </Box>
       <ColorPicker
@@ -105,7 +110,7 @@ export function SimpleBlogConfig() {
         <EventImageUpload
           label="Dashboard Background"
           property="dashboard_background"
-          current={event.dashboard_background?.url}
+          current={event.dashboard_background}
         />
       </Box>
       <ColorPicker

@@ -2,7 +2,7 @@ import styled from 'styled-components'
 import React from 'react'
 import {Speaker} from 'Event/SpeakerPage'
 
-export const SPEAKER_PLACEHOLDER = 'http://placehold.jp/600x600.png'
+export const SPEAKER_PLACEHOLDER = 'http://placehold.jp/300x300.png'
 
 type ImageProps = {
   speaker: Speaker

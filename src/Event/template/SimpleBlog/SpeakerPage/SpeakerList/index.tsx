@@ -4,6 +4,7 @@ import Grid, {GridSpacing} from '@material-ui/core/Grid'
 import React from 'react'
 import {useTemplate} from 'Event/TemplateProvider'
 import {DEFAULT_SPEAKERS_SPACE} from 'organization/Event/SpeakerPageConfig/SpeakerPageEditDialog/Form'
+import Typography from '@material-ui/core/Typography'
 
 export default function SpeakerList(props: {
   speakers: Speaker[]
@@ -13,7 +14,7 @@ export default function SpeakerList(props: {
 
   const isEmpty = props.speakers.length === 0
   if (isEmpty) {
-    return <div>No speakers have been added</div>
+    return <Typography align="center">No speakers have been added</Typography>
   }
 
   const spacing = (template.speakers?.speakersSpace ||

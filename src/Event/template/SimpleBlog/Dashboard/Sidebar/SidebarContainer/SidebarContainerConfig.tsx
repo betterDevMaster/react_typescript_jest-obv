@@ -43,7 +43,7 @@ export function SidebarContainerConfig() {
       <EventImageUpload
         label="Background Image"
         property="sidebar_background"
-        current={event.sidebar_background?.url}
+        current={event.sidebar_background}
       />
       <InputLabel>Top Padding</InputLabel>
       <Slider

@@ -54,7 +54,7 @@ export function FooterConfig() {
       <EventImageUpload
         label="Image"
         property="footer_image"
-        current={event.footer_image?.url}
+        current={event.footer_image}
       />
       <InputLabel>Image Size</InputLabel>
       <Slider
