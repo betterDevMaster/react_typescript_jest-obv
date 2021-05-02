@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from 'react'
-import DangerButton from 'lib/ui/Button/DangerButton'
 import Image from 'lib/ui/form/ImageUpload/Image'
 import UploadButton from 'lib/ui/form/ImageUpload/UploadButton'
+import RemoveButton from 'lib/ui/form/ImageUpload/RemoveButton'
 import Cropper from 'lib/ui/form/ImageUpload/Cropper'
 
 export const MAX_FILE_SIZE_BYTES = 5000000 // 5MB
@@ -101,23 +101,6 @@ export default function ImageUpload(props) {
   }
 
   return withProps(props.children)
-}
-
-export function RemoveButton(props) {
-  if (!props.isVisible) {
-    return null
-  }
-
-  return (
-    <DangerButton
-      variant="outlined"
-      aria-label={props['aria-label']}
-      onClick={props.onClick}
-      disabled={props.disabled}
-    >
-      Remove
-    </DangerButton>
-  )
 }
 
 function is(fn, component) {
