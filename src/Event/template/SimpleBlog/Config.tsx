@@ -42,14 +42,7 @@ export function SimpleBlogConfig() {
   return (
     <>
       <Box mb={2}>
-        <EventImageUpload
-          label="Logo"
-          property="logo"
-          current={event.logo}
-          width={450}
-          height={150}
-          canResize
-        />
+        <EventImageUpload label="Logo" property="logo" current={event.logo} />
       </Box>
       <Box mb={2}>
         <Grid container>
