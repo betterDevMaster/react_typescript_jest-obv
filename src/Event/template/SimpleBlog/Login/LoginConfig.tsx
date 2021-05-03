@@ -133,6 +133,9 @@ export default function LoginFormConfig() {
                 label="Background"
                 property="login_background"
                 current={event.login_background}
+                width={1920}
+                height={1200}
+                canResize
               />
               <Box display="flex" flexDirection="column" flex="1" mb={2}>
                 <InputLabel>Hide Background</InputLabel>

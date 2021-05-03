@@ -104,6 +104,9 @@ export function SimpleBlogConfig() {
           label="Dashboard Background"
           property="dashboard_background"
           current={event.dashboard_background}
+          width={1920}
+          height={1200}
+          canResize
         />
       </Box>
       <ColorPicker
