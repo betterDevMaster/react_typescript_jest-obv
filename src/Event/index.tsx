@@ -7,7 +7,6 @@ import PagePoints, {DASHBOARD} from 'Event/PointsProvider/PagePoints'
 import {eventRoutes} from 'Event/Routes'
 import {Template} from 'Event/template'
 import {PublicFile} from 'lib/http-client'
-import {Area} from 'organization/Event/AreasProvider'
 import React from 'react'
 import {Redirect} from 'react-router-dom'
 import {Form} from 'organization/Event/FormsProvider'
@@ -57,7 +56,7 @@ export interface TechCheckConfig {
   body: string
   start: string
   is_enabled: boolean
-  area: Area
+  area_key: string | null
 }
 
 export interface Domain {

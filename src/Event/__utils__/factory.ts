@@ -76,7 +76,7 @@ export function fakeTechCheck(
     )}</p></html>`,
     start: now(),
     is_enabled: true,
-    area: fakeArea(),
+    area_key: faker.random.alphaNumeric(16),
     ...overrides,
   }
 }

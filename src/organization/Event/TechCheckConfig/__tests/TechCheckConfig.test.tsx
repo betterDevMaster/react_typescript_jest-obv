@@ -11,7 +11,6 @@ import {CONFIGURE_EVENTS} from 'organization/PermissionsProvider'
 import {now} from 'lib/date-time'
 import {Area} from 'organization/Event/AreasProvider'
 import {fakeArea} from 'organization/Event/AreaList/__utils__/factory'
-import moment from 'moment'
 import {fakeSimpleBlog} from 'Event/template/SimpleBlog/__utils__/factory'
 
 const mockGet = axios.get as jest.Mock
@@ -73,10 +72,10 @@ it('should submit a tech check config', async () => {
   })
 
   const [_, data] = mockPut.mock.calls[0]
-  const {body: submitted, area_id} = data
+  const {body: submitted, area_key} = data
 
   expect(submitted).toMatch(body) // CKEditor automatically converts to HTML
-  expect(area_id).toBe(area.key)
+  expect(area_key).toBe(area.key)
 
   /**
    * Saved template fields

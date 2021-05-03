@@ -36,7 +36,7 @@ export default function TemplateFields(props: {
       <Grid container spacing={2}>
         <Grid item xs={12} md={6}>
           <TextField
-            value={techCheck.buttonText}
+            value={techCheck.buttonText || ''}
             label="Label"
             fullWidth
             inputProps={{

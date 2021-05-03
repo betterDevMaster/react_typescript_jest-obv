@@ -75,8 +75,8 @@ export default function Form() {
   const {techCheck, set: setTemplateProp} = useTemplateTechCheckProps()
   const {event} = useEvent()
 
-  const areaId = watch('area_id')
-  const canSave = !submitting && Boolean(areaId)
+  const areaKey = watch('area_key')
+  const canSave = !submitting && Boolean(areaKey)
 
   const error = (key: keyof TechCheckData) =>
     fieldError(key, {
@@ -130,9 +130,7 @@ export default function Form() {
     setValue('body', event.tech_check.body)
     setValue('start', event.tech_check.start)
     setValue('is_enabled', event.tech_check.is_enabled)
-
-    const areaId = event.tech_check.area ? event.tech_check.area.id : null
-    setValue('area_id', areaId)
+    setValue('area_key', event.tech_check.area_key)
 
     setLoading(false)
     return () => {
@@ -187,8 +185,8 @@ export default function Form() {
       />
       <Controller
         control={control}
-        name="area_id"
-        defaultValue={null}
+        name="area_key"
+        defaultValue={event.tech_check?.area_key || ''}
         render={({onChange, value}) => (
           <AreaSelect value={value} onPick={onChange} required />
         )}
