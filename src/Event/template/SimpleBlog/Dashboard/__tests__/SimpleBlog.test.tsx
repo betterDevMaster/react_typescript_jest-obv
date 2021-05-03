@@ -56,8 +56,6 @@ it('should upload a logo', async () => {
 
   fireEvent.change(logoInput)
 
-  user.click(await findByLabelText('cancel image resize'))
-
   await wait(() => {
     expect(mockPost).toHaveBeenCalledTimes(1)
   })

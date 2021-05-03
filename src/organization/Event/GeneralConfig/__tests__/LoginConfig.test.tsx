@@ -47,6 +47,8 @@ it('should update a background', async () => {
 
   fireEvent.change(input)
 
+  user.click(await findByLabelText('cancel image resize'))
+
   await wait(() => {
     expect(mockPost).toHaveBeenCalledTimes(1)
   })
