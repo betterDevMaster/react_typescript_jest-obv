@@ -66,6 +66,14 @@ export default function TextEditor(props: {
 export const TextEditorContainer = styled.div`
   overflow-x: hidden;
   margin-bottom: ${(props) => props.theme.spacing[5]};
+
+  /** 
+   * Add a required min-height to prevent the pop-ups from being
+   * cut off when inside a dialog.
+   */
+  .ck-editor__editable_inline {
+    min-height: 200px;
+  }
 `
 
 /*

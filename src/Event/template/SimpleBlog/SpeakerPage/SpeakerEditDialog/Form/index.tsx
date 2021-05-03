@@ -36,16 +36,23 @@ export default function EditSpeakerForm(props: {
   const image = useFileSelect(speaker?.image)
   const {update, remove} = useSpeakers()
 
+  const createFormData = (image: File, form: UpdateSpeakerData) => {
+    const formData = new FormData()
+    for (const [key, value] of Object.entries(form)) {
+      if (value === null || value === undefined) {
+        continue
+      }
+      formData.set(key, String(value))
+    }
+
+    formData.set('image', image)
+
+    return formData
+  }
+
   const data = (form: UpdateSpeakerData) => {
     if (image.selected) {
-      const formData = new FormData()
-      for (const [key, value] of Object.entries(form)) {
-        formData.set(key, String(value))
-      }
-
-      formData.set('image', image.selected)
-
-      return formData
+      return createFormData(image.selected, form)
     }
 
     if (image.wasRemoved) {
