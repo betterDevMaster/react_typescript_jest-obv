@@ -15,6 +15,7 @@ import {AreaProvider} from 'organization/Event/Area/AreaProvider'
 import AreaRoutes from 'organization/Event/Area/AreaRoutes'
 import PointsConfig from 'organization/Event/PointsConfig'
 import GeneralConfig from 'organization/Event/GeneralConfig'
+import Localization from 'organization/Event/LocalizationConfig'
 import AttendeesProvider from 'organization/Event/AttendeesProvider'
 import Services from 'organization/Event/Services'
 import Zapier from 'organization/Event/Services/Apps/Zapier'
@@ -136,6 +137,11 @@ export default function EventRoutes() {
         <Route path={routes.events[':event'].general}>
           <AuthorizedPage permission={CONFIGURE_EVENTS}>
             <GeneralConfig />
+          </AuthorizedPage>
+        </Route>
+        <Route path={routes.events[':event'].localization}>
+          <AuthorizedPage permission={CONFIGURE_EVENTS}>
+            <Localization />
           </AuthorizedPage>
         </Route>
         <Route path={routes.events[':event'].services.root}>

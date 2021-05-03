@@ -9,7 +9,8 @@ import {useTemplate} from 'Event/TemplateProvider'
 import MuiButton, {ButtonProps} from '@material-ui/core/Button'
 import {colors} from 'lib/ui/theme'
 import Grid from '@material-ui/core/Grid'
-import {useWithAttendeeData} from 'Event/auth/data'
+import {useWithVariables} from 'Event'
+
 import {areaRoutes} from 'Event/Routes'
 import {TechCheckConfig} from 'Event'
 import {RelativeLink} from 'lib/ui/link/RelativeLink'
@@ -17,7 +18,7 @@ import {RelativeLink} from 'lib/ui/link/RelativeLink'
 export default function TechCheck(props: {user: User} & TechCheckProps) {
   const {techCheck} = props
   const template = useTemplate()
-  const withAttendeeData = useWithAttendeeData()
+  const v = useWithVariables()
 
   return (
     <SimpleBlogPage user={props.user}>
@@ -31,7 +32,7 @@ export default function TechCheck(props: {user: User} & TechCheckProps) {
         />
         <Body
           dangerouslySetInnerHTML={{
-            __html: withAttendeeData(techCheck.body),
+            __html: v(techCheck.body),
           }}
         />
         <StyledDiv>
@@ -48,7 +49,7 @@ export default function TechCheck(props: {user: User} & TechCheckProps) {
 
 function StartButton(props: {techCheck: TechCheckConfig}) {
   const {techCheck: settings} = useTemplate()
-  const withAttendeeData = useWithAttendeeData()
+  const v = useWithVariables()
 
   const textColor = settings?.buttonTextColor || '#FFFFFF'
   const backgroundColor = settings?.buttonBackground || colors.primary
@@ -67,7 +68,7 @@ function StartButton(props: {techCheck: TechCheckConfig}) {
         aria-label="start tech check"
         fullWidth
       >
-        {withAttendeeData(settings?.buttonText || 'Start Tech Check')}
+        {v(settings?.buttonText || 'Start Tech Check')}
       </StyledButton>
     </RelativeLink>
   )

@@ -10,7 +10,8 @@ import {useTemplate} from 'Event/TemplateProvider'
 import Section from 'Event/template/SimpleBlog/Dashboard/Sidebar/Section'
 import {useEditMode} from 'Event/Dashboard/editor/state/edit-mode'
 import {AbsoluteLink} from 'lib/ui/link/AbsoluteLink'
-import {useWithAttendeeData} from 'Event/auth/data'
+import {useWithAttendeeData} from 'Event/auth/attendee-data'
+import {useWithVariables} from 'Event'
 
 export const AGENDA_ITEM = 'Agenda Item'
 export const AGENDA_LIST = 'Agenda List'
@@ -25,8 +26,7 @@ export type Agenda = Publishable & {
 export default function AgendaList() {
   const {agenda, sidebar} = useTemplate()
   const isEdit = useEditMode()
-  const withAttendeeData = useWithAttendeeData()
-
+  const v = useWithVariables()
   const hasAgenda = agenda.items.length > 0
   if (!hasAgenda && !isEdit) {
     return null
@@ -35,10 +35,10 @@ export default function AgendaList() {
   return (
     <Section>
       <EditComponent component={{type: AGENDA_LIST}}>
-        <Heading aria-label="agendas">{withAttendeeData(agenda.title)}</Heading>
+        <Heading aria-label="agendas">{v(agenda.title)}</Heading>
       </EditComponent>
       <Description aria-label="agendas description" color={sidebar.textColor}>
-        {withAttendeeData(agenda.description || '')}
+        {v(agenda.description || '')}
       </Description>
       <>
         {agenda.items.map((item, index) => (
@@ -56,7 +56,7 @@ export default function AgendaList() {
         aria-label="agendas footer description"
         color={sidebar.textColor}
       >
-        {withAttendeeData(agenda.footer || '')}
+        {v(agenda.footer || '')}
       </Description>
       <EditModeOnly>
         <StyledAddAgendaEventButton />
@@ -114,6 +114,7 @@ function Times(props: {agenda: Agenda}) {
 function Event(props: {agenda: Agenda}) {
   const {sidebar} = useTemplate()
   const withAttendeeData = useWithAttendeeData()
+  const v = useWithVariables()
 
   if (props.agenda.link) {
     return (
@@ -123,7 +124,7 @@ function Event(props: {agenda: Agenda}) {
         color={sidebar.textColor}
       >
         <EventText aria-label="agenda event" color={sidebar.textColor}>
-          {withAttendeeData(props.agenda.text)}
+          {v(props.agenda.text)}
         </EventText>
       </StyledAbsoluteLink>
     )
@@ -131,7 +132,7 @@ function Event(props: {agenda: Agenda}) {
 
   return (
     <EventText aria-label="agenda event" color={sidebar.textColor}>
-      {withAttendeeData(props.agenda.text)}
+      {v(props.agenda.text)}
     </EventText>
   )
 }

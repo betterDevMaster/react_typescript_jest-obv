@@ -37,5 +37,10 @@ export const muiTheme = createMuiTheme({
         marginBottom: spacing[4],
       },
     },
+    MuiInputLabel: {
+      shrink: {
+        background: '#FFFFFF',
+      },
+    },
   },
 })

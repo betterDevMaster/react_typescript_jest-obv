@@ -5,6 +5,7 @@ import styled from 'styled-components'
 import {useTemplate} from 'Event/TemplateProvider'
 import Image from 'Event/template/SimpleBlog/Dashboard/Footer/Image'
 import {useEvent} from 'Event/EventProvider'
+import {useWithVariables} from 'Event'
 
 export const FOOTER = 'footer'
 
@@ -12,6 +13,8 @@ export default function Footer() {
   const {footer} = useTemplate()
   const {event} = useEvent()
   const isEditMode = useEditMode()
+  const v = useWithVariables()
+
   const isEmpty =
     !footer.termsLink &&
     !footer.privacyLink &&
@@ -45,7 +48,7 @@ export default function Footer() {
           ) : null}
         </div>
         {footer.copyrightText ? (
-          <p aria-label="copyright">{footer.copyrightText}</p>
+          <p aria-label="copyright">{v(footer.copyrightText)}</p>
         ) : null}
       </Box>
     </EditComponent>

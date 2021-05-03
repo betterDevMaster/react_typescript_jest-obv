@@ -11,6 +11,7 @@ import {useTemplate} from 'Event/TemplateProvider'
 import {useEvent} from 'Event/EventProvider'
 import {SimpleBlog} from 'Event/template/SimpleBlog'
 import {rgb} from 'lib/color'
+import LanguageSelectMenu from 'Event/LanguageSelectMenu'
 
 export default function SimpleBlogPage(props: {
   user: User
@@ -41,6 +42,7 @@ export default function SimpleBlogPage(props: {
         <Content>
           <StyledContainer maxWidth="lg">{props.children}</StyledContainer>
         </Content>
+        <LanguageSelectMenu />
         <Footer />
       </ColorOverlay>
     </Box>

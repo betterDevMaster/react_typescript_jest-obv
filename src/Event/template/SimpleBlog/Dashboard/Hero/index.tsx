@@ -7,8 +7,8 @@ import EditModeOnly from 'Event/Dashboard/editor/views/EditModeOnly'
 import {withStyles} from '@material-ui/core'
 import {spacing} from 'lib/ui/theme'
 import Button from '@material-ui/core/Button'
-import {useWithAttendeeData} from 'Event/auth/data'
 import {DEFAULT_HERO_IMAGE_SIZE_PERCENT} from 'Event/template/SimpleBlog/Dashboard/Hero/HeroConfig'
+import {useWithVariables} from 'Event'
 
 export const HERO = 'Hero'
 
@@ -43,7 +43,7 @@ function EditButton() {
 
 function WelcomeText() {
   const {welcomeText} = useTemplate()
-  const withAttendeeData = useWithAttendeeData()
+  const v = useWithVariables()
 
   if (!welcomeText) {
     return null
@@ -53,7 +53,7 @@ function WelcomeText() {
     <Text aria-label="welcome">
       <div
         dangerouslySetInnerHTML={{
-          __html: withAttendeeData(welcomeText),
+          __html: v(welcomeText),
         }}
       />
     </Text>

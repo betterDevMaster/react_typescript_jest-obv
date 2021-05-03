@@ -6,10 +6,7 @@ import {createEntityList, EntityList} from 'lib/list'
 export const fakeBlogPost = (overrides?: Partial<BlogPost>): BlogPost => ({
   title: faker.lorem.lines(1),
   postedAt: faker.date.past().toISOString(),
-  publishAt:
-    faker.random.boolean() === true
-      ? faker.date.past().toISOString()
-      : faker.date.future().toISOString(),
+  publishAt: null,
   content: `
     <div>
       <p>
@@ -17,7 +14,7 @@ export const fakeBlogPost = (overrides?: Partial<BlogPost>): BlogPost => ({
       </p>
     </div>
   `,
-  isVisible: faker.random.boolean(),
+  isVisible: true,
   ...overrides,
 })
 

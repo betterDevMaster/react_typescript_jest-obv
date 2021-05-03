@@ -14,6 +14,7 @@ import {defaultScore} from 'Event/PointsProvider/__utils__/StaticPointsProvider'
 import {getDiffDatetime, now} from 'lib/date-time'
 import moment from 'moment'
 import {fakeOrganization} from 'obvio/Organizations/__utils__/factory'
+import {Translations} from 'Event/LanguageProvider/translations'
 
 it('should render blog posts', async () => {
   const withoutPosts = fakeEvent({
@@ -36,7 +37,14 @@ it('should render blog posts', async () => {
 
   const numPosts = faker.random.number({min: 1, max: 5})
   const blogPosts = createEntityList(
-    Array.from({length: numPosts}, fakeBlogPost),
+    Array.from({length: numPosts}, () =>
+      fakeBlogPost({
+        publishAt: faker.random.boolean()
+          ? faker.date.past().toISOString()
+          : faker.date.future().toISOString(),
+        isVisible: faker.random.boolean(),
+      }),
+    ),
   )
 
   const withPosts = fakeEvent({
@@ -204,4 +212,39 @@ it('should show in order', async () => {
   expect(await titleAtIndex(0)).toBe(firstPost.title)
   expect(await titleAtIndex(1)).toBe(secondPost.title)
   expect(await titleAtIndex(2)).toBe(thirdPost.title)
+})
+
+it('should show translated text content', async () => {
+  const key = 'my_translated_post'
+
+  const post = fakeBlogPost({
+    content: `<div>{{${key}}}</div>`,
+  })
+
+  const text = faker.lorem.paragraph()
+
+  const translations: Translations = {
+    English: {
+      [key]: text,
+    },
+  }
+
+  const {findByText} = render(
+    <Dashboard isEditMode={false} user={fakeUser()} />,
+    {
+      event: fakeEvent({
+        template: fakeSimpleBlog({
+          blogPosts: createEntityList([post]),
+        }),
+        localization: {
+          translations,
+        },
+      }),
+      actions: emptyActions,
+      score: defaultScore,
+      withRouter: true,
+    },
+  )
+
+  expect(await findByText(text)).toBeInTheDocument()
 })

@@ -14,13 +14,13 @@ import {useAsync} from 'lib/async'
 import {usePoints} from 'Event/PointsProvider'
 import {useTemplate} from 'Event/TemplateProvider'
 import {Entry} from 'Event/Leaderboard'
-import {useWithAttendeeData} from 'Event/auth/data'
 import {
   DEFAULT_TITLE,
   DEFAULT_DESCRIPTION,
   DEFAULT_BACK_TO_DASHBOARD_TEXT_COLOR,
   DEFAULT_BACK_TO_DASHBOARD_TEXT,
 } from 'Event/template/SimpleBlog/Leaderboard/LeaderboardConfig'
+import {useWithVariables} from 'Event'
 
 const replace = (key: string, value: string, text: string) => {
   const match = new RegExp(`{{${key}}}`, 'gi')
@@ -34,9 +34,10 @@ export default function SimpleBlogLeaderboard(props: {user: Attendee}) {
   const {points, leaderboard: leaderboardPage} = useTemplate()
   const unit = points ? points.unit : 'Points'
 
-  const withAttendeeData = useWithAttendeeData()
+  const v = useWithVariables()
+
   let description = leaderboardPage?.description || DEFAULT_DESCRIPTION
-  description = withAttendeeData(description)
+  description = v(description)
   description = replace('points', `${score.points}`, description)
   description = replace('unit', unit, description)
   description = replace('position', `${score.position}`, description)

@@ -35,6 +35,7 @@ export const fakeEvent = (overrides?: Partial<ObvioEvent>): ObvioEvent => ({
   has_infusionsoft: false,
   sponsor_page_title: 'Our Sponsors',
   sponsor_question_icon: null,
+  localization: null,
   domains: [],
   ...overrides,
 })

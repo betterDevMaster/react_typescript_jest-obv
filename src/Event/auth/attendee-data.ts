@@ -1,4 +1,5 @@
 import {isAttendee, useEventAuth} from 'Event/auth'
+import {replace, parseVariables} from 'lib/template'
 import {time, today} from 'lib/date-time'
 import {useCallback} from 'react'
 
@@ -47,7 +48,7 @@ export function useWithAttendeeData() {
        */
 
       const customVariables = (text: string) => {
-        return variables(text).filter((v) => !isBaseAttribute(v))
+        return parseVariables(text).filter((v) => !isBaseAttribute(v))
       }
 
       /**
@@ -55,11 +56,6 @@ export function useWithAttendeeData() {
        */
 
       let result = text
-
-      const replace = (key: string, value: string, text: string) => {
-        const match = new RegExp(`{{${key}}}`, 'gi')
-        return text.replace(match, value)
-      }
 
       /**
        * Replace base attributes
@@ -86,24 +82,4 @@ export function useWithAttendeeData() {
     },
     [user],
   )
-}
-
-/**
- * Get the custom {{variables}} within a text
- *
- * @param text
- * @returns
- */
-
-function variables(text: string) {
-  const matches = text.match(/{{([^}]+)}}/g)
-
-  if (!matches) {
-    return []
-  }
-
-  /**
-   * Remove matched {{ brackes }}
-   */
-  return matches.map((key) => key.replace(/{/g, '').replace(/}/g, ''))
 }

@@ -8,6 +8,7 @@ export default function IconButton(props: {
   className?: string
   'aria-label'?: string
   type?: 'button' | 'submit'
+  disabled?: boolean
 }) {
   return (
     <Button
@@ -16,6 +17,7 @@ export default function IconButton(props: {
       onClick={props.onClick}
       data-testid={props.dataTestId}
       aria-label={props['aria-label']}
+      disabled={props.disabled}
     >
       {props.children}
     </Button>

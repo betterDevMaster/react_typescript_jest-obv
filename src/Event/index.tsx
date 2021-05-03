@@ -7,10 +7,16 @@ import PagePoints, {DASHBOARD} from 'Event/PointsProvider/PagePoints'
 import {eventRoutes} from 'Event/Routes'
 import {Template} from 'Event/template'
 import {PublicFile} from 'lib/http-client'
-import React from 'react'
+import React, {useCallback} from 'react'
 import {Redirect} from 'react-router-dom'
 import {Form} from 'organization/Event/FormsProvider'
-import {Speaker} from 'Event/SpeakerPage'
+import {Speaker} from './SpeakerPage'
+import {
+  Localization,
+  useWithTranslations,
+} from 'Event/LanguageProvider/translations'
+import {useWithAttendeeData} from 'Event/auth/attendee-data'
+import {pipe} from 'ramda'
 
 // Can't use 'Event' because that's already a native DOM type
 // for browser events and we'd lose TS safety/import assist.
@@ -41,6 +47,7 @@ export interface ObvioEvent {
   sponsor_page_title: string
   sponsor_question_icon: PublicFile | null
   speakers: Speaker[]
+  localization: Localization | null
   domains: Domain[]
 }
 
@@ -91,5 +98,22 @@ export default function Event() {
         <Dashboard user={attendee} />
       </PagePoints>
     </AttendeeProfileProvider>
+  )
+}
+
+/**
+ * withVariables() will dynamically replace any Event text
+ * with known {{ variables }}.
+ */
+export function useWithVariables() {
+  const withTranslations = useWithTranslations()
+  const withAttendeeData = useWithAttendeeData()
+
+  return useCallback(
+    (text: string) => {
+      const process = pipe(withAttendeeData, withTranslations)
+      return process(text)
+    },
+    [withAttendeeData, withTranslations],
   )
 }

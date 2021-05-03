@@ -54,6 +54,12 @@ function AuthorizedPages() {
         <ConfigNavItem to={routes.general} aria-label="general config">
           General
         </ConfigNavItem>
+        <ConfigNavItem
+          to={routes.localization}
+          aria-label="localization config"
+        >
+          Localization
+        </ConfigNavItem>
         <ConfigNavItem to={routes.services.root} aria-label="services">
           Services
         </ConfigNavItem>

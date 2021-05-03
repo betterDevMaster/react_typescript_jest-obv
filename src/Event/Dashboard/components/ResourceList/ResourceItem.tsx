@@ -8,7 +8,6 @@ import {storage} from 'lib/url'
 import {Publishable} from 'Event/Dashboard/editor/views/Published'
 import {useTemplate} from 'Event/TemplateProvider'
 import {HasRules} from 'Event/Dashboard/component-rules'
-import {useWithAttendeeData} from 'Event/auth/data'
 import HiddenOnMatch from 'Event/Dashboard/component-rules/HiddenOnMatch'
 import EditComponent from 'Event/Dashboard/editor/views/EditComponent'
 import Published from 'Event/Dashboard/editor/views/Published'
@@ -16,6 +15,7 @@ import {Draggable, DraggableProvidedDraggableProps} from 'react-beautiful-dnd'
 import Grid from '@material-ui/core/Grid'
 import {useEditMode} from 'Event/Dashboard/editor/state/edit-mode'
 import {DragHandle, DraggableOverlay} from 'lib/ui/drag-and-drop'
+import {useWithVariables} from 'Event'
 
 export type Resource = Publishable &
   HasRules & {
@@ -77,8 +77,8 @@ function ResourceItemLink(props: {resource: Resource; iconColor?: string}) {
   const {downloadResource: DOWNLOADING_RESOURCE} = usePlatformActions()
   const {submit} = usePoints()
   const {sidebar} = useTemplate()
-  const withAttendeeData = useWithAttendeeData()
   const path = storage(`/event/resources/${props.resource.filePath}`)
+  const v = useWithVariables()
 
   const awardPoints = () => {
     submit(DOWNLOADING_RESOURCE)
@@ -98,9 +98,7 @@ function ResourceItemLink(props: {resource: Resource; iconColor?: string}) {
       >
         {props.resource.icon}
       </StyledIcon>
-      <LinkText aria-label="resource link">
-        {withAttendeeData(props.resource.name)}
-      </LinkText>
+      <LinkText aria-label="resource link">{v(props.resource.name)}</LinkText>
     </ResourceLink>
   )
 }

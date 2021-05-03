@@ -21,12 +21,12 @@ import {
 } from 'Event/template/SimpleBlog/SetPasswordForm/SetPasswordFormConfig'
 import MuiButton from '@material-ui/core/Button'
 import Box from '@material-ui/core/Box'
-import {useWithAttendeeData} from 'Event/auth/data'
+import {useWithVariables} from 'Event'
 
 export default function SimpleBlogSetPasswordForm(props: SetPasswordFormProps) {
   const {register, handleSubmit, errors, watch} = useForm()
   const template = useTemplate()
-  const withAttendeeData = useWithAttendeeData()
+  const v = useWithVariables()
 
   const {setPasswordForm} = template
 
@@ -43,11 +43,9 @@ export default function SimpleBlogSetPasswordForm(props: SetPasswordFormProps) {
           thickness={template.progressBar.thickness}
         />
         <Typography align="center" variant="h6">
-          {withAttendeeData(setPasswordForm?.title || DEFAULT_TITLE)}
+          {v(setPasswordForm?.title || DEFAULT_TITLE)}
         </Typography>
-        <Description>
-          {withAttendeeData(setPasswordForm?.description || '')}
-        </Description>
+        <Description>{v(setPasswordForm?.description || '')}</Description>
         <Box mt={2}>
           <form onSubmit={handleSubmit(props.submit)}>
             <TextField

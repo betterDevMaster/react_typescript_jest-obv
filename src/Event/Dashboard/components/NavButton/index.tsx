@@ -11,8 +11,9 @@ import {Publishable} from 'Event/Dashboard/editor/views/Published'
 import {InfusionsoftTag, useAddTag} from 'Event/infusionsoft'
 
 import {RelativeLink} from 'lib/ui/link/RelativeLink'
-import {useWithAttendeeData} from 'Event/auth/data'
+import {useWithAttendeeData} from 'Event/auth/attendee-data'
 import {areaRoutes} from 'Event/Routes'
+import {useWithVariables} from 'Event'
 
 export const NAV_BUTTON = 'NAV_BUTTON'
 
@@ -55,6 +56,7 @@ export default function NavButton(props: NavButton) {
   const submitAction = useSubmitAction(props.actionId)
   const addInfusionsoftTag = useAddInfusionsoftTag(props.infusionsoftTag)
   const withAttendeeData = useWithAttendeeData()
+  const v = useWithVariables()
 
   const handleClicked = () => {
     submitAction()
@@ -75,7 +77,7 @@ export default function NavButton(props: NavButton) {
         aria-label={props['aria-label']}
         onClick={handleClicked}
       >
-        <Button {...props}>{withAttendeeData(props.text)}</Button>
+        <Button {...props}>{v(props.text)}</Button>
       </RelativeLink>
     )
   }
@@ -88,7 +90,7 @@ export default function NavButton(props: NavButton) {
       newTab={newTab}
       onClick={handleClicked}
     >
-      <Button {...props}>{withAttendeeData(props.text)}</Button>
+      <Button {...props}>{v(props.text)}</Button>
     </StyledAbsoluteLink>
   )
 }
@@ -131,12 +133,11 @@ function JoinAreaButton(
 
   const joinLink = areaRoutes(areaId).root
 
-  const withAttendeeData = useWithAttendeeData()
-
+  const v = useWithVariables()
   return (
     <RelativeLink to={joinLink} newTab>
       <Button {...props} onClick={props.onJoin}>
-        {withAttendeeData(props.text)}
+        {v(props.text)}
       </Button>
     </RelativeLink>
   )

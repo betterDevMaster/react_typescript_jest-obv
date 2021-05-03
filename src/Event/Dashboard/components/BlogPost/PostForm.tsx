@@ -12,7 +12,7 @@ import {DEFAULT_MODAL_BUTTON_TEXT} from 'Event/Dashboard/components/BlogPost/Blo
 import Box from '@material-ui/core/Box'
 import {usePoints} from 'Event/PointsProvider'
 import {useSubmissions} from 'Event/SubmissionsProvider'
-import {useWithAttendeeData} from 'Event/auth/data'
+import {useWithAttendeeData} from 'Event/auth/attendee-data'
 
 export default function PostForm(props: {post: BlogPost}) {
   const {post} = props

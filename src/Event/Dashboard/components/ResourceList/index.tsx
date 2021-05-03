@@ -10,8 +10,8 @@ import Section from 'Event/template/SimpleBlog/Dashboard/Sidebar/Section'
 import ResourceItem, {
   Resource,
 } from 'Event/Dashboard/components/ResourceList/ResourceItem'
-import {useWithAttendeeData} from 'Event/auth/data'
 import Grid from '@material-ui/core/Grid'
+import {useWithVariables} from 'Event'
 
 import {
   DragDropContext,
@@ -41,7 +41,7 @@ export const RESOURCE_ICON = {
 export function ResourceList() {
   const isEdit = useEditMode()
   const {resourceList: list, sidebar} = useTemplate()
-  const withAttendeeData = useWithAttendeeData()
+  const v = useWithVariables()
 
   const hasResources = list.resources.length > 0
   if (!hasResources && !isEdit) {
@@ -51,10 +51,10 @@ export function ResourceList() {
   return (
     <Section>
       <EditComponent component={{type: RESOURCE_LIST}}>
-        <Heading aria-label="resources">{withAttendeeData(list.title)}</Heading>
+        <Heading aria-label="resources">{v(list.title)}</Heading>
       </EditComponent>
       <Description aria-label="resource description" color={sidebar.textColor}>
-        {withAttendeeData(list.description)}
+        {v(list.description)}
       </Description>
       <DroppableList />
       <EditModeOnly>

@@ -89,6 +89,7 @@ export function createRoutesFor(organization: Organization) {
           attendees: '/attendees',
           points: '/points',
           general: '/general',
+          localization: '/localization',
           services: {
             zapier: '/zapier',
             infusionsoft: '/infusionsoft',
