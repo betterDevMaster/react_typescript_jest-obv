@@ -6,7 +6,6 @@ import {Sponsor} from 'Event/SponsorPage'
 import {fakeSimpleBlog} from 'Event/template/SimpleBlog/__utils__/factory'
 import faker from 'faker'
 import {now} from 'lib/date-time'
-import {fakeArea} from 'organization/Event/AreaList/__utils__/factory'
 
 export const fakeEvent = (overrides?: Partial<ObvioEvent>): ObvioEvent => ({
   id: faker.random.number({min: 1000, max: 10000}),

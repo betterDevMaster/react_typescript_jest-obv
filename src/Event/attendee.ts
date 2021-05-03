@@ -7,6 +7,8 @@ export type Groups = Record<GroupKey, GroupValue>
 export type Tags = string[]
 
 export type Attendee = User & {
+  first_name?: string | null
+  last_name?: string | null
   groups: Groups
   tags: Tags
   login_token: string
