@@ -1,4 +1,3 @@
-import Button from '@material-ui/core/Button'
 import Container from '@material-ui/core/Container'
 import {User} from 'auth/user'
 import {useTemplate} from 'Event/TemplateProvider'
@@ -12,6 +11,11 @@ import {useForm} from 'react-hook-form'
 import Step2Form from 'Event/template/SimpleBlog/Step2/Step2Form'
 import {Form} from 'organization/Event/FormsProvider'
 import {useSubmissions} from 'Event/SubmissionsProvider'
+import Box from '@material-ui/core/Box'
+import styled from 'styled-components'
+import MuiButton, {ButtonProps} from '@material-ui/core/Button'
+import {colors} from 'lib/ui/theme'
+import {useWithVariables} from 'Event'
 
 export default function Step2(props: {user: User}) {
   const {progressBar} = useTemplate()
@@ -91,17 +95,9 @@ function WithForm(props: {form: Form}) {
         answers={answers}
       />
       <Waiver />
-      <div>
-        <Button
-          color="primary"
-          variant="contained"
-          type="submit"
-          disabled={!canSubmit}
-          aria-label="submit"
-        >
-          Submit
-        </Button>
-      </div>
+      <Box display="flex" justifyContent="center" m={1}>
+        <SubmitButton canSubmit={canSubmit} />
+      </Box>
     </form>
   )
 }
@@ -133,17 +129,61 @@ function WaiverOnly() {
   return (
     <form onSubmit={handleSubmit(submit)}>
       <Waiver />
-      <div>
-        <Button
-          color="primary"
-          variant="contained"
-          type="submit"
-          disabled={!canSubmit}
-          aria-label="submit"
-        >
-          Submit
-        </Button>
-      </div>
+      <Box display="flex" justifyContent="center" m={1}>
+        <SubmitButton canSubmit={canSubmit} />
+      </Box>
     </form>
   )
 }
+
+function SubmitButton(props: {canSubmit: boolean}) {
+  const {waiver} = useTemplate()
+  const v = useWithVariables()
+
+  const textColor = waiver?.buttonTextColor || '#FFFFFF'
+  const backgroundColor = waiver?.buttonBackground || colors.primary
+  const borderColor = waiver?.buttonBorderColor || colors.primary
+
+  return (
+    <StyledButton
+      textColor={textColor}
+      backgroundColor={backgroundColor}
+      borderColor={borderColor}
+      borderRadius={waiver?.buttonBorderRadius || 0}
+      borderWidth={waiver?.buttonBorderWidth || 0}
+      aria-label="submit"
+      fullWidth
+      disabled={!props.canSubmit}
+      type="submit"
+    >
+      {v(waiver?.buttonText || 'Submit')}
+    </StyledButton>
+  )
+}
+
+const StyledButton = styled(
+  ({
+    textColor,
+    backgroundColor,
+    borderRadius,
+    borderColor,
+    borderWidth,
+    ...otherProps
+  }: ButtonProps & {
+    textColor: string
+    backgroundColor: string
+    borderRadius: number
+    borderColor: string
+    borderWidth: number
+  }) => <MuiButton {...otherProps} />,
+)`
+  color: ${(props) => props.textColor}!important;
+  border: ${(props) => props.borderWidth}px solid
+    ${(props) => props.borderColor} !important;
+  background-color: ${(props) => props.backgroundColor} !important;
+  border-radius: ${(props) => props.borderRadius}px !important;
+
+  &: disabled {
+    opacity: 0.6;
+  }
+`

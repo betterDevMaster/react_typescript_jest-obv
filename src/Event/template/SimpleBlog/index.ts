@@ -72,6 +72,15 @@ export interface SimpleBlog {
     hasCustomButtons?: boolean
     buttons?: EntityList<NavButtonWithSize>
   }
+  waiver?: {
+    buttonText?: string
+    buttonBackground?: string
+    buttonTextColor?: string
+    buttonBorderRadius?: number
+    buttonBorderWidth?: number
+    buttonBorderColor?: string
+    buttonWidth?: GridSize
+  }
   menu: {
     backgroundColor: string
     iconColor: string
@@ -159,6 +168,15 @@ export const createSimpleBlog = (): SimpleBlog => ({
     isVisible: true,
   },
   techCheck: {
+    buttonText: 'submit',
+    buttonBackground: 'blue',
+    buttonTextColor: '#ffffff',
+    buttonBorderRadius: 0,
+    buttonBorderWidth: 0,
+    buttonBorderColor: '#ffffff',
+    buttonWidth: 12,
+  },
+  waiver: {
     buttonText: 'submit',
     buttonBackground: 'blue',
     buttonTextColor: '#ffffff',

@@ -7,6 +7,8 @@ import Checkbox from '@material-ui/core/Checkbox'
 import Signature from 'lib/ui/form/Signature'
 import {onChangeCheckedHandler} from 'lib/dom'
 import {useWaiver} from 'Event/Step2/WaiverProvider'
+import Grid from '@material-ui/core/Grid'
+import Box from '@material-ui/core/Box'
 import {useWithVariables} from 'Event'
 
 export default function Waiver() {
@@ -14,7 +16,7 @@ export default function Waiver() {
     waiver,
     agree,
     setAgree,
-    agreeLabel,
+    agreeStatement,
     signature,
     setSignature,
   } = useWaiver()
@@ -28,21 +30,29 @@ export default function Waiver() {
           __html: v(waiver.body),
         }}
       />
-      <FormControl required component="fieldset">
-        <FormControlLabel
-          control={
-            <Checkbox
-              checked={agree}
-              onChange={onChangeCheckedHandler(setAgree)}
-              inputProps={{
-                'aria-label': 'agree to waiver checkbox',
-              }}
+      <Grid container spacing={3}>
+        <Grid item md={12} xs={12}>
+          <FormControl required component="fieldset">
+            <FormControlLabel
+              control={
+                <Checkbox
+                  checked={agree}
+                  onChange={onChangeCheckedHandler(setAgree)}
+                  inputProps={{
+                    'aria-label': 'agree to waiver checkbox',
+                  }}
+                />
+              }
+              label={agreeStatement}
             />
-          }
-          label={agreeLabel}
-        />
-      </FormControl>
-      <Signature value={signature} onUpdate={setSignature} />
+          </FormControl>
+        </Grid>
+        <Grid item md={12} xs={12}>
+          <Box display="flex" justifyContent="center" m={1}>
+            <Signature value={signature} onUpdate={setSignature} />
+          </Box>
+        </Grid>
+      </Grid>
     </>
   )
 }

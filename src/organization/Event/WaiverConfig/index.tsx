@@ -24,12 +24,16 @@ import FormControlLabel from '@material-ui/core/FormControlLabel'
 import Switch from '@material-ui/core/Switch'
 import FormSelect from 'organization/Event/FormsProvider/FormSelect'
 import Box from '@material-ui/core/Box'
+import {DEFAULT_AGREE_STATEMENT} from 'Event/Step2/WaiverProvider'
+
+import TemplateFields from 'organization/Event/WaiverConfig/TemplateFields'
 
 const imageUploadId = 'waived-logo-upload'
 
 type WaiverData = {
   title: string
   body: string
+  agree_statement: string
 }
 
 export default function WaiverConfig() {
@@ -61,6 +65,10 @@ export default function WaiverConfig() {
 
     setValue('title', event.waiver.title)
     setValue('body', event.waiver.body)
+    setValue(
+      'agree_statement',
+      event.waiver.agree_statement || DEFAULT_AGREE_STATEMENT,
+    )
 
     const logoPath = event.waiver.logo
     if (logoPath) {
@@ -79,6 +87,7 @@ export default function WaiverConfig() {
 
   const submit = (data: WaiverData) => {
     setSubmitting(true)
+
     setWaiver(data, logo)
       .then((event) => {
         dispatch(setEvent(event))
@@ -179,7 +188,26 @@ export default function WaiverConfig() {
 
             <BodyError error={errors.body} />
           </Editor>
+          <TextField
+            name="agree_statement"
+            label="Agree Statement"
+            required
+            fullWidth
+            inputProps={{
+              ref: register({
+                required: 'Agree Statement is required',
+              }),
+              'aria-label': 'waiver agree statement',
+            }}
+            disabled={submitting}
+            rows={4}
+            multiline
+            error={!!errors.agree_statement}
+          />
+
           <Error>{responseError}</Error>
+
+          <TemplateFields submitting={submitting} />
           <Button
             fullWidth
             variant="contained"

@@ -63,6 +63,7 @@ export function fakeWaiver(
     )}</p></html>`,
     is_enabled: true,
     form: null,
+    agree_statement: faker.lorem.paragraphs(),
     ...overrides,
   }
 }

@@ -51,6 +51,10 @@ it('should submit a waiver', async () => {
 
   // Manually set body input because we can't type into CKEditor
   const body = faker.lorem.paragraph()
+
+  const agreeStatement = faker.lorem.paragraph()
+  user.type(await findByLabelText('waiver agree statement'), agreeStatement)
+
   const bodyEl = (await findByLabelText('waiver body')) as HTMLInputElement
   bodyEl.value = body
 

@@ -57,6 +57,7 @@ export interface WaiverConfig {
   body: string
   is_enabled: boolean
   form: Form | null
+  agree_statement: string | null
 }
 
 export interface TechCheckConfig {

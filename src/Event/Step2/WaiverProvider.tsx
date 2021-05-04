@@ -1,12 +1,12 @@
 import {useEvent} from 'Event/EventProvider'
 import {api, storage} from 'lib/url'
 import {useContext, useState} from 'react'
-import {useAttendee} from 'Event/auth'
 import {Attendee} from 'Event/attendee'
 import {setUser} from 'auth/actions'
 import {useDispatch} from 'react-redux'
 import {WaiverConfig} from 'Event'
 import React from 'react'
+import {useWithVariables} from 'Event'
 
 interface WaiverContextProps {
   agree: boolean
@@ -16,8 +16,10 @@ interface WaiverContextProps {
   signature: string | null
   setSignature: (signature: string | null) => void
   waiver: WaiverConfig
-  agreeLabel: string
+  agreeStatement: string
 }
+
+export const DEFAULT_AGREE_STATEMENT = `I hereby certify that I have read the forgoing and fully understand the meaning effect thereof, and intending to be legally bound, have signed it.`
 
 const WaiverContext = React.createContext<WaiverContextProps | undefined>(
   undefined,
@@ -26,13 +28,12 @@ const WaiverContext = React.createContext<WaiverContextProps | undefined>(
 export default function WaiverProvider(props: {children: React.ReactElement}) {
   const {event, client} = useEvent()
   const {waiver} = event
-  const attendee = useAttendee()
   const [signature, setSignature] = useState<string | null>(null)
   const [agree, setAgree] = useState(false)
   const dispatch = useDispatch()
-
+  const v = useWithVariables()
   const canSubmit = Boolean(signature) && Boolean(agree)
-  const agreeLabel = `I ${attendee.first_name} ${attendee.last_name} hereby certify that I have read the forgoing and fully understand the meaning effect thereof, and intending to be legally bound, have signed it. *`
+  const agreeStatement = v(waiver?.agree_statement || DEFAULT_AGREE_STATEMENT)
 
   if (!waiver) {
     throw new Error(`Missing event waiver`)
@@ -59,7 +60,7 @@ export default function WaiverProvider(props: {children: React.ReactElement}) {
         signature,
         setSignature,
         waiver,
-        agreeLabel,
+        agreeStatement,
       }}
     >
       {props.children}
