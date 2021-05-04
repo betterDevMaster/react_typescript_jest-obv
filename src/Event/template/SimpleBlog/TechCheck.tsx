@@ -15,7 +15,7 @@ import {areaRoutes} from 'Event/Routes'
 import {TechCheckConfig} from 'Event'
 import {RelativeLink} from 'lib/ui/link/RelativeLink'
 import CustomButtons from 'Event/Step3/CustomButtons'
-import { Template } from 'Event/template'
+import {Template} from 'Event/template'
 
 export default function TechCheck(props: {user: User} & TechCheckProps) {
   const {techCheck} = props
@@ -37,38 +37,47 @@ export default function TechCheck(props: {user: User} & TechCheckProps) {
             __html: v(techCheck.body),
           }}
         />
-        <Buttons techCheck={techCheck} settings={template.techCheck}/>
+        <Buttons techCheck={techCheck} settings={template.techCheck} />
       </Container>
     </SimpleBlogPage>
   )
 }
 
-export function Buttons(props: {techCheck: TechCheckConfig, settings: Template['techCheck']}) {
-  const {settings} = props;
+export function Buttons(props: {
+  techCheck: TechCheckConfig
+  settings: Template['techCheck']
+}) {
+  const {settings} = props
 
   if (!settings?.hasCustomButtons || !settings.buttons) {
-    return <DefaultButton techCheck={props.techCheck} settings={settings}/>
+    return <DefaultButton techCheck={props.techCheck} settings={settings} />
   }
 
   return <CustomButtons buttons={settings.buttons} />
 }
 
-function DefaultButton(props: {techCheck: TechCheckConfig, settings: Template['techCheck']}) {
-  const {settings} = props;
+function DefaultButton(props: {
+  techCheck: TechCheckConfig
+  settings: Template['techCheck']
+}) {
+  const {settings} = props
 
   return (
     <ButtonBox>
       <Grid container justify="center">
         <Grid item xs={12} md={settings?.buttonWidth || 12}>
-          <StartButton techCheck={props.techCheck} settings={settings}/>
+          <StartButton techCheck={props.techCheck} settings={settings} />
         </Grid>
       </Grid>
     </ButtonBox>
   )
 }
 
-function StartButton(props: {techCheck: TechCheckConfig, settings: Template['techCheck']}) {
-  const {settings} = props;
+function StartButton(props: {
+  techCheck: TechCheckConfig
+  settings: Template['techCheck']
+}) {
+  const {settings} = props
   const v = useWithVariables()
 
   const textColor = settings?.buttonTextColor || '#FFFFFF'

@@ -6,22 +6,22 @@ import ProgressBar from 'lib/ui/ProgressBar'
 import {useTemplate} from 'Event/TemplateProvider'
 import {useWithVariables} from 'Event'
 
-import { useEvent } from 'Event/EventProvider'
-import { TechCheckTemplateProps } from 'organization/Event/TechCheckConfig/Form'
+import {useEvent} from 'Event/EventProvider'
+import {TechCheckTemplateProps} from 'organization/Event/TechCheckConfig/Form'
 import {Buttons, Body} from 'Event/template/SimpleBlog/TechCheck'
 
-export function TechCheckPreview(props:{ user: User, techCheckTemplate:  TechCheckTemplateProps, body: string}) {
+export function TechCheckPreview(props: {
+  user: User
+  techCheckTemplate: TechCheckTemplateProps
+  body: string
+}) {
   const template = useTemplate()
-  const {event} = useEvent();
+  const {event} = useEvent()
   const {tech_check: techCheck} = event
   const v = useWithVariables()
 
-  if( techCheck === null ){
-    return (
-      <div>
-        No config
-      </div>
-    )
+  if (techCheck === null) {
+    return <div>No config</div>
   }
   return (
     <SimpleBlogPage user={props.user}>

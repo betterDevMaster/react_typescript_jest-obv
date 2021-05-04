@@ -218,22 +218,22 @@ export default function Form() {
       </Editor>
       <Error>{responseError?.message}</Error>
       <Grid container spacing={3}>
-          <Grid item xs={12} md={6}>
-      <TemplateFields
-        techCheck={techCheck}
-        set={setTemplateProp}
-        submitting={submitting}
-      />
-          </Grid>
-          <Grid item xs={12} md={6}>
-            <PreviewContainer>
-              <TechCheckPreview 
-                user={user}
-                body={watch('body')}
-                techCheckTemplate = {techCheck}
-                />
-            </PreviewContainer>
-          </Grid>
+        <Grid item xs={12} md={6}>
+          <TemplateFields
+            techCheck={techCheck}
+            set={setTemplateProp}
+            submitting={submitting}
+          />
+        </Grid>
+        <Grid item xs={12} md={6}>
+          <PreviewContainer>
+            <TechCheckPreview
+              user={user}
+              body={watch('body')}
+              techCheckTemplate={techCheck}
+            />
+          </PreviewContainer>
+        </Grid>
       </Grid>
       <Button
         fullWidth
@@ -325,4 +325,3 @@ const PreviewContainer = styled.div`
   border: 1px solid ${(props) => props.theme.colors.border};
   border-radius: 4px;
 `
-
