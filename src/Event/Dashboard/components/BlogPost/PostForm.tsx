@@ -113,9 +113,11 @@ function Content(props: {form: Form; post: BlogPost}) {
           disabled={submitting}
         />
       ))}
-      <Button type="submit" variant="outlined" disabled={submitting}>
-        Submit
-      </Button>
+      <div>
+        <Button type="submit" variant="outlined" disabled={submitting}>
+          Submit
+        </Button>
+      </div>
     </form>
   )
 

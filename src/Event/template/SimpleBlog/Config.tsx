@@ -46,14 +46,16 @@ export function SimpleBlogConfig() {
 
   return (
     <>
-      <Switch
-        checked={template.isDarkMode}
-        onChange={onChangeCheckedHandler(updateIsDarkMode)}
-        arial-label="config event theme mode"
-        labelPlacement="start"
-        color="primary"
-        label="Dark"
-      />
+      <Box display="flex" justifyContent="flex-end">
+        <Switch
+          checked={template.isDarkMode}
+          onChange={onChangeCheckedHandler(updateIsDarkMode)}
+          arial-label="config event theme mode"
+          labelPlacement="start"
+          color="primary"
+          label="Dark Mode"
+        />
+      </Box>
       <Box mb={2}>
         <EventImageUpload label="Logo" property="logo" current={event.logo} />
       </Box>
