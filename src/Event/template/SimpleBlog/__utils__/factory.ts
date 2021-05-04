@@ -95,6 +95,16 @@ export const fakeSimpleBlog = (overrides?: Partial<SimpleBlog>): SimpleBlog => {
       backToDashboardText: 'Back to Dashboard',
       backToDashboardTextColor: '#000000',
     },
+    zoomBackgrounds: {
+      borderColor: '#000000',
+      borderRadius: 0,
+      borderThickness: 0,
+      imagesPerRow: 2,
+      description: {
+        color: '#000000',
+        fontSize: 18,
+      },
+    },
   }
 
   const makeAttributes: (d: SimpleBlog) => SimpleBlog = pipe(
@@ -203,6 +213,22 @@ export function fakeSideBarContainer(
     borderColor: '#000000',
     paddingTop: 0,
     isVisible: true,
+    ...overrides,
+  }
+}
+
+export function fakeZoomBackgrounds(
+  overrides?: Partial<SimpleBlog['zoomBackgrounds']>,
+): SimpleBlog['zoomBackgrounds'] {
+  return {
+    borderColor: '#000000',
+    borderRadius: 0,
+    borderThickness: 0,
+    imagesPerRow: 2,
+    description: {
+      color: '#000000',
+      fontSize: 18,
+    },
     ...overrides,
   }
 }

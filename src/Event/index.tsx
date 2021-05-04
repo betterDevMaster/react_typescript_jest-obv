@@ -17,6 +17,7 @@ import {
 } from 'Event/LanguageProvider/translations'
 import {useWithAttendeeData} from 'Event/auth/attendee-data'
 import {pipe} from 'ramda'
+import {Background} from 'organization/Event/Backgrounds/BackgroundsProvider'
 
 // Can't use 'Event' because that's already a native DOM type
 // for browser events and we'd lose TS safety/import assist.
@@ -49,6 +50,9 @@ export interface ObvioEvent {
   speakers: Speaker[]
   localization: Localization | null
   domains: Domain[]
+  backgrounds: Background[]
+  zoom_backgrounds_title: string | null
+  zoom_backgrounds_description: string | null
 }
 
 export interface WaiverConfig {

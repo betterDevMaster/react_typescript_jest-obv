@@ -95,6 +95,7 @@ export function createRoutesFor(organization: Organization) {
             infusionsoft: '/infusionsoft',
           },
           name_appendage: '/name_appendage',
+          backgrounds: '/zoom_backgrounds',
           areas: {
             create: '/create',
             ':area': {

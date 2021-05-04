@@ -144,6 +144,16 @@ export interface SimpleBlog {
     speakerImageSize?: Column
     speakersSpace?: number
   }
+  zoomBackgrounds: {
+    borderColor: string
+    borderRadius: number
+    borderThickness: number
+    imagesPerRow: number
+    description: {
+      color: string
+      fontSize: number
+    }
+  }
 }
 
 export const createSimpleBlog = (): SimpleBlog => ({
@@ -256,5 +266,15 @@ export const createSimpleBlog = (): SimpleBlog => ({
   speakers: {
     title: DEFAULT_SPEAKER_PAGE_TITLE,
     backToDashboardText: DEFAULT_SPEAKER_PAGE_BACK_TO_DASHBOARD_TEXT,
+  },
+  zoomBackgrounds: {
+    borderColor: '#000000',
+    borderRadius: 0,
+    borderThickness: 0,
+    imagesPerRow: 2,
+    description: {
+      color: '#000000',
+      fontSize: 18,
+    },
   },
 })

@@ -39,6 +39,9 @@ import SponsorsProvider from 'organization/Event/SponsorsProvider'
 import SpeakersProvider from 'organization/Event/SpeakersProvider'
 import NameAppendageProvider from 'organization/Event/NameAppendageConfig/NameAppendageProvider'
 
+import BackgroundsProvider from 'organization/Event/Backgrounds/BackgroundsProvider'
+import Backgrounds from 'organization/Event/Backgrounds'
+
 export type EventRoutes = ReturnType<typeof useEventRoutes>
 
 export function useEventRoutes(event?: ObvioEvent) {
@@ -149,6 +152,13 @@ export default function EventRoutes() {
             <ServicesProvider>
               <ServiceRoutes />
             </ServicesProvider>
+          </AuthorizedPage>
+        </Route>
+        <Route path={routes.events[':event'].backgrounds}>
+          <AuthorizedPage permission={CONFIGURE_EVENTS}>
+            <BackgroundsProvider>
+              <Backgrounds />
+            </BackgroundsProvider>
           </AuthorizedPage>
         </Route>
         <Route path={routes.events[':event'].areas.create}>

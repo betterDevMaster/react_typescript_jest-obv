@@ -12,6 +12,7 @@ import Speakers from 'Event/SpeakerPage'
 import {AutoRefreshActions, EventActionsProvider} from 'Event/ActionsProvider'
 import {PointsProvider} from 'Event/PointsProvider'
 import Leaderboard from 'Event/Leaderboard'
+import Backgrounds from 'Event/Backgrounds'
 import UnderConstruction from 'Event/UnderConstruction'
 import TemplateProvider from 'Event/TemplateProvider'
 import CustomScripts from 'organization/Event/CustomScripts'
@@ -39,6 +40,7 @@ export const eventRoutes = createRoutes({
   area: {
     ':area': {},
   },
+  backgrounds: '/backgrounds',
 })
 
 /**
@@ -50,6 +52,7 @@ export const EVENT_PAGES = {
   [eventRoutes.speakers]: 'Speakers',
   [eventRoutes.sponsors]: 'Sponsors',
   [eventRoutes.leaderboard]: 'Leaderboard',
+  [eventRoutes.backgrounds]: 'Backgrounds',
 }
 
 export type EventPages = typeof EVENT_PAGES
@@ -128,6 +131,11 @@ function UserRoutes() {
       </Route>
       <Route path={eventRoutes.area[':area'].root}>
         <JoinArea />
+      </Route>
+      <Route path={eventRoutes.backgrounds}>
+        <CompletedOnboarding>
+          <Backgrounds />
+        </CompletedOnboarding>
       </Route>
       <Route path={eventRoutes.checkIn}>
         <CompletedOnboarding step={2}>

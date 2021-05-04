@@ -69,6 +69,9 @@ function AuthorizedPages() {
         >
           Attendee label
         </ConfigNavItem>
+        <ConfigNavItem to={routes.backgrounds} aria-label="backgrounds">
+          Zoom Backgrounds
+        </ConfigNavItem>
       </>
     </HasPermission>
   )
