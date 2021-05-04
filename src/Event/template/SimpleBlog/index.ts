@@ -25,6 +25,7 @@ export const SIMPLE_BLOG = 'Simple Blog'
 export interface SimpleBlog {
   version: number
   name: typeof SIMPLE_BLOG
+  isDarkMode?: boolean
   title: string
   mainNav: EntityList<NavButtonWithSize>
   ticketRibbons: TicketRibbon[]

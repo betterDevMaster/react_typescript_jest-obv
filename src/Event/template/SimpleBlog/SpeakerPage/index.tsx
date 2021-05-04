@@ -59,7 +59,6 @@ export default function SimpleBlogSpeakerPage(props: {
 }
 
 const Title = styled.h2`
-  color: #000;
   font-size: 42px;
   line-height: 1.2;
   text-transform: uppercase;

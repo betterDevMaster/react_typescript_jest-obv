@@ -44,3 +44,16 @@ export const muiTheme = createMuiTheme({
     },
   },
 })
+
+export const muiDarkTheme = createMuiTheme({
+  palette: {
+    type: 'dark',
+  },
+  overrides: {
+    MuiFormControl: {
+      root: {
+        marginBottom: spacing[4],
+      },
+    },
+  },
+})

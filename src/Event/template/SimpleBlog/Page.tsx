@@ -6,12 +6,13 @@ import Header from 'Event/template/SimpleBlog/Dashboard/Header'
 import Menu from 'Event/template/SimpleBlog/Menu'
 import {User} from 'auth/user'
 import Footer from 'Event/template/SimpleBlog/Dashboard/Footer'
-import {withStyles} from '@material-ui/core'
+import {ThemeProvider, withStyles} from '@material-ui/core'
 import {useTemplate} from 'Event/TemplateProvider'
 import {useEvent} from 'Event/EventProvider'
 import {SimpleBlog} from 'Event/template/SimpleBlog'
 import {rgb} from 'lib/color'
 import LanguageSelectMenu from 'Event/LanguageSelectMenu'
+import {muiDarkTheme, muiTheme} from 'lib/ui/theme'
 
 export default function SimpleBlogPage(props: {
   user: User
@@ -19,7 +20,11 @@ export default function SimpleBlogPage(props: {
 }) {
   const [menuVisible, setMenuVisible] = useState(false)
   const toggleMenu = () => setMenuVisible(!menuVisible)
-  const {backgroundPosition, dashboardBackground: dashboard} = useTemplate()
+  const {
+    backgroundPosition,
+    dashboardBackground: dashboard,
+    isDarkMode,
+  } = useTemplate()
   const {event} = useEvent()
   const dashboardBackground = event.dashboard_background
     ? `url(${event.dashboard_background.url})`
@@ -29,29 +34,40 @@ export default function SimpleBlogPage(props: {
     ? rgb(dashboard.color || '#FFFFFF', dashboard.opacity || 0)
     : '#FFFFFF'
 
+  const color = isDarkMode ? '#FFFFFF' : '#000000'
+
+  const theme = isDarkMode ? muiDarkTheme : muiTheme
+
   return (
-    <Box background={dashboardBackground} position={backgroundPosition}>
-      <ColorOverlay color={backgroundRGBColor}>
-        <SimpleBlogStyles />
-        <Menu visible={menuVisible} toggle={toggleMenu} user={props.user} />
-        <Header
-          menuVisible={menuVisible}
-          toggleMenu={toggleMenu}
-          aria-label="header"
-        />
-        <Content>
-          <StyledContainer maxWidth="lg">{props.children}</StyledContainer>
-        </Content>
-        <LanguageSelectMenu />
-        <Footer />
-      </ColorOverlay>
-    </Box>
+    <ThemeProvider theme={theme}>
+      <Box
+        background={dashboardBackground}
+        position={backgroundPosition}
+        color={color}
+      >
+        <ColorOverlay color={backgroundRGBColor}>
+          <SimpleBlogStyles />
+          <Menu visible={menuVisible} toggle={toggleMenu} user={props.user} />
+          <Header
+            menuVisible={menuVisible}
+            toggleMenu={toggleMenu}
+            aria-label="header"
+          />
+          <Content>
+            <StyledContainer maxWidth="lg">{props.children}</StyledContainer>
+          </Content>
+          <LanguageSelectMenu />
+          <Footer />
+        </ColorOverlay>
+      </Box>
+    </ThemeProvider>
   )
 }
 
 const Box = styled.div<{
   background: string
   position: SimpleBlog['backgroundPosition']
+  color: string
 }>`
   height: 100%;
   background: ${(props) => props.background};
@@ -69,6 +85,7 @@ const Box = styled.div<{
       background-size: cover;
     `}
   background-repeat: no-repeat;
+  color: ${(props) => props.color};
 `
 
 const Content = styled.div`

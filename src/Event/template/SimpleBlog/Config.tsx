@@ -3,7 +3,11 @@ import {
   useUpdateObject,
   useUpdatePrimitive,
 } from 'Event/TemplateProvider'
-import {onChangeStringHandler, onUnknownChangeHandler} from 'lib/dom'
+import {
+  onChangeCheckedHandler,
+  onChangeStringHandler,
+  onUnknownChangeHandler,
+} from 'lib/dom'
 import {useEvent} from 'Event/EventProvider'
 import EventImageUpload from 'organization/Event/DashboardConfig/EventImageUpload'
 import ColorPicker from 'lib/ui/ColorPicker'
@@ -34,6 +38,7 @@ export function SimpleBlogConfig() {
   const updateMenu = useUpdateObject('menu')
   const updateDashboardBackground = useUpdateObject('dashboardBackground')
   const updateBackgroundPosition = useUpdatePrimitive('backgroundPosition')
+  const updateIsDarkMode = useUpdatePrimitive('isDarkMode')
 
   const handleSwitchCollapsed = () => {
     updateHeader('isCollapsed')(!template.header.isCollapsed)
@@ -41,6 +46,14 @@ export function SimpleBlogConfig() {
 
   return (
     <>
+      <Switch
+        checked={template.isDarkMode}
+        onChange={onChangeCheckedHandler(updateIsDarkMode)}
+        arial-label="config event theme mode"
+        labelPlacement="start"
+        color="primary"
+        label="Dark"
+      />
       <Box mb={2}>
         <EventImageUpload label="Logo" property="logo" current={event.logo} />
       </Box>

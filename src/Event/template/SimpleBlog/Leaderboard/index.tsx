@@ -110,7 +110,6 @@ function useEntries() {
 }
 
 const Title = styled.h2`
-  color: #000;
   font-size: 42px;
   line-height: 1.5;
   text-transform: uppercase;

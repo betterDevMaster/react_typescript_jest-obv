@@ -91,7 +91,6 @@ const StyledImg = styled.img`
   width: 100%;
 `
 const Text = styled.div`
-  color: #000;
   font-size: 29px;
   font-weight: 400;
   line-height: 1;
