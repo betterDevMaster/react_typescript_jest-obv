@@ -208,13 +208,13 @@ export default function WaiverConfig() {
           />
 
           <Error>{responseError}</Error>
-          
+
           <Grid container spacing={3}>
             <Grid item xs={12} md={6}>
               <TemplateFields submitting={submitting} />
             </Grid>
             <Grid item xs={12} md={6}>
-              <Preview 
+              <Preview
                 body={watch('body')}
                 title={watch('title')}
                 logo={logo?.name || ''}

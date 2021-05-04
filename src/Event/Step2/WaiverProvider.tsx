@@ -32,11 +32,13 @@ export default function WaiverProvider(props: {
   isPreview: boolean
 }) {
   const {event, client} = useEvent()
-  const [waiver, setWaiver] = useState<WaiverConfig | null>(event.waiver);
+  const [waiver, setWaiver] = useState<WaiverConfig | null>(event.waiver)
 
-  useEffect(()=>{
-    if( typeof props.waiver === 'undefined' ) {return;}
-    setWaiver(props.waiver);
+  useEffect(() => {
+    if (typeof props.waiver === 'undefined') {
+      return
+    }
+    setWaiver(props.waiver)
   }, [props.waiver])
   // const {waiver} = event
   const [signature, setSignature] = useState<string | null>(null)
@@ -52,8 +54,8 @@ export default function WaiverProvider(props: {
 
   const submit = () => {
     const url = api(`/events/${event.slug}/waiver/sign`)
-    if( isPreview === true ){
-      return Promise.resolve();
+    if (isPreview === true) {
+      return Promise.resolve()
     }
     return client
       .post<Attendee>(url, {
