@@ -150,6 +150,7 @@ const FormConfig = React.forwardRef<
   const nameError = error('name')
   const onSubmitRedirectUrlError = error('on_submit_redirect_url')
   const submissionWebhookUrlError = error('submission_webhook_url')
+  const submitLabelError = error('submit_label')
 
   return (
     <>
@@ -190,6 +191,19 @@ const FormConfig = React.forwardRef<
           )}
         />
         <TextField
+          label="Submit Label"
+          name="submit_label"
+          defaultValue={form.submit_label}
+          inputProps={{
+            'aria-label': 'form submit label',
+            ref: register,
+          }}
+          disabled={processing}
+          fullWidth
+          helperText={submitLabelError}
+          error={!!submitLabelError}
+        />
+        <TextField
           label="Redirect URL (optional)"
           name="on_submit_redirect_url"
           defaultValue={form.on_submit_redirect_url}
@@ -221,6 +235,7 @@ const FormConfig = React.forwardRef<
           }
           error={!!submissionWebhookUrlError}
         />
+
         <Controller
           control={control}
           name="action_id"

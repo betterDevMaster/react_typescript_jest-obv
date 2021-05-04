@@ -12,7 +12,7 @@ import {DEFAULT_MODAL_BUTTON_TEXT} from 'Event/Dashboard/components/BlogPost/Blo
 import Box from '@material-ui/core/Box'
 import {usePoints} from 'Event/PointsProvider'
 import {useSubmissions} from 'Event/SubmissionsProvider'
-import {useWithAttendeeData} from 'Event/auth/attendee-data'
+import {useWithVariables} from 'Event'
 
 export default function PostForm(props: {post: BlogPost}) {
   const {post} = props
@@ -33,7 +33,7 @@ function Content(props: {form: Form; post: BlogPost}) {
   const [dialogVisible, setDialogVisible] = useState(false)
   const {submit: submitAnswers, responseError, answers} = useSubmissions()
   const {submit: submitAction} = usePoints()
-  const withAttendeeData = useWithAttendeeData()
+  const v = useWithVariables()
 
   const toggleDialog = () => setDialogVisible(!dialogVisible)
 
@@ -76,7 +76,7 @@ function Content(props: {form: Form; post: BlogPost}) {
         }
 
         if (form.on_submit_redirect_url) {
-          window.location.href = withAttendeeData(form.on_submit_redirect_url)
+          window.location.href = v(form.on_submit_redirect_url)
         }
       })
       .finally(() => {
@@ -115,7 +115,7 @@ function Content(props: {form: Form; post: BlogPost}) {
       ))}
       <div>
         <Button type="submit" variant="outlined" disabled={submitting}>
-          Submit
+          {v(form.submit_label)}
         </Button>
       </div>
     </form>

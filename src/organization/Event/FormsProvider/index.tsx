@@ -13,6 +13,7 @@ export interface Form {
   action: Action | null
   infusionsoft_tag_name: string | null
   infusionsoft_tag_id: number | null
+  submit_label: string
 }
 
 export interface FormsContextProps {

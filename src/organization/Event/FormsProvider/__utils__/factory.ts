@@ -11,5 +11,6 @@ export const fakeForm = (overrides?: Partial<Form>): Form => ({
   action: null,
   infusionsoft_tag_name: null,
   infusionsoft_tag_id: null,
+  submit_label: 'Submit',
   ...overrides,
 })
