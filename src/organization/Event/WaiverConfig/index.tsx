@@ -22,12 +22,14 @@ import TextEditor from 'lib/ui/form/TextEditor'
 import FormControl from '@material-ui/core/FormControl'
 import FormControlLabel from '@material-ui/core/FormControlLabel'
 import Switch from '@material-ui/core/Switch'
+import Grid from '@material-ui/core/Grid'
+
 import FormSelect from 'organization/Event/FormsProvider/FormSelect'
 import Box from '@material-ui/core/Box'
 import {DEFAULT_AGREE_STATEMENT} from 'Event/Step2/WaiverProvider'
 
 import TemplateFields from 'organization/Event/WaiverConfig/TemplateFields'
-
+import Preview from 'organization/Event/WaiverConfig/Preview'
 const imageUploadId = 'waived-logo-upload'
 
 type WaiverData = {
@@ -206,8 +208,20 @@ export default function WaiverConfig() {
           />
 
           <Error>{responseError}</Error>
-
-          <TemplateFields submitting={submitting} />
+          
+          <Grid container spacing={3}>
+            <Grid item xs={12} md={6}>
+              <TemplateFields submitting={submitting} />
+            </Grid>
+            <Grid item xs={12} md={6}>
+              <Preview 
+                body={watch('body')}
+                title={watch('title')}
+                logo={logo?.name || ''}
+                agreeStatement={watch('agree_statement')}
+              />
+            </Grid>
+          </Grid>
           <Button
             fullWidth
             variant="contained"
