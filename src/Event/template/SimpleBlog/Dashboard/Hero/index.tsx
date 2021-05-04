@@ -96,7 +96,6 @@ const Text = styled.div`
   line-height: 1;
   text-transform: uppercase;
   text-align: center;
-  margin-top: ${(props) => props.theme.spacing[7]};
   &:empty {
     height: ${(props) => props.theme.spacing[5]};
     width: 100%;

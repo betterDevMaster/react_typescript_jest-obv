@@ -140,6 +140,7 @@ const Box = styled.div<{
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
+  margin-bottom: ${(props) => props.theme.spacing[8]};
   ${(props) => (props.disableShadow ? '' : `box-shadow: 20px 20px 50px #ddd;`)}
 `
 
