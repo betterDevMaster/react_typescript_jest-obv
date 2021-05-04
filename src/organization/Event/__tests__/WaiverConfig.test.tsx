@@ -40,7 +40,15 @@ it('should show waiver config', async () => {
 
 it('should submit a waiver', async () => {
   window.URL.createObjectURL = jest.fn()
-  const event = fakeEvent({waiver: null})
+  const fakerWaiver = {
+    body: '<p>fake body</p>',
+    title: faker.random.words(3),
+    agree_statement: faker.lorem.paragraph(),
+    is_enabled: false,
+    logo: '',
+    form: null,
+  }
+  const event = fakeEvent({waiver: fakerWaiver})
   const {findByLabelText} = await goToWaiverConfig({
     event,
     userPermissions: [CONFIGURE_EVENTS],

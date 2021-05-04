@@ -15,7 +15,7 @@ export default function WaiverPreview(props: {
 }) {
   const user = useTeamMember()
   const template = useTemplate()
-  const twaiver: WaiverConfig = {
+  const waiver: WaiverConfig = {
     body: props.body,
     title: props.title,
     agree_statement: props.agreeStatement,
@@ -27,7 +27,7 @@ export default function WaiverPreview(props: {
     case SIMPLE_BLOG:
       return (
         <PreviewContainer>
-          <WaiverProvider waiver={twaiver} isPreview={true}>
+          <WaiverProvider waiver={waiver} isPreview={true}>
             <SimpleBlogStep2 user={user} />
           </WaiverProvider>
         </PreviewContainer>
