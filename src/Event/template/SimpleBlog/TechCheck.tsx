@@ -15,6 +15,7 @@ import {areaRoutes} from 'Event/Routes'
 import {TechCheckConfig} from 'Event'
 import {RelativeLink} from 'lib/ui/link/RelativeLink'
 import CustomButtons from 'Event/Step3/CustomButtons'
+import { Template } from 'Event/template'
 
 export default function TechCheck(props: {user: User} & TechCheckProps) {
   const {techCheck} = props
@@ -23,7 +24,7 @@ export default function TechCheck(props: {user: User} & TechCheckProps) {
 
   return (
     <SimpleBlogPage user={props.user}>
-      <Container maxWidth="sm">
+      <Container maxWidth="md">
         <ProgressBar
           value={props.progress}
           barColor={template.progressBar.barColor}
@@ -36,38 +37,38 @@ export default function TechCheck(props: {user: User} & TechCheckProps) {
             __html: v(techCheck.body),
           }}
         />
-        <Buttons techCheck={techCheck} />
+        <Buttons techCheck={techCheck} settings={template.techCheck}/>
       </Container>
     </SimpleBlogPage>
   )
 }
 
-function Buttons(props: {techCheck: TechCheckConfig}) {
-  const {techCheck: settings} = useTemplate()
+export function Buttons(props: {techCheck: TechCheckConfig, settings: Template['techCheck']}) {
+  const {settings} = props;
 
   if (!settings?.hasCustomButtons || !settings.buttons) {
-    return <DefaultButton techCheck={props.techCheck} />
+    return <DefaultButton techCheck={props.techCheck} settings={settings}/>
   }
 
   return <CustomButtons buttons={settings.buttons} />
 }
 
-function DefaultButton(props: {techCheck: TechCheckConfig}) {
-  const {techCheck: settings} = useTemplate()
+function DefaultButton(props: {techCheck: TechCheckConfig, settings: Template['techCheck']}) {
+  const {settings} = props;
 
   return (
     <ButtonBox>
       <Grid container justify="center">
         <Grid item xs={12} md={settings?.buttonWidth || 12}>
-          <StartButton techCheck={props.techCheck} />
+          <StartButton techCheck={props.techCheck} settings={settings}/>
         </Grid>
       </Grid>
     </ButtonBox>
   )
 }
 
-function StartButton(props: {techCheck: TechCheckConfig}) {
-  const {techCheck: settings} = useTemplate()
+function StartButton(props: {techCheck: TechCheckConfig, settings: Template['techCheck']}) {
+  const {settings} = props;
   const v = useWithVariables()
 
   const textColor = settings?.buttonTextColor || '#FFFFFF'
@@ -93,7 +94,7 @@ function StartButton(props: {techCheck: TechCheckConfig}) {
   )
 }
 
-const Body = styled.div`
+export const Body = styled.div`
   max-height: 240px;
   overflow-y: auto;
   margin-bottom: ${(props) => props.theme.spacing[4]};

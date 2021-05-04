@@ -15,6 +15,7 @@ import {useDispatch} from 'react-redux'
 import {setEvent} from 'Event/state/actions'
 import FormControl from '@material-ui/core/FormControl'
 import FormControlLabel from '@material-ui/core/FormControlLabel'
+import Grid from '@material-ui/core/Grid'
 import Switch from '@material-ui/core/Switch'
 import AreaSelect from 'organization/Event/Area/AreaSelect'
 import TextEditor from 'lib/ui/form/TextEditor'
@@ -25,6 +26,11 @@ import {useTemplate} from 'Event/TemplateProvider'
 import {Template} from 'Event/template'
 import {now} from 'lib/date-time'
 import TemplateFields from 'organization/Event/TechCheckConfig/Form/TemplateFields'
+
+// import {TechCheckPreview} from 'Event/template/SimpleBlog/TechCheck'
+import {TechCheckPreview} from 'organization/Event/TechCheckConfig/TechCheckPreview'
+
+import {useTeamMember} from 'organization/auth'
 
 /**
  * Default props to use for techCheck. These will be set when an
@@ -41,7 +47,7 @@ const DEFAULT_TECH_CHECK_PROPS: NonNullable<Template['techCheck']> = {
   buttonWidth: 12,
 }
 
-type TechCheckTemplateProps = NonNullable<Template['techCheck']>
+export type TechCheckTemplateProps = NonNullable<Template['techCheck']>
 
 type TechCheckTemplatePropSetter = <K extends keyof TechCheckTemplateProps>(
   key: K,
@@ -74,6 +80,7 @@ export default function Form() {
   const template = useTemplate()
   const {techCheck, set: setTemplateProp} = useTemplateTechCheckProps()
   const {event} = useEvent()
+  const user = useTeamMember()
 
   const areaKey = watch('area_key')
   const canSave = !submitting && Boolean(areaKey)
@@ -210,11 +217,24 @@ export default function Form() {
         <BodyError error={errors.body} />
       </Editor>
       <Error>{responseError?.message}</Error>
+      <Grid container spacing={3}>
+          <Grid item xs={12} md={6}>
       <TemplateFields
         techCheck={techCheck}
         set={setTemplateProp}
         submitting={submitting}
       />
+          </Grid>
+          <Grid item xs={12} md={6}>
+            <PreviewContainer>
+              <TechCheckPreview 
+                user={user}
+                body={watch('body')}
+                techCheckTemplate = {techCheck}
+                />
+            </PreviewContainer>
+          </Grid>
+      </Grid>
       <Button
         fullWidth
         variant="contained"
@@ -300,3 +320,9 @@ const Editor = styled.div`
     max-height: 600px;
   }
 `
+const PreviewContainer = styled.div`
+  padding: ${(props) => props.theme.spacing[2]};
+  border: 1px solid ${(props) => props.theme.colors.border};
+  border-radius: 4px;
+`
+
