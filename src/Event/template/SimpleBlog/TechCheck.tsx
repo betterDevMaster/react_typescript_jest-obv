@@ -104,7 +104,7 @@ function StartButton(props: {
 }
 
 export const Body = styled.div`
-  max-height: 240px;
+  max-height: 100%;
   overflow-y: auto;
   margin-bottom: ${(props) => props.theme.spacing[4]};
 `
