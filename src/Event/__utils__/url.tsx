@@ -40,6 +40,7 @@ export async function loginToEventSite(
     attendee?: Attendee
     event?: ObvioEvent
     actions?: Action[]
+    beforeRender?: () => void
     beforeLogin?: () => void
     submissions?: Answer[]
     pathname?: string
@@ -65,6 +66,8 @@ export async function loginToEventSite(
   mockGet.mockImplementationOnce(() => Promise.resolve({data: actions}))
   mockGet.mockImplementationOnce(() => Promise.resolve({data: submissions}))
   mockGet.mockImplementationOnce(() => Promise.resolve({data: defaultScore}))
+
+  options.beforeRender && options.beforeRender()
 
   const {findByLabelText, ...otherRenderResult} = render(<App />)
 

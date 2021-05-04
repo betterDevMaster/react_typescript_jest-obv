@@ -14,6 +14,7 @@ import {useWithVariables} from 'Event'
 import {areaRoutes} from 'Event/Routes'
 import {TechCheckConfig} from 'Event'
 import {RelativeLink} from 'lib/ui/link/RelativeLink'
+import CustomButtons from 'Event/Step3/CustomButtons'
 
 export default function TechCheck(props: {user: User} & TechCheckProps) {
   const {techCheck} = props
@@ -35,15 +36,33 @@ export default function TechCheck(props: {user: User} & TechCheckProps) {
             __html: v(techCheck.body),
           }}
         />
-        <StyledDiv>
-          <Grid container justify="center">
-            <Grid item xs={12} md={template.techCheck?.buttonWidth || 12}>
-              <StartButton techCheck={props.techCheck} />
-            </Grid>
-          </Grid>
-        </StyledDiv>
+        <Buttons techCheck={techCheck} />
       </Container>
     </SimpleBlogPage>
+  )
+}
+
+function Buttons(props: {techCheck: TechCheckConfig}) {
+  const {techCheck: settings} = useTemplate()
+
+  if (!settings?.hasCustomButtons || !settings.buttons) {
+    return <DefaultButton techCheck={props.techCheck} />
+  }
+
+  return <CustomButtons buttons={settings.buttons} />
+}
+
+function DefaultButton(props: {techCheck: TechCheckConfig}) {
+  const {techCheck: settings} = useTemplate()
+
+  return (
+    <ButtonBox>
+      <Grid container justify="center">
+        <Grid item xs={12} md={settings?.buttonWidth || 12}>
+          <StartButton techCheck={props.techCheck} />
+        </Grid>
+      </Grid>
+    </ButtonBox>
   )
 }
 
@@ -79,9 +98,10 @@ const Body = styled.div`
   overflow-y: auto;
   margin-bottom: ${(props) => props.theme.spacing[4]};
 `
-const StyledDiv = styled.div`
+const ButtonBox = styled.div`
   text-align: center;
 `
+
 const StyledButton = styled(
   ({
     textColor,

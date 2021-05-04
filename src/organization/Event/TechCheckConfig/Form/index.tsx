@@ -23,8 +23,8 @@ import {ValidationError} from 'lib/api-client'
 import {DateTimePicker} from '@material-ui/pickers'
 import {useTemplate} from 'Event/TemplateProvider'
 import {Template} from 'Event/template'
-import TemplateFields from 'organization/Event/TechCheckConfig/Form/TemplateFields'
 import {now} from 'lib/date-time'
+import TemplateFields from 'organization/Event/TechCheckConfig/Form/TemplateFields'
 
 /**
  * Default props to use for techCheck. These will be set when an
@@ -207,7 +207,6 @@ export default function Form() {
             onChange={(val) => setValue('body', val)}
           />
         )}
-
         <BodyError error={errors.body} />
       </Editor>
       <Error>{responseError?.message}</Error>

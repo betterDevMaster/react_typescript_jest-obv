@@ -62,13 +62,15 @@ export interface SimpleBlog {
     borderRadius: number
   }
   techCheck?: {
-    buttonText: string
-    buttonBackground: string
-    buttonTextColor: string
-    buttonBorderRadius: number
-    buttonBorderWidth: number
-    buttonBorderColor: string
-    buttonWidth: GridSize
+    buttonText?: string
+    buttonBackground?: string
+    buttonTextColor?: string
+    buttonBorderRadius?: number
+    buttonBorderWidth?: number
+    buttonBorderColor?: string
+    buttonWidth?: GridSize
+    hasCustomButtons?: boolean
+    buttons?: EntityList<NavButtonWithSize>
   }
   menu: {
     backgroundColor: string

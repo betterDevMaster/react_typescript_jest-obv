@@ -1,4 +1,5 @@
 import {fakeAttendee} from 'Event/auth/__utils__/factory'
+import user from '@testing-library/user-event'
 import {
   createPlatformActions,
   fakeEvent,
@@ -9,9 +10,13 @@ import faker from 'faker'
 import axios from 'axios'
 import {wait} from '@testing-library/react'
 import {fakeAction} from 'Event/ActionsProvider/__utils__/factory'
+import {fakeSimpleBlog} from 'Event/template/SimpleBlog/__utils__/factory'
+import {createEntityList} from 'lib/list'
+import {fakeNavButtonWithSize} from 'Event/Dashboard/components/NavButton/__utils__/factory'
 
 const mockGet = axios.get as jest.Mock
 const mockPost = axios.post as jest.Mock
+const mockPut = axios.put as jest.Mock
 
 beforeEach(() => {
   jest.clearAllMocks()
@@ -102,4 +107,48 @@ it('should complete tech check', async () => {
       timeout: 30000,
     },
   )
+})
+
+it('should complete self-checkin', async () => {
+  const beforeCheckIn = fakeAttendee({
+    has_password: true,
+    waiver: faker.internet.url(),
+    tech_check_completed_at: null,
+  })
+
+  const buttonText = 'Check Myself In'
+  const button = fakeNavButtonWithSize({
+    page: '/check_in',
+    text: buttonText,
+  })
+
+  const buttons = createEntityList([button])
+
+  const event = fakeEvent({
+    template: fakeSimpleBlog({
+      techCheck: {
+        hasCustomButtons: true,
+        buttons,
+      },
+    }),
+  })
+
+  const afterCheckIn = {
+    ...beforeCheckIn,
+    tech_check_completed_at: faker.date.recent().toISOString(),
+  }
+
+  const {findByLabelText, findByText} = await loginToEventSite({
+    attendee: beforeCheckIn,
+    event,
+  })
+
+  mockPut.mockImplementationOnce(() => Promise.resolve({data: afterCheckIn}))
+
+  user.click(await findByText(buttonText))
+
+  // Has finished tech check, and is showing dashboard
+  await wait(async () => {
+    expect(await findByLabelText('welcome')).toBeInTheDocument()
+  })
 })

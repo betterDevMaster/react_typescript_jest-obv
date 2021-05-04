@@ -1,5 +1,5 @@
 import Event from 'Event'
-import {useEventAuth} from 'Event/auth'
+import {useAttendee, useEventAuth} from 'Event/auth'
 import Login from 'Event/auth/Login'
 import {useEvent} from 'Event/EventProvider'
 import Step1 from 'Event/Step1'
@@ -23,6 +23,7 @@ import SubmissionsProvider from 'Event/SubmissionsProvider'
 import LanguageProvider from 'Event/LanguageProvider'
 import JoinArea from 'Event/JoinArea/JoinArea'
 import FullPageLoader from 'lib/ui/layout/FullPageLoader'
+import SelfCheckIn from 'Event/SelfCheckIn'
 
 export const eventRoutes = createRoutes({
   login: '/login',
@@ -34,6 +35,7 @@ export const eventRoutes = createRoutes({
   speakers: '/speakers',
   sponsors: '/sponsors',
   leaderboard: '/leaderboard',
+  checkIn: '/check_in',
   area: {
     ':area': {},
   },
@@ -49,6 +51,8 @@ export const EVENT_PAGES = {
   [eventRoutes.sponsors]: 'Sponsors',
   [eventRoutes.leaderboard]: 'Leaderboard',
 }
+
+export type EventPages = typeof EVENT_PAGES
 
 export const areaRoutes = (key: string) =>
   routesWithValue(':area', key, eventRoutes.area[':area'])
@@ -125,9 +129,48 @@ function UserRoutes() {
       <Route path={eventRoutes.area[':area'].root}>
         <JoinArea />
       </Route>
+      <Route path={eventRoutes.checkIn}>
+        <CompletedOnboarding step={2}>
+          <SelfCheckIn />
+        </CompletedOnboarding>
+      </Route>
       <Redirect to={eventRoutes.root} />
     </Switch>
   )
+}
+
+function CompletedOnboarding(props: {
+  children: React.ReactElement
+  step?: 1 | 2
+}) {
+  const {step} = props
+  const attendee = useAttendee()
+  const {hasTechCheck, hasWaiver} = useEvent()
+
+  if (!attendee.has_password) {
+    return <Redirect to={eventRoutes.step1} />
+  }
+
+  if (step === 1) {
+    return props.children
+  }
+
+  const shouldGoToStep2 = hasWaiver && !attendee.waiver
+  if (shouldGoToStep2) {
+    return <Redirect to={eventRoutes.step2} />
+  }
+
+  if (step === 2) {
+    return props.children
+  }
+
+  const shouldRedirectToStep3 =
+    hasTechCheck && !attendee.tech_check_completed_at
+  if (shouldRedirectToStep3) {
+    return <Redirect to={eventRoutes.step3} />
+  }
+
+  return props.children
 }
 
 function GuestRoutes() {

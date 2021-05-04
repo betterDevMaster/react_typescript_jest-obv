@@ -13,10 +13,14 @@ import Select from '@material-ui/core/Select'
 import InputLabel from '@material-ui/core/InputLabel'
 import {ButtonConfigProps} from 'Event/template/SimpleBlog/Dashboard/MainNav/MainNavButton/MainNavButtonConfig'
 import NavButton from 'Event/Dashboard/components/NavButton'
-import {EVENT_PAGES} from 'Event/Routes'
+import {EventPages, EVENT_PAGES} from 'Event/Routes'
+
+type LinkConfigProps<T extends NavButton> = ButtonConfigProps<T> & {
+  pages?: EventPages
+}
 
 export default function LinkConfig<T extends NavButton>(
-  props: ButtonConfigProps<T>,
+  props: LinkConfigProps<T>,
 ) {
   if (props.button.isAreaButton) {
     return null
@@ -30,8 +34,10 @@ export default function LinkConfig<T extends NavButton>(
   )
 }
 
-function PageSelect<T extends NavButton>(props: ButtonConfigProps<T>) {
+function PageSelect<T extends NavButton>(props: LinkConfigProps<T>) {
   const {update, button} = props
+
+  const pages = props.pages || EVENT_PAGES
 
   const value = button.page ? button.page : 0
 
@@ -56,7 +62,7 @@ function PageSelect<T extends NavButton>(props: ButtonConfigProps<T>) {
           'aria-label': 'pick page',
         }}
       >
-        {Object.entries(EVENT_PAGES).map(([link, label]) => (
+        {Object.entries(pages).map(([link, label]) => (
           <MenuItem value={link} aria-label={`${label} page`} key={link}>
             {label}
           </MenuItem>

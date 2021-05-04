@@ -83,6 +83,72 @@ it('should submit a tech check config', async () => {
   expect(data.template.techCheck.buttonTextColor).toBeTruthy() // has defaults
 })
 
+it('it should set custom buttons', async () => {
+  const event = fakeEvent({
+    tech_check: null,
+    template: fakeSimpleBlog({
+      techCheck: undefined,
+    }),
+  })
+
+  const {
+    findByLabelText,
+    areas,
+    findAllByLabelText,
+  } = await goToTechCheckConfig({
+    event,
+    userPermissions: [CONFIGURE_EVENTS],
+  })
+
+  const area = faker.random.arrayElement(areas)
+
+  fireEvent.mouseDown(await findByLabelText('pick area'))
+  user.click(await findByLabelText(`pick ${area.name}`))
+
+  fireEvent.change(await findByLabelText('tech check start'), {
+    target: {
+      value: now(),
+    },
+  })
+
+  // Manually set body input because we can't type into CKEditor
+  const body = faker.lorem.paragraph()
+  const bodyEl = (await findByLabelText('tech check body')) as HTMLInputElement
+  bodyEl.value = body
+
+  user.click(await findByLabelText('set custom buttons'))
+  // Add 2 buttons
+  user.click(await findByLabelText('add tech check button'))
+  user.click(await findByLabelText('add tech check button'))
+
+  // Configure second button with page
+  user.click((await findAllByLabelText('edit component'))[1])
+  fireEvent.mouseDown(await findByLabelText('pick page'))
+  user.click(await findByLabelText('Check-In page'))
+  fireEvent.click(await findByLabelText('close dialog'))
+
+  // Remove first button
+  user.click((await findAllByLabelText('edit component'))[0])
+  fireEvent.click(await findByLabelText('remove button'))
+
+  user.click(await findByLabelText('save tech check'))
+
+  await wait(() => {
+    expect(mockPut).toHaveBeenCalledTimes(1)
+  })
+
+  const [_, data] = mockPut.mock.calls[0]
+  const {template} = data
+
+  expect(template.techCheck.hasCustomButtons).toBe(true)
+  // Removed the button
+  expect(template.techCheck.buttons.ids.length).toBe(1)
+  // Did set page
+  expect(
+    template.techCheck.buttons.entities[template.techCheck.buttons.ids[0]].page,
+  ).toBe('/check_in')
+})
+
 async function goToTechCheckConfig(
   overrides: EventOverrides & {areas?: Area[]} = {},
 ) {

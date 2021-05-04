@@ -1,13 +1,11 @@
 import React from 'react'
 import InputLabel from '@material-ui/core/InputLabel'
-import Typography from '@material-ui/core/Typography'
 import ColorPicker from 'lib/ui/ColorPicker'
 import Grid from '@material-ui/core/Grid'
 import Slider from '@material-ui/core/Slider'
 import {handleChangeSlider, onChangeStringHandler} from 'lib/dom'
 import TextField from '@material-ui/core/TextField'
-import Box from '@material-ui/core/Box'
-import {Template} from 'Event/template'
+import {TemplateFieldProps} from 'organization/Event/TechCheckConfig/Form/TemplateFields'
 
 const MIN_BUTTON_BORDER_RADIUS = 0
 const MAX_BUTTON_BORDER_RADIUS = 100
@@ -15,24 +13,11 @@ const MAX_BUTTON_BORDER_RADIUS = 100
 const MIN_BUTTON_BORDER_WIDTH = 0
 const MAX_BUTTON_BORDER_WIDTH = 20
 
-type TechCheckTemplateProps = NonNullable<Template['techCheck']>
-
-type TechCheckTemplatePropSetter = <K extends keyof TechCheckTemplateProps>(
-  key: K,
-) => (value: TechCheckTemplateProps[K]) => void
-
-export default function TemplateFields(props: {
-  techCheck: TechCheckTemplateProps
-  set: TechCheckTemplatePropSetter
-  submitting: boolean
-}) {
+export default function DefaultButtonFields(props: TemplateFieldProps) {
   const {techCheck, set, submitting} = props
 
   return (
     <>
-      <Box mb={1}>
-        <Typography variant="h6">Button Styles</Typography>
-      </Box>
       <Grid container spacing={2}>
         <Grid item xs={12} md={6}>
           <TextField
