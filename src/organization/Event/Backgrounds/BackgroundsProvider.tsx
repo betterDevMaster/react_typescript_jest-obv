@@ -27,8 +27,8 @@ export interface BackgroundsResponseData {
 }
 
 export type BackgroundsData = {
-  title: string
-  body: string
+  zoom_backgrounds_title: string
+  zoom_backgrounds_description: string
 }
 
 export type BackgroundsTemplateData = {

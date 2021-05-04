@@ -21,7 +21,7 @@ import {createSimpleBlog} from 'Event/template/SimpleBlog'
 import {handleChangeSlider} from 'lib/dom'
 import {spacing} from 'lib/ui/theme'
 import {useEvent} from 'Event/EventProvider'
-import {useForm} from 'react-hook-form'
+import {Controller, useForm} from 'react-hook-form'
 import {useTemplate} from 'Event/TemplateProvider'
 
 const FONT_SIZE_MIN = 5
@@ -37,13 +37,12 @@ export default function Form() {
   const mounted = useRef(true)
   const template = useTemplate()
   const {event} = useEvent()
-  const {errors, handleSubmit, register, setValue, watch} = useForm()
+  const {errors, handleSubmit, register, setValue, watch, control} = useForm()
   const {
     requestError,
     isRemoving,
     isSubmitting,
     isUploading,
-    loading,
     setBackgroundData,
   } = useBackgrounds()
 
@@ -76,8 +75,7 @@ export default function Form() {
 
   // These fields require validation, so they don't go into state the way the
   // slider/picker values do.
-  const title = watch('title', event.zoom_backgrounds_title)
-  const body = watch('body', event.zoom_backgrounds_description)
+  const title = watch('zoom_backgrounds_title', event.zoom_backgrounds_title)
 
   useEffect(() => {
     if (!mounted.current) {
@@ -88,8 +86,8 @@ export default function Form() {
       return
     }
 
-    setValue('title', event.zoom_backgrounds_title)
-    setValue('body', event.zoom_backgrounds_description)
+    setValue('zoom_backgrounds_title', event.zoom_backgrounds_title)
+    setValue('zoom_backgrounds_description', event.zoom_backgrounds_description)
 
     return () => {
       mounted.current = false
@@ -109,11 +107,6 @@ export default function Form() {
     })
   }
 
-  const textEditor =
-    loading === true ? null : (
-      <TextEditor data={body} onChange={(value) => setValue('body', value)} />
-    )
-
   return (
     <form onSubmit={handleSubmit(submit)}>
       <Typography variant="h6" gutterBottom>
@@ -121,7 +114,7 @@ export default function Form() {
       </Typography>
 
       <TextField
-        name="title"
+        name="zoom_backgrounds_title"
         label="Zoom Backgrounds Page Title *"
         fullWidth
         inputProps={{
@@ -133,17 +126,23 @@ export default function Form() {
       />
 
       <Editor>
-        <input
-          aria-label="zoom backgrounds body"
-          name="body"
-          ref={register({required: 'Body is required.'})}
-          type="hidden"
+        <Controller
+          name="zoom_backgrounds_description"
+          control={control}
+          rules={{
+            required: 'Body is required',
+          }}
+          defaultValue={event.zoom_backgrounds_description}
+          render={({value, onChange}) => (
+            <>
+              <BodyLabel required error={!!errors.body}>
+                Body
+              </BodyLabel>
+              <TextEditor data={value} onChange={onChange} />
+              <BodyError error={errors.body} />
+            </>
+          )}
         />
-        <BodyLabel required error={!!errors.body}>
-          Body
-        </BodyLabel>
-        {textEditor}
-        <BodyError error={errors.body} />
       </Editor>
 
       <Grid container spacing={2}>
