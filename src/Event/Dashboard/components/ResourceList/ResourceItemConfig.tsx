@@ -42,6 +42,10 @@ export function ResourceItemConfig(props: {id: ResourceItemConfig['id']}) {
   const deleteFile = useDeleteFile()
   const {visible: ruleConfigVisible, toggle: toggleRuleConfig} = useRuleConfig()
 
+  const onChangeUrl = (url: string) => {
+    update('url')(url)
+  }
+
   if (typeof props.id === 'undefined') {
     throw new Error('Missing component id')
   }
@@ -109,7 +113,15 @@ export function ResourceItemConfig(props: {id: ResourceItemConfig['id']}) {
           onChange={onChangeStringHandler(update('name'))}
         />
         <ResourceUpload resource={resource} update={update} />
-
+        <TextField
+          value={resource.url}
+          inputProps={{
+            'aria-label': 'resource external file url',
+          }}
+          label="External Url (https://, http:// )"
+          fullWidth
+          onChange={onChangeStringHandler(onChangeUrl)}
+        />
         <Grid container spacing={2}>
           <Grid item xs={6}>
             <FormControl fullWidth>

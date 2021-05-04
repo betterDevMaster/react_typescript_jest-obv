@@ -22,6 +22,7 @@ export type Resource = Publishable &
     name: string
     filePath: string
     icon: string
+    url?: string
   }
 
 export const RESOURCE_ITEM = 'Resource Item'
@@ -77,7 +78,7 @@ function ResourceItemLink(props: {resource: Resource; iconColor?: string}) {
   const {downloadResource: DOWNLOADING_RESOURCE} = usePlatformActions()
   const {submit} = usePoints()
   const {sidebar} = useTemplate()
-  const path = storage(`/event/resources/${props.resource.filePath}`)
+  const url = resourceUrl(props.resource)
   const v = useWithVariables()
 
   const awardPoints = () => {
@@ -87,7 +88,7 @@ function ResourceItemLink(props: {resource: Resource; iconColor?: string}) {
     <ResourceLink
       color={sidebar.textColor}
       aria-label="event resource"
-      to={path}
+      to={url}
       onClick={awardPoints}
       newTab
     >
@@ -138,6 +139,14 @@ const Item = React.forwardRef<
     </Grid>
   )
 })
+
+function resourceUrl(resource: Resource): string {
+  if (resource.url) {
+    return resource.url
+  }
+
+  return storage(`/event/resources/${resource.filePath}`)
+}
 
 const ResourceLink = styled(AbsoluteLink)<{color: string}>`
   align-items: center;
