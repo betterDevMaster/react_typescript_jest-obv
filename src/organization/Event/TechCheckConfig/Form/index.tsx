@@ -226,9 +226,7 @@ export default function Form() {
           aria-label="tech check content"
           ref={register}
         />
-        <BodyLabel>
-          Content
-        </BodyLabel>
+        <BodyLabel>Content</BodyLabel>
         {loading ? null : (
           <TextEditor
             data={watch('content')}
