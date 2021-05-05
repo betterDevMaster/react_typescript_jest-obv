@@ -30,7 +30,6 @@ import TemplateFields from 'organization/Event/TechCheckConfig/Form/TemplateFiel
 // import {TechCheckPreview} from 'Event/template/SimpleBlog/TechCheck'
 import {TechCheckPreview} from 'organization/Event/TechCheckConfig/TechCheckPreview'
 
-
 /**
  * Default props to use for techCheck. These will be set when an
  * event does not contain a techCheck config.
@@ -243,11 +242,11 @@ export default function Form() {
           />
         </Grid>
         <Grid item xs={12} md={6}>
-            <TechCheckPreview
-              body={watch('body')}
-              content={watch('content')}
-              techCheckTemplate={techCheck}
-            />
+          <TechCheckPreview
+            body={watch('body')}
+            content={watch('content')}
+            techCheckTemplate={techCheck}
+          />
         </Grid>
       </Grid>
       <Button
