@@ -8,7 +8,7 @@ import {Redirect} from 'react-router-dom'
 import {useEvent} from 'Event/EventProvider'
 import {useTemplate} from 'Event/TemplateProvider'
 import {ImagePreviewContainer} from 'organization/Event/Backgrounds/BackgroundsProvider'
-import download from 'js-file-download'
+import {downloadUrl} from 'lib/dom'
 
 export default function SimpleBlogBackgrounds(props: {user: Attendee}) {
   const {event} = useEvent()
@@ -44,7 +44,7 @@ export default function SimpleBlogBackgrounds(props: {user: Attendee}) {
               borderThickness={settings.borderThickness || 0}
               borderColor={settings.borderColor || '#000000'}
               onClick={() =>
-                download(background.image.url, background.image.name)
+                downloadUrl(background.image.url, background.image.name)
               }
               src={background.image.url}
               clickable
