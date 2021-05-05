@@ -219,21 +219,21 @@ export default function Form() {
       <Error>{responseError?.message}</Error>
       <Grid container spacing={3}>
         <Grid item xs={12} md={6}>
-        <Editor>
-          <input
-            type="hidden"
-            name="content"
-            aria-label="tech check content"
-            ref={register}
-          />
-          <BodyLabel>Content</BodyLabel>
-          {loading ? null : (
-            <TextEditor
-              data={watch('content')}
-              onChange={(val) => setValue('content', val)}
+          <Editor>
+            <input
+              type="hidden"
+              name="content"
+              aria-label="tech check content"
+              ref={register}
             />
-          )}
-        </Editor>
+            <BodyLabel>Content</BodyLabel>
+            {loading ? null : (
+              <TextEditor
+                data={watch('content')}
+                onChange={(val) => setValue('content', val)}
+              />
+            )}
+          </Editor>
           <TemplateFields
             techCheck={techCheck}
             set={setTemplateProp}
