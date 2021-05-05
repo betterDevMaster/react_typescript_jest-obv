@@ -38,6 +38,11 @@ export default function TechCheck(props: {user: User} & TechCheckProps) {
           }}
         />
         <Buttons techCheck={techCheck} settings={template.techCheck} />
+        <Body
+          dangerouslySetInnerHTML={{
+            __html: v(techCheck.content || ''),
+          }}
+        />
       </Container>
     </SimpleBlogPage>
   )

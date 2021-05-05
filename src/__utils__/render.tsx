@@ -18,14 +18,9 @@ import {Score} from 'Event/PointsProvider'
 import StaticPointsProvider from 'Event/PointsProvider/__utils__/StaticPointsProvider'
 import {BrowserRouter as Router} from 'react-router-dom'
 import TemplateProvider from 'Event/TemplateProvider'
-import {useEvent} from 'Event/EventProvider'
+import {EventContext, useEvent} from 'Event/EventProvider'
 import FormsProvider from 'organization/Event/FormsProvider'
-import {
-  Language,
-  SYSTEM_DEFAULT_LANGUAGE,
-} from 'Event/LanguageProvider/language'
-import {SYSTEM_DEFAULTS} from 'Event/LanguageProvider/system'
-import {StaticLanguageProvider} from 'Event/LanguageProvider'
+import EventLanguageProvider from 'Event/LanguageProvider'
 
 type Options = Omit<RtlRenderOptions, 'queries'> & {
   event?: ObvioEvent
@@ -34,7 +29,6 @@ type Options = Omit<RtlRenderOptions, 'queries'> & {
   actions?: Action[]
   score?: Score
   withRouter?: boolean
-  language?: Language
 }
 
 export const render = (
@@ -53,9 +47,7 @@ export const render = (
               <WithActions actions={options?.actions}>
                 <WithPoints score={options?.score}>
                   <AttendeeProfileProvider tags={tags} groups={groups}>
-                    <WithLanguage language={options?.language}>
-                      {target}
-                    </WithLanguage>
+                    <WithLanguage>{target}</WithLanguage>
                   </AttendeeProfileProvider>
                 </WithPoints>
               </WithActions>
@@ -166,17 +158,14 @@ function WithPoints(props: {score?: Score; children: React.ReactElement}) {
   )
 }
 
-function WithLanguage(props: {
-  language?: Language
-  children: React.ReactElement
-}) {
-  const language = props?.language || SYSTEM_DEFAULT_LANGUAGE
+function WithLanguage(props: {children: React.ReactElement}) {
+  const eventContext = React.useContext(EventContext)
 
-  return (
-    <StaticLanguageProvider language={language}>
-      {props.children}
-    </StaticLanguageProvider>
-  )
+  if (eventContext) {
+    return <EventLanguageProvider>{props.children}</EventLanguageProvider>
+  }
+
+  return props.children
 }
 
 export function renderWithEvent(

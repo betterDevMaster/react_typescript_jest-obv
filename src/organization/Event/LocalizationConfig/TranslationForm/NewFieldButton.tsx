@@ -17,6 +17,7 @@ export default function NewFieldButton(props: {
       fullWidth
       onClick={props.onClick}
       disabled={props.disabled}
+      aria-label="add field"
     >
       New Field
     </Button>

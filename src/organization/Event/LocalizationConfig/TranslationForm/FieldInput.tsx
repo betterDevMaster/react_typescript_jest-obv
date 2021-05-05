@@ -74,7 +74,6 @@ export default function FieldInput(props: {
               field={field}
               onToggleHtml={toggleHtmlInput}
             />
-
             <RemoveButton
               onClick={props.onRemove}
               visible={canUpdateKeys}

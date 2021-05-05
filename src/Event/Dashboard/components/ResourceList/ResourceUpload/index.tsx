@@ -82,6 +82,10 @@ export default function ResourceUpload(props: {
       })
   }
 
+  if (props.resource.isUrl) {
+    return null
+  }
+
   return (
     <>
       <Container>

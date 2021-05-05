@@ -6,7 +6,6 @@ import {useEventAuth} from 'Event/auth'
 import Button from 'lib/ui/Button'
 import {eventRoutes} from 'Event/Routes'
 import {RelativeLink} from 'lib/ui/link/RelativeLink'
-import {useEvent} from 'Event/EventProvider'
 import {useTemplate} from 'Event/TemplateProvider'
 
 export const DEFAULT_MENU_TEXT_COLOR = '#FFFFFF'
@@ -60,7 +59,6 @@ function Links() {
           Dashboard
         </StyledRelativeLink>
       </ListItem>
-      <BackgroundsLink />
       <ListItem>
         <Button
           variant="text"
@@ -72,31 +70,6 @@ function Links() {
         </Button>
       </ListItem>
     </List>
-  )
-}
-
-function BackgroundsLink() {
-  const {event} = useEvent()
-  const {menu} = useTemplate()
-  const menuTextColor = menu?.textColor || DEFAULT_MENU_TEXT_COLOR
-
-  // If there are no Zoom Backgrounds configured in the event, we're not going
-  // to show the Backgrounds link.
-  if (event.backgrounds.length < 1) {
-    return null
-  }
-
-  return (
-    <ListItem>
-      <StyledRelativeLink
-        to={eventRoutes.backgrounds}
-        aria-label="view backgrounds"
-        disableStyles
-        color={menuTextColor}
-      >
-        Backgrounds
-      </StyledRelativeLink>
-    </ListItem>
   )
 }
 

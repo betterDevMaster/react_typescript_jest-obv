@@ -22,6 +22,7 @@ export type Resource = Publishable &
     name: string
     filePath: string
     icon: string
+    isUrl?: boolean
     url?: string
   }
 
