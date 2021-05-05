@@ -37,6 +37,11 @@ export default function TechCheck(props: {user: User} & TechCheckProps) {
           }}
         />
         <Buttons techCheck={techCheck} />
+        <Body
+          dangerouslySetInnerHTML={{
+            __html: v(techCheck.content || ''),
+          }}
+        />
       </Container>
     </SimpleBlogPage>
   )

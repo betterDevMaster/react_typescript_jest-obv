@@ -52,6 +52,7 @@ export interface TechCheckData {
   start: string
   is_enabled: boolean
   template: ObvioEvent['template']
+  content: string
 }
 
 export default function Form() {
@@ -131,6 +132,7 @@ export default function Form() {
     setValue('start', event.tech_check.start)
     setValue('is_enabled', event.tech_check.is_enabled)
     setValue('area_key', event.tech_check.area_key)
+    setValue('content', event.tech_check.content)
 
     setLoading(false)
     return () => {
@@ -209,6 +211,25 @@ export default function Form() {
         )}
         <BodyError error={errors.body} />
       </Editor>
+
+      <Editor>
+        <input
+          type="hidden"
+          name="content"
+          aria-label="tech check content"
+          ref={register}
+        />
+        <BodyLabel>
+          Content
+        </BodyLabel>
+        {loading ? null : (
+          <TextEditor
+            data={watch('content')}
+            onChange={(val) => setValue('content', val)}
+          />
+        )}
+      </Editor>
+
       <Error>{responseError?.message}</Error>
       <TemplateFields
         techCheck={techCheck}
