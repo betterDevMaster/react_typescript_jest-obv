@@ -38,7 +38,7 @@ export default function TechCheck(props: {user: User} & TechCheckProps) {
           }}
         />
         <Buttons techCheck={techCheck} settings={props.techCheckTemplate} />
-        <Body
+        <ContentContainer
           dangerouslySetInnerHTML={{
             __html: v(techCheck.content || ''),
           }}
@@ -108,13 +108,18 @@ function StartButton(props: {
   )
 }
 
-export const Body = styled.div`
+const Body = styled.div`
   max-height: 100%;
   overflow-y: auto;
   margin-bottom: ${(props) => props.theme.spacing[4]};
 `
 const ButtonBox = styled.div`
   text-align: center;
+`
+const ContentContainer = styled.div`
+  max-height: 100%;
+  margin-bottom: ${(props) => props.theme.spacing[4]};
+  margin-top: ${(props) => props.theme.spacing[8]};
 `
 
 const StyledButton = styled(

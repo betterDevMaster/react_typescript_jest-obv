@@ -217,25 +217,24 @@ export default function Form() {
         <BodyError error={errors.body} />
       </Editor>
 
-      <Editor>
-        <input
-          type="hidden"
-          name="content"
-          aria-label="tech check content"
-          ref={register}
-        />
-        <BodyLabel>Content</BodyLabel>
-        {loading ? null : (
-          <TextEditor
-            data={watch('content')}
-            onChange={(val) => setValue('content', val)}
-          />
-        )}
-      </Editor>
-
       <Error>{responseError?.message}</Error>
       <Grid container spacing={3}>
         <Grid item xs={12} md={6}>
+        <Editor>
+          <input
+            type="hidden"
+            name="content"
+            aria-label="tech check content"
+            ref={register}
+          />
+          <BodyLabel>Content</BodyLabel>
+          {loading ? null : (
+            <TextEditor
+              data={watch('content')}
+              onChange={(val) => setValue('content', val)}
+            />
+          )}
+        </Editor>
           <TemplateFields
             techCheck={techCheck}
             set={setTemplateProp}
@@ -243,11 +242,12 @@ export default function Form() {
           />
         </Grid>
         <Grid item xs={12} md={6}>
-            <TechCheckPreview
-              body={watch('body')}
-              content={watch('content')}
-              techCheckTemplate={techCheck}
-            />
+          <PreviewBodyLabel>Preview</PreviewBodyLabel>
+          <TechCheckPreview
+            body={watch('body')}
+            content={watch('content')}
+            techCheckTemplate={techCheck}
+          />
         </Grid>
       </Grid>
       <Button
@@ -334,4 +334,7 @@ const Editor = styled.div`
     min-height: 300px;
     max-height: 600px;
   }
+`
+const PreviewBodyLabel = styled(BodyLabel)`
+  margin-top: ${(props) => props.theme.spacing[4]};
 `
