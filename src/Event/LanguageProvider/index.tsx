@@ -1,26 +1,31 @@
+import {ObvioEvent} from 'Event'
 import {useEvent} from 'Event/EventProvider'
-import {
-  isLanguage,
-  Language,
-  SYSTEM_DEFAULT_LANGUAGE,
-} from 'Event/LanguageProvider/language'
+import {Language, ENGLISH} from 'Event/LanguageProvider/language'
 import React, {useEffect, useState} from 'react'
+
 interface LanguageContextProps {
-  language: Language | null
+  current: Language | null
   loading: boolean
+  languages: Language[]
   set: (value: Language) => void
+  translationsEnabled: boolean
+  defaultLanguage: Language
 }
 
-const LanguageContext = React.createContext<LanguageContextProps | undefined>(
-  undefined,
-)
+export const LanguageContext = React.createContext<
+  LanguageContextProps | undefined
+>(undefined)
 
-export default function LanguageProvider(props: {
+export default function EventLanguageProvider(props: {
   children: React.ReactElement
 }) {
-  const [language, setLanguage] = useState<Language | null>(null)
+  const [current, setCurrent] = useState<Language | null>(null)
   const [loading, setLoading] = useState(true)
+  const {event} = useEvent()
   const tokenKey = useLanguageTokenKey()
+  const languages = event.localization?.languages || [ENGLISH]
+  const translationsEnabled = event.localization?.translationsEnabled || false
+  const defaultLanguage = event.localization?.defaultLanguage || ENGLISH
 
   /**
    * Load a saved language
@@ -28,8 +33,8 @@ export default function LanguageProvider(props: {
 
   useEffect(() => {
     const saved = window.localStorage.getItem(tokenKey)
-    if (saved && isLanguage(saved)) {
-      setLanguage(saved)
+    if (saved) {
+      setCurrent(saved)
     }
 
     setLoading(false)
@@ -37,29 +42,51 @@ export default function LanguageProvider(props: {
 
   const set = (language: Language) => {
     window.localStorage.setItem(tokenKey, language)
-    setLanguage(language)
+    setCurrent(language)
   }
 
   return (
-    <LanguageContext.Provider value={{language, loading, set}}>
+    <LanguageContext.Provider
+      value={{
+        current,
+        loading,
+        set,
+        languages,
+        translationsEnabled,
+        defaultLanguage,
+      }}
+    >
       {props.children}
     </LanguageContext.Provider>
   )
 }
 
-export function StaticLanguageProvider(props: {
+export function OrganizationLanguageProvider(props: {
   language?: Language
   children: React.ReactElement
 }) {
-  const language = props.language || SYSTEM_DEFAULT_LANGUAGE
+  const language = props.language || ENGLISH
+  const {event} = useEvent()
+  const languages = event.localization?.languages || [ENGLISH]
+  const translationsEnabled = event.localization?.translationsEnabled || false
+  const defaultLanguage = event.localization?.defaultLanguage || ENGLISH
 
   /**
-   * No-op since you shouldn't set a language when using the StaticLanguageProvider
+   * No-op since you shouldn't set a language when using the OrganizationLanguagesProvider
    */
   const set = () => {}
 
   return (
-    <LanguageContext.Provider value={{language, set, loading: false}}>
+    <LanguageContext.Provider
+      value={{
+        current: language,
+        set,
+        loading: false,
+        languages,
+        translationsEnabled,
+        defaultLanguage,
+      }}
+    >
       {props.children}
     </LanguageContext.Provider>
   )
@@ -72,7 +99,10 @@ export function StaticLanguageProvider(props: {
 
 function useLanguageTokenKey() {
   const {event} = useEvent()
+  return languageTokenKey(event)
+}
 
+export function languageTokenKey(event: ObvioEvent) {
   return `__obvio__${event.slug}__language__`
 }
 
@@ -83,15 +113,4 @@ export function useLanguage() {
   }
 
   return context
-}
-
-export function useDefaultLanguage() {
-  const {event} = useEvent()
-
-  const eventDefault = event.localization?.defaultLanguage
-  if (eventDefault) {
-    return eventDefault
-  }
-
-  return SYSTEM_DEFAULT_LANGUAGE
 }

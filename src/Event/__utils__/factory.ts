@@ -107,3 +107,12 @@ export const fakeSponsor = (overrides?: Partial<Sponsor>): Sponsor => ({
   settings: null,
   ...overrides,
 })
+
+export const fakeLocalization = (
+  overrides?: Partial<ObvioEvent['localization']>,
+): ObvioEvent['localization'] => ({
+  languages: ['English'],
+  defaultLanguage: null,
+  translations: {},
+  ...overrides,
+})

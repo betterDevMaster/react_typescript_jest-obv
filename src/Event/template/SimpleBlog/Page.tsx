@@ -11,7 +11,7 @@ import {useTemplate} from 'Event/TemplateProvider'
 import {useEvent} from 'Event/EventProvider'
 import {SimpleBlog} from 'Event/template/SimpleBlog'
 import {rgb} from 'lib/color'
-import LanguageSelectMenu from 'Event/LanguageSelectMenu'
+import LanguageSelectMenu from 'Event/LanguageSelector'
 import {muiDarkTheme, muiTheme} from 'lib/ui/theme'
 
 export default function SimpleBlogPage(props: {

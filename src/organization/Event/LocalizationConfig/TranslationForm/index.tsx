@@ -5,9 +5,11 @@ import {Translations} from 'Event/LanguageProvider/translations'
 import {Language} from 'Event/LanguageProvider/language'
 import {useEvent, useUpdate} from 'Event/EventProvider'
 import {v4 as uuid} from 'uuid'
-import {useDefaultLanguage} from 'Event/LanguageProvider'
+import {useLanguage} from 'Event/LanguageProvider'
 import FieldInput from 'organization/Event/LocalizationConfig/TranslationForm/FieldInput'
 import NewFieldButton from 'organization/Event/LocalizationConfig/TranslationForm/NewFieldButton'
+import Typography from '@material-ui/core/Typography'
+import {useLocalizationConfig} from 'organization/Event/LocalizationConfig'
 
 export type Field = {
   id: string
@@ -20,13 +22,12 @@ export default function TranslationForm(props: {
   language: Language
   translations: Translations
   setTranslations: (translations: Translations) => void
-  isProcessing: boolean
-  setIsProcessing: (processing: boolean) => void
 }) {
-  const {language, translations, isProcessing, setIsProcessing} = props
+  const {language, translations} = props
+  const {isProcessing, setIsProcessing} = useLocalizationConfig()
   const {event} = useEvent()
-  const defaultLanguage = useDefaultLanguage()
   const parseValues = useParseValues()
+  const {languages, defaultLanguage} = useLanguage()
 
   const isDefaultLanguage = language === defaultLanguage
 
@@ -92,10 +93,13 @@ export default function TranslationForm(props: {
     const update = {
       localization: {
         ...event.localization,
-        translations: {
-          ...event.localization?.translations,
-          [language]: createValues(fields),
-        },
+        translations: createTranslations({
+          translations,
+          language,
+          languages,
+          isDefault: isDefaultLanguage,
+          fields,
+        }),
       },
     }
 
@@ -110,16 +114,13 @@ export default function TranslationForm(props: {
   return (
     <>
       <Box mb={2}>
-        {fields.map((field: Field) => (
-          <FieldInput
-            key={field.id}
-            field={field}
-            onRemove={() => remove(field)}
-            disabled={isProcessing}
-            update={update}
-            canUpdateKeys={isDefaultLanguage}
-          />
-        ))}
+        <FieldList
+          fields={fields}
+          disabled={isProcessing}
+          update={update}
+          onRemove={remove}
+          canUpdateKeys={isDefaultLanguage}
+        />
       </Box>
       <NewFieldButton
         visible={isDefaultLanguage}
@@ -132,11 +133,42 @@ export default function TranslationForm(props: {
           color="primary"
           onClick={save}
           fullWidth
+          aria-label="save translations"
           disabled={!canSave}
         >
           Save
         </Button>
       </Box>
+    </>
+  )
+}
+
+function FieldList(props: {
+  fields: Field[]
+  canUpdateKeys: boolean
+  onRemove: (field: Field) => void
+  disabled?: boolean
+  update: (field: Field) => void
+}) {
+  const {fields, canUpdateKeys, update, onRemove} = props
+
+  const empty = fields.length === 0
+  if (empty) {
+    return <Typography align="center">No fields have been added</Typography>
+  }
+
+  return (
+    <>
+      {fields.map((field: Field) => (
+        <FieldInput
+          key={field.id}
+          field={field}
+          onRemove={() => onRemove(field)}
+          update={update}
+          disabled={props.disabled}
+          canUpdateKeys={canUpdateKeys}
+        />
+      ))}
     </>
   )
 }
@@ -163,7 +195,7 @@ function useParseValues() {
 }
 
 function useParseKeys() {
-  const defaultLanguage = useDefaultLanguage()
+  const {defaultLanguage} = useLanguage()
 
   return useCallback(
     (translations: Translations) => {
@@ -178,6 +210,58 @@ function useParseKeys() {
   )
 }
 
+function createTranslations(attributes: {
+  translations: Translations
+  languages: Language[]
+  language: Language
+  isDefault: boolean
+  fields: Field[]
+}) {
+  const {translations, language, languages, isDefault, fields} = attributes
+
+  const targetValues = createValues(fields)
+
+  /**
+   * If we're not saving a default language, we'll just save whatever
+   * values that are filled out.
+   *
+   **/
+  if (!isDefault || !translations) {
+    return {
+      ...(translations || {}),
+      [language]: targetValues,
+    }
+  }
+
+  return languages.reduce((acc, currentLanguage) => {
+    const values = translations[currentLanguage]
+    /**
+     * Is default language, no need to modify keys
+     */
+    if (currentLanguage === language) {
+      acc[language] = targetValues
+      return acc
+    }
+
+    /**
+     * Default language has no translations, or other language is empty,
+     * we'll just set everything to empty
+     */
+
+    if (!targetValues || !values) {
+      acc[currentLanguage] = null
+      return acc
+    }
+
+    /**
+     * Remove extra keys from other languages
+     */
+    acc[currentLanguage] = makeSubset(targetValues, values)
+
+    return acc
+  }, {} as Translations)
+}
+
 function createValues(fields: Field[]) {
   const result = fields.reduce((acc, f) => {
     acc[f.key] = f.value || ''
@@ -190,4 +274,27 @@ function createValues(fields: Field[]) {
   }
 
   return result
+}
+
+/**
+ * Make the target a subset of the base object. Ensures that there are
+ * no keys in the target that do NOT exist in base object.
+ *
+ * @param base
+ * @param target
+ * @returns
+ */
+function makeSubset(
+  base: Record<string, string>,
+  target: Record<string, string>,
+) {
+  return Object.entries(target).reduce((acc, [key, val]) => {
+    const hasKey = Object.prototype.hasOwnProperty.call(base, key)
+    if (!hasKey) {
+      return acc
+    }
+
+    acc[key] = val
+    return acc
+  }, {} as Record<string, string>)
 }
