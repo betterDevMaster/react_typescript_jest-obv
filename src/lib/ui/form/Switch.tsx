@@ -13,6 +13,7 @@ type SwitchLabelsProps = {
   labelPlacement: FormControlLabelProps['labelPlacement']
   color: SwitchProps['color']
   'aria-label'?: string
+  disabled?: boolean
 }
 
 export default function SwitchLabel(props: SwitchLabelsProps) {
@@ -21,6 +22,7 @@ export default function SwitchLabel(props: SwitchLabelsProps) {
       <FormControlLabel
         control={
           <Switch
+            disabled={props.disabled}
             checked={props.checked}
             onChange={props.onChange}
             name={props.name}

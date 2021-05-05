@@ -213,38 +213,3 @@ it('should show in order', async () => {
   expect(await titleAtIndex(1)).toBe(secondPost.title)
   expect(await titleAtIndex(2)).toBe(thirdPost.title)
 })
-
-it('should show translated text content', async () => {
-  const key = 'my_translated_post'
-
-  const post = fakeBlogPost({
-    content: `<div>{{${key}}}</div>`,
-  })
-
-  const text = faker.lorem.paragraph()
-
-  const translations: Translations = {
-    English: {
-      [key]: text,
-    },
-  }
-
-  const {findByText} = render(
-    <Dashboard isEditMode={false} user={fakeUser()} />,
-    {
-      event: fakeEvent({
-        template: fakeSimpleBlog({
-          blogPosts: createEntityList([post]),
-        }),
-        localization: {
-          translations,
-        },
-      }),
-      actions: emptyActions,
-      score: defaultScore,
-      withRouter: true,
-    },
-  )
-
-  expect(await findByText(text)).toBeInTheDocument()
-})

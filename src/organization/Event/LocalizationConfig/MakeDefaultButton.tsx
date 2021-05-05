@@ -1,20 +1,21 @@
-import {useUpdate} from 'Event/EventProvider'
-import {useDefaultLanguage} from 'Event/LanguageProvider'
+import {useEvent, useUpdate} from 'Event/EventProvider'
+import {useLanguage} from 'Event/LanguageProvider'
 import {Language} from 'Event/LanguageProvider/language'
 import {Translations} from 'Event/LanguageProvider/translations'
 import React from 'react'
 import Button from '@material-ui/core/Button'
-import Box from '@material-ui/core/Box'
+import {useLocalizationConfig} from 'organization/Event/LocalizationConfig'
 
-export default function MakeDefaultField(props: {
+export default function MakeDefaultButton(props: {
   language: Language
-  isProcessing: boolean
-  setIsProcessing: (processing: boolean) => void
   translations: Translations
+  className?: string
 }) {
-  const {isProcessing, setIsProcessing, language, translations} = props
-  const defaultLanguage = useDefaultLanguage()
+  const {language, translations} = props
+  const {isProcessing, setIsProcessing} = useLocalizationConfig()
   const updateEvent = useUpdate()
+  const {event} = useEvent()
+  const {languages, defaultLanguage} = useLanguage()
 
   const isDefault = language === defaultLanguage
 
@@ -27,10 +28,12 @@ export default function MakeDefaultField(props: {
 
     const updates = {
       localization: {
+        ...(event.localization || {}),
         defaultLanguage: language,
         translations: createTranslations({
           prevDefault: defaultLanguage,
           newDefault: language,
+          languages,
           translations,
         }),
       },
@@ -42,25 +45,27 @@ export default function MakeDefaultField(props: {
   }
 
   return (
-    <Box display="flex" justifyContent="flex-end" mb={2}>
-      <Button
-        onClick={setDefault}
-        variant="outlined"
-        disabled={isDefault || isProcessing}
-      >
-        Make Default
-      </Button>
-    </Box>
+    <Button
+      onClick={setDefault}
+      variant="outlined"
+      disabled={isDefault || isProcessing}
+      className={props.className}
+      aria-label="make default"
+    >
+      Make Default
+    </Button>
   )
 }
 
 function createTranslations({
   prevDefault,
   newDefault,
+  languages,
   translations,
 }: {
   prevDefault: Language
   newDefault: Language
+  languages: Language[]
   translations: Translations
 }) {
   const currentDefaults = translations[prevDefault]
@@ -68,13 +73,15 @@ function createTranslations({
     return translations
   }
 
-  return Object.entries(translations).reduce((acc, [key, value]) => {
-    if (key !== newDefault && value) {
-      acc[key] = value
+  return languages.reduce((acc, language) => {
+    const value = translations[language]
+
+    if (language !== newDefault && value) {
+      acc[language] = value
       return acc
     }
 
-    acc[key] = copyKeys(currentDefaults, value)
+    acc[language] = copyKeys(currentDefaults, value)
     return acc
   }, {} as Record<string, Record<string, string>>)
 }

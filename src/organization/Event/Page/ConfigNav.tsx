@@ -56,7 +56,7 @@ function AuthorizedPages() {
         </ConfigNavItem>
         <ConfigNavItem
           to={routes.localization}
-          aria-label="localization config"
+          aria-label="configure localization"
         >
           Localization
         </ConfigNavItem>

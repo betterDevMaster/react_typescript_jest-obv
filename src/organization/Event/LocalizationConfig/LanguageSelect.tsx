@@ -3,8 +3,8 @@ import {onUnknownChangeHandler} from 'lib/dom'
 import MenuItem from '@material-ui/core/MenuItem'
 import FormControl from '@material-ui/core/FormControl'
 import Select from '@material-ui/core/Select'
-import {Language, ALL_LANGUAGES} from 'Event/LanguageProvider/language'
-import {useDefaultLanguage} from 'Event/LanguageProvider'
+import {Language} from 'Event/LanguageProvider/language'
+import {useLanguage} from 'Event/LanguageProvider'
 
 export default function LanguageSelect(props: {
   value: Language
@@ -12,7 +12,7 @@ export default function LanguageSelect(props: {
   showDefault?: boolean
   disabled?: boolean
 }) {
-  const defaultLanguage = useDefaultLanguage()
+  const {languages, defaultLanguage} = useLanguage()
 
   const label = (language: Language) => {
     const isDefault = language === defaultLanguage
@@ -23,7 +23,7 @@ export default function LanguageSelect(props: {
     return `${language} (Default)`
   }
 
-  const sortedByDefault = [...ALL_LANGUAGES].sort((a, b) => {
+  const sortedByDefault = [...languages].sort((a, b) => {
     if (a === defaultLanguage) {
       return -1
     }
@@ -31,16 +31,22 @@ export default function LanguageSelect(props: {
     return 0
   })
 
+  const optionExists = sortedByDefault.includes(props.value)
+  const value = optionExists ? props.value : defaultLanguage
+
   return (
     <FormControl fullWidth>
       <Select
         variant="outlined"
         onChange={onUnknownChangeHandler(props.onChange)}
-        value={props.value}
+        value={value}
         disabled={props.disabled}
+        inputProps={{
+          'aria-label': 'language select',
+        }}
       >
         {sortedByDefault.map((language: Language, index: number) => (
-          <MenuItem key={index} value={language}>
+          <MenuItem key={index} value={language} aria-label={language}>
             {label(language)}
           </MenuItem>
         ))}

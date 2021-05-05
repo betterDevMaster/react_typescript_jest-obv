@@ -21,7 +21,7 @@ import ForgotPassword from 'Event/auth/ForgotPassword'
 import ResetPassword from 'Event/auth/ResetPassword'
 import SponsorPage from 'Event/SponsorPage'
 import SubmissionsProvider from 'Event/SubmissionsProvider'
-import LanguageProvider from 'Event/LanguageProvider'
+import EventLanguageProvider from 'Event/LanguageProvider'
 import JoinArea from 'Event/JoinArea/JoinArea'
 import FullPageLoader from 'lib/ui/layout/FullPageLoader'
 import SelfCheckIn from 'Event/SelfCheckIn'
@@ -80,11 +80,11 @@ export default function Routes() {
             <TemplateProvider template={event.template}>
               <CustomScripts>
                 <SubmissionsProvider>
-                  <LanguageProvider>
+                  <EventLanguageProvider>
                     <HTMLHead>
                       <UserRoutes />
                     </HTMLHead>
-                  </LanguageProvider>
+                  </EventLanguageProvider>
                 </SubmissionsProvider>
               </CustomScripts>
             </TemplateProvider>

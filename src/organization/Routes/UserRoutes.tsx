@@ -9,7 +9,7 @@ import Team from 'organization/Team'
 import {CREATE_EVENTS, UPDATE_TEAM} from 'organization/PermissionsProvider'
 import AuthorizedPage from 'organization/AuthorizedPage'
 import FormsProvider from 'organization/Event/FormsProvider'
-import {StaticLanguageProvider} from 'Event/LanguageProvider'
+import {OrganizationLanguageProvider} from 'Event/LanguageProvider'
 
 export default function UserRoutes() {
   const {routes} = useOrganization()
@@ -39,9 +39,9 @@ export default function UserRoutes() {
       <Route path={routes.events[':event'].root}>
         <RouteEventProvider>
           <FormsProvider>
-            <StaticLanguageProvider>
+            <OrganizationLanguageProvider>
               <EventRoutes />
-            </StaticLanguageProvider>
+            </OrganizationLanguageProvider>
           </FormsProvider>
         </RouteEventProvider>
       </Route>
