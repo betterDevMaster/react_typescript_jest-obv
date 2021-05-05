@@ -19,7 +19,7 @@ import {Template} from 'Event/template'
 
 export default function TechCheck(props: {user: User} & TechCheckProps) {
   const {techCheck} = props
-  const template = useTemplate()
+  const  template = useTemplate()
   const v = useWithVariables()
 
   return (
@@ -37,7 +37,7 @@ export default function TechCheck(props: {user: User} & TechCheckProps) {
             __html: v(techCheck.body),
           }}
         />
-        <Buttons techCheck={techCheck} settings={template.techCheck} />
+        <Buttons techCheck={techCheck} settings={props.techCheckTemplate} />
         <Body
           dangerouslySetInnerHTML={{
             __html: v(techCheck.content || ''),

@@ -7,12 +7,15 @@ import {TechCheckConfig} from 'Event'
 import SimpleBlogTechCheck from 'Event/template/SimpleBlog/TechCheck'
 import {usePlatformActions} from 'Event/ActionsProvider/platform-actions'
 import {usePoints} from 'Event/PointsProvider'
+import { Template } from 'Event/template'
 
 const TECH_CHECK_POLL_SECS = 10
 
 export interface TechCheckProps {
   techCheck: TechCheckConfig
   progress: number
+  techCheckTemplate: Template['techCheck']
+  isPreview: boolean
 }
 
 export default function TechCheck() {
@@ -51,7 +54,7 @@ export default function TechCheck() {
   switch (template.name) {
     case SIMPLE_BLOG:
       return (
-        <SimpleBlogTechCheck user={user} techCheck={techCheck} progress={75} />
+        <SimpleBlogTechCheck user={user} techCheck={techCheck} progress={75} isPreview={false} techCheckTemplate={template.techCheck}/>
       )
     default:
       throw new Error(`Missing tech check for template: ${template.name}`)

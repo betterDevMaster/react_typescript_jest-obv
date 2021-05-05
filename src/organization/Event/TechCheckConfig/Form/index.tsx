@@ -30,7 +30,6 @@ import TemplateFields from 'organization/Event/TechCheckConfig/Form/TemplateFiel
 // import {TechCheckPreview} from 'Event/template/SimpleBlog/TechCheck'
 import {TechCheckPreview} from 'organization/Event/TechCheckConfig/TechCheckPreview'
 
-import {useTeamMember} from 'organization/auth'
 
 /**
  * Default props to use for techCheck. These will be set when an
@@ -81,7 +80,6 @@ export default function Form() {
   const template = useTemplate()
   const {techCheck, set: setTemplateProp} = useTemplateTechCheckProps()
   const {event} = useEvent()
-  const user = useTeamMember()
 
   const areaKey = watch('area_key')
   const canSave = !submitting && Boolean(areaKey)
@@ -245,13 +243,11 @@ export default function Form() {
           />
         </Grid>
         <Grid item xs={12} md={6}>
-          <PreviewContainer>
             <TechCheckPreview
-              user={user}
               body={watch('body')}
+              content={watch('content')}
               techCheckTemplate={techCheck}
             />
-          </PreviewContainer>
         </Grid>
       </Grid>
       <Button
@@ -338,9 +334,4 @@ const Editor = styled.div`
     min-height: 300px;
     max-height: 600px;
   }
-`
-const PreviewContainer = styled.div`
-  padding: ${(props) => props.theme.spacing[2]};
-  border: 1px solid ${(props) => props.theme.colors.border};
-  border-radius: 4px;
 `
