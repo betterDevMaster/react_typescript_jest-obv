@@ -29,6 +29,8 @@ import RuleConfig, {
   useRuleConfig,
 } from 'Event/Dashboard/component-rules/RuleConfig'
 import ConfigureRulesButton from 'Event/Dashboard/component-rules/ConfigureRulesButton'
+import ToggleButtonGroup from '@material-ui/lab/ToggleButtonGroup'
+import ToggleButton from '@material-ui/lab/ToggleButton'
 
 export type ResourceItemConfig = {
   type: typeof RESOURCE_ITEM
@@ -42,7 +44,7 @@ export function ResourceItemConfig(props: {id: ResourceItemConfig['id']}) {
   const deleteFile = useDeleteFile()
   const {visible: ruleConfigVisible, toggle: toggleRuleConfig} = useRuleConfig()
 
-  const onChangeUrl = (url: string) => {
+  const setUrl = (url: string) => {
     update('url')(url)
   }
 
@@ -112,16 +114,25 @@ export function ResourceItemConfig(props: {id: ResourceItemConfig['id']}) {
           fullWidth
           onChange={onChangeStringHandler(update('name'))}
         />
+        <FormControl>
+          <ToggleButtonGroup
+            value={resource.isUrl ? 'true' : 'false'}
+            exclusive
+          >
+            <ToggleButton value="false" onClick={() => update('isUrl')(false)}>
+              File
+            </ToggleButton>
+            <ToggleButton
+              value="true"
+              aria-label="set url resource"
+              onClick={() => update('isUrl')(true)}
+            >
+              Link
+            </ToggleButton>
+          </ToggleButtonGroup>
+        </FormControl>
         <ResourceUpload resource={resource} update={update} />
-        <TextField
-          value={resource.url}
-          inputProps={{
-            'aria-label': 'resource external file url',
-          }}
-          label="External Url (https://, http:// )"
-          fullWidth
-          onChange={onChangeStringHandler(onChangeUrl)}
-        />
+        <UrlField resource={resource} onChange={setUrl} />
         <Grid container spacing={2}>
           <Grid item xs={6}>
             <FormControl fullWidth>
@@ -164,6 +175,27 @@ export function ResourceItemConfig(props: {id: ResourceItemConfig['id']}) {
         </RemoveButton>
       </>
     </RuleConfig>
+  )
+}
+
+function UrlField(props: {
+  resource: Resource
+  onChange: (url: string) => void
+}) {
+  if (!props.resource.isUrl) {
+    return null
+  }
+
+  return (
+    <TextField
+      value={props.resource.url}
+      inputProps={{
+        'aria-label': 'resource external file url',
+      }}
+      label="URL starting with http:// or https://"
+      fullWidth
+      onChange={onChangeStringHandler(props.onChange)}
+    />
   )
 }
 
