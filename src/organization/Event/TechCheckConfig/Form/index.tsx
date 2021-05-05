@@ -30,7 +30,6 @@ import TemplateFields from 'organization/Event/TechCheckConfig/Form/TemplateFiel
 // import {TechCheckPreview} from 'Event/template/SimpleBlog/TechCheck'
 import {TechCheckPreview} from 'organization/Event/TechCheckConfig/TechCheckPreview'
 
-
 /**
  * Default props to use for techCheck. These will be set when an
  * event does not contain a techCheck config.

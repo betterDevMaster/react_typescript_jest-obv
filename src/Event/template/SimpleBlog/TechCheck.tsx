@@ -19,7 +19,7 @@ import {Template} from 'Event/template'
 
 export default function TechCheck(props: {user: User} & TechCheckProps) {
   const {techCheck} = props
-  const  template = useTemplate()
+  const template = useTemplate()
   const v = useWithVariables()
 
   return (

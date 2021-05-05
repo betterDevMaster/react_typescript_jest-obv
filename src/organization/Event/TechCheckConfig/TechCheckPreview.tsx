@@ -26,7 +26,7 @@ export function TechCheckPreview(props: {
     content: props.content,
     is_enabled: false,
     area_key: null,
-    start: now()
+    start: now(),
   }
 
   if (techCheck === null) {
@@ -37,19 +37,18 @@ export function TechCheckPreview(props: {
     case SIMPLE_BLOG:
       return (
         <PreviewContainer>
-          <SimpleBlogTechCheck 
-            user={user} 
-            techCheck={techCheck} 
-            progress={75} 
-            isPreview={true} 
+          <SimpleBlogTechCheck
+            user={user}
+            techCheck={techCheck}
+            progress={75}
+            isPreview={true}
             techCheckTemplate={props.techCheckTemplate}
-            />
+          />
         </PreviewContainer>
       )
     default:
       throw new Error(`Missing tech check for template: ${template.name}`)
   }
-
 }
 
 const PreviewContainer = styled.div`
@@ -57,4 +56,3 @@ const PreviewContainer = styled.div`
   border: 1px solid ${(props) => props.theme.colors.border};
   border-radius: 4px;
 `
-
