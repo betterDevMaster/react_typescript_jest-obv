@@ -17,6 +17,7 @@ export type BlogPost = Publishable &
     formSubmittedText?: string
     isModalForm?: boolean
     modalButtonText?: string
+    hideDate?: boolean
   }
 
 export const BLOG_POST = 'Blog Post'
@@ -36,7 +37,7 @@ export function BlogPost(props: {post: BlogPost}) {
   return (
     <Post aria-label="blog post">
       <Title>{v(post.title)}</Title>
-      <PostDate>{formattedDate}</PostDate>
+      <Date hidden={post.hideDate}>{formattedDate}</Date>
       <div
         dangerouslySetInnerHTML={{
           __html: v(post.content),
@@ -56,6 +57,14 @@ function shouldPublish(post: BlogPost) {
   return getDiffDatetime(post.publishAt, now()) < 0
 }
 
+function Date(props: {children: React.ReactNode; hidden?: boolean}) {
+  if (props.hidden) {
+    return null
+  }
+
+  return <DateText>{props.children}</DateText>
+}
+
 const Post = styled.div`
   margin-bottom: ${(props) => props.theme.spacing[8]};
 `
@@ -66,7 +75,7 @@ const Title = styled.h2`
   font-size: 30px;
 `
 
-const PostDate = styled.span`
+const DateText = styled.span`
   font-size: 14px;
   color: #adadad;
   display: block;

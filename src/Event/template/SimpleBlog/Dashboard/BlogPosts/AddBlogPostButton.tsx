@@ -20,6 +20,7 @@ export default function AddBlogPostButton(props: {className?: string}) {
       publishAt: null,
       content: '',
       isVisible: true,
+      hideDate: true,
     }
 
     const entities = {

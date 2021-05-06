@@ -19,6 +19,7 @@ import RuleConfig, {
   useRuleConfig,
 } from 'Event/Dashboard/component-rules/RuleConfig'
 import ConfigureRulesButton from 'Event/Dashboard/component-rules/ConfigureRulesButton'
+import Box from '@material-ui/core/Box'
 
 export const DEFAULT_MODAL_BUTTON_TEXT = 'Submit'
 
@@ -102,6 +103,7 @@ export function BlogPostConfig(props: {id: BlogPostConfig['id']}) {
             fullWidth
             onChange={onChangeStringHandler(update('title'))}
           />
+
           <DateTimePicker
             clearable
             value={post.publishAt}
@@ -112,6 +114,16 @@ export function BlogPostConfig(props: {id: BlogPostConfig['id']}) {
               'aria-label': 'post publish at',
             }}
           />
+          <Box mb={2}>
+            <Switch
+              checked={Boolean(post.hideDate)}
+              onChange={onChangeCheckedHandler(update('hideDate'))}
+              arial-label="toggle hide date"
+              labelPlacement="end"
+              color="primary"
+              label="Hide Date"
+            />
+          </Box>
           <StyledTextEditor data={post.content} onChange={update('content')} />
           <FormControl fullWidth>
             <InputLabel>Form</InputLabel>
