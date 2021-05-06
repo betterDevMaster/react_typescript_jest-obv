@@ -66,7 +66,7 @@ export interface WaiverConfig {
 
 export interface TechCheckConfig {
   body: string
-  content?: string
+  additional_content: string | null
   start: string
   is_enabled: boolean
   area_key: string | null

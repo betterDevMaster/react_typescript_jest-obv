@@ -13,14 +13,18 @@ import {now} from 'lib/date-time'
 export function TechCheckPreview(props: {
   techCheckTemplate: TechCheckTemplateProps
   body: string
-  content: string
+  content: string | null
 }) {
   const template = useTemplate()
   const user = useTeamMember()
 
+  /**
+   * Build event.tech_check dynamically for the
+   * preview.
+   */
   const techCheck: TechCheckConfig = {
     body: props.body,
-    content: props.content,
+    additional_content: props.content,
     is_enabled: false,
     area_key: null,
     start: now(),

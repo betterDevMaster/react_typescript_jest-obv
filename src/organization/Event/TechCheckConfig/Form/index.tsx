@@ -136,7 +136,7 @@ export default function Form() {
     setValue('start', event.tech_check.start)
     setValue('is_enabled', event.tech_check.is_enabled)
     setValue('area_key', event.tech_check.area_key)
-    setValue('content', event.tech_check.content)
+    setValue('additional_content', event.tech_check.additional_content)
 
     setLoading(false)
     return () => {
@@ -226,15 +226,15 @@ export default function Form() {
             <Editor>
               <input
                 type="hidden"
-                name="content"
+                name="additional_content"
                 aria-label="tech check content"
                 ref={register}
               />
               <BodyLabel>Additional Content</BodyLabel>
               {loading ? null : (
                 <TextEditor
-                  data={watch('content')}
-                  onChange={(val) => setValue('content', val)}
+                  data={watch('additional_content')}
+                  onChange={(val) => setValue('additional_content', val)}
                 />
               )}
             </Editor>
@@ -243,7 +243,7 @@ export default function Form() {
             <PreviewBodyLabel>Preview</PreviewBodyLabel>
             <TechCheckPreview
               body={watch('body')}
-              content={watch('content')}
+              content={watch('additional_content')}
               techCheckTemplate={techCheck}
             />
           </Grid>

@@ -81,6 +81,7 @@ export function fakeTechCheck(
     start: now(),
     is_enabled: true,
     area_key: faker.random.alphaNumeric(16),
+    additional_content: null,
     ...overrides,
   }
 }
