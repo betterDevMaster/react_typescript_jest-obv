@@ -155,7 +155,7 @@ export const StyledButton = styled(
   color: ${(props) => props.color} !important;
   background-color: ${(props) => props.backgroundColor} !important;
 
-  &: hover {
+  &:hover {
     background-color: ${(props) => props.hoverColor} !important;
   }
 `
