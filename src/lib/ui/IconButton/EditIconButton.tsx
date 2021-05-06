@@ -12,7 +12,7 @@ export default function EditIconButton(props: {
 }) {
   const theme = useTheme()
   const color = props.color || theme.colors.primary
-  const type = props.type || 'submit'
+  const type = props.type || 'button'
 
   return (
     <IconButton

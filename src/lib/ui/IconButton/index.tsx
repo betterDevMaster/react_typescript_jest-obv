@@ -12,7 +12,7 @@ export default function IconButton(props: {
 }) {
   return (
     <Button
-      type={props.type}
+      type={props.type || 'button'}
       className={props.className}
       onClick={props.onClick}
       data-testid={props.dataTestId}
