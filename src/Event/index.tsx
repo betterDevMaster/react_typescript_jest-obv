@@ -119,7 +119,7 @@ export function useVariables() {
 
   return useCallback(
     (text: string) => {
-      const process = pipe(withAttendeeData, withTranslations, removeVariables)
+      const process = pipe(withTranslations, withAttendeeData, removeVariables)
       return process(text)
     },
     [withAttendeeData, withTranslations, removeVariables],
