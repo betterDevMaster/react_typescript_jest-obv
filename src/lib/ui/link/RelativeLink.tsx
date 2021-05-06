@@ -53,7 +53,8 @@ const StyledRouterLink = styled((props) => {
   cursor: pointer;
   font-size: inherit;
   &:hover {
-    ${(props) => (props.underline ? 'text-decoration: underline;' : null)}
+    text-decoration: ${(props) =>
+      props.underline ? 'underline' : 'none'}!important;
   }
 `
 
