@@ -37,7 +37,7 @@ export default function TechCheck(props: {user: User} & TechCheckProps) {
             __html: v(techCheck.body),
           }}
         />
-        <Buttons techCheck={techCheck} settings={props.techCheckTemplate} />
+        <Buttons techCheck={techCheck} settings={props.settings} />
         <ContentContainer
           dangerouslySetInnerHTML={{
             __html: v(techCheck.content || ''),

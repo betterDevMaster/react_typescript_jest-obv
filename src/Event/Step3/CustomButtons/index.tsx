@@ -187,7 +187,5 @@ const Box = styled.div`
 `
 
 const NewButtonBox = styled.div`
-  display: flex;
-  justify-content: flex-end;
   margin-bottom: ${(props) => props.theme.spacing[2]}!important;
 `

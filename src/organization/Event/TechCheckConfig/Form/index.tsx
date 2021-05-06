@@ -26,9 +26,8 @@ import {useTemplate} from 'Event/TemplateProvider'
 import {Template} from 'Event/template'
 import {now} from 'lib/date-time'
 import TemplateFields from 'organization/Event/TechCheckConfig/Form/TemplateFields'
-
-// import {TechCheckPreview} from 'Event/template/SimpleBlog/TechCheck'
 import {TechCheckPreview} from 'organization/Event/TechCheckConfig/TechCheckPreview'
+import Box from '@material-ui/core/Box'
 
 /**
  * Default props to use for techCheck. These will be set when an
@@ -43,6 +42,7 @@ const DEFAULT_TECH_CHECK_PROPS: NonNullable<Template['techCheck']> = {
   buttonBorderRadius: 4,
   buttonBorderWidth: 0,
   buttonWidth: 12,
+  hasCustomButtons: false,
 }
 
 export type TechCheckTemplateProps = NonNullable<Template['techCheck']>
@@ -215,40 +215,41 @@ export default function Form() {
         )}
         <BodyError error={errors.body} />
       </Editor>
-
-      <Error>{responseError?.message}</Error>
-      <Grid container spacing={3}>
-        <Grid item xs={12} md={6}>
-          <Editor>
-            <input
-              type="hidden"
-              name="content"
-              aria-label="tech check content"
-              ref={register}
-            />
-            <BodyLabel>Content</BodyLabel>
-            {loading ? null : (
-              <TextEditor
-                data={watch('content')}
-                onChange={(val) => setValue('content', val)}
+      <TemplateFields
+        techCheck={techCheck}
+        set={setTemplateProp}
+        submitting={submitting}
+      />
+      <Box mb={4}>
+        <Grid container spacing={2}>
+          <Grid item xs={12} md={6}>
+            <Editor>
+              <input
+                type="hidden"
+                name="content"
+                aria-label="tech check content"
+                ref={register}
               />
-            )}
-          </Editor>
-          <TemplateFields
-            techCheck={techCheck}
-            set={setTemplateProp}
-            submitting={submitting}
-          />
+              <BodyLabel>Additional Content</BodyLabel>
+              {loading ? null : (
+                <TextEditor
+                  data={watch('content')}
+                  onChange={(val) => setValue('content', val)}
+                />
+              )}
+            </Editor>
+          </Grid>
+          <Grid item xs={12} md={6}>
+            <PreviewBodyLabel>Preview</PreviewBodyLabel>
+            <TechCheckPreview
+              body={watch('body')}
+              content={watch('content')}
+              techCheckTemplate={techCheck}
+            />
+          </Grid>
         </Grid>
-        <Grid item xs={12} md={6}>
-          <PreviewBodyLabel>Preview</PreviewBodyLabel>
-          <TechCheckPreview
-            body={watch('body')}
-            content={watch('content')}
-            techCheckTemplate={techCheck}
-          />
-        </Grid>
-      </Grid>
+      </Box>
+      <Error>{responseError?.message}</Error>
       <Button
         fullWidth
         variant="contained"

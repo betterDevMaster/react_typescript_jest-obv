@@ -14,8 +14,13 @@ const TECH_CHECK_POLL_SECS = 10
 export interface TechCheckProps {
   techCheck: TechCheckConfig
   progress: number
-  techCheckTemplate: Template['techCheck']
   isPreview: boolean
+
+  /**
+   * Accepting the current template settings is required
+   * to render the config preview before saving.
+   */
+  settings: Template['techCheck']
 }
 
 export default function TechCheck() {
@@ -59,7 +64,7 @@ export default function TechCheck() {
           techCheck={techCheck}
           progress={75}
           isPreview={false}
-          techCheckTemplate={template.techCheck}
+          settings={template.techCheck}
         />
       )
     default:
