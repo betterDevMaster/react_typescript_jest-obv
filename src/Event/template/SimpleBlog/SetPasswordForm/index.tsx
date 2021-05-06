@@ -21,12 +21,12 @@ import {
 } from 'Event/template/SimpleBlog/SetPasswordForm/SetPasswordFormConfig'
 import MuiButton from '@material-ui/core/Button'
 import Box from '@material-ui/core/Box'
-import {useWithVariables} from 'Event'
+import {useVariables} from 'Event'
 
 export default function SimpleBlogSetPasswordForm(props: SetPasswordFormProps) {
   const {register, handleSubmit, errors, watch} = useForm()
   const template = useTemplate()
-  const v = useWithVariables()
+  const v = useVariables()
 
   const {setPasswordForm} = template
 
@@ -49,7 +49,9 @@ export default function SimpleBlogSetPasswordForm(props: SetPasswordFormProps) {
         <Box mt={2}>
           <form onSubmit={handleSubmit(props.submit)}>
             <TextField
-              label={setPasswordForm?.passwordLabel || DEFAULT_PASSWORD_LABEL}
+              label={v(
+                setPasswordForm?.passwordLabel || DEFAULT_PASSWORD_LABEL,
+              )}
               type="password"
               fullWidth
               variant="outlined"
@@ -69,10 +71,10 @@ export default function SimpleBlogSetPasswordForm(props: SetPasswordFormProps) {
               disabled={props.submitting}
             />
             <TextField
-              label={
+              label={v(
                 setPasswordForm?.confirmPasswordLabel ||
-                DEFAULT_CONFIRM_PASSWORD_LABEL
-              }
+                  DEFAULT_CONFIRM_PASSWORD_LABEL,
+              )}
               type="password"
               fullWidth
               variant="outlined"
@@ -115,7 +117,7 @@ export default function SimpleBlogSetPasswordForm(props: SetPasswordFormProps) {
               }
               aria-label="submit set password form"
             >
-              {setPasswordForm?.button?.text || DEFAULT_BUTTON_TEXT}
+              {v(setPasswordForm?.button?.text || DEFAULT_BUTTON_TEXT)}
             </StyledButton>
           </form>
         </Box>

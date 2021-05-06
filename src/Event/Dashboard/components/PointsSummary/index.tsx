@@ -10,7 +10,7 @@ import {usePoints} from 'Event/PointsProvider'
 import Section from 'Event/template/SimpleBlog/Dashboard/Sidebar/Section'
 import {usePlatformActions} from 'Event/ActionsProvider/platform-actions'
 import {useEvent} from 'Event/EventProvider'
-import {useWithVariables} from 'Event'
+import {useVariables} from 'Event'
 
 export type Points = {
   description: string
@@ -25,7 +25,7 @@ export default function PointsSummary() {
   const {score, submit} = usePoints()
   const {event} = useEvent()
   const logo = event.points_summary_logo ? event.points_summary_logo.url : ''
-  const v = useWithVariables()
+  const v = useVariables()
   const awardPoints = () => {
     submit(VISIT_LEADERBOARD)
   }

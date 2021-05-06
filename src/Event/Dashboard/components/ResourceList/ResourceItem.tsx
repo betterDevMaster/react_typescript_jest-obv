@@ -15,7 +15,7 @@ import {Draggable, DraggableProvidedDraggableProps} from 'react-beautiful-dnd'
 import Grid from '@material-ui/core/Grid'
 import {useEditMode} from 'Event/Dashboard/editor/state/edit-mode'
 import {DragHandle, DraggableOverlay} from 'lib/ui/drag-and-drop'
-import {useWithVariables} from 'Event'
+import {useVariables} from 'Event'
 
 export type Resource = Publishable &
   HasRules & {
@@ -80,7 +80,7 @@ function ResourceItemLink(props: {resource: Resource; iconColor?: string}) {
   const {submit} = usePoints()
   const {sidebar} = useTemplate()
   const url = resourceUrl(props.resource)
-  const v = useWithVariables()
+  const v = useVariables()
 
   const awardPoints = () => {
     submit(DOWNLOADING_RESOURCE)

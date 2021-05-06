@@ -19,7 +19,7 @@ import MAGENTA_RIBBON_IMAGE from 'Event/Dashboard/components/TicketRibbonList/ri
 import LIGHT_BLUE_RIBBON_IMAGE from 'Event/Dashboard/components/TicketRibbonList/ribbons/light_blue.png'
 import LIGHT_PURPLE_RIBBON_IMAGE from 'Event/Dashboard/components/TicketRibbonList/ribbons/light_purple.png'
 import {HasRules} from 'Event/Dashboard/component-rules'
-import {useWithVariables} from 'Event'
+import {useVariables} from 'Event'
 import {Typography} from '@material-ui/core'
 
 export const TICKET_RIBBON = 'Ticket Ribbon'
@@ -92,7 +92,7 @@ export const IMAGES = Object.values(TICKET_RIBBON_IMAGE)
 
 export default (props: {ticketRibbon: TicketRibbon; index: number}) => {
   const image = TICKET_RIBBON_IMAGE[props.ticketRibbon.name]
-  const v = useWithVariables()
+  const v = useVariables()
 
   return (
     <EditComponent component={{type: TICKET_RIBBON, index: props.index}}>

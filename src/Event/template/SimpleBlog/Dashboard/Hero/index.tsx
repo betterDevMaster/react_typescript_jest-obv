@@ -8,7 +8,7 @@ import {withStyles} from '@material-ui/core'
 import {spacing} from 'lib/ui/theme'
 import Button from '@material-ui/core/Button'
 import {DEFAULT_HERO_IMAGE_SIZE_PERCENT} from 'Event/template/SimpleBlog/Dashboard/Hero/HeroConfig'
-import {useWithVariables} from 'Event'
+import {useVariables} from 'Event'
 
 export const HERO = 'Hero'
 
@@ -43,7 +43,7 @@ function EditButton() {
 
 function WelcomeText() {
   const {welcomeText} = useTemplate()
-  const v = useWithVariables()
+  const v = useVariables()
 
   if (!welcomeText) {
     return null

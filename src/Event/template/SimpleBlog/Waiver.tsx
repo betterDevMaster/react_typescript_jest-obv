@@ -9,7 +9,7 @@ import {onChangeCheckedHandler} from 'lib/dom'
 import {useWaiver} from 'Event/Step2/WaiverProvider'
 import Grid from '@material-ui/core/Grid'
 import Box from '@material-ui/core/Box'
-import {useWithVariables} from 'Event'
+import {useVariables} from 'Event'
 
 export default function Waiver() {
   const {
@@ -21,7 +21,7 @@ export default function Waiver() {
     setSignature,
   } = useWaiver()
 
-  const v = useWithVariables()
+  const v = useVariables()
 
   return (
     <>

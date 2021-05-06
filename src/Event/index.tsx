@@ -109,10 +109,10 @@ export default function Event() {
 }
 
 /**
- * withVariables() will dynamically replace any Event text
+ * Using variables will dynamically replace any Event text
  * with known {{ variables }}.
  */
-export function useWithVariables() {
+export function useVariables() {
   const withTranslations = useWithTranslations()
   const withAttendeeData = useWithAttendeeData()
   const removeVariables = useRemoveVariables()

@@ -11,7 +11,7 @@ import ResourceItem, {
   Resource,
 } from 'Event/Dashboard/components/ResourceList/ResourceItem'
 import Grid from '@material-ui/core/Grid'
-import {useWithVariables} from 'Event'
+import {useVariables} from 'Event'
 
 import {
   DragDropContext,
@@ -41,7 +41,7 @@ export const RESOURCE_ICON = {
 export function ResourceList() {
   const isEdit = useEditMode()
   const {resourceList: list, sidebar} = useTemplate()
-  const v = useWithVariables()
+  const v = useVariables()
 
   const hasResources = list.resources.length > 0
   if (!hasResources && !isEdit) {

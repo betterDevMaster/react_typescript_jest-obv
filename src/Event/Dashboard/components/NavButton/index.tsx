@@ -13,7 +13,7 @@ import {InfusionsoftTag, useAddTag} from 'Event/infusionsoft'
 import {RelativeLink} from 'lib/ui/link/RelativeLink'
 import {useWithAttendeeData} from 'Event/auth/attendee-data'
 import {areaRoutes} from 'Event/Routes'
-import {useWithVariables} from 'Event'
+import {useVariables} from 'Event'
 
 export const NAV_BUTTON = 'NAV_BUTTON'
 
@@ -56,7 +56,7 @@ export default function NavButton(props: NavButton) {
   const submitAction = useSubmitAction(props.actionId)
   const addInfusionsoftTag = useAddInfusionsoftTag(props.infusionsoftTag)
   const withAttendeeData = useWithAttendeeData()
-  const v = useWithVariables()
+  const v = useVariables()
 
   const handleClicked = () => {
     submitAction()
@@ -133,7 +133,7 @@ function JoinAreaButton(
 
   const joinLink = areaRoutes(areaId).root
 
-  const v = useWithVariables()
+  const v = useVariables()
   return (
     <RelativeLink to={joinLink} newTab>
       <Button {...props} onClick={props.onJoin}>

@@ -11,7 +11,7 @@ import Section from 'Event/template/SimpleBlog/Dashboard/Sidebar/Section'
 import {useEditMode} from 'Event/Dashboard/editor/state/edit-mode'
 import {AbsoluteLink} from 'lib/ui/link/AbsoluteLink'
 import {useWithAttendeeData} from 'Event/auth/attendee-data'
-import {useWithVariables} from 'Event'
+import {useVariables} from 'Event'
 
 export const AGENDA_ITEM = 'Agenda Item'
 export const AGENDA_LIST = 'Agenda List'
@@ -26,7 +26,7 @@ export type Agenda = Publishable & {
 export default function AgendaList() {
   const {agenda, sidebar} = useTemplate()
   const isEdit = useEditMode()
-  const v = useWithVariables()
+  const v = useVariables()
   const hasAgenda = agenda.items.length > 0
   if (!hasAgenda && !isEdit) {
     return null
@@ -114,7 +114,7 @@ function Times(props: {agenda: Agenda}) {
 function Event(props: {agenda: Agenda}) {
   const {sidebar} = useTemplate()
   const withAttendeeData = useWithAttendeeData()
-  const v = useWithVariables()
+  const v = useVariables()
 
   if (props.agenda.link) {
     return (

@@ -9,7 +9,7 @@ import {useTemplate} from 'Event/TemplateProvider'
 import MuiButton, {ButtonProps} from '@material-ui/core/Button'
 import {colors} from 'lib/ui/theme'
 import Grid from '@material-ui/core/Grid'
-import {useWithVariables} from 'Event'
+import {useVariables} from 'Event'
 
 import {areaRoutes} from 'Event/Routes'
 import {TechCheckConfig} from 'Event'
@@ -20,7 +20,7 @@ import {Template} from 'Event/template'
 export default function TechCheck(props: {user: User} & TechCheckProps) {
   const {techCheck} = props
   const template = useTemplate()
-  const v = useWithVariables()
+  const v = useVariables()
 
   return (
     <SimpleBlogPage user={props.user}>
@@ -83,7 +83,7 @@ function StartButton(props: {
   settings: Template['techCheck']
 }) {
   const {settings} = props
-  const v = useWithVariables()
+  const v = useVariables()
 
   const textColor = settings?.buttonTextColor || '#FFFFFF'
   const backgroundColor = settings?.buttonBackground || colors.primary

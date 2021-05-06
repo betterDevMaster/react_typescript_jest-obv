@@ -5,7 +5,7 @@ import styled from 'styled-components'
 import {useTemplate} from 'Event/TemplateProvider'
 import Image from 'Event/template/SimpleBlog/Dashboard/Footer/Image'
 import {useEvent} from 'Event/EventProvider'
-import {useWithVariables} from 'Event'
+import {useVariables} from 'Event'
 
 export const FOOTER = 'footer'
 
@@ -13,7 +13,7 @@ export default function Footer() {
   const {footer} = useTemplate()
   const {event} = useEvent()
   const isEditMode = useEditMode()
-  const v = useWithVariables()
+  const v = useVariables()
 
   const isEmpty =
     !footer.termsLink &&

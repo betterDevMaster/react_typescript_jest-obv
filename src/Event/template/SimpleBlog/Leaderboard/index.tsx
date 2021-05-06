@@ -20,7 +20,7 @@ import {
   DEFAULT_BACK_TO_DASHBOARD_TEXT_COLOR,
   DEFAULT_BACK_TO_DASHBOARD_TEXT,
 } from 'Event/template/SimpleBlog/Leaderboard/LeaderboardConfig'
-import {useWithVariables} from 'Event'
+import {useVariables} from 'Event'
 
 import {PageTitle} from 'Event/template/SimpleBlog/Page'
 
@@ -36,7 +36,7 @@ export default function SimpleBlogLeaderboard(props: {user: Attendee}) {
   const {points, leaderboard: leaderboardPage} = useTemplate()
   const unit = points ? points.unit : 'Points'
 
-  const v = useWithVariables()
+  const v = useVariables()
 
   let description = leaderboardPage?.description || DEFAULT_DESCRIPTION
   description = v(description)

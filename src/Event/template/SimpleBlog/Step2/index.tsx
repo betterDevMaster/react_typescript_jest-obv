@@ -15,7 +15,7 @@ import Box from '@material-ui/core/Box'
 import styled from 'styled-components'
 import MuiButton, {ButtonProps} from '@material-ui/core/Button'
 import {colors} from 'lib/ui/theme'
-import {useWithVariables} from 'Event'
+import {useVariables} from 'Event'
 
 export default function Step2(props: {user: User}) {
   const {progressBar} = useTemplate()
@@ -138,7 +138,7 @@ function WaiverOnly() {
 
 function SubmitButton(props: {canSubmit: boolean}) {
   const {waiver} = useTemplate()
-  const v = useWithVariables()
+  const v = useVariables()
 
   const textColor = waiver?.buttonTextColor || '#FFFFFF'
   const backgroundColor = waiver?.buttonBackground || colors.primary

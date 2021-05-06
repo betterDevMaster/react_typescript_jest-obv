@@ -12,7 +12,7 @@ import {DEFAULT_MODAL_BUTTON_TEXT} from 'Event/Dashboard/components/BlogPost/Blo
 import Box from '@material-ui/core/Box'
 import {usePoints} from 'Event/PointsProvider'
 import {useSubmissions} from 'Event/SubmissionsProvider'
-import {useWithVariables} from 'Event'
+import {useVariables} from 'Event'
 
 export default function PostForm(props: {post: BlogPost}) {
   const {post} = props
@@ -33,7 +33,7 @@ function Content(props: {form: Form; post: BlogPost}) {
   const [dialogVisible, setDialogVisible] = useState(false)
   const {submit: submitAnswers, responseError, answers} = useSubmissions()
   const {submit: submitAction} = usePoints()
-  const v = useWithVariables()
+  const v = useVariables()
 
   const toggleDialog = () => setDialogVisible(!dialogVisible)
 
