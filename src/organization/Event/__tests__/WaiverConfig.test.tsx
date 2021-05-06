@@ -13,8 +13,15 @@ import {CONFIGURE_EVENTS} from 'organization/PermissionsProvider'
 
 const mockPost = axios.post as jest.Mock
 
+beforeAll(() => {
+  // Hide JSDOM nav unimplemented error
+  jest.spyOn(console, 'error').mockImplementation(() => {})
+})
+
 afterEach(() => {
   jest.clearAllMocks()
+  // @ts-ignore
+  console.error.mockRestore()
 })
 
 it('should show waiver config', async () => {
@@ -34,7 +41,10 @@ it('should show waiver config', async () => {
     throw new Error(`Missing event waiver logo required for test`)
   }
 
-  expect(mockedFetch).toHaveBeenCalledTimes(1)
+  await wait(() => {
+    expect(mockedFetch).toHaveBeenCalledTimes(1)
+  })
+
   expect(mockedFetch.mock.calls[0][0]).toBe(waiverLogoPath(event.waiver.logo))
 })
 
