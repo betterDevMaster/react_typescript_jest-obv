@@ -1,6 +1,6 @@
 import {useEvent} from 'Event/EventProvider'
 import {api, storage} from 'lib/url'
-import {useContext, useEffect, useState} from 'react'
+import {useContext, useState} from 'react'
 import {Attendee} from 'Event/attendee'
 import {setUser} from 'auth/actions'
 import {useDispatch} from 'react-redux'
@@ -16,7 +16,7 @@ interface WaiverContextProps {
   signature: string | null
   setSignature: (signature: string | null) => void
   waiver: WaiverConfig
-  isPreview: boolean
+  isPreview?: boolean
   agreeStatement: string
 }
 
@@ -28,35 +28,28 @@ const WaiverContext = React.createContext<WaiverContextProps | undefined>(
 
 export default function WaiverProvider(props: {
   children: React.ReactElement
-  waiver?: WaiverConfig
-  isPreview: boolean
+  waiver: WaiverConfig
+  isPreview?: boolean
 }) {
+  const {waiver, isPreview} = props
   const {event, client} = useEvent()
-  const [waiver, setWaiver] = useState<WaiverConfig | null>(event.waiver)
-
-  useEffect(() => {
-    if (typeof props.waiver === 'undefined') {
-      return
-    }
-    setWaiver(props.waiver)
-  }, [props.waiver])
-  // const {waiver} = event
   const [signature, setSignature] = useState<string | null>(null)
   const [agree, setAgree] = useState(false)
   const dispatch = useDispatch()
   const v = useWithVariables()
   const canSubmit = Boolean(signature) && Boolean(agree)
   const agreeStatement = v(waiver?.agree_statement || DEFAULT_AGREE_STATEMENT)
-  const isPreview = props.isPreview
+
   if (!waiver) {
     throw new Error(`Missing event waiver`)
   }
 
   const submit = () => {
     const url = api(`/events/${event.slug}/waiver/sign`)
-    if (isPreview === true) {
+    if (isPreview) {
       return Promise.resolve()
     }
+
     return client
       .post<Attendee>(url, {
         signature,
@@ -76,7 +69,6 @@ export default function WaiverProvider(props: {
         signature,
         setSignature,
         waiver,
-        isPreview,
         agreeStatement,
       }}
     >

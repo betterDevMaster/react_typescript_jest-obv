@@ -10,13 +10,13 @@ import WaiverProvider from 'Event/Step2/WaiverProvider'
 
 export default function Step2() {
   const attendee = useAttendee()
-  const {hasWaiver} = useEvent()
+  const {event} = useEvent()
 
   if (!attendee.has_password) {
     return <Redirect to={eventRoutes.step1} />
   }
 
-  if (!hasWaiver) {
+  if (!event.waiver) {
     return <Redirect to={eventRoutes.step3} />
   }
 
@@ -30,7 +30,7 @@ export default function Step2() {
   }
 
   return (
-    <WaiverProvider isPreview={false}>
+    <WaiverProvider isPreview={false} waiver={event.waiver}>
       <TemplateStep2 />
     </WaiverProvider>
   )
