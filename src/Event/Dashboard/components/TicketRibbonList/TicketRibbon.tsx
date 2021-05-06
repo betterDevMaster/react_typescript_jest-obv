@@ -20,6 +20,7 @@ import LIGHT_BLUE_RIBBON_IMAGE from 'Event/Dashboard/components/TicketRibbonList
 import LIGHT_PURPLE_RIBBON_IMAGE from 'Event/Dashboard/components/TicketRibbonList/ribbons/light_purple.png'
 import {HasRules} from 'Event/Dashboard/component-rules'
 import {useWithVariables} from 'Event'
+import {Typography} from '@material-ui/core'
 
 export const TICKET_RIBBON = 'Ticket Ribbon'
 
@@ -97,7 +98,11 @@ export default (props: {ticketRibbon: TicketRibbon; index: number}) => {
     <EditComponent component={{type: TICKET_RIBBON, index: props.index}}>
       <Box aria-label="ticket ribbon">
         <Ribbon background={`url(${image})`} color={props.ticketRibbon.color}>
-          <RibbonText aria-label="ticket ribbon text">
+          <RibbonText
+            aria-label="ticket ribbon text"
+            align="center"
+            variant="h3"
+          >
             {v(props.ticketRibbon.text)}
           </RibbonText>
         </Ribbon>
@@ -126,19 +131,18 @@ const Ribbon = styled.div<{
   color: string
 }>`
   width: 100%;
-  height: 70px;
   background: ${(props) => props.background};
   background-repeat: no-repeat;
   background-size: 100% 100%;
   background-position: center center;
   color: ${(props) => props.color};
-  display: flex;
+  display: block;
   justify-content: center;
   align-items: center;
-  margin-top: 30px;
+  margin-top: ${(props) => props.theme.spacing[7]};
+  padding: 0 ${(props) => props.theme.spacing[18]};
 `
 
-const RibbonText = styled.div`
-  font-size: 35px;
-  font-weight: bold;
+const RibbonText = styled(Typography)`
+  word-wrap: break-word;
 `

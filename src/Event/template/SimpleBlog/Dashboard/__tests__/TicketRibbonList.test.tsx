@@ -111,7 +111,7 @@ it('should add a new ticket ribbon', async () => {
     },
   )
 
-  const text = faker.random.words(3)
+  const text = faker.random.words(8).substring(0, 7)
   user.type(await findByLabelText('ticket ribbon text input'), text)
 
   fireEvent.click(await findByLabelText('close config dialog'))

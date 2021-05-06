@@ -3,13 +3,12 @@ import styled from 'styled-components'
 import TextField from '@material-ui/core/TextField'
 import Select from '@material-ui/core/Select'
 import ColorPicker from 'lib/ui/ColorPicker'
-import {useForm} from 'react-hook-form'
 import {
   TicketRibbon,
   TICKET_RIBBON_IMAGE,
   TICKET_RIBBON,
 } from 'Event/Dashboard/components/TicketRibbonList/TicketRibbon'
-import React from 'react'
+import React, {useState} from 'react'
 import MenuItem from '@material-ui/core/MenuItem'
 import {useTemplate, useUpdateTemplate} from 'Event/TemplateProvider'
 import {onChangeStringHandler, onUnknownChangeHandler} from 'lib/dom'
@@ -25,13 +24,15 @@ export type TicketRibbonConfig = {
   index: number
 }
 
+const MAX_NUM_CHARACTERS = 9
+
 export function TicketRibbonConfig(props: {index: number}) {
   const {ticketRibbons} = useTemplate()
   const ticketRibbon = ticketRibbons[props.index]
   const updateTemplate = useUpdateTemplate()
   const closeConfig = useCloseConfig()
   const {visible: ruleConfigVisible, toggle: toggleRuleConfig} = useRuleConfig()
-  const {register, errors} = useForm()
+  const [error, setError] = useState('')
 
   if (ticketRibbon === undefined) {
     throw new Error('Missing ticket ribbon; was it set properly via edit?')
@@ -65,6 +66,18 @@ export function TicketRibbonConfig(props: {index: number}) {
     })
   }
 
+  const onChangeText = (val: string) => {
+    const exceedsCharacterLimit = val.length > MAX_NUM_CHARACTERS
+    if (exceedsCharacterLimit) {
+      setError(`Maximum of ${MAX_NUM_CHARACTERS} characters`)
+
+      return
+    }
+
+    setError('')
+    update('text')(val)
+  }
+
   return (
     <RuleConfig
       visible={ruleConfigVisible}
@@ -94,15 +107,12 @@ export function TicketRibbonConfig(props: {index: number}) {
           name="text"
           defaultValue={ticketRibbon.text}
           fullWidth
-          onChange={onChangeStringHandler(update('text'))}
+          onChange={onChangeStringHandler(onChangeText)}
           inputProps={{
-            ref: register({
-              maxLength: 8,
-            }),
             'aria-label': 'ticket ribbon text input',
           }}
-          error={!!errors.text}
-          helperText={errors.text && errors.text.message}
+          error={!!error}
+          helperText={error}
         />
         <ColorPicker
           label="Ribbon Text Color"
