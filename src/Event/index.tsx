@@ -18,6 +18,7 @@ import {
 import {useWithAttendeeData} from 'Event/auth/attendee-data'
 import {pipe} from 'ramda'
 import {Background} from 'organization/Event/Backgrounds/BackgroundsProvider'
+import {useRemoveVariables} from 'lib/template'
 
 // Can't use 'Event' because that's already a native DOM type
 // for browser events and we'd lose TS safety/import assist.
@@ -114,12 +115,13 @@ export default function Event() {
 export function useWithVariables() {
   const withTranslations = useWithTranslations()
   const withAttendeeData = useWithAttendeeData()
+  const removeVariables = useRemoveVariables()
 
   return useCallback(
     (text: string) => {
-      const process = pipe(withAttendeeData, withTranslations)
+      const process = pipe(withAttendeeData, withTranslations, removeVariables)
       return process(text)
     },
-    [withAttendeeData, withTranslations],
+    [withAttendeeData, withTranslations, removeVariables],
   )
 }

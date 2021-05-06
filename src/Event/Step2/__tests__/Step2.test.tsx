@@ -62,26 +62,23 @@ it('should submit answers', async () => {
 
   const radioQuestion = fakeQuestion({
     type: RADIO,
-    options: Array.from(
-      {length: faker.random.number({min: 1, max: 5})},
-      () => `radio ${faker.random.word()}`,
-    ),
+    options: new Array(faker.random.number({min: 1, max: 4}))
+      .fill(null)
+      .map((_, index) => `radio ${index} ${faker.random.word()}`),
   })
 
   const selectQuestion = fakeQuestion({
     type: SELECT,
-    options: Array.from(
-      {length: faker.random.number({min: 1, max: 5})},
-      () => `select ${faker.random.word()}`,
-    ),
+    options: new Array(faker.random.number({min: 1, max: 4}))
+      .fill(null)
+      .map((_, index) => `select ${index} ${faker.random.word()}`),
   })
 
   const checkboxQuestion = fakeQuestion({
     type: CHECKBOX,
-    options: Array.from(
-      {length: faker.random.number({min: 1, max: 5})},
-      () => `checkbox ${faker.random.word()}`,
-    ),
+    options: new Array(faker.random.number({min: 1, max: 4}))
+      .fill(null)
+      .map((_, index) => `checkbox ${index} ${faker.random.word()}`),
   })
 
   const attendee = fakeAttendee({

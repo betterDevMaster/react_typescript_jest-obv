@@ -172,10 +172,13 @@ it('should remove empty groups', async () => {
 })
 
 it('should search for an attendee', async () => {
-  const attendees = Array.from(
-    {length: faker.random.number({min: 1, max: 5})},
-    fakeAttendee,
-  )
+  const attendees = new Array(faker.random.number({min: 1, max: 4}))
+    .fill(null)
+    .map((_, index) =>
+      fakeAttendee({
+        first_name: `${faker.name.firstName()} ${index}`,
+      }),
+    )
 
   const target = faker.random.arrayElement(attendees)
 
