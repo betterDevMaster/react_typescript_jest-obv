@@ -22,6 +22,8 @@ import {
 } from 'Event/template/SimpleBlog/Leaderboard/LeaderboardConfig'
 import {useWithVariables} from 'Event'
 
+import {PageTitle} from 'Event/template/SimpleBlog/Page'
+
 const replace = (key: string, value: string, text: string) => {
   const match = new RegExp(`{{${key}}}`, 'gi')
   return text.replace(match, value)
@@ -52,7 +54,7 @@ export default function SimpleBlogLeaderboard(props: {user: Attendee}) {
 
   return (
     <Page user={props.user}>
-      <Title>{leaderboardPage?.title || DEFAULT_TITLE}</Title>
+      <PageTitle>{leaderboardPage?.title || DEFAULT_TITLE}</PageTitle>
       <Description
         dangerouslySetInnerHTML={{
           __html: description,
@@ -108,13 +110,6 @@ function useEntries() {
 
   return useAsync(request)
 }
-
-const Title = styled.h2`
-  font-size: 42px;
-  line-height: 1.5;
-  text-transform: uppercase;
-  text-align: center;
-`
 
 const Description = styled.div`
   text-align: center;

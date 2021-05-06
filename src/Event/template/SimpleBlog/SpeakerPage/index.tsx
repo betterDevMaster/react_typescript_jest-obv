@@ -14,6 +14,8 @@ import {Speaker} from 'Event/SpeakerPage'
 import SpeakerList from 'Event/template/SimpleBlog/SpeakerPage/SpeakerList'
 import SpeakerEditDialog from 'Event/template/SimpleBlog/SpeakerPage/SpeakerEditDialog'
 
+import {PageTitle} from 'Event/template/SimpleBlog/Page'
+
 export default function SimpleBlogSpeakerPage(props: {
   user: User
   isEditMode?: boolean
@@ -24,9 +26,9 @@ export default function SimpleBlogSpeakerPage(props: {
 
   const content = (
     <>
-      <Title aria-label="speakers title">
+      <PageTitle aria-label="speakers title">
         {speakerPageSettings?.title || DEFAULT_TITLE}
-      </Title>
+      </PageTitle>
       <SubTitle>
         <div
           aria-label="speakers description"
@@ -58,13 +60,6 @@ export default function SimpleBlogSpeakerPage(props: {
   return <Page user={props.user}>{content}</Page>
 }
 
-const Title = styled.h2`
-  font-size: 42px;
-  line-height: 1.2;
-  text-transform: uppercase;
-  text-align: center;
-  margin: 0 0;
-`
 const SubTitle = styled.div`
   text-align: center;
   margin: 20px 20px;

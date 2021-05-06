@@ -14,6 +14,8 @@ import {
   DEFAULT_BACK_TO_DASHBOARD_TEXT,
 } from 'Event/template/SimpleBlog/SponsorPage/SponsorList/Card'
 
+import {PageTitle} from 'Event/template/SimpleBlog/Page'
+
 export default function SimpleBlogSponsorPage(props: {
   user: User
   isEditMode?: boolean
@@ -26,7 +28,9 @@ export default function SimpleBlogSponsorPage(props: {
 
   const content = (
     <>
-      <Title aria-label="sponsors title">{event.sponsor_page_title}</Title>
+      <PageTitle aria-label="sponsors title">
+        {event.sponsor_page_title}
+      </PageTitle>
       <SubTitle>
         <div
           aria-label="speakers description"
@@ -57,13 +61,6 @@ export default function SimpleBlogSponsorPage(props: {
 
   return <Page user={props.user}>{content}</Page>
 }
-
-const Title = styled.h2`
-  font-size: 42px;
-  line-height: 1.5;
-  text-transform: uppercase;
-  text-align: center;
-`
 
 const SubTitle = styled.div`
   text-align: center;

@@ -110,3 +110,10 @@ const StyledContainer = withStyles({
     alignItems: 'center',
   },
 })(Container)
+
+export const PageTitle = styled.h2`
+  font-size: 42px;
+  line-height: 1.5;
+  text-transform: uppercase;
+  text-align: center;
+`

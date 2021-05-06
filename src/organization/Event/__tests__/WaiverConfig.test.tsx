@@ -18,10 +18,13 @@ beforeAll(() => {
   jest.spyOn(console, 'error').mockImplementation(() => {})
 })
 
-afterEach(() => {
-  jest.clearAllMocks()
+afterAll(() => {
   // @ts-ignore
   console.error.mockRestore()
+})
+
+afterEach(() => {
+  jest.clearAllMocks()
 })
 
 it('should show waiver config', async () => {
