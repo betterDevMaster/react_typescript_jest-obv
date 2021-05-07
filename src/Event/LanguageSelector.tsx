@@ -83,14 +83,14 @@ const StyledButton = styled((props) => {
   padding-top: ${(props) => props.theme.spacing[2]} !important;
   white-space: nowrap;
   ${(props) =>
-    props.isDarkMode ? 'background-color: rgba(0, 0, 0, 0.6) !important;' : ''}
+    props.isDarkMode ? 'background-color: rgba(0, 0, 0, 0.75) !important;' : ''}
   ${(props) => (props.isDarkMode ? 'color: #ffffff !important;' : '')}
 
 
   &:hover {
     ${(props) =>
       props.isDarkMode
-        ? 'background-color: rgba(0, 0, 0, 0.75) !important;'
+        ? 'background-color: rgba(0, 0, 0, 0.85) !important;'
         : ''}
   }
   svg {
