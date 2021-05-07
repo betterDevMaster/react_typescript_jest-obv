@@ -1,19 +1,21 @@
 import React, {useState} from 'react'
 import {useLanguage} from 'Event/LanguageProvider'
 import LanguageIcon from '@material-ui/icons/Language'
-import IconButton from '@material-ui/core/IconButton'
 import styled from 'styled-components'
 import {Language} from 'Event/LanguageProvider/language'
 import {useEditMode} from 'Event/Dashboard/editor/state/edit-mode'
 import List from '@material-ui/core/List'
 import ListItem from '@material-ui/core/ListItem'
 import Dialog from '@material-ui/core/Dialog'
+import Button from '@material-ui/core/Button'
+import {useTemplate} from 'Event/TemplateProvider'
 
 export default function LanguageSelector() {
   const {current, set} = useLanguage()
   const isEditMode = useEditMode()
   const {languages, translationsEnabled} = useLanguage()
   const [dialogVisible, setDialogVisible] = useState(false)
+  const {isDarkMode} = useTemplate()
 
   const toggleDialog = () => setDialogVisible(!dialogVisible)
 
@@ -30,14 +32,17 @@ export default function LanguageSelector() {
 
   return (
     <BottomLeft>
-      <IconButton
-        aria-haspopup="true"
+      <StyledButton
+        variant="contained"
         color="primary"
-        onClick={toggleDialog}
         aria-label="change language"
+        onClick={toggleDialog}
+        startIcon={<LanguageIcon />}
+        disableRipple
+        isDarkMode={isDarkMode}
       >
-        <LanguageIcon />
-      </IconButton>
+        Change Language
+      </StyledButton>
       <Dialog
         open={dialogVisible}
         onClose={toggleDialog}
@@ -67,4 +72,29 @@ const BottomLeft = styled.div`
   bottom: ${(props) => props.theme.spacing[8]};
   z-index: 10;
   width: 50px;
+`
+
+const StyledButton = styled((props) => {
+  const {isDarkMode, ...otherProps} = props
+  return <Button {...otherProps} />
+})<{
+  isDarkMode?: boolean
+}>`
+  padding-top: ${(props) => props.theme.spacing[2]} !important;
+  white-space: nowrap;
+  ${(props) =>
+    props.isDarkMode ? 'background-color: rgba(0, 0, 0, 0.2) !important;' : ''}
+  ${(props) => (props.isDarkMode ? 'color: #ffffff !important;' : '')}
+
+
+  &:hover {
+    ${(props) =>
+      props.isDarkMode
+        ? 'background-color: rgba(0, 0, 0, 0.35) !important;'
+        : ''}
+  }
+  svg {
+    font-size: 24px !important;
+    margin-bottom: 2px;
+  }
 `

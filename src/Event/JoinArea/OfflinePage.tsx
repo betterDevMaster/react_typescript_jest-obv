@@ -1,6 +1,6 @@
 import {RequestJoinUrlError} from 'Event/EventProvider'
 import React from 'react'
-import Page, {Description} from 'Event/template/SimpleBlog/Login/Page'
+import Page, {Description, Title} from 'Event/template/SimpleBlog/Login/Page'
 
 const FALLBACK_OFFLINE_TITLE = 'Area is currently offline'
 
@@ -13,7 +13,7 @@ export default function OfflinePage(props: {error: RequestJoinUrlError}) {
   return (
     <Page isPreview={false}>
       <>
-        <Description>{title}</Description>
+        <Title>{title}</Title>
         <Description>{description}</Description>
       </>
     </Page>

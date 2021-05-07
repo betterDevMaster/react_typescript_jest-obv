@@ -5,6 +5,7 @@ import LinearProgress, {
 import Typography, {TypographyProps} from '@material-ui/core/Typography'
 import Box from '@material-ui/core/Box'
 import styled from 'styled-components'
+import {Container} from '@material-ui/core'
 
 export interface ProgressBarStyleProps {
   barColor?: string
@@ -21,17 +22,19 @@ export default function ProgressBar(
   props: LinearProgressProps & ProgressBarProps,
 ) {
   return (
-    <Box display="flex" alignItems="center" mb={3}>
-      <Box width="100%" mr={1}>
-        <StyledLinearProgress variant="determinate" {...props} />
+    <Container maxWidth="sm">
+      <Box display="flex" alignItems="center" mb={3}>
+        <Box width="100%" mr={1}>
+          <StyledLinearProgress variant="determinate" {...props} />
+        </Box>
+        <Box minWidth={35}>
+          <StyledTypography
+            variant="body2"
+            textColor={props.textColor}
+          >{`${Math.round(props.value)}%`}</StyledTypography>
+        </Box>
       </Box>
-      <Box minWidth={35}>
-        <StyledTypography
-          variant="body2"
-          textColor={props.textColor}
-        >{`${Math.round(props.value)}%`}</StyledTypography>
-      </Box>
-    </Box>
+    </Container>
   )
 }
 

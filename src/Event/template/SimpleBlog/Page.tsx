@@ -90,7 +90,7 @@ const Box = styled.div<{
 
 const Content = styled.div`
   flex: 1;
-  margin-bottom: 20px;
+  margin-bottom: 70px;
   display: flex;
 `
 const ColorOverlay = styled.div<{
