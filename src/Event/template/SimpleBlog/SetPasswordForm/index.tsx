@@ -34,7 +34,7 @@ export default function SimpleBlogSetPasswordForm(props: SetPasswordFormProps) {
 
   return (
     <SimpleBlogPage user={props.user}>
-      <Container maxWidth="md">
+      <Container maxWidth="sm">
         <ProgressBar
           value={props.progress}
           barColor={template.progressBar.barColor}
