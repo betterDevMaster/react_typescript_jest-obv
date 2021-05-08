@@ -1,16 +1,10 @@
-import React from 'react'
 import axios from 'axios'
-import {fakeTeamMember} from 'organization/Team/__utils__/factory'
-import {signInToOrganization} from 'organization/__utils__/authenticate'
 import {fakeRole} from 'organization/Team/Roles/__utils__/factory'
 import user from '@testing-library/user-event'
-import {render} from '__utils__/render'
-import App from 'App'
 import {ALL_PERMISSIONS} from 'organization/__utils__/factory'
 import faker from 'faker'
-import {UPDATE_TEAM} from 'organization/PermissionsProvider'
+import {goToTeams} from 'organization/Team/__utils__/go-to-teams-page'
 
-const mockGet = axios.get as jest.Mock
 const mockPut = axios.put as jest.Mock
 const mockDelete = axios.delete as jest.Mock
 
@@ -22,20 +16,12 @@ it('toggles permissions', async () => {
 
   const permission = ALL_PERMISSIONS[targetIndex]
 
-  const authUser = fakeTeamMember()
-  signInToOrganization({
-    authUser,
-    owner: authUser,
-    userPermissions: [UPDATE_TEAM],
-  })
-  const {findByText, findAllByLabelText} = render(<App />)
-
   const role = fakeRole({permissions: [permission]}) // start with permission
 
-  mockGet.mockImplementationOnce(() => Promise.resolve({data: []}))
-  mockGet.mockImplementationOnce(() => Promise.resolve({data: [role]}))
+  const {findByText, findAllByLabelText} = await goToTeams({
+    roles: [role],
+  })
 
-  user.click(await findByText(/team/i))
   user.click(await findByText(/roles/i))
 
   // starts checked

@@ -1,8 +1,6 @@
 import styled from 'styled-components'
 import React from 'react'
 import DeleteIconButton from 'lib/ui/IconButton/DeleteIconButton'
-import {api} from 'lib/url'
-import {useOrganization} from 'organization/OrganizationProvider'
 import {useTeam} from 'organization/Team/TeamProvider'
 import Table from '@material-ui/core/Table'
 import TableHead from '@material-ui/core/TableHead'
@@ -10,20 +8,26 @@ import TableRow from '@material-ui/core/TableRow'
 import TableCell from '@material-ui/core/TableCell'
 import TableBody from '@material-ui/core/TableBody'
 import Role from 'organization/Team/TeamMembersTable/Role'
-import {TeamMember} from 'auth/user'
+import {useTeamInvitations} from 'organization/Team/TeamInvitationsProvider'
 
 export default function TeamMemberList() {
-  const {members, remove: removeFromList} = useTeam()
-  const removeOnServer = useRemove()
-  const handleRemove = (target: TeamMember) => {
-    removeOnServer(target).then(removeFromList)
-  }
+  const {
+    members,
+    remove: removeTeamMember,
+    processing: processingTeamMember,
+  } = useTeam()
+  const {
+    invitations: memberInvites,
+    remove: removeInvite,
+    processing: processingInvites,
+  } = useTeamInvitations()
 
-  const hasTeamMembers = members.length > 0
+  const processing = processingTeamMember || processingInvites
+
+  const hasTeamMembers = members.length > 0 || memberInvites.length > 0
   if (!hasTeamMembers) {
     return <EmptyPlaceholder>No team members have been added.</EmptyPlaceholder>
   }
-
   return (
     <Table>
       <TableHead>
@@ -36,6 +40,24 @@ export default function TeamMemberList() {
         </TableRow>
       </TableHead>
       <TableBody>
+        {memberInvites.map((invite) => (
+          <TableRow key={invite.id} aria-label="team invitation">
+            <TableCell>
+              {invite.email} <em>(Invitation Sent)</em>
+            </TableCell>
+            <TableCell>-</TableCell>
+            <TableCell>-</TableCell>
+            <TableCell></TableCell>
+            <TableCell>
+              <DeleteIconButton
+                disabled={processing}
+                onClick={() => removeInvite(invite)}
+                aria-label="remove team invitation"
+              />
+            </TableCell>
+          </TableRow>
+        ))}
+
         {members.map((member) => (
           <TableRow key={member.id} aria-label="team member">
             <TableCell>{member.email}</TableCell>
@@ -46,7 +68,8 @@ export default function TeamMemberList() {
             </TableCell>
             <TableCell>
               <DeleteIconButton
-                onClick={() => handleRemove(member)}
+                disabled={processing}
+                onClick={() => removeTeamMember(member)}
                 aria-label="remove team member"
               />
             </TableCell>
@@ -55,18 +78,6 @@ export default function TeamMemberList() {
       </TableBody>
     </Table>
   )
-}
-
-function useRemove() {
-  const {organization, client} = useOrganization()
-
-  return (target: TeamMember) => {
-    const url = api(
-      `/organizations/${organization.slug}/team_members/${target.id}`,
-    )
-
-    return client.delete<TeamMember>(url)
-  }
 }
 
 const EmptyPlaceholder = styled.p`

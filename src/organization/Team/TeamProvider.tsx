@@ -10,6 +10,7 @@ interface TeamContextProps {
   add: (teamMember: TeamMember) => void
   update: (teamMember: TeamMember) => void
   remove: (teamMember: TeamMember) => void
+  processing: boolean
 }
 
 const TeamContext = React.createContext<TeamContextProps | undefined>(undefined)
@@ -18,6 +19,8 @@ export default function TeamProvider(props: {children: React.ReactNode}) {
   const fetchTeamMembers = useFetchTeamMembers()
   const {data: savedMembers, loading} = useAsync(fetchTeamMembers)
   const [members, setMembers] = useState<TeamMember[]>([])
+  const [processing, setProcessing] = useState(false)
+  const removeFromTeam = useRemoveFromTeam()
 
   useEffect(() => {
     if (!savedMembers) {
@@ -44,8 +47,20 @@ export default function TeamProvider(props: {children: React.ReactNode}) {
   }
 
   const remove = (target: TeamMember) => {
-    const updated = members.filter((tm) => tm.id !== target.id)
-    setMembers(updated)
+    if (processing) {
+      return
+    }
+
+    setProcessing(true)
+
+    removeFromTeam(target)
+      .then(() => {
+        const updated = members.filter((tm) => tm.id !== target.id)
+        setMembers(updated)
+      })
+      .finally(() => {
+        setProcessing(false)
+      })
   }
 
   if (loading) {
@@ -60,6 +75,7 @@ export default function TeamProvider(props: {children: React.ReactNode}) {
         add,
         update,
         remove,
+        processing,
       }}
     >
       {props.children}
@@ -83,4 +99,16 @@ function useFetchTeamMembers() {
     const url = api(`/organizations/${organization.slug}/team_members`)
     return client.get<TeamMember[]>(url)
   }, [organization, client])
+}
+
+function useRemoveFromTeam() {
+  const {organization, client} = useOrganization()
+
+  return (target: TeamMember) => {
+    const url = api(
+      `/organizations/${organization.slug}/team_members/${target.id}`,
+    )
+
+    return client.delete<TeamMember>(url)
+  }
 }

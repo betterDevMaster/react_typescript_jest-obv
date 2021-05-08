@@ -1,32 +1,17 @@
-import axios from 'axios'
 import faker from 'faker'
 import user from '@testing-library/user-event'
-import React from 'react'
-import {signInToOrganization} from 'organization/__utils__/authenticate'
-import {render} from '__utils__/render'
-import App from 'App'
 import {fakeRole} from 'organization/Team/Roles/__utils__/factory'
 import {ALL_PERMISSIONS} from 'organization/__utils__/factory'
-import {label, UPDATE_TEAM} from 'organization/PermissionsProvider'
-
-const mockGet = axios.get as jest.Mock
+import {label} from 'organization/PermissionsProvider'
+import {goToTeams} from 'organization/Team/__utils__/go-to-teams-page'
 
 it('should show permissions table', async () => {
-  signInToOrganization({
-    userPermissions: [UPDATE_TEAM],
-  })
-
-  const {findByText, findAllByLabelText} = render(<App />)
-
   const roles = new Array(faker.random.number({min: 1, max: 4}))
     .fill(null)
     .map((_, index) => fakeRole({name: `${index}_${faker.random.word()}`}))
 
-  mockGet.mockImplementationOnce(() => Promise.resolve({data: []})) // team members
-  mockGet.mockImplementationOnce(() => Promise.resolve({data: roles}))
+  const {findByText, findAllByLabelText} = await goToTeams({roles})
 
-  // Go to team page
-  user.click(await findByText(/team/i))
   user.click(await findByText(/roles/i))
 
   // shows all rows

@@ -4,11 +4,13 @@ import faker from 'faker'
 import {render} from '__utils__/render'
 import App from 'App'
 import user from '@testing-library/user-event'
-import {fakeTeamMember} from 'organization/Team/__utils__/factory'
+import {
+  fakeTeamInvitation,
+  fakeTeamMember,
+} from 'organization/Team/__utils__/factory'
 import {signInToOrganization} from 'organization/__utils__/authenticate'
 import {UPDATE_TEAM} from 'organization/PermissionsProvider'
-import {queryByLabelText} from '@testing-library/dom'
-import {act} from '@testing-library/react'
+import {goToTeams} from 'organization/Team/__utils__/go-to-teams-page'
 
 const mockGet = axios.get as jest.Mock
 const mockPost = axios.post as jest.Mock
@@ -47,5 +49,24 @@ it('should add a new team member', async () => {
   // New member was added to list
   expect(
     await findByText(new RegExp(addedMember.first_name)),
+  ).toBeInTheDocument()
+})
+
+it('should add an invited team member', async () => {
+  const {findByText, findByLabelText} = await goToTeams()
+
+  const email = faker.internet.email()
+  user.type(await findByLabelText('team member email'), email)
+
+  const addedInvitation = fakeTeamInvitation()
+  mockPost.mockImplementationOnce(() =>
+    Promise.resolve({data: addedInvitation}),
+  )
+
+  user.click(await findByLabelText('add team member'))
+
+  // New invite
+  expect(
+    await findByText(new RegExp(addedInvitation.email)),
   ).toBeInTheDocument()
 })

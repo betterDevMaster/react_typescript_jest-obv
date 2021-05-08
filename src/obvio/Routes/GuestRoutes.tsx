@@ -5,6 +5,7 @@ import ResetPassword from 'obvio/auth/ResetPassword'
 import {obvioRoutes} from 'obvio/Routes'
 import React from 'react'
 import {Redirect, Route, Switch} from 'react-router-dom'
+import AcceptInvitation from 'obvio/auth/AcceptInvitation'
 
 export default function GuestRoutes() {
   return (
@@ -20,6 +21,9 @@ export default function GuestRoutes() {
       </Route>
       <Route path={obvioRoutes.resetPassword}>
         <ResetPassword />
+      </Route>
+      <Route path={obvioRoutes.acceptInvitation}>
+        <AcceptInvitation />
       </Route>
       <Redirect
         to={{

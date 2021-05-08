@@ -1,28 +1,16 @@
-import React from 'react'
 import axios from 'axios'
 import faker from 'faker'
-import {render} from '__utils__/render'
-import App from 'App'
 import user from '@testing-library/user-event'
 import {fakeTeamMember} from 'organization/Team/__utils__/factory'
-import {act, fireEvent, wait} from '@testing-library/react'
-import {signInToOrganization} from 'organization/__utils__/authenticate'
-import {UPDATE_TEAM} from 'organization/PermissionsProvider'
+import {fireEvent, wait} from '@testing-library/react'
 import {fakeRole} from 'organization/Team/Roles/__utils__/factory'
 import {TeamMember} from 'auth/user'
+import {goToTeams} from 'organization/Team/__utils__/go-to-teams-page'
 
-const mockGet = axios.get as jest.Mock
 const mockPut = axios.put as jest.Mock
 const mockDelete = axios.delete as jest.Mock
 
 it('should update a user role', async () => {
-  const authUser = fakeTeamMember()
-  signInToOrganization({
-    authUser,
-    owner: authUser,
-    userPermissions: [UPDATE_TEAM],
-  })
-
   const teamMembers = Array.from(
     {
       length: faker.random.number({min: 1, max: 5}),
@@ -30,16 +18,12 @@ it('should update a user role', async () => {
     fakeTeamMember,
   )
 
-  const {findByText, findAllByLabelText, findByLabelText} = render(<App />)
-
-  expect(await findByText(/team/i)).toBeInTheDocument()
-
   const roles = [fakeRole(), fakeRole()]
 
-  mockGet.mockImplementationOnce(() => Promise.resolve({data: teamMembers})) // team members
-  mockGet.mockImplementationOnce(() => Promise.resolve({data: roles})) // team members
-
-  user.click(await findByText(/team/i))
+  const {findAllByLabelText, findByLabelText} = await goToTeams({
+    teamMembers,
+    roles,
+  })
 
   expect((await findAllByLabelText('team member')).length).toBe(
     teamMembers.length,

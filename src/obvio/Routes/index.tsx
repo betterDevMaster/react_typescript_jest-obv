@@ -8,6 +8,7 @@ import FullPageLoader from 'lib/ui/layout/FullPageLoader'
 export const obvioRoutes = createRoutes({
   login: '/login',
   registration: '/register',
+  acceptInvitation: '/accept_invitation',
   forgotPassword: '/forgot_password',
   resetPassword: '/reset_password',
   organizations: {

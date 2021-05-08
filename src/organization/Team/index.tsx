@@ -11,6 +11,7 @@ import Layout from 'organization/user/Layout'
 import TabPanel from 'lib/ui/tabs/TabPanel'
 import {useBreadcrumbs} from 'lib/ui/BreadcrumbProvider'
 import {useOrganization} from 'organization/OrganizationProvider'
+import TeamInvitationsProvider from 'organization/Team/TeamInvitationsProvider'
 
 export default function Team() {
   const [tabIndex, setTabIndex] = useState(0)
@@ -31,19 +32,21 @@ export default function Team() {
     <Layout>
       <Page>
         <TeamProvider>
-          <RolesProvider>
-            <Tabs onChange={changeTab} value={tabIndex}>
-              <Tab label="Members" />
-              <Tab label="Roles" />
-            </Tabs>
-            <TabPanel index={0} currentIndex={tabIndex}>
-              <AddTeamMemberForm />
-              <TeamMembersTable />
-            </TabPanel>
-            <TabPanel index={1} currentIndex={tabIndex}>
-              <Roles />
-            </TabPanel>
-          </RolesProvider>
+          <TeamInvitationsProvider>
+            <RolesProvider>
+              <Tabs onChange={changeTab} value={tabIndex}>
+                <Tab label="Members" />
+                <Tab label="Roles" />
+              </Tabs>
+              <TabPanel index={0} currentIndex={tabIndex}>
+                <AddTeamMemberForm />
+                <TeamMembersTable />
+              </TabPanel>
+              <TabPanel index={1} currentIndex={tabIndex}>
+                <Roles />
+              </TabPanel>
+            </RolesProvider>
+          </TeamInvitationsProvider>
         </TeamProvider>
       </Page>
     </Layout>

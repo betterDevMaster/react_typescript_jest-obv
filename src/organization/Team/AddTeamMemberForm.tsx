@@ -10,29 +10,44 @@ import {useOrganization} from 'organization/OrganizationProvider'
 import {api} from 'lib/url'
 import {withStyles} from '@material-ui/core'
 import {spacing} from 'lib/ui/theme'
-import {useTeam} from 'organization/Team/TeamProvider'
 import {TeamMember} from 'auth/user'
+import {
+  TeamInvitation,
+  useTeamInvitations,
+} from 'organization/Team/TeamInvitationsProvider'
+import {useTeam} from 'organization/Team/TeamProvider'
 
-interface InviteTeamMemberData {
+interface InviteData {
   email: string
 }
 
 export default function AddTeamMemberForm() {
   const {register, handleSubmit, errors, reset: resetForm} = useForm()
-  const {add} = useTeam()
+  const {add: addInvite} = useTeamInvitations()
+  const {add: addMember} = useTeam()
   const [submitting, setSubmitting] = useState(false)
   const [responseError, setResponseError] = useState<
-    ValidationError<InviteTeamMemberData>
+    ValidationError<InviteData>
   >(null)
   const inviteTeamMember = useInviteTeamMember()
 
-  const submit = (data: InviteTeamMemberData) => {
+  const submit = (data: InviteData) => {
+    if (submitting) {
+      return
+    }
+
     setSubmitting(true)
+    setResponseError(null)
+
     inviteTeamMember(data)
-      .then((teamMember) => {
-        add(teamMember)
+      .then((added) => {
+        if (isInvitation(added)) {
+          addInvite(added)
+          return
+        }
+
+        addMember(added)
         resetForm()
-        setResponseError(null)
       })
       .catch((e) => {
         setResponseError(e)
@@ -79,8 +94,24 @@ function useInviteTeamMember() {
   const {organization, client} = useOrganization()
   const url = api(`/organizations/${organization.slug}/team_members`)
 
-  return (data: InviteTeamMemberData) =>
-    client.post<TeamMember>(url, {email: data.email})
+  return (data: InviteData) =>
+    client.post<TeamMember | TeamInvitation>(url, {email: data.email})
+}
+
+/**
+ * Helper to check whether the returned data from an invite was a
+ * Team Member (existing), or an invitation (account not found).
+ *
+ * @param data
+ * @returns
+ */
+function isInvitation(
+  data: TeamMember | TeamInvitation,
+): data is TeamInvitation {
+  /**
+   * An invitation does NOT have name info
+   */
+  return !Object.prototype.hasOwnProperty.call(data, 'first_name')
 }
 
 const SyledForm = styled.form`

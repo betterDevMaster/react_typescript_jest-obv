@@ -14,7 +14,15 @@ import {defaultScore} from 'Event/PointsProvider/__utils__/StaticPointsProvider'
 import {getDiffDatetime, now} from 'lib/date-time'
 import moment from 'moment'
 import {fakeOrganization} from 'obvio/Organizations/__utils__/factory'
-import {Translations} from 'Event/LanguageProvider/translations'
+
+beforeAll(() => {
+  jest.spyOn(console, 'error').mockImplementation(() => {})
+})
+
+afterAll(() => {
+  // @ts-ignore
+  console.error.mockRestore()
+})
 
 it('should render blog posts', async () => {
   const withoutPosts = fakeEvent({
