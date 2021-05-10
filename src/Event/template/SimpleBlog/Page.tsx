@@ -86,6 +86,10 @@ const Box = styled.div<{
     `}
   background-repeat: no-repeat;
   color: ${(props) => props.color};
+
+  a {
+    color: ${(props) => props.color};
+  }
 `
 
 const Content = styled.div`
