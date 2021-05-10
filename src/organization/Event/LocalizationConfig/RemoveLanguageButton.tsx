@@ -10,7 +10,8 @@ import React, {useState} from 'react'
 export default function RemoveLanguageButton(props: {
   onRemove: () => void
   canRemove: boolean
-  language: Language
+  language: Language['name']
+  className?: string
 }) {
   const {language, canRemove, onRemove} = props
   const [dialogVisible, setDialogVisible] = useState(false)

@@ -13,6 +13,7 @@ import Box from '@material-ui/core/Box'
 import AddLanguageButton from 'organization/Event/LocalizationConfig/AddLanguageButton'
 import EnableTranslationSwitch from 'organization/Event/LocalizationConfig/EnableTranslationSwitch'
 import RemoveLanguageButton from 'organization/Event/LocalizationConfig/RemoveLanguageButton'
+import SetRulesButton from 'organization/Event/LocalizationConfig/SetRulesButton'
 
 type LocalizationConfigContextProps = {
   isProcessing: boolean
@@ -25,7 +26,7 @@ const LocalizationConfigContext = React.createContext<
 
 export default function LocalizationConfig() {
   const {defaultLanguage} = useLanguage()
-  const [language, setLanguage] = useState<Language>(defaultLanguage)
+  const [language, setLanguage] = useState<Language['name']>(defaultLanguage)
   const [translations, setTranslations] = useState<Translations | null>(null)
   const [isProcessing, setIsProcessing] = useState(false)
   const {event} = useEvent()
@@ -72,8 +73,9 @@ export default function LocalizationConfig() {
             <EnableTranslationSwitch />
           </Box>
           <Box mb={2} display="flex" justifyContent="space-between">
-            <div>
-              <StyledMakeDefaultButton
+            <ButtonsBox>
+              <SetRulesButton language={language} />
+              <MakeDefaultButton
                 language={language}
                 translations={translations}
               />
@@ -82,7 +84,7 @@ export default function LocalizationConfig() {
                 canRemove={canRemove}
                 language={language}
               />
-            </div>
+            </ButtonsBox>
             <AddLanguageButton onAdd={setLanguage} />
           </Box>
           <LanguageSelect
@@ -113,8 +115,12 @@ export function useLocalizationConfig() {
   return context
 }
 
-const StyledMakeDefaultButton = styled(MakeDefaultButton)`
-  margin-right: ${(props) => props.theme.spacing[2]}!important;
+const ButtonsBox = styled.div`
+  margin: ${(props) => `-${props.theme.spacing[1]}`}!important;
+
+  > button {
+    margin: ${(props) => props.theme.spacing[1]}!important;
+  }
 `
 
 function useRemoveLanguage() {
@@ -122,7 +128,7 @@ function useRemoveLanguage() {
   const updateEvent = useUpdate()
   const {languages} = useLanguage()
 
-  return (translations: Translations, language: Language) => {
+  return (translations: Translations, language: Language['name']) => {
     const hasTranslations = Object.prototype.hasOwnProperty.call(
       translations,
       language,
@@ -137,7 +143,7 @@ function useRemoveLanguage() {
       return otherTranslations
     }
 
-    const removedLanguage = languages.filter((l) => l !== language)
+    const removedLanguage = languages.filter((l) => l.name !== language)
 
     const updates = {
       localization: {

@@ -7,7 +7,7 @@ import {fakeEvent} from 'Event/__utils__/factory'
 import {loginToEventSite} from 'Event/__utils__/url'
 import {createEntityList} from 'lib/list'
 import {fakeAttendee} from 'Event/auth/__utils__/factory'
-import {ENGLISH} from 'Event/LanguageProvider/language'
+import {createLanguage, ENGLISH} from 'Event/LanguageProvider/language'
 import {languageTokenKey} from 'Event/LanguageProvider'
 
 it('should update user language', async () => {
@@ -43,7 +43,7 @@ it('should update user language', async () => {
     localization: {
       translationsEnabled: true,
       translations,
-      languages: [ENGLISH, SPANISH],
+      languages: [createLanguage(ENGLISH), createLanguage(SPANISH)],
     },
   })
 

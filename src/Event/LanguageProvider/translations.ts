@@ -9,9 +9,9 @@ type TranslatedFields = Record<string, string>
 
 export interface Localization {
   languages?: Language[]
-  defaultLanguage?: Language | null
+  defaultLanguage?: Language['name'] | null
   translations?: {
-    [P in Language]?: TranslatedFields | null
+    [P in Language['name']]?: TranslatedFields | null
   }
   translationsEnabled?: boolean
 }
@@ -57,8 +57,8 @@ function useTranslate() {
       fallback,
     }: {
       text: string
-      target: Language
-      fallback?: Language
+      target: Language['name']
+      fallback?: Language['name']
     }) => {
       let result = text
 
@@ -95,9 +95,9 @@ function findTranslation({
   translations,
 }: {
   key: string
-  target: Language
+  target: Language['name']
   translations?: Translations
-  fallback?: Language
+  fallback?: Language['name']
 }): string | null {
   /**
    * Translations field hasn't been initialized, no

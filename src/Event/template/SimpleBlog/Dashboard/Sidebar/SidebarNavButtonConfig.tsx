@@ -4,10 +4,8 @@ import Box from '@material-ui/core/Box'
 import {useCloseConfig} from 'Event/Dashboard/editor/state/edit-mode'
 import {useTemplate, useUpdateTemplate} from 'Event/TemplateProvider'
 import {SIDEBAR_NAV_BUTTON} from 'Event/template/SimpleBlog/Dashboard/Sidebar/SidebarNav'
-import RuleConfig, {
-  useRuleConfig,
-} from 'Event/Dashboard/component-rules/RuleConfig'
-import ConfigureRulesButton from 'Event/Dashboard/component-rules/ConfigureRulesButton'
+import RuleConfig, {useRuleConfig} from 'Event/visibility-rules/RuleConfig'
+import ConfigureRulesButton from 'Event/visibility-rules/ConfigureRulesButton'
 import TextField from '@material-ui/core/TextField'
 import {
   onChangeCheckedHandler,

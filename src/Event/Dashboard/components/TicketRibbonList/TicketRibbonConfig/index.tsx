@@ -14,10 +14,8 @@ import {useTemplate, useUpdateTemplate} from 'Event/TemplateProvider'
 import {onChangeStringHandler, onUnknownChangeHandler} from 'lib/dom'
 import DangerButton from 'lib/ui/Button/DangerButton'
 import {useCloseConfig} from 'Event/Dashboard/editor/state/edit-mode'
-import RuleConfig, {
-  useRuleConfig,
-} from 'Event/Dashboard/component-rules/RuleConfig'
-import ConfigureRulesButton from 'Event/Dashboard/component-rules/ConfigureRulesButton'
+import RuleConfig, {useRuleConfig} from 'Event/visibility-rules/RuleConfig'
+import ConfigureRulesButton from 'Event/visibility-rules/ConfigureRulesButton'
 
 export type TicketRibbonConfig = {
   type: typeof TICKET_RIBBON

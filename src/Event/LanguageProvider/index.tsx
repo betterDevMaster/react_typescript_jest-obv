@@ -1,15 +1,21 @@
 import {ObvioEvent} from 'Event'
 import {useEvent} from 'Event/EventProvider'
-import {Language, ENGLISH} from 'Event/LanguageProvider/language'
-import React, {useEffect, useState} from 'react'
+import {
+  Language,
+  ENGLISH,
+  createLanguage,
+} from 'Event/LanguageProvider/language'
+import React, {useCallback, useEffect, useState} from 'react'
+import {hasMatch} from 'Event/visibility-rules/matcher'
+import {useAttendeeProfile} from 'Event/visibility-rules/AttendeeProfileProvider'
 
 interface LanguageContextProps {
-  current: Language | null
+  current: Language['name'] | null
   loading: boolean
   languages: Language[]
   set: (value: Language) => void
   translationsEnabled: boolean
-  defaultLanguage: Language
+  defaultLanguage: Language['name']
 }
 
 export const LanguageContext = React.createContext<
@@ -19,31 +25,55 @@ export const LanguageContext = React.createContext<
 export default function EventLanguageProvider(props: {
   children: React.ReactElement
 }) {
-  const [current, setCurrent] = useState<Language | null>(null)
+  const [current, setCurrent] = useState<string | null>(null)
   const [loading, setLoading] = useState(true)
   const {event} = useEvent()
   const tokenKey = useLanguageTokenKey()
-  const languages = event.localization?.languages || [ENGLISH]
+  const languages = getLanguages(event)
   const translationsEnabled = event.localization?.translationsEnabled || false
   const defaultLanguage = event.localization?.defaultLanguage || ENGLISH
+  const saved = window.localStorage.getItem(tokenKey)
+  const {groups, tags} = useAttendeeProfile()
 
   /**
    * Load a saved language
    */
 
   useEffect(() => {
-    const saved = window.localStorage.getItem(tokenKey)
     if (saved) {
       setCurrent(saved)
     }
 
     setLoading(false)
-  }, [tokenKey])
+  }, [saved])
 
-  const set = (language: Language) => {
-    window.localStorage.setItem(tokenKey, language)
-    setCurrent(language)
-  }
+  const set = useCallback(
+    (language: Language) => {
+      window.localStorage.setItem(tokenKey, language.name)
+      setCurrent(language.name)
+    },
+    [tokenKey],
+  )
+
+  /**
+   * Match a language based on rules. If no language has been saved (selected), then
+   * we'll check to see if the attendee matches any Language rules. If they
+   * do we'll select that language as a default.
+   */
+  useEffect(() => {
+    if (saved) {
+      return
+    }
+
+    const matchedLanguage = languages.find((l) =>
+      hasMatch({groups, tags}, l.rules),
+    )
+    if (!matchedLanguage) {
+      return
+    }
+
+    set(matchedLanguage)
+  }, [groups, tags, languages, set, saved])
 
   return (
     <LanguageContext.Provider
@@ -65,9 +95,9 @@ export function OrganizationLanguageProvider(props: {
   language?: Language
   children: React.ReactElement
 }) {
-  const language = props.language || ENGLISH
+  const language = props.language?.name || ENGLISH
   const {event} = useEvent()
-  const languages = event.localization?.languages || [ENGLISH]
+  const languages = getLanguages(event)
   const translationsEnabled = event.localization?.translationsEnabled || false
   const defaultLanguage = event.localization?.defaultLanguage || ENGLISH
 
@@ -113,4 +143,20 @@ export function useLanguage() {
   }
 
   return context
+}
+
+function getLanguages(event: ObvioEvent) {
+  const defaultLanguages = [createLanguage(ENGLISH)]
+
+  const definedLanguages = event.localization?.languages
+  if (!definedLanguages) {
+    return defaultLanguages
+  }
+
+  const isEmpty = definedLanguages.length === 0
+  if (isEmpty) {
+    return defaultLanguages
+  }
+
+  return definedLanguages
 }

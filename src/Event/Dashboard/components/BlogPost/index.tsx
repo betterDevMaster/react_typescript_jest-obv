@@ -4,7 +4,7 @@ import {blogPostTime, getDiffDatetime, now} from 'lib/date-time'
 import {Publishable} from 'Event/Dashboard/editor/views/Published'
 import {useEditMode} from 'Event/Dashboard/editor/state/edit-mode'
 import PostForm from 'Event/Dashboard/components/BlogPost/PostForm'
-import {HasRules} from 'Event/Dashboard/component-rules'
+import {HasRules} from 'Event/visibility-rules'
 import {useVariables} from 'Event'
 
 export type BlogPost = Publishable &

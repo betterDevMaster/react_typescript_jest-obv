@@ -1,4 +1,4 @@
-import {Rule} from 'Event/Dashboard/component-rules'
+import {Rule} from 'Event/visibility-rules'
 import {useEvent} from 'Event/EventProvider'
 import {useAsync} from 'lib/async'
 import FullPageLoader from 'lib/ui/layout/FullPageLoader'

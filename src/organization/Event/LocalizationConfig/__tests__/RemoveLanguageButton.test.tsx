@@ -4,13 +4,14 @@ import {goToLocalizationConfig} from 'organization/Event/LocalizationConfig/__ut
 import {CONFIGURE_EVENTS} from 'organization/PermissionsProvider'
 import axios from 'axios'
 import {fireEvent, wait} from '@testing-library/react'
+import {createLanguage} from 'Event/LanguageProvider/language'
 
 const mockPut = axios.put as jest.Mock
 
 it('should remove a language', async () => {
   const defaultLanguage = 'English'
   const target = 'Chinese'
-  const languages = [defaultLanguage, target]
+  const languages = [createLanguage(defaultLanguage), createLanguage(target)]
 
   /**
    * Have translations for everything
@@ -50,7 +51,7 @@ it('should remove a language', async () => {
     ...event,
     localization: {
       ...event.localization,
-      languages: [defaultLanguage],
+      languages: [createLanguage(defaultLanguage)],
       translations: {...otherTranslations},
     },
   }

@@ -16,10 +16,8 @@ import ColorPicker from 'lib/ui/ColorPicker'
 import React from 'react'
 import Box from '@material-ui/core/Box'
 import {useCloseConfig} from 'Event/Dashboard/editor/state/edit-mode'
-import RuleConfig, {
-  useRuleConfig,
-} from 'Event/Dashboard/component-rules/RuleConfig'
-import ConfigureRulesButton from 'Event/Dashboard/component-rules/ConfigureRulesButton'
+import RuleConfig, {useRuleConfig} from 'Event/visibility-rules/RuleConfig'
+import ConfigureRulesButton from 'Event/visibility-rules/ConfigureRulesButton'
 import {useTemplate, useUpdateTemplate} from 'Event/TemplateProvider'
 import {MAIN_NAV_BUTTON} from 'Event/template/SimpleBlog/Dashboard/MainNav/MainNavButton'
 import ActionSelect from 'Event/ActionsProvider/ActionConfig'

@@ -1,7 +1,6 @@
 import {PlatformActions} from 'Event/ActionsProvider/platform-actions'
 import {useAttendee} from 'Event/auth'
 import Dashboard from 'Event/Dashboard'
-import AttendeeProfileProvider from 'Event/Dashboard/component-rules/AttendeeProfileProvider'
 import {useEvent} from 'Event/EventProvider'
 import PagePoints, {DASHBOARD} from 'Event/PointsProvider/PagePoints'
 import {eventRoutes} from 'Event/Routes'
@@ -100,11 +99,9 @@ export default function Event() {
   // We fetch the user, and split the user from the attendee profile to allow
   // stubbing out data for org users while configuring dashboard.
   return (
-    <AttendeeProfileProvider groups={attendee.groups} tags={attendee.tags}>
-      <PagePoints page={DASHBOARD}>
-        <Dashboard user={attendee} />
-      </PagePoints>
-    </AttendeeProfileProvider>
+    <PagePoints page={DASHBOARD}>
+      <Dashboard user={attendee} />
+    </PagePoints>
   )
 }
 

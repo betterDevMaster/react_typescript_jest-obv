@@ -6,7 +6,7 @@ import TicketRibbonItem, {
 import EditModeOnly from 'Event/Dashboard/editor/views/EditModeOnly'
 import React from 'react'
 import styled from 'styled-components'
-import HiddenOnMatch from 'Event/Dashboard/component-rules/HiddenOnMatch'
+import HiddenOnMatch from 'Event/visibility-rules/HiddenOnMatch'
 
 export default () => {
   const {ticketRibbons} = useTemplate()

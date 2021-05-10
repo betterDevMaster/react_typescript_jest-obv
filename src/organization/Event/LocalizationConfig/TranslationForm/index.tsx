@@ -19,7 +19,7 @@ export type Field = {
 }
 
 export default function TranslationForm(props: {
-  language: Language
+  language: Language['name']
   translations: Translations
   setTranslations: (translations: Translations) => void
 }) {
@@ -177,7 +177,7 @@ function useParseValues() {
   const parseKeys = useParseKeys()
 
   return useCallback(
-    (language: Language, translations: Translations) => {
+    (language: Language['name'], translations: Translations) => {
       const keys = parseKeys(translations)
       return keys.reduce((acc, key) => {
         const values = translations[language]
@@ -213,7 +213,7 @@ function useParseKeys() {
 function createTranslations(attributes: {
   translations: Translations
   languages: Language[]
-  language: Language
+  language: Language['name']
   isDefault: boolean
   fields: Field[]
 }) {
@@ -233,7 +233,8 @@ function createTranslations(attributes: {
     }
   }
 
-  return languages.reduce((acc, currentLanguage) => {
+  return languages.reduce((acc, l) => {
+    const currentLanguage = l.name
     const values = translations[currentLanguage]
     /**
      * Is default language, no need to modify keys

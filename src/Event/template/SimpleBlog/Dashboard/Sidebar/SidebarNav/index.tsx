@@ -5,7 +5,7 @@ import NewSidebarNavButton from 'Event/template/SimpleBlog/Dashboard/Sidebar/New
 import EditModeOnly from 'Event/Dashboard/editor/views/EditModeOnly'
 import {useTemplate, useUpdateTemplate} from 'Event/TemplateProvider'
 import Section from 'Event/template/SimpleBlog/Dashboard/Sidebar/Section'
-import HiddenOnMatch from 'Event/Dashboard/component-rules/HiddenOnMatch'
+import HiddenOnMatch from 'Event/visibility-rules/HiddenOnMatch'
 import {DragDropContext, Droppable, DropResult} from 'react-beautiful-dnd'
 import {useEditMode} from 'Event/Dashboard/editor/state/edit-mode'
 export const SIDEBAR_NAV_BUTTON = 'Sidebar Nav Button'

@@ -1,3 +1,4 @@
+import {createLanguage, ENGLISH} from './../LanguageProvider/language'
 import {ObvioEvent} from 'Event'
 import {fakeAttendee} from 'Event/auth/__utils__/factory'
 import {Entry} from 'Event/Leaderboard'
@@ -112,7 +113,7 @@ export const fakeSponsor = (overrides?: Partial<Sponsor>): Sponsor => ({
 export const fakeLocalization = (
   overrides?: Partial<ObvioEvent['localization']>,
 ): ObvioEvent['localization'] => ({
-  languages: ['English'],
+  languages: [createLanguage(ENGLISH)],
   defaultLanguage: null,
   translations: {},
   ...overrides,

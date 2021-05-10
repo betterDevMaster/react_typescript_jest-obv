@@ -25,10 +25,8 @@ import ResourceUpload, {
 import {Resource} from 'Event/Dashboard/components/ResourceList/ResourceItem'
 import Grid from '@material-ui/core/Grid'
 import Switch from 'lib/ui/form/Switch'
-import RuleConfig, {
-  useRuleConfig,
-} from 'Event/Dashboard/component-rules/RuleConfig'
-import ConfigureRulesButton from 'Event/Dashboard/component-rules/ConfigureRulesButton'
+import RuleConfig, {useRuleConfig} from 'Event/visibility-rules/RuleConfig'
+import ConfigureRulesButton from 'Event/visibility-rules/ConfigureRulesButton'
 import ToggleButtonGroup from '@material-ui/lab/ToggleButtonGroup'
 import ToggleButton from '@material-ui/lab/ToggleButton'
 

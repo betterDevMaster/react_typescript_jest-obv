@@ -25,6 +25,7 @@ import EventLanguageProvider from 'Event/LanguageProvider'
 import JoinArea from 'Event/JoinArea/JoinArea'
 import FullPageLoader from 'lib/ui/layout/FullPageLoader'
 import SelfCheckIn from 'Event/SelfCheckIn'
+import AttendeeProfileProvider from 'Event/visibility-rules/AttendeeProfileProvider'
 
 export const eventRoutes = createRoutes({
   login: '/login',
@@ -74,23 +75,9 @@ export default function Routes() {
 
   if (user) {
     return (
-      <EventActionsProvider>
-        <AutoRefreshActions>
-          <PointsProvider>
-            <TemplateProvider template={event.template}>
-              <CustomScripts>
-                <SubmissionsProvider>
-                  <EventLanguageProvider>
-                    <HTMLHead>
-                      <UserRoutes />
-                    </HTMLHead>
-                  </EventLanguageProvider>
-                </SubmissionsProvider>
-              </CustomScripts>
-            </TemplateProvider>
-          </PointsProvider>
-        </AutoRefreshActions>
-      </EventActionsProvider>
+      <TemplateProvider template={event.template}>
+        <Authenticated />
+      </TemplateProvider>
     )
   }
 
@@ -102,6 +89,32 @@ export default function Routes() {
         </HTMLHead>
       </CustomScripts>
     </TemplateProvider>
+  )
+}
+
+function Authenticated() {
+  const attendee = useAttendee()
+  return (
+    <EventActionsProvider>
+      <AutoRefreshActions>
+        <PointsProvider>
+          <CustomScripts>
+            <SubmissionsProvider>
+              <AttendeeProfileProvider
+                groups={attendee.groups}
+                tags={attendee.tags}
+              >
+                <EventLanguageProvider>
+                  <HTMLHead>
+                    <UserRoutes />
+                  </HTMLHead>
+                </EventLanguageProvider>
+              </AttendeeProfileProvider>
+            </SubmissionsProvider>
+          </CustomScripts>
+        </PointsProvider>
+      </AutoRefreshActions>
+    </EventActionsProvider>
   )
 }
 

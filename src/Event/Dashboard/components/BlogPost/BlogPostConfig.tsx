@@ -15,10 +15,8 @@ import FormControl from '@material-ui/core/FormControl'
 import InputLabel from '@material-ui/core/InputLabel'
 import Checkbox from '@material-ui/core/Checkbox'
 import FormControlLabel from '@material-ui/core/FormControlLabel'
-import RuleConfig, {
-  useRuleConfig,
-} from 'Event/Dashboard/component-rules/RuleConfig'
-import ConfigureRulesButton from 'Event/Dashboard/component-rules/ConfigureRulesButton'
+import RuleConfig, {useRuleConfig} from 'Event/visibility-rules/RuleConfig'
+import ConfigureRulesButton from 'Event/visibility-rules/ConfigureRulesButton'
 import Box from '@material-ui/core/Box'
 
 export const DEFAULT_MODAL_BUTTON_TEXT = 'Submit'

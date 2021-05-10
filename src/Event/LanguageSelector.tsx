@@ -19,7 +19,7 @@ export default function LanguageSelector() {
 
   const toggleDialog = () => setDialogVisible(!dialogVisible)
 
-  const isSelected = (language: Language) => language === current
+  const isSelected = (language: Language) => language.name === current
 
   const handleSelect = (language: Language) => {
     set(language)
@@ -52,12 +52,12 @@ export default function LanguageSelector() {
         <List disablePadding>
           {languages.map((language) => (
             <ListItem
-              key={language}
+              key={language.name}
               button
               selected={isSelected(language)}
               onClick={() => handleSelect(language)}
             >
-              {language}
+              {language.name}
             </ListItem>
           ))}
         </List>

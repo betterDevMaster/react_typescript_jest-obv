@@ -7,13 +7,17 @@ import TextField from '@material-ui/core/TextField'
 import Dialog from 'lib/ui/Dialog'
 import Box from '@material-ui/core/Box'
 import {useEvent, useUpdate} from 'Event/EventProvider'
-import {ENGLISH, Language} from 'Event/LanguageProvider/language'
+import {
+  createLanguage,
+  ENGLISH,
+  Language,
+} from 'Event/LanguageProvider/language'
 import {useForm} from 'react-hook-form'
 import {useLanguage} from 'Event/LanguageProvider'
 import {useLocalizationConfig} from 'organization/Event/LocalizationConfig'
 
 export default function AddLanguageButton(props: {
-  onAdd: (language: Language) => void
+  onAdd: (language: Language['name']) => void
 }) {
   const {onAdd} = props
   const {isProcessing, setIsProcessing} = useLocalizationConfig()
@@ -48,7 +52,7 @@ function AddLanguageDialog(props: {
   onClose: () => void
   isProcessing: boolean
   setIsProcessing: (processing: boolean) => void
-  onAdd: (language: Language) => void
+  onAdd: (language: Language['name']) => void
 }) {
   const {isProcessing, setIsProcessing, open, onClose, onAdd} = props
   const [language, setLanguage] = useState('')
@@ -58,7 +62,7 @@ function AddLanguageDialog(props: {
   const {languages} = useLanguage()
   const [error, setError] = useState<string | null>(null)
 
-  const current = event.localization?.languages || [ENGLISH]
+  const current = event.localization?.languages || [createLanguage(ENGLISH)]
 
   useEffect(() => {
     setLanguage('')
@@ -71,7 +75,7 @@ function AddLanguageDialog(props: {
 
     setError(null)
 
-    const alreadyExists = languages.includes(language)
+    const alreadyExists = languages.map((l) => l.name).includes(language)
     if (alreadyExists) {
       setError('Language already exists')
       return
@@ -82,7 +86,7 @@ function AddLanguageDialog(props: {
     const updates = {
       localization: {
         ...(event.localization || {}),
-        languages: [...current, language],
+        languages: [...current, createLanguage(language)],
       },
     }
 

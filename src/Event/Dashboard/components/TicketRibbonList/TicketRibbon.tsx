@@ -18,7 +18,7 @@ import TEAL_RIBBON_IMAGE from 'Event/Dashboard/components/TicketRibbonList/ribbo
 import MAGENTA_RIBBON_IMAGE from 'Event/Dashboard/components/TicketRibbonList/ribbons/magenta.png'
 import LIGHT_BLUE_RIBBON_IMAGE from 'Event/Dashboard/components/TicketRibbonList/ribbons/light_blue.png'
 import LIGHT_PURPLE_RIBBON_IMAGE from 'Event/Dashboard/components/TicketRibbonList/ribbons/light_purple.png'
-import {HasRules} from 'Event/Dashboard/component-rules'
+import {HasRules} from 'Event/visibility-rules'
 import {useVariables} from 'Event'
 import {Typography} from '@material-ui/core'
 

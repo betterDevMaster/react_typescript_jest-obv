@@ -7,7 +7,7 @@ import Button from '@material-ui/core/Button'
 import {useLocalizationConfig} from 'organization/Event/LocalizationConfig'
 
 export default function MakeDefaultButton(props: {
-  language: Language
+  language: Language['name']
   translations: Translations
   className?: string
 }) {
@@ -63,8 +63,8 @@ function createTranslations({
   languages,
   translations,
 }: {
-  prevDefault: Language
-  newDefault: Language
+  prevDefault: Language['name']
+  newDefault: Language['name']
   languages: Language[]
   translations: Translations
 }) {
@@ -74,14 +74,14 @@ function createTranslations({
   }
 
   return languages.reduce((acc, language) => {
-    const value = translations[language]
+    const value = translations[language.name]
 
-    if (language !== newDefault && value) {
-      acc[language] = value
+    if (language.name !== newDefault && value) {
+      acc[language.name] = value
       return acc
     }
 
-    acc[language] = copyKeys(currentDefaults, value)
+    acc[language.name] = copyKeys(currentDefaults, value)
     return acc
   }, {} as Record<string, Record<string, string>>)
 }

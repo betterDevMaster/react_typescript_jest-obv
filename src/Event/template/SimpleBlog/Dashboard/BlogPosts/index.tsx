@@ -9,7 +9,7 @@ import EditModeOnly from 'Event/Dashboard/editor/views/EditModeOnly'
 import AddBlogPostButton from 'Event/template/SimpleBlog/Dashboard/BlogPosts/AddBlogPostButton'
 import {getDiffDatetime} from 'lib/date-time'
 import {SimpleBlog} from 'Event/template/SimpleBlog'
-import HiddenOnMatch from 'Event/Dashboard/component-rules/HiddenOnMatch'
+import HiddenOnMatch from 'Event/visibility-rules/HiddenOnMatch'
 
 export default function BlogPosts() {
   const {blogPosts: posts} = useTemplate()

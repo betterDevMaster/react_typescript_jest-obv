@@ -4,11 +4,12 @@ import {goToLocalizationConfig} from 'organization/Event/LocalizationConfig/__ut
 import {CONFIGURE_EVENTS} from 'organization/PermissionsProvider'
 import axios from 'axios'
 import {wait} from '@testing-library/react'
+import {createLanguage, Language} from 'Event/LanguageProvider/language'
 
 const mockPut = axios.put as jest.Mock
 
 it('should add a language', async () => {
-  const languages = ['Foo', 'Bar']
+  const languages = [createLanguage('Foo'), createLanguage('Bar')]
 
   const event = fakeEvent({
     localization: fakeLocalization({
@@ -31,7 +32,7 @@ it('should add a language', async () => {
     ...event,
     localization: {
       ...event.localization,
-      languages: [...languages, chinese],
+      languages: [...languages, createLanguage(chinese)],
     },
   }
 
@@ -50,7 +51,9 @@ it('should add a language', async () => {
 
   // Includes new language
   expect(data.localization.languages.length).toBe(languages.length + 1)
-  expect(data.localization.languages.includes(chinese)).toBe(true)
+  expect(
+    data.localization.languages.map((l: Language) => l.name).includes(chinese),
+  ).toBe(true)
 
   // Selected new language
   expect(

@@ -1,5 +1,5 @@
 import React from 'react'
-import {Rule} from 'Event/Dashboard/component-rules'
+import {Rule} from 'Event/visibility-rules'
 import Button from 'lib/ui/Button'
 
 export function GenerateTextForVisibilityRules(props: {

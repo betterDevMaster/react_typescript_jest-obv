@@ -7,31 +7,31 @@ import {Language} from 'Event/LanguageProvider/language'
 import {useLanguage} from 'Event/LanguageProvider'
 
 export default function LanguageSelect(props: {
-  value: Language
-  onChange: (language: Language) => void
+  value: Language['name']
+  onChange: (language: Language['name']) => void
   showDefault?: boolean
   disabled?: boolean
 }) {
   const {languages, defaultLanguage} = useLanguage()
 
   const label = (language: Language) => {
-    const isDefault = language === defaultLanguage
+    const isDefault = language.name === defaultLanguage
     if (!props.showDefault || !isDefault) {
-      return language
+      return language.name
     }
 
-    return `${language} (Default)`
+    return `${language.name} (Default)`
   }
 
   const sortedByDefault = [...languages].sort((a, b) => {
-    if (a === defaultLanguage) {
+    if (a.name === defaultLanguage) {
       return -1
     }
 
     return 0
   })
 
-  const optionExists = sortedByDefault.includes(props.value)
+  const optionExists = sortedByDefault.map((l) => l.name).includes(props.value)
   const value = optionExists ? props.value : defaultLanguage
 
   return (
@@ -46,7 +46,11 @@ export default function LanguageSelect(props: {
         }}
       >
         {sortedByDefault.map((language: Language, index: number) => (
-          <MenuItem key={index} value={language} aria-label={language}>
+          <MenuItem
+            key={index}
+            value={language.name}
+            aria-label={language.name}
+          >
             {label(language)}
           </MenuItem>
         ))}

@@ -1,7 +1,7 @@
+import {createLanguage} from 'Event/LanguageProvider/language'
 import {fakeEvent, fakeLocalization} from 'Event/__utils__/factory'
 import {goToLocalizationConfig} from 'organization/Event/LocalizationConfig/__utils__/go-to-localization-config'
 import {CONFIGURE_EVENTS} from 'organization/PermissionsProvider'
-import axios from 'axios'
 
 it('should have a default when localization is null', async () => {
   const event = fakeEvent({})
@@ -20,7 +20,7 @@ it('should have a default when localization is null', async () => {
 })
 
 it('should select the default language', async () => {
-  const languages = ['Foo', 'Bar']
+  const languages = [createLanguage('Foo'), createLanguage('Bar')]
 
   const event = fakeEvent({
     localization: fakeLocalization({
