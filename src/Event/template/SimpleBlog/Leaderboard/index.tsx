@@ -11,7 +11,6 @@ import TableBody from '@material-ui/core/TableBody'
 import {useEvent} from 'Event/EventProvider'
 import {api} from 'lib/url'
 import {useAsync} from 'lib/async'
-import {usePoints} from 'Event/PointsProvider'
 import {useTemplate} from 'Event/TemplateProvider'
 import {Entry} from 'Event/Leaderboard'
 import {
