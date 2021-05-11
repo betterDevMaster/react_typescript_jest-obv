@@ -33,6 +33,7 @@ export const fakeQuestion = (overrides?: Partial<Question>): Question => ({
   helper_text: faker.lorem.sentence(),
   is_required: faker.random.boolean(),
   allows_multiple_options: faker.random.boolean(),
+  has_other_option: false,
   type: randomType(),
   options: [],
   validation_rule: null,

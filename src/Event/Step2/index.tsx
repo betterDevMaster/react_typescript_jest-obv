@@ -30,7 +30,7 @@ export default function Step2() {
   }
 
   return (
-    <WaiverProvider isPreview={false} waiver={event.waiver}>
+    <WaiverProvider waiver={event.waiver}>
       <TemplateStep2 />
     </WaiverProvider>
   )

@@ -27,7 +27,7 @@ export default function WaiverPreview(props: {
     case SIMPLE_BLOG:
       return (
         <PreviewContainer>
-          <WaiverProvider waiver={waiver} isPreview={true}>
+          <WaiverProvider waiver={waiver} isPreview>
             <SimpleBlogStep2 user={user} />
           </WaiverProvider>
         </PreviewContainer>

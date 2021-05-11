@@ -67,6 +67,14 @@ it('should submit answers', async () => {
       .map((_, index) => `radio ${index} ${faker.random.word()}`),
   })
 
+  const radioOtherQuestion = fakeQuestion({
+    type: RADIO,
+    options: new Array(faker.random.number({min: 1, max: 4}))
+      .fill(null)
+      .map((_, index) => `radio ${index} ${faker.random.word()}`),
+    has_other_option: true,
+  })
+
   const selectQuestion = fakeQuestion({
     type: SELECT,
     options: new Array(faker.random.number({min: 1, max: 4}))
@@ -91,6 +99,7 @@ it('should submit answers', async () => {
       shortAnswerQuestion,
       longAnswerQuestion,
       radioQuestion,
+      radioOtherQuestion,
       selectQuestion,
       checkboxQuestion,
     ],
@@ -120,6 +129,11 @@ it('should submit answers', async () => {
   // Select a radio
   const radioOption = faker.random.arrayElement(radioQuestion.options)
   user.click(await findByText(radioOption))
+
+  // Set an other option
+  const otherValue = faker.random.word()
+  user.click(await findByText('Other'))
+  user.type(await findByLabelText('other value'), otherValue)
 
   // Select dropdown select option
   const selectOption = faker.random.arrayElement(selectQuestion.options)
@@ -159,4 +173,6 @@ it('should submit answers', async () => {
   expect(submission(checkboxQuestion).value).toBe(
     checkboxQuestion.options.join(', '),
   )
+  // Saved 'other' radio input value
+  expect(submission(radioOtherQuestion).value).toBe(otherValue)
 })

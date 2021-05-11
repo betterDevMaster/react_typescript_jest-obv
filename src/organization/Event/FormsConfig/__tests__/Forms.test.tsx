@@ -1,5 +1,4 @@
 import faker from 'faker'
-import user from '@testing-library/user-event'
 import {fakeEvent} from 'Event/__utils__/factory'
 import {goToFormsConfig} from 'organization/Event/FormsConfig/__utils__/go-to-forms-config'
 import {fakeForm} from 'organization/Event/FormsProvider/__utils__/factory'

@@ -70,6 +70,7 @@ export default function WaiverProvider(props: {
         setSignature,
         waiver,
         agreeStatement,
+        isPreview,
       }}
     >
       {props.children}

@@ -59,7 +59,11 @@ function WithForm(props: {form: Form}) {
     control,
     setValue,
   } = useForm()
-  const {submit: submitWaiver, canSubmit: canSubmitWaiver} = useWaiver()
+  const {
+    submit: submitWaiver,
+    canSubmit: canSubmitWaiver,
+    isPreview,
+  } = useWaiver()
   const {submit: submitAnswers, responseError, answers} = useSubmissions()
 
   const canSubmit = !submitting && canSubmitWaiver
@@ -83,8 +87,8 @@ function WithForm(props: {form: Form}) {
       })
   }
 
-  return (
-    <form onSubmit={handleSubmit(submit)}>
+  const content = (
+    <>
       <Step2Form
         form={form}
         formErrors={formErrors}
@@ -98,14 +102,24 @@ function WithForm(props: {form: Form}) {
       <Box display="flex" justifyContent="center" m={1}>
         <SubmitButton canSubmit={canSubmit} />
       </Box>
-    </form>
+    </>
   )
+
+  if (isPreview) {
+    return <div>{content}</div>
+  }
+
+  return <form onSubmit={handleSubmit(submit)}>{content}</form>
 }
 
 function WaiverOnly() {
   const [submitting, setSubmitting] = useState(false)
   const {handleSubmit} = useForm()
-  const {submit: submitWaiver, canSubmit: canSubmitWaiver} = useWaiver()
+  const {
+    submit: submitWaiver,
+    canSubmit: canSubmitWaiver,
+    isPreview,
+  } = useWaiver()
 
   const canSubmit = !submitting && canSubmitWaiver
 
@@ -126,14 +140,20 @@ function WaiverOnly() {
     })
   }
 
-  return (
-    <form onSubmit={handleSubmit(submit)}>
+  const body = (
+    <>
       <Waiver />
       <Box display="flex" justifyContent="center" m={1}>
         <SubmitButton canSubmit={canSubmit} />
       </Box>
-    </form>
+    </>
   )
+
+  if (isPreview) {
+    return <div>{body}</div>
+  }
+
+  return <form onSubmit={handleSubmit(submit)}>{body}</form>
 }
 
 function SubmitButton(props: {canSubmit: boolean}) {

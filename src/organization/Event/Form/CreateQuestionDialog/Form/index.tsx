@@ -10,6 +10,7 @@ import Switch from '@material-ui/core/Switch'
 import {onUnknownChangeHandler} from 'lib/dom'
 import {fieldError} from 'lib/form'
 import AllowsMultipleSwitch from 'organization/Event/Form/CreateQuestionDialog/Form/AllowsMultipleSwitch'
+import HasOtherOptionSwitch from 'organization/Event/Form/CreateQuestionDialog/Form/HasOtherOptionSwitch'
 import OptionsInput from 'organization/Event/Form/CreateQuestionDialog/Form/OptionsInput'
 import {
   ALPHA_NUMERIC,
@@ -125,6 +126,12 @@ export default function Form(props: {
           />
         </FormControl>
         <AllowsMultipleSwitch
+          control={control}
+          questionType={selectedType}
+          register={register}
+          question={question}
+        />
+        <HasOtherOptionSwitch
           control={control}
           questionType={selectedType}
           register={register}

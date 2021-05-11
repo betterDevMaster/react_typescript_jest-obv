@@ -14,6 +14,7 @@ export interface Question {
   type: QuestionType
   options: string[]
   validation_rule: string | null
+  has_other_option: boolean
 }
 
 /**
