@@ -12,9 +12,12 @@ import Layout from 'organization/user/Layout'
 import {useBreadcrumbs} from 'lib/ui/BreadcrumbProvider'
 import HasPermission from 'organization/HasPermission'
 import {CREATE_EVENTS} from 'organization/PermissionsProvider'
+import {usePageView} from 'analytics'
 
 export default function EventList() {
   const {organization, routes, client} = useOrganization()
+
+  usePageView()
 
   useBreadcrumbs([{title: 'Events', url: routes.events.root}])
 
