@@ -10,7 +10,7 @@ import user from '@testing-library/user-event'
 import {fireEvent, wait} from '@testing-library/react'
 import axios from 'axios'
 import {clickEdit} from '__utils__/edit'
-import {defaultScore} from 'Event/PointsProvider/__utils__/StaticPointsProvider'
+import {defaultScore} from 'Event/PointsProvider'
 
 const mockPost = axios.post as jest.Mock
 const mockDelete = axios.delete as jest.Mock

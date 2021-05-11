@@ -6,7 +6,7 @@ import {
   goToEventConfig,
 } from 'organization/Event/__utils__/event'
 import {fakeAction} from 'Event/ActionsProvider/__utils__/factory'
-import {defaultScore} from 'Event/PointsProvider/__utils__/StaticPointsProvider'
+import {defaultScore} from 'Event/PointsProvider'
 import {Sponsor} from 'Event/SponsorPage'
 import {fakeArea} from 'organization/Event/AreaList/__utils__/factory'
 import {fakeSponsor} from 'Event/__utils__/factory'
@@ -36,7 +36,6 @@ export async function goToSponsorConfig(
   mockGet.mockImplementationOnce(() => Promise.resolve({data: areas}))
   mockGet.mockImplementationOnce(() => Promise.resolve({data: sponsors}))
   mockGet.mockImplementationOnce(() => Promise.resolve({data: [fakeAction()]}))
-  mockGet.mockImplementationOnce(() => Promise.resolve({data: defaultScore}))
 
   user.click(await result.findByLabelText('configure sponsors'))
 

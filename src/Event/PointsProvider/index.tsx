@@ -11,6 +11,11 @@ export interface Score {
   position: number
 }
 
+export const defaultScore: Score = {
+  points: 0,
+  position: 1,
+}
+
 export interface PointsContextProps {
   showReceived: (action: Action, unit: string) => void
   submit: (action: Action | null) => void
@@ -21,7 +26,7 @@ export const PointsContext = React.createContext<
   PointsContextProps | undefined
 >(undefined)
 
-export function PointsProvider(props: {children: React.ReactElement}) {
+export default function PointsProvider(props: {children: React.ReactElement}) {
   const {client, event} = useEvent()
   const unit = event.template?.points?.unit
   const fetchScore = useFetchScore()
@@ -52,6 +57,35 @@ export function PointsProvider(props: {children: React.ReactElement}) {
         })
     },
     [client, event.slug, showReceived, add, isEditMode, unit],
+  )
+
+  return (
+    <PointsContext.Provider value={{showReceived, submit, score}}>
+      {props.children}
+    </PointsContext.Provider>
+  )
+}
+
+export function StaticPointsProvider(props: {
+  children: React.ReactElement
+  score?: Score
+}) {
+  const fetchScore = useCallback(
+    () => Promise.resolve(props.score || defaultScore),
+    [props.score],
+  )
+  const {score, add} = useAttendeeScore(fetchScore)
+  const showReceived = useShowReceived()
+
+  const submit = useCallback(
+    (action: Action | null) => {
+      if (!action) {
+        return
+      }
+
+      add(action.points)
+    },
+    [add],
   )
 
   return (

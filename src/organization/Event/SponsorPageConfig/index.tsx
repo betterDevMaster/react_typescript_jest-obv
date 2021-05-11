@@ -5,7 +5,6 @@ import {Sponsor} from 'Event/SponsorPage'
 import {OrganizationActionsProvider} from 'Event/ActionsProvider'
 import Page from 'organization/Event/Page'
 import AddSponsorButton from 'organization/Event/SponsorPageConfig/AddSponsorButton'
-import {PointsProvider} from 'Event/PointsProvider'
 import Button from '@material-ui/core/Button'
 import Box from '@material-ui/core/Box'
 import PageSettingsDialog from 'organization/Event/SponsorPageConfig/PageSettingsDialog'
@@ -40,30 +39,28 @@ export default function SponsorPageConfig() {
 
   return (
     <OrganizationActionsProvider loader={loader}>
-      <PointsProvider>
-        <>
-          <PageSettingsDialog
-            visible={pageSettingsVisible}
-            onClose={togglePageSettings}
-          />
-          <Layout>
-            <Page>
-              <Box display="flex" justifyContent="flex-end" mb={2}>
-                <Button
-                  variant="outlined"
-                  color="primary"
-                  onClick={togglePageSettings}
-                  aria-label="configure sponsor page"
-                >
-                  Page Settings
-                </Button>
-              </Box>
-              <StyledAddSponsorButton onAdd={handleAddedSponsor} />
-              <SponsorPage />
-            </Page>
-          </Layout>
-        </>
-      </PointsProvider>
+      <>
+        <PageSettingsDialog
+          visible={pageSettingsVisible}
+          onClose={togglePageSettings}
+        />
+        <Layout>
+          <Page>
+            <Box display="flex" justifyContent="flex-end" mb={2}>
+              <Button
+                variant="outlined"
+                color="primary"
+                onClick={togglePageSettings}
+                aria-label="configure sponsor page"
+              >
+                Page Settings
+              </Button>
+            </Box>
+            <StyledAddSponsorButton onAdd={handleAddedSponsor} />
+            <SponsorPage />
+          </Page>
+        </Layout>
+      </>
     </OrganizationActionsProvider>
   )
 }

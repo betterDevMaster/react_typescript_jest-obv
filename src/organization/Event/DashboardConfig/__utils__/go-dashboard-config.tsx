@@ -1,7 +1,7 @@
 import axios from 'axios'
 import user from '@testing-library/user-event'
 import {fakeAction} from 'Event/ActionsProvider/__utils__/factory'
-import {defaultScore} from 'Event/PointsProvider/__utils__/StaticPointsProvider'
+import {defaultScore} from 'Event/PointsProvider'
 import {
   EventOverrides,
   goToEventConfig,
@@ -15,7 +15,6 @@ export async function goToDashboardConfig(options: EventOverrides = {}) {
   // Dashboard requests
   mockGet.mockImplementationOnce(() => Promise.resolve({data: [fakeAction()]})) // Platform actions
   mockGet.mockImplementationOnce(() => Promise.resolve({data: []})) // Custom actions
-  mockGet.mockImplementationOnce(() => Promise.resolve({data: defaultScore})) // Custom actions
 
   // Configure dashboard
   user.click(await context.findByLabelText('configure dashboard'))

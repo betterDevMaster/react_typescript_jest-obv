@@ -10,7 +10,7 @@ import {clickEdit} from '__utils__/edit'
 import user from '@testing-library/user-event'
 import {fakeEvent} from 'Event/__utils__/factory'
 import {mockRxJsAjax} from 'store/__utils__/MockStoreProvider'
-import {defaultScore} from 'Event/PointsProvider/__utils__/StaticPointsProvider'
+import {defaultScore} from 'Event/PointsProvider'
 
 const mockPost = mockRxJsAjax.post as jest.Mock
 

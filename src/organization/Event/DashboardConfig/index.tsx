@@ -5,7 +5,6 @@ import React from 'react'
 import AttendeeProfileProvider from 'Event/visibility-rules/AttendeeProfileProvider'
 import Layout from 'organization/user/Layout'
 import Page from 'organization/Event/Page'
-import {PointsProvider} from 'Event/PointsProvider'
 import {OrganizationActionsProvider} from 'Event/ActionsProvider'
 import {StaticSubmissionsProvider} from 'Event/SubmissionsProvider'
 
@@ -22,13 +21,11 @@ export default function DashboardConfig() {
         <OrganizationActionsProvider
           loader={<LoadingText>loading...</LoadingText>}
         >
-          <PointsProvider>
-            <AttendeeProfileProvider groups={{}} tags={[]}>
-              <StaticSubmissionsProvider>
-                <Dashboard user={user} isEditMode={true} />
-              </StaticSubmissionsProvider>
-            </AttendeeProfileProvider>
-          </PointsProvider>
+          <AttendeeProfileProvider groups={{}} tags={[]}>
+            <StaticSubmissionsProvider>
+              <Dashboard user={user} isEditMode={true} />
+            </StaticSubmissionsProvider>
+          </AttendeeProfileProvider>
         </OrganizationActionsProvider>
       </Page>
     </Layout>

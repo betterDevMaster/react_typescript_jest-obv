@@ -15,7 +15,7 @@ import {wait} from '@testing-library/react'
 import {fakeOrganization} from 'obvio/Organizations/__utils__/factory'
 import {fakeArea} from 'organization/Event/AreaList/__utils__/factory'
 import mockAxios from 'axios'
-import {defaultScore} from 'Event/PointsProvider/__utils__/StaticPointsProvider'
+import {defaultScore} from 'Event/PointsProvider'
 import {fakeAction} from 'Event/ActionsProvider/__utils__/factory'
 import StaticAreasProvider from 'organization/Event/__utils__/StaticAreasProvider'
 

@@ -4,7 +4,6 @@ import {ObvioEvent} from 'Event'
 import Page from 'organization/Event/Page'
 import Form from 'organization/Event/TechCheckConfig/Form'
 import {OrganizationActionsProvider} from 'Event/ActionsProvider'
-import {PointsProvider} from 'Event/PointsProvider'
 
 export interface TechCheckData {
   body: string
@@ -17,11 +16,9 @@ export default function TechCheckConfig() {
   return (
     <Layout>
       <Page>
-        <PointsProvider>
-          <OrganizationActionsProvider loader={<div>loading...</div>}>
-            <Form />
-          </OrganizationActionsProvider>
-        </PointsProvider>
+        <OrganizationActionsProvider loader={<div>loading...</div>}>
+          <Form />
+        </OrganizationActionsProvider>
       </Page>
     </Layout>
   )

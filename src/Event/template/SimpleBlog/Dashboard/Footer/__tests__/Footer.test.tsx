@@ -9,7 +9,7 @@ import {fireEvent} from '@testing-library/react'
 import {fakeEvent} from 'Event/__utils__/factory'
 import {mockRxJsAjax} from 'store/__utils__/MockStoreProvider'
 import {wait} from '@testing-library/react'
-import {defaultScore} from 'Event/PointsProvider/__utils__/StaticPointsProvider'
+import {defaultScore} from 'Event/PointsProvider'
 import {fakeOrganization} from 'obvio/Organizations/__utils__/factory'
 
 const mockPost = mockRxJsAjax.post as jest.Mock

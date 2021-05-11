@@ -9,7 +9,7 @@ import React from 'react'
 import {clickEdit} from '__utils__/edit'
 import {emptyActions, render} from '__utils__/render'
 import axios from 'axios'
-import {defaultScore} from 'Event/PointsProvider/__utils__/StaticPointsProvider'
+import {defaultScore} from 'Event/PointsProvider'
 
 const mockAjaxPost = axios.post as jest.Mock
 const mockAjaxDelete = axios.delete as jest.Mock

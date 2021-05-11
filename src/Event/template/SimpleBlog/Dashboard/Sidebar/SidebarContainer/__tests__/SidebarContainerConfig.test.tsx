@@ -8,7 +8,7 @@ import {fakeEvent} from 'Event/__utils__/factory'
 import {mockRxJsAjax} from 'store/__utils__/MockStoreProvider'
 import {wait} from '@testing-library/react'
 import {emptyActions, render} from '__utils__/render'
-import {defaultScore} from 'Event/PointsProvider/__utils__/StaticPointsProvider'
+import {defaultScore} from 'Event/PointsProvider'
 import user from '@testing-library/user-event'
 import {fakeOrganization} from 'obvio/Organizations/__utils__/factory'
 
