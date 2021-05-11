@@ -15,6 +15,7 @@ import SpeakerList from 'Event/template/SimpleBlog/SpeakerPage/SpeakerList'
 import SpeakerEditDialog from 'Event/template/SimpleBlog/SpeakerPage/SpeakerEditDialog'
 
 import {PageTitle} from 'Event/template/SimpleBlog/Page'
+import {useVariables} from 'Event'
 
 export default function SimpleBlogSpeakerPage(props: {
   user: User
@@ -23,17 +24,18 @@ export default function SimpleBlogSpeakerPage(props: {
 }) {
   const {event} = useEvent()
   const speakerPageSettings = event.template?.speakers
+  const v = useVariables()
 
   const content = (
     <>
       <PageTitle aria-label="speakers title">
-        {speakerPageSettings?.title || DEFAULT_TITLE}
+        {v(speakerPageSettings?.title || DEFAULT_TITLE)}
       </PageTitle>
       <SubTitle>
         <div
           aria-label="speakers description"
           dangerouslySetInnerHTML={{
-            __html: speakerPageSettings?.description || DEFAULT_DESCRIPTION,
+            __html: v(speakerPageSettings?.description || DEFAULT_DESCRIPTION),
           }}
         />
       </SubTitle>
@@ -44,8 +46,10 @@ export default function SimpleBlogSpeakerPage(props: {
         }
       >
         <Link to="/">
-          {speakerPageSettings?.backToDashboardText ||
-            DEFAULT_BACK_TO_DASHBOARD_TEXT}
+          {v(
+            speakerPageSettings?.backToDashboardText ||
+              DEFAULT_BACK_TO_DASHBOARD_TEXT,
+          )}
         </Link>
       </BackToDashboard>
       <SpeakerEditDialog isEditMode={props.isEditMode} />
