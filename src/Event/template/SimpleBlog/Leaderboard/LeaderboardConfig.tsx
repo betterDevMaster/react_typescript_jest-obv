@@ -11,7 +11,7 @@ import {useUpdate} from 'Event/EventProvider'
 
 export const DEFAULT_TITLE = 'Leaderboard'
 export const DEFAULT_DESCRIPTION =
-  '<p>{{first name}}, you have earned {{points}} {{unit}}, and you are currently {{position}}. Great Job!</p><p><i>The list below is the top 200 point earners! If you don’t see your name listed, there’s still time!</i></p><p><br>&nbsp;</p>'
+  '<p>{{first name}}, you have earned {{leaderboard_points}} {{points_unit}}, and you are currently {{leaderboard_position}}. Great Job!</p><p><i>The list below is the top 200 point earners! If you don’t see your name listed, there’s still time!</i></p><p><br>&nbsp;</p>'
 export const DEFAULT_BACK_TO_DASHBOARD_TEXT = 'Back to Dashboard'
 export const DEFAULT_BACK_TO_DASHBOARD_TEXT_COLOR = '#000000'
 
