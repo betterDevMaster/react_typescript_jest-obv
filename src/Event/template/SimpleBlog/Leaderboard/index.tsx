@@ -21,28 +21,16 @@ import {
   DEFAULT_BACK_TO_DASHBOARD_TEXT,
 } from 'Event/template/SimpleBlog/Leaderboard/LeaderboardConfig'
 import {useVariables} from 'Event'
-
 import {PageTitle} from 'Event/template/SimpleBlog/Page'
-
-const replace = (key: string, value: string, text: string) => {
-  const match = new RegExp(`{{${key}}}`, 'gi')
-  return text.replace(match, value)
-}
 
 export default function SimpleBlogLeaderboard(props: {user: Attendee}) {
   const [entries, setEntries] = useState<Entry[]>([])
   const {data: fetched} = useEntries()
-  const {score} = usePoints()
-  const {points, leaderboard: leaderboardPage} = useTemplate()
-  const unit = points ? points.unit : 'Points'
+  const {leaderboard: leaderboardPage} = useTemplate()
 
   const v = useVariables()
 
-  let description = leaderboardPage?.description || DEFAULT_DESCRIPTION
-  description = v(description)
-  description = replace('points', `${score.points}`, description)
-  description = replace('unit', unit, description)
-  description = replace('position', `${score.position}`, description)
+  let description = v(leaderboardPage?.description || DEFAULT_DESCRIPTION)
 
   useEffect(() => {
     if (!fetched) {

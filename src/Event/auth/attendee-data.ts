@@ -1,7 +1,10 @@
+import {useTemplate} from 'Event/TemplateProvider'
 import {isAttendee, useEventAuth} from 'Event/auth'
 import {replace, parseVariables} from 'lib/template'
 import {time, today} from 'lib/date-time'
 import {useCallback} from 'react'
+import {usePoints} from 'Event/PointsProvider'
+import {DEFAULT_POINTS_UNIT} from 'Event/Dashboard/components/PointsSummary/SetPointsButton'
 
 /**
  * Dynamically replace text with data from the currently authenticated
@@ -81,5 +84,37 @@ export function useWithAttendeeData() {
       return result
     },
     [user],
+  )
+}
+
+/**
+ *
+ * @returns
+ */
+export function useWithPoints() {
+  const {score} = usePoints()
+  const {points} = useTemplate()
+
+  return useCallback(
+    (text: string) => {
+      if (!text) {
+        return text
+      }
+
+      const variables = {
+        leaderboard_points: String(score.points),
+        leaderboard_position: String(score.position),
+        points_unit: points?.unit || DEFAULT_POINTS_UNIT,
+      }
+
+      let result = text
+
+      for (const [key, value] of Object.entries(variables)) {
+        result = replace(key, value, result)
+      }
+
+      return result
+    },
+    [score, points],
   )
 }

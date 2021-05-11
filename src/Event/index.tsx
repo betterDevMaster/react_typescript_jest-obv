@@ -14,7 +14,7 @@ import {
   Localization,
   useWithTranslations,
 } from 'Event/LanguageProvider/translations'
-import {useWithAttendeeData} from 'Event/auth/attendee-data'
+import {useWithAttendeeData, useWithPoints} from 'Event/auth/attendee-data'
 import {pipe} from 'ramda'
 import {Background} from 'organization/Event/Backgrounds/BackgroundsProvider'
 import {useRemoveVariables} from 'lib/template'
@@ -112,13 +112,19 @@ export default function Event() {
 export function useVariables() {
   const withTranslations = useWithTranslations()
   const withAttendeeData = useWithAttendeeData()
+  const withPoints = useWithPoints()
   const removeVariables = useRemoveVariables()
 
   return useCallback(
     (text: string) => {
-      const process = pipe(withTranslations, withAttendeeData, removeVariables)
+      const process = pipe(
+        withTranslations,
+        withAttendeeData,
+        withPoints,
+        removeVariables,
+      )
       return process(text)
     },
-    [withAttendeeData, withTranslations, removeVariables],
+    [withAttendeeData, withTranslations, withPoints, removeVariables],
   )
 }

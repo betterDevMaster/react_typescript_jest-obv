@@ -5,6 +5,8 @@ import {setConfig} from 'Event/Dashboard/editor/state/actions'
 import React from 'react'
 import {useDispatch} from 'react-redux'
 
+export const DEFAULT_POINTS_UNIT = 'Points'
+
 export default function SetPointsButton(props: {className?: string}) {
   const dispatch = useDispatch()
   const updateTemplate = useUpdateTemplate()
@@ -13,7 +15,7 @@ export default function SetPointsButton(props: {className?: string}) {
     updateTemplate({
       points: {
         description: '',
-        unit: 'Points',
+        unit: DEFAULT_POINTS_UNIT,
       },
     })
     dispatch(
