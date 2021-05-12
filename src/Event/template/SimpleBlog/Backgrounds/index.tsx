@@ -8,7 +8,7 @@ import {Redirect} from 'react-router-dom'
 import {useEvent} from 'Event/EventProvider'
 import {useTemplate} from 'Event/TemplateProvider'
 import {ImagePreviewContainer} from 'organization/Event/Backgrounds/BackgroundsProvider'
-import {downloadUrl} from 'lib/dom'
+import {AbsoluteLink} from 'lib/ui/link/AbsoluteLink'
 
 export default function SimpleBlogBackgrounds(props: {user: Attendee}) {
   const {event} = useEvent()
@@ -38,18 +38,17 @@ export default function SimpleBlogBackgrounds(props: {user: Attendee}) {
       <Grid container spacing={2}>
         {backgrounds.map((background) => (
           <Grid item xs={12} md={perRow} key={background.id}>
-            <ImagePreviewContainer
-              alt=""
-              borderRadius={settings.borderRadius}
-              borderThickness={settings.borderThickness || 0}
-              borderColor={settings.borderColor || '#000000'}
-              onClick={() =>
-                downloadUrl(background.image.url, background.image.name)
-              }
-              src={background.image.url}
-              clickable
-              width="100%"
-            />
+            <AbsoluteLink to={background.image.url} newTab disableStyles>
+              <ImagePreviewContainer
+                alt=""
+                borderRadius={settings.borderRadius}
+                borderThickness={settings.borderThickness || 0}
+                borderColor={settings.borderColor || '#000000'}
+                src={background.image.url}
+                clickable
+                width="100%"
+              />
+            </AbsoluteLink>
           </Grid>
         ))}
       </Grid>
