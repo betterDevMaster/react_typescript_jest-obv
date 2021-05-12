@@ -1,3 +1,4 @@
+import {isTest} from 'App'
 import {useEffect} from 'react'
 import ReactGA from 'react-ga'
 
@@ -9,6 +10,10 @@ const GA_PROPERTY_ID = 'UA-193332349-1'
 
 export function useAnalytics() {
   useEffect(() => {
+    if (isTest) {
+      return
+    }
+
     ReactGA.initialize(GA_PROPERTY_ID)
 
     /**
@@ -47,6 +52,10 @@ export function useAnalytics() {
  */
 export function usePageView(page?: string) {
   useEffect(() => {
+    if (isTest) {
+      return
+    }
+
     const url = window.location.pathname + window.location.search
     const location = page || url
     ReactGA.pageview(location)
@@ -64,6 +73,10 @@ export function useTrackOnLoad(data: {
   value?: number
 }) {
   useEffect(() => {
+    if (isTest) {
+      return
+    }
+
     ReactGA.event(data)
   }, [data])
 }
@@ -74,5 +87,9 @@ export function sendTiming(data: {
   value: number
   label?: string
 }) {
+  if (isTest) {
+    return
+  }
+
   ReactGA.timing(data)
 }
