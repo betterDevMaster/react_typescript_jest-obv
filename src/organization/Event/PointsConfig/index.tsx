@@ -67,7 +67,7 @@ function Content() {
           onClick={togglePageSettings}
           aria-label="configure leaderboard page"
         >
-          Leaderboard Settings
+          Page Settings
         </Button>
       </ButtonContainer>
       <Box display="flex" justifyContent="flex-end">
