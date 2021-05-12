@@ -85,6 +85,7 @@ export function createRoutesFor(organization: Organization) {
           emoji: '/emoji',
           speakers: '/speakers',
           sponsors: '/sponsors',
+          faqs: '/faqs',
           tech_check: '/tech_check',
           attendees: '/attendees',
           points: '/points',

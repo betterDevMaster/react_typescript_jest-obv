@@ -144,6 +144,13 @@ export interface SimpleBlog {
     speakerImageSize?: Column
     speakersSpace?: number
   }
+  faq?: {
+    title?: string
+    description?: string
+    backToDashboardText?: string
+    backToDashboardTextColor?: string
+    order?: number[]
+  }
   zoomBackgrounds: {
     borderColor: string
     borderRadius: number

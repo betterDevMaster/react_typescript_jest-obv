@@ -30,12 +30,14 @@ import Event from 'organization/Event'
 import AreaList from 'organization/Event/AreaList'
 import {HideLiveChatSupport} from 'lib/WithLiveChatSupport'
 import SponsorPageConfig from 'organization/Event/SponsorPageConfig'
+import FaqPageConfig from 'organization/Event/FaqPageConfig'
 import Form from 'organization/Event/Form'
 import {FormProvider} from 'organization/Event/Form/FormProvider'
 import {useEvent} from 'Event/EventProvider'
 import SelectTemplateForm from 'organization/Event/SelectTemplateForm'
 import TemplateProvider from 'Event/TemplateProvider'
 import SponsorsProvider from 'organization/Event/SponsorsProvider'
+import FaqsProvider from 'organization/Event/FaqsProvider'
 import SpeakersProvider from 'organization/Event/SpeakersProvider'
 import NameAppendageProvider from 'organization/Event/NameAppendageConfig/NameAppendageProvider'
 
@@ -129,6 +131,15 @@ export default function EventRoutes() {
               <SponsorsProvider>
                 <SponsorPageConfig />
               </SponsorsProvider>
+            </AreasProvider>
+          </AuthorizedPage>
+        </Route>
+        <Route path={routes.events[':event'].faqs}>
+          <AuthorizedPage permission={CONFIGURE_EVENTS}>
+            <AreasProvider>
+              <FaqsProvider>
+                <FaqPageConfig />
+              </FaqsProvider>
             </AreasProvider>
           </AuthorizedPage>
         </Route>

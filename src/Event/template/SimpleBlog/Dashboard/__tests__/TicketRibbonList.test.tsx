@@ -114,7 +114,11 @@ it('should add a new ticket ribbon', async () => {
     },
   )
 
-  const text = faker.random.words(8).substring(0, 7)
+  /**
+   * Only grab first 5 characters as the ribbon has a char limit
+   */
+  const text = faker.random.words(2).substring(0, 5)
+
   user.type(await findByLabelText('ticket ribbon text input'), text)
 
   fireEvent.click(await findByLabelText('close config dialog'))

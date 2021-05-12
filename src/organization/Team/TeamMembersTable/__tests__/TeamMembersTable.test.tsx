@@ -57,7 +57,7 @@ it('should remove a team member', async () => {
 it('should remove a team invitation', async () => {
   const teamInvitations = Array.from(
     {
-      length: faker.random.number({min: 1, max: 5}),
+      length: faker.random.number({min: 2, max: 5}),
     },
     fakeTeamInvitation,
   )

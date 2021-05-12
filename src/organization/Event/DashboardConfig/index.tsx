@@ -2,7 +2,6 @@ import {useOrganizationAuth} from 'organization/auth'
 import styled from 'styled-components'
 import Dashboard from 'Event/Dashboard'
 import React from 'react'
-import AttendeeProfileProvider from 'Event/visibility-rules/AttendeeProfileProvider'
 import Layout from 'organization/user/Layout'
 import Page from 'organization/Event/Page'
 import {OrganizationActionsProvider} from 'Event/ActionsProvider'
@@ -21,11 +20,9 @@ export default function DashboardConfig() {
         <OrganizationActionsProvider
           loader={<LoadingText>loading...</LoadingText>}
         >
-          <AttendeeProfileProvider groups={{}} tags={[]}>
-            <StaticSubmissionsProvider>
-              <Dashboard user={user} isEditMode={true} />
-            </StaticSubmissionsProvider>
-          </AttendeeProfileProvider>
+          <StaticSubmissionsProvider>
+            <Dashboard user={user} isEditMode={true} />
+          </StaticSubmissionsProvider>
         </OrganizationActionsProvider>
       </Page>
     </Layout>

@@ -11,6 +11,7 @@ import AuthorizedPage from 'organization/AuthorizedPage'
 import FormsProvider from 'organization/Event/FormsProvider'
 import {OrganizationLanguageProvider} from 'Event/LanguageProvider'
 import {StaticPointsProvider} from 'Event/PointsProvider'
+import AttendeeProfileProvider from 'Event/visibility-rules/AttendeeProfileProvider'
 
 export default function UserRoutes() {
   const {routes} = useOrganization()
@@ -42,7 +43,9 @@ export default function UserRoutes() {
           <FormsProvider>
             <OrganizationLanguageProvider>
               <StaticPointsProvider>
-                <EventRoutes />
+                <AttendeeProfileProvider groups={{}} tags={[]}>
+                  <EventRoutes />
+                </AttendeeProfileProvider>
               </StaticPointsProvider>
             </OrganizationLanguageProvider>
           </FormsProvider>

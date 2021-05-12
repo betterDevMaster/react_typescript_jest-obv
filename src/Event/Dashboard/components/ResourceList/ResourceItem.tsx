@@ -154,7 +154,7 @@ const ResourceLink = styled(AbsoluteLink)<{color: string}>`
   font-size: 20px;
   display: flex;
   margin-bottom: ${(props) => props.theme.spacing[1]};
-  color: ${(props) => props.color};
+  color: ${(props) => props.color}!important;
 
   &:hover {
     text-decoration: none;

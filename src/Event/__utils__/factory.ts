@@ -4,6 +4,7 @@ import {fakeAttendee} from 'Event/auth/__utils__/factory'
 import {Entry} from 'Event/Leaderboard'
 import {Speaker} from 'Event/SpeakerPage'
 import {Sponsor} from 'Event/SponsorPage'
+import {FAQ} from 'Event/FaqPage'
 import {fakeSimpleBlog} from 'Event/template/SimpleBlog/__utils__/factory'
 import faker from 'faker'
 import {now} from 'lib/date-time'
@@ -108,6 +109,17 @@ export const fakeSponsor = (overrides?: Partial<Sponsor>): Sponsor => ({
   description: `<html><p>${faker.lorem.paragraphs(3)}</p></html>`,
   image: null,
   settings: null,
+  ...overrides,
+})
+
+export const fakeFaq = (overrides?: Partial<FAQ>): FAQ => ({
+  id: faker.random.number({min: 1000, max: 10000}),
+  question: `${faker.name.firstName()} ${faker.name.lastName()}`,
+  answer: `<html><p>${faker.lorem.paragraphs(3)}</p></html>`,
+  settings: {
+    showAnswerOnLoad: false,
+    rules: [],
+  },
   ...overrides,
 })
 

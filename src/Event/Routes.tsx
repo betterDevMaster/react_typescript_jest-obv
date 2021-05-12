@@ -20,6 +20,7 @@ import HTMLHead from 'Event/HTMLHead'
 import ForgotPassword from 'Event/auth/ForgotPassword'
 import ResetPassword from 'Event/auth/ResetPassword'
 import SponsorPage from 'Event/SponsorPage'
+import FaqPage from 'Event/FaqPage'
 import SubmissionsProvider from 'Event/SubmissionsProvider'
 import EventLanguageProvider from 'Event/LanguageProvider'
 import JoinArea from 'Event/JoinArea/JoinArea'
@@ -36,6 +37,7 @@ export const eventRoutes = createRoutes({
   step3: '/step_3',
   speakers: '/speakers',
   sponsors: '/sponsors',
+  faq: '/faq',
   leaderboard: '/leaderboard',
   checkIn: '/check_in',
   area: {
@@ -52,6 +54,7 @@ export const eventRoutes = createRoutes({
 export const EVENT_PAGES = {
   [eventRoutes.speakers]: 'Speakers',
   [eventRoutes.sponsors]: 'Sponsors',
+  [eventRoutes.faq]: 'FAQ',
   [eventRoutes.leaderboard]: 'Leaderboard',
   [eventRoutes.backgrounds]: 'Backgrounds',
 }
@@ -138,6 +141,9 @@ function UserRoutes() {
       </Route>
       <Route path={eventRoutes.sponsors} exact>
         <SponsorPage />
+      </Route>
+      <Route path={eventRoutes.faq} exact>
+        <FaqPage />
       </Route>
       <Route path={eventRoutes.leaderboard}>
         <Leaderboard />
