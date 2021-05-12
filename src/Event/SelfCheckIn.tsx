@@ -1,3 +1,4 @@
+import {useTrackOnLoad} from 'analytics'
 import {setUser} from 'auth/actions'
 import {Attendee} from 'Event/attendee'
 import {useAttendee} from 'Event/auth'
@@ -12,8 +13,14 @@ import {Redirect} from 'react-router-dom'
 export default function SelfCheckIn() {
   const {client} = useEvent()
   const dispatch = useDispatch()
-
   const attendee = useAttendee()
+  const {event} = useEvent()
+
+  useTrackOnLoad({
+    category: 'Event',
+    action: 'Visit Self Check-In',
+    label: event.name,
+  })
 
   useEffect(() => {
     const url = api(`/check_in`)

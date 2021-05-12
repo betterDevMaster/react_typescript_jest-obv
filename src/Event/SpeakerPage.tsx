@@ -8,6 +8,7 @@ import {useAsync} from 'lib/async'
 import {api} from 'lib/url'
 import {Client} from 'lib/api-client'
 import {PublicFile} from 'lib/http-client'
+import {useTrackOnLoad} from 'analytics'
 
 export interface Speaker {
   id: number
@@ -20,6 +21,12 @@ export default function SpeakersPage() {
   const template = useTemplate()
   const user = useAttendee()
   const {event} = useEvent()
+
+  useTrackOnLoad({
+    category: 'Event',
+    action: 'Visited Speakers',
+    label: event.name,
+  })
 
   const speakers = event.speakers
 
