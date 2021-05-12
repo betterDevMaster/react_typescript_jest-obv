@@ -17,14 +17,13 @@ export default () => {
         <StyledSetTicketRibbonButton />
       </EditModeOnly>
       <RibbonsContainer>
-        {ticketRibbons &&
-          ticketRibbons.map((ticketRibbon: TicketRibbon, index: number) => {
-            return (
-              <HiddenOnMatch rules={ticketRibbon.rules} key={index}>
-                <TicketRibbonItem ticketRibbon={ticketRibbon} index={index} />
-              </HiddenOnMatch>
-            )
-          })}
+        {ticketRibbons.map((ticketRibbon: TicketRibbon, index: number) => {
+          return (
+            <HiddenOnMatch rules={ticketRibbon.rules} key={index}>
+              <TicketRibbonItem ticketRibbon={ticketRibbon} index={index} />
+            </HiddenOnMatch>
+          )
+        })}
       </RibbonsContainer>
     </>
   )

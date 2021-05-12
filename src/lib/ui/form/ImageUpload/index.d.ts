@@ -4,8 +4,7 @@ import React from 'react'
 const ImageUpload: React.ComponentType<{
   file: FileSelect
   disabled?: boolean
-  children: React.ReactElement | React.ReactElement[]
-  onSelect?: (image: File | null) => void
+  children: React.ReactElement | (React.ReactElement | null)[]
 }>
 
 export default ImageUpload

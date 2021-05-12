@@ -28,9 +28,12 @@ export function useTemplate() {
 export function useUpdateTemplate() {
   const dispatch = useDispatch()
 
-  return (updates: Partial<Template>) => {
-    dispatch(updateTemplate(updates))
-  }
+  return useCallback(
+    (updates: Partial<Template>) => {
+      dispatch(updateTemplate(updates))
+    },
+    [dispatch],
+  )
 }
 
 export function useUpdatePrimitive<T extends keyof Template>(key: T) {

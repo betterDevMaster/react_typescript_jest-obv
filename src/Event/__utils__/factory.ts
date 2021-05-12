@@ -40,6 +40,7 @@ export const fakeEvent = (overrides?: Partial<ObvioEvent>): ObvioEvent => ({
   zoom_backgrounds_title: null,
   zoom_backgrounds_description: null,
   backgrounds: [],
+  ticket_ribbons: [],
   ...overrides,
 })
 

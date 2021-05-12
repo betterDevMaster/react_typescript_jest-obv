@@ -16,6 +16,7 @@ import {mockRxJsAjax} from 'store/__utils__/MockStoreProvider'
 import {wait} from '@testing-library/react'
 import {clickEdit} from '__utils__/edit'
 import {defaultScore} from 'Event/PointsProvider'
+import {fakeOrganization} from 'obvio/Organizations/__utils__/factory'
 
 const mockPost = mockRxJsAjax.post as jest.Mock
 
@@ -42,6 +43,7 @@ it('should edit an existing ticket ribbon', async () => {
       withRouter: true,
       actions: emptyActions,
       score: defaultScore,
+      organization: fakeOrganization(),
     },
   )
 
@@ -97,6 +99,7 @@ it('should add a new ticket ribbon', async () => {
       withRouter: true,
       actions: emptyActions,
       score: defaultScore,
+      organization: fakeOrganization(),
     },
   )
 
@@ -143,7 +146,13 @@ it('should remove a ticket ribbon', async () => {
 
   const {findByLabelText, findAllByLabelText, queryByText} = render(
     <Dashboard isEditMode={true} user={fakeAttendee()} />,
-    {event, withRouter: true, actions: emptyActions, score: defaultScore},
+    {
+      event,
+      withRouter: true,
+      actions: emptyActions,
+      score: defaultScore,
+      organization: fakeOrganization(),
+    },
   )
 
   const targetIndex = faker.random.number({

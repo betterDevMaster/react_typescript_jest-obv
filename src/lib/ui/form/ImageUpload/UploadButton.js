@@ -7,6 +7,7 @@ import {MAX_FILE_SIZE_BYTES} from 'lib/ui/form/ImageUpload'
 
 export default function UploadButton(props) {
   const [error, setError] = useState(null)
+  const {children: text} = props
 
   const id = useRef(uuid())
 
@@ -36,7 +37,9 @@ export default function UploadButton(props) {
         aria-label="select image to upload"
         disabled={props.disabled}
       >
-        <UploadButtonLabel htmlFor={id.current}>Upload</UploadButtonLabel>
+        <UploadButtonLabel htmlFor={id.current}>
+          {text || 'Upload'}
+        </UploadButtonLabel>
       </Button>
       <input
         id={id.current}

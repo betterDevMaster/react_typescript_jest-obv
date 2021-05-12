@@ -7,10 +7,12 @@ import Cropper from 'lib/ui/form/ImageUpload/Cropper'
 export const MAX_FILE_SIZE_BYTES = 5000000 // 5MB
 
 export default function ImageUpload(props) {
-  const {file, disabled} = props
+  const {file, disabled, children} = props
   const [cropTarget, setCropTarget] = useState(null)
 
-  const hasCropper = hasComponent(Cropper, props.children)
+  const components = Array.isArray(children) ? children : [children]
+
+  const hasCropper = hasComponent(Cropper, components)
 
   const handleSelected = (image) => {
     if (!hasCropper) {
@@ -31,9 +33,7 @@ export default function ImageUpload(props) {
     setCropTarget(null)
   }
 
-  const withProps = (children) => {
-    const components = Array.isArray(children) ? children : [children]
-
+  const withProps = (components) => {
     return components.map((component, index) => {
       /**
        * Handle 'null's
@@ -117,7 +117,7 @@ export default function ImageUpload(props) {
     })
   }
 
-  return withProps(props.children)
+  return withProps(components)
 }
 
 function is(fn, component) {

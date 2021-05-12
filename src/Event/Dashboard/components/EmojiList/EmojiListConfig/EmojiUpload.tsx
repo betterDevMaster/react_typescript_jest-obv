@@ -147,7 +147,7 @@ function Error(props: {children: string | null}) {
 }
 
 const Box = styled.div`
-  margin: 0 ${(props) => props.theme.spacing[4]};
+  margin: ${(props) => props.theme.spacing[4]} 0;
 `
 
 const ErrorText = withStyles({

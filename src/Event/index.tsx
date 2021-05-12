@@ -18,6 +18,7 @@ import {useWithAttendeeData, useWithPoints} from 'Event/auth/attendee-data'
 import {pipe} from 'ramda'
 import {Background} from 'organization/Event/Backgrounds/BackgroundsProvider'
 import {useRemoveVariables} from 'lib/template'
+import {CustomTicketRibbon} from 'Event/Dashboard/components/TicketRibbonList/TicketRibbon'
 
 // Can't use 'Event' because that's already a native DOM type
 // for browser events and we'd lose TS safety/import assist.
@@ -53,6 +54,7 @@ export interface ObvioEvent {
   backgrounds: Background[]
   zoom_backgrounds_title: string | null
   zoom_backgrounds_description: string | null
+  ticket_ribbons: CustomTicketRibbon[]
 }
 
 export interface WaiverConfig {

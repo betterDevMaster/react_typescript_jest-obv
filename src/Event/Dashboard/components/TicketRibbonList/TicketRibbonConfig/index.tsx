@@ -1,21 +1,22 @@
-import FormControl from '@material-ui/core/FormControl'
 import styled from 'styled-components'
 import TextField from '@material-ui/core/TextField'
-import Select from '@material-ui/core/Select'
 import ColorPicker from 'lib/ui/ColorPicker'
 import {
   TicketRibbon,
-  TICKET_RIBBON_IMAGE,
   TICKET_RIBBON,
 } from 'Event/Dashboard/components/TicketRibbonList/TicketRibbon'
-import React, {useState} from 'react'
-import MenuItem from '@material-ui/core/MenuItem'
+import React, {useCallback, useState} from 'react'
 import {useTemplate, useUpdateTemplate} from 'Event/TemplateProvider'
-import {onChangeStringHandler, onUnknownChangeHandler} from 'lib/dom'
+import {onChangeStringHandler} from 'lib/dom'
 import DangerButton from 'lib/ui/Button/DangerButton'
 import {useCloseConfig} from 'Event/Dashboard/editor/state/edit-mode'
 import RuleConfig, {useRuleConfig} from 'Event/visibility-rules/RuleConfig'
 import ConfigureRulesButton from 'Event/visibility-rules/ConfigureRulesButton'
+import DefaultRibbonSelect from 'Event/Dashboard/components/TicketRibbonList/TicketRibbonConfig/DefaultRibbonSelect'
+import CustomRibbonUpload from 'Event/Dashboard/components/TicketRibbonList/TicketRibbonConfig/CustomRibbonUpload'
+import CustomRibbonImage, {
+  useDeleteCustomRibbon,
+} from 'Event/Dashboard/components/TicketRibbonList/TicketRibbonConfig/CustomRibbonImage'
 
 export type TicketRibbonConfig = {
   type: typeof TICKET_RIBBON
@@ -24,39 +25,59 @@ export type TicketRibbonConfig = {
 
 const MAX_NUM_CHARACTERS = 9
 
+export interface TicketRibbonConfigProps {
+  update: <T extends keyof TicketRibbon>(
+    key: T,
+  ) => (value: TicketRibbon[T]) => void
+  processing: boolean
+  setProcessing: (procesing: boolean) => void
+  ticketRibbon: TicketRibbon
+}
+
 export function TicketRibbonConfig(props: {index: number}) {
+  const {index} = props
   const {ticketRibbons} = useTemplate()
   const ticketRibbon = ticketRibbons[props.index]
   const updateTemplate = useUpdateTemplate()
   const closeConfig = useCloseConfig()
   const {visible: ruleConfigVisible, toggle: toggleRuleConfig} = useRuleConfig()
   const [error, setError] = useState('')
+  const [processing, setProcessing] = useState(false)
+  const deleteCustomRibbon = useDeleteCustomRibbon()
 
-  if (ticketRibbon === undefined) {
-    throw new Error('Missing ticket ribbon; was it set properly via edit?')
-  }
+  const update: TicketRibbonConfigProps['update'] = useCallback(
+    (key) => (value) => {
+      const updated = {
+        ...ticketRibbon,
+        [key]: value,
+      }
 
-  const update = <T extends keyof TicketRibbon>(key: T) => (
-    value: TicketRibbon[T],
-  ) => {
-    const updated = {
-      ...ticketRibbon,
-      [key]: value,
-    }
+      updateTemplate({
+        ticketRibbons: ticketRibbons.map((tr, i) => {
+          const isTarget = i === index
+          if (isTarget) {
+            return updated
+          }
 
-    updateTemplate({
-      ticketRibbons: ticketRibbons.map((tr, index) => {
-        const isTarget = index === props.index
-        if (isTarget) {
-          return updated
-        }
+          return tr
+        }),
+      })
+    },
+    [index, ticketRibbons, ticketRibbon, updateTemplate],
+  )
 
-        return tr
-      }),
-    })
+  const configProps = {
+    processing,
+    setProcessing,
+    update,
+    ticketRibbon,
   }
 
   const remove = () => {
+    if (ticketRibbon.customRibbon) {
+      deleteCustomRibbon(ticketRibbon.customRibbon)
+    }
+
     const removed = ticketRibbons.filter((_, index) => index !== props.index)
     closeConfig()
     updateTemplate({
@@ -68,12 +89,15 @@ export function TicketRibbonConfig(props: {index: number}) {
     const exceedsCharacterLimit = val.length > MAX_NUM_CHARACTERS
     if (exceedsCharacterLimit) {
       setError(`Maximum of ${MAX_NUM_CHARACTERS} characters`)
-
       return
     }
 
     setError('')
     update('text')(val)
+  }
+
+  if (ticketRibbon === undefined) {
+    throw new Error('Missing ticket ribbon; was it set properly via edit?')
   }
 
   return (
@@ -85,25 +109,13 @@ export function TicketRibbonConfig(props: {index: number}) {
     >
       <>
         <ConfigureRulesButton onClick={toggleRuleConfig} />
-        <FormControl fullWidth>
-          <Select
-            value={ticketRibbon.name}
-            inputProps={{
-              'aria-label': 'pick ticket ribbon',
-            }}
-            onChange={onUnknownChangeHandler(update('name'))}
-          >
-            {Object.entries(TICKET_RIBBON_IMAGE).map(([name, image]) => (
-              <MenuItem key={name} value={name}>
-                <Image src={image} alt={name} />
-                <span>{name}</span>
-              </MenuItem>
-            ))}
-          </Select>
-        </FormControl>
+        <DefaultRibbonSelect {...configProps} />
+        <CustomRibbonUpload {...configProps} />
+        <CustomRibbonImage {...configProps} />
         <TextField
           name="text"
           defaultValue={ticketRibbon.text}
+          label="Text"
           fullWidth
           onChange={onChangeStringHandler(onChangeText)}
           inputProps={{
@@ -129,11 +141,6 @@ export function TicketRibbonConfig(props: {index: number}) {
     </RuleConfig>
   )
 }
-
-const Image = styled.img`
-  margin-right: ${(props) => props.theme.spacing[2]};
-  width: 40px;
-`
 
 const RemoveButton = styled(DangerButton)`
   margin-top: ${(props) => props.theme.spacing[6]}!important;

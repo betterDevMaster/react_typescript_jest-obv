@@ -21,6 +21,7 @@ import LIGHT_PURPLE_RIBBON_IMAGE from 'Event/Dashboard/components/TicketRibbonLi
 import {HasRules} from 'Event/visibility-rules'
 import {useVariables} from 'Event'
 import {Typography} from '@material-ui/core'
+import {PublicFile} from 'lib/http-client'
 
 export const TICKET_RIBBON = 'Ticket Ribbon'
 
@@ -41,6 +42,7 @@ export const RED_RIBBON = 'Red'
 export const MAGENTA_RIBBON = 'Magenta'
 export const WHITE_RIBBON = 'White'
 export const YELLOW_RIBBON = 'Yellow'
+export const CUSTOM_RIBBON = 'Custom'
 
 export type TicketRibbonName =
   | typeof BLACK_RIBBON
@@ -60,14 +62,21 @@ export type TicketRibbonName =
   | typeof MAGENTA_RIBBON
   | typeof WHITE_RIBBON
   | typeof YELLOW_RIBBON
+  | typeof CUSTOM_RIBBON
 
 export type TicketRibbon = HasRules & {
   name: TicketRibbonName
   text: string
   color: string
+  customRibbon?: CustomTicketRibbon | null
 }
 
-export const TICKET_RIBBON_IMAGE: Record<TicketRibbonName, string> = {
+export type CustomTicketRibbon = {
+  id: number
+  image: PublicFile
+}
+
+export const TICKET_RIBBON_IMAGE: Record<string, string> = {
   [BLACK_RIBBON]: BLACK_RIBBON_IMAGE,
   [LIGHT_BLUE_RIBBON]: LIGHT_BLUE_RIBBON_IMAGE,
   [BLUE_RIBBON]: BLUE_RIBBON_IMAGE,
@@ -90,8 +99,14 @@ export const TICKET_RIBBON_IMAGE: Record<TicketRibbonName, string> = {
 export const RIBBONS = Object.keys(TICKET_RIBBON_IMAGE) as TicketRibbonName[]
 export const IMAGES = Object.values(TICKET_RIBBON_IMAGE)
 
-export default (props: {ticketRibbon: TicketRibbon; index: number}) => {
-  const image = TICKET_RIBBON_IMAGE[props.ticketRibbon.name]
+export default function TicketRibbon(props: {
+  ticketRibbon: TicketRibbon
+  index: number
+}) {
+  const {ticketRibbon} = props
+  const image =
+    ticketRibbon.customRibbon?.image.url ||
+    TICKET_RIBBON_IMAGE[props.ticketRibbon.name]
   const v = useVariables()
 
   return (
@@ -141,6 +156,7 @@ const Ribbon = styled.div<{
   align-items: center;
   margin-top: ${(props) => props.theme.spacing[7]};
   padding: 0 ${(props) => props.theme.spacing[18]};
+  min-height: 64px;
 `
 
 const RibbonText = styled(Typography)`

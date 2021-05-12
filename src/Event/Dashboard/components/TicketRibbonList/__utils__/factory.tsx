@@ -1,4 +1,5 @@
 import {
+  CustomTicketRibbon,
   RIBBONS,
   TicketRibbon,
 } from 'Event/Dashboard/components/TicketRibbonList/TicketRibbon'
@@ -23,3 +24,14 @@ export function withTicketRibbons<T>(attributes: T): T {
     ),
   }
 }
+
+export const fakeCustomRibbon = (
+  overrides?: Partial<CustomTicketRibbon>,
+): CustomTicketRibbon => ({
+  id: faker.random.number({min: 1000, max: 10000}),
+  image: {
+    name: 'customribbon.jpg',
+    url: faker.internet.url(),
+  },
+  ...overrides,
+})
