@@ -112,53 +112,50 @@ export default function TicketRibbon(props: {
   return (
     <EditComponent component={{type: TICKET_RIBBON, index: props.index}}>
       <Box aria-label="ticket ribbon">
-        <Ribbon background={`url(${image})`} color={props.ticketRibbon.color}>
-          <RibbonText
-            aria-label="ticket ribbon text"
-            align="center"
-            variant="h3"
-          >
+        <Background src={image} aria-label="ticket ribbon image" />
+        <TextBox color={props.ticketRibbon.color}>
+          <Text aria-label="ticket ribbon text" align="center" variant="h3">
             {v(props.ticketRibbon.text)}
-          </RibbonText>
-        </Ribbon>
+          </Text>
+        </TextBox>
       </Box>
     </EditComponent>
   )
 }
 
 const Box = styled.div`
-  margin: ${(props) =>
-    `-${props.theme.spacing[6]} 0 ${props.theme.spacing[8]}`};
+  position: relative;
+  margin: ${(props) => `0 0 ${props.theme.spacing[8]}`};
 
   @media (min-width: ${(props) => props.theme.breakpoints.md}) {
     margin: ${(props) =>
-      `-${props.theme.spacing[6]} -${props.theme.spacing[13]} ${props.theme.spacing[8]}`};
+      `0 -${props.theme.spacing[13]} ${props.theme.spacing[8]}`};
   }
 
   @media (min-width: ${(props) => props.theme.breakpoints.lg}) {
     margin: ${(props) =>
-      `-${props.theme.spacing[6]} -${props.theme.spacing[16]} ${props.theme.spacing[8]}`};
+      `0 -${props.theme.spacing[16]} ${props.theme.spacing[8]}`};
   }
 `
 
-const Ribbon = styled.div<{
-  background: string
+const TextBox = styled.div<{
   color: string
 }>`
   width: 100%;
-  background: ${(props) => props.background};
-  background-repeat: no-repeat;
-  background-size: 100% 100%;
-  background-position: center center;
+  height: 100%;
   color: ${(props) => props.color};
-  display: block;
+  display: flex;
   justify-content: center;
   align-items: center;
-  margin-top: ${(props) => props.theme.spacing[7]};
-  padding: 0 ${(props) => props.theme.spacing[18]};
-  min-height: 64px;
+  position: absolute;
+  left: 0;
+  top: 0;
 `
 
-const RibbonText = styled(Typography)`
+const Text = styled(Typography)`
   word-wrap: break-word;
+`
+
+const Background = styled.img`
+  width: 100%;
 `

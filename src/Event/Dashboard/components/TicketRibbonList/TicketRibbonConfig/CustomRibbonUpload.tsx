@@ -56,7 +56,7 @@ export default function CustomRibbonUpload(props: TicketRibbonConfigProps) {
     <Box mb={2}>
       <ImageUpload file={customImage}>
         {/* Same dimensions as default ribbons */}
-        <Cropper width={1405} height={263} />
+        <Cropper width={800} height={150} />
         <UploadButton
           inputProps={{
             'aria-label': 'upload custom image',

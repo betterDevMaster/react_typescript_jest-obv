@@ -60,8 +60,10 @@ it('should add a custom ticket ribbon', async () => {
 
   // Background was set correctly
   const ribbon = await findByLabelText('ticket ribbon')
-  const background = ribbon.children[0]
-  expect(background).toHaveStyle(`background: url(${customRibbon.image.url});`)
+  const background = (await findByLabelText(
+    'ticket ribbon image',
+  )) as HTMLImageElement
+  expect(background.getAttribute('src')).toBe(customRibbon.image.url)
 
   clickEdit(ribbon)
 
@@ -72,9 +74,7 @@ it('should add a custom ticket ribbon', async () => {
   user.click(await findByLabelText('close config dialog'))
 
   // Custom background removed
-  expect(background).not.toHaveStyle(
-    `background: url(${customRibbon.image.url});`,
-  )
+  expect(background.getAttribute('src')).not.toBe(customRibbon.image.url)
 })
 
 it('should remove a custom image on delete', async () => {
