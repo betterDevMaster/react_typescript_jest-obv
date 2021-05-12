@@ -71,7 +71,7 @@ const Box = styled.div<{color: string}>`
 `
 
 const StyledLink = styled(RelativeLink)<{color: string}>`
-  color: ${(props) => props.color};
+  color: ${(props) => props.color}!important;
 `
 
 const NumPointsText = styled.span`
