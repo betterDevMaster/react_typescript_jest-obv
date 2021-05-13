@@ -106,7 +106,7 @@ export default function Form() {
         fontSize: descriptionFontSize,
       },
       backToDashboardText: zoomBackgrounds.backToDashboardText,
-      backToDashboardTextColor: zoomBackgrounds.backToDashboardTextColor
+      backToDashboardTextColor: zoomBackgrounds.backToDashboardTextColor,
     })
   }
 

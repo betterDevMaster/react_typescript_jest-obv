@@ -41,14 +41,17 @@ export default function PageSettingsDialog(props: {
   const {event} = useEvent()
 
   const submit = (data: SettingsFormData) => {
-    setBackgroundData({
-      zoom_backgrounds_title: data.title,
-      zoom_backgrounds_description: data.description
-    }, {
-      ...zoomBackgrounds,
-      backToDashboardText: data.backToDashboardText,
-      backToDashboardTextColor: data.backToDashboardTextColor
-    })
+    setBackgroundData(
+      {
+        zoom_backgrounds_title: data.title,
+        zoom_backgrounds_description: data.description,
+      },
+      {
+        ...zoomBackgrounds,
+        backToDashboardText: data.backToDashboardText,
+        backToDashboardTextColor: data.backToDashboardTextColor,
+      },
+    )
   }
 
   return (

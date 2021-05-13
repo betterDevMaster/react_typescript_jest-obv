@@ -46,8 +46,7 @@ export default function SimpleBlogBackgrounds(props: {user: Attendee}) {
         }
       >
         <Link to="/">
-          {settings?.backToDashboardText ||
-            DEFAULT_BACK_TO_DASHBOARD_TEXT}
+          {settings?.backToDashboardText || DEFAULT_BACK_TO_DASHBOARD_TEXT}
         </Link>
       </BackToDashboard>
 
