@@ -9,11 +9,10 @@ import {useActions} from 'Event/ActionsProvider'
 import {usePoints} from 'Event/PointsProvider'
 import {Publishable} from 'Event/Dashboard/editor/views/Published'
 import {InfusionsoftTag, useAddTag} from 'Event/infusionsoft'
-
 import {RelativeLink} from 'lib/ui/link/RelativeLink'
-import {useWithAttendeeData} from 'Event/auth/attendee-data'
 import {areaRoutes} from 'Event/Routes'
 import {useVariables} from 'Event'
+import {Icon} from 'lib/fontawesome/Icon'
 
 export const NAV_BUTTON = 'NAV_BUTTON'
 
@@ -43,6 +42,7 @@ export default interface NavButton extends HasRules, Publishable {
   fontSize?: number
   padding?: number
   width?: number
+  icon?: string | null
 }
 
 export type NavButtonWithSize = NavButton & {
@@ -55,7 +55,6 @@ export default function NavButton(props: NavButton) {
   const {newTab, isAreaButton} = props
   const submitAction = useSubmitAction(props.actionId)
   const addInfusionsoftTag = useAddInfusionsoftTag(props.infusionsoftTag)
-  const withAttendeeData = useWithAttendeeData()
   const v = useVariables()
 
   const handleClicked = () => {
@@ -77,20 +76,20 @@ export default function NavButton(props: NavButton) {
         aria-label={props['aria-label']}
         onClick={handleClicked}
       >
-        <Button {...props}>{v(props.text)}</Button>
+        <Button {...props} />
       </RelativeLink>
     )
   }
 
   return (
     <StyledAbsoluteLink
-      to={withAttendeeData(props.link)}
+      to={v(props.link)}
       disableStyles
       aria-label={props['aria-label']}
       newTab={newTab}
       onClick={handleClicked}
     >
-      <Button {...props}>{v(props.text)}</Button>
+      <Button {...props} />
     </StyledAbsoluteLink>
   )
 }
@@ -127,31 +126,30 @@ function useAddInfusionsoftTag(tag: NavButton['infusionsoftTag']) {
 }
 
 function JoinAreaButton(
-  props: NavButton & {areaId: string; onJoin: () => void},
+  props: NavButton & {
+    areaId: string
+    onJoin: () => void
+  },
 ) {
   const {areaId} = props
-
   const joinLink = areaRoutes(areaId).root
 
-  const v = useVariables()
   return (
     <RelativeLink to={joinLink} newTab>
-      <Button {...props} onClick={props.onJoin}>
-        {v(props.text)}
-      </Button>
+      <Button {...props} onClick={props.onJoin} />
     </RelativeLink>
   )
 }
 
 function Button(
   props: {
-    children: string | React.ReactElement
     disabled?: boolean
     onClick?: () => void
     isPending?: boolean
   } & NavButton,
 ) {
   const opacity = props.isPending ? 0.8 : 1
+  const v = useVariables()
 
   return (
     <StyledButton
@@ -174,7 +172,10 @@ function Button(
       width={props.width}
       fontSize={props.fontSize}
     >
-      {props.children}
+      <>
+        <StyledIcon iconClass={props.icon} color={props.textColor} />
+        {v(props.text)}
+      </>
     </StyledButton>
   )
 }
@@ -192,4 +193,8 @@ const StyledButton = styled(ButtonBase)`
   &:hover {
     opacity: 0.8;
   }
+`
+
+const StyledIcon = styled(Icon)`
+  margin-right: ${(props) => props.theme.spacing[2]};
 `

@@ -1,18 +1,6 @@
-import FormControl from '@material-ui/core/FormControl'
-import Icon from '@material-ui/core/Icon'
-import InputLabel from '@material-ui/core/InputLabel'
-import MenuItem from '@material-ui/core/MenuItem'
-import Select from '@material-ui/core/Select'
 import TextField from '@material-ui/core/TextField'
-import {
-  RESOURCE_ICON,
-  RESOURCE_ITEM,
-} from 'Event/Dashboard/components/ResourceList'
-import {
-  onUnknownChangeHandler,
-  onChangeStringHandler,
-  onChangeCheckedHandler,
-} from 'lib/dom'
+import {RESOURCE_ITEM} from 'Event/Dashboard/components/ResourceList'
+import {onChangeStringHandler, onChangeCheckedHandler} from 'lib/dom'
 import styled from 'styled-components'
 import React from 'react'
 import DangerButton from 'lib/ui/Button/DangerButton'
@@ -29,6 +17,8 @@ import RuleConfig, {useRuleConfig} from 'Event/visibility-rules/RuleConfig'
 import ConfigureRulesButton from 'Event/visibility-rules/ConfigureRulesButton'
 import ToggleButtonGroup from '@material-ui/lab/ToggleButtonGroup'
 import ToggleButton from '@material-ui/lab/ToggleButton'
+import FormControl from '@material-ui/core/FormControl'
+import IconSelect from 'lib/fontawesome/IconSelect'
 
 export type ResourceItemConfig = {
   type: typeof RESOURCE_ITEM
@@ -132,26 +122,10 @@ export function ResourceItemConfig(props: {id: ResourceItemConfig['id']}) {
         <ResourceUpload resource={resource} update={update} />
         <UrlField resource={resource} onChange={setUrl} />
         <Grid container spacing={2}>
-          <Grid item xs={6}>
-            <FormControl fullWidth>
-              <InputLabel>File Icon</InputLabel>
-              <Select
-                value={resource.icon}
-                fullWidth
-                onChange={onUnknownChangeHandler(update('icon'))}
-                inputProps={{
-                  'aria-label': 'resource icon',
-                }}
-              >
-                {Object.values(RESOURCE_ICON).map((icon) => (
-                  <MenuItem key={icon} value={icon}>
-                    <Icon component="i">{icon}</Icon>
-                  </MenuItem>
-                ))}
-              </Select>
-            </FormControl>
+          <Grid item xs={8}>
+            <IconSelect value={resource.icon} onChange={update('icon')} />
           </Grid>
-          <Grid item xs={6}>
+          <Grid item xs={4}>
             <Switch
               checked={resource.isVisible}
               onChange={onChangeCheckedHandler(update('isVisible'))}
