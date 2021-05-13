@@ -22,6 +22,9 @@ import {HasRules} from 'Event/visibility-rules'
 import {useVariables} from 'Event'
 import {Typography} from '@material-ui/core'
 import {PublicFile} from 'lib/http-client'
+import {useEditMode} from 'Event/Dashboard/editor/state/edit-mode'
+import {Draggable} from 'react-beautiful-dnd'
+import {DragHandle, DraggableOverlay} from 'lib/ui/drag-and-drop'
 
 export const TICKET_RIBBON = 'Ticket Ribbon'
 
@@ -103,6 +106,33 @@ export default function TicketRibbon(props: {
   ticketRibbon: TicketRibbon
   index: number
 }) {
+  const isEdit = useEditMode()
+
+  if (!isEdit) {
+    return <TicketRibbonItem {...props} />
+  }
+
+  return (
+    <Draggable draggableId={String(props.index)} index={props.index}>
+      {(provided) => (
+        <div ref={provided.innerRef} {...provided.draggableProps}>
+          <DraggableOverlay>
+            <EditComponent
+              component={{type: TICKET_RIBBON, index: props.index}}
+            >
+              <>
+                <DragHandle handleProps={provided.dragHandleProps} />
+                <TicketRibbonItem {...props} />
+              </>
+            </EditComponent>
+          </DraggableOverlay>
+        </div>
+      )}
+    </Draggable>
+  )
+}
+
+function TicketRibbonItem(props: {ticketRibbon: TicketRibbon; index: number}) {
   const {ticketRibbon} = props
   const image =
     ticketRibbon.customRibbon?.image.url ||
@@ -110,16 +140,14 @@ export default function TicketRibbon(props: {
   const v = useVariables()
 
   return (
-    <EditComponent component={{type: TICKET_RIBBON, index: props.index}}>
-      <Box aria-label="ticket ribbon">
-        <Background src={image} aria-label="ticket ribbon image" />
-        <TextBox color={props.ticketRibbon.color}>
-          <Text aria-label="ticket ribbon text" align="center" variant="h3">
-            {v(props.ticketRibbon.text)}
-          </Text>
-        </TextBox>
-      </Box>
-    </EditComponent>
+    <Box aria-label="ticket ribbon">
+      <Background src={image} aria-label="ticket ribbon image" />
+      <TextBox color={props.ticketRibbon.color}>
+        <Text aria-label="ticket ribbon text" align="center" variant="h3">
+          {v(props.ticketRibbon.text)}
+        </Text>
+      </TextBox>
+    </Box>
   )
 }
 
