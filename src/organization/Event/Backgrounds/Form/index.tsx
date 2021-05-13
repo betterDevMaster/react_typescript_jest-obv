@@ -8,6 +8,7 @@ import Typography from '@material-ui/core/Typography'
 import styled from 'styled-components'
 import TextField from '@material-ui/core/TextField'
 import withStyles from '@material-ui/core/styles/withStyles'
+import Box from '@material-ui/core/Box'
 import BackgroundImageTable from 'organization/Event/Backgrounds/Form/BackgroundImageTable'
 import BackgroundImageUpload from 'organization/Event/Backgrounds/Form/BackgroundImageUpload'
 import ColorPicker from 'lib/ui/ColorPicker'
@@ -23,6 +24,7 @@ import {spacing} from 'lib/ui/theme'
 import {useEvent} from 'Event/EventProvider'
 import {Controller, useForm} from 'react-hook-form'
 import {useTemplate} from 'Event/TemplateProvider'
+import PageSettingsDialog from './PageSettingsDialog'
 
 const FONT_SIZE_MIN = 5
 const FONT_SIZE_MAX = 50
@@ -34,6 +36,10 @@ const PER_ROW_MIN = 1
 const PER_ROW_MAX = 3
 
 export default function Form() {
+  const [pageSettingsVisible, setPageSettingsVisible] = useState(false)
+
+  const togglePageSettings = () => setPageSettingsVisible(!pageSettingsVisible)
+
   const mounted = useRef(true)
   const template = useTemplate()
   const {event} = useEvent()
@@ -112,7 +118,20 @@ export default function Form() {
       <Typography variant="h6" gutterBottom>
         Zoom Backgrounds
       </Typography>
-
+      <Box display="flex" justifyContent="flex-end" mb={2}>
+        <Button
+          variant="outlined"
+          color="primary"
+          onClick={togglePageSettings}
+          aria-label="configure zoom background"
+        >
+          Page Settings
+        </Button>
+      </Box>
+      <PageSettingsDialog
+        visible={pageSettingsVisible}
+        onClose={togglePageSettings}
+      />
       <TextField
         name="zoom_backgrounds_title"
         label="Zoom Backgrounds Page Title *"
