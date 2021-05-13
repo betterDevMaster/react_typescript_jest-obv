@@ -24,7 +24,7 @@ import {spacing} from 'lib/ui/theme'
 import {useEvent} from 'Event/EventProvider'
 import {Controller, useForm} from 'react-hook-form'
 import {useTemplate} from 'Event/TemplateProvider'
-import PageSettingsDialog from './PageSettingsDialog'
+import PageSettingsDialog from 'organization/Event/Backgrounds/Form/PageSettingsDialog'
 
 const FONT_SIZE_MIN = 5
 const FONT_SIZE_MAX = 50
