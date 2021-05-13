@@ -120,7 +120,6 @@ export default function Form() {
 
       <Grid container spacing={2}>
         <Grid item xs={12} md={6}>
-
           <Typography variant="h6" gutterBottom>
             Image Appearance
           </Typography>
