@@ -23,6 +23,7 @@ export default function Waiver() {
     signature,
     setSignature,
   } = useWaiver()
+
   const {isDarkMode} = useTemplate()
   const v = useVariables()
   const color = isDarkMode ? '#FFFFFF' : '#000000'
@@ -41,6 +42,7 @@ export default function Waiver() {
               control={
                 <StyledCheckBox
                   color={color}
+                  checked={agree}
                   isDarkMode={isDarkMode}
                   onChange={onChangeCheckedHandler(setAgree)}
                   inputProps={{
