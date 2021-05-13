@@ -1,5 +1,6 @@
 import React from 'react'
 import Grid, {GridSize} from '@material-ui/core/Grid'
+import {Link} from 'react-router-dom'
 import Page from 'Event/template/SimpleBlog/Page'
 import styled from 'styled-components'
 import {Attendee} from 'Event/attendee'
@@ -9,6 +10,9 @@ import {useEvent} from 'Event/EventProvider'
 import {useTemplate} from 'Event/TemplateProvider'
 import {ImagePreviewContainer} from 'organization/Event/Backgrounds/BackgroundsProvider'
 import {AbsoluteLink} from 'lib/ui/link/AbsoluteLink'
+
+const DEFAULT_BACK_TO_DASHBOARD_TEXT = 'Back to Dashboard'
+const DEFAULT_BACK_TO_DASHBOARD_TEXT_COLOR = '#000000'
 
 export default function SimpleBlogBackgrounds(props: {user: Attendee}) {
   const {event} = useEvent()
@@ -34,6 +38,18 @@ export default function SimpleBlogBackgrounds(props: {user: Attendee}) {
         dangerouslySetInnerHTML={{__html: zoom_backgrounds_description || ''}}
         fontSize={settings.description.fontSize}
       />
+
+      <BackToDashboard
+        color={
+          settings?.backToDashboardTextColor ||
+          DEFAULT_BACK_TO_DASHBOARD_TEXT_COLOR
+        }
+      >
+        <Link to="/">
+          {settings?.backToDashboardText ||
+            DEFAULT_BACK_TO_DASHBOARD_TEXT}
+        </Link>
+      </BackToDashboard>
 
       <Grid container spacing={2}>
         {backgrounds.map((background) => (
@@ -69,4 +85,13 @@ const Title = styled.h2`
   line-height: 1.5;
   text-transform: uppercase;
   text-align: center;
+`
+
+const BackToDashboard = styled.div`
+  text-align: center;
+  margin-bottom: 20px;
+  a {
+    line-height: 1.5;
+    color: ${(props) => props.color};
+  }
 `

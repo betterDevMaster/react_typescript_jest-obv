@@ -104,6 +104,8 @@ export const fakeSimpleBlog = (overrides?: Partial<SimpleBlog>): SimpleBlog => {
         color: '#000000',
         fontSize: 18,
       },
+      backToDashboardText: 'Back to Dashboard',
+      backToDashboardTextColor: '#000000',
     },
   }
 
@@ -229,6 +231,8 @@ export function fakeZoomBackgrounds(
       color: '#000000',
       fontSize: 18,
     },
+    backToDashboardText: 'Back to Dashboard',
+    backToDashboardTextColor: '#000000',
     ...overrides,
   }
 }

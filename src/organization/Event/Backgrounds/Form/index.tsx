@@ -1,18 +1,14 @@
 import React, {useEffect, useRef, useState} from 'react'
 import Button from '@material-ui/core/Button'
-import FormHelperText from '@material-ui/core/FormHelperText'
 import Grid from '@material-ui/core/Grid'
 import InputLabel from '@material-ui/core/InputLabel'
 import Slider from '@material-ui/core/Slider'
 import Typography from '@material-ui/core/Typography'
-import styled from 'styled-components'
-import TextField from '@material-ui/core/TextField'
 import withStyles from '@material-ui/core/styles/withStyles'
 import Box from '@material-ui/core/Box'
 import BackgroundImageTable from 'organization/Event/Backgrounds/Form/BackgroundImageTable'
 import BackgroundImageUpload from 'organization/Event/Backgrounds/Form/BackgroundImageUpload'
 import ColorPicker from 'lib/ui/ColorPicker'
-import TextEditor from 'lib/ui/form/TextEditor'
 import {
   BackgroundsData,
   ImagePreviewContainer,
@@ -22,7 +18,7 @@ import {createSimpleBlog} from 'Event/template/SimpleBlog'
 import {handleChangeSlider} from 'lib/dom'
 import {spacing} from 'lib/ui/theme'
 import {useEvent} from 'Event/EventProvider'
-import {Controller, useForm} from 'react-hook-form'
+import {useForm} from 'react-hook-form'
 import {useTemplate} from 'Event/TemplateProvider'
 import PageSettingsDialog from 'organization/Event/Backgrounds/Form/PageSettingsDialog'
 
@@ -43,7 +39,7 @@ export default function Form() {
   const mounted = useRef(true)
   const template = useTemplate()
   const {event} = useEvent()
-  const {errors, handleSubmit, register, setValue, watch, control} = useForm()
+  const {handleSubmit, setValue} = useForm()
   const {
     requestError,
     isRemoving,
@@ -81,7 +77,6 @@ export default function Form() {
 
   // These fields require validation, so they don't go into state the way the
   // slider/picker values do.
-  const title = watch('zoom_backgrounds_title', event.zoom_backgrounds_title)
 
   useEffect(() => {
     if (!mounted.current) {
@@ -110,6 +105,8 @@ export default function Form() {
         color: descriptionColor,
         fontSize: descriptionFontSize,
       },
+      backToDashboardText: zoomBackgrounds.backToDashboardText,
+      backToDashboardTextColor: zoomBackgrounds.backToDashboardTextColor
     })
   }
 
@@ -132,37 +129,6 @@ export default function Form() {
         visible={pageSettingsVisible}
         onClose={togglePageSettings}
       />
-      <TextField
-        name="zoom_backgrounds_title"
-        label="Zoom Backgrounds Page Title *"
-        fullWidth
-        inputProps={{
-          ref: register,
-          'aria-label': 'zoom backgrounds page title',
-          required: 'Title is required',
-        }}
-        defaultValue={title}
-      />
-
-      <Editor>
-        <Controller
-          name="zoom_backgrounds_description"
-          control={control}
-          rules={{
-            required: 'Body is required',
-          }}
-          defaultValue={event.zoom_backgrounds_description}
-          render={({value, onChange}) => (
-            <>
-              <BodyLabel required error={!!errors.body}>
-                Body
-              </BodyLabel>
-              <TextEditor data={value} onChange={onChange} />
-              <BodyError error={errors.body} />
-            </>
-          )}
-        />
-      </Editor>
 
       <Grid container spacing={2}>
         <Grid item xs={12} md={6}>
@@ -281,18 +247,6 @@ const StyledSaveButton = withStyles({
   },
 })(Button)
 
-const BodyLabel = withStyles({
-  root: {
-    marginBottom: spacing[3],
-  },
-})(InputLabel)
-
-const BodyError = (props: {error?: {message: string}}) => {
-  return typeof props.error === 'undefined' ? null : (
-    <FormHelperText error>{props.error.message}</FormHelperText>
-  )
-}
-
 const Error = (props: {children: string}) => {
   if (!props.children) {
     return null
@@ -306,13 +260,3 @@ const ErrorText = withStyles({
     marginBottom: spacing[3],
   },
 })(Typography)
-
-const Editor = styled.div`
-  margin-top: ${(props) => props.theme.spacing[4]};
-  margin-bottom: ${(props) => props.theme.spacing[6]};
-
-  .ck-editor__editable_inline {
-    min-height: 300px;
-    max-height: 600px;
-  }
-`
