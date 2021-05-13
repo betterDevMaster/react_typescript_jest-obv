@@ -8,18 +8,31 @@ import {Speaker} from 'Event/SpeakerPage'
 import {useSpeakers} from 'organization/Event/SpeakersProvider'
 import Clickable from 'lib/ui/Editable'
 import {DEFAULT_SPEAKER_IMAGE_SIZE} from 'organization/Event/SpeakerPageConfig/SpeakerPageEditDialog/Form'
+import {Draggable} from 'react-beautiful-dnd'
 
 type SpeakerProps = {
+  index: number
   speaker: Speaker
   isEditMode?: boolean
 }
 
-export default function Card(props: {speaker: Speaker; isEditMode?: boolean}) {
-  if (props.isEditMode) {
-    return <Editable {...props} />
+export default function Card(props: SpeakerProps) {
+  if (!props.isEditMode) {
+    return <Content {...props} />
   }
-
-  return <Content {...props} />
+  return (
+    <Draggable draggableId={String(props.speaker.id)} index={props.index}>
+      {(provided) => (
+        <div
+          ref={provided.innerRef}
+          {...provided.draggableProps}
+          {...provided.dragHandleProps}
+        >
+          <Editable {...props} />
+        </div>
+      )}
+    </Draggable>
+  )
 }
 
 function Editable(props: SpeakerProps) {

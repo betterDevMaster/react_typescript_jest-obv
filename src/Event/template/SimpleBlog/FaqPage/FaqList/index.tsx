@@ -63,7 +63,7 @@ export default function FaqList(props: {
 function useSortedFaqs(faqs: FAQ[]) {
   const {faq: pageSettings} = useTemplate()
 
-  const order = pageSettings?.order || []
+  const order = pageSettings?.orderedIds || []
 
   return faqs.sort((a, b) => {
     const aPosition = order.indexOf(a.id)
@@ -97,7 +97,7 @@ function useHandleDrag() {
     moved.splice(destination.index, 0, removed)
 
     const orderedIds = moved.map((f) => f.id)
-    update('order')(orderedIds)
+    update('orderedIds')(orderedIds)
   }
 }
 
