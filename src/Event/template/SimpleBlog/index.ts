@@ -135,6 +135,7 @@ export interface SimpleBlog {
     backToDashboardTextColor?: string
     sponsorSpace?: number
     sponsorSeparator?: boolean
+    orderedIds?: number[]
   }
   speakers?: {
     title?: string
