@@ -21,6 +21,7 @@ import {useEvent} from 'Event/EventProvider'
 import {useForm} from 'react-hook-form'
 import {useTemplate} from 'Event/TemplateProvider'
 import PageSettingsDialog from 'organization/Event/Backgrounds/Form/PageSettingsDialog'
+import {useVariables} from 'Event'
 
 const BORDER_RADIUS_SIZE_MIN = 0
 const BORDER_RADIUS_SIZE_MAX = 60
@@ -45,6 +46,7 @@ export default function Form() {
     isUploading,
     setBackgroundData,
   } = useBackgrounds()
+  const v = useVariables()
 
   // Zoom Backgrounds-specific template data.
   const {zoomBackgrounds: templateSettings} = template
@@ -127,7 +129,7 @@ export default function Form() {
           <InputLabel>Border Color</InputLabel>
           <ColorPicker
             aria-label="border color"
-            color={borderColor}
+            color={v(borderColor)}
             label=""
             onPick={setBorderColor}
           />

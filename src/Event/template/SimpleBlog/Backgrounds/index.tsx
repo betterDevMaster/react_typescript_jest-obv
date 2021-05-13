@@ -10,11 +10,13 @@ import {useEvent} from 'Event/EventProvider'
 import {useTemplate} from 'Event/TemplateProvider'
 import {ImagePreviewContainer} from 'organization/Event/Backgrounds/BackgroundsProvider'
 import {downloadUrl} from 'lib/dom'
+import {useVariables} from 'Event'
 
 const DEFAULT_BACK_TO_DASHBOARD_TEXT = 'Back to Dashboard'
 const DEFAULT_BACK_TO_DASHBOARD_TEXT_COLOR = '#000000'
 
 export default function SimpleBlogBackgrounds(props: {user: Attendee}) {
+  const v = useVariables()
   const {event} = useEvent()
   const {zoomBackgrounds: settings} = useTemplate()
   const {
@@ -31,20 +33,20 @@ export default function SimpleBlogBackgrounds(props: {user: Attendee}) {
 
   return (
     <Page user={props.user}>
-      <Title>{zoom_backgrounds_title}</Title>
+      <Title>{v(zoom_backgrounds_title || '')}</Title>
 
       <div
-        dangerouslySetInnerHTML={{__html: zoom_backgrounds_description || ''}}
+        dangerouslySetInnerHTML={{__html: v(zoom_backgrounds_description || '')}}
       />
 
       <BackToDashboard
         color={
-          settings?.backToDashboardTextColor ||
-          DEFAULT_BACK_TO_DASHBOARD_TEXT_COLOR
+          v(settings?.backToDashboardTextColor ||
+          DEFAULT_BACK_TO_DASHBOARD_TEXT_COLOR)
         }
       >
         <Link to="/">
-          {settings?.backToDashboardText || DEFAULT_BACK_TO_DASHBOARD_TEXT}
+          {v(settings?.backToDashboardText || DEFAULT_BACK_TO_DASHBOARD_TEXT)}
         </Link>
       </BackToDashboard>
 
@@ -55,11 +57,11 @@ export default function SimpleBlogBackgrounds(props: {user: Attendee}) {
               alt=""
               borderRadius={settings.borderRadius}
               borderThickness={settings.borderThickness || 0}
-              borderColor={settings.borderColor || '#000000'}
+              borderColor={v(settings.borderColor || '#000000')}
               onClick={() =>
-                downloadUrl(background.image.url, background.image.name)
+                downloadUrl(v(background.image.url), background.image.name)
               }
-              src={background.image.url}
+              src={v(background.image.url)}
               clickable
               width="100%"
             />

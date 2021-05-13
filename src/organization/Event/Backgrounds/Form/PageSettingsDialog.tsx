@@ -12,6 +12,7 @@ import {useEvent} from 'Event/EventProvider'
 import {useTemplate} from 'Event/TemplateProvider'
 import {createSimpleBlog} from 'Event/template/SimpleBlog'
 import {useBackgrounds} from 'organization/Event/Backgrounds/BackgroundsProvider'
+import {useVariables} from 'Event'
 
 type SettingsFormData = {
   title: string
@@ -26,6 +27,7 @@ export default function PageSettingsDialog(props: {
 }) {
   const {visible, onClose} = props
 
+  const v = useVariables()
   const template = useTemplate()
   const {zoomBackgrounds: templateSettings} = template
   const {zoomBackgrounds: templateDefaults} = createSimpleBlog()
@@ -63,7 +65,7 @@ export default function PageSettingsDialog(props: {
             <TextField
               label="Title"
               name="title"
-              defaultValue={event.zoom_backgrounds_title}
+              defaultValue={v(event.zoom_backgrounds_title || '')}
               variant="outlined"
               fullWidth
               inputProps={{'aria-label': 'page title', ref: register}}
@@ -71,7 +73,7 @@ export default function PageSettingsDialog(props: {
             />
             <Controller
               name="description"
-              defaultValue={event.zoom_backgrounds_description}
+              defaultValue={v(event.zoom_backgrounds_description || '')}
               control={control}
               render={({onChange, value}) => (
                 <TextEditorContainer>
@@ -82,7 +84,7 @@ export default function PageSettingsDialog(props: {
             <TextField
               label="Back to Dashboard Text"
               name="backToDashboardText"
-              defaultValue={zoomBackgrounds.backToDashboardText}
+              defaultValue={v(zoomBackgrounds.backToDashboardText)}
               variant="outlined"
               fullWidth
               inputProps={{'aria-label': 'page title', ref: register}}
@@ -91,7 +93,7 @@ export default function PageSettingsDialog(props: {
             <Controller
               name="backToDashboardTextColor"
               control={control}
-              defaultValue={zoomBackgrounds.backToDashboardTextColor}
+              defaultValue={v(zoomBackgrounds.backToDashboardTextColor)}
               render={({value, onChange}) => (
                 <ColorPicker
                   label="Back to Dashboard Text Color"
