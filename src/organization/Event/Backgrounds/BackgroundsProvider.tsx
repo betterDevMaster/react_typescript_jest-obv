@@ -40,6 +40,8 @@ export type BackgroundsTemplateData = {
     color: string
     fontSize: number
   }
+  backToDashboardText: string
+  backToDashboardTextColor: string
 }
 
 export interface BackgroundsContextProps {

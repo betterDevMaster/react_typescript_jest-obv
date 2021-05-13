@@ -162,6 +162,8 @@ export interface SimpleBlog {
       color: string
       fontSize: number
     }
+    backToDashboardText: string
+    backToDashboardTextColor: string
   }
 }
 
@@ -285,5 +287,7 @@ export const createSimpleBlog = (): SimpleBlog => ({
       color: '#000000',
       fontSize: 18,
     },
+    backToDashboardText: 'Back to Dashboard',
+    backToDashboardTextColor: '#000000',
   },
 })
