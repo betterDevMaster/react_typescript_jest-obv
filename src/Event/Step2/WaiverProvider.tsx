@@ -18,9 +18,11 @@ interface WaiverContextProps {
   waiver: WaiverConfig
   isPreview?: boolean
   agreeStatement: string
+  signaturePrompt: string
 }
 
 export const DEFAULT_AGREE_STATEMENT = `I hereby certify that I have read the forgoing and fully understand the meaning effect thereof, and intending to be legally bound, have signed it.`
+export const DEFAULT_SIGNATURE_PROMPT = `Please Sign Below with your finger or mouse.`
 
 const WaiverContext = React.createContext<WaiverContextProps | undefined>(
   undefined,
@@ -39,6 +41,9 @@ export default function WaiverProvider(props: {
   const v = useVariables()
   const canSubmit = Boolean(signature) && Boolean(agree)
   const agreeStatement = v(waiver?.agree_statement || DEFAULT_AGREE_STATEMENT)
+  const signaturePrompt = v(
+    waiver?.signature_prompt || DEFAULT_SIGNATURE_PROMPT,
+  )
 
   if (!waiver) {
     throw new Error(`Missing event waiver`)
@@ -71,6 +76,7 @@ export default function WaiverProvider(props: {
         waiver,
         agreeStatement,
         isPreview,
+        signaturePrompt,
       }}
     >
       {props.children}

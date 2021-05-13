@@ -11,6 +11,7 @@ export default function WaiverPreview(props: {
   body: string
   title: string
   agreeStatement: string
+  signaturePrompt: string
   logo: string
 }) {
   const user = useTeamMember()
@@ -19,6 +20,7 @@ export default function WaiverPreview(props: {
     body: props.body,
     title: props.title,
     agree_statement: props.agreeStatement,
+    signature_prompt: props.signaturePrompt,
     is_enabled: false,
     logo: props.logo,
     form: null,

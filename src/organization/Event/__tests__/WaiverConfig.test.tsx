@@ -1,6 +1,6 @@
 import faker from 'faker'
 import axios from 'axios'
-import {fakeEvent} from 'Event/__utils__/factory'
+import {fakeEvent, fakeWaiver} from 'Event/__utils__/factory'
 import user from '@testing-library/user-event'
 import {fireEvent, wait} from '@testing-library/react'
 import {ObvioEvent} from 'Event'
@@ -53,14 +53,14 @@ it('should show waiver config', async () => {
 
 it('should submit a waiver', async () => {
   window.URL.createObjectURL = jest.fn()
-  const fakerWaiver = {
+  const fakerWaiver = fakeWaiver({
     body: '<p>fake body</p>',
     title: faker.random.words(3),
     agree_statement: faker.lorem.paragraph(),
     is_enabled: false,
     logo: '',
     form: null,
-  }
+  })
   const event = fakeEvent({waiver: fakerWaiver})
   const {findByLabelText} = await goToWaiverConfig({
     event,
