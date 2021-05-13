@@ -6,6 +6,7 @@ import NavButton from 'Event/Dashboard/components/NavButton'
 import {useTemplate} from 'Event/TemplateProvider'
 import Image from 'Event/template/SimpleBlog/SponsorPage/SponsorList/Card/Image'
 import Body from 'Event/template/SimpleBlog/SponsorPage/SponsorList/Card/Body'
+import {Draggable} from 'react-beautiful-dnd'
 
 export const DEFAULT_SPONSOR_IMAGE_SIZE = 4
 export const DEFAULT_DESCRIPTION = ''
@@ -13,13 +14,38 @@ export const DEFAULT_BACK_TO_DASHBOARD_TEXT = 'Back to Dashboard'
 export const DEFAULT_BACK_TO_DASHBOARD_TEXT_COLOR = '#000000'
 export const DEFAULT_SPONSORS_SPACE = 0
 
-export default function Card(props: {
+type SponsorProps = {
+  index: number
   sponsor: Sponsor
   isEditMode?: boolean
   className?: string
-}) {
-  const {sponsor} = props
+}
 
+export default function Card(props: SponsorProps) {
+  const {sponsor, isEditMode, index} = props
+
+  if (!isEditMode) {
+    return <Content {...props} />
+  }
+
+  return (
+    <Draggable draggableId={String(sponsor.id)} index={index}>
+      {(provided) => (
+        <div
+          ref={provided.innerRef}
+          className={props.className}
+          {...provided.draggableProps}
+          {...provided.dragHandleProps}
+        >
+          <Content {...props} />
+        </div>
+      )}
+    </Draggable>
+  )
+}
+
+function Content(props: SponsorProps) {
+  const {sponsor} = props
   const template = useTemplate()
 
   const imageSize = template.sponsors?.imageSize || DEFAULT_SPONSOR_IMAGE_SIZE

@@ -10,6 +10,8 @@ import {useWaiver} from 'Event/Step2/WaiverProvider'
 import Grid from '@material-ui/core/Grid'
 import Box from '@material-ui/core/Box'
 import {useVariables} from 'Event'
+import {Typography} from '@material-ui/core'
+import {useTemplate} from 'Event/TemplateProvider'
 
 export default function Waiver() {
   const {
@@ -17,11 +19,14 @@ export default function Waiver() {
     agree,
     setAgree,
     agreeStatement,
+    signaturePrompt,
     signature,
     setSignature,
   } = useWaiver()
 
+  const {isDarkMode} = useTemplate()
   const v = useVariables()
+  const color = isDarkMode ? '#FFFFFF' : '#000000'
 
   return (
     <>
@@ -35,8 +40,10 @@ export default function Waiver() {
           <FormControl required component="fieldset">
             <FormControlLabel
               control={
-                <Checkbox
+                <StyledCheckBox
+                  color={color}
                   checked={agree}
+                  isDarkMode={isDarkMode}
                   onChange={onChangeCheckedHandler(setAgree)}
                   inputProps={{
                     'aria-label': 'agree to waiver checkbox',
@@ -48,6 +55,9 @@ export default function Waiver() {
           </FormControl>
         </Grid>
         <Grid item md={12} xs={12}>
+          <Box display="flex" justifyContent="center" m={1}>
+            <Typography variant="inherit">{v(signaturePrompt)}</Typography>
+          </Box>
           <Box display="flex" justifyContent="center" m={1}>
             <Signature value={signature} onUpdate={setSignature} />
           </Box>
@@ -63,4 +73,13 @@ const Body = styled.div`
   border: 1px solid ${grey[300]};
   padding: 0 ${(props) => props.theme.spacing[4]};
   margin-bottom: ${(props) => props.theme.spacing[4]};
+`
+
+const StyledCheckBox = styled((props) => {
+  const {color, isDarkMode, ...otherProps} = props
+  return <Checkbox {...otherProps} />
+})<{
+  isDarkMode?: boolean
+}>`
+  color: ${(props) => props.color} !important;
 `

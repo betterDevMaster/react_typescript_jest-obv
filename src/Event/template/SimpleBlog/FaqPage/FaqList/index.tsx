@@ -3,7 +3,6 @@ import styled from 'styled-components'
 import {FAQ} from 'Event/FaqPage'
 import Card from 'Event/template/SimpleBlog/FaqPage/FaqList/Card'
 import React from 'react'
-import grey from '@material-ui/core/colors/grey'
 import HiddenOnMatch from 'Event/visibility-rules/HiddenOnMatch'
 import {DragDropContext, Droppable, DropResult} from 'react-beautiful-dnd'
 import {useTemplate, useUpdateObject} from 'Event/TemplateProvider'
@@ -23,7 +22,7 @@ export default function FaqList(props: {
 
   const faqs = sortedFaqs.map((faq, index) => (
     <HiddenOnMatch rules={faq.settings?.rules} key={faq.id}>
-      <StyledCard faq={faq} isEditMode={props.isEditMode} index={index} />
+      <Card faq={faq} isEditMode={props.isEditMode} index={index} />
     </HiddenOnMatch>
   ))
 
@@ -63,7 +62,7 @@ export default function FaqList(props: {
 function useSortedFaqs(faqs: FAQ[]) {
   const {faq: pageSettings} = useTemplate()
 
-  const order = pageSettings?.order || []
+  const order = pageSettings?.orderedIds || []
 
   return faqs.sort((a, b) => {
     const aPosition = order.indexOf(a.id)
@@ -97,22 +96,10 @@ function useHandleDrag() {
     moved.splice(destination.index, 0, removed)
 
     const orderedIds = moved.map((f) => f.id)
-    update('order')(orderedIds)
+    update('orderedIds')(orderedIds)
   }
 }
 
 const Box = styled.div`
   width: 100%;
-`
-
-/**
- * Fixes fowarding props (isEditMode) with undefined causing
- * app to crash
- */
-const StyledCard = styled((props) => <Card {...props} />)`
-  &:not(:last-child) {
-    padding-bottom: ${(props) => props.theme.spacing[2]};
-    margin-bottom: ${(props) => props.theme.spacing[3]};
-    border-bottom: 1px solid ${grey[300]};
-  }
 `

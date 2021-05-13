@@ -26,7 +26,10 @@ import Grid from '@material-ui/core/Grid'
 
 import FormSelect from 'organization/Event/FormsProvider/FormSelect'
 import Box from '@material-ui/core/Box'
-import {DEFAULT_AGREE_STATEMENT} from 'Event/Step2/WaiverProvider'
+import {
+  DEFAULT_AGREE_STATEMENT,
+  DEFAULT_SIGNATURE_PROMPT,
+} from 'Event/Step2/WaiverProvider'
 
 import TemplateFields from 'organization/Event/WaiverConfig/TemplateFields'
 import Preview from 'organization/Event/WaiverConfig/Preview'
@@ -70,6 +73,10 @@ export default function WaiverConfig() {
     setValue(
       'agree_statement',
       event.waiver.agree_statement || DEFAULT_AGREE_STATEMENT,
+    )
+    setValue(
+      'signature_prompt',
+      event.waiver.signature_prompt || DEFAULT_SIGNATURE_PROMPT,
     )
 
     const logoPath = event.waiver.logo
@@ -206,6 +213,17 @@ export default function WaiverConfig() {
             multiline
             error={!!errors.agree_statement}
           />
+          <TextField
+            name="signature_prompt"
+            label="Signature Prompt"
+            fullWidth
+            inputProps={{
+              ref: register,
+              'aria-label': 'waiver signature prompt',
+            }}
+            disabled={submitting}
+            error={!!errors.signature_prompt}
+          />
 
           <Error>{responseError}</Error>
 
@@ -219,6 +237,7 @@ export default function WaiverConfig() {
                 title={watch('title')}
                 logo={logo?.name || ''}
                 agreeStatement={watch('agree_statement')}
+                signaturePrompt={watch('signature_prompt')}
               />
             </Grid>
           </Grid>

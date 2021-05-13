@@ -70,6 +70,7 @@ export function fakeWaiver(
     is_enabled: true,
     form: null,
     agree_statement: faker.lorem.paragraphs(),
+    signature_prompt: faker.lorem.paragraphs(),
     ...overrides,
   }
 }
