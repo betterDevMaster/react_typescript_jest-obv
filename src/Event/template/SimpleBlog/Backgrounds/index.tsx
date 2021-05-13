@@ -36,14 +36,16 @@ export default function SimpleBlogBackgrounds(props: {user: Attendee}) {
       <Title>{v(zoom_backgrounds_title || '')}</Title>
 
       <div
-        dangerouslySetInnerHTML={{__html: v(zoom_backgrounds_description || '')}}
+        dangerouslySetInnerHTML={{
+          __html: v(zoom_backgrounds_description || ''),
+        }}
       />
 
       <BackToDashboard
-        color={
-          v(settings?.backToDashboardTextColor ||
-          DEFAULT_BACK_TO_DASHBOARD_TEXT_COLOR)
-        }
+        color={v(
+          settings?.backToDashboardTextColor ||
+            DEFAULT_BACK_TO_DASHBOARD_TEXT_COLOR,
+        )}
       >
         <Link to="/">
           {v(settings?.backToDashboardText || DEFAULT_BACK_TO_DASHBOARD_TEXT)}
