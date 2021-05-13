@@ -33,10 +33,8 @@ export default function SimpleBlogBackgrounds(props: {user: Attendee}) {
     <Page user={props.user}>
       <Title>{zoom_backgrounds_title}</Title>
 
-      <Description
-        color={settings.description.color}
+      <div
         dangerouslySetInnerHTML={{__html: zoom_backgrounds_description || ''}}
-        fontSize={settings.description.fontSize}
       />
 
       <BackToDashboard
@@ -70,14 +68,6 @@ export default function SimpleBlogBackgrounds(props: {user: Attendee}) {
     </Page>
   )
 }
-
-const Description = styled.div<{
-  color: string
-  fontSize: number
-}>`
-  color: ${(props) => props.color};
-  font-size: ${(props) => props.fontSize}px;
-`
 
 const Title = styled.h2`
   font-size: 42px;

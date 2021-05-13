@@ -22,8 +22,6 @@ import {useForm} from 'react-hook-form'
 import {useTemplate} from 'Event/TemplateProvider'
 import PageSettingsDialog from 'organization/Event/Backgrounds/Form/PageSettingsDialog'
 
-const FONT_SIZE_MIN = 5
-const FONT_SIZE_MAX = 50
 const BORDER_RADIUS_SIZE_MIN = 0
 const BORDER_RADIUS_SIZE_MAX = 60
 const BORDER_THICKNESS_SIZE_MIN = 0
@@ -62,12 +60,6 @@ export default function Form() {
       ? templateSettings
       : templateDefaults
 
-  const [descriptionColor, setDescriptionColor] = useState(
-    zoomBackgrounds.description.color,
-  )
-  const [descriptionFontSize, setDescriptionFontSize] = useState(
-    zoomBackgrounds.description.fontSize,
-  )
   const [borderColor, setBorderColor] = useState(zoomBackgrounds.borderColor)
   const [borderThickness, setBorderThickness] = useState(
     zoomBackgrounds.borderThickness,
@@ -101,10 +93,6 @@ export default function Form() {
       borderRadius: borderRadius,
       borderThickness: borderThickness,
       imagesPerRow: imagesPerRow,
-      description: {
-        color: descriptionColor,
-        fontSize: descriptionFontSize,
-      },
       backToDashboardText: zoomBackgrounds.backToDashboardText,
       backToDashboardTextColor: zoomBackgrounds.backToDashboardTextColor,
     })
@@ -132,24 +120,6 @@ export default function Form() {
 
       <Grid container spacing={2}>
         <Grid item xs={12} md={6}>
-          <InputLabel>Description Color</InputLabel>
-          <ColorPicker
-            aria-label="description color"
-            color={descriptionColor}
-            label=""
-            onPick={setDescriptionColor}
-          />
-
-          <InputLabel>Description Font Size</InputLabel>
-          <Slider
-            aria-label="description font size"
-            max={FONT_SIZE_MAX}
-            min={FONT_SIZE_MIN}
-            onChange={handleChangeSlider(setDescriptionFontSize)}
-            step={1}
-            value={descriptionFontSize}
-            valueLabelDisplay="auto"
-          />
 
           <Typography variant="h6" gutterBottom>
             Image Appearance
