@@ -19,6 +19,7 @@ interface WaiverContextProps {
   isPreview?: boolean
   agreeStatement: string
   signaturePrompt: string
+  body: string
 }
 
 export const DEFAULT_AGREE_STATEMENT = `I hereby certify that I have read the forgoing and fully understand the meaning effect thereof, and intending to be legally bound, have signed it.`
@@ -45,6 +46,8 @@ export default function WaiverProvider(props: {
     waiver?.signature_prompt || DEFAULT_SIGNATURE_PROMPT,
   )
 
+  const body = v(waiver.body)
+
   if (!waiver) {
     throw new Error(`Missing event waiver`)
   }
@@ -57,6 +60,7 @@ export default function WaiverProvider(props: {
 
     return client
       .post<Attendee>(url, {
+        body,
         signature,
       })
       .then((attendee) => {
@@ -67,6 +71,7 @@ export default function WaiverProvider(props: {
   return (
     <WaiverContext.Provider
       value={{
+        body,
         agree,
         submit,
         canSubmit,
