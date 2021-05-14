@@ -11,6 +11,7 @@ import {useTemplate} from 'Event/TemplateProvider'
 import {Background, ImagePreviewContainer} from 'organization/Event/Backgrounds/BackgroundsProvider'
 import {downloadUrl} from 'lib/dom'
 import {useVariables} from 'Event'
+import HiddenOnMatch from 'Event/visibility-rules/HiddenOnMatch'
 
 const DEFAULT_BACK_TO_DASHBOARD_TEXT = 'Back to Dashboard'
 const DEFAULT_BACK_TO_DASHBOARD_TEXT_COLOR = '#000000'
@@ -57,20 +58,22 @@ export default function SimpleBlogBackgrounds(props: {user: Attendee}) {
 
       <Grid container spacing={2}>
         {sortedBackgrounds.map((background) => (
-          <Grid item xs={12} md={perRow} key={background.id}>
-            <ImagePreviewContainer
-              alt=""
-              borderRadius={settings.borderRadius}
-              borderThickness={settings.borderThickness || 0}
-              borderColor={v(settings.borderColor || '#000000')}
-              onClick={() =>
-                downloadUrl(v(background.image.url), background.image.name)
-              }
-              src={v(background.image.url)}
-              clickable
-              width="100%"
-            />
-          </Grid>
+          <HiddenOnMatch rules={background.settings?.rules} key={background.id}>
+            <Grid item xs={12} md={perRow}>
+              <ImagePreviewContainer
+                alt=""
+                borderRadius={settings.borderRadius}
+                borderThickness={settings.borderThickness || 0}
+                borderColor={v(settings.borderColor || '#000000')}
+                onClick={() =>
+                  downloadUrl(v(background.image.url), background.image.name)
+                }
+                src={v(background.image.url)}
+                clickable
+                width="100%"
+              />
+            </Grid>
+          </HiddenOnMatch>
         ))}
       </Grid>
     </Page>

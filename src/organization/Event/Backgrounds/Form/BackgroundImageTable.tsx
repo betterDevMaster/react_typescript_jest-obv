@@ -2,17 +2,17 @@ import React from 'react'
 import styled from 'styled-components'
 import {
   Background,
-  ImagePreviewContainer,
   useBackgrounds,
 } from 'organization/Event/Backgrounds/BackgroundsProvider'
-import DangerButton from 'lib/ui/Button/DangerButton'
 import Box from '@material-ui/core/Box'
 import CircularProgress from '@material-ui/core/CircularProgress'
 import Typography from '@material-ui/core/Typography'
+import Grid from '@material-ui/core/Grid'
 import {useSortedBackgrounds} from 'Event/template/SimpleBlog/Backgrounds'
 import {DragDropContext, Draggable, Droppable, DropResult} from 'react-beautiful-dnd'
 import {useEvent} from 'Event/EventProvider'
 import {useTemplate} from 'Event/TemplateProvider'
+import BackgroundImageRow from 'organization/Event/Backgrounds/Form/BackgroundImageRow'
 
 export default function BackgroundImageTable() {
   const {
@@ -28,36 +28,30 @@ export default function BackgroundImageTable() {
   const handleDrag = useHandleDrag()
   const sortedBackgrounds = useSortedBackgrounds(backgrounds)
 
-  const draggableBackgrounds = sortedBackgrounds.map((background, index) => (
-    <Draggable draggableId={String(background.id)} index={index} key={background.id}>
-      {(provided) => (
-        <DraggableBox
-          ref={provided.innerRef}
-          aria-label="background"
-          {...provided.draggableProps}
-          {...provided.dragHandleProps}
-        >
-          <ImagePreviewContainer
-            alt="background"
-            borderRadius={previewSettings.borderRadius}
-            borderThickness={previewSettings.borderThickness}
-            borderColor={previewSettings.borderColor}
-            clickable={false}
-            src={background.image.url}
-            width="200"
-          />
-          <DangerButton
-            variant="outlined"
-            aria-label={`remove background image`}
-            onClick={() => removeBackground(background.id)}
-            disabled={isRemoving}
+  const draggableBackgrounds = sortedBackgrounds.map((background, index) => {
+    return (
+      <Draggable draggableId={String(background.id)} index={index} key={background.id}>
+        {(provided) => (
+          <Grid
+            item
+            xs={12}
+            key={background.id}
+            ref={provided.innerRef}
+            aria-label="background"
+            {...provided.draggableProps}
+            {...provided.dragHandleProps}
           >
-            Remove
-          </DangerButton>
-        </DraggableBox>
-      )}
-    </Draggable>
-  ))
+            <BackgroundImageRow
+              settings={previewSettings}
+              background={background}
+              isRemoving={isRemoving}
+              remove={() => removeBackground(background.id)}
+            />
+          </Grid>
+        )}
+      </Draggable>
+    )
+  })
 
   if (loading) {
     return (
@@ -84,8 +78,10 @@ export default function BackgroundImageTable() {
             {...provided.droppableProps}
           >
             <>
+            <Grid container spacing={2}>
               {draggableBackgrounds}
               {provided.placeholder}
+            </Grid>
             </>
           </DroppableBox>
         )}
@@ -130,12 +126,4 @@ function useHandleDrag() {
 
 const DroppableBox = styled.div`
   width: 100%;
-`
-
-const DraggableBox = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding-top: ${(props) => props.theme.spacing[2]};
-  padding-bottom: ${(props) => props.theme.spacing[2]};
 `

@@ -8,6 +8,7 @@ import {useDispatch} from 'react-redux'
 import {useEvent, useUpdate} from 'Event/EventProvider'
 import {createSimpleBlog} from 'Event/template/SimpleBlog'
 import {useTemplate} from 'Event/TemplateProvider'
+import {HasRules} from 'Event/visibility-rules'
 
 export type Background = {
   id: number
@@ -15,6 +16,7 @@ export type Background = {
     name: string
     url: string
   }
+  settings?: BackgroundSettings
   event_id: number
   created_at: string
   updated_at: string
@@ -30,6 +32,8 @@ export type BackgroundsData = {
   zoom_backgrounds_title: string
   zoom_backgrounds_description: string
 }
+
+export type BackgroundSettings = HasRules
 
 export type BackgroundsTemplateData = {
   borderColor: string
