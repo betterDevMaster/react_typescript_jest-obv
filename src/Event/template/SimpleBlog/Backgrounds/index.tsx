@@ -74,7 +74,7 @@ export default function SimpleBlogBackgrounds(props: {user: Attendee}) {
               />
             </Grid>
           </HiddenOnMatch>
-        ))}
+))}
       </Grid>
     </Page>
   )

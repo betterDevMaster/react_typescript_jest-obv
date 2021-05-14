@@ -7,16 +7,14 @@ import {SIMPLE_BLOG} from 'Event/template/SimpleBlog'
 import SimpleBlogStep2 from 'Event/template/SimpleBlog/Step2'
 import {useEvent} from 'Event/EventProvider'
 import WaiverProvider from 'Event/Step2/WaiverProvider'
-import {useTrackOnLoad} from 'analytics'
+import {useTrackEventPage} from 'analytics'
 
 export default function Step2() {
   const attendee = useAttendee()
   const {event} = useEvent()
 
-  useTrackOnLoad({
-    category: 'Event',
-    action: 'Visited Step 2',
-    label: event.name,
+  useTrackEventPage({
+    page: 'Visited Step 2',
   })
 
   if (!attendee.has_password) {

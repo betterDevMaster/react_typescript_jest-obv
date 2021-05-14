@@ -26,6 +26,7 @@ import InfusionsoftTagInput from 'organization/Event/DashboardConfig/Infusionsof
 import Checkbox from '@material-ui/core/Checkbox'
 import FormControlLabel from '@material-ui/core/FormControlLabel'
 import TargetConfig from 'Event/Dashboard/components/NavButton/NavButtonConfig/TargetConfig'
+import IconSelect from 'lib/fontawesome/IconSelect'
 
 export type MainNavButtonConfig = {
   type: typeof MAIN_NAV_BUTTON
@@ -97,14 +98,17 @@ export function MainNavButtonConfig(props: {id: MainNavButtonConfig['id']}) {
     >
       <>
         <ConfigureRulesButton onClick={toggleRuleConfig} />
-        <Switch
-          checked={button.isVisible}
-          onChange={onChangeCheckedHandler(updateButton('isVisible'))}
-          arial-label="config switch to attendee"
-          labelPlacement="end"
-          color="primary"
-          label={button.isVisible ? 'Enable' : 'Disable'}
-        />
+        <Box mb={2}>
+          <Switch
+            checked={button.isVisible}
+            onChange={onChangeCheckedHandler(updateButton('isVisible'))}
+            arial-label="config switch to attendee"
+            labelPlacement="end"
+            color="primary"
+            label={button.isVisible ? 'Enable' : 'Disable'}
+          />
+        </Box>
+        <IconSelect value={button.icon} onChange={updateButton('icon')} />
         <TextField
           label="Text"
           value={button.text}
@@ -114,6 +118,7 @@ export function MainNavButtonConfig(props: {id: MainNavButtonConfig['id']}) {
           fullWidth
           onChange={onChangeStringHandler(updateButton('text'))}
         />
+
         <ActionSelect
           value={button.actionId}
           onChange={updateButton('actionId')}

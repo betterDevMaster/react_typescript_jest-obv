@@ -1,4 +1,4 @@
-import {useTrackOnLoad} from 'analytics'
+import {useTrackEventPage} from 'analytics'
 import {setUser} from 'auth/actions'
 import {Attendee} from 'Event/attendee'
 import {useAttendee} from 'Event/auth'
@@ -14,12 +14,9 @@ export default function SelfCheckIn() {
   const {client} = useEvent()
   const dispatch = useDispatch()
   const attendee = useAttendee()
-  const {event} = useEvent()
 
-  useTrackOnLoad({
-    category: 'Event',
-    action: 'Visit Self Check-In',
-    label: event.name,
+  useTrackEventPage({
+    page: 'Visit Self Check-In',
   })
 
   useEffect(() => {

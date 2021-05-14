@@ -15,13 +15,13 @@ import {useTemplate} from 'Event/TemplateProvider'
 
 export default function Waiver() {
   const {
-    waiver,
     agree,
     setAgree,
     agreeStatement,
     signaturePrompt,
     signature,
     setSignature,
+    body,
   } = useWaiver()
 
   const {isDarkMode} = useTemplate()
@@ -32,7 +32,7 @@ export default function Waiver() {
     <>
       <Body
         dangerouslySetInnerHTML={{
-          __html: v(waiver.body),
+          __html: body,
         }}
       />
       <Grid container spacing={3}>

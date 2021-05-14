@@ -1,3 +1,4 @@
+import {useEvent} from 'Event/EventProvider'
 import {isTest} from 'App'
 import {useEffect} from 'react'
 import ReactGA from 'react-ga'
@@ -79,6 +80,22 @@ export function useTrackOnLoad(data: {
 
     ReactGA.event(data)
   }, [data])
+}
+
+export function useTrackEventPage(data: {
+  page: string
+  details?: string
+  value?: number
+}) {
+  const {event} = useEvent()
+  const {page, details, value} = data
+
+  useTrackOnLoad({
+    category: `Event - ${event.name} (${event.slug})`,
+    action: page,
+    label: details,
+    value,
+  })
 }
 
 export function sendTiming(data: {

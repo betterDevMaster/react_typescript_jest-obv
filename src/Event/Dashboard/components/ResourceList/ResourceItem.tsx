@@ -1,6 +1,5 @@
 import React from 'react'
 import styled from 'styled-components'
-import Icon from '@material-ui/core/Icon'
 import {usePoints} from 'Event/PointsProvider'
 import {usePlatformActions} from 'Event/ActionsProvider/platform-actions'
 import {AbsoluteLink} from 'lib/ui/link/AbsoluteLink'
@@ -16,12 +15,13 @@ import Grid from '@material-ui/core/Grid'
 import {useEditMode} from 'Event/Dashboard/editor/state/edit-mode'
 import {DragHandle, DraggableOverlay} from 'lib/ui/drag-and-drop'
 import {useVariables} from 'Event'
+import {Icon} from 'lib/fontawesome/Icon'
 
 export type Resource = Publishable &
   HasRules & {
     name: string
     filePath: string
-    icon: string
+    icon: string | null
     isUrl?: boolean
     url?: string
   }
@@ -93,13 +93,7 @@ function ResourceItemLink(props: {resource: Resource; iconColor?: string}) {
       onClick={awardPoints}
       newTab
     >
-      <StyledIcon
-        className="resource-icon"
-        component="i"
-        color={props.iconColor}
-      >
-        {props.resource.icon}
-      </StyledIcon>
+      <StyledIcon iconClass={props.resource.icon} color={props.iconColor} />
       <LinkText aria-label="resource link">{v(props.resource.name)}</LinkText>
     </ResourceLink>
   )
@@ -169,10 +163,6 @@ const LinkText = styled.span`
   font-weight: bold;
 `
 
-const StyledIcon = styled((props) => {
-  const {className, color, ...otherProps} = props
-  return <Icon className={className} {...otherProps} />
-})`
-  color: ${(props) => props.color || '#000'};
-  margin-right: ${(props) => props.theme.spacing[2]};
+const StyledIcon = styled(Icon)`
+  margin-right: ${(props) => props.theme.spacing[3]};
 `

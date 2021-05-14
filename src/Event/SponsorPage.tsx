@@ -10,7 +10,7 @@ import {Client} from 'lib/api-client'
 import {PublicFile} from 'lib/http-client'
 import {EntityList} from 'lib/list'
 import NavButton from 'Event/Dashboard/components/NavButton'
-import {useTrackOnLoad} from 'analytics'
+import {useTrackEventPage} from 'analytics'
 
 export interface Sponsor {
   id: number
@@ -26,12 +26,9 @@ export interface Sponsor {
 export default function SponsorPage(props: {isEditMode?: boolean}) {
   const template = useTemplate()
   const user = useAttendee()
-  const {event} = useEvent()
 
-  useTrackOnLoad({
-    category: 'Event',
-    action: 'Visited Sponsors',
-    label: event.name,
+  useTrackEventPage({
+    page: 'Visited Sponsors',
   })
 
   const {client} = useEvent()
