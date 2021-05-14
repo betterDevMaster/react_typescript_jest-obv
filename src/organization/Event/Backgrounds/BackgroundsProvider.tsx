@@ -38,6 +38,7 @@ export type BackgroundsTemplateData = {
   imagesPerRow: number
   backToDashboardText: string
   backToDashboardTextColor: string
+  orderedIds?: number[]
 }
 
 export interface BackgroundsContextProps {

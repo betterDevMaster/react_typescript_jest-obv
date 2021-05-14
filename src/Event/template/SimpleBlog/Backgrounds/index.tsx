@@ -8,7 +8,7 @@ import {eventRoutes} from 'Event/Routes'
 import {Redirect} from 'react-router-dom'
 import {useEvent} from 'Event/EventProvider'
 import {useTemplate} from 'Event/TemplateProvider'
-import {ImagePreviewContainer} from 'organization/Event/Backgrounds/BackgroundsProvider'
+import {Background, ImagePreviewContainer} from 'organization/Event/Backgrounds/BackgroundsProvider'
 import {downloadUrl} from 'lib/dom'
 import {useVariables} from 'Event'
 
@@ -25,9 +25,12 @@ export default function SimpleBlogBackgrounds(props: {user: Attendee}) {
     zoom_backgrounds_title,
   } = event
 
+  const sortedBackgrounds = useSortedBackgrounds(backgrounds)
+
   if (zoom_backgrounds_title === '' || zoom_backgrounds_description === '') {
     return <Redirect to={eventRoutes.root} />
   }
+
 
   const perRow = (12 / (settings.imagesPerRow || 1)) as GridSize
 
@@ -51,7 +54,7 @@ export default function SimpleBlogBackgrounds(props: {user: Attendee}) {
       </BackToDashboard>
 
       <Grid container spacing={2}>
-        {backgrounds.map((background) => (
+        {sortedBackgrounds.map((background) => (
           <Grid item xs={12} md={perRow} key={background.id}>
             <ImagePreviewContainer
               alt=""
@@ -87,3 +90,25 @@ const BackToDashboard = styled.div`
     color: ${(props) => props.color};
   }
 `
+
+export function useSortedBackgrounds(backgrounds: Background[]) {
+  const {zoomBackgrounds: pageSettings} = useTemplate()
+
+  const order = pageSettings?.orderedIds || []
+
+  return backgrounds.sort((a, b) => {
+    const aPosition = order.indexOf(a.id)
+    const bPosition = order.indexOf(b.id)
+
+    if (aPosition < bPosition) {
+      return -1
+    }
+
+    if (aPosition > bPosition) {
+      return 1
+    }
+
+    // Index not found, any order is fine
+    return 0
+  })
+}

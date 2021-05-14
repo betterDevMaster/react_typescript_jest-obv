@@ -160,6 +160,7 @@ export interface SimpleBlog {
     imagesPerRow: number
     backToDashboardText: string
     backToDashboardTextColor: string
+    orderedIds?: number[]
   }
 }
 
