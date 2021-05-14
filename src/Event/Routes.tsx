@@ -27,7 +27,7 @@ import JoinArea from 'Event/JoinArea/JoinArea'
 import FullPageLoader from 'lib/ui/layout/FullPageLoader'
 import SelfCheckIn from 'Event/SelfCheckIn'
 import AttendeeProfileProvider from 'Event/visibility-rules/AttendeeProfileProvider'
-import {useTrackOnLoad} from 'analytics'
+import {useTrackEventPage, useTrackOnLoad} from 'analytics'
 
 export const eventRoutes = createRoutes({
   login: '/login',
@@ -68,10 +68,9 @@ export const areaRoutes = (key: string) =>
 export default function Routes() {
   const {user, loading} = useEventAuth()
   const {event} = useEvent()
-  useTrackOnLoad({
-    category: 'Event',
-    action: 'Accessed Site',
-    label: event.name,
+
+  useTrackEventPage({
+    page: 'Accessed Site',
   })
 
   if (!event.template) {
@@ -105,7 +104,7 @@ function Authenticated() {
   const attendee = useAttendee()
 
   useTrackOnLoad({
-    category: 'Event',
+    category: 'Attendee',
     action: 'Logged In',
   })
 

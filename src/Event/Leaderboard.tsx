@@ -4,8 +4,7 @@ import {useTemplate} from 'Event/TemplateProvider'
 import {SIMPLE_BLOG} from 'Event/template/SimpleBlog'
 import SimpleBlogLeaderboard from 'Event/template/SimpleBlog/Leaderboard'
 import {Attendee} from 'Event/attendee'
-import {useEvent} from 'Event/EventProvider'
-import {useTrackOnLoad} from 'analytics'
+import {useTrackEventPage} from 'analytics'
 
 export interface Entry {
   attendee: Attendee
@@ -15,12 +14,9 @@ export interface Entry {
 export default function Leaderboard() {
   const template = useTemplate()
   const user = useAttendee()
-  const {event} = useEvent()
 
-  useTrackOnLoad({
-    category: 'Event',
-    action: 'Visited Leaderboard',
-    label: event.name,
+  useTrackEventPage({
+    page: 'Visited Leaderboard',
   })
 
   switch (template.name) {

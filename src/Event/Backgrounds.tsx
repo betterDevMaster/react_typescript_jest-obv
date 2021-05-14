@@ -3,18 +3,14 @@ import {useAttendee} from 'Event/auth'
 import {useTemplate} from 'Event/TemplateProvider'
 import {SIMPLE_BLOG} from 'Event/template/SimpleBlog'
 import SimpleBlogBackgrounds from 'Event/template/SimpleBlog/Backgrounds'
-import {useTrackOnLoad} from 'analytics'
-import {useEvent} from 'Event/EventProvider'
+import {useTrackEventPage} from 'analytics'
 
 export default function Backgrounds() {
   const template = useTemplate()
   const user = useAttendee()
-  const {event} = useEvent()
 
-  useTrackOnLoad({
-    category: 'Event',
-    action: 'Visited Zoom Backgrounds',
-    label: event.name,
+  useTrackEventPage({
+    page: 'Visited Zoom Backgrounds',
   })
 
   switch (template.name) {

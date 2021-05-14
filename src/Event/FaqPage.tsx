@@ -8,7 +8,7 @@ import {useAsync} from 'lib/async'
 import {api} from 'lib/url'
 import {Client} from 'lib/api-client'
 import {HasRules} from 'Event/visibility-rules'
-import {useTrackOnLoad} from 'analytics'
+import {useTrackEventPage} from 'analytics'
 
 export type FAQ = {
   id: number
@@ -24,12 +24,9 @@ export type FAQSettings = HasRules & {
 export default function FaqsPage() {
   const template = useTemplate()
   const user = useAttendee()
-  const {event} = useEvent()
 
-  useTrackOnLoad({
-    category: 'Event',
-    action: 'Visited FAQ',
-    label: event.name,
+  useTrackEventPage({
+    page: 'Visited FAQ',
   })
 
   const {client} = useEvent()

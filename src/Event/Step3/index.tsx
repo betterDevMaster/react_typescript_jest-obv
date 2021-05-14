@@ -4,16 +4,14 @@ import {eventRoutes} from 'Event/Routes'
 import {Redirect} from 'react-router-dom'
 import TechCheck from 'Event/Step3/TechCheck'
 import {useEvent} from 'Event/EventProvider'
-import {useTrackOnLoad} from 'analytics'
+import {useTrackEventPage} from 'analytics'
 
 export default function Step3() {
   const attendee = useAttendee()
-  const {hasTechCheck, hasWaiver, event} = useEvent()
+  const {hasTechCheck, hasWaiver} = useEvent()
 
-  useTrackOnLoad({
-    category: 'Event',
-    action: 'Visited Step 2',
-    label: event.name,
+  useTrackEventPage({
+    page: 'Visited Step 3',
   })
 
   if (!attendee.has_password) {
