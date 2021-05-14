@@ -8,16 +8,14 @@ import {
 } from 'organization/Event/Backgrounds/BackgroundsProvider'
 import BackgroundImageEditDialog from 'organization/Event/Backgrounds/Form/BackgroundImageEditDialog'
 import {setEvent} from 'Event/state/actions'
-import { ObvioEvent } from 'Event'
+import {ObvioEvent} from 'Event'
 
-export default function BackgroundImageRow(
-  props: {
-    settings: BackgroundsTemplateData,
-    background: Background
-    isRemoving: boolean
-    remove: () => void
-  }
-) {
+export default function BackgroundImageRow(props: {
+  settings: BackgroundsTemplateData
+  background: Background
+  isRemoving: boolean
+  remove: () => void
+}) {
   const [visibleEditDialog, setVisibleEditDialog] = useState(false)
   const {settings, background, isRemoving, remove} = props
 

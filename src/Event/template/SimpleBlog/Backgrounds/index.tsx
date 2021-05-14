@@ -8,7 +8,10 @@ import {eventRoutes} from 'Event/Routes'
 import {Redirect} from 'react-router-dom'
 import {useEvent} from 'Event/EventProvider'
 import {useTemplate} from 'Event/TemplateProvider'
-import {Background, ImagePreviewContainer} from 'organization/Event/Backgrounds/BackgroundsProvider'
+import {
+  Background,
+  ImagePreviewContainer,
+} from 'organization/Event/Backgrounds/BackgroundsProvider'
 import {downloadUrl} from 'lib/dom'
 import {useVariables} from 'Event'
 import HiddenOnMatch from 'Event/visibility-rules/HiddenOnMatch'
@@ -31,7 +34,6 @@ export default function SimpleBlogBackgrounds(props: {user: Attendee}) {
   if (zoom_backgrounds_title === '' || zoom_backgrounds_description === '') {
     return <Redirect to={eventRoutes.root} />
   }
-
 
   const perRow = (12 / (settings.imagesPerRow || 1)) as GridSize
 

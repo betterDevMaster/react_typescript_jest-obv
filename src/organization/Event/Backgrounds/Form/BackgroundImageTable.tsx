@@ -9,7 +9,12 @@ import CircularProgress from '@material-ui/core/CircularProgress'
 import Typography from '@material-ui/core/Typography'
 import Grid from '@material-ui/core/Grid'
 import {useSortedBackgrounds} from 'Event/template/SimpleBlog/Backgrounds'
-import {DragDropContext, Draggable, Droppable, DropResult} from 'react-beautiful-dnd'
+import {
+  DragDropContext,
+  Draggable,
+  Droppable,
+  DropResult,
+} from 'react-beautiful-dnd'
 import {useEvent} from 'Event/EventProvider'
 import {useTemplate} from 'Event/TemplateProvider'
 import BackgroundImageRow from 'organization/Event/Backgrounds/Form/BackgroundImageRow'
@@ -20,7 +25,7 @@ export default function BackgroundImageTable() {
     backgroundsTemplateData: previewSettings,
     loading,
     isRemoving,
-    removeBackground
+    removeBackground,
   } = useBackgrounds()
 
   const hasBackgrounds = backgrounds.length > 0
@@ -30,7 +35,11 @@ export default function BackgroundImageTable() {
 
   const draggableBackgrounds = sortedBackgrounds.map((background, index) => {
     return (
-      <Draggable draggableId={String(background.id)} index={index} key={background.id}>
+      <Draggable
+        draggableId={String(background.id)}
+        index={index}
+        key={background.id}
+      >
         {(provided) => (
           <Grid
             item
@@ -73,15 +82,12 @@ export default function BackgroundImageTable() {
     <DragDropContext onDragEnd={handleDrag(sortedBackgrounds)}>
       <Droppable droppableId="drag-and-drop-faq">
         {(provided) => (
-          <DroppableBox
-            ref={provided.innerRef}
-            {...provided.droppableProps}
-          >
+          <DroppableBox ref={provided.innerRef} {...provided.droppableProps}>
             <>
-            <Grid container spacing={2}>
-              {draggableBackgrounds}
-              {provided.placeholder}
-            </Grid>
+              <Grid container spacing={2}>
+                {draggableBackgrounds}
+                {provided.placeholder}
+              </Grid>
             </>
           </DroppableBox>
         )}
@@ -94,10 +100,7 @@ function useHandleDrag() {
   const {setBackgroundData} = useBackgrounds()
   const {event} = useEvent()
   const {zoomBackgrounds: settings} = useTemplate()
-  const {
-    zoom_backgrounds_description,
-    zoom_backgrounds_title,
-  } = event
+  const {zoom_backgrounds_description, zoom_backgrounds_title} = event
 
   return (backgrounds: Background[]) => (result: DropResult) => {
     const {destination, source} = result
@@ -114,12 +117,12 @@ function useHandleDrag() {
     setBackgroundData(
       {
         zoom_backgrounds_title: zoom_backgrounds_title || '',
-        zoom_backgrounds_description: zoom_backgrounds_description || ''
+        zoom_backgrounds_description: zoom_backgrounds_description || '',
       },
       {
         ...settings,
         orderedIds: [...orderedIds],
-      }
+      },
     )
   }
 }

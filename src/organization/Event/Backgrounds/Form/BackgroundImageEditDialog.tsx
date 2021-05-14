@@ -6,7 +6,11 @@ import Box from '@material-ui/core/Box'
 import Button from '@material-ui/core/Button'
 import Dialog from 'lib/ui/Dialog'
 import {ObvioEvent, useVariables} from 'Event'
-import {Background, BackgroundsTemplateData, ImagePreviewContainer} from '../BackgroundsProvider'
+import {
+  Background,
+  BackgroundsTemplateData,
+  ImagePreviewContainer,
+} from '../BackgroundsProvider'
 import DangerButton from 'lib/ui/Button/DangerButton'
 import RuleConfig, {useRuleConfig} from 'Event/visibility-rules/RuleConfig'
 import {Rule} from 'Event/visibility-rules'
@@ -17,7 +21,7 @@ import {useOrganization} from 'organization/OrganizationProvider'
 export default function BackgroundImageEditDialog(props: {
   onClose: () => void
   visible: boolean
-  settings: BackgroundsTemplateData,
+  settings: BackgroundsTemplateData
   background: Background
   handleRemove: () => void
   onDone: (event: ObvioEvent) => void
@@ -33,7 +37,7 @@ export default function BackgroundImageEditDialog(props: {
     const url = api(`/backgrounds/${background.id}`)
     setSaving(true)
     client
-      .put<ObvioEvent>(url, { settings: {rules} })
+      .put<ObvioEvent>(url, {settings: {rules}})
       .then((event: ObvioEvent) => {
         onDone(event)
       })
