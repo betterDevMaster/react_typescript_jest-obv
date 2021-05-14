@@ -158,10 +158,9 @@ export interface SimpleBlog {
     borderRadius: number
     borderThickness: number
     imagesPerRow: number
-    description: {
-      color: string
-      fontSize: number
-    }
+    backToDashboardText: string
+    backToDashboardTextColor: string
+    orderedIds?: number[]
   }
 }
 
@@ -281,9 +280,7 @@ export const createSimpleBlog = (): SimpleBlog => ({
     borderRadius: 0,
     borderThickness: 0,
     imagesPerRow: 2,
-    description: {
-      color: '#000000',
-      fontSize: 18,
-    },
+    backToDashboardText: 'Back to Dashboard',
+    backToDashboardTextColor: '#000000',
   },
 })

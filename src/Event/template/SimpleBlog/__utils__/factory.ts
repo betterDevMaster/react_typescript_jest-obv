@@ -100,10 +100,8 @@ export const fakeSimpleBlog = (overrides?: Partial<SimpleBlog>): SimpleBlog => {
       borderRadius: 0,
       borderThickness: 0,
       imagesPerRow: 2,
-      description: {
-        color: '#000000',
-        fontSize: 18,
-      },
+      backToDashboardText: 'Back to Dashboard',
+      backToDashboardTextColor: '#000000',
     },
   }
 
@@ -225,10 +223,8 @@ export function fakeZoomBackgrounds(
     borderRadius: 0,
     borderThickness: 0,
     imagesPerRow: 2,
-    description: {
-      color: '#000000',
-      fontSize: 18,
-    },
+    backToDashboardText: 'Back to Dashboard',
+    backToDashboardTextColor: '#000000',
     ...overrides,
   }
 }
