@@ -30,6 +30,17 @@ export default function LinkConfig<T extends NavButton>(
     <>
       <PageSelect {...props} />
       <LinkInput {...props} />
+      <FormControl>
+        <FormControlLabel
+          label="New Tab"
+          control={
+            <Checkbox
+              checked={props.button.newTab || false}
+              onChange={onChangeCheckedHandler(props.update('newTab'))}
+            />
+          }
+        />
+      </FormControl>
     </>
   )
 }
@@ -81,28 +92,15 @@ function LinkInput<T extends NavButton>(props: ButtonConfigProps<T>) {
   }
 
   return (
-    <>
-      <TextField
-        label="URL"
-        value={props.button.link || ''}
-        inputProps={{
-          'aria-label': 'button link input',
-        }}
-        fullWidth
-        onChange={onChangeStringHandler(props.update('link'))}
-        helperText="Starting with https:// or http://"
-      />
-      <FormControl>
-        <FormControlLabel
-          label="New Tab"
-          control={
-            <Checkbox
-              checked={props.button.newTab || false}
-              onChange={onChangeCheckedHandler(props.update('newTab'))}
-            />
-          }
-        />
-      </FormControl>
-    </>
+    <TextField
+      label="URL"
+      value={props.button.link || ''}
+      inputProps={{
+        'aria-label': 'button link input',
+      }}
+      fullWidth
+      onChange={onChangeStringHandler(props.update('link'))}
+      helperText="Starting with https:// or http://"
+    />
   )
 }
