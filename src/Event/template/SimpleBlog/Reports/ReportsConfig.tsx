@@ -13,7 +13,7 @@ export const DEFAULT_FOOTER_TEXT = ''
 export const DEFAULT_FOOTER_BACKGROUND_COLOR = '#FFFFFF'
 export const DEFAULT_FOOTER_TEXT_COLOR = '#000000'
 export const DEFAULT_BODY_BACKGROUND_COLOR = '#FFFFFF'
-export const DEFAULT_BODY_BACKGROUND_OPACITY = 1
+export const DEFAULT_BODY_BACKGROUND_OPACITY = 0
 
 export default function SimpleBlogReportsConfig() {
   const [isPreview, setIsPreview] = useState(false)
