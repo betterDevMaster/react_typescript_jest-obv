@@ -9,9 +9,8 @@ import FullPageLoader from 'lib/ui/layout/FullPageLoader'
 
 type OwnerContextProps = User
 
-const OwnerContext = React.createContext<OwnerContextProps | undefined>(
-  undefined,
-)
+const OwnerContext =
+  React.createContext<OwnerContextProps | undefined>(undefined)
 
 export default function OwnerProvider(props: {children: React.ReactNode}) {
   const {organization, client} = useOrganization()

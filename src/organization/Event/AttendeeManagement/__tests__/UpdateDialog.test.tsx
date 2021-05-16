@@ -28,14 +28,11 @@ it('should edit an attendee', async () => {
       }),
   )
 
-  const {
-    findAllByLabelText,
-    findByLabelText,
-    event,
-  } = await goToAttendeeManagement({
-    userPermissions: [CONFIGURE_EVENTS],
-    attendees,
-  })
+  const {findAllByLabelText, findByLabelText, event} =
+    await goToAttendeeManagement({
+      userPermissions: [CONFIGURE_EVENTS],
+      attendees,
+    })
 
   const targetIndex = faker.random.number({min: 0, max: attendees.length - 1})
   const target = attendees[targetIndex]

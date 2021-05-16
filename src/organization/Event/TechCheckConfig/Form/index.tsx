@@ -69,9 +69,8 @@ export default function Form() {
     control,
   } = useForm()
   const [loading, setLoading] = useState(true)
-  const [responseError, setResponseError] = useState<
-    ValidationError<TechCheckData>
-  >(null)
+  const [responseError, setResponseError] =
+    useState<ValidationError<TechCheckData>>(null)
   const [submitting, setSubmitting] = useState(false)
   const setTechCheck = useSetTechCheck()
   const dispatch = useDispatch()

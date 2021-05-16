@@ -26,9 +26,8 @@ export default function AddTeamMemberForm() {
   const {add: addInvite} = useTeamInvitations()
   const {add: addMember} = useTeam()
   const [submitting, setSubmitting] = useState(false)
-  const [responseError, setResponseError] = useState<
-    ValidationError<InviteData>
-  >(null)
+  const [responseError, setResponseError] =
+    useState<ValidationError<InviteData>>(null)
   const inviteTeamMember = useInviteTeamMember()
 
   const submit = (data: InviteData) => {

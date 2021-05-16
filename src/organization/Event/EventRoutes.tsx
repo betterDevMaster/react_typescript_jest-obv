@@ -40,9 +40,10 @@ import SponsorsProvider from 'organization/Event/SponsorsProvider'
 import FaqsProvider from 'organization/Event/FaqsProvider'
 import SpeakersProvider from 'organization/Event/SpeakersProvider'
 import NameAppendageProvider from 'organization/Event/NameAppendageConfig/NameAppendageProvider'
-
+import ReportsConfig from 'organization/Event/ReportsConfig'
 import BackgroundsProvider from 'organization/Event/Backgrounds/BackgroundsProvider'
 import Backgrounds from 'organization/Event/Backgrounds'
+import ReportsProvider from 'organization/Event/ReportsProvider'
 
 export type EventRoutes = ReturnType<typeof useEventRoutes>
 
@@ -187,6 +188,14 @@ export default function EventRoutes() {
             <NameAppendageProvider>
               <NameAppendageConfig />
             </NameAppendageProvider>
+          </AuthorizedPage>
+        </Route>
+        reports
+        <Route path={routes.events[':event'].reports}>
+          <AuthorizedPage permission={CONFIGURE_EVENTS}>
+            <ReportsProvider>
+              <ReportsConfig />
+            </ReportsProvider>
           </AuthorizedPage>
         </Route>
         <Redirect to={routes.events[':event'].root} />

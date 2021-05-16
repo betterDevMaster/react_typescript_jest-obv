@@ -31,11 +31,10 @@ export default function TranslationForm(props: {
 
   const isDefaultLanguage = language === defaultLanguage
 
-  const values = useMemo(() => parseValues(language, translations), [
-    language,
-    translations,
-    parseValues,
-  ])
+  const values = useMemo(
+    () => parseValues(language, translations),
+    [language, translations, parseValues],
+  )
 
   const [fields, setFields] = useState<Field[]>([])
 

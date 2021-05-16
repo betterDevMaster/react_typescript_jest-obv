@@ -12,8 +12,8 @@ import {
   Background,
   ImagePreviewContainer,
 } from 'organization/Event/Backgrounds/BackgroundsProvider'
-import {downloadUrl} from 'lib/dom'
 import {useVariables} from 'Event'
+import {downloadFile} from 'lib/http-client'
 
 const DEFAULT_BACK_TO_DASHBOARD_TEXT = 'Back to Dashboard'
 const DEFAULT_BACK_TO_DASHBOARD_TEXT_COLOR = '#000000'
@@ -22,11 +22,8 @@ export default function SimpleBlogBackgrounds(props: {user: Attendee}) {
   const v = useVariables()
   const {event} = useEvent()
   const {zoomBackgrounds: settings} = useTemplate()
-  const {
-    backgrounds,
-    zoom_backgrounds_description,
-    zoom_backgrounds_title,
-  } = event
+  const {backgrounds, zoom_backgrounds_description, zoom_backgrounds_title} =
+    event
 
   const sortedBackgrounds = useSortedBackgrounds(backgrounds)
 
@@ -66,7 +63,7 @@ export default function SimpleBlogBackgrounds(props: {user: Attendee}) {
               borderThickness={settings.borderThickness || 0}
               borderColor={v(settings.borderColor || '#000000')}
               onClick={() =>
-                downloadUrl(v(background.image.url), background.image.name)
+                downloadFile(v(background.image.url), background.image.name)
               }
               src={v(background.image.url)}
               clickable

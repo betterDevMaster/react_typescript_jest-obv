@@ -1,4 +1,4 @@
-import {PublicFile} from 'lib/http-client'
+import {FileLocation} from 'lib/http-client'
 import {useEffect, useState} from 'react'
 
 export type FileSelect = ReturnType<typeof useFileSelect>
@@ -14,7 +14,7 @@ export type FileSelect = ReturnType<typeof useFileSelect>
  * @param current
  * @returns
  */
-export function useFileSelect(current?: PublicFile | null) {
+export function useFileSelect(current?: FileLocation | null) {
   const [file, setFile] = useState<null | File>(null)
   const [wasRemoved, setWasRemoved] = useState(false)
 

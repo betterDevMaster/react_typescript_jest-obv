@@ -5,7 +5,7 @@ import {useEvent} from 'Event/EventProvider'
 import PagePoints, {DASHBOARD} from 'Event/PointsProvider/PagePoints'
 import {eventRoutes} from 'Event/Routes'
 import {Template} from 'Event/template'
-import {PublicFile} from 'lib/http-client'
+import {FileLocation} from 'lib/http-client'
 import React, {useCallback} from 'react'
 import {Redirect} from 'react-router-dom'
 import {Form} from 'organization/Event/FormsProvider'
@@ -33,21 +33,21 @@ export interface ObvioEvent {
   template: Template | null
   waiver: WaiverConfig | null
   tech_check: TechCheckConfig | null
-  logo: PublicFile | null
-  header_background: PublicFile | null
-  points_summary_logo: PublicFile | null
+  logo: FileLocation | null
+  header_background: FileLocation | null
+  points_summary_logo: FileLocation | null
   platform_actions: PlatformActions
-  login_background: PublicFile | null
-  login_logo: PublicFile | null
-  favicon: PublicFile | null
+  login_background: FileLocation | null
+  login_logo: FileLocation | null
+  favicon: FileLocation | null
   forms: Form[]
   has_infusionsoft: boolean
-  dashboard_background: PublicFile | null
-  welcome_image: PublicFile | null
-  sidebar_background: PublicFile | null
-  footer_image: PublicFile | null
+  dashboard_background: FileLocation | null
+  welcome_image: FileLocation | null
+  sidebar_background: FileLocation | null
+  footer_image: FileLocation | null
   sponsor_page_title: string
-  sponsor_question_icon: PublicFile | null
+  sponsor_question_icon: FileLocation | null
   speakers: Speaker[]
   localization: Localization | null
   domains: Domain[]

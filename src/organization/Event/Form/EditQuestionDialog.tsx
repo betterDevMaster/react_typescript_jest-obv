@@ -10,7 +10,7 @@ import Form from 'organization/Event/Form/CreateQuestionDialog/Form'
 import DangerButton from 'lib/ui/Button/DangerButton'
 import {colors, spacing} from 'lib/ui/theme'
 import {withStyles} from '@material-ui/core/styles'
-import {CsvExport} from 'lib/api-client'
+import {Downloadable} from 'lib/api-client'
 import Typography from '@material-ui/core/Typography'
 import Box from '@material-ui/core/Box'
 import Button from 'lib/ui/Button'
@@ -74,7 +74,7 @@ function ExportSubmission(props: {question: Question}) {
 
   const exportSubmissions = () => {
     client
-      .get<CsvExport>(url)
+      .get<Downloadable>(url)
       .then((res) => download(res.data, res.file_name))
       .catch((e) => setError(e.message))
   }

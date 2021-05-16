@@ -83,14 +83,10 @@ it('edit an action', async () => {
 })
 
 it('removes an action', async () => {
-  const {
-    findByLabelText,
-    actions,
-    findAllByLabelText,
-    event,
-  } = await goToPointsConfig({
-    userPermissions: [CONFIGURE_EVENTS],
-  })
+  const {findByLabelText, actions, findAllByLabelText, event} =
+    await goToPointsConfig({
+      userPermissions: [CONFIGURE_EVENTS],
+    })
 
   const numOriginal = actions.length
 

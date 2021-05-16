@@ -22,11 +22,8 @@ it('should edit a speaker', async () => {
   )
 
   const event = fakeEvent({speakers})
-  const {
-    findAllByLabelText,
-    findByText,
-    findByLabelText,
-  } = await goToSpeakerConfig({event, userPermissions: [CONFIGURE_EVENTS]})
+  const {findAllByLabelText, findByText, findByLabelText} =
+    await goToSpeakerConfig({event, userPermissions: [CONFIGURE_EVENTS]})
 
   const targetIndex = faker.random.number({min: 0, max: speakers.length - 1})
 
@@ -88,11 +85,8 @@ it('remove a speaker', async () => {
   )
 
   const event = fakeEvent({speakers})
-  const {
-    findAllByLabelText,
-    queryByText,
-    findByLabelText,
-  } = await goToSpeakerConfig({event, userPermissions: [CONFIGURE_EVENTS]})
+  const {findAllByLabelText, queryByText, findByLabelText} =
+    await goToSpeakerConfig({event, userPermissions: [CONFIGURE_EVENTS]})
 
   const targetIndex = faker.random.number({min: 0, max: speakers.length - 1})
   const target = speakers[targetIndex]

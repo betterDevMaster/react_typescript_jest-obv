@@ -61,9 +61,8 @@ export interface BackgroundsContextProps {
   ) => Promise<any>
 }
 
-const BackgroundsContext = React.createContext<
-  BackgroundsContextProps | undefined
->(undefined)
+const BackgroundsContext =
+  React.createContext<BackgroundsContextProps | undefined>(undefined)
 
 export default function BackgroundsProvider(props: {
   children: React.ReactElement
@@ -72,10 +71,8 @@ export default function BackgroundsProvider(props: {
   const dispatch = useDispatch()
   const {zoomBackgrounds: backgroundsTemplateDataDefaults} = createSimpleBlog()
 
-  const [
-    backgroundsTemplateData,
-    setBackgroundsTemplateData,
-  ] = useState<BackgroundsTemplateData>(backgroundsTemplateDataDefaults)
+  const [backgroundsTemplateData, setBackgroundsTemplateData] =
+    useState<BackgroundsTemplateData>(backgroundsTemplateDataDefaults)
   const [backgrounds, setBackgrounds] = useState<Background[]>([])
   const [isRemoving, setIsRemoving] = useState<boolean>(false)
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false)

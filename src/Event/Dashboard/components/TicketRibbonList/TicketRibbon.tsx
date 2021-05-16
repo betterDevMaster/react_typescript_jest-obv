@@ -21,7 +21,7 @@ import LIGHT_PURPLE_RIBBON_IMAGE from 'Event/Dashboard/components/TicketRibbonLi
 import {HasRules} from 'Event/visibility-rules'
 import {useVariables} from 'Event'
 import {Typography} from '@material-ui/core'
-import {PublicFile} from 'lib/http-client'
+import {FileLocation} from 'lib/http-client'
 import {useEditMode} from 'Event/Dashboard/editor/state/edit-mode'
 import {Draggable} from 'react-beautiful-dnd'
 import {DragHandle, DraggableOverlay} from 'lib/ui/drag-and-drop'
@@ -76,7 +76,7 @@ export type TicketRibbon = HasRules & {
 
 export type CustomTicketRibbon = {
   id: number
-  image: PublicFile
+  image: FileLocation
 }
 
 export const TICKET_RIBBON_IMAGE: Record<string, string> = {

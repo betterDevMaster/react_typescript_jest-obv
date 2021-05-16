@@ -9,7 +9,7 @@ import {useOrganization} from 'organization/OrganizationProvider'
 import React from 'react'
 import {useCallback, useEffect, useState} from 'react'
 import download from 'js-file-download'
-import {CsvExport} from 'lib/api-client'
+import {Downloadable} from 'lib/api-client'
 
 const SEARCH_DEBOUNCE_MS = 1000
 
@@ -34,9 +34,8 @@ export interface AttendeeImportResult {
   invalid_emails: string[]
 }
 
-export const AttendeesContext = React.createContext<
-  AttendeesContextProps | undefined
->(undefined)
+export const AttendeesContext =
+  React.createContext<AttendeesContextProps | undefined>(undefined)
 
 export default function AttendeesProvider(props: {
   children: React.ReactElement
@@ -227,7 +226,7 @@ export function useExport(options: {onError: (error: string | null) => void}) {
 
   return () =>
     client
-      .get<CsvExport>(url)
+      .get<Downloadable>(url)
       .then((res) => {
         download(res.data, res.file_name)
       })

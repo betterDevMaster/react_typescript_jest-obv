@@ -82,13 +82,13 @@ export function MainNavButtonConfig(props: {id: MainNavButtonConfig['id']}) {
     })
   }
 
-  const updateButton = <T extends keyof NavButtonWithSize>(key: T) => (
-    value: NavButtonWithSize[T],
-  ) =>
-    update({
-      ...button,
-      [key]: value,
-    })
+  const updateButton =
+    <T extends keyof NavButtonWithSize>(key: T) =>
+    (value: NavButtonWithSize[T]) =>
+      update({
+        ...button,
+        [key]: value,
+      })
   return (
     <RuleConfig
       visible={ruleConfigVisible}

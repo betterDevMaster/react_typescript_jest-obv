@@ -26,9 +26,11 @@ it('toggles permissions', async () => {
 
   // starts checked
   expect(
-    ((await findAllByLabelText('toggle permission'))[
-      targetIndex
-    ] as HTMLInputElement).checked,
+    (
+      (await findAllByLabelText('toggle permission'))[
+        targetIndex
+      ] as HTMLInputElement
+    ).checked,
   ).toBe(true)
 
   const withoutPermission = {...role, permissions: []}
@@ -40,9 +42,11 @@ it('toggles permissions', async () => {
 
   // is now unchecked
   expect(
-    ((await findAllByLabelText('toggle permission'))[
-      targetIndex
-    ] as HTMLInputElement).checked,
+    (
+      (await findAllByLabelText('toggle permission'))[
+        targetIndex
+      ] as HTMLInputElement
+    ).checked,
   ).toBe(false)
 
   const withPermissionAdded = {...role, permissions: [permission]}
@@ -54,9 +58,11 @@ it('toggles permissions', async () => {
 
   // is now checked again
   expect(
-    ((await findAllByLabelText('toggle permission'))[
-      targetIndex
-    ] as HTMLInputElement).checked,
+    (
+      (await findAllByLabelText('toggle permission'))[
+        targetIndex
+      ] as HTMLInputElement
+    ).checked,
   ).toBe(true)
 
   // Check that we're updating the right permission

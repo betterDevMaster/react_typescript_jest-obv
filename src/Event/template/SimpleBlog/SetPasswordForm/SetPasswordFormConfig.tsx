@@ -31,17 +31,17 @@ export default function SetPasswordFormConfig() {
 
   const updateSetPasswordForm = useUpdateObject('setPasswordForm')
 
-  const updateButton = <T extends keyof SetPasswordButton>(key: T) => (
-    value: SetPasswordButton[T],
-  ) => {
-    const current = setPasswordForm?.button || {}
-    const button = {
-      ...current,
-      [key]: value,
-    }
+  const updateButton =
+    <T extends keyof SetPasswordButton>(key: T) =>
+    (value: SetPasswordButton[T]) => {
+      const current = setPasswordForm?.button || {}
+      const button = {
+        ...current,
+        [key]: value,
+      }
 
-    updateSetPasswordForm('button')(button)
-  }
+      updateSetPasswordForm('button')(button)
+    }
 
   return (
     <>

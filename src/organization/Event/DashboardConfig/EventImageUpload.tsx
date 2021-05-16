@@ -4,7 +4,7 @@ import {useEvent} from 'Event/EventProvider'
 import {api} from 'lib/url'
 import {useOrganization} from 'organization/OrganizationProvider'
 import {ObvioEvent} from 'Event'
-import {PublicFile} from 'lib/http-client'
+import {FileLocation} from 'lib/http-client'
 import Label from 'lib/ui/form/ImageUpload/Label'
 import ImageUpload from 'lib/ui/form/ImageUpload'
 import RemoveImageButton from 'lib/ui/form/ImageUpload/RemoveButton'
@@ -19,7 +19,7 @@ import Cropper, {CropperProps} from 'lib/ui/form/ImageUpload/Cropper'
 interface EventImageUploadProps {
   label: string
   property: keyof ObvioEvent
-  current?: PublicFile | null
+  current?: FileLocation | null
   width?: CropperProps['width']
   height?: CropperProps['height']
   canResize?: CropperProps['canResize']

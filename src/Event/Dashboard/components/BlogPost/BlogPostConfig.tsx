@@ -39,22 +39,24 @@ export function BlogPostConfig(props: {id: BlogPostConfig['id']}) {
 
   const post = posts.entities[id]
 
-  const update = <T extends keyof BlogPost>(key: T) => (value: BlogPost[T]) => {
-    const updated: BlogPost = {
-      ...post,
-      [key]: value,
-    }
+  const update =
+    <T extends keyof BlogPost>(key: T) =>
+    (value: BlogPost[T]) => {
+      const updated: BlogPost = {
+        ...post,
+        [key]: value,
+      }
 
-    updateTemplate({
-      blogPosts: {
-        ...posts,
-        entities: {
-          ...posts.entities,
-          [id]: updated,
+      updateTemplate({
+        blogPosts: {
+          ...posts,
+          entities: {
+            ...posts.entities,
+            [id]: updated,
+          },
         },
-      },
-    })
-  }
+      })
+    }
 
   const remove = () => {
     const {[id]: target, ...otherPosts} = posts.entities

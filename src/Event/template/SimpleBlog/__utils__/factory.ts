@@ -136,7 +136,7 @@ export function withMainNav<T extends {mainNav: SimpleBlog['mainNav']}>(
 }
 
 export function withSidebarNav<
-  T extends {sidebarNav: SimpleBlog['sidebarNav']}
+  T extends {sidebarNav: SimpleBlog['sidebarNav']},
 >(attributes: T): T {
   const buttons = Array.from(
     {length: faker.random.number({min: 1, max: 5})},

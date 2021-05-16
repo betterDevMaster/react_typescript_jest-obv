@@ -23,9 +23,8 @@ export interface FormsContextProps {
   remove: (form: Form) => void
 }
 
-export const FormsContext = React.createContext<FormsContextProps | undefined>(
-  undefined,
-)
+export const FormsContext =
+  React.createContext<FormsContextProps | undefined>(undefined)
 
 export default function FormsProvider(props: {children: React.ReactElement}) {
   const {event, set: updateEvent} = useEvent()

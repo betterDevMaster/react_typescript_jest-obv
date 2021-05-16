@@ -13,9 +13,9 @@ export async function submitWaiver({
   findByLabelText,
   attendee,
 }: Await<ReturnType<typeof loginToEventSite>> & {attendee?: Attendee}) {
-  const canvas = ((await findByLabelText(
+  const canvas = (await findByLabelText(
     'signature canvas',
-  )) as unknown) as HTMLCanvasElement
+  )) as unknown as HTMLCanvasElement
 
   const signature = 'data:image/png;base64'
   //@ts-ignore

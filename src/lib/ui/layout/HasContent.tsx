@@ -11,6 +11,6 @@ export default function IfExists<T>(
     return null
   }
 
-  const componentProps = (otherProps as unknown) as T
+  const componentProps = otherProps as unknown as T
   return <Component {...componentProps}>{children}</Component>
 }

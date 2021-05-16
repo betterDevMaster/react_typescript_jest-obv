@@ -7,12 +7,12 @@ import {useEvent} from 'Event/EventProvider'
 import {useAsync} from 'lib/async'
 import {api} from 'lib/url'
 import {Client} from 'lib/api-client'
-import {PublicFile} from 'lib/http-client'
+import {FileLocation} from 'lib/http-client'
 import {useTrackEventPage} from 'analytics'
 
 export interface Speaker {
   id: number
-  image: PublicFile | null
+  image: FileLocation | null
   name: string
   text: string
 }
