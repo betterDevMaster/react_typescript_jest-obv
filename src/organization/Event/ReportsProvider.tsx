@@ -38,13 +38,15 @@ interface ReportsProviderContextProps {
   loading: boolean
 }
 
-const ReportsProviderContext =
-  React.createContext<undefined | ReportsProviderContextProps>(undefined)
+const ReportsProviderContext = React.createContext<
+  undefined | ReportsProviderContextProps
+>(undefined)
 
 export default function ReportsProvider(props: {children: React.ReactElement}) {
   const {data: saved, loading} = useFetchReports()
   const [reports, setReports] = useState<Report[]>([])
   const createReport = useCreateReport()
+  const [creating, setCreating] = useState(false)
 
   /**
    * TEMPORARY workaround - before multiple reports is implemented, we'll just
@@ -75,9 +77,11 @@ export default function ReportsProvider(props: {children: React.ReactElement}) {
    * Create first report if one doesn't exist
    */
   useEffect(() => {
-    if (loading || !saved) {
+    if (loading || !saved || Boolean(editing) || creating) {
       return
     }
+
+    setCreating(true)
 
     const needFirstReport = saved.length === 0
     if (!needFirstReport) {
@@ -85,7 +89,7 @@ export default function ReportsProvider(props: {children: React.ReactElement}) {
     }
 
     createReport().then(add)
-  }, [loading, saved, add, createReport])
+  }, [loading, saved, add, createReport, editing, creating])
 
   const set = useCallback(
     (target: Report) => {
