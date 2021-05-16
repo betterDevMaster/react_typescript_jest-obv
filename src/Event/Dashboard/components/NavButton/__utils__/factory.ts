@@ -10,7 +10,7 @@ export const fakeNavButton = (overrides?: Partial<NavButton>): NavButton => {
   const defaultAttributes: NavButton = {
     text: `${faker.random.words(3)}`,
     link: faker.internet.url(),
-    newTab: true,
+    newTab: false,
     rules: [],
     isAreaButton: false,
     areaId: null,
