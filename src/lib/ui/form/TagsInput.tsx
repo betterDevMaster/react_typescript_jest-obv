@@ -1,4 +1,4 @@
-import React, {useState} from 'react'
+import React, {useEffect, useState} from 'react'
 import Downshift from 'downshift'
 import TextField from '@material-ui/core/TextField'
 import Chip from '@material-ui/core/Chip'
@@ -7,18 +7,21 @@ import {makeStyles} from '@material-ui/core/styles'
 
 export type Tag = string
 
-export default React.forwardRef<
-  HTMLInputElement,
-  {
-    value?: Tag[]
-    'aria-label'?: string
-    name: string
-    label?: string
-    disabled?: boolean
-  }
->((props, ref) => {
+export default function TagsInput(props: {
+  value?: Tag[]
+  'aria-label'?: string
+  name: string
+  label?: string
+  disabled?: boolean
+  onChange: (tags: Tag[]) => void
+}) {
+  const {onChange} = props
   const [input, setInput] = useState('')
   const [tags, setTags] = useState<Tag[]>(props.value || [])
+
+  useEffect(() => {
+    onChange(tags)
+  }, [tags, onChange])
 
   const classes = useStyles()
 
@@ -111,21 +114,12 @@ export default React.forwardRef<
               fullWidth
               variant="outlined"
             />
-            {tags.map((t, index) => (
-              <input
-                type="hidden"
-                key={t}
-                ref={ref}
-                value={t}
-                name={`${props.name}[${index}]`}
-              />
-            ))}
           </div>
         )
       }}
     </Downshift>
   )
-})
+}
 
 const useStyles = makeStyles((theme) => ({
   chip: {

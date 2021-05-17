@@ -8,14 +8,14 @@ import {useAttendees} from 'organization/Event/AttendeesProvider'
 import Button from '@material-ui/core/Button'
 import {spacing} from 'lib/ui/theme'
 import {withStyles} from '@material-ui/core'
-import TagsInput from 'lib/ui/form/TagsInput'
-import GroupInput from 'organization/Event/AttendeeManagement/CreateDialog/Form/GroupInput'
+import TagsInput, {Tag} from 'lib/ui/form/TagsInput'
+import GroupInput from 'organization/Event/AttendeeManagement/attendee-dialog/Form/GroupInput'
 import {
   CONFIGURE_EVENTS,
   usePermissions,
 } from 'organization/PermissionsProvider'
 import HasPermission from 'organization/HasPermission'
-import NewGroupInput from 'organization/Event/AttendeeManagement/CreateDialog/Form/NewGroupInput'
+import NewGroupInput from 'organization/Event/AttendeeManagement/attendee-dialog/Form/NewGroupInput'
 
 export interface NewGroup {
   key: string
@@ -31,15 +31,15 @@ export default function Form(props: {
   const {register, handleSubmit, errors} = useForm()
   const [serverError, setServerError] =
     useState<ValidationError<Partial<Attendee>>>(null)
+  const {isVisible, attendee} = props
   const [submitting, setSubmitting] = useState(false)
   const [newGroups, setNewGroups] = useState<NewGroup[]>([])
   const {groups} = useAttendees()
   const isMounted = useRef(true)
+  const [tags, setTags] = useState<Tag[]>(attendee?.tags || [])
 
   const {can} = usePermissions()
   const canEdit = can(CONFIGURE_EVENTS)
-
-  const {isVisible, attendee} = props
 
   useEffect(() => {
     setNewGroups([])
@@ -76,13 +76,6 @@ export default function Form(props: {
 
     setServerError(null)
     setSubmitting(true)
-
-    /**
-     * If no tags were included, react-hook-from won't send an
-     * empty array so we need to include it ourself to
-     * handle the case of clearing all tags.
-     */
-    const tags = data.tags || []
 
     /**
      * Dynamically append new groups
@@ -170,10 +163,10 @@ export default function Form(props: {
         disabled={!canEdit}
       />
       <TagsInput
-        value={attendee?.tags || []}
+        value={tags}
+        onChange={setTags}
         name="tags"
         aria-label="tags"
-        ref={register}
         label="Tags"
         disabled={!canEdit}
       />

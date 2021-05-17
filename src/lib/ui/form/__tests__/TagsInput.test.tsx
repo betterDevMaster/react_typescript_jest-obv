@@ -11,7 +11,7 @@ it('should render initial tags', async () => {
     .map((_, index) => `${index}_${faker.random.word()}`) // Prepend index to ensure uniquenes
 
   const {findAllByLabelText, findByText} = render(
-    <TagsInput value={tags} name="tags" />,
+    <TagsInput value={tags} name="tags" onChange={() => {}} />,
   )
 
   expect((await findAllByLabelText('tag')).length).toBe(tags.length)
@@ -22,8 +22,11 @@ it('should render initial tags', async () => {
 })
 
 it('should add a new tag', async () => {
+  const onChange = jest.fn()
   const label = 'my tags'
-  const {findByLabelText} = render(<TagsInput name="tags" aria-label={label} />)
+  const {findByLabelText} = render(
+    <TagsInput name="tags" aria-label={label} onChange={onChange} />,
+  )
 
   const tag = faker.random.word()
   user.type(await findByLabelText(label), tag)
@@ -31,9 +34,15 @@ it('should add a new tag', async () => {
   fireEvent.keyDown(await findByLabelText(label), {key: 'Enter', code: 13})
 
   expect((await findByLabelText('tag')).textContent).toBe(tag)
+
+  expect(onChange).toHaveBeenCalledTimes(2)
+
+  const [added] = onChange.mock.calls[1][0]
+  expect(added).toBe(tag)
 })
 
 it('should remove the last tag', async () => {
+  const onChange = jest.fn()
   const label = 'my tags'
 
   const tags = new Array(faker.random.number({min: 2, max: 4}))
@@ -41,15 +50,28 @@ it('should remove the last tag', async () => {
     .map((_, index) => `${index}_${faker.random.word()}`)
 
   const {findAllByLabelText, findByLabelText} = render(
-    <TagsInput value={tags} name="tags" aria-label={label} />,
+    <TagsInput
+      value={tags}
+      name="tags"
+      aria-label={label}
+      onChange={onChange}
+    />,
   )
 
   fireEvent.keyDown(await findByLabelText(label), {key: 'Backspace'})
 
   expect((await findAllByLabelText('tag')).length).toBe(tags.length - 1)
+
+  expect(onChange).toHaveBeenCalledTimes(2)
+
+  // Did remove from array
+  const last = tags[tags.length - 1]
+  const updated = onChange.mock.calls[1][0]
+  expect(updated.includes(last)).toBe(false)
 })
 
 it('should remove a specific tag', async () => {
+  const onChange = jest.fn()
   const label = 'my tags'
 
   const tags = new Array(faker.random.number({min: 2, max: 5}))
@@ -57,7 +79,12 @@ it('should remove a specific tag', async () => {
     .map((_, index) => `${index}_${faker.random.word()}`)
 
   const {findAllByLabelText, findByText, queryByText} = render(
-    <TagsInput value={tags} name="tags" aria-label={label} />,
+    <TagsInput
+      value={tags}
+      name="tags"
+      aria-label={label}
+      onChange={onChange}
+    />,
   )
 
   const target = faker.random.arrayElement(tags)
@@ -68,4 +95,10 @@ it('should remove a specific tag', async () => {
   expect((await findAllByLabelText('tag')).length).toBe(tags.length - 1)
 
   expect(queryByText(target)).not.toBeInTheDocument()
+
+  expect(onChange).toHaveBeenCalledTimes(2)
+
+  // Did remove from array
+  const updated = onChange.mock.calls[1][0]
+  expect(updated.includes(target)).toBe(false)
 })
