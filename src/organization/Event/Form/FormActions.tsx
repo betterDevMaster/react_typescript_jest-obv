@@ -1,6 +1,6 @@
 import Box from '@material-ui/core/Box'
 import Button from '@material-ui/core/Button'
-import {CsvExport} from 'lib/api-client'
+import {Downloadable} from 'lib/api-client'
 import {api} from 'lib/url'
 import React, {useState} from 'react'
 import download from 'js-file-download'
@@ -49,7 +49,7 @@ function useExportSubmissions() {
 
   const exportSubmissions = () => {
     client
-      .get<CsvExport>(url)
+      .get<Downloadable>(url)
       .then((res) => download(res.data, res.file_name))
       .catch((e) => setError(e.message))
   }

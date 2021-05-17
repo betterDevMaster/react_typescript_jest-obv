@@ -74,6 +74,7 @@ export default function NavButton(props: NavButton) {
         to={props.page}
         disableStyles
         aria-label={props['aria-label']}
+        newTab={props.newTab}
         onClick={handleClicked}
       >
         <Button {...props} />

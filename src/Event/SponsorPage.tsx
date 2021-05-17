@@ -7,14 +7,14 @@ import {useEvent} from 'Event/EventProvider'
 import {useAsync} from 'lib/async'
 import {api} from 'lib/url'
 import {Client} from 'lib/api-client'
-import {PublicFile} from 'lib/http-client'
+import {FileLocation} from 'lib/http-client'
 import {EntityList} from 'lib/list'
 import NavButton from 'Event/Dashboard/components/NavButton'
 import {useTrackEventPage} from 'analytics'
 
 export interface Sponsor {
   id: number
-  image: PublicFile | null
+  image: FileLocation | null
   name: string
   description: string
   settings: null | {

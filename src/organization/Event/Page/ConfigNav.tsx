@@ -72,6 +72,9 @@ function AuthorizedPages() {
         >
           Attendee label
         </ConfigNavItem>
+        <ConfigNavItem to={routes.reports} aria-label="reports config">
+          Reports
+        </ConfigNavItem>
         <ConfigNavItem to={routes.backgrounds} aria-label="backgrounds">
           Zoom Backgrounds
         </ConfigNavItem>

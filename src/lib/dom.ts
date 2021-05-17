@@ -1,5 +1,4 @@
 import {ChangeEvent, useEffect, useRef} from 'react'
-import download from 'js-file-download'
 
 export const onChangeStringHandler = (setter: (v: string) => void) => (
   e: ChangeEvent<HTMLInputElement>,
@@ -55,16 +54,4 @@ export function useIsMounted() {
   }, [])
 
   return isMounted
-}
-
-/**
- *  Download file at URL
- *
- * @param url
- * @param fileName
- */
-export const downloadUrl = async (url: string, fileName: string) => {
-  const file = await fetch(url)
-  const blob = await file.blob()
-  download(blob, fileName)
 }

@@ -25,6 +25,7 @@ import SubmissionsProvider from 'Event/SubmissionsProvider'
 import EventLanguageProvider from 'Event/LanguageProvider'
 import JoinArea from 'Event/JoinArea/JoinArea'
 import FullPageLoader from 'lib/ui/layout/FullPageLoader'
+import DownloadReport from 'Event/DownloadReport'
 import SelfCheckIn from 'Event/SelfCheckIn'
 import AttendeeProfileProvider from 'Event/visibility-rules/AttendeeProfileProvider'
 import {useTrackEventPage, useTrackOnLoad} from 'analytics'
@@ -44,6 +45,7 @@ export const eventRoutes = createRoutes({
   area: {
     ':area': {},
   },
+  report: '/report',
   backgrounds: '/backgrounds',
 })
 
@@ -58,6 +60,7 @@ export const EVENT_PAGES = {
   [eventRoutes.faq]: 'FAQ',
   [eventRoutes.leaderboard]: 'Leaderboard',
   [eventRoutes.backgrounds]: 'Backgrounds',
+  [eventRoutes.report]: 'Download Report',
 }
 
 export type EventPages = typeof EVENT_PAGES
@@ -161,6 +164,9 @@ function UserRoutes() {
       </Route>
       <Route path={eventRoutes.area[':area'].root}>
         <JoinArea />
+      </Route>
+      <Route path={eventRoutes.report}>
+        <DownloadReport />
       </Route>
       <Route path={eventRoutes.backgrounds}>
         <CompletedOnboarding>

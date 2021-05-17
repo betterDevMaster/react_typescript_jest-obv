@@ -1,10 +1,10 @@
 import Button from '@material-ui/core/Button'
 import styled from 'styled-components'
 import React from 'react'
-import {PublicFile} from 'lib/http-client'
+import {FileLocation} from 'lib/http-client'
 
 export default function UploadedImage(props: {
-  image: PublicFile | null
+  image: FileLocation | null
   onRemove: () => void
 }) {
   if (!props.image) {

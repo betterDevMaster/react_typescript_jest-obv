@@ -12,9 +12,9 @@ import {
   Background,
   ImagePreviewContainer,
 } from 'organization/Event/Backgrounds/BackgroundsProvider'
-import {downloadUrl} from 'lib/dom'
 import {useVariables} from 'Event'
 import HiddenOnMatch from 'Event/visibility-rules/HiddenOnMatch'
+import {downloadFile} from 'lib/http-client'
 
 const DEFAULT_BACK_TO_DASHBOARD_TEXT = 'Back to Dashboard'
 const DEFAULT_BACK_TO_DASHBOARD_TEXT_COLOR = '#000000'
@@ -66,9 +66,9 @@ export default function SimpleBlogBackgrounds(props: {user: Attendee}) {
                 alt=""
                 borderRadius={settings.borderRadius}
                 borderThickness={settings.borderThickness || 0}
-                borderColor={v(settings.borderColor || '#000000')}
+                borderColor={settings.borderColor || '#000000'}
                 onClick={() =>
-                  downloadUrl(v(background.image.url), background.image.name)
+                  downloadFile(v(background.image.url), background.image.name)
                 }
                 src={v(background.image.url)}
                 clickable

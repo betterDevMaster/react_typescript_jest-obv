@@ -31,7 +31,7 @@ const defaultHeaders = {
   'content-type': 'application/json',
 }
 
-export interface CsvExport {
+export interface Downloadable {
   data: string
   file_name: string
 }
@@ -40,6 +40,7 @@ export type RequestOptions = {
   headers?: Record<string, string>
   tokenKey?: string
   noCache?: boolean
+  isFormData?: boolean
 }
 
 export type Client = typeof client
@@ -53,23 +54,40 @@ export const client = {
     handleAxiosResult<T>(axios.post(url, data, createOptions(options))),
   put: <T>(url: string, data: {} | FormData, options?: RequestOptions) => {
     if (isFormData(data)) {
-      const formDataOptions = {
-        ...options,
-        headers: {
-          ...headers,
-          'content-type': 'multipart/form-data',
-        },
-      }
-
       return handleAxiosResult<T>(
-        axios.post(url, putData(data), createOptions(formDataOptions)),
+        axios.post(
+          url,
+          createData(data, 'PUT'),
+          createOptions({
+            ...options,
+            isFormData: true,
+          }),
+        ),
       )
     }
 
     return handleAxiosResult<T>(axios.put(url, data, createOptions(options)))
   },
-  patch: <T>(url: string, data: {} = {}, options?: RequestOptions) =>
-    handleAxiosResult<T>(axios.patch(url, data, createOptions(options))),
+  patch: <T>(
+    url: string,
+    data: {} | FormData = {},
+    options?: RequestOptions,
+  ) => {
+    if (isFormData(data)) {
+      return handleAxiosResult<T>(
+        axios.post(
+          url,
+          createData(data, 'PATCH'),
+          createOptions({
+            ...options,
+            isFormData: true,
+          }),
+        ),
+      )
+    }
+
+    return handleAxiosResult<T>(axios.patch(url, data, createOptions(options)))
+  },
   delete: <T>(url: string, options?: RequestOptions) =>
     handleAxiosResult<T>(axios.delete(url, createOptions(options))),
 }
@@ -79,14 +97,14 @@ export const client = {
  *
  * @param data
  */
-function putData(data: {} | FormData) {
+function createData(data: {} | FormData, method: 'PUT' | 'PATCH') {
   if (isFormData(data)) {
-    data.append('_method', 'PUT')
+    data.append('_method', method)
     return data
   }
 
   return {
-    _method: 'PUT',
+    _method: method,
     ...data,
   }
 }
@@ -116,12 +134,12 @@ function appendNoCacheParam(url: string) {
 function createOptions(options: RequestOptions = {}) {
   return {
     ...options,
-    headers: headers(options),
+    headers: createHeaders(options),
   }
 }
 
-function headers(options: RequestOptions) {
-  const {headers: custom, tokenKey, noCache} = options
+function createHeaders(options: RequestOptions) {
+  const {headers: custom, tokenKey, noCache, isFormData} = options
 
   const headers: Record<string, string> = {
     ...defaultHeaders,
@@ -140,6 +158,10 @@ function headers(options: RequestOptions) {
    */
   if (noCache) {
     headers['No-Cache'] = uuid()
+  }
+
+  if (isFormData) {
+    headers['content-type'] = 'multipart/form-data'
   }
 
   return headers

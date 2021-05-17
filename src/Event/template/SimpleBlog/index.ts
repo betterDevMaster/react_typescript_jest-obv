@@ -153,6 +153,23 @@ export interface SimpleBlog {
     backToDashboardTextColor?: string
     orderedIds?: number[]
   }
+  attendeePDFExport?: {
+    active?: boolean
+    header?: {
+      title: string
+      color: string
+    }
+    body?: {
+      backgroundOverlayColor: string
+      backgroundOverlayColorOpacity: number
+    }
+    footer?: {
+      backgroundColor: string
+      text: string
+      textColor: string
+    }
+    formIds?: number[] | null
+  }
   zoomBackgrounds: {
     borderColor: string
     borderRadius: number

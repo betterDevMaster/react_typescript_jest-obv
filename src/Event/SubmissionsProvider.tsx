@@ -9,6 +9,7 @@ import React, {useCallback, useEffect, useState} from 'react'
 export interface Answer {
   question_id: number
   value: string
+  form_id: number
 }
 
 interface SubmissionsContextProps {
