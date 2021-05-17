@@ -61,9 +61,8 @@ function useUpdateForm(id: number) {
   const {client} = useOrganization()
   const [processing, setProcessing] = useState(false)
   const {update: updateForm} = useForms()
-  const [responseError, setResponseError] = useState<ValidationError<Form>>(
-    null,
-  )
+  const [responseError, setResponseError] =
+    useState<ValidationError<Form>>(null)
 
   const update = useCallback(
     (data: Partial<Form>) => {

@@ -49,9 +49,8 @@ export default function AssignmentsTable(props: {
 }
 
 function useCurrentAssignments(savedAssignments: RoomAssignment[]) {
-  const [assignments, setAssignments] = useState<RoomAssignment[]>(
-    savedAssignments,
-  )
+  const [assignments, setAssignments] =
+    useState<RoomAssignment[]>(savedAssignments)
 
   const addAssignment = (assignment: RoomAssignment) => {
     setAssignments((current) => [...current, assignment])

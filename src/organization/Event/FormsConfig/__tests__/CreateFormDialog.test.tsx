@@ -21,14 +21,11 @@ it('should add a new form', async () => {
     forms,
   })
 
-  const {
-    findAllByLabelText,
-    findByLabelText,
-    findByText,
-  } = await goToFormsConfig({
-    event,
-    userPermissions: [CONFIGURE_EVENTS],
-  })
+  const {findAllByLabelText, findByLabelText, findByText} =
+    await goToFormsConfig({
+      event,
+      userPermissions: [CONFIGURE_EVENTS],
+    })
 
   user.click(await findByLabelText('add form'))
 

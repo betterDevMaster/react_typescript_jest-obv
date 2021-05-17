@@ -29,9 +29,8 @@ export interface SetPasswordFormProps {
 export default function SetPasswordForm() {
   const {hasTechCheck} = useEvent()
   const [submitting, setSubmitting] = useState(false)
-  const [responseError, setResponseError] = useState<
-    SetPasswordFormProps['responseError']
-  >(null)
+  const [responseError, setResponseError] =
+    useState<SetPasswordFormProps['responseError']>(null)
   const setPassword = useSetPassword()
   const dispatch = useDispatch()
   const {submit: submitAction} = usePoints()

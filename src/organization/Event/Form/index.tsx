@@ -31,9 +31,8 @@ import ErrorAlert from 'lib/ui/alerts/ErrorAlert'
 export default function Form() {
   const {form, processing, responseError} = useEventForm()
   const [editing, setEditing] = useState<Question | null>(null)
-  const [addQuestionDialogVisible, setAddQuestionDialogVisible] = useState(
-    false,
-  )
+  const [addQuestionDialogVisible, setAddQuestionDialogVisible] =
+    useState(false)
   const formRef = useRef<HTMLFormElement>(null)
   const toggleAddQuestionDialog = () =>
     setAddQuestionDialogVisible(!addQuestionDialogVisible)
@@ -116,10 +115,8 @@ const FormConfig = React.forwardRef<
   const {handleSubmit, register, control, errors: formErrors} = useHookForm()
   const {form, update, processing, responseError} = useEventForm()
   const {questions} = useQuestions()
-  const [
-    infusionsoftTag,
-    setInfusionsoftTag,
-  ] = useState<InfusionsoftTag | null>(null)
+  const [infusionsoftTag, setInfusionsoftTag] =
+    useState<InfusionsoftTag | null>(null)
 
   useEffect(() => {
     if (form.infusionsoft_tag_id && form.infusionsoft_tag_name) {

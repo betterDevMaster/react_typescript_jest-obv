@@ -25,9 +25,8 @@ export default function CreateFormDialog(props: {
   const create = useCreate()
 
   const [processing, setProcessing] = useState(false)
-  const [responseError, setResponseError] = useState<
-    ValidationError<CreateFormData>
-  >(null)
+  const [responseError, setResponseError] =
+    useState<ValidationError<CreateFormData>>(null)
   const {add} = useForms()
 
   const {handleSubmit, register, errors} = useForm()

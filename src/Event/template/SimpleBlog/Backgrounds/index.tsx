@@ -23,11 +23,8 @@ export default function SimpleBlogBackgrounds(props: {user: Attendee}) {
   const v = useVariables()
   const {event} = useEvent()
   const {zoomBackgrounds: settings} = useTemplate()
-  const {
-    backgrounds,
-    zoom_backgrounds_description,
-    zoom_backgrounds_title,
-  } = event
+  const {backgrounds, zoom_backgrounds_description, zoom_backgrounds_title} =
+    event
 
   const sortedBackgrounds = useSortedBackgrounds(backgrounds)
 

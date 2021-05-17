@@ -54,16 +54,15 @@ export function useUpdateObject<T extends keyof Template>(key: T) {
   const template = useTemplate()
 
   return useCallback(
-    <K extends keyof NonNullable<Template[T]>>(childKey: K) => (
-      value: NonNullable<Template[T]>[K],
-    ) => {
-      updateTemplate({
-        [key]: {
-          ...((template[key] || {}) as {}),
-          [childKey]: value,
-        },
-      })
-    },
+    <K extends keyof NonNullable<Template[T]>>(childKey: K) =>
+      (value: NonNullable<Template[T]>[K]) => {
+        updateTemplate({
+          [key]: {
+            ...((template[key] || {}) as {}),
+            [childKey]: value,
+          },
+        })
+      },
     [key, template, updateTemplate],
   )
 }

@@ -29,15 +29,15 @@ export function FooterConfig() {
   const {event} = useEvent()
   const updateFooter = useUpdateObject('footer')
 
-  const update = <T extends keyof SimpleBlog['footer']>(key: T) => (
-    value: SimpleBlog['footer'][T],
-  ) =>
-    updateTemplate({
-      footer: {
-        ...footer,
-        [key]: value,
-      },
-    })
+  const update =
+    <T extends keyof SimpleBlog['footer']>(key: T) =>
+    (value: SimpleBlog['footer'][T]) =>
+      updateTemplate({
+        footer: {
+          ...footer,
+          [key]: value,
+        },
+      })
 
   return (
     <>

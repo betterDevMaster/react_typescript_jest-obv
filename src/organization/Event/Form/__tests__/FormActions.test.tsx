@@ -33,15 +33,11 @@ it('should remove a form', async () => {
     forms,
   })
 
-  const {
-    findAllByLabelText,
-    findByLabelText,
-    findByText,
-    queryByText,
-  } = await goToFormsConfig({
-    event,
-    userPermissions: [CONFIGURE_EVENTS],
-  })
+  const {findAllByLabelText, findByLabelText, findByText, queryByText} =
+    await goToFormsConfig({
+      event,
+      userPermissions: [CONFIGURE_EVENTS],
+    })
 
   const targetIndex = faker.random.number({min: 0, max: forms.length - 1})
   const target = forms[targetIndex]

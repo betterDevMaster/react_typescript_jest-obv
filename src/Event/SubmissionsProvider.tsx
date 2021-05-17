@@ -18,19 +18,16 @@ interface SubmissionsContextProps {
   responseError: ValidationError<any> | null
 }
 
-export const SubmissionsContext = React.createContext<
-  undefined | SubmissionsContextProps
->(undefined)
+export const SubmissionsContext =
+  React.createContext<undefined | SubmissionsContextProps>(undefined)
 
 export default function SubmissionsProvider(props: {
   children: React.ReactElement
 }) {
   const [answers, setAnswers] = useState<Answer[]>([])
   const {loading, data: fetchedAnswers} = useAnswers()
-  const [
-    responseError,
-    setResponseError,
-  ] = useState<ValidationError<any> | null>(null)
+  const [responseError, setResponseError] =
+    useState<ValidationError<any> | null>(null)
 
   const submit = useSubmit()
 
