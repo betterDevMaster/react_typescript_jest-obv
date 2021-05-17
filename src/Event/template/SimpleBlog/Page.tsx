@@ -69,7 +69,7 @@ const Box = styled.div<{
   position: SimpleBlog['backgroundPosition']
   color: string
 }>`
-  height: 100%;
+  height: auto;
   background: ${(props) => props.background};
   ${(props) =>
     props.position === 'bottom' &&
