@@ -58,7 +58,7 @@ const Box = styled.div<SimpleBlog['sidebar']>`
   border: ${(props) => props.borderWidth}px solid
     ${(props) => props.borderColor};
   @media (min-width: ${(props) => props.theme.breakpoints.md}) {
-    height: auto;
+    height: 100%;
   }
 `
 
