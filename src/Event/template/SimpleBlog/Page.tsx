@@ -105,6 +105,7 @@ const ColorOverlay = styled.div<{
   display: flex;
   flex-direction: column;
   overflow: auto;
+  min-height: 100vh;
 `
 
 const StyledContainer = withStyles({
