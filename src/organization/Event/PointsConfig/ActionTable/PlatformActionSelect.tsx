@@ -40,6 +40,7 @@ export default function PlatformActionSelect(props: {
       <MenuItem value="visit_dashboard_action_id">Visit Dashboard</MenuItem>
       <MenuItem value="download_resource_action_id">Download Resource</MenuItem>
       <MenuItem value="visit_leaderboard_action_id">Visit Leaderboard</MenuItem>
+      <MenuItem value="visit_speakers_action_id">Visit Speakers</MenuItem>
     </Select>
   )
 }

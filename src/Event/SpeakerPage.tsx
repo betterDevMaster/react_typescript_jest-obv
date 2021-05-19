@@ -9,6 +9,7 @@ import {api} from 'lib/url'
 import {Client} from 'lib/api-client'
 import {FileLocation} from 'lib/http-client'
 import {useTrackEventPage} from 'analytics'
+import PagePoints, { SPEAKERS } from 'Event/PointsProvider/PagePoints'
 
 export interface Speaker {
   id: number
@@ -18,6 +19,14 @@ export interface Speaker {
 }
 
 export default function SpeakersPage() {
+  return (
+    <PagePoints page={SPEAKERS}>
+      <Speakers />
+    </PagePoints>
+  )
+}
+
+function Speakers() {
   const template = useTemplate()
   const user = useAttendee()
   const {event} = useEvent()

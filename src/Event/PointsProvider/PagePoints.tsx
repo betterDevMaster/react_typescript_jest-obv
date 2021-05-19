@@ -3,6 +3,7 @@ import {usePoints} from 'Event/PointsProvider'
 import React, {useEffect, useState} from 'react'
 
 export const DASHBOARD = 'DASHBOARD'
+export const SPEAKERS = 'SPEAKERS'
 
 export type Page = typeof DASHBOARD
 
@@ -13,7 +14,7 @@ export type Page = typeof DASHBOARD
  */
 export default function PagePoints(props: {
   children: React.ReactElement
-  page: Page
+  page: string
 }) {
   const {submit} = usePoints()
   const action = usePageAction(props.page)
@@ -31,12 +32,14 @@ export default function PagePoints(props: {
   return props.children
 }
 
-function usePageAction(page: Page) {
+function usePageAction(page: string) {
   const action = usePlatformActions()
 
   switch (page) {
     case DASHBOARD:
       return action.visitDashboard
+    case SPEAKERS:
+        return action.visitSpeakers
     default:
       return null
   }
