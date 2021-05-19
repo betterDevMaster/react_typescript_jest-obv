@@ -13,6 +13,7 @@ import {CHECKBOX, RADIO, SELECT} from 'organization/Event/QuestionsProvider'
 import {CONFIGURE_EVENTS} from 'organization/PermissionsProvider'
 import {fakeForm} from 'organization/Event/FormsProvider/__utils__/factory'
 import {goToForm} from 'organization/Event/Form/__utils__/go-to-form'
+import {fakeAction} from 'Event/ActionsProvider/__utils__/factory'
 
 const mockPatch = axios.patch as jest.Mock
 
@@ -92,9 +93,12 @@ it('should add a question', async () => {
 it('should create a question with options', async () => {
   const form = fakeForm({questions: []})
 
+  const actions = Array.from({length: 3}, fakeAction)
+
   const {findByLabelText, findByText, findAllByLabelText} = await goToForm({
     form,
     userPermissions: [CONFIGURE_EVENTS],
+    actions,
   })
 
   user.click(await findByLabelText('add question'))
@@ -121,6 +125,18 @@ it('should create a question with options', async () => {
   const removeTargetIndex = faker.random.number({min: 0, max: numOptions - 1})
   user.click((await findAllByLabelText('remove option'))[removeTargetIndex])
 
+  /**
+   * Select action for option
+   */
+  const actionOptionIndex = faker.random.number({min: 0, max: numOptions - 2}) // -2 because we've removed an option
+  const targetAction = faker.random.arrayElement(actions)
+  fireEvent.mouseDown(
+    (await findAllByLabelText('pick action'))[actionOptionIndex + 1], // + 1 because the Form has an action picker too
+  )
+  user.click(await findByLabelText(`pick ${targetAction.description}`))
+
+  // Save form
+
   user.click(await findByLabelText('save'))
   user.click(await findByLabelText('save form'))
 
@@ -135,6 +151,11 @@ it('should create a question with options', async () => {
 
   // Did save correct options
   for (const savedOption of data.questions[0].options) {
-    expect(options.includes(savedOption)).toBe(true)
+    expect(options.includes(savedOption.value)).toBe(true)
   }
+
+  // Did save correct action
+  expect(data.questions[0].options[actionOptionIndex].action_id).toBe(
+    targetAction.id,
+  )
 })

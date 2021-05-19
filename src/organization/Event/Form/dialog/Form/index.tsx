@@ -9,9 +9,9 @@ import Select from '@material-ui/core/Select'
 import Switch from '@material-ui/core/Switch'
 import {onUnknownChangeHandler} from 'lib/dom'
 import {fieldError} from 'lib/form'
-import AllowsMultipleSwitch from 'organization/Event/Form/CreateQuestionDialog/Form/AllowsMultipleSwitch'
-import HasOtherOptionSwitch from 'organization/Event/Form/CreateQuestionDialog/Form/HasOtherOptionSwitch'
-import OptionsInput from 'organization/Event/Form/CreateQuestionDialog/Form/OptionsInput'
+import AllowsMultipleSwitch from 'organization/Event/Form/dialog/Form/AllowsMultipleSwitch'
+import HasOtherOptionSwitch from 'organization/Event/Form/dialog/Form/HasOtherOptionSwitch'
+import OptionsInput from 'organization/Event/Form/dialog/Form/OptionsInput'
 import {
   ALPHA_NUMERIC,
   CHECKBOX,
@@ -37,8 +37,13 @@ export default function Form(props: {
   question?: Question
   footer?: React.ReactElement
 }) {
-  const {register, handleSubmit, errors, control, watch, setValue} = useForm()
   const {question} = props
+  const {register, handleSubmit, errors, control, watch, setValue} = useForm({
+    defaultValues: {
+      options: question?.options || [],
+      type: question?.type || '',
+    },
+  })
 
   const selectedType = watch('type')
 
@@ -139,6 +144,7 @@ export default function Form(props: {
         />
         <OptionsInput
           questionType={selectedType}
+          control={control}
           register={register}
           question={question}
         />

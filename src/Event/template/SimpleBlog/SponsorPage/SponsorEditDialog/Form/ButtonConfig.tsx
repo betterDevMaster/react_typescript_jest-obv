@@ -19,7 +19,7 @@ import InputLabel from '@material-ui/core/InputLabel'
 import Slider from '@material-ui/core/Slider'
 import TargetConfig from 'Event/Dashboard/components/NavButton/NavButtonConfig/TargetConfig'
 import NavButton from 'Event/Dashboard/components/NavButton'
-import ActionSelect from 'Event/ActionsProvider/ActionConfig'
+import ActionSelect from 'Event/ActionsProvider/ActionSelect'
 
 const MIN_BORDER_WIDTH = 0
 const MAX_BORDER_WIDTH = 50

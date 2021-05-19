@@ -66,9 +66,9 @@ export default function Select(props: FieldProps) {
               'aria-label': props.question.label,
             }}
           >
-            {props.question.options.map((option, index) => (
-              <MenuItem key={index} value={option}>
-                {option}
+            {props.question.options.map(({value}, index) => (
+              <MenuItem key={index} value={value}>
+                {value}
               </MenuItem>
             ))}
           </SelectInput>

@@ -7,6 +7,7 @@ import FormLabel from '@material-ui/core/FormLabel'
 import FormGroup from '@material-ui/core/FormGroup'
 import {Controller} from 'react-hook-form'
 import {onChangeCheckedHandler} from 'lib/dom'
+import {Option} from 'organization/Event/QuestionsProvider'
 
 export default function Checkbox(props: FieldProps) {
   useSavedValue(props)
@@ -39,20 +40,20 @@ function Inputs(
   props: FieldProps & {onChange: (...events: any[]) => void; value: any},
 ) {
   const [values, setValues] = useState(
-    props.question.options.map((option) => ({checked: false, name: option})),
+    props.question.options.map((option) => ({checked: false, option})),
   )
   const [hasLoaded, setHasLoaded] = useState(false)
   const {onChange, value} = props
 
-  const setChecked = (name: string) => (checked: boolean) => {
-    const updated = values.map((o) => {
-      const isTarget = o.name === name
+  const setChecked = (option: Option) => (checked: boolean) => {
+    const updated = values.map((item) => {
+      const isTarget = item.option.value === option.value
       if (!isTarget) {
-        return o
+        return item
       }
 
       return {
-        name,
+        ...item,
         checked,
       }
     })
@@ -68,10 +69,10 @@ function Inputs(
     setHasLoaded(true)
 
     const checked = value.split(', ')
-    const saved = values.map(({name}) => {
+    const saved = values.map(({option}) => {
       return {
-        name,
-        checked: checked.includes(name),
+        option,
+        checked: checked.includes(option.value),
       }
     })
 
@@ -80,12 +81,12 @@ function Inputs(
 
   useEffect(() => {
     const checkedOptions = values.filter((o) => o.checked)
-    const names = checkedOptions.map(({name}) => name).join(', ')
+    const names = checkedOptions.map(({option}) => option.value).join(', ')
     onChange(names)
   }, [values, onChange])
 
-  const isChecked = (option: string) => {
-    const target = values.find(({name}) => name === option)
+  const isChecked = (option: Option) => {
+    const target = values.find(({option: o}) => o.value === option.value)
     if (!target) {
       return false
     }
@@ -104,7 +105,7 @@ function Inputs(
               onChange={onChangeCheckedHandler(setChecked(option))}
             />
           }
-          label={option}
+          label={option.value}
         />
       ))}
     </FormGroup>

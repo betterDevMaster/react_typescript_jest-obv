@@ -10,7 +10,6 @@ import React, {useState} from 'react'
 import {useForm} from 'react-hook-form'
 import {DEFAULT_MODAL_BUTTON_TEXT} from 'Event/Dashboard/components/BlogPost/BlogPostConfig'
 import Box from '@material-ui/core/Box'
-import {usePoints} from 'Event/PointsProvider'
 import {useSubmissions} from 'Event/SubmissionsProvider'
 import {useVariables} from 'Event'
 
@@ -32,7 +31,6 @@ function Content(props: {form: Form; post: BlogPost}) {
   const [isResubmitting, setIsResubmitting] = useState(false)
   const [dialogVisible, setDialogVisible] = useState(false)
   const {submit: submitAnswers, responseError, answers} = useSubmissions()
-  const {submit: submitAction} = usePoints()
   const v = useVariables()
 
   const toggleDialog = () => setDialogVisible(!dialogVisible)
@@ -70,14 +68,6 @@ function Content(props: {form: Form; post: BlogPost}) {
     submitAnswers(form, data)
       .then(() => {
         setIsResubmitting(false)
-
-        if (form.action) {
-          submitAction(form.action)
-        }
-
-        if (form.on_submit_redirect_url) {
-          window.location.href = v(form.on_submit_redirect_url)
-        }
       })
       .finally(() => {
         setSubmitting(false)

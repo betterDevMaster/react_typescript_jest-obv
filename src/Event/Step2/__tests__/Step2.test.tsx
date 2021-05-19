@@ -4,7 +4,10 @@ import faker from 'faker'
 import {fakeAttendee} from 'Event/auth/__utils__/factory'
 import {loginToEventSite} from 'Event/__utils__/url'
 import axios from 'axios'
-import {fakeQuestion} from 'organization/Event/QuestionsProvider/__utils__/factory'
+import {
+  fakeOption,
+  fakeQuestion,
+} from 'organization/Event/QuestionsProvider/__utils__/factory'
 import {
   CHECKBOX,
   LONG_ANSWER_TEXT,
@@ -64,14 +67,18 @@ it('should submit answers', async () => {
     type: RADIO,
     options: new Array(faker.random.number({min: 1, max: 4}))
       .fill(null)
-      .map((_, index) => `radio ${index} ${faker.random.word()}`),
+      .map((_, index) =>
+        fakeOption({value: `radio_${index} ${faker.random.word()}`}),
+      ),
   })
 
   const radioOtherQuestion = fakeQuestion({
     type: RADIO,
     options: new Array(faker.random.number({min: 1, max: 4}))
       .fill(null)
-      .map((_, index) => `radio ${index} ${faker.random.word()}`),
+      .map((_, index) =>
+        fakeOption({value: `radio ${index} ${faker.random.word()}`}),
+      ),
     has_other_option: true,
   })
 
@@ -79,14 +86,18 @@ it('should submit answers', async () => {
     type: SELECT,
     options: new Array(faker.random.number({min: 1, max: 4}))
       .fill(null)
-      .map((_, index) => `select ${index} ${faker.random.word()}`),
+      .map((_, index) =>
+        fakeOption({value: `select ${index} ${faker.random.word()}`}),
+      ),
   })
 
   const checkboxQuestion = fakeQuestion({
     type: CHECKBOX,
     options: new Array(faker.random.number({min: 1, max: 4}))
       .fill(null)
-      .map((_, index) => `checkbox ${index} ${faker.random.word()}`),
+      .map((_, index) =>
+        fakeOption({value: `checkbox ${index} ${faker.random.word()}`}),
+      ),
   })
 
   const attendee = fakeAttendee({
@@ -128,7 +139,7 @@ it('should submit answers', async () => {
 
   // Select a radio
   const radioOption = faker.random.arrayElement(radioQuestion.options)
-  user.click(await findByText(radioOption))
+  user.click(await findByText(radioOption.value))
 
   // Set an other option
   const otherValue = faker.random.word()
@@ -138,11 +149,11 @@ it('should submit answers', async () => {
   // Select dropdown select option
   const selectOption = faker.random.arrayElement(selectQuestion.options)
   fireEvent.mouseDown(await findByLabelText(selectQuestion.label))
-  user.click(await findByText(selectOption))
+  user.click(await findByText(selectOption.value))
 
   // select all checkboxes
   for (const option of checkboxQuestion.options) {
-    user.click(await findByLabelText(option))
+    user.click(await findByLabelText(option.value))
   }
 
   // answers
@@ -167,11 +178,11 @@ it('should submit answers', async () => {
 
   expect(submission(shortAnswerQuestion).value).toBe(shortAnswer)
   expect(submission(longAnswerQuestion).value).toBe(longAnswer)
-  expect(submission(radioQuestion).value).toBe(radioOption)
-  expect(submission(selectQuestion).value).toBe(selectOption)
+  expect(submission(radioQuestion).value).toBe(radioOption.value)
+  expect(submission(selectQuestion).value).toBe(selectOption.value)
   // Selected all checkbox options...
   expect(submission(checkboxQuestion).value).toBe(
-    checkboxQuestion.options.join(', '),
+    checkboxQuestion.options.map((o) => o.value).join(', '),
   )
   // Saved 'other' radio input value
   expect(submission(radioOtherQuestion).value).toBe(otherValue)

@@ -15,6 +15,7 @@ export const fakeBlogPost = (overrides?: Partial<BlogPost>): BlogPost => ({
     </div>
   `,
   isVisible: true,
+  formId: null,
   ...overrides,
 })
 

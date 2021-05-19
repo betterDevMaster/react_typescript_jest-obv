@@ -95,17 +95,16 @@ export default function NavButton(props: NavButton) {
   )
 }
 
-function useSubmitAction(actionId: NavButton['actionId']) {
+function useSubmitAction(actionKey: NavButton['actionId']) {
   const actionsList = useActions()
   const {submit} = usePoints()
 
   return () => {
-    if (!actionId) {
+    if (!actionKey) {
       return
     }
 
-    const action = findAction(actionId, actionsList.actions)
-
+    const action = findAction(actionKey, actionsList.actions)
     if (!action) {
       return
     }

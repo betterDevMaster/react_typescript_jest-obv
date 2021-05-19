@@ -8,6 +8,7 @@ import {
   Question,
   QuestionType,
   RADIO,
+  Option,
   SELECT,
   SHORT_ANSWER_TEXT,
 } from 'organization/Event/QuestionsProvider'
@@ -37,6 +38,12 @@ export const fakeQuestion = (overrides?: Partial<Question>): Question => ({
   type: randomType(),
   options: [],
   validation_rule: null,
+  ...overrides,
+})
+
+export const fakeOption = (overrides?: Partial<Option>): Option => ({
+  value: faker.random.word(),
+  action_id: null,
   ...overrides,
 })
 

@@ -63,8 +63,6 @@ export default function EditHeaderDialog(props: {
       return
     }
 
-    console.log('data: ', values)
-
     const data = createData(values)
     update(data).then(props.onClose)
   }

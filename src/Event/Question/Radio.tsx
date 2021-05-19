@@ -20,7 +20,8 @@ export default function Radio(props: FieldProps) {
   const [value, setValue] = useState(props.answer || '')
 
   const otherInputVisible =
-    Boolean(value) && !props.question.options.includes(value)
+    Boolean(value) &&
+    !props.question.options.map(({value}) => value).includes(value)
 
   return (
     <FormControl
@@ -45,9 +46,9 @@ export default function Radio(props: FieldProps) {
         {props.question.options.map((option, index) => (
           <FormControlLabel
             key={index}
-            value={option}
+            value={option.value}
             control={<RadioInput />}
-            label={option}
+            label={option.value}
           />
         ))}
         <OtherOption

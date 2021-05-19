@@ -1,7 +1,7 @@
 import Dialog from '@material-ui/core/Dialog'
 import DialogContent from '@material-ui/core/DialogContent'
 import DialogTitle from '@material-ui/core/DialogTitle'
-import Form from 'organization/Event/Form/CreateQuestionDialog/Form'
+import Form from 'organization/Event/Form/dialog/Form'
 import {useQuestions} from 'organization/Event/QuestionsProvider'
 import React from 'react'
 

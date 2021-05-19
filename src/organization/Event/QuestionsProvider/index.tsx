@@ -12,9 +12,14 @@ export interface Question {
   is_required: boolean
   allows_multiple_options: boolean
   type: QuestionType
-  options: string[]
+  options: Option[]
   validation_rule: string | null
   has_other_option: boolean
+}
+
+export interface Option {
+  value: string
+  action_id: null | number
 }
 
 /**

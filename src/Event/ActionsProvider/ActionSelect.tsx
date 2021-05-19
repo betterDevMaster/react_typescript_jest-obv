@@ -1,27 +1,35 @@
+import styled from 'styled-components'
 import FormControl from '@material-ui/core/FormControl'
 import InputLabel from '@material-ui/core/InputLabel'
 import MenuItem from '@material-ui/core/MenuItem'
-import Select from '@material-ui/core/Select'
+import Select, {SelectProps} from '@material-ui/core/Select'
 import {useActions} from 'Event/ActionsProvider'
 import {onUnknownChangeHandler} from 'lib/dom'
 import React from 'react'
 
-export default function ActionSelect(props: {
-  value?: string | number | null
-  onChange: (id: string | null) => void
+const DEFAULT_LABEL = 'Pick an action for points'
+
+export default function ActionSelect<T extends string | number>(props: {
+  value?: T | null
+  onChange: (id: T | null) => void
   useId?: boolean
   disabled?: boolean
+  variant?: SelectProps['variant']
+  disableMargin?: boolean
+  label?: string
 }) {
   const {actions} = useActions()
 
-  const setAction = (id: number | string) => {
+  const setAction = (id: T) => {
     const value = id === 0 ? null : id
-    props.onChange(String(value))
+    props.onChange(value)
   }
 
+  const label = props.label || DEFAULT_LABEL
+
   return (
-    <FormControl fullWidth>
-      <InputLabel>Pick an action for points</InputLabel>
+    <StyledFormControl disableMargin={props.disableMargin} fullWidth>
+      <InputLabel variant={props.variant}>{label}</InputLabel>
       <Select
         value={props.value || ''}
         fullWidth
@@ -30,6 +38,7 @@ export default function ActionSelect(props: {
         inputProps={{
           'aria-label': 'pick action',
         }}
+        variant={props.variant}
         disabled={props.disabled}
       >
         {actions.map((action) => (
@@ -45,6 +54,14 @@ export default function ActionSelect(props: {
           None
         </MenuItem>
       </Select>
-    </FormControl>
+    </StyledFormControl>
   )
 }
+
+const StyledFormControl = styled((props) => {
+  const {disableMargin, ...otherProps} = props
+
+  return <FormControl {...otherProps} />
+})`
+  ${(props) => (props.disableMargin ? 'margin: 0!important;' : '')}
+`

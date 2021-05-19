@@ -1,4 +1,6 @@
+import {useActions} from 'Event/ActionsProvider'
 import {useEvent} from 'Event/EventProvider'
+import {usePoints} from 'Event/PointsProvider'
 import {ValidationError} from 'lib/api-client'
 import {useAsync} from 'lib/async'
 import FullPageLoader from 'lib/ui/layout/FullPageLoader'
@@ -13,7 +15,7 @@ export interface Answer {
 }
 
 interface SubmissionsContextProps {
-  submit: (form: Form, answers: Answer[]) => Promise<void>
+  submit: (form: Form, data: {answers: Answer[]}) => Promise<void>
   answers: Answer[]
   responseError: ValidationError<any> | null
 }
@@ -28,32 +30,8 @@ export default function SubmissionsProvider(props: {
   const {loading, data: fetchedAnswers} = useAnswers()
   const [responseError, setResponseError] =
     useState<ValidationError<any> | null>(null)
-
-  const submit = useSubmit()
-
-  const onSubmit = (form: Form, data: Answer[]) => {
-    setResponseError(null)
-
-    return submit(form, data)
-      .then((newAnswers) => {
-        const existing = answers.filter(
-          (a) => !newAnswers.find((na) => na.question_id === a.question_id),
-        )
-
-        const updated = [...existing, ...newAnswers]
-        setAnswers(updated)
-      })
-      .catch((e) => {
-        setResponseError(e)
-
-        /**
-         * Re-throw error in case there's a request expecting this
-         * to success (ie. submitting waiver).
-         */
-
-        throw e
-      })
-  }
+  const {submit: submitAction} = usePoints()
+  const submitOptionActions = useSubmitOptionActions()
 
   useEffect(() => {
     if (!fetchedAnswers) {
@@ -62,6 +40,33 @@ export default function SubmissionsProvider(props: {
 
     setAnswers(fetchedAnswers)
   }, [fetchedAnswers])
+
+  const submit = useSubmit()
+
+  const onSubmit = (form: Form, data: {answers: Answer[]}) => {
+    setResponseError(null)
+
+    return submit(form, data).then((newAnswers) => {
+      /**
+       * Update the answers that's been submitted...
+       */
+      const existing = answers.filter(
+        (a) => !newAnswers.find((na) => na.question_id === a.question_id),
+      )
+
+      const updated = [...existing, ...newAnswers]
+      setAnswers(updated)
+
+      /**
+       * Submit Form action
+       */
+      if (form.action) {
+        submitAction(form.action)
+      }
+
+      submitOptionActions(form, newAnswers)
+    })
+  }
 
   if (loading) {
     return <FullPageLoader />
@@ -85,7 +90,8 @@ export function StaticSubmissionsProvider(props: {
       value={{
         answers: props.answers || [],
         responseError: null,
-        submit: (_form: Form, _answers: Answer[]) => Promise.resolve(),
+        submit: (_form: Form, _answers: {answers: Answer[]}) =>
+          Promise.resolve(),
       }}
     >
       {props.children}
@@ -104,9 +110,46 @@ function useAnswers() {
 function useSubmit() {
   const {client} = useEvent()
 
-  return (form: Form, data: Answer[]) => {
+  return (form: Form, data: {answers: Answer[]}) => {
     const url = api(`/forms/${form.id}/submissions`)
     return client.post<Answer[]>(url, data)
+  }
+}
+
+/**
+ * Submit option actions (correct answers)
+ */
+function useSubmitOptionActions() {
+  const {actions} = useActions()
+  const {submit: submitAction} = usePoints()
+
+  return (form: Form, answers: Answer[]) => {
+    for (const question of form.questions) {
+      const hasOptions = question.options.length > 0
+      if (!hasOptions) {
+        continue
+      }
+
+      const answer = answers.find((a) => a.question_id === question.id)
+      if (!answer) {
+        continue
+      }
+
+      const selectedOption = question.options.find(
+        (o) => o.value === answer.value,
+      )
+
+      if (!selectedOption || !selectedOption.action_id) {
+        continue
+      }
+
+      const action = actions.find((a) => a.id === selectedOption.action_id)
+      if (!action) {
+        return
+      }
+
+      submitAction(action)
+    }
   }
 }
 
