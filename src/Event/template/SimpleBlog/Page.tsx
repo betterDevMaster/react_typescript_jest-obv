@@ -39,6 +39,7 @@ export default function SimpleBlogPage(props: {
   const theme = isDarkMode ? muiDarkTheme : muiTheme
 
   const isBmcEvent = event.slug === 'bmc'
+  const eventColor = isBmcEvent ? '#2F3336' : color
   const linkUnderline = !isBmcEvent
   const linkColor = isBmcEvent ? '#1CA2FB' : color
 
@@ -49,7 +50,7 @@ export default function SimpleBlogPage(props: {
           <SimpleBlogStyles
             linkUnderline={linkUnderline}
             linkColor={linkColor}
-            color={color}
+            color={eventColor}
           />
           <Menu visible={menuVisible} toggle={toggleMenu} user={props.user} />
           <Header
