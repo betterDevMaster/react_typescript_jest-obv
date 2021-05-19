@@ -39,7 +39,7 @@ function usePageAction(page: string) {
     case DASHBOARD:
       return action.visitDashboard
     case SPEAKERS:
-        return action.visitSpeakers
+      return action.visitSpeakers
     default:
       return null
   }

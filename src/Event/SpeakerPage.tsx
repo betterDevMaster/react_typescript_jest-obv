@@ -9,7 +9,7 @@ import {api} from 'lib/url'
 import {Client} from 'lib/api-client'
 import {FileLocation} from 'lib/http-client'
 import {useTrackEventPage} from 'analytics'
-import PagePoints, { SPEAKERS } from 'Event/PointsProvider/PagePoints'
+import PagePoints, {SPEAKERS} from 'Event/PointsProvider/PagePoints'
 
 export interface Speaker {
   id: number
