@@ -38,15 +38,19 @@ export default function SimpleBlogPage(props: {
 
   const theme = isDarkMode ? muiDarkTheme : muiTheme
 
+  const isBmcEvent = event.slug === 'bmc'
+  const linkUnderline = !isBmcEvent
+  const linkColor = isBmcEvent ? '#1CA2FB' : color
+
   return (
     <ThemeProvider theme={theme}>
-      <Box
-        background={dashboardBackground}
-        position={backgroundPosition}
-        color={color}
-      >
+      <Box background={dashboardBackground} position={backgroundPosition}>
         <ColorOverlay color={backgroundRGBColor}>
-          <SimpleBlogStyles />
+          <SimpleBlogStyles
+            linkUnderline={linkUnderline}
+            linkColor={linkColor}
+            color={color}
+          />
           <Menu visible={menuVisible} toggle={toggleMenu} user={props.user} />
           <Header
             menuVisible={menuVisible}
@@ -67,7 +71,6 @@ export default function SimpleBlogPage(props: {
 const Box = styled.div<{
   background: string
   position: SimpleBlog['backgroundPosition']
-  color: string
 }>`
   height: auto;
   background: ${(props) => props.background};
@@ -85,11 +88,6 @@ const Box = styled.div<{
       background-size: cover;
     `}
   background-repeat: no-repeat;
-  color: ${(props) => props.color};
-
-  a {
-    color: ${(props) => props.color};
-  }
 `
 
 const Content = styled.div`

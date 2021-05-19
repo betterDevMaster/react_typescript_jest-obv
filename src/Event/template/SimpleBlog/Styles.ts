@@ -1,6 +1,10 @@
 import {createGlobalStyle} from 'styled-components'
 
-const SimpleBlogStyles = createGlobalStyle`
+const SimpleBlogStyles = createGlobalStyle<{
+  linkUnderline: boolean
+  linkColor: string
+  color: string
+}>`
 
 html, body, #root {
   height: 100%;
@@ -9,13 +13,15 @@ html, body, #root {
 body {
   font-family: Arial, 'Times New Roman', Verdana;
   font-size: 17px;
+  color: ${(props) => props.color};
 }
 
 a {
+    color: ${(props) => props.linkColor};
   text-decoration: none;
   
   &:hover {
-    text-decoration: underline;
+    text-decoration: ${(props) => (props.linkUnderline ? 'underline' : 'none')};
   }
 }
 

@@ -6,6 +6,7 @@ import {useEditMode} from 'Event/Dashboard/editor/state/edit-mode'
 import PostForm from 'Event/Dashboard/components/BlogPost/PostForm'
 import {HasRules} from 'Event/visibility-rules'
 import {useVariables} from 'Event'
+import {useEvent} from 'Event/EventProvider'
 
 export type BlogPost = Publishable &
   HasRules & {
@@ -26,9 +27,13 @@ export function BlogPost(props: {post: BlogPost}) {
   const {post} = props
   const isEdit = useEditMode()
   const v = useVariables()
+  const {event} = useEvent()
 
   const date = post.publishAt || post.postedAt
   const formattedDate = blogPostTime(date)
+
+  const isBmc = event.slug === 'bmc'
+  const fontSize = isBmc ? '25px' : 'inherit'
 
   if (!isEdit && !shouldPublish(post)) {
     return null
@@ -38,7 +43,8 @@ export function BlogPost(props: {post: BlogPost}) {
     <Post aria-label="blog post">
       <Title>{v(post.title)}</Title>
       <Date hidden={post.hideDate}>{formattedDate}</Date>
-      <div
+      <Content
+        fontSize={fontSize}
         dangerouslySetInnerHTML={{
           __html: v(post.content),
         }}
@@ -80,4 +86,10 @@ const DateText = styled.span`
   color: #adadad;
   display: block;
   margin-bottom: ${(props) => props.theme.spacing[4]};
+`
+
+const Content = styled.div<{
+  fontSize: string
+}>`
+  font-size: ${(props) => props.fontSize};
 `
