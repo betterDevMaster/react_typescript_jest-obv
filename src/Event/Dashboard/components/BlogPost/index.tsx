@@ -33,7 +33,7 @@ export function BlogPost(props: {post: BlogPost}) {
   const formattedDate = blogPostTime(date)
 
   const isBmc = event.slug === 'bmc'
-  const fontSize = isBmc ? '25px' : 'inherit'
+  const fontSize = isBmc ? '22px' : 'inherit'
 
   if (!isEdit && !shouldPublish(post)) {
     return null
