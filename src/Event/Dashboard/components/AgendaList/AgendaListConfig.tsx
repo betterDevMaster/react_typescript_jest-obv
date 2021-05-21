@@ -3,6 +3,11 @@ import {AGENDA_LIST} from 'Event/Dashboard/components/AgendaList'
 import {useTemplate, useUpdateObject} from 'Event/TemplateProvider'
 import {onChangeStringHandler} from 'lib/dom'
 import React from 'react'
+import FontStyleInput from 'lib/ui/typography/FontStyleInput'
+import InputAdornment from '@material-ui/core/InputAdornment'
+import FormControl from '@material-ui/core/FormControl'
+import InputLabel from '@material-ui/core/InputLabel'
+import Input from '@material-ui/core/Input'
 
 export type AgendaListConfig = {
   type: typeof AGENDA_LIST
@@ -23,24 +28,46 @@ export function AgendaListConfig() {
         fullWidth
         onChange={onChangeStringHandler(updateAgendasList('title'))}
       />
-      <TextField
-        value={agendas.description || ''}
-        inputProps={{
-          'aria-label': 'update agendas description',
-        }}
-        label="Description"
-        fullWidth
-        onChange={onChangeStringHandler(updateAgendasList('description'))}
-      />
-      <TextField
-        value={agendas.footer || ''}
-        inputProps={{
-          'aria-label': 'update agendas footer',
-        }}
-        label="Footer"
-        fullWidth
-        onChange={onChangeStringHandler(updateAgendasList('footer'))}
-      />
+      <FormControl fullWidth>
+        <InputLabel htmlFor="agenda-adornment-description">
+          Description
+        </InputLabel>
+        <Input
+          id="agenda-adornment-description"
+          type="text"
+          value={agendas.description || ''}
+          onChange={onChangeStringHandler(updateAgendasList('description'))}
+          aria-label="update agendas description"
+          fullWidth
+          endAdornment={
+            <InputAdornment position="end">
+              <FontStyleInput
+                onChange={updateAgendasList('descriptionFontStyles')}
+                value={agendas.descriptionFontStyles || []}
+              />
+            </InputAdornment>
+          }
+        />
+      </FormControl>
+      <FormControl fullWidth>
+        <InputLabel htmlFor="agenda-adornment-footer">Footer</InputLabel>
+        <Input
+          id="agenda-adornment-footer"
+          type="text"
+          value={agendas.footer || ''}
+          onChange={onChangeStringHandler(updateAgendasList('footer'))}
+          aria-label="update agendas footer"
+          fullWidth
+          endAdornment={
+            <InputAdornment position="end">
+              <FontStyleInput
+                onChange={updateAgendasList('footerFontStyles')}
+                value={agendas.footerFontStyles || []}
+              />
+            </InputAdornment>
+          }
+        />
+      </FormControl>
     </>
   )
 }

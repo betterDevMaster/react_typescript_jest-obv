@@ -16,7 +16,7 @@ export default function AddAgendaEventButton(props: {className?: string}) {
       {
         text: 'Event',
         startDate: new Date().toISOString(),
-        endDate: null,
+        endDate: new Date().toISOString(),
         link: null,
         isVisible: true,
       },

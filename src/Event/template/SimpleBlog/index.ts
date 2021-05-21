@@ -19,6 +19,7 @@ import {DEFAULT_LOGO_SIZE_PERCENT} from 'Event/template/SimpleBlog/Login/LoginCo
 import {GridSize} from '@material-ui/core'
 import {Column} from 'lib/ui/layout'
 import {DEFAULT_SPONSOR_IMAGE_SIZE} from 'Event/template/SimpleBlog/SponsorPage/SponsorList/Card'
+import {FontStyle} from 'lib/ui/typography/FontStyleInput'
 
 export const SIMPLE_BLOG = 'Simple Blog'
 
@@ -39,6 +40,8 @@ export interface SimpleBlog {
     title: string
     description?: string
     footer?: string
+    descriptionFontStyles?: FontStyle[]
+    footerFontStyles?: FontStyle[]
     items: Agenda[]
   }
   points: Points | null

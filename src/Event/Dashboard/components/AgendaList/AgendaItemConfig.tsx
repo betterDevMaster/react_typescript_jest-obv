@@ -77,6 +77,10 @@ export function AgendaItemConfig(props: {id: AgendaItemConfig['id']}) {
         return
       }
 
+      /**
+       * End date is clear-able so we'll set it to null if
+       * it was cleared. ie. didn't receive a date.
+       */
       if (key === 'endDate') {
         update(key)(null)
         return
