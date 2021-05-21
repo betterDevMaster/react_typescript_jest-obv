@@ -11,7 +11,7 @@ import {useTrackEventPage} from 'analytics'
 
 export default function Step2() {
   const attendee = useAttendee()
-  const {event} = useEvent()
+  const {event, hasWaiver} = useEvent()
 
   useTrackEventPage({
     page: 'Visited Step 2',
@@ -21,7 +21,7 @@ export default function Step2() {
     return <Redirect to={eventRoutes.step1} />
   }
 
-  if (!event.waiver) {
+  if (!event.waiver || !hasWaiver) {
     return <Redirect to={eventRoutes.step3} />
   }
 
