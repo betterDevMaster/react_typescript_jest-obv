@@ -8,13 +8,16 @@ import axios from 'axios'
 import {fakeAction} from 'Event/ActionsProvider/__utils__/factory'
 import {Action} from 'Event/ActionsProvider'
 import {wait} from '@testing-library/react'
+import {CONFIGURE_EVENTS} from 'organization/PermissionsProvider'
 
 const mockGet = axios.get as jest.Mock
 
 export async function goToPointsConfig(
   overrides: {actions?: Action[]} & EventOverrides = {},
 ) {
-  const {event} = goToEvent(overrides)
+  const userPermissions = overrides.userPermissions || [CONFIGURE_EVENTS]
+
+  const {event} = goToEvent({...overrides, userPermissions})
   const {findByLabelText, ...renderResult} = render(<App />)
 
   user.click(await findByLabelText(`view ${event.name}`))

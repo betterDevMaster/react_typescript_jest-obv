@@ -11,9 +11,11 @@ import ActionEditDialog from 'organization/Event/PointsConfig/ActionEditDialog'
 import Page from 'organization/Event/Page'
 import {OrganizationActionsProvider} from 'Event/ActionsProvider'
 import {onChangeCheckedHandler} from 'lib/dom'
+import ExportLeaderboardButton from 'organization/Event/PointsConfig/ExportLeaderboardButton'
 import {useToggleActions} from 'organization/Event/PointsConfig/active'
 import LeaderboardSettingsDialog from 'organization/Event/PointsConfig/LeaderboardSettingsDialog'
 import Box from '@material-ui/core/Box'
+import ErrorAlert from 'lib/ui/alerts/ErrorAlert'
 
 export default function PointsConfig() {
   return (
@@ -34,6 +36,7 @@ function Content() {
   const [checked, setChecked] = useState(false)
   const [processing, setProcessing] = useState(false)
   const [pageSettingsVisible, setPageSettingsVisible] = useState(false)
+  const [error, setError] = useState<string | null>(null)
 
   const edit = (action: Action) => setEditing(action)
   const closeEditDialog = () => setEditing(null)
@@ -60,16 +63,20 @@ function Content() {
         onClose={togglePageSettings}
       />
       <ButtonContainer>
-        <AddActionButton onAdd={edit} />
-        <Button
-          variant="outlined"
-          color="primary"
-          onClick={togglePageSettings}
-          aria-label="configure leaderboard page"
-        >
-          Page Settings
-        </Button>
+        <StyledAddActionButton onAdd={edit} />
+        <RightButtons>
+          <StyledExportLeaderboardButton onError={setError} />
+          <Button
+            variant="outlined"
+            color="primary"
+            onClick={togglePageSettings}
+            aria-label="configure leaderboard page"
+          >
+            Page Settings
+          </Button>
+        </RightButtons>
       </ButtonContainer>
+      <ErrorAlert>{error}</ErrorAlert>
       <Box display="flex" justifyContent="flex-end">
         <FormControlLabel
           control={
@@ -97,4 +104,37 @@ const ButtonContainer = styled.div`
   justify-content: space-between;
   align-items: center;
   margin-bottom: ${(props) => props.theme.spacing[4]};
+  flex-wrap: wrap;
+
+  @media (min-width: ${(props) => props.theme.breakpoints.md}) {
+    flex-wrap: nowrap;
+  }
+`
+
+const RightButtons = styled.div`
+  display: flex;
+  width: 100%;
+
+  button {
+    flex: 1;
+  }
+
+  @media (min-width: ${(props) => props.theme.breakpoints.md}) {
+    display: inline-block;
+    width: auto;
+  }
+`
+
+const StyledAddActionButton = styled(AddActionButton)`
+  margin-bottom: ${(props) => props.theme.spacing[2]}!important;
+  width: 100% !important;
+
+  @media (min-width: ${(props) => props.theme.breakpoints.md}) {
+    width: auto !important;
+    margin-bottom: 0;
+  }
+`
+
+const StyledExportLeaderboardButton = styled(ExportLeaderboardButton)`
+  margin-right: ${(props) => props.theme.spacing[2]}!important;
 `

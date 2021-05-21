@@ -14,11 +14,13 @@ export interface CreateActionData {
 
 export default function AddActionButton(props: {
   onAdd: (action: Action) => void
+  className?: string
 }) {
   const createAction = useCreateAction(props.onAdd)
 
   return (
     <Button
+      className={props.className}
       variant="contained"
       onClick={createAction}
       color="primary"
