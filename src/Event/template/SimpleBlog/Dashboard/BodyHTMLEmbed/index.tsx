@@ -5,11 +5,11 @@ import {
   useEditMode,
 } from 'Event/Dashboard/editor/state/edit-mode'
 import EditModeOnly from 'Event/Dashboard/editor/views/EditModeOnly'
-import {withStyles} from '@material-ui/core'
 import {spacing} from 'lib/ui/theme'
 import Button from '@material-ui/core/Button'
 import {useTemplate} from 'Event/TemplateProvider'
 import {useVariables} from 'Event'
+import withStyles from '@material-ui/core/styles/withStyles'
 
 export const BODY_HTML_EMBED = 'Embed HTML'
 

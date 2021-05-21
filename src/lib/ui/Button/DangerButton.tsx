@@ -1,5 +1,4 @@
-import {ButtonProps} from '@material-ui/core'
-import Button from '@material-ui/core/Button'
+import Button, {ButtonProps} from '@material-ui/core/Button'
 import makeStyles from '@material-ui/core/styles/makeStyles'
 import React from 'react'
 import red from '@material-ui/core/colors/red'

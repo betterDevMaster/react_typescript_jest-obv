@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from 'react'
 import styled from 'styled-components'
-import {Grid, withStyles} from '@material-ui/core'
+import withStyles from '@material-ui/core/styles/withStyles'
 import Button from '@material-ui/core/Button'
 import {
   DragDropContext,
@@ -14,6 +14,7 @@ import EditFormDialog from 'Event/template/SimpleBlog/Reports/Form/EditFormDialo
 import {Form} from 'organization/Event/FormsProvider'
 import {useReportsConfig} from 'organization/Event/ReportsConfig'
 import AddNewFormDialog from 'Event/template/SimpleBlog/Reports/Form/AddFormDialog'
+import Grid from '@material-ui/core/Grid'
 
 export default function FormsConfig(props: {isPreview: boolean}) {
   const [editing, setEditing] = useState<null | Form>(null)

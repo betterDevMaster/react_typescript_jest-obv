@@ -3,10 +3,10 @@ import Button from '@material-ui/core/Button'
 import styled from 'styled-components'
 import {useEvent} from 'Event/EventProvider'
 import {api} from 'lib/url'
-import {withStyles} from '@material-ui/core'
 import {spacing} from 'lib/ui/theme'
 import Typography from '@material-ui/core/Typography'
 import {useOrganization} from 'organization/OrganizationProvider'
+import {withStyles} from '@material-ui/core/styles'
 
 const imageUploadId = 'emoji-image-upload'
 const MAX_FILE_SIZE_BYTES = 5000000 // 5MB

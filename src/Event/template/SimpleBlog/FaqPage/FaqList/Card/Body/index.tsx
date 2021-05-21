@@ -10,7 +10,7 @@ import Collapse from '@material-ui/core/Collapse'
 import {useVariables} from 'Event'
 import {spacing} from 'lib/ui/theme'
 import grey from '@material-ui/core/colors/grey'
-import {withStyles} from '@material-ui/core'
+import withStyles from '@material-ui/core/styles/withStyles'
 
 type BodyProps = {
   faq: FAQ

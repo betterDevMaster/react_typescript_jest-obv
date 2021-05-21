@@ -1,5 +1,5 @@
 import React, {useState} from 'react'
-import {Button} from '@material-ui/core'
+import Button from '@material-ui/core/Button'
 import {useEvent} from 'Event/EventProvider'
 import {useOrganization} from 'organization/OrganizationProvider'
 import {api} from 'lib/url'

@@ -1,4 +1,4 @@
-import {Typography} from '@material-ui/core'
+import Typography from '@material-ui/core/Typography'
 import Center from 'lib/ui/layout/Center'
 import React from 'react'
 import spinner from 'assets/images/obvio_spinner_80.gif'

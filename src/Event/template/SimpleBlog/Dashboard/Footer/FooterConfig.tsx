@@ -1,4 +1,4 @@
-import {TextField} from '@material-ui/core'
+import TextField from '@material-ui/core/TextField'
 import {onChangeStringHandler} from 'lib/dom'
 import ColorPicker from 'lib/ui/ColorPicker'
 import React from 'react'

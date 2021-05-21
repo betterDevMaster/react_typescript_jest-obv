@@ -1,6 +1,6 @@
 import Grid from '@material-ui/core/Grid'
 import React, {useState} from 'react'
-import {Button} from '@material-ui/core'
+import Button from '@material-ui/core/Button'
 import styled from 'styled-components'
 import {emojiesList} from 'organization/Event/NameAppendageConfig/EmojiSelector/emojiesList'
 

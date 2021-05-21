@@ -1,5 +1,5 @@
 import React from 'react'
-import {TextField} from '@material-ui/core'
+import TextField from '@material-ui/core/TextField'
 import {onChangeStringHandler} from 'lib/dom'
 import {useTemplate, useUpdatePrimitive} from 'Event/TemplateProvider'
 import {BODY_HTML_EMBED} from 'Event/template/SimpleBlog/Dashboard/BodyHTMLEmbed'

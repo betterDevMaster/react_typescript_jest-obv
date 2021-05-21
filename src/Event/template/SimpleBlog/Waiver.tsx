@@ -10,7 +10,7 @@ import {useWaiver} from 'Event/Step2/WaiverProvider'
 import Grid from '@material-ui/core/Grid'
 import Box from '@material-ui/core/Box'
 import {useVariables} from 'Event'
-import {Typography} from '@material-ui/core'
+import Typography from '@material-ui/core/Typography'
 import {useTemplate} from 'Event/TemplateProvider'
 
 export default function Waiver() {

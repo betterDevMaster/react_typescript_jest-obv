@@ -10,7 +10,8 @@ import {
   DEFAULT_BODY_BACKGROUND_OPACITY,
 } from 'Event/template/SimpleBlog/Reports/ReportsConfig'
 import ColorPicker from 'lib/ui/ColorPicker'
-import {InputLabel, Slider} from '@material-ui/core'
+import InputLabel from '@material-ui/core/InputLabel'
+import Slider from '@material-ui/core/Slider'
 import {handleChangeSlider} from 'lib/dom'
 import {useReportsConfig} from 'organization/Event/ReportsConfig'
 import {Report} from 'organization/Event/ReportsProvider'

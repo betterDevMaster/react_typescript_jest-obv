@@ -1,4 +1,5 @@
-import {TextField, withStyles} from '@material-ui/core'
+import TextField from '@material-ui/core/TextField'
+import withStyles from '@material-ui/core/styles/withStyles'
 import Box from '@material-ui/core/Box'
 import Button from '@material-ui/core/Button'
 import FormControl from '@material-ui/core/FormControl'

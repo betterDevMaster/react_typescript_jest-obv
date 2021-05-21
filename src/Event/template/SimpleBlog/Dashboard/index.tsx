@@ -4,7 +4,6 @@ import {User} from 'auth/user'
 import Hidden from '@material-ui/core/Hidden'
 import BlogPosts from 'Event/template/SimpleBlog/Dashboard/BlogPosts'
 import Sidebar from 'Event/template/SimpleBlog/Dashboard/Sidebar'
-import {withStyles} from '@material-ui/core'
 import MainNav from 'Event/template/SimpleBlog/Dashboard/MainNav'
 import SimpleBlogPage from 'Event/template/SimpleBlog/Page'
 import Hero from 'Event/template/SimpleBlog/Dashboard/Hero'
@@ -12,6 +11,7 @@ import BodyHTMLEmbed from 'Event/template/SimpleBlog/Dashboard/BodyHTMLEmbed'
 import {useTemplate} from 'Event/TemplateProvider'
 import {useEditMode} from 'Event/Dashboard/editor/state/edit-mode'
 import {spacing} from 'lib/ui/theme'
+import withStyles from '@material-ui/core/styles/withStyles'
 
 export default function SimpleBlogDashboard(props: {user: User}) {
   const sidebarWidth = useSidebarWidth()

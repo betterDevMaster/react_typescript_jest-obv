@@ -12,7 +12,7 @@ import {api, useQueryParams} from 'lib/url'
 import {client} from 'lib/api-client'
 import {TeamMember} from 'auth/user'
 import ErrorAlert from 'lib/ui/alerts/ErrorAlert'
-import {withStyles} from '@material-ui/core'
+import withStyles from '@material-ui/core/styles/withStyles'
 import Typography from '@material-ui/core/Typography'
 import {spacing} from 'lib/ui/theme'
 

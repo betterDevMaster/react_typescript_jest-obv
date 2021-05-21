@@ -1,4 +1,4 @@
-import {Container} from '@material-ui/core'
+import Container from '@material-ui/core/Container'
 import styled from 'styled-components'
 import React from 'react'
 import Typography from '@material-ui/core/Typography/'

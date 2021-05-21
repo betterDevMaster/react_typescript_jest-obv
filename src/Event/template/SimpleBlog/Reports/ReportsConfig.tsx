@@ -1,5 +1,7 @@
 import React, {useState} from 'react'
-import {FormControlLabel, Switch, Box} from '@material-ui/core'
+import Switch from '@material-ui/core/Switch'
+import FormControlLabel from '@material-ui/core/FormControlLabel'
+import Box from '@material-ui/core/Box'
 import {onChangeCheckedHandler} from 'lib/dom'
 import Header from 'Event/template/SimpleBlog/Reports/Header'
 import Footer from 'Event/template/SimpleBlog/Reports/Footer'

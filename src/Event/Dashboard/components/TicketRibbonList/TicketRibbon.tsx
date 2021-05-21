@@ -20,7 +20,7 @@ import LIGHT_BLUE_RIBBON_IMAGE from 'Event/Dashboard/components/TicketRibbonList
 import LIGHT_PURPLE_RIBBON_IMAGE from 'Event/Dashboard/components/TicketRibbonList/ribbons/light_purple.png'
 import {HasRules} from 'Event/visibility-rules'
 import {useVariables} from 'Event'
-import {Typography} from '@material-ui/core'
+import Typography from '@material-ui/core/Typography'
 import {FileLocation} from 'lib/http-client'
 import {useEditMode} from 'Event/Dashboard/editor/state/edit-mode'
 import {Draggable} from 'react-beautiful-dnd'

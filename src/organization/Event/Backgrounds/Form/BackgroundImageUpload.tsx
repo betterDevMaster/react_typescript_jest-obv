@@ -4,7 +4,7 @@ import Typography from '@material-ui/core/Typography'
 import styled from 'styled-components'
 import {spacing} from 'lib/ui/theme'
 import {useBackgrounds} from 'organization/Event/Backgrounds/BackgroundsProvider'
-import {withStyles} from '@material-ui/core'
+import withStyles from '@material-ui/core/styles/withStyles'
 
 const MAX_FILE_SIZE_BYTES = 5000000 // 5MB
 const ASPECT_RATIO = 0.5625 // 16:9

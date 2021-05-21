@@ -7,7 +7,7 @@ import {ValidationError} from 'lib/api-client'
 import {useAttendees} from 'organization/Event/AttendeesProvider'
 import Button from '@material-ui/core/Button'
 import {spacing} from 'lib/ui/theme'
-import {withStyles} from '@material-ui/core'
+import withStyles from '@material-ui/core/styles/withStyles'
 import TagsInput, {Tag} from 'lib/ui/form/TagsInput'
 import GroupInput from 'organization/Event/AttendeeManagement/attendee-dialog/Form/GroupInput'
 import {

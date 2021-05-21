@@ -10,7 +10,8 @@ import {
   useNameAppendages,
 } from 'organization/Event/NameAppendageConfig/NameAppendageProvider'
 import {SortableContainer, SortableElement} from 'react-sortable-hoc'
-import {Button, Table} from '@material-ui/core'
+import Button from '@material-ui/core/Button'
+import Table from '@material-ui/core/Table'
 import {api} from 'lib/url'
 import 'organization/Event/NameAppendageConfig/sorting.css'
 import styled from 'styled-components'

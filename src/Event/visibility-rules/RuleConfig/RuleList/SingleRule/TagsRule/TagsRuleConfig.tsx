@@ -1,4 +1,4 @@
-import {Select} from '@material-ui/core'
+import Select from '@material-ui/core/Select'
 import FormControl from '@material-ui/core/FormControl/FormControl'
 import MenuItem from '@material-ui/core/MenuItem/MenuItem'
 import TextField from '@material-ui/core/TextField/TextField'

@@ -1,5 +1,5 @@
 import React from 'react'
-import {Button} from '@material-ui/core'
+import Button from '@material-ui/core/Button'
 import {useTemplate, useUpdateTemplate} from 'Event/TemplateProvider'
 import {setConfig} from 'Event/Dashboard/editor/state/actions'
 import {AGENDA_ITEM} from 'Event/Dashboard/components/AgendaList'

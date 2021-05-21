@@ -1,4 +1,4 @@
-import {Button} from '@material-ui/core'
+import Button from '@material-ui/core/Button'
 import {EMOJI_LIST} from 'Event/Dashboard/components/EmojiList'
 import {setConfig} from 'Event/Dashboard/editor/state/actions'
 import React from 'react'

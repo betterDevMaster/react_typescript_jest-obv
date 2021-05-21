@@ -5,7 +5,7 @@ import LinearProgress, {
 import Typography, {TypographyProps} from '@material-ui/core/Typography'
 import Box from '@material-ui/core/Box'
 import styled from 'styled-components'
-import {Container} from '@material-ui/core'
+import Container from '@material-ui/core/Container'
 
 export interface ProgressBarStyleProps {
   barColor?: string

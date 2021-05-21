@@ -16,10 +16,10 @@ import NavButton, {
 import {EntityList} from 'lib/list'
 import {colors} from 'lib/ui/theme'
 import {DEFAULT_LOGO_SIZE_PERCENT} from 'Event/template/SimpleBlog/Login/LoginConfig'
-import {GridSize} from '@material-ui/core'
 import {Column} from 'lib/ui/layout'
 import {DEFAULT_SPONSOR_IMAGE_SIZE} from 'Event/template/SimpleBlog/SponsorPage/SponsorList/Card'
 import {FontStyle} from 'lib/ui/typography/FontStyleInput'
+import {GridSize} from '@material-ui/core/Grid'
 
 export const SIMPLE_BLOG = 'Simple Blog'
 

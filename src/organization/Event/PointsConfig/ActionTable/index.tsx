@@ -1,5 +1,5 @@
 import React, {useState} from 'react'
-import {TableBody} from '@material-ui/core'
+import TableBody from '@material-ui/core/TableBody'
 import Table from '@material-ui/core/Table'
 import TableContainer from '@material-ui/core/TableContainer'
 import TableCell from '@material-ui/core/TableCell'

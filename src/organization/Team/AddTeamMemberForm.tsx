@@ -8,7 +8,7 @@ import {ValidationError} from 'lib/api-client'
 import Button from '@material-ui/core/Button'
 import {useOrganization} from 'organization/OrganizationProvider'
 import {api} from 'lib/url'
-import {withStyles} from '@material-ui/core'
+import withStyles from '@material-ui/core/styles/withStyles'
 import {spacing} from 'lib/ui/theme'
 import {TeamMember} from 'auth/user'
 import {

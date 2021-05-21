@@ -1,6 +1,6 @@
 import React, {useState} from 'react'
 import styled from 'styled-components'
-import {withStyles} from '@material-ui/core'
+import withStyles from '@material-ui/core/styles/withStyles'
 import {spacing} from 'lib/ui/theme'
 import Button from '@material-ui/core/Button'
 import EditFooterDialog from 'Event/template/SimpleBlog/Reports/Footer/EditFooterDialog'

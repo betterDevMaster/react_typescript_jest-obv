@@ -7,7 +7,7 @@ import MuiButton from '@material-ui/core/Button'
 import RuleForm from 'Event/visibility-rules/RuleConfig/RuleList/RuleForm'
 import Typography from '@material-ui/core/Typography'
 import {spacing} from 'lib/ui/theme'
-import {withStyles} from '@material-ui/core'
+import withStyles from '@material-ui/core/styles/withStyles'
 import Visible from 'lib/ui/layout/Visible'
 
 export default function RuleList(props: {

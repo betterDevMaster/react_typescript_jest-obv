@@ -1,5 +1,5 @@
 import React, {useState} from 'react'
-import {withStyles} from '@material-ui/core'
+import withStyles from '@material-ui/core/styles/withStyles'
 import {spacing} from 'lib/ui/theme'
 import Button from '@material-ui/core/Button'
 import EditBodyDialog from 'Event/template/SimpleBlog/Reports/Body/EditBodyDialog'

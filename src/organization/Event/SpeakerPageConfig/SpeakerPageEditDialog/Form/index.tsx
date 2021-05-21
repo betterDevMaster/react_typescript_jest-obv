@@ -1,7 +1,7 @@
 import React, {useState} from 'react'
 import styled from 'styled-components'
 import Grid from '@material-ui/core/Grid'
-import {Button} from '@material-ui/core'
+import Button from '@material-ui/core/Button'
 import InputLabel from '@material-ui/core/InputLabel'
 import Slider from '@material-ui/core/Slider'
 import TextField from '@material-ui/core/TextField'

@@ -4,7 +4,7 @@ import ToggleButtonGroup from '@material-ui/lab/ToggleButtonGroup'
 import FormatBoldIcon from '@material-ui/icons/FormatBold'
 import FormatItalicIcon from '@material-ui/icons/FormatItalic'
 import FormatUnderlinedIcon from '@material-ui/icons/FormatUnderlined'
-import {withStyles} from '@material-ui/core'
+import withStyles from '@material-ui/core/styles/withStyles'
 import {colors} from 'lib/ui/theme'
 
 export const BOLD = 'bold'

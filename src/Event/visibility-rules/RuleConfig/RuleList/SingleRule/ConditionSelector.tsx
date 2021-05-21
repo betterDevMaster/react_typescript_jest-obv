@@ -3,7 +3,7 @@ import Select from '@material-ui/core/Select'
 import {AND, OR, Rule} from 'Event/visibility-rules'
 import {onUnknownChangeHandler} from 'lib/dom'
 import React from 'react'
-import {withStyles} from '@material-ui/core'
+import withStyles from '@material-ui/core/styles/withStyles'
 import {spacing} from 'lib/ui/theme'
 
 export default function ConditionSelector(props: {

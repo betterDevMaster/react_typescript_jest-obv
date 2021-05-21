@@ -6,13 +6,14 @@ import Header from 'Event/template/SimpleBlog/Dashboard/Header'
 import Menu from 'Event/template/SimpleBlog/Menu'
 import {User} from 'auth/user'
 import Footer from 'Event/template/SimpleBlog/Dashboard/Footer'
-import {ThemeProvider, withStyles} from '@material-ui/core'
 import {useTemplate} from 'Event/TemplateProvider'
 import {useEvent} from 'Event/EventProvider'
 import {SimpleBlog} from 'Event/template/SimpleBlog'
 import {rgb} from 'lib/color'
 import LanguageSelectMenu from 'Event/LanguageSelector'
 import {muiDarkTheme, muiTheme} from 'lib/ui/theme'
+import {ThemeProvider} from '@material-ui/core/styles'
+import {withStyles} from '@material-ui/core/styles'
 
 export default function SimpleBlogPage(props: {
   user: User

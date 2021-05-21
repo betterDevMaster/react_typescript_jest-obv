@@ -1,5 +1,7 @@
 import React from 'react'
-import {Grid, Button, withStyles} from '@material-ui/core'
+import withStyles from '@material-ui/core/styles/withStyles'
+import Grid from '@material-ui/core/Grid'
+import Button from '@material-ui/core/Button'
 import {Draggable, DraggableProvidedDraggableProps} from 'react-beautiful-dnd'
 import {spacing} from 'lib/ui/theme'
 import {DraggableOverlay, DragHandle} from 'lib/ui/drag-and-drop'
