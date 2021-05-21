@@ -117,7 +117,7 @@ it('should add a new ticket ribbon', async () => {
   /**
    * Only grab first 5 characters as the ribbon has a char limit
    */
-  const text = faker.random.words(2).substring(0, 5)
+  const text = faker.random.words(1).substring(0, 5)
 
   user.type(await findByLabelText('ticket ribbon text input'), text)
 
