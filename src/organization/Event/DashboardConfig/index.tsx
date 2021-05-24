@@ -5,7 +5,6 @@ import React from 'react'
 import Layout from 'organization/user/Layout'
 import Page from 'organization/Event/Page'
 import {OrganizationActionsProvider} from 'Event/ActionsProvider'
-import {StaticSubmissionsProvider} from 'Event/SubmissionsProvider'
 
 export default function DashboardConfig() {
   const {user} = useOrganizationAuth()
@@ -20,9 +19,7 @@ export default function DashboardConfig() {
         <OrganizationActionsProvider
           loader={<LoadingText>loading...</LoadingText>}
         >
-          <StaticSubmissionsProvider>
-            <Dashboard user={user} isEditMode={true} />
-          </StaticSubmissionsProvider>
+          <Dashboard user={user} isEditMode={true} />
         </OrganizationActionsProvider>
       </Page>
     </Layout>

@@ -2,6 +2,7 @@ import React, {useCallback} from 'react'
 import {api} from 'lib/url'
 import {useAsync} from 'lib/async'
 import {useOrganization} from 'organization/OrganizationProvider'
+import FullPageLoader from 'lib/ui/layout/FullPageLoader'
 
 /**
  * CK Editor upload URL
@@ -22,7 +23,7 @@ export default function TextEditorProvider(props: {children: React.ReactNode}) {
   const {loading, token} = useAccessToken()
 
   if (loading) {
-    return null
+    return <FullPageLoader />
   }
 
   if (!token) {

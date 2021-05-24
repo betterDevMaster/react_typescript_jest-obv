@@ -6,6 +6,7 @@ import {useAsync} from 'lib/async'
 import FullPageLoader from 'lib/ui/layout/FullPageLoader'
 import {api} from 'lib/url'
 import {Form} from 'organization/Event/FormsProvider'
+import {Question} from 'organization/Event/QuestionsProvider'
 import React, {useCallback, useEffect, useState} from 'react'
 
 export interface Answer {
@@ -160,4 +161,35 @@ export function useSubmissions() {
   }
 
   return context
+}
+
+export function findAnswer(question: Question, answers?: Answer[]) {
+  if (!answers) {
+    return null
+  }
+
+  const answer = answers.find((a) => a.question_id === question.id)
+  if (!answer) {
+    return null
+  }
+
+  return answer.value
+}
+
+/**
+ * Checks whether a particular form has been submitted.
+ * @param answers
+ * @param form
+ * @returns
+ */
+export function hasSubmittedForm(answers: Answer[], form: Form) {
+  /**
+   * Answers could contain submissions from several forms so we need
+   * to see if there are any relevant to this form.
+   */
+  const numSubmitted = form.questions.filter((q) =>
+    Boolean(findAnswer(q, answers)),
+  ).length
+
+  return numSubmitted > 0
 }

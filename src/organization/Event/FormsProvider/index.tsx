@@ -14,6 +14,8 @@ export interface Form {
   infusionsoft_tag_name: string | null
   infusionsoft_tag_id: number | null
   submit_label: string
+  submitted_message: string
+  resubmit_button_label: string
 }
 
 export interface FormsContextProps {

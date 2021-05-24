@@ -11,6 +11,7 @@ export const SPONSOR_QUESTION_ICON_PLACEHOLDER = 'http://placehold.jp/50x50.png'
 type BodyProps = {
   sponsor: Sponsor
   isEditMode?: boolean
+  toggleForm: () => void
 }
 
 export default function Body(props: BodyProps) {
@@ -37,25 +38,25 @@ function Content(props: BodyProps) {
   const {sponsor} = props
 
   return (
-    <div>
+    <Box>
       <SponsorHeader>
         <Typography variant="h5">{sponsor.name}</Typography>
-        <QuestionIcon sponsor={sponsor} />
+        <QuestionIcon sponsor={sponsor} onClick={props.toggleForm} />
       </SponsorHeader>
       <div
         dangerouslySetInnerHTML={{
           __html: sponsor.description,
         }}
       />
-    </div>
+    </Box>
   )
 }
 
-function QuestionIcon(props: {sponsor: Sponsor}) {
+function QuestionIcon(props: {sponsor: Sponsor; onClick: () => void}) {
   const {event} = useEvent()
   const {sponsor_question_icon} = event
 
-  if (!props.sponsor.settings?.formId) {
+  if (!props.sponsor.form) {
     return null
   }
 
@@ -64,7 +65,7 @@ function QuestionIcon(props: {sponsor: Sponsor}) {
     : SPONSOR_QUESTION_ICON_PLACEHOLDER
 
   return (
-    <QuestionIconBox>
+    <QuestionIconBox onClick={props.onClick} aria-label="sponsor questions">
       <img src={src} alt={props.sponsor.name} />
     </QuestionIconBox>
   )
@@ -77,9 +78,14 @@ const ImageContainer = styled.div`
   }
 `
 
+const Box = styled.div`
+  width: 100%;
+`
+
 const QuestionIconBox = styled(ImageContainer)`
   width: 40px;
   margin-right: 10px;
+  cursor: pointer;
 `
 const SponsorHeader = styled.div`
   display: flex;

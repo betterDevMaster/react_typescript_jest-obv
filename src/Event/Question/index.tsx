@@ -4,7 +4,7 @@ import LongAnswerText from 'Event/Question/LongAnswerText'
 import Radio from 'Event/Question/Radio'
 import Select from 'Event/Question/Select'
 import ShortAnswerText from 'Event/Question/ShortAnswerText'
-import {Answer} from 'Event/SubmissionsProvider'
+import {Answer, findAnswer} from 'Event/SubmissionsProvider'
 import {ValidationError} from 'lib/api-client'
 import {fieldError} from 'lib/form'
 import {
@@ -94,19 +94,6 @@ function Field(props: FieldProps) {
         `Missing question component for type: ${props.question.type}`,
       )
   }
-}
-
-export function findAnswer(question: QuestionDefinition, answers?: Answer[]) {
-  if (!answers) {
-    return null
-  }
-
-  const answer = answers.find((a) => a.question_id === question.id)
-  if (!answer) {
-    return null
-  }
-
-  return answer.value
 }
 
 export function useSavedValue(props: {

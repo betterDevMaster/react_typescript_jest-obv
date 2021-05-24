@@ -11,15 +11,16 @@ import {FileLocation} from 'lib/http-client'
 import {EntityList} from 'lib/list'
 import NavButton from 'Event/Dashboard/components/NavButton'
 import {useTrackEventPage} from 'analytics'
+import {Form} from 'organization/Event/FormsProvider'
 
 export interface Sponsor {
   id: number
   image: FileLocation | null
   name: string
   description: string
+  form: Form | null
   settings: null | {
     buttons?: EntityList<NavButton>
-    formId?: number
   }
 }
 

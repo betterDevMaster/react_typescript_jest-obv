@@ -110,6 +110,7 @@ export const fakeSponsor = (overrides?: Partial<Sponsor>): Sponsor => ({
   description: `<html><p>${faker.lorem.paragraphs(3)}</p></html>`,
   image: null,
   settings: null,
+  form: null,
   ...overrides,
 })
 

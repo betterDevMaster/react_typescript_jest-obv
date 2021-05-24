@@ -148,6 +148,8 @@ const FormConfig = React.forwardRef<
   const onSubmitRedirectUrlError = error('on_submit_redirect_url')
   const submissionWebhookUrlError = error('submission_webhook_url')
   const submitLabelError = error('submit_label')
+  const submittedMessageError = error('submitted_message')
+  const resubmitButtonLabelError = error('resubmit_button_label')
 
   return (
     <>
@@ -187,6 +189,20 @@ const FormConfig = React.forwardRef<
             </FormControl>
           )}
         />
+
+        <TextField
+          label="Resubmit Button Label"
+          name="resubmit_button_label"
+          defaultValue={form.resubmit_button_label}
+          inputProps={{
+            'aria-label': 'resubmit button label',
+            ref: register,
+          }}
+          disabled={processing}
+          fullWidth
+          helperText={resubmitButtonLabelError}
+          error={!!resubmitButtonLabelError}
+        />
         <TextField
           label="Submit Label"
           name="submit_label"
@@ -200,6 +216,24 @@ const FormConfig = React.forwardRef<
           helperText={submitLabelError}
           error={!!submitLabelError}
         />
+
+        <TextField
+          label="Submitted Message"
+          name="submitted_message"
+          defaultValue={form.submitted_message}
+          inputProps={{
+            'aria-label': 'form submitted message',
+            ref: register,
+          }}
+          disabled={processing}
+          fullWidth
+          helperText={
+            submittedMessageError ||
+            'Message displayed when form has been submitted'
+          }
+          error={!!submittedMessageError}
+        />
+
         <TextField
           label="Redirect URL (optional)"
           name="on_submit_redirect_url"

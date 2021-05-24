@@ -15,7 +15,6 @@ export type BlogPost = Publishable &
     publishAt: string | null
     content: string
     formId?: number | null
-    formSubmittedText?: string
     isModalForm?: boolean
     modalButtonText?: string
     hideDate?: boolean

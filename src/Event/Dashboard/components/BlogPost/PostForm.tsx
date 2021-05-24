@@ -3,14 +3,14 @@ import Button from '@material-ui/core/Button'
 import DialogTitle from '@material-ui/core/DialogTitle'
 import {BlogPost} from 'Event/Dashboard/components/BlogPost'
 import {useEvent} from 'Event/EventProvider'
-import Question, {findAnswer} from 'Event/Question'
+import Question from 'Event/Question'
 import Dialog from 'lib/ui/Dialog'
 import {Form} from 'organization/Event/FormsProvider'
 import React, {useState} from 'react'
 import {useForm} from 'react-hook-form'
 import {DEFAULT_MODAL_BUTTON_TEXT} from 'Event/Dashboard/components/BlogPost/BlogPostConfig'
 import Box from '@material-ui/core/Box'
-import {useSubmissions} from 'Event/SubmissionsProvider'
+import {hasSubmittedForm, useSubmissions} from 'Event/SubmissionsProvider'
 import {useVariables} from 'Event'
 
 export default function PostForm(props: {post: BlogPost}) {
@@ -68,6 +68,10 @@ function Content(props: {form: Form; post: BlogPost}) {
     submitAnswers(form, data)
       .then(() => {
         setIsResubmitting(false)
+
+        if (form.on_submit_redirect_url) {
+          window.location.href = v(form.on_submit_redirect_url)
+        }
       })
       .finally(() => {
         setSubmitting(false)
@@ -75,16 +79,8 @@ function Content(props: {form: Form; post: BlogPost}) {
       })
   }
 
-  const numAnswered = form.questions.filter((q) =>
-    Boolean(findAnswer(q, answers)),
-  ).length
-
-  const hasSubmitted = numAnswered > 0
-
-  if (hasSubmitted && !isResubmitting) {
-    return (
-      <SubmittedMessage post={post} resubmit={handleResubmit} form={form} />
-    )
+  if (hasSubmittedForm(answers, form) && !isResubmitting) {
+    return <SubmittedMessage resubmit={handleResubmit} form={form} />
   }
 
   const body = (
@@ -130,20 +126,18 @@ function Content(props: {form: Form; post: BlogPost}) {
   )
 }
 
-function SubmittedMessage(props: {
-  post: BlogPost
-  resubmit: () => void
-  form: Form
-}) {
+function SubmittedMessage(props: {resubmit: () => void; form: Form}) {
+  const v = useVariables()
+
   if (!props.form.can_resubmit) {
-    return <div>{props.post.formSubmittedText}</div>
+    return <div>{v(props.form.submitted_message)}</div>
   }
 
   return (
     <div>
-      <p>{props.post.formSubmittedText}</p>
+      <p>{v(props.form.submitted_message)}</p>
       <Button variant="text" onClick={props.resubmit}>
-        edit your answer
+        {v(props.form.resubmit_button_label)}
       </Button>
     </div>
   )

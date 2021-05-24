@@ -153,17 +153,6 @@ export function BlogPostConfig(props: {id: BlogPostConfig['id']}) {
                 onChange={onChangeStringHandler(update('modalButtonText'))}
               />
             </IfModalForm>
-            <TextField
-              value={post.formSubmittedText || ''}
-              label="Submitted Message"
-              fullWidth
-              inputProps={{
-                'aria-label': 'submitted message',
-              }}
-              multiline
-              rows="2"
-              onChange={onChangeStringHandler(update('formSubmittedText'))}
-            />
           </FormFields>
           <RemoveButton
             fullWidth

@@ -17,6 +17,9 @@ import Buttons, {
 } from 'Event/template/SimpleBlog/SponsorPage/SponsorEditDialog/Form/Buttons'
 import ButtonConfig from 'Event/template/SimpleBlog/SponsorPage/SponsorEditDialog/Form/ButtonConfig'
 import {useSponsors} from 'organization/Event/SponsorsProvider'
+import FormSelect from 'organization/Event/FormsProvider/FormSelect'
+import InputLabel from '@material-ui/core/InputLabel'
+import FormControl from '@material-ui/core/FormControl'
 
 export default function EditSponsorForm(props: {
   sponsor: Sponsor
@@ -46,6 +49,7 @@ export default function EditSponsorForm(props: {
     const dataWithButtons: Sponsor = {
       ...data,
       settings: {
+        ...(data.settings || {}),
         buttons,
       },
     }
@@ -118,6 +122,17 @@ export default function EditSponsorForm(props: {
             loading={loadingButtons}
           />
         </Box>
+        <Controller
+          name="form_id"
+          control={control}
+          defaultValue={sponsor.form?.id || null}
+          render={({onChange, value}) => (
+            <FormControl fullWidth>
+              <InputLabel filled={Boolean(value)}>Form</InputLabel>
+              <FormSelect value={value} onChange={onChange} />
+            </FormControl>
+          )}
+        />
         <SaveButton
           fullWidth
           variant="contained"
