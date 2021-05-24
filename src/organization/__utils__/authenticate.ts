@@ -57,6 +57,16 @@ export function signInToOrganization(
   mockGet.mockImplementationOnce(() => Promise.resolve({data: userPermissions}))
   // All Permissions
   mockGet.mockImplementationOnce(() => Promise.resolve({data: ALL_PERMISSIONS}))
+  // CKEditor token
+  mockGet.mockImplementationOnce(() =>
+    Promise.resolve({
+      data: {
+        token:
+          // Dummy JWT
+          'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJqdGkiOiIwOTYxNGYyYy05OTY0LTRjN2MtYTBjOS1jMjA5OWNlZTQ5YTIiLCJpYXQiOjE2MjE4NTE5NDgsImV4cCI6MTYyMTg1NTU0OH0.X3qYxn5IYvab7U54rzwimFaxJl873tTgN3m0VcrCTC8',
+      },
+    }),
+  )
   // Fetch events
   mockGet.mockImplementationOnce(() => Promise.resolve({data: events}))
 

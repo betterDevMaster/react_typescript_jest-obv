@@ -1,7 +1,8 @@
 import React from 'react'
 import styled, {createGlobalStyle} from 'styled-components'
 import CKEditor from '@ckeditor/ckeditor5-react'
-import ClassicEditor from 'obvio-ckeditor'
+import ClassicEditor from '@obvio/ckeditor'
+import {useTextEditor} from 'lib/ui/form/TextEditor/TextEditorProvider'
 
 /**
  * Toolbar items to display
@@ -21,6 +22,8 @@ const toolbar = [
   'numberedList',
   'bulletedList',
   'insertTable',
+  '|',
+  'imageUpload',
 ]
 
 export default function TextEditor(props: {
@@ -32,6 +35,8 @@ export default function TextEditor(props: {
   const updateValue = (_: any, editor: any) => {
     props.onChange(editor.getData())
   }
+
+  const {ckUploadUrl, ckToken} = useTextEditor()
 
   return (
     <div className={props.className}>
@@ -49,6 +54,19 @@ export default function TextEditor(props: {
 
           mediaEmbed: {
             previewsInData: true,
+          },
+          cloudServices: {
+            /**
+             * CKEditor expects the endpoint to fetch the token. Since we
+             * require custom client auth, we'll use a function that
+             * returns the token.
+             *
+             * Reference: https://ckeditor.com/docs/ckeditor5/latest/api/module_cloud-services_cloudservices-CloudServicesConfig.html#member-tokenUrl
+             *
+             * @returns
+             */
+            tokenUrl: () => Promise.resolve(ckToken),
+            uploadUrl: ckUploadUrl,
           },
         }}
       />

@@ -65,6 +65,10 @@ it('should complete authorization', async () => {
   )
   // All Permissions
   mockGet.mockImplementationOnce(() => Promise.resolve({data: ALL_PERMISSIONS}))
+  // ckeditor token
+  mockGet.mockImplementationOnce(() =>
+    Promise.resolve({data: {token: 'ckeditortoken'}}),
+  )
   // event
   mockGet.mockImplementationOnce(() => Promise.resolve({data: event}))
 

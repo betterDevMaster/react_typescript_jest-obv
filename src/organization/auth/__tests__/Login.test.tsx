@@ -57,6 +57,9 @@ it('should login a user', async () => {
   mockGet.mockImplementationOnce(() => Promise.resolve({data: fakeUser()})) // Owner
   mockGet.mockImplementationOnce(() => Promise.resolve({data: []})) // user permissions
   mockGet.mockImplementationOnce(() => Promise.resolve({data: ALL_PERMISSIONS})) // all permissions
+  mockGet.mockImplementationOnce(() =>
+    Promise.resolve({data: {token: 'ckeditortoken'}}),
+  ) // ckeditor token
 
   const {findByLabelText, findByText} = render(<App />)
 

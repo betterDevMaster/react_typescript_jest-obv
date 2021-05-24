@@ -5,6 +5,7 @@ import GuestRoutes from 'organization/Routes/GuestRoutes'
 import OwnerProvider from 'organization/OwnerProvider'
 import PermissionsProvider from 'organization/PermissionsProvider'
 import FullPageLoader from 'lib/ui/layout/FullPageLoader'
+import TextEditorProvider from 'lib/ui/form/TextEditor/TextEditorProvider'
 
 export default function OrganizationRoutes() {
   const {user, loading} = useOrganizationAuth()
@@ -22,7 +23,9 @@ export default function OrganizationRoutes() {
     return (
       <OwnerProvider>
         <PermissionsProvider>
-          <UserRoutes />
+          <TextEditorProvider>
+            <UserRoutes />
+          </TextEditorProvider>
         </PermissionsProvider>
       </OwnerProvider>
     )

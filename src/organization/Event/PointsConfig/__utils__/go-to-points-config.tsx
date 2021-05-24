@@ -34,7 +34,7 @@ export async function goToPointsConfig(
   user.click(await findByLabelText(`configure points`))
 
   await wait(() => {
-    expect(mockGet).toHaveBeenCalledTimes(8)
+    expect(mockGet).toHaveBeenCalledTimes(9)
   })
 
   return {
