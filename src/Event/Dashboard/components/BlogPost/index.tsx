@@ -72,6 +72,10 @@ function Date(props: {children: React.ReactNode; hidden?: boolean}) {
 
 const Post = styled.div`
   margin-bottom: ${(props) => props.theme.spacing[8]};
+
+  img {
+    max-width: 100%;
+  }
 `
 
 const Title = styled.h2`
