@@ -23,6 +23,7 @@ tests:
     refs:
       - staging
       - production
+      - test
   artifacts:
     paths:
       - coverage
