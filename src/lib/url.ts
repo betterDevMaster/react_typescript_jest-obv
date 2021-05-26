@@ -8,6 +8,11 @@ import {useLocation} from 'react-router-dom'
 
 const OBVIO_DOMAINS = ['obv.io', 'obv.localhost:3000', 'obv.localhost']
 
+/**
+ * Staging environments are prefixed with *.staging.obv.io or *.test.obv.io
+ */
+const STAGING_SUBDOMAINS = ['staging', 'test']
+
 export const getSubdomain = (location: string) => {
   const urlParts = location.split('.')
   const missingSubdomain = urlParts.length < 3
@@ -22,7 +27,7 @@ export const getSubdomain = (location: string) => {
 
   const index = urlParts.length - 3
   const firstSubdomain = urlParts[index]
-  const isStaging = firstSubdomain === 'staging'
+  const isStaging = STAGING_SUBDOMAINS.includes(firstSubdomain)
   if (isStaging) {
     // return next child to allow app.staging.obv.io
     return urlParts[index - 1]
