@@ -10,6 +10,7 @@ variables:
   AWS_SECRET_ACCESS_KEY: $AWS_SECRET_ACCESS_KEY
   STAGING_CDN_DISTRIBUTION_ID: E1PN7CUQQZ69AV
   PROD_CDN_DISTRIBUTION_ID: EOHRS0Q0OCXKQ
+  TEST_CDN_DISTRIBUTION_ID: EM6D9VOGZ87XQ
 
 stages:
   - test
@@ -29,6 +30,34 @@ tests:
     - npm i --cache .npm --prefer-offline
     - npm run test:coverage
   retry: 2
+
+build_test:
+  stage: build
+  only:
+    refs:
+      - test
+  script:
+    - npm i --cache .npm --prefer-offline
+    - npm run build
+  variables:
+    REACT_APP_API_URL: 'https://v1-test.obv.io'
+    REACT_APP_WEB_APP_ROOT: 'test.obv.io'
+    REACT_APP_IS_STAGING: 'true'
+    REACT_APP_CK_EDITOR_UPLOAD_URL: 'https://80003.cke-cs.com/easyimage/upload/'
+  artifacts:
+    paths:
+      - build/
+
+deploy_test:
+  image: registry.gitlab.com/gitlab-org/cloud-deploy/aws-base:latest
+  stage: deploy
+  only:
+    refs:
+      - test
+  script:
+    - aws s3 sync build/ s3://obvio-event-web-test
+    - aws cloudfront create-invalidation --distribution-id
+      $TEST_CDN_DISTRIBUTION_ID --paths "/*"
 
 build_staging:
   stage: build
