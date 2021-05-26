@@ -7,6 +7,7 @@ import PostForm from 'Event/Dashboard/components/BlogPost/PostForm'
 import {HasRules} from 'Event/visibility-rules'
 import {useVariables} from 'Event'
 import {useEvent} from 'Event/EventProvider'
+import Content from 'lib/ui/form/TextEditor/Content'
 
 export type BlogPost = Publishable &
   HasRules & {
@@ -42,12 +43,7 @@ export function BlogPost(props: {post: BlogPost}) {
     <Post aria-label="blog post">
       <Title>{v(post.title)}</Title>
       <Date hidden={post.hideDate}>{formattedDate}</Date>
-      <Content
-        fontSize={fontSize}
-        dangerouslySetInnerHTML={{
-          __html: v(post.content),
-        }}
-      />
+      <StyledContent fontSize={fontSize}>{v(post.content)}</StyledContent>
       <PostForm post={post} />
     </Post>
   )
@@ -91,7 +87,7 @@ const DateText = styled.span`
   margin-bottom: ${(props) => props.theme.spacing[4]};
 `
 
-const Content = styled.div<{
+const StyledContent = styled(Content)<{
   fontSize: string
 }>`
   font-size: ${(props) => props.fontSize};

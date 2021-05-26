@@ -16,6 +16,7 @@ import SpeakerEditDialog from 'Event/template/SimpleBlog/SpeakerPage/SpeakerEdit
 
 import {PageTitle} from 'Event/template/SimpleBlog/Page'
 import {useVariables} from 'Event'
+import Content from 'lib/ui/form/TextEditor/Content'
 
 export default function SimpleBlogSpeakerPage(props: {
   user: User
@@ -32,12 +33,9 @@ export default function SimpleBlogSpeakerPage(props: {
         {v(speakerPageSettings?.title || DEFAULT_TITLE)}
       </PageTitle>
       <SubTitle>
-        <div
-          aria-label="speakers description"
-          dangerouslySetInnerHTML={{
-            __html: v(speakerPageSettings?.description || DEFAULT_DESCRIPTION),
-          }}
-        />
+        <Content aria-label="speakers description">
+          {v(speakerPageSettings?.description || DEFAULT_DESCRIPTION)}
+        </Content>
       </SubTitle>
       <BackToDashboard
         color={

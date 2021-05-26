@@ -16,6 +16,7 @@ import {
 
 import {PageTitle} from 'Event/template/SimpleBlog/Page'
 import {useVariables} from 'Event'
+import Content from 'lib/ui/form/TextEditor/Content'
 
 export default function SimpleBlogFaqPage(props: {
   user: User
@@ -33,12 +34,9 @@ export default function SimpleBlogFaqPage(props: {
         {v(pageSettings?.title || DEFAULT_TITLE)}
       </PageTitle>
       <SubTitle>
-        <div
-          aria-label="description"
-          dangerouslySetInnerHTML={{
-            __html: v(pageSettings?.description || DEFAULT_DESCRIPTION),
-          }}
-        />
+        <Content aria-label="description">
+          {v(pageSettings?.description || DEFAULT_DESCRIPTION)}
+        </Content>
       </SubTitle>
       <BackToDashboard
         color={

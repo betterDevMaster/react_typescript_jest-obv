@@ -3,6 +3,7 @@ import styled from 'styled-components'
 import Typography from '@material-ui/core/Typography'
 import {Speaker} from 'Event/SpeakerPage'
 import {useVariables} from 'Event'
+import Content from 'lib/ui/form/TextEditor/Content'
 
 export default function Body(props: {speaker: Speaker}) {
   const {speaker} = props
@@ -13,11 +14,7 @@ export default function Body(props: {speaker: Speaker}) {
       <Box>
         <Typography variant="h5">{v(speaker.name)}</Typography>
       </Box>
-      <div
-        dangerouslySetInnerHTML={{
-          __html: v(speaker.text),
-        }}
-      />
+      <Content>{v(speaker.text)}</Content>
     </div>
   )
 }

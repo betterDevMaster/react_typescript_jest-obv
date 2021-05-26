@@ -16,6 +16,7 @@ import {TechCheckConfig} from 'Event'
 import {RelativeLink} from 'lib/ui/link/RelativeLink'
 import CustomButtons from 'Event/Step3/CustomButtons'
 import {Template} from 'Event/template'
+import Content from 'lib/ui/form/TextEditor/Content'
 
 export default function TechCheck(props: {user: User} & TechCheckProps) {
   const {techCheck} = props
@@ -32,17 +33,11 @@ export default function TechCheck(props: {user: User} & TechCheckProps) {
           borderRadius={template.progressBar.borderRadius}
           thickness={template.progressBar.thickness}
         />
-        <Body
-          dangerouslySetInnerHTML={{
-            __html: v(techCheck.body),
-          }}
-        />
+        <Body>{v(techCheck.body)}</Body>
         <Buttons techCheck={techCheck} settings={props.settings} />
-        <ContentContainer
-          dangerouslySetInnerHTML={{
-            __html: v(techCheck.additional_content || ''),
-          }}
-        />
+        <AdditionalContent>
+          {v(techCheck.additional_content || '')}
+        </AdditionalContent>
       </Container>
     </SimpleBlogPage>
   )
@@ -108,7 +103,7 @@ function StartButton(props: {
   )
 }
 
-const Body = styled.div`
+const Body = styled(Content)`
   max-height: 100%;
   overflow-y: auto;
   margin-bottom: ${(props) => props.theme.spacing[4]};
@@ -116,7 +111,7 @@ const Body = styled.div`
 const ButtonBox = styled.div`
   text-align: center;
 `
-const ContentContainer = styled.div`
+const AdditionalContent = styled(Content)`
   max-height: 100%;
   margin-bottom: ${(props) => props.theme.spacing[4]};
   margin-top: ${(props) => props.theme.spacing[8]};

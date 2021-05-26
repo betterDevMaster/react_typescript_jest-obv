@@ -5,6 +5,8 @@ import {Sponsor} from 'Event/SponsorPage'
 import Typography from '@material-ui/core/Typography'
 import Clickable from 'lib/ui/Editable'
 import {useSponsors} from 'organization/Event/SponsorsProvider'
+import {useVariables} from 'Event'
+import TextContent from 'lib/ui/form/TextEditor/Content'
 
 export const SPONSOR_QUESTION_ICON_PLACEHOLDER = 'http://placehold.jp/50x50.png'
 
@@ -36,6 +38,7 @@ function Editable(props: BodyProps) {
 
 function Content(props: BodyProps) {
   const {sponsor} = props
+  const v = useVariables()
 
   return (
     <Box>
@@ -43,11 +46,7 @@ function Content(props: BodyProps) {
         <Typography variant="h5">{sponsor.name}</Typography>
         <QuestionIcon sponsor={sponsor} onClick={props.toggleForm} />
       </SponsorHeader>
-      <div
-        dangerouslySetInnerHTML={{
-          __html: sponsor.description,
-        }}
-      />
+      <TextContent>{v(sponsor.description)}</TextContent>
     </Box>
   )
 }

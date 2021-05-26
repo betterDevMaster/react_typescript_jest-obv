@@ -11,6 +11,7 @@ import {useVariables} from 'Event'
 import {spacing} from 'lib/ui/theme'
 import grey from '@material-ui/core/colors/grey'
 import withStyles from '@material-ui/core/styles/withStyles'
+import Content from 'lib/ui/form/TextEditor/Content'
 
 type BodyProps = {
   faq: FAQ
@@ -65,11 +66,7 @@ function FaqCard(props: {faq: FAQ; answerVisible?: boolean}) {
         <StyledCardHeader title={v(faq.question)} />
         <Collapse in={expanded} timeout="auto" unmountOnExit>
           <StyledCardContent>
-            <div
-              dangerouslySetInnerHTML={{
-                __html: v(faq.answer),
-              }}
-            />
+            <Content>{v(faq.answer)}</Content>
           </StyledCardContent>
         </Collapse>
       </StyledCard>

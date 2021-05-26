@@ -15,6 +15,8 @@ import {
 } from 'Event/template/SimpleBlog/SponsorPage/SponsorList/Card'
 
 import {PageTitle} from 'Event/template/SimpleBlog/Page'
+import {useVariables} from 'Event'
+import Content from 'lib/ui/form/TextEditor/Content'
 
 export default function SimpleBlogSponsorPage(props: {
   user: User
@@ -25,6 +27,7 @@ export default function SimpleBlogSponsorPage(props: {
   const {event} = useEvent()
   const template = useTemplate()
   const {sponsors: sponsorsPageSettings} = template
+  const v = useVariables()
 
   const content = (
     <>
@@ -32,12 +35,9 @@ export default function SimpleBlogSponsorPage(props: {
         {event.sponsor_page_title}
       </PageTitle>
       <SubTitle>
-        <div
-          aria-label="speakers description"
-          dangerouslySetInnerHTML={{
-            __html: sponsorsPageSettings?.description || DEFAULT_DESCRIPTION,
-          }}
-        />
+        <Content aria-label="speakers description">
+          {v(sponsorsPageSettings?.description || DEFAULT_DESCRIPTION)}
+        </Content>
       </SubTitle>
       <BackToDashboard
         color={

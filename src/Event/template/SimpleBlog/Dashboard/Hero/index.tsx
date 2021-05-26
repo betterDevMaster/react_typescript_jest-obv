@@ -49,15 +49,7 @@ function WelcomeText() {
     return null
   }
 
-  return (
-    <Text aria-label="welcome">
-      <div
-        dangerouslySetInnerHTML={{
-          __html: v(welcomeText),
-        }}
-      />
-    </Text>
-  )
+  return <Text aria-label="welcome">{v(welcomeText)}</Text>
 }
 
 function Image() {

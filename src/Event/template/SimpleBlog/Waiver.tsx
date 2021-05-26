@@ -12,6 +12,7 @@ import Box from '@material-ui/core/Box'
 import {useVariables} from 'Event'
 import Typography from '@material-ui/core/Typography'
 import {useTemplate} from 'Event/TemplateProvider'
+import Content from 'lib/ui/form/TextEditor/Content'
 
 export default function Waiver() {
   const {
@@ -30,11 +31,7 @@ export default function Waiver() {
 
   return (
     <>
-      <Body
-        dangerouslySetInnerHTML={{
-          __html: body,
-        }}
-      />
+      <Body>{body}</Body>
       <Grid container spacing={3}>
         <Grid item md={12} xs={12}>
           <FormControl required component="fieldset">
@@ -67,7 +64,7 @@ export default function Waiver() {
   )
 }
 
-const Body = styled.div`
+const Body = styled(Content)`
   max-height: 240px;
   overflow-y: auto;
   border: 1px solid ${grey[300]};

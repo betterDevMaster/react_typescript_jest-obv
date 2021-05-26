@@ -10,6 +10,7 @@ import {
   DEFAULT_FOOTER_TEXT_COLOR,
 } from 'Event/template/SimpleBlog/Reports/ReportsConfig'
 import {useReportsConfig} from 'organization/Event/ReportsConfig'
+import Content from 'lib/ui/form/TextEditor/Content'
 
 export default function Footer(props: {isPreview: boolean}) {
   const [isEditing, setIsEditing] = useState(false)
@@ -24,11 +25,7 @@ export default function Footer(props: {isPreview: boolean}) {
         color={footer?.textColor || DEFAULT_FOOTER_TEXT_COLOR}
         bgColor={footer?.backgroundColor || DEFAULT_FOOTER_BACKGROUND_COLOR}
       >
-        <div
-          dangerouslySetInnerHTML={{
-            __html: footer?.text || DEFAULT_FOOTER_TEXT,
-          }}
-        />
+        <Content>{footer?.text || DEFAULT_FOOTER_TEXT}</Content>
       </Container>
       <EditFooterButton visible={!props.isPreview} onClick={toggleEditing} />
     </>

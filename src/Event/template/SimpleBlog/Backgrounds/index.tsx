@@ -15,6 +15,7 @@ import {
 import {useVariables} from 'Event'
 import HiddenOnMatch from 'Event/visibility-rules/HiddenOnMatch'
 import {downloadFile} from 'lib/http-client'
+import Content from 'lib/ui/form/TextEditor/Content'
 
 const DEFAULT_BACK_TO_DASHBOARD_TEXT = 'Back to Dashboard'
 const DEFAULT_BACK_TO_DASHBOARD_TEXT_COLOR = '#000000'
@@ -23,8 +24,11 @@ export default function SimpleBlogBackgrounds(props: {user: Attendee}) {
   const v = useVariables()
   const {event} = useEvent()
   const {zoomBackgrounds: settings} = useTemplate()
-  const {backgrounds, zoom_backgrounds_description, zoom_backgrounds_title} =
-    event
+  const {
+    backgrounds,
+    zoom_backgrounds_description,
+    zoom_backgrounds_title,
+  } = event
 
   const sortedBackgrounds = useSortedBackgrounds(backgrounds)
 
@@ -37,12 +41,7 @@ export default function SimpleBlogBackgrounds(props: {user: Attendee}) {
   return (
     <Page user={props.user}>
       <Title>{v(zoom_backgrounds_title || '')}</Title>
-
-      <div
-        dangerouslySetInnerHTML={{
-          __html: v(zoom_backgrounds_description || ''),
-        }}
-      />
+      <Content>{v(zoom_backgrounds_description || '')}</Content>
 
       <BackToDashboard
         color={v(

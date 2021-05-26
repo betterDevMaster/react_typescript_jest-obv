@@ -21,6 +21,7 @@ import {
 } from 'Event/template/SimpleBlog/Leaderboard/LeaderboardConfig'
 import {useVariables} from 'Event'
 import {PageTitle} from 'Event/template/SimpleBlog/Page'
+import Content from 'lib/ui/form/TextEditor/Content'
 
 export default function SimpleBlogLeaderboard(props: {user: Attendee}) {
   const [entries, setEntries] = useState<Entry[]>([])
@@ -42,11 +43,7 @@ export default function SimpleBlogLeaderboard(props: {user: Attendee}) {
   return (
     <Page user={props.user}>
       <PageTitle>{leaderboardPage?.title || DEFAULT_TITLE}</PageTitle>
-      <Description
-        dangerouslySetInnerHTML={{
-          __html: description,
-        }}
-      />
+      <Description>{description}</Description>
       <Link
         to="/"
         style={{
@@ -98,7 +95,7 @@ function useEntries() {
   return useAsync(request)
 }
 
-const Description = styled.div`
+const Description = styled(Content)`
   text-align: center;
 `
 
