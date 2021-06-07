@@ -2,9 +2,11 @@ import React, {useEffect, useRef, useState} from 'react'
 import {useForm, UseFormMethods} from 'react-hook-form'
 import {useEventAuth} from 'Event/auth'
 import {useQueryParams} from 'lib/url'
-import {useTemplate} from 'Event/TemplateProvider'
 import SimpleBlogLogin from 'Event/template/SimpleBlog/Login'
 import {SIMPLE_BLOG} from 'Event/template/SimpleBlog'
+import {useTemplate} from 'Event/TemplateProvider'
+import {PANELS} from 'Event/template/Panels'
+import PanelsLogin from 'Event/template/Panels/Login'
 
 export interface LoginProps {
   onSubmit: () => void
@@ -84,7 +86,9 @@ function TemplateLogin(props: LoginProps) {
   switch (template.name) {
     case SIMPLE_BLOG:
       return <SimpleBlogLogin {...props} />
+    case PANELS:
+      return <PanelsLogin {...props} />
     default:
-      throw new Error(`Missing login for template: ${template.name}`)
+      throw new Error(`Missing login for template`)
   }
 }

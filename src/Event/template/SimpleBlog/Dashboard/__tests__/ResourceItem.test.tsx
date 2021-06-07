@@ -1,6 +1,6 @@
 import user from '@testing-library/user-event'
 import {fakeSimpleBlog} from 'Event/template/SimpleBlog/__utils__/factory'
-import {fakeResource} from 'Event/Dashboard/components/ResourceList/__utils__/factory'
+import {fakeResource} from 'Event/template/SimpleBlog/Dashboard/ResourceList/__utils__/factory'
 import {createPlatformActions, fakeEvent} from 'Event/__utils__/factory'
 import {wait} from '@testing-library/react'
 import {fakeAction} from 'Event/ActionsProvider/__utils__/factory'

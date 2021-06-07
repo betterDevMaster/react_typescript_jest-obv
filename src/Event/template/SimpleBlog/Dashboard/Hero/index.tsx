@@ -1,7 +1,6 @@
 import React from 'react'
 import styled from 'styled-components'
 import {useEvent} from 'Event/EventProvider'
-import {useTemplate} from 'Event/TemplateProvider'
 import {useEditComponent} from 'Event/Dashboard/editor/state/edit-mode'
 import EditModeOnly from 'Event/Dashboard/editor/views/EditModeOnly'
 import withStyles from '@material-ui/core/styles/withStyles'
@@ -9,6 +8,7 @@ import {spacing} from 'lib/ui/theme'
 import Button from '@material-ui/core/Button'
 import {DEFAULT_HERO_IMAGE_SIZE_PERCENT} from 'Event/template/SimpleBlog/Dashboard/Hero/HeroConfig'
 import {useVariables} from 'Event'
+import {useSimpleBlog} from 'Event/template/SimpleBlog'
 
 export const HERO = 'Hero'
 
@@ -42,7 +42,8 @@ function EditButton() {
 }
 
 function WelcomeText() {
-  const {welcomeText} = useTemplate()
+  const {template} = useSimpleBlog()
+  const {welcomeText} = template
   const v = useVariables()
 
   if (!welcomeText) {
@@ -54,7 +55,8 @@ function WelcomeText() {
 
 function Image() {
   const {event} = useEvent()
-  const {heroImageSize} = useTemplate()
+  const {template} = useSimpleBlog()
+  const {heroImageSize} = template
 
   const size = heroImageSize || DEFAULT_HERO_IMAGE_SIZE_PERCENT
 

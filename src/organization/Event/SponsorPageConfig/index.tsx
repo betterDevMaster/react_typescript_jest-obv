@@ -1,86 +1,21 @@
-import styled from 'styled-components'
-import React, {useState} from 'react'
-import Layout from 'organization/user/Layout'
-import {Sponsor} from 'Event/SponsorPage'
-import {OrganizationActionsProvider} from 'Event/ActionsProvider'
-import Page from 'organization/Event/Page'
-import AddSponsorButton from 'organization/Event/SponsorPageConfig/AddSponsorButton'
-import Button from '@material-ui/core/Button'
-import Box from '@material-ui/core/Box'
-import PageSettingsDialog from 'organization/Event/SponsorPageConfig/PageSettingsDialog'
-import {useTeamMember} from 'organization/auth'
-import {useTemplate} from 'Event/TemplateProvider'
-import SimpleBlogSponsorPage from 'Event/template/SimpleBlog/SponsorPage'
+import React from 'react'
 import {SIMPLE_BLOG} from 'Event/template/SimpleBlog'
-import {useSponsors} from 'organization/Event/SponsorsProvider'
+import {useTemplate} from 'Event/TemplateProvider'
+import SimpleBlogSponsorConfig from 'Event/template/SimpleBlog/SponsorPage/SponsorPageConfig'
+import PanelsSponsorConfig from 'Event/template/Panels/Dashboard/Sponsors/SponsorPageConfig'
+import {PANELS} from 'Event/template/Panels'
 
 export default function SponsorPageConfig() {
-  const {add, loading, edit} = useSponsors()
-  const [pageSettingsVisible, setPageSettingsVisible] = useState(false)
-
-  const handleAddedSponsor = (newSponsor: Sponsor) => {
-    add(newSponsor)
-    edit(newSponsor)
-  }
-
-  const togglePageSettings = () => setPageSettingsVisible(!pageSettingsVisible)
-
-  const loader = (
-    <Layout>
-      <Page>
-        <div>loading...</div>
-      </Page>
-    </Layout>
-  )
-
-  if (loading) {
-    return loader
-  }
-
-  return (
-    <OrganizationActionsProvider loader={loader}>
-      <>
-        <PageSettingsDialog
-          visible={pageSettingsVisible}
-          onClose={togglePageSettings}
-        />
-        <Layout>
-          <Page>
-            <Box display="flex" justifyContent="flex-end" mb={2}>
-              <Button
-                variant="outlined"
-                color="primary"
-                onClick={togglePageSettings}
-                aria-label="configure sponsor page"
-              >
-                Page Settings
-              </Button>
-            </Box>
-            <StyledAddSponsorButton onAdd={handleAddedSponsor} />
-            <SponsorPage />
-          </Page>
-        </Layout>
-      </>
-    </OrganizationActionsProvider>
-  )
-}
-
-function SponsorPage() {
-  const template = useTemplate()
-
-  const user = useTeamMember()
-  const {sponsors} = useSponsors()
-
-  switch (template.name) {
+  const {name} = useTemplate()
+  switch (name) {
     case SIMPLE_BLOG:
-      return (
-        <SimpleBlogSponsorPage user={user} isEditMode sponsors={sponsors} />
-      )
+      return <SimpleBlogSponsorConfig />
+    case PANELS:
+      return <PanelsSponsorConfig />
     default:
-      throw new Error(`Missing sponsor page for template: ${template.name}`)
+      break
   }
+  throw new Error(
+    `Speaker Page config has not been defined for template: ${name}`,
+  )
 }
-
-const StyledAddSponsorButton = styled(AddSponsorButton)`
-  margin-bottom: ${(props) => props.theme.spacing[8]}!important;
-`

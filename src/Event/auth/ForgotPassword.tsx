@@ -1,12 +1,11 @@
 import React from 'react'
-import {useTemplate} from 'Event/TemplateProvider'
 import SimpleBlogForgotPassword from 'Event/template/SimpleBlog/Login/ForgotPassword'
 import {SIMPLE_BLOG} from 'Event/template/SimpleBlog'
-
 import {useEvent} from 'Event/EventProvider'
 import {eventRoutes} from 'Event/Routes'
 import {useForgotPassword} from 'auth/password'
 import {api} from 'lib/url'
+import {useTemplate} from 'Event/TemplateProvider'
 
 export default function ForgotPassword() {
   const template = useTemplate()

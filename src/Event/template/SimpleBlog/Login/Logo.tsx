@@ -1,14 +1,15 @@
 import React from 'react'
 import defaultLogo from 'assets/images/logo_vertical.png'
 import {useEvent} from 'Event/EventProvider'
-import {useTemplate} from 'Event/TemplateProvider'
 import styled from 'styled-components'
 import {DEFAULT_LOGO_SIZE_PERCENT} from 'Event/template/SimpleBlog/Login/LoginConfig'
+import {useSimpleBlog} from 'Event/template/SimpleBlog'
 
 export default function Logo(props: {isHidden?: boolean}) {
   const {event} = useEvent()
   const logo = event.login_logo ? event.login_logo.url : defaultLogo
-  const {login} = useTemplate()
+  const {template} = useSimpleBlog()
+  const {login} = template
 
   const size = login.logoSize || DEFAULT_LOGO_SIZE_PERCENT
 

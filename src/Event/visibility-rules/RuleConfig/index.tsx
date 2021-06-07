@@ -36,9 +36,12 @@ export function useRuleConfig() {
 
   const toggle = () => setVisible(!visible)
 
+  const close = () => setVisible(false)
+
   return {
     visible,
     toggle,
+    close,
   }
 }
 

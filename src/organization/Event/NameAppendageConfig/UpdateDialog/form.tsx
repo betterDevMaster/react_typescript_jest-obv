@@ -1,5 +1,4 @@
 import React, {useEffect, useRef, useState} from 'react'
-import {NameAppendage, useNameAppendages} from '../NameAppendageProvider'
 import TextField from '@material-ui/core/TextField'
 import {useForm} from 'react-hook-form'
 import styled from 'styled-components'
@@ -12,6 +11,10 @@ import ConfigureRulesButton from 'Event/visibility-rules/ConfigureRulesButton'
 import {GenerateTextForVisibilityRules} from 'organization/Event/NameAppendageConfig/Helpers/GenerateTextForVisibilityRules'
 import {LabelPreview} from 'organization/Event/NameAppendageConfig/Helpers/LabelPreview'
 import EmojiesSelector from 'organization/Event/NameAppendageConfig/EmojiSelector'
+import {
+  NameAppendage,
+  useNameAppendages,
+} from 'organization/Event/NameAppendageConfig/NameAppendageProvider'
 export default function NameAppendageUpdateForm(props: {
   onClose: () => void
   nameAppendage: NameAppendage | null

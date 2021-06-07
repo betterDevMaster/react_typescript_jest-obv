@@ -3,11 +3,11 @@ import styled from 'styled-components'
 import Grid, {GridSize} from '@material-ui/core/Grid'
 import {Sponsor} from 'Event/SponsorPage'
 import NavButton from 'Event/Dashboard/components/NavButton'
-import {useTemplate} from 'Event/TemplateProvider'
 import Image from 'Event/template/SimpleBlog/SponsorPage/SponsorList/Card/Image'
 import Body from 'Event/template/SimpleBlog/SponsorPage/SponsorList/Card/Body'
 import {Draggable} from 'react-beautiful-dnd'
 import SponsorForm from 'Event/template/SimpleBlog/SponsorPage/SponsorList/Card/SponsorForm'
+import {useSimpleBlog} from 'Event/template/SimpleBlog'
 
 export const DEFAULT_SPONSOR_IMAGE_SIZE = 4
 export const DEFAULT_DESCRIPTION = ''
@@ -47,7 +47,7 @@ export default function Card(props: SponsorProps) {
 
 function Content(props: SponsorProps) {
   const {sponsor} = props
-  const template = useTemplate()
+  const {template} = useSimpleBlog()
   const [formVisible, setFormVisible] = useState(false)
   const toggleForm = () => setFormVisible(!formVisible)
 

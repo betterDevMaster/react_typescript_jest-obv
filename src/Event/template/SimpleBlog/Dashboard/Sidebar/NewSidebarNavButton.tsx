@@ -1,14 +1,16 @@
 import Button from '@material-ui/core/Button'
 import NavButton from 'Event/Dashboard/components/NavButton'
-import {useTemplate, useUpdateTemplate} from 'Event/TemplateProvider'
+import {useDispatchUpdate} from 'Event/TemplateProvider'
 import {useEditMode} from 'Event/Dashboard/editor/state/edit-mode'
 import React from 'react'
 import {v4 as uid} from 'uuid'
+import {useSimpleBlog} from 'Event/template/SimpleBlog'
 
 export default function NewSidebarNavButton(props: {className?: string}) {
   const isEditMode = useEditMode()
-  const {sidebarNav: buttons} = useTemplate()
-  const updateTemplate = useUpdateTemplate()
+  const {template} = useSimpleBlog()
+  const {sidebarNav: buttons} = template
+  const updateTemplate = useDispatchUpdate()
 
   if (!isEditMode) {
     return null

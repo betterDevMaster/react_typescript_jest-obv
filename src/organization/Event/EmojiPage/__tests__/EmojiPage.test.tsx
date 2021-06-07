@@ -4,9 +4,9 @@ import {fakeEvent} from 'Event/__utils__/factory'
 import React from 'react'
 import {render} from '__utils__/render'
 import {wait} from '@testing-library/react'
-import {EMOJI} from 'Event/Dashboard/components/EmojiList/emoji'
 import EmojiPage from 'organization/Event/EmojiPage'
 import {fakeOrganization} from 'obvio/Organizations/__utils__/factory'
+import {EMOJI} from 'Event/Dashboard/components/emoji'
 
 const mockGet = axios.get as jest.Mock
 

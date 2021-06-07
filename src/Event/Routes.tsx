@@ -39,6 +39,7 @@ export const eventRoutes = createRoutes({
   step3: '/step_3',
   speakers: '/speakers',
   sponsors: '/sponsors',
+  resources: '/resources',
   faq: '/faq',
   leaderboard: '/leaderboard',
   checkIn: '/check_in',

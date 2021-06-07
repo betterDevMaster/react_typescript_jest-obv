@@ -1,7 +1,7 @@
 import MainNavButton from 'Event/template/SimpleBlog/Dashboard/MainNav/MainNavButton'
 import styled from 'styled-components'
 import React from 'react'
-import {useTemplate, useUpdateTemplate} from 'Event/TemplateProvider'
+import {useDispatchUpdate} from 'Event/TemplateProvider'
 import {
   DragDropContext,
   Droppable,
@@ -11,9 +11,11 @@ import {
 import Grid from '@material-ui/core/Grid'
 import {useEditMode} from 'Event/Dashboard/editor/state/edit-mode'
 import NewMainNavButton from 'Event/template/SimpleBlog/Dashboard/MainNav/MainNavButton/NewMainNavButton'
+import {useSimpleBlog} from 'Event/template/SimpleBlog'
 
 export default function MainNav(props: {className?: string}) {
-  const {mainNav} = useTemplate()
+  const {template} = useSimpleBlog()
+  const {mainNav} = template
   const isEditMode = useEditMode()
   const handleDrag = useHandleDrag()
 
@@ -63,8 +65,9 @@ const Container = React.forwardRef<
 ))
 
 function useHandleDrag() {
-  const {mainNav: buttons} = useTemplate()
-  const updateTemplate = useUpdateTemplate()
+  const {template} = useSimpleBlog()
+  const {mainNav: buttons} = template
+  const updateTemplate = useDispatchUpdate()
 
   return (result: DropResult) => {
     const {destination, source} = result

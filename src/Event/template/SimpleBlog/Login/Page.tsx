@@ -6,18 +6,19 @@ import Typography from '@material-ui/core/Typography'
 import MuiTextField, {TextFieldProps} from '@material-ui/core/TextField'
 import MuiButton, {ButtonProps} from '@material-ui/core/Button'
 import defaultBackground from 'assets/images/background_login.png'
-import {useTemplate} from 'Event/TemplateProvider'
 import {makeStyles} from '@material-ui/core/styles'
 import {spacing} from 'lib/ui/theme'
 import Logo from 'Event/template/SimpleBlog/Login/Logo'
 import {rgb} from 'lib/color'
+import {useSimpleBlog} from 'Event/template/SimpleBlog'
 
 export default function Page(props: {
   isPreview: LoginProps['isPreview']
   children: React.ReactElement | React.ReactElement[]
 }) {
   const {event} = useEvent()
-  const {login} = useTemplate()
+  const {template} = useSimpleBlog()
+  const {login} = template
 
   const background = event.login_background
     ? event.login_background.url
@@ -45,7 +46,7 @@ export default function Page(props: {
 }
 
 export function Title(props: {children: string; 'aria-label'?: string}) {
-  const template = useTemplate()
+  const {template} = useSimpleBlog()
   const color = template.login.description.color
 
   if (!props.children) {
@@ -64,7 +65,7 @@ export function Title(props: {children: string; 'aria-label'?: string}) {
 }
 
 export function Description(props: {children: string; 'aria-label'?: string}) {
-  const template = useTemplate()
+  const {template} = useSimpleBlog()
   const color = template.login.description.color
   const fontSize = template.login.description.fontSize
 
@@ -92,7 +93,8 @@ export function ErrorMessage(props: {children?: string}) {
 }
 
 export function Button(props: ButtonProps) {
-  const {login} = useTemplate()
+  const {template} = useSimpleBlog()
+  const {login} = template
   const borderRadius = `${login.submitButton.borderRadius}px` || spacing[14]
   const hoverColor =
     login.submitButton.hoverColor || login.submitButton.backgroundColor
@@ -149,7 +151,8 @@ export const ColorOverlay = styled.div<{
 `
 
 export function TextField(props: TextFieldProps) {
-  const {login} = useTemplate()
+  const {template} = useSimpleBlog()
+  const {login} = template
 
   const useStyles = makeStyles({
     root: {

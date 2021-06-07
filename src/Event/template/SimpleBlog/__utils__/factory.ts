@@ -1,11 +1,11 @@
 import faker from 'faker'
 import {pipe} from 'ramda'
-import {withAgendas} from 'Event/Dashboard/components/AgendaList/__utils__/factory'
-import {withPoints} from 'Event/Dashboard/components/PointsSummary/__utils__/factory'
-import {withResources} from 'Event/Dashboard/components/ResourceList/__utils__/factory'
+import {withAgendas} from 'Event/template/SimpleBlog/Dashboard/AgendaList/__utils__/factory'
+import {withPoints} from 'Event/template/SimpleBlog/Dashboard/PointsSummary/__utils__/factory'
+import {withResources} from 'Event/template/SimpleBlog/Dashboard/ResourceList/__utils__/factory'
 import {sometimes} from '__utils__/attributes'
-import {withTicketRibbons} from 'Event/Dashboard/components/TicketRibbonList/__utils__/factory'
-import {withEmojiList} from 'Event/Dashboard/components/EmojiList/__utils__/factory'
+import {withTicketRibbons} from 'Event/template/SimpleBlog/Dashboard/TicketRibbonList/__utils__/factory'
+import {withEmojiList} from 'Event/template/SimpleBlog/Dashboard/EmojiList/__utils__/factory'
 import {withBlogPosts} from 'Event/Dashboard/components/BlogPost/__utils__/factory'
 import {
   fakeNavButton,

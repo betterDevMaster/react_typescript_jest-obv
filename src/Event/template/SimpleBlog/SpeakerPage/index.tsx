@@ -2,20 +2,19 @@ import React from 'react'
 import {User} from 'auth/user'
 import Page from 'Event/template/SimpleBlog/Page'
 import styled from 'styled-components'
-import {useEvent} from 'Event/EventProvider'
 import {Link} from 'react-router-dom'
 import {
   DEFAULT_TITLE,
   DEFAULT_DESCRIPTION,
   DEFAULT_BACK_TO_DASHBOARD_TEXT,
   DEFAULT_BACK_TO_DASHBOARD_TEXT_COLOR,
-} from 'organization/Event/SpeakerPageConfig/SpeakerPageEditDialog/Form'
+} from 'Event/template/SimpleBlog/SpeakerPage/SpeakerPageConfig/SpeakerPageEditDialog/Form'
 import {Speaker} from 'Event/SpeakerPage'
 import SpeakerList from 'Event/template/SimpleBlog/SpeakerPage/SpeakerList'
 import SpeakerEditDialog from 'Event/template/SimpleBlog/SpeakerPage/SpeakerEditDialog'
-
 import {PageTitle} from 'Event/template/SimpleBlog/Page'
 import {useVariables} from 'Event'
+import {useSimpleBlog} from 'Event/template/SimpleBlog'
 import Content from 'lib/ui/form/TextEditor/Content'
 
 export default function SimpleBlogSpeakerPage(props: {
@@ -23,8 +22,9 @@ export default function SimpleBlogSpeakerPage(props: {
   isEditMode?: boolean
   speakers: Speaker[]
 }) {
-  const {event} = useEvent()
-  const speakerPageSettings = event.template?.speakers
+  const {
+    template: {speakers: speakerPageSettings},
+  } = useSimpleBlog()
   const v = useVariables()
 
   const content = (

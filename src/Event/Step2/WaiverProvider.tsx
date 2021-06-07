@@ -25,8 +25,9 @@ interface WaiverContextProps {
 export const DEFAULT_AGREE_STATEMENT = `I hereby certify that I have read the forgoing and fully understand the meaning effect thereof, and intending to be legally bound, have signed it.`
 export const DEFAULT_SIGNATURE_PROMPT = `Please Sign Below with your finger or mouse.`
 
-const WaiverContext =
-  React.createContext<WaiverContextProps | undefined>(undefined)
+const WaiverContext = React.createContext<WaiverContextProps | undefined>(
+  undefined,
+)
 
 export default function WaiverProvider(props: {
   children: React.ReactElement

@@ -1,14 +1,14 @@
 import React from 'react'
 import styled from 'styled-components'
 import Grid, {GridSize} from '@material-ui/core/Grid'
-import {useTemplate} from 'Event/TemplateProvider'
 import Image from 'Event/template/SimpleBlog/SpeakerPage/SpeakerList/Card/Image'
 import Body from 'Event/template/SimpleBlog/SpeakerPage/SpeakerList/Card/Body'
 import {Speaker} from 'Event/SpeakerPage'
 import {useSpeakers} from 'organization/Event/SpeakersProvider'
-import Clickable from 'lib/ui/Editable'
-import {DEFAULT_SPEAKER_IMAGE_SIZE} from 'organization/Event/SpeakerPageConfig/SpeakerPageEditDialog/Form'
+import Clickable from 'lib/ui/Clickable'
+import {DEFAULT_SPEAKER_IMAGE_SIZE} from 'Event/template/SimpleBlog/SpeakerPage/SpeakerPageConfig/SpeakerPageEditDialog/Form'
 import {Draggable} from 'react-beautiful-dnd'
+import {useSimpleBlog} from 'Event/template/SimpleBlog'
 
 type SpeakerProps = {
   index: number
@@ -49,8 +49,7 @@ function Editable(props: SpeakerProps) {
 
 function Content(props: SpeakerProps) {
   const {speaker} = props
-
-  const template = useTemplate()
+  const {template} = useSimpleBlog()
 
   const imageSize =
     template.speakers?.speakerImageSize || DEFAULT_SPEAKER_IMAGE_SIZE

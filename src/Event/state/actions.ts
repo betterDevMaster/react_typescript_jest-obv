@@ -1,6 +1,7 @@
 import {ObvioEvent} from 'Event'
 import {EventState} from 'Event/state'
 import {Template} from 'Event/template'
+import {createPanels, PANELS} from 'Event/template/Panels'
 import {createSimpleBlog, SIMPLE_BLOG} from 'Event/template/SimpleBlog'
 
 export const SET_EVENT_ACTION = 'SET_EVENT'
@@ -48,6 +49,8 @@ function newTemplate(name: Template['name']) {
   switch (name) {
     case SIMPLE_BLOG:
       return createSimpleBlog()
+    case PANELS:
+      return createPanels()
   }
 }
 
@@ -74,13 +77,18 @@ export const handleUpdateTemplate = (
     throw new Error('Template missing; create one before updating')
   }
 
+  /**
+   * Need to explicitly cast to EventState here as TS will complain that
+   * it can't determine the specific template type. We'll assume this
+   * is safe as the user will only ever edit the current template.
+   */
   return {
     ...state,
     template: {
       ...state.template,
       ...action.payload,
     },
-  }
+  } as EventState
 }
 export interface ClickedEmoji {
   id: number | null

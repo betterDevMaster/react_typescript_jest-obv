@@ -9,8 +9,7 @@ import Button from '@material-ui/core/Button'
 import ColorPicker from 'lib/ui/ColorPicker'
 import TextEditor, {TextEditorContainer} from 'lib/ui/form/TextEditor'
 import {useEvent} from 'Event/EventProvider'
-import {useTemplate} from 'Event/TemplateProvider'
-import {createSimpleBlog} from 'Event/template/SimpleBlog'
+import {createSimpleBlog, useSimpleBlog} from 'Event/template/SimpleBlog'
 import {useBackgrounds} from 'organization/Event/Backgrounds/BackgroundsProvider'
 import {useVariables} from 'Event'
 
@@ -28,7 +27,7 @@ export default function PageSettingsDialog(props: {
   const {visible, onClose} = props
 
   const v = useVariables()
-  const template = useTemplate()
+  const {template} = useSimpleBlog()
   const {zoomBackgrounds: templateSettings} = template
   const {zoomBackgrounds: templateDefaults} = createSimpleBlog()
   const zoomBackgrounds =

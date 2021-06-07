@@ -18,7 +18,7 @@ import Box from '@material-ui/core/Box'
 import {useCloseConfig} from 'Event/Dashboard/editor/state/edit-mode'
 import RuleConfig, {useRuleConfig} from 'Event/visibility-rules/RuleConfig'
 import ConfigureRulesButton from 'Event/visibility-rules/ConfigureRulesButton'
-import {useTemplate, useUpdateTemplate} from 'Event/TemplateProvider'
+import {useDispatchUpdate} from 'Event/TemplateProvider'
 import {MAIN_NAV_BUTTON} from 'Event/template/SimpleBlog/Dashboard/MainNav/MainNavButton'
 import ActionSelect from 'Event/ActionsProvider/ActionSelect'
 import Switch from 'lib/ui/form/Switch'
@@ -27,6 +27,7 @@ import Checkbox from '@material-ui/core/Checkbox'
 import FormControlLabel from '@material-ui/core/FormControlLabel'
 import TargetConfig from 'Event/Dashboard/components/NavButton/NavButtonConfig/TargetConfig'
 import IconSelect from 'lib/fontawesome/IconSelect'
+import {useSimpleBlog} from 'Event/template/SimpleBlog'
 
 export type MainNavButtonConfig = {
   type: typeof MAIN_NAV_BUTTON
@@ -36,14 +37,16 @@ export type MainNavButtonConfig = {
 export type ButtonConfigProps<K extends NavButton> = {
   button: K
   update: <T extends keyof K>(key: T) => (value: K[T]) => void
+  disablePageSelect?: boolean
 }
 
 export function MainNavButtonConfig(props: {id: MainNavButtonConfig['id']}) {
-  const {mainNav: buttons} = useTemplate()
+  const {template} = useSimpleBlog()
+  const {mainNav: buttons} = template
 
   const {visible: ruleConfigVisible, toggle: toggleRuleConfig} = useRuleConfig()
 
-  const updateTemplate = useUpdateTemplate()
+  const updateTemplate = useDispatchUpdate()
   const closeConfig = useCloseConfig()
   const {id} = props
 

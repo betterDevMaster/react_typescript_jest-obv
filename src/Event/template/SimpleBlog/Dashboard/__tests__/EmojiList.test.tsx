@@ -4,7 +4,6 @@ import {fakeSimpleBlog} from 'Event/template/SimpleBlog/__utils__/factory'
 import {fakeUser} from 'auth/user/__utils__/factory'
 import Dashboard from 'Event/Dashboard'
 import {emptyActions, inputElementFor, render} from '__utils__/render'
-import {DEFAULT_EMOJIS, EMOJI} from 'Event/Dashboard/components/EmojiList/emoji'
 import {fireEvent} from '@testing-library/dom'
 import {clickEdit} from '__utils__/edit'
 import {fakeEvent} from 'Event/__utils__/factory'
@@ -12,6 +11,7 @@ import {mockRxJsAjax} from 'store/__utils__/MockStoreProvider'
 import {wait} from '@testing-library/react'
 import {fakeOrganization} from 'obvio/Organizations/__utils__/factory'
 import {defaultScore} from 'Event/PointsProvider'
+import {DEFAULT_EMOJIS, EMOJI} from 'Event/Dashboard/components/emoji'
 
 const mockPost = mockRxJsAjax.post as jest.Mock
 

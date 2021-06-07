@@ -6,10 +6,10 @@ import {emptyActions, inputElementFor, render} from '__utils__/render'
 import {
   BLACK_RIBBON,
   RIBBONS,
-} from 'Event/Dashboard/components/TicketRibbonList/TicketRibbon'
+} from 'Event/template/SimpleBlog/Dashboard/TicketRibbonList/TicketRibbon'
 import {fireEvent} from '@testing-library/dom'
 import {fakeEvent} from 'Event/__utils__/factory'
-import {fakeTicketRibbon} from 'Event/Dashboard/components/TicketRibbonList/__utils__/factory'
+import {fakeTicketRibbon} from 'Event/template/SimpleBlog/Dashboard/TicketRibbonList/__utils__/factory'
 import {fakeAttendee} from 'Event/auth/__utils__/factory'
 import user from '@testing-library/user-event'
 import {mockRxJsAjax} from 'store/__utils__/MockStoreProvider'

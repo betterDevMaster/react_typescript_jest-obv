@@ -1,10 +1,9 @@
 import Container from '@material-ui/core/Container'
 import {User} from 'auth/user'
-import {useTemplate} from 'Event/TemplateProvider'
 import {useEvent} from 'Event/EventProvider'
 import {useWaiver} from 'Event/Step2/WaiverProvider'
 import SimpleBlogPage from 'Event/template/SimpleBlog/Page'
-import Waiver from 'Event/template/SimpleBlog/Waiver'
+import Waiver from 'Event/template/SimpleBlog/Step2/Waiver'
 import ProgressBar from 'lib/ui/ProgressBar'
 import React, {useState} from 'react'
 import {useForm} from 'react-hook-form'
@@ -16,9 +15,11 @@ import styled from 'styled-components'
 import MuiButton, {ButtonProps} from '@material-ui/core/Button'
 import {colors} from 'lib/ui/theme'
 import {useVariables} from 'Event'
+import {useSimpleBlog} from 'Event/template/SimpleBlog'
 
 export default function Step2(props: {user: User}) {
-  const {progressBar} = useTemplate()
+  const {template} = useSimpleBlog()
+  const {progressBar} = template
   const {hasTechCheck} = useEvent()
   const progress = hasTechCheck ? 50 : 67
 
@@ -157,7 +158,8 @@ function WaiverOnly() {
 }
 
 function SubmitButton(props: {canSubmit: boolean}) {
-  const {waiver} = useTemplate()
+  const {template} = useSimpleBlog()
+  const waiver = template.waiver
   const v = useVariables()
 
   const textColor = waiver?.buttonTextColor || '#FFFFFF'
@@ -203,7 +205,7 @@ const StyledButton = styled(
   background-color: ${(props) => props.backgroundColor} !important;
   border-radius: ${(props) => props.borderRadius}px !important;
 
-  &: disabled {
+  &:disabled {
     opacity: 0.6;
   }
 `

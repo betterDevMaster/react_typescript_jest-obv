@@ -9,7 +9,6 @@ import {FileLocation} from 'lib/http-client'
 import React, {useCallback} from 'react'
 import {Redirect} from 'react-router-dom'
 import {Form} from 'organization/Event/FormsProvider'
-import {Speaker} from './SpeakerPage'
 import {
   Localization,
   useWithTranslations,
@@ -18,7 +17,8 @@ import {useWithAttendeeData, useWithPoints} from 'Event/auth/attendee-data'
 import {pipe} from 'ramda'
 import {Background} from 'organization/Event/Backgrounds/BackgroundsProvider'
 import {useRemoveVariables} from 'lib/template'
-import {CustomTicketRibbon} from 'Event/Dashboard/components/TicketRibbonList/TicketRibbon'
+import {CustomTicketRibbon} from 'Event/template/SimpleBlog/Dashboard/TicketRibbonList/TicketRibbon'
+import {Speaker} from 'Event/SpeakerPage'
 
 // Can't use 'Event' because that's already a native DOM type
 // for browser events and we'd lose TS safety/import assist.

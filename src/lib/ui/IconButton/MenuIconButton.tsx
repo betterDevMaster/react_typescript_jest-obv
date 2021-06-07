@@ -1,22 +1,23 @@
 import React from 'react'
 import styled, {css} from 'styled-components'
 import IconButton from 'lib/ui/IconButton'
-import {useTemplate} from 'Event/TemplateProvider'
 import {DEFAULT_MENU_ICON_COLOR} from 'Event/template/SimpleBlog/Menu'
 
 export function MenuIconButton(props: {
   'aria-label'?: string
   active: boolean
   onClick?: () => void
+  iconColor?: string
+  className?: string
 }) {
-  const {menu} = useTemplate()
-  const color = menu?.iconColor || DEFAULT_MENU_ICON_COLOR
+  const color = props.iconColor || DEFAULT_MENU_ICON_COLOR
 
   return (
     <StyledIconButton
       onClick={props.onClick}
       aria-label={props['aria-label']}
       dataTestId="menu-button"
+      className={props.className}
     >
       <Bar color={color} active={props.active} />
     </StyledIconButton>

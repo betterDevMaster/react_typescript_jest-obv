@@ -1,11 +1,12 @@
 import {useEvent} from 'Event/EventProvider'
-import {useTemplate} from 'Event/TemplateProvider'
+import {useSimpleBlog} from 'Event/template/SimpleBlog'
 import React from 'react'
 import styled from 'styled-components'
 
 export default function BackgroundImage() {
   const {event} = useEvent()
-  const {sidebar} = useTemplate()
+  const {template} = useSimpleBlog()
+  const {sidebar} = template
 
   if (!event.sidebar_background) {
     return null

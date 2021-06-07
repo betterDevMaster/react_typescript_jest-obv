@@ -23,3 +23,23 @@ export default function BackgroundsConfig() {
     </Layout>
   )
 }
+
+export function HasBackgroundConfig(props: {children: React.ReactElement}) {
+  /**
+   * Can't use useTemplate() because at this point the event might not
+   * have selected one yet.
+   */
+  const {
+    event: {template},
+  } = useEvent()
+
+  if (!template) {
+    return null
+  }
+
+  if (template.disableBackgroundConfig) {
+    return null
+  }
+
+  return props.children
+}

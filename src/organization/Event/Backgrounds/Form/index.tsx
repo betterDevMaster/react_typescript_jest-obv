@@ -14,12 +14,11 @@ import {
   ImagePreviewContainer,
   useBackgrounds,
 } from 'organization/Event/Backgrounds/BackgroundsProvider'
-import {createSimpleBlog} from 'Event/template/SimpleBlog'
+import {createSimpleBlog, useSimpleBlog} from 'Event/template/SimpleBlog'
 import {handleChangeSlider} from 'lib/dom'
 import {spacing} from 'lib/ui/theme'
 import {useEvent} from 'Event/EventProvider'
 import {useForm} from 'react-hook-form'
-import {useTemplate} from 'Event/TemplateProvider'
 import PageSettingsDialog from 'organization/Event/Backgrounds/Form/PageSettingsDialog'
 import {useVariables} from 'Event'
 
@@ -36,7 +35,7 @@ export default function Form() {
   const togglePageSettings = () => setPageSettingsVisible(!pageSettingsVisible)
 
   const mounted = useRef(true)
-  const template = useTemplate()
+  const {template} = useSimpleBlog()
   const {event} = useEvent()
   const {handleSubmit, setValue} = useForm()
   const {

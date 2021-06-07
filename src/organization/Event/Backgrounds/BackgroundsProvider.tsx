@@ -6,8 +6,7 @@ import {setEvent} from 'Event/state/actions'
 import {teamMemberClient as client} from 'obvio/obvio-client'
 import {useDispatch} from 'react-redux'
 import {useEvent, useUpdate} from 'Event/EventProvider'
-import {createSimpleBlog} from 'Event/template/SimpleBlog'
-import {useTemplate} from 'Event/TemplateProvider'
+import {createSimpleBlog, useSimpleBlog} from 'Event/template/SimpleBlog'
 import {HasRules} from 'Event/visibility-rules'
 
 export type Background = {
@@ -65,8 +64,9 @@ export interface BackgroundsContextProps {
   ) => Promise<any>
 }
 
-const BackgroundsContext =
-  React.createContext<BackgroundsContextProps | undefined>(undefined)
+const BackgroundsContext = React.createContext<
+  BackgroundsContextProps | undefined
+>(undefined)
 
 export default function BackgroundsProvider(props: {
   children: React.ReactElement
@@ -85,7 +85,7 @@ export default function BackgroundsProvider(props: {
   const [error, setError] = useState<string>('')
   const [requestError, setRequestError] = useState<string>('')
   const updateEvent = useUpdate()
-  const template = useTemplate()
+  const {template} = useSimpleBlog()
 
   useEffect(() => {
     if (!event.template || !event.backgrounds) {
@@ -96,13 +96,18 @@ export default function BackgroundsProvider(props: {
     // apply the defaults from the BackgroundsProvider. This prevents issues when
     // an event is self-migrating from no backgrounds, to having backgrounds (any
     // event that was created before "Zoom Backgrounds" were a thing).
-    if (typeof event.template.zoomBackgrounds !== 'undefined') {
-      setBackgroundsTemplateData(event.template.zoomBackgrounds)
+    if (typeof template.zoomBackgrounds !== 'undefined') {
+      setBackgroundsTemplateData(template.zoomBackgrounds)
     }
 
     setBackgrounds(event.backgrounds)
     setLoading(false)
-  }, [backgroundsTemplateData, backgroundsTemplateDataDefaults, event])
+  }, [
+    backgroundsTemplateData,
+    backgroundsTemplateDataDefaults,
+    template,
+    event,
+  ])
 
   const clearError = () => setError('')
   const clearRequestError = () => setRequestError('')

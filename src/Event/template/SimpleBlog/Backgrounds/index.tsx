@@ -7,7 +7,6 @@ import {Attendee} from 'Event/attendee'
 import {eventRoutes} from 'Event/Routes'
 import {Redirect} from 'react-router-dom'
 import {useEvent} from 'Event/EventProvider'
-import {useTemplate} from 'Event/TemplateProvider'
 import {
   Background,
   ImagePreviewContainer,
@@ -15,6 +14,7 @@ import {
 import {useVariables} from 'Event'
 import HiddenOnMatch from 'Event/visibility-rules/HiddenOnMatch'
 import {downloadFile} from 'lib/http-client'
+import {useSimpleBlog} from 'Event/template/SimpleBlog'
 import Content from 'lib/ui/form/TextEditor/Content'
 
 const DEFAULT_BACK_TO_DASHBOARD_TEXT = 'Back to Dashboard'
@@ -23,7 +23,8 @@ const DEFAULT_BACK_TO_DASHBOARD_TEXT_COLOR = '#000000'
 export default function SimpleBlogBackgrounds(props: {user: Attendee}) {
   const v = useVariables()
   const {event} = useEvent()
-  const {zoomBackgrounds: settings} = useTemplate()
+  const {template} = useSimpleBlog()
+  const {zoomBackgrounds: settings} = template
   const {backgrounds, zoom_backgrounds_description, zoom_backgrounds_title} =
     event
 
@@ -92,7 +93,8 @@ const BackToDashboard = styled.div`
 `
 
 export function useSortedBackgrounds(backgrounds: Background[]) {
-  const {zoomBackgrounds: pageSettings} = useTemplate()
+  const {template} = useSimpleBlog()
+  const {zoomBackgrounds: pageSettings} = template
 
   const order = pageSettings?.orderedIds || []
 

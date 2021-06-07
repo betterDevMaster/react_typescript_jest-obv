@@ -8,10 +8,12 @@ import {useDispatch} from 'react-redux'
 import {useTemplate} from 'Event/TemplateProvider'
 import {useAttendee} from 'Event/auth'
 import {SIMPLE_BLOG} from 'Event/template/SimpleBlog'
-import SimpleBlogSetPasswordForm from 'Event/template/SimpleBlog/SetPasswordForm'
+import SimpleBlogSetPasswordForm from 'Event/template/SimpleBlog/Step1/SetPasswordForm'
+import PanelsSetPasswordForm from 'Event/template/Panels/Step1/SetPasswordForm'
 import {usePoints} from 'Event/PointsProvider'
 import {usePlatformActions} from 'Event/ActionsProvider/platform-actions'
 import {User} from 'auth/user'
+import {PANELS} from 'Event/template/Panels'
 
 interface SetPasswordData {
   password: string
@@ -68,10 +70,10 @@ export function TemplateSetPasswordForm(props: SetPasswordFormProps) {
   switch (template.name) {
     case SIMPLE_BLOG:
       return <SimpleBlogSetPasswordForm {...props} />
+    case PANELS:
+      return <PanelsSetPasswordForm {...props} />
     default:
-      throw new Error(
-        `Missing set password form for template: ${template.name}`,
-      )
+      throw new Error(`Missing set password form for template.`)
   }
 }
 

@@ -1,4 +1,3 @@
-import {useTemplate, useUpdateObject} from 'Event/TemplateProvider'
 import {SIDEBAR_CONTAINER} from 'Event/template/SimpleBlog/Dashboard/Sidebar/SidebarContainer'
 import ColorPicker from 'lib/ui/ColorPicker'
 import React from 'react'
@@ -9,6 +8,7 @@ import EventImageUpload from 'organization/Event/DashboardConfig/EventImageUploa
 import {useEvent} from 'Event/EventProvider'
 import Switch from 'lib/ui/form/Switch'
 import Box from '@material-ui/core/Box'
+import {useSimpleBlog} from 'Event/template/SimpleBlog'
 
 export type SidebarContainerConfig = {
   type: typeof SIDEBAR_CONTAINER
@@ -24,8 +24,11 @@ const MIN_SIDEBAR_BORDER_RADIUS = 0
 const MAX_SIDEBAR_BORDER_RADIUS = 25
 
 export function SidebarContainerConfig() {
-  const {sidebar} = useTemplate()
-  const updateSideBar = useUpdateObject('sidebar')
+  const {
+    template: {sidebar},
+    update,
+  } = useSimpleBlog()
+  const updateSideBar = update.object('sidebar')
   const {event} = useEvent()
 
   return (

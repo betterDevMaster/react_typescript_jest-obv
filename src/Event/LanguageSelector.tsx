@@ -8,14 +8,16 @@ import List from '@material-ui/core/List'
 import ListItem from '@material-ui/core/ListItem'
 import Dialog from '@material-ui/core/Dialog'
 import Button from '@material-ui/core/Button'
-import {useTemplate} from 'Event/TemplateProvider'
+import {useSimpleBlog} from 'Event/template/SimpleBlog'
 
 export default function LanguageSelector() {
   const {current, set} = useLanguage()
   const isEditMode = useEditMode()
   const {languages, translationsEnabled} = useLanguage()
   const [dialogVisible, setDialogVisible] = useState(false)
-  const {isDarkMode} = useTemplate()
+
+  const {template} = useSimpleBlog()
+  const {isDarkMode} = template
 
   const toggleDialog = () => setDialogVisible(!dialogVisible)
 

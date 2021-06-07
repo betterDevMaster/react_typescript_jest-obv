@@ -3,9 +3,8 @@ import Grid from '@material-ui/core/Grid'
 import TextField from '@material-ui/core/TextField'
 import ColorPicker from 'lib/ui/ColorPicker'
 import TextEditor, {TextEditorContainer} from 'lib/ui/form/TextEditor'
-import {useTemplate} from 'Event/TemplateProvider'
 import {Controller, useForm} from 'react-hook-form'
-import {SimpleBlog} from 'Event/template/SimpleBlog'
+import {SimpleBlog, useSimpleBlog} from 'Event/template/SimpleBlog'
 import Button from '@material-ui/core/Button'
 import {useUpdate} from 'Event/EventProvider'
 
@@ -18,7 +17,7 @@ export const DEFAULT_BACK_TO_DASHBOARD_TEXT_COLOR = '#000000'
 export type LeaderboardConfigData = NonNullable<SimpleBlog['leaderboard']>
 
 export default function LeaderboardConfig(props: {onComplete?: () => void}) {
-  const template = useTemplate()
+  const {template} = useSimpleBlog()
   const {leaderboard} = template
   const {register, control, handleSubmit} = useForm()
   const [processing, setProcessing] = useState(false)

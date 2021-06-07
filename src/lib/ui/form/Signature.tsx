@@ -9,6 +9,7 @@ import ClearIcon from '@material-ui/icons/Clear'
 export default function Signature(props: {
   value: null | string
   onUpdate: (data: string | null) => void
+  className?: string
 }) {
   const canvasBoxRef = useRef<HTMLDivElement | null>(null)
   const canvasRef = useRef<HTMLCanvasElement | null>(null)
@@ -65,7 +66,7 @@ export default function Signature(props: {
   )
 
   return (
-    <Box>
+    <Box className={props.className}>
       <CanvasBox ref={canvasBoxRef}>
         <Canvas ref={canvasRef} aria-label="signature canvas" width="300" />
       </CanvasBox>

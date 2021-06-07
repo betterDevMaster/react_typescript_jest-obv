@@ -9,6 +9,8 @@ import {api} from 'lib/url'
 import {Client} from 'lib/api-client'
 import {FileLocation} from 'lib/http-client'
 import {useTrackEventPage} from 'analytics'
+import {PANELS} from 'Event/template/Panels'
+import PanelsSpeakers from 'Event/template/Panels/Dashboard/Speakers'
 
 export interface Speaker {
   id: number
@@ -18,7 +20,7 @@ export interface Speaker {
 }
 
 export default function SpeakersPage() {
-  const template = useTemplate()
+  const {name} = useTemplate()
   const user = useAttendee()
   const {event} = useEvent()
 
@@ -28,11 +30,13 @@ export default function SpeakersPage() {
 
   const speakers = event.speakers
 
-  switch (template.name) {
+  switch (name) {
     case SIMPLE_BLOG:
       return <SimpleBlogSpeakers user={user} speakers={speakers} />
+    case PANELS:
+      return <PanelsSpeakers speakers={speakers} />
     default:
-      throw new Error(`Missing speaker page for template: ${template.name}`)
+      throw new Error(`Missing speaker page for template: ${name}`)
   }
 }
 

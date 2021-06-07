@@ -23,6 +23,7 @@ export default function LeaderboardConfig() {
 
 function TemplateLeaderboardPageConfig() {
   const template = useTemplate()
+
   switch (template.name) {
     case SIMPLE_BLOG:
       return <SimpleBlogLeaderboardConfig />

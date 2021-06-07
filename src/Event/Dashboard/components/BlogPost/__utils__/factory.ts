@@ -1,5 +1,4 @@
 import {BlogPost} from 'Event/Dashboard/components/BlogPost'
-
 import faker from 'faker'
 import {createEntityList, EntityList} from 'lib/list'
 

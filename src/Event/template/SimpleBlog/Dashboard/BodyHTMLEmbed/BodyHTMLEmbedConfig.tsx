@@ -1,19 +1,20 @@
 import React from 'react'
 import TextField from '@material-ui/core/TextField'
 import {onChangeStringHandler} from 'lib/dom'
-import {useTemplate, useUpdatePrimitive} from 'Event/TemplateProvider'
 import {BODY_HTML_EMBED} from 'Event/template/SimpleBlog/Dashboard/BodyHTMLEmbed'
 import Typography from '@material-ui/core/Typography'
 import Box from '@material-ui/core/Box'
 import styled from 'styled-components'
+import {useSimpleBlog} from 'Event/template/SimpleBlog'
 
 export type BodyHTMLEmbedConfig = {
   type: typeof BODY_HTML_EMBED
 }
 
 export function BodyHTMLEmbedConfig() {
-  const {bodyHTMLEmbed} = useTemplate()
-  const updateHTML = useUpdatePrimitive('bodyHTMLEmbed')
+  const {template, update} = useSimpleBlog()
+  const {bodyHTMLEmbed} = template
+  const updateHTML = update.primitive('bodyHTMLEmbed')
 
   return (
     <>

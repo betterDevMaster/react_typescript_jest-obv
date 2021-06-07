@@ -1,11 +1,11 @@
 import faker from 'faker'
 import {fakeEvent, fakeSpeaker} from 'Event/__utils__/factory'
-import {goToSpeakerConfig} from 'organization/Event/SpeakerPageConfig/__utils__/go-to-speaker-config'
 import axios from 'axios'
 import user from '@testing-library/user-event'
 import {fireEvent, wait} from '@testing-library/react'
 import {CONFIGURE_EVENTS} from 'organization/PermissionsProvider'
 import {Speaker} from 'Event/SpeakerPage'
+import {goToSpeakerConfig} from 'Event/template/SimpleBlog/SpeakerPage/SpeakerPageConfig/__utils__/go-to-speaker-config'
 
 const mockPost = axios.post as jest.Mock
 const mockDelete = axios.delete as jest.Mock

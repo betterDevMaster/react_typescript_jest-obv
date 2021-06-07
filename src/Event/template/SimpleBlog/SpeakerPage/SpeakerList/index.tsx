@@ -2,16 +2,17 @@ import {Speaker} from 'Event/SpeakerPage'
 import Card from 'Event/template/SimpleBlog/SpeakerPage/SpeakerList/Card'
 import Grid, {GridSpacing} from '@material-ui/core/Grid'
 import React from 'react'
-import {useTemplate, useUpdateObject} from 'Event/TemplateProvider'
-import {DEFAULT_SPEAKERS_SPACE} from 'organization/Event/SpeakerPageConfig/SpeakerPageEditDialog/Form'
+import {useTemplate} from 'Event/TemplateProvider'
+import {DEFAULT_SPEAKERS_SPACE} from 'Event/template/SimpleBlog/SpeakerPage/SpeakerPageConfig/SpeakerPageEditDialog/Form'
 import Typography from '@material-ui/core/Typography'
 import {DragDropContext, Droppable, DropResult} from 'react-beautiful-dnd'
+import {useSimpleBlog} from 'Event/template/SimpleBlog'
 
 export default function SpeakerList(props: {
   speakers: Speaker[]
   isEditMode?: boolean
 }) {
-  const template = useTemplate()
+  const {template} = useSimpleBlog()
   const handleDrag = useHandleDrag()
   const sortedSpeakers = useSortedSpeakers(props.speakers)
 
@@ -90,7 +91,8 @@ function useSortedSpeakers(speakers: Speaker[]) {
 }
 
 function useHandleDrag() {
-  const update = useUpdateObject('speakers')
+  const {update: updateTemplate} = useSimpleBlog()
+  const update = updateTemplate.object('speakers')
 
   return (speakers: Speaker[]) => (result: DropResult) => {
     const {destination, source} = result

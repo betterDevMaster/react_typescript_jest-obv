@@ -1,18 +1,12 @@
 import {Attendee} from 'Event/attendee'
 import styled from 'styled-components'
 import Page from 'Event/template/SimpleBlog/Page'
-import {Link} from 'react-router-dom'
-import React, {useCallback, useEffect, useState} from 'react'
+import React from 'react'
 import Table from '@material-ui/core/Table'
 import TableHead from '@material-ui/core/TableHead'
 import TableCell from '@material-ui/core/TableCell'
 import TableRow from '@material-ui/core/TableRow'
 import TableBody from '@material-ui/core/TableBody'
-import {useEvent} from 'Event/EventProvider'
-import {api} from 'lib/url'
-import {useAsync} from 'lib/async'
-import {useTemplate} from 'Event/TemplateProvider'
-import {Entry} from 'Event/Leaderboard'
 import {
   DEFAULT_TITLE,
   DEFAULT_DESCRIPTION,
@@ -21,41 +15,34 @@ import {
 } from 'Event/template/SimpleBlog/Leaderboard/LeaderboardConfig'
 import {useVariables} from 'Event'
 import {PageTitle} from 'Event/template/SimpleBlog/Page'
+import {useSimpleBlog} from 'Event/template/SimpleBlog'
 import Content from 'lib/ui/form/TextEditor/Content'
+import {eventRoutes} from 'Event/Routes'
+import {RelativeLink} from 'lib/ui/link/RelativeLink'
+import {useEntries} from 'Event/Leaderboard'
 
 export default function SimpleBlogLeaderboard(props: {user: Attendee}) {
-  const [entries, setEntries] = useState<Entry[]>([])
-  const {data: fetched} = useEntries()
-  const {leaderboard: leaderboardPage} = useTemplate()
+  const {entries} = useEntries()
+  const {template} = useSimpleBlog()
+  const {leaderboard: leaderboardPage} = template
 
   const v = useVariables()
 
   let description = v(leaderboardPage?.description || DEFAULT_DESCRIPTION)
 
-  useEffect(() => {
-    if (!fetched) {
-      return
-    }
-
-    setEntries(fetched)
-  }, [fetched])
-
   return (
     <Page user={props.user}>
       <PageTitle>{leaderboardPage?.title || DEFAULT_TITLE}</PageTitle>
       <Description>{description}</Description>
-      <Link
-        to="/"
-        style={{
-          color:
-            leaderboardPage?.backToDashboardTextColor ||
-            DEFAULT_BACK_TO_DASHBOARD_TEXT_COLOR,
-          lineHeight: 1.5,
-          marginBottom: 20,
-        }}
+      <StyledRelativeLink
+        to={eventRoutes.root}
+        color={
+          leaderboardPage?.backToDashboardTextColor ||
+          DEFAULT_BACK_TO_DASHBOARD_TEXT_COLOR
+        }
       >
         {leaderboardPage?.backToDashboardText || DEFAULT_BACK_TO_DASHBOARD_TEXT}
-      </Link>
+      </StyledRelativeLink>
       <Container>
         <Table>
           <TableHead>
@@ -86,15 +73,6 @@ export default function SimpleBlogLeaderboard(props: {user: Attendee}) {
   )
 }
 
-function useEntries() {
-  const {client, event} = useEvent()
-  const url = api(`/events/${event.slug}/leaderboard`)
-
-  const request = useCallback(() => client.get<Entry[]>(url), [client, url])
-
-  return useAsync(request)
-}
-
 const Description = styled(Content)`
   text-align: center;
 `
@@ -105,4 +83,14 @@ const Container = styled.div`
   flex-direction: row;
   align-items: center;
   justify-content: center;
+`
+
+const StyledRelativeLink = styled((props) => {
+  const {color, ...otherProps} = props
+
+  return <RelativeLink {...otherProps} />
+})`
+  line-height: 1.5;
+  margin-bottom: 20px;
+  color: ${(props) => props.color};
 `

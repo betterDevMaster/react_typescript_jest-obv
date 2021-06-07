@@ -16,8 +16,8 @@ import {
   DropResult,
 } from 'react-beautiful-dnd'
 import {useEvent} from 'Event/EventProvider'
-import {useTemplate} from 'Event/TemplateProvider'
 import BackgroundImageRow from 'organization/Event/Backgrounds/Form/BackgroundImageRow'
+import {useSimpleBlog} from 'Event/template/SimpleBlog'
 
 export default function BackgroundImageTable() {
   const {
@@ -99,7 +99,8 @@ export default function BackgroundImageTable() {
 function useHandleDrag() {
   const {setBackgroundData} = useBackgrounds()
   const {event} = useEvent()
-  const {zoomBackgrounds: settings} = useTemplate()
+  const {template} = useSimpleBlog()
+  const {zoomBackgrounds: settings} = template
   const {zoom_backgrounds_description, zoom_backgrounds_title} = event
 
   return (backgrounds: Background[]) => (result: DropResult) => {

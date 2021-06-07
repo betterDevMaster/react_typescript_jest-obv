@@ -6,6 +6,8 @@ export default function TabPanel(props: {
   index: number
   currentIndex: number
   render?: boolean
+  disablePadding?: boolean
+  className?: string
 }) {
   /**
    * By setting the render prop we can toggle whether
@@ -17,8 +19,15 @@ export default function TabPanel(props: {
     return null
   }
 
+  const topPadding = props.disablePadding ? 0 : 3
+
   return (
-    <Box py={3} role="tabpanel" hidden={!isVisible}>
+    <Box
+      py={topPadding}
+      role="tabpanel"
+      hidden={!isVisible}
+      className={props.className}
+    >
       {props.children}
     </Box>
   )

@@ -6,13 +6,16 @@ import Button from '@material-ui/core/Button'
 import {api} from 'lib/url'
 import {useEvent} from 'Event/EventProvider'
 import {useOrganization} from 'organization/OrganizationProvider'
-import {NameAppendage, useNameAppendages} from '../NameAppendageProvider'
 import {Rule} from 'Event/visibility-rules'
 import RuleConfig, {useRuleConfig} from 'Event/visibility-rules/RuleConfig'
 import ConfigureRulesButton from 'Event/visibility-rules/ConfigureRulesButton'
 import {GenerateTextForVisibilityRules} from 'organization/Event/NameAppendageConfig/Helpers/GenerateTextForVisibilityRules'
 import {LabelPreview} from 'organization/Event/NameAppendageConfig/Helpers/LabelPreview'
 import EmojiesSelector from 'organization/Event/NameAppendageConfig/EmojiSelector'
+import {
+  NameAppendage,
+  useNameAppendages,
+} from 'organization/Event/NameAppendageConfig/NameAppendageProvider'
 
 export default function NameAppendageAddForm(props: {onClose: () => void}) {
   const {register, handleSubmit} = useForm()

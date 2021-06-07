@@ -1,15 +1,12 @@
 import {
   DEFAULT_TITLE as DEFAULT_SPEAKER_PAGE_TITLE,
   DEFAULT_BACK_TO_DASHBOARD_TEXT as DEFAULT_SPEAKER_PAGE_BACK_TO_DASHBOARD_TEXT,
-} from 'organization/Event/SpeakerPageConfig/SpeakerPageEditDialog/Form/index'
-import {ResourceList} from 'Event/Dashboard/components/ResourceList'
-import {Points} from 'Event/Dashboard/components/PointsSummary'
-import {Agenda} from 'Event/Dashboard/components/AgendaList'
-import {BlogPost} from 'Event/Dashboard/components/BlogPost'
-import {EmojiList} from 'Event/Dashboard/components/EmojiList'
+} from 'Event/template/SimpleBlog/SpeakerPage/SpeakerPageConfig/SpeakerPageEditDialog/Form/index'
+import {ResourceList} from 'Event/template/SimpleBlog/Dashboard/ResourceList'
+import {Agenda} from 'Event/template/SimpleBlog/Dashboard/AgendaList'
+import {EmojiList} from 'Event/template/SimpleBlog/Dashboard/EmojiList'
 import {Sidebar} from 'Event/template/SimpleBlog/Dashboard/Sidebar/SidebarContainer'
-import {Header} from 'Event/template/SimpleBlog/Dashboard/Header'
-import {TicketRibbon} from 'Event/Dashboard/components/TicketRibbonList/TicketRibbon'
+import {TicketRibbon} from 'Event/template/SimpleBlog/Dashboard/TicketRibbonList/TicketRibbon'
 import NavButton, {
   NavButtonWithSize,
 } from 'Event/Dashboard/components/NavButton'
@@ -20,11 +17,24 @@ import {Column} from 'lib/ui/layout'
 import {DEFAULT_SPONSOR_IMAGE_SIZE} from 'Event/template/SimpleBlog/SponsorPage/SponsorList/Card'
 import {FontStyle} from 'lib/ui/typography/FontStyleInput'
 import {GridSize} from '@material-ui/core/Grid'
+import {useTemplate, useUpdate} from 'Event/TemplateProvider'
+import {BaseTemplate, Header} from 'Event/template'
+import {BlogPost} from 'Event/Dashboard/components/BlogPost'
 
 export const SIMPLE_BLOG = 'Simple Blog'
 
-export interface SimpleBlog {
-  version: number
+export function useSimpleBlog() {
+  const template = useTemplate()
+  const update = useUpdate<SimpleBlog>()
+
+  if (template.name !== SIMPLE_BLOG) {
+    throw new Error('useSimpleBlog called with wrong template')
+  }
+
+  return {template, update}
+}
+
+export type SimpleBlog = BaseTemplate & {
   name: typeof SIMPLE_BLOG
   isDarkMode?: boolean
   title: string
@@ -44,9 +54,8 @@ export interface SimpleBlog {
     footerFontStyles?: FontStyle[]
     items: Agenda[]
   }
-  points: Points | null
   resourceList: ResourceList
-  header: Header
+  header: SimpleBlogHeader
   dashboardBackground?: {
     color: string
     opacity: number
@@ -182,6 +191,14 @@ export interface SimpleBlog {
     backToDashboardTextColor: string
     orderedIds?: number[]
   }
+}
+
+export type SimpleBlogHeader = Header & {
+  backgroundColor: string
+  backgroundOpacity: number
+  height: number
+  isCollapsed?: boolean
+  disableShadow?: boolean
 }
 
 export const createSimpleBlog = (): SimpleBlog => ({

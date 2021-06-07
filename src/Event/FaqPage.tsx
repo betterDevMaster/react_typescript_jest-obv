@@ -1,6 +1,5 @@
 import React, {useCallback} from 'react'
 import {useAttendee} from 'Event/auth'
-import {useTemplate} from 'Event/TemplateProvider'
 import {SIMPLE_BLOG} from 'Event/template/SimpleBlog'
 import SimpleBlogFaqs from 'Event/template/SimpleBlog/FaqPage'
 import {useEvent} from 'Event/EventProvider'
@@ -9,6 +8,7 @@ import {api} from 'lib/url'
 import {Client} from 'lib/api-client'
 import {HasRules} from 'Event/visibility-rules'
 import {useTrackEventPage} from 'analytics'
+import {useTemplate} from 'Event/TemplateProvider'
 
 export type FAQ = {
   id: number

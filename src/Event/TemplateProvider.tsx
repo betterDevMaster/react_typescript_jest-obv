@@ -25,37 +25,38 @@ export function useTemplate() {
   return context
 }
 
-export function useUpdateTemplate() {
-  const dispatch = useDispatch()
+export function useUpdate<T extends Template>() {
+  const updatePrimitive = useUpdatePrimitive<T>()
+  const updateObject = useUpdateObject<T>()
+
+  return {
+    primitive: <K extends keyof T>(key: K) => updatePrimitive(key),
+    object: <K extends keyof T>(key: K) => updateObject(key),
+  }
+}
+
+function useUpdatePrimitive<T extends Template>() {
+  const updateTemplate = useDispatchUpdate()
 
   return useCallback(
-    (updates: Partial<Template>) => {
-      dispatch(updateTemplate(updates))
-    },
-    [dispatch],
+    <K extends keyof T>(key: K) =>
+      (value: T[K]) => {
+        updateTemplate({
+          [key]: value,
+        })
+      },
+    [updateTemplate],
   )
 }
 
-export function useUpdatePrimitive<T extends keyof Template>(key: T) {
-  const updateTemplate = useUpdateTemplate()
+function useUpdateObject<T extends Template>() {
+  const updateTemplate = useDispatchUpdate()
+  const template = useTemplate() as T
 
   return useCallback(
-    (value: Template[T]) => {
-      updateTemplate({
-        [key]: value,
-      })
-    },
-    [updateTemplate, key],
-  )
-}
-
-export function useUpdateObject<T extends keyof Template>(key: T) {
-  const updateTemplate = useUpdateTemplate()
-  const template = useTemplate()
-
-  return useCallback(
-    <K extends keyof NonNullable<Template[T]>>(childKey: K) =>
-      (value: NonNullable<Template[T]>[K]) => {
+    <K extends keyof T>(key: K) =>
+      <P extends keyof NonNullable<T[K]>>(childKey: P) =>
+      (value: NonNullable<T[K]>[P]) => {
         updateTemplate({
           [key]: {
             ...((template[key] || {}) as {}),
@@ -63,6 +64,17 @@ export function useUpdateObject<T extends keyof Template>(key: T) {
           },
         })
       },
-    [key, template, updateTemplate],
+    [template, updateTemplate],
+  )
+}
+
+export function useDispatchUpdate() {
+  const dispatch = useDispatch()
+
+  return useCallback(
+    (updates: Partial<Template>) => {
+      dispatch(updateTemplate(updates))
+    },
+    [dispatch],
   )
 }
