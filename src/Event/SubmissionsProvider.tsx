@@ -21,9 +21,8 @@ interface SubmissionsContextProps {
   responseError: ValidationError<any> | null
 }
 
-export const SubmissionsContext = React.createContext<
-  undefined | SubmissionsContextProps
->(undefined)
+export const SubmissionsContext =
+  React.createContext<undefined | SubmissionsContextProps>(undefined)
 
 export default function SubmissionsProvider(props: {
   children: React.ReactElement
