@@ -15,7 +15,6 @@ export default function StepIndicator(props: {
   horizontal?: boolean
 }) {
   const {template} = usePanels()
-  const color = useColor()
 
   return (
     <Box className={props.className}>
@@ -26,14 +25,14 @@ export default function StepIndicator(props: {
       <IconContainer horizontal={props.horizontal}>
         <StepIcon
           icon={template.step1Icon || DEFAULT_STEP_1_ICON}
-          isActive={props.step === 1}
+          isActive={props.step >= 1}
         />
-        <Divider horizontal={props.horizontal} color={color} />
+        <Divider horizontal={props.horizontal} isActive={props.step > 1} />
         <StepIcon
           icon={template.step2Icon || DEFAULT_STEP_2_ICON}
-          isActive={props.step === 2}
+          isActive={props.step >= 2}
         />
-        <Divider horizontal={props.horizontal} color={color} />
+        <Divider horizontal={props.horizontal} isActive={props.step > 2} />
         <StepIcon
           icon={template.step3Icon || DEFAULT_STEP_3_ICON}
           isActive={props.step === 3}
@@ -82,6 +81,21 @@ function StepIcon(props: {icon: string; isActive: boolean}) {
   return <StyledIcon iconClass={props.icon} color={color()} />
 }
 
+function Divider(props: {isActive: boolean; horizontal?: boolean}) {
+  const {isActive, horizontal} = props
+  const {template} = usePanels()
+  const defaultColor = useColor()
+
+  const color = () => {
+    if (!isActive) {
+      return defaultColor
+    }
+
+    return template.checkInLeftPanel.textColor
+  }
+  return <DividerLine color={color()} horizontal={horizontal} />
+}
+
 function useColor() {
   const {template} = usePanels()
 
@@ -123,7 +137,7 @@ const StyledIcon = styled(Icon)`
   font-size: 40px;
 `
 
-const Divider = styled.div<{horizontal?: boolean; color: string}>`
+const DividerLine = styled.div<{horizontal?: boolean; color: string}>`
   background: ${(props) => props.color};
   width: ${(props) => (props.horizontal ? '120px' : '4px')};
   height: ${(props) => (props.horizontal ? '4px' : '80px')};
