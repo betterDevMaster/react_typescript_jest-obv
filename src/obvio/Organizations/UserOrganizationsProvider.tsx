@@ -9,8 +9,9 @@ interface UserOrganizationsContextProps {
   loading: boolean
 }
 
-const UserOrganizationsContext =
-  React.createContext<UserOrganizationsContextProps | undefined>(undefined)
+const UserOrganizationsContext = React.createContext<
+  UserOrganizationsContextProps | undefined
+>(undefined)
 
 export default function UserOrganizationsProvier(props: {
   children: React.ReactNode
