@@ -24,8 +24,8 @@ export default function BlogPost(props: {post: BlogPostData}) {
 
   return (
     <Post aria-label="blog post">
-      <Date hidden={post.hideDate}>{formattedDate}</Date>
       <Title>{v(post.title)}</Title>
+      <Date hidden={post.hideDate}>{formattedDate}</Date>
       <StyledContent>{v(post.content)}</StyledContent>
       <PostForm post={post} />
     </Post>
@@ -51,7 +51,7 @@ const Post = styled.div`
 
 const Title = styled.h2`
   text-transform: uppercase;
-  margin: 0 0 16px;
+  margin-bottom: 14px;
   font-size: 28px;
   line-height: 22px;
 `
@@ -61,8 +61,8 @@ const DateText = styled.span`
   line-height: 16px;
   color: #adadad;
   display: block;
-  margin-bottom: 14px;
   position: relative;
+  margin: 0 0 16px;
   background: transparent;
 
   /* Separator line after date */
