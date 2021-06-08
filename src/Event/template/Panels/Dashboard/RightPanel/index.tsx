@@ -6,6 +6,8 @@ import {useToggle} from 'lib/toggle'
 import Bar from 'Event/template/Panels/Dashboard/RightPanel/Bar'
 import RightPanelConfig from 'Event/template/Panels/Dashboard/RightPanel/RightPanelConfig'
 import {Editable} from 'Event/Dashboard/editor/views/EditComponent'
+import {useTheme} from 'Event/template/Panels/Page'
+import {ThemeProvider} from '@material-ui/core/styles'
 
 export default function RightPanel(props: {
   children: React.ReactElement
@@ -16,6 +18,7 @@ export default function RightPanel(props: {
     template: {rightPanel},
   } = usePanels()
   const {flag: barConfigVisible, toggle: toggleBarConfig} = useToggle()
+  const theme = useTheme(rightPanel.isDarkMode)
 
   return (
     <>
@@ -23,20 +26,25 @@ export default function RightPanel(props: {
         isVisible={barConfigVisible}
         onClose={toggleBarConfig}
       />
-      <Box>
-        <Editable onEdit={toggleBarConfig}>
-          <Bar currentTab={props.currentTab} onChangeTab={props.onChangeTab} />
-        </Editable>
-        <Body
-          backgroundColor={rgba(
-            rightPanel.backgroundColor,
-            rightPanel.backgroundOpacity,
-          )}
-          textColor={rightPanel.textColor}
-        >
-          {props.children}
-        </Body>
-      </Box>
+      <ThemeProvider theme={theme}>
+        <Box>
+          <Editable onEdit={toggleBarConfig}>
+            <Bar
+              currentTab={props.currentTab}
+              onChangeTab={props.onChangeTab}
+            />
+          </Editable>
+          <Body
+            backgroundColor={rgba(
+              rightPanel.backgroundColor,
+              rightPanel.backgroundOpacity,
+            )}
+            textColor={rightPanel.textColor}
+          >
+            {props.children}
+          </Body>
+        </Box>
+      </ThemeProvider>
     </>
   )
 }

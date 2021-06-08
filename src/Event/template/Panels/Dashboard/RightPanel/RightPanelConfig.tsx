@@ -7,7 +7,8 @@ import ColorPicker from 'lib/ui/ColorPicker'
 import Dialog from 'lib/ui/Dialog'
 import React from 'react'
 import Slider from '@material-ui/core/Slider'
-import {handleChangeSlider} from 'lib/dom'
+import {handleChangeSlider, onChangeCheckedHandler} from 'lib/dom'
+import Switch from 'lib/ui/form/Switch'
 
 export default function RightPanelConfig(props: {
   isVisible: boolean
@@ -26,6 +27,16 @@ export default function RightPanelConfig(props: {
     <Dialog open={isVisible} onClose={onClose} fullWidth>
       <DialogTitle>Left Panel Bar</DialogTitle>
       <DialogContent>
+        <Box mb={2}>
+          <Switch
+            checked={rightPanel.isDarkMode}
+            onChange={onChangeCheckedHandler(updateRightPanel('isDarkMode'))}
+            arial-label="set dark mode"
+            labelPlacement="end"
+            color="primary"
+            label="Dark Mode"
+          />
+        </Box>
         <Box mb={2}>
           <ColorPicker
             label="Bar Background Color"

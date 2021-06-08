@@ -21,14 +21,14 @@ export default function Page(props: {
 }) {
   const {Left, Right, Mobile} = props
   const {
-    template: {linkUnderline, backgroundPosition},
+    template: {linkUnderline, backgroundPosition, isDarkMode},
   } = usePanels()
 
   const background = useBackground()
   const backgroundColor = useBackgroundColor()
   const textColor = useTextColor()
   const linkColor = useLinkColor()
-  const theme = useTheme()
+  const theme = useTheme(isDarkMode)
 
   return (
     <ThemeProvider theme={theme}>
@@ -102,16 +102,14 @@ function useLinkColor() {
   return linkColor
 }
 
-function useTheme() {
+export function useTheme(isDarkMode?: boolean) {
   const {template} = usePanels()
 
   const options: MuiThemeOptions = {
     secondaryColor: template.accentColor,
   }
 
-  return template.isDarkMode
-    ? createMuiDarkTheme(options)
-    : createMuiLightTheme(options)
+  return isDarkMode ? createMuiDarkTheme(options) : createMuiLightTheme(options)
 }
 
 const Box = styled.div<{

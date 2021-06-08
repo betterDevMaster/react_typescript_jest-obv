@@ -57,6 +57,7 @@ export type Panels = BaseTemplate & {
     textColor: string
     backgroundColor: string
     backgroundOpacity: number
+    isDarkMode: boolean
   }
   blogPosts: EntityList<BlogPost>
   resourceList: ResourceList
@@ -239,6 +240,7 @@ export const createPanels = (): Panels => ({
     textColor: '#000000',
     backgroundColor: '#FFFFFF',
     backgroundOpacity: 0,
+    isDarkMode: false,
   },
   blogPosts: {
     entities: {},
