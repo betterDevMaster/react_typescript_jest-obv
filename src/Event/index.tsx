@@ -34,6 +34,7 @@ export interface ObvioEvent {
   waiver: WaiverConfig | null
   tech_check: TechCheckConfig | null
   logo: FileLocation | null
+  mobile_logo: FileLocation | null
   header_background: FileLocation | null
   points_summary_logo: FileLocation | null
   platform_actions: PlatformActions

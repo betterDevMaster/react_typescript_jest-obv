@@ -1,4 +1,5 @@
 import Box from '@material-ui/core/Box'
+import Grid from '@material-ui/core/Grid'
 import InputLabel from '@material-ui/core/InputLabel'
 import Slider from '@material-ui/core/Slider'
 import {useEvent} from 'Event/EventProvider'
@@ -18,19 +19,38 @@ export default function GlobalStylesConfig() {
   return (
     <>
       <SectionTitle>Global Styles</SectionTitle>
-      <Box mb={2}>
-        <EventImageUpload label="Logo" property="logo" current={event.logo} />
-      </Box>
-      <Box mb={2}>
-        <EventImageUpload
-          label="Background"
-          property="dashboard_background"
-          current={event.dashboard_background}
-          width={1920}
-          height={1200}
-          canResize
-        />
-      </Box>
+      <Grid container spacing={3}>
+        <Grid item xs={12} md={4}>
+          <Box mb={2}>
+            <EventImageUpload
+              label="Logo"
+              property="logo"
+              current={event.logo}
+            />
+          </Box>
+        </Grid>
+        <Grid item xs={12} md={4}>
+          <Box mb={2}>
+            <EventImageUpload
+              label="Mobile Logo"
+              property="mobile_logo"
+              current={event.mobile_logo}
+            />
+          </Box>
+        </Grid>
+        <Grid item xs={12} md={4}>
+          <Box mb={2}>
+            <EventImageUpload
+              label="Background"
+              property="dashboard_background"
+              current={event.dashboard_background}
+              width={1920}
+              height={1200}
+              canResize
+            />
+          </Box>
+        </Grid>
+      </Grid>
       <Box mb={2}>
         <Switch
           checked={template.isDarkMode}

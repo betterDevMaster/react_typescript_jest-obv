@@ -22,6 +22,7 @@ export const fakeEvent = (overrides?: Partial<ObvioEvent>): ObvioEvent => ({
   waiver: fakeWaiver(),
   tech_check: fakeTechCheck(),
   logo: null,
+  mobile_logo: null,
   welcome_image: null,
   header_background: null,
   points_summary_logo: null,

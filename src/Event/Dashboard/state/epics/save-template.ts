@@ -39,6 +39,7 @@ export const saveTemplateEpic: Epic<
         footer_image,
         favicon,
         sponsor_question_icon,
+        mobile_logo,
         ...data
       } = event
 
