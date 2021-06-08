@@ -12,7 +12,6 @@ import ResourceList from 'Event/template/Panels/Dashboard/ResourceList'
 import ResourceGroupList from 'Event/template/Panels/Dashboard/ResourceGroupList'
 import Home from 'Event/template/Panels/Dashboard/Home'
 import Leaderboard from 'Event/template/Panels/Dashboard/Leaderboard/Leaderboard'
-import ThemeProvider from 'lib/ui/theme/ThemeProvider'
 
 export default function PanelsDashboard(props: {user: User}) {
   const [tabIndex, setTabIndex] = useState(0)
@@ -39,24 +38,21 @@ function Content(props: {currentTab: number}) {
   const {event} = useEvent()
 
   return (
-    // Use default theme to prevent inheriting dark-mode
-    <ThemeProvider>
-      <>
-        <StyledTabPanel index={0} currentIndex={currentTab} disablePadding>
-          <Home />
-        </StyledTabPanel>
-        <StyledTabPanel index={1} currentIndex={currentTab} disablePadding>
-          <SpeakerPage speakers={event.speakers} />
-        </StyledTabPanel>
-        <StyledTabPanel index={2} currentIndex={currentTab} disablePadding>
-          <ResourceList />
-          <ResourceGroupList />
-        </StyledTabPanel>
-        <StyledTabPanel index={3} currentIndex={currentTab} disablePadding>
-          <Leaderboard />
-        </StyledTabPanel>
-      </>
-    </ThemeProvider>
+    <>
+      <StyledTabPanel index={0} currentIndex={currentTab} disablePadding>
+        <Home />
+      </StyledTabPanel>
+      <StyledTabPanel index={1} currentIndex={currentTab} disablePadding>
+        <SpeakerPage speakers={event.speakers} />
+      </StyledTabPanel>
+      <StyledTabPanel index={2} currentIndex={currentTab} disablePadding>
+        <ResourceList />
+        <ResourceGroupList />
+      </StyledTabPanel>
+      <StyledTabPanel index={3} currentIndex={currentTab} disablePadding>
+        <Leaderboard />
+      </StyledTabPanel>
+    </>
   )
 }
 
