@@ -68,6 +68,14 @@ export default function GlobalStylesConfig() {
         valueLabelFormat={() => <div>{template.background?.opacity || 0}</div>}
         aria-label="background color opacity"
       />
+      <Box mb={2}>
+        <ColorPicker
+          label="Link Color"
+          color={template.linkColor}
+          onPick={update.primitive('linkColor')}
+          aria-label="link color"
+        />
+      </Box>
     </>
   )
 }

@@ -30,7 +30,6 @@ export default React.memo((props: ResourceItemProps) => {
   const {resource, index} = props
   const isEdit = useEditMode()
 
-  console.log('props.cardBackgroundColor: ', props.cardBackgroundColor)
   if (!isEdit)
     return (
       <Container resource={resource}>
@@ -88,13 +87,10 @@ function ResourceItemCard(props: {
         <Typography variant="h5" component="h2">
           {v(props.resource.name)}
         </Typography>
-        <Typography color="textSecondary">
-          {v(props.resource.description || '')}
-        </Typography>
+        <Typography>{v(props.resource.description || '')}</Typography>
       </CardContent>
       <CardActions>
         <ResourceLink
-          color={'#fafafa'}
           aria-label="event resource"
           to={url}
           onClick={awardPoints}
@@ -151,12 +147,11 @@ function resourceUrl(resource: Resource): string {
   return storage(`/event/resources/${resource.filePath}`)
 }
 
-const ResourceLink = styled(AbsoluteLink)<{color: string}>`
+const ResourceLink = styled(AbsoluteLink)`
   align-items: center;
   font-size: 20px;
   display: flex;
   margin-bottom: ${(props) => props.theme.spacing[1]};
-  color: ${(props) => props.color}!important;
 
   &:hover {
     text-decoration: none;
@@ -169,7 +164,6 @@ const ResourceLink = styled(AbsoluteLink)<{color: string}>`
 
 const LinkText = styled.span`
   font-weight: bold;
-  color: #000000;
 `
 
 const StyledCard = styled((props) => {

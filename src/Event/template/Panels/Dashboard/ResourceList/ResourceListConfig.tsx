@@ -16,7 +16,7 @@ export default function ResourceListConfig(props: {
   const updateResourceList = update.object('resourceList')
 
   return (
-    <Dialog onClose={props.onClose} open={props.isVisible}>
+    <Dialog onClose={props.onClose} open={props.isVisible} fullWidth>
       <DialogTitle>Resources</DialogTitle>
       <DialogContent>
         <TextField
