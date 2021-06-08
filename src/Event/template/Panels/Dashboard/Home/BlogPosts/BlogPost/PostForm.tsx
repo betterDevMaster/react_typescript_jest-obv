@@ -84,7 +84,12 @@ function Content(props: {form: Form; post: BlogPost}) {
 
   return (
     <>
-      <Dialog open={dialogVisible} onClose={closeDialog}>
+      <Dialog
+        open={dialogVisible}
+        onClose={closeDialog}
+        fullWidth
+        maxWidth="md"
+      >
         <DialogTitle>{form.name}</DialogTitle>
         <DialogContent>
           <Box pb={2}>{body}</Box>

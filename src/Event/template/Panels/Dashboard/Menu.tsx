@@ -36,10 +36,10 @@ function Link(props: {to: string; children: string; onClick: () => void}) {
 
 const LinkText = styled.span`
   font-weight: bold;
-  font-size: 36px;
-  line-height: 44px;
+  font-size: 24px;
+  line-height: 20px;
   cursor: pointer;
-  margin-bottom: 42px;
+  margin-bottom: 20px;
 `
 
 const Box = styled.div`
