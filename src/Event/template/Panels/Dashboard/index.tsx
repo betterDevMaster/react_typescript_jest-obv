@@ -18,14 +18,14 @@ export default function PanelsDashboard(props: {user: User}) {
 
   return (
     <Page
-      Left={<LeftPanel onChangeTab={setTabIndex} />}
+      Left={<LeftPanel onChangeTab={setTabIndex} user={props.user} />}
       Right={
         <RightPanel currentTab={tabIndex} onChangeTab={setTabIndex}>
           <Content currentTab={tabIndex} />
         </RightPanel>
       }
       Mobile={
-        <MobilePanel onChangeTab={setTabIndex}>
+        <MobilePanel onChangeTab={setTabIndex} user={props.user}>
           <Content currentTab={tabIndex} />
         </MobilePanel>
       }

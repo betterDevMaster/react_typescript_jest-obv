@@ -7,10 +7,12 @@ import Menu from 'Event/template/Panels/Dashboard/Menu'
 import MainNav from 'Event/template/Panels/Dashboard/MainNav'
 import EmojiList from 'Event/template/Panels/Dashboard/EmojiList'
 import {rgba} from 'lib/color'
+import {User} from 'auth/user'
 
 export default function MobilePanel(props: {
   children: React.ReactElement
   onChangeTab: (tab: number) => void
+  user: User
 }) {
   const [menuVisible, setMenuVisible] = useState(false)
   const toggleMenu = () => setMenuVisible(!menuVisible)
@@ -31,7 +33,11 @@ export default function MobilePanel(props: {
       <LogoBox>
         <Logo />
       </LogoBox>
-      <Content menuVisible={menuVisible} onChangeTab={handleChangeTab}>
+      <Content
+        menuVisible={menuVisible}
+        onChangeTab={handleChangeTab}
+        user={props.user}
+      >
         {props.children}
       </Content>
     </Box>
@@ -42,11 +48,12 @@ function Content(props: {
   menuVisible: boolean
   children: React.ReactElement
   onChangeTab: (tab: number) => void
+  user: User
 }) {
   const {template} = usePanels()
 
   if (props.menuVisible) {
-    return <Menu onChangeTab={props.onChangeTab} />
+    return <Menu onChangeTab={props.onChangeTab} user={props.user} />
   }
 
   return (

@@ -12,8 +12,12 @@ import {useToggle} from 'lib/toggle'
 import {rgba} from 'lib/color'
 import Slide from '@material-ui/core/Slide'
 import {TOP_BAR_HEIGHT} from 'Event/template/Panels/Page'
+import {User} from 'auth/user'
 
-export default function LeftPanel(props: {onChangeTab: (tab: number) => void}) {
+export default function LeftPanel(props: {
+  onChangeTab: (tab: number) => void
+  user: User
+}) {
   const [menuVisible, setMenuVisible] = useState(false)
   const toggleMenu = () => setMenuVisible(!menuVisible)
 
@@ -54,9 +58,11 @@ export default function LeftPanel(props: {onChangeTab: (tab: number) => void}) {
               stacking while animating. 
           */}
           <Slide in={menuVisible} direction="left" mountOnEnter unmountOnExit>
-            <div>
-              {menuVisible ? <Menu onChangeTab={handleChangeTab} /> : null}
-            </div>
+            <MenuBox>
+              {menuVisible ? (
+                <Menu onChangeTab={handleChangeTab} user={props.user} />
+              ) : null}
+            </MenuBox>
           </Slide>
           <Slide in={!menuVisible} direction="right" mountOnEnter unmountOnExit>
             <MainContent>
@@ -107,4 +113,9 @@ const MainContent = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+`
+
+const MenuBox = styled.div`
+  flex: 1;
+  display: flex;
 `
