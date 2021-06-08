@@ -12,13 +12,13 @@ export default function Menu(props: {onChangeTab: (tab: number) => void}) {
   }
 
   return (
-    <>
+    <Box>
       {Object.entries(items).map(([label, url], index) => (
         <Link key={label} to={url} onClick={() => props.onChangeTab(index)}>
           {label}
         </Link>
       ))}
-    </>
+    </Box>
   )
 }
 
@@ -40,4 +40,10 @@ const LinkText = styled.span`
   line-height: 44px;
   cursor: pointer;
   margin-bottom: 42px;
+`
+
+const Box = styled.div`
+  display: flex;
+  align-items: center;
+  flex-direction: column;
 `

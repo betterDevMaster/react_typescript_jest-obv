@@ -10,6 +10,7 @@ import {Editable} from 'Event/Dashboard/editor/views/EditComponent'
 import LeftPanelConfig from 'Event/template/Panels/Dashboard/LeftPanel/LeftPanelConfig'
 import {useToggle} from 'lib/toggle'
 import {rgba} from 'lib/color'
+import Slide from '@material-ui/core/Slide'
 
 export default function LeftPanel(props: {onChangeTab: (tab: number) => void}) {
   const [menuVisible, setMenuVisible] = useState(false)
@@ -46,26 +47,29 @@ export default function LeftPanel(props: {onChangeTab: (tab: number) => void}) {
         </Editable>
         <Main>
           <Logo />
-          <Content menuVisible={menuVisible} onChangeTab={handleChangeTab} />
+          {/* 
+              Menu slide-in-out animation. Need to set content to null to avoid
+              the exiting content from having a height, and the divs
+              stacking while animating. 
+          */}
+          <Slide in={menuVisible} direction="left" mountOnEnter unmountOnExit>
+            <div>
+              {menuVisible ? <Menu onChangeTab={handleChangeTab} /> : null}
+            </div>
+          </Slide>
+          <Slide in={!menuVisible} direction="right" mountOnEnter unmountOnExit>
+            <div>
+              {menuVisible ? null : (
+                <>
+                  <MainNav />
+                  <EmojiList />
+                </>
+              )}
+            </div>
+          </Slide>
         </Main>
       </Box>
     </>
-  )
-}
-
-function Content(props: {
-  menuVisible: boolean
-  onChangeTab: (tab: number) => void
-}) {
-  if (props.menuVisible) {
-    return <Menu onChangeTab={props.onChangeTab} />
-  }
-
-  return (
-    <div>
-      <MainNav />
-      <EmojiList />
-    </div>
   )
 }
 

@@ -1,4 +1,6 @@
 import {ChangeEvent, useEffect, useRef} from 'react'
+import axios from 'axios'
+import download from 'js-file-download'
 
 export const onChangeStringHandler =
   (setter: (v: string) => void) =>
@@ -53,4 +55,21 @@ export function useIsMounted() {
   }, [])
 
   return isMounted
+}
+
+/**
+ *  Download file at URL
+ *
+ * @param url
+ * @param fileName
+ */
+export const downloadUrl = async (url: string, fileName: string) => {
+  axios
+    .get(url, {
+      responseType: 'blob',
+    })
+    .then((response) => {
+      const file = new File([response.data], fileName)
+      download(file, fileName)
+    })
 }
