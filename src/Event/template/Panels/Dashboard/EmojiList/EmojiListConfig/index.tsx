@@ -83,7 +83,7 @@ export function EmojiListConfig(props: {
   }
 
   return (
-    <Dialog onClose={props.onClose} open={true} maxWidth="xs">
+    <Dialog onClose={props.onClose} open fullWidth>
       <DialogTitle>Emoji</DialogTitle>
       <DialogContent>
         <TextField

@@ -58,14 +58,14 @@ export default function LeftPanel(props: {onChangeTab: (tab: number) => void}) {
             </div>
           </Slide>
           <Slide in={!menuVisible} direction="right" mountOnEnter unmountOnExit>
-            <div>
+            <MainContent>
               {menuVisible ? null : (
                 <>
                   <MainNav />
                   <EmojiList />
                 </>
               )}
-            </div>
+            </MainContent>
           </Slide>
         </Main>
       </Box>
@@ -89,6 +89,8 @@ const Box = styled.div<{
   margin: 24px 12px 24px 24px;
   border-radius: 10px;
   background: ${(props) => props.backgroundColor};
+  display: flex;
+  flex-direction: column;
 `
 
 const Main = styled.div`
@@ -96,4 +98,12 @@ const Main = styled.div`
   align-items: center;
   flex-direction: column;
   padding: 24px;
+  flex: 1;
+`
+
+const MainContent = styled.div`
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
 `
