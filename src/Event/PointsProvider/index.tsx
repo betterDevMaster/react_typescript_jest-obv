@@ -22,8 +22,9 @@ export interface PointsContextProps {
   score: Score
 }
 
-export const PointsContext =
-  React.createContext<PointsContextProps | undefined>(undefined)
+export const PointsContext = React.createContext<
+  PointsContextProps | undefined
+>(undefined)
 
 export default function PointsProvider(props: {children: React.ReactElement}) {
   const {client, event} = useEvent()

@@ -26,8 +26,9 @@ export interface AreasContextProps {
   loading: boolean
 }
 
-export const AreasContext =
-  React.createContext<AreasContextProps | undefined>(undefined)
+export const AreasContext = React.createContext<AreasContextProps | undefined>(
+  undefined,
+)
 
 export default function AreasProvider(props: {children: React.ReactElement}) {
   const fetch = useFetchAreas()
