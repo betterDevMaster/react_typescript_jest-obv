@@ -27,6 +27,7 @@ import {usePanels} from 'Event/template/Panels'
 import Dialog from 'lib/ui/Dialog'
 import DialogContent from '@material-ui/core/DialogContent'
 import DialogTitle from '@material-ui/core/DialogTitle'
+import InputLabel from '@material-ui/core/InputLabel'
 
 export type ButtonConfigProps<K extends NavButton> = {
   button: K
@@ -82,13 +83,13 @@ export default function MainNavButtonConfig(props: {
     })
   }
 
-  const updateButton =
-    <T extends keyof NavButtonWithSize>(key: T) =>
-    (value: NavButtonWithSize[T]) =>
-      update({
-        ...button,
-        [key]: value,
-      })
+  const updateButton = <T extends keyof NavButtonWithSize>(key: T) => (
+    value: NavButtonWithSize[T],
+  ) =>
+    update({
+      ...button,
+      [key]: value,
+    })
 
   return (
     <Dialog onClose={props.onClose} open={true}>
@@ -122,12 +123,18 @@ export default function MainNavButtonConfig(props: {
               fullWidth
               onChange={onChangeStringHandler(updateButton('text'))}
             />
-
+            <InputLabel>Font Size</InputLabel>
+            <Slider
+              min={10}
+              max={36}
+              onChange={handleChangeSlider(updateButton('fontSize'))}
+              valueLabelDisplay="auto"
+              value={button.fontSize || 29}
+            />
             <ActionSelect
               value={button.actionId}
               onChange={updateButton('actionId')}
             />
-
             <Typography gutterBottom>Size</Typography>
             <Slider
               min={1}
