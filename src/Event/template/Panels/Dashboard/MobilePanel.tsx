@@ -83,6 +83,7 @@ const LogoBox = styled.div`
 const Panel = styled.div<{
   backgroundColor: string
 }>`
+  overflow: auto;
   flex: 1;
   margin-top: 24px;
   border-top-left-radius: 10px;

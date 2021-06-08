@@ -162,6 +162,12 @@ const ColorOverlay = styled.div<{
 }>`
   background-color: ${(props) => props.color};
   height: 100vh;
+
+  display: flex;
+
+  > * {
+    flex: 1;
+  }
 `
 
 export const PageTitle = styled.h2`
@@ -185,10 +191,9 @@ const FullHeightGrid = styled(Grid)`
 
 const SidePanel = styled(FullHeightGrid)`
   display: flex;
-  flex-direction: column;
+  overflow: hidden;
 
   > * {
     flex: 1;
-    overflow: auto;
   }
 `
