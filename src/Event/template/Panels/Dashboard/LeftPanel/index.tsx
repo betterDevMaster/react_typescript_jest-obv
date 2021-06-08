@@ -38,7 +38,7 @@ export default function LeftPanel(props: {onChangeTab: (tab: number) => void}) {
         <Editable onEdit={toggleBarConfig}>
           <Bar backgroundColor={leftPanel.barBackgroundColor}>
             <MenuIconButton
-              active={false}
+              active={menuVisible}
               iconColor={leftPanel.barTextColor}
               onClick={toggleMenu}
             />

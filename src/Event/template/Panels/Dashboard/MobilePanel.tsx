@@ -27,7 +27,7 @@ export default function MobilePanel(props: {
   return (
     <Box>
       <StyledMenuIconButton
-        active={false}
+        active={menuVisible}
         iconColor={menuIconColor}
         onClick={toggleMenu}
       />
