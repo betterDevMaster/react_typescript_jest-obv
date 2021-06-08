@@ -116,7 +116,7 @@ const Box = styled.div<{
   ${(props) => props.background};
   font-size: 17px;
   color: ${(props) => props.color};
-  height: 100vh;
+  min-height: 100vh;
   background-size: cover;
 
   a {
@@ -155,7 +155,7 @@ const ColorOverlay = styled.div<{
   color: string
 }>`
   background-color: ${(props) => props.color};
-  min-height: 100vh;
+  height: 100vh;
 `
 
 export const PageTitle = styled.h2`
@@ -174,7 +174,7 @@ export const PageTitle = styled.h2`
 `
 
 const FullHeightGrid = styled(Grid)`
-  min-height: 100vh;
+  height: 100vh;
 `
 
 const SidePanel = styled(FullHeightGrid)`
@@ -183,5 +183,6 @@ const SidePanel = styled(FullHeightGrid)`
 
   > * {
     flex: 1;
+    overflow: auto;
   }
 `
