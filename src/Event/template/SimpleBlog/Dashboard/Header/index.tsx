@@ -6,7 +6,7 @@ import {eventRoutes} from 'Event/Routes'
 import {RelativeLink} from 'lib/ui/link/RelativeLink'
 import {useEvent} from 'Event/EventProvider'
 import EditComponent from 'Event/Dashboard/editor/views/EditComponent'
-import {rgb} from 'lib/color'
+import {rgba} from 'lib/color'
 import {SIMPLE_BLOG, useSimpleBlog} from 'Event/template/SimpleBlog'
 
 export default function Header(props: {
@@ -93,7 +93,7 @@ function Layout(props: {children: React.ReactElement | React.ReactElement[]}) {
 function CollapsableColorOverlay(props: {children: React.ReactElement}) {
   const {template} = useSimpleBlog()
   const {header} = template
-  const backgroundColorRgb = rgb(
+  const backgroundColorRgb = rgba(
     header.backgroundColor,
     header.backgroundOpacity,
   )

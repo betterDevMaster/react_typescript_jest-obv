@@ -9,7 +9,7 @@ import defaultBackground from 'assets/images/background_login.png'
 import {makeStyles} from '@material-ui/core/styles'
 import {spacing} from 'lib/ui/theme'
 import Logo from 'Event/template/SimpleBlog/Login/Logo'
-import {rgb} from 'lib/color'
+import {rgba} from 'lib/color'
 import {useSimpleBlog} from 'Event/template/SimpleBlog'
 
 export default function Page(props: {
@@ -24,7 +24,7 @@ export default function Page(props: {
     ? event.login_background.url
     : defaultBackground
 
-  const backgroundRGBColor = rgb(
+  const backgroundRGBColor = rgba(
     login.backgroundColor || '#FFFFFF',
     login.backgroundOpacity || 0,
   )

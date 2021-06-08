@@ -15,6 +15,7 @@ export default function StepIndicator(props: {
   horizontal?: boolean
 }) {
   const {template} = usePanels()
+  const color = useColor()
 
   return (
     <Box className={props.className}>
@@ -27,12 +28,12 @@ export default function StepIndicator(props: {
           icon={template.step1Icon || DEFAULT_STEP_1_ICON}
           isActive={props.step === 1}
         />
-        <Divider horizontal={props.horizontal} />
+        <Divider horizontal={props.horizontal} color={color} />
         <StepIcon
           icon={template.step2Icon || DEFAULT_STEP_2_ICON}
           isActive={props.step === 2}
         />
-        <Divider horizontal={props.horizontal} />
+        <Divider horizontal={props.horizontal} color={color} />
         <StepIcon
           icon={template.step3Icon || DEFAULT_STEP_3_ICON}
           isActive={props.step === 3}
@@ -69,15 +70,26 @@ function StepLabel(props: {step: Step}) {
 function StepIcon(props: {icon: string; isActive: boolean}) {
   const {isActive} = props
   const {template} = usePanels()
+  const defaultColor = useColor()
 
   const color = () => {
     if (!isActive) {
-      return '#1C1C1C'
+      return defaultColor
     }
 
-    return template.isDarkMode ? '#FFFFFF' : '#000000'
+    return template.checkInLeftPanel.textColor
   }
   return <StyledIcon iconClass={props.icon} color={color()} />
+}
+
+function useColor() {
+  const {template} = usePanels()
+
+  if (template.isDarkMode) {
+    return '#C7C7C7'
+  }
+
+  return '#1C1C1C'
 }
 
 const Label = styled.h4<{
@@ -111,8 +123,8 @@ const StyledIcon = styled(Icon)`
   font-size: 40px;
 `
 
-const Divider = styled.div<{horizontal?: boolean}>`
-  background: #1c1c1c;
+const Divider = styled.div<{horizontal?: boolean; color: string}>`
+  background: ${(props) => props.color};
   width: ${(props) => (props.horizontal ? '120px' : '4px')};
   height: ${(props) => (props.horizontal ? '4px' : '80px')};
   margin: 8px;

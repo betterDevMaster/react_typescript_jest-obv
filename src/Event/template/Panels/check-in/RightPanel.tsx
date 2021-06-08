@@ -1,4 +1,5 @@
 import {usePanels} from 'Event/template/Panels'
+import {rgba} from 'lib/color'
 import React from 'react'
 import styled from 'styled-components'
 
@@ -7,11 +8,18 @@ export default function RightPanel(props: {
   center?: boolean
 }) {
   const {
-    template: {checkInPanelColor},
+    template: {checkInRightPanel},
   } = usePanels()
 
   return (
-    <Box backgroundColor={checkInPanelColor} center={props.center}>
+    <Box
+      backgroundColor={rgba(
+        checkInRightPanel.backgroundColor,
+        checkInRightPanel.backgroundOpacity,
+      )}
+      textColor={checkInRightPanel.textColor}
+      center={props.center}
+    >
       {props.children}
     </Box>
   )
@@ -19,6 +27,7 @@ export default function RightPanel(props: {
 
 const Box = styled.div<{
   backgroundColor: string
+  textColor: string
   center?: boolean
 }>`
   padding: 100px 35px;
@@ -28,4 +37,8 @@ const Box = styled.div<{
   justify-content: center;
   align-items: ${(props) => (props.center ? 'center' : 'flex-start')};
   background: ${(props) => props.backgroundColor};
+
+  > * {
+    color: ${(props) => props.textColor}!important;
+  }
 `

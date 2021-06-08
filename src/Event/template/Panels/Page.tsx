@@ -2,7 +2,7 @@ import React from 'react'
 import styled from 'styled-components'
 import Grid from '@material-ui/core/Grid'
 import {useEvent} from 'Event/EventProvider'
-import {rgb} from 'lib/color'
+import {rgba} from 'lib/color'
 import {ThemeProvider} from '@material-ui/core/styles'
 import {Panels, usePanels} from 'Event/template/Panels'
 import Hidden from '@material-ui/core/Hidden'
@@ -73,7 +73,7 @@ function useBackgroundColor() {
   }
 
   const opacity = background.opacity || 0
-  return rgb(background.color, opacity)
+  return rgba(background.color, opacity)
 }
 
 function useTextColor() {

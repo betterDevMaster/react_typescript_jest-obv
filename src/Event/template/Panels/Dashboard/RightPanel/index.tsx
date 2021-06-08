@@ -1,7 +1,7 @@
 import styled from 'styled-components'
 import React from 'react'
 import {usePanels} from 'Event/template/Panels'
-import {rgb} from 'lib/color'
+import {rgba} from 'lib/color'
 import {useToggle} from 'lib/toggle'
 import Bar from 'Event/template/Panels/Dashboard/RightPanel/Bar'
 import RightPanelConfig from 'Event/template/Panels/Dashboard/RightPanel/RightPanelConfig'
@@ -28,7 +28,7 @@ export default function RightPanel(props: {
           <Bar currentTab={props.currentTab} onChangeTab={props.onChangeTab} />
         </Editable>
         <Body
-          backgroundColor={rgb(
+          backgroundColor={rgba(
             rightPanel.backgroundColor,
             rightPanel.backgroundOpacity,
           )}

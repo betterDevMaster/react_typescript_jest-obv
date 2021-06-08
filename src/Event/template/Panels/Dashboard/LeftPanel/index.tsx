@@ -9,7 +9,7 @@ import EmojiList from 'Event/template/Panels/Dashboard/EmojiList'
 import {Editable} from 'Event/Dashboard/editor/views/EditComponent'
 import LeftPanelConfig from 'Event/template/Panels/Dashboard/LeftPanel/LeftPanelConfig'
 import {useToggle} from 'lib/toggle'
-import {rgb} from 'lib/color'
+import {rgba} from 'lib/color'
 
 export default function LeftPanel(props: {onChangeTab: (tab: number) => void}) {
   const [menuVisible, setMenuVisible] = useState(false)
@@ -30,7 +30,7 @@ export default function LeftPanel(props: {onChangeTab: (tab: number) => void}) {
     <>
       <LeftPanelConfig isVisible={barConfigVisible} onClose={toggleBarConfig} />
       <Box
-        backgroundColor={rgb(
+        backgroundColor={rgba(
           leftPanel.backgroundColor,
           leftPanel.backgroundOpacity,
         )}

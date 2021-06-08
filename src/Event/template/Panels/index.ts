@@ -66,7 +66,16 @@ export type Panels = BaseTemplate & {
     opacity?: number
   }
   checkInTitle: string
-  checkInPanelColor: string
+  checkInRightPanel: {
+    backgroundColor: string
+    backgroundOpacity: number
+    textColor: string
+  }
+  checkInLeftPanel: {
+    backgroundColor: string
+    backgroundOpacity: number
+    textColor: string
+  }
   stepLabelColor: string
   step1Label: string
   step1Icon: string | null
@@ -185,7 +194,16 @@ export const createPanels = (): Panels => ({
       '<p>{{first name}}, you have earned {{leaderboard_points}} {{points_unit}}, and you are currently {{leaderboard_position}}. Great Job!</p><p><i>The list below is the top 200 point earners! If you don’t see your name listed, there’s still time!</i></p><p><br>&nbsp;</p>',
   },
   checkInTitle: 'Check In:',
-  checkInPanelColor: '#07BAB5',
+  checkInRightPanel: {
+    backgroundColor: '#07BAB5',
+    backgroundOpacity: 1,
+    textColor: '#000000',
+  },
+  checkInLeftPanel: {
+    backgroundColor: '#FFFFFF',
+    backgroundOpacity: 0,
+    textColor: '#000000',
+  },
   stepLabelColor: '#07BAB5',
   step1Label: 'Step 1',
   step1Icon: DEFAULT_STEP_1_ICON,

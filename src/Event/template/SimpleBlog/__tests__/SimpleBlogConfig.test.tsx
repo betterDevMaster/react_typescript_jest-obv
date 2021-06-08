@@ -13,7 +13,7 @@ import axios from 'axios'
 import {wait} from '@testing-library/react'
 import {fakeOrganization} from 'obvio/Organizations/__utils__/factory'
 import {ObvioEvent} from 'Event'
-import {rgb} from 'lib/color'
+import {rgba} from 'lib/color'
 
 const mockPost = axios.post as jest.Mock
 const mockPut = axios.put as jest.Mock
@@ -125,7 +125,7 @@ it('should configure a header color settings', async () => {
 
   await wait(async () => {
     expect(await findByLabelText('header')).toHaveStyle(
-      `background-color: ${rgb(color)}`,
+      `background-color: ${rgba(color)}`,
     )
   })
 })

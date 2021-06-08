@@ -8,7 +8,7 @@ import {User} from 'auth/user'
 import Footer from 'Event/template/SimpleBlog/Dashboard/Footer'
 import {useEvent} from 'Event/EventProvider'
 import {SimpleBlog, useSimpleBlog} from 'Event/template/SimpleBlog'
-import {rgb} from 'lib/color'
+import {rgba} from 'lib/color'
 import LanguageSelectMenu from 'Event/LanguageSelector'
 import {muiDarkTheme, muiTheme} from 'lib/ui/theme'
 import {ThemeProvider} from '@material-ui/core/styles'
@@ -32,7 +32,7 @@ export default function SimpleBlogPage(props: {
     : '#FFFFFF'
 
   const backgroundRGBColor = dashboard
-    ? rgb(dashboard.color || '#FFFFFF', dashboard.opacity || 0)
+    ? rgba(dashboard.color || '#FFFFFF', dashboard.opacity || 0)
     : '#FFFFFF'
 
   const color = isDarkMode ? '#FFFFFF' : '#000000'

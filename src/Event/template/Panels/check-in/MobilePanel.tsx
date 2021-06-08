@@ -4,13 +4,14 @@ import StepIndicator from 'Event/template/Panels/check-in/StepIndicator'
 import React from 'react'
 import {usePanels} from 'Event/template/Panels'
 import {Step} from 'Event/template/Panels/GeneralConfig/CheckInConfig'
+import {rgba} from 'lib/color'
 
 export default function MobilePanel(props: {
   children: React.ReactElement
   step: Step
 }) {
   const {
-    template: {checkInPanelColor},
+    template: {checkInRightPanel},
   } = usePanels()
 
   return (
@@ -19,7 +20,14 @@ export default function MobilePanel(props: {
         <Logo />
       </LogoBox>
       <StyledStepIndicator horizontal step={props.step} />
-      <Panel backgroundColor={checkInPanelColor}>{props.children}</Panel>
+      <Panel
+        backgroundColor={rgba(
+          checkInRightPanel.backgroundColor,
+          checkInRightPanel.backgroundOpacity,
+        )}
+      >
+        {props.children}
+      </Panel>
     </Box>
   )
 }

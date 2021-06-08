@@ -9,7 +9,7 @@ import defaultBackground from 'assets/images/background_login.png'
 import {makeStyles} from '@material-ui/core/styles'
 import {spacing} from 'lib/ui/theme'
 import Logo from 'Event/template/Panels/Login/Logo'
-import {rgb} from 'lib/color'
+import {rgba} from 'lib/color'
 import {usePanels} from 'Event/template/Panels'
 import {DEFAULT_LOGIN_CONFIG} from 'Event/template/Panels/Login/LoginConfig'
 
@@ -25,7 +25,7 @@ export default function Page(props: {
     ? event.login_background.url
     : defaultBackground
 
-  const backgroundRGBColor = rgb(
+  const backgroundRGBColor = rgba(
     login.backgroundColor || '#FFFFFF',
     login.backgroundOpacity || 0,
   )
