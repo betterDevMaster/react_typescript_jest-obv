@@ -14,6 +14,7 @@ import {
   DEFAULT_STEP_3_ICON,
 } from 'Event/template/Panels/check-in/StepIndicator'
 import {BlogPost} from 'Event/Dashboard/components/BlogPost'
+import {DEFAULT_POINTS_UNIT} from 'Event/template/SimpleBlog/Dashboard/PointsSummary/SetPointsButton'
 
 export const PANELS = 'Panels'
 
@@ -168,6 +169,9 @@ export type Panels = BaseTemplate & {
     speakersSpace?: number
     orderedIds?: number[]
   }
+  points: {
+    unit: string
+  }
 }
 
 export const createPanels = (): Panels => ({
@@ -183,7 +187,9 @@ export const createPanels = (): Panels => ({
   header: {
     script: null,
   },
-  points: null,
+  points: {
+    unit: DEFAULT_POINTS_UNIT,
+  },
   nav: {
     entities: {},
     ids: [],

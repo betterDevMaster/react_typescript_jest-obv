@@ -11,7 +11,7 @@ import TabPanel from 'lib/ui/tabs/TabPanel'
 import ResourceList from 'Event/template/Panels/Dashboard/ResourceList'
 import ResourceGroupList from 'Event/template/Panels/Dashboard/ResourceGroupList'
 import Home from 'Event/template/Panels/Dashboard/Home'
-import Leaderboard from 'Event/template/Panels/Dashboard/Leaderboard'
+import Leaderboard from 'Event/template/Panels/Dashboard/Leaderboard/Leaderboard'
 import ThemeProvider from 'lib/ui/theme/ThemeProvider'
 
 export default function PanelsDashboard(props: {user: User}) {

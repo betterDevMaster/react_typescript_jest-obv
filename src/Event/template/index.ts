@@ -1,4 +1,3 @@
-import {Points} from 'Event/template/SimpleBlog/Dashboard/PointsSummary'
 import {Panels} from 'Event/template/Panels'
 import {SimpleBlog} from 'Event/template/SimpleBlog'
 
@@ -7,7 +6,6 @@ import {SimpleBlog} from 'Event/template/SimpleBlog'
  */
 export type BaseTemplate = {
   version: number
-  points: Points | null
   header: Header
   disableBackgroundConfig?: boolean
 }

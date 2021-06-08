@@ -20,6 +20,7 @@ import {GridSize} from '@material-ui/core/Grid'
 import {useTemplate, useUpdate} from 'Event/TemplateProvider'
 import {BaseTemplate, Header} from 'Event/template'
 import {BlogPost} from 'Event/Dashboard/components/BlogPost'
+import {Points} from 'Event/template/SimpleBlog/Dashboard/PointsSummary'
 
 export const SIMPLE_BLOG = 'Simple Blog'
 
@@ -46,6 +47,7 @@ export type SimpleBlog = BaseTemplate & {
   sidebar: Sidebar
   sidebarNav: EntityList<NavButton>
   blogPosts: EntityList<BlogPost>
+  points: Points | null
   agenda: {
     title: string
     description?: string
