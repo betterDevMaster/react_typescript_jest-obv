@@ -45,12 +45,12 @@ const barStyles = css`
 const Bar = styled.div<{color: string; active: boolean}>`
   ${barStyles}
   margin-top: 0;
-  background: ${(props) => (props.active ? '#fff' : props.color)};
+  background: ${(props) => (props.active ? 'transparent' : props.color)};
 
   &:before {
     ${barStyles}
     margin-top: ${(props) => (props.active ? '0' : '-8px')};
-    background: ${(props) => (props.active ? '#000' : props.color)};
+    background: ${(props) => props.color};
     transform: ${(props) =>
       props.active ? 'rotate(-45deg)' : 'rotate(0), translateY(-50%)'};
   }
@@ -58,7 +58,7 @@ const Bar = styled.div<{color: string; active: boolean}>`
   &:after {
     ${barStyles}
     margin-top: ${(props) => (props.active ? '0' : '8px')};
-    background: ${(props) => (props.active ? '#000' : props.color)};
+    background: ${(props) => props.color};
     transform: ${(props) =>
       props.active ? 'rotate(45deg)' : 'rotate(0), translateY(-50%)'};
   }
