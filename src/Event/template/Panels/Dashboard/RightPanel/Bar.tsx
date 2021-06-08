@@ -3,6 +3,7 @@ import {usePanels} from 'Event/template/Panels'
 import React from 'react'
 import Tabs from '@material-ui/core/Tabs'
 import {Tab} from '@material-ui/core'
+import {TOP_BAR_HEIGHT} from 'Event/template/Panels/Page'
 
 export default function Nav(props: {
   currentTab: number
@@ -15,7 +16,7 @@ export default function Nav(props: {
 
   const StyledTabs = withStyles({
     root: {
-      minHeight: '65px',
+      minHeight: `${TOP_BAR_HEIGHT}px`,
       backgroundColor: rightPanel.barBackgroundColor,
       borderTopLeftRadius: '10px',
       borderTopRightRadius: '10px',
@@ -41,6 +42,7 @@ export default function Nav(props: {
       color: rightPanel.barTextColor,
       fontWeight: 'bold',
       textTransform: 'none',
+      height: `${TOP_BAR_HEIGHT}px`,
     },
   }))((props) => <Tab disableRipple {...props} />) as typeof Tab
 

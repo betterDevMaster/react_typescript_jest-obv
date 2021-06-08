@@ -7,6 +7,7 @@ import WelcomeTextConfig from 'Event/template/Panels/Dashboard/Home/WelcomeTextC
 import {PageTitle} from 'Event/template/Panels/Page'
 import {useToggle} from 'lib/toggle'
 import React from 'react'
+import BodyHTMLEmbed from 'Event/template/Panels/Dashboard/Home/BodyHTMLEmbed'
 
 export default function Home() {
   const {template} = usePanels()
@@ -26,6 +27,7 @@ export default function Home() {
         </WelcomeText>
       </Editable>
       <BlogPosts />
+      <BodyHTMLEmbed />
     </>
   )
 }

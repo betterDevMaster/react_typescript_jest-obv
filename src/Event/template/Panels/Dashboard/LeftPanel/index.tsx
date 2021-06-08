@@ -11,6 +11,7 @@ import LeftPanelConfig from 'Event/template/Panels/Dashboard/LeftPanel/LeftPanel
 import {useToggle} from 'lib/toggle'
 import {rgba} from 'lib/color'
 import Slide from '@material-ui/core/Slide'
+import {TOP_BAR_HEIGHT} from 'Event/template/Panels/Page'
 
 export default function LeftPanel(props: {onChangeTab: (tab: number) => void}) {
   const [menuVisible, setMenuVisible] = useState(false)
@@ -76,7 +77,7 @@ export default function LeftPanel(props: {onChangeTab: (tab: number) => void}) {
 const Bar = styled.div<{
   backgroundColor: string
 }>`
-  height: 65px;
+  height: ${TOP_BAR_HEIGHT}px;
   background: ${(props) => props.backgroundColor};
   border-top-left-radius: 10px;
   border-top-right-radius: 10px;
