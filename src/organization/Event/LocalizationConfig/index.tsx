@@ -20,8 +20,9 @@ type LocalizationConfigContextProps = {
   setIsProcessing: (processing: boolean) => void
 }
 
-const LocalizationConfigContext =
-  React.createContext<LocalizationConfigContextProps | undefined>(undefined)
+const LocalizationConfigContext = React.createContext<
+  LocalizationConfigContextProps | undefined
+>(undefined)
 
 export default function LocalizationConfig() {
   const {defaultLanguage} = useLanguage()
