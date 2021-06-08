@@ -69,11 +69,10 @@ function StepLabel(props: {step: Step}) {
 function StepIcon(props: {icon: string; isActive: boolean}) {
   const {isActive} = props
   const {template} = usePanels()
-  const defaultColor = useColor()
 
   const color = () => {
     if (!isActive) {
-      return defaultColor
+      return template.checkInLeftPanel.inactiveTextColor
     }
 
     return template.checkInLeftPanel.textColor
@@ -84,26 +83,15 @@ function StepIcon(props: {icon: string; isActive: boolean}) {
 function Divider(props: {isActive: boolean; horizontal?: boolean}) {
   const {isActive, horizontal} = props
   const {template} = usePanels()
-  const defaultColor = useColor()
 
   const color = () => {
     if (!isActive) {
-      return defaultColor
+      return template.checkInLeftPanel.inactiveTextColor
     }
 
     return template.checkInLeftPanel.textColor
   }
   return <DividerLine color={color()} horizontal={horizontal} />
-}
-
-function useColor() {
-  const {template} = usePanels()
-
-  if (template.isDarkMode) {
-    return '#C7C7C7'
-  }
-
-  return '#1C1C1C'
 }
 
 const Label = styled.h4<{

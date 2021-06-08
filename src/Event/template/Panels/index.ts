@@ -76,6 +76,7 @@ export type Panels = BaseTemplate & {
     backgroundColor: string
     backgroundOpacity: number
     textColor: string
+    inactiveTextColor: string
   }
   stepLabelColor: string
   step1Label: string
@@ -209,6 +210,7 @@ export const createPanels = (): Panels => ({
     backgroundColor: '#FFFFFF',
     backgroundOpacity: 0,
     textColor: '#000000',
+    inactiveTextColor: '#C7C7C7',
   },
   stepLabelColor: '#07BAB5',
   step1Label: 'Step 1',
