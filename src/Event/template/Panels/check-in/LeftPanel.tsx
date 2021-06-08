@@ -42,6 +42,7 @@ const Box = styled.div<{
   padding: 40px;
   background: ${(props) => props.backgroundColor};
   border-radius: 10px;
+  overflow: auto;
 
   > * {
     color: ${(props) => props.textColor}!important;

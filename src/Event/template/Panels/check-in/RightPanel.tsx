@@ -37,6 +37,7 @@ const Box = styled.div<{
   justify-content: center;
   align-items: ${(props) => (props.center ? 'center' : 'flex-start')};
   background: ${(props) => props.backgroundColor};
+  overflow: auto;
 
   > * {
     color: ${(props) => props.textColor}!important;
