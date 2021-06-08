@@ -11,9 +11,8 @@ export interface BreadcrumbContextProps {
   clear: () => void
 }
 
-const BreadcrumbContext = React.createContext<
-  BreadcrumbContextProps | undefined
->(undefined)
+const BreadcrumbContext =
+  React.createContext<BreadcrumbContextProps | undefined>(undefined)
 
 export default function BreadcrumbProvider(props: {children: React.ReactNode}) {
   const [breadcrumbs, setBreadcrumbs] = useState<Breadcrumb[]>([])
