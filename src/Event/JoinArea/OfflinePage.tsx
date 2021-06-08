@@ -1,8 +1,17 @@
 import {RequestJoinUrlError} from 'Event/EventProvider'
 import React from 'react'
-import Page, {Description, Title} from 'Event/template/SimpleBlog/Login/Page'
+import {useTemplate} from 'Event/TemplateProvider'
+import {SIMPLE_BLOG} from 'Event/template/SimpleBlog'
+import {PANELS} from 'Event/template/Panels'
+import SimpleBlogOfflinePage from 'Event/template/SimpleBlog/OfflinePage'
+import PanelsOfflinePage from 'Event/template/Panels/OfflinePage'
 
 const FALLBACK_OFFLINE_TITLE = 'Area is currently offline'
+
+export type OfflinePageProps = {
+  title: string
+  description: string
+}
 
 export default function OfflinePage(props: {error: RequestJoinUrlError}) {
   const {error} = props
@@ -10,12 +19,16 @@ export default function OfflinePage(props: {error: RequestJoinUrlError}) {
   const title = error.offline_title || FALLBACK_OFFLINE_TITLE
   const description = error.offline_description || ''
 
-  return (
-    <Page isPreview={false}>
-      <>
-        <Title>{title}</Title>
-        <Description>{description}</Description>
-      </>
-    </Page>
-  )
+  return <TemplateOfflinePage title={title} description={description} />
+}
+
+function TemplateOfflinePage(props: OfflinePageProps) {
+  const {name} = useTemplate()
+
+  switch (name) {
+    case SIMPLE_BLOG:
+      return <SimpleBlogOfflinePage {...props} />
+    case PANELS:
+      return <PanelsOfflinePage {...props} />
+  }
 }

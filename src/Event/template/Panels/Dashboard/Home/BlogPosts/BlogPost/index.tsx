@@ -63,12 +63,12 @@ const DateText = styled.span`
   display: block;
   margin-bottom: 14px;
   position: relative;
-  background: #ffffff;
+  background: transparent;
 
   /* Separator line after date */
   &:after {
     content: ' ';
-    background: #e5e5e5;
+    background: #adadad;
     position: absolute;
     width: 100%;
     height: 1px;
