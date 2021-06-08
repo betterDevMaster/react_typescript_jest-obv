@@ -15,6 +15,7 @@ export default function Nav(props: {
 
   const StyledTabs = withStyles({
     root: {
+      minHeight: '65px',
       backgroundColor: rightPanel.barBackgroundColor,
       borderTopLeftRadius: '10px',
       borderTopRightRadius: '10px',
@@ -38,7 +39,6 @@ export default function Nav(props: {
   const StyledTab = withStyles((theme) => ({
     root: {
       color: rightPanel.barTextColor,
-      minHeight: '65px',
       fontWeight: 'bold',
       textTransform: 'none',
     },
