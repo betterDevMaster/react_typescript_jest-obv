@@ -6,7 +6,11 @@ import {rgba} from 'lib/color'
 import {ThemeProvider} from '@material-ui/core/styles'
 import {Panels, usePanels} from 'Event/template/Panels'
 import Hidden from '@material-ui/core/Hidden'
-import {muiDarkTheme, muiTheme} from 'lib/ui/theme'
+import {
+  createMuiDarkTheme,
+  createMuiLightTheme,
+  MuiThemeOptions,
+} from 'lib/ui/theme'
 
 const DEFAULT_BACKGROUND_COLOR = '#FFFFFF'
 
@@ -99,11 +103,15 @@ function useLinkColor() {
 }
 
 function useTheme() {
-  const {
-    template: {isDarkMode},
-  } = usePanels()
+  const {template} = usePanels()
 
-  return isDarkMode ? muiDarkTheme : muiTheme
+  const options: MuiThemeOptions = {
+    secondaryColor: template.accentColor,
+  }
+
+  return template.isDarkMode
+    ? createMuiDarkTheme(options)
+    : createMuiLightTheme(options)
 }
 
 const Box = styled.div<{

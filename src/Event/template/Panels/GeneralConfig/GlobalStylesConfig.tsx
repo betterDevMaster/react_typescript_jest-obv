@@ -43,6 +43,14 @@ export default function GlobalStylesConfig() {
       </Box>
       <Box mb={2}>
         <ColorPicker
+          label="Accent Color"
+          color={template.accentColor}
+          onPick={update.primitive('accentColor')}
+          aria-label="accent color"
+        />
+      </Box>
+      <Box mb={2}>
+        <ColorPicker
           label="Background Color"
           color={template.background?.color}
           onPick={updateBackground('color')}
