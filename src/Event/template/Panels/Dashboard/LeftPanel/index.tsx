@@ -68,6 +68,7 @@ export default function LeftPanel(props: {
             <MainContent>
               {menuVisible ? null : (
                 <>
+                  <div>{/* Spacer used to center buttons */}</div>
                   <MainNav />
                   <EmojiList />
                 </>
