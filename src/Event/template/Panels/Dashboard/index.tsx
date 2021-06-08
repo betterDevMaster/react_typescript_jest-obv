@@ -62,4 +62,5 @@ const StyledTabPanel = styled(TabPanel)`
     rendering text invisible on white background. 
   */
   color: #000000;
+  width: 100%;
 `

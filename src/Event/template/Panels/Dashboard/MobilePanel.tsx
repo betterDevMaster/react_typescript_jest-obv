@@ -6,6 +6,7 @@ import {MenuIconButton} from 'lib/ui/IconButton/MenuIconButton'
 import Menu from 'Event/template/Panels/Dashboard/Menu'
 import MainNav from 'Event/template/Panels/Dashboard/MainNav'
 import EmojiList from 'Event/template/Panels/Dashboard/EmojiList'
+import {rgba} from 'lib/color'
 
 export default function MobilePanel(props: {
   children: React.ReactElement
@@ -13,11 +14,7 @@ export default function MobilePanel(props: {
 }) {
   const [menuVisible, setMenuVisible] = useState(false)
   const toggleMenu = () => setMenuVisible(!menuVisible)
-  const {
-    template: {isDarkMode},
-  } = usePanels()
-
-  const menuIconColor = isDarkMode ? '#ffffff' : '#000000'
+  const {template} = usePanels()
 
   const handleChangeTab = (tab: number) => {
     props.onChangeTab(tab)
@@ -28,7 +25,7 @@ export default function MobilePanel(props: {
     <Box>
       <StyledMenuIconButton
         active={menuVisible}
-        iconColor={menuIconColor}
+        iconColor={template.leftPanel.barTextColor}
         onClick={toggleMenu}
       />
       <LogoBox>
@@ -46,6 +43,8 @@ function Content(props: {
   children: React.ReactElement
   onChangeTab: (tab: number) => void
 }) {
+  const {template} = usePanels()
+
   if (props.menuVisible) {
     return <Menu onChangeTab={props.onChangeTab} />
   }
@@ -56,7 +55,14 @@ function Content(props: {
         <MainNav />
         <EmojiList />
       </Top>
-      <Panel backgroundColor="#ffffff">{props.children}</Panel>
+      <Panel
+        backgroundColor={rgba(
+          template.rightPanel.backgroundColor,
+          template.rightPanel.backgroundOpacity,
+        )}
+      >
+        {props.children}
+      </Panel>
     </>
   )
 }
