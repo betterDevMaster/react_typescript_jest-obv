@@ -80,6 +80,7 @@ const Box = styled.div`
   flex-direction: column;
   align-items: center;
   min-height: 100vh;
+  overflow: auto;
 `
 
 const LogoBox = styled.div`
@@ -90,7 +91,6 @@ const LogoBox = styled.div`
 const Panel = styled.div<{
   backgroundColor: string
 }>`
-  overflow: auto;
   flex: 1;
   margin-top: 24px;
   border-top-left-radius: 10px;

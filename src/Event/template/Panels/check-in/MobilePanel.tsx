@@ -37,6 +37,7 @@ const Box = styled.div`
   flex-direction: column;
   align-items: center;
   min-height: 100vh;
+  overflow: auto;
 `
 
 const LogoBox = styled.div`
@@ -59,7 +60,6 @@ const Panel = styled.div<{
   justify-content: center;
   align-items: center;
   background: ${(props) => props.backgroundColor};
-  overflow: auto;
 
   @media (min-width: ${(props) => props.theme.breakpoints.sm}) {
     width: calc(100% - 40px);
