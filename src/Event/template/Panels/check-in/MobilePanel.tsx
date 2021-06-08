@@ -59,6 +59,7 @@ const Panel = styled.div<{
   justify-content: center;
   align-items: center;
   background: ${(props) => props.backgroundColor};
+  overflow: auto;
 
   @media (min-width: ${(props) => props.theme.breakpoints.sm}) {
     width: calc(100% - 40px);
