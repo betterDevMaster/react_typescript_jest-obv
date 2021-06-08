@@ -82,9 +82,8 @@ export const createMuiLightTheme = (options: MuiThemeOptions) =>
   createMuiTheme(
     {
       palette: {
-        type: 'dark',
         primary: {
-          main: '#FFFFFF',
+          main: colors.primary,
         },
         secondary: {
           main: options.secondaryColor,
