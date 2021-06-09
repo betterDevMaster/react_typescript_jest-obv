@@ -55,8 +55,9 @@ export interface QuestionsContextProps {
   remove: (question: Question) => void
 }
 
-export const QuestionsContext =
-  React.createContext<QuestionsContextProps | undefined>(undefined)
+export const QuestionsContext = React.createContext<
+  QuestionsContextProps | undefined
+>(undefined)
 
 export default function QuestionsProvider(props: {
   children: React.ReactElement
