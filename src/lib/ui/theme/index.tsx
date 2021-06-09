@@ -71,7 +71,7 @@ export const createMuiDarkTheme = (options: MuiThemeOptions) =>
           main: '#FFFFFF',
         },
         secondary: {
-          main: options.secondaryColor,
+          main: options.secondaryColor || colors.secondary,
         },
       },
     },
@@ -86,7 +86,7 @@ export const createMuiLightTheme = (options: MuiThemeOptions) =>
           main: colors.primary,
         },
         secondary: {
-          main: options.secondaryColor,
+          main: options.secondaryColor || colors.secondary,
         },
       },
     },
