@@ -29,8 +29,9 @@ export default function RuleList(props: {
     }
   }
 
-  const [selectedRuleIndex, setSelectedRuleIndex] =
-    useState<number | null>(null)
+  const [selectedRuleIndex, setSelectedRuleIndex] = useState<number | null>(
+    null,
+  )
 
   const rules = props.rules || []
 

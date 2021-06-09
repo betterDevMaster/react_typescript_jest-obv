@@ -34,8 +34,9 @@ export interface AttendeeImportResult {
   invalid_emails: string[]
 }
 
-export const AttendeesContext =
-  React.createContext<AttendeesContextProps | undefined>(undefined)
+export const AttendeesContext = React.createContext<
+  AttendeesContextProps | undefined
+>(undefined)
 
 export default function AttendeesProvider(props: {
   children: React.ReactElement
