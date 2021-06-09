@@ -6,9 +6,11 @@ import {eventRoutes} from 'Event/Routes'
 import {useForgotPassword} from 'auth/password'
 import {api} from 'lib/url'
 import {useTemplate} from 'Event/TemplateProvider'
+import {PANELS} from 'Event/template/Panels'
+import PanelsForgotPassword from 'Event/template/Panels/Login/ForgotPassword'
 
 export default function ForgotPassword() {
-  const template = useTemplate()
+  const {name} = useTemplate()
 
   const {url: eventUrl, event} = useEvent()
 
@@ -17,10 +19,12 @@ export default function ForgotPassword() {
     resetFormUrl: `${eventUrl}${eventRoutes.reset_password}`,
   })
 
-  switch (template.name) {
+  switch (name) {
     case SIMPLE_BLOG:
       return <SimpleBlogForgotPassword {...forgotPassword} />
+    case PANELS:
+      return <PanelsForgotPassword {...forgotPassword} />
     default:
-      throw new Error(`Missing login for template: ${template.name}`)
+      throw new Error(`Missing forgot password page for template: ${name}`)
   }
 }

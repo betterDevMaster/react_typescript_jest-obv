@@ -1,42 +1,79 @@
-import {act, wait} from '@testing-library/react'
 import user from '@testing-library/user-event'
+import {
+  fakeLogin,
+  fakeSimpleBlog,
+} from 'Event/template/SimpleBlog/__utils__/factory'
+import {fakeEvent} from 'Event/__utils__/factory'
+import {visitEventSite} from 'Event/__utils__/url'
+import React from 'react'
+import faker from 'faker'
+import {render} from '__utils__/render'
 import App from 'App'
+import {act, wait} from '@testing-library/react'
 import axios from 'axios'
-import {EVENT_TOKEN_KEY} from 'Event/auth'
+import {DEFAULT_LOGO_SIZE_PERCENT} from 'Event/template/SimpleBlog/Login/LoginConfig'
+import {useLocation} from 'react-router-dom'
 import {fakeAttendee} from 'Event/auth/__utils__/factory'
 import {defaultScore} from 'Event/PointsProvider'
-import {visitEventSite} from 'Event/__utils__/url'
-import faker from 'faker'
-import React from 'react'
-import {useLocation} from 'react-router-dom'
-import {render} from '__utils__/render'
+import {EVENT_TOKEN_KEY} from 'Event/auth'
+import {fakePanels} from 'Event/template/Panels/__utils__/factory'
 
-const mockPost = axios.post as jest.Mock
 const mockGet = axios.get as jest.Mock
+const mockPost = axios.post as jest.Mock
 const mockUseLocation = useLocation as jest.Mock
 
 beforeEach(() => {
   jest.clearAllMocks()
 })
 
-it('should show event login form', async () => {
-  const event = visitEventSite()
+it('render login page', async () => {
+  const background = faker.internet.url()
+  const logo = faker.internet.url()
+  const descriptionText = faker.lorem.sentence()
+  const event = fakeEvent({
+    login_background: {
+      url: background,
+      name: 'background',
+    },
+    login_logo: {
+      url: logo,
+      name: 'logo',
+    },
+    template: fakePanels({
+      login: fakeLogin({
+        description: {
+          text: descriptionText,
+          color: '#000000',
+          fontSize: 18,
+        },
+        logoSize: DEFAULT_LOGO_SIZE_PERCENT,
+      }),
+    }),
+  })
 
-  const {findByLabelText} = render(<App />)
+  visitEventSite({event})
+
+  const {findByLabelText, findByText} = render(<App />)
 
   await wait(() => {
     expect(mockGet).toBeCalledTimes(1)
   })
 
-  expect(await findByLabelText(`email`)).toBeInTheDocument()
-  expect(await findByLabelText(`password`)).toBeInTheDocument()
+  expect(await findByLabelText('login background')).toHaveStyle(
+    `background: url(${background})`,
+  )
 
-  const url = mockGet.mock.calls[0][0]
-  expect(url).toBe(`${process.env.REACT_APP_API_URL}/events/${event.slug}`)
+  expect((await findByLabelText('login logo')).getAttribute('src')).toBe(logo)
+
+  expect(await findByText(descriptionText)).toBeInTheDocument()
 })
 
 it('should login a user', async () => {
-  visitEventSite()
+  visitEventSite({
+    event: fakeEvent({
+      template: fakePanels(),
+    }),
+  })
 
   const token = 'secrettoken'
   mockPost.mockImplementationOnce(() =>
@@ -62,7 +99,7 @@ it('should login a user', async () => {
 
   expect(mockPost).toHaveBeenCalledTimes(1)
 
-  // // Submitted correct data?
+  // Submitted correct data?
   const data = mockPost.mock.calls[0][1]
   expect(data.email).toBe(email)
   expect(data.password).toBe(password)
@@ -83,7 +120,11 @@ it('should login a user by token', async () => {
   const token = 'logintoken'
   const accessToken = faker.random.alphaNumeric(8)
 
-  visitEventSite()
+  visitEventSite({
+    event: fakeEvent({
+      template: fakePanels(),
+    }),
+  })
 
   mockUseLocation.mockImplementation(() => ({
     pathname: '',
@@ -114,7 +155,11 @@ it('should handle an invalid login token', async () => {
   const attendee = fakeAttendee({has_password: false})
   const token = 'logintoken'
 
-  visitEventSite()
+  visitEventSite({
+    event: fakeEvent({
+      template: fakePanels(),
+    }),
+  })
 
   mockUseLocation.mockImplementation(() => ({
     pathname: '',

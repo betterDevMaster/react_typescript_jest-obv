@@ -11,6 +11,7 @@ import {
   createMuiLightTheme,
   MuiThemeOptions,
 } from 'lib/ui/theme'
+import LanguageSelector from 'Event/LanguageSelector'
 
 const DEFAULT_BACKGROUND_COLOR = '#FFFFFF'
 export const TOP_BAR_HEIGHT = 65
@@ -52,6 +53,7 @@ export default function Page(props: {
             </FullHeightGrid>
           </Hidden>
           <Hidden mdUp>{Mobile}</Hidden>
+          <LanguageSelector />
         </ColorOverlay>
       </Box>
     </ThemeProvider>

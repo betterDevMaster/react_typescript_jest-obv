@@ -22,7 +22,7 @@ export default function Home() {
         onClose={toggleWelcomeConfig}
       />
       <Editable onEdit={toggleWelcomeConfig}>
-        <WelcomeText hasMinHeight={isEditMode}>
+        <WelcomeText hasMinHeight={isEditMode} aria-label="welcome">
           {template.welcomeText}
         </WelcomeText>
       </Editable>
