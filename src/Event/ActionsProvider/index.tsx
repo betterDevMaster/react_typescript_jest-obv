@@ -23,9 +23,8 @@ export interface Action {
 
 export type ActionsContextProps = ReturnType<typeof useActionsList>
 
-export const ActionsContext = React.createContext<
-  ActionsContextProps | undefined
->(undefined)
+export const ActionsContext =
+  React.createContext<ActionsContextProps | undefined>(undefined)
 
 export function OrganizationActionsProvider(props: {
   children: React.ReactNode
