@@ -110,7 +110,6 @@ it('should edit a blog post', async () => {
   const updatedTitle = faker.random.words(10)
   user.type(await findByLabelText('blog post title'), updatedTitle)
 
-
   expect(await findByText(updatedTitle)).toBeInTheDocument()
 })
 

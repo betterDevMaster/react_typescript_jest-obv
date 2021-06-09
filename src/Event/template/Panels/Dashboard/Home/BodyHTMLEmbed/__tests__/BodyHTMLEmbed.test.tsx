@@ -1,7 +1,5 @@
 import React from 'react'
-import {
-  fakePanels,
-} from 'Event/template/Panels/__utils__/factory'
+import {fakePanels} from 'Event/template/Panels/__utils__/factory'
 import {fakeUser} from 'auth/user/__utils__/factory'
 import Dashboard from 'Event/Dashboard'
 import {emptyActions, render} from '__utils__/render'

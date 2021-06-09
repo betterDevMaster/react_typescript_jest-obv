@@ -41,12 +41,12 @@ it('should update welcome Text', async () => {
 
   expect((await findByLabelText('welcome')).textContent).toBe(welcomeText)
 
-//   await wait(() => {
-//     expect(mockPost).toHaveBeenCalledTimes(1)
-//   })
+  //   await wait(() => {
+  //     expect(mockPost).toHaveBeenCalledTimes(1)
+  //   })
 
-//   const [url, data] = mockPost.mock.calls[0]
+  //   const [url, data] = mockPost.mock.calls[0]
 
-//   expect(url).toMatch(`/events/${event.slug}`)
-//   expect(data.get('welcomeText')).toBe(welcomeText)
+  //   expect(url).toMatch(`/events/${event.slug}`)
+  //   expect(data.get('welcomeText')).toBe(welcomeText)
 })

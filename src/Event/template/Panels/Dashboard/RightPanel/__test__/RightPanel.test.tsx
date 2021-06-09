@@ -19,57 +19,52 @@ afterEach(() => {
 })
 
 it('should render right panel', async () => {
-  
-    const {findByLabelText} = render(
-      <Dashboard isEditMode={false} user={fakeUser()} />,
-      {
-        event: fakeEvent({template: fakePanels(), logo: null}),
-        organization: fakeOrganization(),
-        actions: [],
-        score: defaultScore,
-        withRouter: true,
-      },
-    )
+  const {findByLabelText} = render(
+    <Dashboard isEditMode={false} user={fakeUser()} />,
+    {
+      event: fakeEvent({template: fakePanels(), logo: null}),
+      organization: fakeOrganization(),
+      actions: [],
+      score: defaultScore,
+      withRouter: true,
+    },
+  )
 
-    expect( await (findByLabelText("panels tab home")) ).toBeInTheDocument();
-    expect( await (findByLabelText("panels tab speakers")) ).toBeInTheDocument();
-    expect( await (findByLabelText("panels tab resources")) ).toBeInTheDocument();
-    expect( await (findByLabelText("panels tab points")) ).toBeInTheDocument();
-
+  expect(await findByLabelText('panels tab home')).toBeInTheDocument()
+  expect(await findByLabelText('panels tab speakers')).toBeInTheDocument()
+  expect(await findByLabelText('panels tab resources')).toBeInTheDocument()
+  expect(await findByLabelText('panels tab points')).toBeInTheDocument()
 })
 
-
 it('should render right panel', async () => {
+  const event = fakeEvent({template: fakePanels(), logo: null})
 
-    const event = fakeEvent({template: fakePanels(), logo: null})
+  const {findByLabelText} = render(
+    <Dashboard isEditMode={true} user={fakeUser()} />,
+    {
+      event,
+      organization: fakeOrganization(),
+      actions: [],
+      score: defaultScore,
+      withRouter: true,
+    },
+  )
 
-    const {findByLabelText} = render(
-        <Dashboard isEditMode={true} user={fakeUser()} />,
-        {
-          event,
-          organization: fakeOrganization(),
-          actions: [],
-          score: defaultScore,
-          withRouter: true,
-        },
+  clickEdit(await findByLabelText('panels right panel bar'))
+
+  const color = '#555555'
+  user.type(await findByLabelText('bar text color'), color)
+
+  await wait(async () => {
+    expect(await findByLabelText('panels tab home')).toHaveStyle(
+      `color: ${rgba(color)}`,
     )
+  })
+  await wait(() => {
+    expect(mockPost).toHaveBeenCalledTimes(1)
+  })
 
-    clickEdit(await findByLabelText('panels right panel bar'))
-    
-    const color = '#555555'
-    user.type(await findByLabelText('bar text color'), color)
-  
-    await wait(async () => {
-      expect(await findByLabelText('panels tab home')).toHaveStyle(
-        `color: ${rgba(color)}`,
-      )
-    })
-    await wait(() => {
-        expect(mockPost).toHaveBeenCalledTimes(1)
-    })
+  const [url] = mockPost.mock.calls[0]
 
-    const [url] = mockPost.mock.calls[0]
-
-    expect(url).toMatch(`/events/${event.slug}`)
-    
+  expect(url).toMatch(`/events/${event.slug}`)
 })

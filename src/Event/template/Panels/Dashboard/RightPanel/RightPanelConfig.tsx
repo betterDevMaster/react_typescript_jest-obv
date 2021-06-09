@@ -42,7 +42,7 @@ export default function RightPanelConfig(props: {
             label="Bar Background Color"
             color={rightPanel.barBackgroundColor}
             onPick={updateRightPanel('barBackgroundColor')}
-            aria-label = "bar background color"
+            aria-label="bar background color"
           />
         </Box>
         <Box mb={2}>
@@ -50,8 +50,7 @@ export default function RightPanelConfig(props: {
             label="Bar Text Color"
             color={rightPanel.barTextColor}
             onPick={updateRightPanel('barTextColor')}
-            aria-label = "bar text color"
-
+            aria-label="bar text color"
           />
         </Box>
         <Box mb={2}>
@@ -59,7 +58,7 @@ export default function RightPanelConfig(props: {
             label="Tab Underline Color"
             color={rightPanel.tabUnderlineColor}
             onPick={updateRightPanel('tabUnderlineColor')}
-            aria-label = "Tab underline color"
+            aria-label="Tab underline color"
           />
         </Box>
         <Box mb={2}>
@@ -67,8 +66,7 @@ export default function RightPanelConfig(props: {
             label="Text Color"
             color={rightPanel.textColor}
             onPick={updateRightPanel('textColor')}
-            aria-label = "panel text color"
-
+            aria-label="panel text color"
           />
         </Box>
         <Box mb={2}>
@@ -76,7 +74,7 @@ export default function RightPanelConfig(props: {
             label="Panel Background Color"
             color={rightPanel.backgroundColor}
             onPick={updateRightPanel('backgroundColor')}
-            aria-label = "panel background color"
+            aria-label="panel background color"
           />
         </Box>
         <Box mb={2}>

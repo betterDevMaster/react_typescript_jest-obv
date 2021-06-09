@@ -31,8 +31,7 @@ export default function LeftPanelConfig(props: {
             label="Bar Background Color"
             color={leftPanel.barBackgroundColor}
             onPick={updateLeftPanel('barBackgroundColor')}
-            aria-label = "left panel bar background color"
-
+            aria-label="left panel bar background color"
           />
         </Box>
 
@@ -41,7 +40,7 @@ export default function LeftPanelConfig(props: {
             label="Bar Text Color"
             color={leftPanel.barTextColor}
             onPick={updateLeftPanel('barTextColor')}
-            aria-label = "left panel bar text color"
+            aria-label="left panel bar text color"
           />
         </Box>
 
@@ -50,8 +49,7 @@ export default function LeftPanelConfig(props: {
             label="Panel Background Color"
             color={leftPanel.backgroundColor}
             onPick={updateLeftPanel('backgroundColor')}
-            aria-label = "left panel background color"
-
+            aria-label="left panel background color"
           />
         </Box>
         <Box mb={2}>

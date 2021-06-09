@@ -102,7 +102,6 @@ it('should add a new resource', async () => {
 })
 
 it('should update resources title', async () => {
-
   const dashboard = fakePanels({
     resourceList: {
       title: faker.random.word(),
@@ -129,10 +128,7 @@ it('should update resources title', async () => {
   clickEdit(await findByLabelText('resources'))
 
   const updatedTitle = faker.random.words(2)
-  user.type(
-    await findByLabelText('update resources title'),
-    updatedTitle,
-  )
+  user.type(await findByLabelText('update resources title'), updatedTitle)
 
   expect((await findByLabelText('resources')).textContent).toBe(updatedTitle)
 
@@ -159,7 +155,7 @@ it('should update a resource', async () => {
   const event = fakeEvent({template: dashboard})
   const organization = fakeOrganization()
 
-  const downloadLinkText = "Download";
+  const downloadLinkText = 'Download'
 
   const {findByLabelText} = render(
     <Dashboard isEditMode={true} user={fakeUser()} />,
@@ -174,14 +170,18 @@ it('should update a resource', async () => {
 
   user.click(await findByLabelText('panels tab resources'))
 
-  expect((await findByLabelText('resource link')).textContent).toBe(downloadLinkText)
+  expect((await findByLabelText('resource link')).textContent).toBe(
+    downloadLinkText,
+  )
 
   clickEdit(await findByLabelText('event resource'))
 
   const updatedName = faker.random.word()
   user.type(await findByLabelText('resource name'), updatedName)
 
-  expect((await findByLabelText('resource link')).textContent).toBe(downloadLinkText)
+  expect((await findByLabelText('resource link')).textContent).toBe(
+    downloadLinkText,
+  )
 
   // Saved
   await wait(() => {

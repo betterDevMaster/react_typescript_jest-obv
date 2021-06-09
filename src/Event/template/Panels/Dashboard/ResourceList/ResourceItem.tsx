@@ -87,7 +87,9 @@ function ResourceItemCard(props: {
         <Typography variant="h5" component="h2">
           {v(props.resource.name)}
         </Typography>
-        <Typography aria-label="resource description">{v(props.resource.description || '')}</Typography>
+        <Typography aria-label="resource description">
+          {v(props.resource.description || '')}
+        </Typography>
       </CardContent>
       <CardActions>
         <ResourceLink

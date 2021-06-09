@@ -40,7 +40,6 @@ it('should render emojis', async () => {
       },
     }),
   })
-  
 
   const {findAllByLabelText, rerender, queryByLabelText} = render(
     <Dashboard isEditMode={false} user={fakeUser()} />,
