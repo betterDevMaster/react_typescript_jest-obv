@@ -148,7 +148,7 @@ function Content(props: {targetIndex: number; onClose: () => void}) {
             <TextField
               value={resource.description}
               inputProps={{
-                'aria-label': 'resource name',
+                'aria-label': 'resource description',
               }}
               label="Description"
               fullWidth

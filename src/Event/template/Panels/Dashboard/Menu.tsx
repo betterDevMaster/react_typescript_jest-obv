@@ -28,6 +28,7 @@ export default function Menu(props: {
             key={label}
             onClick={() => props.onChangeTab(index)}
             color={color}
+            aria-label={`left panel menu ${label} button`}
           >
             {label}
           </LinkText>

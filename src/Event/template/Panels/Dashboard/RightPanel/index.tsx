@@ -32,6 +32,7 @@ export default function RightPanel(props: {
             <Bar
               currentTab={props.currentTab}
               onChangeTab={props.onChangeTab}
+              aria-label="panels right panel bar"
             />
           </Editable>
           <Body

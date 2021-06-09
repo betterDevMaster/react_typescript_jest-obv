@@ -42,11 +42,12 @@ export default function LeftPanel(props: {
         )}
       >
         <Editable onEdit={toggleBarConfig}>
-          <Bar backgroundColor={leftPanel.barBackgroundColor}>
+          <Bar backgroundColor={leftPanel.barBackgroundColor} aria-label='left panel'>
             <MenuIconButton
               active={menuVisible}
               iconColor={leftPanel.barTextColor}
               onClick={toggleMenu}
+              aria-label="menu icon button"
             />
           </Bar>
         </Editable>

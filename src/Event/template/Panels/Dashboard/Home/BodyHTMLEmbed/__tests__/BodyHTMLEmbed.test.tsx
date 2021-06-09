@@ -1,8 +1,7 @@
 import React from 'react'
 import {
-  fakeHeader,
-  fakeSimpleBlog,
-} from 'Event/template/SimpleBlog/__utils__/factory'
+  fakePanels,
+} from 'Event/template/Panels/__utils__/factory'
 import {fakeUser} from 'auth/user/__utils__/factory'
 import Dashboard from 'Event/Dashboard'
 import {emptyActions, render} from '__utils__/render'
@@ -22,11 +21,7 @@ it('inserts HTML into dashboard body', async () => {
   const text = faker.random.word()
 
   const event = fakeEvent({
-    template: fakeSimpleBlog({
-      header: fakeHeader({
-        script: 'myFunc()',
-      }),
-
+    template: fakePanels({
       bodyHTMLEmbed: `
         <script>
           myFunc();

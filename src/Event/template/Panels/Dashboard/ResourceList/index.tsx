@@ -34,7 +34,6 @@ export type Resource = Publishable &
     name: string
     filePath: string
     description: string | null
-    icon: string | null
     isUrl?: boolean
     url?: string
   }

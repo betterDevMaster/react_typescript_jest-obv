@@ -8,6 +8,7 @@ import {TOP_BAR_HEIGHT} from 'Event/template/Panels/Page'
 export default function Nav(props: {
   currentTab: number
   onChangeTab: (index: number) => void
+  'aria-label'?: string
 }) {
   const {
     template: {rightPanel},
@@ -51,11 +52,12 @@ export default function Nav(props: {
       onChange={(_, tabIndex) => onChangeTab(tabIndex)}
       value={currentTab}
       centered
+      aria-label={props['aria-label']}
     >
-      <StyledTab label="Home" />
-      <StyledTab label="Speakers" />
-      <StyledTab label="Resources" />
-      <StyledTab label="Points" />
+      <StyledTab label="Home" aria-label="panels tab home" />
+      <StyledTab label="Speakers" aria-label="panels tab speakers" />
+      <StyledTab label="Resources" aria-label="panels tab resources" />
+      <StyledTab label="Points" aria-label="panels tab points" />
     </StyledTabs>
   )
 }
