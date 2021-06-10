@@ -18,12 +18,14 @@ import {CONFIGURE_EVENTS} from 'organization/PermissionsProvider'
 import HasPermission from 'organization/HasPermission'
 import AttendeesTable from 'organization/Event/AttendeeManagement/AttendeesTable'
 import AssignmentsDialog from 'organization/Event/AttendeeManagement/AssignmentsDialog'
+import PointsDialog from 'organization/Event/AttendeeManagement/PointsDialog'
 
 export default function AttendeeManagement() {
   const {error, clearError, exportAttendees, search} = useAttendees()
   const [editing, setEditing] = useState<Attendee | null>(null)
   const [viewAssignments, setViewAssignments] = useState<Attendee | null>(null)
   const [createDialogVisible, setCreateDialogVisible] = useState(false)
+  const [pointsTarget, setPointsTarget] = useState<Attendee | null>(null)
 
   const toggleCreateDialog = () => setCreateDialogVisible(!createDialogVisible)
 
@@ -33,6 +35,10 @@ export default function AttendeeManagement() {
   const viewAttendeeAssignments = (attendee: Attendee) => () =>
     setViewAssignments(attendee)
   const stopViewingAssignments = () => setViewAssignments(null)
+
+  const showPointsDialog = (attendee: Attendee) => () =>
+    setPointsTarget(attendee)
+  const hidePointsDialog = () => setPointsTarget(null)
 
   return (
     <>
@@ -45,6 +51,7 @@ export default function AttendeeManagement() {
         attendee={viewAssignments}
         onClose={stopViewingAssignments}
       />
+      <PointsDialog attendee={pointsTarget} onClose={hidePointsDialog} />
       <Layout>
         <Page>
           <Box mb={2}>
@@ -102,6 +109,7 @@ export default function AttendeeManagement() {
           <AttendeesTable
             onSelectEdit={edit}
             onSelectAssignments={viewAttendeeAssignments}
+            onUpdatePoints={showPointsDialog}
           />
         </Page>
       </Layout>

@@ -11,6 +11,7 @@ export default function Dialog(
     children: React.ReactElement | React.ReactElement[]
     open: boolean
     onClose: () => void
+    className?: string
   } & DialogProps,
 ) {
   return (
@@ -22,6 +23,7 @@ export default function Dialog(
         onClose={props.onClose}
         fullWidth={props.fullWidth}
         disableEnforceFocus={props.disableEnforceFocus}
+        className={props.className}
       >
         <CloseButton onClick={props.onClose} aria-label="close dialog">
           <CloseIcon fontSize="small" />

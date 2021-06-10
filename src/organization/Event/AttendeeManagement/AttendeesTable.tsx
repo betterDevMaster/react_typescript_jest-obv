@@ -23,10 +23,12 @@ import {useEvent} from 'Event/EventProvider'
 import {useAsync} from 'lib/async'
 import {api} from 'lib/url'
 import {useOrganization} from 'organization/OrganizationProvider'
+import UpdateIcon from '@material-ui/icons/Update'
 
 export default function AttendeesTable(props: {
   onSelectEdit: (attendee: Attendee) => () => void
   onSelectAssignments: (attendee: Attendee) => () => void
+  onUpdatePoints: (attendee: Attendee) => () => void
 }) {
   const {
     attendees,
@@ -118,6 +120,13 @@ export default function AttendeesTable(props: {
                     aria-label="view room assignments"
                   >
                     <AssignmentOutlined />
+                  </IconButton>
+                  <IconButton
+                    color="primary"
+                    aria-label="update points"
+                    onClick={props.onUpdatePoints(attendee)}
+                  >
+                    <UpdateIcon />
                   </IconButton>
                 </TableCell>
               </TableRow>

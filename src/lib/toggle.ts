@@ -2,7 +2,7 @@ import {useState} from 'react'
 
 export function useToggle() {
   const [isTrue, setIsTrue] = useState(false)
-  const toggle = () => setIsTrue(!isTrue)
+  const toggle = () => setIsTrue((isTrue) => !isTrue) // use callback otherwise it would yield unexpected results in promises
 
   /**
    * Have to return an object instead of a typed array because
