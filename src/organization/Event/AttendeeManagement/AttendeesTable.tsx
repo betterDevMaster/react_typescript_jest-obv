@@ -23,7 +23,7 @@ import {useEvent} from 'Event/EventProvider'
 import {useAsync} from 'lib/async'
 import {api} from 'lib/url'
 import {useOrganization} from 'organization/OrganizationProvider'
-import UpdateIcon from '@material-ui/icons/Update'
+import EmojiEventsIcon from '@material-ui/icons/EmojiEvents'
 
 export default function AttendeesTable(props: {
   onSelectEdit: (attendee: Attendee) => () => void
@@ -126,7 +126,7 @@ export default function AttendeesTable(props: {
                     aria-label="update points"
                     onClick={props.onUpdatePoints(attendee)}
                   >
-                    <UpdateIcon />
+                    <EmojiEventsIcon />
                   </IconButton>
                 </TableCell>
               </TableRow>
