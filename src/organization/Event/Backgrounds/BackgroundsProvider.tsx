@@ -64,8 +64,9 @@ export interface BackgroundsContextProps {
   ) => Promise<any>
 }
 
-const BackgroundsContext =
-  React.createContext<BackgroundsContextProps | undefined>(undefined)
+const BackgroundsContext = React.createContext<
+  BackgroundsContextProps | undefined
+>(undefined)
 
 export default function BackgroundsProvider(props: {
   children: React.ReactElement
