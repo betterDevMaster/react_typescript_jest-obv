@@ -25,8 +25,9 @@ export interface NameAppendageContextProps {
   loading: boolean
 }
 
-export const NameAppendageContext =
-  React.createContext<NameAppendageContextProps | undefined>(undefined)
+export const NameAppendageContext = React.createContext<
+  NameAppendageContextProps | undefined
+>(undefined)
 
 export default function NameAppendageProvider(props: {
   children: React.ReactElement

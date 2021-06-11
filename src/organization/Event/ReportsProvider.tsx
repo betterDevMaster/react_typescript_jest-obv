@@ -38,8 +38,9 @@ interface ReportsProviderContextProps {
   loading: boolean
 }
 
-const ReportsProviderContext =
-  React.createContext<undefined | ReportsProviderContextProps>(undefined)
+const ReportsProviderContext = React.createContext<
+  undefined | ReportsProviderContextProps
+>(undefined)
 
 export default function ReportsProvider(props: {children: React.ReactElement}) {
   const {data: saved, loading} = useFetchReports()

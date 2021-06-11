@@ -12,8 +12,9 @@ interface SponsorsContextProps {
   editing: Sponsor | null
 }
 
-const SponsorsContext =
-  React.createContext<undefined | SponsorsContextProps>(undefined)
+const SponsorsContext = React.createContext<undefined | SponsorsContextProps>(
+  undefined,
+)
 
 export default function SponsorsProvider(props: {
   children: React.ReactElement
