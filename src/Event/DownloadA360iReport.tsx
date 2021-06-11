@@ -21,12 +21,8 @@ export default function DownloadA360iReport() {
     setDownloaded(true)
 
     client
-      .get<FileLocation[]>(url)
-      .then((files) =>
-        files.forEach((file: FileLocation) =>
-          downloadFile(file.url, file.name),
-        ),
-      )
+      .get<FileLocation>(url)
+      .then((file) => downloadFile(file.url, file.name))
   }, [downloaded, client, url])
 
   if (downloaded) {
