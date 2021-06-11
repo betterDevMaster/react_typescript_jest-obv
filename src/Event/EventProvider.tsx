@@ -23,9 +23,8 @@ interface EventContextProps {
   url: string
 }
 
-export const EventContext = React.createContext<EventContextProps | undefined>(
-  undefined,
-)
+export const EventContext =
+  React.createContext<EventContextProps | undefined>(undefined)
 
 export function DomainEventProvider(props: {children: React.ReactNode}) {
   const domain = getDomain(window.location.host)

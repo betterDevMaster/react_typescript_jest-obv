@@ -41,11 +41,13 @@ export function usePostForm(post: BlogPost, form: Form) {
 
         if (form.on_submit_redirect_url) {
           window.location.href = v(form.on_submit_redirect_url)
+          return
         }
+
+        toggleDialog()
       })
       .finally(() => {
         setSubmitting(false)
-        toggleDialog()
       })
   }
 
