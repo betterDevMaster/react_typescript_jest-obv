@@ -14,8 +14,9 @@ interface OrganizationContextProps {
   client: Client
 }
 
-export const OrganizationContext =
-  React.createContext<OrganizationContextProps | undefined>(undefined)
+export const OrganizationContext = React.createContext<
+  OrganizationContextProps | undefined
+>(undefined)
 
 export default function OrganizationProvider(props: {
   children: React.ReactNode
