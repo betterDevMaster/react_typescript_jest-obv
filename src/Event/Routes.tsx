@@ -29,6 +29,7 @@ import DownloadReport from 'Event/DownloadReport'
 import SelfCheckIn from 'Event/SelfCheckIn'
 import AttendeeProfileProvider from 'Event/visibility-rules/AttendeeProfileProvider'
 import {useTrackEventPage, useTrackOnLoad} from 'analytics'
+import DownloadA360iReport from 'Event/DownloadA360iReport'
 
 export const eventRoutes = createRoutes({
   login: '/login',
@@ -168,6 +169,9 @@ function UserRoutes() {
       </Route>
       <Route path={eventRoutes.report}>
         <DownloadReport />
+      </Route>
+      <Route path="/a360i/reports/:index">
+        <DownloadA360iReport />
       </Route>
       <Route path={eventRoutes.backgrounds}>
         <CompletedOnboarding>
