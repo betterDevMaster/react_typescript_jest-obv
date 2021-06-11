@@ -22,9 +22,8 @@ interface ReportsConfigContextProps {
   processing: boolean
 }
 
-const ReportsConfigContext = React.createContext<
-  undefined | ReportsConfigContextProps
->(undefined)
+const ReportsConfigContext =
+  React.createContext<undefined | ReportsConfigContextProps>(undefined)
 
 export default function Reports() {
   const {loading, editing: report} = useReports()

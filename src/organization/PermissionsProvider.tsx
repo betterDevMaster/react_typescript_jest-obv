@@ -28,9 +28,8 @@ interface PermissionsContextProps {
   can: (permission: Permission) => boolean
 }
 
-const PermissionsContext = React.createContext<
-  PermissionsContextProps | undefined
->(undefined)
+const PermissionsContext =
+  React.createContext<PermissionsContextProps | undefined>(undefined)
 
 export default function PermissionsProvider(props: {
   children: React.ReactNode
