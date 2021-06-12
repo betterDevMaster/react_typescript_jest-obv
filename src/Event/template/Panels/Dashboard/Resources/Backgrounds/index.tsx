@@ -1,8 +1,6 @@
 import React from 'react'
 import Grid from '@material-ui/core/Grid'
 import styled from 'styled-components'
-import {eventRoutes} from 'Event/Routes'
-import {Redirect} from 'react-router-dom'
 import {useEvent} from 'Event/EventProvider'
 import {useVariables} from 'Event'
 import HiddenOnMatch from 'Event/visibility-rules/HiddenOnMatch'
@@ -11,7 +9,6 @@ import {usePanels} from 'Event/template/Panels'
 import Content from 'lib/ui/form/TextEditor/Content'
 import BackgroundImage from 'Event/template/Panels/Dashboard/Resources/Backgrounds/BackgroundsConfig/BackgroundImage'
 import {useSortBackgrounds} from 'organization/Event/Backgrounds/BackgroundsProvider'
-
 import Card from '@material-ui/core/Card'
 import CardContent from '@material-ui/core/CardContent'
 import CardActions from '@material-ui/core/CardActions'
@@ -25,20 +22,20 @@ export default function PanelsBackgrounds() {
   const {zoomBackgrounds: settings} = template
   const {resourceList: list} = template
 
-  const {backgrounds, zoom_backgrounds_description, zoom_backgrounds_title} =
-    event
+  const {
+    backgrounds,
+    zoom_backgrounds_description,
+    zoom_backgrounds_title,
+  } = event
 
   const sortedBackgrounds = useSortBackgrounds(
     settings?.orderedIds,
     backgrounds,
   )
 
-  /**
-   * If no title/description has been set, we'll assume the user
-   * hasn't configured the page.
-   */
-  if (!zoom_backgrounds_title || !zoom_backgrounds_description) {
-    return <Redirect to={eventRoutes.root} />
+  const hasBackgrounds = backgrounds.length > 0
+  if (!hasBackgrounds) {
+    return null
   }
 
   return (
