@@ -134,3 +134,18 @@ export const fakeLocalization = (
   translations: {},
   ...overrides,
 })
+
+export const fakeBackground = (
+  overrides?: Partial<ObvioEvent['backgrounds']>,
+): ObvioEvent['backgrounds'][0] => ({
+  id: faker.random.number({min: 1000, max: 10000}),
+  image: {
+    name: `background_${faker.random.alphaNumeric()}.jpeg`,
+    url: `https://fake-cdn.obv.io/background_${faker.random.alphaNumeric()}.jpeg`,
+  },
+  settings: null,
+  event_id: faker.random.number({min: 1000, max: 10000}),
+  created_at: now(),
+  updated_at: now(),
+  ...overrides,
+})

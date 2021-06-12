@@ -21,6 +21,12 @@ import {useTemplate, useUpdate} from 'Event/TemplateProvider'
 import {BaseTemplate, Header} from 'Event/template'
 import {BlogPost} from 'Event/Dashboard/components/BlogPost'
 import {Points} from 'Event/template/SimpleBlog/Dashboard/PointsSummary'
+import {
+  DEFAULT_BACK_TO_DASHBOARD_TEXT,
+  DEFAULT_BACK_TO_DASHBOARD_TEXT_COLOR,
+  DEFAULT_BORDER_COLOR,
+  DEFAULT_IMAGES_PER_ROW,
+} from 'Event/template/SimpleBlog/Backgrounds'
 
 export const SIMPLE_BLOG = 'Simple Blog'
 
@@ -184,13 +190,13 @@ export type SimpleBlog = BaseTemplate & {
     }
     formIds?: number[] | null
   }
-  zoomBackgrounds: {
-    borderColor: string
-    borderRadius: number
-    borderThickness: number
-    imagesPerRow: number
-    backToDashboardText: string
-    backToDashboardTextColor: string
+  zoomBackgrounds?: {
+    borderColor?: string
+    borderRadius?: number
+    borderThickness?: number
+    imagesPerRow?: number
+    backToDashboardText?: string
+    backToDashboardTextColor?: string
     orderedIds?: number[]
   }
 }
@@ -315,11 +321,11 @@ export const createSimpleBlog = (): SimpleBlog => ({
     backToDashboardText: DEFAULT_SPEAKER_PAGE_BACK_TO_DASHBOARD_TEXT,
   },
   zoomBackgrounds: {
-    borderColor: '#000000',
+    borderColor: DEFAULT_BORDER_COLOR,
     borderRadius: 0,
     borderThickness: 0,
-    imagesPerRow: 2,
-    backToDashboardText: 'Back to Dashboard',
-    backToDashboardTextColor: '#000000',
+    imagesPerRow: DEFAULT_IMAGES_PER_ROW,
+    backToDashboardText: DEFAULT_BACK_TO_DASHBOARD_TEXT,
+    backToDashboardTextColor: DEFAULT_BACK_TO_DASHBOARD_TEXT_COLOR,
   },
 })

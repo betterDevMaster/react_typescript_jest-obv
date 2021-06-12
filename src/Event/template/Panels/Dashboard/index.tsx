@@ -8,10 +8,11 @@ import MobilePanel from 'Event/template/Panels/Dashboard/MobilePanel'
 import {useEvent} from 'Event/EventProvider'
 import SpeakerPage from 'Event/template/Panels/Dashboard/Speakers'
 import TabPanel from 'lib/ui/tabs/TabPanel'
-import ResourceList from 'Event/template/Panels/Dashboard/ResourceList'
-import ResourceGroupList from 'Event/template/Panels/Dashboard/ResourceGroupList'
+import ResourceList from 'Event/template/Panels/Dashboard/Resources/ResourceList'
+import ResourceGroupList from 'Event/template/Panels/Dashboard/Resources/ResourceGroupList'
 import Home from 'Event/template/Panels/Dashboard/Home'
 import Leaderboard from 'Event/template/Panels/Dashboard/Leaderboard/Leaderboard'
+import Backgrounds from 'Event/template/Panels/Dashboard/Resources/Backgrounds'
 
 export default function PanelsDashboard(props: {user: User}) {
   const [tabIndex, setTabIndex] = useState(0)
@@ -48,6 +49,7 @@ function Content(props: {currentTab: number}) {
       <StyledTabPanel index={2} currentIndex={currentTab} disablePadding>
         <ResourceList />
         <ResourceGroupList />
+        <Backgrounds />
       </StyledTabPanel>
       <StyledTabPanel index={3} currentIndex={currentTab} disablePadding>
         <Leaderboard />

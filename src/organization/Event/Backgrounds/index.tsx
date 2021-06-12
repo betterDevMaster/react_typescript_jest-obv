@@ -1,12 +1,15 @@
 import React from 'react'
-import Form from 'organization/Event/Backgrounds/Form'
 import Layout from 'organization/user/Layout'
 import Page from 'organization/Event/Page'
 import SelectTemplateForm from 'organization/Event/SelectTemplateForm'
-import TemplateProvider from 'Event/TemplateProvider'
+import TemplateProvider, {useTemplate} from 'Event/TemplateProvider'
 import {useEvent} from 'Event/EventProvider'
+import {SIMPLE_BLOG} from 'Event/template/SimpleBlog'
+import {PANELS} from 'Event/template/Panels'
+import SimpleBlogBackgroundsConfig from 'Event/template/SimpleBlog/Backgrounds/BackgroundsConfig'
+import PanelsBackgroundsConfig from 'Event/template/Panels/Dashboard/Resources/Backgrounds/BackgroundsConfig'
 
-export default function BackgroundsConfig() {
+export default function Backgrounds() {
   const {event} = useEvent()
 
   if (!event.template) {
@@ -17,29 +20,22 @@ export default function BackgroundsConfig() {
     <Layout>
       <Page>
         <TemplateProvider template={event.template}>
-          <Form />
+          <TemplateConfig />
         </TemplateProvider>
       </Page>
     </Layout>
   )
 }
 
-export function HasBackgroundConfig(props: {children: React.ReactElement}) {
-  /**
-   * Can't use useTemplate() because at this point the event might not
-   * have selected one yet.
-   */
-  const {
-    event: {template},
-  } = useEvent()
+function TemplateConfig() {
+  const {name} = useTemplate()
 
-  if (!template) {
-    return null
+  switch (name) {
+    case SIMPLE_BLOG:
+      return <SimpleBlogBackgroundsConfig />
+    case PANELS:
+      return <PanelsBackgroundsConfig />
+    default:
+      throw new Error(`Missing backgrounds config for template: ${name}`)
   }
-
-  if (template.disableBackgroundConfig) {
-    return null
-  }
-
-  return props.children
 }

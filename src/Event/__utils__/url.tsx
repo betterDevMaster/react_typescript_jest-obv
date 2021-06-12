@@ -47,7 +47,12 @@ export async function loginToEventSite(
     skipLogin?: boolean
   } = {},
 ) {
-  const attendee = options.attendee || fakeAttendee()
+  const attendee =
+    options.attendee ||
+    fakeAttendee({
+      tech_check_completed_at: 'now',
+      waiver: 'some_waiver.png',
+    })
   const event = options.event || fakeEvent()
   visitEventSite({event, pathname: options.pathname})
 

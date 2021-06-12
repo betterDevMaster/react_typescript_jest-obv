@@ -5,7 +5,6 @@ import {useLocation} from 'react-router-dom'
 import {useEventRoutes} from 'organization/Event/EventRoutes'
 import HasPermission from 'organization/HasPermission'
 import {CONFIGURE_EVENTS} from 'organization/PermissionsProvider'
-import {HasBackgroundConfig} from 'organization/Event/Backgrounds'
 
 export default function ConfigNav() {
   const routes = useEventRoutes()
@@ -76,11 +75,9 @@ function AuthorizedPages() {
         <ConfigNavItem to={routes.reports} aria-label="reports config">
           Reports
         </ConfigNavItem>
-        <HasBackgroundConfig>
-          <ConfigNavItem to={routes.backgrounds} aria-label="backgrounds">
-            Zoom Backgrounds
-          </ConfigNavItem>
-        </HasBackgroundConfig>
+        <ConfigNavItem to={routes.backgrounds} aria-label="backgrounds">
+          Zoom Backgrounds
+        </ConfigNavItem>
       </>
     </HasPermission>
   )

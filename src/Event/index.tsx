@@ -15,10 +15,10 @@ import {
 } from 'Event/LanguageProvider/translations'
 import {useWithAttendeeData, useWithPoints} from 'Event/auth/attendee-data'
 import {pipe} from 'ramda'
-import {Background} from 'organization/Event/Backgrounds/BackgroundsProvider'
 import {useRemoveVariables} from 'lib/template'
 import {CustomTicketRibbon} from 'Event/template/SimpleBlog/Dashboard/TicketRibbonList/TicketRibbon'
 import {Speaker} from 'Event/SpeakerPage'
+import {Background} from 'organization/Event/Backgrounds/BackgroundsProvider'
 
 // Can't use 'Event' because that's already a native DOM type
 // for browser events and we'd lose TS safety/import assist.

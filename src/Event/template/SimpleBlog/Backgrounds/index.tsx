@@ -7,18 +7,18 @@ import {Attendee} from 'Event/attendee'
 import {eventRoutes} from 'Event/Routes'
 import {Redirect} from 'react-router-dom'
 import {useEvent} from 'Event/EventProvider'
-import {
-  Background,
-  ImagePreviewContainer,
-} from 'organization/Event/Backgrounds/BackgroundsProvider'
 import {useVariables} from 'Event'
 import HiddenOnMatch from 'Event/visibility-rules/HiddenOnMatch'
 import {downloadFile} from 'lib/http-client'
 import {useSimpleBlog} from 'Event/template/SimpleBlog'
 import Content from 'lib/ui/form/TextEditor/Content'
+import BackgroundImage from 'Event/template/SimpleBlog/Backgrounds/BackgroundsConfig/BackgroundImage'
+import {useSortBackgrounds} from 'organization/Event/Backgrounds/BackgroundsProvider'
 
-const DEFAULT_BACK_TO_DASHBOARD_TEXT = 'Back to Dashboard'
-const DEFAULT_BACK_TO_DASHBOARD_TEXT_COLOR = '#000000'
+export const DEFAULT_BACK_TO_DASHBOARD_TEXT = 'Back to Dashboard'
+export const DEFAULT_BACK_TO_DASHBOARD_TEXT_COLOR = '#000000'
+export const DEFAULT_BORDER_COLOR = '#000000'
+export const DEFAULT_IMAGES_PER_ROW = 2
 
 export default function SimpleBlogBackgrounds(props: {user: Attendee}) {
   const v = useVariables()
@@ -28,18 +28,26 @@ export default function SimpleBlogBackgrounds(props: {user: Attendee}) {
   const {backgrounds, zoom_backgrounds_description, zoom_backgrounds_title} =
     event
 
-  const sortedBackgrounds = useSortedBackgrounds(backgrounds)
+  const sortedBackgrounds = useSortBackgrounds(
+    settings?.orderedIds,
+    backgrounds,
+  )
 
-  if (zoom_backgrounds_title === '' || zoom_backgrounds_description === '') {
+  /**
+   * If no title/description has been set, we'll assume the user
+   * hasn't configured the page.
+   */
+  if (!zoom_backgrounds_title || !zoom_backgrounds_description) {
     return <Redirect to={eventRoutes.root} />
   }
 
-  const perRow = (12 / (settings.imagesPerRow || 1)) as GridSize
+  const perRow = (12 /
+    (settings?.imagesPerRow || DEFAULT_IMAGES_PER_ROW)) as GridSize
 
   return (
     <Page user={props.user}>
-      <Title>{v(zoom_backgrounds_title || '')}</Title>
-      <Content>{v(zoom_backgrounds_description || '')}</Content>
+      <Title>{v(zoom_backgrounds_title)}</Title>
+      <Content>{v(zoom_backgrounds_description)}</Content>
 
       <BackToDashboard
         color={v(
@@ -56,11 +64,12 @@ export default function SimpleBlogBackgrounds(props: {user: Attendee}) {
         {sortedBackgrounds.map((background) => (
           <HiddenOnMatch rules={background.settings?.rules} key={background.id}>
             <Grid item xs={12} md={perRow}>
-              <ImagePreviewContainer
-                alt=""
-                borderRadius={settings.borderRadius}
-                borderThickness={settings.borderThickness || 0}
-                borderColor={settings.borderColor || '#000000'}
+              <BackgroundImage
+                aria-label="background image"
+                alt="background image"
+                borderRadius={settings?.borderRadius}
+                borderThickness={settings?.borderThickness}
+                borderColor={settings?.borderColor}
                 onClick={() =>
                   downloadFile(v(background.image.url), background.image.name)
                 }
@@ -91,26 +100,3 @@ const BackToDashboard = styled.div`
     color: ${(props) => props.color};
   }
 `
-
-export function useSortedBackgrounds(backgrounds: Background[]) {
-  const {template} = useSimpleBlog()
-  const {zoomBackgrounds: pageSettings} = template
-
-  const order = pageSettings?.orderedIds || []
-
-  return backgrounds.sort((a, b) => {
-    const aPosition = order.indexOf(a.id)
-    const bPosition = order.indexOf(b.id)
-
-    if (aPosition < bPosition) {
-      return -1
-    }
-
-    if (aPosition > bPosition) {
-      return 1
-    }
-
-    // Index not found, any order is fine
-    return 0
-  })
-}
