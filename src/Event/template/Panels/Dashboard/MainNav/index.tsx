@@ -72,9 +72,11 @@ const Container = React.forwardRef<
   } & Partial<DroppableProvidedProps>
 >((props, ref) => (
   <Box className={props.className} ref={ref} {...props}>
-    <Grid container justify="center" spacing={2}>
-      {props.children}
-    </Grid>
+    <ScrollContainer>
+      <Grid container justify="center" spacing={2}>
+        {props.children}
+      </Grid>
+    </ScrollContainer>
   </Box>
 ))
 
@@ -106,9 +108,24 @@ function useHandleDrag() {
 }
 
 const Box = styled.div`
+  flex: 1;
   margin-bottom: ${(props) => props.theme.spacing[7]};
   margin-top: ${(props) => props.theme.spacing[7]};
   width: 100%;
+  position: relative;
+`
+
+const ScrollContainer = styled.div`
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+
+  /* Only want to enable inner scroll in desktop layout */
+  @media (min-width: ${(props) => props.theme.breakpoints.md}) {
+    position: absolute;
+    overflow: auto;
+  }
 `
 
 const StyledNewMainNavButton = styled(NewMainNavButton)`
