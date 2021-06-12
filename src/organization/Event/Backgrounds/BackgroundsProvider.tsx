@@ -38,7 +38,7 @@ export default function BackgroundsProvider(props: {
   const {data: saved, loading} = useSavedBackgrounds()
   const {blocking, busy} = useBlocking()
   const {client} = useOrganization()
-  const {event} = useEvent()
+  const {event, set: setEvent} = useEvent()
 
   useEffect(() => {
     if (!saved) {
@@ -47,6 +47,29 @@ export default function BackgroundsProvider(props: {
 
     setBackgrounds(saved)
   }, [saved])
+
+  /**
+   * Update event on background changes. This is required for
+   * sections that require the current backgrounds. ie. in
+   * dashboard configs that contain backgrounds.
+   */
+  useEffect(() => {
+    const sameNumBackgrounds = event.backgrounds.length === backgrounds.length
+    const hasNewBackgrounds =
+      backgrounds.filter((b) => !event.backgrounds.find((eb) => eb.id === b.id))
+        .length > 0
+
+    if (sameNumBackgrounds && !hasNewBackgrounds) {
+      return
+    }
+
+    const updatedEvent = {
+      ...event,
+      backgrounds,
+    }
+
+    setEvent(updatedEvent)
+  }, [backgrounds, setEvent, event])
 
   const upload = blocking((image: File) => {
     const formData = new FormData()
