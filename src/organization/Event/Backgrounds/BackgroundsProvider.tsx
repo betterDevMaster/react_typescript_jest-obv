@@ -27,9 +27,8 @@ interface BackgroundsContextProps {
   loading: boolean
 }
 
-const BackgroundsContext = React.createContext<
-  BackgroundsContextProps | undefined
->(undefined)
+const BackgroundsContext =
+  React.createContext<BackgroundsContextProps | undefined>(undefined)
 
 export default function BackgroundsProvider(props: {
   children: React.ReactElement

@@ -18,9 +18,8 @@ interface LanguageContextProps {
   defaultLanguage: Language['name']
 }
 
-export const LanguageContext = React.createContext<
-  LanguageContextProps | undefined
->(undefined)
+export const LanguageContext =
+  React.createContext<LanguageContextProps | undefined>(undefined)
 
 export default function EventLanguageProvider(props: {
   children: React.ReactElement
