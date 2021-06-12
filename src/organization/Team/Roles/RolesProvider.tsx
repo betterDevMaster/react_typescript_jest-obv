@@ -17,9 +17,8 @@ interface RolesContextProps {
   updateRole: (role: Role) => void
 }
 
-const RolesContext = React.createContext<RolesContextProps | undefined>(
-  undefined,
-)
+const RolesContext =
+  React.createContext<RolesContextProps | undefined>(undefined)
 
 export default function RolesProvider(props: {children: React.ReactNode}) {
   const [roles, setRoles] = useState<Role[]>([])
