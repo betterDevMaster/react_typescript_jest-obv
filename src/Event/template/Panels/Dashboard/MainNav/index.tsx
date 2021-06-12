@@ -120,11 +120,12 @@ const ScrollContainer = styled.div`
   left: 0;
   width: 100%;
   height: 100%;
+  overflow-x: hidden;
 
   /* Only want to enable inner scroll in desktop layout */
   @media (min-width: ${(props) => props.theme.breakpoints.md}) {
     position: absolute;
-    overflow: auto;
+    overflow-y: auto;
   }
 `
 
