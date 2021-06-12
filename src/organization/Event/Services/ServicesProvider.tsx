@@ -29,8 +29,9 @@ export interface ServicesContextProps {
   remove: (service: Service) => void
 }
 
-const ServicesContext =
-  React.createContext<undefined | ServicesContextProps>(undefined)
+const ServicesContext = React.createContext<undefined | ServicesContextProps>(
+  undefined,
+)
 
 export default function ServicesProvider(props: {
   children: React.ReactElement

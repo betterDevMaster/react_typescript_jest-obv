@@ -11,8 +11,9 @@ interface SpeakersContextProps {
   editing: Speaker | null
 }
 
-const SpeakersContext =
-  React.createContext<undefined | SpeakersContextProps>(undefined)
+const SpeakersContext = React.createContext<undefined | SpeakersContextProps>(
+  undefined,
+)
 
 export default function SpeakersProvider(props: {
   children: React.ReactElement
