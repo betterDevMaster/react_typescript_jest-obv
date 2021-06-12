@@ -21,9 +21,8 @@ import ErrorAlert from 'lib/ui/alerts/ErrorAlert'
 
 export default function Registration() {
   const {register: registerForm, handleSubmit, errors, watch} = useForm()
-  const [error, setError] = useState<ValidationError<RegistrationData> | null>(
-    null,
-  )
+  const [error, setError] =
+    useState<ValidationError<RegistrationData> | null>(null)
   const {token} = useQueryParams()
 
   const [submitting, setSubmitting] = useState(false)
