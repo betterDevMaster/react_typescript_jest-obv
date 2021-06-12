@@ -8,11 +8,10 @@ import MobilePanel from 'Event/template/Panels/Dashboard/MobilePanel'
 import {useEvent} from 'Event/EventProvider'
 import SpeakerPage from 'Event/template/Panels/Dashboard/Speakers'
 import TabPanel from 'lib/ui/tabs/TabPanel'
-import ResourceList from 'Event/template/Panels/Dashboard/Resources/ResourceList'
-import ResourceGroupList from 'Event/template/Panels/Dashboard/Resources/ResourceGroupList'
 import Home from 'Event/template/Panels/Dashboard/Home'
 import Leaderboard from 'Event/template/Panels/Dashboard/Leaderboard/Leaderboard'
-import Backgrounds from 'Event/template/Panels/Dashboard/Resources/Backgrounds'
+import Resources from 'Event/template/Panels/Dashboard/Resources'
+import {usePanels} from 'Event/template/Panels'
 
 export default function PanelsDashboard(props: {user: User}) {
   const [tabIndex, setTabIndex] = useState(0)
@@ -37,32 +36,54 @@ export default function PanelsDashboard(props: {user: User}) {
 function Content(props: {currentTab: number}) {
   const {currentTab} = props
   const {event} = useEvent()
-
   return (
     <>
-      <StyledTabPanel index={0} currentIndex={currentTab} disablePadding>
+      <ContentPanel index={0} currentIndex={currentTab}>
         <Home />
-      </StyledTabPanel>
-      <StyledTabPanel index={1} currentIndex={currentTab} disablePadding>
+      </ContentPanel>
+      <ContentPanel index={1} currentIndex={currentTab}>
         <SpeakerPage speakers={event.speakers} />
-      </StyledTabPanel>
-      <StyledTabPanel index={2} currentIndex={currentTab} disablePadding>
-        <ResourceList />
-        <ResourceGroupList />
-        <Backgrounds />
-      </StyledTabPanel>
-      <StyledTabPanel index={3} currentIndex={currentTab} disablePadding>
+      </ContentPanel>
+      <ContentPanel index={2} currentIndex={currentTab}>
+        <Resources />
+      </ContentPanel>
+      <ContentPanel index={3} currentIndex={currentTab}>
         <Leaderboard />
-      </StyledTabPanel>
+      </ContentPanel>
     </>
   )
 }
 
-const StyledTabPanel = styled(TabPanel)`
+function ContentPanel(props: {
+  index: number
+  currentIndex: number
+  children: React.ReactElement
+}) {
+  const {
+    template: {
+      rightPanel: {textColor},
+    },
+  } = usePanels()
+
+  return (
+    <StyledTabPanel
+      disablePadding
+      textColor={textColor}
+      index={props.index}
+      currentIndex={props.currentIndex}
+    >
+      {props.children}
+    </StyledTabPanel>
+  )
+}
+
+const StyledTabPanel = styled(TabPanel)<{
+  textColor: string
+}>`
   /* 
     Explicitly set color to avoid dark mode's white color from
     rendering text invisible on white background. 
   */
-  color: #000000;
+  color: ${(props) => props.textColor}!important;
   width: 100%;
 `
