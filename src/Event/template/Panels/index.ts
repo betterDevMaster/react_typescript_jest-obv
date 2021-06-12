@@ -2,7 +2,6 @@ import {GridSize} from '@material-ui/core/Grid'
 import {EmojiList} from 'Event/template/Panels/Dashboard/EmojiList'
 import {NavButtonWithSize} from 'Event/Dashboard/components/NavButton'
 import {ResourceList} from 'Event/template/Panels/Dashboard/Resources/ResourceList'
-import {ResourceGroupList} from 'Event/template/Panels/Dashboard/Resources/ResourceGroupList'
 import {BaseTemplate} from 'Event/template'
 import {TicketRibbon} from 'Event/template/Panels/Dashboard/TicketRibbons'
 import {EntityList} from 'lib/list'
@@ -61,7 +60,6 @@ export type Panels = BaseTemplate & {
   }
   blogPosts: EntityList<BlogPost>
   resourceList: ResourceList
-  resourceGroupList: ResourceGroupList
   menuIconColor: string
   isDarkMode?: boolean
   background?: {
@@ -262,7 +260,4 @@ export const createPanels = (): Panels => ({
     },
   },
   menuIconColor: '#000000',
-  resourceGroupList: {
-    resourceGroups: [],
-  },
 })
