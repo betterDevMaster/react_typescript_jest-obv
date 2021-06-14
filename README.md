@@ -1,33 +1,7 @@
 # Obv.io - Event Web App
 
-## URLs
-
-This is a single app that handles requests at various subdomains:
-
-app.obv.io (obv.io Service Admin) - Handles billing, creating organizations.
-
-app.obv.io/organization/myorganization (Organization Admin) - Create/manage
-events, invite team members, define roles/permisisons
-
-myevent.obv.io - Event site for attendees
-
-or
-
-myevent.staging.obv.io
-
-## CI
-
-On feature, and `develop` branch CI will automatically check TS types, and
-formatting via prettier. If you encounter failures make sure you are **not**
-skipping the commit hooks via `--no-verify`.
-
-If you're still seeing issues with formatting, try running `npm run format`
-before your commit.
-
-## Testing
-
-`npm run test` to run tests, or `npm run test:watch` to run tests any time a
-file changes.
+Please see the [wiki](https://gitlab.com/obviobysage/event/web/-/wikis/home) for
+docs.
 
 ## Dev
 
