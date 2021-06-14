@@ -19,8 +19,11 @@ it('should add a new speaker', async () => {
   )
 
   const event = fakeEvent({speakers})
-  const {findByLabelText, findByText, findAllByLabelText} =
-    await goToSpeakerConfig({event, userPermissions: [CONFIGURE_EVENTS]})
+  const {
+    findByLabelText,
+    findByText,
+    findAllByLabelText,
+  } = await goToSpeakerConfig({event, userPermissions: [CONFIGURE_EVENTS]})
 
   const speaker = fakeSpeaker()
   mockPost.mockImplementationOnce(() => Promise.resolve({data: speaker}))

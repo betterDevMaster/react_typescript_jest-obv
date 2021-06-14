@@ -21,7 +21,7 @@ export const fakeBlogPost = (overrides?: Partial<BlogPost>): BlogPost => ({
 export function withBlogPosts<
   T extends {
     blogPosts: EntityList<BlogPost>
-  },
+  }
 >(dashboard: T): T {
   const posts = Array.from(
     {length: faker.random.number({min: 1, max: 5})},

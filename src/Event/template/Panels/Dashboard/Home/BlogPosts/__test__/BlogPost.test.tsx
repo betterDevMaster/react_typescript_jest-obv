@@ -97,10 +97,13 @@ it('should edit a blog post', async () => {
   const event = fakeEvent({
     template: fakePanels({blogPosts}),
   })
-  const {findAllByLabelText, findByLabelText, findByText} =
-    await goToDashboardConfig({
-      event,
-    })
+  const {
+    findAllByLabelText,
+    findByLabelText,
+    findByText,
+  } = await goToDashboardConfig({
+    event,
+  })
 
   const targetIndex = faker.random.number({min: 0, max: numPosts - 1})
 

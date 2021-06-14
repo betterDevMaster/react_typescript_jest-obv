@@ -15,6 +15,15 @@ or
 
 myevent.staging.obv.io
 
+## CI
+
+On feature, and `develop` branch CI will automatically check TS types, and
+formatting via prettier. If you encounter failures make sure you are **not**
+skipping the commit hooks via `--no-verify`.
+
+If you're still seeing issues with formatting, try running `npm run format`
+before your commit.
+
 ## Testing
 
 `npm run test` to run tests, or `npm run test:watch` to run tests any time a

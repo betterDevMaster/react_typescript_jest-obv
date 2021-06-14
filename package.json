@@ -83,7 +83,8 @@
       "!**/__utils__/**",
       "!**/src/index.tsx",
       "!**/serviceWorker.ts",
-      "!**/react-app-env.d.ts"
+      "!**/react-app-env.d.ts",
+      "!**/*.d.ts"
     ]
   },
   "browserslist": {

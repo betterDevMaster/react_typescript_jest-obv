@@ -26,21 +26,19 @@ interface State<T> {
 }
 
 // Wrap in create function to pass generic type to state
-const createReducer =
-  <T>() =>
-  (state: State<T>, action: Action): State<T> => {
-    switch (action.type) {
-      case LOADING: {
-        return {loading: true, data: null, error: null}
-      }
-      case DONE: {
-        return {loading: false, data: action.data, error: null}
-      }
-      case ERROR: {
-        return {loading: false, data: null, error: action.error}
-      }
+const createReducer = <T>() => (state: State<T>, action: Action): State<T> => {
+  switch (action.type) {
+    case LOADING: {
+      return {loading: true, data: null, error: null}
+    }
+    case DONE: {
+      return {loading: false, data: action.data, error: null}
+    }
+    case ERROR: {
+      return {loading: false, data: null, error: action.error}
     }
   }
+}
 
 export function useAsync<T>(
   asyncCallback: (...args: any[]) => Promise<T | null>,

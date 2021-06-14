@@ -46,27 +46,26 @@ function Content(props: {targetIndex: number; onClose: () => void}) {
   const resource = list.resources[props.targetIndex]
 
   const update = useCallback(
-    <T extends keyof Resource>(key: T) =>
-      (value: Resource[T]) => {
-        const updated = {
-          ...resource,
-          [key]: value,
-        }
+    <T extends keyof Resource>(key: T) => (value: Resource[T]) => {
+      const updated = {
+        ...resource,
+        [key]: value,
+      }
 
-        updateTemplate({
-          resourceList: {
-            ...list,
-            resources: list.resources.map((r, index) => {
-              const isTarget = index === props.targetIndex
-              if (isTarget) {
-                return updated
-              }
+      updateTemplate({
+        resourceList: {
+          ...list,
+          resources: list.resources.map((r, index) => {
+            const isTarget = index === props.targetIndex
+            if (isTarget) {
+              return updated
+            }
 
-              return r
-            }),
-          },
-        })
-      },
+            return r
+          }),
+        },
+      })
+    },
     [list, props.targetIndex, resource, updateTemplate],
   )
 

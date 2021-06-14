@@ -22,8 +22,9 @@ export function useForgotPassword(props: {
   resetFormUrl: string
 }): ForgotPasswordProps {
   const {register, handleSubmit, errors} = useForm()
-  const [responseError, setResponseError] =
-    useState<ValidationError<{email: string}>>(null)
+  const [responseError, setResponseError] = useState<
+    ValidationError<{email: string}>
+  >(null)
   const [submitting, setSubmitting] = useState(false)
   const [resetLinkSent, setResetLinkSent] = useState(false)
 

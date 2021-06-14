@@ -39,12 +39,11 @@ function useUpdatePrimitive<T extends Template>() {
   const updateTemplate = useDispatchUpdate()
 
   return useCallback(
-    <K extends keyof T>(key: K) =>
-      (value: T[K]) => {
-        updateTemplate({
-          [key]: value,
-        })
-      },
+    <K extends keyof T>(key: K) => (value: T[K]) => {
+      updateTemplate({
+        [key]: value,
+      })
+    },
     [updateTemplate],
   )
 }
@@ -54,16 +53,16 @@ function useUpdateObject<T extends Template>() {
   const template = useTemplate() as T
 
   return useCallback(
-    <K extends keyof T>(key: K) =>
-      <P extends keyof NonNullable<T[K]>>(childKey: P) =>
-      (value: NonNullable<T[K]>[P]) => {
-        updateTemplate({
-          [key]: {
-            ...((template[key] || {}) as {}),
-            [childKey]: value,
-          },
-        })
-      },
+    <K extends keyof T>(key: K) => <P extends keyof NonNullable<T[K]>>(
+      childKey: P,
+    ) => (value: NonNullable<T[K]>[P]) => {
+      updateTemplate({
+        [key]: {
+          ...((template[key] || {}) as {}),
+          [childKey]: value,
+        },
+      })
+    },
     [template, updateTemplate],
   )
 }

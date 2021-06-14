@@ -25,15 +25,13 @@ export function PointsSummaryConfig() {
   const closeConfig = useCloseConfig()
   const {event} = useEvent()
 
-  const update =
-    <T extends keyof Points>(key: T) =>
-    (value: Points[T]) => {
-      const updated = updatePoints(key, value, points)
+  const update = <T extends keyof Points>(key: T) => (value: Points[T]) => {
+    const updated = updatePoints(key, value, points)
 
-      updateTemplate({
-        points: updated,
-      })
-    }
+    updateTemplate({
+      points: updated,
+    })
+  }
 
   const removePoints = () => {
     closeConfig()

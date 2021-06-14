@@ -37,8 +37,9 @@ export default function Form(props: {
   const {client} = useOrganization()
   const {event} = useEvent()
   const actions = useActions()
-  const [serverError, setServerError] =
-    useState<ValidationError<UpdateActionData>>(null)
+  const [serverError, setServerError] = useState<
+    ValidationError<UpdateActionData>
+  >(null)
   const [hasRandomPoints, setHasRandomPoints] = useState(false)
   const [hasMaxPerDay, setHasMaxPerDay] = useState(false)
   const [hasMaxPerEvent, setHasMaxPerEvent] = useState(false)

@@ -5,7 +5,7 @@ import {EmojiList} from 'Event/template/SimpleBlog/Dashboard/EmojiList'
 export function withEmojiList<
   T extends {
     emojiList: EmojiList | null
-  },
+  }
 >(attributes: T): T {
   const emojiList: EmojiList = {
     emojis: Array.from(

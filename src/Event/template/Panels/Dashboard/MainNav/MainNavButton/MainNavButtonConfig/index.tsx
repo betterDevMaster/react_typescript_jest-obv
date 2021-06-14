@@ -83,13 +83,13 @@ export default function MainNavButtonConfig(props: {
     })
   }
 
-  const updateButton =
-    <T extends keyof NavButtonWithSize>(key: T) =>
-    (value: NavButtonWithSize[T]) =>
-      update({
-        ...button,
-        [key]: value,
-      })
+  const updateButton = <T extends keyof NavButtonWithSize>(key: T) => (
+    value: NavButtonWithSize[T],
+  ) =>
+    update({
+      ...button,
+      [key]: value,
+    })
 
   return (
     <Dialog onClose={props.onClose} open={true}>

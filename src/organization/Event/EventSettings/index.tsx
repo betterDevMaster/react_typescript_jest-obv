@@ -14,8 +14,9 @@ import {useFileSelect} from 'lib/ui/form/file'
 export default function UpdateEventForm() {
   const [submitting, setSubmitting] = useState(false)
   const isMounted = useIsMounted()
-  const [responseError, setResponseError] =
-    useState<ValidationError<UpdateEventData>>(null)
+  const [responseError, setResponseError] = useState<
+    ValidationError<UpdateEventData>
+  >(null)
   const {event} = useEvent()
   const {routes: organizationRoutes} = useOrganization()
   const {

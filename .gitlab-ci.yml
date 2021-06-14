@@ -13,12 +13,46 @@ variables:
   TEST_CDN_DISTRIBUTION_ID: EM6D9VOGZ87XQ
 
 stages:
-  - test
+  - setup
+  - tests
   - build
   - deploy
 
-tests:
-  stage: test
+install_packages:
+  stage: setup
+  except:
+    refs:
+      - staging
+      - production
+      - test
+  script:
+    - npm i --cache .npm --prefer-offline
+  artifacts:
+    paths:
+      - node_modules/
+
+check_format:
+  stage: tests
+  except:
+    refs:
+      - staging
+      - production
+      - test
+  script:
+    - npm run check-format
+
+check_types:
+  stage: tests
+  except:
+    refs:
+      - staging
+      - production
+      - test
+  script:
+    - npm run check-types
+
+jest:
+  stage: tests
   except:
     refs:
       - staging
@@ -28,7 +62,6 @@ tests:
     paths:
       - coverage
   script:
-    - npm i --cache .npm --prefer-offline
     - npm run test:coverage
   retry: 2
 

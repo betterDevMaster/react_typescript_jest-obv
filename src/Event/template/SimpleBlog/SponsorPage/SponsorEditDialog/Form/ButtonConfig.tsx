@@ -40,13 +40,13 @@ export default function ButtonConfig(props: {
     return null
   }
 
-  const updateButton =
-    <T extends keyof NavButton>(key: T) =>
-    (value: NavButton[T]) =>
-      props.onChange({
-        ...button,
-        [key]: value,
-      })
+  const updateButton = <T extends keyof NavButton>(key: T) => (
+    value: NavButton[T],
+  ) =>
+    props.onChange({
+      ...button,
+      [key]: value,
+    })
 
   return (
     <>

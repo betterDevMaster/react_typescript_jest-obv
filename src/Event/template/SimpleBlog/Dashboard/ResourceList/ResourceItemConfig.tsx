@@ -46,27 +46,26 @@ export function ResourceItemConfig(props: {id: ResourceItemConfig['id']}) {
   const resource = list.resources[props.id]
 
   const update = useCallback(
-    <T extends keyof Resource>(key: T) =>
-      (value: Resource[T]) => {
-        const updated = {
-          ...resource,
-          [key]: value,
-        }
+    <T extends keyof Resource>(key: T) => (value: Resource[T]) => {
+      const updated = {
+        ...resource,
+        [key]: value,
+      }
 
-        updateTemplate({
-          resourceList: {
-            ...list,
-            resources: list.resources.map((r, index) => {
-              const isTarget = index === props.id
-              if (isTarget) {
-                return updated
-              }
+      updateTemplate({
+        resourceList: {
+          ...list,
+          resources: list.resources.map((r, index) => {
+            const isTarget = index === props.id
+            if (isTarget) {
+              return updated
+            }
 
-              return r
-            }),
-          },
-        })
-      },
+            return r
+          }),
+        },
+      })
+    },
     [list, props.id, resource, updateTemplate],
   )
 

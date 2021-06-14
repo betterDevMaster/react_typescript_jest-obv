@@ -30,8 +30,10 @@ export default function SubmissionsProvider(props: {
 }) {
   const [answers, setAnswers] = useState<Answer[]>([])
   const {loading, data: fetchedAnswers} = useAnswers()
-  const [responseError, setResponseError] =
-    useState<ValidationError<any> | null>(null)
+  const [
+    responseError,
+    setResponseError,
+  ] = useState<ValidationError<any> | null>(null)
   const {submit: submitAction} = usePoints()
   const submitOptionActions = useSubmitOptionActions()
 

@@ -100,29 +100,28 @@ export function useUpdatePost({
 }) {
   const updateTemplate = useDispatchUpdate()
 
-  return <T extends keyof BlogPost>(key: T) =>
-    (value: BlogPost[T]) => {
-      if (!id) {
-        throw new Error('Missing target id to update blog post')
-      }
-
-      const post = list.entities[id]
-
-      const updated: BlogPost = {
-        ...post,
-        [key]: value,
-      }
-
-      updateTemplate({
-        blogPosts: {
-          ...list,
-          entities: {
-            ...list.entities,
-            [id]: updated,
-          },
-        },
-      })
+  return <T extends keyof BlogPost>(key: T) => (value: BlogPost[T]) => {
+    if (!id) {
+      throw new Error('Missing target id to update blog post')
     }
+
+    const post = list.entities[id]
+
+    const updated: BlogPost = {
+      ...post,
+      [key]: value,
+    }
+
+    updateTemplate({
+      blogPosts: {
+        ...list,
+        entities: {
+          ...list.entities,
+          [id]: updated,
+        },
+      },
+    })
+  }
 }
 
 export function useRemovePost({

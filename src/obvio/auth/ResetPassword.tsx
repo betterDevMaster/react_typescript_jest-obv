@@ -12,8 +12,14 @@ import Page, {
 import {useResetPassword} from 'auth/password'
 
 export default function ResetPassword() {
-  const {submitting, onSubmit, responseError, register, errors, wasSuccessful} =
-    useResetPassword(api('/reset_password'))
+  const {
+    submitting,
+    onSubmit,
+    responseError,
+    register,
+    errors,
+    wasSuccessful,
+  } = useResetPassword(api('/reset_password'))
 
   const history = useHistory()
 

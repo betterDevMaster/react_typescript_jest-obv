@@ -22,8 +22,11 @@ export default function PanelsBackgrounds() {
   const {zoomBackgrounds: settings} = template
   const {resourceList: list} = template
 
-  const {backgrounds, zoom_backgrounds_description, zoom_backgrounds_title} =
-    event
+  const {
+    backgrounds,
+    zoom_backgrounds_description,
+    zoom_backgrounds_title,
+  } = event
 
   const sortedBackgrounds = useSortBackgrounds(
     settings?.orderedIds,

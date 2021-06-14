@@ -50,7 +50,7 @@ export type SimpleBlogTechCheckTemplateProps = NonNullable<
 >
 
 type TechCheckTemplatePropSetter = <
-  K extends keyof SimpleBlogTechCheckTemplateProps,
+  K extends keyof SimpleBlogTechCheckTemplateProps
 >(
   key: K,
 ) => (value: SimpleBlogTechCheckTemplateProps[K]) => void
@@ -73,8 +73,9 @@ export default function Form() {
     control,
   } = useForm()
   const [loading, setLoading] = useState(true)
-  const [responseError, setResponseError] =
-    useState<ValidationError<TechCheckData>>(null)
+  const [responseError, setResponseError] = useState<
+    ValidationError<TechCheckData>
+  >(null)
   const [submitting, setSubmitting] = useState(false)
   const setTechCheck = useSetTechCheck()
   const dispatch = useDispatch()

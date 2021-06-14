@@ -54,16 +54,16 @@ export default function ButtonConfig(props: {
 
   const button = buttons.entities[id]
 
-  const updateButton =
-    <T extends keyof NavButtonWithSize>(key: T) =>
-    (value: NavButtonWithSize[T]) => {
-      const updated = {
-        ...button,
-        [key]: value,
-      }
-
-      onUpdate(updated)
+  const updateButton = <T extends keyof NavButtonWithSize>(key: T) => (
+    value: NavButtonWithSize[T],
+  ) => {
+    const updated = {
+      ...button,
+      [key]: value,
     }
+
+    onUpdate(updated)
+  }
 
   return (
     <Dialog open={true} onClose={props.onClose} fullWidth>

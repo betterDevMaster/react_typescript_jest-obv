@@ -49,7 +49,7 @@ const DEFAULT_TECH_CHECK_PROPS: NonNullable<Panels['techCheck']> = {
 export type PanelsTechCheckTemplateProps = NonNullable<Panels['techCheck']>
 
 type TechCheckTemplatePropSetter = <
-  K extends keyof PanelsTechCheckTemplateProps,
+  K extends keyof PanelsTechCheckTemplateProps
 >(
   key: K,
 ) => (value: PanelsTechCheckTemplateProps[K]) => void
@@ -72,8 +72,9 @@ export default function Form() {
     control,
   } = useForm()
   const [loading, setLoading] = useState(true)
-  const [responseError, setResponseError] =
-    useState<ValidationError<TechCheckData>>(null)
+  const [responseError, setResponseError] = useState<
+    ValidationError<TechCheckData>
+  >(null)
   const [submitting, setSubmitting] = useState(false)
   const setTechCheck = useSetTechCheck()
   const dispatch = useDispatch()

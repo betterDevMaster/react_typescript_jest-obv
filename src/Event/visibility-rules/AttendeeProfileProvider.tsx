@@ -8,7 +8,7 @@ interface AttendeeProfileProps {
 }
 
 const AttendeeProfileContext = React.createContext(
-  undefined as unknown as AttendeeProfileProps,
+  (undefined as unknown) as AttendeeProfileProps,
 )
 
 /**

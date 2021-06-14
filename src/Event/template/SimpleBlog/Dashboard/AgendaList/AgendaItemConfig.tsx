@@ -39,27 +39,26 @@ export function AgendaItemConfig(props: {id: AgendaItemConfig['id']}) {
   const agenda = agendas.items[props.id]
 
   const update = useCallback(
-    <T extends keyof Agenda>(key: T) =>
-      (value: Agenda[T]) => {
-        const updated = {
-          ...agenda,
-          [key]: value,
-        }
+    <T extends keyof Agenda>(key: T) => (value: Agenda[T]) => {
+      const updated = {
+        ...agenda,
+        [key]: value,
+      }
 
-        updateTemplate({
-          agenda: {
-            ...agendas,
-            items: agendas.items.map((r, index) => {
-              const isTarget = index === props.id
-              if (isTarget) {
-                return updated
-              }
+      updateTemplate({
+        agenda: {
+          ...agendas,
+          items: agendas.items.map((r, index) => {
+            const isTarget = index === props.id
+            if (isTarget) {
+              return updated
+            }
 
-              return r
-            }),
-          },
-        })
-      },
+            return r
+          }),
+        },
+      })
+    },
     [agendas, props.id, agenda, updateTemplate],
   )
 
@@ -74,24 +73,25 @@ export function AgendaItemConfig(props: {id: AgendaItemConfig['id']}) {
     })
   }
 
-  const updateDate =
-    (key: 'startDate' | 'endDate') => (date: MaterialUiPickersDate) => {
-      if (date) {
-        update(key)(date.toISOString())
-        return
-      }
-
-      /**
-       * End date is clear-able so we'll set it to null if
-       * it was cleared. ie. didn't receive a date.
-       */
-      if (key === 'endDate') {
-        update(key)(null)
-        return
-      }
-
-      throw new Error('Start date cannot be empty')
+  const updateDate = (key: 'startDate' | 'endDate') => (
+    date: MaterialUiPickersDate,
+  ) => {
+    if (date) {
+      update(key)(date.toISOString())
+      return
     }
+
+    /**
+     * End date is clear-able so we'll set it to null if
+     * it was cleared. ie. didn't receive a date.
+     */
+    if (key === 'endDate') {
+      update(key)(null)
+      return
+    }
+
+    throw new Error('Start date cannot be empty')
+  }
 
   return (
     <>

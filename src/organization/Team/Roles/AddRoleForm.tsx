@@ -19,8 +19,9 @@ interface AddRoleData {
 export default function AddRoleForm() {
   const {register, handleSubmit, errors, reset: resetForm} = useForm()
   const [submitting, setSubmitting] = useState(false)
-  const [responseError, setResponseError] =
-    useState<ValidationError<AddRoleData>>(null)
+  const [responseError, setResponseError] = useState<
+    ValidationError<AddRoleData>
+  >(null)
   const {addRole} = useRoles()
   const save = useSaveRole()
 

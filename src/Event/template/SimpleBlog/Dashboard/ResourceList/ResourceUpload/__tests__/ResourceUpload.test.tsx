@@ -16,6 +16,15 @@ const mockAjaxPost = axios.post as jest.Mock
 const mockAjaxDelete = axios.delete as jest.Mock
 const mockRxPost = mockRxJsAjax.post as jest.Mock
 
+beforeAll(() => {
+  jest.spyOn(console, 'warn').mockImplementation(() => {})
+})
+
+afterAll(() => {
+  // @ts-ignore
+  console.warn.mockRestore()
+})
+
 beforeEach(() => {
   jest.clearAllMocks()
 })

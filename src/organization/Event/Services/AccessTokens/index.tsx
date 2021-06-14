@@ -149,10 +149,10 @@ function useAccessTokens() {
   const {event} = useEvent()
   const {client} = useOrganization()
   const url = api(`/events/${event.slug}/access_tokens`)
-  const request = useCallback(
-    () => client.get<AccessToken[]>(url),
-    [client, url],
-  )
+  const request = useCallback(() => client.get<AccessToken[]>(url), [
+    client,
+    url,
+  ])
 
   return useAsync(request)
 }

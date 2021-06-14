@@ -22,8 +22,10 @@ export default function StyledText<T>(
   } & T,
 ) {
   const {fontStyles, Component, ...otherProps} = props
-  const [StyledComponent, setStyledComponent] =
-    useState<null | React.FunctionComponent>(null)
+  const [
+    StyledComponent,
+    setStyledComponent,
+  ] = useState<null | React.FunctionComponent>(null)
 
   /**
    * Style the target Component dynamically. We only want to create new components

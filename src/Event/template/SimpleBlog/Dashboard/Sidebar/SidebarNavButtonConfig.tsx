@@ -76,13 +76,13 @@ export function SidebarNavButtonConfig(props: {
     })
   }
 
-  const updateButton =
-    <T extends keyof NavButton>(key: T) =>
-    (value: NavButton[T]) =>
-      update({
-        ...button,
-        [key]: value,
-      })
+  const updateButton = <T extends keyof NavButton>(key: T) => (
+    value: NavButton[T],
+  ) =>
+    update({
+      ...button,
+      [key]: value,
+    })
 
   return (
     <RuleConfig
