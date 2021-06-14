@@ -43,7 +43,10 @@ export default function TextEditor(props: {
       <CKEditor
         disabled={props.disabled}
         editor={ClassicEditor}
-        data={props.data}
+        // In case DB returns 'null' for a text field, we don't
+        // want to crash the app so let's just set is as a
+        // blank string as a precaution.
+        data={props.data || ''}
         onChange={updateValue}
         config={{
           toolbar,
