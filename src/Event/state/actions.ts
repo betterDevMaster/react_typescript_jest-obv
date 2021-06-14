@@ -108,10 +108,12 @@ export const sendEmoji = (emoji: ClickedEmoji): SendEmojiAction => ({
 export const REFRESH_EVENT_ACTION = 'REFRESH_EVENT'
 export interface RefreshEventAction {
   type: typeof REFRESH_EVENT_ACTION
+  payload: string
 }
-export const refreshEvent: RefreshEventAction = {
+export const refreshEvent = (updatedAt: string): RefreshEventAction => ({
   type: REFRESH_EVENT_ACTION,
-}
+  payload: updatedAt,
+})
 
 export type EventAction =
   | SetEventAction
