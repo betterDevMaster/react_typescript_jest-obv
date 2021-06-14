@@ -2,7 +2,6 @@ import {
   EventOverrides,
   goToEventConfig,
 } from 'organization/Event/__utils__/event'
-import {ObvioEvent} from 'Event'
 import user from '@testing-library/user-event'
 import axios from 'axios'
 import {Integration} from 'organization/Event/Services/ServicesProvider'

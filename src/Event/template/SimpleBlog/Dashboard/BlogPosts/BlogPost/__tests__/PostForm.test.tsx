@@ -57,7 +57,7 @@ it('should submit a post with a form', async () => {
     forms: [form],
   })
 
-  const {findByLabelText, findByText} = await loginToEventSite({
+  const {findByText} = await loginToEventSite({
     actions: [action],
     attendee: fakeAttendee({
       has_password: true,

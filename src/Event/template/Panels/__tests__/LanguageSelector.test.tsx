@@ -2,7 +2,6 @@ import {fakeBlogPost} from 'Event/Dashboard/components/BlogPost/__utils__/factor
 import user from '@testing-library/user-event'
 import faker from 'faker'
 import {Translations} from 'Event/LanguageProvider/translations'
-import {fakeSimpleBlog} from 'Event/template/SimpleBlog/__utils__/factory'
 import {fakeEvent} from 'Event/__utils__/factory'
 import {loginToEventSite} from 'Event/__utils__/url'
 import {createEntityList} from 'lib/list'

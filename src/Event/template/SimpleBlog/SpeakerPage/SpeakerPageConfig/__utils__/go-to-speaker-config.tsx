@@ -1,5 +1,4 @@
 import user from '@testing-library/user-event'
-import {ObvioEvent} from 'Event'
 import {
   EventOverrides,
   goToEventConfig,

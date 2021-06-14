@@ -1,16 +1,11 @@
-import React from 'react'
 import faker from 'faker'
 import {fireEvent, wait} from '@testing-library/react'
 import {fakeSimpleBlog} from 'Event/template/SimpleBlog/__utils__/factory'
-import {fakeUser} from 'auth/user/__utils__/factory'
-import Dashboard from 'Event/Dashboard'
-import {emptyActions, render} from '__utils__/render'
 import {fakeAgenda} from 'Event/template/SimpleBlog/Dashboard/AgendaList/__utils__/factory'
 import {clickEdit} from '__utils__/edit'
 import user from '@testing-library/user-event'
 import {fakeEvent} from 'Event/__utils__/factory'
 import {mockRxJsAjax} from 'store/__utils__/MockStoreProvider'
-import {defaultScore} from 'Event/PointsProvider'
 import {goToDashboardConfig} from 'organization/Event/DashboardConfig/__utils__/go-dashboard-config'
 
 const mockPost = mockRxJsAjax.post as jest.Mock

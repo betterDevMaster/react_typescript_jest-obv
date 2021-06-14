@@ -1,12 +1,7 @@
 import {fakeEvent, fakeLocalization} from 'Event/__utils__/factory'
-import faker from 'faker'
 import user from '@testing-library/user-event'
 import {goToLocalizationConfig} from 'organization/Event/LocalizationConfig/__utils__/go-to-localization-config'
 import {CONFIGURE_EVENTS} from 'organization/PermissionsProvider'
-import axios from 'axios'
-import {fireEvent, wait} from '@testing-library/react'
-
-const mockPut = axios.put as jest.Mock
 
 it('should switch input types', async () => {
   const event = fakeEvent({

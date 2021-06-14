@@ -7,7 +7,6 @@ import {clickEdit} from '__utils__/edit'
 import {fakeEvent} from 'Event/__utils__/factory'
 import {mockRxJsAjax} from 'store/__utils__/MockStoreProvider'
 import {wait} from '@testing-library/react'
-import {fakeOrganization} from 'obvio/Organizations/__utils__/factory'
 import axios from 'axios'
 import {goToDashboardConfig} from 'organization/Event/DashboardConfig/__utils__/go-dashboard-config'
 
@@ -91,7 +90,6 @@ it('should update a resource', async () => {
   })
 
   const event = fakeEvent({template: dashboard})
-  const organization = fakeOrganization()
 
   const downloadLinkText = 'Download'
 

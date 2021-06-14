@@ -86,7 +86,7 @@ it('should remove an image', async () => {
   const sponsor = fakeSponsor({image: imageData})
 
   const event = fakeEvent()
-  const {findByLabelText, findByText} = await goToSponsorConfig({
+  const {findByLabelText} = await goToSponsorConfig({
     event,
     userPermissions: [CONFIGURE_EVENTS],
     sponsors: [sponsor],

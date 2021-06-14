@@ -1,6 +1,5 @@
 import React from 'react'
 import faker from 'faker'
-import {fakeSimpleBlog} from 'Event/template/SimpleBlog/__utils__/factory'
 import {fakeBlogPost} from 'Event/Dashboard/components/BlogPost/__utils__/factory'
 import {createEntityList} from 'lib/list'
 import {render} from '__utils__/render'
