@@ -68,7 +68,12 @@ export const saveTemplateEpic: Epic<
         request.pipe(
           map((data) =>
             setEvent({
+              ...update,
               ...data.response,
+              /**
+               * Use local template to always show latest changes. This prevents typed
+               * text from disappearing when the event is resolved.
+               */
               template: update.template,
             }),
           ),
