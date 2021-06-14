@@ -100,14 +100,22 @@ export interface SendEmojiAction {
   type: typeof SEND_EMOJI_ACTION
   payload: ClickedEmoji
 }
-
 export const sendEmoji = (emoji: ClickedEmoji): SendEmojiAction => ({
   type: SEND_EMOJI_ACTION,
   payload: emoji,
 })
+
+export const REFRESH_EVENT_ACTION = 'REFRESH_EVENT'
+export interface RefreshEventAction {
+  type: typeof REFRESH_EVENT_ACTION
+}
+export const refreshEvent: RefreshEventAction = {
+  type: REFRESH_EVENT_ACTION,
+}
 
 export type EventAction =
   | SetEventAction
   | CreateTemplateAction
   | UpdateTemplateAction
   | SendEmojiAction
+  | RefreshEventAction

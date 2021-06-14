@@ -1,4 +1,4 @@
-import {useEvent} from 'Event/EventProvider'
+import {useEvent, useRefreshEvent} from 'Event/EventProvider'
 import {useOrganizationEcho} from 'organization/OrganizationProvider'
 import React, {useEffect} from 'react'
 
@@ -10,19 +10,18 @@ import React, {useEffect} from 'react'
 export default function EventLiveUpdates(props: {
   children: React.ReactElement
 }) {
-  const {event, set: setEvent} = useEvent()
+  const {event} = useEvent()
   const echo = useOrganizationEcho()
+  const refresh = useRefreshEvent()
 
   useEffect(() => {
     const eventChannel = echo.private(`event.${event.slug}`)
-    eventChannel.listen('.event.updated', ({event}: any) => {
-      setEvent(event)
-    })
+    eventChannel.listen('.event.updated', refresh)
 
     return () => {
       echo.leave(`event.${event.id}`)
     }
-  }, [event, setEvent, echo])
+  }, [event, echo, refresh])
 
   return props.children
 }

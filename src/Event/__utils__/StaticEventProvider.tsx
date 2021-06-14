@@ -19,7 +19,7 @@ export default function StaticEventProvider(props: {
     dispatch(setEvent(event))
   }, [event, dispatch])
 
-  const update = useCallback(
+  const set = useCallback(
     (updated: ObvioEvent) => {
       dispatch(setEvent(updated))
     },
@@ -40,7 +40,7 @@ export default function StaticEventProvider(props: {
         client: eventClient,
         hasTechCheck: hasTechCheck(event),
         hasWaiver: hasWaiver(event),
-        set: update,
+        set,
         url,
       }}
     >
