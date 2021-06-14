@@ -53,6 +53,9 @@ export function BlogPostConfig(props: {id: BlogPostConfig['id']}) {
   }
 
   const post = posts.entities[id]
+  if (!post) {
+    return null
+  }
 
   const handleRemove = () => {
     closeConfig()

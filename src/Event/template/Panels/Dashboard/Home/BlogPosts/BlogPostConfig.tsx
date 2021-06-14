@@ -62,6 +62,9 @@ export function BlogPostConfig(props: {
   }
 
   const post = posts.entities[targetId]
+  if (!post) {
+    return null
+  }
 
   const updatePublishAt = (date: MaterialUiPickersDate) => {
     const value = date ? date.toISOString() : null
