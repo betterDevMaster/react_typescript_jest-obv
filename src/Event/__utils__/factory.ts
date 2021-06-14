@@ -13,6 +13,7 @@ export const fakeEvent = (overrides?: Partial<ObvioEvent>): ObvioEvent => ({
   id: faker.random.number({min: 1000, max: 10000}),
   name: faker.company.companyName(),
   slug: faker.internet.domainWord(),
+  updated_at: now(),
   start: now(),
   end: faker.date.future().toISOString(),
   has_ended: false,

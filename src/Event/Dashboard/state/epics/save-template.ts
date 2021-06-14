@@ -1,11 +1,15 @@
 import {Epic, ofType} from 'redux-observable'
 import {RootState} from 'store'
-import {mapTo, debounceTime, switchMap} from 'rxjs/operators'
+import {debounceTime, switchMap, map} from 'rxjs/operators'
 import {api} from 'lib/url'
 import {setSaving} from 'Event/Dashboard/editor/state/actions'
 import {of, concat} from 'rxjs'
 import {AjaxCreationMethod} from 'rxjs/internal/observable/dom/AjaxObservable'
-import {UpdateTemplateAction, UPDATE_TEMPLATE_ACTION} from 'Event/state/actions'
+import {
+  setEvent,
+  UpdateTemplateAction,
+  UPDATE_TEMPLATE_ACTION,
+} from 'Event/state/actions'
 
 export const saveTemplateEpic: Epic<
   UpdateTemplateAction,
@@ -59,6 +63,10 @@ export const saveTemplateEpic: Epic<
       )
 
       // Set saving status after request completes
-      return concat(of(setSaving(true)), request.pipe(mapTo(setSaving(false))))
+      return concat(
+        of(setSaving(true)),
+        request.pipe(map((data) => setEvent(data.response))),
+        of(setSaving(false)),
+      )
     }),
   )

@@ -1,4 +1,5 @@
 import {useEvent, useRefreshEvent} from 'Event/EventProvider'
+import {isAfter} from 'lib/date-time'
 import {useOrganizationEcho} from 'organization/OrganizationProvider'
 import React, {useEffect} from 'react'
 
@@ -10,18 +11,34 @@ import React, {useEffect} from 'react'
 export default function EventLiveUpdates(props: {
   children: React.ReactElement
 }) {
-  const {event} = useEvent()
+  const {
+    event: {slug, updated_at: lastUpdated},
+  } = useEvent()
   const echo = useOrganizationEcho()
-  const refresh = useRefreshEvent()
+  const refreshEvent = useRefreshEvent()
 
   useEffect(() => {
-    const eventChannel = echo.private(`event.${event.slug}`)
-    eventChannel.listen('.event.updated', refresh)
+    const channel = `event.${slug}`
+    echo
+      .private(channel)
+      .listen('.event.updated', (data: {updated_at: string}) => {
+        const hasChanges = isAfter({
+          target: data.updated_at,
+          isAfter: lastUpdated,
+        })
+
+        if (!hasChanges) {
+          console.log('same!')
+          return
+        }
+
+        refreshEvent()
+      })
 
     return () => {
-      echo.leave(`event.${event.id}`)
+      echo.leave(channel)
     }
-  }, [event, echo, refresh])
+  }, [slug, echo, refreshEvent, lastUpdated])
 
   return props.children
 }

@@ -28,3 +28,6 @@ export const getDiffDatetime = (
   var diff = date1.diff(date2, resultType)
   return diff
 }
+
+export const isAfter = ({isAfter, target}: {isAfter: string; target: string}) =>
+  moment(target).isAfter(moment(isAfter))

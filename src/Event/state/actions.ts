@@ -17,7 +17,7 @@ export const handleSetEvent = (
   state: EventState,
   action: SetEventAction,
 ): EventState => {
-  return action.payload
+  return action.payload || null // Have to return `null` in case undefined
 }
 
 export const CREATE_TEMPLATE_ACTION = 'CREATE_TEMPLATE'

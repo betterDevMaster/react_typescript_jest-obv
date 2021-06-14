@@ -23,6 +23,7 @@ import {Background} from 'organization/Event/Backgrounds/BackgroundsProvider'
 // Can't use 'Event' because that's already a native DOM type
 // for browser events and we'd lose TS safety/import assist.
 export interface ObvioEvent {
+  updated_at: string
   id: number
   name: string
   slug: string
