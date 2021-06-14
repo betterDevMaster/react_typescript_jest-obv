@@ -28,7 +28,6 @@ export default function EventLiveUpdates(props: {
         })
 
         if (!hasChanges) {
-          console.log('same!')
           return
         }
 

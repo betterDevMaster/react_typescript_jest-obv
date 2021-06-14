@@ -44,7 +44,7 @@ export const saveTemplateEpic: Epic<
         favicon,
         sponsor_question_icon,
         mobile_logo,
-        ...data
+        ...update
       } = event
 
       const url = api(`/events/${event.slug}`)
@@ -53,7 +53,7 @@ export const saveTemplateEpic: Epic<
       const request = ajax.post(
         url,
         {
-          ...data,
+          ...update,
           _method: 'PUT', // Required to tell Laravel it's a PUT request
         },
         {
@@ -65,7 +65,14 @@ export const saveTemplateEpic: Epic<
       // Set saving status after request completes
       return concat(
         of(setSaving(true)),
-        request.pipe(map((data) => setEvent(data.response))),
+        request.pipe(
+          map((data) =>
+            setEvent({
+              ...data.response,
+              template: update.template,
+            }),
+          ),
+        ),
         of(setSaving(false)),
       )
     }),
