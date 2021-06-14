@@ -1,8 +1,5 @@
-import React from 'react'
 import faker from 'faker'
 import {fakeSimpleBlog} from 'Event/template/SimpleBlog/__utils__/factory'
-import {fakeUser} from 'auth/user/__utils__/factory'
-import Dashboard from 'Event/Dashboard'
 import {fakeNavButton} from 'Event/Dashboard/components/NavButton/__utils__/factory'
 import {createEntityList} from 'lib/list'
 import {fireEvent} from '@testing-library/react'
@@ -10,59 +7,13 @@ import {clickEdit} from '__utils__/edit'
 import {fakeEvent} from 'Event/__utils__/factory'
 import {mockRxJsAjax} from 'store/__utils__/MockStoreProvider'
 import {wait} from '@testing-library/react'
-import {emptyActions, render} from '__utils__/render'
-import {defaultScore} from 'Event/PointsProvider'
 import NavButton from 'Event/Dashboard/components/NavButton'
-import {fakeOrganization} from 'obvio/Organizations/__utils__/factory'
+import {goToDashboardConfig} from 'organization/Event/DashboardConfig/__utils__/go-dashboard-config'
 
 const mockPost = mockRxJsAjax.post as jest.Mock
 
 afterEach(() => {
   jest.clearAllMocks()
-})
-
-it('should render sidebarNavButtons', async () => {
-  const withoutButtons = fakeEvent({
-    template: fakeSimpleBlog({
-      sidebarNav: createEntityList([]),
-    }),
-  })
-
-  const {queryByLabelText, rerender, findAllByLabelText} = render(
-    <Dashboard isEditMode={false} user={fakeUser()} />,
-    {
-      event: withoutButtons,
-      withRouter: true,
-      actions: emptyActions,
-      score: defaultScore,
-    },
-  )
-
-  expect(queryByLabelText(/sidebar nav/i)).not.toBeInTheDocument()
-
-  const numButtons = faker.random.number({min: 1, max: 5})
-
-  const template = fakeSimpleBlog({
-    sidebarNav: createEntityList(
-      Array.from({length: numButtons}, fakeNavButton),
-    ),
-  })
-
-  const withNavButtons = fakeEvent({
-    template,
-  })
-
-  rerender(<Dashboard isEditMode={false} user={fakeUser()} />, {
-    event: withNavButtons,
-  })
-
-  const numVisibleButtons = Object.values(template.sidebarNav.entities).filter(
-    (b) => b.isVisible,
-  ).length
-
-  expect((await findAllByLabelText(/sidebar nav/i)).length).toBe(
-    numVisibleButtons,
-  )
 })
 
 it('should add a new sidebar nav button', async () => {
@@ -80,10 +31,9 @@ it('should add a new sidebar nav button', async () => {
     template: fakeSimpleBlog({sidebarNav: sidebarNavButtons}),
   })
 
-  const {findAllByLabelText, findByLabelText} = render(
-    <Dashboard isEditMode={true} user={fakeUser()} />,
-    {event, withRouter: true, actions: emptyActions, score: defaultScore},
-  )
+  const {findAllByLabelText, findByLabelText} = await goToDashboardConfig({
+    event,
+  })
 
   const buttonEls = () => findAllByLabelText('sidebar nav button')
 
@@ -111,10 +61,9 @@ it('should add a new button when there are none', async () => {
     template: fakeSimpleBlog({sidebarNav: sidebarNavButtons}),
   })
 
-  const {findAllByLabelText, findByLabelText} = render(
-    <Dashboard isEditMode={true} user={fakeUser()} />,
-    {event, withRouter: true, actions: emptyActions, score: defaultScore},
-  )
+  const {findAllByLabelText, findByLabelText} = await goToDashboardConfig({
+    event,
+  })
 
   const buttonEls = () => findAllByLabelText('sidebar nav button')
 
@@ -144,16 +93,9 @@ it('should edit the selected button', async () => {
   const event = fakeEvent({
     template: fakeSimpleBlog({sidebarNav: sidebarNavButtons}),
   })
-  const {findByLabelText, findByText} = render(
-    <Dashboard isEditMode={true} user={fakeUser()} />,
-    {
-      event,
-      withRouter: true,
-      actions: emptyActions,
-      score: defaultScore,
-      organization: fakeOrganization(),
-    },
-  )
+  const {findByLabelText, findByText} = await goToDashboardConfig({
+    event,
+  })
 
   const targetIndex = faker.random.number({min: 0, max: buttons.length - 1})
   const button = buttons[targetIndex]
@@ -199,16 +141,13 @@ it('should remove the button', async () => {
   const event = fakeEvent({
     template: fakeSimpleBlog({sidebarNav: sidebarNavButtons}),
   })
-  const {findAllByLabelText, findByLabelText, queryByText} = render(
-    <Dashboard isEditMode={true} user={fakeUser()} />,
-    {
-      event,
-      withRouter: true,
-      actions: emptyActions,
-      score: defaultScore,
-      organization: fakeOrganization(),
-    },
-  )
+  const {
+    findAllByLabelText,
+    findByLabelText,
+    queryByText,
+  } = await goToDashboardConfig({
+    event,
+  })
 
   const buttonEls = () => findAllByLabelText('sidebar nav button')
   expect((await buttonEls()).length).toBe(numButtons)

@@ -1,17 +1,11 @@
-import React from 'react'
 import user from '@testing-library/user-event'
 import faker from 'faker'
 import {fakeSimpleBlog} from 'Event/template/SimpleBlog/__utils__/factory'
-import {fakeUser} from 'auth/user/__utils__/factory'
-import Dashboard from 'Event/Dashboard'
 import {fakeBlogPost} from 'Event/Dashboard/components/BlogPost/__utils__/factory'
 import {createEntityList} from 'lib/list'
 import {clickEdit} from '__utils__/edit'
 import {fireEvent, wait} from '@testing-library/react'
-import {emptyActions, render} from '__utils__/render'
 import {fakeEvent} from 'Event/__utils__/factory'
-import {defaultScore} from 'Event/PointsProvider'
-import {getDiffDatetime, now} from 'lib/date-time'
 import moment from 'moment'
 import {goToDashboardConfig} from 'organization/Event/DashboardConfig/__utils__/go-dashboard-config'
 
@@ -26,66 +20,6 @@ beforeAll(() => {
 afterAll(() => {
   // @ts-ignore
   console.error.mockRestore()
-})
-
-it('should render blog posts', async () => {
-  const withoutPosts = fakeEvent({
-    template: fakeSimpleBlog({
-      blogPosts: createEntityList([]),
-    }),
-  })
-
-  const {queryByLabelText, rerender, getAllByLabelText, findByText} = render(
-    <Dashboard isEditMode={false} user={fakeUser()} />,
-    {
-      event: withoutPosts,
-      actions: emptyActions,
-      score: defaultScore,
-      withRouter: true,
-    },
-  )
-
-  expect(queryByLabelText('blog post')).not.toBeInTheDocument()
-
-  const numPosts = faker.random.number({min: 1, max: 5})
-  const blogPosts = createEntityList(
-    Array.from({length: numPosts}, () =>
-      fakeBlogPost({
-        publishAt: faker.random.boolean()
-          ? faker.date.past().toISOString()
-          : faker.date.future().toISOString(),
-        isVisible: faker.random.boolean(),
-      }),
-    ),
-  )
-
-  const withPosts = fakeEvent({
-    template: fakeSimpleBlog({
-      blogPosts,
-    }),
-  })
-
-  rerender(<Dashboard isEditMode={false} user={fakeUser()} />, {
-    event: withPosts,
-  })
-
-  for (const post of Object.values(blogPosts.entities)) {
-    if (
-      post.isVisible === true &&
-      post.publishAt &&
-      getDiffDatetime(post.publishAt, now()) < 0
-    )
-      expect(await findByText(post.title)).toBeInTheDocument()
-  }
-
-  const numVisiblePosts = Object.values(blogPosts.entities).filter(
-    (i) =>
-      i.isVisible && i.publishAt && getDiffDatetime(i.publishAt, now()) < 0,
-  ).length
-
-  if (numVisiblePosts > 0) {
-    expect(getAllByLabelText('blog post').length).toBe(numVisiblePosts)
-  }
 })
 
 it('should edit a blog post', async () => {
@@ -185,15 +119,9 @@ it('should show in order', async () => {
     }),
   })
 
-  const {findAllByLabelText} = render(
-    <Dashboard isEditMode={false} user={fakeUser()} />,
-    {
-      event,
-      actions: emptyActions,
-      score: defaultScore,
-      withRouter: true,
-    },
-  )
+  const {findAllByLabelText} = await goToDashboardConfig({
+    event,
+  })
 
   await wait(async () => {
     expect((await findAllByLabelText('blog post')).length).toBe(3)

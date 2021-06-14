@@ -1,16 +1,11 @@
-import React from 'react'
 import faker from 'faker'
 import {fakeEvent} from 'Event/__utils__/factory'
 import {fakeSimpleBlog} from 'Event/template/SimpleBlog/__utils__/factory'
-import Dashboard from 'Event/Dashboard'
-import {fakeOrganization} from 'obvio/Organizations/__utils__/factory'
-import {fakeUser} from 'auth/user/__utils__/factory'
-import {emptyActions, render} from '__utils__/render'
 import user from '@testing-library/user-event'
 import {fireEvent, wait} from '@testing-library/react'
 import axios from 'axios'
 import {clickEdit} from '__utils__/edit'
-import {defaultScore} from 'Event/PointsProvider'
+import {goToDashboardConfig} from 'organization/Event/DashboardConfig/__utils__/go-dashboard-config'
 
 const mockPost = axios.post as jest.Mock
 const mockDelete = axios.delete as jest.Mock
@@ -26,16 +21,9 @@ it('should upload an image', async () => {
     }),
   })
 
-  const {findByLabelText, findAllByLabelText} = render(
-    <Dashboard isEditMode={true} user={fakeUser()} />,
-    {
-      event,
-      organization: fakeOrganization(),
-      withRouter: true,
-      actions: emptyActions,
-      score: defaultScore,
-    },
-  )
+  const {findByLabelText, findAllByLabelText} = await goToDashboardConfig({
+    event,
+  })
 
   user.click(await findByLabelText('add emoji list'))
 
@@ -87,16 +75,9 @@ it('should remove the emoji file', async () => {
     }),
   })
 
-  const {findByLabelText, findAllByLabelText} = render(
-    <Dashboard isEditMode={true} user={fakeUser()} />,
-    {
-      event,
-      organization: fakeOrganization(),
-      withRouter: true,
-      actions: emptyActions,
-      score: defaultScore,
-    },
-  )
+  const {findByLabelText, findAllByLabelText} = await goToDashboardConfig({
+    event,
+  })
 
   clickEdit(await findByLabelText('emoji list'))
 
@@ -123,16 +104,7 @@ it('it should cancel an emoji upload', async () => {
     }),
   })
 
-  const {findByLabelText, queryByLabelText} = render(
-    <Dashboard isEditMode={true} user={fakeUser()} />,
-    {
-      event,
-      organization: fakeOrganization(),
-      withRouter: true,
-      actions: emptyActions,
-      score: defaultScore,
-    },
-  )
+  const {findByLabelText, queryByLabelText} = await goToDashboardConfig({event})
 
   user.click(await findByLabelText('add emoji list'))
 

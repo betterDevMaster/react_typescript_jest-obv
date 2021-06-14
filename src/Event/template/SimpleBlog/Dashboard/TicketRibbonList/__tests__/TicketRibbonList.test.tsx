@@ -1,8 +1,6 @@
-import React from 'react'
 import faker from 'faker'
 import {fakeSimpleBlog} from 'Event/template/SimpleBlog/__utils__/factory'
-import Dashboard from 'Event/Dashboard'
-import {emptyActions, inputElementFor, render} from '__utils__/render'
+import {inputElementFor} from '__utils__/render'
 import {
   BLACK_RIBBON,
   RIBBONS,
@@ -10,13 +8,11 @@ import {
 import {fireEvent} from '@testing-library/dom'
 import {fakeEvent} from 'Event/__utils__/factory'
 import {fakeTicketRibbon} from 'Event/template/SimpleBlog/Dashboard/TicketRibbonList/__utils__/factory'
-import {fakeAttendee} from 'Event/auth/__utils__/factory'
 import user from '@testing-library/user-event'
 import {mockRxJsAjax} from 'store/__utils__/MockStoreProvider'
 import {wait} from '@testing-library/react'
 import {clickEdit} from '__utils__/edit'
-import {defaultScore} from 'Event/PointsProvider'
-import {fakeOrganization} from 'obvio/Organizations/__utils__/factory'
+import {goToDashboardConfig} from 'organization/Event/DashboardConfig/__utils__/go-dashboard-config'
 
 const mockPost = mockRxJsAjax.post as jest.Mock
 
@@ -36,16 +32,9 @@ it('should edit an existing ticket ribbon', async () => {
     }),
   })
 
-  const {findByLabelText, findAllByLabelText} = render(
-    <Dashboard isEditMode={true} user={fakeAttendee()} />,
-    {
-      event,
-      withRouter: true,
-      actions: emptyActions,
-      score: defaultScore,
-      organization: fakeOrganization(),
-    },
-  )
+  const {findByLabelText, findAllByLabelText} = await goToDashboardConfig({
+    event,
+  })
 
   const targetIndex = faker.random.number({
     min: 0,
@@ -92,16 +81,9 @@ it('should add a new ticket ribbon', async () => {
     }),
   })
 
-  const {findByLabelText, findByText} = render(
-    <Dashboard isEditMode={true} user={fakeAttendee()} />,
-    {
-      event: withoutRibbons,
-      withRouter: true,
-      actions: emptyActions,
-      score: defaultScore,
-      organization: fakeOrganization(),
-    },
-  )
+  const {findByLabelText, findByText} = await goToDashboardConfig({
+    event: withoutRibbons,
+  })
 
   fireEvent.click(await findByLabelText('add ticket ribbon'))
 
@@ -114,10 +96,7 @@ it('should add a new ticket ribbon', async () => {
     },
   )
 
-  /**
-   * Only grab first 5 characters as the ribbon has a char limit
-   */
-  const text = faker.random.words(1).substring(0, 5)
+  const text = 'vip'
 
   user.type(await findByLabelText('ticket ribbon text input'), text)
 
@@ -148,16 +127,13 @@ it('should remove a ticket ribbon', async () => {
     }),
   })
 
-  const {findByLabelText, findAllByLabelText, queryByText} = render(
-    <Dashboard isEditMode={true} user={fakeAttendee()} />,
-    {
-      event,
-      withRouter: true,
-      actions: emptyActions,
-      score: defaultScore,
-      organization: fakeOrganization(),
-    },
-  )
+  const {
+    findByLabelText,
+    findAllByLabelText,
+    queryByText,
+  } = await goToDashboardConfig({
+    event,
+  })
 
   const targetIndex = faker.random.number({
     min: 0,

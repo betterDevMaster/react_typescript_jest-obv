@@ -13,6 +13,7 @@ import {OrganizationLanguageProvider} from 'Event/LanguageProvider'
 import {StaticPointsProvider} from 'Event/PointsProvider'
 import AttendeeProfileProvider from 'Event/visibility-rules/AttendeeProfileProvider'
 import {StaticSubmissionsProvider} from 'Event/SubmissionsProvider'
+import EventLiveUpdates from 'organization/EventLiveUpdates'
 
 export default function UserRoutes() {
   const {routes} = useOrganization()
@@ -46,7 +47,9 @@ export default function UserRoutes() {
               <StaticPointsProvider>
                 <StaticSubmissionsProvider>
                   <AttendeeProfileProvider groups={{}} tags={[]}>
-                    <EventRoutes />
+                    <EventLiveUpdates>
+                      <EventRoutes />
+                    </EventLiveUpdates>
                   </AttendeeProfileProvider>
                 </StaticSubmissionsProvider>
               </StaticPointsProvider>

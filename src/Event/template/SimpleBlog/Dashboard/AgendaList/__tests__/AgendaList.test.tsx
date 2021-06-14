@@ -11,47 +11,12 @@ import user from '@testing-library/user-event'
 import {fakeEvent} from 'Event/__utils__/factory'
 import {mockRxJsAjax} from 'store/__utils__/MockStoreProvider'
 import {defaultScore} from 'Event/PointsProvider'
+import {goToDashboardConfig} from 'organization/Event/DashboardConfig/__utils__/go-dashboard-config'
 
 const mockPost = mockRxJsAjax.post as jest.Mock
 
 afterEach(() => {
   jest.clearAllMocks()
-})
-
-it('should render agendas', async () => {
-  const title = faker.random.word()
-  const withoutAgendas = fakeEvent({
-    template: fakeSimpleBlog({agenda: {title, items: []}}),
-  })
-
-  const {queryByText, findAllByLabelText, rerender} = render(
-    <Dashboard isEditMode={false} user={fakeUser()} />,
-    {
-      event: withoutAgendas,
-      withRouter: true,
-      actions: emptyActions,
-      score: defaultScore,
-    },
-  )
-
-  expect(queryByText(/agenda/i)).not.toBeInTheDocument()
-
-  const list = new Array(faker.random.number({min: 1, max: 4}))
-    .fill(null)
-    .map((_, index) =>
-      fakeAgenda({isVisible: index === 0 || faker.random.boolean()}),
-    )
-
-  const withAgendas = fakeEvent({
-    template: fakeSimpleBlog({agenda: {title, items: list}}),
-  })
-
-  rerender(<Dashboard isEditMode={false} user={fakeUser()} />, {
-    event: withAgendas,
-  })
-
-  const numVisible = list.filter((a) => a.isVisible).length
-  expect((await findAllByLabelText('agenda')).length).toBe(numVisible)
 })
 
 it('should edit an agenda', async () => {
@@ -63,10 +28,9 @@ it('should edit an agenda', async () => {
   const dashboard = fakeSimpleBlog({agenda: {title, items: list}})
   const event = fakeEvent({template: dashboard})
 
-  const {findAllByLabelText, findByLabelText} = render(
-    <Dashboard isEditMode={true} user={fakeUser()} />,
-    {event, withRouter: true, actions: emptyActions, score: defaultScore},
-  )
+  const {findAllByLabelText, findByLabelText} = await goToDashboardConfig({
+    event,
+  })
 
   const targetIndex = faker.random.number({min: 0, max: list.length - 1})
 
@@ -103,15 +67,11 @@ it('should add a new agenda', async () => {
   const dashboard = fakeSimpleBlog({agenda: {title, items: []}})
   const event = fakeEvent({template: dashboard})
 
-  const {findAllByLabelText, findByLabelText, queryByLabelText} = render(
-    <Dashboard isEditMode={true} user={fakeUser()} />,
-    {
-      event,
-      withRouter: true,
-      actions: emptyActions,
-      score: defaultScore,
-    },
-  )
+  const {
+    findAllByLabelText,
+    findByLabelText,
+    queryByLabelText,
+  } = await goToDashboardConfig({event})
 
   expect(queryByLabelText('agenda')).not.toBeInTheDocument()
 
@@ -138,15 +98,12 @@ it('should remove an agenda', async () => {
   const dashboard = fakeSimpleBlog({agenda: {title, items: list}})
   const event = fakeEvent({template: dashboard})
 
-  const {queryByText, findAllByLabelText, findByLabelText, findByText} = render(
-    <Dashboard isEditMode={true} user={fakeUser()} />,
-    {
-      event,
-      withRouter: true,
-      actions: emptyActions,
-      score: defaultScore,
-    },
-  )
+  const {
+    queryByText,
+    findAllByLabelText,
+    findByLabelText,
+    findByText,
+  } = await goToDashboardConfig({event})
 
   const targetIndex = faker.random.number({min: 0, max: list.length - 1})
 
@@ -184,15 +141,7 @@ it('should update agendas list title', async () => {
   const dashboard = fakeSimpleBlog({agenda: {title, items: list}})
   const event = fakeEvent({template: dashboard})
 
-  const {findByLabelText} = render(
-    <Dashboard isEditMode={true} user={fakeUser()} />,
-    {
-      event,
-      withRouter: true,
-      actions: emptyActions,
-      score: defaultScore,
-    },
-  )
+  const {findByLabelText} = await goToDashboardConfig({event})
 
   clickEdit(await findByLabelText('agendas'))
   const upadtedTitle = faker.random.words(2)

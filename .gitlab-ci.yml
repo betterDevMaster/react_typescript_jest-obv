@@ -106,6 +106,7 @@ build_staging:
     REACT_APP_WEB_APP_ROOT: 'staging.obv.io'
     REACT_APP_IS_STAGING: 'true'
     REACT_APP_CK_EDITOR_UPLOAD_URL: 'https://80003.cke-cs.com/easyimage/upload/'
+    REACT_APP_PUSHER_KEY: $PUSHER_APP_STAGING_KEY
   artifacts:
     paths:
       - build/
@@ -134,6 +135,7 @@ build_prod:
     REACT_APP_ADMIN_API_URL: 'https://v1-admin.obv.io'
     REACT_APP_WEB_APP_ROOT: 'obv.io'
     REACT_APP_CK_EDITOR_UPLOAD_URL: 'https://80003.cke-cs.com/easyimage/upload/'
+    REACT_APP_PUSHER_KEY: $PUSHER_APP_PRODUCTION_KEY
   artifacts:
     paths:
       - build/

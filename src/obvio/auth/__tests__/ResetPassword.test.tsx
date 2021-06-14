@@ -4,7 +4,7 @@ import {render} from '__utils__/render'
 import user from '@testing-library/user-event'
 import mockAxios from 'axios'
 import {act, wait} from '@testing-library/react'
-import App, {appRoot} from 'App'
+import App from 'App'
 import {useLocation} from 'react-router-dom'
 
 const mockPost = mockAxios.post as jest.Mock

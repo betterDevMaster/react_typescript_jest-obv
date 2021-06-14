@@ -1,4 +1,4 @@
-import App, {OBVIO_SUBDOMAIN} from 'App'
+import App from 'App'
 import faker from 'faker'
 import React from 'react'
 import {render} from '__utils__/render'

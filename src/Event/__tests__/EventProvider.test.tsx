@@ -1,4 +1,5 @@
-import App, {appRoot} from 'App'
+import App from 'App'
+import {appRoot} from 'env'
 import React from 'react'
 import {render} from '__utils__/render'
 import axios from 'axios'

@@ -13,6 +13,7 @@ import {mockRxJsAjax} from 'store/__utils__/MockStoreProvider'
 import {wait} from '@testing-library/react'
 import {fakeOrganization} from 'obvio/Organizations/__utils__/factory'
 import {defaultScore} from 'Event/PointsProvider'
+import {goToDashboardConfig} from 'organization/Event/DashboardConfig/__utils__/go-dashboard-config'
 
 const mockPost = mockRxJsAjax.post as jest.Mock
 
@@ -29,20 +30,13 @@ it('should render main nav buttons', async () => {
   )
 
   const mainNavButtons = createEntityList(buttons)
-  const {findAllByLabelText} = render(
-    <Dashboard isEditMode={false} user={fakeUser()} />,
-    {
-      event: fakeEvent({
-        template: fakeSimpleBlog({
-          mainNav: mainNavButtons,
-        }),
+  const {findAllByLabelText} = await goToDashboardConfig({
+    event: fakeEvent({
+      template: fakeSimpleBlog({
+        mainNav: mainNavButtons,
       }),
-      organization: fakeOrganization(),
-      actions: [],
-      score: defaultScore,
-      withRouter: true,
-    },
-  )
+    }),
+  })
 
   const buttonsEls = await findAllByLabelText('main nav button')
   expect(buttonsEls.length).toBe(mainNavButtons.ids.length)
@@ -65,16 +59,9 @@ it('should add a new main nav button', async () => {
     }),
   })
 
-  const {findAllByLabelText, findByLabelText} = render(
-    <Dashboard isEditMode={true} user={fakeUser()} />,
-    {
-      event,
-      organization: fakeOrganization(),
-      actions: [],
-      score: defaultScore,
-      withRouter: true,
-    },
-  )
+  const {findAllByLabelText, findByLabelText} = await goToDashboardConfig({
+    event,
+  })
 
   const buttonEls = () => findAllByLabelText('main nav button')
 
@@ -111,16 +98,9 @@ it('should add a new main nav button', async () => {
     }),
   })
 
-  const {findAllByLabelText, findByLabelText} = render(
-    <Dashboard isEditMode={true} user={fakeUser()} />,
-    {
-      event,
-      organization: fakeOrganization(),
-      actions: [],
-      score: defaultScore,
-      withRouter: true,
-    },
-  )
+  const {findAllByLabelText, findByLabelText} = await goToDashboardConfig({
+    event,
+  })
 
   const buttonEls = () => findAllByLabelText('main nav button')
 
@@ -149,16 +129,13 @@ it('should remove the button', async () => {
     template: fakeSimpleBlog({mainNav: mainNavButtons}),
   })
 
-  const {findAllByLabelText, findByLabelText, queryByText} = render(
-    <Dashboard isEditMode={true} user={fakeUser()} />,
-    {
-      event,
-      organization: fakeOrganization(),
-      actions: [],
-      score: defaultScore,
-      withRouter: true,
-    },
-  )
+  const {
+    findAllByLabelText,
+    findByLabelText,
+    queryByText,
+  } = await goToDashboardConfig({
+    event,
+  })
 
   const buttonEls = () => findAllByLabelText('main nav button')
   expect((await buttonEls()).length).toBe(numButtons)

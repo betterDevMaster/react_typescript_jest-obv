@@ -1,15 +1,10 @@
 import {fireEvent, wait} from '@testing-library/react'
-import {fakeUser} from 'auth/user/__utils__/factory'
-import Dashboard from 'Event/Dashboard'
 import {fakeResource} from 'Event/template/SimpleBlog/Dashboard/ResourceList/__utils__/factory'
 import {fakeSimpleBlog} from 'Event/template/SimpleBlog/__utils__/factory'
 import {fakeEvent} from 'Event/__utils__/factory'
-import {fakeOrganization} from 'obvio/Organizations/__utils__/factory'
-import React from 'react'
 import {clickEdit} from '__utils__/edit'
-import {emptyActions, render} from '__utils__/render'
 import axios from 'axios'
-import {defaultScore} from 'Event/PointsProvider'
+import {goToDashboardConfig} from 'organization/Event/DashboardConfig/__utils__/go-dashboard-config'
 
 const mockAjaxPost = axios.post as jest.Mock
 const mockAjaxDelete = axios.delete as jest.Mock
@@ -34,16 +29,9 @@ it('should remove the existing file', async () => {
     template,
   })
 
-  const {findByLabelText, queryByLabelText} = render(
-    <Dashboard isEditMode={true} user={fakeUser()} />,
-    {
-      event,
-      organization: fakeOrganization(),
-      withRouter: true,
-      actions: emptyActions,
-      score: defaultScore,
-    },
-  )
+  const {findByLabelText, queryByLabelText} = await goToDashboardConfig({
+    event,
+  })
   clickEdit(await findByLabelText('event resource'))
   const filePath = 'somegeneratedfilepath.pdf'
 

@@ -1,10 +1,6 @@
-import React from 'react'
 import user from '@testing-library/user-event'
 import faker from 'faker'
 import {fakeSimpleBlog} from 'Event/template/SimpleBlog/__utils__/factory'
-import {fakeUser} from 'auth/user/__utils__/factory'
-import Dashboard from 'Event/Dashboard'
-import {emptyActions, render} from '__utils__/render'
 import {fakeNavButtonWithSize} from 'Event/Dashboard/components/NavButton/__utils__/factory'
 import {createEntityList} from 'lib/list'
 import {clickEdit} from '__utils__/edit'
@@ -12,12 +8,10 @@ import {fireEvent} from '@testing-library/react'
 import {fakeEvent} from 'Event/__utils__/factory'
 import {mockRxJsAjax} from 'store/__utils__/MockStoreProvider'
 import {wait} from '@testing-library/react'
-import {fakeOrganization} from 'obvio/Organizations/__utils__/factory'
 import {fakeArea} from 'organization/Event/AreaList/__utils__/factory'
 import mockAxios from 'axios'
-import {defaultScore} from 'Event/PointsProvider'
 import {fakeAction} from 'Event/ActionsProvider/__utils__/factory'
-import StaticAreasProvider from 'organization/Event/__utils__/StaticAreasProvider'
+import {goToDashboardConfig} from 'organization/Event/DashboardConfig/__utils__/go-dashboard-config'
 
 const mockPost = mockRxJsAjax.post as jest.Mock
 const mockGet = mockAxios.get as jest.Mock
@@ -40,16 +34,7 @@ it('should edit the selected button', async () => {
       mainNav: mainNavButtons,
     }),
   })
-  const {findByLabelText, findByText} = render(
-    <Dashboard isEditMode={true} user={fakeUser()} />,
-    {
-      event,
-      organization: fakeOrganization(),
-      actions: emptyActions,
-      withRouter: true,
-      score: defaultScore,
-    },
-  )
+  const {findByLabelText, findByText} = await goToDashboardConfig({event})
 
   const targetIndex = faker.random.number({min: 0, max: buttons.length - 1})
   const button = buttons[targetIndex]
@@ -106,26 +91,16 @@ it('should set an area button', async () => {
     fakeArea,
   )
 
-  const {findByLabelText, findByText} = render(
-    <StaticAreasProvider areas={areas}>
-      <Dashboard isEditMode={true} user={fakeUser()} />
-    </StaticAreasProvider>,
-    {
-      event,
-      organization: fakeOrganization(),
-      actions: emptyActions,
-      withRouter: true,
-      score: defaultScore,
-    },
-  )
+  const {findByLabelText, findByText} = await goToDashboardConfig({
+    areas,
+    event,
+  })
 
   const targetIndex = faker.random.number({min: 0, max: buttons.length - 1})
   const button = buttons[targetIndex]
   const buttonEl = await findByText(button.text)
 
   const target = faker.random.arrayElement(areas)
-
-  mockGet.mockImplementationOnce(() => Promise.resolve({data: areas}))
 
   clickEdit(buttonEl)
 
@@ -164,22 +139,14 @@ it('should assign an action for points', async () => {
     () => fakeAction(),
   )
 
-  const {findByLabelText, findByText} = render(
-    <Dashboard isEditMode={true} user={fakeUser()} />,
-    {
-      event,
-      organization: fakeOrganization(),
-      actions,
-      withRouter: true,
-      score: defaultScore,
-    },
-  )
+  const {findByLabelText, findByText} = await goToDashboardConfig({
+    event,
+    actions,
+  })
 
   const buttonEl = await findByText(button.text)
 
   const target = faker.random.arrayElement(actions)
-
-  mockGet.mockImplementationOnce(() => Promise.resolve({data: actions}))
 
   clickEdit(buttonEl)
 
@@ -212,16 +179,7 @@ it('should set an infusionsoft tag', async () => {
     has_infusionsoft: true,
   })
 
-  const {findByLabelText, findByText} = render(
-    <Dashboard isEditMode={true} user={fakeUser()} />,
-    {
-      event,
-      organization: fakeOrganization(),
-      actions: [],
-      withRouter: true,
-      score: defaultScore,
-    },
-  )
+  const {findByLabelText, findByText} = await goToDashboardConfig({event})
 
   const buttonEl = await findByText(button.text)
 
@@ -234,10 +192,6 @@ it('should set an infusionsoft tag', async () => {
 
   user.type(await findByLabelText('infusionsoft tag id'), String(id))
   user.click(await findByLabelText('set tag id'))
-
-  await wait(() => {
-    expect(mockGet).toHaveBeenCalledTimes(1)
-  })
 
   // Saved
   await wait(() => {
@@ -266,16 +220,7 @@ it('should set a link to an event page', async () => {
     }),
   })
 
-  const {findByLabelText, findByText} = render(
-    <Dashboard isEditMode={true} user={fakeUser()} />,
-    {
-      event,
-      organization: fakeOrganization(),
-      actions: emptyActions,
-      withRouter: true,
-      score: defaultScore,
-    },
-  )
+  const {findByLabelText, findByText} = await goToDashboardConfig({event})
 
   const buttonEl = async () => await findByText(button.text)
 

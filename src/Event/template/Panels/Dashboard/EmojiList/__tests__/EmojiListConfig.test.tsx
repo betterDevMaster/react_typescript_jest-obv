@@ -1,17 +1,13 @@
-import React from 'react'
 import faker from 'faker'
 import {fakePanels} from 'Event/template/Panels/__utils__/factory'
-import {fakeUser} from 'auth/user/__utils__/factory'
-import Dashboard from 'Event/Dashboard'
-import {emptyActions, inputElementFor, render} from '__utils__/render'
+import {inputElementFor} from '__utils__/render'
 import {fireEvent} from '@testing-library/dom'
 import {clickEdit} from '__utils__/edit'
 import {fakeEvent} from 'Event/__utils__/factory'
 import {mockRxJsAjax} from 'store/__utils__/MockStoreProvider'
 import {wait} from '@testing-library/react'
-import {fakeOrganization} from 'obvio/Organizations/__utils__/factory'
-import {defaultScore} from 'Event/PointsProvider'
 import {DEFAULT_EMOJIS, EMOJI} from 'Event/Dashboard/components/emoji'
+import {goToDashboardConfig} from 'organization/Event/DashboardConfig/__utils__/go-dashboard-config'
 
 const mockPost = mockRxJsAjax.post as jest.Mock
 
@@ -28,16 +24,9 @@ it('should pick an emoji', async () => {
     }),
   })
 
-  const {findByLabelText, findAllByLabelText} = render(
-    <Dashboard isEditMode={true} user={fakeUser()} />,
-    {
-      event,
-      organization: fakeOrganization(),
-      actions: emptyActions,
-      score: defaultScore,
-      withRouter: true,
-    },
-  )
+  const {findByLabelText, findAllByLabelText} = await goToDashboardConfig({
+    event,
+  })
 
   fireEvent.click(await findByLabelText('add emoji list'))
 
@@ -76,16 +65,9 @@ it('should remove an existing emoji', async () => {
   const event = fakeEvent({
     template: fakePanels({emojiList: {emojis}}),
   })
-  const {findByLabelText, findAllByLabelText} = render(
-    <Dashboard isEditMode={true} user={fakeUser()} />,
-    {
-      event,
-      organization: fakeOrganization(),
-      actions: emptyActions,
-      score: defaultScore,
-      withRouter: true,
-    },
-  )
+  const {findByLabelText, findAllByLabelText} = await goToDashboardConfig({
+    event,
+  })
 
   clickEdit(await findByLabelText('emoji list'))
 

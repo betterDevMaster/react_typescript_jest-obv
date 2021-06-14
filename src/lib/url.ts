@@ -1,4 +1,4 @@
-import {appRoot, isProduction, isStaging, OBVIO_SUBDOMAIN} from 'App'
+import {appRoot, isProduction, isStaging, OBVIO_SUBDOMAIN} from 'env'
 import {ExtendRecursively} from 'lib/type-utils'
 import {useLocation} from 'react-router-dom'
 

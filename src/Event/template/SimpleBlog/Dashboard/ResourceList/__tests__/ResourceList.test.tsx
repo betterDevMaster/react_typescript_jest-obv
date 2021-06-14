@@ -1,19 +1,14 @@
-import React from 'react'
 import user from '@testing-library/user-event'
 import faker from 'faker'
 import {fakeSimpleBlog} from 'Event/template/SimpleBlog/__utils__/factory'
-import {fakeUser} from 'auth/user/__utils__/factory'
-import Dashboard from 'Event/Dashboard'
-import {emptyActions, render} from '__utils__/render'
 import {fakeResource} from 'Event/template/SimpleBlog/Dashboard/ResourceList/__utils__/factory'
 import {fireEvent} from '@testing-library/dom'
 import {clickEdit} from '__utils__/edit'
 import {fakeEvent} from 'Event/__utils__/factory'
 import {mockRxJsAjax} from 'store/__utils__/MockStoreProvider'
 import {wait} from '@testing-library/react'
-import {fakeOrganization} from 'obvio/Organizations/__utils__/factory'
-import {defaultScore} from 'Event/PointsProvider'
 import axios from 'axios'
+import {goToDashboardConfig} from 'organization/Event/DashboardConfig/__utils__/go-dashboard-config'
 
 const mockPost = mockRxJsAjax.post as jest.Mock
 const mockDelete = axios.delete as jest.Mock
@@ -31,50 +26,6 @@ afterEach(() => {
   jest.clearAllMocks()
 })
 
-it('should render resources', async () => {
-  const event = fakeEvent({
-    template: fakeSimpleBlog({
-      resourceList: {
-        title: faker.random.word(),
-        description: '',
-        resources: [],
-      },
-    }),
-  })
-
-  const {queryByText, rerender, findAllByLabelText} = render(
-    <Dashboard isEditMode={false} user={fakeUser()} />,
-    {event, withRouter: true, score: defaultScore, actions: emptyActions},
-  )
-
-  expect(queryByText(/resources:/i)).not.toBeInTheDocument()
-
-  const numResources = faker.random.number({min: 1, max: 6})
-  const withResourcesTemplate = fakeSimpleBlog({
-    resourceList: {
-      title: faker.random.word(),
-      description: '',
-      resources: Array.from({length: numResources}, () =>
-        fakeResource({isVisible: true}),
-      ),
-    },
-  })
-  const withResources = fakeEvent({
-    template: withResourcesTemplate,
-  })
-
-  rerender(<Dashboard isEditMode={false} user={fakeUser()} />, {
-    event: withResources,
-  })
-
-  const resources = await findAllByLabelText('event resource')
-  const numVisible = withResourcesTemplate.resourceList.resources.filter(
-    (r) => r.isVisible,
-  ).length
-
-  expect(resources.length).toBe(numVisible)
-})
-
 it('should add a new resource', async () => {
   const dashboard = fakeSimpleBlog({
     resourceList: {
@@ -85,18 +36,12 @@ it('should add a new resource', async () => {
   })
 
   const event = fakeEvent({template: dashboard})
-  const organization = fakeOrganization()
 
-  const {queryByLabelText, findByLabelText, findAllByLabelText} = render(
-    <Dashboard isEditMode={true} user={fakeUser()} />,
-    {
-      event,
-      organization,
-      withRouter: true,
-      score: defaultScore,
-      actions: emptyActions,
-    },
-  )
+  const {
+    queryByLabelText,
+    findByLabelText,
+    findAllByLabelText,
+  } = await goToDashboardConfig({event})
 
   expect(queryByLabelText('event resource')).not.toBeInTheDocument()
 
@@ -125,15 +70,7 @@ it('should update resources description', async () => {
   })
 
   const event = fakeEvent({template: dashboard})
-  const {findByLabelText} = render(
-    <Dashboard isEditMode={true} user={fakeUser()} />,
-    {
-      event,
-      withRouter: true,
-      score: defaultScore,
-      actions: emptyActions,
-    },
-  )
+  const {findByLabelText} = await goToDashboardConfig({event})
 
   expect((await findByLabelText('resource description')).textContent).toBe(
     description,
@@ -181,18 +118,8 @@ it('should update a resource', async () => {
   })
 
   const event = fakeEvent({template: dashboard})
-  const organization = fakeOrganization()
 
-  const {findByLabelText} = render(
-    <Dashboard isEditMode={true} user={fakeUser()} />,
-    {
-      event,
-      organization,
-      withRouter: true,
-      score: defaultScore,
-      actions: emptyActions,
-    },
-  )
+  const {findByLabelText} = await goToDashboardConfig({event})
 
   expect((await findByLabelText('resource link')).textContent).toBe(name)
 
@@ -229,18 +156,12 @@ it('should remove a resource', async () => {
     },
   })
   const event = fakeEvent({template: dashboard})
-  const organization = fakeOrganization()
 
-  const {findAllByLabelText, findByLabelText, queryByText} = render(
-    <Dashboard isEditMode={true} user={fakeUser()} />,
-    {
-      event,
-      organization,
-      withRouter: true,
-      score: defaultScore,
-      actions: emptyActions,
-    },
-  )
+  const {
+    findAllByLabelText,
+    findByLabelText,
+    queryByText,
+  } = await goToDashboardConfig({event})
 
   expect((await findAllByLabelText('event resource')).length).toBe(
     resources.length,

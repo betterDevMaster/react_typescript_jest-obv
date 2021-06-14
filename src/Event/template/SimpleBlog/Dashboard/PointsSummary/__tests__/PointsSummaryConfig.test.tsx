@@ -1,19 +1,14 @@
-import React from 'react'
 import user from '@testing-library/user-event'
 import faker from 'faker'
 import {fakeSimpleBlog} from 'Event/template/SimpleBlog/__utils__/factory'
-import {fakeUser} from 'auth/user/__utils__/factory'
-import Dashboard from 'Event/Dashboard'
-import {emptyActions, render} from '__utils__/render'
 import {fakePoints} from 'Event/template/SimpleBlog/Dashboard/PointsSummary/__utils__/factory'
 import {fireEvent, wait} from '@testing-library/dom'
 import {clickEdit} from '__utils__/edit'
 import {fakeEvent} from 'Event/__utils__/factory'
 import {mockRxJsAjax} from 'store/__utils__/MockStoreProvider'
-import {defaultScore} from 'Event/PointsProvider'
-import {fakeOrganization} from 'obvio/Organizations/__utils__/factory'
 import {ObvioEvent} from 'Event'
 import axios from 'axios'
+import {goToDashboardConfig} from 'organization/Event/DashboardConfig/__utils__/go-dashboard-config'
 
 const mockRxPost = mockRxJsAjax.post as jest.Mock
 const mockAxiosPost = axios.post as jest.Mock
@@ -23,51 +18,11 @@ afterEach(() => {
   jest.clearAllMocks()
 })
 
-it('should render points', async () => {
-  const withoutPoints = fakeEvent({template: fakeSimpleBlog({points: null})})
-
-  const {queryByText, rerender, findByText} = render(
-    <Dashboard isEditMode={false} user={fakeUser()} />,
-    {
-      event: withoutPoints,
-      withRouter: true,
-      actions: emptyActions,
-      score: defaultScore,
-      organization: fakeOrganization(),
-    },
-  )
-
-  expect(queryByText(/you've earned/i)).not.toBeInTheDocument()
-
-  const points = fakePoints()
-
-  const withPoints = fakeEvent({
-    template: fakeSimpleBlog({
-      points,
-    }),
-  })
-
-  rerender(<Dashboard isEditMode={false} user={fakeUser()} />, {
-    event: withPoints,
-  })
-
-  const pointsText = new RegExp(`${points.unit}!`, 'i')
-
-  expect(await findByText(pointsText)).toBeInTheDocument()
-})
-
 it('should configure points', async () => {
   const event = fakeEvent({template: fakeSimpleBlog({points: null})})
-  const {queryByText, findByLabelText, findByText} = render(
-    <Dashboard isEditMode={true} user={fakeUser()} />,
-    {
-      event,
-      withRouter: true,
-      actions: emptyActions,
-      score: defaultScore,
-      organization: fakeOrganization(),
-    },
-  )
+  const {queryByText, findByLabelText, findByText} = await goToDashboardConfig({
+    event,
+  })
 
   expect(queryByText(/you've earned/i)).not.toBeInTheDocument()
 
@@ -99,16 +54,9 @@ it('should remove points', async () => {
     }),
   })
 
-  const {queryByText, findByLabelText, findByText} = render(
-    <Dashboard isEditMode={true} user={fakeUser()} />,
-    {
-      event,
-      withRouter: true,
-      actions: emptyActions,
-      score: defaultScore,
-      organization: fakeOrganization(),
-    },
-  )
+  const {queryByText, findByLabelText, findByText} = await goToDashboardConfig({
+    event,
+  })
 
   expect(await findByText(/you've earned 0 .*/i)).toBeInTheDocument()
 
@@ -139,16 +87,7 @@ it('should upload a logo', async () => {
     }),
   })
 
-  const {findByLabelText} = render(
-    <Dashboard isEditMode={true} user={fakeUser()} />,
-    {
-      event,
-      withRouter: true,
-      actions: emptyActions,
-      score: defaultScore,
-      organization: fakeOrganization(),
-    },
-  )
+  const {findByLabelText} = await goToDashboardConfig({event})
 
   clickEdit(await findByLabelText('points summary'))
 
@@ -190,16 +129,7 @@ it('should remove the logo', async () => {
     points_summary_logo: logo,
   })
 
-  const {findByLabelText} = render(
-    <Dashboard isEditMode={true} user={fakeUser()} />,
-    {
-      event,
-      withRouter: true,
-      actions: emptyActions,
-      score: defaultScore,
-      organization: fakeOrganization(),
-    },
-  )
+  const {findByLabelText} = await goToDashboardConfig({event})
 
   clickEdit(await findByLabelText('points summary'))
 

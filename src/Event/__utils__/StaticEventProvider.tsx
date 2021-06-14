@@ -5,7 +5,7 @@ import {useDispatch, useSelector} from 'react-redux'
 import {ObvioEvent} from 'Event'
 import {eventClient} from 'Event/api-client'
 import {RootState} from 'store'
-import {appRoot, isProduction} from 'App'
+import {appRoot, isProduction} from 'env'
 
 export default function StaticEventProvider(props: {
   event: ObvioEvent

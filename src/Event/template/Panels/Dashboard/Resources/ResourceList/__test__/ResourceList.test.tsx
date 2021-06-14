@@ -1,10 +1,6 @@
-import React from 'react'
 import user from '@testing-library/user-event'
 import faker from 'faker'
 import {fakePanels} from 'Event/template/Panels/__utils__/factory'
-import {fakeUser} from 'auth/user/__utils__/factory'
-import Dashboard from 'Event/Dashboard'
-import {emptyActions, render} from '__utils__/render'
 import {fakeResource} from 'Event/template/Panels/Dashboard/Resources/ResourceList/__utils__/factory'
 import {fireEvent} from '@testing-library/dom'
 import {clickEdit} from '__utils__/edit'
@@ -12,56 +8,14 @@ import {fakeEvent} from 'Event/__utils__/factory'
 import {mockRxJsAjax} from 'store/__utils__/MockStoreProvider'
 import {wait} from '@testing-library/react'
 import {fakeOrganization} from 'obvio/Organizations/__utils__/factory'
-import {defaultScore} from 'Event/PointsProvider'
 import axios from 'axios'
+import {goToDashboardConfig} from 'organization/Event/DashboardConfig/__utils__/go-dashboard-config'
 
 const mockPost = mockRxJsAjax.post as jest.Mock
 const mockDelete = axios.delete as jest.Mock
 
 afterEach(() => {
   jest.clearAllMocks()
-})
-
-it('should render resources', async () => {
-  const event = fakeEvent({
-    template: fakePanels({
-      resourceList: {
-        title: faker.random.word(),
-        resources: [],
-      },
-    }),
-  })
-
-  const {rerender, findAllByLabelText, findByLabelText} = render(
-    <Dashboard isEditMode={false} user={fakeUser()} />,
-    {event, withRouter: true, score: defaultScore, actions: emptyActions},
-  )
-
-  const numResources = faker.random.number({min: 1, max: 6})
-  const withResourcesTemplate = fakePanels({
-    resourceList: {
-      title: faker.random.word(),
-      resources: Array.from({length: numResources}, () =>
-        fakeResource({isVisible: true}),
-      ),
-    },
-  })
-  const withResources = fakeEvent({
-    template: withResourcesTemplate,
-  })
-
-  rerender(<Dashboard isEditMode={false} user={fakeUser()} />, {
-    event: withResources,
-  })
-
-  user.click(await findByLabelText('panels tab resources'))
-
-  const resources = await findAllByLabelText('event resource')
-  const numVisible = withResourcesTemplate.resourceList.resources.filter(
-    (r) => r.isVisible,
-  ).length
-
-  expect(resources.length).toBe(numVisible)
 })
 
 it('should add a new resource', async () => {
@@ -73,18 +27,10 @@ it('should add a new resource', async () => {
   })
 
   const event = fakeEvent({template: dashboard})
-  const organization = fakeOrganization()
 
-  const {findByLabelText, findAllByLabelText} = render(
-    <Dashboard isEditMode={true} user={fakeUser()} />,
-    {
-      event,
-      organization,
-      withRouter: true,
-      score: defaultScore,
-      actions: emptyActions,
-    },
-  )
+  const {findByLabelText, findAllByLabelText} = await goToDashboardConfig({
+    event,
+  })
 
   user.click(await findByLabelText('panels tab resources'))
 
@@ -110,18 +56,10 @@ it('should update resources title', async () => {
   })
 
   const event = fakeEvent({template: dashboard})
-  const organization = fakeOrganization()
 
-  const {findByLabelText} = render(
-    <Dashboard isEditMode={true} user={fakeUser()} />,
-    {
-      event,
-      organization,
-      withRouter: true,
-      score: defaultScore,
-      actions: emptyActions,
-    },
-  )
+  const {findByLabelText} = await goToDashboardConfig({
+    event,
+  })
 
   user.click(await findByLabelText('panels tab resources'))
 
@@ -157,16 +95,9 @@ it('should update a resource', async () => {
 
   const downloadLinkText = 'Download'
 
-  const {findByLabelText} = render(
-    <Dashboard isEditMode={true} user={fakeUser()} />,
-    {
-      event,
-      organization,
-      withRouter: true,
-      score: defaultScore,
-      actions: emptyActions,
-    },
-  )
+  const {findByLabelText} = await goToDashboardConfig({
+    event,
+  })
 
   user.click(await findByLabelText('panels tab resources'))
 
@@ -206,18 +137,14 @@ it('should remove a resource', async () => {
     },
   })
   const event = fakeEvent({template: dashboard})
-  const organization = fakeOrganization()
 
-  const {findAllByLabelText, findByLabelText, queryByText} = render(
-    <Dashboard isEditMode={true} user={fakeUser()} />,
-    {
-      event,
-      organization,
-      withRouter: true,
-      score: defaultScore,
-      actions: emptyActions,
-    },
-  )
+  const {
+    findAllByLabelText,
+    findByLabelText,
+    queryByText,
+  } = await goToDashboardConfig({
+    event,
+  })
 
   user.click(await findByLabelText('panels tab resources'))
 
