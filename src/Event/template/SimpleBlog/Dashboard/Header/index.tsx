@@ -2,22 +2,12 @@ import React from 'react'
 import styled from 'styled-components'
 import Container from '@material-ui/core/Container'
 import {MenuIconButton} from 'lib/ui/IconButton/MenuIconButton'
-import {useTemplate} from 'Event/TemplateProvider'
 import {eventRoutes} from 'Event/Routes'
 import {RelativeLink} from 'lib/ui/link/RelativeLink'
 import {useEvent} from 'Event/EventProvider'
 import EditComponent from 'Event/Dashboard/editor/views/EditComponent'
-import {rgb} from 'lib/color'
-import {SIMPLE_BLOG} from 'Event/template/SimpleBlog'
-
-export type Header = {
-  backgroundColor: string
-  backgroundOpacity: number
-  height: number
-  script: string | null
-  isCollapsed?: boolean
-  disableShadow?: boolean
-}
+import {rgba} from 'lib/color'
+import {SIMPLE_BLOG, useSimpleBlog} from 'Event/template/SimpleBlog'
 
 export default function Header(props: {
   toggleMenu: () => void
@@ -53,7 +43,8 @@ export default function Header(props: {
 
 function CollapsableBackground(props: {children: React.ReactElement}) {
   const {event} = useEvent()
-  const {header} = useTemplate()
+  const {template} = useSimpleBlog()
+  const {header} = template
   const backgroundImage = header.isCollapsed
     ? ''
     : event.header_background
@@ -71,7 +62,8 @@ function CollapsableBackground(props: {children: React.ReactElement}) {
 
 function CollapsableLogo() {
   const {event} = useEvent()
-  const {title, header} = useTemplate()
+  const {template} = useSimpleBlog()
+  const {title, header} = template
   const logo = event.logo ? event.logo.url : ''
 
   if (header.isCollapsed) {
@@ -81,7 +73,8 @@ function CollapsableLogo() {
 }
 
 function Layout(props: {children: React.ReactElement | React.ReactElement[]}) {
-  const {header} = useTemplate()
+  const {template} = useSimpleBlog()
+  const {header} = template
 
   const height = header.isCollapsed ? 50 : header.height
   const mobileHeight = Math.round(height * 0.7)
@@ -98,8 +91,9 @@ function Layout(props: {children: React.ReactElement | React.ReactElement[]}) {
 }
 
 function CollapsableColorOverlay(props: {children: React.ReactElement}) {
-  const {header} = useTemplate()
-  const backgroundColorRgb = rgb(
+  const {template} = useSimpleBlog()
+  const {header} = template
+  const backgroundColorRgb = rgba(
     header.backgroundColor,
     header.backgroundOpacity,
   )

@@ -1,93 +1,51 @@
 import React from 'react'
-import Typography from '@material-ui/core/Typography'
-import Box from '@material-ui/core/Box'
-import Grid from '@material-ui/core/Grid'
-import Slider from '@material-ui/core/Slider'
-
-import ColorPicker from 'lib/ui/ColorPicker'
-import {useTemplate, useUpdateObject} from 'Event/TemplateProvider'
-import ProgressBarPreview from 'organization/Event/GeneralConfig/ProgressBarPreview'
-import LoginConfig from 'organization/Event/GeneralConfig/LoginConfig'
+import styled from 'styled-components'
 import Layout from 'organization/user/Layout'
 import Page from 'organization/Event/Page'
-import {handleChangeSlider} from 'lib/dom'
-import SetPasswordConfig from 'organization/Event/GeneralConfig/SetPasswordConfig'
-
-export interface ProgressBar {
-  background: string
-  textColor: string
-}
-
-const MIN_PROGRESS_BAR_THICKNESS = 5
-const MAX_PROGRESS_BAR_THICKNESS = 50
-const MIN_PROGRESS_BAR_BORDER_RADIUS = 0
-const MAX_PROGRESS_BAR_BORDER_RADIUS = 25
+import {useTemplate} from 'Event/TemplateProvider'
+import {SIMPLE_BLOG} from 'Event/template/SimpleBlog'
+import {PANELS} from 'Event/template/Panels'
+import SimpleBlogGeneralConfig from 'Event/template/SimpleBlog/GeneralConfig'
+import PanelsGeneralConfig from 'Event/template/Panels/GeneralConfig'
+import {withStyles} from '@material-ui/core/styles'
+import {spacing} from 'lib/ui/theme'
+import Typography from '@material-ui/core/Typography'
 
 export default function GeneralConfig() {
-  const updateProgressBar = useUpdateObject('progressBar')
-  const {progressBar} = useTemplate()
-
   return (
     <Layout>
-      <div>
-        <Page>
-          <Box>
-            <Typography variant="h6">Progress Bar</Typography>
-            <ProgressBarPreview
-              barColor={progressBar.barColor}
-              textColor={progressBar.textColor}
-              thickness={progressBar.thickness}
-              borderRadius={progressBar.borderRadius}
-            />
-            <Grid container spacing={2}>
-              <Grid item xs={6}>
-                <ColorPicker
-                  label="Bar Color"
-                  color={progressBar.barColor}
-                  onPick={updateProgressBar('barColor')}
-                  aria-label="bar color"
-                />
-                <Typography variant="subtitle2" style={{opacity: 0.7}}>
-                  Thickness
-                </Typography>
-                <Slider
-                  valueLabelDisplay="auto"
-                  aria-label="progress bar thickness"
-                  value={progressBar.thickness || 0}
-                  onChange={handleChangeSlider(updateProgressBar('thickness'))}
-                  step={1}
-                  min={MIN_PROGRESS_BAR_THICKNESS}
-                  max={MAX_PROGRESS_BAR_THICKNESS}
-                />
-              </Grid>
-              <Grid item xs={6}>
-                <ColorPicker
-                  label="Text Color"
-                  color={progressBar.textColor}
-                  onPick={updateProgressBar('textColor')}
-                  aria-label="text color"
-                />
-                <Typography variant="subtitle2" style={{opacity: 0.7}}>
-                  Border Radius
-                </Typography>
-                <Slider
-                  valueLabelDisplay="auto"
-                  aria-label="progress bar border"
-                  value={progressBar.borderRadius || 0}
-                  onChange={handleChangeSlider(
-                    updateProgressBar('borderRadius'),
-                  )}
-                  step={1}
-                  min={MIN_PROGRESS_BAR_BORDER_RADIUS}
-                  max={MAX_PROGRESS_BAR_BORDER_RADIUS}
-                />
-              </Grid>
-            </Grid>
-          </Box>
-          <LoginConfig />
-          <SetPasswordConfig />
-        </Page>
-      </div>
+      <Page>
+        <TemplateGeneralConfig />
+      </Page>
     </Layout>
   )
 }
+
+function TemplateGeneralConfig() {
+  const template = useTemplate()
+  switch (template.name) {
+    case SIMPLE_BLOG:
+      return <SimpleBlogGeneralConfig />
+    case PANELS:
+      return <PanelsGeneralConfig />
+    default:
+      throw new Error('Missing a template')
+  }
+}
+
+export function SectionTitle(props: {children: string}) {
+  return <TitleText variant="h6">{props.children}</TitleText>
+}
+
+const TitleText = withStyles({
+  root: {
+    marginTop: spacing[4],
+    marginBottom: spacing[4],
+  },
+})(Typography)
+
+export const PreviewBox = styled.div`
+  padding: ${(props) => props.theme.spacing[2]};
+  border: 1px solid ${(props) => props.theme.colors.border};
+  border-radius: 4px;
+`

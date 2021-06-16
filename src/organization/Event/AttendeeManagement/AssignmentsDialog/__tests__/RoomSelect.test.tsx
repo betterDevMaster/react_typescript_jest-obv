@@ -34,11 +34,14 @@ it('should assign a room', async () => {
   const attendee = attendees[targetIndex]
   const room = faker.random.arrayElement(rooms)
 
-  const {findAllByLabelText, findByLabelText, event} =
-    await goToAttendeeManagement({
-      attendees,
-      areas: [area],
-    })
+  const {
+    findAllByLabelText,
+    findByLabelText,
+    event,
+  } = await goToAttendeeManagement({
+    attendees,
+    areas: [area],
+  })
 
   // Room assignments
   mockGet.mockImplementationOnce(() => Promise.resolve({data: []}))
@@ -146,11 +149,14 @@ it('it should re-assign a room', async () => {
 
   const area = fakeArea({rooms})
 
-  const {findByLabelText, event, findAllByLabelText} =
-    await goToAttendeeManagement({
-      attendees,
-      areas: [area],
-    })
+  const {
+    findByLabelText,
+    event,
+    findAllByLabelText,
+  } = await goToAttendeeManagement({
+    attendees,
+    areas: [area],
+  })
 
   // Room assignments
   mockGet.mockImplementationOnce(() =>

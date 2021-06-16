@@ -28,11 +28,14 @@ it('should add a new', async () => {
       }),
   )
 
-  const {findByLabelText, event, findAllByLabelText} =
-    await goToAttendeeManagement({
-      attendees,
-      userPermissions: [CONFIGURE_EVENTS],
-    })
+  const {
+    findByLabelText,
+    event,
+    findAllByLabelText,
+  } = await goToAttendeeManagement({
+    attendees,
+    userPermissions: [CONFIGURE_EVENTS],
+  })
 
   user.click(await findByLabelText('add attendee'))
 

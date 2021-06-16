@@ -29,8 +29,9 @@ export default function Form(props: {
   attendee?: Attendee
 }) {
   const {register, handleSubmit, errors} = useForm()
-  const [serverError, setServerError] =
-    useState<ValidationError<Partial<Attendee>>>(null)
+  const [serverError, setServerError] = useState<
+    ValidationError<Partial<Attendee>>
+  >(null)
   const {isVisible, attendee} = props
   const [submitting, setSubmitting] = useState(false)
   const [newGroups, setNewGroups] = useState<NewGroup[]>([])

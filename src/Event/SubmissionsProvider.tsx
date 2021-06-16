@@ -21,16 +21,19 @@ interface SubmissionsContextProps {
   responseError: ValidationError<any> | null
 }
 
-export const SubmissionsContext =
-  React.createContext<undefined | SubmissionsContextProps>(undefined)
+export const SubmissionsContext = React.createContext<
+  undefined | SubmissionsContextProps
+>(undefined)
 
 export default function SubmissionsProvider(props: {
   children: React.ReactElement
 }) {
   const [answers, setAnswers] = useState<Answer[]>([])
   const {loading, data: fetchedAnswers} = useAnswers()
-  const [responseError, setResponseError] =
-    useState<ValidationError<any> | null>(null)
+  const [
+    responseError,
+    setResponseError,
+  ] = useState<ValidationError<any> | null>(null)
   const {submit: submitAction} = usePoints()
   const submitOptionActions = useSubmitOptionActions()
 
@@ -47,26 +50,31 @@ export default function SubmissionsProvider(props: {
   const onSubmit = (form: Form, data: {answers: Answer[]}) => {
     setResponseError(null)
 
-    return submit(form, data).then((newAnswers) => {
-      /**
-       * Update the answers that's been submitted...
-       */
-      const existing = answers.filter(
-        (a) => !newAnswers.find((na) => na.question_id === a.question_id),
-      )
+    return submit(form, data)
+      .then((newAnswers) => {
+        /**
+         * Update the answers that's been submitted...
+         */
+        const existing = answers.filter(
+          (a) => !newAnswers.find((na) => na.question_id === a.question_id),
+        )
 
-      const updated = [...existing, ...newAnswers]
-      setAnswers(updated)
+        const updated = [...existing, ...newAnswers]
+        setAnswers(updated)
 
-      /**
-       * Submit Form action
-       */
-      if (form.action) {
-        submitAction(form.action)
-      }
+        /**
+         * Submit Form action
+         */
+        if (form.action) {
+          submitAction(form.action)
+        }
 
-      submitOptionActions(form, newAnswers)
-    })
+        submitOptionActions(form, newAnswers)
+      })
+      .catch((e) => {
+        setResponseError(e)
+        throw e // Re-throw to avoid the form thinking it was a success
+      })
   }
 
   if (loading) {

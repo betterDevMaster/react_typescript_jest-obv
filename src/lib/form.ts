@@ -37,9 +37,9 @@ export const fieldError = <T>(
      */
     const objKey = key.replace(/\[/g, '.').replace(']', '') as keyof T
 
-    const validationErrors = errors.response.errors[
+    const validationErrors = (errors.response.errors[
       objKey
-    ] as unknown as string[]
+    ] as unknown) as string[]
     if (!validationErrors) {
       return
     }

@@ -3,15 +3,18 @@ import {useTemplate} from 'Event/TemplateProvider'
 import {useEvent} from 'Event/EventProvider'
 import {useAttendee, useEventAuth} from 'Event/auth'
 import {SIMPLE_BLOG} from 'Event/template/SimpleBlog'
+import {PANELS} from 'Event/template/Panels'
 import {TechCheckConfig} from 'Event'
-import SimpleBlogTechCheck from 'Event/template/SimpleBlog/TechCheck'
+import SimpleBlogTechCheck from 'Event/template/SimpleBlog/Step3/TechCheck'
+import PanelsTechCheck from 'Event/template/Panels/Step3/TechCheck'
 import {usePlatformActions} from 'Event/ActionsProvider/platform-actions'
 import {usePoints} from 'Event/PointsProvider'
-import {Template} from 'Event/template'
+import {User} from 'auth/user'
 
 const TECH_CHECK_POLL_SECS = 10
 
-export interface TechCheckProps {
+export type TechCheckProps = {
+  user: User
   techCheck: TechCheckConfig
   progress: number
   isPreview: boolean
@@ -20,7 +23,7 @@ export interface TechCheckProps {
    * Accepting the current template settings is required
    * to render the config preview before saving.
    */
-  settings: Template['techCheck']
+  settings: any
 }
 
 export default function TechCheck() {
@@ -67,7 +70,17 @@ export default function TechCheck() {
           settings={template.techCheck}
         />
       )
+    case PANELS:
+      return (
+        <PanelsTechCheck
+          user={user}
+          techCheck={techCheck}
+          progress={75}
+          isPreview={false}
+          settings={template.techCheck}
+        />
+      )
     default:
-      throw new Error(`Missing tech check for template: ${template.name}`)
+      throw new Error(`Missing tech check for template`)
   }
 }

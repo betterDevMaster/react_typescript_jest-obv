@@ -1,43 +1,16 @@
-import {useTemplate, useUpdateTemplate} from 'Event/TemplateProvider'
-import {v4 as uid} from 'uuid'
 import React from 'react'
-import {BlogPost, BLOG_POST} from 'Event/Dashboard/components/BlogPost'
-import {now} from 'lib/date-time'
+import {BLOG_POST} from 'Event/template/SimpleBlog/Dashboard/BlogPosts/BlogPost'
 import {useDispatch} from 'react-redux'
 import {setConfig} from 'Event/Dashboard/editor/state/actions'
 import Button from '@material-ui/core/Button'
+import {useCreatePost} from 'Event/Dashboard/components/BlogPost'
 
 export default function AddBlogPostButton(props: {className?: string}) {
-  const {blogPosts} = useTemplate()
-  const updateTemplate = useUpdateTemplate()
   const dispatch = useDispatch()
+  const create = useCreatePost()
 
-  const addPost = () => {
-    const id = uid()
-    const post: BlogPost = {
-      title: 'My Post',
-      postedAt: now(),
-      publishAt: null,
-      content: '',
-      isVisible: true,
-      hideDate: true,
-    }
-
-    const entities = {
-      ...blogPosts.entities,
-      [id]: post,
-    }
-    const ids = [id, ...blogPosts.ids]
-
-    updateTemplate({
-      blogPosts: {
-        entities,
-        ids,
-      },
-    })
-
-    dispatch(setConfig({type: BLOG_POST, id}))
-  }
+  const addPost = () =>
+    create().then((id) => dispatch(setConfig({type: BLOG_POST, id})))
 
   return (
     <Button

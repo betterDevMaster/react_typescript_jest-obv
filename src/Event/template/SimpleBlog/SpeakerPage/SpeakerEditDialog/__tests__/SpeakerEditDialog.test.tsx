@@ -1,11 +1,11 @@
 import faker from 'faker'
 import {fakeEvent, fakeSpeaker} from 'Event/__utils__/factory'
-import {goToSpeakerConfig} from 'organization/Event/SpeakerPageConfig/__utils__/go-to-speaker-config'
 import axios from 'axios'
 import user from '@testing-library/user-event'
 import {fireEvent, wait} from '@testing-library/react'
 import {CONFIGURE_EVENTS} from 'organization/PermissionsProvider'
 import {Speaker} from 'Event/SpeakerPage'
+import {goToSpeakerConfig} from 'Event/template/SimpleBlog/SpeakerPage/SpeakerPageConfig/__utils__/go-to-speaker-config'
 
 const mockPost = axios.post as jest.Mock
 const mockDelete = axios.delete as jest.Mock
@@ -22,8 +22,11 @@ it('should edit a speaker', async () => {
   )
 
   const event = fakeEvent({speakers})
-  const {findAllByLabelText, findByText, findByLabelText} =
-    await goToSpeakerConfig({event, userPermissions: [CONFIGURE_EVENTS]})
+  const {
+    findAllByLabelText,
+    findByText,
+    findByLabelText,
+  } = await goToSpeakerConfig({event, userPermissions: [CONFIGURE_EVENTS]})
 
   const targetIndex = faker.random.number({min: 0, max: speakers.length - 1})
 
@@ -85,8 +88,11 @@ it('remove a speaker', async () => {
   )
 
   const event = fakeEvent({speakers})
-  const {findAllByLabelText, queryByText, findByLabelText} =
-    await goToSpeakerConfig({event, userPermissions: [CONFIGURE_EVENTS]})
+  const {
+    findAllByLabelText,
+    queryByText,
+    findByLabelText,
+  } = await goToSpeakerConfig({event, userPermissions: [CONFIGURE_EVENTS]})
 
   const targetIndex = faker.random.number({min: 0, max: speakers.length - 1})
   const target = speakers[targetIndex]

@@ -4,11 +4,11 @@ import {api, getDomain, isObvioApp, isObvioDomain} from 'lib/url'
 import {domainEventSlug, useParamEventSlug} from 'Event/url'
 import React, {useCallback, useEffect, useState} from 'react'
 import {useDispatch, useSelector} from 'react-redux'
-import {setEvent} from 'Event/state/actions'
+import {refreshEvent, setEvent} from 'Event/state/actions'
 import {ObvioEvent} from 'Event'
 import {RootState} from 'store'
 import {eventClient} from 'Event/api-client'
-import {appRoot, isProduction} from 'App'
+import {appRoot, isProduction} from 'env'
 import {useInterval} from 'lib/interval'
 import {useEditMode} from 'Event/Dashboard/editor/state/edit-mode'
 import {useOrganization} from 'organization/OrganizationProvider'
@@ -23,8 +23,9 @@ interface EventContextProps {
   url: string
 }
 
-export const EventContext =
-  React.createContext<EventContextProps | undefined>(undefined)
+export const EventContext = React.createContext<EventContextProps | undefined>(
+  undefined,
+)
 
 export function DomainEventProvider(props: {children: React.ReactNode}) {
   const domain = getDomain(window.location.host)
@@ -50,7 +51,7 @@ function EventProvider(props: {
 }) {
   const {slug, domain, noCache} = props
 
-  const find = useCallback(() => {
+  const getEvent = useCallback(() => {
     if (domain) {
       return findEventByDomain(domain, {noCache})
     }
@@ -60,22 +61,22 @@ function EventProvider(props: {
 
   const dispatch = useDispatch()
 
-  const {data: saved, loading} = useAsync(find)
+  const {data: saved, loading} = useAsync(getEvent)
   const current = useSelector((state: RootState) => state.event)
+
+  const set = useCallback(
+    (target: ObvioEvent) => {
+      dispatch(setEvent(target))
+    },
+    [dispatch],
+  )
 
   useEffect(() => {
     if (!saved) {
       return
     }
-    dispatch(setEvent(saved))
-  }, [saved, dispatch])
-
-  const update = useCallback(
-    (updated: ObvioEvent) => {
-      dispatch(setEvent(updated))
-    },
-    [dispatch],
-  )
+    set(saved)
+  }, [saved, set])
 
   if (loading) {
     return <FullPageLoader />
@@ -103,7 +104,7 @@ function EventProvider(props: {
         client: eventClient,
         hasTechCheck: hasTechCheck(current),
         hasWaiver: hasWaiver(current),
-        set: update,
+        set,
         url,
       }}
     >
@@ -218,4 +219,15 @@ export function AutoRefreshEvent(props: {children: React.ReactElement}) {
   useInterval(refresh, AUTO_REFRESH_EVENT_INTERVAL_SEC * 1000)
 
   return props.children
+}
+
+export function useRefreshEvent() {
+  const dispatch = useDispatch()
+
+  return useCallback(
+    (updatedAt: string) => {
+      dispatch(refreshEvent(updatedAt))
+    },
+    [dispatch],
+  )
 }

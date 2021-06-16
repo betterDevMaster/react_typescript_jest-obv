@@ -8,7 +8,7 @@ import {
   fakeTeamInvitation,
   fakeTeamMember,
 } from 'organization/Team/__utils__/factory'
-import {act, wait} from '@testing-library/react'
+import {wait} from '@testing-library/react'
 import {signInToOrganization} from 'organization/__utils__/authenticate'
 import {UPDATE_TEAM} from 'organization/PermissionsProvider'
 import {goToTeams} from 'organization/Team/__utils__/go-to-teams-page'

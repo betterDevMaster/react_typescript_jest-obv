@@ -3,15 +3,17 @@ import styled from 'styled-components'
 import SidebarNavButton from 'Event/template/SimpleBlog/Dashboard/Sidebar/SidebarNav/SidebarNavButton'
 import NewSidebarNavButton from 'Event/template/SimpleBlog/Dashboard/Sidebar/NewSidebarNavButton'
 import EditModeOnly from 'Event/Dashboard/editor/views/EditModeOnly'
-import {useTemplate, useUpdateTemplate} from 'Event/TemplateProvider'
+import {useDispatchUpdate} from 'Event/TemplateProvider'
 import Section from 'Event/template/SimpleBlog/Dashboard/Sidebar/Section'
 import HiddenOnMatch from 'Event/visibility-rules/HiddenOnMatch'
 import {DragDropContext, Droppable, DropResult} from 'react-beautiful-dnd'
 import {useEditMode} from 'Event/Dashboard/editor/state/edit-mode'
+import {useSimpleBlog} from 'Event/template/SimpleBlog'
 export const SIDEBAR_NAV_BUTTON = 'Sidebar Nav Button'
 
 export default function SidebarNav() {
-  const {sidebarNav} = useTemplate()
+  const {template} = useSimpleBlog()
+  const {sidebarNav} = template
   const {ids, entities} = sidebarNav
   const handleDrag = useHandleDrag()
   const isEditMode = useEditMode()
@@ -66,8 +68,9 @@ export default function SidebarNav() {
 }
 
 function useHandleDrag() {
-  const {sidebarNav: buttons} = useTemplate()
-  const updateTemplate = useUpdateTemplate()
+  const {template} = useSimpleBlog()
+  const {sidebarNav: buttons} = template
+  const updateTemplate = useDispatchUpdate()
 
   return (result: DropResult) => {
     const {destination, source} = result

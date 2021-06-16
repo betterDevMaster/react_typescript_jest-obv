@@ -6,10 +6,7 @@ import {
   fakeTag,
   tagTypes,
 } from 'organization/Event/Services/Apps/Infusionsoft/__utils__/factory'
-import {
-  InfusionsoftIntegration,
-  Tag,
-} from 'organization/Event/Services/Apps/Infusionsoft'
+import {InfusionsoftIntegration} from 'organization/Event/Services/Apps/Infusionsoft'
 import axios from 'axios'
 import {wait} from '@testing-library/dom'
 import {CONFIGURE_EVENTS} from 'organization/PermissionsProvider'

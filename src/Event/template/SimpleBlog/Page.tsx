@@ -6,10 +6,9 @@ import Header from 'Event/template/SimpleBlog/Dashboard/Header'
 import Menu from 'Event/template/SimpleBlog/Menu'
 import {User} from 'auth/user'
 import Footer from 'Event/template/SimpleBlog/Dashboard/Footer'
-import {useTemplate} from 'Event/TemplateProvider'
 import {useEvent} from 'Event/EventProvider'
-import {SimpleBlog} from 'Event/template/SimpleBlog'
-import {rgb} from 'lib/color'
+import {SimpleBlog, useSimpleBlog} from 'Event/template/SimpleBlog'
+import {rgba} from 'lib/color'
 import LanguageSelectMenu from 'Event/LanguageSelector'
 import {muiDarkTheme, muiTheme} from 'lib/ui/theme'
 import {ThemeProvider} from '@material-ui/core/styles'
@@ -21,18 +20,19 @@ export default function SimpleBlogPage(props: {
 }) {
   const [menuVisible, setMenuVisible] = useState(false)
   const toggleMenu = () => setMenuVisible(!menuVisible)
+  const {template} = useSimpleBlog()
   const {
     backgroundPosition,
     dashboardBackground: dashboard,
     isDarkMode,
-  } = useTemplate()
+  } = template
   const {event} = useEvent()
   const dashboardBackground = event.dashboard_background
     ? `url(${event.dashboard_background.url})`
     : '#FFFFFF'
 
   const backgroundRGBColor = dashboard
-    ? rgb(dashboard.color || '#FFFFFF', dashboard.opacity || 0)
+    ? rgba(dashboard.color || '#FFFFFF', dashboard.opacity || 0)
     : '#FFFFFF'
 
   const color = isDarkMode ? '#FFFFFF' : '#000000'

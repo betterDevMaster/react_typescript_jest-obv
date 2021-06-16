@@ -1,7 +1,7 @@
 import styled from 'styled-components'
 import React, {useEffect} from 'react'
 import {v4 as uuid} from 'uuid'
-import {emojiWithName} from 'Event/Dashboard/components/EmojiList/emoji'
+import {emojiWithName} from 'Event/Dashboard/components/emoji'
 
 const DEFAULT_SIZE: number = 34
 

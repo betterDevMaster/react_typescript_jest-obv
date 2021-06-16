@@ -2,7 +2,7 @@ import {Sponsor} from 'Event/SponsorPage'
 import styled from 'styled-components'
 import React, {useState} from 'react'
 import ConfigDialog from 'Event/template/SimpleBlog/SponsorPage/SponsorList/Card/Image/ConfigDialog'
-import Clickable from 'lib/ui/Editable'
+import Clickable from 'lib/ui/Clickable'
 
 export const SPONSOR_PLACEHOLDER = 'http://placehold.jp/300x100.png'
 

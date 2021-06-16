@@ -1,6 +1,7 @@
 import {ObvioEvent} from 'Event'
 import {EventState} from 'Event/state'
 import {Template} from 'Event/template'
+import {createPanels, PANELS} from 'Event/template/Panels'
 import {createSimpleBlog, SIMPLE_BLOG} from 'Event/template/SimpleBlog'
 
 export const SET_EVENT_ACTION = 'SET_EVENT'
@@ -16,7 +17,7 @@ export const handleSetEvent = (
   state: EventState,
   action: SetEventAction,
 ): EventState => {
-  return action.payload
+  return action.payload || null // Have to return `null` in case undefined
 }
 
 export const CREATE_TEMPLATE_ACTION = 'CREATE_TEMPLATE'
@@ -48,6 +49,8 @@ function newTemplate(name: Template['name']) {
   switch (name) {
     case SIMPLE_BLOG:
       return createSimpleBlog()
+    case PANELS:
+      return createPanels()
   }
 }
 
@@ -74,13 +77,18 @@ export const handleUpdateTemplate = (
     throw new Error('Template missing; create one before updating')
   }
 
+  /**
+   * Need to explicitly cast to EventState here as TS will complain that
+   * it can't determine the specific template type. We'll assume this
+   * is safe as the user will only ever edit the current template.
+   */
   return {
     ...state,
     template: {
       ...state.template,
       ...action.payload,
     },
-  }
+  } as EventState
 }
 export interface ClickedEmoji {
   id: number | null
@@ -92,10 +100,19 @@ export interface SendEmojiAction {
   type: typeof SEND_EMOJI_ACTION
   payload: ClickedEmoji
 }
-
 export const sendEmoji = (emoji: ClickedEmoji): SendEmojiAction => ({
   type: SEND_EMOJI_ACTION,
   payload: emoji,
+})
+
+export const REFRESH_EVENT_ACTION = 'REFRESH_EVENT'
+export interface RefreshEventAction {
+  type: typeof REFRESH_EVENT_ACTION
+  payload: string
+}
+export const refreshEvent = (updatedAt: string): RefreshEventAction => ({
+  type: REFRESH_EVENT_ACTION,
+  payload: updatedAt,
 })
 
 export type EventAction =
@@ -103,3 +120,4 @@ export type EventAction =
   | CreateTemplateAction
   | UpdateTemplateAction
   | SendEmojiAction
+  | RefreshEventAction

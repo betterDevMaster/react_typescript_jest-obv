@@ -30,9 +30,9 @@ it('should show tech check config', async () => {
   })
   expect(await findByLabelText('tech check body')).toBeInTheDocument()
 
-  const editorValue = (
-    (await findByLabelText('tech check body')) as HTMLInputElement
-  ).value
+  const editorValue = ((await findByLabelText(
+    'tech check body',
+  )) as HTMLInputElement).value
 
   expect(editorValue).toBe(body)
 })
@@ -91,11 +91,14 @@ it('it should set custom buttons', async () => {
     }),
   })
 
-  const {findByLabelText, areas, findAllByLabelText} =
-    await goToTechCheckConfig({
-      event,
-      userPermissions: [CONFIGURE_EVENTS],
-    })
+  const {
+    findByLabelText,
+    areas,
+    findAllByLabelText,
+  } = await goToTechCheckConfig({
+    event,
+    userPermissions: [CONFIGURE_EVENTS],
+  })
 
   const area = faker.random.arrayElement(areas)
 

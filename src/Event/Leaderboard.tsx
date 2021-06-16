@@ -1,10 +1,13 @@
-import React from 'react'
+import React, {useCallback} from 'react'
 import {useAttendee} from 'Event/auth'
 import {useTemplate} from 'Event/TemplateProvider'
 import {SIMPLE_BLOG} from 'Event/template/SimpleBlog'
 import SimpleBlogLeaderboard from 'Event/template/SimpleBlog/Leaderboard'
 import {Attendee} from 'Event/attendee'
 import {useTrackEventPage} from 'analytics'
+import {useEvent} from 'Event/EventProvider'
+import {api} from 'lib/url'
+import {useAsync} from 'lib/async'
 
 export interface Entry {
   attendee: Attendee
@@ -24,5 +27,19 @@ export default function Leaderboard() {
       return <SimpleBlogLeaderboard user={user} />
     default:
       throw new Error(`Missing leaderboard for template: ${template.name}`)
+  }
+}
+
+export function useEntries() {
+  const {client, event} = useEvent()
+  const url = api(`/events/${event.slug}/leaderboard`)
+
+  const request = useCallback(() => client.get<Entry[]>(url), [client, url])
+
+  const {data, loading} = useAsync(request)
+
+  return {
+    entries: data || [],
+    loading,
   }
 }

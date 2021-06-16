@@ -30,8 +30,9 @@ interface CreateAreaData {
 export default function CreateAreaForm() {
   const {register, errors, handleSubmit} = useForm()
   const [submitting, setSubmitting] = useState(false)
-  const [serverError, setServerError] =
-    useState<ValidationError<CreateAreaData>>(null)
+  const [serverError, setServerError] = useState<
+    ValidationError<CreateAreaData>
+  >(null)
   const history = useHistory()
   const createArea = useCreateArea()
   const eventRoutes = useEventRoutes()

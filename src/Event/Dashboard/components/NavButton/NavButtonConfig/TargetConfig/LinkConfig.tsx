@@ -61,6 +61,10 @@ function PageSelect<T extends NavButton>(props: LinkConfigProps<T>) {
     update('page')(link)
   }
 
+  if (props.disablePageSelect) {
+    return null
+  }
+
   return (
     <FormControl fullWidth>
       <InputLabel>Page</InputLabel>

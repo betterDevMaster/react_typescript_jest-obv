@@ -5,7 +5,7 @@ import React, {useEffect, useState} from 'react'
 export const DASHBOARD = 'DASHBOARD'
 export const SPEAKERS = 'SPEAKERS'
 
-export type Page = typeof DASHBOARD
+export type Page = typeof DASHBOARD | typeof SPEAKERS
 
 /**
  * Awards user points when accessing certain pages.
@@ -14,7 +14,7 @@ export type Page = typeof DASHBOARD
  */
 export default function PagePoints(props: {
   children: React.ReactElement
-  page: string
+  page: Page
 }) {
   const {submit} = usePoints()
   const action = usePageAction(props.page)

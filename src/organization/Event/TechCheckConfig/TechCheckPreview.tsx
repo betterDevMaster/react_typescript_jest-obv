@@ -1,55 +1,36 @@
 import React from 'react'
 import styled from 'styled-components'
-
-import {useTemplate} from 'Event/TemplateProvider'
-import {TechCheckConfig} from 'Event'
-import {SIMPLE_BLOG} from 'Event/template/SimpleBlog'
-
-import {TechCheckTemplateProps} from 'organization/Event/TechCheckConfig/Form'
 import {useTeamMember} from 'organization/auth'
-import SimpleBlogTechCheck from 'Event/template/SimpleBlog/TechCheck'
 import {now} from 'lib/date-time'
+import {TechCheckProps} from 'Event/Step3/TechCheck'
 
 export function TechCheckPreview(props: {
-  techCheckTemplate: TechCheckTemplateProps
   body: string
   content: string | null
+  render: (previewProps: Omit<TechCheckProps, 'settings'>) => React.ReactElement
 }) {
-  const template = useTemplate()
+  const {render} = props
   const user = useTeamMember()
 
   /**
    * Build event.tech_check dynamically for the
-   * preview.
+   * preview. We will omit the settings to
+   * let the template pass that in.
    */
-  const techCheck: TechCheckConfig = {
-    body: props.body,
-    additional_content: props.content,
-    is_enabled: false,
-    area_key: null,
-    start: now(),
+  const previewProps = {
+    techCheck: {
+      body: props.body,
+      additional_content: props.content,
+      is_enabled: false,
+      area_key: null,
+      start: now(),
+    },
+    progress: 75,
+    isPreview: true,
+    user,
   }
 
-  if (techCheck === null) {
-    return <div>No config</div>
-  }
-
-  switch (template.name) {
-    case SIMPLE_BLOG:
-      return (
-        <PreviewContainer>
-          <SimpleBlogTechCheck
-            user={user}
-            techCheck={techCheck}
-            progress={75}
-            isPreview={true}
-            settings={props.techCheckTemplate}
-          />
-        </PreviewContainer>
-      )
-    default:
-      throw new Error(`Missing tech check for template: ${template.name}`)
-  }
+  return <PreviewContainer>{render(previewProps)}</PreviewContainer>
 }
 
 const PreviewContainer = styled.div`

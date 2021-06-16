@@ -31,8 +31,9 @@ interface CreateRoomData {
 export default function CreateRoomForm() {
   const {register, errors, handleSubmit} = useForm()
   const [submitting, setSubmitting] = useState(false)
-  const [serverError, setServerError] =
-    useState<ValidationError<CreateRoomData>>(null)
+  const [serverError, setServerError] = useState<
+    ValidationError<CreateRoomData>
+  >(null)
   const history = useHistory()
   const createRoom = useCreateRoom()
   const areaRoutes = useAreaRoutes()

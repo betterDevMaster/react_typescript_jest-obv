@@ -2,6 +2,7 @@ import React, {useEffect, useState} from 'react'
 import TextField from '@material-ui/core/TextField'
 import Autocomplete from '@material-ui/lab/Autocomplete'
 import {findIcon} from 'lib/fontawesome/search'
+import {withStyles} from '@material-ui/core/styles'
 
 export default function IconSelect(props: {
   value?: string | null
@@ -18,7 +19,7 @@ export default function IconSelect(props: {
   }, [term])
 
   return (
-    <Autocomplete
+    <StyledAutocomplete
       options={options}
       renderOption={(option) => <i className={option} />}
       blurOnSelect
@@ -37,7 +38,8 @@ export default function IconSelect(props: {
           label="Icon"
           onFocus={() => {
             /**
-             * We want to 'clear' any selected icon on click
+             * We want to 'clear' any selected icon on click, otherwise
+             * we wouldn't be able to search for a new icon
              */
             onChange(null)
           }}
@@ -50,3 +52,9 @@ export default function IconSelect(props: {
     />
   )
 }
+
+const StyledAutocomplete = withStyles({
+  inputRoot: {
+    minHeight: '34px',
+  },
+})(Autocomplete) as typeof Autocomplete

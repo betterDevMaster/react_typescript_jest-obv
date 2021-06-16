@@ -27,6 +27,29 @@ export default function EditComponent(
   )
 }
 
+/**
+ * A more generic version of EditComponent where handling the edit/config
+ * dialog rendering is handled by the parent.
+ *
+ * @param props
+ * @returns
+ */
+export function Editable(props: {
+  children: React.ReactElement
+  onEdit: () => void
+}) {
+  const isEditMode = useEditMode()
+  if (!isEditMode) {
+    return props.children
+  }
+
+  return (
+    <EditComponentOverlay onClick={props.onEdit}>
+      {props.children}
+    </EditComponentOverlay>
+  )
+}
+
 export function EditComponentOverlay(props: {
   onClick: () => void
   children: React.ReactElement

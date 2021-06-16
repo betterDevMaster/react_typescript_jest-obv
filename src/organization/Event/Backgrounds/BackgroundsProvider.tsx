@@ -1,14 +1,10 @@
-import React, {useEffect, useState} from 'react'
-import styled from 'styled-components'
+import React, {useCallback, useEffect, useState} from 'react'
 import {api} from 'lib/url'
-import {ObvioEvent} from 'Event'
-import {setEvent} from 'Event/state/actions'
-import {teamMemberClient as client} from 'obvio/obvio-client'
-import {useDispatch} from 'react-redux'
-import {useEvent, useUpdate} from 'Event/EventProvider'
-import {createSimpleBlog} from 'Event/template/SimpleBlog'
-import {useTemplate} from 'Event/TemplateProvider'
+import {useEvent} from 'Event/EventProvider'
 import {HasRules} from 'Event/visibility-rules'
+import {useAsync} from 'lib/async'
+import {useOrganization} from 'organization/OrganizationProvider'
+import {useBlocking} from 'lib/blocking'
 
 export type Background = {
   id: number
@@ -16,211 +12,111 @@ export type Background = {
     name: string
     url: string
   }
-  settings?: BackgroundSettings
+  settings: HasRules | null
   event_id: number
   created_at: string
   updated_at: string
 }
 
-export interface BackgroundsResponseData {
-  zoom_backgrounds_title: string
-  zoom_backgrounds_description: string
-  zoom_backgrounds: string[]
-}
-
-export type BackgroundsData = {
-  zoom_backgrounds_title: string
-  zoom_backgrounds_description: string
-}
-
-export type BackgroundSettings = HasRules
-
-export type BackgroundsTemplateData = {
-  borderColor: string
-  borderRadius: number
-  borderThickness: number
-  imagesPerRow: number
-  backToDashboardText: string
-  backToDashboardTextColor: string
-  orderedIds?: number[]
-}
-
-export interface BackgroundsContextProps {
+interface BackgroundsContextProps {
   backgrounds: Background[]
-  isRemoving: boolean
-  isSubmitting: boolean
-  isUploading: boolean
+  upload: (image: File) => Promise<any>
+  update: (background: Background, data: Partial<Background>) => Promise<any>
+  remove: (background: Background) => Promise<any>
+  busy: boolean
   loading: boolean
-  error: string
-  requestError: string
-  backgroundsTemplateData: BackgroundsTemplateData
-  setError: (error: string) => void
-  clearError: () => void
-  clearRequestError: () => void
-  uploadBackground: (data: FormData) => Promise<any>
-  removeBackground: (id: number) => void
-  setBackgroundData: (
-    data: BackgroundsData,
-    dataTemplate: BackgroundsTemplateData,
-  ) => Promise<any>
 }
 
-const BackgroundsContext =
-  React.createContext<BackgroundsContextProps | undefined>(undefined)
+const BackgroundsContext = React.createContext<
+  BackgroundsContextProps | undefined
+>(undefined)
 
 export default function BackgroundsProvider(props: {
   children: React.ReactElement
 }) {
-  const {event} = useEvent()
-  const dispatch = useDispatch()
-  const {zoomBackgrounds: backgroundsTemplateDataDefaults} = createSimpleBlog()
-
-  const [backgroundsTemplateData, setBackgroundsTemplateData] =
-    useState<BackgroundsTemplateData>(backgroundsTemplateDataDefaults)
   const [backgrounds, setBackgrounds] = useState<Background[]>([])
-  const [isRemoving, setIsRemoving] = useState<boolean>(false)
-  const [isSubmitting, setIsSubmitting] = useState<boolean>(false)
-  const [isUploading, setIsUploading] = useState<boolean>(false)
-  const [loading, setLoading] = useState<boolean>(true)
-  const [error, setError] = useState<string>('')
-  const [requestError, setRequestError] = useState<string>('')
-  const updateEvent = useUpdate()
-  const template = useTemplate()
+  const {data: saved, loading} = useSavedBackgrounds()
+  const {blocking, busy} = useBlocking()
+  const {client} = useOrganization()
+  const {event, set: setEvent} = useEvent()
 
   useEffect(() => {
-    if (!event.template || !event.backgrounds) {
+    if (!saved) {
       return
     }
 
-    // If there aren't any zoomBackgrounds settings in the template currently,
-    // apply the defaults from the BackgroundsProvider. This prevents issues when
-    // an event is self-migrating from no backgrounds, to having backgrounds (any
-    // event that was created before "Zoom Backgrounds" were a thing).
-    if (typeof event.template.zoomBackgrounds !== 'undefined') {
-      setBackgroundsTemplateData(event.template.zoomBackgrounds)
+    setBackgrounds(saved)
+  }, [saved])
+
+  /**
+   * Update event on background changes. This is required for
+   * sections that require the current backgrounds. ie. in
+   * dashboard configs that contain backgrounds.
+   */
+  useEffect(() => {
+    const sameNumBackgrounds = event.backgrounds.length === backgrounds.length
+    const hasNewBackgrounds =
+      backgrounds.filter((b) => !event.backgrounds.find((eb) => eb.id === b.id))
+        .length > 0
+
+    if (sameNumBackgrounds && !hasNewBackgrounds) {
+      return
     }
 
-    setBackgrounds(event.backgrounds)
-    setLoading(false)
-  }, [backgroundsTemplateData, backgroundsTemplateDataDefaults, event])
-
-  const clearError = () => setError('')
-  const clearRequestError = () => setRequestError('')
-
-  const uploadBackground = (data: {} | FormData): Promise<any> => {
-    if (isUploading) {
-      return new Promise((resolve, reject) => reject(false))
+    const updatedEvent = {
+      ...event,
+      backgrounds,
     }
 
-    clearError()
-    clearRequestError()
-    setIsUploading(true)
+    setEvent(updatedEvent)
+  }, [backgrounds, setEvent, event])
 
-    const url = api(`/events/${event.slug}/backgrounds`)
+  const upload = blocking((image: File) => {
+    const formData = new FormData()
+    formData.set('image', image)
+
     return client
-      .post<ObvioEvent>(url, data)
-      .then((event) => {
-        // Currently, the response to the "upload zoom background image" request
-        // returns a full Event payload. This lets us update the event/backgrounds
-        // without having to do another fetch of the background assets. Although,
-        // this is breaking the RESTful principals, of not returning the payload
-        // according to the request. We're uploading a background image, we SHOULD
-        // get a response of just the image upload request.
-        //
-        // This of course can be refactored if we decide to make a fetch AFTER
-        // getting the response to the upload.
-        dispatch(setEvent(event))
-        setBackgrounds(event.backgrounds)
+      .post<Background>(api(`/events/${event.slug}/backgrounds`), formData)
+      .then((background) => {
+        const added = [...backgrounds, background]
+        setBackgrounds(added)
       })
-      .catch((e) => {
-        setRequestError(e.message)
-      })
-      .finally(() => {
-        setIsUploading(false)
-      })
-  }
+  })
 
-  /**
-   * Removes a background image from the event.
-   *
-   * @param id number
-   * @returns Promise
-   */
-  const removeBackground = (id: number) => {
-    if (isRemoving) {
-      return
-    }
-
-    clearRequestError()
-    setIsRemoving(true)
-
+  const update = blocking((background: Background, data: Partial<Background>) =>
     client
-      .delete<ObvioEvent>(api(`/events/${event.slug}/backgrounds/${id}`))
-      .then((event) => {
-        dispatch(setEvent(event))
-        setBackgrounds(event.backgrounds)
-      })
-      .catch((e) => {
-        setRequestError(e.message)
-      })
-      .finally(() => {
-        setIsRemoving(false)
-      })
-  }
+      .put<Background>(api(`/backgrounds/${background.id}`), data)
+      .then((target) => {
+        const updated = backgrounds.map((b) => {
+          const isTarget = b.id === target.id
 
-  /**
-   * Method to send the Zoom Backgrounds page title/description and template
-   * configuration to storage in the backend.
-   *
-   * @param data BackgroundsData
-   * @param dataTemplate BackgroundsTemplateData
-   * @returns Promise
-   */
-  const setBackgroundData = (
-    data: BackgroundsData,
-    dataTemplate: BackgroundsTemplateData,
-  ): Promise<any> => {
-    if (isSubmitting === true) {
-      return new Promise((resolve, reject) => reject(false))
-    }
+          if (!isTarget) {
+            return b
+          }
 
-    clearRequestError()
-    setIsSubmitting(true)
+          return target
+        })
 
-    const withTemplate = {
-      ...data,
-      template: {
-        ...template,
-        zoomBackgrounds: dataTemplate,
-      },
-    }
+        setBackgrounds(updated)
+      }),
+  )
 
-    return updateEvent(withTemplate)
-      .catch((e) => {
-        setRequestError(e.message)
-      })
-      .finally(() => {
-        setIsSubmitting(false)
-      })
-  }
+  const remove = blocking((target: Background) =>
+    client.delete(api(`/backgrounds/${target.id}`)).then(() => {
+      const removed = backgrounds.filter((b) => b.id !== target.id)
+      setBackgrounds(removed)
+    }),
+  )
 
   return (
     <BackgroundsContext.Provider
       value={{
         backgrounds,
-        isRemoving,
-        isSubmitting,
-        isUploading,
+        upload,
+        update,
+        remove,
+        busy,
         loading,
-        error,
-        requestError,
-        backgroundsTemplateData,
-        setError,
-        clearError,
-        clearRequestError,
-        uploadBackground,
-        removeBackground,
-        setBackgroundData,
       }}
     >
       {props.children}
@@ -238,19 +134,37 @@ export function useBackgrounds() {
   return context
 }
 
-/**
- * Normalized preview container of the Zoom Background, with the template settings
- * applied. Used on the Config page as well as the Attendee page.
- */
-export const ImagePreviewContainer = styled.img<{
-  borderRadius: number
-  borderThickness: number
-  borderColor: string
-  clickable: boolean | undefined
-}>`
-  border-radius: ${(props) => props.borderRadius}px;
-  border-width: ${(props) => props.borderThickness}px;
-  border-color: ${(props) => props.borderColor};
-  border-style: solid;
-  cursor: ${(props) => (props.clickable === true ? 'pointer' : 'default')};
-`
+function useSavedBackgrounds() {
+  const {
+    event: {slug},
+  } = useEvent()
+  const {client} = useOrganization()
+
+  const request = useCallback(() => {
+    const url = api(`/events/${slug}/backgrounds`)
+    return client.get<Background[]>(url)
+  }, [slug, client])
+
+  return useAsync(request)
+}
+
+export function useSortBackgrounds(
+  ids: number[] = [],
+  backgrounds: Background[],
+) {
+  return backgrounds.sort((a, b) => {
+    const aPosition = ids.indexOf(a.id)
+    const bPosition = ids.indexOf(b.id)
+
+    if (aPosition < bPosition) {
+      return -1
+    }
+
+    if (aPosition > bPosition) {
+      return 1
+    }
+
+    // Index not found, any order is fine
+    return 0
+  })
+}

@@ -1,4 +1,4 @@
-import {useTemplate} from 'Event/TemplateProvider'
+import {useSimpleBlog} from 'Event/template/SimpleBlog'
 import React from 'react'
 import styled from 'styled-components'
 
@@ -6,7 +6,8 @@ export default function Heading(props: {
   children: string
   'aria-label'?: string
 }) {
-  const {sidebar} = useTemplate()
+  const {template} = useSimpleBlog()
+  const {sidebar} = template
   return (
     <Text aria-label={props['aria-label']} color={sidebar.textColor}>
       {props.children}

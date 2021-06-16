@@ -1,4 +1,5 @@
-import App, {appRoot} from 'App'
+import {appRoot} from 'env'
+import App from 'App'
 import React from 'react'
 import user from '@testing-library/user-event'
 import faker from 'faker'
@@ -47,7 +48,12 @@ export async function loginToEventSite(
     skipLogin?: boolean
   } = {},
 ) {
-  const attendee = options.attendee || fakeAttendee()
+  const attendee =
+    options.attendee ||
+    fakeAttendee({
+      tech_check_completed_at: 'now',
+      waiver: 'some_waiver.png',
+    })
   const event = options.event || fakeEvent()
   visitEventSite({event, pathname: options.pathname})
 

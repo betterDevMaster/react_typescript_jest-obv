@@ -1,5 +1,5 @@
 import {useEvent} from 'Event/EventProvider'
-import {isTest} from 'App'
+import {isTest} from 'env'
 import {useEffect} from 'react'
 import ReactGA from 'react-ga'
 

@@ -2,15 +2,16 @@ import {useEditMode} from 'Event/Dashboard/editor/state/edit-mode'
 import EditComponent from 'Event/Dashboard/editor/views/EditComponent'
 import React from 'react'
 import styled from 'styled-components'
-import {useTemplate} from 'Event/TemplateProvider'
 import Image from 'Event/template/SimpleBlog/Dashboard/Footer/Image'
 import {useEvent} from 'Event/EventProvider'
 import {useVariables} from 'Event'
+import {useSimpleBlog} from 'Event/template/SimpleBlog'
 
 export const FOOTER = 'footer'
 
 export default function Footer() {
-  const {footer} = useTemplate()
+  const {template} = useSimpleBlog()
+  const {footer} = template
   const {event} = useEvent()
   const isEditMode = useEditMode()
   const v = useVariables()

@@ -50,7 +50,9 @@ function useSetPlatformAction() {
   const {event, set: setEvent} = useEvent()
   const url = api(`/events/${event.slug}/platform_actions`)
 
-  return (prevKey: string | number, id: number) => (newKey: string | number) => {
+  return (prevKey: string | number, id: number) => (
+    newKey: string | number,
+  ) => {
     const data = createData(prevKey, id, newKey)
     return client.patch<ObvioEvent>(url, data).then(setEvent)
   }

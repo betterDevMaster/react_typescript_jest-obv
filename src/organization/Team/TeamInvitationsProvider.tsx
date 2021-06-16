@@ -17,8 +17,9 @@ interface TeamInviteContextProps {
   processing: boolean
 }
 
-const TeamInviteContext =
-  React.createContext<TeamInviteContextProps | undefined>(undefined)
+const TeamInviteContext = React.createContext<
+  TeamInviteContextProps | undefined
+>(undefined)
 
 export default function TeamInvitationsProvider(props: {
   children: React.ReactNode

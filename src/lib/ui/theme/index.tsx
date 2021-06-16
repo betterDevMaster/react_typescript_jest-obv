@@ -1,4 +1,4 @@
-import {createMuiTheme} from '@material-ui/core/styles'
+import {createMuiTheme, ThemeOptions} from '@material-ui/core/styles'
 import red from '@material-ui/core/colors/red'
 
 export const breakpoints = {
@@ -22,41 +22,73 @@ export const spacing = Array(60)
   .fill(4)
   .map((base, idx) => `${base * idx}px`)
 
-export const muiTheme = createMuiTheme({
-  palette: {
-    primary: {
-      main: colors.primary,
-    },
-    secondary: {
-      main: colors.secondary,
-    },
-  },
+const muiBaseTheme: ThemeOptions = {
   overrides: {
     MuiFormControl: {
       root: {
         marginBottom: spacing[4],
       },
     },
-    MuiInputLabel: {
-      shrink: {
-        background: '#FFFFFF',
-      },
-    },
   },
-})
+}
 
-export const muiDarkTheme = createMuiTheme({
-  palette: {
-    type: 'dark',
-    primary: {
-      main: '#FFFFFF',
-    },
-  },
-  overrides: {
-    MuiFormControl: {
-      root: {
-        marginBottom: spacing[4],
+export const muiTheme = createMuiTheme(
+  {
+    palette: {
+      primary: {
+        main: colors.primary,
+      },
+      secondary: {
+        main: colors.secondary,
       },
     },
   },
-})
+  muiBaseTheme,
+)
+
+export const muiDarkTheme = createMuiTheme(
+  {
+    palette: {
+      type: 'dark',
+      primary: {
+        main: '#FFFFFF',
+      },
+    },
+  },
+  muiBaseTheme,
+)
+
+export type MuiThemeOptions = {
+  secondaryColor: string
+}
+
+export const createMuiDarkTheme = (options: MuiThemeOptions) =>
+  createMuiTheme(
+    {
+      palette: {
+        type: 'dark',
+        primary: {
+          main: '#FFFFFF',
+        },
+        secondary: {
+          main: options.secondaryColor || colors.secondary,
+        },
+      },
+    },
+    muiBaseTheme,
+  )
+
+export const createMuiLightTheme = (options: MuiThemeOptions) =>
+  createMuiTheme(
+    {
+      palette: {
+        primary: {
+          main: colors.primary,
+        },
+        secondary: {
+          main: options.secondaryColor || colors.secondary,
+        },
+      },
+    },
+    muiBaseTheme,
+  )

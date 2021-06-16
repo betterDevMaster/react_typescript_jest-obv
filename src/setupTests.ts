@@ -6,11 +6,14 @@ import '@testing-library/jest-dom/extend-expect'
 import {setWindowMatchMedia} from '__utils__/media-query'
 import 'jest-canvas-mock'
 
+// Alwsays mock echo (sockets in test)
+jest.mock('lib/echo')
+
 beforeAll(() => {
   // Required to render <Hidden/> components in tests
   setWindowMatchMedia()
   // Increase timeout to avoid tests failing when running with coverage
-  jest.setTimeout(30000)
+  jest.setTimeout(50000)
 })
 
 beforeEach(() => {

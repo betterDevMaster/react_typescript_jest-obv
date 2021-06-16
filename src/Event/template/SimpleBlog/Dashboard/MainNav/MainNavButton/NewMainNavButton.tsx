@@ -2,15 +2,17 @@ import Button from '@material-ui/core/Button'
 import Grid from '@material-ui/core/Grid'
 import {NavButtonWithSize} from 'Event/Dashboard/components/NavButton'
 import {setConfig} from 'Event/Dashboard/editor/state/actions'
-import {useTemplate, useUpdateTemplate} from 'Event/TemplateProvider'
+import {useDispatchUpdate} from 'Event/TemplateProvider'
 import {MAIN_NAV_BUTTON} from 'Event/template/SimpleBlog/Dashboard/MainNav/MainNavButton'
 import React from 'react'
 import {useDispatch} from 'react-redux'
 import {v4 as uid} from 'uuid'
+import {useSimpleBlog} from 'Event/template/SimpleBlog'
 
 export default function NewMainNavButton(props: {className?: string}) {
-  const {mainNav: buttons} = useTemplate()
-  const updateTemplate = useUpdateTemplate()
+  const {template} = useSimpleBlog()
+  const {mainNav: buttons} = template
+  const updateTemplate = useDispatchUpdate()
   const dispatch = useDispatch()
 
   if (!buttons) {

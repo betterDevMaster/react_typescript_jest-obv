@@ -1,4 +1,3 @@
-import {createLanguage, ENGLISH} from './../LanguageProvider/language'
 import {ObvioEvent} from 'Event'
 import {fakeAttendee} from 'Event/auth/__utils__/factory'
 import {Entry} from 'Event/Leaderboard'
@@ -8,11 +7,13 @@ import {FAQ} from 'Event/FaqPage'
 import {fakeSimpleBlog} from 'Event/template/SimpleBlog/__utils__/factory'
 import faker from 'faker'
 import {now} from 'lib/date-time'
+import {createLanguage, ENGLISH} from 'Event/LanguageProvider/language'
 
 export const fakeEvent = (overrides?: Partial<ObvioEvent>): ObvioEvent => ({
   id: faker.random.number({min: 1000, max: 10000}),
   name: faker.company.companyName(),
   slug: faker.internet.domainWord(),
+  updated_at: now(),
   start: now(),
   end: faker.date.future().toISOString(),
   has_ended: false,
@@ -22,6 +23,7 @@ export const fakeEvent = (overrides?: Partial<ObvioEvent>): ObvioEvent => ({
   waiver: fakeWaiver(),
   tech_check: fakeTechCheck(),
   logo: null,
+  mobile_logo: null,
   welcome_image: null,
   header_background: null,
   points_summary_logo: null,
@@ -132,5 +134,20 @@ export const fakeLocalization = (
   languages: [createLanguage(ENGLISH)],
   defaultLanguage: null,
   translations: {},
+  ...overrides,
+})
+
+export const fakeBackground = (
+  overrides?: Partial<ObvioEvent['backgrounds']>,
+): ObvioEvent['backgrounds'][0] => ({
+  id: faker.random.number({min: 1000, max: 10000}),
+  image: {
+    name: `background_${faker.random.alphaNumeric()}.jpeg`,
+    url: `https://fake-cdn.obv.io/background_${faker.random.alphaNumeric()}.jpeg`,
+  },
+  settings: null,
+  event_id: faker.random.number({min: 1000, max: 10000}),
+  created_at: now(),
+  updated_at: now(),
   ...overrides,
 })

@@ -2,13 +2,8 @@ import TextField from '@material-ui/core/TextField'
 import {onChangeStringHandler} from 'lib/dom'
 import ColorPicker from 'lib/ui/ColorPicker'
 import React from 'react'
-import {
-  useTemplate,
-  useUpdateTemplate,
-  useUpdateObject,
-} from 'Event/TemplateProvider'
 import {FOOTER} from 'Event/template/SimpleBlog/Dashboard/Footer'
-import {SimpleBlog} from 'Event/template/SimpleBlog'
+import {useSimpleBlog} from 'Event/template/SimpleBlog'
 import EventImageUpload from 'organization/Event/DashboardConfig/EventImageUpload'
 import {useEvent} from 'Event/EventProvider'
 import InputLabel from '@material-ui/core/InputLabel'
@@ -24,32 +19,24 @@ export type FooterConfig = {
 }
 
 export function FooterConfig() {
-  const {footer} = useTemplate()
-  const updateTemplate = useUpdateTemplate()
+  const {
+    template: {footer},
+    update,
+  } = useSimpleBlog()
   const {event} = useEvent()
-  const updateFooter = useUpdateObject('footer')
-
-  const update =
-    <T extends keyof SimpleBlog['footer']>(key: T) =>
-    (value: SimpleBlog['footer'][T]) =>
-      updateTemplate({
-        footer: {
-          ...footer,
-          [key]: value,
-        },
-      })
+  const updateFooter = update.object('footer')
 
   return (
     <>
       <ColorPicker
         label="Background Color"
         color={footer.background}
-        onPick={update('background')}
+        onPick={updateFooter('background')}
       />
       <ColorPicker
         label="Text Color"
         color={footer.textColor}
-        onPick={update('textColor')}
+        onPick={updateFooter('textColor')}
       />
       <EventImageUpload
         label="Image"
@@ -73,7 +60,7 @@ export function FooterConfig() {
           'aria-label': 'set footer terms link',
         }}
         fullWidth
-        onChange={onChangeStringHandler(update('termsLink'))}
+        onChange={onChangeStringHandler(updateFooter('termsLink'))}
       />
       <TextField
         label="Privacy Link"
@@ -82,7 +69,7 @@ export function FooterConfig() {
           'aria-label': 'set privacy terms link',
         }}
         fullWidth
-        onChange={onChangeStringHandler(update('privacyLink'))}
+        onChange={onChangeStringHandler(updateFooter('privacyLink'))}
       />
       <TextField
         label="Copyright Text"
@@ -91,7 +78,7 @@ export function FooterConfig() {
           'aria-label': 'set copyright text',
         }}
         fullWidth
-        onChange={onChangeStringHandler(update('copyrightText'))}
+        onChange={onChangeStringHandler(updateFooter('copyrightText'))}
       />
     </>
   )

@@ -4,15 +4,16 @@ import {Sponsor} from 'Event/SponsorPage'
 import Card from 'Event/template/SimpleBlog/SponsorPage/SponsorList/Card'
 import React from 'react'
 import grey from '@material-ui/core/colors/grey'
-import {useTemplate, useUpdateObject} from 'Event/TemplateProvider'
+import {useTemplate} from 'Event/TemplateProvider'
 import {DragDropContext, Droppable, DropResult} from 'react-beautiful-dnd'
+import {useSimpleBlog} from 'Event/template/SimpleBlog'
 
 export default function SponsorList(props: {
   className?: string
   sponsors: Sponsor[]
   isEditMode?: boolean
 }) {
-  const template = useTemplate()
+  const {template} = useSimpleBlog()
   const {sponsors: sponsorPageSettings} = template
 
   const handleDrag = useHandleDrag()
@@ -89,7 +90,8 @@ function useSortedSponsors(sponsors: Sponsor[]) {
 }
 
 function useHandleDrag() {
-  const update = useUpdateObject('sponsors')
+  const {update: updateTemplate} = useSimpleBlog()
+  const update = updateTemplate.object('sponsors')
 
   return (sponsors: Sponsor[]) => (result: DropResult) => {
     const {destination, source} = result

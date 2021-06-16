@@ -28,8 +28,9 @@ export interface ResetPasswordData {
 
 export function useResetPassword(url: string) {
   const {register, handleSubmit, errors} = useForm()
-  const [responseError, setResponseError] =
-    useState<ResetPasswordProps['responseError']>(null)
+  const [responseError, setResponseError] = useState<
+    ResetPasswordProps['responseError']
+  >(null)
   const [submitting, setSubmitting] = useState(false)
   const [wasSuccessful, setwasSuccessful] = useState(false)
   const {email, token} = useQueryParams()

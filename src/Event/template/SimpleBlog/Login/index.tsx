@@ -1,7 +1,6 @@
 import {LoginProps} from 'Event/auth/Login'
 import styled from 'styled-components'
 import React from 'react'
-import {useTemplate} from 'Event/TemplateProvider'
 import {eventRoutes} from 'Event/Routes'
 import Page, {
   Button,
@@ -10,9 +9,10 @@ import Page, {
   TextField,
 } from 'Event/template/SimpleBlog/Login/Page'
 import {RelativeLink} from 'lib/ui/link/RelativeLink'
+import {useSimpleBlog} from 'Event/template/SimpleBlog'
 
 export default function Login(props: LoginProps) {
-  const template = useTemplate()
+  const {template} = useSimpleBlog()
 
   return (
     <Page isPreview={props.isPreview}>

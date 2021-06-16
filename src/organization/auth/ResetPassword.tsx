@@ -14,8 +14,16 @@ export default function ResetPassword() {
   const {organization, routes} = useOrganization()
   const history = useHistory()
 
-  const {submitting, onSubmit, responseError, register, errors, wasSuccessful} =
-    useResetPassword(api(`/organizations/${organization.slug}/reset_password`))
+  const {
+    submitting,
+    onSubmit,
+    responseError,
+    register,
+    errors,
+    wasSuccessful,
+  } = useResetPassword(
+    api(`/organizations/${organization.slug}/reset_password`),
+  )
 
   const goBacktoLogin = () => {
     history.push(routes.login)

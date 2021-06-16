@@ -5,9 +5,9 @@ import {useEvent} from 'Event/EventProvider'
 import Box from '@material-ui/core/Box'
 import TextField from '@material-ui/core/TextField'
 import {handleChangeSlider, onChangeStringHandler} from 'lib/dom'
-import {useTemplate, useUpdatePrimitive} from 'Event/TemplateProvider'
 import InputLabel from '@material-ui/core/InputLabel'
 import Slider from '@material-ui/core/Slider'
+import {useSimpleBlog} from 'Event/template/SimpleBlog'
 
 export const DEFAULT_HERO_IMAGE_SIZE_PERCENT = 50
 const MIN_HERO_IMAGE_SIZE_PERCENT = 20
@@ -19,9 +19,10 @@ export type HeroConfig = {
 
 export function HeroConfig() {
   const {event} = useEvent()
-  const updateWelcomeText = useUpdatePrimitive('welcomeText')
-  const updateHeroImageSize = useUpdatePrimitive('heroImageSize')
-  const {welcomeText, heroImageSize} = useTemplate()
+  const {template, update} = useSimpleBlog()
+  const {welcomeText, heroImageSize} = template
+  const updateWelcomeText = update.primitive('welcomeText')
+  const updateHeroImageSize = update.primitive('heroImageSize')
 
   return (
     <>

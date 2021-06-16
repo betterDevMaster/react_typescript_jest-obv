@@ -13,7 +13,8 @@ import axios from 'axios'
 import {wait} from '@testing-library/react'
 import {fakeOrganization} from 'obvio/Organizations/__utils__/factory'
 import {ObvioEvent} from 'Event'
-import {rgb} from 'lib/color'
+import {rgba} from 'lib/color'
+import {goToDashboardConfig} from 'organization/Event/DashboardConfig/__utils__/go-dashboard-config'
 
 const mockPost = axios.post as jest.Mock
 const mockPut = axios.put as jest.Mock
@@ -26,16 +27,9 @@ it('should upload a header background', async () => {
   window.URL.createObjectURL = jest.fn(() => 'blob://foo')
 
   const event = fakeEvent({template: fakeSimpleBlog(), header_background: null})
-  const {findByLabelText} = render(
-    <Dashboard isEditMode={true} user={fakeUser()} />,
-    {
-      event,
-      withRouter: true,
-      score: defaultScore,
-      actions: [],
-      organization: fakeOrganization(),
-    },
-  )
+  const {findByLabelText} = await goToDashboardConfig({
+    event,
+  })
 
   clickEdit(await findByLabelText('header'))
 
@@ -75,16 +69,9 @@ it('should remove the header background', async () => {
     template: fakeSimpleBlog(),
     header_background: headerBg,
   })
-  const {findByLabelText} = render(
-    <Dashboard isEditMode={true} user={fakeUser()} />,
-    {
-      event,
-      withRouter: true,
-      score: defaultScore,
-      actions: [],
-      organization: fakeOrganization(),
-    },
-  )
+  const {findByLabelText} = await goToDashboardConfig({
+    event,
+  })
 
   clickEdit(await findByLabelText('header'))
 
@@ -107,16 +94,9 @@ it('should configure a header color settings', async () => {
   const event = fakeEvent({
     template: fakeSimpleBlog(),
   })
-  const {findByLabelText} = render(
-    <Dashboard isEditMode={true} user={fakeUser()} />,
-    {
-      event,
-      withRouter: true,
-      score: defaultScore,
-      actions: [],
-      organization: fakeOrganization(),
-    },
-  )
+  const {findByLabelText} = await goToDashboardConfig({
+    event,
+  })
 
   clickEdit(await findByLabelText('header'))
 
@@ -125,7 +105,7 @@ it('should configure a header color settings', async () => {
 
   await wait(async () => {
     expect(await findByLabelText('header')).toHaveStyle(
-      `background-color: ${rgb(color)}`,
+      `background-color: ${rgba(color)}`,
     )
   })
 })
@@ -134,16 +114,9 @@ it('should configure a custom code settings', async () => {
   const event = fakeEvent({
     template: fakeSimpleBlog(),
   })
-  const {findByLabelText} = render(
-    <Dashboard isEditMode={true} user={fakeUser()} />,
-    {
-      event,
-      withRouter: true,
-      score: defaultScore,
-      actions: [],
-      organization: fakeOrganization(),
-    },
-  )
+  const {findByLabelText} = await goToDashboardConfig({
+    event,
+  })
 
   clickEdit(await findByLabelText('header'))
 

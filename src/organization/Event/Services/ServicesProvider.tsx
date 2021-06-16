@@ -29,8 +29,9 @@ export interface ServicesContextProps {
   remove: (service: Service) => void
 }
 
-const ServicesContext =
-  React.createContext<undefined | ServicesContextProps>(undefined)
+const ServicesContext = React.createContext<undefined | ServicesContextProps>(
+  undefined,
+)
 
 export default function ServicesProvider(props: {
   children: React.ReactElement
@@ -98,10 +99,10 @@ function useIntegrations() {
   const {event} = useEvent()
   const url = api(`/events/${event.slug}/integrations`)
 
-  const request = useCallback(
-    () => client.get<Integration[]>(url),
-    [client, url],
-  )
+  const request = useCallback(() => client.get<Integration[]>(url), [
+    client,
+    url,
+  ])
   return useAsync(request)
 }
 

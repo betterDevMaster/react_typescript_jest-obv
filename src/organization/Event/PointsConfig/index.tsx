@@ -16,6 +16,12 @@ import {useToggleActions} from 'organization/Event/PointsConfig/active'
 import LeaderboardSettingsDialog from 'organization/Event/PointsConfig/LeaderboardSettingsDialog'
 import Box from '@material-ui/core/Box'
 import ErrorAlert from 'lib/ui/alerts/ErrorAlert'
+import DangerButton from 'lib/ui/Button/DangerButton'
+import {useOrganization} from 'organization/OrganizationProvider'
+import {useToggle} from 'lib/toggle'
+import {api} from 'lib/url'
+import {useEvent} from 'Event/EventProvider'
+import ConfirmDialog from 'lib/ui/ConfirmDialog'
 
 export default function PointsConfig() {
   return (
@@ -37,6 +43,7 @@ function Content() {
   const [processing, setProcessing] = useState(false)
   const [pageSettingsVisible, setPageSettingsVisible] = useState(false)
   const [error, setError] = useState<string | null>(null)
+  const {clear, processing: processingClear} = useClearLeaderboard()
 
   const edit = (action: Action) => setEditing(action)
   const closeEditDialog = () => setEditing(null)
@@ -65,7 +72,21 @@ function Content() {
       <ButtonContainer>
         <StyledAddActionButton onAdd={edit} />
         <RightButtons>
-          <StyledExportLeaderboardButton onError={setError} />
+          <ConfirmDialog
+            onConfirm={clear}
+            description="Clearing the leaderboard will remove all attendee points. This action CANNOT be reversed."
+          >
+            {(confirm) => (
+              <DangerButton
+                variant="contained"
+                onClick={confirm}
+                disabled={processingClear}
+              >
+                Clear Leaderboard
+              </DangerButton>
+            )}
+          </ConfirmDialog>
+          <ExportLeaderboardButton onError={setError} />
           <Button
             variant="outlined"
             color="primary"
@@ -98,6 +119,25 @@ function Content() {
   )
 }
 
+function useClearLeaderboard() {
+  const {client} = useOrganization()
+  const {event} = useEvent()
+  const {flag: processing, toggle: toggleProcessing} = useToggle()
+
+  const clear = () => {
+    if (processing) {
+      return
+    }
+
+    toggleProcessing()
+
+    const url = api(`/events/${event.slug}/leaderboard`)
+    client.delete(url).finally(toggleProcessing)
+  }
+
+  return {clear, processing}
+}
+
 const ButtonContainer = styled.div`
   display: flex;
   flex-direction: row;
@@ -114,9 +154,11 @@ const ButtonContainer = styled.div`
 const RightButtons = styled.div`
   display: flex;
   width: 100%;
+  margin: 0 -${(props) => props.theme.spacing[1]}!important;
 
   button {
     flex: 1;
+    margin: 0 ${(props) => props.theme.spacing[1]}!important;
   }
 
   @media (min-width: ${(props) => props.theme.breakpoints.md}) {
@@ -133,8 +175,4 @@ const StyledAddActionButton = styled(AddActionButton)`
     width: auto !important;
     margin-bottom: 0;
   }
-`
-
-const StyledExportLeaderboardButton = styled(ExportLeaderboardButton)`
-  margin-right: ${(props) => props.theme.spacing[2]}!important;
 `

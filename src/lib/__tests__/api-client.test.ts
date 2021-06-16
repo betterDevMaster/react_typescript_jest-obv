@@ -1,5 +1,5 @@
-import {client} from '../api-client'
 import mockAxios from 'axios'
+import {client} from 'lib/api-client'
 
 afterEach(() => {
   jest.clearAllMocks()

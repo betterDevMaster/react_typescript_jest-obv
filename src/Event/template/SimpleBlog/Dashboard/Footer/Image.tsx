@@ -2,12 +2,13 @@ import Box from '@material-ui/core/Box'
 import {useEvent} from 'Event/EventProvider'
 import React from 'react'
 import styled from 'styled-components'
-import {useTemplate} from 'Event/TemplateProvider'
 import {DEFAULT_FOOTER_IMAGE_SIZE} from 'Event/template/SimpleBlog/Dashboard/Footer/FooterConfig'
+import {useSimpleBlog} from 'Event/template/SimpleBlog'
 
 export default function Image() {
   const {event} = useEvent()
-  const {footer} = useTemplate()
+  const {template} = useSimpleBlog()
+  const {footer} = template
 
   if (!event.footer_image) {
     return null

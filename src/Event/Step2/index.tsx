@@ -5,9 +5,11 @@ import {Redirect} from 'react-router-dom'
 import {useTemplate} from 'Event/TemplateProvider'
 import {SIMPLE_BLOG} from 'Event/template/SimpleBlog'
 import SimpleBlogStep2 from 'Event/template/SimpleBlog/Step2'
+import PanelsStep2 from 'Event/template/Panels/Step2'
 import {useEvent} from 'Event/EventProvider'
 import WaiverProvider from 'Event/Step2/WaiverProvider'
 import {useTrackEventPage} from 'analytics'
+import {PANELS} from 'Event/template/Panels'
 
 export default function Step2() {
   const attendee = useAttendee()
@@ -43,12 +45,15 @@ export default function Step2() {
 
 function TemplateStep2() {
   const template = useTemplate()
+
   const user = useAttendee()
 
   switch (template.name) {
     case SIMPLE_BLOG:
       return <SimpleBlogStep2 user={user} />
+    case PANELS:
+      return <PanelsStep2 />
     default:
-      throw new Error(`Missing step 2 for template: ${template.name}`)
+      throw new Error(`Missing step 2 for template.`)
   }
 }

@@ -1,4 +1,5 @@
 import {AuthClientSettings, useAuthClient} from 'auth/auth-client'
+import {getToken} from 'auth/token'
 import {isTeamMember} from 'auth/user'
 import {TEAM_MEMBER_TOKEN_KEY} from 'obvio/auth'
 import {useOrganization} from 'organization/OrganizationProvider'
@@ -22,6 +23,22 @@ export const useOrganizationAuth = () => {
   )
 
   return useAuthClient(settings)
+}
+
+/**
+ * Get the currently authenticated team member's auth token.
+ *
+ * @returns
+ */
+export function useAuthToken() {
+  const token = getToken(TEAM_MEMBER_TOKEN_KEY)
+  if (!token) {
+    throw new Error(
+      'Missing auth token; was useToken called for a user that is NOT an organization?',
+    )
+  }
+
+  return token
 }
 
 export function useTeamMember() {

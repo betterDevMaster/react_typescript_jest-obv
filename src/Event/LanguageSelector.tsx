@@ -15,7 +15,9 @@ export default function LanguageSelector() {
   const isEditMode = useEditMode()
   const {languages, translationsEnabled} = useLanguage()
   const [dialogVisible, setDialogVisible] = useState(false)
-  const {isDarkMode} = useTemplate()
+
+  const template = useTemplate()
+  const {isDarkMode} = template
 
   const toggleDialog = () => setDialogVisible(!dialogVisible)
 

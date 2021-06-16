@@ -1,5 +1,4 @@
 import {fireEvent} from '@testing-library/react'
-import faker from 'faker'
 import {fakeAttendee} from 'Event/auth/__utils__/factory'
 import {loginToEventSite} from 'Event/__utils__/url'
 import axios from 'axios'
@@ -7,15 +6,14 @@ import {Await} from 'lib/type-utils'
 import {Attendee} from 'Event/attendee'
 
 const mockPost = axios.post as jest.Mock
-const mockGet = axios.get as jest.Mock
 
 export async function submitWaiver({
   findByLabelText,
   attendee,
 }: Await<ReturnType<typeof loginToEventSite>> & {attendee?: Attendee}) {
-  const canvas = (await findByLabelText(
+  const canvas = ((await findByLabelText(
     'signature canvas',
-  )) as unknown as HTMLCanvasElement
+  )) as unknown) as HTMLCanvasElement
 
   const signature = 'data:image/png;base64'
   //@ts-ignore

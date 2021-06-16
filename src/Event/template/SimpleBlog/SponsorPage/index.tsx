@@ -7,14 +7,13 @@ import SponsorList from 'Event/template/SimpleBlog/SponsorPage/SponsorList'
 import {User} from 'auth/user'
 import {useEvent} from 'Event/EventProvider'
 import SponsorEditDialog from 'Event/template/SimpleBlog/SponsorPage/SponsorEditDialog'
-import {useTemplate} from 'Event/TemplateProvider'
 import {
   DEFAULT_BACK_TO_DASHBOARD_TEXT_COLOR,
   DEFAULT_DESCRIPTION,
   DEFAULT_BACK_TO_DASHBOARD_TEXT,
 } from 'Event/template/SimpleBlog/SponsorPage/SponsorList/Card'
-
 import {PageTitle} from 'Event/template/SimpleBlog/Page'
+import {useSimpleBlog} from 'Event/template/SimpleBlog'
 import {useVariables} from 'Event'
 import Content from 'lib/ui/form/TextEditor/Content'
 
@@ -25,7 +24,7 @@ export default function SimpleBlogSponsorPage(props: {
 }) {
   const {sponsors} = props
   const {event} = useEvent()
-  const template = useTemplate()
+  const {template} = useSimpleBlog()
   const {sponsors: sponsorsPageSettings} = template
   const v = useVariables()
 

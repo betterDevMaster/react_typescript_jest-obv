@@ -5,7 +5,7 @@ import Card from 'Event/template/SimpleBlog/FaqPage/FaqList/Card'
 import React from 'react'
 import HiddenOnMatch from 'Event/visibility-rules/HiddenOnMatch'
 import {DragDropContext, Droppable, DropResult} from 'react-beautiful-dnd'
-import {useTemplate, useUpdateObject} from 'Event/TemplateProvider'
+import {useSimpleBlog} from 'Event/template/SimpleBlog'
 
 export default function FaqList(props: {
   className?: string
@@ -60,7 +60,9 @@ export default function FaqList(props: {
  * @returns
  */
 function useSortedFaqs(faqs: FAQ[]) {
-  const {faq: pageSettings} = useTemplate()
+  const {
+    template: {faq: pageSettings},
+  } = useSimpleBlog()
 
   const order = pageSettings?.orderedIds || []
 
@@ -82,7 +84,8 @@ function useSortedFaqs(faqs: FAQ[]) {
 }
 
 function useHandleDrag() {
-  const update = useUpdateObject('faq')
+  const simpleBlog = useSimpleBlog()
+  const update = simpleBlog.update.object('faq')
 
   return (faqs: FAQ[]) => (result: DropResult) => {
     const {destination, source} = result

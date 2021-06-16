@@ -7,6 +7,8 @@ import {useTemplate} from 'Event/TemplateProvider'
 import {useDispatch} from 'react-redux'
 import {setEditMode} from 'Event/Dashboard/editor/state/actions'
 import {SIMPLE_BLOG} from 'Event/template/SimpleBlog'
+import {PANELS} from 'Event/template/Panels'
+import PanelsDashboard from 'Event/template/Panels/Dashboard'
 
 export type DashboardProps = {
   isEditMode?: boolean
@@ -45,11 +47,14 @@ function ConfigComponents(props: {
 }
 
 function TemplateDashboard(props: {user: User}) {
-  const template = useTemplate()
-  switch (template.name) {
+  const {name} = useTemplate()
+
+  switch (name) {
     case SIMPLE_BLOG:
       return <SimpleBlogDashboard user={props.user} />
+    case PANELS:
+      return <PanelsDashboard user={props.user} />
     default:
-      throw new Error(`Missing dashboard for template: ${template.name}`)
+      throw new Error(`Missing dashboard for template: ${name}`)
   }
 }

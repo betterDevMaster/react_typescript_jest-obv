@@ -1,8 +1,9 @@
 import React, {useCallback} from 'react'
 import {useAttendee} from 'Event/auth'
-import {useTemplate} from 'Event/TemplateProvider'
 import {SIMPLE_BLOG} from 'Event/template/SimpleBlog'
 import SimpleBlogSponsorPage from 'Event/template/SimpleBlog/SponsorPage'
+import {PANELS} from 'Event/template/Panels'
+import PanelsSponsorPage from 'Event/template/Panels/Dashboard/Sponsors'
 import {useEvent} from 'Event/EventProvider'
 import {useAsync} from 'lib/async'
 import {api} from 'lib/url'
@@ -12,6 +13,7 @@ import {EntityList} from 'lib/list'
 import NavButton from 'Event/Dashboard/components/NavButton'
 import {useTrackEventPage} from 'analytics'
 import {Form} from 'organization/Event/FormsProvider'
+import {useTemplate} from 'Event/TemplateProvider'
 
 export interface Sponsor {
   id: number
@@ -25,7 +27,8 @@ export interface Sponsor {
 }
 
 export default function SponsorPage(props: {isEditMode?: boolean}) {
-  const template = useTemplate()
+  const {name} = useTemplate()
+
   const user = useAttendee()
 
   useTrackEventPage({
@@ -41,11 +44,13 @@ export default function SponsorPage(props: {isEditMode?: boolean}) {
 
   const sponsors = data || []
 
-  switch (template.name) {
+  switch (name) {
     case SIMPLE_BLOG:
       return <SimpleBlogSponsorPage user={user} sponsors={sponsors} />
+    case PANELS:
+      return <PanelsSponsorPage user={user} sponsors={sponsors} />
     default:
-      throw new Error(`Missing sponsor page for template: ${template.name}`)
+      throw new Error(`Missing sponsor page for template: ${name}`)
   }
 }
 

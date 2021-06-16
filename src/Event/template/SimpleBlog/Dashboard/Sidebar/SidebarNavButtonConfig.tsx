@@ -2,7 +2,7 @@ import DangerButton from 'lib/ui/Button/DangerButton'
 import React from 'react'
 import Box from '@material-ui/core/Box'
 import {useCloseConfig} from 'Event/Dashboard/editor/state/edit-mode'
-import {useTemplate, useUpdateTemplate} from 'Event/TemplateProvider'
+import {useDispatchUpdate} from 'Event/TemplateProvider'
 import {SIDEBAR_NAV_BUTTON} from 'Event/template/SimpleBlog/Dashboard/Sidebar/SidebarNav'
 import RuleConfig, {useRuleConfig} from 'Event/visibility-rules/RuleConfig'
 import ConfigureRulesButton from 'Event/visibility-rules/ConfigureRulesButton'
@@ -22,6 +22,7 @@ import Slider from '@material-ui/core/Slider'
 import TargetConfig from 'Event/Dashboard/components/NavButton/NavButtonConfig/TargetConfig'
 import NavButton from 'Event/Dashboard/components/NavButton'
 import ActionSelect from 'Event/ActionsProvider/ActionSelect'
+import {useSimpleBlog} from 'Event/template/SimpleBlog'
 
 const MIN_BORDER_WIDTH = 0
 const MAX_BORDER_WIDTH = 50
@@ -37,9 +38,10 @@ export type SidebarNavButtonConfig = {
 export function SidebarNavButtonConfig(props: {
   id: SidebarNavButtonConfig['id']
 }) {
-  const {sidebarNav: buttons} = useTemplate()
+  const {template} = useSimpleBlog()
+  const {sidebarNav: buttons} = template
   const {visible: ruleConfigVisible, toggle: toggleRuleConfig} = useRuleConfig()
-  const updateTemplate = useUpdateTemplate()
+  const updateTemplate = useDispatchUpdate()
   const closeConfig = useCloseConfig()
   const {id} = props
 
@@ -74,13 +76,13 @@ export function SidebarNavButtonConfig(props: {
     })
   }
 
-  const updateButton =
-    <T extends keyof NavButton>(key: T) =>
-    (value: NavButton[T]) =>
-      update({
-        ...button,
-        [key]: value,
-      })
+  const updateButton = <T extends keyof NavButton>(key: T) => (
+    value: NavButton[T],
+  ) =>
+    update({
+      ...button,
+      [key]: value,
+    })
 
   return (
     <RuleConfig

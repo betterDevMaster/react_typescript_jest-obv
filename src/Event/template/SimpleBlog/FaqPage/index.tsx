@@ -6,16 +6,15 @@ import {FAQ} from 'Event/FaqPage'
 import FaqList from 'Event/template/SimpleBlog/FaqPage/FaqList'
 import {User} from 'auth/user'
 import FaqEditDialog from 'Event/template/SimpleBlog/FaqPage/FaqEditDialog'
-import {useTemplate} from 'Event/TemplateProvider'
 import {
   DEFAULT_BACK_TO_DASHBOARD_TEXT_COLOR,
   DEFAULT_DESCRIPTION,
   DEFAULT_BACK_TO_DASHBOARD_TEXT,
   DEFAULT_TITLE,
 } from 'Event/template/SimpleBlog/FaqPage/FaqList/Card'
-
 import {PageTitle} from 'Event/template/SimpleBlog/Page'
 import {useVariables} from 'Event'
+import {useSimpleBlog} from 'Event/template/SimpleBlog'
 import Content from 'lib/ui/form/TextEditor/Content'
 
 export default function SimpleBlogFaqPage(props: {
@@ -24,7 +23,7 @@ export default function SimpleBlogFaqPage(props: {
   faqs: FAQ[]
 }) {
   const {faqs} = props
-  const template = useTemplate()
+  const {template} = useSimpleBlog()
   const {faq: pageSettings} = template
   const v = useVariables()
 

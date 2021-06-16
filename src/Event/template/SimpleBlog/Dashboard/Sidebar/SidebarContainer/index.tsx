@@ -3,8 +3,7 @@ import {useEditComponent} from 'Event/Dashboard/editor/state/edit-mode'
 import EditModeOnly from 'Event/Dashboard/editor/views/EditModeOnly'
 import React from 'react'
 import styled from 'styled-components'
-import {useTemplate} from 'Event/TemplateProvider'
-import {SimpleBlog} from 'Event/template/SimpleBlog'
+import {SimpleBlog, useSimpleBlog} from 'Event/template/SimpleBlog'
 import BackgroundImage from 'Event/template/SimpleBlog/Dashboard/Sidebar/SidebarContainer/BackgroundImage'
 import {Publishable} from 'Event/Dashboard/editor/views/Published'
 import Published from 'Event/Dashboard/editor/views/Published'
@@ -22,7 +21,8 @@ export type Sidebar = Publishable & {
 
 export default function SidebarContainer(props: {children: React.ReactNode}) {
   const edit = useEditComponent({type: SIDEBAR_CONTAINER})
-  const {sidebar} = useTemplate()
+  const {template} = useSimpleBlog()
+  const {sidebar} = template
 
   return (
     <Published component={sidebar}>

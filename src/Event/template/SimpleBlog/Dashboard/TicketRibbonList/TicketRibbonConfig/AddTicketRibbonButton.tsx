@@ -1,0 +1,51 @@
+import Button from '@material-ui/core/Button'
+import {
+  BLUE_RIBBON,
+  TicketRibbon,
+  TICKET_RIBBON,
+} from 'Event/template/SimpleBlog/Dashboard/TicketRibbonList/TicketRibbon'
+import {setConfig} from 'Event/Dashboard/editor/state/actions'
+import {useSimpleBlog} from 'Event/template/SimpleBlog'
+import {useDispatchUpdate} from 'Event/TemplateProvider'
+import React from 'react'
+import {useDispatch} from 'react-redux'
+
+export default function AddTicketRibbonButton(props: {className?: string}) {
+  const dispatch = useDispatch()
+  const {template} = useSimpleBlog()
+  const {ticketRibbons} = template
+  const updateTemplate = useDispatchUpdate()
+
+  const existingRibbons = ticketRibbons || []
+
+  const add = () => {
+    const newRibbon: TicketRibbon = {
+      name: BLUE_RIBBON,
+      text: '',
+      color: '#ffffff',
+      rules: [],
+    }
+
+    const ticketRibbons = [...existingRibbons, newRibbon]
+
+    updateTemplate({
+      ticketRibbons,
+    })
+
+    const lastIndex = ticketRibbons.length - 1
+    dispatch(setConfig({type: TICKET_RIBBON, index: lastIndex}))
+  }
+  return (
+    <Button
+      aria-label="add ticket ribbon"
+      fullWidth
+      size="large"
+      variant="outlined"
+      color="primary"
+      onClick={add}
+      className={props.className}
+    >
+      Add Ticket Ribbon
+    </Button>
+  )
+}

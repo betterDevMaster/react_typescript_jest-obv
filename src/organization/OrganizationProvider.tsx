@@ -2,9 +2,11 @@ import {useAsync} from 'lib/async'
 import {api, createRoutes} from 'lib/url'
 import {Organization} from 'organization'
 import {teamMemberClient} from 'obvio/obvio-client'
-import React, {useCallback} from 'react'
+import React, {useCallback, useMemo} from 'react'
 import {useLocation} from 'react-router-dom'
 import {Client} from 'lib/api-client'
+import {createPrivate as createEcho} from 'lib/echo'
+import {useAuthToken} from 'organization/auth'
 
 export type OrganizationRoutes = ReturnType<typeof createRoutesFor>
 
@@ -14,8 +16,9 @@ interface OrganizationContextProps {
   client: Client
 }
 
-export const OrganizationContext =
-  React.createContext<OrganizationContextProps | undefined>(undefined)
+export const OrganizationContext = React.createContext<
+  OrganizationContextProps | undefined
+>(undefined)
 
 export default function OrganizationProvider(props: {
   children: React.ReactNode
@@ -64,6 +67,11 @@ export function useOrganization() {
   }
 
   return context
+}
+
+export function useOrganizationEcho() {
+  const token = useAuthToken()
+  return useMemo(() => createEcho(token), [token])
 }
 
 export function createRoutesFor(organization: Organization) {

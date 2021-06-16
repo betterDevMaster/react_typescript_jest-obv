@@ -32,6 +32,6 @@ it('should create a new dashboard', async () => {
     expect(mockPost).toHaveBeenCalledTimes(1)
   })
 
-  const [url, data] = mockPost.mock.calls[0]
+  const [url] = mockPost.mock.calls[0]
   expect(url).toMatch(`/events/${event.slug}`)
 })

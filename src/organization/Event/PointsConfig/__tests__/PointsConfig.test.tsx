@@ -12,6 +12,7 @@ afterEach(() => {
 })
 
 const mockPut = axios.put as jest.Mock
+const mockDelete = axios.delete as jest.Mock
 
 it('should render actions', async () => {
   const {actions, findByText} = await goToPointsConfig({
@@ -70,4 +71,27 @@ it('should configure the leaderboard', async () => {
   expect(url).toMatch(`/events/${event.slug}`)
 
   expect(data.template.leaderboard.title).toBe(title)
+})
+
+it('should clear the leaderboard', async () => {
+  const event = fakeEvent({
+    template: fakeSimpleBlog(),
+  })
+  const {findByText} = await goToPointsConfig({
+    event,
+    userPermissions: [CONFIGURE_EVENTS],
+  })
+
+  user.click(await findByText(/clear leaderboard/i))
+
+  mockDelete.mockImplementationOnce(() => Promise.resolve({data: 'deleted'}))
+
+  user.click(await findByText(/confirm/i))
+
+  await wait(() => {
+    expect(mockDelete).toHaveBeenCalledTimes(1)
+  })
+
+  const [url, _] = mockDelete.mock.calls[0]
+  expect(url).toMatch(`/events/${event.slug}/leaderboard`)
 })

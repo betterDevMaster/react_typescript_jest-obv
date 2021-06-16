@@ -47,8 +47,8 @@ it('should update an area', async () => {
   expect(data.is_open).toBe(!target.is_open)
 
   // Checkbox was updated
-  const isChecked = (
-    (await findByLabelText('toggle area open status')) as HTMLInputElement
-  ).checked
+  const isChecked = ((await findByLabelText(
+    'toggle area open status',
+  )) as HTMLInputElement).checked
   expect(isChecked).toBe(!target.is_open)
 })

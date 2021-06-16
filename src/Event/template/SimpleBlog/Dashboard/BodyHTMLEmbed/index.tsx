@@ -7,9 +7,9 @@ import {
 import EditModeOnly from 'Event/Dashboard/editor/views/EditModeOnly'
 import {spacing} from 'lib/ui/theme'
 import Button from '@material-ui/core/Button'
-import {useTemplate} from 'Event/TemplateProvider'
 import {useVariables} from 'Event'
 import withStyles from '@material-ui/core/styles/withStyles'
+import {useSimpleBlog} from 'Event/template/SimpleBlog'
 
 export const BODY_HTML_EMBED = 'Embed HTML'
 
@@ -17,7 +17,8 @@ export default function BodyHTMLEmbed() {
   const anchor = useRef<HTMLDivElement>(null)
   const [isLoading, setIsLoading] = useState(false)
   const [scriptElements, setScriptElements] = useState<HTMLElement[]>([])
-  const {bodyHTMLEmbed: bodyEmbed} = useTemplate()
+  const {template} = useSimpleBlog()
+  const {bodyHTMLEmbed: bodyEmbed} = template
   const isEditMode = useEditMode()
   const v = useVariables()
 

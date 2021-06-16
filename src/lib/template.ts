@@ -48,3 +48,23 @@ export function replace(key: string, value: string, text: string) {
   const match = new RegExp(`{{${key}}}`, 'gi')
   return text.replace(match, value)
 }
+
+/**
+ * Return the provided default if the value has not been defined.
+ * Convenient when the actual value can be fals-y, and using
+ * the '||' operator will not work as expected.
+ *
+ * @param defaultValue
+ * @param val
+ * @returns
+ */
+export function withDefault<T extends any>(
+  defaultValue: T,
+  val: T | undefined,
+) {
+  if (val !== undefined) {
+    return val
+  }
+
+  return defaultValue
+}

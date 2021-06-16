@@ -5,7 +5,7 @@ import user from '@testing-library/user-event'
 import {fireEvent, wait} from '@testing-library/react'
 import {Sponsor} from 'Event/SponsorPage'
 import {CONFIGURE_EVENTS} from 'organization/PermissionsProvider'
-import {goToSponsorConfig} from 'organization/Event/SponsorPageConfig/__utils__/go-to-sponsor-page-config'
+import {goToSponsorConfig} from 'Event/template/SimpleBlog/SponsorPage/SponsorPageConfig/__utils__/go-to-sponsor-page-config'
 
 const mockPost = axios.post as jest.Mock
 const mockPut = axios.put as jest.Mock
@@ -86,7 +86,7 @@ it('should remove an image', async () => {
   const sponsor = fakeSponsor({image: imageData})
 
   const event = fakeEvent()
-  const {findByLabelText, findByText} = await goToSponsorConfig({
+  const {findByLabelText} = await goToSponsorConfig({
     event,
     userPermissions: [CONFIGURE_EVENTS],
     sponsors: [sponsor],

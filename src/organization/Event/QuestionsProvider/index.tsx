@@ -41,6 +41,10 @@ export type QuestionType =
 
 /**
  * Validation Rules
+ *
+ * These types match up to the types defined at the API. We duplicate
+ * them here assuming they rarely change, and this way we avoid
+ * re-fetching types.
  */
 
 export const EMAIL = 'email'
@@ -55,8 +59,9 @@ export interface QuestionsContextProps {
   remove: (question: Question) => void
 }
 
-export const QuestionsContext =
-  React.createContext<QuestionsContextProps | undefined>(undefined)
+export const QuestionsContext = React.createContext<
+  QuestionsContextProps | undefined
+>(undefined)
 
 export default function QuestionsProvider(props: {
   children: React.ReactElement

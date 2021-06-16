@@ -16,8 +16,9 @@ export type TextEditorContextPropos = {
 
 type TextEditorContextProps = TextEditorContextPropos
 
-const TextEditorContext =
-  React.createContext<TextEditorContextProps | undefined>(undefined)
+const TextEditorContext = React.createContext<
+  TextEditorContextProps | undefined
+>(undefined)
 
 export default function TextEditorProvider(props: {children: React.ReactNode}) {
   const {loading, token} = useAccessToken()

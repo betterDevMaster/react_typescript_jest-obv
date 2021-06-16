@@ -1,9 +1,9 @@
 import React from 'react'
 import {useAttendee} from 'Event/auth'
-import {useTemplate} from 'Event/TemplateProvider'
 import {SIMPLE_BLOG} from 'Event/template/SimpleBlog'
 import SimpleBlogBackgrounds from 'Event/template/SimpleBlog/Backgrounds'
 import {useTrackEventPage} from 'analytics'
+import {useTemplate} from 'Event/TemplateProvider'
 
 export default function Backgrounds() {
   const template = useTemplate()
