@@ -52,7 +52,11 @@ function Date(props: {children: React.ReactNode; hidden?: boolean}) {
     return null
   }
 
-  return <DateText color={styles.dateTextColor}>{props.children}</DateText>
+  return (
+    <DateText color={styles.dateTextColor} aria-label="post date">
+      {props.children}
+    </DateText>
+  )
 }
 
 const Post = styled.div`

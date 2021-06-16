@@ -5,12 +5,10 @@ import {fakeResource} from 'Event/template/SimpleBlog/Dashboard/ResourceList/__u
 import {fireEvent} from '@testing-library/dom'
 import {clickEdit} from '__utils__/edit'
 import {fakeEvent} from 'Event/__utils__/factory'
-import {mockRxJsAjax} from 'store/__utils__/MockStoreProvider'
 import {wait} from '@testing-library/react'
 import axios from 'axios'
 import {goToDashboardConfig} from 'organization/Event/DashboardConfig/__utils__/go-dashboard-config'
 
-const mockPost = mockRxJsAjax.post as jest.Mock
 const mockDelete = axios.delete as jest.Mock
 
 beforeAll(() => {
@@ -47,15 +45,6 @@ it('should add a new resource', async () => {
 
   fireEvent.click(await findByLabelText('add resource'))
   expect((await findAllByLabelText('event resource')).length).toBe(1)
-
-  // Saved
-  await wait(() => {
-    expect(mockPost).toHaveBeenCalledTimes(1)
-  })
-
-  const [url, data] = mockPost.mock.calls[0]
-  expect(url).toMatch(`/events/${event.slug}`)
-  expect(data.template.resourceList.resources.length).toBe(1)
 })
 
 it('should update resources description', async () => {
@@ -79,13 +68,13 @@ it('should update resources description', async () => {
   clickEdit(await findByLabelText('resources'))
 
   const updatedDescription = faker.random.words(5)
-  const upadtedTitle = faker.random.words(2)
+  const updatedTitle = faker.random.words(2)
   user.type(
     await findByLabelText('update resources description'),
     updatedDescription,
   )
 
-  user.type(await findByLabelText('update resources title'), upadtedTitle)
+  user.type(await findByLabelText('update resources title'), updatedTitle)
 
   fireEvent.click(await findByLabelText('close config dialog'))
 
@@ -93,17 +82,7 @@ it('should update resources description', async () => {
     updatedDescription,
   )
 
-  expect((await findByLabelText('resources')).textContent).toBe(upadtedTitle)
-
-  // Saved
-  await wait(() => {
-    expect(mockPost).toHaveBeenCalledTimes(1)
-  })
-
-  const [url, data] = mockPost.mock.calls[0]
-  expect(url).toMatch(`/events/${event.slug}`)
-  expect(data.template.resourceList.description).toBe(updatedDescription)
-  expect(data.template.resourceList.title).toBe(upadtedTitle)
+  expect((await findByLabelText('resources')).textContent).toBe(updatedTitle)
 })
 
 it('should update a resource', async () => {
@@ -131,15 +110,6 @@ it('should update a resource', async () => {
   fireEvent.click(await findByLabelText('close config dialog'))
 
   expect((await findByLabelText('resource link')).textContent).toBe(updatedName)
-
-  // Saved
-  await wait(() => {
-    expect(mockPost).toHaveBeenCalledTimes(1)
-  })
-
-  const [url, data] = mockPost.mock.calls[0]
-  expect(url).toMatch(`/events/${event.slug}`)
-  expect(data.template.resourceList.resources[0].name).toBe(updatedName)
 })
 
 it('should remove a resource', async () => {
@@ -185,14 +155,10 @@ it('should remove a resource', async () => {
 
   expect(queryByText(targetName)).not.toBeInTheDocument()
 
-  // Saved
+  // Sent request to delete file
   await wait(() => {
-    expect(mockPost).toHaveBeenCalledTimes(1)
+    expect(mockDelete).toHaveBeenCalledTimes(1)
   })
-
-  const [url, data] = mockPost.mock.calls[0]
-  expect(url).toMatch(`/events/${event.slug}`)
-  expect(data.template.resourceList.resources.length).toBe(resources.length - 1)
 
   expect(mockDelete).toHaveBeenCalledTimes(1)
   const [deleteUrl] = mockDelete.mock.calls[0]

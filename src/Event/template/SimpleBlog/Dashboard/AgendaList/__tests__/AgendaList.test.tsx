@@ -1,14 +1,11 @@
 import faker from 'faker'
-import {fireEvent, wait} from '@testing-library/react'
+import {fireEvent} from '@testing-library/react'
 import {fakeSimpleBlog} from 'Event/template/SimpleBlog/__utils__/factory'
 import {fakeAgenda} from 'Event/template/SimpleBlog/Dashboard/AgendaList/__utils__/factory'
 import {clickEdit} from '__utils__/edit'
 import user from '@testing-library/user-event'
 import {fakeEvent} from 'Event/__utils__/factory'
-import {mockRxJsAjax} from 'store/__utils__/MockStoreProvider'
 import {goToDashboardConfig} from 'organization/Event/DashboardConfig/__utils__/go-dashboard-config'
-
-const mockPost = mockRxJsAjax.post as jest.Mock
 
 afterEach(() => {
   jest.clearAllMocks()
@@ -46,15 +43,6 @@ it('should edit an agenda', async () => {
   expect(
     (await findAllByLabelText('agenda event'))[targetIndex].textContent,
   ).toBe(updatedText)
-
-  // Saved
-  await wait(() => {
-    expect(mockRxJsAjax.post).toHaveBeenCalledTimes(1)
-  })
-
-  const [url, data] = mockPost.mock.calls[0]
-  expect(url).toMatch(`/events/${event.slug}`)
-  expect(data.template.agenda.items[targetIndex].text).toBe(updatedText)
 })
 
 it('should add a new agenda', async () => {
@@ -73,15 +61,6 @@ it('should add a new agenda', async () => {
   fireEvent.click(await findByLabelText('add agenda event'))
 
   expect((await findAllByLabelText('agenda')).length).toBe(1)
-
-  // Saved
-  await wait(() => {
-    expect(mockRxJsAjax.post).toHaveBeenCalledTimes(1)
-  })
-
-  const [url, data] = mockPost.mock.calls[0]
-  expect(url).toMatch(`/events/${event.slug}`)
-  expect(data.template.agenda.items.length).toBe(1)
 })
 
 it('should remove an agenda', async () => {
@@ -116,15 +95,6 @@ it('should remove an agenda', async () => {
   )
 
   expect(queryByText(targetText)).not.toBeInTheDocument()
-
-  // Saved
-  await wait(() => {
-    expect(mockPost).toHaveBeenCalledTimes(1)
-  })
-
-  const [url, data] = mockPost.mock.calls[0]
-  expect(url).toMatch(`/events/${event.slug}`)
-  expect(data.template.agenda.items.length).toBe(list.length - 1)
 })
 
 it('should update agendas list title', async () => {

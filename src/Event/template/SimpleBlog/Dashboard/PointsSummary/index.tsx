@@ -43,7 +43,7 @@ export default function PointsSummary() {
     <Section>
       <EditComponent component={{type: POINTS_SUMMARY}}>
         <>
-          <HeaderImage src={logo} alt="Points Image" />
+          <HeaderImage src={logo} alt="Points Image" aria-label="points logo" />
           <Box color={sidebar.textColor}>
             <NumPointsText aria-label="points summary">
               You've earned {score.points} {summary.unit}!

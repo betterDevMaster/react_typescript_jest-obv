@@ -4,13 +4,9 @@ import Switch from '@material-ui/core/Switch'
 import React from 'react'
 import {useDispatch} from 'react-redux'
 import {setEditMode} from 'Event/Dashboard/editor/state/actions'
-import {useEditMode, useIsSaving} from 'Event/Dashboard/editor/state/edit-mode'
-import CircularProgress, {
-  CircularProgressProps,
-} from '@material-ui/core/CircularProgress'
+import {useEditMode} from 'Event/Dashboard/editor/state/edit-mode'
 import grey from '@material-ui/core/colors/grey'
-import green from '@material-ui/core/colors/green'
-import yellow from '@material-ui/core/colors/yellow'
+import SaveButton from 'Event/Dashboard/editor/views/ConfigBar/SaveButton'
 
 export default function ConfigBar() {
   const isEditMode = useEditMode()
@@ -26,24 +22,8 @@ export default function ConfigBar() {
         }
         label="Preview"
       />
-      <SavingIndicator />
+      <SaveButton />
     </Box>
-  )
-}
-
-function SavingIndicator() {
-  const isSaving = useIsSaving()
-  const variant: CircularProgressProps['variant'] = isSaving
-    ? 'indeterminate'
-    : 'determinate'
-  return (
-    <ProgressSpinner
-      size={18}
-      thickness={6}
-      value={100}
-      variant={variant}
-      active={isSaving}
-    />
   )
 }
 
@@ -54,11 +34,4 @@ const Box = styled.div`
   align-items: center;
   justify-content: flex-end;
   padding: 0 ${(props) => props.theme.spacing[4]};
-`
-
-const ProgressSpinner = styled((props) => {
-  const {active, ...otherProps} = props
-  return <CircularProgress {...otherProps} />
-})<{active: boolean}>`
-  color: ${(props) => (props.active ? yellow[700] : green[400])} !important;
 `

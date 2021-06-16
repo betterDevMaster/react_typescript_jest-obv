@@ -10,11 +10,15 @@ import PanelsGeneralConfig from 'Event/template/Panels/GeneralConfig'
 import {withStyles} from '@material-ui/core/styles'
 import {spacing} from 'lib/ui/theme'
 import Typography from '@material-ui/core/Typography'
+import SaveButton from 'organization/Event/GeneralConfig/SaveButton'
 
 export default function GeneralConfig() {
   return (
     <Layout>
       <Page>
+        <Header>
+          <SaveButton />
+        </Header>
         <TemplateGeneralConfig />
       </Page>
     </Layout>
@@ -48,4 +52,9 @@ export const PreviewBox = styled.div`
   padding: ${(props) => props.theme.spacing[2]};
   border: 1px solid ${(props) => props.theme.colors.border};
   border-radius: 4px;
+`
+
+const Header = styled.div`
+  display: flex;
+  justify-content: flex-end;
 `

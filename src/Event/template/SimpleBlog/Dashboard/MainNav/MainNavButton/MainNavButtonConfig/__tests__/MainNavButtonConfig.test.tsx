@@ -6,14 +6,14 @@ import {createEntityList} from 'lib/list'
 import {clickEdit} from '__utils__/edit'
 import {fireEvent} from '@testing-library/react'
 import {fakeEvent} from 'Event/__utils__/factory'
-import {mockRxJsAjax} from 'store/__utils__/MockStoreProvider'
 import {wait} from '@testing-library/react'
 import {fakeArea} from 'organization/Event/AreaList/__utils__/factory'
 import mockAxios from 'axios'
 import {fakeAction} from 'Event/ActionsProvider/__utils__/factory'
 import {goToDashboardConfig} from 'organization/Event/DashboardConfig/__utils__/go-dashboard-config'
+import axios from 'axios'
 
-const mockPost = mockRxJsAjax.post as jest.Mock
+const mockPut = axios.put as jest.Mock
 const mockGet = mockAxios.get as jest.Mock
 
 beforeEach(() => {
@@ -59,16 +59,6 @@ it('should edit the selected button', async () => {
 
   const updatedEl = await findByText(updatedValue)
   expect(updatedEl).toBeInTheDocument()
-
-  // Saved
-  await wait(() => {
-    expect(mockPost).toHaveBeenCalledTimes(1)
-  })
-
-  const [url, data] = mockPost.mock.calls[0]
-  expect(url).toMatch(`/events/${event.slug}`)
-  const id = data.template.mainNav.ids[targetIndex]
-  expect(data.template.mainNav.entities[id].text).toBe(updatedValue)
 })
 
 it('should set an area button', async () => {
@@ -114,12 +104,15 @@ it('should set an area button', async () => {
 
   fireEvent.click(await findByLabelText('close config dialog'))
 
+  mockPut.mockResolvedValueOnce({data: event})
+  user.click(await findByLabelText('save dashboard'))
+
   // Saved
   await wait(() => {
-    expect(mockPost).toHaveBeenCalledTimes(1)
+    expect(mockPut).toHaveBeenCalledTimes(1)
   })
 
-  const [url, data] = mockPost.mock.calls[0]
+  const [url, data] = mockPut.mock.calls[0]
   expect(url).toMatch(`/events/${event.slug}`)
   const id = data.template.mainNav.ids[targetIndex]
   expect(data.template.mainNav.entities[id]['isAreaButton']).toBe(true)
@@ -158,12 +151,15 @@ it('should assign an action for points', async () => {
 
   fireEvent.click(await findByLabelText('close config dialog'))
 
+  mockPut.mockResolvedValueOnce({data: event})
+  user.click(await findByLabelText('save dashboard'))
+
   // Saved
   await wait(() => {
-    expect(mockPost).toHaveBeenCalledTimes(1)
+    expect(mockPut).toHaveBeenCalledTimes(1)
   })
 
-  const [url, data] = mockPost.mock.calls[0]
+  const [url, data] = mockPut.mock.calls[0]
   expect(url).toMatch(`/events/${event.slug}`)
 
   const id = data.template.mainNav.ids[0] // only one button
@@ -193,12 +189,15 @@ it('should set an infusionsoft tag', async () => {
   user.type(await findByLabelText('infusionsoft tag id'), String(id))
   user.click(await findByLabelText('set tag id'))
 
+  mockPut.mockResolvedValueOnce({data: event})
+  user.click(await findByLabelText('save dashboard'))
+
   // Saved
   await wait(() => {
-    expect(mockPost).toHaveBeenCalledTimes(1)
+    expect(mockPut).toHaveBeenCalledTimes(1)
   })
 
-  const [url, data] = mockPost.mock.calls[0]
+  const [url, data] = mockPut.mock.calls[0]
   expect(url).toMatch(`/events/${event.slug}`)
 
   const saved = Object.values(data.template.mainNav.entities)[0] as any
