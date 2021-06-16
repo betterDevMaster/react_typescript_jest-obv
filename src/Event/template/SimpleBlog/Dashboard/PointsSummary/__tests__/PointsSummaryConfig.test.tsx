@@ -134,7 +134,7 @@ it('should remove the logo', async () => {
   clickEdit(await findByLabelText('points summary'))
 
   const withoutLogo: ObvioEvent = {...event, points_summary_logo: null}
-  mockPut.mockImplementationOnce(() => Promise.resolve(withoutLogo))
+  mockPut.mockImplementationOnce(() => Promise.resolve({data: withoutLogo}))
 
   user.click(await findByLabelText('remove points_summary_logo image'))
 
