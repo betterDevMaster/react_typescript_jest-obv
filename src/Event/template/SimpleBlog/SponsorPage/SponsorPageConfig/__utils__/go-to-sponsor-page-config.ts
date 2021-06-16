@@ -6,7 +6,6 @@ import {
   goToEventConfig,
 } from 'organization/Event/__utils__/event'
 import {fakeAction} from 'Event/ActionsProvider/__utils__/factory'
-import {defaultScore} from 'Event/PointsProvider'
 import {Sponsor} from 'Event/SponsorPage'
 import {fakeArea} from 'organization/Event/AreaList/__utils__/factory'
 import {fakeSponsor} from 'Event/__utils__/factory'

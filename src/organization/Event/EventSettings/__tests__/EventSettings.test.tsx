@@ -88,6 +88,6 @@ it('should update event values', async () => {
     expect(mockPut).toHaveBeenCalledTimes(2)
   })
 
-  const [removeUrl, removeFavicon] = mockPut.mock.calls[1]
+  const [_removeUrl, removeFavicon] = mockPut.mock.calls[1]
   expect(removeFavicon.favicon).toBe(null)
 })

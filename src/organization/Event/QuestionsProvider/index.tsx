@@ -1,5 +1,5 @@
-import {Form, useForms} from 'organization/Event/FormsProvider'
-import React from 'react'
+import {Form} from 'organization/Event/FormsProvider'
+import React, {useEffect, useState} from 'react'
 
 export interface Question {
   /**
@@ -57,6 +57,7 @@ export interface QuestionsContextProps {
   add: (question: Question) => void
   update: (question: Question) => void
   remove: (question: Question) => void
+  setQuestions: (questions: Question[]) => void
 }
 
 export const QuestionsContext = React.createContext<
@@ -67,15 +68,12 @@ export default function QuestionsProvider(props: {
   children: React.ReactElement
   form: Form
 }) {
-  const {update: updateForm} = useForms()
+  const [questions, setQuestions] = useState<Question[]>([])
   const {form} = props
 
-  const setQuestions = (questions: Question[]) => {
-    updateForm({
-      ...form,
-      questions,
-    })
-  }
+  useEffect(() => {
+    setQuestions(form.questions)
+  }, [form])
 
   const add = (question: Question) => {
     const added = [...form.questions, question]
@@ -102,7 +100,7 @@ export default function QuestionsProvider(props: {
 
   return (
     <QuestionsContext.Provider
-      value={{questions: form.questions, add, update, remove}}
+      value={{questions, add, update, remove, setQuestions}}
     >
       {props.children}
     </QuestionsContext.Provider>
