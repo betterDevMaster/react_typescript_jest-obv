@@ -32,7 +32,9 @@ it('should upload a welcome image', async () => {
     name: faker.random.word(),
   }
   const withWelcomeImage: ObvioEvent = {...event, logo: imageData}
-  mockPost.mockImplementationOnce(() => Promise.resolve(withWelcomeImage))
+  mockPost.mockImplementationOnce(() =>
+    Promise.resolve({data: withWelcomeImage}),
+  )
 
   fireEvent.change(imageInput)
 

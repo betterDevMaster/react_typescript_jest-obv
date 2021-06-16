@@ -35,7 +35,7 @@ it('should upload a logo', async () => {
     name: faker.random.word(),
   }
   const withLogo: ObvioEvent = {...event, logo: logoData}
-  mockPost.mockImplementationOnce(() => Promise.resolve(withLogo))
+  mockPost.mockImplementationOnce(() => Promise.resolve({data: withLogo}))
 
   fireEvent.change(logoInput)
 
@@ -67,7 +67,7 @@ it('should remove the logo', async () => {
   user.click(await findByLabelText('remove logo image'))
 
   const withoutLogo: ObvioEvent = {...event, logo: null}
-  mockPut.mockImplementationOnce(() => Promise.resolve(withoutLogo))
+  mockPut.mockImplementationOnce(() => Promise.resolve({data: withoutLogo}))
 
   await wait(() => {
     expect(mockPut).toHaveBeenCalledTimes(1)

@@ -38,7 +38,7 @@ it('should upload a header background', async () => {
     name: faker.random.word(),
   }
   const withHeaderBg: ObvioEvent = {...event, logo: headerData}
-  mockPost.mockImplementationOnce(() => Promise.resolve(withHeaderBg))
+  mockPost.mockImplementationOnce(() => Promise.resolve({data: withHeaderBg}))
 
   fireEvent.change(headerBgInput)
 
@@ -72,7 +72,7 @@ it('should remove the header background', async () => {
   user.click(await findByLabelText('remove header_background image'))
 
   const withoutHeaderBg: ObvioEvent = {...event, header_background: null}
-  mockPut.mockImplementationOnce(() => Promise.resolve(withoutHeaderBg))
+  mockPut.mockImplementationOnce(() => Promise.resolve({data: withoutHeaderBg}))
 
   await wait(() => {
     expect(mockPut).toHaveBeenCalledTimes(1)
