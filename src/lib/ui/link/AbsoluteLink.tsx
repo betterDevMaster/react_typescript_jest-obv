@@ -41,8 +41,8 @@ const StyledAnchor = styled.a<{
   font-size: inherit;
   color: ${(props) => props.color};
   &:hover {
-    ${(props) =>
-      props.underline ? 'text-decoration: underline' : 'text-decoration: none'};
+    text-decoration: ${(props) =>
+      props.underline ? 'underline' : 'none'} !important;
   }
   pointer-events: ${(props) => (props.disabled ? 'none' : 'auto')};
   opacity: ${(props) => (props.disabled ? 0.8 : 1)};

@@ -1,6 +1,5 @@
 import React, {useState} from 'react'
 import styled from 'styled-components'
-import SimpleBlogStyles from 'Event/template/SimpleBlog/Styles'
 import Container from '@material-ui/core/Container'
 import Header from 'Event/template/SimpleBlog/Dashboard/Header'
 import Menu from 'Event/template/SimpleBlog/Menu'
@@ -13,6 +12,12 @@ import LanguageSelectMenu from 'Event/LanguageSelector'
 import {muiDarkTheme, muiTheme} from 'lib/ui/theme'
 import {ThemeProvider} from '@material-ui/core/styles'
 import {withStyles} from '@material-ui/core/styles'
+import {
+  DEFAULT_LINK_COLOR,
+  DEFAULT_LINK_UNDERLINE,
+  DEFAULT_TEXT_COLOR,
+} from 'Event/template/SimpleBlog/GeneralConfig/GlobalStylesConfig'
+import {withDefault} from 'lib/template'
 
 export default function SimpleBlogPage(props: {
   user: User
@@ -35,24 +40,25 @@ export default function SimpleBlogPage(props: {
     ? rgba(dashboard.color || '#FFFFFF', dashboard.opacity || 0)
     : '#FFFFFF'
 
-  const color = isDarkMode ? '#FFFFFF' : '#000000'
-
   const theme = isDarkMode ? muiDarkTheme : muiTheme
 
-  const isBmcEvent = event.slug === 'bmc'
-  const eventColor = isBmcEvent ? '#2F3336' : color
-  const linkUnderline = !isBmcEvent
-  const linkColor = isBmcEvent ? '#1CA2FB' : color
+  const color = template.textColor || DEFAULT_TEXT_COLOR
+  const linkUnderline = withDefault(
+    DEFAULT_LINK_UNDERLINE,
+    template.linkUnderline,
+  )
+  const linkColor = template.linkColor || DEFAULT_LINK_COLOR
 
   return (
     <ThemeProvider theme={theme}>
-      <Box background={dashboardBackground} position={backgroundPosition}>
+      <Box
+        background={dashboardBackground}
+        position={backgroundPosition}
+        color={color}
+        linkColor={linkColor}
+        linkUnderline={linkUnderline}
+      >
         <ColorOverlay color={backgroundRGBColor}>
-          <SimpleBlogStyles
-            linkUnderline={linkUnderline}
-            linkColor={linkColor}
-            color={eventColor}
-          />
           <Menu visible={menuVisible} toggle={toggleMenu} user={props.user} />
           <Header
             menuVisible={menuVisible}
@@ -73,8 +79,14 @@ export default function SimpleBlogPage(props: {
 const Box = styled.div<{
   background: string
   position: SimpleBlog['backgroundPosition']
+  color: string
+  linkColor: string
+  linkUnderline: boolean
 }>`
   height: auto;
+  font-family: Arial, 'Times New Roman', Verdana;
+  font-size: 17px;
+  color: ${(props) => props.color};
   background: ${(props) => props.background};
   ${(props) =>
     props.position === 'bottom' &&
@@ -90,6 +102,16 @@ const Box = styled.div<{
       background-size: cover;
     `}
   background-repeat: no-repeat;
+
+  a {
+    color: ${(props) => props.linkColor};
+    text-decoration: none;
+
+    &:hover {
+      text-decoration: ${(props) =>
+        props.linkUnderline ? 'underline' : 'none'};
+    }
+  }
 `
 
 const Content = styled.div`

@@ -7,7 +7,6 @@ import {SimpleBlog} from 'Event/template/SimpleBlog'
 export type BaseTemplate = {
   version: number
   header: Header
-  disableBackgroundConfig?: boolean
 }
 
 export type Template = SimpleBlog | Panels

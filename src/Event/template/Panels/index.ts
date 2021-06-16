@@ -30,7 +30,6 @@ export function usePanels() {
 
 export type Panels = BaseTemplate & {
   name: typeof PANELS
-  disableBackgroundConfig: true
   accentColor: string
   menu: {
     backgroundColor: string
@@ -177,7 +176,6 @@ export type Panels = BaseTemplate & {
 export const createPanels = (): Panels => ({
   version: 1,
   name: PANELS,
-  disableBackgroundConfig: true,
   menu: {
     backgroundColor: '#54CFD6',
     iconColor: '#FFFFFF',

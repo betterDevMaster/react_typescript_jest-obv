@@ -5,11 +5,14 @@ import Slider from '@material-ui/core/Slider'
 import {useEvent} from 'Event/EventProvider'
 import {usePanels} from 'Event/template/Panels'
 import {handleChangeSlider, onChangeCheckedHandler} from 'lib/dom'
+import {withDefault} from 'lib/template'
 import ColorPicker from 'lib/ui/ColorPicker'
 import Switch from 'lib/ui/form/Switch'
 import EventImageUpload from 'organization/Event/DashboardConfig/EventImageUpload'
 import {SectionTitle} from 'organization/Event/GeneralConfig'
 import React from 'react'
+
+export const DEFAULT_LINK_UNDERLINE = true
 
 export default function GlobalStylesConfig() {
   const {template, update} = usePanels()
@@ -94,6 +97,15 @@ export default function GlobalStylesConfig() {
           color={template.linkColor}
           onPick={update.primitive('linkColor')}
           aria-label="link color"
+        />
+      </Box>
+      <Box mb={2}>
+        <Switch
+          label="Link Underline"
+          checked={withDefault(DEFAULT_LINK_UNDERLINE, template.linkUnderline)}
+          onChange={onChangeCheckedHandler(update.primitive('linkUnderline'))}
+          labelPlacement="end"
+          color="primary"
         />
       </Box>
     </>

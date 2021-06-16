@@ -54,6 +54,17 @@ export type SimpleBlog = BaseTemplate & {
   sidebarNav: EntityList<NavButton>
   blogPosts: EntityList<BlogPost>
   points: Points | null
+  textColor?: string
+  linkColor?: string
+  linkUnderline?: boolean
+  postStyles?: {
+    titleTextColor?: string
+    titleCapitalize?: boolean
+    titleFontSize?: number
+    dateTextColor?: string
+    contentFontSize?: number
+    contentTextColor?: string
+  }
   agenda: {
     title: string
     description?: string
