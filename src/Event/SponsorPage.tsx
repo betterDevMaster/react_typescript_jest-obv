@@ -14,6 +14,7 @@ import NavButton from 'Event/Dashboard/components/NavButton'
 import {useTrackEventPage} from 'analytics'
 import {Form} from 'organization/Event/FormsProvider'
 import {useTemplate} from 'Event/TemplateProvider'
+import PagePoints, {SPONSORS} from 'Event/PointsProvider/PagePoints'
 
 export interface Sponsor {
   id: number
@@ -27,6 +28,14 @@ export interface Sponsor {
 }
 
 export default function SponsorPage(props: {isEditMode?: boolean}) {
+  return (
+    <PagePoints page={SPONSORS}>
+      <Sponsors />
+    </PagePoints>
+  )
+}
+
+function Sponsors() {
   const {name} = useTemplate()
 
   const user = useAttendee()

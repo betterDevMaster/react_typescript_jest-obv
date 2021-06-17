@@ -57,6 +57,7 @@ export function createPlatformActions(
     download_resource: null,
     visit_leaderboard: null,
     visit_speakers: null,
+    visit_sponsors: null,
     ...overrides,
   }
 }

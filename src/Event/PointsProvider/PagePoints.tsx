@@ -4,8 +4,9 @@ import React, {useEffect, useState} from 'react'
 
 export const DASHBOARD = 'DASHBOARD'
 export const SPEAKERS = 'SPEAKERS'
+export const SPONSORS = 'SPONSORS'
 
-export type Page = typeof DASHBOARD | typeof SPEAKERS
+export type Page = typeof DASHBOARD | typeof SPEAKERS | typeof SPONSORS
 
 /**
  * Awards user points when accessing certain pages.
@@ -40,6 +41,8 @@ function usePageAction(page: string) {
       return action.visitDashboard
     case SPEAKERS:
       return action.visitSpeakers
+    case SPONSORS:
+      return action.visitSponsors
     default:
       return null
   }
