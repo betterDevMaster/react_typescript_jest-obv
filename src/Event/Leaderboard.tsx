@@ -10,7 +10,7 @@ import {api} from 'lib/url'
 import {useAsync} from 'lib/async'
 
 export interface Entry {
-  attendee: Attendee
+  attendee: Pick<Attendee, 'id' | 'first_name' | 'last_name' | 'email'>
   score: number
 }
 
