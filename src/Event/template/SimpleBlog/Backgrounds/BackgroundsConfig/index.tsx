@@ -80,6 +80,7 @@ export default function BackgroundsConfig() {
       template: updatedTemplate,
     })
       .catch(setError)
+      .then(togglePageSettings)
       .finally(toggleProcessing)
   }
 

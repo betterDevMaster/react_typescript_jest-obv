@@ -36,21 +36,13 @@ export default function SimpleBlogBackgrounds(props: {user: Attendee}) {
     backgrounds,
   )
 
-  /**
-   * If no title/description has been set, we'll assume the user
-   * hasn't configured the page.
-   */
-  if (!zoom_backgrounds_title || !zoom_backgrounds_description) {
-    return <Redirect to={eventRoutes.root} />
-  }
-
   const perRow = (12 /
     (settings?.imagesPerRow || DEFAULT_IMAGES_PER_ROW)) as GridSize
 
   return (
     <Page user={props.user}>
-      <Title>{v(zoom_backgrounds_title)}</Title>
-      <Content>{v(zoom_backgrounds_description)}</Content>
+      <Title>{v(zoom_backgrounds_title || '')}</Title>
+      <Content>{v(zoom_backgrounds_description || '')}</Content>
 
       <BackToDashboard
         color={v(
