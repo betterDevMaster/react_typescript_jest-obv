@@ -72,7 +72,12 @@ export default function PageSettingsDialog(props: {
           backToDashboardTextColor,
         },
       },
-    }).finally(toggleProcessing)
+    })
+      .then(() => {
+        toggleProcessing()
+        props.onClose()
+      })
+      .catch(toggleProcessing)
   }
 
   if (loading) {
