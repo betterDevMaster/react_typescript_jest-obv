@@ -108,3 +108,34 @@ it('should remove a custom image on delete', async () => {
 
   expect(url).toMatch(`/ticket_ribbons/${customRibbon.id}`)
 })
+
+it('should handle a failed custom delete', async () => {
+  const event = fakeEvent({
+    template: fakeSimpleBlog({
+      ticketRibbons: [
+        fakeTicketRibbon({
+          customRibbon: {
+            id: 10,
+            image: {
+              name: 'customticket',
+              url: 'http://customticket.jpg',
+            },
+          },
+        }),
+      ],
+    }),
+  })
+
+  const {findByLabelText, queryByText} = await goToDashboardConfig({
+    event,
+  })
+
+  clickEdit(await findByLabelText('ticket ribbon'))
+
+  mockDelete.mockImplementationOnce(() => Promise.reject('missing ribbon'))
+
+  fireEvent.click(await findByLabelText('remove ticket ribbon'))
+
+  // Target ribbon was still removed anyway
+  expect(queryByText('ticket ribbon')).not.toBeInTheDocument()
+})

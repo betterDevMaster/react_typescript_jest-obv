@@ -75,9 +75,17 @@ export function TicketRibbonConfig(props: {index: number}) {
     ticketRibbon,
   }
 
-  const remove = () => {
+  const remove = async () => {
     if (ticketRibbon.customRibbon) {
-      deleteCustomRibbon(ticketRibbon.customRibbon)
+      try {
+        await deleteCustomRibbon(ticketRibbon.customRibbon)
+      } catch {
+        /**
+         * Ignore - if a model/image has already been removed
+         * on server due to an aborted request, this will
+         * fail. So we'll just ignore it, and proceed.
+         */
+      }
     }
 
     const removed = ticketRibbons.filter((_, index) => index !== props.index)
