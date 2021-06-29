@@ -14,23 +14,34 @@ import {defaultScore} from 'Event/PointsProvider'
 import {Action} from 'Event/ActionsProvider'
 import {Answer} from 'Event/SubmissionsProvider'
 import {EVENT_TOKEN_KEY} from 'Event/auth'
+import {useLocation} from 'react-router-dom'
 
 const mockGet = axios.get as jest.Mock
 const mockPost = axios.post as jest.Mock
 
+const mockUseLocation = useLocation as jest.Mock
+
 export function visitEventSite(
-  options: {event?: ObvioEvent; pathname?: string} = {},
+  options: {event?: ObvioEvent; pathname?: string; search?: string} = {},
 ) {
   const event = options.event || fakeEvent()
+  const search = options.search || ''
+  const pathname = options.pathname || ''
 
   Object.defineProperty(window, 'location', {
     value: {
       host: `${event.slug}.${appRoot}`,
-      pathname: options.pathname || '',
-      search: '',
+      pathname,
+      search,
       hash: '',
     },
   })
+
+  mockUseLocation.mockImplementation(() => ({
+    pathname,
+    search,
+  }))
+
   mockGet.mockImplementationOnce(() => Promise.resolve({data: event}))
 
   return event

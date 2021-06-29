@@ -29,10 +29,12 @@ import DownloadReport from 'Event/DownloadReport'
 import SelfCheckIn from 'Event/SelfCheckIn'
 import AttendeeProfileProvider from 'Event/visibility-rules/AttendeeProfileProvider'
 import {useTrackEventPage, useTrackOnLoad} from 'analytics'
+import RoomRegistration from 'Event/RoomRegistration'
 import DownloadA360iReport from 'Event/DownloadA360iReport'
 
 export const eventRoutes = createRoutes({
   login: '/login',
+  room: '/room',
   forgot_password: '/forgot_password',
   reset_password: '/reset_password',
   step1: '/step_1',
@@ -233,6 +235,9 @@ function GuestRoutes() {
       </Route>
       <Route path={eventRoutes.reset_password}>
         <ResetPassword />
+      </Route>
+      <Route path={eventRoutes.room}>
+        <RoomRegistration />
       </Route>
       <Redirect to={eventRoutes.login} />
     </Switch>

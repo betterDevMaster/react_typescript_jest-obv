@@ -149,7 +149,7 @@ export function hasWaiver(event: ObvioEvent) {
 }
 
 // How many seconds to wait before trying to re-fetch the join url
-const FETCH_JOIN_URL_INTERVAL_MS = 5000
+export const FETCH_JOIN_URL_INTERVAL_MS = 5000
 
 export interface RequestJoinUrlError {
   message: string

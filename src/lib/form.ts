@@ -1,6 +1,7 @@
 import {ValidationError} from 'lib/api-client'
-import {DeepMap, FieldError} from 'react-hook-form'
+import {DeepMap, FieldError, useForm} from 'react-hook-form'
 import {get} from 'lodash'
+import {useState} from 'react'
 
 export type ReactHookFormErrors = DeepMap<Record<string, any>, FieldError>
 
@@ -46,4 +47,69 @@ export const fieldError = <T>(
 
     return validationErrors[0] // Only care about first error
   }
+}
+
+/**
+ * Similar to fieldError but returns errors for multiple fields.
+ *
+ * @param errors
+ * @returns
+ */
+export const fieldErrors = <T extends Record<string, any>>(errors: {
+  formErrors: ReactHookFormErrors
+  responseError: ValidationError<T>
+}): {
+  [P in keyof T]?: string
+} => {
+  const formErrors = Object.entries(errors.formErrors).reduce(
+    (acc, [key, val]) => {
+      acc[key] = val.message
+      return acc
+    },
+    {} as any,
+  )
+
+  if (!errors.responseError || !errors.responseError.errors) {
+    return formErrors
+  }
+
+  const validationErrors = Object.entries(errors.responseError.errors).reduce(
+    (acc, [key, errors]) => {
+      if (!errors) {
+        return acc
+      }
+
+      /**
+       * Server returns path keys in dot notation (answers.0.value), so we'll
+       * convert it to bracket notation for consistency with the
+       * form errors.
+       */
+      const bracketKeyName = key.replace(/\[/g, '.').replace(']', '') as keyof T
+      acc[bracketKeyName] = errors[0]
+      return acc
+    },
+    {} as any,
+  )
+
+  return {
+    ...validationErrors,
+    ...formErrors,
+  }
+}
+
+/**
+ * A decorated react-hook-form's useForm() method that merges form
+ * errors with server validation errors from Laravel.
+ */
+export function useValidatedForm<T extends Record<string, any>>() {
+  const {errors: formErrors, ...hookForm} = useForm()
+
+  const [responseError, setResponseError] = useState<ValidationError<T>>(null)
+
+  const errors = fieldErrors({
+    formErrors,
+    responseError,
+  })
+
+  return {...hookForm, errors, setResponseError}
 }

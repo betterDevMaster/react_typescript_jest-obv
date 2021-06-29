@@ -33,6 +33,8 @@ import {
   START_ROOMS,
 } from 'organization/PermissionsProvider'
 import OnlineSwitch from 'organization/Event/Room/OnlineSwitch'
+import RegistrationSwitch from 'organization/Event/Room/RegistrationSwitch'
+import RegistrationURL from 'organization/Event/Room/RegistrationURL'
 
 export const DEFAULT_MAX_NUM_ATTENDEES = 500
 
@@ -104,6 +106,15 @@ export default function RoomConfig() {
             <StartButton processing={processing} />
           </Box>
         </HasPermission>
+        <HasPermission permission={CONFIGURE_EVENTS}>
+          <FormControl>
+            <FormControlLabel
+              control={<RegistrationSwitch />}
+              label="Registration Enabled"
+            />
+          </FormControl>
+        </HasPermission>
+        <RegistrationURL room={room} />
         <HasPermission permission={CONFIGURE_EVENTS}>
           <>
             <TextField

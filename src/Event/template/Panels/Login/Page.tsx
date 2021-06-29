@@ -14,7 +14,7 @@ import {usePanels} from 'Event/template/Panels'
 import {DEFAULT_LOGIN_CONFIG} from 'Event/template/Panels/Login/LoginConfig'
 
 export default function Page(props: {
-  isPreview: LoginProps['isPreview']
+  isPreview?: LoginProps['isPreview']
   children: React.ReactElement | React.ReactElement[]
 }) {
   const {event} = useEvent()

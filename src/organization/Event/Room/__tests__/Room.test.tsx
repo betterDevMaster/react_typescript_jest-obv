@@ -9,9 +9,16 @@ import {goToAreas} from 'organization/Event/AreaList/__utils__/go-to-areas'
 
 const mockGet = axios.get as jest.Mock
 const mockPatch = axios.patch as jest.Mock
+const mockDelete = axios.delete as jest.Mock
 
 afterEach(() => {
   jest.clearAllMocks()
+})
+
+Object.assign(navigator, {
+  clipboard: {
+    writeText: () => Promise.resolve(),
+  },
 })
 
 it('should toggle a room on/off', async () => {
@@ -134,4 +141,72 @@ it('should update room attributes', async () => {
   if (hasMaxAttendees) {
     expect(data.max_num_attendees).toBe(maxNumAttendees)
   }
+})
+
+it('should configure room registration', async () => {
+  const {findByLabelText, areas, queryByLabelText} = await goToAreas({
+    userPermissions: [CONFIGURE_EVENTS],
+  })
+
+  const area = faker.random.arrayElement(areas)
+  mockGet.mockImplementationOnce(() => Promise.resolve({data: area}))
+
+  const room = fakeRoom({
+    has_registration: false,
+  })
+  mockGet.mockImplementationOnce(() => Promise.resolve({data: [room]}))
+
+  // Go to area
+  user.click(await findByLabelText(`view ${area.name} area`))
+
+  // Go to room
+  mockGet.mockImplementationOnce(() => Promise.resolve({data: room}))
+  user.click(await findByLabelText(`view ${room.name} room`))
+
+  expect(await findByLabelText('room name input')).toBeInTheDocument()
+
+  expect(
+    ((await findByLabelText('toggle registration')) as HTMLInputElement)
+      .checked,
+  ).toBe(room.has_registration)
+
+  const registrationUrl = faker.internet.url()
+
+  const enabled: Room = {
+    ...room,
+    has_registration: true,
+    registration_url: registrationUrl,
+  }
+  mockPatch.mockImplementationOnce(() => Promise.resolve({data: enabled}))
+
+  //  Enable registration
+  user.click(await findByLabelText('toggle registration'))
+
+  const [patchUrl] = mockPatch.mock.calls[0]
+  expect(patchUrl).toMatch(`/rooms/${room.id}/registration`)
+
+  //copy an access token
+  jest.spyOn(navigator.clipboard, 'writeText')
+  user.click(await findByLabelText('copy registration url'))
+  await wait(() => {
+    expect(navigator.clipboard.writeText).toHaveBeenCalledWith(registrationUrl)
+  })
+
+  const disabled: Room = {
+    ...room,
+    has_registration: false,
+    registration_url: null,
+  }
+  mockDelete.mockImplementationOnce(() => Promise.resolve({data: disabled}))
+
+  // Disable registration
+  user.click(await findByLabelText('toggle registration'))
+
+  await wait(async () => {
+    expect(mockDelete).toHaveBeenCalledTimes(1)
+    expect(queryByLabelText('copy registration url'))
+  })
+
+  const [deleteUrl] = mockDelete.mock.calls[0]
+  expect(deleteUrl).toMatch(`/rooms/${room.id}/registration`)
 })

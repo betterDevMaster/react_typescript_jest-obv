@@ -1,8 +1,6 @@
-import {useEvent} from 'Event/EventProvider'
 import {Room} from 'Event/room'
 import {useAsync} from 'lib/async'
 import {api} from 'lib/url'
-import {useArea} from 'organization/Event/Area/AreaProvider'
 import {useOrganization} from 'organization/OrganizationProvider'
 import React, {useCallback, useEffect, useState} from 'react'
 import {useParams} from 'react-router-dom'
@@ -15,6 +13,7 @@ type RoomContextProps = {
   room: Room
   update: UpdateRoom
   setOnline: (online: boolean) => void
+  toggleRegistration: (hasRegistration: boolean) => void
   processing: boolean
 }
 
@@ -28,9 +27,22 @@ export function StaticRoomProvider(props: {
   const [processing, setProcessing] = useState(false)
   const update = useUpdateRoom(props.room.id, setRoom, setProcessing)
   const setOnline = useSetOnline(props.room.id, setRoom, setProcessing)
+  const toggleRegistration = useToggleRegistration(
+    props.room.id,
+    setRoom,
+    setProcessing,
+  )
 
   return (
-    <RoomContext.Provider value={{room: room, update, processing, setOnline}}>
+    <RoomContext.Provider
+      value={{
+        room: room,
+        update,
+        processing,
+        setOnline,
+        toggleRegistration,
+      }}
+    >
       {props.children}
     </RoomContext.Provider>
   )
@@ -44,6 +56,7 @@ export function RouteRoomProvider(props: {children: React.ReactElement}) {
   const [processing, setProcessing] = useState(false)
   const update = useUpdateRoom(id, setRoom, setProcessing)
   const setOnline = useSetOnline(id, setRoom, setProcessing)
+  const setPublic = useToggleRegistration(id, setRoom, setProcessing)
 
   useEffect(() => {
     setRoom(saved)
@@ -64,7 +77,15 @@ export function RouteRoomProvider(props: {children: React.ReactElement}) {
   }
 
   return (
-    <RoomContext.Provider value={{room: room, update, processing, setOnline}}>
+    <RoomContext.Provider
+      value={{
+        room: room,
+        update,
+        processing,
+        setOnline,
+        toggleRegistration: setPublic,
+      }}
+    >
       {props.children}
     </RoomContext.Provider>
   )
@@ -72,14 +93,11 @@ export function RouteRoomProvider(props: {children: React.ReactElement}) {
 
 function useSavedRoom(id: number) {
   const {client} = useOrganization()
-  const {event} = useEvent()
-  const {area} = useArea()
-  const {id: areaId} = area
 
   const fetch = useCallback(() => {
-    const url = api(`/events/${event.slug}/areas/${areaId}/rooms/${id}`)
+    const url = api(`/rooms/${id}`)
     return client.get<Room>(url)
-  }, [id, client, event, areaId])
+  }, [id, client])
 
   return useAsync(fetch)
 }
@@ -90,13 +108,10 @@ function useUpdateRoom(
   setProcessing: (processing: boolean) => void,
 ) {
   const {client} = useOrganization()
-  const {event} = useEvent()
-  const {area} = useArea()
-  const {id: areaId} = area
 
   return useCallback<UpdateRoom>(
     (updates) => {
-      const url = api(`/events/${event.slug}/areas/${areaId}/rooms/${id}`)
+      const url = api(`/rooms/${id}`)
       setProcessing(true)
       return client
         .patch<Room>(url, updates)
@@ -105,7 +120,32 @@ function useUpdateRoom(
           setProcessing(false)
         })
     },
-    [id, client, event, setRoom, areaId, setProcessing],
+    [id, client, setRoom, setProcessing],
+  )
+}
+
+function useToggleRegistration(
+  id: number,
+  setRoom: (room: Room) => void,
+  setProcessing: (processing: boolean) => void,
+) {
+  const {client} = useOrganization()
+
+  return useCallback(
+    (enable: boolean) => {
+      const endpoint = `/rooms/${id}/registration`
+      const url = api(endpoint)
+      const sendRequest = enable ? client.patch : client.delete
+
+      setProcessing(true)
+
+      sendRequest<Room>(url)
+        .then(setRoom)
+        .finally(() => {
+          setProcessing(false)
+        })
+    },
+    [id, client, setRoom, setProcessing],
   )
 }
 
@@ -115,14 +155,10 @@ function useSetOnline(
   setProcessing: (processing: boolean) => void,
 ) {
   const {client} = useOrganization()
-  const {event} = useEvent()
-  const {area} = useArea()
 
   return useCallback(
     (online: boolean) => {
-      const endpoint = online
-        ? `/events/${event.slug}/areas/${area.id}/rooms/${id}/start`
-        : `/events/${event.slug}/areas/${area.id}/rooms/${id}/stop`
+      const endpoint = online ? `/rooms/${id}/start` : `/rooms/${id}/stop`
       const url = api(endpoint)
 
       setProcessing(true)
@@ -133,7 +169,7 @@ function useSetOnline(
           setProcessing(false)
         })
     },
-    [id, client, event, setRoom, area, setProcessing],
+    [id, client, setRoom, setProcessing],
   )
 }
 

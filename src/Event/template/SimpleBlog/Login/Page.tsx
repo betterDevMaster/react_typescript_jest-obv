@@ -13,7 +13,7 @@ import {rgba} from 'lib/color'
 import {useSimpleBlog} from 'Event/template/SimpleBlog'
 
 export default function Page(props: {
-  isPreview: LoginProps['isPreview']
+  isPreview?: LoginProps['isPreview']
   children: React.ReactElement | React.ReactElement[]
 }) {
   const {event} = useEvent()
@@ -195,7 +195,7 @@ export const StyledButton = styled(
   color: ${(props) => props.color} !important;
   background-color: ${(props) => props.backgroundColor} !important;
 
-  &: hover {
+  &:hover {
     background-color: ${(props) => props.hoverColor} !important;
   }
 `
