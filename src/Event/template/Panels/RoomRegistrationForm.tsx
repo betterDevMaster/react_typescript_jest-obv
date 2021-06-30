@@ -1,12 +1,11 @@
 import React from 'react'
 import styled from 'styled-components'
-import TextField from '@material-ui/core/TextField'
 import {useForm} from 'react-hook-form'
 import {useEventAuth} from 'Event/auth'
 import {RoomRegistrationFormProps} from 'Event/RoomRegistration/Form'
 import {fieldErrors} from 'lib/form'
 import ErrorAlert from 'lib/ui/alerts/ErrorAlert'
-import Page, {Button} from 'Event/template/Panels/Login/Page'
+import Page, {Button, TextField} from 'Event/template/Panels/Login/Page'
 
 export default function SimpleBlogRoomRegistrationForm(
   props: RoomRegistrationFormProps,

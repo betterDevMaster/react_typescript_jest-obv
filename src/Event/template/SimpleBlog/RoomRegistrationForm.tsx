@@ -1,7 +1,6 @@
 import React from 'react'
 import styled from 'styled-components'
-import TextField from '@material-ui/core/TextField'
-import Page, {Button} from 'Event/template/SimpleBlog/Login/Page'
+import Page, {Button, TextField} from 'Event/template/SimpleBlog/Login/Page'
 import {useForm} from 'react-hook-form'
 import {useEventAuth} from 'Event/auth'
 import {RoomRegistrationFormProps} from 'Event/RoomRegistration/Form'
