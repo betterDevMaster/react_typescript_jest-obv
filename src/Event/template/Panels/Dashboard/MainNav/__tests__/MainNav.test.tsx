@@ -5,7 +5,15 @@ import {createEntityList} from 'lib/list'
 import {clickEdit} from '__utils__/edit'
 import {fireEvent} from '@testing-library/react'
 import {fakeEvent} from 'Event/__utils__/factory'
+import {mockRxJsAjax} from 'store/__utils__/MockStoreProvider'
+import {wait} from '@testing-library/react'
 import {goToDashboardConfig} from 'organization/Event/DashboardConfig/__utils__/go-dashboard-config'
+
+const mockPost = mockRxJsAjax.post as jest.Mock
+
+afterEach(() => {
+  jest.clearAllMocks()
+})
 
 it('should render main nav buttons', async () => {
   const buttons = Array.from(
@@ -54,38 +62,20 @@ it('should add a new main nav button', async () => {
   expect((await buttonEls()).length).toBe(numButtons)
 
   fireEvent.click(await findByLabelText('add main nav button'))
+  fireEvent.click(await findByLabelText('save'))
 
-  expect((await buttonEls()).length).toBe(numButtons + 1)
-})
-
-it('should add a new main nav button', async () => {
-  const numButtons = faker.random.number({min: 1, max: 4})
-
-  const buttons = Array.from(
-    {
-      length: numButtons,
-    },
-    fakeNavButtonWithSize,
-  )
-
-  const mainNavButtons = createEntityList(buttons)
-  const event = fakeEvent({
-    template: fakePanels({
-      nav: mainNavButtons,
-    }),
+  await wait(async () => {
+    expect((await buttonEls()).length).toBe(numButtons + 1)
   })
 
-  const {findAllByLabelText, findByLabelText} = await goToDashboardConfig({
-    event,
+  // Saved
+  await wait(() => {
+    expect(mockPost).toHaveBeenCalledTimes(1)
   })
 
-  const buttonEls = () => findAllByLabelText('main nav button')
-
-  expect((await buttonEls()).length).toBe(numButtons)
-
-  fireEvent.click(await findByLabelText('add main nav button'))
-
-  expect((await buttonEls()).length).toBe(numButtons + 1)
+  const [url, data] = mockPost.mock.calls[0]
+  expect(url).toMatch(`/events/${event.slug}`)
+  expect(data.template.nav.ids.length).toBe(numButtons + 1)
 })
 
 it('should remove the button', async () => {
@@ -116,4 +106,13 @@ it('should remove the button', async () => {
   expect((await buttonEls()).length).toBe(numButtons - 1)
 
   expect(queryByText(target.textContent!)).not.toBeInTheDocument()
+
+  // Saved
+  await wait(() => {
+    expect(mockPost).toHaveBeenCalledTimes(1)
+  })
+
+  const [url, data] = mockPost.mock.calls[0]
+  expect(url).toMatch(`/events/${event.slug}`)
+  expect(data.template.nav.ids.length).toBe(numButtons - 1)
 })

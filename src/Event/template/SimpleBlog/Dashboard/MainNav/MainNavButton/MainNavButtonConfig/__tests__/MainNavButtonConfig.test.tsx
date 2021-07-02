@@ -6,14 +6,14 @@ import {createEntityList} from 'lib/list'
 import {clickEdit} from '__utils__/edit'
 import {fireEvent} from '@testing-library/react'
 import {fakeEvent} from 'Event/__utils__/factory'
+import {mockRxJsAjax} from 'store/__utils__/MockStoreProvider'
 import {wait} from '@testing-library/react'
 import {fakeArea} from 'organization/Event/AreaList/__utils__/factory'
 import mockAxios from 'axios'
 import {fakeAction} from 'Event/ActionsProvider/__utils__/factory'
 import {goToDashboardConfig} from 'organization/Event/DashboardConfig/__utils__/go-dashboard-config'
-import axios from 'axios'
 
-const mockPut = axios.put as jest.Mock
+const mockPost = mockRxJsAjax.post as jest.Mock
 const mockGet = mockAxios.get as jest.Mock
 
 beforeEach(() => {
@@ -55,10 +55,20 @@ it('should edit the selected button', async () => {
     },
   })
 
-  fireEvent.click(await findByLabelText('close config dialog'))
+  fireEvent.click(await findByLabelText('save'))
 
   const updatedEl = await findByText(updatedValue)
   expect(updatedEl).toBeInTheDocument()
+
+  // Saved
+  await wait(() => {
+    expect(mockPost).toHaveBeenCalledTimes(1)
+  })
+
+  const [url, data] = mockPost.mock.calls[0]
+  expect(url).toMatch(`/events/${event.slug}`)
+  const id = data.template.mainNav.ids[targetIndex]
+  expect(data.template.mainNav.entities[id].text).toBe(updatedValue)
 })
 
 it('should set an area button', async () => {
@@ -102,17 +112,14 @@ it('should set an area button', async () => {
   fireEvent.mouseDown(await findByLabelText('pick area'))
   user.click(await findByLabelText(`pick ${target.name}`))
 
-  fireEvent.click(await findByLabelText('close config dialog'))
-
-  mockPut.mockResolvedValueOnce({data: event})
-  user.click(await findByLabelText('save dashboard'))
+  fireEvent.click(await findByLabelText('save'))
 
   // Saved
   await wait(() => {
-    expect(mockPut).toHaveBeenCalledTimes(1)
+    expect(mockPost).toHaveBeenCalledTimes(1)
   })
 
-  const [url, data] = mockPut.mock.calls[0]
+  const [url, data] = mockPost.mock.calls[0]
   expect(url).toMatch(`/events/${event.slug}`)
   const id = data.template.mainNav.ids[targetIndex]
   expect(data.template.mainNav.entities[id]['isAreaButton']).toBe(true)
@@ -149,17 +156,14 @@ it('should assign an action for points', async () => {
   fireEvent.mouseDown(await findByLabelText('pick action'))
   user.click(await findByLabelText(`pick ${target.description}`))
 
-  fireEvent.click(await findByLabelText('close config dialog'))
-
-  mockPut.mockResolvedValueOnce({data: event})
-  user.click(await findByLabelText('save dashboard'))
+  fireEvent.click(await findByLabelText('save'))
 
   // Saved
   await wait(() => {
-    expect(mockPut).toHaveBeenCalledTimes(1)
+    expect(mockPost).toHaveBeenCalledTimes(1)
   })
 
-  const [url, data] = mockPut.mock.calls[0]
+  const [url, data] = mockPost.mock.calls[0]
   expect(url).toMatch(`/events/${event.slug}`)
 
   const id = data.template.mainNav.ids[0] // only one button
@@ -189,15 +193,14 @@ it('should set an infusionsoft tag', async () => {
   user.type(await findByLabelText('infusionsoft tag id'), String(id))
   user.click(await findByLabelText('set tag id'))
 
-  mockPut.mockResolvedValueOnce({data: event})
-  user.click(await findByLabelText('save dashboard'))
+  user.click(await findByLabelText('save'))
 
   // Saved
   await wait(() => {
-    expect(mockPut).toHaveBeenCalledTimes(1)
+    expect(mockPost).toHaveBeenCalledTimes(1)
   })
 
-  const [url, data] = mockPut.mock.calls[0]
+  const [url, data] = mockPost.mock.calls[0]
   expect(url).toMatch(`/events/${event.slug}`)
 
   const saved = Object.values(data.template.mainNav.entities)[0] as any
@@ -235,7 +238,9 @@ it('should set a link to an event page', async () => {
   fireEvent.mouseDown(await findByLabelText('pick page'))
   user.click(await findByLabelText(/speakers page/i))
 
-  fireEvent.click(await findByLabelText('close config dialog'))
+  fireEvent.click(await findByLabelText('save'))
 
-  expect(await href()).toBe('/speakers')
+  await wait(async () => {
+    expect(await href()).toBe('/speakers')
+  })
 })

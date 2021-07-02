@@ -1,5 +1,5 @@
 import styled from 'styled-components'
-import React, {useState} from 'react'
+import React from 'react'
 import {useDispatchUpdate} from 'Event/TemplateProvider'
 import {
   DragDropContext,
@@ -12,7 +12,6 @@ import {useEditMode} from 'Event/Dashboard/editor/state/edit-mode'
 import {usePanels} from 'Event/template/Panels'
 import NewMainNavButton from 'Event/template/Panels/Dashboard/MainNav/MainNavButton/NewMainNavButton'
 import MainNavButton from 'Event/template/Panels/Dashboard/MainNav/MainNavButton'
-import MainNavButtonConfig from 'Event/template/Panels/Dashboard/MainNav/MainNavButton/MainNavButtonConfig'
 
 export default function MainNav(props: {className?: string}) {
   const {template} = usePanels()
@@ -20,20 +19,10 @@ export default function MainNav(props: {className?: string}) {
   const isEditMode = useEditMode()
   const handleDrag = useHandleDrag()
 
-  const [editing, setEditing] = useState<null | number>(null)
-  const edit = (index: number) => setEditing(index)
-  const stopEditing = () => setEditing(null)
-
   const {ids, entities} = nav
 
   const buttons = ids.map((id, index) => (
-    <MainNavButton
-      id={id}
-      index={index}
-      key={id}
-      button={entities[id]}
-      onEdit={edit}
-    />
+    <MainNavButton id={id} index={index} key={id} button={entities[id]} />
   ))
 
   if (!isEditMode) {
@@ -42,7 +31,6 @@ export default function MainNav(props: {className?: string}) {
 
   return (
     <>
-      <MainNavButtonConfig editing={editing} onClose={stopEditing} />
       <DragDropContext onDragEnd={handleDrag}>
         <Droppable droppableId="main_nav_buttons">
           {(provided) => (
@@ -54,7 +42,7 @@ export default function MainNav(props: {className?: string}) {
               <>
                 {buttons}
                 {provided.placeholder}
-                <StyledNewMainNavButton edit={setEditing} />
+                <StyledNewMainNavButton />
               </>
             </Container>
           )}

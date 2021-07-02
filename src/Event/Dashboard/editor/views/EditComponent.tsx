@@ -1,31 +1,10 @@
-import {
-  useEditMode,
-  useEditComponent,
-} from 'Event/Dashboard/editor/state/edit-mode'
-import {ComponentConfig} from 'Event/Dashboard/editor/views/DashboardEditDialog/ComponentConfig'
+import {useEditMode} from 'Event/Dashboard/editor/state/edit-mode'
 import EditIconButton from 'lib/ui/IconButton/EditIconButton'
 import React from 'react'
 import styled from 'styled-components'
 
 export const EDIT_COMPONENT_CLASS = 'edit-component'
 export const EDIT_COMPONENT_BUTTON_CLASS = 'edit-component-button'
-
-export default function EditComponent(
-  props: {component: ComponentConfig} & {children: React.ReactElement},
-) {
-  const isEditMode = useEditMode()
-
-  const editComponent = useEditComponent(props.component)
-  if (!isEditMode) {
-    return props.children
-  }
-
-  return (
-    <EditComponentOverlay onClick={editComponent}>
-      {props.children}
-    </EditComponentOverlay>
-  )
-}
 
 /**
  * A more generic version of EditComponent where handling the edit/config

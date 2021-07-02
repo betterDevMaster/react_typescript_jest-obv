@@ -1,14 +1,10 @@
 import Button from '@material-ui/core/Button'
 import React from 'react'
 
-export default function AddEmojiListButton(props: {
+export default function AddEmojiButton(props: {
   className?: string
-  edit: () => void
+  onClick: () => void
 }) {
-  const addEmojiList = () => {
-    props.edit()
-  }
-
   return (
     <Button
       fullWidth
@@ -16,7 +12,7 @@ export default function AddEmojiListButton(props: {
       variant="contained"
       color="secondary"
       aria-label="add emoji list"
-      onClick={addEmojiList}
+      onClick={props.onClick}
       className={props.className}
     >
       Add Emoji

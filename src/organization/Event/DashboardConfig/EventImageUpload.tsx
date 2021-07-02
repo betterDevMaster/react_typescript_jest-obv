@@ -15,7 +15,6 @@ import {withStyles} from '@material-ui/core/styles'
 import {spacing} from 'lib/ui/theme'
 import Typography from '@material-ui/core/Typography'
 import Cropper, {CropperProps} from 'lib/ui/form/ImageUpload/Cropper'
-import {useTemplate} from 'Event/TemplateProvider'
 
 interface EventImageUploadProps {
   label: string
@@ -35,7 +34,6 @@ export default function EventImageUpload(props: EventImageUploadProps) {
   const {set: setEvent} = useEvent()
   const [isUploading, setIsUploading] = useState(false)
   const [error, setError] = useState<string | null>(null)
-  const template = useTemplate()
 
   const clearError = () => setError(null)
 
@@ -65,16 +63,8 @@ export default function EventImageUpload(props: EventImageUploadProps) {
     clearError()
 
     upload(data)
-      .then((updated) => {
-        /**
-         * Avoid over-writing the template which would throw away
-         * any unsaved changes if we're mid-configuring a form
-         * that had an image upload.
-         */
-        setEvent({
-          ...updated,
-          template,
-        })
+      .then((event) => {
+        setEvent(event)
       })
       .catch((e) => {
         setError(e.message)
@@ -82,7 +72,7 @@ export default function EventImageUpload(props: EventImageUploadProps) {
       .finally(() => {
         setIsUploading(false)
       })
-  }, [selected, wasRemoved, upload, data, setEvent, template])
+  }, [selected, wasRemoved, upload, data, setEvent])
 
   const hasCropSettings =
     width !== undefined || height !== undefined || canResize !== undefined

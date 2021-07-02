@@ -1,28 +1,25 @@
 import DangerButton from 'lib/ui/Button/DangerButton'
-import React from 'react'
+import React, {useEffect, useState} from 'react'
 import Box from '@material-ui/core/Box'
-import {useCloseConfig} from 'Event/Dashboard/editor/state/edit-mode'
 import {useDispatchUpdate} from 'Event/TemplateProvider'
-import {SIDEBAR_NAV_BUTTON} from 'Event/template/SimpleBlog/Dashboard/Sidebar/SidebarNav'
 import RuleConfig, {useRuleConfig} from 'Event/visibility-rules/RuleConfig'
 import ConfigureRulesButton from 'Event/visibility-rules/ConfigureRulesButton'
 import TextField from '@material-ui/core/TextField'
-import {
-  onChangeCheckedHandler,
-  onChangeNumberHandler,
-  onChangeStringHandler,
-} from 'lib/dom'
+import {onChangeCheckedHandler} from 'lib/dom'
 import Switch from 'lib/ui/form/Switch'
 import Grid from '@material-ui/core/Grid'
 import InfusionsoftTagInput from 'organization/Event/DashboardConfig/InfusionsoftTagInput'
 import ColorPicker from 'lib/ui/ColorPicker'
-import {handleChangeSlider} from 'lib/dom'
-import InputLabel from '@material-ui/core/InputLabel'
-import Slider from '@material-ui/core/Slider'
 import TargetConfig from 'Event/Dashboard/components/NavButton/NavButtonConfig/TargetConfig'
 import NavButton from 'Event/Dashboard/components/NavButton'
 import ActionSelect from 'Event/ActionsProvider/ActionSelect'
 import {useSimpleBlog} from 'Event/template/SimpleBlog'
+import ComponentConfig, {
+  ComponentConfigProps,
+  SaveButton,
+} from 'organization/Event/DashboardConfig/ComponentConfig'
+import {Controller, useForm} from 'react-hook-form'
+import {v4 as uuid} from 'uuid'
 
 const MIN_BORDER_WIDTH = 0
 const MAX_BORDER_WIDTH = 50
@@ -30,28 +27,41 @@ const MAX_BORDER_WIDTH = 50
 const MIN_BORDER_RADIUS = 0
 const MAX_BORDER_RADIUS = 50
 
-export type SidebarNavButtonConfig = {
-  type: typeof SIDEBAR_NAV_BUTTON
-  id: string
-}
-
-export function SidebarNavButtonConfig(props: {
-  id: SidebarNavButtonConfig['id']
-}) {
+export function SidebarNavButtonConfig(
+  props: ComponentConfigProps & {
+    button: NavButton
+    id?: string
+  },
+) {
+  const {button, id, isVisible, onClose} = props
   const {template} = useSimpleBlog()
   const {sidebarNav: buttons} = template
   const {visible: ruleConfigVisible, toggle: toggleRuleConfig} = useRuleConfig()
   const updateTemplate = useDispatchUpdate()
-  const closeConfig = useCloseConfig()
-  const {id} = props
 
-  if (!id) {
-    throw new Error('Missing component id')
-  }
+  const [rules, setRules] = useState(button.rules)
+  const [isAreaButton, setIsAreaButton] = useState(button.isAreaButton)
+  const [areaId, setAreaId] = useState(button.areaId)
+  const [link, setLink] = useState(button.link)
+  const [page, setPage] = useState(button.page)
+  const [newTab, setNewTab] = useState(button.newTab)
 
-  const button = buttons.entities[id]
+  useEffect(() => {
+    if (isVisible) {
+      return
+    }
 
-  const update = (updated: NavButton) => {
+    setRules(button.rules)
+    setIsAreaButton(button.isAreaButton)
+    setAreaId(button.areaId)
+    setLink(button.link)
+    setPage(button.page)
+    setNewTab(button.newTab)
+  }, [isVisible, button])
+
+  const {register, control, handleSubmit} = useForm()
+
+  const update = (id: string, updated: NavButton) => {
     updateTemplate({
       sidebarNav: {
         ...buttons,
@@ -64,10 +74,14 @@ export function SidebarNavButtonConfig(props: {
   }
 
   const removeButton = () => {
+    if (!id) {
+      throw new Error('Missing id')
+    }
+
     const {[id]: target, ...otherButtons} = buttons.entities
     const updatedIds = buttons.ids.filter((i) => i !== id)
 
-    closeConfig()
+    onClose()
     updateTemplate({
       sidebarNav: {
         entities: otherButtons,
@@ -76,112 +90,197 @@ export function SidebarNavButtonConfig(props: {
     })
   }
 
-  const updateButton = <T extends keyof NavButton>(key: T) => (
-    value: NavButton[T],
-  ) =>
-    update({
-      ...button,
-      [key]: value,
+  const insert = (button: NavButton) => {
+    const id = uuid()
+
+    updateTemplate({
+      sidebarNav: {
+        ids: [...buttons.ids, id],
+        entities: {
+          ...buttons.entities,
+          [id]: button,
+        },
+      },
     })
+  }
+
+  const save = (formData: any) => {
+    const button: NavButton = {
+      ...formData,
+      rules,
+      isAreaButton,
+      areaId,
+      link,
+      page,
+      newTab,
+    }
+
+    if (id) {
+      update(id, button)
+      onClose()
+      return
+    }
+
+    insert(button)
+    onClose()
+  }
 
   return (
-    <RuleConfig
-      visible={ruleConfigVisible}
-      close={toggleRuleConfig}
-      rules={button.rules}
-      onChange={updateButton('rules')}
+    <ComponentConfig
+      title="Sidebar Nav Button"
+      isVisible={isVisible}
+      onClose={onClose}
     >
-      <>
-        <ConfigureRulesButton onClick={toggleRuleConfig} />
-        <Switch
-          checked={button.isVisible}
-          onChange={onChangeCheckedHandler(updateButton('isVisible'))}
-          arial-label="config visible switch"
-          labelPlacement="end"
-          color="primary"
-          label={button.isVisible ? 'Enable' : 'Disable'}
-        />
-        <TextField
-          label="Text"
-          value={button.text}
-          inputProps={{
-            'aria-label': 'button name input',
-          }}
-          fullWidth
-          onChange={onChangeStringHandler(updateButton('text'))}
-        />
-        <ActionSelect
-          value={button.actionId}
-          onChange={updateButton('actionId')}
-        />
-        <TargetConfig update={updateButton} button={button} />
-        <Grid container spacing={2}>
-          <Grid item xs={6}>
-            <ColorPicker
-              label="Background Color"
-              color={button.backgroundColor}
-              onPick={updateButton('backgroundColor')}
-              aria-label="background color"
+      <RuleConfig
+        visible={ruleConfigVisible}
+        close={toggleRuleConfig}
+        rules={rules}
+        onChange={setRules}
+      >
+        <form onSubmit={handleSubmit(save)}>
+          <ConfigureRulesButton onClick={toggleRuleConfig} />
+          <Box mb={2}>
+            <Controller
+              name="isVisible"
+              control={control}
+              defaultValue={button.isVisible}
+              render={({value, onChange}) => (
+                <Switch
+                  checked={value}
+                  onChange={onChangeCheckedHandler(onChange)}
+                  arial-label="config switch to attendee"
+                  labelPlacement="end"
+                  color="primary"
+                  label={button.isVisible ? 'Enable' : 'Disable'}
+                />
+              )}
             />
-          </Grid>
-          <Grid item xs={6}>
-            <ColorPicker
-              label="Text Color"
-              color={button.textColor}
-              onPick={updateButton('textColor')}
-              aria-label="text color color"
-            />
-          </Grid>
-          <Grid item xs={6}>
-            <ColorPicker
-              label="Border  Color"
-              color={button.borderColor}
-              onPick={updateButton('borderColor')}
-              aria-label="border color"
-            />
-          </Grid>
-          <Grid item xs={6}>
-            <TextField
-              value={button.borderRadius || ''}
-              label="Border Radius"
-              type="number"
-              fullWidth
-              inputProps={{
-                min: MIN_BORDER_RADIUS,
-                max: MAX_BORDER_RADIUS,
-              }}
-              onChange={onChangeNumberHandler(updateButton('borderRadius'))}
-            />
-          </Grid>
-          <Grid item xs={12}>
-            <InputLabel>Border Thickness</InputLabel>
-            <Slider
-              min={MIN_BORDER_WIDTH}
-              max={MAX_BORDER_WIDTH}
-              step={1}
-              onChange={handleChangeSlider(updateButton('borderWidth'))}
-              valueLabelDisplay="auto"
-              value={button.borderWidth ? button.borderWidth : 1}
-              aria-label="border thickness"
-            />
-          </Grid>
-        </Grid>
-        <InfusionsoftTagInput
-          value={button.infusionsoftTag}
-          onChange={updateButton('infusionsoftTag')}
-        />
-
-        <Box mt={2} mb={3}>
-          <DangerButton
+          </Box>
+          <TextField
+            label="Text"
+            name="text"
+            defaultValue={button.text}
+            inputProps={{
+              'aria-label': 'button name input',
+              ref: register,
+            }}
             fullWidth
-            variant="outlined"
-            aria-label="remove button"
-            onClick={removeButton}
-          >
-            REMOVE BUTTON
-          </DangerButton>
-        </Box>
-      </>
-    </RuleConfig>
+          />
+          <Controller
+            name="actionId"
+            defaultValue={button.actionId}
+            control={control}
+            render={({value, onChange}) => (
+              <ActionSelect value={value} onChange={onChange} />
+            )}
+          />
+          <TargetConfig
+            disablePageSelect
+            isAreaButton={isAreaButton}
+            setIsAreaButton={setIsAreaButton}
+            areaId={areaId}
+            setAreaId={setAreaId}
+            link={link}
+            setLink={setLink}
+            page={page}
+            setPage={setPage}
+            newTab={newTab}
+            setNewTab={setNewTab}
+          />
+
+          <Grid container spacing={2}>
+            <Grid item xs={6}>
+              <Controller
+                name="backgroundColor"
+                control={control}
+                defaultValue={button.backgroundColor || ''}
+                render={({value, onChange}) => (
+                  <ColorPicker
+                    label="Background Color"
+                    color={value}
+                    onPick={onChange}
+                  />
+                )}
+              />
+            </Grid>
+            <Grid item xs={6}>
+              <Controller
+                name="textColor"
+                control={control}
+                defaultValue={button.textColor || ''}
+                render={({value, onChange}) => (
+                  <ColorPicker
+                    label="Text Color"
+                    color={value}
+                    onPick={onChange}
+                  />
+                )}
+              />
+            </Grid>
+            <Grid item xs={6}>
+              <Controller
+                name="borderColor"
+                control={control}
+                defaultValue={button.borderColor || ''}
+                render={({value, onChange}) => (
+                  <ColorPicker
+                    label="Border Color"
+                    color={value}
+                    onPick={onChange}
+                  />
+                )}
+              />
+            </Grid>
+            <Grid item xs={6}>
+              <TextField
+                name="borderRadius"
+                defaultValue={button.borderRadius || ''}
+                label="Border Radius"
+                type="number"
+                fullWidth
+                inputProps={{
+                  min: MIN_BORDER_RADIUS,
+                  max: MAX_BORDER_RADIUS,
+                  ref: register,
+                }}
+              />
+            </Grid>
+            <Grid item xs={12}>
+              <TextField
+                name="borderWidth"
+                defaultValue={button.borderWidth || ''}
+                label="Border Width"
+                type="number"
+                fullWidth
+                inputProps={{
+                  min: MIN_BORDER_WIDTH,
+                  max: MAX_BORDER_WIDTH,
+                  ref: register,
+                }}
+              />
+            </Grid>
+          </Grid>
+          <Controller
+            name="infusionsoftTag"
+            control={control}
+            defaultValue={button.infusionsoftTag}
+            render={({value, onChange}) => (
+              <InfusionsoftTagInput value={value} onChange={onChange} />
+            )}
+          />
+          <SaveButton type="submit" />
+          <Box mt={2} mb={3}>
+            <DangerButton
+              fullWidth
+              variant="outlined"
+              aria-label="remove button"
+              onClick={removeButton}
+            >
+              REMOVE BUTTON
+            </DangerButton>
+          </Box>
+        </form>
+      </RuleConfig>
+    </ComponentConfig>
   )
 }

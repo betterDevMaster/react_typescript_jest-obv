@@ -1,4 +1,3 @@
-import {SIDEBAR_CONTAINER} from 'Event/template/SimpleBlog/Dashboard/Sidebar/SidebarContainer'
 import ColorPicker from 'lib/ui/ColorPicker'
 import React from 'react'
 import InputLabel from '@material-ui/core/InputLabel'
@@ -9,10 +8,11 @@ import {useEvent} from 'Event/EventProvider'
 import Switch from 'lib/ui/form/Switch'
 import Box from '@material-ui/core/Box'
 import {useSimpleBlog} from 'Event/template/SimpleBlog'
-
-export type SidebarContainerConfig = {
-  type: typeof SIDEBAR_CONTAINER
-}
+import ComponentConfig, {
+  ComponentConfigProps,
+  SaveButton,
+} from 'organization/Event/DashboardConfig/ComponentConfig'
+import {Controller, useForm} from 'react-hook-form'
 
 const MIN_SIDEBAR_PADDING_TOP = 0
 const MAX_SIDEBAR_PADDING_TOP = 720
@@ -23,78 +23,137 @@ const MAX_SIDEBAR_BORDER_WIDTH = 50
 const MIN_SIDEBAR_BORDER_RADIUS = 0
 const MAX_SIDEBAR_BORDER_RADIUS = 25
 
-export function SidebarContainerConfig() {
+export function SidebarContainerConfig(props: ComponentConfigProps) {
+  const {isVisible, onClose} = props
   const {
     template: {sidebar},
     update,
   } = useSimpleBlog()
-  const updateSideBar = update.object('sidebar')
   const {event} = useEvent()
 
+  const {control, handleSubmit} = useForm()
+
+  const save = (data: any) => {
+    update.primitive('sidebar')(data)
+    onClose()
+  }
+
   return (
-    <>
-      <Box display="flex" justifyContent="flex-end">
-        <Switch
-          checked={sidebar.isVisible}
-          onChange={onChangeCheckedHandler(updateSideBar('isVisible'))}
-          arial-label="config visible switch"
-          labelPlacement="start"
-          color="primary"
-          label={sidebar.isVisible ? 'Enabled' : 'Disabled'}
+    <ComponentConfig isVisible={isVisible} onClose={onClose} title="Sidebar">
+      <form onSubmit={handleSubmit(save)}>
+        <Box display="flex" justifyContent="flex-end">
+          <Controller
+            name="isVisible"
+            defaultValue={sidebar.isVisible}
+            control={control}
+            render={({value, onChange}) => (
+              <Switch
+                checked={sidebar.isVisible}
+                onChange={onChangeCheckedHandler(onChange)}
+                arial-label="config visible switch"
+                labelPlacement="start"
+                color="primary"
+                label={value ? 'Enabled' : 'Disabled'}
+              />
+            )}
+          />
+        </Box>
+        <EventImageUpload
+          label="Background Image"
+          property="sidebar_background"
+          current={event.sidebar_background}
         />
-      </Box>
-      <EventImageUpload
-        label="Background Image"
-        property="sidebar_background"
-        current={event.sidebar_background}
-      />
-      <InputLabel>Top Padding</InputLabel>
-      <Slider
-        min={MIN_SIDEBAR_PADDING_TOP}
-        max={MAX_SIDEBAR_PADDING_TOP}
-        step={4}
-        onChange={handleChangeSlider(updateSideBar('paddingTop'))}
-        valueLabelDisplay="auto"
-        value={sidebar.paddingTop || 48}
-        aria-label="padding top"
-      />
-      <ColorPicker
-        label="Background Color"
-        color={sidebar.background}
-        onPick={updateSideBar('background')}
-        aria-label="background color"
-      />
-      <ColorPicker
-        label="Text Color"
-        color={sidebar.textColor}
-        onPick={updateSideBar('textColor')}
-        aria-label="color"
-      />
-      <InputLabel>Border Thickness</InputLabel>
-      <Slider
-        min={MIN_SIDEBAR_BORDER_WIDTH}
-        max={MAX_SIDEBAR_BORDER_WIDTH}
-        step={1}
-        onChange={handleChangeSlider(updateSideBar('borderWidth'))}
-        valueLabelDisplay="auto"
-        value={sidebar.borderWidth}
-        aria-label="border thickness"
-      />
-      <ColorPicker
-        label="Border Color"
-        color={sidebar.borderColor}
-        onPick={updateSideBar('borderColor')}
-      />
-      <InputLabel>Border Radius</InputLabel>
-      <Slider
-        min={MIN_SIDEBAR_BORDER_RADIUS}
-        max={MAX_SIDEBAR_BORDER_RADIUS}
-        step={1}
-        onChange={handleChangeSlider(updateSideBar('borderRadius'))}
-        valueLabelDisplay="auto"
-        value={sidebar.borderRadius}
-        aria-label="border radius"
-      />
-    </>
+        <InputLabel>Top Padding</InputLabel>
+
+        <Controller
+          name="paddingTop"
+          defaultValue={sidebar.paddingTop || 48}
+          control={control}
+          render={({value, onChange}) => (
+            <Slider
+              min={MIN_SIDEBAR_PADDING_TOP}
+              max={MAX_SIDEBAR_PADDING_TOP}
+              step={4}
+              onChange={handleChangeSlider(onChange)}
+              valueLabelDisplay="auto"
+              value={value}
+              aria-label="padding top"
+            />
+          )}
+        />
+        <Controller
+          name="background"
+          defaultValue={sidebar.background}
+          control={control}
+          render={({value, onChange}) => (
+            <ColorPicker
+              label="Background Color"
+              color={value}
+              onPick={onChange}
+              aria-label="background color"
+            />
+          )}
+        />
+
+        <Controller
+          name="textColor"
+          defaultValue={sidebar.textColor}
+          control={control}
+          render={({value, onChange}) => (
+            <ColorPicker
+              label="Text Color"
+              color={value}
+              onPick={onChange}
+              aria-label="color"
+            />
+          )}
+        />
+        <InputLabel>Border Thickness</InputLabel>
+
+        <Controller
+          name="borderWidth"
+          defaultValue={sidebar.borderWidth}
+          control={control}
+          render={({value, onChange}) => (
+            <Slider
+              min={MIN_SIDEBAR_BORDER_WIDTH}
+              max={MAX_SIDEBAR_BORDER_WIDTH}
+              step={1}
+              onChange={handleChangeSlider(onChange)}
+              valueLabelDisplay="auto"
+              value={value}
+              aria-label="border thickness"
+            />
+          )}
+        />
+        <Controller
+          name="borderColor"
+          defaultValue={sidebar.borderColor}
+          control={control}
+          render={({value, onChange}) => (
+            <ColorPicker label="Border Color" color={value} onPick={onChange} />
+          )}
+        />
+        <InputLabel>Border Radius</InputLabel>
+
+        <Controller
+          name="borderRadius"
+          defaultValue={sidebar.borderRadius}
+          control={control}
+          render={({value, onChange}) => (
+            <Slider
+              min={MIN_SIDEBAR_BORDER_RADIUS}
+              max={MAX_SIDEBAR_BORDER_RADIUS}
+              step={1}
+              onChange={handleChangeSlider(onChange)}
+              valueLabelDisplay="auto"
+              value={value}
+              aria-label="border radius"
+            />
+          )}
+        />
+        <SaveButton type="submit" />
+      </form>
+    </ComponentConfig>
   )
 }

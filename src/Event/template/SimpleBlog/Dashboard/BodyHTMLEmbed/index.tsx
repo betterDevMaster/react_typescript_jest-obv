@@ -1,17 +1,14 @@
 import React, {useEffect, useMemo, useRef, useState} from 'react'
 import {Parser} from 'htmlparser2'
-import {
-  useEditComponent,
-  useEditMode,
-} from 'Event/Dashboard/editor/state/edit-mode'
+import {useEditMode} from 'Event/Dashboard/editor/state/edit-mode'
 import EditModeOnly from 'Event/Dashboard/editor/views/EditModeOnly'
 import {spacing} from 'lib/ui/theme'
 import Button from '@material-ui/core/Button'
 import {useVariables} from 'Event'
 import withStyles from '@material-ui/core/styles/withStyles'
 import {useSimpleBlog} from 'Event/template/SimpleBlog'
-
-export const BODY_HTML_EMBED = 'Embed HTML'
+import {BodyHTMLEmbedConfig} from 'Event/template/SimpleBlog/Dashboard/BodyHTMLEmbed/BodyHTMLEmbedConfig'
+import {useToggle} from 'lib/toggle'
 
 export default function BodyHTMLEmbed() {
   const anchor = useRef<HTMLDivElement>(null)
@@ -124,21 +121,24 @@ function isScript(element: HTMLElement): element is HTMLScriptElement {
 }
 
 function EditButton() {
-  const edit = useEditComponent({type: BODY_HTML_EMBED})
+  const {flag: configVisible, toggle: toggleConfig} = useToggle()
 
   return (
-    <EditModeOnly>
-      <StyledEditButton
-        onClick={edit}
-        fullWidth
-        size="large"
-        variant="outlined"
-        color="primary"
-        aria-label="edit body html embed"
-      >
-        Embed HTML
-      </StyledEditButton>
-    </EditModeOnly>
+    <>
+      <BodyHTMLEmbedConfig isVisible={configVisible} onClose={toggleConfig} />
+      <EditModeOnly>
+        <StyledEditButton
+          onClick={toggleConfig}
+          fullWidth
+          size="large"
+          variant="outlined"
+          color="primary"
+          aria-label="edit body html embed"
+        >
+          Embed HTML
+        </StyledEditButton>
+      </EditModeOnly>
+    </>
   )
 }
 

@@ -9,8 +9,6 @@ import {shouldPublish} from 'Event/Dashboard/components/BlogPost'
 import {BlogPost as BlogPostData} from 'Event/Dashboard/components/BlogPost'
 import {usePostStyles} from 'Event/template/SimpleBlog/Dashboard/BlogPosts/PostStylesConfig'
 
-export const BLOG_POST = 'Blog Post'
-
 export function BlogPost(props: {post: BlogPostData}) {
   const {post} = props
   const isEdit = useEditMode()
@@ -52,11 +50,7 @@ function Date(props: {children: React.ReactNode; hidden?: boolean}) {
     return null
   }
 
-  return (
-    <DateText color={styles.dateTextColor} aria-label="post date">
-      {props.children}
-    </DateText>
-  )
+  return <DateText color={styles.dateTextColor}>{props.children}</DateText>
 }
 
 const Post = styled.div`

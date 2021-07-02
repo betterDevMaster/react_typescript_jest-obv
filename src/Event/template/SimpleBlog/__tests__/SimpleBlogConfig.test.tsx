@@ -44,6 +44,8 @@ it('should upload a header background', async () => {
 
   user.click(await findByLabelText('cancel image resize'))
 
+  user.click(await findByLabelText('save'))
+
   await wait(() => {
     expect(mockPost).toHaveBeenCalledTimes(1)
   })
@@ -96,6 +98,8 @@ it('should configure a header color settings', async () => {
 
   const color = faker.commerce.color()
   user.type(await findByLabelText('header background color'), color)
+
+  user.click(await findByLabelText('save'))
 
   await wait(async () => {
     expect(await findByLabelText('header')).toHaveStyle(

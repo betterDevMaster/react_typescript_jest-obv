@@ -125,7 +125,7 @@ it('it should set custom buttons', async () => {
   user.click((await findAllByLabelText('edit component'))[1])
   fireEvent.mouseDown(await findByLabelText('pick page'))
   user.click(await findByLabelText('Check-In page'))
-  fireEvent.click(await findByLabelText('close dialog'))
+  fireEvent.click(await findByLabelText('save'))
 
   // Remove first button
   user.click((await findAllByLabelText('edit component'))[0])

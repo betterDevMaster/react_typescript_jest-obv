@@ -9,17 +9,19 @@ import {Draggable, DraggableProvidedDraggableProps} from 'react-beautiful-dnd'
 import {useEditMode} from 'Event/Dashboard/editor/state/edit-mode'
 import {DraggableOverlay, DragHandle} from 'lib/ui/drag-and-drop'
 import {Editable} from 'Event/Dashboard/editor/views/EditComponent'
+import {useToggle} from 'lib/toggle'
+import MainNavButtonConfig from 'Event/template/Panels/Dashboard/MainNav/MainNavButton/MainNavButtonConfig'
 
 export const MAIN_NAV_BUTTON = 'Main Nav Button'
 type MainNavButtonProps = {
   id: string
   button: NavButtonWithSize
   index: number
-  onEdit: (index: number) => void
 }
 
 export default React.memo((props: MainNavButtonProps) => {
   const isEditMode = useEditMode()
+  const {flag: configVisible, toggle: toggleConfig} = useToggle()
 
   const button = <NavButton {...props.button} aria-label="main nav button" />
 
@@ -28,24 +30,32 @@ export default React.memo((props: MainNavButtonProps) => {
   }
 
   return (
-    <Draggable draggableId={props.id} index={props.index}>
-      {(provided) => (
-        <Container
-          button={props.button}
-          ref={provided.innerRef}
-          draggableProps={provided.draggableProps}
-        >
-          <DraggableOverlay>
-            <Editable onEdit={() => props.onEdit(props.index)}>
-              <>
-                <DragHandle handleProps={provided.dragHandleProps} />
-                {button}
-              </>
-            </Editable>
-          </DraggableOverlay>
-        </Container>
-      )}
-    </Draggable>
+    <>
+      <MainNavButtonConfig
+        button={props.button}
+        id={props.id}
+        isVisible={configVisible}
+        onClose={toggleConfig}
+      />
+      <Draggable draggableId={props.id} index={props.index}>
+        {(provided) => (
+          <Container
+            button={props.button}
+            ref={provided.innerRef}
+            draggableProps={provided.draggableProps}
+          >
+            <DraggableOverlay>
+              <Editable onEdit={toggleConfig}>
+                <>
+                  <DragHandle handleProps={provided.dragHandleProps} />
+                  {button}
+                </>
+              </Editable>
+            </DraggableOverlay>
+          </Container>
+        )}
+      </Draggable>
+    </>
   )
 })
 

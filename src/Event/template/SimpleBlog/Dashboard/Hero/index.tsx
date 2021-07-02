@@ -1,16 +1,16 @@
 import React from 'react'
 import styled from 'styled-components'
 import {useEvent} from 'Event/EventProvider'
-import {useEditComponent} from 'Event/Dashboard/editor/state/edit-mode'
-import EditModeOnly from 'Event/Dashboard/editor/views/EditModeOnly'
 import withStyles from '@material-ui/core/styles/withStyles'
 import {spacing} from 'lib/ui/theme'
 import Button from '@material-ui/core/Button'
-import {DEFAULT_HERO_IMAGE_SIZE_PERCENT} from 'Event/template/SimpleBlog/Dashboard/Hero/HeroConfig'
+import {
+  DEFAULT_HERO_IMAGE_SIZE_PERCENT,
+  HeroConfig,
+} from 'Event/template/SimpleBlog/Dashboard/Hero/HeroConfig'
 import {useVariables} from 'Event'
 import {useSimpleBlog} from 'Event/template/SimpleBlog'
-
-export const HERO = 'Hero'
+import {useToggle} from 'lib/toggle'
 
 export default function Hero() {
   return (
@@ -23,12 +23,13 @@ export default function Hero() {
 }
 
 function EditButton() {
-  const edit = useEditComponent({type: HERO})
+  const {flag: configVisible, toggle: toggleConfig} = useToggle()
 
   return (
-    <EditModeOnly>
+    <>
+      <HeroConfig isVisible={configVisible} onClose={toggleConfig} />
       <StyledEditButton
-        onClick={edit}
+        onClick={toggleConfig}
         fullWidth
         size="large"
         variant="outlined"
@@ -37,7 +38,7 @@ function EditButton() {
       >
         Edit Hero
       </StyledEditButton>
-    </EditModeOnly>
+    </>
   )
 }
 

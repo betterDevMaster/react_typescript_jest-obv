@@ -6,8 +6,8 @@ import {
 import {useEvent} from 'Event/EventProvider'
 import EventImageUpload from 'organization/Event/DashboardConfig/EventImageUpload'
 import ColorPicker from 'lib/ui/ColorPicker'
-import React from 'react'
-import {SIMPLE_BLOG, useSimpleBlog} from 'Event/template/SimpleBlog'
+import React, {useEffect, useState} from 'react'
+import {SimpleBlog, useSimpleBlog} from 'Event/template/SimpleBlog'
 import Grid from '@material-ui/core/Grid'
 import Slider from '@material-ui/core/Slider'
 import {handleChangeSlider} from 'lib/dom'
@@ -17,34 +17,109 @@ import InputLabel from '@material-ui/core/InputLabel'
 import MenuItem from '@material-ui/core/MenuItem'
 import Box from '@material-ui/core/Box'
 import Switch from 'lib/ui/form/Switch'
-
-export type SimpleBlogConfig = {
-  type: typeof SIMPLE_BLOG
-}
+import ComponentConfig, {
+  ComponentConfigProps,
+  SaveButton,
+} from 'organization/Event/DashboardConfig/ComponentConfig'
+import {useDispatchUpdate} from 'Event/TemplateProvider'
 
 const MIN_HEADER_HEIGHT = 30
 const MAX_HEADER_HEIGHT = 200
 
-export function SimpleBlogConfig() {
-  const {template, update} = useSimpleBlog()
+export function SimpleBlogConfig(props: ComponentConfigProps) {
+  const {isVisible, onClose} = props
+  const {template} = useSimpleBlog()
+  const update = useDispatchUpdate()
   const {event} = useEvent()
 
-  const updateHeader = update.object('header')
-  const updateMenu = update.object('menu')
-  const updateDashboardBackground = update.object('dashboardBackground')
-  const updateBackgroundPosition = update.primitive('backgroundPosition')
-  const updateIsDarkMode = update.primitive('isDarkMode')
+  const [isDarkMode, setIsDarkMode] = useState(template.isDarkMode)
+  const [headerIsCollapsed, setHeaderIsCollapsed] = useState(
+    template.header.isCollapsed,
+  )
+  const [disableHeaderShadow, setDisableHeaderShadow] = useState(
+    template.header.disableShadow,
+  )
+  const [headerBackgroundColor, setHeaderBackgroundColor] = useState(
+    template.header.backgroundColor,
+  )
+  const [headerBackgroundOpacity, setHeaderBackgroundOpacity] = useState(
+    template.header.backgroundOpacity,
+  )
+  const [headerHeight, setHeaderHeight] = useState(template.header.height)
+  const [dashboardBackgroundColor, setDashboardBackgroundColor] = useState(
+    template.dashboardBackground?.color,
+  )
+  const [dashboardBackgroundOpacity, setDashboardBackgroundOpacity] = useState(
+    template.dashboardBackground?.opacity,
+  )
+  const [backgroundPosition, setBackgroundPosition] = useState(
+    template.backgroundPosition,
+  )
+  const [menuBackgroundColor, setMenuBackgroundColor] = useState(
+    template.menu?.backgroundColor,
+  )
+  const [menuTextColor, setMenuTextColor] = useState(template.menu?.textColor)
+  const [menuIconColor, setMenuIconColor] = useState(template.menu?.iconColor)
+  const [headerScript, setHeaderScript] = useState(template.header.script)
 
-  const handleSwitchCollapsed = () => {
-    updateHeader('isCollapsed')(!template.header.isCollapsed)
+  useEffect(() => {
+    if (isVisible) {
+      return
+    }
+
+    setIsDarkMode(template.isDarkMode)
+    setHeaderIsCollapsed(template.header.isCollapsed)
+    setDisableHeaderShadow(template.header.disableShadow)
+    setHeaderBackgroundColor(template.header.backgroundColor)
+    setHeaderBackgroundOpacity(template.header.backgroundOpacity)
+    setHeaderHeight(template.header.height)
+    setDashboardBackgroundColor(template.dashboardBackground?.color)
+    setDashboardBackgroundOpacity(template.dashboardBackground?.opacity)
+    setBackgroundPosition(template.backgroundPosition)
+    setMenuBackgroundColor(template.menu?.backgroundColor)
+    setMenuTextColor(template.menu?.textColor)
+    setMenuIconColor(template.menu?.iconColor)
+    setHeaderScript(template.header.script)
+  }, [isVisible, template])
+
+  const save = () => {
+    const data: SimpleBlog = {
+      ...template,
+      isDarkMode,
+      header: {
+        isCollapsed: headerIsCollapsed,
+        disableShadow: disableHeaderShadow,
+        backgroundColor: headerBackgroundColor,
+        backgroundOpacity: headerBackgroundOpacity,
+        height: headerHeight,
+        script: headerScript,
+      },
+      dashboardBackground: {
+        color: dashboardBackgroundColor || '',
+        opacity: dashboardBackgroundOpacity || 0,
+      },
+      backgroundPosition,
+      menu: {
+        backgroundColor: menuBackgroundColor,
+        textColor: menuTextColor,
+        iconColor: menuIconColor,
+      },
+    }
+
+    update(data)
+    onClose()
   }
 
   return (
-    <>
+    <ComponentConfig
+      isVisible={isVisible}
+      onClose={onClose}
+      title="Simple Blog"
+    >
       <Box display="flex" justifyContent="flex-end">
         <Switch
-          checked={template.isDarkMode}
-          onChange={onChangeCheckedHandler(updateIsDarkMode)}
+          checked={isDarkMode}
+          onChange={onChangeCheckedHandler(setIsDarkMode)}
           arial-label="config event theme mode"
           labelPlacement="start"
           color="primary"
@@ -58,8 +133,8 @@ export function SimpleBlogConfig() {
         <Grid container>
           <Grid item xs={12} md={6}>
             <Switch
-              checked={!template.header.isCollapsed}
-              onChange={handleSwitchCollapsed}
+              checked={!headerIsCollapsed}
+              onChange={onChangeCheckedHandler(setHeaderIsCollapsed)}
               arial-label="config header background image visible switch"
               labelPlacement="start"
               color="primary"
@@ -67,7 +142,11 @@ export function SimpleBlogConfig() {
             />
           </Grid>
           <Grid item xs={12} md={6}>
-            <DropShawdowToggle />
+            <DropShadowToggle
+              isVisible={!headerIsCollapsed}
+              disableShadow={disableHeaderShadow}
+              setDisableShadow={setDisableHeaderShadow}
+            />
           </Grid>
         </Grid>
       </Box>
@@ -82,8 +161,8 @@ export function SimpleBlogConfig() {
       </Box>
       <ColorPicker
         label="Header Background Color"
-        color={template.header?.backgroundColor}
-        onPick={updateHeader('backgroundColor')}
+        color={headerBackgroundColor}
+        onPick={setHeaderBackgroundColor}
         aria-label="header background color"
       />
       <InputLabel>Header Background Opacity</InputLabel>
@@ -91,12 +170,10 @@ export function SimpleBlogConfig() {
         min={0}
         max={1}
         step={0.1}
-        onChange={handleChangeSlider(updateHeader('backgroundOpacity'))}
+        onChange={handleChangeSlider(setHeaderBackgroundOpacity)}
         valueLabelDisplay="auto"
-        valueLabelFormat={() => (
-          <div>{template.header?.backgroundOpacity * 100}</div>
-        )}
-        value={template.header?.backgroundOpacity || 0}
+        valueLabelFormat={() => <div>{headerBackgroundOpacity * 100}</div>}
+        value={headerBackgroundOpacity || 0}
         aria-label="background opacity"
       />
       <InputLabel>Header Height</InputLabel>
@@ -104,9 +181,9 @@ export function SimpleBlogConfig() {
         min={MIN_HEADER_HEIGHT}
         max={MAX_HEADER_HEIGHT}
         step={1}
-        onChange={handleChangeSlider(updateHeader('height'))}
+        onChange={handleChangeSlider(setHeaderHeight)}
         valueLabelDisplay="auto"
-        value={template.header.height}
+        value={headerHeight}
         aria-label="header height"
       />
       <Box mb={2}>
@@ -121,8 +198,8 @@ export function SimpleBlogConfig() {
       </Box>
       <ColorPicker
         label="Dashboard Background Color"
-        color={template.dashboardBackground?.color}
-        onPick={updateDashboardBackground('color')}
+        color={dashboardBackgroundColor}
+        onPick={setDashboardBackgroundColor}
         aria-label="dashboard background color"
       />
       <InputLabel>Dashboard Background Color Opacity</InputLabel>
@@ -130,19 +207,19 @@ export function SimpleBlogConfig() {
         min={0}
         max={1}
         step={0.1}
-        onChange={handleChangeSlider(updateDashboardBackground('opacity'))}
+        onChange={handleChangeSlider(setDashboardBackgroundOpacity)}
         valueLabelDisplay="auto"
-        value={template.dashboardBackground?.opacity || 0}
+        value={dashboardBackgroundOpacity || 0}
         valueLabelFormat={() => (
-          <div>{(template.dashboardBackground?.opacity || 0) * 100}</div>
+          <div>{(dashboardBackgroundOpacity || 0) * 100}</div>
         )}
         aria-label="dashboard background color opacity"
       />
       <Box mb={2}>
         <InputLabel>Background Position</InputLabel>
         <Select
-          value={template.backgroundPosition}
-          onChange={onUnknownChangeHandler(updateBackgroundPosition)}
+          value={backgroundPosition}
+          onChange={onUnknownChangeHandler(setBackgroundPosition)}
           fullWidth
         >
           <MenuItem value="fixed">Fixed</MenuItem>
@@ -151,20 +228,20 @@ export function SimpleBlogConfig() {
       </Box>
       <ColorPicker
         label="Menu Background Color"
-        color={template.menu?.backgroundColor}
-        onPick={updateMenu('backgroundColor')}
+        color={menuBackgroundColor}
+        onPick={setMenuBackgroundColor}
         aria-label="menu background color"
       />
       <ColorPicker
         label="Menu Text Color"
-        color={template.menu?.textColor}
-        onPick={updateMenu('textColor')}
+        color={menuTextColor}
+        onPick={setMenuTextColor}
         aria-label="menu text color"
       />
       <ColorPicker
         label="Menu Icon Color"
-        color={template.menu?.iconColor}
-        onPick={updateMenu('iconColor')}
+        color={menuIconColor}
+        onPick={setMenuIconColor}
         aria-label="menu icon color"
       />
       <TextField
@@ -175,34 +252,35 @@ export function SimpleBlogConfig() {
         inputProps={{
           'aria-label': 'set header custom code',
         }}
-        defaultValue={template.header.script || ''}
-        onChange={onChangeStringHandler(updateHeader('script'))}
+        defaultValue={headerScript || ''}
+        onChange={onChangeStringHandler(setHeaderScript)}
         multiline
         rows={6}
       />
-    </>
+      <SaveButton onClick={save} />
+    </ComponentConfig>
   )
 }
 
-function DropShawdowToggle() {
-  const {template, update} = useSimpleBlog()
-  const updateHeader = update.object('header')
+function DropShadowToggle(props: {
+  isVisible: boolean
+  disableShadow?: boolean
+  setDisableShadow: (disable: boolean) => void
+}) {
+  const {disableShadow, setDisableShadow, isVisible} = props
 
-  const handleSwitchCollapsed = () => {
-    updateHeader('disableShadow')(!template.header.disableShadow)
+  if (!isVisible) {
+    return null
   }
 
-  if (Boolean(template.header.isCollapsed)) return null
   return (
     <Switch
-      checked={!template.header.disableShadow}
-      onChange={handleSwitchCollapsed}
+      checked={!disableShadow}
+      onChange={onChangeCheckedHandler(setDisableShadow)}
       arial-label="config header dropShawdowVisible visible switch"
       labelPlacement="start"
       color="primary"
-      label={
-        template.header.disableShadow ? 'Show Drop-Shadow' : 'Hide Drop-Shadow'
-      }
+      label={disableShadow ? 'Show Drop-Shadow' : 'Hide Drop-Shadow'}
     />
   )
 }

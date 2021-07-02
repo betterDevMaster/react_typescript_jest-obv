@@ -1,4 +1,4 @@
-import EditComponent from 'Event/Dashboard/editor/views/EditComponent'
+import {Editable} from 'Event/Dashboard/editor/views/EditComponent'
 import React from 'react'
 import styled from 'styled-components'
 import BLACK_RIBBON_IMAGE from 'Event/template/SimpleBlog/Dashboard/TicketRibbonList/ribbons/black.png'
@@ -25,8 +25,8 @@ import {FileLocation} from 'lib/http-client'
 import {useEditMode} from 'Event/Dashboard/editor/state/edit-mode'
 import {Draggable} from 'react-beautiful-dnd'
 import {DragHandle, DraggableOverlay} from 'lib/ui/drag-and-drop'
-
-export const TICKET_RIBBON = 'Ticket Ribbon'
+import {TicketRibbonConfig} from 'Event/template/SimpleBlog/Dashboard/TicketRibbonList/TicketRibbonConfig'
+import {useToggle} from 'lib/toggle'
 
 export const BLACK_RIBBON = 'Black'
 export const BLUE_RIBBON = 'Blue'
@@ -107,28 +107,36 @@ export default function TicketRibbon(props: {
   index: number
 }) {
   const isEdit = useEditMode()
+  const {ticketRibbon, index} = props
+  const {flag: configVisible, toggle: toggleConfig} = useToggle()
 
   if (!isEdit) {
     return <TicketRibbonItem {...props} />
   }
 
   return (
-    <Draggable draggableId={String(props.index)} index={props.index}>
-      {(provided) => (
-        <div ref={provided.innerRef} {...provided.draggableProps}>
-          <DraggableOverlay>
-            <EditComponent
-              component={{type: TICKET_RIBBON, index: props.index}}
-            >
-              <>
-                <DragHandle handleProps={provided.dragHandleProps} />
-                <TicketRibbonItem {...props} />
-              </>
-            </EditComponent>
-          </DraggableOverlay>
-        </div>
-      )}
-    </Draggable>
+    <>
+      <TicketRibbonConfig
+        isVisible={configVisible}
+        ticketRibbon={ticketRibbon}
+        index={index}
+        onClose={toggleConfig}
+      />
+      <Draggable draggableId={String(index)} index={index}>
+        {(provided) => (
+          <div ref={provided.innerRef} {...provided.draggableProps}>
+            <DraggableOverlay>
+              <Editable onEdit={toggleConfig}>
+                <>
+                  <DragHandle handleProps={provided.dragHandleProps} />
+                  <TicketRibbonItem {...props} />
+                </>
+              </Editable>
+            </DraggableOverlay>
+          </div>
+        )}
+      </Draggable>
+    </>
   )
 }
 

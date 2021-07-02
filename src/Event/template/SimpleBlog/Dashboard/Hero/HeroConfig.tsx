@@ -1,59 +1,86 @@
-import {HERO} from 'Event/template/SimpleBlog/Dashboard/Hero'
 import React from 'react'
 import EventImageUpload from 'organization/Event/DashboardConfig/EventImageUpload'
 import {useEvent} from 'Event/EventProvider'
 import Box from '@material-ui/core/Box'
 import TextField from '@material-ui/core/TextField'
-import {handleChangeSlider, onChangeStringHandler} from 'lib/dom'
+import {handleChangeSlider} from 'lib/dom'
 import InputLabel from '@material-ui/core/InputLabel'
 import Slider from '@material-ui/core/Slider'
-import {useSimpleBlog} from 'Event/template/SimpleBlog'
+import {SimpleBlog, useSimpleBlog} from 'Event/template/SimpleBlog'
+import ComponentConfig, {
+  ComponentConfigProps,
+  SaveButton,
+} from 'organization/Event/DashboardConfig/ComponentConfig'
+import {Controller, useForm} from 'react-hook-form'
+import {useDispatchUpdate} from 'Event/TemplateProvider'
 
 export const DEFAULT_HERO_IMAGE_SIZE_PERCENT = 50
 const MIN_HERO_IMAGE_SIZE_PERCENT = 20
 const MAX_HERO_IMAGE_SIZE_PERCENT = 100
 
-export type HeroConfig = {
-  type: typeof HERO
-}
-
-export function HeroConfig() {
+export function HeroConfig(props: ComponentConfigProps) {
+  const {isVisible, onClose} = props
   const {event} = useEvent()
-  const {template, update} = useSimpleBlog()
+  const {template} = useSimpleBlog()
+
+  const update = useDispatchUpdate()
+
   const {welcomeText, heroImageSize} = template
-  const updateWelcomeText = update.primitive('welcomeText')
-  const updateHeroImageSize = update.primitive('heroImageSize')
+
+  const {register, handleSubmit, control} = useForm()
+
+  const save = ({heroImageSize, welcomeText}: any) => {
+    const data: SimpleBlog = {
+      ...template,
+      welcomeText,
+      heroImageSize,
+    }
+
+    update(data)
+    onClose()
+  }
 
   return (
-    <>
-      <Box mb={2}>
-        <EventImageUpload
-          label="Image"
-          property="welcome_image"
-          current={event.welcome_image}
+    <ComponentConfig title="Hero" isVisible={isVisible} onClose={onClose}>
+      <form onSubmit={handleSubmit(save)}>
+        <Box mb={2}>
+          <EventImageUpload
+            label="Image"
+            property="welcome_image"
+            current={event.welcome_image}
+          />
+        </Box>
+        <InputLabel>Image Size</InputLabel>
+        <Controller
+          control={control}
+          name="heroImageSize"
+          defaultValue={heroImageSize || DEFAULT_HERO_IMAGE_SIZE_PERCENT}
+          render={({value, onChange}) => (
+            <Slider
+              min={MIN_HERO_IMAGE_SIZE_PERCENT}
+              max={MAX_HERO_IMAGE_SIZE_PERCENT}
+              step={1}
+              onChange={handleChangeSlider(onChange)}
+              valueLabelDisplay="auto"
+              value={value}
+              aria-label="hero image size"
+            />
+          )}
         />
-      </Box>
-      <InputLabel>Image Size</InputLabel>
-      <Slider
-        min={MIN_HERO_IMAGE_SIZE_PERCENT}
-        max={MAX_HERO_IMAGE_SIZE_PERCENT}
-        step={1}
-        onChange={handleChangeSlider(updateHeroImageSize)}
-        valueLabelDisplay="auto"
-        value={heroImageSize || DEFAULT_HERO_IMAGE_SIZE_PERCENT}
-        aria-label="hero image size"
-      />
-      <Box display="flex" justifyContent="center">
-        <TextField
-          fullWidth
-          placeholder="Text"
-          inputProps={{
-            'aria-label': 'dashboard welcome text',
-          }}
-          value={welcomeText || ''}
-          onChange={onChangeStringHandler(updateWelcomeText)}
-        />
-      </Box>
-    </>
+        <Box display="flex" justifyContent="center">
+          <TextField
+            fullWidth
+            name="welcomeText"
+            defaultValue={welcomeText || ''}
+            placeholder="Text"
+            inputProps={{
+              'aria-label': 'dashboard welcome text',
+              ref: register,
+            }}
+          />
+        </Box>
+        <SaveButton type="submit" />
+      </form>
+    </ComponentConfig>
   )
 }

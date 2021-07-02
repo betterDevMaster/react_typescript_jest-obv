@@ -5,39 +5,46 @@ import {MenuIconButton} from 'lib/ui/IconButton/MenuIconButton'
 import {eventRoutes} from 'Event/Routes'
 import {RelativeLink} from 'lib/ui/link/RelativeLink'
 import {useEvent} from 'Event/EventProvider'
-import EditComponent from 'Event/Dashboard/editor/views/EditComponent'
 import {rgba} from 'lib/color'
-import {SIMPLE_BLOG, useSimpleBlog} from 'Event/template/SimpleBlog'
+import {useSimpleBlog} from 'Event/template/SimpleBlog'
+import {useToggle} from 'lib/toggle'
+import {Editable} from 'Event/Dashboard/editor/views/EditComponent'
+import {SimpleBlogConfig} from 'Event/template/SimpleBlog/SimpleBlogConfig'
 
 export default function Header(props: {
   toggleMenu: () => void
   menuVisible: boolean
   'aria-label'?: string
 }) {
+  const {flag: configVisible, toggle: toggleConfig} = useToggle()
+
   return (
-    <EditComponent component={{type: SIMPLE_BLOG}}>
-      <CollapsableBackground>
-        <CollapsableColorOverlay>
-          <Container maxWidth="lg">
-            <Layout>
-              <Side>
-                <MenuIconButton
-                  active={props.menuVisible}
-                  onClick={props.toggleMenu}
-                  aria-label="show side menu"
-                />
-              </Side>
-              <Middle>
-                <RelativeLink to={eventRoutes.root} disableStyles>
-                  <CollapsableLogo />
-                </RelativeLink>
-              </Middle>
-              <Side />
-            </Layout>
-          </Container>
-        </CollapsableColorOverlay>
-      </CollapsableBackground>
-    </EditComponent>
+    <>
+      <SimpleBlogConfig isVisible={configVisible} onClose={toggleConfig} />
+      <Editable onEdit={toggleConfig}>
+        <CollapsableBackground>
+          <CollapsableColorOverlay>
+            <Container maxWidth="lg">
+              <Layout>
+                <Side>
+                  <MenuIconButton
+                    active={props.menuVisible}
+                    onClick={props.toggleMenu}
+                    aria-label="show side menu"
+                  />
+                </Side>
+                <Middle>
+                  <RelativeLink to={eventRoutes.root} disableStyles>
+                    <CollapsableLogo />
+                  </RelativeLink>
+                </Middle>
+                <Side />
+              </Layout>
+            </Container>
+          </CollapsableColorOverlay>
+        </CollapsableBackground>
+      </Editable>
+    </>
   )
 }
 

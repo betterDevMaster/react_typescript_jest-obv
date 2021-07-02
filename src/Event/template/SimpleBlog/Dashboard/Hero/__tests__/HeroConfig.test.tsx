@@ -38,6 +38,8 @@ it('should upload a welcome image', async () => {
 
   fireEvent.change(imageInput)
 
+  user.click(await findByLabelText('save'))
+
   await wait(() => {
     expect(mockPost).toHaveBeenCalledTimes(1)
   })

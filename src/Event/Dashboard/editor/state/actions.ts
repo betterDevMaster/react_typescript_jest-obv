@@ -1,5 +1,4 @@
 import {DashboardEditorState} from 'Event/Dashboard/editor/state'
-import {ComponentConfig} from 'Event/Dashboard/editor/views/DashboardEditDialog/ComponentConfig'
 
 export const SET_EDIT_MODE = 'SET_EDIT_MODE'
 export interface SetEditModeAction {
@@ -18,25 +17,6 @@ export const handleSetEditMode = (
   isEditMode: action.payload,
 })
 
-export const SET_CONFIG_ACTION = 'SET_CONFIG'
-export interface SetConfigAction {
-  type: typeof SET_CONFIG_ACTION
-  payload: ComponentConfig | null
-}
-export const setConfig = (config: ComponentConfig | null): SetConfigAction => ({
-  type: SET_CONFIG_ACTION,
-  payload: config,
-})
-export const handleSetConfig = (
-  state: DashboardEditorState,
-  action: SetConfigAction,
-) => {
-  return {
-    ...state,
-    config: action.payload,
-  }
-}
-
 export const SET_SAVING_ACTION = 'SET_SAVING_DASHBOARD'
 export interface SetSavingAction {
   type: typeof SET_SAVING_ACTION
@@ -54,4 +34,4 @@ export const handlesetSaving = (
   isSaving: action.payload,
 })
 
-export type EditorAction = SetEditModeAction | SetConfigAction | SetSavingAction
+export type EditorAction = SetEditModeAction | SetSavingAction

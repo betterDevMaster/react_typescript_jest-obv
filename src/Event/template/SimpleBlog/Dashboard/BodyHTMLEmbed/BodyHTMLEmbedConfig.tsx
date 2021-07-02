@@ -1,23 +1,38 @@
-import React from 'react'
+import React, {useEffect, useState} from 'react'
 import TextField from '@material-ui/core/TextField'
 import {onChangeStringHandler} from 'lib/dom'
-import {BODY_HTML_EMBED} from 'Event/template/SimpleBlog/Dashboard/BodyHTMLEmbed'
 import Typography from '@material-ui/core/Typography'
 import Box from '@material-ui/core/Box'
 import styled from 'styled-components'
 import {useSimpleBlog} from 'Event/template/SimpleBlog'
+import ComponentConfig, {
+  ComponentConfigProps,
+  SaveButton,
+} from 'organization/Event/DashboardConfig/ComponentConfig'
 
-export type BodyHTMLEmbedConfig = {
-  type: typeof BODY_HTML_EMBED
-}
-
-export function BodyHTMLEmbedConfig() {
+export function BodyHTMLEmbedConfig(props: ComponentConfigProps) {
+  const {isVisible: visible, onClose} = props
   const {template, update} = useSimpleBlog()
   const {bodyHTMLEmbed} = template
   const updateHTML = update.primitive('bodyHTMLEmbed')
 
+  const [embed, setEmbed] = useState(bodyHTMLEmbed)
+
+  useEffect(() => {
+    if (visible) {
+      return
+    }
+
+    setEmbed(bodyHTMLEmbed)
+  }, [visible, bodyHTMLEmbed])
+
+  const save = () => {
+    updateHTML(embed)
+    onClose()
+  }
+
   return (
-    <>
+    <ComponentConfig title="Embed HTML" isVisible={visible} onClose={onClose}>
       <Box mb={4}>
         <Typography color="error" variant="h6">
           Important
@@ -35,18 +50,19 @@ export function BodyHTMLEmbedConfig() {
         </List>
       </Box>
       <TextField
-        value={bodyHTMLEmbed || ''}
+        value={embed || ''}
         label="HTML"
         multiline
         rows={10}
         variant="outlined"
         fullWidth
-        onChange={onChangeStringHandler(updateHTML)}
+        onChange={onChangeStringHandler(setEmbed)}
         inputProps={{
           'aria-label': 'body embed html input',
         }}
       />
-    </>
+      <SaveButton onClick={save} />
+    </ComponentConfig>
   )
 }
 

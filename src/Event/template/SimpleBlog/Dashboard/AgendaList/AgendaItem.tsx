@@ -1,25 +1,25 @@
 import React from 'react'
 import styled from 'styled-components'
 import moment from 'moment-timezone'
-import EditComponent from 'Event/Dashboard/editor/views/EditComponent'
+import {Editable} from 'Event/Dashboard/editor/views/EditComponent'
 import Published from 'Event/Dashboard/editor/views/Published'
 import {useEditMode} from 'Event/Dashboard/editor/state/edit-mode'
 import {AbsoluteLink} from 'lib/ui/link/AbsoluteLink'
 import {useWithAttendeeData} from 'Event/auth/attendee-data'
 import {useVariables} from 'Event'
-import {
-  Agenda,
-  AGENDA_ITEM,
-} from 'Event/template/SimpleBlog/Dashboard/AgendaList'
+import {Agenda} from 'Event/template/SimpleBlog/Dashboard/AgendaList'
 import {Draggable} from 'react-beautiful-dnd'
 import {DragHandle, DraggableOverlay} from 'lib/ui/drag-and-drop'
 import {useSimpleBlog} from 'Event/template/SimpleBlog'
+import {useToggle} from 'lib/toggle'
+import {AgendaItemConfig} from 'Event/template/SimpleBlog/Dashboard/AgendaList/AgendaItemConfig'
 
 export default function AgendaItem(props: {agenda: Agenda; index: number}) {
   const {agenda, index} = props
-  const isEdit = useEditMode()
+  const isEditMode = useEditMode()
+  const {flag: configVisible, toggle: toggleConfig} = useToggle()
 
-  if (!isEdit) {
+  if (!isEditMode) {
     return (
       <Published component={agenda}>
         <Box aria-label="agenda">
@@ -31,28 +31,33 @@ export default function AgendaItem(props: {agenda: Agenda; index: number}) {
   }
 
   return (
-    <Draggable draggableId={`drag-and-drop-agenda-${index}`} index={index}>
-      {(provided) => (
-        <div ref={provided.innerRef} {...provided.draggableProps}>
-          <DraggableOverlay>
-            <EditComponent
-              component={{type: AGENDA_ITEM, id: index}}
-              key={index}
-            >
-              <>
-                <DragHandle handleProps={provided.dragHandleProps} />
-                <Published component={agenda}>
-                  <Box aria-label="agenda">
-                    <Event agenda={agenda} />
-                    <Times agenda={agenda} />
-                  </Box>
-                </Published>
-              </>
-            </EditComponent>
-          </DraggableOverlay>
-        </div>
-      )}
-    </Draggable>
+    <>
+      <AgendaItemConfig
+        isVisible={configVisible}
+        onClose={toggleConfig}
+        agenda={agenda}
+        index={index}
+      />
+      <Draggable draggableId={`drag-and-drop-agenda-${index}`} index={index}>
+        {(provided) => (
+          <div ref={provided.innerRef} {...provided.draggableProps}>
+            <DraggableOverlay>
+              <Editable onEdit={toggleConfig} key={index}>
+                <>
+                  <DragHandle handleProps={provided.dragHandleProps} />
+                  <Published component={agenda}>
+                    <Box aria-label="agenda">
+                      <Event agenda={agenda} />
+                      <Times agenda={agenda} />
+                    </Box>
+                  </Published>
+                </>
+              </Editable>
+            </DraggableOverlay>
+          </div>
+        )}
+      </Draggable>
+    </>
   )
 }
 

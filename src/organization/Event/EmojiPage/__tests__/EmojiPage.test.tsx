@@ -6,7 +6,7 @@ import {render} from '__utils__/render'
 import {wait} from '@testing-library/react'
 import EmojiPage from 'organization/Event/EmojiPage'
 import {fakeOrganization} from 'obvio/Organizations/__utils__/factory'
-import {EMOJI} from 'Event/Dashboard/components/emoji'
+import {EMOJI} from 'Event/Dashboard/components/EmojiList/emoji'
 
 const mockGet = axios.get as jest.Mock
 

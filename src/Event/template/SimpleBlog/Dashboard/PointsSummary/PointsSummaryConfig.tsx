@@ -1,99 +1,82 @@
 import TextField from '@material-ui/core/TextField'
-import {
-  Points,
-  POINTS_SUMMARY,
-} from 'Event/template/SimpleBlog/Dashboard/PointsSummary'
 import {useDispatchUpdate} from 'Event/TemplateProvider'
-import {useCloseConfig} from 'Event/Dashboard/editor/state/edit-mode'
-import {onChangeStringHandler} from 'lib/dom'
 import DangerButton from 'lib/ui/Button/DangerButton'
 import React from 'react'
 import styled from 'styled-components'
 import EventImageUpload from 'organization/Event/DashboardConfig/EventImageUpload'
 import {useEvent} from 'Event/EventProvider'
 import {useSimpleBlog} from 'Event/template/SimpleBlog'
+import ComponentConfig, {
+  ComponentConfigProps,
+  SaveButton,
+} from 'organization/Event/DashboardConfig/ComponentConfig'
+import {useForm} from 'react-hook-form'
 
-export type PointsSummaryConfig = {
-  type: typeof POINTS_SUMMARY
-}
-
-export function PointsSummaryConfig() {
+export function PointsSummaryConfig(props: ComponentConfigProps) {
   const {template} = useSimpleBlog()
+  const {isVisible, onClose} = props
 
   const {points} = template
   const updateTemplate = useDispatchUpdate()
-  const closeConfig = useCloseConfig()
   const {event} = useEvent()
 
-  const update = <T extends keyof Points>(key: T) => (value: Points[T]) => {
-    const updated = updatePoints(key, value, points)
+  const {register, handleSubmit} = useForm()
 
+  const save = (data: any) => {
     updateTemplate({
-      points: updated,
+      points: data,
     })
+
+    onClose()
   }
 
   const removePoints = () => {
-    closeConfig()
+    onClose()
     updateTemplate({points: null})
   }
 
   return (
-    <>
-      <EventImageUpload
-        label="Points Logo"
-        property="points_summary_logo"
-        current={event.points_summary_logo}
-      />
-      <TextField
-        value={points?.description || ''}
-        label="Description"
-        multiline
-        rows={4}
-        fullWidth
-        onChange={onChangeStringHandler(update('description'))}
-        inputProps={{
-          'aria-label': 'points description',
-        }}
-      />
-      <TextField
-        value={points?.unit || ''}
-        label="Unit"
-        fullWidth
-        onChange={onChangeStringHandler(update('unit'))}
-        inputProps={{
-          'aria-label': 'points unit',
-        }}
-      />
-      <RemovePointsButton
-        fullWidth
-        variant="outlined"
-        aria-label="remove points"
-        onClick={removePoints}
-      >
-        REMOVE POINTS
-      </RemovePointsButton>
-    </>
+    <ComponentConfig title="Points" isVisible={isVisible} onClose={onClose}>
+      <form onSubmit={handleSubmit(save)}>
+        <EventImageUpload
+          label="Points Logo"
+          property="points_summary_logo"
+          current={event.points_summary_logo}
+        />
+        <TextField
+          defaultValue={points?.description || ''}
+          name="description"
+          label="Description"
+          multiline
+          rows={4}
+          fullWidth
+          inputProps={{
+            'aria-label': 'points description',
+            ref: register,
+          }}
+        />
+        <TextField
+          name="unit"
+          defaultValue={points?.unit || ''}
+          label="Unit"
+          fullWidth
+          inputProps={{
+            'aria-label': 'points unit',
+            ref: register,
+          }}
+        />
+        <SaveButton type="submit" />
+        <RemovePointsButton
+          fullWidth
+          variant="outlined"
+          aria-label="remove points"
+          onClick={removePoints}
+        >
+          REMOVE POINTS
+        </RemovePointsButton>
+      </form>
+    </ComponentConfig>
   )
-}
-
-function updatePoints<T extends keyof Points>(
-  key: T,
-  value: Points[T],
-  points: Points | null,
-): Points {
-  if (!points) {
-    return {
-      description: '',
-      unit: '',
-      [key]: value,
-    }
-  }
-
-  return {
-    ...points,
-    [key]: value,
-  }
 }
 
 const RemovePointsButton = styled(DangerButton)`

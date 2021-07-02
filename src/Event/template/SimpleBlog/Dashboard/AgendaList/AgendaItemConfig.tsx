@@ -1,70 +1,93 @@
-import React from 'react'
-import {useCallback} from 'react'
+import React, {useEffect, useState} from 'react'
 import styled from 'styled-components'
 import {DateTimePicker} from '@material-ui/pickers'
 import DangerButton from 'lib/ui/Button/DangerButton'
 import TextField from '@material-ui/core/TextField'
 import Grid from '@material-ui/core/Grid'
-import {
-  AGENDA_ITEM,
-  Agenda,
-} from 'Event/template/SimpleBlog/Dashboard/AgendaList'
+import {Agenda} from 'Event/template/SimpleBlog/Dashboard/AgendaList'
 import {onChangeStringHandler, onChangeCheckedHandler} from 'lib/dom'
 import {MaterialUiPickersDate} from '@material-ui/pickers/typings/date'
-import {useCloseConfig} from 'Event/Dashboard/editor/state/edit-mode'
 import {useDispatchUpdate} from 'Event/TemplateProvider'
 import Switch from 'lib/ui/form/Switch'
 import Box from '@material-ui/core/Box'
 import {useSimpleBlog} from 'Event/template/SimpleBlog'
+import ComponentConfig, {
+  ComponentConfigProps,
+  SaveButton,
+} from 'organization/Event/DashboardConfig/ComponentConfig'
 
-export type AgendaItemConfig = {
-  type: typeof AGENDA_ITEM
-  id: number
-}
-
-export function AgendaItemConfig(props: {id: AgendaItemConfig['id']}) {
+export function AgendaItemConfig(
+  props: {agenda: Agenda; index?: number} & ComponentConfigProps,
+) {
+  const {isVisible: visible, onClose, agenda, index} = props
   const {template} = useSimpleBlog()
   const {agenda: agendas} = template
   const updateTemplate = useDispatchUpdate()
-  const closeConfig = useCloseConfig()
 
-  if (!agendas) {
-    throw new Error('Missing agendas; was it set properly via edit?')
+  const [isVisible, setIsVisible] = useState(agenda.isVisible)
+  const [text, setText] = useState(agenda.text)
+  const [startDate, setStartDate] = useState(agenda.startDate)
+  const [endDate, setEndDate] = useState(agenda.endDate)
+  const [link, setLink] = useState(agenda.link)
+
+  useEffect(() => {
+    if (visible) {
+      // Prevent losing current changes
+      return
+    }
+
+    setIsVisible(agenda.isVisible)
+    setText(agenda.text)
+    setStartDate(agenda.startDate)
+    setEndDate(agenda.endDate)
+    setLink(agenda.link)
+  }, [agenda, visible])
+
+  const update = (data: Agenda, index: number) =>
+    updateTemplate({
+      agenda: {
+        ...agendas,
+        items: agendas.items.map((r, i) => {
+          const isTarget = i === index
+          if (isTarget) {
+            return data
+          }
+
+          return r
+        }),
+      },
+    })
+
+  const insert = (item: Agenda) =>
+    updateTemplate({
+      agenda: {
+        ...agendas,
+        items: [...agendas.items, item],
+      },
+    })
+
+  const save = () => {
+    const data: Agenda = {
+      isVisible,
+      text,
+      startDate,
+      endDate,
+      link,
+    }
+
+    if (index === undefined) {
+      insert(data)
+      onClose()
+      return
+    }
+
+    update(data, index)
+    onClose()
   }
-
-  if (props.id === undefined || typeof props.id !== 'number') {
-    throw new Error('Missing component id')
-  }
-
-  const agenda = agendas.items[props.id]
-
-  const update = useCallback(
-    <T extends keyof Agenda>(key: T) => (value: Agenda[T]) => {
-      const updated = {
-        ...agenda,
-        [key]: value,
-      }
-
-      updateTemplate({
-        agenda: {
-          ...agendas,
-          items: agendas.items.map((r, index) => {
-            const isTarget = index === props.id
-            if (isTarget) {
-              return updated
-            }
-
-            return r
-          }),
-        },
-      })
-    },
-    [agendas, props.id, agenda, updateTemplate],
-  )
 
   const remove = () => {
-    const withoutTarget = agendas.items.filter((_, index) => index !== props.id)
-    closeConfig()
+    const withoutTarget = agendas.items.filter((_, i) => i !== index)
+    onClose()
     updateTemplate({
       agenda: {
         ...agendas,
@@ -73,52 +96,48 @@ export function AgendaItemConfig(props: {id: AgendaItemConfig['id']}) {
     })
   }
 
-  const updateDate = (key: 'startDate' | 'endDate') => (
+  const handleDate = (setter: (value: string) => void) => (
     date: MaterialUiPickersDate,
   ) => {
-    if (date) {
-      update(key)(date.toISOString())
-      return
+    if (!date) {
+      throw new Error('Date is required')
     }
 
-    /**
-     * End date is clear-able so we'll set it to null if
-     * it was cleared. ie. didn't receive a date.
-     */
-    if (key === 'endDate') {
-      update(key)(null)
-      return
-    }
+    setter(date.toISOString())
+  }
 
-    throw new Error('Start date cannot be empty')
+  const handleNullableDate = (setter: (value: string | null) => void) => (
+    date: MaterialUiPickersDate,
+  ) => {
+    setter(date ? date.toISOString() : null)
   }
 
   return (
-    <>
+    <ComponentConfig isVisible={visible} onClose={onClose} title="Agenda">
       <Box display="flex" justifyContent="flex-end">
         <Switch
-          checked={agenda.isVisible}
-          onChange={onChangeCheckedHandler(update('isVisible'))}
+          checked={isVisible}
+          onChange={onChangeCheckedHandler(setIsVisible)}
           arial-label="config visible switch"
           labelPlacement="start"
           color="primary"
-          label={agenda.isVisible ? 'Enable' : 'Disable'}
+          label={isVisible ? 'Enable' : 'Disable'}
         />
       </Box>
       <TextField
-        value={agenda.text}
+        value={text}
         inputProps={{
           'aria-label': 'agenda text',
         }}
         label="Event"
         fullWidth
-        onChange={onChangeStringHandler(update('text'))}
+        onChange={onChangeStringHandler(setText)}
       />
       <Grid container spacing={2}>
         <Grid item xs={6}>
           <DateTimePicker
-            value={agenda.startDate}
-            onChange={updateDate('startDate')}
+            value={startDate}
+            onChange={handleDate(setStartDate)}
             fullWidth
             label="Start"
             inputProps={{
@@ -129,8 +148,8 @@ export function AgendaItemConfig(props: {id: AgendaItemConfig['id']}) {
         <Grid item xs={6}>
           <DateTimePicker
             clearable
-            value={agenda.endDate}
-            onChange={updateDate('endDate')}
+            value={endDate}
+            onChange={handleNullableDate(setEndDate)}
             fullWidth
             label="End"
             inputProps={{
@@ -140,27 +159,29 @@ export function AgendaItemConfig(props: {id: AgendaItemConfig['id']}) {
         </Grid>
       </Grid>
       <TextField
-        value={agenda.link || ''}
+        value={link || ''}
         inputProps={{
           'aria-label': 'agenda link',
         }}
         label="Link"
         fullWidth
-        onChange={onChangeStringHandler(update('link'))}
+        onChange={onChangeStringHandler(setLink)}
       />
+      <SaveButton onClick={save} />
       <RemoveAgendaButton
         fullWidth
         variant="outlined"
         aria-label="remove agenda"
         onClick={remove}
+        hidden={!index}
       >
         REMOVE AGENDA
       </RemoveAgendaButton>
-    </>
+    </ComponentConfig>
   )
 }
 
 const RemoveAgendaButton = styled(DangerButton)`
-  margin-top: ${(props) => props.theme.spacing[6]}!important;
-  margin-bottom: ${(props) => props.theme.spacing[5]}!important;
+  margin-top: ${(props) => props.theme.spacing[2]}!important;
+  margin-bottom: ${(props) => props.theme.spacing[2]}!important;
 `

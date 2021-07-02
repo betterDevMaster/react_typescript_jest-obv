@@ -1,26 +1,15 @@
 import Button from '@material-ui/core/Button'
 import Grid from '@material-ui/core/Grid'
 import {NavButtonWithSize} from 'Event/Dashboard/components/NavButton'
-import {setConfig} from 'Event/Dashboard/editor/state/actions'
-import {useDispatchUpdate} from 'Event/TemplateProvider'
-import {MAIN_NAV_BUTTON} from 'Event/template/SimpleBlog/Dashboard/MainNav/MainNavButton'
-import React from 'react'
-import {useDispatch} from 'react-redux'
-import {v4 as uid} from 'uuid'
-import {useSimpleBlog} from 'Event/template/SimpleBlog'
+import React, {useState} from 'react'
+import {MainNavButtonConfig} from 'Event/template/SimpleBlog/Dashboard/MainNav/MainNavButton/MainNavButtonConfig'
 
 export default function NewMainNavButton(props: {className?: string}) {
-  const {template} = useSimpleBlog()
-  const {mainNav: buttons} = template
-  const updateTemplate = useDispatchUpdate()
-  const dispatch = useDispatch()
+  const [button, setButton] = useState<NavButtonWithSize | null>(null)
 
-  if (!buttons) {
-    return null
-  }
+  const clearButton = () => setButton(null)
 
   const addButton = () => {
-    const id = uid()
     const button: NavButtonWithSize = {
       text: 'Button',
       link: '',
@@ -32,34 +21,41 @@ export default function NewMainNavButton(props: {className?: string}) {
       isVisible: true,
       infusionsoftTag: null,
     }
-    const entities = {
-      ...buttons.entities,
-      [id]: button,
-    }
-    const ids = [...buttons.ids, id]
 
-    updateTemplate({
-      mainNav: {
-        entities,
-        ids,
-      },
-    })
-
-    // Show config after adding button
-    dispatch(setConfig({type: MAIN_NAV_BUTTON, id}))
+    setButton(button)
   }
   return (
-    <Grid item xs={12} className={props.className}>
-      <Button
-        fullWidth
-        size="large"
-        variant="outlined"
-        color="primary"
-        aria-label="add main nav button"
-        onClick={addButton}
-      >
-        New Button
-      </Button>
-    </Grid>
+    <>
+      <NewButtonConfig button={button} onClose={clearButton} />
+      <Grid item xs={12} className={props.className}>
+        <Button
+          fullWidth
+          size="large"
+          variant="outlined"
+          color="primary"
+          aria-label="add main nav button"
+          onClick={addButton}
+        >
+          New Button
+        </Button>
+      </Grid>
+    </>
+  )
+}
+
+function NewButtonConfig(props: {
+  button: NavButtonWithSize | null
+  onClose: () => void
+}) {
+  if (!props.button) {
+    return null
+  }
+
+  return (
+    <MainNavButtonConfig
+      isVisible
+      onClose={props.onClose}
+      button={props.button}
+    />
   )
 }

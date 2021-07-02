@@ -2,12 +2,12 @@ import {fakeEvent} from 'Event/__utils__/factory'
 import {goToGeneralConfig} from 'organization/Event/GeneralConfig/__utils__/go-to-general-config'
 import user from '@testing-library/user-event'
 import faker from 'faker'
+import {mockRxJsAjax} from 'store/__utils__/MockStoreProvider'
 import {wait} from '@testing-library/react'
 import {CONFIGURE_EVENTS} from 'organization/PermissionsProvider'
 import {fakePanels} from 'Event/template/Panels/__utils__/factory'
-import axios from 'axios'
 
-const mockPut = axios.put as jest.Mock
+const mockRxPost = mockRxJsAjax.post as jest.Mock
 
 it('should configure login template', async () => {
   const event = fakeEvent({
@@ -24,15 +24,11 @@ it('should configure login template', async () => {
     backgroundColor,
   )
 
-  mockPut.mockImplementationOnce(() => Promise.resolve({data: event}))
-
-  user.click(await findByLabelText('save general config'))
-
   await wait(() => {
-    expect(mockPut).toHaveBeenCalledTimes(1)
+    expect(mockRxPost).toHaveBeenCalledTimes(1)
   })
 
-  const [url, data] = mockPut.mock.calls[0]
+  const [url, data] = mockRxPost.mock.calls[0]
   expect(url).toMatch(`/events/${event.slug}`)
 
   expect(data.template.login.submitButton.backgroundColor).toBe(backgroundColor)

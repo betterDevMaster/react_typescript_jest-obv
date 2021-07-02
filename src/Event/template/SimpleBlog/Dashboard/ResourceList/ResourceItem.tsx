@@ -7,7 +7,7 @@ import {storage} from 'lib/url'
 import {Publishable} from 'Event/Dashboard/editor/views/Published'
 import {HasRules} from 'Event/visibility-rules'
 import HiddenOnMatch from 'Event/visibility-rules/HiddenOnMatch'
-import EditComponent from 'Event/Dashboard/editor/views/EditComponent'
+import {Editable} from 'Event/Dashboard/editor/views/EditComponent'
 import Published from 'Event/Dashboard/editor/views/Published'
 import {Draggable, DraggableProvidedDraggableProps} from 'react-beautiful-dnd'
 import Grid from '@material-ui/core/Grid'
@@ -16,6 +16,8 @@ import {DragHandle, DraggableOverlay} from 'lib/ui/drag-and-drop'
 import {useVariables} from 'Event'
 import {Icon} from 'lib/fontawesome/Icon'
 import {useSimpleBlog} from 'Event/template/SimpleBlog'
+import {useToggle} from 'lib/toggle'
+import {ResourceItemConfig} from 'Event/template/SimpleBlog/Dashboard/ResourceList/ResourceItemConfig'
 
 export type Resource = Publishable &
   HasRules & {
@@ -37,6 +39,7 @@ type ResourceItemProps = {
 export default React.memo((props: ResourceItemProps) => {
   const {resource, index} = props
   const isEdit = useEditMode()
+  const {flag: configVisible, toggle: toggleConfig} = useToggle()
 
   if (!isEdit)
     return (
@@ -46,32 +49,35 @@ export default React.memo((props: ResourceItemProps) => {
     )
 
   return (
-    <Draggable draggableId={props.id} index={index}>
-      {(provided) => (
-        <Container
-          resource={resource}
-          ref={provided.innerRef}
-          draggableProps={provided.draggableProps}
-        >
-          <DraggableOverlay>
-            <EditComponent
-              component={{
-                type: RESOURCE_ITEM,
-                id: index,
-              }}
-            >
-              <>
-                <DragHandle handleProps={provided.dragHandleProps} />
-                <ResourceItemLink
-                  resource={resource}
-                  iconColor={props.iconColor}
-                />
-              </>
-            </EditComponent>
-          </DraggableOverlay>
-        </Container>
-      )}
-    </Draggable>
+    <>
+      <ResourceItemConfig
+        isVisible={configVisible}
+        onClose={toggleConfig}
+        resource={resource}
+        index={index}
+      />
+      <Draggable draggableId={props.id} index={index}>
+        {(provided) => (
+          <Container
+            resource={resource}
+            ref={provided.innerRef}
+            draggableProps={provided.draggableProps}
+          >
+            <DraggableOverlay>
+              <Editable onEdit={toggleConfig}>
+                <>
+                  <DragHandle handleProps={provided.dragHandleProps} />
+                  <ResourceItemLink
+                    resource={resource}
+                    iconColor={props.iconColor}
+                  />
+                </>
+              </Editable>
+            </DraggableOverlay>
+          </Container>
+        )}
+      </Draggable>
+    </>
   )
 })
 
@@ -146,6 +152,7 @@ function resourceUrl(resource: Resource): string {
 
 const ResourceLink = styled(AbsoluteLink)<{color: string}>`
   align-items: center;
+  min-height: 20px;
   font-size: 20px;
   display: flex;
   margin-bottom: ${(props) => props.theme.spacing[1]};

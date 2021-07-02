@@ -6,41 +6,92 @@ import React from 'react'
 import {Draggable, DraggableProvidedDraggableProps} from 'react-beautiful-dnd'
 import {DraggableOverlay, DragHandle} from 'lib/ui/drag-and-drop'
 import {EditComponentOverlay} from 'Event/Dashboard/editor/views/EditComponent'
+import {useToggle} from 'lib/toggle'
+import {EntityList} from 'lib/list'
+import ButtonConfig from 'Event/Step3/CustomButtons/ButtonConfig'
 
 type CustomButtonProps = {
   id: string
   button: NavButtonWithSize
+  buttons: EntityList<NavButtonWithSize>
   index: number
-  onEdit?: (id: string) => void
+  update?: (buttons: EntityList<NavButtonWithSize>) => void
 }
 
 export default React.memo((props: CustomButtonProps) => {
-  const {onEdit, id, index} = props
-  const button = <NavButton {...props.button} aria-label="tech check button" />
+  const {id, index, update, buttons} = props
+  const {flag: configVisible, toggle: toggleConfig} = useToggle()
 
-  if (!onEdit) {
-    return <Container button={props.button}>{button}</Container>
+  const removeButton = () => {
+    if (!update) {
+      throw new Error('Missing button update function')
+    }
+
+    const {[id]: target, ...otherButtons} = buttons.entities
+
+    const removed = {
+      ids: buttons.ids.filter((i) => i !== id),
+      entities: {...otherButtons},
+    }
+
+    toggleConfig()
+    update(removed)
+  }
+
+  const handleUpdate = (button: NavButtonWithSize) => {
+    if (!update) {
+      throw new Error('Missing button update function')
+    }
+
+    const updated = {
+      ids: [...buttons.ids],
+      entities: {
+        ...buttons.entities,
+        [id]: button,
+      },
+    }
+
+    update(updated)
+  }
+
+  const buttonComponent = (
+    <NavButton {...props.button} aria-label="tech check button" />
+  )
+
+  if (!update) {
+    return <Container button={props.button}>{buttonComponent}</Container>
   }
 
   return (
-    <Draggable draggableId={id} index={index}>
-      {(provided) => (
-        <Container
-          button={props.button}
-          ref={provided.innerRef}
-          draggableProps={provided.draggableProps}
-        >
-          <DraggableOverlay>
-            <EditComponentOverlay onClick={() => onEdit(id)}>
-              <>
-                <DragHandle handleProps={provided.dragHandleProps} />
-                {button}
-              </>
-            </EditComponentOverlay>
-          </DraggableOverlay>
-        </Container>
-      )}
-    </Draggable>
+    <>
+      <ButtonConfig
+        isVisible={configVisible}
+        id={id}
+        button={props.button}
+        buttons={buttons}
+        onClose={toggleConfig}
+        onRemove={removeButton}
+        onUpdate={handleUpdate}
+      />
+      <Draggable draggableId={id} index={index}>
+        {(provided) => (
+          <Container
+            button={props.button}
+            ref={provided.innerRef}
+            draggableProps={provided.draggableProps}
+          >
+            <DraggableOverlay>
+              <EditComponentOverlay onClick={toggleConfig}>
+                <>
+                  <DragHandle handleProps={provided.dragHandleProps} />
+                  {buttonComponent}
+                </>
+              </EditComponentOverlay>
+            </DraggableOverlay>
+          </Container>
+        )}
+      </Draggable>
+    </>
   )
 })
 

@@ -1,4 +1,4 @@
-import React from 'react'
+import React, {useEffect, useState} from 'react'
 import Box from '@material-ui/core/Box'
 import DangerButton from 'lib/ui/Button/DangerButton'
 import TextField from '@material-ui/core/TextField'
@@ -23,6 +23,7 @@ import {eventRoutes} from 'Event/Routes'
 import Typography from '@material-ui/core/Typography'
 import FormControlLabel from '@material-ui/core/FormControlLabel'
 import Checkbox from '@material-ui/core/Checkbox'
+import {Controller, useForm} from 'react-hook-form'
 
 const MIN_BORDER_WIDTH = 0
 const MAX_BORDER_WIDTH = 50
@@ -34,13 +35,35 @@ export const DEFAULT_BUTTON_WIDTH_PERCENT = 100
 
 export default function ButtonConfig(
   props: TemplateFieldProps & {
+    isVisible: boolean
     buttons: EntityList<NavButtonWithSize>
     id: string | null
     onClose: () => void
     onRemove: () => void
+    button: NavButtonWithSize
   },
 ) {
-  const {id, set, buttons} = props
+  const {id, set, buttons, button, onClose, isVisible} = props
+
+  const {register, control, handleSubmit} = useForm()
+
+  const [isAreaButton, setIsAreaButton] = useState(button.isAreaButton)
+  const [areaId, setAreaId] = useState(button.areaId)
+  const [link, setLink] = useState(button.link)
+  const [page, setPage] = useState(button.page)
+  const [newTab, setNewTab] = useState(button.newTab)
+
+  useEffect(() => {
+    if (isVisible) {
+      return
+    }
+
+    setIsAreaButton(button.isAreaButton)
+    setAreaId(button.areaId)
+    setLink(button.link)
+    setPage(button.page)
+    setNewTab(button.newTab)
+  }, [button, isVisible])
 
   /**
    * Pages the button can navigate to. We only want to allow tech-check
@@ -50,116 +73,139 @@ export default function ButtonConfig(
     [eventRoutes.checkIn]: 'Check-In',
   }
 
-  if (!id) {
-    return null
-  }
-
-  const button = buttons.entities[id]
-
-  const updateButton = <T extends keyof NavButtonWithSize>(key: T) => (
-    value: NavButtonWithSize[T],
-  ) => {
-    const updated = {
-      ids: [...buttons.ids],
-      entities: {
-        ...buttons.entities,
-        [id]: {
-          ...button,
-          [key]: value,
-        },
-      },
-    }
-
-    set('buttons')(updated)
-  }
-
   return (
-    <Dialog open={true} onClose={props.onClose} fullWidth>
+    <Dialog open={isVisible} onClose={onClose} fullWidth>
       <DialogTitle>Edit Button</DialogTitle>
       <DialogContent>
         <TextField
           label="Text"
-          value={button.text}
+          name="text"
+          defaultValue={button.text}
           inputProps={{
             'aria-label': 'button name input',
+            ref: register,
           }}
           fullWidth
-          onChange={onChangeStringHandler(updateButton('text'))}
         />
-        <LinkConfig button={button} update={updateButton} pages={pages} />
+
+        <LinkConfig
+          isAreaButton={isAreaButton}
+          page={page}
+          setPage={setPage}
+          link={link}
+          setLink={setLink}
+          newTab={newTab}
+          setNewTab={setNewTab}
+          pages={pages}
+        />
+
         <Typography gutterBottom>Size</Typography>
-        <Slider
-          min={1}
-          max={12}
-          onChange={handleChangeSlider(updateButton('size'))}
-          valueLabelDisplay="auto"
-          value={button.size || 0}
+        <Controller
+          name="size"
+          defaultValue={button.size || 0}
+          control={control}
+          render={({value, onChange}) => (
+            <Slider
+              min={1}
+              max={12}
+              onChange={handleChangeSlider(onChange)}
+              valueLabelDisplay="auto"
+              value={value}
+            />
+          )}
         />
         <FormControlLabel
           label="New Line"
           control={
-            <Checkbox
-              checked={button.newLine || false}
-              onChange={onChangeCheckedHandler(updateButton('newLine'))}
+            <Controller
+              name="newLine"
+              defaultValue={button.newLine || false}
+              control={control}
+              render={({value, onChange}) => (
+                <Checkbox checked={value} onChange={onChange} />
+              )}
             />
           }
         />
-        <ColorPicker
-          label="Background Color"
-          color={button.backgroundColor}
-          onPick={updateButton('backgroundColor')}
-          aria-label="background color"
+        <Controller
+          name="backgroundColor"
+          control={control}
+          defaultValue={button.backgroundColor}
+          render={({value, onChange}) => (
+            <ColorPicker
+              label="Background Color"
+              color={value}
+              onPick={onChange}
+            />
+          )}
         />
-        <ColorPicker
-          label="Text Color"
-          color={button.textColor}
-          onPick={updateButton('textColor')}
-          aria-label="text color color"
+        <Controller
+          name="textColor"
+          control={control}
+          defaultValue={button.textColor}
+          render={({value, onChange}) => (
+            <ColorPicker label="Text Color" color={value} onPick={onChange} />
+          )}
         />
-        <ColorPicker
-          label="Border  Color"
-          color={button.borderColor}
-          onPick={updateButton('borderColor')}
-          aria-label="border color"
+        <Controller
+          name="borderColor"
+          control={control}
+          defaultValue={button.borderColor}
+          render={({value, onChange}) => (
+            <ColorPicker label="Border Color" color={value} onPick={onChange} />
+          )}
         />
         <TextField
-          value={button.borderRadius || ''}
+          name="borderRadius"
+          defaultValue={button.borderRadius || ''}
           label="Border Radius"
           type="number"
           fullWidth
           inputProps={{
             min: MIN_BORDER_RADIUS,
             max: MAX_BORDER_RADIUS,
+            ref: register,
           }}
-          onChange={onChangeNumberHandler(updateButton('borderRadius'))}
-        />
-        <InputLabel>Border Thickness</InputLabel>
-        <Slider
-          min={MIN_BORDER_WIDTH}
-          max={MAX_BORDER_WIDTH}
-          step={1}
-          onChange={handleChangeSlider(updateButton('borderWidth'))}
-          valueLabelDisplay="auto"
-          value={button.borderWidth ? button.borderWidth : 0}
-          aria-label="border thickness"
         />
         <TextField
-          value={button.padding || ''}
+          name="borderWidth"
+          defaultValue={button.borderWidth || ''}
+          label="Border Width"
+          type="number"
+          fullWidth
+          inputProps={{
+            min: MIN_BORDER_WIDTH,
+            max: MAX_BORDER_WIDTH,
+            ref: register,
+          }}
+        />
+        <TextField
+          name="padding"
+          defaultValue={button.padding || ''}
+          inputProps={{
+            ref: register,
+          }}
           label="Padding"
           type="number"
           fullWidth
-          onChange={onChangeNumberHandler(updateButton('padding'))}
         />
         <TextField
-          value={button.fontSize || ''}
+          name="fontSize"
+          inputProps={{
+            ref: register,
+          }}
+          defaultValue={button.fontSize || ''}
           label="Font Size"
           type="number"
           fullWidth
-          onChange={onChangeNumberHandler(updateButton('fontSize'))}
         />
-        <InfusionsoftTagInput
-          value={button.infusionsoftTag}
-          onChange={updateButton('infusionsoftTag')}
+        <Controller
+          name="infusionsoftTag"
+          control={control}
+          defaultValue={button.infusionsoftTag}
+          render={({value, onChange}) => (
+            <InfusionsoftTagInput value={value} onChange={onChange} />
+          )}
         />
         <Box mt={2} mb={3}>
           <DangerButton

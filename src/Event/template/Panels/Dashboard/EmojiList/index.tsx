@@ -5,13 +5,12 @@ import {
   EmojiImageProps,
   emojiWithName,
   useSendEmoji,
-} from 'Event/Dashboard/components/emoji'
-import AddEmojiListButton from 'Event/template/Panels/Dashboard/EmojiList/AddEmojiListButton'
+} from 'Event/Dashboard/components/EmojiList/emoji'
 import EditModeOnly from 'Event/Dashboard/editor/views/EditModeOnly'
 import {useTemplate} from 'Event/TemplateProvider'
 import {Editable} from 'Event/Dashboard/editor/views/EditComponent'
-import {EmojiListConfig as ConfigDialog} from 'Event/template/Panels/Dashboard/EmojiList/EmojiListConfig'
-import {useEditMode} from 'Event/Dashboard/editor/state/edit-mode'
+import {EmojiListConfig} from 'Event/Dashboard/components/EmojiList/EmojiListConfig'
+import AddEmojiButton from 'Event/Dashboard/components/EmojiList/AddEmojiButton'
 
 export const EMOJI_LIST = 'Emoji List'
 
@@ -36,11 +35,9 @@ export default function EmojiList() {
     // Add button to create emoji list
     return (
       <>
-        <EmojiListConfig>
-          <ConfigDialog editing={isEditing} onClose={stopEditing} />
-        </EmojiListConfig>
         <EditModeOnly>
-          <StyledAddEmojiListButton edit={edit} />
+          <EmojiListConfig isVisible={isEditing} onClose={stopEditing} />
+          <StyledAddEmojiListButton onClick={edit} />
         </EditModeOnly>
       </>
     )
@@ -48,9 +45,9 @@ export default function EmojiList() {
 
   return (
     <>
-      <EmojiListConfig>
-        <ConfigDialog editing={isEditing} onClose={stopEditing} />
-      </EmojiListConfig>
+      <EditModeOnly>
+        <EmojiListConfig isVisible={isEditing} onClose={stopEditing} />
+      </EditModeOnly>
       <Editable onEdit={edit}>
         <Box aria-label="emoji list">
           {list.emojis.map((name, index) => (
@@ -64,13 +61,6 @@ export default function EmojiList() {
   )
 }
 
-function EmojiListConfig(props: {children: React.ReactElement}) {
-  const isEditMode = useEditMode()
-  if (!isEditMode) {
-    return null
-  }
-  return props.children
-}
 const EmojiImage = (props: EmojiImageProps) => {
   const {send, sending} = useSendEmoji()
   const {name, src} = props
@@ -107,6 +97,6 @@ const Image = styled.img`
   cursor: pointer;
 `
 
-const StyledAddEmojiListButton = styled(AddEmojiListButton)`
+const StyledAddEmojiListButton = styled(AddEmojiButton)`
   margin-bottom: ${(props) => props.theme.spacing[6]}!important;
 `

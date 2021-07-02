@@ -8,7 +8,6 @@ import DangerButton from 'lib/ui/Button/DangerButton'
 import {api} from 'lib/url'
 import {useOrganization} from 'organization/OrganizationProvider'
 import React, {useEffect, useState} from 'react'
-import {useForm} from 'react-hook-form'
 
 export default function InfusionsoftTagInput(props: {
   onChange: (tag: InfusionsoftTag | null) => void
@@ -21,7 +20,6 @@ export default function InfusionsoftTagInput(props: {
   const getTagName = useGetTagName()
   const [failed, setFailed] = useState(false)
   const [processing, setProcessing] = useState(false)
-  const {handleSubmit} = useForm()
 
   const hasChanges = parseInt(id) !== value?.id
   const canSet = Boolean(id) && hasChanges && !processing
@@ -78,32 +76,30 @@ export default function InfusionsoftTagInput(props: {
   const helperText = failed ? 'Invalid tag ID' : ''
 
   return (
-    <form onSubmit={handleSubmit(set)}>
-      <TextField
-        value={id}
-        label={label}
-        fullWidth
-        inputProps={{
-          'aria-label': 'infusionsoft tag id',
-        }}
-        onChange={onChangeStringHandler(setId)}
-        error={failed}
-        disabled={processing || props.disabled}
-        helperText={helperText}
-        InputProps={{
-          endAdornment: (
-            <InputAdornment position="end">
-              <ActionButton
-                canSet={canSet}
-                set={set}
-                canClear={canClear}
-                clear={clear}
-              />
-            </InputAdornment>
-          ),
-        }}
-      />
-    </form>
+    <TextField
+      value={id}
+      label={label}
+      fullWidth
+      inputProps={{
+        'aria-label': 'infusionsoft tag id',
+      }}
+      onChange={onChangeStringHandler(setId)}
+      error={failed}
+      disabled={processing || props.disabled}
+      helperText={helperText}
+      InputProps={{
+        endAdornment: (
+          <InputAdornment position="end">
+            <ActionButton
+              canSet={canSet}
+              set={set}
+              canClear={canClear}
+              clear={clear}
+            />
+          </InputAdornment>
+        ),
+      }}
+    />
   )
 }
 

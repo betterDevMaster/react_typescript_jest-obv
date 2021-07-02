@@ -1,5 +1,4 @@
 import Button from '@material-ui/core/Button'
-import {useEditComponent} from 'Event/Dashboard/editor/state/edit-mode'
 import EditModeOnly from 'Event/Dashboard/editor/views/EditModeOnly'
 import React from 'react'
 import styled from 'styled-components'
@@ -7,8 +6,8 @@ import {SimpleBlog, useSimpleBlog} from 'Event/template/SimpleBlog'
 import BackgroundImage from 'Event/template/SimpleBlog/Dashboard/Sidebar/SidebarContainer/BackgroundImage'
 import {Publishable} from 'Event/Dashboard/editor/views/Published'
 import Published from 'Event/Dashboard/editor/views/Published'
-
-export const SIDEBAR_CONTAINER = 'Sidebar'
+import {useToggle} from 'lib/toggle'
+import {SidebarContainerConfig} from 'Event/template/SimpleBlog/Dashboard/Sidebar/SidebarContainer/SidebarContainerConfig'
 
 export type Sidebar = Publishable & {
   background: string
@@ -20,31 +19,38 @@ export type Sidebar = Publishable & {
 }
 
 export default function SidebarContainer(props: {children: React.ReactNode}) {
-  const edit = useEditComponent({type: SIDEBAR_CONTAINER})
   const {template} = useSimpleBlog()
   const {sidebar} = template
 
+  const {flag: configVisible, toggle: toggleConfig} = useToggle()
+
   return (
-    <Published component={sidebar}>
-      <Box {...sidebar}>
-        <TopLayer>
-          <EditModeOnly>
-            <EditSidebarButton
-              onClick={edit}
-              fullWidth
-              size="large"
-              variant="contained"
-              color="secondary"
-              aria-label="edit sidebar"
-            >
-              Edit Sidebar
-            </EditSidebarButton>
-          </EditModeOnly>
-          {props.children}
-        </TopLayer>
-        <BackgroundImage />
-      </Box>
-    </Published>
+    <>
+      <SidebarContainerConfig
+        isVisible={configVisible}
+        onClose={toggleConfig}
+      />
+      <Published component={sidebar}>
+        <Box {...sidebar}>
+          <TopLayer>
+            <EditModeOnly>
+              <EditSidebarButton
+                onClick={toggleConfig}
+                fullWidth
+                size="large"
+                variant="contained"
+                color="secondary"
+                aria-label="edit sidebar"
+              >
+                Edit Sidebar
+              </EditSidebarButton>
+            </EditModeOnly>
+            {props.children}
+          </TopLayer>
+          <BackgroundImage />
+        </Box>
+      </Published>
+    </>
   )
 }
 

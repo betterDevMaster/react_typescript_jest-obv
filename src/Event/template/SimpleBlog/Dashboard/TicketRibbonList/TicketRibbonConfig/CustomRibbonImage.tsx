@@ -8,36 +8,33 @@ import {api} from 'lib/url'
 import {CustomTicketRibbon} from 'Event/template/SimpleBlog/Dashboard/TicketRibbonList/TicketRibbon'
 
 export default function CustomRibbonImage(props: TicketRibbonConfigProps) {
-  const {ticketRibbon, processing, setProcessing, update} = props
+  const {processing, setProcessing, setCustomRibbon, customRibbon} = props
   const deleteRibbon = useDeleteCustomRibbon()
 
   const remove = () => {
-    if (processing || !ticketRibbon.customRibbon) {
+    if (processing || !customRibbon) {
       return
     }
 
     setProcessing(true)
 
-    deleteRibbon(ticketRibbon.customRibbon)
+    deleteRibbon(customRibbon)
       .then(() => {
-        update('customRibbon')(null)
+        setCustomRibbon(null)
       })
       .finally(() => {
         setProcessing(false)
       })
   }
 
-  if (!ticketRibbon.customRibbon) {
+  if (!customRibbon) {
     return null
   }
 
   return (
     <Box mb={2}>
       <ImageBox>
-        <img
-          src={ticketRibbon.customRibbon.image.url}
-          alt={ticketRibbon.name}
-        />
+        <img src={customRibbon.image.url} alt="Ticket ribbon" />
       </ImageBox>
       <Box display="flex" justifyContent="flex-end">
         <DangerButton

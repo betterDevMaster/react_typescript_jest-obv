@@ -1,4 +1,4 @@
-import React, {useState} from 'react'
+import React from 'react'
 import styled from 'styled-components'
 import {EntityList} from 'lib/list'
 import {
@@ -10,7 +10,6 @@ import {
 import Grid from '@material-ui/core/Grid'
 import CustomButton from 'Event/Step3/CustomButtons/CustomButton'
 import NewCustomButton from 'Event/Step3/CustomButtons/NewCustomButton'
-import ButtonConfig from 'Event/Step3/CustomButtons/ButtonConfig'
 import {NavButtonWithSize} from 'Event/Dashboard/components/NavButton'
 import {v4 as uid} from 'uuid'
 
@@ -29,6 +28,7 @@ export default function CustomButtons(props: CustomButtonsProps) {
       <Container className={props.className}>
         {ids.map((id, index) => (
           <CustomButton
+            buttons={buttons}
             id={id}
             index={index}
             key={index}
@@ -50,42 +50,6 @@ function Editable(
   const {buttons, update} = props
   const {ids, entities} = buttons
   const handleDrag = useHandleDrag(update, buttons)
-  const [editing, setEditing] = useState<string | null>(null)
-
-  const edit = (id: string | null) => setEditing(id)
-  const stopEdit = () => edit(null)
-
-  const removeButton = () => {
-    if (!editing) {
-      return
-    }
-
-    const {[editing]: target, ...otherButtons} = buttons.entities
-
-    const removed = {
-      ids: buttons.ids.filter((id) => id !== editing),
-      entities: {...otherButtons},
-    }
-
-    stopEdit()
-    update(removed)
-  }
-
-  const updateButton = (button: NavButtonWithSize) => {
-    if (!editing) {
-      return
-    }
-
-    const updated = {
-      ids: [...buttons.ids],
-      entities: {
-        ...buttons.entities,
-        [editing]: button,
-      },
-    }
-
-    update(updated)
-  }
 
   const addButton = (button: NavButtonWithSize) => {
     const id = uid()
@@ -100,19 +64,10 @@ function Editable(
       entities,
       ids,
     })
-
-    edit(id)
   }
 
   return (
     <>
-      <ButtonConfig
-        id={editing}
-        onClose={stopEdit}
-        buttons={buttons}
-        onRemove={removeButton}
-        onUpdate={updateButton}
-      />
       <NewButtonBox>
         <NewCustomButton onAdd={addButton} />
       </NewButtonBox>
@@ -127,11 +82,12 @@ function Editable(
               <>
                 {ids.map((id, index) => (
                   <CustomButton
+                    update={update}
+                    buttons={buttons}
                     id={id}
                     index={index}
                     key={index}
                     button={entities[id]}
-                    onEdit={edit}
                   />
                 ))}
                 {provided.placeholder}

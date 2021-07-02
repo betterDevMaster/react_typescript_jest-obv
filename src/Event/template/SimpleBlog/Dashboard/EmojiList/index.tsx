@@ -5,13 +5,13 @@ import {
   EmojiImageProps,
   emojiWithName,
   useSendEmoji,
-} from 'Event/Dashboard/components/emoji'
-import EditComponent from 'Event/Dashboard/editor/views/EditComponent'
-import AddEmojiListButton from 'Event/template/SimpleBlog/Dashboard/EmojiList/AddEmojiListButton'
+} from 'Event/Dashboard/components/EmojiList/emoji'
+import {Editable} from 'Event/Dashboard/editor/views/EditComponent'
+import AddEmojiButton from 'Event/Dashboard/components/EmojiList/AddEmojiButton'
 import EditModeOnly from 'Event/Dashboard/editor/views/EditModeOnly'
 import {useTemplate} from 'Event/TemplateProvider'
-
-export const EMOJI_LIST = 'Emoji List'
+import {useToggle} from 'lib/toggle'
+import {EmojiListConfig} from 'Event/Dashboard/components/EmojiList/EmojiListConfig'
 
 export interface EmojiList {
   emojis: Emoji['name'][]
@@ -24,27 +24,36 @@ export interface EmojiList {
 export default function EmojiList() {
   const template = useTemplate()
   const {emojiList: list} = template
+  const {flag: configVisible, toggle: toggleConfig} = useToggle()
 
   const isEmpty = list && list.emojis.length === 0
   if (!list || isEmpty) {
     // Add button to create emoji list
     return (
       <EditModeOnly>
-        <StyledAddEmojiListButton />
+        <>
+          <EmojiListConfig isVisible={configVisible} onClose={toggleConfig} />
+          <StyledAddEmojiListButton onClick={toggleConfig} />
+        </>
       </EditModeOnly>
     )
   }
 
   return (
-    <EditComponent component={{type: EMOJI_LIST}}>
-      <Box aria-label="emoji list">
-        {list.emojis.map((name, index) => (
-          <Container key={index} width={list.emojiWidth}>
-            <EmojiImage name={name} src={emojiWithName(name).image} />
-          </Container>
-        ))}
-      </Box>
-    </EditComponent>
+    <>
+      <EditModeOnly>
+        <EmojiListConfig isVisible={configVisible} onClose={toggleConfig} />
+      </EditModeOnly>
+      <Editable onEdit={toggleConfig}>
+        <Box aria-label="emoji list">
+          {list.emojis.map((name, index) => (
+            <Container key={index} width={list.emojiWidth}>
+              <EmojiImage name={name} src={emojiWithName(name).image} />
+            </Container>
+          ))}
+        </Box>
+      </Editable>
+    </>
   )
 }
 
@@ -84,6 +93,6 @@ const Image = styled.img`
   cursor: pointer;
 `
 
-const StyledAddEmojiListButton = styled(AddEmojiListButton)`
+const StyledAddEmojiListButton = styled(AddEmojiButton)`
   margin-bottom: ${(props) => props.theme.spacing[6]}!important;
 `

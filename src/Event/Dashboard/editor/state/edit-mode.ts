@@ -1,6 +1,4 @@
-import {setConfig} from 'Event/Dashboard/editor/state/actions'
-import {ComponentConfig} from 'Event/Dashboard/editor/views/DashboardEditDialog/ComponentConfig'
-import {useDispatch, useSelector} from 'react-redux'
+import {useSelector} from 'react-redux'
 import {RootState} from 'store'
 
 export const useEditMode = () =>
@@ -24,19 +22,4 @@ export function useCurrent<T>(
   }
 
   return current
-}
-
-export function useCloseConfig() {
-  const dispatch = useDispatch()
-  return () => {
-    dispatch(setConfig(null))
-  }
-}
-
-export function useEditComponent(component: ComponentConfig) {
-  const dispatch = useDispatch()
-
-  return () => {
-    dispatch(setConfig(component))
-  }
 }

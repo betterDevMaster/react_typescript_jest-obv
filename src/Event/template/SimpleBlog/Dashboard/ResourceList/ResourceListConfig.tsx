@@ -1,39 +1,52 @@
 import TextField from '@material-ui/core/TextField'
-import {RESOURCE_LIST} from 'Event/template/SimpleBlog/Dashboard/ResourceList'
 import {useSimpleBlog} from 'Event/template/SimpleBlog'
-import {onChangeStringHandler} from 'lib/dom'
 import React from 'react'
+import ComponentConfig, {
+  ComponentConfigProps,
+  SaveButton,
+} from 'organization/Event/DashboardConfig/ComponentConfig'
+import {useForm} from 'react-hook-form'
 
-export type ResourceListConfig = {
-  type: typeof RESOURCE_LIST
-}
-
-export function ResourceListConfig() {
+export function ResourceListConfig(props: ComponentConfigProps) {
+  const {isVisible, onClose} = props
   const {template, update} = useSimpleBlog()
   const {resourceList: list} = template
-  const updateResourceList = update.object('resourceList')
+  const {handleSubmit, register} = useForm()
+
+  const save = (data: any) => {
+    update.primitive('resourceList')({
+      resources: [list.resources],
+      ...data,
+    })
+    onClose()
+  }
 
   return (
-    <>
-      <TextField
-        value={list.title}
-        inputProps={{
-          'aria-label': 'update resources title',
-        }}
-        label="Title"
-        fullWidth
-        onChange={onChangeStringHandler(updateResourceList('title'))}
-      />
+    <ComponentConfig isVisible={isVisible} onClose={onClose} title="Resources">
+      <form onSubmit={handleSubmit(save)}>
+        <TextField
+          defaultValue={list.title}
+          name="title"
+          inputProps={{
+            'aria-label': 'update resources title',
+            ref: register,
+          }}
+          label="Title"
+          fullWidth
+        />
 
-      <TextField
-        value={list.description}
-        inputProps={{
-          'aria-label': 'update resources description',
-        }}
-        label="Description"
-        fullWidth
-        onChange={onChangeStringHandler(updateResourceList('description'))}
-      />
-    </>
+        <TextField
+          name="description"
+          defaultValue={list.description}
+          inputProps={{
+            'aria-label': 'update resources description',
+            ref: register,
+          }}
+          label="Description"
+          fullWidth
+        />
+        <SaveButton type="submit" />
+      </form>
+    </ComponentConfig>
   )
 }

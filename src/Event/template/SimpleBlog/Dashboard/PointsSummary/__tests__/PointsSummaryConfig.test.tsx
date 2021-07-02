@@ -5,12 +5,13 @@ import {fakePoints} from 'Event/template/SimpleBlog/Dashboard/PointsSummary/__ut
 import {fireEvent, wait} from '@testing-library/dom'
 import {clickEdit} from '__utils__/edit'
 import {fakeEvent} from 'Event/__utils__/factory'
+import {mockRxJsAjax} from 'store/__utils__/MockStoreProvider'
 import {ObvioEvent} from 'Event'
 import axios from 'axios'
 import {goToDashboardConfig} from 'organization/Event/DashboardConfig/__utils__/go-dashboard-config'
 import {act} from 'react-dom/test-utils'
-import {debug} from 'node:console'
 
+const mockRxPost = mockRxJsAjax.post as jest.Mock
 const mockAxiosPost = axios.post as jest.Mock
 const mockPut = axios.put as jest.Mock
 
@@ -31,11 +32,20 @@ it('should configure points', async () => {
   const unit = faker.random.word()
   user.type(await findByLabelText('points unit'), unit)
 
-  fireEvent.click(await findByLabelText('close config dialog'))
+  fireEvent.click(await findByLabelText('save'))
 
   const pointsText = new RegExp(`you've earned 0 ${unit}!`, 'i')
 
   expect(await findByText(pointsText)).toBeInTheDocument()
+
+  // Saved
+  await wait(() => {
+    expect(mockRxPost).toHaveBeenCalledTimes(1)
+  })
+
+  const [url, data] = mockRxPost.mock.calls[0]
+  expect(url).toMatch(`/events/${event.slug}`)
+  expect(data.template.points).not.toBeNull()
 })
 
 it('should remove points', async () => {
@@ -58,6 +68,15 @@ it('should remove points', async () => {
   await wait(() => {
     expect(queryByText(/you've earned/i)).not.toBeInTheDocument()
   })
+
+  // Saved
+  await wait(() => {
+    expect(mockRxPost).toHaveBeenCalledTimes(1)
+  })
+
+  const [url, data] = mockRxPost.mock.calls[0]
+  expect(url).toMatch(`/events/${event.slug}`)
+  expect(data.template.points).toBeNull()
 })
 
 it('should upload a logo', async () => {
@@ -69,7 +88,7 @@ it('should upload a logo', async () => {
     }),
   })
 
-  const {findByLabelText} = await goToDashboardConfig({event})
+  const {findByLabelText, debug} = await goToDashboardConfig({event})
 
   clickEdit(await findByLabelText('points summary'))
 
@@ -97,10 +116,6 @@ it('should upload a logo', async () => {
 
   expect(url).toMatch(`/events/${event.slug}`)
   expect(data.get('points_summary_logo')).toBe(logo)
-
-  expect((await findByLabelText('points logo')).getAttribute('src')).toBe(
-    logoData.url,
-  )
 })
 
 it('should remove the logo', async () => {

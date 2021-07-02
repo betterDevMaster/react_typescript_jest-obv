@@ -5,11 +5,12 @@ import {fakeSimpleBlog} from 'Event/template/SimpleBlog/__utils__/factory'
 import {fakeEvent} from 'Event/__utils__/factory'
 import {clickEdit} from '__utils__/edit'
 import axios from 'axios'
+import {mockRxJsAjax} from 'store/__utils__/MockStoreProvider'
 import {goToDashboardConfig} from 'organization/Event/DashboardConfig/__utils__/go-dashboard-config'
 
 const mockAjaxPost = axios.post as jest.Mock
-const mockPut = axios.put as jest.Mock
 const mockAjaxDelete = axios.delete as jest.Mock
+const mockRxPost = mockRxJsAjax.post as jest.Mock
 
 beforeAll(() => {
   jest.spyOn(console, 'warn').mockImplementation(() => {})
@@ -73,15 +74,14 @@ it('should upload a file', async () => {
   // Shows remove button, ie. has existing file now
   expect(await findByLabelText('remove resource file')).toBeInTheDocument()
 
-  mockPut.mockResolvedValueOnce({data: event})
-  user.click(await findByLabelText('save dashboard'))
+  user.click(await findByLabelText('save'))
 
   // saved?
   await wait(() => {
-    expect(mockPut).toHaveBeenCalledTimes(1)
+    expect(mockRxPost).toHaveBeenCalledTimes(1)
   })
 
-  const [saveUrl, savedData] = mockPut.mock.calls[0]
+  const [saveUrl, savedData] = mockRxPost.mock.calls[0]
   expect(saveUrl).toMatch(`/events/${event.slug}`)
   // Saved returned file path
   expect(savedData.template.resourceList.resources[0]['filePath']).toBe(

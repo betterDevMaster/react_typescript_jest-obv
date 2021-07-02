@@ -1,3 +1,4 @@
+import {MaterialUiPickersDate} from '@material-ui/pickers/typings/date'
 import {ChangeEvent, useEffect, useRef} from 'react'
 
 export const onChangeStringHandler = (setter: (v: string) => void) => (
@@ -34,6 +35,17 @@ export const handleChangeSlider = (handler: (newValue: any) => void) => (
   }
 
   handler(value)
+}
+
+export const onChangeDate = (set: (val: string) => void) => (
+  date: MaterialUiPickersDate,
+) => {
+  const value = date?.toISOString()
+  if (!value) {
+    throw new Error('Missing date')
+  }
+
+  set(value)
 }
 
 export function Visible(props: {if: boolean; children: React.ReactElement}) {

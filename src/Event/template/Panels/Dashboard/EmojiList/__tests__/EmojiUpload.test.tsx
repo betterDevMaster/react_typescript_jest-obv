@@ -1,11 +1,11 @@
 import faker from 'faker'
 import {fakeEvent} from 'Event/__utils__/factory'
-import {fakeSimpleBlog} from 'Event/template/SimpleBlog/__utils__/factory'
 import user from '@testing-library/user-event'
 import {fireEvent, wait} from '@testing-library/react'
 import axios from 'axios'
 import {clickEdit} from '__utils__/edit'
 import {goToDashboardConfig} from 'organization/Event/DashboardConfig/__utils__/go-dashboard-config'
+import {fakePanels} from 'Event/template/Panels/__utils__/factory'
 
 const mockPost = axios.post as jest.Mock
 const mockDelete = axios.delete as jest.Mock
@@ -14,7 +14,7 @@ it('should upload an image', async () => {
   window.URL.createObjectURL = jest.fn()
 
   const event = fakeEvent({
-    template: fakeSimpleBlog({
+    template: fakePanels({
       emojiList: {
         emojis: [],
       },
@@ -54,7 +54,7 @@ it('should upload an image', async () => {
 
   const emojiSelects = await findAllByLabelText('pick emoji')
 
-  // Addds a new picker
+  // Adds a new picker
   expect(emojiSelects.length).toBe(2)
 
   // Sets image source in first picker
@@ -68,7 +68,7 @@ it('should remove the emoji file', async () => {
   const customEmoji = `${faker.random.alphaNumeric()}.jpg`
 
   const event = fakeEvent({
-    template: fakeSimpleBlog({
+    template: fakePanels({
       emojiList: {
         emojis: [customEmoji],
       },
@@ -97,7 +97,7 @@ it('it should cancel an emoji upload', async () => {
   window.URL.createObjectURL = jest.fn(() => data)
 
   const event = fakeEvent({
-    template: fakeSimpleBlog({
+    template: fakePanels({
       emojiList: {
         emojis: [],
       },

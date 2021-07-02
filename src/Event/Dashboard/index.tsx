@@ -1,7 +1,6 @@
 import React, {useEffect} from 'react'
 import SimpleBlogDashboard from 'Event/template/SimpleBlog/Dashboard'
 import {User} from 'auth/user'
-import DashboardEditDialog from 'Event/Dashboard/editor/views/DashboardEditDialog'
 import ConfigBar from 'Event/Dashboard/editor/views/ConfigBar'
 import {useTemplate} from 'Event/TemplateProvider'
 import {useDispatch} from 'react-redux'
@@ -38,7 +37,6 @@ function ConfigComponents(props: {
       <>
         <ConfigBar />
         {props.children}
-        <DashboardEditDialog />
       </>
     )
   }

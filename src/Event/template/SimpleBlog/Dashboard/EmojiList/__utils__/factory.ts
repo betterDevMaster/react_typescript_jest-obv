@@ -1,5 +1,5 @@
 import faker from 'faker'
-import {DEFAULT_EMOJIS} from 'Event/Dashboard/components/emoji'
+import {DEFAULT_EMOJIS} from 'Event/Dashboard/components/EmojiList/emoji'
 import {EmojiList} from 'Event/template/SimpleBlog/Dashboard/EmojiList'
 
 export function withEmojiList<

@@ -6,34 +6,42 @@ import {TICKET_RIBBON_IMAGE} from 'Event/template/SimpleBlog/Dashboard/TicketRib
 import React from 'react'
 import MenuItem from '@material-ui/core/MenuItem'
 import {onUnknownChangeHandler} from 'lib/dom'
+import {Controller} from 'react-hook-form'
 
 export default function DefaultRibbonSelect(props: TicketRibbonConfigProps) {
-  const {ticketRibbon, update} = props
+  const {ticketRibbon, control, customRibbon} = props
 
   /**
    * Only want to show default ribbon select if a user has
    * NOT uploaded a custom ribbon.
    */
-  if (Boolean(ticketRibbon.customRibbon)) {
+  if (Boolean(customRibbon)) {
     return null
   }
 
   return (
     <FormControl fullWidth>
-      <Select
-        value={ticketRibbon.name}
-        inputProps={{
-          'aria-label': 'pick ticket ribbon',
-        }}
-        onChange={onUnknownChangeHandler(update('name'))}
-      >
-        {Object.entries(TICKET_RIBBON_IMAGE).map(([name, image]) => (
-          <MenuItem key={name} value={name}>
-            <Image src={image} alt={name} />
-            <span>{name}</span>
-          </MenuItem>
-        ))}
-      </Select>
+      <Controller
+        control={control}
+        name="name"
+        defaultValue={ticketRibbon.name || ''}
+        render={({value, onChange}) => (
+          <Select
+            value={value}
+            inputProps={{
+              'aria-label': 'pick ticket ribbon',
+            }}
+            onChange={onUnknownChangeHandler(onChange)}
+          >
+            {Object.entries(TICKET_RIBBON_IMAGE).map(([name, image]) => (
+              <MenuItem key={name} value={name}>
+                <Image src={image} alt={name} />
+                <span>{name}</span>
+              </MenuItem>
+            ))}
+          </Select>
+        )}
+      />
     </FormControl>
   )
 }

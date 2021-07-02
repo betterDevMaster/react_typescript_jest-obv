@@ -1,13 +1,13 @@
 import {useEditMode} from 'Event/Dashboard/editor/state/edit-mode'
-import EditComponent from 'Event/Dashboard/editor/views/EditComponent'
+import {Editable} from 'Event/Dashboard/editor/views/EditComponent'
 import React from 'react'
 import styled from 'styled-components'
 import Image from 'Event/template/SimpleBlog/Dashboard/Footer/Image'
 import {useEvent} from 'Event/EventProvider'
 import {useVariables} from 'Event'
 import {useSimpleBlog} from 'Event/template/SimpleBlog'
-
-export const FOOTER = 'footer'
+import {useToggle} from 'lib/toggle'
+import {FooterConfig} from 'Event/template/SimpleBlog/Dashboard/Footer/FooterConfig'
 
 export default function Footer() {
   const {template} = useSimpleBlog()
@@ -15,6 +15,7 @@ export default function Footer() {
   const {event} = useEvent()
   const isEditMode = useEditMode()
   const v = useVariables()
+  const {flag: configVisible, toggle: toggleConfig} = useToggle()
 
   const isEmpty =
     !footer.termsLink &&
@@ -27,32 +28,35 @@ export default function Footer() {
   }
 
   return (
-    <EditComponent component={{type: FOOTER}}>
-      <Box
-        background={footer.background}
-        textColor={footer.textColor}
-        aria-label="footer"
-      >
-        <div>
-          <Image />
+    <>
+      <FooterConfig isVisible={configVisible} onClose={toggleConfig} />
+      <Editable onEdit={toggleConfig}>
+        <Box
+          background={footer.background}
+          textColor={footer.textColor}
+          aria-label="footer"
+        >
+          <div>
+            <Image />
 
-          {footer.termsLink ? (
-            <a href={footer.termsLink} aria-label="terms of service">
-              Terms of Service
-            </a>
+            {footer.termsLink ? (
+              <a href={footer.termsLink} aria-label="terms of service">
+                Terms of Service
+              </a>
+            ) : null}
+            {footer.termsLink && footer.privacyLink ? ' • ' : null}
+            {footer.privacyLink ? (
+              <a href={footer.privacyLink} aria-label="privacy policy">
+                Privacy Policy
+              </a>
+            ) : null}
+          </div>
+          {footer.copyrightText ? (
+            <p aria-label="copyright">{v(footer.copyrightText)}</p>
           ) : null}
-          {footer.termsLink && footer.privacyLink ? ' • ' : null}
-          {footer.privacyLink ? (
-            <a href={footer.privacyLink} aria-label="privacy policy">
-              Privacy Policy
-            </a>
-          ) : null}
-        </div>
-        {footer.copyrightText ? (
-          <p aria-label="copyright">{v(footer.copyrightText)}</p>
-        ) : null}
-      </Box>
-    </EditComponent>
+        </Box>
+      </Editable>
+    </>
   )
 }
 

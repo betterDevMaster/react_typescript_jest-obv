@@ -1,10 +1,10 @@
 import React from 'react'
 import styled from 'styled-components'
 import Heading from 'Event/template/SimpleBlog/Dashboard/Sidebar/Heading'
-import EditComponent from 'Event/Dashboard/editor/views/EditComponent'
+import {Editable} from 'Event/Dashboard/editor/views/EditComponent'
 import {Publishable} from 'Event/Dashboard/editor/views/Published'
 import EditModeOnly from 'Event/Dashboard/editor/views/EditModeOnly'
-import AddAgendaEventButton from 'Event/template/SimpleBlog/Dashboard/AgendaList/AddAgendaEventButton'
+import AddAgendaButton from 'Event/template/SimpleBlog/Dashboard/AgendaList/AddAgendaButton'
 import {useDispatchUpdate} from 'Event/TemplateProvider'
 import Section from 'Event/template/SimpleBlog/Dashboard/Sidebar/Section'
 import {useEditMode} from 'Event/Dashboard/editor/state/edit-mode'
@@ -13,9 +13,8 @@ import Agenda from 'Event/template/SimpleBlog/Dashboard/AgendaList/AgendaItem'
 import {DragDropContext, Droppable, DropResult} from 'react-beautiful-dnd'
 import StyledText from 'lib/ui/typography/StyledText'
 import {useSimpleBlog} from 'Event/template/SimpleBlog'
-
-export const AGENDA_ITEM = 'Agenda Item'
-export const AGENDA_LIST = 'Agenda List'
+import {useToggle} from 'lib/toggle'
+import {AgendaListConfig} from 'Event/template/SimpleBlog/Dashboard/AgendaList/AgendaListConfig'
 
 export type Agenda = Publishable & {
   startDate: string
@@ -30,36 +29,44 @@ export default function AgendaList() {
   const isEdit = useEditMode()
   const v = useVariables()
   const hasAgenda = agenda.items.length > 0
+  const {flag: listConfigVisible, toggle: toggleListConfig} = useToggle()
+
   if (!hasAgenda && !isEdit) {
     return null
   }
 
   return (
-    <Section>
-      <EditComponent component={{type: AGENDA_LIST}}>
-        <Heading aria-label="agendas">{v(agenda.title)}</Heading>
-      </EditComponent>
-      <StyledText
-        Component={Text}
-        fontStyles={agenda.descriptionFontStyles}
-        aria-label="agendas description"
-        color={sidebar.textColor}
-      >
-        {v(agenda.description || '')}
-      </StyledText>
-      <DroppableList />
-      <StyledText
-        Component={Text}
-        fontStyles={agenda.footerFontStyles}
-        aria-label="agendas footer description"
-        color={sidebar.textColor}
-      >
-        {v(agenda.footer || '')}
-      </StyledText>
-      <EditModeOnly>
-        <StyledAddAgendaEventButton />
-      </EditModeOnly>
-    </Section>
+    <>
+      <AgendaListConfig
+        isVisible={listConfigVisible}
+        onClose={toggleListConfig}
+      />
+      <Section>
+        <Editable onEdit={toggleListConfig}>
+          <Heading aria-label="agendas">{v(agenda.title)}</Heading>
+        </Editable>
+        <StyledText
+          Component={Text}
+          fontStyles={agenda.descriptionFontStyles}
+          aria-label="agendas description"
+          color={sidebar.textColor}
+        >
+          {v(agenda.description || '')}
+        </StyledText>
+        <DroppableList />
+        <StyledText
+          Component={Text}
+          fontStyles={agenda.footerFontStyles}
+          aria-label="agendas footer description"
+          color={sidebar.textColor}
+        >
+          {v(agenda.footer || '')}
+        </StyledText>
+        <EditModeOnly>
+          <StyledAddAgendaEventButton />
+        </EditModeOnly>
+      </Section>
+    </>
   )
 }
 
@@ -124,7 +131,7 @@ function useHandleDrag() {
   }
 }
 
-const StyledAddAgendaEventButton = styled(AddAgendaEventButton)`
+const StyledAddAgendaEventButton = styled(AddAgendaButton)`
   margin-bottom: ${(props) => props.theme.spacing[6]}!important;
 `
 

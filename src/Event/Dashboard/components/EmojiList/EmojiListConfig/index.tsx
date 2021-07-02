@@ -1,103 +1,106 @@
 import styled from 'styled-components'
-import {EmojiList, EMOJI_LIST} from 'Event/template/Panels/Dashboard/EmojiList'
+import {EmojiList} from 'Event/template/SimpleBlog/Dashboard/EmojiList'
 import {
   DEFAULT_EMOJIS,
   createCustomEmoji,
   Emoji,
   isCustom,
-} from 'Event/Dashboard/components/emoji'
-import EmojiSelect from 'Event/template/Panels/Dashboard/EmojiList/EmojiListConfig/EmojiSelect'
-import React from 'react'
+} from 'Event/Dashboard/components/EmojiList/emoji'
+import EmojiSelect from 'Event/Dashboard/components/EmojiList/EmojiListConfig/EmojiSelect'
+import React, {useEffect, useState} from 'react'
 import CloseIcon from '@material-ui/icons/Close'
 import IconButton from 'lib/ui/IconButton'
 import TextField from '@material-ui/core/TextField'
 import {onUnknownChangeHandler} from 'lib/dom'
 import {useDispatchUpdate, useTemplate} from 'Event/TemplateProvider'
-import EmojiUpload from 'Event/template/Panels/Dashboard/EmojiList/EmojiListConfig/EmojiUpload'
+import EmojiUpload from 'Event/Dashboard/components/EmojiList/EmojiListConfig/EmojiUpload'
 import {useEvent} from 'Event/EventProvider'
 import {useOrganization} from 'organization/OrganizationProvider'
 import {api} from 'lib/url'
-import Dialog from 'lib/ui/Dialog'
-import DialogContent from '@material-ui/core/DialogContent'
-import DialogTitle from '@material-ui/core/DialogTitle'
+import ComponentConfig, {
+  ComponentConfigProps,
+  SaveButton,
+} from 'organization/Event/DashboardConfig/ComponentConfig'
 
-export type EmojiListConfig = {
-  type: typeof EMOJI_LIST
-}
-
-export function EmojiListConfig(props: {
-  editing: boolean | null
-  onClose: () => void
-}) {
+export function EmojiListConfig(props: ComponentConfigProps) {
+  const {isVisible, onClose} = props
   const updateTemplate = useDispatchUpdate()
   const template = useTemplate()
   const {emojiList} = template
   const deleteFile = useDeleteFile()
 
-  if (props.editing === false) {
-    return null
-  }
-  const customEmojis = emojiList.emojis.filter(isCustom).map(createCustomEmoji)
+  const [emojiWidth, setEmojiWidth] = useState(emojiList.emojiWidth)
+  const [emojis, setEmojis] = useState(emojiList.emojis)
+
+  useEffect(() => {
+    if (isVisible) {
+      return
+    }
+
+    setEmojiWidth(emojiList.emojiWidth)
+    setEmojis(emojiList.emojis)
+  }, [isVisible, emojiList])
+
+  const customEmojis = emojis.filter(isCustom).map(createCustomEmoji)
   const availableEmojis = [...DEFAULT_EMOJIS, ...customEmojis]
 
-  const update = <T extends keyof EmojiList>(key: T, value: EmojiList[T]) => {
+  const save = () => {
+    const data: EmojiList = {
+      emojiWidth,
+      emojis,
+    }
+
     updateTemplate({
-      emojiList: {
-        ...emojiList,
-        [key]: value,
-      },
+      emojiList: data,
     })
+
+    onClose()
   }
 
   const addNewEmoji = (emoji: Emoji['name']) => {
-    const updated = [...emojiList.emojis, emoji]
-    update('emojis', updated)
+    const added = [...emojis, emoji]
+    setEmojis(added)
   }
 
-  const updateEmoji = (index: number) => (updated: Emoji['name']) => {
-    const updatedEmojis = emojiList.emojis.map((e, i) => {
+  const updateEmoji = (index: number) => (target: Emoji['name']) => {
+    const updated = emojis.map((e, i) => {
       const isTarget = i === index
       if (isTarget) {
-        return updated
+        return target
       }
 
       return e
     })
 
-    update('emojis', updatedEmojis)
+    setEmojis(updated)
   }
 
   const remove = (index: number) => () => {
-    const emoji = emojiList.emojis[index]
-    const isLast = emojiList.emojis.filter((e) => e === emoji).length === 1
+    const emoji = emojis[index]
+    const isLast = emojis.filter((e) => e === emoji).length === 1
     if (isCustom(emoji) && isLast) {
       deleteFile(emoji)
     }
 
-    const updated = emojiList.emojis.filter((e, i) => i !== index)
-    update('emojis', updated)
-  }
-
-  const setWidth = (width: number) => {
-    update('emojiWidth', width)
+    const removed = emojis.filter((e, i) => i !== index)
+    setEmojis(removed)
   }
 
   return (
-    <Dialog onClose={props.onClose} open fullWidth>
-      <DialogTitle>Emoji</DialogTitle>
-      <DialogContent>
+    <ComponentConfig title="Emojis" isVisible={isVisible} onClose={onClose}>
+      <>
         <TextField
           type="number"
-          value={emojiList.emojiWidth || ''}
+          value={emojiWidth || ''}
           label="Emoji Size"
-          onChange={onUnknownChangeHandler(setWidth)}
+          onChange={onUnknownChangeHandler(setEmojiWidth)}
           fullWidth
           inputProps={{
             step: 5,
             min: 20,
           }}
         />
-        {emojiList.emojis.map((emoji, index) => (
+        {emojis.map((emoji, index) => (
           <ExistingEmoji key={index}>
             <EmojiSelect
               emojis={availableEmojis}
@@ -111,8 +114,9 @@ export function EmojiListConfig(props: {
         ))}
         <EmojiSelect value="" emojis={availableEmojis} onPick={addNewEmoji} />
         <EmojiUpload onSuccess={addNewEmoji} />
-      </DialogContent>
-    </Dialog>
+        <SaveButton onClick={save} />
+      </>
+    </ComponentConfig>
   )
 }
 

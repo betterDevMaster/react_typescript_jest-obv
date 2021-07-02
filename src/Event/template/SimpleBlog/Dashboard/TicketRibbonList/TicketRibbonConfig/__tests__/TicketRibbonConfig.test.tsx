@@ -56,7 +56,7 @@ it('should add a custom ticket ribbon', async () => {
   expect(url).toMatch(`/events/${event.slug}/ticket_ribbons`)
   expect(data.get('image')).toBe(image)
 
-  user.click(await findByLabelText('close config dialog'))
+  user.click(await findByLabelText('save'))
 
   // Background was set correctly
   const ribbon = await findByLabelText('ticket ribbon')
@@ -71,10 +71,12 @@ it('should add a custom ticket ribbon', async () => {
 
   user.click(await findByLabelText('delete custom ribbon'))
 
-  user.click(await findByLabelText('close config dialog'))
+  user.click(await findByLabelText('save'))
 
   // Custom background removed
-  expect(background.getAttribute('src')).not.toBe(customRibbon.image.url)
+  await wait(() => {
+    expect(background.getAttribute('src')).not.toBe(customRibbon.image.url)
+  })
 })
 
 it('should remove a custom image on delete', async () => {

@@ -1,4 +1,7 @@
-import {CustomTicketRibbon} from 'Event/template/SimpleBlog/Dashboard/TicketRibbonList/TicketRibbon'
+import {
+  CustomTicketRibbon,
+  TicketRibbon,
+} from 'Event/template/SimpleBlog/Dashboard/TicketRibbonList/TicketRibbon'
 import React, {useCallback, useEffect} from 'react'
 import ImageUpload from 'lib/ui/form/ImageUpload'
 import {useFileSelect} from 'lib/ui/form/file'
@@ -10,8 +13,12 @@ import {api} from 'lib/url'
 import Cropper from 'lib/ui/form/ImageUpload/Cropper'
 import {TicketRibbonConfigProps} from 'Event/template/SimpleBlog/Dashboard/TicketRibbonList/TicketRibbonConfig'
 
-export default function CustomRibbonUpload(props: TicketRibbonConfigProps) {
-  const {processing, setProcessing, update, ticketRibbon} = props
+export default function CustomRibbonUpload(
+  props: TicketRibbonConfigProps & {
+    setCustomRibbon: (customRibbon: TicketRibbon['customRibbon']) => void
+  },
+) {
+  const {processing, setProcessing, setCustomRibbon, customRibbon} = props
   const customImage = useFileSelect()
   const {selected: selectedUpload, remove: removeSelectedUpload} = customImage
   const uploadCustomRibbon = useUploadCustomRibbon()
@@ -28,27 +35,25 @@ export default function CustomRibbonUpload(props: TicketRibbonConfigProps) {
     setProcessing(true)
 
     uploadCustomRibbon(selectedUpload)
-      .then((customRibbon) => {
-        update('customRibbon')(customRibbon)
-      })
+      .then(setCustomRibbon)
       .finally(() => {
         removeSelectedUpload() // Required to prevent upload loop
         setProcessing(false)
       })
   }, [
     selectedUpload,
-    update,
     uploadCustomRibbon,
     processing,
     removeSelectedUpload,
     setProcessing,
+    setCustomRibbon,
   ])
 
   /**
    * Already uploaded a custom image, so we won't show
    * the upload button again.
    */
-  if (Boolean(ticketRibbon.customRibbon)) {
+  if (Boolean(customRibbon)) {
     return null
   }
 

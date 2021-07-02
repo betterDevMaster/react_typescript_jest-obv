@@ -32,6 +32,7 @@ export const SIMPLE_BLOG = 'Simple Blog'
 
 export function useSimpleBlog() {
   const template = useTemplate()
+
   const update = useUpdate<SimpleBlog>()
 
   if (template.name !== SIMPLE_BLOG) {

@@ -1,7 +1,7 @@
 import React from 'react'
 import styled from 'styled-components'
 import Heading from 'Event/template/SimpleBlog/Dashboard/Sidebar/Heading'
-import EditComponent from 'Event/Dashboard/editor/views/EditComponent'
+import {Editable} from 'Event/Dashboard/editor/views/EditComponent'
 import {useEditMode} from 'Event/Dashboard/editor/state/edit-mode'
 import EditModeOnly from 'Event/Dashboard/editor/views/EditModeOnly'
 import AddResourceButton from 'Event/template/SimpleBlog/Dashboard/ResourceList/AddResourceButton'
@@ -20,16 +20,14 @@ import {
   DropResult,
 } from 'react-beautiful-dnd'
 import {useSimpleBlog} from 'Event/template/SimpleBlog'
+import {useToggle} from 'lib/toggle'
+import {ResourceListConfig} from 'Event/template/SimpleBlog/Dashboard/ResourceList/ResourceListConfig'
 
 export interface ResourceList {
   title: string
   description: string
   resources: Resource[]
 }
-
-export const RESOURCE_LIST = 'Resource List'
-
-export const RESOURCE_ITEM = 'Resource Item'
 
 export const RESOURCE_ICON = {
   pdf: 'picture_as_pdf',
@@ -42,6 +40,7 @@ export const RESOURCE_ICON = {
 export function ResourceList() {
   const isEdit = useEditMode()
   const {template} = useSimpleBlog()
+  const {flag: configVisible, toggle: toggleConfig} = useToggle()
 
   const {resourceList: list, sidebar} = template
   const v = useVariables()
@@ -52,27 +51,38 @@ export function ResourceList() {
   }
 
   return (
-    <Section>
-      <EditComponent component={{type: RESOURCE_LIST}}>
-        <Heading aria-label="resources">{v(list.title)}</Heading>
-      </EditComponent>
-      <Description aria-label="resource description" color={sidebar.textColor}>
-        {v(list.description)}
-      </Description>
-      <DroppableList />
-      <EditModeOnly>
-        <StyledAddResourceButton />
-      </EditModeOnly>
-    </Section>
+    <>
+      <ResourceListConfig isVisible={configVisible} onClose={toggleConfig} />
+      <Section>
+        <Editable onEdit={toggleConfig}>
+          <Heading aria-label="resources">{v(list.title)}</Heading>
+        </Editable>
+        <Description
+          aria-label="resource description"
+          color={sidebar.textColor}
+        >
+          {v(list.description)}
+        </Description>
+        <DroppableList />
+        <EditModeOnly>
+          <StyledAddResourceButton />
+        </EditModeOnly>
+      </Section>
+    </>
   )
 }
 
 function DroppableList() {
-  const resources = ResourceItemList()
   const handleDrag = useHandleDrag()
-  const isEdit = useEditMode()
 
-  if (!isEdit) return <Container>{resources}</Container>
+  const isEditMode = useEditMode()
+  if (!isEditMode) {
+    return (
+      <Container>
+        <Resources />
+      </Container>
+    )
+  }
 
   return (
     <DragDropContext onDragEnd={handleDrag}>
@@ -80,7 +90,7 @@ function DroppableList() {
         {(provided) => (
           <Container ref={provided.innerRef} {...provided.droppableProps}>
             <>
-              {resources}
+              <Resources />
               {provided.placeholder}
             </>
           </Container>
@@ -90,20 +100,23 @@ function DroppableList() {
   )
 }
 
-function ResourceItemList() {
+function Resources() {
   const {template} = useSimpleBlog()
   const {resourceList: list, sidebar} = template
 
-  const resources = list.resources.map((resource: Resource, index: number) => (
-    <ResourceItem
-      id={`resource-item-${index}`}
-      resource={resource}
-      iconColor={sidebar.textColor}
-      index={index}
-      key={index}
-    />
-  ))
-  return resources
+  return (
+    <>
+      {list.resources.map((resource: Resource, index: number) => (
+        <ResourceItem
+          id={`resource-item-${index}`}
+          resource={resource}
+          iconColor={sidebar.textColor}
+          index={index}
+          key={index}
+        />
+      ))}
+    </>
+  )
 }
 
 const Container = React.forwardRef<

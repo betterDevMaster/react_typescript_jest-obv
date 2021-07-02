@@ -47,7 +47,7 @@ it('should edit a blog post', async () => {
   const updatedTitle = faker.random.words(10)
   user.type(await findByLabelText('blog post title'), updatedTitle)
 
-  fireEvent.click(await findByLabelText('close config dialog'))
+  fireEvent.click(await findByLabelText('save'))
 
   expect(await findByText(updatedTitle)).toBeInTheDocument()
 })
@@ -66,6 +66,9 @@ it('should add a new blog post', async () => {
   })
 
   fireEvent.click(await findByLabelText('add blog post'))
+
+  fireEvent.click(await findByLabelText('save'))
+
   expect((await findAllByLabelText('blog post')).length).toBe(numPosts + 1)
 })
 

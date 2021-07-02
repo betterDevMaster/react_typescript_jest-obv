@@ -3,33 +3,33 @@ import {Editable} from 'Event/Dashboard/editor/views/EditComponent'
 import EditModeOnly from 'Event/Dashboard/editor/views/EditModeOnly'
 import Published from 'Event/Dashboard/editor/views/Published'
 import {usePanels} from 'Event/template/Panels'
-import AddBlogPostButton from 'Event/template/Panels/Dashboard/Home/BlogPosts/AddBlogPostButton'
 import BlogPost from 'Event/template/Panels/Dashboard/Home/BlogPosts/BlogPost'
-import {BlogPostConfig} from 'Event/template/Panels/Dashboard/Home/BlogPosts/BlogPostConfig'
+import {EditPost} from 'Event/Dashboard/components/BlogPost/BlogPostConfig'
 import HiddenOnMatch from 'Event/visibility-rules/HiddenOnMatch'
 import React, {useState} from 'react'
 import styled from 'styled-components'
+import AddBlogPostButton from 'Event/Dashboard/components/BlogPost/AddBlogPostButton'
 
 export default function BlogPosts() {
   const {
     template: {blogPosts},
   } = usePanels()
 
-  const [editingId, setEditingId] = useState<string | null>(null)
-  const stopEditing = () => setEditingId(null)
+  const [editing, setEditing] = useState<string | null>(null)
+  const stopEditing = () => setEditing(null)
 
   const sortedIds = sortedByDate(blogPosts)
 
   return (
     <>
-      <BlogPostConfig targetId={editingId} onClose={stopEditing} />
+      <EditPost id={editing} onClose={stopEditing} />
       <EditModeOnly>
-        <StyledAddBlogPostButton onAdd={setEditingId} />
+        <StyledAddBlogPostButton />
       </EditModeOnly>
       {sortedIds.map((id) => {
         const post = blogPosts.entities[id]
         return (
-          <Editable onEdit={() => setEditingId(id)} key={id}>
+          <Editable onEdit={() => setEditing(id)} key={id}>
             <Published component={post}>
               <HiddenOnMatch rules={post.rules}>
                 <BlogPost post={post} />

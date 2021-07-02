@@ -57,20 +57,29 @@ export function sortedByDate(posts: EntityList<BlogPost>) {
   })
 }
 
-export function useCreatePost() {
-  const {blogPosts} = useTemplate()
+export function useUpdatePost() {
   const updateTemplate = useDispatchUpdate()
+  const {blogPosts: current} = useTemplate()
 
-  const create = () => {
+  return (id: string, updated: BlogPost) => {
+    updateTemplate({
+      blogPosts: {
+        ...current,
+        entities: {
+          ...current.entities,
+          [id]: updated,
+        },
+      },
+    })
+  }
+}
+
+export function useInsertPost() {
+  const updateTemplate = useDispatchUpdate()
+  const {blogPosts} = useTemplate()
+
+  return (post: BlogPost) => {
     const id = uid()
-    const post: BlogPost = {
-      title: 'My Post',
-      postedAt: now(),
-      publishAt: null,
-      content: '',
-      isVisible: true,
-      hideDate: true,
-    }
 
     const entities = {
       ...blogPosts.entities,
@@ -84,62 +93,16 @@ export function useCreatePost() {
         ids,
       },
     })
-
-    return Promise.resolve(id)
-  }
-
-  return create
-}
-
-export function useUpdatePost({
-  list,
-  id,
-}: {
-  list: EntityList<BlogPost>
-  id: string | null
-}) {
-  const updateTemplate = useDispatchUpdate()
-
-  return <T extends keyof BlogPost>(key: T) => (value: BlogPost[T]) => {
-    if (!id) {
-      throw new Error('Missing target id to update blog post')
-    }
-
-    const post = list.entities[id]
-
-    const updated: BlogPost = {
-      ...post,
-      [key]: value,
-    }
-
-    updateTemplate({
-      blogPosts: {
-        ...list,
-        entities: {
-          ...list.entities,
-          [id]: updated,
-        },
-      },
-    })
   }
 }
 
-export function useRemovePost({
-  list,
-  id,
-}: {
-  list: EntityList<BlogPost>
-  id: string | null
-}) {
+export function useRemovePost() {
   const updateTemplate = useDispatchUpdate()
+  const {blogPosts} = useTemplate()
 
-  return () => {
-    if (!id) {
-      throw new Error('Missing id to remove blog post')
-    }
-
-    const {[id]: target, ...otherPosts} = list.entities
-    const updatedIds = list.ids.filter((i) => i !== id)
+  return (id: string) => {
+    const {[id]: target, ...otherPosts} = blogPosts.entities
+    const updatedIds = blogPosts.ids.filter((i) => i !== id)
 
     updateTemplate({
       blogPosts: {
@@ -147,7 +110,5 @@ export function useRemovePost({
         ids: updatedIds,
       },
     })
-
-    return Promise.resolve()
   }
 }

@@ -1,4 +1,4 @@
-import React from 'react'
+import React, {useEffect, useState} from 'react'
 import Box from '@material-ui/core/Box'
 import DangerButton from 'lib/ui/Button/DangerButton'
 import TextField from '@material-ui/core/TextField'
@@ -10,7 +10,6 @@ import {
 import InfusionsoftTagInput from 'organization/Event/DashboardConfig/InfusionsoftTagInput'
 import ColorPicker from 'lib/ui/ColorPicker'
 import {handleChangeSlider} from 'lib/dom'
-import InputLabel from '@material-ui/core/InputLabel'
 import Slider from '@material-ui/core/Slider'
 import {NavButtonWithSize} from 'Event/Dashboard/components/NavButton'
 import {EntityList} from 'lib/list'
@@ -22,6 +21,7 @@ import {eventRoutes} from 'Event/Routes'
 import Typography from '@material-ui/core/Typography'
 import FormControlLabel from '@material-ui/core/FormControlLabel'
 import Checkbox from '@material-ui/core/Checkbox'
+import {SaveButton} from 'organization/Event/DashboardConfig/ComponentConfig'
 
 const MIN_BORDER_WIDTH = 0
 const MAX_BORDER_WIDTH = 50
@@ -33,12 +33,54 @@ export const DEFAULT_BUTTON_WIDTH_PERCENT = 100
 
 export default function ButtonConfig(props: {
   buttons: EntityList<NavButtonWithSize>
+  button: NavButtonWithSize
   id: string | null
   onClose: () => void
   onRemove: () => void
   onUpdate: (button: NavButtonWithSize) => void
+  isVisible: boolean
 }) {
-  const {id, onUpdate, buttons} = props
+  const {onUpdate, onClose, button, isVisible} = props
+
+  const [text, setText] = useState(button.text)
+  const [size, setSize] = useState(button.size)
+  const [newLine, setNewLine] = useState(button.newLine)
+  const [backgroundColor, setBackgroundColor] = useState(button.backgroundColor)
+  const [isAreaButton, setIsAreaButton] = useState(button.isAreaButton)
+  const [areaId, setAreaId] = useState(button.areaId)
+  const [link, setLink] = useState(button.link)
+  const [page, setPage] = useState(button.page)
+  const [newTab, setNewTab] = useState(button.newTab)
+  const [textColor, setTextColor] = useState(button.textColor)
+  const [borderColor, setBorderColor] = useState(button.borderColor)
+  const [borderRadius, setBorderRadius] = useState(button.borderRadius)
+  const [borderWidth, setBorderWidth] = useState(button.borderWidth)
+  const [padding, setPadding] = useState(button.padding)
+  const [fontSize, setFontSize] = useState(button.fontSize)
+  const [infusionsoftTag, setInfusionsoftTag] = useState(button.infusionsoftTag)
+
+  useEffect(() => {
+    if (isVisible) {
+      return
+    }
+
+    setText(button.text)
+    setSize(button.size)
+    setNewLine(button.newLine)
+    setBackgroundColor(button.backgroundColor)
+    setIsAreaButton(button.isAreaButton)
+    setAreaId(button.areaId)
+    setLink(button.link)
+    setPage(button.page)
+    setNewTab(button.newTab)
+    setTextColor(button.textColor)
+    setBorderColor(button.borderColor)
+    setBorderRadius(button.borderRadius)
+    setBorderWidth(button.borderWidth)
+    setPadding(button.padding)
+    setFontSize(button.fontSize)
+    setInfusionsoftTag(button.infusionsoftTag)
+  }, [button, isVisible])
 
   /**
    * Pages the button can navigate to. We only want to allow tech-check
@@ -48,111 +90,131 @@ export default function ButtonConfig(props: {
     [eventRoutes.checkIn]: 'Check-In',
   }
 
-  if (!id) {
-    return null
-  }
-
-  const button = buttons.entities[id]
-
-  const updateButton = <T extends keyof NavButtonWithSize>(key: T) => (
-    value: NavButtonWithSize[T],
-  ) => {
-    const updated = {
+  const save = () => {
+    const data: NavButtonWithSize = {
       ...button,
-      [key]: value,
+      text,
+      size,
+      newLine,
+      backgroundColor,
+      isAreaButton,
+      areaId,
+      link,
+      page,
+      newTab,
+      textColor,
+      borderColor,
+      borderWidth,
+      padding,
+      fontSize,
+      infusionsoftTag,
     }
 
-    onUpdate(updated)
+    onUpdate(data)
+    onClose()
   }
 
   return (
-    <Dialog open={true} onClose={props.onClose} fullWidth>
+    <Dialog open={isVisible} onClose={props.onClose} fullWidth>
       <DialogTitle>Edit Button</DialogTitle>
       <DialogContent>
         <TextField
           label="Text"
-          value={button.text}
+          value={text}
+          onChange={onChangeStringHandler(setText)}
           inputProps={{
             'aria-label': 'button name input',
           }}
           fullWidth
-          onChange={onChangeStringHandler(updateButton('text'))}
         />
-        <LinkConfig button={button} update={updateButton} pages={pages} />
+        <LinkConfig
+          isAreaButton={isAreaButton}
+          page={page}
+          setPage={setPage}
+          link={link}
+          setLink={setLink}
+          newTab={newTab}
+          setNewTab={setNewTab}
+          pages={pages}
+        />
         <Typography gutterBottom>Size</Typography>
         <Slider
           min={1}
           max={12}
-          onChange={handleChangeSlider(updateButton('size'))}
+          value={size || 0}
+          onChange={handleChangeSlider(setSize)}
           valueLabelDisplay="auto"
-          value={button.size || 0}
         />
         <FormControlLabel
           label="New Line"
           control={
             <Checkbox
-              checked={button.newLine || false}
-              onChange={onChangeCheckedHandler(updateButton('newLine'))}
+              checked={newLine || false}
+              onChange={onChangeCheckedHandler(setNewLine)}
             />
           }
         />
         <ColorPicker
           label="Background Color"
-          color={button.backgroundColor}
-          onPick={updateButton('backgroundColor')}
+          color={backgroundColor}
+          onPick={setBackgroundColor}
           aria-label="background color"
         />
+
         <ColorPicker
           label="Text Color"
-          color={button.textColor}
-          onPick={updateButton('textColor')}
+          color={textColor}
+          onPick={setTextColor}
           aria-label="text color color"
         />
         <ColorPicker
-          label="Border  Color"
-          color={button.borderColor}
-          onPick={updateButton('borderColor')}
-          aria-label="border color"
+          label="Border Color"
+          color={borderColor}
+          onPick={setBorderColor}
         />
         <TextField
-          value={button.borderRadius || ''}
+          value={borderRadius || 0}
           label="Border Radius"
+          onChange={onChangeNumberHandler(setBorderRadius)}
           type="number"
           fullWidth
           inputProps={{
             min: MIN_BORDER_RADIUS,
             max: MAX_BORDER_RADIUS,
           }}
-          onChange={onChangeNumberHandler(updateButton('borderRadius'))}
-        />
-        <InputLabel>Border Thickness</InputLabel>
-        <Slider
-          min={MIN_BORDER_WIDTH}
-          max={MAX_BORDER_WIDTH}
-          step={1}
-          onChange={handleChangeSlider(updateButton('borderWidth'))}
-          valueLabelDisplay="auto"
-          value={button.borderWidth ? button.borderWidth : 0}
-          aria-label="border thickness"
         />
         <TextField
-          value={button.padding || ''}
+          name="borderWidth"
+          value={borderWidth || 0}
+          onChange={onChangeNumberHandler(setBorderWidth)}
+          label="Border Width"
+          type="number"
+          fullWidth
+          inputProps={{
+            min: MIN_BORDER_WIDTH,
+            max: MAX_BORDER_WIDTH,
+          }}
+        />
+        <TextField
+          value={padding || 0}
+          onChange={onChangeNumberHandler(setPadding)}
           label="Padding"
           type="number"
           fullWidth
-          onChange={onChangeNumberHandler(updateButton('padding'))}
         />
         <TextField
-          value={button.fontSize || ''}
+          value={fontSize || ''}
+          onChange={onChangeNumberHandler(setFontSize)}
           label="Font Size"
           type="number"
           fullWidth
-          onChange={onChangeNumberHandler(updateButton('fontSize'))}
         />
         <InfusionsoftTagInput
-          value={button.infusionsoftTag}
-          onChange={updateButton('infusionsoftTag')}
+          value={infusionsoftTag}
+          onChange={setInfusionsoftTag}
         />
+
+        <SaveButton onClick={save} />
         <Box mt={2} mb={3}>
           <DangerButton
             fullWidth

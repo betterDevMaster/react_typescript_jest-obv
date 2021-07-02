@@ -5,8 +5,12 @@ import {createEntityList} from 'lib/list'
 import {fireEvent} from '@testing-library/react'
 import {clickEdit} from '__utils__/edit'
 import {fakeEvent} from 'Event/__utils__/factory'
+import {mockRxJsAjax} from 'store/__utils__/MockStoreProvider'
+import {wait} from '@testing-library/react'
 import NavButton from 'Event/Dashboard/components/NavButton'
 import {goToDashboardConfig} from 'organization/Event/DashboardConfig/__utils__/go-dashboard-config'
+
+const mockPost = mockRxJsAjax.post as jest.Mock
 
 afterEach(() => {
   jest.clearAllMocks()
@@ -38,6 +42,15 @@ it('should add a new sidebar nav button', async () => {
   fireEvent.click(await findByLabelText('add sidebar nav button'))
 
   expect((await buttonEls()).length).toBe(numButtons + 1)
+
+  // Saved
+  await wait(() => {
+    expect(mockPost).toHaveBeenCalledTimes(1)
+  })
+
+  const [url, data] = mockPost.mock.calls[0]
+  expect(url).toMatch(`/events/${event.slug}`)
+  expect(data.template.sidebarNav.ids.length).toBe(numButtons + 1)
 })
 
 it('should add a new button when there are none', async () => {
@@ -57,6 +70,15 @@ it('should add a new button when there are none', async () => {
   fireEvent.click(await findByLabelText('add sidebar nav button'))
 
   expect((await buttonEls()).length).toBe(1)
+
+  // Saved
+  await wait(() => {
+    expect(mockPost).toHaveBeenCalledTimes(1)
+  })
+
+  const [url, data] = mockPost.mock.calls[0]
+  expect(url).toMatch(`/events/${event.slug}`)
+  expect(data.template.sidebarNav.ids.length).toBe(1)
 })
 
 it('should edit the selected button', async () => {
@@ -94,10 +116,20 @@ it('should edit the selected button', async () => {
     },
   })
 
-  fireEvent.click(await findByLabelText('close config dialog'))
+  fireEvent.click(await findByLabelText('save'))
 
   const updatedEl = await findByText(updatedValue)
   expect(updatedEl).toBeInTheDocument()
+
+  // Saved
+  await wait(() => {
+    expect(mockPost).toHaveBeenCalledTimes(1)
+  })
+
+  const [url, data] = mockPost.mock.calls[0]
+  expect(url).toMatch(`/events/${event.slug}`)
+  const id = data.template.sidebarNav.ids[targetIndex]
+  expect(data.template.sidebarNav.entities[id].text).toBe(updatedValue)
 })
 
 it('should remove the button', async () => {
@@ -130,4 +162,13 @@ it('should remove the button', async () => {
   expect((await buttonEls()).length).toBe(numButtons - 1)
 
   expect(queryByText(target.textContent!)).not.toBeInTheDocument()
+
+  // Saved
+  await wait(() => {
+    expect(mockPost).toHaveBeenCalledTimes(1)
+  })
+
+  const [url, data] = mockPost.mock.calls[0]
+  expect(url).toMatch(`/events/${event.slug}`)
+  expect(data.template.sidebarNav.ids.length).toBe(numButtons - 1)
 })

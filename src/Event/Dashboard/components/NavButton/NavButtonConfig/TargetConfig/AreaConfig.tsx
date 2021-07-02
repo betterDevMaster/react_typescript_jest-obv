@@ -1,15 +1,12 @@
 import React from 'react'
 import AreaSelect from 'organization/Event/Area/AreaSelect'
-import {ButtonConfigProps} from 'Event/template/SimpleBlog/Dashboard/MainNav/MainNavButton/MainNavButtonConfig'
-import NavButton from 'Event/Dashboard/components/NavButton'
+import {TargetConfigProps} from 'Event/Dashboard/components/NavButton/NavButtonConfig/TargetConfig'
 
-export default function AreaConfig<T extends NavButton>(
-  props: ButtonConfigProps<T>,
-) {
-  const {button, update} = props
-  if (!button.isAreaButton) {
+export default function AreaConfig(props: TargetConfigProps) {
+  const {areaId, setAreaId, isAreaButton} = props
+  if (!isAreaButton) {
     return null
   }
 
-  return <AreaSelect value={button.areaId} onPick={update('areaId')} />
+  return <AreaSelect value={areaId} onPick={setAreaId} />
 }

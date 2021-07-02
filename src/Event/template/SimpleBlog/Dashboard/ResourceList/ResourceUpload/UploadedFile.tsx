@@ -3,18 +3,16 @@ import {storage} from 'lib/url'
 import DangerButton from 'lib/ui/Button/DangerButton'
 import {AbsoluteLink} from 'lib/ui/link/AbsoluteLink'
 import Button from '@material-ui/core/Button'
-import {Resource} from 'Event/template/SimpleBlog/Dashboard/ResourceList/ResourceItem'
 
 export default function ExistingFile(props: {
-  resource: Resource
-  onRemoveFile: (resource: Resource) => void
+  filePath: string
+  onRemove: () => void
 }) {
-  if (!props.resource.filePath) {
+  if (!props.filePath) {
     return null
   }
 
-  const remove = () => props.onRemoveFile(props.resource)
-  const path = storage(`/event/resources/${props.resource.filePath}`)
+  const path = storage(`/event/resources/${props.filePath}`)
 
   return (
     <>
@@ -24,7 +22,7 @@ export default function ExistingFile(props: {
         </Button>
       </AbsoluteLink>
       <DangerButton
-        onClick={remove}
+        onClick={props.onRemove}
         variant="outlined"
         aria-label="remove resource file"
       >

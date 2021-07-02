@@ -4,31 +4,35 @@ import ToggleButtonGroup from '@material-ui/lab/ToggleButtonGroup'
 import ToggleButton from '@material-ui/lab/ToggleButton'
 import AreaConfig from 'Event/Dashboard/components/NavButton/NavButtonConfig/TargetConfig/AreaConfig'
 import LinkConfig from 'Event/Dashboard/components/NavButton/NavButtonConfig/TargetConfig/LinkConfig'
-import {ButtonConfigProps} from 'Event/template/SimpleBlog/Dashboard/MainNav/MainNavButton/MainNavButtonConfig'
-import NavButton from 'Event/Dashboard/components/NavButton'
 
-export default function TargetConfig<T extends NavButton>(
-  props: ButtonConfigProps<T>,
-) {
-  const {update, button} = props
+export type TargetConfigProps = {
+  disablePageSelect?: boolean
+  isAreaButton: boolean
+  setIsAreaButton: (isAreaButton: boolean) => void
+  areaId: string | null
+  setAreaId: (areaId: string | null) => void
+  link: string
+  setLink: (link: string) => void
+  page?: string | null
+  setPage: (page: string | null) => void
+  newTab?: boolean
+  setNewTab: (newTab: boolean) => void
+}
+
+export default function TargetConfig(props: TargetConfigProps) {
+  const {setIsAreaButton, isAreaButton} = props
 
   return (
     <>
       <FormControl>
-        <ToggleButtonGroup
-          value={button.isAreaButton ? 'true' : 'false'}
-          exclusive
-        >
-          <ToggleButton
-            value="false"
-            onClick={() => update('isAreaButton')(false)}
-          >
+        <ToggleButtonGroup value={isAreaButton ? 'true' : 'false'} exclusive>
+          <ToggleButton value="false" onClick={() => setIsAreaButton(false)}>
             Link
           </ToggleButton>
           <ToggleButton
             value="true"
             aria-label="configure button to join room"
-            onClick={() => update('isAreaButton')(true)}
+            onClick={() => setIsAreaButton(true)}
           >
             Join Room
           </ToggleButton>

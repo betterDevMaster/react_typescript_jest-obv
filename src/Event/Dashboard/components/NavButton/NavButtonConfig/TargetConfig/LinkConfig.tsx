@@ -11,18 +11,26 @@ import React from 'react'
 import MenuItem from '@material-ui/core/MenuItem'
 import Select from '@material-ui/core/Select'
 import InputLabel from '@material-ui/core/InputLabel'
-import {ButtonConfigProps} from 'Event/template/SimpleBlog/Dashboard/MainNav/MainNavButton/MainNavButtonConfig'
 import NavButton from 'Event/Dashboard/components/NavButton'
 import {EventPages, EVENT_PAGES} from 'Event/Routes'
+import {TargetConfigProps} from 'Event/Dashboard/components/NavButton/NavButtonConfig/TargetConfig'
 
-type LinkConfigProps<T extends NavButton> = ButtonConfigProps<T> & {
+type LinkConfigProps = Pick<
+  TargetConfigProps,
+  | 'isAreaButton'
+  | 'page'
+  | 'setPage'
+  | 'disablePageSelect'
+  | 'link'
+  | 'setLink'
+  | 'newTab'
+  | 'setNewTab'
+> & {
   pages?: EventPages
 }
 
-export default function LinkConfig<T extends NavButton>(
-  props: LinkConfigProps<T>,
-) {
-  if (props.button.isAreaButton) {
+export default function LinkConfig(props: LinkConfigProps) {
+  if (props.isAreaButton) {
     return null
   }
 
@@ -35,8 +43,8 @@ export default function LinkConfig<T extends NavButton>(
           label="New Tab"
           control={
             <Checkbox
-              checked={props.button.newTab || false}
-              onChange={onChangeCheckedHandler(props.update('newTab'))}
+              checked={props.newTab}
+              onChange={onChangeCheckedHandler(props.setNewTab)}
             />
           }
         />
@@ -45,20 +53,18 @@ export default function LinkConfig<T extends NavButton>(
   )
 }
 
-function PageSelect<T extends NavButton>(props: LinkConfigProps<T>) {
-  const {update, button} = props
-
+function PageSelect<T extends NavButton>(props: LinkConfigProps) {
   const pages = props.pages || EVENT_PAGES
 
-  const value = button.page ? button.page : 0
+  const value = props.page || 0
 
   const setLink = (link: string | number) => {
     if (typeof link === 'number') {
-      update('page')(null)
+      props.setPage(null)
       return
     }
 
-    update('page')(link)
+    props.setPage(link)
   }
 
   if (props.disablePageSelect) {
@@ -90,20 +96,20 @@ function PageSelect<T extends NavButton>(props: LinkConfigProps<T>) {
   )
 }
 
-function LinkInput<T extends NavButton>(props: ButtonConfigProps<T>) {
-  if (props.button.page) {
+function LinkInput(props: LinkConfigProps) {
+  if (props.page) {
     return null
   }
 
   return (
     <TextField
       label="URL"
-      value={props.button.link || ''}
+      value={props.link || ''}
       inputProps={{
         'aria-label': 'button link input',
       }}
       fullWidth
-      onChange={onChangeStringHandler(props.update('link'))}
+      onChange={onChangeStringHandler(props.setLink)}
       helperText="Starting with https:// or http://"
     />
   )
