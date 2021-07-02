@@ -1,19 +1,16 @@
-import React, {useState} from 'react'
-import download from 'js-file-download'
+import React from 'react'
 import DialogTitle from '@material-ui/core/DialogTitle'
 import DialogContent from '@material-ui/core/DialogContent'
 import Dialog from 'lib/ui/Dialog'
-import {useOrganization} from 'organization/OrganizationProvider'
-import {api} from 'lib/url'
 import {Question, useQuestions} from 'organization/Event/QuestionsProvider'
 import Form from 'organization/Event/Form/dialog/Form'
 import DangerButton from 'lib/ui/Button/DangerButton'
-import {colors, spacing} from 'lib/ui/theme'
+import {spacing} from 'lib/ui/theme'
 import {withStyles} from '@material-ui/core/styles'
-import {Downloadable} from 'lib/api-client'
 import Typography from '@material-ui/core/Typography'
 import Box from '@material-ui/core/Box'
-import Button from 'lib/ui/Button'
+import Button from '@material-ui/core/Button'
+import {useSubmissionsExport} from 'organization/Event/Form/FormActions'
 
 export default function QuestionEditDialog(props: {
   question: Question | null
@@ -67,29 +64,31 @@ const RemoveButton = withStyles({
   },
 })(DangerButton)
 
-function ExportSubmission(props: {question: Question}) {
-  const [error, setError] = useState<string | null>(null)
-  const url = api(`/questions/${props.question.id}/submissions`)
-  const {client} = useOrganization()
+export type ExportResponse = {
+  message: string | null
+}
 
-  const exportSubmissions = () => {
-    client
-      .get<Downloadable>(url)
-      .then((res) => download(res.data, res.file_name))
-      .catch((e) => setError(e.message))
-  }
+function ExportSubmission(props: {question: Question}) {
+  const endpoint = `/questions/${props.question.id}/submissions`
+  const {
+    exportSubmissions,
+    error,
+    successMessage,
+    processing,
+  } = useSubmissionsExport(endpoint)
 
   return (
     <Box textAlign="right" mb={3}>
       <Button
         onClick={exportSubmissions}
-        variant="text"
-        textColor={colors.secondary}
+        variant="outlined"
         aria-label={`export ${props.question.label} submissions`}
+        disabled={processing}
       >
         Download Submissions
       </Button>
       <ExportError>{error}</ExportError>
+      <Success>{successMessage}</Success>
     </Box>
   )
 }
@@ -100,4 +99,12 @@ function ExportError(props: {children: string | null}) {
   }
 
   return <Typography color="error">{props.children}</Typography>
+}
+
+function Success(props: {children: string | null}) {
+  if (!props.children) {
+    return null
+  }
+
+  return <Typography color="primary">{props.children}</Typography>
 }

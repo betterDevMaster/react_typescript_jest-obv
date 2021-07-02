@@ -65,30 +65,13 @@ it('should remove a form', async () => {
   expect(url).toMatch(`/forms/${target.id}`)
 })
 
-it('should export submissons for a form', async (done) => {
-  const {findByLabelText} = await goToForm()
+it('should export submissons for a form', async () => {
+  const {findByLabelText, findByText} = await goToForm()
 
-  const csv = faker.random.alphaNumeric(20)
-
-  window.URL.createObjectURL = jest.fn()
-  window.URL.revokeObjectURL = jest.fn()
-
-  mockGet.mockImplementationOnce(() => Promise.resolve({data: {data: csv}}))
+  const message = 'exported!'
+  mockGet.mockImplementationOnce(() => Promise.resolve({data: {message}}))
 
   user.click(await findByLabelText('export submissions'))
 
-  await wait(() => {
-    expect(window.URL.createObjectURL).toHaveBeenCalledTimes(1)
-  })
-
-  const blob = (window.URL.createObjectURL as jest.Mock).mock.calls[0][0]
-
-  // Test that we are downloading returned file contents
-  const reader = new FileReader()
-  reader.addEventListener('loadend', () => {
-    expect(reader.result).toBe(csv)
-    done()
-    // reader.result contains the contents of blob as a typed array
-  })
-  reader.readAsText(blob)
+  expect(await findByText(message)).toBeInTheDocument()
 })

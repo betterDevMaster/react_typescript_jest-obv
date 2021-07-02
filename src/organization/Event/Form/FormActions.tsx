@@ -1,9 +1,7 @@
 import Box from '@material-ui/core/Box'
 import Button from '@material-ui/core/Button'
-import {Downloadable} from 'lib/api-client'
 import {api} from 'lib/url'
 import React, {useState} from 'react'
-import download from 'js-file-download'
 import Typography from '@material-ui/core/Typography'
 import {useOrganization} from 'organization/OrganizationProvider'
 import DangerButton from 'lib/ui/Button/DangerButton'
@@ -11,23 +9,16 @@ import {useForm} from 'organization/Event/Form/FormProvider'
 import {useForms} from 'organization/Event/FormsProvider'
 import {useHistory} from 'react-router'
 import {useEventRoutes} from 'organization/Event/EventRoutes'
+import {useToggle} from 'lib/toggle'
 
 export default function FormActions(props: {className?: string}) {
-  const {exportSubmissions, error: downloadError} = useExportSubmissions()
-  const {deleteForm, error: deleteError} = useDelete()
-
-  const error = downloadError || deleteError
+  const {deleteForm, error} = useDelete()
 
   return (
     <div className={props.className}>
       <Box display="flex" justifyContent="space-between" alignItems="center">
-        <Button
-          onClick={exportSubmissions}
-          variant="outlined"
-          aria-label="export submissions"
-        >
-          Download Submissions
-        </Button>
+        <ExportSubmission />
+
         <DangerButton
           onClick={deleteForm}
           variant="outlined"
@@ -41,20 +32,68 @@ export default function FormActions(props: {className?: string}) {
   )
 }
 
-function useExportSubmissions() {
-  const [error, setError] = useState<string | null>(null)
+function ExportSubmission() {
   const {form} = useForm()
-  const url = api(`/forms/${form.id}/submissions/export`)
+  const {
+    exportSubmissions,
+    error,
+    successMessage,
+    processing,
+  } = useSubmissionsExport(`/forms/${form.id}/submissions/export`)
+
+  return (
+    <>
+      <Button
+        onClick={exportSubmissions}
+        variant="outlined"
+        aria-label="export submissions"
+        disabled={processing}
+      >
+        Download Submissions
+      </Button>
+      <Error>{error}</Error>
+      <Success>{successMessage}</Success>
+    </>
+  )
+}
+
+export function useSubmissionsExport(endpoint: string) {
+  const [error, setError] = useState<string | null>(null)
+  const [successMessage, setSuccessMessage] = useState<string | null>(null)
+  const {flag: processing, toggle: toggleProcessing} = useToggle()
+
+  const url = api(endpoint)
   const {client} = useOrganization()
 
   const exportSubmissions = () => {
+    if (processing) {
+      return
+    }
+
+    toggleProcessing()
+
+    setError(null)
+    setSuccessMessage(null)
+
     client
-      .get<Downloadable>(url)
-      .then((res) => download(res.data, res.file_name))
-      .catch((e) => setError(e.message))
+      .get<{
+        message: string
+      }>(url)
+      .then((res) => {
+        setSuccessMessage(res.message)
+      })
+      .catch((e) => {
+        setError(e.message)
+      })
+      .finally(toggleProcessing)
   }
 
-  return {exportSubmissions, error}
+  return {
+    exportSubmissions,
+    error,
+    successMessage,
+    processing,
+  }
 }
 
 function useDelete() {
@@ -85,4 +124,12 @@ function Error(props: {children: string | null}) {
   }
 
   return <Typography color="error">{props.children}</Typography>
+}
+
+function Success(props: {children: string | null}) {
+  if (!props.children) {
+    return null
+  }
+
+  return <Typography color="primary">{props.children}</Typography>
 }

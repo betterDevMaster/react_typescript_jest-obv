@@ -68,40 +68,24 @@ it('should update an existing question', async () => {
   expect(await findByText(label)).toBeInTheDocument()
 })
 
-it('should download answers', async (done) => {
+it('should send submissions', async () => {
   const question = fakeQuestion()
   const form = fakeForm({
     questions: [question],
   })
 
-  const {findByLabelText} = await goToForm({
+  const {findByLabelText, findByText} = await goToForm({
     form,
     userPermissions: [CONFIGURE_EVENTS],
   })
 
   user.click(await findByLabelText('edit question'))
 
-  const csv = faker.random.alphaNumeric(20)
+  const message = 'exported!'
 
-  window.URL.createObjectURL = jest.fn()
-  window.URL.revokeObjectURL = jest.fn()
-
-  mockGet.mockImplementationOnce(() => Promise.resolve({data: {data: csv}}))
+  mockGet.mockImplementationOnce(() => Promise.resolve({data: {message}}))
 
   user.click(await findByLabelText(`export ${question.label} submissions`))
 
-  await wait(() => {
-    expect(window.URL.createObjectURL).toHaveBeenCalledTimes(1)
-  })
-
-  const blob = (window.URL.createObjectURL as jest.Mock).mock.calls[0][0]
-
-  // Test that we are downloading returned file contents
-  const reader = new FileReader()
-  reader.addEventListener('loadend', () => {
-    expect(reader.result).toBe(csv)
-    done()
-    // reader.result contains the contents of blob as a typed array
-  })
-  reader.readAsText(blob)
+  expect(await findByText(message)).toBeInTheDocument()
 })
