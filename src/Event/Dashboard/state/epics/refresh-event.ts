@@ -30,7 +30,6 @@ export const refreshEventEpic: Epic<
         isAfter: event.updated_at,
       })
       if (!hasChanges) {
-        console.log('empty!~')
         return EMPTY
       }
 
