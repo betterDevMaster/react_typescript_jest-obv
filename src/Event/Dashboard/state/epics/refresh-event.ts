@@ -1,4 +1,5 @@
 import {Epic, ofType} from 'redux-observable'
+import {v4 as uuid} from 'uuid'
 import {RootState} from 'store'
 import {switchMap, map} from 'rxjs/operators'
 import {api} from 'lib/url'
@@ -33,9 +34,15 @@ export const refreshEventEpic: Epic<
         return EMPTY
       }
 
-      const url = api(`/events/${event.slug}`)
+      /**
+       * Re-fetch event, we have to make sure to include `No-Cache` header to avoid
+       * browser/cdn from returning stale data.
+       */
+      const url = api(`/events/${event.slug}?no-cache=true`)
+      const request = ajax.get(url, {
+        'No-Cache': uuid(),
+      })
 
-      const request = ajax.get(url)
       return request.pipe(map((data) => setEvent(data.response)))
     }),
   )

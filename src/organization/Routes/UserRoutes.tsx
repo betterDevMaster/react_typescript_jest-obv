@@ -13,7 +13,7 @@ import {OrganizationLanguageProvider} from 'Event/LanguageProvider'
 import {StaticPointsProvider} from 'Event/PointsProvider'
 import AttendeeProfileProvider from 'Event/visibility-rules/AttendeeProfileProvider'
 import {StaticSubmissionsProvider} from 'Event/SubmissionsProvider'
-import EventSocket from 'organization/Event/EventSocket'
+import EventSocketConnection from 'organization/Event/EventSocketConnection'
 
 export default function UserRoutes() {
   const {routes} = useOrganization()
@@ -47,9 +47,9 @@ export default function UserRoutes() {
               <StaticPointsProvider>
                 <StaticSubmissionsProvider>
                   <AttendeeProfileProvider groups={{}} tags={[]}>
-                    <EventSocket>
+                    <EventSocketConnection>
                       <EventRoutes />
-                    </EventSocket>
+                    </EventSocketConnection>
                   </AttendeeProfileProvider>
                 </StaticSubmissionsProvider>
               </StaticPointsProvider>

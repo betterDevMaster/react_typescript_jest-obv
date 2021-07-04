@@ -6,7 +6,12 @@ import {useLocation} from 'react-router-dom'
  * obv.io Domains
  */
 
-const OBVIO_DOMAINS = ['obv.io', 'obv.localhost:3000', 'obv.localhost']
+const OBVIO_DOMAINS = [
+  'obv.io',
+  'obv.localhost:3000',
+  'obv.localhost',
+  'app.localhost:3000',
+]
 
 /**
  * Staging environments are prefixed with *.staging.obv.io or *.test.obv.io
@@ -15,7 +20,10 @@ const STAGING_SUBDOMAINS = ['staging', 'test']
 
 export const getSubdomain = (location: string) => {
   const urlParts = location.split('.')
-  const missingSubdomain = urlParts.length < 3
+
+  const isDev = urlParts.length === 2 && urlParts[1] === 'localhost:3000'
+
+  const missingSubdomain = urlParts.length < 3 && !isDev
   if (missingSubdomain) {
     return ''
   }
