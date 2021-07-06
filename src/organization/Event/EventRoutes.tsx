@@ -44,6 +44,8 @@ import Reports from 'organization/Event/Reports'
 import ReportsProvider from 'organization/Event/ReportsProvider'
 import BackgroundsProvider from 'organization/Event/Backgrounds/BackgroundsProvider'
 import Backgrounds from 'organization/Event/Backgrounds'
+import DownloadFormSubmissions from 'organization/Event/Form/DownloadFormSubmissions'
+import DownloadQuestionSubmissions from 'organization/Event/Form/DownloadQuestionSubmissions'
 
 export type EventRoutes = ReturnType<typeof useEventRoutes>
 
@@ -85,6 +87,16 @@ export default function EventRoutes() {
           <AuthorizedPage permission={CONFIGURE_EVENTS}>
             <WaiverConfig />
           </AuthorizedPage>
+        </Route>
+        <Route path={routes.events[':event'].forms.submissions[':file'].root}>
+          <DownloadFormSubmissions />
+        </Route>
+        <Route
+          path={
+            routes.events[':event'].forms.question.submissions[':file'].root
+          }
+        >
+          <DownloadQuestionSubmissions />
         </Route>
         <Route path={routes.events[':event'].forms[':form'].root}>
           <AuthorizedPage permission={CONFIGURE_EVENTS}>

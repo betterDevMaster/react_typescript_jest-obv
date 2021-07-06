@@ -87,6 +87,14 @@ export function createRoutesFor(organization: Organization) {
           dashboard: '/dashboard',
           waiver: '/waiver',
           forms: {
+            question: {
+              submissions: {
+                ':file': {},
+              },
+            },
+            submissions: {
+              ':file': {},
+            },
             ':form': {},
           },
           emoji: '/emoji',

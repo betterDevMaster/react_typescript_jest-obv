@@ -26,5 +26,7 @@ export const fetchFile = (name: string, url: string) =>
 export const downloadFile = (url: string, name: string) => {
   return fetch(url)
     .then((f) => f.blob())
-    .then((blob) => download(blob, name))
+    .then((blob) => {
+      download(blob, name)
+    })
 }

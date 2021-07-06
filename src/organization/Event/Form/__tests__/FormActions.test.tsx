@@ -64,14 +64,3 @@ it('should remove a form', async () => {
 
   expect(url).toMatch(`/forms/${target.id}`)
 })
-
-it('should export submissons for a form', async () => {
-  const {findByLabelText, findByText} = await goToForm()
-
-  const message = 'exported!'
-  mockGet.mockImplementationOnce(() => Promise.resolve({data: {message}}))
-
-  user.click(await findByLabelText('export submissions'))
-
-  expect(await findByText(message)).toBeInTheDocument()
-})

@@ -1,7 +1,9 @@
+const router = jest.requireActual('react-router-dom')
 module.exports = {
-  ...jest.requireActual('react-router-dom'),
+  ...router,
   useLocation: jest.fn(() => ({
     search: '',
     pathname: '',
   })),
+  useParams: jest.fn(() => router.useParams()), // Still use actual implementation if we're not mocking
 }
