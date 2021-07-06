@@ -11,11 +11,14 @@ import {
 import {useVariables} from 'Event'
 import {useSimpleBlog} from 'Event/template/SimpleBlog'
 import {useToggle} from 'lib/toggle'
+import EditModeOnly from 'Event/Dashboard/editor/views/EditModeOnly'
 
 export default function Hero() {
   return (
     <>
-      <EditButton />
+      <EditModeOnly>
+        <EditButton />
+      </EditModeOnly>
       <WelcomeText />
       <Image />
     </>
