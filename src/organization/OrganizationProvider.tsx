@@ -102,7 +102,11 @@ export function createRoutesFor(organization: Organization) {
           sponsors: '/sponsors',
           faqs: '/faqs',
           tech_check: '/tech_check',
-          attendees: '/attendees',
+          attendees: {
+            export: {
+              ':file': {},
+            },
+          },
           points: '/points',
           general: '/general',
           localization: '/localization',

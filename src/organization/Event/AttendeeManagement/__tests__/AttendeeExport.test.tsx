@@ -1,45 +1,16 @@
-import faker from 'faker'
 import axios from 'axios'
 import user from '@testing-library/user-event'
 import {goToAttendeeManagement} from 'organization/Event/AttendeeManagement/__utils__/go-to-attendee-management'
-import {wait} from '@testing-library/react'
 
 const mockGet = axios.get as jest.Mock
 
-beforeAll(() => {
-  // Hide JSDOM nav unimplemented error
-  jest.spyOn(console, 'error').mockImplementation(() => {})
-})
+it('should show exported message', async () => {
+  const {findByLabelText, findByText} = await goToAttendeeManagement()
 
-afterAll(() => {
-  // @ts-ignore
-  console.error.mockRestore()
-})
-
-it('should save attendees', async (done) => {
-  const csv = faker.random.alphaNumeric(20)
-
-  window.URL.createObjectURL = jest.fn()
-  window.URL.revokeObjectURL = jest.fn()
-
-  const {findByLabelText} = await goToAttendeeManagement()
-
-  mockGet.mockImplementationOnce(() => Promise.resolve({data: {data: csv}}))
+  const message = 'Form export request received!'
+  mockGet.mockImplementationOnce(() => Promise.resolve({data: {message}}))
 
   user.click(await findByLabelText('export attendees'))
 
-  await wait(() => {
-    expect(window.URL.createObjectURL).toHaveBeenCalledTimes(1)
-  })
-
-  const blob = (window.URL.createObjectURL as jest.Mock).mock.calls[0][0]
-
-  // Test that we are downloading returned file contents
-  const reader = new FileReader()
-  reader.addEventListener('loadend', () => {
-    expect(reader.result).toBe(csv)
-    done()
-    // reader.result contains the contents of blob as a typed array
-  })
-  reader.readAsText(blob)
+  expect(await findByText(message)).toBeInTheDocument()
 })

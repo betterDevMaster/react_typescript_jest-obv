@@ -19,13 +19,15 @@ import HasPermission from 'organization/HasPermission'
 import AttendeesTable from 'organization/Event/AttendeeManagement/AttendeesTable'
 import AssignmentsDialog from 'organization/Event/AttendeeManagement/AssignmentsDialog'
 import PointsDialog from 'organization/Event/AttendeeManagement/PointsDialog'
+import AttendeeExport from 'organization/Event/AttendeeManagement/AttendeeExport'
 
 export default function AttendeeManagement() {
-  const {error, clearError, exportAttendees, search} = useAttendees()
+  const {error, clearError, search} = useAttendees()
   const [editing, setEditing] = useState<Attendee | null>(null)
   const [viewAssignments, setViewAssignments] = useState<Attendee | null>(null)
   const [createDialogVisible, setCreateDialogVisible] = useState(false)
   const [pointsTarget, setPointsTarget] = useState<Attendee | null>(null)
+  const [successMessage, setSuccessMessage] = useState<string | null>(null)
 
   const toggleCreateDialog = () => setCreateDialogVisible(!createDialogVisible)
 
@@ -39,6 +41,9 @@ export default function AttendeeManagement() {
   const showPointsDialog = (attendee: Attendee) => () =>
     setPointsTarget(attendee)
   const hidePointsDialog = () => setPointsTarget(null)
+
+  const onSuccess = (message: string | null) => setSuccessMessage(message)
+  const onCloseSuccess = () => setSuccessMessage(null)
 
   return (
     <>
@@ -55,14 +60,7 @@ export default function AttendeeManagement() {
       <Layout>
         <Page>
           <Box mb={2}>
-            <ExportButton
-              variant="outlined"
-              color="primary"
-              aria-label="export attendees"
-              onClick={exportAttendees}
-            >
-              Export
-            </ExportButton>
+            <AttendeeExport onSuccess={onSuccess} />
             <HasPermission permission={CONFIGURE_EVENTS}>
               <>
                 <AttendeeImport
@@ -79,11 +77,7 @@ export default function AttendeeManagement() {
                       </ImportButtonLabel>
                     </Button>
                   )}
-                  successAlert={(numImported, onClose) => (
-                    <StyledAlert severity="info" onClose={onClose}>
-                      Successfully imported {numImported} attendees
-                    </StyledAlert>
-                  )}
+                  onSuccess={onSuccess}
                 />
                 <CreateAttendeeButton
                   variant="outlined"
@@ -105,6 +99,7 @@ export default function AttendeeManagement() {
               'aria-label': 'search for attendee',
             }}
           />
+          <Success onClose={onCloseSuccess}>{successMessage}</Success>
           <Error onClose={clearError}>{error}</Error>
           <AttendeesTable
             onSelectEdit={edit}
@@ -114,6 +109,18 @@ export default function AttendeeManagement() {
         </Page>
       </Layout>
     </>
+  )
+}
+
+function Success(props: {children: string | null; onClose: () => void}) {
+  if (!props.children) {
+    return null
+  }
+
+  return (
+    <StyledAlert severity="info" onClose={props.onClose}>
+      {props.children}
+    </StyledAlert>
   )
 }
 
@@ -128,12 +135,6 @@ function Error(props: {children: string | null; onClose: () => void}) {
     </StyledAlert>
   )
 }
-
-const ExportButton = withStyles({
-  root: {
-    marginRight: spacing[2],
-  },
-})(Button)
 
 const ImportButtonLabel = styled.label`
   cursor: pointer;

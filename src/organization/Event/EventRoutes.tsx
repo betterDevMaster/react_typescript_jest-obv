@@ -44,6 +44,7 @@ import Reports from 'organization/Event/Reports'
 import ReportsProvider from 'organization/Event/ReportsProvider'
 import BackgroundsProvider from 'organization/Event/Backgrounds/BackgroundsProvider'
 import Backgrounds from 'organization/Event/Backgrounds'
+import DownloadAttendees from 'Event/DownloadAttendees'
 import DownloadFormSubmissions from 'organization/Event/Form/DownloadFormSubmissions'
 import DownloadQuestionSubmissions from 'organization/Event/Form/DownloadQuestionSubmissions'
 
@@ -117,7 +118,10 @@ export default function EventRoutes() {
             </AreasProvider>
           </AuthorizedPage>
         </Route>
-        <Route path={routes.events[':event'].attendees}>
+        <Route path={routes.events[':event'].attendees.export[':file'].root}>
+          <DownloadAttendees />
+        </Route>
+        <Route path={routes.events[':event'].attendees.root}>
           <AttendeesProvider>
             <AreasProvider>
               <AttendeeManagement />

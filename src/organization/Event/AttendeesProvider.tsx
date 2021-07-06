@@ -8,8 +8,6 @@ import {api} from 'lib/url'
 import {useOrganization} from 'organization/OrganizationProvider'
 import React from 'react'
 import {useCallback, useEffect, useState} from 'react'
-import download from 'js-file-download'
-import {Downloadable} from 'lib/api-client'
 
 const SEARCH_DEBOUNCE_MS = 1000
 
@@ -25,13 +23,16 @@ export interface AttendeesContextProps {
   toggleCheckIn: (attendee: Attendee) => () => void
   error: string | null
   clearError: () => void
-  exportAttendees: () => Promise<void>
+  exportAttendees: () => Promise<AttendeeExportResult>
   importAttendees: (file: File) => Promise<AttendeeImportResult>
 }
 
 export interface AttendeeImportResult {
-  attendees: Attendee[]
-  invalid_emails: string[]
+  message: string
+}
+
+export interface AttendeeExportResult {
+  message: string
 }
 
 export const AttendeesContext = React.createContext<
@@ -69,7 +70,7 @@ export default function AttendeesProvider(props: {
     setAttendees(updatedList)
   }
 
-  const importAttendees = useImport({onError: setError, onSuccess: insert})
+  const importAttendees = useImport({onError: setError})
 
   const clearError = () => setError(null)
 
@@ -220,23 +221,32 @@ export function useCheckOut() {
   }
 }
 
-export function useExport(options: {onError: (error: string | null) => void}) {
+export function useExport(options: {
+  onSuccess?: (result: AttendeeExportResult) => void
+  onError: (error: string | null) => void
+}) {
   const {event} = useEvent()
   const {client} = useOrganization()
   const url = api(`/events/${event.slug}/attendees/export `)
 
   return () =>
     client
-      .get<Downloadable>(url)
+      .get<AttendeeExportResult>(url)
       .then((res) => {
-        download(res.data, res.file_name)
+        if (options.onSuccess) {
+          options.onSuccess(res)
+        }
+        return res
       })
-      .catch((e) => options.onError(e.message))
+      .catch((e) => {
+        options.onError(e.message)
+        throw e
+      })
 }
 
 export function useImport(options: {
   onError: (error: string | null) => void
-  onSuccess: (attendees: Attendee[]) => void
+  onSuccess?: (result: AttendeeImportResult) => void
 }) {
   const {event} = useEvent()
   const {client} = useOrganization()
@@ -252,14 +262,9 @@ export function useImport(options: {
           'content-type': 'multipart/form-data',
         },
       })
-      .then((res) => {
-        options.onSuccess(res.attendees)
-
-        const hasInvalidEmails = res.invalid_emails.length > 0
-        if (hasInvalidEmails) {
-          const emails = res.invalid_emails.join(', ')
-          const invalidEmailMessage = `Could not import the following emails: ${emails}.`
-          options.onError(invalidEmailMessage)
+      .then((res: AttendeeImportResult) => {
+        if (options.onSuccess) {
+          options.onSuccess(res)
         }
 
         return res

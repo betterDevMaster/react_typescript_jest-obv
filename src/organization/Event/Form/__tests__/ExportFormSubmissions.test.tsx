@@ -9,6 +9,10 @@ beforeAll(() => {
   jest.spyOn(console, 'error').mockImplementation(() => {})
 })
 
+beforeEach(() => {
+  jest.clearAllMocks()
+})
+
 it('should export submissions for a form', async () => {
   const {findByLabelText, findByText} = await goToForm()
 
