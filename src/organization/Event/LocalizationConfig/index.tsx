@@ -14,7 +14,7 @@ import AddLanguageButton from 'organization/Event/LocalizationConfig/AddLanguage
 import EnableTranslationSwitch from 'organization/Event/LocalizationConfig/EnableTranslationSwitch'
 import RemoveLanguageButton from 'organization/Event/LocalizationConfig/RemoveLanguageButton'
 import SetRulesButton from 'organization/Event/LocalizationConfig/SetRulesButton'
-// import LocalizationImport from 'organization/Event/LocalizationConfig/LocalizationImport'
+import LocalizationImport from 'organization/Event/LocalizationConfig/LocalizationImport'
 
 type LocalizationConfigContextProps = {
   isProcessing: boolean
@@ -88,7 +88,7 @@ export default function LocalizationConfig() {
             </ButtonsBox>
             <ButtonsBox>
               <AddLanguageButton onAdd={setLanguage} />
-              {/* <LocalizationImport /> */}
+              <LocalizationImport />
             </ButtonsBox>
           </Box>
           <LanguageSelect

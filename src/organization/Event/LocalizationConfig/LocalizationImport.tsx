@@ -68,7 +68,6 @@ export default function LocalizationImport() {
         hidden
         required
         aria-label="localization import input"
-        accept=".csv"
       />
       <Error onClose={clearError}>{error}</Error>
     </>
