@@ -22,6 +22,7 @@ import HasPermission from 'organization/HasPermission'
 import {CONFIGURE_EVENTS} from 'organization/PermissionsProvider'
 import InputAdornment from '@material-ui/core/InputAdornment'
 import TextField from '@material-ui/core/TextField'
+import ExportAreaAttendees from 'organization/Event/Area/ExportAreaAttendees'
 
 export default function Area() {
   const {area, update, processing} = useArea()
@@ -70,6 +71,7 @@ export default function Area() {
   return (
     <Layout>
       <Page>
+        <ExportAreaAttendees area={area} />
         <Title variant="h5">{area.name}</Title>
         <HasPermission permission={CONFIGURE_EVENTS}>
           <>

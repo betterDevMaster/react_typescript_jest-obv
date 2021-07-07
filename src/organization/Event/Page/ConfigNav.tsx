@@ -13,10 +13,7 @@ export default function ConfigNav() {
       <ConfigNavItem to={routes.areas.root} aria-label="areas">
         Areas
       </ConfigNavItem>
-      <ConfigNavItem
-        to={routes.attendees.root}
-        aria-label="attendee management"
-      >
+      <ConfigNavItem to={routes.attendees} aria-label="attendee management">
         Attendees
       </ConfigNavItem>
       <AuthorizedPages />

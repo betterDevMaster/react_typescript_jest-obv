@@ -16,7 +16,7 @@ import CircularProgress from '@material-ui/core/CircularProgress'
 import Typography from '@material-ui/core/Typography'
 import Box from '@material-ui/core/Box'
 import ConfirmDialog from 'lib/ui/ConfirmDialog'
-import {useBlocking} from 'lib/blocking'
+import {useBlocking} from 'lib/requests'
 
 export interface AttendeeScore {
   points: number

@@ -9,7 +9,7 @@ import {useForm} from 'organization/Event/Form/FormProvider'
 import {useForms} from 'organization/Event/FormsProvider'
 import {useHistory} from 'react-router'
 import {useEventRoutes} from 'organization/Event/EventRoutes'
-import {useToggle} from 'lib/toggle'
+import {useGet} from 'lib/requests'
 
 export default function FormActions(props: {className?: string}) {
   const {deleteForm, error} = useDelete()
@@ -36,7 +36,7 @@ function ExportSubmission() {
   const {form} = useForm()
   const {
     exportSubmissions,
-    error,
+    errorMessage,
     successMessage,
     processing,
   } = useSubmissionsExport(`/forms/${form.id}/submissions/export`)
@@ -51,46 +51,26 @@ function ExportSubmission() {
       >
         Download Submissions
       </Button>
-      <Error>{error}</Error>
+      <Error>{errorMessage}</Error>
       <Success>{successMessage}</Success>
     </>
   )
 }
 
 export function useSubmissionsExport(endpoint: string) {
-  const [error, setError] = useState<string | null>(null)
-  const [successMessage, setSuccessMessage] = useState<string | null>(null)
-  const {flag: processing, toggle: toggleProcessing} = useToggle()
-
   const url = api(endpoint)
   const {client} = useOrganization()
 
-  const exportSubmissions = () => {
-    if (processing) {
-      return
-    }
-
-    toggleProcessing()
-
-    setError(null)
-    setSuccessMessage(null)
-
-    client
-      .get<{
-        message: string
-      }>(url)
-      .then((res) => {
-        setSuccessMessage(res.message)
-      })
-      .catch((e) => {
-        setError(e.message)
-      })
-      .finally(toggleProcessing)
-  }
+  const {
+    send: exportSubmissions,
+    processing,
+    errorMessage,
+    successMessage,
+  } = useGet(client, url)
 
   return {
     exportSubmissions,
-    error,
+    errorMessage,
     successMessage,
     processing,
   }

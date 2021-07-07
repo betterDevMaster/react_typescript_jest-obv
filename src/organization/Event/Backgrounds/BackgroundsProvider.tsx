@@ -4,7 +4,7 @@ import {useEvent} from 'Event/EventProvider'
 import {HasRules} from 'Event/visibility-rules'
 import {useAsync} from 'lib/async'
 import {useOrganization} from 'organization/OrganizationProvider'
-import {useBlocking} from 'lib/blocking'
+import {useBlocking} from 'lib/requests'
 
 export type Background = {
   id: number

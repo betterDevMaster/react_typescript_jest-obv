@@ -33,6 +33,7 @@ import {
   START_ROOMS,
 } from 'organization/PermissionsProvider'
 import OnlineSwitch from 'organization/Event/Room/OnlineSwitch'
+import ExportRoomAttendees from 'organization/Event/Room/ExportRoomAttendees'
 import RegistrationSwitch from 'organization/Event/Room/RegistrationSwitch'
 import RegistrationURL from 'organization/Event/Room/RegistrationURL'
 
@@ -97,6 +98,8 @@ export default function RoomConfig() {
   return (
     <Layout>
       <Page>
+        <ExportRoomAttendees room={room} />
+
         <Title variant="h5">{room.name}</Title>
         <FormControl>
           <FormControlLabel control={<OnlineSwitch />} label="Open" />

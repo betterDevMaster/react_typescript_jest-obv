@@ -39,6 +39,7 @@ export default function AreaRoutes() {
       <Route path={routes.events[':event'].areas.create}>
         <CreateAreaForm />
       </Route>
+
       <Route path={routes.events[':event'].areas.root}>
         <Area />
       </Route>

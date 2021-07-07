@@ -14,6 +14,11 @@ import {StaticPointsProvider} from 'Event/PointsProvider'
 import AttendeeProfileProvider from 'Event/visibility-rules/AttendeeProfileProvider'
 import {StaticSubmissionsProvider} from 'Event/SubmissionsProvider'
 import EventSocketConnection from 'organization/Event/EventSocketConnection'
+import DownloadAreaAttendees from 'organization/Event/Area/DownloadAreaAttendees'
+import DownloadFormSubmissions from 'organization/Event/Form/DownloadFormSubmissions'
+import DownloadQuestionSubmissions from 'organization/Event/Form/DownloadQuestionSubmissions'
+import DownloadRoomAttendees from 'organization/Event/Room/DownloadRoomAttendees'
+import DownloadAttendees from 'Event/DownloadAttendees'
 
 export default function UserRoutes() {
   const {routes} = useOrganization()
@@ -39,6 +44,21 @@ export default function UserRoutes() {
         <AuthorizedPage permission={UPDATE_TEAM}>
           <Team />
         </AuthorizedPage>
+      </Route>
+      <Route path={routes.area_attendees_export[':file'].root}>
+        <DownloadAreaAttendees />
+      </Route>
+      <Route path={routes.form_submissions[':file'].root}>
+        <DownloadFormSubmissions />
+      </Route>
+      <Route path={routes.question_submissions[':file'].root}>
+        <DownloadQuestionSubmissions />
+      </Route>
+      <Route path={routes.room_attendees_export[':file'].root}>
+        <DownloadRoomAttendees />
+      </Route>
+      <Route path={routes.attendees_export[':file'].root}>
+        <DownloadAttendees />
       </Route>
       <Route path={routes.events[':event'].root}>
         <RouteEventProvider>

@@ -72,7 +72,7 @@ function ExportSubmission(props: {question: Question}) {
   const endpoint = `/questions/${props.question.id}/submissions`
   const {
     exportSubmissions,
-    error,
+    errorMessage: error,
     successMessage,
     processing,
   } = useSubmissionsExport(endpoint)

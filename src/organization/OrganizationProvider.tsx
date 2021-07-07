@@ -81,20 +81,27 @@ export function createRoutesFor(organization: Organization) {
       forgot_password: '/forgot_password',
       reset_password: '/reset_password',
       team: '/team',
+      form_submissions: {
+        ':file': {},
+      },
+      question_submissions: {
+        ':file': {},
+      },
+      attendees_export: {
+        ':file': {},
+      },
+      area_attendees_export: {
+        ':file': {},
+      },
+      room_attendees_export: {
+        ':file': {},
+      },
       events: {
         create: '/create',
         ':event': {
           dashboard: '/dashboard',
           waiver: '/waiver',
           forms: {
-            question: {
-              submissions: {
-                ':file': {},
-              },
-            },
-            submissions: {
-              ':file': {},
-            },
             ':form': {},
           },
           emoji: '/emoji',
@@ -102,11 +109,7 @@ export function createRoutesFor(organization: Organization) {
           sponsors: '/sponsors',
           faqs: '/faqs',
           tech_check: '/tech_check',
-          attendees: {
-            export: {
-              ':file': {},
-            },
-          },
+          attendees: '/attendees',
           points: '/points',
           general: '/general',
           localization: '/localization',
