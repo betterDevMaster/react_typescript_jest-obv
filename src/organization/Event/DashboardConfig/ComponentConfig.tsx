@@ -19,7 +19,8 @@ export default function ComponentConfig(
   const {isVisible: visible, onClose, title, children} = props
 
   return (
-    <Dialog open={visible} onClose={onClose} fullWidth>
+    // Added 'disableEnforceFocus' to fix CKEditor link not being clickable
+    <Dialog open={visible} onClose={onClose} fullWidth disableEnforceFocus>
       <DialogTitle>{title}</DialogTitle>
       <StyledDialogContent>{children}</StyledDialogContent>
     </Dialog>
