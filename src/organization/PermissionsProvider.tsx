@@ -98,6 +98,8 @@ export function label(permission: Permission) {
       return 'Start Rooms'
     case CHECK_IN_ATTENDEES:
       return 'Check-In Attendees'
+    case UPDATE_ATTENDEES:
+      return 'Update Attendees'
     default:
       throw new Error(
         `Unhandled permission: ${permission}; was it added to the Permission type?`,
