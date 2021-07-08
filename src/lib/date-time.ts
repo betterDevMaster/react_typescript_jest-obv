@@ -1,13 +1,32 @@
 import moment, {unitOfTime} from 'moment-timezone'
 
 // Moment locales
-import 'moment/locale/es'
+import 'moment/locale/es' // Spanish
 import 'moment/locale/es-mx'
 import 'moment/locale/es-us'
 import 'moment/locale/es-do'
-import 'moment/locale/pt'
-import 'moment/locale/pt-br'
-import 'moment/locale/fr'
+import 'moment/locale/pt' // Portuguese
+import 'moment/locale/pt-br' // Brazil
+import 'moment/locale/fr' // France
+import 'moment/locale/en-au' // English
+import 'moment/locale/en-ca'
+import 'moment/locale/en-gb'
+import 'moment/locale/en-nz'
+import 'moment/locale/de' // Germany
+import 'moment/locale/de-at'
+import 'moment/locale/de-ch'
+import 'moment/locale/da' // Denmark
+import 'moment/locale/sv' // Sweden
+import 'moment/locale/nb' // Norway
+import 'moment/locale/it' // Italy
+import 'moment/locale/hu' // Hungary
+import 'moment/locale/ru' // Russia
+import 'moment/locale/ja' // Japan
+import 'moment/locale/th'
+import 'moment/locale/zh-cn' // Chinese
+import 'moment/locale/zh-hk'
+import 'moment/locale/zh-mo'
+import 'moment/locale/zh-tw'
 
 export const blogPostTime = (date: string) =>
   moment(date).tz(moment.tz.guess()).format('MMMM Do h:mma z')
