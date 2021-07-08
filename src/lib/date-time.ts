@@ -1,5 +1,14 @@
 import moment, {unitOfTime} from 'moment-timezone'
 
+// Moment locales
+import 'moment/locale/es'
+import 'moment/locale/es-mx'
+import 'moment/locale/es-us'
+import 'moment/locale/es-do'
+import 'moment/locale/pt'
+import 'moment/locale/pt-br'
+import 'moment/locale/fr'
+
 export const blogPostTime = (date: string) =>
   moment(date).tz(moment.tz.guess()).format('MMMM Do h:mma z')
 
@@ -13,8 +22,6 @@ export const today = () => formatDate(now())
 
 export const formatDate = (value: string, format = 'DD-MM-YYYY') =>
   moment(value).format(format)
-
-export const DATE_TIME_FORMAT = 'Do MMMM h:mma'
 
 export const MINUTE_PRECISION_FORMAT = 'YYYY-MM-DDTHH:mm'
 

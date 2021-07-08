@@ -8,13 +8,15 @@ import {
 } from 'organization/PermissionsProvider'
 import Typography from '@material-ui/core/Typography'
 import {AbsoluteLink} from 'lib/ui/link/AbsoluteLink'
-import {DATE_TIME_FORMAT, formatDate} from 'lib/date-time'
+import {formatDate} from 'lib/date-time'
 import Box from '@material-ui/core/Box'
+import {useLocalization} from 'lib/LocalizationProvider'
 import UpdateEventForm from 'organization/Event/EventSettings'
 
 export default function Event() {
   const {can} = usePermissions()
   const {event, url} = useEvent()
+  const {dateTimeFormat} = useLocalization()
 
   if (can(CONFIGURE_EVENTS)) {
     return <UpdateEventForm />
@@ -32,8 +34,8 @@ export default function Event() {
         <Box mb={1}>
           <Typography variant="h6">Times</Typography>
           <Typography>
-            {formatDate(event.start, DATE_TIME_FORMAT)} -{' '}
-            {formatDate(event.end, DATE_TIME_FORMAT)}
+            {formatDate(event.start, dateTimeFormat)} -{' '}
+            {formatDate(event.end, dateTimeFormat)}
           </Typography>
         </Box>
         <Typography variant="h6">Expected Number of Attendees</Typography>

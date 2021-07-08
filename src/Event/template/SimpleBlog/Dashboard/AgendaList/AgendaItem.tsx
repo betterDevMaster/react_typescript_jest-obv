@@ -13,6 +13,7 @@ import {DragHandle, DraggableOverlay} from 'lib/ui/drag-and-drop'
 import {useSimpleBlog} from 'Event/template/SimpleBlog'
 import {useToggle} from 'lib/toggle'
 import {AgendaItemConfig} from 'Event/template/SimpleBlog/Dashboard/AgendaList/AgendaItemConfig'
+import {useLocalization} from 'lib/LocalizationProvider'
 
 export default function AgendaItem(props: {agenda: Agenda; index: number}) {
   const {agenda, index} = props
@@ -69,7 +70,11 @@ function Times(props: {agenda: Agenda}) {
   const start = moment(props.agenda.startDate)
   const getMonth = (date: moment.Moment) => date.format('MMMM')
   const getDay = (date: moment.Moment) => date.format('Do')
-  const getTime = (date: moment.Moment) => date.format('h:mma')
+
+  const {has12HourTime} = useLocalization()
+  const timeFormat = has12HourTime ? 'h:mma' : 'HH:MM'
+  const getTime = (date: moment.Moment) => date.format(timeFormat)
+
   const getTimezone = (date: moment.Moment) =>
     date.tz(moment.tz.guess()).format('z')
   const {template} = useSimpleBlog()
