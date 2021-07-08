@@ -1,6 +1,7 @@
 import {useAsync} from 'lib/async'
 import FullPageLoader from 'lib/ui/layout/FullPageLoader'
 import {api} from 'lib/url'
+import {useArea} from 'organization/Event/Area/AreaProvider'
 import {useOrganization} from 'organization/OrganizationProvider'
 import React, {useCallback} from 'react'
 
@@ -14,6 +15,7 @@ export const CONFIGURE_EVENTS = 'events.configure'
 export const UPDATE_TEAM = 'team.update'
 export const START_ROOMS = 'rooms.start'
 export const CHECK_IN_ATTENDEES = 'attendees.check_in'
+export const UPDATE_ATTENDEES = 'attendees.update'
 
 export type Permission =
   | typeof CREATE_EVENTS
@@ -21,6 +23,7 @@ export type Permission =
   | typeof UPDATE_TEAM
   | typeof START_ROOMS
   | typeof CHECK_IN_ATTENDEES
+  | typeof UPDATE_ATTENDEES
 
 interface PermissionsContextProps {
   user: Permission[]
@@ -100,4 +103,30 @@ export function label(permission: Permission) {
         `Unhandled permission: ${permission}; was it added to the Permission type?`,
       )
   }
+}
+
+/**
+ * Checks whether a user can start a room. This hook
+ * takes into account the current area, and allows
+ * tech check agents to start rooms.
+ *
+ * @returns
+ */
+export function useCanStartRooms() {
+  const {can} = usePermissions()
+  const {area} = useArea()
+
+  if (can(START_ROOMS)) {
+    return true
+  }
+
+  /**
+   * If is tech check agent, lets allow them
+   * to start tech-check rooms.
+   */
+  if (!can(CHECK_IN_ATTENDEES)) {
+    return false
+  }
+
+  return area.is_tech_check
 }

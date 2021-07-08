@@ -14,7 +14,7 @@ import {onChangeStringHandler} from 'lib/dom'
 import Box from '@material-ui/core/Box'
 import UpdateDialog from 'organization/Event/AttendeeManagement/attendee-dialog/UpdateDialog'
 import CreateDialog from 'organization/Event/AttendeeManagement/attendee-dialog/CreateDialog'
-import {CONFIGURE_EVENTS} from 'organization/PermissionsProvider'
+import {UPDATE_ATTENDEES} from 'organization/PermissionsProvider'
 import HasPermission from 'organization/HasPermission'
 import AttendeesTable from 'organization/Event/AttendeeManagement/AttendeesTable'
 import AssignmentsDialog from 'organization/Event/AttendeeManagement/AssignmentsDialog'
@@ -61,7 +61,7 @@ export default function AttendeeManagement() {
         <Page>
           <Box mb={2}>
             <AttendeeExport onSuccess={onSuccess} />
-            <HasPermission permission={CONFIGURE_EVENTS}>
+            <HasPermission permission={UPDATE_ATTENDEES}>
               <>
                 <AttendeeImport
                   button={(inputId, submitting) => (

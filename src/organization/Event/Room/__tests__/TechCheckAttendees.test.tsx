@@ -41,6 +41,9 @@ it('should check in an attendee', async () => {
 
   // Room to be configured
   mockGet.mockImplementationOnce(() => Promise.resolve({data: targetRoom}))
+  // Start url
+  const url = faker.internet.url()
+  mockGet.mockImplementationOnce(() => Promise.resolve({data: {url}}))
 
   // Tech Check Assignments
   const numAssignments = faker.random.number({min: 2, max: 5})

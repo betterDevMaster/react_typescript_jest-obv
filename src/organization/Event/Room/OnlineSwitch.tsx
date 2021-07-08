@@ -2,15 +2,16 @@ import Switch from '@material-ui/core/Switch'
 import {useEvent} from 'Event/EventProvider'
 import {onChangeCheckedHandler} from 'lib/dom'
 import {useRoom} from 'organization/Event/Room/RoomProvider'
-import {START_ROOMS, usePermissions} from 'organization/PermissionsProvider'
+import {useCanStartRooms} from 'organization/PermissionsProvider'
 import React from 'react'
 
 export default function OnlineSwitch() {
   const {room, processing, setOnline} = useRoom()
-  const {can} = usePermissions()
   const {event} = useEvent()
 
-  const canStart = !processing && can(START_ROOMS) && !event.has_ended
+  const canStartRooms = useCanStartRooms()
+
+  const canStart = !processing && canStartRooms && !event.has_ended
 
   return (
     <Switch

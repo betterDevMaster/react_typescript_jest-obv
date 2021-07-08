@@ -11,7 +11,7 @@ import withStyles from '@material-ui/core/styles/withStyles'
 import TagsInput, {Tag} from 'lib/ui/form/TagsInput'
 import GroupInput from 'organization/Event/AttendeeManagement/attendee-dialog/Form/GroupInput'
 import {
-  CONFIGURE_EVENTS,
+  UPDATE_ATTENDEES,
   usePermissions,
 } from 'organization/PermissionsProvider'
 import HasPermission from 'organization/HasPermission'
@@ -40,7 +40,7 @@ export default function Form(props: {
   const [tags, setTags] = useState<Tag[]>(attendee?.tags || [])
 
   const {can} = usePermissions()
-  const canEdit = can(CONFIGURE_EVENTS)
+  const canEdit = can(UPDATE_ATTENDEES)
 
   useEffect(() => {
     setNewGroups([])
@@ -187,7 +187,7 @@ export default function Form(props: {
           onChange={updateNewGroup(index)}
         />
       ))}
-      <HasPermission permission={CONFIGURE_EVENTS}>
+      <HasPermission permission={UPDATE_ATTENDEES}>
         <AddGroupButton
           aria-label="add group"
           variant="outlined"

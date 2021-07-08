@@ -30,7 +30,7 @@ import HasPermission from 'organization/HasPermission'
 import {
   CHECK_IN_ATTENDEES,
   CONFIGURE_EVENTS,
-  START_ROOMS,
+  useCanStartRooms,
 } from 'organization/PermissionsProvider'
 import OnlineSwitch from 'organization/Event/Room/OnlineSwitch'
 import ExportRoomAttendees from 'organization/Event/Room/ExportRoomAttendees'
@@ -104,11 +104,7 @@ export default function RoomConfig() {
         <FormControl>
           <FormControlLabel control={<OnlineSwitch />} label="Open" />
         </FormControl>
-        <HasPermission permission={START_ROOMS}>
-          <Box mb={3}>
-            <StartButton processing={processing} />
-          </Box>
-        </HasPermission>
+        <StartRoom processing={processing} />
         <HasPermission permission={CONFIGURE_EVENTS}>
           <FormControl>
             <FormControlLabel
@@ -186,6 +182,19 @@ export default function RoomConfig() {
         </HasPermission>
       </Page>
     </Layout>
+  )
+}
+
+function StartRoom(props: {processing: boolean}) {
+  const canStartRooms = useCanStartRooms()
+  if (!canStartRooms) {
+    return null
+  }
+
+  return (
+    <Box mb={3}>
+      <StartButton processing={props.processing} />
+    </Box>
   )
 }
 
