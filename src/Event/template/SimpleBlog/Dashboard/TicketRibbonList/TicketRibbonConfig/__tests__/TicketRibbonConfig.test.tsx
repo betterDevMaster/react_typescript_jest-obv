@@ -139,5 +139,8 @@ it('should handle a failed custom delete', async () => {
   fireEvent.click(await findByLabelText('remove ticket ribbon'))
 
   // Target ribbon was still removed anyway
-  expect(queryByText('ticket ribbon')).not.toBeInTheDocument()
+
+  await wait(() => {
+    expect(queryByText('ticket ribbon')).not.toBeInTheDocument()
+  })
 })
