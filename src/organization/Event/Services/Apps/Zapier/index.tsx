@@ -31,7 +31,7 @@ export default function Zapier() {
           </li>
           <li>Go to My Apps</li>
           <li>Click Add connection</li>
-          <li>Find and click to OBVIO (2.0.0)</li>
+          <li>Find and click to OBVIO (3.0.0)</li>
           <li>
             Provide an access token from the{' '}
             {<RelativeLink to={routes.services.root}>services</RelativeLink>}{' '}
