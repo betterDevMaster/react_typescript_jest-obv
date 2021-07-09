@@ -8,17 +8,19 @@ import {RelativeLink} from 'lib/ui/link/RelativeLink'
 import {routesWithValue} from 'lib/url'
 import {useEventRoutes} from 'organization/Event/EventRoutes'
 import {Form, useForms} from 'organization/Event/FormsProvider'
-import React from 'react'
+import React, {useState} from 'react'
 import {useOrganization} from 'organization/OrganizationProvider'
 import {api} from 'lib/url'
 import styled from 'styled-components'
 import {useToggle} from 'lib/toggle'
 import IconButton from '@material-ui/core/IconButton'
+import Tooltip from '@material-ui/core/Tooltip'
 
 export default function Forms() {
   const {forms, add} = useForms()
   const duplicate = useDuplicate()
   const {flag: processing, toggle: toggleProcessing} = useToggle()
+  const [copiedForm, setCopiedForm] = useState<number>(0)
 
   const eventRoutes = useEventRoutes()
 
@@ -35,8 +37,14 @@ export default function Forms() {
       return
     }
 
+    setCopiedForm(form.id)
     toggleProcessing()
-    duplicate(form).then(add).finally(toggleProcessing)
+    duplicate(form)
+      .then(add)
+      .finally(() => {
+        setCopiedForm(0)
+        toggleProcessing()
+      })
   }
 
   return (
@@ -56,15 +64,17 @@ export default function Forms() {
               </RelativeLink>
             </TableCell>
             <ActionTableCell>
-              <IconButton
-                onClick={() => handleDuplicate(form)}
-                disabled={processing}
-                size="small"
-                color="primary"
-                aria-label="duplicate form"
-              >
-                <StyledFileCopyIcon />
-              </IconButton>
+              <Tooltip title={form.id === copiedForm ? 'Copied' : 'Copy'}>
+                <IconButton
+                  onClick={() => handleDuplicate(form)}
+                  disabled={processing}
+                  size="small"
+                  color="primary"
+                  aria-label="duplicate form"
+                >
+                  <StyledFileCopyIcon />
+                </IconButton>
+              </Tooltip>
             </ActionTableCell>
           </TableRow>
         ))}
