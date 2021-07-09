@@ -13,6 +13,15 @@ beforeEach(() => {
   jest.clearAllMocks()
 })
 
+beforeAll(() => {
+  jest.spyOn(console, 'error').mockImplementation(() => {})
+})
+
+afterAll(() => {
+  // @ts-ignore
+  console.error.mockRestore()
+})
+
 it('should download form submissions', async () => {
   const file = 'myform.csv'
   const url = `https://obv.io/${file}`

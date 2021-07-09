@@ -13,6 +13,15 @@ beforeEach(() => {
   jest.clearAllMocks()
 })
 
+beforeAll(() => {
+  jest.spyOn(console, 'error').mockImplementation(() => {})
+})
+
+afterAll(() => {
+  // @ts-ignore
+  console.error.mockRestore()
+})
+
 it('should download question submissions', async () => {
   const blob = 'somefileblob'
   const file = 'myquestion.csv'
