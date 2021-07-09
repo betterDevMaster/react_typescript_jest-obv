@@ -22,7 +22,7 @@ export default function LocalizationProvider(props: {
   const dateTimeFormat = has12HourTime ? 'Do MMMM h:mma' : 'Do MMMM HH:MM'
 
   useEffect(() => {
-    moment.locale(locale)
+    moment.locale([locale, 'en-US'])
   }, [locale])
 
   return (
