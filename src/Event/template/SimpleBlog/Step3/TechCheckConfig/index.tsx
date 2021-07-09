@@ -21,13 +21,13 @@ import AreaSelect from 'organization/Event/Area/AreaSelect'
 import TextEditor from 'lib/ui/form/TextEditor'
 import {fieldError} from 'lib/form'
 import {ValidationError} from 'lib/api-client'
-import {DateTimePicker} from '@material-ui/pickers'
 import {now} from 'lib/date-time'
 import TemplateFields from 'Event/template/SimpleBlog/Step3/TechCheckConfig/TemplateFields'
 import {TechCheckPreview} from 'organization/Event/TechCheckConfig/TechCheckPreview'
 import Box from '@material-ui/core/Box'
 import {SimpleBlog, useSimpleBlog} from 'Event/template/SimpleBlog'
 import TechCheck from 'Event/template/SimpleBlog/Step3/TechCheck'
+import LocalizedDateTimePicker from 'lib/LocalizedDateTimePicker'
 
 /**
  * Default props to use for techCheck. These will be set when an
@@ -178,7 +178,7 @@ export default function Form() {
           required: 'Start is required',
         }}
         render={({onChange, value}) => (
-          <DateTimePicker
+          <LocalizedDateTimePicker
             disabled={submitting}
             value={value}
             onChange={(date) => {

@@ -4,7 +4,6 @@ import DangerButton from 'lib/ui/Button/DangerButton'
 import {onChangeStringHandler, onChangeCheckedHandler} from 'lib/dom'
 import TextField from '@material-ui/core/TextField'
 import Switch from 'lib/ui/form/Switch'
-import {DateTimePicker} from '@material-ui/pickers'
 import {MaterialUiPickersDate} from '@material-ui/pickers/typings/date'
 import TextEditor, {TextEditorContainer} from 'lib/ui/form/TextEditor'
 import FormSelect from 'organization/Event/FormsProvider/FormSelect'
@@ -26,6 +25,7 @@ import ComponentConfig, {
   SaveButton,
 } from 'organization/Event/DashboardConfig/ComponentConfig'
 import {useTemplate} from 'Event/TemplateProvider'
+import LocalizedDateTimePicker from 'lib/LocalizedDateTimePicker'
 
 export const DEFAULT_MODAL_BUTTON_TEXT = 'Submit'
 
@@ -162,7 +162,7 @@ export default function BlogPostConfig(
               fullWidth
               onChange={onChangeStringHandler(setTitle)}
             />
-            <DateTimePicker
+            <LocalizedDateTimePicker
               clearable
               value={publishAt}
               onChange={handleDate(setPublishAt)}

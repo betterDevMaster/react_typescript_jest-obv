@@ -8,7 +8,6 @@ import React from 'react'
 import {Controller, UseFormMethods} from 'react-hook-form'
 import {ObvioEvent} from 'Event'
 import {fieldError} from 'lib/form'
-import {DateTimePicker} from '@material-ui/pickers'
 import moment from 'moment'
 import {FileSelect} from 'lib/ui/form/file'
 import ImageUpload from 'lib/ui/form/ImageUpload'
@@ -18,6 +17,7 @@ import UploadButton from 'lib/ui/form/ImageUpload/UploadButton'
 import Image from 'lib/ui/form/ImageUpload/Image'
 import Box from '@material-ui/core/Box'
 import Cropper from 'lib/ui/form/ImageUpload/Cropper'
+import LocalizedDateTimePicker from 'lib/LocalizedDateTimePicker'
 
 export type UpdateEventData = Pick<
   ObvioEvent,
@@ -116,7 +116,7 @@ export default function Form(props: {
           required: 'Start is required',
         }}
         render={({onChange, value}) => (
-          <DateTimePicker
+          <LocalizedDateTimePicker
             disabled={submitting}
             value={value}
             onChange={(date) => onChange(date?.toISOString() || '')}
@@ -137,7 +137,7 @@ export default function Form(props: {
           required: 'End is required',
         }}
         render={({onChange, value}) => (
-          <DateTimePicker
+          <LocalizedDateTimePicker
             disabled={submitting}
             value={value}
             onChange={(date) => onChange(date?.toISOString() || '')}

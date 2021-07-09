@@ -19,7 +19,7 @@ export default function LocalizationProvider(props: {
   // Only show 12 hour time format for English locales
   const has12HourTime = /en-/.test(locale)
 
-  const dateTimeFormat = has12HourTime ? 'Do MMMM h:mma' : 'Do MMMM HH:MM'
+  const dateTimeFormat = has12HourTime ? 'Do MMMM h:mma' : 'Do MMMM hh:mm'
 
   useEffect(() => {
     moment.locale([locale, 'en-US'])

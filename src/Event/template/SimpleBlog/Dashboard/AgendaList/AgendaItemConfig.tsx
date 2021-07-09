@@ -1,6 +1,5 @@
 import React, {useEffect, useState} from 'react'
 import styled from 'styled-components'
-import {DateTimePicker} from '@material-ui/pickers'
 import DangerButton from 'lib/ui/Button/DangerButton'
 import TextField from '@material-ui/core/TextField'
 import Grid from '@material-ui/core/Grid'
@@ -15,6 +14,7 @@ import ComponentConfig, {
   ComponentConfigProps,
   SaveButton,
 } from 'organization/Event/DashboardConfig/ComponentConfig'
+import LocalizedDateTimePicker from 'lib/LocalizedDateTimePicker'
 
 export function AgendaItemConfig(
   props: {agenda: Agenda; index?: number} & ComponentConfigProps,
@@ -135,7 +135,7 @@ export function AgendaItemConfig(
       />
       <Grid container spacing={2}>
         <Grid item xs={6}>
-          <DateTimePicker
+          <LocalizedDateTimePicker
             value={startDate}
             onChange={handleDate(setStartDate)}
             fullWidth
@@ -146,7 +146,7 @@ export function AgendaItemConfig(
           />
         </Grid>
         <Grid item xs={6}>
-          <DateTimePicker
+          <LocalizedDateTimePicker
             clearable
             value={endDate}
             onChange={handleNullableDate(setEndDate)}

@@ -72,7 +72,7 @@ function Times(props: {agenda: Agenda}) {
   const getDay = (date: moment.Moment) => date.format('Do')
 
   const {has12HourTime} = useLocalization()
-  const timeFormat = has12HourTime ? 'h:mma' : 'HH:MM'
+  const timeFormat = has12HourTime ? 'h:mma' : 'hh:mm'
   const getTime = (date: moment.Moment) => date.format(timeFormat)
 
   const getTimezone = (date: moment.Moment) =>
