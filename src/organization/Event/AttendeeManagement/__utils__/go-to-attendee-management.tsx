@@ -10,6 +10,7 @@ import {EventOverrides, goToEvent} from 'organization/Event/__utils__/event'
 import {fakeArea} from 'organization/Event/AreaList/__utils__/factory'
 import {Area} from 'organization/Event/AreasProvider'
 import {fakePaginate} from 'lib/__utils__/pagination-factory'
+import {UPDATE_ATTENDEES} from 'organization/PermissionsProvider'
 
 const mockGet = axios.get as jest.Mock
 
@@ -23,7 +24,9 @@ export async function goToAttendeeManagement(
     overrides.areas ||
     Array.from({length: faker.random.number({min: 1, max: 5})}, fakeArea)
 
-  const data = goToEvent({...overrides})
+  const userPermissions = overrides.userPermissions || [UPDATE_ATTENDEES]
+
+  const data = goToEvent({...overrides, userPermissions})
 
   const renderResult = render(<App />)
 

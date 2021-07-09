@@ -4,7 +4,10 @@ import {RelativeLink} from 'lib/ui/link/RelativeLink'
 import {useLocation} from 'react-router-dom'
 import {useEventRoutes} from 'organization/Event/EventRoutes'
 import HasPermission from 'organization/HasPermission'
-import {CONFIGURE_EVENTS} from 'organization/PermissionsProvider'
+import {
+  CONFIGURE_EVENTS,
+  UPDATE_ATTENDEES,
+} from 'organization/PermissionsProvider'
 
 export default function ConfigNav() {
   const routes = useEventRoutes()
@@ -13,15 +16,17 @@ export default function ConfigNav() {
       <ConfigNavItem to={routes.areas.root} aria-label="areas">
         Areas
       </ConfigNavItem>
-      <ConfigNavItem to={routes.attendees} aria-label="attendee management">
-        Attendees
-      </ConfigNavItem>
-      <AuthorizedPages />
+      <HasPermission permission={UPDATE_ATTENDEES}>
+        <ConfigNavItem to={routes.attendees} aria-label="attendee management">
+          Attendees
+        </ConfigNavItem>
+      </HasPermission>
+      <ConfigureEventPages />
     </Box>
   )
 }
 
-function AuthorizedPages() {
+function ConfigureEventPages() {
   const routes = useEventRoutes()
 
   return (
