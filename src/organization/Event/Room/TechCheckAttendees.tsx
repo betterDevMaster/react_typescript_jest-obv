@@ -18,6 +18,9 @@ import {api} from 'lib/url'
 import {useRoom} from 'organization/Event/Room/RoomProvider'
 import {useInterval} from 'lib/interval'
 import {Room} from 'Event/room'
+import EditButton from 'lib/ui/Button'
+import TechCheckAttendeeUpdateDialog from 'organization/Event/Room/TechCheckAttendeeUpdateDialog'
+import {colors} from 'lib/ui/theme'
 
 export default function TechCheckAttendees() {
   const {area} = useArea()
@@ -35,6 +38,13 @@ function Content() {
   const checkIn = useCheckIn()
   const [error, setError] = useState('')
   const [isProcessing, setIsProcessing] = useState(false)
+
+  const [editing, setEditing] = useState<Attendee | null>(null)
+  const edit = (attendee: Attendee) => () => setEditing(attendee)
+
+  const stopEditing = () => {
+    setEditing(null)
+  }
 
   useEffect(() => {
     const attendees = assignments.map(({attendee}) => attendee)
@@ -62,27 +72,48 @@ function Content() {
       })
   }
 
+  const update = (target: Attendee) => {
+    setAttendees((current) => {
+      const updated = current.map((c) => {
+        if (c.id === target.id) {
+          return target
+        }
+        return c
+      })
+      return updated
+    })
+  }
+
   return (
-    <Box mt={3}>
-      <Box mt={2}>
-        <Typography variant="h6">Attendees</Typography>
-      </Box>
-      <Error>{error}</Error>
-      <Attendees
-        attendees={attendees}
-        checkIn={handleCheckIn}
-        isProcessing={isProcessing}
+    <>
+      <TechCheckAttendeeUpdateDialog
+        attendee={editing}
+        onClose={stopEditing}
+        update={update}
       />
-    </Box>
+      <Box mt={3}>
+        <Box mt={2}>
+          <Typography variant="h6">Attendees</Typography>
+        </Box>
+        <Error>{error}</Error>
+        <Attendees
+          attendees={attendees}
+          checkIn={handleCheckIn}
+          isProcessing={isProcessing}
+          onSelectEdit={edit}
+        />
+      </Box>
+    </>
   )
 }
 
 function Attendees(props: {
   attendees: Attendee[]
   checkIn: (attendee: Attendee) => () => void
+  onSelectEdit: (attendee: Attendee) => () => void
   isProcessing: boolean
 }) {
-  const {attendees, checkIn, isProcessing} = props
+  const {attendees, checkIn, onSelectEdit, isProcessing} = props
   const hasAttendees = attendees.length > 0
 
   if (!hasAttendees) {
@@ -102,7 +133,14 @@ function Attendees(props: {
         {props.attendees.map((attendee) => (
           <TableRow key={attendee.id}>
             <TableCell component="th" scope="row" aria-label="name">
-              {`${attendee.first_name} ${attendee.last_name}`}
+              <EditButton
+                variant="text"
+                onClick={onSelectEdit(attendee)}
+                textColor={colors.primary}
+                aria-label="edit"
+              >
+                {`${attendee.first_name} ${attendee.last_name}`}
+              </EditButton>
             </TableCell>
             <TableCell>{attendee.email}</TableCell>
             <TableCell>
@@ -130,7 +168,7 @@ export interface TechCheckAssignment {
   room: Room
 }
 
-function useTechCheckAssignments() {
+export function useTechCheckAssignments() {
   const {client} = useOrganization()
   const {event} = useEvent()
   const {area} = useArea()
