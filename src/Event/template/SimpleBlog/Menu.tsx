@@ -64,6 +64,16 @@ function Links() {
         </StyledRelativeLink>
       </ListItem>
       <ListItem>
+        <StyledRelativeLink
+          to={eventRoutes.changePassword}
+          aria-label="change password"
+          disableStyles
+          color={menuTextColor}
+        >
+          Change password
+        </StyledRelativeLink>
+      </ListItem>
+      <ListItem>
         <Button
           variant="text"
           onClick={logout}

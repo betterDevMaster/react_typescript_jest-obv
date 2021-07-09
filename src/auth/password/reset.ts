@@ -3,6 +3,9 @@ import {useQueryParams} from 'lib/url'
 import {useState} from 'react'
 import {useForm, UseFormMethods} from 'react-hook-form'
 import {client, ValidationError} from 'lib/api-client'
+import {useAttendee} from 'Event/auth'
+import {User} from 'auth/user'
+import {useEvent} from 'Event/EventProvider'
 
 export interface ResetPasswordProps {
   onSubmit: () => void

@@ -16,7 +16,7 @@ export default function ForgotPassword() {
 
   const forgotPassword = useForgotPassword({
     url: api(`/events/${event.slug}/forgot_password`),
-    resetFormUrl: `${eventUrl}${eventRoutes.reset_password}`,
+    resetFormUrl: `${eventUrl}${eventRoutes.resetPassword}`,
   })
 
   switch (name) {

@@ -66,7 +66,7 @@ export default function Login(props: LoginProps) {
         </form>
         {props.isPreview ? null : (
           <StyledRelativeLink
-            to={eventRoutes.forgot_password}
+            to={eventRoutes.forgotPassword}
             aria-label="forgot password"
             color={template.login.description.color}
           >
