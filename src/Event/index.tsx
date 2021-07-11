@@ -121,7 +121,7 @@ export function useVariables() {
   const removeVariables = useRemoveVariables()
 
   return useCallback(
-    (text: string) => {
+    (text: string = '') => {
       const process = pipe(
         withTranslations,
         withAttendeeData,

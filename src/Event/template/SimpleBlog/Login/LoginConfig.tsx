@@ -13,6 +13,10 @@ import {useEvent} from 'Event/EventProvider'
 import {useSimpleBlog} from 'Event/template/SimpleBlog'
 import {PreviewBox, SectionTitle} from 'organization/Event/GeneralConfig'
 import Login from 'Event/auth/Login'
+import {
+  DEFAULT_EMAIL_LABEL,
+  DEFAULT_PASSWORD_LABEL,
+} from 'Event/template/SimpleBlog/Login'
 
 const MAX_LOGO_SIZE_PERCENT = 100
 const MIN_LOGO_SIZE_PERCENT = 20
@@ -26,6 +30,12 @@ export default function LoginFormConfig() {
   const updateLogin = update.primitive('login')
 
   const [submitLabel, setSubmitLabel] = useState(login.submitButton.label)
+  const [emailLabel, setEmailLabel] = useState(
+    login.emailLabel || DEFAULT_EMAIL_LABEL,
+  )
+  const [passwordLabel, setPasswordLabel] = useState(
+    login.passwordLabel || DEFAULT_PASSWORD_LABEL,
+  )
   const [submitBackgroundColor, setSubmitBackgroundColor] = useState(
     login.submitButton.backgroundColor,
   )
@@ -80,13 +90,17 @@ export default function LoginFormConfig() {
       login.backgroundColor !== backgroundColor ||
       login.backgroundOpacity !== backgroundOpacity ||
       login.submitButton.hoverColor !== submitHoverColor ||
-      login.submitButton.borderRadius !== buttonBorderRadius
+      login.submitButton.borderRadius !== buttonBorderRadius ||
+      login.emailLabel !== emailLabel ||
+      login.passwordLabel !== passwordLabel
 
     if (!hasChanges) {
       return
     }
 
     updateLogin({
+      emailLabel: emailLabel,
+      passwordLabel: passwordLabel,
       submitButton: {
         label: submitLabel,
         backgroundColor: submitBackgroundColor,
@@ -123,6 +137,8 @@ export default function LoginFormConfig() {
     backgroundColor,
     backgroundOpacity,
     submitHoverColor,
+    emailLabel,
+    passwordLabel,
   ])
 
   return (
@@ -207,7 +223,24 @@ export default function LoginFormConfig() {
                   max={1}
                 />
               </Box>
-
+              <Box display="flex" flexDirection="row" flex="2">
+                <Box mr={1} display="flex" flexDirection="column" flex="1">
+                  <TextField
+                    label="Email Label"
+                    value={emailLabel}
+                    onChange={onChangeStringHandler(setEmailLabel)}
+                    inputProps={{'aria-label': 'email label'}}
+                  />
+                </Box>
+                <Box ml={1} display="flex" flexDirection="column" flex="1">
+                  <TextField
+                    label="Password Label"
+                    value={passwordLabel}
+                    onChange={onChangeStringHandler(setPasswordLabel)}
+                    inputProps={{'aria-label': 'password label'}}
+                  />
+                </Box>
+              </Box>
               <TextField
                 label="Submit Label"
                 value={submitLabel}

@@ -122,6 +122,8 @@ export type SimpleBlog = BaseTemplate & {
   }
   backgroundPosition: 'fixed' | 'bottom'
   login: {
+    emailLabel?: string
+    passwordLabel?: string
     submitButton: {
       backgroundColor: string
       textColor: string

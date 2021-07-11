@@ -7,6 +7,8 @@ import Page, {
   ErrorMessage,
 } from 'Event/template/SimpleBlog/Login/Page'
 import {ForgotPasswordProps} from 'auth/password'
+import {useSimpleBlog} from 'Event/template/SimpleBlog'
+import {DEFAULT_EMAIL_LABEL} from 'Event/template/SimpleBlog/Login'
 
 export default function ForgotPassword(props: ForgotPasswordProps) {
   return (
@@ -17,6 +19,9 @@ export default function ForgotPassword(props: ForgotPasswordProps) {
 }
 
 export function Content(props: ForgotPasswordProps) {
+  const {template} = useSimpleBlog()
+  const emailLabel = template.login.emailLabel || DEFAULT_EMAIL_LABEL
+
   if (props.resetLinkSent) {
     return (
       <Description aria-label="password reset link sent">
@@ -33,7 +38,7 @@ export function Content(props: ForgotPasswordProps) {
       </Description>
       <form onSubmit={props.onSubmit}>
         <TextField
-          label="Email"
+          label={emailLabel}
           type="email"
           fullWidth
           variant="outlined"
@@ -41,7 +46,7 @@ export function Content(props: ForgotPasswordProps) {
           disabled={props.submitting}
           inputProps={{
             ref: props.register({
-              required: 'Email is required',
+              required: `${emailLabel} is required`,
             }),
             'aria-label': 'event account email',
           }}

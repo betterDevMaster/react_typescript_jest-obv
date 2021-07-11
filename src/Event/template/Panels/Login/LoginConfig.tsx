@@ -10,14 +10,18 @@ import {handleChangeSlider} from 'lib/dom'
 import InputLabel from '@material-ui/core/InputLabel'
 import EventImageUpload from 'organization/Event/DashboardConfig/EventImageUpload'
 import {useEvent} from 'Event/EventProvider'
-import {usePanels} from 'Event/template/Panels'
+import {Panels, usePanels} from 'Event/template/Panels'
 import {PreviewBox, SectionTitle} from 'organization/Event/GeneralConfig'
 import Login from 'Event/auth/Login'
+import {
+  DEFAULT_EMAIL_LABEL,
+  DEFAULT_PASSWORD_LABEL,
+} from 'Event/template/Panels/Login'
 
 const MAX_LOGO_SIZE_PERCENT = 100
 const MIN_LOGO_SIZE_PERCENT = 20
 
-export const DEFAULT_LOGIN_CONFIG = {
+export const DEFAULT_LOGIN_CONFIG: NonNullable<Panels['login']> = {
   submitButton: {
     backgroundColor: '#FFFFFF',
     textColor: '#FFFFFF',
@@ -36,6 +40,8 @@ export const DEFAULT_LOGIN_CONFIG = {
   inputBorderRadius: 56,
   logoHidden: false,
   backgroundHidden: false,
+  emailLabel: DEFAULT_EMAIL_LABEL,
+  passwordLabel: DEFAULT_PASSWORD_LABEL,
 }
 
 export const DEFAULT_LOGO_SIZE_PERCENT = 20
@@ -47,6 +53,9 @@ export default function LoginFormConfig() {
 
   const login = templateLogin ? templateLogin : DEFAULT_LOGIN_CONFIG
   const updateLogin = update.primitive('login')
+
+  const [emailLabel, setEmailLabel] = useState(login.emailLabel)
+  const [passwordLabel, setPasswordLabel] = useState(login.passwordLabel)
 
   const [submitLabel, setSubmitLabel] = useState(login.submitButton.label)
   const [submitBackgroundColor, setSubmitBackgroundColor] = useState(
@@ -103,7 +112,9 @@ export default function LoginFormConfig() {
       login.backgroundColor !== backgroundColor ||
       login.backgroundOpacity !== backgroundOpacity ||
       login.submitButton.hoverColor !== submitHoverColor ||
-      login.submitButton.borderRadius !== buttonBorderRadius
+      login.submitButton.borderRadius !== buttonBorderRadius ||
+      login.emailLabel !== emailLabel ||
+      login.passwordLabel !== passwordLabel
 
     if (!hasChanges) {
       return
@@ -128,6 +139,8 @@ export default function LoginFormConfig() {
       inputBorderRadius,
       logoHidden: logoHidden,
       backgroundHidden: backgroundHidden,
+      emailLabel: emailLabel,
+      passwordLabel: passwordLabel,
     })
   }, [
     login,
@@ -146,6 +159,8 @@ export default function LoginFormConfig() {
     backgroundColor,
     backgroundOpacity,
     submitHoverColor,
+    emailLabel,
+    passwordLabel,
   ])
 
   return (
@@ -230,7 +245,24 @@ export default function LoginFormConfig() {
                   max={1}
                 />
               </Box>
-
+              <Box display="flex" flexDirection="row" flex="2">
+                <Box mr={1} display="flex" flexDirection="column" flex="1">
+                  <TextField
+                    label="Email Label"
+                    value={emailLabel}
+                    onChange={onChangeStringHandler(setEmailLabel)}
+                    inputProps={{'aria-label': 'email label'}}
+                  />
+                </Box>
+                <Box ml={1} display="flex" flexDirection="column" flex="1">
+                  <TextField
+                    label="Password Label"
+                    value={passwordLabel}
+                    onChange={onChangeStringHandler(setPasswordLabel)}
+                    inputProps={{'aria-label': 'password label'}}
+                  />
+                </Box>
+              </Box>
               <TextField
                 label="Submit Label"
                 value={submitLabel}

@@ -11,8 +11,13 @@ import Page, {
 import {RelativeLink} from 'lib/ui/link/RelativeLink'
 import {useSimpleBlog} from 'Event/template/SimpleBlog'
 
+export const DEFAULT_EMAIL_LABEL = 'Email'
+export const DEFAULT_PASSWORD_LABEL = 'Password'
+
 export default function Login(props: LoginProps) {
   const {template} = useSimpleBlog()
+  const emailLabel = template.login.emailLabel || DEFAULT_EMAIL_LABEL
+  const passwordLabel = template.login.passwordLabel || DEFAULT_PASSWORD_LABEL
 
   return (
     <Page isPreview={props.isPreview}>
@@ -22,7 +27,7 @@ export default function Login(props: LoginProps) {
         </Description>
         <form onSubmit={props.onSubmit}>
           <TextField
-            label="Email"
+            label={emailLabel}
             type="email"
             fullWidth
             variant="outlined"
@@ -30,7 +35,7 @@ export default function Login(props: LoginProps) {
             disabled={props.submitting}
             inputProps={{
               ref: props.register({
-                required: 'Email is required',
+                required: `${emailLabel} is required`,
               }),
               'aria-label': 'email',
             }}
@@ -38,7 +43,7 @@ export default function Login(props: LoginProps) {
             helperText={props.errors.email && props.errors.email.message}
           />
           <TextField
-            label="Password"
+            label={passwordLabel}
             type="password"
             fullWidth
             variant="outlined"
@@ -46,7 +51,7 @@ export default function Login(props: LoginProps) {
             disabled={props.submitting}
             inputProps={{
               ref: props.register({
-                required: 'Password is required',
+                required: `${passwordLabel} is required`,
               }),
               'aria-label': 'password',
             }}

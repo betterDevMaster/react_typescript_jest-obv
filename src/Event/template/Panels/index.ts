@@ -142,6 +142,8 @@ export type Panels = BaseTemplate & {
     inputBorderRadius?: number
     logoHidden?: boolean
     backgroundHidden?: boolean
+    emailLabel?: string
+    passwordLabel?: string
   }
   setPasswordForm: {
     title: string
