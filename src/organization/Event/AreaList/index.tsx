@@ -10,7 +10,12 @@ import {useBreadcrumbs} from 'lib/ui/BreadcrumbProvider'
 import {useOrganization} from 'organization/OrganizationProvider'
 import Page from 'organization/Event/Page'
 import HasPermission from 'organization/HasPermission'
-import {CONFIGURE_EVENTS} from 'organization/PermissionsProvider'
+import {
+  CHECK_IN_ATTENDEES,
+  CONFIGURE_EVENTS,
+  START_ROOMS,
+  usePermissions,
+} from 'organization/PermissionsProvider'
 
 export default function AreaList() {
   const routes = useEventRoutes()
@@ -47,6 +52,7 @@ export default function AreaList() {
 
 function Areas() {
   const {areas, loading} = useAreas()
+  const {can} = usePermissions()
 
   if (loading || !areas) {
     return <div>loading...</div>
@@ -54,12 +60,28 @@ function Areas() {
 
   const isEmpty = areas.length === 0
   if (isEmpty) {
-    return <div>You have not created any areas</div>
+    return <div>No areas have been created</div>
   }
+
+  const visibleAreas = areas.filter((a) => {
+    if (can(START_ROOMS) || can(CONFIGURE_EVENTS)) {
+      return true
+    }
+
+    /**
+     * If a user only has permission to check in attendees (tech check agent), then
+     * we'll only show the tech check area.
+     */
+    if (can(CHECK_IN_ATTENDEES)) {
+      return a.is_tech_check
+    }
+
+    return false
+  })
 
   return (
     <div>
-      {areas.map((a) => (
+      {visibleAreas.map((a) => (
         <Card key={a.id} area={a} />
       ))}
     </div>

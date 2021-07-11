@@ -3,7 +3,7 @@ import user from '@testing-library/user-event'
 import axios from 'axios'
 import {fakeRoom} from 'organization/Event/AreaList/__utils__/factory'
 import {wait} from '@testing-library/react'
-import {CONFIGURE_EVENTS} from 'organization/PermissionsProvider'
+import {CONFIGURE_EVENTS, START_ROOMS} from 'organization/PermissionsProvider'
 import {goToAreas} from 'organization/Event/AreaList/__utils__/go-to-areas'
 
 const mockGet = axios.get as jest.Mock

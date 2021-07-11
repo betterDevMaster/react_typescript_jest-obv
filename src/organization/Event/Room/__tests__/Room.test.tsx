@@ -1,7 +1,7 @@
 import user from '@testing-library/user-event'
 import axios from 'axios'
 import faker from 'faker'
-import {fakeRoom} from 'organization/Event/AreaList/__utils__/factory'
+import {fakeArea, fakeRoom} from 'organization/Event/AreaList/__utils__/factory'
 import {Room} from 'Event/room'
 import {wait} from '@testing-library/react'
 import {CONFIGURE_EVENTS, START_ROOMS} from 'organization/PermissionsProvider'
@@ -78,16 +78,19 @@ it('should toggle a room on/off', async () => {
 })
 
 it('should update room attributes', async () => {
-  const {areas, findByLabelText} = await goToAreas({
-    userPermissions: [CONFIGURE_EVENTS],
+  const area = fakeArea({
+    is_tech_check: false,
+  })
+  const {findByLabelText} = await goToAreas({
+    userPermissions: [START_ROOMS, CONFIGURE_EVENTS],
+    areas: [area],
   })
 
-  const area = faker.random.arrayElement(areas)
   mockGet.mockImplementationOnce(() => Promise.resolve({data: area}))
 
   const rooms = Array.from(
     {length: faker.random.number({min: 1, max: 3})},
-    () => fakeRoom({max_num_attendees: null}),
+    () => fakeRoom({max_num_attendees: null, is_online: false}),
   )
   const targetIndex = faker.random.number({min: 0, max: rooms.length - 1})
   const target = rooms[targetIndex]
@@ -109,13 +112,6 @@ it('should update room attributes', async () => {
   const hasMaxAttendees = faker.random.boolean()
   const maxNumAttendees = faker.random.number({min: 100, max: 400})
 
-  const updated: Room = {
-    ...target,
-    name: newName,
-    max_num_attendees: hasMaxAttendees ? null : maxNumAttendees,
-  }
-  mockPatch.mockImplementationOnce(() => Promise.resolve({data: updated}))
-
   user.type(await findByLabelText('room name input'), newName)
 
   if (hasMaxAttendees) {
@@ -125,6 +121,13 @@ it('should update room attributes', async () => {
       String(maxNumAttendees),
     )
   }
+
+  const updated: Room = {
+    ...target,
+    name: newName,
+    max_num_attendees: hasMaxAttendees ? null : maxNumAttendees,
+  }
+  mockPatch.mockImplementationOnce(() => Promise.resolve({data: updated}))
 
   user.click(await findByLabelText('update room'))
 
@@ -144,15 +147,20 @@ it('should update room attributes', async () => {
 })
 
 it('should configure room registration', async () => {
-  const {findByLabelText, areas, queryByLabelText} = await goToAreas({
-    userPermissions: [CONFIGURE_EVENTS],
+  const area = fakeArea({
+    is_tech_check: false,
   })
 
-  const area = faker.random.arrayElement(areas)
+  const {findByLabelText, queryByLabelText} = await goToAreas({
+    areas: [area],
+    userPermissions: [CONFIGURE_EVENTS, START_ROOMS],
+  })
+
   mockGet.mockImplementationOnce(() => Promise.resolve({data: area}))
 
   const room = fakeRoom({
     has_registration: false,
+    is_online: false,
   })
   mockGet.mockImplementationOnce(() => Promise.resolve({data: [room]}))
 

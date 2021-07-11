@@ -3,11 +3,14 @@ import axios from 'axios'
 import {fakeRoom} from 'organization/Event/AreaList/__utils__/factory'
 import user from '@testing-library/user-event'
 import {goToAreas} from 'organization/Event/AreaList/__utils__/go-to-areas'
+import {START_ROOMS} from 'organization/PermissionsProvider'
 
 const mockGet = axios.get as jest.Mock
 
 it('should render list of rooms', async () => {
-  const {areas, findByLabelText, findByText} = await goToAreas()
+  const {areas, findByLabelText, findByText} = await goToAreas({
+    userPermissions: [START_ROOMS],
+  })
 
   const area = faker.random.arrayElement(areas)
   mockGet.mockImplementationOnce(() => Promise.resolve({data: area}))

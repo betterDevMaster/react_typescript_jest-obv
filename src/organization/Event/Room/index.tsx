@@ -69,7 +69,7 @@ export default function RoomConfig() {
 
   const canSave = hasUpdates && !processing
 
-  const saveName = () => {
+  const save = () => {
     const data: Room = {
       ...room,
       name,
@@ -169,7 +169,7 @@ export default function RoomConfig() {
               color="primary"
               disabled={!canSave}
               variant="contained"
-              onClick={saveName}
+              onClick={save}
               aria-label="update room"
             >
               Save
