@@ -184,7 +184,7 @@ export function MainNavButtonConfig(
           />
           <Controller
             name="actionId"
-            defaultValue={button.actionId}
+            defaultValue={button.actionId || ''}
             control={control}
             render={({value, onChange}) => (
               <ActionSelect value={value} onChange={onChange} />
@@ -213,7 +213,13 @@ export function MainNavButtonConfig(
                 defaultValue={button.newLine || false}
                 control={control}
                 render={({value, onChange}) => (
-                  <Checkbox checked={value} onChange={onChange} />
+                  <Checkbox
+                    checked={value}
+                    inputProps={{
+                      'aria-label': 'toggle new line',
+                    }}
+                    onChange={onChangeCheckedHandler(onChange)}
+                  />
                 )}
               />
             }

@@ -71,6 +71,37 @@ it('should edit the selected button', async () => {
   expect(data.template.mainNav.entities[id].text).toBe(updatedValue)
 })
 
+it('should edit new line setting', async () => {
+  const button = fakeNavButtonWithSize({
+    newLine: false,
+  })
+
+  const mainNavButtons = createEntityList([button])
+  const event = fakeEvent({
+    template: fakeSimpleBlog({
+      mainNav: mainNavButtons,
+    }),
+  })
+  const {findByLabelText, findByText} = await goToDashboardConfig({event})
+
+  const buttonEl = await findByText(button.text)
+  clickEdit(buttonEl)
+
+  user.click(await findByLabelText('toggle new line'))
+
+  fireEvent.click(await findByLabelText('save'))
+
+  // Saved
+  await wait(() => {
+    expect(mockPost).toHaveBeenCalledTimes(1)
+  })
+
+  const [url, data] = mockPost.mock.calls[0]
+  expect(url).toMatch(`/events/${event.slug}`)
+  const id = data.template.mainNav.ids[0]
+  expect(data.template.mainNav.entities[id].newLine).toBe(true)
+})
+
 it('should set an area button', async () => {
   const buttons = Array.from(
     {
