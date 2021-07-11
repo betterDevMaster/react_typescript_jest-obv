@@ -65,15 +65,17 @@ export default function Forms() {
             </TableCell>
             <ActionTableCell>
               <Tooltip title={form.id === copiedForm ? 'Copied' : 'Copy'}>
-                <IconButton
-                  onClick={() => handleDuplicate(form)}
-                  disabled={processing}
-                  size="small"
-                  color="primary"
-                  aria-label="duplicate form"
-                >
-                  <StyledFileCopyIcon />
-                </IconButton>
+                <span>
+                  <IconButton
+                    onClick={() => handleDuplicate(form)}
+                    disabled={processing}
+                    size="small"
+                    color="primary"
+                    aria-label="duplicate form"
+                  >
+                    <StyledFileCopyIcon />
+                  </IconButton>
+                </span>
               </Tooltip>
             </ActionTableCell>
           </TableRow>
