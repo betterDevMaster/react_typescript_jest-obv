@@ -18,7 +18,7 @@ export default function LeaderboardSettingsDialog(props: {
   const {visible, onClose} = props
 
   return (
-    <Dialog open={visible} onClose={onClose} fullWidth>
+    <Dialog open={visible} onClose={onClose} fullWidth disableEnforceFocus>
       <DialogTitle>Leaderboard Page</DialogTitle>
       <DialogContent>
         <Box pb={2}>
