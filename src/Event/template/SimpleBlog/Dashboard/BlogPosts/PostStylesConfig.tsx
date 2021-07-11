@@ -8,6 +8,9 @@ import {withDefault} from 'lib/template'
 import ColorPicker from 'lib/ui/ColorPicker'
 import Switch from 'lib/ui/form/Switch'
 import React, {useEffect, useMemo, useState} from 'react'
+import InputLabel from '@material-ui/core/InputLabel'
+import Slider from '@material-ui/core/Slider'
+import {handleChangeSlider} from 'lib/dom'
 
 export const DEFAULT_TITLE_TEXT_COLOR = '#000000'
 export const DEFAULT_TITLE_FONT_SIZE = 30
@@ -15,6 +18,10 @@ export const DEFAULT_TITLE_CAPITALIZE = true
 export const DEFAULT_DATE_TEXT_COLOR = '#adadad'
 export const DEFAULT_CONTENT_TEXT_COLOR = '#000000'
 export const DEFAULT_CONTENT_FONT_SIZE = 17
+export const DEFAULT_SPACING = 32
+
+const MAX_SPACING = 250
+const MIN_SPACING = 1
 
 export default function PostStylesConfig(props: {
   isVisible: boolean
@@ -30,6 +37,7 @@ export default function PostStylesConfig(props: {
   const [titleFontSize, setTitleFontSize] = useState(styles.titleFontSize)
   const [titleCapitalize, setTitleCapitalize] = useState(styles.titleCapitalize)
   const [dateTextColor, setDateTextColor] = useState(styles.dateTextColor)
+  const [spacing, setSpacing] = useState(styles.spacing)
   const [contentTextColor, setContentTextColor] = useState(
     styles.contentTextColor,
   )
@@ -46,6 +54,7 @@ export default function PostStylesConfig(props: {
     setDateTextColor(styles.dateTextColor)
     setContentTextColor(styles.contentTextColor)
     setContentFontSize(styles.contentFontSize)
+    setSpacing(styles.spacing)
   }, [isVisible, styles])
 
   const save = () => {
@@ -56,6 +65,7 @@ export default function PostStylesConfig(props: {
       dateTextColor,
       contentTextColor,
       contentFontSize,
+      spacing,
     }
 
     update.primitive('postStyles')(updated)
@@ -113,6 +123,15 @@ export default function PostStylesConfig(props: {
         }}
         onChange={onChangeNumberHandler(setContentFontSize)}
       />
+      <InputLabel>Space Between Posts</InputLabel>
+      <Slider
+        min={MIN_SPACING}
+        max={MAX_SPACING}
+        step={1}
+        onChange={handleChangeSlider(setSpacing)}
+        valueLabelDisplay="auto"
+        value={spacing}
+      />
       <SaveButton onClick={save} />
     </ComponentConfig>
   )
@@ -141,6 +160,7 @@ export function usePostStyles() {
         DEFAULT_CONTENT_FONT_SIZE,
         postStyles?.contentFontSize,
       ),
+      spacing: withDefault(DEFAULT_SPACING, postStyles?.spacing),
     }),
     [postStyles],
   )

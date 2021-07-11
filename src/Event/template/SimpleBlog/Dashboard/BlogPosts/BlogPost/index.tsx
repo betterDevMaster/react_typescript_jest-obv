@@ -9,11 +9,12 @@ import {shouldPublish} from 'Event/Dashboard/components/BlogPost'
 import {BlogPost as BlogPostData} from 'Event/Dashboard/components/BlogPost'
 import {usePostStyles} from 'Event/template/SimpleBlog/Dashboard/BlogPosts/PostStylesConfig'
 
-export function BlogPost(props: {post: BlogPostData}) {
-  const {post} = props
+export function BlogPost(props: {post: BlogPostData; isLast: boolean}) {
+  const {post, isLast} = props
   const isEdit = useEditMode()
   const v = useVariables()
   const styles = usePostStyles()
+  const bottomMargin = isLast ? 0 : styles.spacing
 
   const date = post.publishAt || post.postedAt
   const formattedDate = blogPostTime(date)
@@ -23,7 +24,7 @@ export function BlogPost(props: {post: BlogPostData}) {
   }
 
   return (
-    <Post aria-label="blog post">
+    <Post aria-label="blog post" marginBottom={bottomMargin}>
       <Title
         color={styles.titleTextColor}
         fontSize={styles.titleFontSize}
@@ -53,8 +54,8 @@ function Date(props: {children: React.ReactNode; hidden?: boolean}) {
   return <DateText color={styles.dateTextColor}>{props.children}</DateText>
 }
 
-const Post = styled.div`
-  margin-bottom: ${(props) => props.theme.spacing[8]};
+const Post = styled.div<{marginBottom: number}>`
+  margin-bottom: ${(props) => props.marginBottom}px;
 
   img {
     max-width: 100%;

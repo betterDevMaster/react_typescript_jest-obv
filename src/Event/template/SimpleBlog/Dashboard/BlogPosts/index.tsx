@@ -33,13 +33,16 @@ export default function BlogPosts() {
           onClose={toggleStyleConfig}
         />
       </EditModeOnly>
-      {sortedIds.map((id) => {
+      {sortedIds.map((id, index) => {
         const post = posts.entities[id]
+
+        const isLast = index === sortedIds.length - 1
+
         return (
           <Editable key={id} onEdit={() => setEditing(id)}>
             <Published component={post}>
               <HiddenOnMatch rules={post.rules}>
-                <BlogPost post={post} />
+                <BlogPost post={post} isLast={isLast} />
               </HiddenOnMatch>
             </Published>
           </Editable>

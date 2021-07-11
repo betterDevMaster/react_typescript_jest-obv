@@ -65,6 +65,7 @@ export type SimpleBlog = BaseTemplate & {
     dateTextColor?: string
     contentFontSize?: number
     contentTextColor?: string
+    spacing?: number
   }
   agenda: {
     title: string
