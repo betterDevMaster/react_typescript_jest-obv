@@ -55,7 +55,6 @@ export default function LinkConfig(props: LinkConfigProps) {
 
 function PageSelect<T extends NavButton>(props: LinkConfigProps) {
   const pages = props.pages || EVENT_PAGES
-
   const value = props.page || 0
 
   const setLink = (link: string | number) => {

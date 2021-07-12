@@ -175,7 +175,6 @@ export function SidebarNavButtonConfig(
             )}
           />
           <TargetConfig
-            disablePageSelect
             isAreaButton={isAreaButton}
             setIsAreaButton={setIsAreaButton}
             areaId={areaId}
@@ -187,7 +186,6 @@ export function SidebarNavButtonConfig(
             newTab={newTab}
             setNewTab={setNewTab}
           />
-
           <Grid container spacing={2}>
             <Grid item xs={6}>
               <Controller
