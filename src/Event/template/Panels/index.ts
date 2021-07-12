@@ -14,6 +14,11 @@ import {
 } from 'Event/template/Panels/check-in/StepIndicator'
 import {BlogPost} from 'Event/Dashboard/components/BlogPost'
 import {DEFAULT_POINTS_UNIT} from 'Event/template/SimpleBlog/Dashboard/PointsSummary/SetPointsButton'
+import {
+  DEFAULT_REWARD_ALERT_BACKGROUND_COLOR,
+  DEFAULT_REWARD_ALERT_TEXT_COLOR,
+  DEFAULT_REWARD_TEXT,
+} from 'Event/PointsProvider'
 
 export const PANELS = 'Panels'
 
@@ -194,6 +199,11 @@ export const createPanels = (): Panels => ({
   nav: {
     entities: {},
     ids: [],
+  },
+  rewardAlert: {
+    backgroundColor: DEFAULT_REWARD_ALERT_BACKGROUND_COLOR,
+    textColor: DEFAULT_REWARD_ALERT_TEXT_COLOR,
+    text: DEFAULT_REWARD_TEXT,
   },
   leaderboard: {
     title: 'Leaderboard',

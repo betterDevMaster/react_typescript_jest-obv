@@ -44,6 +44,7 @@ import Reports from 'organization/Event/Reports'
 import ReportsProvider from 'organization/Event/ReportsProvider'
 import BackgroundsProvider from 'organization/Event/Backgrounds/BackgroundsProvider'
 import Backgrounds from 'organization/Event/Backgrounds'
+import {StaticPointsProvider} from 'Event/PointsProvider'
 
 export type EventRoutes = ReturnType<typeof useEventRoutes>
 
@@ -65,141 +66,143 @@ export default function EventRoutes() {
 
   return (
     <TemplateProvider template={event.template}>
-      <Switch>
-        <Route path={routes.events[':event'].root} exact>
-          <Event />
-        </Route>
-        <Route path={routes.events[':event'].areas.root} exact>
-          <AreasProvider>
-            <AreaList />
-          </AreasProvider>
-        </Route>
-        <Route path={routes.events[':event'].dashboard}>
-          <AuthorizedPage permission={CONFIGURE_EVENTS}>
+      <StaticPointsProvider>
+        <Switch>
+          <Route path={routes.events[':event'].root} exact>
+            <Event />
+          </Route>
+          <Route path={routes.events[':event'].areas.root} exact>
             <AreasProvider>
-              <DashboardConfig />
+              <AreaList />
             </AreasProvider>
-          </AuthorizedPage>
-        </Route>
-        <Route path={routes.events[':event'].waiver}>
-          <AuthorizedPage permission={CONFIGURE_EVENTS}>
-            <WaiverConfig />
-          </AuthorizedPage>
-        </Route>
-        <Route path={routes.events[':event'].forms[':form'].root}>
-          <AuthorizedPage permission={CONFIGURE_EVENTS}>
-            <FormProvider>
-              <Form />
-            </FormProvider>
-          </AuthorizedPage>
-        </Route>
-        <Route path={routes.events[':event'].forms.root}>
-          <AuthorizedPage permission={CONFIGURE_EVENTS}>
-            <FormsConfig />
-          </AuthorizedPage>
-        </Route>
-        <Route path={routes.events[':event'].tech_check}>
-          <AuthorizedPage permission={CONFIGURE_EVENTS}>
-            <AreasProvider>
-              <TechCheckConfig />
-            </AreasProvider>
-          </AuthorizedPage>
-        </Route>
-        <Route path={routes.events[':event'].attendees}>
-          <AttendeesProvider>
-            <AreasProvider>
-              <AttendeeManagement />
-            </AreasProvider>
-          </AttendeesProvider>
-        </Route>
-        <Route path={routes.events[':event'].emoji}>
-          <AuthorizedPage permission={CONFIGURE_EVENTS}>
-            <HideLiveChatSupport>
-              <Emoji />
-            </HideLiveChatSupport>
-          </AuthorizedPage>
-        </Route>
-        <Route path={routes.events[':event'].speakers}>
-          <AuthorizedPage permission={CONFIGURE_EVENTS}>
-            <SpeakersProvider>
-              <SpeakerPageConfig />
-            </SpeakersProvider>
-          </AuthorizedPage>
-        </Route>
-        <Route path={routes.events[':event'].sponsors}>
-          <AuthorizedPage permission={CONFIGURE_EVENTS}>
-            <AreasProvider>
-              <SponsorsProvider>
-                <SponsorPageConfig />
-              </SponsorsProvider>
-            </AreasProvider>
-          </AuthorizedPage>
-        </Route>
-        <Route path={routes.events[':event'].faqs}>
-          <AuthorizedPage permission={CONFIGURE_EVENTS}>
-            <AreasProvider>
-              <FaqsProvider>
-                <FaqPageConfig />
-              </FaqsProvider>
-            </AreasProvider>
-          </AuthorizedPage>
-        </Route>
-        <Route path={routes.events[':event'].points}>
-          <AuthorizedPage permission={CONFIGURE_EVENTS}>
-            <PointsConfig />
-          </AuthorizedPage>
-        </Route>
-        <Route path={routes.events[':event'].general}>
-          <AuthorizedPage permission={CONFIGURE_EVENTS}>
-            <GeneralConfig />
-          </AuthorizedPage>
-        </Route>
-        <Route path={routes.events[':event'].localization}>
-          <AuthorizedPage permission={CONFIGURE_EVENTS}>
-            <LocalizationConfig />
-          </AuthorizedPage>
-        </Route>
-        <Route path={routes.events[':event'].services.root}>
-          <AuthorizedPage permission={CONFIGURE_EVENTS}>
-            <ServicesProvider>
-              <ServiceRoutes />
-            </ServicesProvider>
-          </AuthorizedPage>
-        </Route>
-        <Route path={routes.events[':event'].backgrounds}>
-          <AuthorizedPage permission={CONFIGURE_EVENTS}>
-            <BackgroundsProvider>
-              <Backgrounds />
-            </BackgroundsProvider>
-          </AuthorizedPage>
-        </Route>
-        <Route path={routes.events[':event'].areas.create}>
-          <AuthorizedPage permission={CONFIGURE_EVENTS}>
-            <CreateAreaForm />
-          </AuthorizedPage>
-        </Route>
-        <Route path={routes.events[':event'].areas[':area'].root}>
-          <AreaProvider>
-            <AreaRoutes />
-          </AreaProvider>
-        </Route>
-        <Route path={routes.events[':event'].name_appendage}>
-          <AuthorizedPage permission={CONFIGURE_EVENTS}>
-            <NameAppendageProvider>
-              <NameAppendageConfig />
-            </NameAppendageProvider>
-          </AuthorizedPage>
-        </Route>
-        reports
-        <Route path={routes.events[':event'].reports}>
-          <AuthorizedPage permission={CONFIGURE_EVENTS}>
-            <ReportsProvider>
-              <Reports />
-            </ReportsProvider>
-          </AuthorizedPage>
-        </Route>
-        <Redirect to={routes.events[':event'].root} />
-      </Switch>
+          </Route>
+          <Route path={routes.events[':event'].dashboard}>
+            <AuthorizedPage permission={CONFIGURE_EVENTS}>
+              <AreasProvider>
+                <DashboardConfig />
+              </AreasProvider>
+            </AuthorizedPage>
+          </Route>
+          <Route path={routes.events[':event'].waiver}>
+            <AuthorizedPage permission={CONFIGURE_EVENTS}>
+              <WaiverConfig />
+            </AuthorizedPage>
+          </Route>
+          <Route path={routes.events[':event'].forms[':form'].root}>
+            <AuthorizedPage permission={CONFIGURE_EVENTS}>
+              <FormProvider>
+                <Form />
+              </FormProvider>
+            </AuthorizedPage>
+          </Route>
+          <Route path={routes.events[':event'].forms.root}>
+            <AuthorizedPage permission={CONFIGURE_EVENTS}>
+              <FormsConfig />
+            </AuthorizedPage>
+          </Route>
+          <Route path={routes.events[':event'].tech_check}>
+            <AuthorizedPage permission={CONFIGURE_EVENTS}>
+              <AreasProvider>
+                <TechCheckConfig />
+              </AreasProvider>
+            </AuthorizedPage>
+          </Route>
+          <Route path={routes.events[':event'].attendees}>
+            <AttendeesProvider>
+              <AreasProvider>
+                <AttendeeManagement />
+              </AreasProvider>
+            </AttendeesProvider>
+          </Route>
+          <Route path={routes.events[':event'].emoji}>
+            <AuthorizedPage permission={CONFIGURE_EVENTS}>
+              <HideLiveChatSupport>
+                <Emoji />
+              </HideLiveChatSupport>
+            </AuthorizedPage>
+          </Route>
+          <Route path={routes.events[':event'].speakers}>
+            <AuthorizedPage permission={CONFIGURE_EVENTS}>
+              <SpeakersProvider>
+                <SpeakerPageConfig />
+              </SpeakersProvider>
+            </AuthorizedPage>
+          </Route>
+          <Route path={routes.events[':event'].sponsors}>
+            <AuthorizedPage permission={CONFIGURE_EVENTS}>
+              <AreasProvider>
+                <SponsorsProvider>
+                  <SponsorPageConfig />
+                </SponsorsProvider>
+              </AreasProvider>
+            </AuthorizedPage>
+          </Route>
+          <Route path={routes.events[':event'].faqs}>
+            <AuthorizedPage permission={CONFIGURE_EVENTS}>
+              <AreasProvider>
+                <FaqsProvider>
+                  <FaqPageConfig />
+                </FaqsProvider>
+              </AreasProvider>
+            </AuthorizedPage>
+          </Route>
+          <Route path={routes.events[':event'].points}>
+            <AuthorizedPage permission={CONFIGURE_EVENTS}>
+              <PointsConfig />
+            </AuthorizedPage>
+          </Route>
+          <Route path={routes.events[':event'].general}>
+            <AuthorizedPage permission={CONFIGURE_EVENTS}>
+              <GeneralConfig />
+            </AuthorizedPage>
+          </Route>
+          <Route path={routes.events[':event'].localization}>
+            <AuthorizedPage permission={CONFIGURE_EVENTS}>
+              <LocalizationConfig />
+            </AuthorizedPage>
+          </Route>
+          <Route path={routes.events[':event'].services.root}>
+            <AuthorizedPage permission={CONFIGURE_EVENTS}>
+              <ServicesProvider>
+                <ServiceRoutes />
+              </ServicesProvider>
+            </AuthorizedPage>
+          </Route>
+          <Route path={routes.events[':event'].backgrounds}>
+            <AuthorizedPage permission={CONFIGURE_EVENTS}>
+              <BackgroundsProvider>
+                <Backgrounds />
+              </BackgroundsProvider>
+            </AuthorizedPage>
+          </Route>
+          <Route path={routes.events[':event'].areas.create}>
+            <AuthorizedPage permission={CONFIGURE_EVENTS}>
+              <CreateAreaForm />
+            </AuthorizedPage>
+          </Route>
+          <Route path={routes.events[':event'].areas[':area'].root}>
+            <AreaProvider>
+              <AreaRoutes />
+            </AreaProvider>
+          </Route>
+          <Route path={routes.events[':event'].name_appendage}>
+            <AuthorizedPage permission={CONFIGURE_EVENTS}>
+              <NameAppendageProvider>
+                <NameAppendageConfig />
+              </NameAppendageProvider>
+            </AuthorizedPage>
+          </Route>
+          reports
+          <Route path={routes.events[':event'].reports}>
+            <AuthorizedPage permission={CONFIGURE_EVENTS}>
+              <ReportsProvider>
+                <Reports />
+              </ReportsProvider>
+            </AuthorizedPage>
+          </Route>
+          <Redirect to={routes.events[':event'].root} />
+        </Switch>
+      </StaticPointsProvider>
     </TemplateProvider>
   )
 }

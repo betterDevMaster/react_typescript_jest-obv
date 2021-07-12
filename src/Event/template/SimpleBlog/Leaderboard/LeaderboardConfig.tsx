@@ -7,21 +7,50 @@ import {Controller, useForm} from 'react-hook-form'
 import {SimpleBlog, useSimpleBlog} from 'Event/template/SimpleBlog'
 import Button from '@material-ui/core/Button'
 import {useUpdate} from 'Event/EventProvider'
+import Typography from '@material-ui/core/Typography'
+import List from '@material-ui/core/List'
+import ListItem from '@material-ui/core/ListItem'
+import ListItemText from '@material-ui/core/ListItemText'
+import styled from 'styled-components'
+import {
+  DEFAULT_REWARD_ALERT_BACKGROUND_COLOR,
+  DEFAULT_REWARD_ALERT_TEXT_COLOR,
+  DEFAULT_REWARD_TEXT,
+} from 'Event/PointsProvider'
+import SnackbarContent from '@material-ui/core/SnackbarContent'
+import {onChangeStringHandler} from 'lib/dom'
+import CheckCircleIcon from '@material-ui/icons/CheckCircle'
 
 export const DEFAULT_TITLE = 'Leaderboard'
 export const DEFAULT_DESCRIPTION =
   '<p>{{first name}}, you have earned {{leaderboard_points}} {{points_unit}}, and you are currently {{leaderboard_position}}. Great Job!</p><p><i>The list below is the top 200 point earners! If you don’t see your name listed, there’s still time!</i></p><p><br>&nbsp;</p>'
 export const DEFAULT_BACK_TO_DASHBOARD_TEXT = 'Back to Dashboard'
 export const DEFAULT_BACK_TO_DASHBOARD_TEXT_COLOR = '#000000'
-
 export type LeaderboardConfigData = NonNullable<SimpleBlog['leaderboard']>
+
+const DESCRIPTION = `Use the following variables to insert action data into the popup text:`
+const VARIABLES = [
+  `{{points_unit}} - Point Unit Name`,
+  `{{action_description}} - Action Description`,
+  `{{action_points}} - Action Points`,
+]
 
 export default function LeaderboardConfig(props: {onComplete?: () => void}) {
   const {template} = useSimpleBlog()
-  const {leaderboard} = template
+  const {leaderboard, rewardAlert} = template
   const {register, control, handleSubmit} = useForm()
   const [processing, setProcessing] = useState(false)
   const updateEvent = useUpdate()
+
+  const [rewardText, setRewardText] = useState<string>(
+    rewardAlert?.text || DEFAULT_REWARD_TEXT,
+  )
+  const [rewardBackgroundColor, setRewardBackgroundColor] = useState<string>(
+    rewardAlert?.backgroundColor || DEFAULT_REWARD_ALERT_BACKGROUND_COLOR,
+  )
+  const [rewardTextColor, setRewardTextColor] = useState<string>(
+    rewardAlert?.textColor || DEFAULT_REWARD_ALERT_TEXT_COLOR,
+  )
 
   const submit = (data: LeaderboardConfigData) => {
     if (processing) {
@@ -34,6 +63,11 @@ export default function LeaderboardConfig(props: {onComplete?: () => void}) {
 
     const updated = {
       ...template,
+      rewardAlert: {
+        text: rewardText,
+        backgroundColor: rewardBackgroundColor,
+        textColor: rewardTextColor,
+      },
       leaderboard: {
         ...existing,
         ...data,
@@ -116,6 +150,57 @@ export default function LeaderboardConfig(props: {onComplete?: () => void}) {
             )}
           />
         </Grid>
+        <Grid item xs={12} md={12}>
+          <StyledSnackerBar
+            message={
+              <Continer>
+                <CheckCircleIcon />
+                <StyledDiv>{rewardText}</StyledDiv>
+              </Continer>
+            }
+            color={rewardTextColor}
+            backgroundColor={rewardBackgroundColor}
+          />
+        </Grid>
+        <Grid item xs={12} md={6}>
+          <ColorPicker
+            label="Popup Background Color"
+            color={rewardBackgroundColor}
+            onPick={setRewardBackgroundColor}
+          />
+        </Grid>
+        <Grid item xs={12} md={6}>
+          <ColorPicker
+            label="Popup Color"
+            color={rewardTextColor}
+            onPick={setRewardTextColor}
+          />
+        </Grid>
+        <Grid item xs={12} md={12}>
+          <TextField
+            defaultValue={rewardText}
+            name="popupText"
+            label="Popup Text"
+            fullWidth
+            multiline
+            rows={3}
+            variant="outlined"
+            onChange={onChangeStringHandler(setRewardText)}
+            inputProps={{
+              'aria-label': 'set leaderboard popup text',
+              ref: register({required: 'Title is required'}),
+            }}
+            disabled={processing}
+          />
+        </Grid>
+        <Grid item xs={12}>
+          <Typography variant="inherit">{DESCRIPTION}</Typography>
+          <List dense={true}>
+            {VARIABLES.map((item) => (
+              <Item text={item} />
+            ))}
+          </List>
+        </Grid>
       </Grid>
 
       <Button
@@ -131,3 +216,36 @@ export default function LeaderboardConfig(props: {onComplete?: () => void}) {
     </form>
   )
 }
+
+function Item(props: {text: string}) {
+  return (
+    <ListItem>
+      <StyledListItemText>{props.text}</StyledListItemText>
+    </ListItem>
+  )
+}
+
+const StyledListItemText = styled(ListItemText)`
+  margin: unset !important;
+`
+const StyledSnackerBar = styled(
+  ({
+    color,
+    backgroundColor,
+    ...otherProps
+  }: {
+    color: string
+    backgroundColor: string
+    message: React.ReactElement
+  }) => <SnackbarContent {...otherProps} />,
+)`
+  color: ${(props) => props.color}!important;
+  background-color: ${(props) => props.backgroundColor} !important;
+`
+
+const Continer = styled.div`
+  display: flex;
+`
+const StyledDiv = styled.div`
+  font-size: 19px;
+`

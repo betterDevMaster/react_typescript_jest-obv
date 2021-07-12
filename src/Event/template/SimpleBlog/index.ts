@@ -27,6 +27,11 @@ import {
   DEFAULT_BORDER_COLOR,
   DEFAULT_IMAGES_PER_ROW,
 } from 'Event/template/SimpleBlog/Backgrounds'
+import {
+  DEFAULT_REWARD_ALERT_BACKGROUND_COLOR,
+  DEFAULT_REWARD_ALERT_TEXT_COLOR,
+  DEFAULT_REWARD_TEXT,
+} from 'Event/PointsProvider'
 
 export const SIMPLE_BLOG = 'Simple Blog'
 
@@ -342,5 +347,10 @@ export const createSimpleBlog = (): SimpleBlog => ({
     imagesPerRow: DEFAULT_IMAGES_PER_ROW,
     backToDashboardText: DEFAULT_BACK_TO_DASHBOARD_TEXT,
     backToDashboardTextColor: DEFAULT_BACK_TO_DASHBOARD_TEXT_COLOR,
+  },
+  rewardAlert: {
+    backgroundColor: DEFAULT_REWARD_ALERT_BACKGROUND_COLOR,
+    textColor: DEFAULT_REWARD_ALERT_TEXT_COLOR,
+    text: DEFAULT_REWARD_TEXT,
   },
 })

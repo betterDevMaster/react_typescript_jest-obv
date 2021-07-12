@@ -10,7 +10,6 @@ import {CREATE_EVENTS, UPDATE_TEAM} from 'organization/PermissionsProvider'
 import AuthorizedPage from 'organization/AuthorizedPage'
 import FormsProvider from 'organization/Event/FormsProvider'
 import {OrganizationLanguageProvider} from 'Event/LanguageProvider'
-import {StaticPointsProvider} from 'Event/PointsProvider'
 import AttendeeProfileProvider from 'Event/visibility-rules/AttendeeProfileProvider'
 import {StaticSubmissionsProvider} from 'Event/SubmissionsProvider'
 import EventSocketConnection from 'organization/Event/EventSocketConnection'
@@ -64,15 +63,13 @@ export default function UserRoutes() {
         <RouteEventProvider>
           <FormsProvider>
             <OrganizationLanguageProvider>
-              <StaticPointsProvider>
-                <StaticSubmissionsProvider>
-                  <AttendeeProfileProvider groups={{}} tags={[]}>
-                    <EventSocketConnection>
-                      <EventRoutes />
-                    </EventSocketConnection>
-                  </AttendeeProfileProvider>
-                </StaticSubmissionsProvider>
-              </StaticPointsProvider>
+              <StaticSubmissionsProvider>
+                <AttendeeProfileProvider groups={{}} tags={[]}>
+                  <EventSocketConnection>
+                    <EventRoutes />
+                  </EventSocketConnection>
+                </AttendeeProfileProvider>
+              </StaticSubmissionsProvider>
             </OrganizationLanguageProvider>
           </FormsProvider>
         </RouteEventProvider>
