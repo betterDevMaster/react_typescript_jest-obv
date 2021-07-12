@@ -1,4 +1,5 @@
 import Grid from '@material-ui/core/Grid'
+import styled from 'styled-components'
 import NavButton, {
   NavButtonWithSize,
 } from 'Event/Dashboard/components/NavButton'
@@ -103,33 +104,24 @@ const Container = React.forwardRef<
     draggableProps?: DraggableProvidedDraggableProps
   }
 >((props, ref) => {
-  if (props.button.newLine) {
-    return (
-      <Grid item xs={12}>
-        <Grid container justify="center">
-          <Grid
-            item
-            xs={12}
-            md={props.button.size}
-            {...props.draggableProps}
-            ref={ref}
-          >
-            {props.children}
-          </Grid>
-        </Grid>
-      </Grid>
-    )
-  }
+  const lineBreak = props.button.newLine ? <SpacerGrid item xs={12} /> : null
 
   return (
-    <Grid
-      item
-      xs={12}
-      md={props.button.size}
-      ref={ref}
-      {...props.draggableProps}
-    >
-      {props.children}
-    </Grid>
+    <>
+      {lineBreak}
+      <Grid
+        item
+        xs={12}
+        md={props.button.size}
+        ref={ref}
+        {...props.draggableProps}
+      >
+        {props.children}
+      </Grid>
+    </>
   )
 })
+
+const SpacerGrid = styled(Grid)`
+  padding: 0 !important;
+`

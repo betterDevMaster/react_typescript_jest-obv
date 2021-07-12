@@ -1,4 +1,5 @@
 import Grid from '@material-ui/core/Grid'
+import styled from 'styled-components'
 import HiddenOnMatch from 'Event/visibility-rules/HiddenOnMatch'
 import NavButton, {
   NavButtonWithSize,
@@ -69,13 +70,13 @@ const Container = React.forwardRef<
   return (
     <HiddenOnMatch rules={props.button.rules}>
       <Published component={props.button}>
-        <NewLine ref={ref} {...props} />
+        <Button ref={ref} {...props} />
       </Published>
     </HiddenOnMatch>
   )
 })
 
-const NewLine = React.forwardRef<
+const Button = React.forwardRef<
   HTMLDivElement,
   {
     children: React.ReactElement
@@ -83,33 +84,24 @@ const NewLine = React.forwardRef<
     draggableProps?: DraggableProvidedDraggableProps
   }
 >((props, ref) => {
-  if (props.button.newLine) {
-    return (
-      <Grid item xs={12}>
-        <Grid container justify="center">
-          <Grid
-            item
-            xs={12}
-            md={props.button.size}
-            {...props.draggableProps}
-            ref={ref}
-          >
-            {props.children}
-          </Grid>
-        </Grid>
-      </Grid>
-    )
-  }
+  const lineBreak = props.button.newLine ? <SpacerGrid item xs={12} /> : null
 
   return (
-    <Grid
-      item
-      xs={12}
-      md={props.button.size}
-      ref={ref}
-      {...props.draggableProps}
-    >
-      {props.children}
-    </Grid>
+    <>
+      {lineBreak}
+      <Grid
+        item
+        xs={12}
+        md={props.button.size}
+        ref={ref}
+        {...props.draggableProps}
+      >
+        {props.children}
+      </Grid>
+    </>
   )
 })
+
+const SpacerGrid = styled(Grid)`
+  padding: 0 !important;
+`
