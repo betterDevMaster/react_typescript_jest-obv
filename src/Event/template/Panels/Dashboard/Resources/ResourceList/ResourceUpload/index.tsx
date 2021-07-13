@@ -12,7 +12,7 @@ import {withStyles} from '@material-ui/core/styles'
 import Typography from '@material-ui/core/Typography'
 import {spacing} from 'lib/ui/theme'
 
-export const ACCEPTED_FILE_TYPES = ['image/*', '.pdf']
+export const ACCEPTED_FILE_TYPES = ['image/*', '.pdf', '.xlsx']
 export const MAX_FILE_SIZE_BYTES = 150000000 // bytes
 export const MAX_NUM_FILES = 1
 
