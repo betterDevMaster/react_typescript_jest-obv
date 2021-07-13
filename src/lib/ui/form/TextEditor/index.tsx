@@ -31,6 +31,8 @@ export default function TextEditor(props: {
   onChange: (value: string) => void
   className?: string
   disabled?: boolean
+  customToolBars?: string[]
+  customLinks?: string[]
 }) {
   const updateValue = (_: any, editor: any) => {
     props.onChange(editor.getData())
@@ -49,7 +51,10 @@ export default function TextEditor(props: {
         data={props.data || ''}
         onChange={updateValue}
         config={{
-          toolbar,
+          toolbar: props.customToolBars || toolbar,
+          links: {
+            rexlink: props.customLinks || [],
+          },
 
           /**
            * Required for media embed to render in HTML

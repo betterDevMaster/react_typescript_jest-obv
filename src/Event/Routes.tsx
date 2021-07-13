@@ -32,6 +32,7 @@ import {useTrackEventPage, useTrackOnLoad} from 'analytics'
 import ChangePassword from 'Event/auth/ChangePassword'
 import RoomRegistration from 'Event/RoomRegistration'
 import DownloadA360iReport from 'Event/DownloadA360iReport'
+import PagePoints, {LEADERBOARD} from 'Event/PointsProvider/PagePoints'
 
 export const eventRoutes = createRoutes({
   login: '/login',
@@ -166,7 +167,9 @@ function UserRoutes() {
         <FaqPage />
       </Route>
       <Route path={eventRoutes.leaderboard}>
-        <Leaderboard />
+        <PagePoints page={LEADERBOARD}>
+          <Leaderboard />
+        </PagePoints>
       </Route>
       <Route path={eventRoutes.area[':area'].root}>
         <JoinArea />

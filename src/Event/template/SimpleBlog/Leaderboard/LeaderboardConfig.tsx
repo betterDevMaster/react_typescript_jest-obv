@@ -8,9 +8,6 @@ import {SimpleBlog, useSimpleBlog} from 'Event/template/SimpleBlog'
 import Button from '@material-ui/core/Button'
 import {useUpdate} from 'Event/EventProvider'
 import Typography from '@material-ui/core/Typography'
-import List from '@material-ui/core/List'
-import ListItem from '@material-ui/core/ListItem'
-import ListItemText from '@material-ui/core/ListItemText'
 import styled from 'styled-components'
 import {
   DEFAULT_REWARD_ALERT_BACKGROUND_COLOR,
@@ -20,6 +17,8 @@ import {
 import SnackbarContent from '@material-ui/core/SnackbarContent'
 import {onChangeStringHandler} from 'lib/dom'
 import CheckCircleIcon from '@material-ui/icons/CheckCircle'
+import Alert from '@material-ui/lab/Alert'
+import AlertTitle from '@material-ui/lab/AlertTitle'
 
 export const DEFAULT_TITLE = 'Leaderboard'
 export const DEFAULT_DESCRIPTION =
@@ -27,13 +26,6 @@ export const DEFAULT_DESCRIPTION =
 export const DEFAULT_BACK_TO_DASHBOARD_TEXT = 'Back to Dashboard'
 export const DEFAULT_BACK_TO_DASHBOARD_TEXT_COLOR = '#000000'
 export type LeaderboardConfigData = NonNullable<SimpleBlog['leaderboard']>
-
-const DESCRIPTION = `Use the following variables to insert action data into the popup text:`
-const VARIABLES = [
-  `{{points_unit}} - Point Unit Name`,
-  `{{action_description}} - Action Description`,
-  `{{action_points}} - Action Points`,
-]
 
 export default function LeaderboardConfig(props: {onComplete?: () => void}) {
   const {template} = useSimpleBlog()
@@ -84,6 +76,36 @@ export default function LeaderboardConfig(props: {onComplete?: () => void}) {
     <form onSubmit={handleSubmit(submit)}>
       <Grid container spacing={2}>
         <Grid item xs={12}>
+          <Alert severity="info">
+            <AlertTitle>Variables</AlertTitle>
+            <div>
+              <Typography variant="caption">
+                {`{{points_unit}} - Name for points`}
+              </Typography>
+            </div>
+            <div>
+              <Typography variant="caption">
+                {`{{action_description}} - Action description`}
+              </Typography>
+            </div>
+            <div>
+              <Typography variant="caption">
+                {`{{action_points}} - Number of points received`}
+              </Typography>
+            </div>
+            <div>
+              <Typography variant="caption">
+                {`{{leaderboard_points}} - Attendee's current points`}
+              </Typography>
+            </div>
+            <div>
+              <Typography variant="caption">
+                {`{{leaderboard_position}} - Attendee's current position on leaderboard`}
+              </Typography>
+            </div>
+          </Alert>
+        </Grid>
+        <Grid item xs={12}>
           <TextField
             defaultValue={leaderboard?.title || DEFAULT_TITLE}
             name="title"
@@ -96,6 +118,7 @@ export default function LeaderboardConfig(props: {onComplete?: () => void}) {
             disabled={processing}
           />
         </Grid>
+
         <Grid item xs={12}>
           <Controller
             name="description"
@@ -193,16 +216,7 @@ export default function LeaderboardConfig(props: {onComplete?: () => void}) {
             disabled={processing}
           />
         </Grid>
-        <Grid item xs={12}>
-          <Typography variant="inherit">{DESCRIPTION}</Typography>
-          <List dense={true}>
-            {VARIABLES.map((item) => (
-              <Item text={item} />
-            ))}
-          </List>
-        </Grid>
       </Grid>
-
       <Button
         fullWidth
         color="primary"
@@ -217,17 +231,6 @@ export default function LeaderboardConfig(props: {onComplete?: () => void}) {
   )
 }
 
-function Item(props: {text: string}) {
-  return (
-    <ListItem>
-      <StyledListItemText>{props.text}</StyledListItemText>
-    </ListItem>
-  )
-}
-
-const StyledListItemText = styled(ListItemText)`
-  margin: unset !important;
-`
 const StyledSnackerBar = styled(
   ({
     color,

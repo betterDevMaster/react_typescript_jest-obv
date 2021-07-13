@@ -21,7 +21,7 @@ afterEach(() => {
 
 it('should configure points', async () => {
   const event = fakeEvent({template: fakeSimpleBlog({points: null})})
-  const {queryByText, findByLabelText, findByText} = await goToDashboardConfig({
+  const {queryByText, findByLabelText} = await goToDashboardConfig({
     event,
   })
 
@@ -34,10 +34,6 @@ it('should configure points', async () => {
 
   fireEvent.click(await findByLabelText('save'))
 
-  const pointsText = new RegExp(`you've earned 0 ${unit}!`, 'i')
-
-  expect(await findByText(pointsText)).toBeInTheDocument()
-
   // Saved
   await wait(() => {
     expect(mockRxPost).toHaveBeenCalledTimes(1)
@@ -49,9 +45,12 @@ it('should configure points', async () => {
 })
 
 it('should remove points', async () => {
+  const summary = 'your points'
   const event = fakeEvent({
     template: fakeSimpleBlog({
-      points: fakePoints(),
+      points: fakePoints({
+        summary,
+      }),
     }),
   })
 
@@ -59,7 +58,7 @@ it('should remove points', async () => {
     event,
   })
 
-  expect(await findByText(/you've earned 0 .*/i)).toBeInTheDocument()
+  expect(await findByText(new RegExp(summary))).toBeInTheDocument()
 
   clickEdit(await findByLabelText('points summary'))
 

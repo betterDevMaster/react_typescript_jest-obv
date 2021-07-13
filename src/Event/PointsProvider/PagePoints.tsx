@@ -5,8 +5,13 @@ import React, {useEffect, useState} from 'react'
 export const DASHBOARD = 'DASHBOARD'
 export const SPEAKERS = 'SPEAKERS'
 export const SPONSORS = 'SPONSORS'
+export const LEADERBOARD = 'LEADERBOARD'
 
-export type Page = typeof DASHBOARD | typeof SPEAKERS | typeof SPONSORS
+export type Page =
+  | typeof DASHBOARD
+  | typeof SPEAKERS
+  | typeof SPONSORS
+  | typeof LEADERBOARD
 
 /**
  * Awards user points when accessing certain pages.
@@ -43,6 +48,8 @@ function usePageAction(page: string) {
       return action.visitSpeakers
     case SPONSORS:
       return action.visitSponsors
+    case LEADERBOARD:
+      return action.visitLeaderboard
     default:
       return null
   }

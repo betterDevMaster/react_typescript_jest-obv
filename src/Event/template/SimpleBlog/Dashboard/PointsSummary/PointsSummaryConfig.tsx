@@ -10,17 +10,21 @@ import ComponentConfig, {
   ComponentConfigProps,
   SaveButton,
 } from 'organization/Event/DashboardConfig/ComponentConfig'
-import {useForm} from 'react-hook-form'
+import {Controller, useForm} from 'react-hook-form'
+import TextEditor from 'lib/ui/form/TextEditor'
+import Typography from '@material-ui/core/Typography'
+import Box from '@material-ui/core/Box'
+import InputLabel from '@material-ui/core/InputLabel'
+import Alert from '@material-ui/lab/Alert'
+import AlertTitle from '@material-ui/lab/AlertTitle'
 
 export function PointsSummaryConfig(props: ComponentConfigProps) {
   const {template} = useSimpleBlog()
   const {isVisible, onClose} = props
-
   const {points} = template
   const updateTemplate = useDispatchUpdate()
   const {event} = useEvent()
-
-  const {register, handleSubmit} = useForm()
+  const {register, handleSubmit, control} = useForm()
 
   const save = (data: any) => {
     updateTemplate({
@@ -43,18 +47,55 @@ export function PointsSummaryConfig(props: ComponentConfigProps) {
           property="points_summary_logo"
           current={event.points_summary_logo}
         />
-        <TextField
-          defaultValue={points?.description || ''}
-          name="description"
-          label="Description"
-          multiline
-          rows={4}
-          fullWidth
-          inputProps={{
-            'aria-label': 'points description',
-            ref: register,
-          }}
-        />
+        <Box mb={2}>
+          <Alert severity="info">
+            <AlertTitle>Variables</AlertTitle>
+            <div>
+              <Typography variant="caption">
+                {`{{leaderboard_points}} - Attendee's current points`}
+              </Typography>
+            </div>
+            <Typography variant="caption">
+              {`{{points_unit}} - Name for points`}
+            </Typography>
+          </Alert>
+        </Box>
+        <Box mb={2}>
+          <Box mb={1}>
+            <InputLabel>Summary</InputLabel>
+          </Box>
+          <Controller
+            name="summary"
+            control={control}
+            defaultValue={points?.summary || ''}
+            render={({value, onChange}) => (
+              <TextEditor
+                data={value}
+                onChange={onChange}
+                customToolBars={['bold', 'italic', 'link', 'alignment']}
+                customLinks={['leaderboardLink']}
+              />
+            )}
+          />
+        </Box>
+        <Box mb={1}>
+          <Box mb={1}>
+            <InputLabel>Description</InputLabel>
+          </Box>
+          <Controller
+            name="description"
+            control={control}
+            defaultValue={points?.description || ''}
+            render={({value, onChange}) => (
+              <TextEditor
+                data={value}
+                onChange={onChange}
+                customToolBars={['bold', 'italic', 'link', 'alignment']}
+                customLinks={['leaderboardLink']}
+              />
+            )}
+          />
+        </Box>
         <TextField
           name="unit"
           defaultValue={points?.unit || ''}

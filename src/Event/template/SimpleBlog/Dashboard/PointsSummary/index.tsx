@@ -3,11 +3,7 @@ import {Editable} from 'Event/Dashboard/editor/views/EditComponent'
 import EditModeOnly from 'Event/Dashboard/editor/views/EditModeOnly'
 import React from 'react'
 import styled from 'styled-components'
-import {eventRoutes} from 'Event/Routes'
-import {RelativeLink} from 'lib/ui/link/RelativeLink'
-import {usePoints} from 'Event/PointsProvider'
 import Section from 'Event/template/SimpleBlog/Dashboard/Sidebar/Section'
-import {usePlatformActions} from 'Event/ActionsProvider/platform-actions'
 import {useEvent} from 'Event/EventProvider'
 import {useVariables} from 'Event'
 import {useSimpleBlog} from 'Event/template/SimpleBlog'
@@ -17,22 +13,16 @@ import {PointsSummaryConfig} from 'Event/template/SimpleBlog/Dashboard/PointsSum
 export type Points = {
   description: string
   unit: string
+  summary?: string
 }
 
 export default function PointsSummary() {
   const {template} = useSimpleBlog()
-  const {points: summary, sidebar} = template
-  const {visitLeaderboard: VISIT_LEADERBOARD} = usePlatformActions()
-  const {score, submit} = usePoints()
-  const {event} = useEvent()
-  const logo = event.points_summary_logo ? event.points_summary_logo.url : ''
+  const {points: settings, sidebar} = template
   const v = useVariables()
-  const awardPoints = () => {
-    submit(VISIT_LEADERBOARD)
-  }
   const {flag: configVisible, toggle: toggleConfig} = useToggle()
 
-  if (!summary) {
+  if (!settings) {
     return (
       <EditModeOnly>
         <PointsSummaryConfig isVisible={configVisible} onClose={toggleConfig} />
@@ -47,23 +37,14 @@ export default function PointsSummary() {
       <Section>
         <Editable onEdit={toggleConfig}>
           <>
-            <HeaderImage src={logo} alt="Points Image" />
+            <PointsLogo />
             <Box color={sidebar.textColor}>
-              <NumPointsText aria-label="points summary">
-                You've earned {score.points} {summary.unit}!
-              </NumPointsText>
-              <p>{v(summary.description)}</p>
-              <p>
-                If you would like to see where you stand on the{' '}
-                <StyledLink
-                  color={sidebar.textColor}
-                  to={eventRoutes.leaderboard}
-                  aria-label="view leaderboard"
-                  onClick={awardPoints}
-                >
-                  <strong>LEADERBOARD you can click HERE!</strong>
-                </StyledLink>
-              </p>
+              <Summary aria-label="points summary" color={sidebar.textColor}>
+                {v(settings.summary)}
+              </Summary>
+              <Description color={sidebar.textColor}>
+                {v(settings.description)}
+              </Description>
             </Box>
           </>
         </Editable>
@@ -72,22 +53,17 @@ export default function PointsSummary() {
   )
 }
 
+function PointsLogo() {
+  const {event} = useEvent()
+  const logo = event.points_summary_logo ? event.points_summary_logo.url : ''
+  if (!event.points_summary_logo) {
+    return null
+  }
+  return <HeaderImage src={logo} alt="Points Image" />
+}
+
 const Box = styled.div<{color: string}>`
   color: ${(props) => props.color};
-`
-
-const StyledLink = styled(RelativeLink)<{color: string}>`
-  color: ${(props) => props.color}!important;
-`
-
-const NumPointsText = styled.span`
-  font-weight: bold;
-  display: block;
-  margin-bottom: ${(props) => props.theme.spacing[8]};
-
-  @media (min-width: ${(props) => props.theme.breakpoints.md}) {
-    text-align: center;
-  }
 `
 
 const HeaderImage = styled.img`
@@ -98,4 +74,50 @@ const HeaderImage = styled.img`
 
 const StyledSetPointsButton = styled(SetPointsButton)`
   margin-bottom: ${(props) => props.theme.spacing[6]}!important;
+`
+const Container = React.forwardRef<
+  HTMLDivElement,
+  {
+    className?: string
+    children: string
+    'aria-label'?: string
+  }
+>((props, ref) => {
+  return (
+    <div
+      className={`ck-content ${props.className}`}
+      ref={ref}
+      aria-label={props['aria-label']}
+      dangerouslySetInnerHTML={{
+        __html: props.children,
+      }}
+    />
+  )
+})
+
+const Summary = styled(Container)<{
+  color: string
+}>`
+  color: ${(props) => props.color};
+  font-weight: bold;
+  display: block;
+  margin-bottom: ${(props) => props.theme.spacing[8]};
+
+  @media (min-width: ${(props) => props.theme.breakpoints.md}) {
+    text-align: center;
+  }
+
+  a {
+    color: ${(props) => props.color} !important;
+  }
+`
+
+const Description = styled(Container)<{
+  color: string
+}>`
+  color: ${(props) => props.color};
+
+  a {
+    color: ${(props) => props.color} !important;
+  }
 `

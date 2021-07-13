@@ -10,7 +10,7 @@
     "@material-ui/icons": "^4.9.1",
     "@material-ui/lab": "^4.0.0-alpha.57",
     "@material-ui/pickers": "^3.2.10",
-    "@obvio/ckeditor": "^1.0.5",
+    "@obvio/ckeditor": "^1.0.6",
     "axios": "^0.21.0",
     "color": "^3.1.2",
     "croppie": "^2.6.5",

@@ -3,7 +3,6 @@ import {
   fakeEntry,
   fakeEvent,
 } from 'Event/__utils__/factory'
-import user from '@testing-library/user-event'
 import axios from 'axios'
 import {loginToEventSite} from 'Event/__utils__/url'
 import faker from 'faker'
@@ -22,12 +21,14 @@ beforeEach(() => {
 
 it('should render list of entries', async () => {
   const event = fakeEvent({template: fakeSimpleBlog({points: fakePoints()})})
-  const {findByLabelText, findAllByLabelText} = await loginToEventSite({
+  const {findAllByLabelText} = await loginToEventSite({
     event,
     attendee: fakeAttendee({
       tech_check_completed_at: 'now',
       waiver: 'some_waiver.png',
     }),
+    pathname: '/leaderboard',
+    skipLogin: true,
   })
 
   const entries = Array.from(
@@ -36,8 +37,6 @@ it('should render list of entries', async () => {
   )
 
   mockGet.mockImplementationOnce(() => Promise.resolve({data: entries}))
-
-  user.click(await findByLabelText('view leaderboard'))
 
   expect((await findAllByLabelText('entry')).length).toBe(entries.length)
 })
@@ -49,26 +48,26 @@ it('should receive points', async () => {
     template: fakeSimpleBlog({points: fakePoints()}),
     platform_actions: createPlatformActions({visit_leaderboard: action}),
   })
-  const {findByLabelText, findByText} = await loginToEventSite({
+  const {findByText} = await loginToEventSite({
     event,
     attendee: fakeAttendee({
       tech_check_completed_at: 'now',
       waiver: 'some_waiver.png',
     }),
     actions: [action],
+    pathname: '/leaderboard',
+    skipLogin: true,
   })
 
   mockGet.mockImplementationOnce(() => Promise.resolve({data: []})) // entries
 
   mockPost.mockImplementationOnce(() => Promise.resolve({data: 'got points'}))
 
-  user.click(await findByLabelText('view leaderboard'))
-
   await wait(() => {
-    expect(mockPost).toHaveBeenCalledTimes(2)
+    expect(mockPost).toHaveBeenCalledTimes(1)
   })
 
-  const [url] = mockPost.mock.calls[1]
+  const [url] = mockPost.mock.calls[0]
   expect(url).toMatch(`/events/${event.slug}/actions/${action.key}`)
 
   // show points pop-up
