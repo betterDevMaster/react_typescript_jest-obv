@@ -9,12 +9,16 @@ import {useVariables} from 'Event'
 import {useSimpleBlog} from 'Event/template/SimpleBlog'
 import {useToggle} from 'lib/toggle'
 import {PointsSummaryConfig} from 'Event/template/SimpleBlog/Dashboard/PointsSummary/PointsSummaryConfig'
+import {withDefault} from 'lib/template'
 
 export type Points = {
   description: string
   unit: string
   summary?: string
 }
+
+export const DEFAULT_POINTS_SUMMARY =
+  "You've earned {{leaderboard_points}} {{points_unit}}!"
 
 export default function PointsSummary() {
   const {template} = useSimpleBlog()
@@ -40,7 +44,7 @@ export default function PointsSummary() {
             <PointsLogo />
             <Box color={sidebar.textColor}>
               <Summary aria-label="points summary" color={sidebar.textColor}>
-                {v(settings.summary)}
+                {v(withDefault(DEFAULT_POINTS_SUMMARY, settings.summary))}
               </Summary>
               <Description color={sidebar.textColor}>
                 {v(settings.description)}
