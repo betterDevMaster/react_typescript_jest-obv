@@ -3,11 +3,11 @@ import React from 'react'
 import Page, {Description, Title} from 'Event/template/SimpleBlog/Login/Page'
 
 export default function OfflinePage(props: OfflinePageProps) {
-  const {title, description} = props
+  const {title, description, isPreview} = props
   return (
-    <Page isPreview={false}>
+    <Page isPreview={isPreview || false}>
       <>
-        <Title>{title}</Title>
+        <Title disableMargin>{title}</Title>
         <Description>{description}</Description>
       </>
     </Page>

@@ -16,10 +16,13 @@ type SwitchLabelsProps = {
   disabled?: boolean
 }
 
-export default function SwitchLabel(props: SwitchLabelsProps) {
+export default function SwitchLabel(
+  props: SwitchLabelsProps & {className?: string},
+) {
   return (
     <FormGroup row>
       <FormControlLabel
+        className={props.className}
         control={
           <Switch
             disabled={props.disabled}

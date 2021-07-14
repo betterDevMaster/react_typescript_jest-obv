@@ -32,6 +32,7 @@ import {useTrackEventPage, useTrackOnLoad} from 'analytics'
 import ChangePassword from 'Event/auth/ChangePassword'
 import RoomRegistration from 'Event/RoomRegistration'
 import DownloadA360iReport from 'Event/DownloadA360iReport'
+import EventOfflinePage from 'Event/EventOfflinePage'
 import PagePoints, {LEADERBOARD} from 'Event/PointsProvider/PagePoints'
 
 export const eventRoutes = createRoutes({
@@ -85,6 +86,14 @@ export default function Routes() {
 
   if (!event.template) {
     return <UnderConstruction />
+  }
+
+  if (!event.is_online) {
+    return (
+      <TemplateProvider template={event.template}>
+        <EventOfflinePage />
+      </TemplateProvider>
+    )
   }
 
   if (loading) {

@@ -18,4 +18,6 @@ beforeAll(() => {
 
 beforeEach(() => {
   window.localStorage.clear()
+
+  jest.clearAllMocks()
 })

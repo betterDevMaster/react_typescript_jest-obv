@@ -1,9 +1,8 @@
-import React, {useEffect, useState} from 'react'
+import React, {useState} from 'react'
 import Layout from 'organization/user/Layout'
 import Page, {rootEventBreadcrumbs} from 'organization/Event/Page'
 import {useEvent, useUpdate} from 'Event/EventProvider'
 import {useForm} from 'react-hook-form'
-import {useIsMounted} from 'lib/dom'
 import {ValidationError} from 'lib/api-client'
 import {useOrganization} from 'organization/OrganizationProvider'
 import {routesWithValue} from 'lib/url'
@@ -13,36 +12,16 @@ import {useFileSelect} from 'lib/ui/form/file'
 
 export default function UpdateEventForm() {
   const [submitting, setSubmitting] = useState(false)
-  const isMounted = useIsMounted()
   const [responseError, setResponseError] = useState<
     ValidationError<UpdateEventData>
   >(null)
   const {event} = useEvent()
   const {routes: organizationRoutes} = useOrganization()
-  const {
-    register,
-    handleSubmit,
-    watch,
-    setValue,
-    errors: formErrors,
-    control,
-  } = useForm()
+  const {register, handleSubmit, watch, errors: formErrors, control} = useForm()
   const {set: setBreadcrumbs} = useBreadcrumbs()
   const update = useUpdate()
 
   const favicon = useFileSelect(event.favicon)
-
-  useEffect(() => {
-    if (!isMounted.current) {
-      return
-    }
-
-    setValue('name', event.name)
-    setValue('slug', event.slug)
-    setValue('start', event.start)
-    setValue('end', event.end)
-    setValue('num_attendees', event.num_attendees)
-  }, [event, setValue, isMounted])
 
   const data = (form: UpdateEventData) => {
     if (favicon.selected) {
@@ -95,21 +74,6 @@ export default function UpdateEventForm() {
       })
   }
 
-  const name = watch('name')
-  const slug = watch('slug')
-  const start = watch('start')
-  const end = watch('end')
-  const numAttendees = watch('num_attendees')
-
-  const hasChanges =
-    name !== event.name ||
-    slug !== event.slug ||
-    start !== event.start ||
-    end !== event.end ||
-    numAttendees !== String(event.num_attendees) ||
-    Boolean(favicon.selected) ||
-    favicon.wasRemoved
-
   return (
     <Layout>
       <Page>
@@ -121,7 +85,6 @@ export default function UpdateEventForm() {
           slug={watch('slug')}
           submitLabel="Save"
           submitting={submitting}
-          canSave={hasChanges}
           control={control}
           favicon={favicon}
         />

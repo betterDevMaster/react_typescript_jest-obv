@@ -178,6 +178,12 @@ export type Panels = BaseTemplate & {
   points: {
     unit: string
   }
+  offlinePage?: {
+    title: string
+    description: string
+    redirectUrl: string
+    shouldRedirect: boolean
+  }
 }
 
 export const createPanels = (): Panels => ({

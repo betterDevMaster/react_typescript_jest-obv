@@ -219,6 +219,12 @@ export type SimpleBlog = BaseTemplate & {
     backToDashboardTextColor?: string
     orderedIds?: number[]
   }
+  offlinePage?: {
+    shouldRedirect: boolean
+    title: string
+    description: string
+    redirectUrl: string
+  }
 }
 
 export type SimpleBlogHeader = Header & {
@@ -322,12 +328,16 @@ export const createSimpleBlog = (): SimpleBlog => ({
       backgroundColor: colors.primary,
       textColor: '#FFFFFF',
       label: 'Login',
+      borderRadius: 56,
     },
+    backgroundHidden: false,
     description: {
       text: '',
       color: '#000000',
       fontSize: 18,
     },
+    logoHidden: false,
+    inputBorderRadius: 56,
     backgroundColor: '#FFFFFF',
     backgroundOpacity: 0,
     logoSize: DEFAULT_LOGO_SIZE_PERCENT,

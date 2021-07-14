@@ -11,6 +11,7 @@ const FALLBACK_OFFLINE_TITLE = 'Area is currently offline'
 export type OfflinePageProps = {
   title: string
   description: string
+  isPreview?: boolean
 }
 
 export default function OfflinePage(props: {error: RequestJoinUrlError}) {

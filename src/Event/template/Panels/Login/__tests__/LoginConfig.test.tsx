@@ -9,6 +9,10 @@ import {fakePanels} from 'Event/template/Panels/__utils__/factory'
 
 const mockRxPost = mockRxJsAjax.post as jest.Mock
 
+beforeEach(() => {
+  jest.clearAllMocks()
+})
+
 it('should configure login template', async () => {
   const event = fakeEvent({
     template: fakePanels(),

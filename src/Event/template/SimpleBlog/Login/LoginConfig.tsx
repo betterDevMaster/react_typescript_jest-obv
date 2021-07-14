@@ -30,12 +30,8 @@ export default function LoginFormConfig() {
   const updateLogin = update.primitive('login')
 
   const [submitLabel, setSubmitLabel] = useState(login.submitButton.label)
-  const [emailLabel, setEmailLabel] = useState(
-    login.emailLabel || DEFAULT_EMAIL_LABEL,
-  )
-  const [passwordLabel, setPasswordLabel] = useState(
-    login.passwordLabel || DEFAULT_PASSWORD_LABEL,
-  )
+  const [emailLabel, setEmailLabel] = useState(login.emailLabel)
+  const [passwordLabel, setPasswordLabel] = useState(login.passwordLabel)
   const [submitBackgroundColor, setSubmitBackgroundColor] = useState(
     login.submitButton.backgroundColor,
   )
@@ -62,9 +58,7 @@ export default function LoginFormConfig() {
     login.backgroundHidden || false,
   )
 
-  const [logoSize, setLogoSize] = useState(
-    login.logoSize || DEFAULT_LOGO_SIZE_PERCENT,
-  )
+  const [logoSize, setLogoSize] = useState(login.logoSize)
 
   const [backgroundColor, setBackgroundColor] = useState(login.backgroundColor)
   const [backgroundOpacity, setBackgroundOpacity] = useState(
@@ -227,7 +221,7 @@ export default function LoginFormConfig() {
                 <Box mr={1} display="flex" flexDirection="column" flex="1">
                   <TextField
                     label="Email Label"
-                    value={emailLabel}
+                    value={emailLabel || DEFAULT_EMAIL_LABEL}
                     onChange={onChangeStringHandler(setEmailLabel)}
                     inputProps={{'aria-label': 'email label'}}
                   />
@@ -235,7 +229,7 @@ export default function LoginFormConfig() {
                 <Box ml={1} display="flex" flexDirection="column" flex="1">
                   <TextField
                     label="Password Label"
-                    value={passwordLabel}
+                    value={passwordLabel || DEFAULT_PASSWORD_LABEL}
                     onChange={onChangeStringHandler(setPasswordLabel)}
                     inputProps={{'aria-label': 'password label'}}
                   />

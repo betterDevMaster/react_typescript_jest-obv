@@ -1,4 +1,5 @@
 import Button from '@material-ui/core/Button'
+import styled from 'styled-components'
 import withStyles from '@material-ui/core/styles/withStyles'
 import TextField from '@material-ui/core/TextField'
 import Typography from '@material-ui/core/Typography'
@@ -8,7 +9,6 @@ import React from 'react'
 import {Controller, UseFormMethods} from 'react-hook-form'
 import {ObvioEvent} from 'Event'
 import {fieldError} from 'lib/form'
-import moment from 'moment'
 import {FileSelect} from 'lib/ui/form/file'
 import ImageUpload from 'lib/ui/form/ImageUpload'
 import Label from 'lib/ui/form/ImageUpload/Label'
@@ -18,10 +18,13 @@ import Image from 'lib/ui/form/ImageUpload/Image'
 import Box from '@material-ui/core/Box'
 import Cropper from 'lib/ui/form/ImageUpload/Cropper'
 import LocalizedDateTimePicker from 'lib/LocalizedDateTimePicker'
+import {onChangeCheckedHandler} from 'lib/dom'
+import Switch from 'lib/ui/form/Switch'
+import {useEvent} from 'Event/EventProvider'
 
 export type UpdateEventData = Pick<
   ObvioEvent,
-  'name' | 'slug' | 'start' | 'end' | 'num_attendees'
+  'name' | 'slug' | 'start' | 'end' | 'num_attendees' | 'is_online'
 >
 
 export default function Form(props: {
@@ -29,7 +32,6 @@ export default function Form(props: {
   register: UseFormMethods['register']
   formErrors: UseFormMethods['errors']
   submitting: boolean
-  canSave?: boolean
   responseError: ValidationError<UpdateEventData>
   slug?: string
   submitLabel: string
@@ -43,12 +45,10 @@ export default function Form(props: {
     slug,
     register,
     onSubmit,
+    control,
     submitLabel,
   } = props
-  const inThreeDays = moment().add(3, 'days').toISOString()
-  const inSixDays = moment().add(6, 'days').toISOString()
-
-  const canSave = props.canSave === undefined ? true : props.canSave
+  const {event} = useEvent()
 
   const error = (key: keyof UpdateEventData) =>
     fieldError(key, {
@@ -78,11 +78,29 @@ export default function Form(props: {
 
   return (
     <form onSubmit={onSubmit}>
+      <Box mb={1}>
+        <Controller
+          control={control}
+          name="is_online"
+          defaultValue={event.is_online}
+          render={({value, onChange}) => (
+            <StyledSwitch
+              label="Online"
+              checked={value}
+              onChange={onChangeCheckedHandler(onChange)}
+              labelPlacement="top"
+              color="primary"
+              aria-label="is online"
+            />
+          )}
+        />
+      </Box>
       <TextField
         label="Event Name"
         name="name"
         required
         fullWidth
+        defaultValue={event.name}
         inputProps={{
           ref: register({
             required: 'Name is required',
@@ -97,6 +115,7 @@ export default function Form(props: {
         label="Unique Slug"
         name="slug"
         required
+        defaultValue={event.slug}
         fullWidth
         inputProps={{
           ref: register({
@@ -110,8 +129,8 @@ export default function Form(props: {
       />
       <Controller
         name="start"
-        control={props.control}
-        defaultValue={inThreeDays}
+        control={control}
+        defaultValue={event.start}
         rules={{
           required: 'Start is required',
         }}
@@ -131,8 +150,8 @@ export default function Form(props: {
       />
       <Controller
         name="end"
-        control={props.control}
-        defaultValue={inSixDays}
+        control={control}
+        defaultValue={event.end}
         rules={{
           required: 'End is required',
         }}
@@ -155,6 +174,7 @@ export default function Form(props: {
         label="Expected Number of Attendees"
         type="number"
         name="num_attendees"
+        defaultValue={event.num_attendees}
         fullWidth
         inputProps={{
           ref: register({
@@ -187,7 +207,7 @@ export default function Form(props: {
         fullWidth
         color="primary"
         size="large"
-        disabled={submitting || !canSave}
+        disabled={submitting}
         aria-label="submit"
       >
         {submitLabel}
@@ -209,3 +229,7 @@ const ErrorText = withStyles({
     marginBottom: spacing[3],
   },
 })(Typography)
+
+const StyledSwitch = styled(Switch)`
+  margin: 0 0 0 -4px !important;
+`

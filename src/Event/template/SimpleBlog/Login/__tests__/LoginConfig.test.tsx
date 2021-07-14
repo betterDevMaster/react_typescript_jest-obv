@@ -8,6 +8,10 @@ import {CONFIGURE_EVENTS} from 'organization/PermissionsProvider'
 
 const mockRxPost = mockRxJsAjax.post as jest.Mock
 
+beforeEach(() => {
+  jest.clearAllMocks()
+})
+
 it('should configure login template', async () => {
   const event = fakeEvent()
   const {findByLabelText} = await goToGeneralConfig({

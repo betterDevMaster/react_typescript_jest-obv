@@ -45,7 +45,11 @@ export default function Page(props: {
   )
 }
 
-export function Title(props: {children: string; 'aria-label'?: string}) {
+export function Title(props: {
+  children: string
+  'aria-label'?: string
+  disableMargin?: boolean
+}) {
   const {template} = useSimpleBlog()
   const color = template.login.description.color
 
@@ -57,6 +61,7 @@ export function Title(props: {children: string; 'aria-label'?: string}) {
     <DescriptionText
       color={color}
       fontSize={24}
+      disableMargin={props.disableMargin}
       aria-label={props['aria-label']}
     >
       {props.children}
@@ -114,11 +119,13 @@ export function Button(props: ButtonProps) {
 export const DescriptionText = styled.div<{
   color?: string | null
   fontSize: number
+  disableMargin?: boolean
 }>`
   color: ${(props) => props.color};
   font-size: ${(props) => props.fontSize}px;
   font-weight: 500;
-  margin-bottom: ${(props) => props.theme.spacing[8]};
+  margin-bottom: ${(props) =>
+    props.disableMargin ? 0 : props.theme.spacing[8]};
   text-align: center;
 `
 

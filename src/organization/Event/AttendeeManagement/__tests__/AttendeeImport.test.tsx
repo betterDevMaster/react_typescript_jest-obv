@@ -7,6 +7,10 @@ import {UPDATE_ATTENDEES} from 'organization/PermissionsProvider'
 
 const mockPost = axios.post as jest.Mock
 
+beforeEach(() => {
+  jest.clearAllMocks()
+})
+
 it('should import attendees', async () => {
   const attendees = Array.from(
     {length: faker.random.number({min: 1, max: 5})},
