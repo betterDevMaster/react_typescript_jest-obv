@@ -1,4 +1,5 @@
 import React from 'react'
+import styled from 'styled-components'
 import AgendaList from 'Event/template/SimpleBlog/Dashboard/AgendaList'
 import EmojiList from 'Event/template/SimpleBlog/Dashboard/EmojiList'
 import PointsSummary from 'Event/template/SimpleBlog/Dashboard/PointsSummary'
@@ -35,7 +36,7 @@ function GylsPlayer() {
   }
 
   return (
-    <>
+    <GylsPlayerBox>
       <p
         style={{
           color: '#FFFFFF',
@@ -59,6 +60,10 @@ function GylsPlayer() {
         marginHeight={0}
         marginWidth={0}
       ></iframe>
-    </>
+    </GylsPlayerBox>
   )
 }
+
+const GylsPlayerBox = styled.div`
+  margin: 50px 0;
+`
