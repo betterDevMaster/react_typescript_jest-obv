@@ -47,8 +47,8 @@ function GylsPlayer() {
         }}
       >
         JOIN AUDIO - Click the Play button below every day before you join the
-        Main Stage!(This is important so you can hear us during the breakout
-        sessions.)
+        Main Stage! This is important so you can hear us during the breakout
+        sessions. Please wait for full instructions given on Day 1.
       </p>
       <iframe
         title="gyls player iframe"
