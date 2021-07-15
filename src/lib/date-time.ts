@@ -27,6 +27,8 @@ import 'moment/locale/zh-cn' // Chinese
 import 'moment/locale/zh-hk'
 import 'moment/locale/zh-mo'
 import 'moment/locale/zh-tw'
+import 'moment/locale/is' // Iceland
+import 'moment/locale/fi' // Finland
 
 export const blogPostTime = (date: string) =>
   moment(date).tz(moment.tz.guess()).format('MMMM Do h:mma z')
