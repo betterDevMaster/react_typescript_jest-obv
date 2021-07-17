@@ -123,7 +123,7 @@ export function ResourceItemConfig(
       <RuleConfig
         visible={ruleConfigVisible}
         close={toggleRuleConfig}
-        rules={resource.rules}
+        rules={rules}
         onChange={setRules}
       >
         <>
