@@ -46,6 +46,8 @@ export default function CreateFormDialog(props: {
       })
       .catch((e) => {
         setResponseError(e)
+      })
+      .finally(() => {
         setProcessing(false)
       })
   }

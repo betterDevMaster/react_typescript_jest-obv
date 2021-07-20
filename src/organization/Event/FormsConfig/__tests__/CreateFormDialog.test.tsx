@@ -54,3 +54,41 @@ it('should add a new form', async () => {
   expect(url).toMatch(`/events/${event.slug}/forms`)
   expect(data.name).toBe(name)
 })
+
+it('should allow adding consecutive forms', async () => {
+  const event = fakeEvent({
+    forms: [],
+  })
+
+  const {findAllByLabelText, findByLabelText} = await goToFormsConfig({
+    event,
+    userPermissions: [CONFIGURE_EVENTS],
+  })
+
+  user.click(await findByLabelText('add form'))
+
+  const firstName = 'First form'
+  user.type(await findByLabelText('form name'), firstName)
+
+  const firstForm = fakeForm({name: firstName})
+  mockPost.mockImplementationOnce(() => Promise.resolve({data: firstForm}))
+
+  user.click(await findByLabelText('create'))
+
+  expect((await findAllByLabelText('form')).length).toBe(1)
+
+  user.click(await findByLabelText('add form'))
+
+  const secondName = 'Second Form'
+  user.type(await findByLabelText('form name'), secondName)
+  const secondForm = fakeForm({name: secondName})
+  mockPost.mockImplementationOnce(() => Promise.resolve({data: secondForm}))
+
+  user.click(await findByLabelText('create'))
+
+  await wait(() => {
+    expect(mockPost).toHaveBeenCalledTimes(2)
+  })
+
+  expect((await findAllByLabelText('form')).length).toBe(2)
+})
