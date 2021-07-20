@@ -9,6 +9,7 @@ import Team from 'organization/Team'
 import {CREATE_EVENTS, UPDATE_TEAM} from 'organization/PermissionsProvider'
 import AuthorizedPage from 'organization/AuthorizedPage'
 import FormsProvider from 'organization/Event/FormsProvider'
+import OrganizationSetting from 'organization/Settings'
 import {OrganizationLanguageProvider} from 'Event/LanguageProvider'
 import AttendeeProfileProvider from 'Event/visibility-rules/AttendeeProfileProvider'
 import {StaticSubmissionsProvider} from 'Event/SubmissionsProvider'
@@ -30,7 +31,9 @@ export default function UserRoutes() {
           render error .
         */}
       <Redirect path={routes.login} to={routes.events.root} />
-
+      <Route path={routes.settings}>
+        <OrganizationSetting />
+      </Route>
       <Route path={routes.events.create}>
         <AuthorizedPage permission={CREATE_EVENTS}>
           <CreateEventForm />

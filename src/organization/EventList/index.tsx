@@ -24,7 +24,7 @@ export default function EventList() {
   const fetch = useCallback(() => {
     const url = api(`/organizations/${organization.slug}/events`)
     return client.get<ObvioEvent[]>(url)
-  }, [client, organization])
+  }, [organization, client])
 
   const {data: events, loading} = useAsync(fetch)
   if (loading || !events) {

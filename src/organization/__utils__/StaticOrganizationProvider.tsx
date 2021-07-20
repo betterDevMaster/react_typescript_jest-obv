@@ -18,6 +18,7 @@ export default function StaticOrganizationProvider(props: {
         organization: props.organization,
         routes,
         client: teamMemberClient,
+        set: () => {},
       }}
     >
       {props.children}

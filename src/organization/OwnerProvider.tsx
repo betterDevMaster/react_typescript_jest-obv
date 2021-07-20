@@ -14,12 +14,15 @@ const OwnerContext = React.createContext<OwnerContextProps | undefined>(
 )
 
 export default function OwnerProvider(props: {children: React.ReactNode}) {
-  const {organization, client} = useOrganization()
+  const {
+    organization: {slug},
+    client,
+  } = useOrganization()
 
   const fetch = useCallback(() => {
-    const url = api(`/organizations/${organization.slug}/owner`)
+    const url = api(`/organizations/${slug}/owner`)
     return client.get<User>(url)
-  }, [organization, client])
+  }, [slug, client])
 
   const {data: owner, loading} = useAsync(fetch)
 

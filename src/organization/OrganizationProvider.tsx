@@ -2,11 +2,11 @@ import {useAsync} from 'lib/async'
 import {api, createRoutes} from 'lib/url'
 import {Organization} from 'organization'
 import {teamMemberClient} from 'obvio/obvio-client'
-import React, {useCallback, useMemo} from 'react'
-import {useLocation} from 'react-router-dom'
+import React, {useCallback, useEffect, useMemo, useState} from 'react'
 import {Client} from 'lib/api-client'
 import {createPrivate as createEcho} from 'lib/echo'
 import {useAuthToken} from 'organization/auth'
+import {useLocation} from 'react-router-dom'
 
 export type OrganizationRoutes = ReturnType<typeof createRoutesFor>
 
@@ -14,6 +14,7 @@ interface OrganizationContextProps {
   organization: Organization
   routes: OrganizationRoutes
   client: Client
+  set: (organization: Organization) => void
 }
 
 export const OrganizationContext = React.createContext<
@@ -29,7 +30,14 @@ export default function OrganizationProvider(props: {
   const find = useCallback(() => {
     return findOrganization(slug)
   }, [slug])
-  const {data: organization, loading} = useAsync(find)
+
+  const [organization, setOrganization] = useState<Organization | null>(null)
+
+  const {data: fetched, loading} = useAsync(find)
+
+  useEffect(() => {
+    setOrganization(fetched)
+  }, [fetched])
 
   if (loading) {
     return null
@@ -51,6 +59,7 @@ export default function OrganizationProvider(props: {
         organization,
         routes,
         client: teamMemberClient,
+        set: setOrganization,
       }}
     >
       {props.children}
@@ -81,6 +90,7 @@ export function createRoutesFor(organization: Organization) {
       forgot_password: '/forgot_password',
       reset_password: '/reset_password',
       team: '/team',
+      settings: '/settings',
       form_submissions: {
         ':file': {},
       },

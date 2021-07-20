@@ -60,12 +60,15 @@ export default function PermissionsProvider(props: {
 }
 
 function useFetchUserPermissions() {
-  const {organization, client} = useOrganization()
+  const {
+    organization: {slug},
+    client,
+  } = useOrganization()
 
   return useCallback(() => {
-    const url = api(`/organizations/${organization.slug}/permissions`)
+    const url = api(`/organizations/${slug}/permissions`)
     return client.get<Permission[]>(url)
-  }, [organization, client])
+  }, [slug, client])
 }
 
 function useFetchAllPermissions() {

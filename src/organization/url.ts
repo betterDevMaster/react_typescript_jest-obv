@@ -1,6 +1,6 @@
 import {useLocation} from 'react-router-dom'
 
-export const useOrganizationUrl = () => {
+export function useOrganizationUrl() {
   const location = useLocation()
   const paths = location.pathname.split('/')
   if (paths.length < 3) {

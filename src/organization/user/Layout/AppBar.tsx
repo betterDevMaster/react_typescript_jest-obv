@@ -15,6 +15,7 @@ import {useOrganizationAuth} from 'organization/auth'
 import Button from '@material-ui/core/Button'
 import HasPermission from 'organization/HasPermission'
 import {UPDATE_TEAM} from 'organization/PermissionsProvider'
+import {useIsOwner} from 'organization/OwnerProvider'
 
 export default function AppBar() {
   const useStyles = makeStyles((theme) => ({
@@ -28,6 +29,9 @@ export default function AppBar() {
   const {logout} = useOrganizationAuth()
   const history = useHistory()
   const {routes, organization} = useOrganization()
+  const isOwner = useIsOwner()
+
+  const homeLinkTarget = isOwner ? routes.settings : routes.events.root
 
   const handleClose = () => {
     setAnchorEl(null)
@@ -45,7 +49,7 @@ export default function AppBar() {
   return (
     <MuiAppBar className={classes.root}>
       <Toolbar>
-        <HomeLink to={routes.events.root} disableStyles>
+        <HomeLink to={homeLinkTarget} disableStyles>
           {organization.name}
         </HomeLink>
         <div>
