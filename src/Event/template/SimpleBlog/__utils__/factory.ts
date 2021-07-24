@@ -24,7 +24,6 @@ export const fakeSimpleBlog = (overrides?: Partial<SimpleBlog>): SimpleBlog => {
     withTicketRibbons,
     withBlogPosts,
     sometimes<SimpleBlog>(withPoints),
-    sometimes<SimpleBlog>(withResources),
     sometimes<SimpleBlog>(withEmojiList),
   )
 

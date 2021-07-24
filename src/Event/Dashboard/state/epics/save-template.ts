@@ -6,7 +6,7 @@ import {setSaving} from 'Event/Dashboard/editor/state/actions'
 import {of, concat} from 'rxjs'
 import {AjaxCreationMethod} from 'rxjs/internal/observable/dom/AjaxObservable'
 import {
-  setEvent,
+  setEventUpdatedAt,
   UpdateTemplateAction,
   UPDATE_TEMPLATE_ACTION,
 } from 'Event/state/actions'
@@ -66,17 +66,9 @@ export const saveTemplateEpic: Epic<
       return concat(
         of(setSaving(true)),
         request.pipe(
-          map((data) =>
-            setEvent({
-              ...update,
-              ...data.response,
-              /**
-               * Use local template to always show latest changes. This prevents typed
-               * text from disappearing when the event is resolved.
-               */
-              template: update.template,
-            }),
-          ),
+          map((data) => {
+            return setEventUpdatedAt(data.response.updated_at)
+          }),
         ),
         of(setSaving(false)),
       )

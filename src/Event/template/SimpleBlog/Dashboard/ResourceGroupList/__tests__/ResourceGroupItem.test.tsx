@@ -15,16 +15,21 @@ afterEach(() => {
   jest.clearAllMocks()
 })
 
-it('receives points', async () => {
+it('should receives points', async () => {
   // Downloading resource action id
   const action = fakeAction()
 
   const event = fakeEvent({
     template: fakeSimpleBlog({
-      resourceList: {
-        title: faker.random.word(),
-        description: '',
-        resources: [fakeResource({isVisible: true})],
+      resourceGroupList: {
+        groups: [
+          {
+            isVisible: true,
+            title: faker.random.word(),
+            description: '',
+            resources: [fakeResource({isVisible: true})],
+          },
+        ],
       },
     }),
     platform_actions: createPlatformActions({

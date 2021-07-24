@@ -115,9 +115,35 @@ export const refreshEvent = (updatedAt: string): RefreshEventAction => ({
   payload: updatedAt,
 })
 
+export const SET_EVENT_UPDATED_AT_ACTION = 'SET_EVENT_UPDATED_AT'
+export interface SetEventUpdatedAtAction {
+  type: typeof SET_EVENT_UPDATED_AT_ACTION
+  payload: string
+}
+export const setEventUpdatedAt = (
+  updated_at: string,
+): SetEventUpdatedAtAction => ({
+  type: SET_EVENT_UPDATED_AT_ACTION,
+  payload: updated_at,
+})
+export const handleSetEventUpdatedAt = (
+  state: EventState,
+  action: SetEventUpdatedAtAction,
+): EventState => {
+  if (!state) {
+    return state
+  }
+
+  return {
+    ...state,
+    updated_at: action.payload,
+  }
+}
+
 export type EventAction =
   | SetEventAction
   | CreateTemplateAction
   | UpdateTemplateAction
   | SendEmojiAction
   | RefreshEventAction
+  | SetEventUpdatedAtAction

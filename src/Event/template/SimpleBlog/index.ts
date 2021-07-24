@@ -3,6 +3,7 @@ import {
   DEFAULT_BACK_TO_DASHBOARD_TEXT as DEFAULT_SPEAKER_PAGE_BACK_TO_DASHBOARD_TEXT,
 } from 'Event/template/SimpleBlog/SpeakerPage/SpeakerPageConfig/SpeakerPageEditDialog/Form/index'
 import {ResourceList} from 'Event/template/SimpleBlog/Dashboard/ResourceList'
+import {ResourceGroupList} from 'Event/template/SimpleBlog/Dashboard/ResourceGroupList'
 import {Agenda} from 'Event/template/SimpleBlog/Dashboard/AgendaList'
 import {EmojiList} from 'Event/template/SimpleBlog/Dashboard/EmojiList'
 import {Sidebar} from 'Event/template/SimpleBlog/Dashboard/Sidebar/SidebarContainer'
@@ -81,6 +82,7 @@ export type SimpleBlog = BaseTemplate & {
     items: Agenda[]
   }
   resourceList: ResourceList
+  resourceGroupList: ResourceGroupList
   header: SimpleBlogHeader
   dashboardBackground?: {
     color: string
@@ -295,6 +297,9 @@ export const createSimpleBlog = (): SimpleBlog => ({
     title: 'Resources',
     description: '',
     resources: [],
+  },
+  resourceGroupList: {
+    groups: [],
   },
   header: {
     backgroundColor: '#FFFFFF',

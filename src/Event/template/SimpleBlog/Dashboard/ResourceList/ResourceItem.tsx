@@ -10,7 +10,6 @@ import HiddenOnMatch from 'Event/visibility-rules/HiddenOnMatch'
 import {Editable} from 'Event/Dashboard/editor/views/EditComponent'
 import Published from 'Event/Dashboard/editor/views/Published'
 import {Draggable, DraggableProvidedDraggableProps} from 'react-beautiful-dnd'
-import Grid from '@material-ui/core/Grid'
 import {useEditMode} from 'Event/Dashboard/editor/state/edit-mode'
 import {DragHandle, DraggableOverlay} from 'lib/ui/drag-and-drop'
 import {useVariables} from 'Event'
@@ -29,7 +28,7 @@ export type Resource = Publishable &
   }
 
 export const RESOURCE_ITEM = 'Resource Item'
-type ResourceItemProps = {
+export type ResourceItemProps = {
   id: string
   resource: Resource
   iconColor?: string
@@ -81,7 +80,10 @@ export default React.memo((props: ResourceItemProps) => {
   )
 })
 
-function ResourceItemLink(props: {resource: Resource; iconColor?: string}) {
+export function ResourceItemLink(props: {
+  resource: Resource
+  iconColor?: string
+}) {
   const {downloadResource: DOWNLOADING_RESOURCE} = usePlatformActions()
   const {submit} = usePoints()
   const {template} = useSimpleBlog()
@@ -106,7 +108,7 @@ function ResourceItemLink(props: {resource: Resource; iconColor?: string}) {
   )
 }
 
-const Container = React.forwardRef<
+export const Container = React.forwardRef<
   HTMLDivElement,
   {
     children: React.ReactElement
@@ -117,30 +119,17 @@ const Container = React.forwardRef<
   return (
     <HiddenOnMatch rules={props.resource.rules}>
       <Published component={props.resource}>
-        <Item ref={ref} {...props} />
+        <Box ref={ref} {...props.draggableProps}>
+          {props.children}
+        </Box>
       </Published>
     </HiddenOnMatch>
   )
 })
 
-const Item = React.forwardRef<
-  HTMLDivElement,
-  {
-    children: React.ReactElement
-    resource: Resource
-    draggableProps?: DraggableProvidedDraggableProps
-  }
->((props, ref) => {
-  return (
-    <Grid item xs={12} md={12}>
-      <Grid container>
-        <Grid item xs={12} md={12} {...props.draggableProps} ref={ref}>
-          {props.children}
-        </Grid>
-      </Grid>
-    </Grid>
-  )
-})
+const Box = styled.div`
+  margin-bottom: ${(props) => props.theme.spacing[2]};
+`
 
 function resourceUrl(resource: Resource): string {
   if (resource.url) {
