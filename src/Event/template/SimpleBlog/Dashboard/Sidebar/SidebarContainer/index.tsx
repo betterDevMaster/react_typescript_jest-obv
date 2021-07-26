@@ -16,6 +16,9 @@ export type Sidebar = Publishable & {
   borderWidth: number
   borderColor: string
   paddingTop?: number
+  separatorColor?: string
+  separatorWidth?: number
+  separatorStyle?: 'solid' | 'dashed' | 'dotted'
 }
 
 export default function SidebarContainer(props: {children: React.ReactNode}) {

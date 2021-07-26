@@ -2,7 +2,11 @@ import ColorPicker from 'lib/ui/ColorPicker'
 import React from 'react'
 import InputLabel from '@material-ui/core/InputLabel'
 import Slider from '@material-ui/core/Slider'
-import {handleChangeSlider, onChangeCheckedHandler} from 'lib/dom'
+import {
+  handleChangeSlider,
+  onChangeCheckedHandler,
+  onUnknownChangeHandler,
+} from 'lib/dom'
 import EventImageUpload from 'organization/Event/DashboardConfig/EventImageUpload'
 import {useEvent} from 'Event/EventProvider'
 import Switch from 'lib/ui/form/Switch'
@@ -13,6 +17,10 @@ import ComponentConfig, {
   SaveButton,
 } from 'organization/Event/DashboardConfig/ComponentConfig'
 import {Controller, useForm} from 'react-hook-form'
+import Select from '@material-ui/core/Select'
+import MenuItem from '@material-ui/core/MenuItem'
+import FormControl from '@material-ui/core/FormControl'
+import {withDefault} from 'lib/template'
 
 const MIN_SIDEBAR_PADDING_TOP = 0
 const MAX_SIDEBAR_PADDING_TOP = 720
@@ -22,6 +30,9 @@ const MAX_SIDEBAR_BORDER_WIDTH = 50
 
 const MIN_SIDEBAR_BORDER_RADIUS = 0
 const MAX_SIDEBAR_BORDER_RADIUS = 25
+
+export const DEFAULT_SIDEBAR_SEPARATOR_STYLE = 'solid'
+export const DEFAULT_SIDEBAR_SEPARATOR_COLOR = '#FFFFFF'
 
 export function SidebarContainerConfig(props: ComponentConfigProps) {
   const {isVisible, onClose} = props
@@ -44,11 +55,11 @@ export function SidebarContainerConfig(props: ComponentConfigProps) {
         <Box display="flex" justifyContent="flex-end">
           <Controller
             name="isVisible"
-            defaultValue={sidebar.isVisible}
+            defaultValue={sidebar.isVisible || false}
             control={control}
             render={({value, onChange}) => (
               <Switch
-                checked={sidebar.isVisible}
+                checked={value}
                 onChange={onChangeCheckedHandler(onChange)}
                 arial-label="config visible switch"
                 labelPlacement="start"
@@ -64,7 +75,6 @@ export function SidebarContainerConfig(props: ComponentConfigProps) {
           current={event.sidebar_background}
         />
         <InputLabel>Top Padding</InputLabel>
-
         <Controller
           name="paddingTop"
           defaultValue={sidebar.paddingTop || 48}
@@ -81,6 +91,62 @@ export function SidebarContainerConfig(props: ComponentConfigProps) {
             />
           )}
         />
+
+        <Controller
+          name="separatorColor"
+          defaultValue={
+            sidebar.separatorColor || DEFAULT_SIDEBAR_SEPARATOR_COLOR
+          }
+          control={control}
+          render={({value, onChange}) => (
+            <ColorPicker
+              label="Separator Color"
+              color={value}
+              onPick={onChange}
+              aria-label="separator color"
+            />
+          )}
+        />
+
+        <InputLabel>Separator Width</InputLabel>
+        <Controller
+          name="separatorWidth"
+          defaultValue={withDefault(1, sidebar.separatorWidth)}
+          control={control}
+          render={({value, onChange}) => (
+            <Slider
+              min={1}
+              max={10}
+              step={1}
+              onChange={handleChangeSlider(onChange)}
+              valueLabelDisplay="auto"
+              value={value}
+              aria-label="separator width"
+            />
+          )}
+        />
+
+        <FormControl fullWidth>
+          <InputLabel>Separator Style</InputLabel>
+          <Controller
+            name="separatorStyle"
+            defaultValue={
+              sidebar.separatorStyle || DEFAULT_SIDEBAR_SEPARATOR_STYLE
+            }
+            control={control}
+            render={({value, onChange}) => (
+              <Select
+                value={value}
+                onChange={onUnknownChangeHandler(onChange)}
+                label="Separator Style"
+              >
+                <MenuItem value="solid">Solid</MenuItem>
+                <MenuItem value="dashed">Dashed</MenuItem>
+                <MenuItem value="dotted">Dotted</MenuItem>
+              </Select>
+            )}
+          />
+        </FormControl>
         <Controller
           name="background"
           defaultValue={sidebar.background}
@@ -94,7 +160,6 @@ export function SidebarContainerConfig(props: ComponentConfigProps) {
             />
           )}
         />
-
         <Controller
           name="textColor"
           defaultValue={sidebar.textColor}
