@@ -1,7 +1,7 @@
 import {LoginProps} from 'Event/auth/Login'
 import styled from 'styled-components'
 import React from 'react'
-import {eventRoutes} from 'Event/Routes'
+// import {eventRoutes} from 'Event/Routes'
 import Page, {
   Button,
   Description,
@@ -69,7 +69,7 @@ export default function Login(props: LoginProps) {
             {template.login.submitButton.label}
           </Button>
         </form>
-        {props.isPreview ? null : (
+        {/* {props.isPreview ? null : (
           <StyledRelativeLink
             to={eventRoutes.forgotPassword}
             aria-label="forgot password"
@@ -77,7 +77,7 @@ export default function Login(props: LoginProps) {
           >
             Forgot Password?
           </StyledRelativeLink>
-        )}
+        )} */}
       </>
     </Page>
   )
