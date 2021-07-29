@@ -5,6 +5,7 @@ import FormControlLabel from '@material-ui/core/FormControlLabel'
 import {withStyles} from '@material-ui/core/styles'
 import Switch from '@material-ui/core/Switch'
 import Typography from '@material-ui/core/Typography'
+import styled from 'styled-components'
 import {onChangeCheckedHandler, onChangeStringHandler} from 'lib/dom'
 import {RelativeLink} from 'lib/ui/link/RelativeLink'
 import {spacing} from 'lib/ui/theme'
@@ -23,6 +24,8 @@ import {CONFIGURE_EVENTS} from 'organization/PermissionsProvider'
 import InputAdornment from '@material-ui/core/InputAdornment'
 import TextField from '@material-ui/core/TextField'
 import ExportAreaAttendees from 'organization/Event/Area/ExportAreaAttendees'
+import ClearRoomAssignmentsButton from 'organization/Event/Area/ClearRoomAssignmentsButton'
+import ErrorAlert from 'lib/ui/alerts/ErrorAlert'
 
 export default function Area() {
   const {area, update, processing} = useArea()
@@ -36,6 +39,8 @@ export default function Area() {
   const [offlineDescription, setOfflineDescription] = useState(
     area.offline_description || '',
   )
+  const [error, setError] = useState<string | null>(null)
+  const clearError = () => setError(null)
 
   useEffect(() => {
     setOfflineTitle(area.offline_title || '')
@@ -71,7 +76,15 @@ export default function Area() {
   return (
     <Layout>
       <Page>
-        <ExportAreaAttendees area={area} />
+        <StyledErrorAlert>{error}</StyledErrorAlert>
+        <Box>
+          <ExportAreaAttendees area={area} />
+          <ClearRoomAssignmentsButton
+            area={area}
+            onError={setError}
+            clearError={clearError}
+          />
+        </Box>
         <Title variant="h5">{area.name}</Title>
         <HasPermission permission={CONFIGURE_EVENTS}>
           <>
@@ -207,3 +220,13 @@ const CreateRoomButton = withStyles({
     marginBottom: spacing[4],
   },
 })(Button)
+
+const Box = styled.div`
+  display: flex;
+  width: 100%;
+  justify-content: space-between;
+`
+
+const StyledErrorAlert = styled(ErrorAlert)`
+  margin-bottom: ${(props) => props.theme.spacing[5]};
+`
