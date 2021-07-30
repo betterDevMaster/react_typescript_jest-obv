@@ -15,6 +15,8 @@ export interface Question {
   options: Option[]
   validation_rule: string | null
   has_other_option: boolean
+  character_limit: number | null
+  character_limit_error_message: string | null
 }
 
 export interface Option {

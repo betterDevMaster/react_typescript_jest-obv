@@ -38,6 +38,8 @@ export const fakeQuestion = (overrides?: Partial<Question>): Question => ({
   type: randomType(),
   options: [],
   validation_rule: null,
+  character_limit: null,
+  character_limit_error_message: null,
   ...overrides,
 })
 

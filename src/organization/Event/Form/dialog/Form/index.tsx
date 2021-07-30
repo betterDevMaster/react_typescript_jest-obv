@@ -28,6 +28,7 @@ import {
 import React, {useEffect} from 'react'
 import {Controller, useForm} from 'react-hook-form'
 import {v4 as uuid} from 'uuid'
+import CharacterLimitInputs from 'organization/Event/Form/dialog/Form/CharacterLimitInputs'
 
 const TYPE_SELECT_ID = 'question-type-select'
 const RULE_SELECT_ID = 'question-rule-select'
@@ -146,6 +147,11 @@ export default function Form(props: {
         <OptionsInput
           questionType={selectedType}
           control={control}
+          register={register}
+          question={question}
+        />
+        <CharacterLimitInputs
+          questionType={selectedType}
           register={register}
           question={question}
         />
