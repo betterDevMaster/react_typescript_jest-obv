@@ -1,4 +1,4 @@
-import React, {useState} from 'react'
+import React, {useCallback, useState} from 'react'
 import styled from 'styled-components'
 import Layout from 'organization/user/Layout'
 import {spacing} from 'lib/ui/theme'
@@ -44,8 +44,14 @@ export default function AttendeeManagement() {
     setPointsTarget(attendee)
   const hidePointsDialog = () => setPointsTarget(null)
 
-  const onSuccess = (message: string | null) => setSuccessMessage(message)
-  const onError = (message: string | null) => setErrorMessage(message)
+  const onSuccess = useCallback(
+    (message: string | null) => setSuccessMessage(message),
+    [],
+  )
+  const onError = useCallback(
+    (message: string | null) => setErrorMessage(message),
+    [],
+  )
   const onCloseSuccess = () => setSuccessMessage(null)
 
   const error = attendeesError || errorMessage
