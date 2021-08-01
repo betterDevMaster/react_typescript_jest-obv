@@ -23,12 +23,13 @@ import ExportWaivers from 'organization/Event/AttendeeManagement/ExportWaivers'
 import AttendeeExport from 'organization/Event/AttendeeManagement/AttendeeExport'
 
 export default function AttendeeManagement() {
-  const {error, clearError, search} = useAttendees()
+  const {error: attendeesError, clearError, search} = useAttendees()
   const [editing, setEditing] = useState<Attendee | null>(null)
   const [viewAssignments, setViewAssignments] = useState<Attendee | null>(null)
   const [createDialogVisible, setCreateDialogVisible] = useState(false)
   const [pointsTarget, setPointsTarget] = useState<Attendee | null>(null)
   const [successMessage, setSuccessMessage] = useState<string | null>(null)
+  const [errorMessage, setErrorMessage] = useState<string | null>(null)
 
   const toggleCreateDialog = () => setCreateDialogVisible(!createDialogVisible)
 
@@ -44,7 +45,10 @@ export default function AttendeeManagement() {
   const hidePointsDialog = () => setPointsTarget(null)
 
   const onSuccess = (message: string | null) => setSuccessMessage(message)
+  const onError = (message: string | null) => setErrorMessage(message)
   const onCloseSuccess = () => setSuccessMessage(null)
+
+  const error = attendeesError || errorMessage
 
   return (
     <>
@@ -90,7 +94,7 @@ export default function AttendeeManagement() {
                 </CreateAttendeeButton>
               </>
             </HasPermission>
-            <ExportWaivers />
+            <ExportWaivers onSuccess={onSuccess} onError={onError} />
           </Box>
           <TextField
             variant="outlined"
