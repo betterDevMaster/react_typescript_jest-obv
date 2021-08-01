@@ -19,6 +19,7 @@ import HasPermission from 'organization/HasPermission'
 import AttendeesTable from 'organization/Event/AttendeeManagement/AttendeesTable'
 import AssignmentsDialog from 'organization/Event/AttendeeManagement/AssignmentsDialog'
 import PointsDialog from 'organization/Event/AttendeeManagement/PointsDialog'
+import ExportWaivers from 'organization/Event/AttendeeManagement/ExportWaivers'
 import AttendeeExport from 'organization/Event/AttendeeManagement/AttendeeExport'
 
 export default function AttendeeManagement() {
@@ -89,6 +90,7 @@ export default function AttendeeManagement() {
                 </CreateAttendeeButton>
               </>
             </HasPermission>
+            <ExportWaivers />
           </Box>
           <TextField
             variant="outlined"

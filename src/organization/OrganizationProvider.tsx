@@ -106,6 +106,9 @@ export function createRoutesFor(organization: Organization) {
       room_attendees_export: {
         ':file': {},
       },
+      waivers: {
+        ':file': {},
+      },
       events: {
         create: '/create',
         ':event': {

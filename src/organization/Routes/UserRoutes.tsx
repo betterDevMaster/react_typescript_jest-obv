@@ -19,6 +19,7 @@ import DownloadFormSubmissions from 'organization/Event/Form/DownloadFormSubmiss
 import DownloadQuestionSubmissions from 'organization/Event/Form/DownloadQuestionSubmissions'
 import DownloadRoomAttendees from 'organization/Event/Room/DownloadRoomAttendees'
 import DownloadAttendees from 'Event/DownloadAttendees'
+import DownloadWaivers from 'Event/DownloadWaivers'
 
 export default function UserRoutes() {
   const {routes} = useOrganization()
@@ -61,6 +62,9 @@ export default function UserRoutes() {
       </Route>
       <Route path={routes.attendees_export[':file'].root}>
         <DownloadAttendees />
+      </Route>
+      <Route path={routes.waivers[':file'].root}>
+        <DownloadWaivers />
       </Route>
       <Route path={routes.events[':event'].root}>
         <RouteEventProvider>

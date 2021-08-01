@@ -192,7 +192,6 @@ export default function EventRoutes() {
               </NameAppendageProvider>
             </AuthorizedPage>
           </Route>
-          reports
           <Route path={routes.events[':event'].reports}>
             <AuthorizedPage permission={CONFIGURE_EVENTS}>
               <ReportsProvider>
