@@ -13,13 +13,12 @@ import {useEvent} from 'Event/EventProvider'
 import {Panels, usePanels} from 'Event/template/Panels'
 import {PreviewBox, SectionTitle} from 'organization/Event/GeneralConfig'
 import Login from 'Event/auth/Login'
-import {
-  DEFAULT_EMAIL_LABEL,
-  DEFAULT_PASSWORD_LABEL,
-} from 'Event/template/Panels/Login'
 
 const MAX_LOGO_SIZE_PERCENT = 100
 const MIN_LOGO_SIZE_PERCENT = 20
+
+export const DEFAULT_EMAIL_LABEL = 'Email'
+export const DEFAULT_PASSWORD_LABEL = 'Password'
 
 export const DEFAULT_LOGIN_CONFIG: NonNullable<Panels['login']> = {
   submitButton: {

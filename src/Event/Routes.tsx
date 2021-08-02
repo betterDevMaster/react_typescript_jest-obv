@@ -34,6 +34,7 @@ import RoomRegistration from 'Event/RoomRegistration'
 import DownloadA360iReport from 'Event/DownloadA360iReport'
 import EventOfflinePage from 'Event/EventOfflinePage'
 import PagePoints, {LEADERBOARD} from 'Event/PointsProvider/PagePoints'
+import CompletedOnboarding from 'Event/CompletedOnboarding'
 
 export const eventRoutes = createRoutes({
   login: '/login',
@@ -158,33 +159,49 @@ function UserRoutes() {
         <Step1 />
       </Route>
       <Route path={eventRoutes.step2}>
-        <Step2 />
+        <CompletedOnboarding step={1}>
+          <Step2 />
+        </CompletedOnboarding>
       </Route>
       <Route path={eventRoutes.step3}>
-        <Step3 />
+        <CompletedOnboarding step={2}>
+          <Step3 />
+        </CompletedOnboarding>
       </Route>
       <Route path={eventRoutes.root} exact>
-        <Event />
+        <CompletedOnboarding>
+          <Event />
+        </CompletedOnboarding>
       </Route>
       <Route path={eventRoutes.speakers} exact>
-        <Speakers />
+        <CompletedOnboarding>
+          <Speakers />
+        </CompletedOnboarding>
       </Route>
       <Route path={eventRoutes.sponsors} exact>
-        <SponsorPage />
+        <CompletedOnboarding>
+          <SponsorPage />
+        </CompletedOnboarding>
       </Route>
       <Route path={eventRoutes.faq} exact>
-        <FaqPage />
+        <CompletedOnboarding>
+          <FaqPage />
+        </CompletedOnboarding>
       </Route>
       <Route path={eventRoutes.leaderboard}>
-        <PagePoints page={LEADERBOARD}>
-          <Leaderboard />
-        </PagePoints>
+        <CompletedOnboarding>
+          <PagePoints page={LEADERBOARD}>
+            <Leaderboard />
+          </PagePoints>
+        </CompletedOnboarding>
       </Route>
       <Route path={eventRoutes.area[':area'].root}>
         <JoinArea />
       </Route>
       <Route path={eventRoutes.report}>
-        <DownloadReport />
+        <CompletedOnboarding>
+          <DownloadReport />
+        </CompletedOnboarding>
       </Route>
       <Route path="/a360i/reports/:index">
         <DownloadA360iReport />
@@ -205,40 +222,6 @@ function UserRoutes() {
       <Redirect to={eventRoutes.root} />
     </Switch>
   )
-}
-
-function CompletedOnboarding(props: {
-  children: React.ReactElement
-  step?: 1 | 2
-}) {
-  const {step} = props
-  const attendee = useAttendee()
-  const {hasTechCheck, hasWaiver} = useEvent()
-
-  if (!attendee.has_password) {
-    return <Redirect to={eventRoutes.step1} />
-  }
-
-  if (step === 1) {
-    return props.children
-  }
-
-  const shouldGoToStep2 = hasWaiver && !attendee.waiver
-  if (shouldGoToStep2) {
-    return <Redirect to={eventRoutes.step2} />
-  }
-
-  if (step === 2) {
-    return props.children
-  }
-
-  const shouldRedirectToStep3 =
-    hasTechCheck && !attendee.tech_check_completed_at
-  if (shouldRedirectToStep3) {
-    return <Redirect to={eventRoutes.step3} />
-  }
-
-  return props.children
 }
 
 function GuestRoutes() {

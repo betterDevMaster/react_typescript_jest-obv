@@ -19,10 +19,6 @@ export default function Step2() {
     page: 'Visited Step 2',
   })
 
-  if (!attendee.has_password) {
-    return <Redirect to={eventRoutes.step1} />
-  }
-
   if (!event.waiver || !hasWaiver) {
     return <Redirect to={eventRoutes.step3} />
   }

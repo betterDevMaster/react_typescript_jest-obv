@@ -114,3 +114,21 @@ it('should receive points', async () => {
   // show points pop-up
   expect(await findByText(new RegExp(action.description))).toBeInTheDocument()
 })
+
+it('should skip step 1 if pw is not required', async () => {
+  const attendee = fakeAttendee({
+    has_password: false, // no pw set
+  })
+
+  const withoutSetPassword = fakeEvent({
+    requires_attendee_password: false,
+    template: fakePanels(),
+  })
+
+  const {findByLabelText} = await loginToEventSite({
+    attendee,
+    event: withoutSetPassword,
+  })
+
+  expect(await findByLabelText('signature canvas')).toBeInTheDocument()
+})

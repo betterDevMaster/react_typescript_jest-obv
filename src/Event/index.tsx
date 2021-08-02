@@ -1,13 +1,10 @@
 import {PlatformActions} from 'Event/ActionsProvider/platform-actions'
 import {useAttendee} from 'Event/auth'
 import Dashboard from 'Event/Dashboard'
-import {useEvent} from 'Event/EventProvider'
 import PagePoints, {DASHBOARD} from 'Event/PointsProvider/PagePoints'
-import {eventRoutes} from 'Event/Routes'
 import {Template} from 'Event/template'
 import {FileLocation} from 'lib/http-client'
 import React, {useCallback} from 'react'
-import {Redirect} from 'react-router-dom'
 import {Form} from 'organization/Event/FormsProvider'
 import {
   Localization,
@@ -58,6 +55,7 @@ export interface ObvioEvent {
   zoom_backgrounds_description: string | null
   ticket_ribbons: CustomTicketRibbon[]
   is_online: boolean
+  requires_attendee_password: boolean
 }
 
 export interface WaiverConfig {
@@ -85,22 +83,6 @@ export interface Domain {
 
 export default function Event() {
   const attendee = useAttendee()
-  const {hasTechCheck, hasWaiver} = useEvent()
-
-  if (!attendee.has_password) {
-    return <Redirect to={eventRoutes.step1} />
-  }
-
-  const shouldGoToStep2 = hasWaiver && !attendee.waiver
-  if (shouldGoToStep2) {
-    return <Redirect to={eventRoutes.step2} />
-  }
-
-  const shouldRedirectToStep3 =
-    hasTechCheck && !attendee.tech_check_completed_at
-  if (shouldRedirectToStep3) {
-    return <Redirect to={eventRoutes.step3} />
-  }
 
   // We fetch the user, and split the user from the attendee profile to allow
   // stubbing out data for org users while configuring dashboard.

@@ -10,10 +10,11 @@ import Page, {
 } from 'Event/template/Panels/Login/Page'
 import {RelativeLink} from 'lib/ui/link/RelativeLink'
 import {usePanels} from 'Event/template/Panels'
-import {DEFAULT_LOGIN_CONFIG} from 'Event/template/Panels/Login/LoginConfig'
-
-export const DEFAULT_EMAIL_LABEL = 'Email'
-export const DEFAULT_PASSWORD_LABEL = 'Password'
+import {
+  DEFAULT_PASSWORD_LABEL,
+  DEFAULT_EMAIL_LABEL,
+  DEFAULT_LOGIN_CONFIG,
+} from 'Event/template/Panels/Login/LoginConfig'
 
 export default function Login(props: LoginProps) {
   const {template} = usePanels()

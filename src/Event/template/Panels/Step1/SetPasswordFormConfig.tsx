@@ -4,13 +4,19 @@ import TextField from '@material-ui/core/TextField'
 import Slider from '@material-ui/core/Slider'
 import InputLabel from '@material-ui/core/InputLabel'
 import ColorPicker from 'lib/ui/ColorPicker'
-import {handleChangeSlider, onChangeStringHandler} from 'lib/dom'
+import {
+  handleChangeSlider,
+  onChangeCheckedHandler,
+  onChangeStringHandler,
+} from 'lib/dom'
 import {colors} from 'lib/ui/theme'
 import {Panels, usePanels} from 'Event/template/Panels'
 import {withDefault} from 'lib/template'
 import {PreviewBox, SectionTitle} from 'organization/Event/GeneralConfig'
 import {TemplateSetPasswordForm} from 'Event/Step1/SetPasswordForm'
 import {useTeamMember} from 'organization/auth'
+import {useEvent, useUpdate} from 'Event/EventProvider'
+import Switch from 'lib/ui/form/Switch'
 
 const MIN_BORDER_RADIUS = 0
 const MAX_BORDER_RADIUS = 60
@@ -29,9 +35,40 @@ export const DEFAULT_BUTTON_BORDER_RADIUS = 56
 export const DEFAULT_BUTTON_BORDER_WIDTH = 0
 
 export default function SetPasswordFormConfig() {
+  const {event} = useEvent()
+  const updateEvent = useUpdate()
+
+  const setRequiresPassword = (requires_attendee_password: boolean) => {
+    updateEvent({
+      requires_attendee_password,
+    })
+  }
+
+  return (
+    <>
+      <SectionTitle>Set Password Form</SectionTitle>
+      <Grid container spacing={3}>
+        <Grid item xs={12}>
+          <Switch
+            onChange={onChangeCheckedHandler(setRequiresPassword)}
+            labelPlacement="end"
+            checked={event.requires_attendee_password}
+            aria-label="toggle requires attendee password"
+            label="Require password"
+            color="primary"
+          />
+        </Grid>
+        <Config />
+      </Grid>
+    </>
+  )
+}
+
+export function Config() {
   const {template, update} = usePanels()
   const user = useTeamMember()
   const {setPasswordForm} = template
+  const {event} = useEvent()
 
   const updateSetPasswordForm = update.object('setPasswordForm')
 
@@ -45,6 +82,10 @@ export default function SetPasswordFormConfig() {
     }
 
     updateSetPasswordForm('button')(button)
+  }
+
+  if (!event.requires_attendee_password) {
+    return null
   }
 
   return (

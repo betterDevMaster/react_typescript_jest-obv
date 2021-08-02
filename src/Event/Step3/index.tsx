@@ -8,20 +8,11 @@ import {useTrackEventPage} from 'analytics'
 
 export default function Step3() {
   const attendee = useAttendee()
-  const {hasTechCheck, hasWaiver} = useEvent()
+  const {hasTechCheck} = useEvent()
 
   useTrackEventPage({
     page: 'Visited Step 3',
   })
-
-  if (!attendee.has_password) {
-    return <Redirect to={eventRoutes.step1} />
-  }
-
-  const needWaiver = hasWaiver && !attendee.waiver
-  if (needWaiver) {
-    return <Redirect to={eventRoutes.step2} />
-  }
 
   const hasCompletedTechCheck = Boolean(attendee.tech_check_completed_at)
   if (hasCompletedTechCheck || !hasTechCheck) {
