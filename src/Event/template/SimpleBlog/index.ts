@@ -85,6 +85,7 @@ export type SimpleBlog = BaseTemplate & {
     textColor: string
     thickness: number
     borderRadius: number
+    showing?: boolean
   }
   techCheck?: {
     buttonText?: string
@@ -312,6 +313,7 @@ export const createSimpleBlog = (): DeepRequired<SimpleBlog> => ({
     textColor: '#000000',
     thickness: 15,
     borderRadius: 50,
+    showing: true,
   },
   menu: {
     backgroundColor: '#000000',

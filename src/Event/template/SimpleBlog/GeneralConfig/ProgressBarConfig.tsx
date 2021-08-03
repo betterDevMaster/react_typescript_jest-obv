@@ -4,9 +4,10 @@ import Grid from '@material-ui/core/Grid'
 import Slider from '@material-ui/core/Slider'
 import ColorPicker from 'lib/ui/ColorPicker'
 import ProgressBarPreview from 'Event/template/SimpleBlog/GeneralConfig/ProgressBarPreview'
-import {handleChangeSlider} from 'lib/dom'
+import {handleChangeSlider, onChangeCheckedHandler} from 'lib/dom'
 import {useSimpleBlog} from 'Event/template/SimpleBlog'
 import {SectionTitle} from 'organization/Event/GeneralConfig'
+import Switch from 'lib/ui/form/Switch'
 
 export interface ProgressBar {
   background: string
@@ -29,52 +30,82 @@ export default function ProgressBarConfig() {
     <>
       <SectionTitle>Progress Bar</SectionTitle>
       <ProgressBarPreview
+        showing={progressBar.showing}
         barColor={progressBar.barColor}
         textColor={progressBar.textColor}
         thickness={progressBar.thickness}
         borderRadius={progressBar.borderRadius}
       />
       <Grid container spacing={2}>
-        <Grid item xs={6}>
-          <ColorPicker
-            label="Bar Color"
-            color={progressBar.barColor}
-            onPick={updateProgressBar('barColor')}
-            aria-label="bar color"
-          />
-          <Typography variant="subtitle2" style={{opacity: 0.7}}>
-            Thickness
-          </Typography>
-          <Slider
-            valueLabelDisplay="auto"
-            aria-label="progress bar thickness"
-            value={progressBar.thickness || 0}
-            onChange={handleChangeSlider(updateProgressBar('thickness'))}
-            step={1}
-            min={MIN_PROGRESS_BAR_THICKNESS}
-            max={MAX_PROGRESS_BAR_THICKNESS}
+        <Grid item xs={12}>
+          <Switch
+            label="Show"
+            checked={progressBar.showing}
+            onChange={onChangeCheckedHandler(updateProgressBar('showing'))}
+            labelPlacement="end"
+            color="primary"
+            aria-label="progress bar visible"
           />
         </Grid>
-        <Grid item xs={6}>
-          <ColorPicker
-            label="Text Color"
-            color={progressBar.textColor}
-            onPick={updateProgressBar('textColor')}
-            aria-label="text color"
-          />
-          <Typography variant="subtitle2" style={{opacity: 0.7}}>
-            Border Radius
-          </Typography>
-          <Slider
-            valueLabelDisplay="auto"
-            aria-label="progress bar border"
-            value={progressBar.borderRadius || 0}
-            onChange={handleChangeSlider(updateProgressBar('borderRadius'))}
-            step={1}
-            min={MIN_PROGRESS_BAR_BORDER_RADIUS}
-            max={MAX_PROGRESS_BAR_BORDER_RADIUS}
-          />
-        </Grid>
+        <Config />
+      </Grid>
+    </>
+  )
+}
+
+function Config() {
+  const {
+    update,
+    template: {progressBar},
+  } = useSimpleBlog()
+
+  const updateProgressBar = update.object('progressBar')
+
+  if (!progressBar.showing) {
+    return null
+  }
+
+  return (
+    <>
+      <Grid item xs={6}>
+        <ColorPicker
+          label="Bar Color"
+          color={progressBar.barColor}
+          onPick={updateProgressBar('barColor')}
+          aria-label="bar color"
+        />
+        <Typography variant="subtitle2" style={{opacity: 0.7}}>
+          Thickness
+        </Typography>
+        <Slider
+          valueLabelDisplay="auto"
+          aria-label="progress bar thickness"
+          value={progressBar.thickness || 0}
+          onChange={handleChangeSlider(updateProgressBar('thickness'))}
+          step={1}
+          min={MIN_PROGRESS_BAR_THICKNESS}
+          max={MAX_PROGRESS_BAR_THICKNESS}
+        />
+      </Grid>
+      <Grid item xs={6}>
+        <ColorPicker
+          label="Text Color"
+          color={progressBar.textColor}
+          onPick={updateProgressBar('textColor')}
+          aria-label="text color"
+        />
+        <Typography variant="subtitle2" style={{opacity: 0.7}}>
+          Border Radius
+        </Typography>
+        <Slider
+          valueLabelDisplay="auto"
+          aria-label="progress bar border"
+          value={progressBar.borderRadius || 0}
+          onChange={handleChangeSlider(updateProgressBar('borderRadius'))}
+          step={1}
+          min={MIN_PROGRESS_BAR_BORDER_RADIUS}
+          max={MAX_PROGRESS_BAR_BORDER_RADIUS}
+        />
       </Grid>
     </>
   )

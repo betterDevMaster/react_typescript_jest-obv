@@ -16,11 +16,16 @@ export interface ProgressBarStyleProps {
 
 export type ProgressBarProps = {
   value: number
+  showing: boolean
 } & ProgressBarStyleProps
 
 export default function ProgressBar(
   props: LinearProgressProps & ProgressBarProps,
 ) {
+  if (!props.showing) {
+    return null
+  }
+
   return (
     <Container maxWidth="sm">
       <Box display="flex" alignItems="center" mb={3}>

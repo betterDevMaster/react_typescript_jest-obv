@@ -28,6 +28,7 @@ export default function TechCheck(props: SimpleBlogTechCheckProps) {
     <SimpleBlogPage user={props.user}>
       <Container maxWidth="md">
         <ProgressBar
+          showing={template.progressBar.showing}
           value={props.progress}
           barColor={template.progressBar.barColor}
           textColor={template.progressBar.textColor}

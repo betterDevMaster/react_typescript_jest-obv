@@ -27,6 +27,7 @@ export default function Step2(props: {user: User}) {
     <SimpleBlogPage user={props.user}>
       <Container maxWidth="md">
         <ProgressBar
+          showing={progressBar.showing}
           value={progress}
           barColor={progressBar.barColor}
           textColor={progressBar.textColor}
