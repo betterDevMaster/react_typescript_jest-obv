@@ -13,14 +13,9 @@ import {useEvent} from 'Event/EventProvider'
 import {useSimpleBlog} from 'Event/template/SimpleBlog'
 import {PreviewBox, SectionTitle} from 'organization/Event/GeneralConfig'
 import Login from 'Event/auth/Login'
-import {
-  DEFAULT_EMAIL_LABEL,
-  DEFAULT_PASSWORD_LABEL,
-} from 'Event/template/SimpleBlog/Login'
 
 const MAX_LOGO_SIZE_PERCENT = 100
 const MIN_LOGO_SIZE_PERCENT = 20
-export const DEFAULT_LOGO_SIZE_PERCENT = 20
 
 export default function LoginFormConfig() {
   const {template, update} = useSimpleBlog()
@@ -69,6 +64,22 @@ export default function LoginFormConfig() {
     login.submitButton.hoverColor,
   )
 
+  const [passwordResetLinkLabel, setPasswordResetLinkLabel] = useState<string>(
+    login.passwordReset.linkLabel,
+  )
+  const [
+    passwordResetButtonText,
+    setPasswordResetButtonText,
+  ] = useState<string>(login.passwordReset.buttonText)
+  const [
+    passwordResetDescription,
+    setPasswordResetDescription,
+  ] = useState<string>(login.passwordReset.description)
+  const [
+    passwordResetSuccessMessage,
+    setPasswordResetSuccessMessage,
+  ] = useState<string>(login.passwordReset.successMessage)
+
   useEffect(() => {
     const hasChanges =
       login.submitButton.label !== submitLabel ||
@@ -85,6 +96,10 @@ export default function LoginFormConfig() {
       login.backgroundOpacity !== backgroundOpacity ||
       login.submitButton.hoverColor !== submitHoverColor ||
       login.submitButton.borderRadius !== buttonBorderRadius ||
+      login.passwordReset?.linkLabel !== passwordResetLinkLabel ||
+      login.passwordReset?.description !== passwordResetDescription ||
+      login.passwordReset?.buttonText !== passwordResetButtonText ||
+      login.passwordReset?.successMessage !== passwordResetSuccessMessage ||
       login.emailLabel !== emailLabel ||
       login.passwordLabel !== passwordLabel
 
@@ -106,6 +121,12 @@ export default function LoginFormConfig() {
         text: descriptionText,
         color: descriptionColor,
         fontSize: descriptionFontSize,
+      },
+      passwordReset: {
+        linkLabel: passwordResetLinkLabel,
+        description: passwordResetDescription,
+        successMessage: passwordResetSuccessMessage,
+        buttonText: passwordResetButtonText,
       },
       backgroundColor,
       backgroundOpacity,
@@ -131,6 +152,10 @@ export default function LoginFormConfig() {
     backgroundColor,
     backgroundOpacity,
     submitHoverColor,
+    passwordResetButtonText,
+    passwordResetDescription,
+    passwordResetSuccessMessage,
+    passwordResetLinkLabel,
     emailLabel,
     passwordLabel,
   ])
@@ -189,7 +214,7 @@ export default function LoginFormConfig() {
                 <Slider
                   valueLabelDisplay="auto"
                   aria-label="logo weight"
-                  value={logoSize ? logoSize : DEFAULT_LOGO_SIZE_PERCENT}
+                  value={logoSize}
                   onChange={handleChangeSlider(setLogoSize)}
                   step={1}
                   min={MIN_LOGO_SIZE_PERCENT}
@@ -221,7 +246,7 @@ export default function LoginFormConfig() {
                 <Box mr={1} display="flex" flexDirection="column" flex="1">
                   <TextField
                     label="Email Label"
-                    value={emailLabel || DEFAULT_EMAIL_LABEL}
+                    value={emailLabel}
                     onChange={onChangeStringHandler(setEmailLabel)}
                     inputProps={{'aria-label': 'email label'}}
                   />
@@ -229,7 +254,7 @@ export default function LoginFormConfig() {
                 <Box ml={1} display="flex" flexDirection="column" flex="1">
                   <TextField
                     label="Password Label"
-                    value={passwordLabel || DEFAULT_PASSWORD_LABEL}
+                    value={passwordLabel}
                     onChange={onChangeStringHandler(setPasswordLabel)}
                     inputProps={{'aria-label': 'password label'}}
                   />
@@ -301,6 +326,34 @@ export default function LoginFormConfig() {
                 step={1}
                 min={0}
                 max={60}
+              />
+              <TextField
+                id="login-forgot-password-text"
+                label="Forgot Password Text"
+                defaultValue={passwordResetLinkLabel}
+                onChange={onChangeStringHandler(setPasswordResetLinkLabel)}
+                inputProps={{'aria-label': 'login forgot password text'}}
+              />
+              <TextField
+                id="login-forgot-password-button-text"
+                label="Forgot Password Button Text"
+                defaultValue={passwordResetButtonText}
+                onChange={onChangeStringHandler(setPasswordResetButtonText)}
+                inputProps={{'aria-label': 'login forgot password button text'}}
+              />
+              <TextField
+                id="login-forgot-password-description"
+                label="Forgot Password Description"
+                defaultValue={passwordResetDescription}
+                onChange={onChangeStringHandler(setPasswordResetDescription)}
+                inputProps={{'aria-label': 'login forgot password description'}}
+              />
+              <TextField
+                id="login-forgot-password-message"
+                label="Forgot Password Description"
+                defaultValue={passwordResetSuccessMessage}
+                onChange={onChangeStringHandler(setPasswordResetSuccessMessage)}
+                inputProps={{'aria-label': 'login forgot password message'}}
               />
             </Box>
           </Box>

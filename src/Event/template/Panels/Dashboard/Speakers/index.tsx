@@ -1,5 +1,4 @@
 import React from 'react'
-import {DEFAULT_TITLE} from 'Event/template/Panels/Dashboard/Speakers/SpeakerPageConfig/SpeakerPageEditDialog/Form'
 import {Speaker} from 'Event/SpeakerPage'
 import SpeakerList from 'Event/template/Panels/Dashboard/Speakers/SpeakerList'
 import SpeakerEditDialog from 'Event/template/Panels/Dashboard/Speakers/SpeakerEditDialog'
@@ -19,7 +18,7 @@ export default function SpeakerPage(props: {
   return (
     <>
       <PageTitle aria-label="speakers title">
-        {v(speakerPageSettings?.title || DEFAULT_TITLE)}
+        {v(speakerPageSettings.title)}
       </PageTitle>
       <SpeakerEditDialog isEditMode={props.isEditMode} />
       <SpeakerList speakers={props.speakers} isEditMode={props.isEditMode} />

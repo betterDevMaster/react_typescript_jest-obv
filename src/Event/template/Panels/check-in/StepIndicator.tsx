@@ -1,13 +1,9 @@
 import React from 'react'
 import styled from 'styled-components'
-import {usePanels} from 'Event/template/Panels'
+import {DEFAULTS, usePanels} from 'Event/template/Panels'
 import {useVariables} from 'Event'
 import {Icon} from 'lib/fontawesome/Icon'
 import {Step} from 'Event/template/Panels/GeneralConfig/CheckInConfig'
-
-export const DEFAULT_STEP_1_ICON = 'far fa-lock'
-export const DEFAULT_STEP_2_ICON = 'far fa-clipboard'
-export const DEFAULT_STEP_3_ICON = 'far fa-desktop'
 
 export default function StepIndicator(props: {
   step: Step
@@ -24,17 +20,17 @@ export default function StepIndicator(props: {
       </LabelContainer>
       <IconContainer horizontal={props.horizontal}>
         <StepIcon
-          icon={template.step1Icon || DEFAULT_STEP_1_ICON}
+          icon={template.step1Icon || DEFAULTS.step1Icon}
           isActive={props.step >= 1}
         />
         <Divider horizontal={props.horizontal} isActive={props.step > 1} />
         <StepIcon
-          icon={template.step2Icon || DEFAULT_STEP_2_ICON}
+          icon={template.step2Icon || DEFAULTS.step2Icon}
           isActive={props.step >= 2}
         />
         <Divider horizontal={props.horizontal} isActive={props.step > 2} />
         <StepIcon
-          icon={template.step3Icon || DEFAULT_STEP_3_ICON}
+          icon={template.step3Icon || DEFAULTS.step3Icon}
           isActive={props.step === 3}
         />
       </IconContainer>

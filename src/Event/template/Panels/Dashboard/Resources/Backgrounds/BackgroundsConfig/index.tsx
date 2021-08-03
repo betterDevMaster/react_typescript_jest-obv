@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react'
+import React, {useState} from 'react'
 import Button from '@material-ui/core/Button'
 import Grid from '@material-ui/core/Grid'
 import InputLabel from '@material-ui/core/InputLabel'
@@ -17,7 +17,6 @@ import BackgroundImage from 'Event/template/Panels/Dashboard/Resources/Backgroun
 import BackgroundImageUpload from 'Event/template/Panels/Dashboard/Resources/Backgrounds/BackgroundsConfig/BackgroundImageUpload'
 import BackgroundImageTable from 'Event/template/Panels/Dashboard/Resources/Backgrounds/BackgroundsConfig/BackgroundImageTable'
 import PageSettingsDialog from 'Event/template/Panels/Dashboard/Resources/Backgrounds/BackgroundsConfig/PageSettingsDialog'
-import {DEFAULT_BORDER_COLOR} from 'Event/template/Panels/Dashboard/Resources/Backgrounds'
 
 const BORDER_RADIUS_SIZE_MIN = 0
 const BORDER_RADIUS_SIZE_MAX = 60
@@ -34,21 +33,16 @@ export default function BackgroundsConfig() {
 
   const updateEvent = useUpdate()
 
-  const [borderColor, setBorderColor] = useState(DEFAULT_BORDER_COLOR)
-  const [borderRadius, setBorderRadius] = useState(0)
-  const [borderThickness, setBorderThickness] = useState(0)
-  const [loading, setLoading] = useState(true)
+  const [borderColor, setBorderColor] = useState(templateSettings.borderColor)
+  const [borderRadius, setBorderRadius] = useState(
+    templateSettings.borderRadius,
+  )
+  const [borderThickness, setBorderThickness] = useState(
+    templateSettings.borderThickness,
+  )
   const [error, setError] = useState<string | null>(null)
 
   const clearError = () => setError(null)
-
-  useEffect(() => {
-    setBorderColor(templateSettings?.borderColor || DEFAULT_BORDER_COLOR)
-    setBorderRadius(templateSettings?.borderRadius || 0)
-    setBorderThickness(templateSettings?.borderThickness || 0)
-
-    setLoading(false)
-  }, [templateSettings])
 
   const submit = () => {
     if (processing) {
@@ -73,10 +67,6 @@ export default function BackgroundsConfig() {
     })
       .catch(setError)
       .finally(toggleProcessing)
-  }
-
-  if (loading) {
-    return null
   }
 
   return (

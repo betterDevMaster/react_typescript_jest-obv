@@ -3,12 +3,6 @@ import {User} from 'auth/user'
 import Page from 'Event/template/SimpleBlog/Page'
 import styled from 'styled-components'
 import {Link} from 'react-router-dom'
-import {
-  DEFAULT_TITLE,
-  DEFAULT_DESCRIPTION,
-  DEFAULT_BACK_TO_DASHBOARD_TEXT,
-  DEFAULT_BACK_TO_DASHBOARD_TEXT_COLOR,
-} from 'Event/template/SimpleBlog/SpeakerPage/SpeakerPageConfig/SpeakerPageEditDialog/Form'
 import {Speaker} from 'Event/SpeakerPage'
 import SpeakerList from 'Event/template/SimpleBlog/SpeakerPage/SpeakerList'
 import SpeakerEditDialog from 'Event/template/SimpleBlog/SpeakerPage/SpeakerEditDialog'
@@ -30,25 +24,15 @@ export default function SimpleBlogSpeakerPage(props: {
   const content = (
     <>
       <PageTitle aria-label="speakers title">
-        {v(speakerPageSettings?.title || DEFAULT_TITLE)}
+        {v(speakerPageSettings.title)}
       </PageTitle>
       <SubTitle>
         <Content aria-label="speakers description">
-          {v(speakerPageSettings?.description || DEFAULT_DESCRIPTION)}
+          {v(speakerPageSettings?.description)}
         </Content>
       </SubTitle>
-      <BackToDashboard
-        color={
-          speakerPageSettings?.backToDashboardTextColor ||
-          DEFAULT_BACK_TO_DASHBOARD_TEXT_COLOR
-        }
-      >
-        <Link to="/">
-          {v(
-            speakerPageSettings?.backToDashboardText ||
-              DEFAULT_BACK_TO_DASHBOARD_TEXT,
-          )}
-        </Link>
+      <BackToDashboard color={speakerPageSettings.backToDashboardTextColor}>
+        <Link to="/">{v(speakerPageSettings.backToDashboardText)}</Link>
       </BackToDashboard>
       <SpeakerEditDialog isEditMode={props.isEditMode} />
       <SpeakerList speakers={props.speakers} isEditMode={props.isEditMode} />

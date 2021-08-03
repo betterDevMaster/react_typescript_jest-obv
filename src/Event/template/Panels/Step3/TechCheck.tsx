@@ -2,7 +2,6 @@ import React from 'react'
 import Page from 'Event/template/Panels/Page'
 import styled from 'styled-components'
 import MuiButton, {ButtonProps} from '@material-ui/core/Button'
-import {colors} from 'lib/ui/theme'
 import Grid from '@material-ui/core/Grid'
 import {useVariables} from 'Event'
 import {areaRoutes} from 'Event/Routes'
@@ -11,7 +10,7 @@ import {RelativeLink} from 'lib/ui/link/RelativeLink'
 import CustomButtons from 'Event/Step3/CustomButtons'
 import TextEditorContent from 'lib/ui/form/TextEditor/Content'
 import {TechCheckProps} from 'Event/Step3/TechCheck'
-import {Panels} from 'Event/template/Panels'
+import {DEFAULTS, Panels} from 'Event/template/Panels'
 import LeftPanel from 'Event/template/Panels/check-in/LeftPanel'
 import RightPanel from 'Event/template/Panels/check-in/RightPanel'
 import MobilePanel from 'Event/template/Panels/check-in/MobilePanel'
@@ -75,7 +74,11 @@ function DefaultButton(props: {
   return (
     <ButtonBox>
       <Grid container justify="center">
-        <Grid item xs={12} md={settings?.buttonWidth || 12}>
+        <Grid
+          item
+          xs={12}
+          md={settings?.buttonWidth || DEFAULTS.techCheck.buttonWidth}
+        >
           <StartButton techCheck={props.techCheck} settings={settings} />
         </Grid>
       </Grid>
@@ -91,8 +94,10 @@ function StartButton(props: {
   const v = useVariables()
 
   const textColor = settings?.buttonTextColor || '#FFFFFF'
-  const backgroundColor = settings?.buttonBackground || colors.primary
-  const borderColor = settings?.buttonBorderColor || colors.primary
+  const backgroundColor =
+    settings?.buttonBackground || DEFAULTS.techCheck.buttonBackground
+  const borderColor =
+    settings?.buttonBorderColor || DEFAULTS.techCheck.buttonBorderColor
 
   const joinLink = areaRoutes(props.techCheck.area_key || '').root
 
@@ -102,12 +107,16 @@ function StartButton(props: {
         textColor={textColor}
         backgroundColor={backgroundColor}
         borderColor={borderColor}
-        borderRadius={settings?.buttonBorderRadius || 0}
-        borderWidth={settings?.buttonBorderWidth || 0}
+        borderRadius={
+          settings?.buttonBorderRadius || DEFAULTS.techCheck.buttonBorderRadius
+        }
+        borderWidth={
+          settings?.buttonBorderWidth || DEFAULTS.techCheck.buttonBorderWidth
+        }
         aria-label="start tech check"
         fullWidth
       >
-        {v(settings?.buttonText || 'Start Tech Check')}
+        {v(settings?.buttonText || DEFAULTS.techCheck.buttonText)}
       </StyledButton>
     </RelativeLink>
   )

@@ -15,7 +15,9 @@ import {
   useBackgrounds,
 } from 'organization/Event/Backgrounds/BackgroundsProvider'
 import BackgroundImage from 'Event/template/Panels/Dashboard/Resources/Backgrounds/BackgroundsConfig/BackgroundImage'
-import {usePanels} from 'Event/template/Panels'
+import {DEFAULTS as TEMPLATE_DEFAULTS, usePanels} from 'Event/template/Panels'
+
+const DEFAULT = TEMPLATE_DEFAULTS.zoomBackgrounds
 
 export default function BackgroundImageEditDialog(props: {
   onClose: () => void
@@ -55,9 +57,11 @@ export default function BackgroundImageEditDialog(props: {
             <ImageContainer>
               <BackgroundImage
                 alt="background"
-                borderRadius={templateSettings?.borderRadius}
-                borderThickness={templateSettings?.borderThickness}
-                borderColor={templateSettings?.borderColor}
+                borderRadius={templateSettings.borderRadius}
+                borderThickness={templateSettings.borderThickness}
+                borderColor={
+                  templateSettings?.borderColor || DEFAULT.borderColor
+                }
                 clickable={false}
                 src={v(background.image.url)}
                 width="100%"

@@ -7,27 +7,26 @@ import MuiTextField, {TextFieldProps} from '@material-ui/core/TextField'
 import MuiButton, {ButtonProps} from '@material-ui/core/Button'
 import defaultBackground from 'assets/images/background_login.png'
 import {makeStyles} from '@material-ui/core/styles'
-import {spacing} from 'lib/ui/theme'
 import Logo from 'Event/template/Panels/Login/Logo'
 import {rgba} from 'lib/color'
 import {usePanels} from 'Event/template/Panels'
-import {DEFAULT_LOGIN_CONFIG} from 'Event/template/Panels/Login/LoginConfig'
 
 export default function Page(props: {
   isPreview?: LoginProps['isPreview']
   children: React.ReactElement | React.ReactElement[]
 }) {
   const {event} = useEvent()
-  const {template} = usePanels()
-  const login = template.login ? template.login : DEFAULT_LOGIN_CONFIG
+  const {
+    template: {login},
+  } = usePanels()
 
   const background = event.login_background
     ? event.login_background.url
     : defaultBackground
 
   const backgroundRGBColor = rgba(
-    login.backgroundColor || '#FFFFFF',
-    login.backgroundOpacity || 0,
+    login.backgroundColor,
+    login.backgroundOpacity,
   )
   return (
     <Background
@@ -47,9 +46,9 @@ export default function Page(props: {
 }
 
 export function Title(props: {children: string; 'aria-label'?: string}) {
-  const {template} = usePanels()
-  const login = template.login ? template.login : DEFAULT_LOGIN_CONFIG
-  const color = login.description.color
+  const {
+    template: {login},
+  } = usePanels()
 
   if (!props.children) {
     return null
@@ -57,7 +56,7 @@ export function Title(props: {children: string; 'aria-label'?: string}) {
 
   return (
     <DescriptionText
-      color={color}
+      color={login.description.color}
       fontSize={24}
       aria-label={props['aria-label']}
     >
@@ -67,8 +66,9 @@ export function Title(props: {children: string; 'aria-label'?: string}) {
 }
 
 export function Description(props: {children: string; 'aria-label'?: string}) {
-  const {template} = usePanels()
-  const login = template.login ? template.login : DEFAULT_LOGIN_CONFIG
+  const {
+    template: {login},
+  } = usePanels()
   const color = login.description.color
   const fontSize = login.description.fontSize
 
@@ -96,11 +96,11 @@ export function ErrorMessage(props: {children?: string}) {
 }
 
 export function Button(props: ButtonProps) {
-  const {template} = usePanels()
-  const login = template.login ? template.login : DEFAULT_LOGIN_CONFIG
-  const borderRadius = `${login.submitButton.borderRadius}px` || spacing[14]
-  const hoverColor =
-    login.submitButton.hoverColor || login.submitButton.backgroundColor
+  const {
+    template: {login},
+  } = usePanels()
+  const borderRadius = `${login.submitButton.borderRadius}px`
+  const hoverColor = login.submitButton.hoverColor
   return (
     <StyledButton
       variant="contained"
@@ -154,15 +154,16 @@ export const ColorOverlay = styled.div<{
 `
 
 export function TextField(props: TextFieldProps) {
-  const {template} = usePanels()
-  const login = template.login ? template.login : DEFAULT_LOGIN_CONFIG
+  const {
+    template: {login},
+  } = usePanels()
 
   const useStyles = makeStyles({
     root: {
       backgroundColor: '#f2f5f9 !important',
-      borderRadius: `${login.inputBorderRadius}px !important;` || spacing[14],
+      borderRadius: `${login.inputBorderRadius}px !important;`,
       '& .MuiFilledInput-input': {
-        borderRadius: `${login.inputBorderRadius}px !important;` || spacing[14],
+        borderRadius: `${login.inputBorderRadius}px !important;`,
       },
       '&::before': {
         content: 'unset',
@@ -198,7 +199,7 @@ export const StyledButton = styled(
   color: ${(props) => props.color} !important;
   background-color: ${(props) => props.backgroundColor} !important;
 
-  &: hover {
+  &:hover {
     background-color: ${(props) => props.hoverColor} !important;
   }
 `

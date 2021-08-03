@@ -4,10 +4,7 @@ import {useEvent} from 'Event/EventProvider'
 import withStyles from '@material-ui/core/styles/withStyles'
 import {spacing} from 'lib/ui/theme'
 import Button from '@material-ui/core/Button'
-import {
-  DEFAULT_HERO_IMAGE_SIZE_PERCENT,
-  HeroConfig,
-} from 'Event/template/SimpleBlog/Dashboard/Hero/HeroConfig'
+import {HeroConfig} from 'Event/template/SimpleBlog/Dashboard/Hero/HeroConfig'
 import {useVariables} from 'Event'
 import {useSimpleBlog} from 'Event/template/SimpleBlog'
 import {useToggle} from 'lib/toggle'
@@ -62,7 +59,7 @@ function Image() {
   const {template} = useSimpleBlog()
   const {heroImageSize} = template
 
-  const size = heroImageSize || DEFAULT_HERO_IMAGE_SIZE_PERCENT
+  const size = heroImageSize
 
   if (!event.welcome_image) {
     return null

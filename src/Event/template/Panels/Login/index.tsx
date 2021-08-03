@@ -10,23 +10,20 @@ import Page, {
 } from 'Event/template/Panels/Login/Page'
 import {RelativeLink} from 'lib/ui/link/RelativeLink'
 import {usePanels} from 'Event/template/Panels'
-import {
-  DEFAULT_PASSWORD_LABEL,
-  DEFAULT_EMAIL_LABEL,
-  DEFAULT_LOGIN_CONFIG,
-} from 'Event/template/Panels/Login/LoginConfig'
 
 export default function Login(props: LoginProps) {
-  const {template} = usePanels()
-  const login = template.login ? template.login : DEFAULT_LOGIN_CONFIG
-  const emailLabel = login.emailLabel || DEFAULT_EMAIL_LABEL
-  const passwordLabel = login.passwordLabel || DEFAULT_PASSWORD_LABEL
+  const {
+    template: {login},
+  } = usePanels()
+
+  const emailLabel = login.emailLabel
+  const passwordLabel = login.passwordLabel
 
   return (
     <Page isPreview={props.isPreview}>
       <>
         <Description aria-label="event login description">
-          {login.description.text}
+          {login?.description.text || ''}
         </Description>
         <form onSubmit={props.onSubmit}>
           <TextField
@@ -78,7 +75,7 @@ export default function Login(props: LoginProps) {
             aria-label="forgot password"
             color={login.description.color}
           >
-            Forgot Password?
+            {login.passwordReset.linkLabel}
           </StyledRelativeLink>
         )}
       </>

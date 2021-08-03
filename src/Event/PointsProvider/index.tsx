@@ -7,11 +7,6 @@ import {useEditMode} from 'Event/Dashboard/editor/state/edit-mode'
 import {replace} from 'lib/template'
 import {useSnackbar} from 'lib/ui/SnackbarProvider'
 import {useTemplate} from 'Event/TemplateProvider'
-import {DEFAULT_POINTS_UNIT} from 'Event/template/SimpleBlog/Dashboard/PointsSummary/SetPointsButton'
-
-export const DEFAULT_REWARD_TEXT = `Yay! You have received {{action_points}} {{points_unit}} for {{action_description}}.`
-export const DEFAULT_REWARD_ALERT_BACKGROUND_COLOR = '#565656'
-export const DEFAULT_REWARD_ALERT_TEXT_COLOR = '#ffffff'
 
 export interface Score {
   points: number
@@ -35,11 +30,13 @@ export const PointsContext = React.createContext<
 
 export default function PointsProvider(props: {children: React.ReactElement}) {
   const {client, event} = useEvent()
-  const unit = event.template?.points?.unit
+  const template = useTemplate()
   const fetchScore = useFetchScore()
   const {score, add} = useAttendeeScore(fetchScore)
   const showReceived = useShowReceived()
   const isEditMode = useEditMode()
+
+  const unit = template.points?.unit || ''
 
   const submit = useCallback(
     (action: Action | null) => {
@@ -52,7 +49,7 @@ export default function PointsProvider(props: {children: React.ReactElement}) {
       client
         .post(url)
         .then(() => {
-          showReceived(action, unit || null)
+          showReceived(action, unit)
           add(action.points)
         })
         .catch((e) => {
@@ -114,10 +111,9 @@ export function usePoints() {
 export function useShowReceived() {
   const {enqueueSnackbar, setBackgroundColor, setTextColor} = useSnackbar()
   const withActionVariables = useWithActionVariables()
-  const {event} = useEvent()
 
   const template = useTemplate()
-  const rewardText = event.template?.rewardAlert?.text || DEFAULT_REWARD_TEXT
+  const rewardText = template.rewardAlert?.text || ''
 
   /**
    * Customize snackbar colors
@@ -182,7 +178,7 @@ function useWithActionVariables() {
     const values = {
       action_description: action.description,
       action_points: action.points,
-      points_unit: unit || DEFAULT_POINTS_UNIT,
+      points_unit: unit,
     }
 
     let result = text

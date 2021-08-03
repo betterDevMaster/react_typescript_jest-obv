@@ -3,16 +3,15 @@ import Grid from '@material-ui/core/Grid'
 import InputLabel from '@material-ui/core/InputLabel'
 import Slider from '@material-ui/core/Slider'
 import {useEvent} from 'Event/EventProvider'
-import {usePanels} from 'Event/template/Panels'
+import {DEFAULTS as TEMPLATE_DEFAULTS, usePanels} from 'Event/template/Panels'
 import {handleChangeSlider, onChangeCheckedHandler} from 'lib/dom'
-import {withDefault} from 'lib/template'
 import ColorPicker from 'lib/ui/ColorPicker'
 import Switch from 'lib/ui/form/Switch'
 import EventImageUpload from 'organization/Event/DashboardConfig/EventImageUpload'
 import {SectionTitle} from 'organization/Event/GeneralConfig'
 import React from 'react'
 
-export const DEFAULT_LINK_UNDERLINE = true
+const DEFAULT = TEMPLATE_DEFAULTS.background
 
 export default function GlobalStylesConfig() {
   const {template, update} = usePanels()
@@ -87,8 +86,10 @@ export default function GlobalStylesConfig() {
         step={0.1}
         onChange={handleChangeSlider(updateBackground('opacity'))}
         valueLabelDisplay="auto"
-        value={template.background?.opacity || 0}
-        valueLabelFormat={() => <div>{template.background?.opacity || 0}</div>}
+        value={template.background?.opacity || DEFAULT.opacity}
+        valueLabelFormat={() => (
+          <div>{template.background?.opacity || DEFAULT.opacity}</div>
+        )}
         aria-label="background color opacity"
       />
       <Box mb={2}>
@@ -102,7 +103,7 @@ export default function GlobalStylesConfig() {
       <Box mb={2}>
         <Switch
           label="Link Underline"
-          checked={withDefault(DEFAULT_LINK_UNDERLINE, template.linkUnderline)}
+          checked={template.linkUnderline}
           onChange={onChangeCheckedHandler(update.primitive('linkUnderline'))}
           labelPlacement="end"
           color="primary"

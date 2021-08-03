@@ -4,21 +4,12 @@ import ComponentConfig, {
 } from 'organization/Event/DashboardConfig/ComponentConfig'
 import {SimpleBlog, useSimpleBlog} from 'Event/template/SimpleBlog'
 import {onChangeCheckedHandler, onChangeNumberHandler} from 'lib/dom'
-import {withDefault} from 'lib/template'
 import ColorPicker from 'lib/ui/ColorPicker'
 import Switch from 'lib/ui/form/Switch'
 import React, {useEffect, useMemo, useState} from 'react'
 import InputLabel from '@material-ui/core/InputLabel'
 import Slider from '@material-ui/core/Slider'
 import {handleChangeSlider} from 'lib/dom'
-
-export const DEFAULT_TITLE_TEXT_COLOR = '#000000'
-export const DEFAULT_TITLE_FONT_SIZE = 30
-export const DEFAULT_TITLE_CAPITALIZE = true
-export const DEFAULT_DATE_TEXT_COLOR = '#adadad'
-export const DEFAULT_CONTENT_TEXT_COLOR = '#000000'
-export const DEFAULT_CONTENT_FONT_SIZE = 17
-export const DEFAULT_SPACING = 32
 
 const MAX_SPACING = 250
 const MIN_SPACING = 1
@@ -144,23 +135,13 @@ export function usePostStyles() {
 
   return useMemo(
     () => ({
-      titleTextColor: postStyles?.titleTextColor || DEFAULT_TITLE_TEXT_COLOR,
-      titleFontSize: withDefault(
-        DEFAULT_TITLE_FONT_SIZE,
-        postStyles?.titleFontSize,
-      ),
-      titleCapitalize: withDefault(
-        DEFAULT_TITLE_CAPITALIZE,
-        postStyles?.titleCapitalize,
-      ),
-      dateTextColor: postStyles?.dateTextColor || DEFAULT_DATE_TEXT_COLOR,
-      contentTextColor:
-        postStyles?.contentTextColor || DEFAULT_CONTENT_TEXT_COLOR,
-      contentFontSize: withDefault(
-        DEFAULT_CONTENT_FONT_SIZE,
-        postStyles?.contentFontSize,
-      ),
-      spacing: withDefault(DEFAULT_SPACING, postStyles?.spacing),
+      titleTextColor: postStyles.titleTextColor,
+      titleFontSize: postStyles.titleFontSize,
+      titleCapitalize: postStyles.titleCapitalize,
+      dateTextColor: postStyles.dateTextColor,
+      contentTextColor: postStyles.contentTextColor,
+      contentFontSize: postStyles.contentFontSize,
+      spacing: postStyles.spacing,
     }),
     [postStyles],
   )

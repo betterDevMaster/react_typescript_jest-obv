@@ -7,6 +7,7 @@ import Page, {
   ErrorMessage,
 } from 'Event/template/Panels/Login/Page'
 import {ForgotPasswordProps} from 'auth/password'
+import {usePanels} from 'Event/template/Panels'
 
 export default function ForgotPassword(props: ForgotPasswordProps) {
   return (
@@ -17,11 +18,15 @@ export default function ForgotPassword(props: ForgotPasswordProps) {
 }
 
 export function Content(props: ForgotPasswordProps) {
+  const {
+    template: {login},
+  } = usePanels()
+  const emailLabel = login.emailLabel
+
   if (props.resetLinkSent) {
     return (
       <Description aria-label="password reset link sent">
-        Password reset link sent! Check your spam folder if you don't see it
-        after a couple minutes.
+        {login.passwordReset.successMessage}
       </Description>
     )
   }
@@ -29,11 +34,11 @@ export function Content(props: ForgotPasswordProps) {
   return (
     <>
       <Description aria-label="event login description">
-        Send password reset link
+        {login.passwordReset.description}
       </Description>
       <form onSubmit={props.onSubmit}>
         <TextField
-          label="Email"
+          label={emailLabel}
           type="email"
           fullWidth
           variant="outlined"
@@ -41,7 +46,7 @@ export function Content(props: ForgotPasswordProps) {
           disabled={props.submitting}
           inputProps={{
             ref: props.register({
-              required: 'Email is required',
+              required: `${emailLabel} is required`,
             }),
             'aria-label': 'event account email',
           }}
@@ -56,7 +61,7 @@ export function Content(props: ForgotPasswordProps) {
           aria-label="submit reset password"
           type="submit"
         >
-          Send Reset Password Link
+          {login.passwordReset.buttonText}
         </Button>
       </form>
     </>

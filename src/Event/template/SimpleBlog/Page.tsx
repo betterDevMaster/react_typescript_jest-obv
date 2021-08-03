@@ -12,12 +12,6 @@ import LanguageSelectMenu from 'Event/LanguageSelector'
 import {muiDarkTheme, muiTheme} from 'lib/ui/theme'
 import {ThemeProvider} from '@material-ui/core/styles'
 import {withStyles} from '@material-ui/core/styles'
-import {
-  DEFAULT_LINK_COLOR,
-  DEFAULT_LINK_UNDERLINE,
-  DEFAULT_TEXT_COLOR,
-} from 'Event/template/SimpleBlog/GeneralConfig/GlobalStylesConfig'
-import {withDefault} from 'lib/template'
 
 export default function SimpleBlogPage(props: {
   user: User
@@ -42,12 +36,9 @@ export default function SimpleBlogPage(props: {
 
   const theme = isDarkMode ? muiDarkTheme : muiTheme
 
-  const color = template.textColor || DEFAULT_TEXT_COLOR
-  const linkUnderline = withDefault(
-    DEFAULT_LINK_UNDERLINE,
-    template.linkUnderline,
-  )
-  const linkColor = template.linkColor || DEFAULT_LINK_COLOR
+  const color = template.textColor
+  const linkUnderline = template.linkUnderline
+  const linkColor = template.linkColor
 
   return (
     <ThemeProvider theme={theme}>

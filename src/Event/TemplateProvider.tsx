@@ -1,19 +1,47 @@
 import {updateTemplate} from 'Event/state/actions'
 import {Template} from 'Event/template'
-import React, {useCallback} from 'react'
+import {PANELS, DEFAULTS as PANELS_DEFAULTS} from 'Event/template/Panels'
+import {
+  DEFAULTS as SIMPLE_BLOG_DEFAULTS,
+  SIMPLE_BLOG,
+} from 'Event/template/SimpleBlog'
+import {withDefaults} from 'lib/object'
+import {DeepRequired} from 'lib/type-utils'
+import React, {useCallback, useMemo} from 'react'
 import {useDispatch} from 'react-redux'
 
-const TemplateContext = React.createContext<Template | undefined>(undefined)
+const TemplateContext = React.createContext<DeepRequired<Template> | undefined>(
+  undefined,
+)
 
 export default function TemplateProvider(props: {
   children: React.ReactNode
   template: Template
 }) {
+  const {template} = props
+
+  /**
+   * Fill out the template with any missing defaults
+   */
+  const filled = useMemo(() => {
+    const defaults = defaultsFor(template)
+    return withDefaults(defaults, template)
+  }, [template])
+
   return (
-    <TemplateContext.Provider value={props.template}>
+    <TemplateContext.Provider value={filled}>
       {props.children}
     </TemplateContext.Provider>
   )
+}
+
+function defaultsFor(template: Template): DeepRequired<Template> {
+  switch (template.name) {
+    case SIMPLE_BLOG:
+      return SIMPLE_BLOG_DEFAULTS
+    case PANELS:
+      return PANELS_DEFAULTS
+  }
 }
 
 export function useTemplate() {

@@ -20,7 +20,6 @@ import {Controller, useForm} from 'react-hook-form'
 import Select from '@material-ui/core/Select'
 import MenuItem from '@material-ui/core/MenuItem'
 import FormControl from '@material-ui/core/FormControl'
-import {withDefault} from 'lib/template'
 
 const MIN_SIDEBAR_PADDING_TOP = 0
 const MAX_SIDEBAR_PADDING_TOP = 720
@@ -30,9 +29,6 @@ const MAX_SIDEBAR_BORDER_WIDTH = 50
 
 const MIN_SIDEBAR_BORDER_RADIUS = 0
 const MAX_SIDEBAR_BORDER_RADIUS = 25
-
-export const DEFAULT_SIDEBAR_SEPARATOR_STYLE = 'solid'
-export const DEFAULT_SIDEBAR_SEPARATOR_COLOR = '#FFFFFF'
 
 export function SidebarContainerConfig(props: ComponentConfigProps) {
   const {isVisible, onClose} = props
@@ -94,9 +90,7 @@ export function SidebarContainerConfig(props: ComponentConfigProps) {
 
         <Controller
           name="separatorColor"
-          defaultValue={
-            sidebar.separatorColor || DEFAULT_SIDEBAR_SEPARATOR_COLOR
-          }
+          defaultValue={sidebar.separatorColor}
           control={control}
           render={({value, onChange}) => (
             <ColorPicker
@@ -111,7 +105,7 @@ export function SidebarContainerConfig(props: ComponentConfigProps) {
         <InputLabel>Separator Width</InputLabel>
         <Controller
           name="separatorWidth"
-          defaultValue={withDefault(1, sidebar.separatorWidth)}
+          defaultValue={sidebar.separatorWidth}
           control={control}
           render={({value, onChange}) => (
             <Slider
@@ -130,9 +124,7 @@ export function SidebarContainerConfig(props: ComponentConfigProps) {
           <InputLabel>Separator Style</InputLabel>
           <Controller
             name="separatorStyle"
-            defaultValue={
-              sidebar.separatorStyle || DEFAULT_SIDEBAR_SEPARATOR_STYLE
-            }
+            defaultValue={sidebar.separatorStyle}
             control={control}
             render={({value, onChange}) => (
               <Select

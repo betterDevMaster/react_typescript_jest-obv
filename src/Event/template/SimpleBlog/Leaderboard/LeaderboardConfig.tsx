@@ -9,22 +9,12 @@ import Button from '@material-ui/core/Button'
 import {useUpdate} from 'Event/EventProvider'
 import Typography from '@material-ui/core/Typography'
 import styled from 'styled-components'
-import {
-  DEFAULT_REWARD_ALERT_BACKGROUND_COLOR,
-  DEFAULT_REWARD_ALERT_TEXT_COLOR,
-  DEFAULT_REWARD_TEXT,
-} from 'Event/PointsProvider'
 import SnackbarContent from '@material-ui/core/SnackbarContent'
 import {onChangeStringHandler} from 'lib/dom'
 import CheckCircleIcon from '@material-ui/icons/CheckCircle'
 import Alert from '@material-ui/lab/Alert'
 import AlertTitle from '@material-ui/lab/AlertTitle'
 
-export const DEFAULT_TITLE = 'Leaderboard'
-export const DEFAULT_DESCRIPTION =
-  '<p>{{first name}}, you have earned {{leaderboard_points}} {{points_unit}}, and you are currently {{leaderboard_position}}. Great Job!</p><p><i>The list below is the top 200 point earners! If you don’t see your name listed, there’s still time!</i></p><p><br>&nbsp;</p>'
-export const DEFAULT_BACK_TO_DASHBOARD_TEXT = 'Back to Dashboard'
-export const DEFAULT_BACK_TO_DASHBOARD_TEXT_COLOR = '#000000'
 export type LeaderboardConfigData = NonNullable<SimpleBlog['leaderboard']>
 
 export default function LeaderboardConfig(props: {onComplete?: () => void}) {
@@ -34,14 +24,12 @@ export default function LeaderboardConfig(props: {onComplete?: () => void}) {
   const [processing, setProcessing] = useState(false)
   const updateEvent = useUpdate()
 
-  const [rewardText, setRewardText] = useState<string>(
-    rewardAlert?.text || DEFAULT_REWARD_TEXT,
-  )
+  const [rewardText, setRewardText] = useState<string>(rewardAlert.text)
   const [rewardBackgroundColor, setRewardBackgroundColor] = useState<string>(
-    rewardAlert?.backgroundColor || DEFAULT_REWARD_ALERT_BACKGROUND_COLOR,
+    rewardAlert.backgroundColor,
   )
   const [rewardTextColor, setRewardTextColor] = useState<string>(
-    rewardAlert?.textColor || DEFAULT_REWARD_ALERT_TEXT_COLOR,
+    rewardAlert.textColor,
   )
 
   const submit = (data: LeaderboardConfigData) => {
@@ -107,7 +95,7 @@ export default function LeaderboardConfig(props: {onComplete?: () => void}) {
         </Grid>
         <Grid item xs={12}>
           <TextField
-            defaultValue={leaderboard?.title || DEFAULT_TITLE}
+            defaultValue={leaderboard.title}
             name="title"
             label="Title"
             fullWidth
@@ -123,7 +111,7 @@ export default function LeaderboardConfig(props: {onComplete?: () => void}) {
           <Controller
             name="description"
             control={control}
-            defaultValue={leaderboard?.description || DEFAULT_DESCRIPTION}
+            defaultValue={leaderboard.description}
             rules={{
               required: 'Description is required',
             }}
@@ -141,9 +129,7 @@ export default function LeaderboardConfig(props: {onComplete?: () => void}) {
         <Grid item xs={12}>
           <TextField
             name="backToDashboardText"
-            defaultValue={
-              leaderboard?.backToDashboardText || DEFAULT_BACK_TO_DASHBOARD_TEXT
-            }
+            defaultValue={leaderboard.backToDashboardText}
             label="Back to Dashboard Text"
             fullWidth
             inputProps={{
@@ -158,10 +144,7 @@ export default function LeaderboardConfig(props: {onComplete?: () => void}) {
           <Controller
             name="backToDashboardTextColor"
             control={control}
-            defaultValue={
-              leaderboard?.backToDashboardTextColor ||
-              DEFAULT_BACK_TO_DASHBOARD_TEXT_COLOR
-            }
+            defaultValue={leaderboard.backToDashboardTextColor}
             render={({value, onChange}) => (
               <ColorPicker
                 label="Back to Dashboard Text Color"

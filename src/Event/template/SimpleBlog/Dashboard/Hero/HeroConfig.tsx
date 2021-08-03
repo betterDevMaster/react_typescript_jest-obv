@@ -14,7 +14,6 @@ import ComponentConfig, {
 import {Controller, useForm} from 'react-hook-form'
 import {useDispatchUpdate} from 'Event/TemplateProvider'
 
-export const DEFAULT_HERO_IMAGE_SIZE_PERCENT = 50
 const MIN_HERO_IMAGE_SIZE_PERCENT = 20
 const MAX_HERO_IMAGE_SIZE_PERCENT = 100
 
@@ -54,7 +53,7 @@ export function HeroConfig(props: ComponentConfigProps) {
         <Controller
           control={control}
           name="heroImageSize"
-          defaultValue={heroImageSize || DEFAULT_HERO_IMAGE_SIZE_PERCENT}
+          defaultValue={heroImageSize}
           render={({value, onChange}) => (
             <Slider
               min={MIN_HERO_IMAGE_SIZE_PERCENT}

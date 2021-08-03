@@ -6,7 +6,6 @@ import Body from 'Event/template/SimpleBlog/SpeakerPage/SpeakerList/Card/Body'
 import {Speaker} from 'Event/SpeakerPage'
 import {useSpeakers} from 'organization/Event/SpeakersProvider'
 import Clickable from 'lib/ui/Clickable'
-import {DEFAULT_SPEAKER_IMAGE_SIZE} from 'Event/template/SimpleBlog/SpeakerPage/SpeakerPageConfig/SpeakerPageEditDialog/Form'
 import {Draggable} from 'react-beautiful-dnd'
 import {useSimpleBlog} from 'Event/template/SimpleBlog'
 
@@ -51,8 +50,7 @@ function Content(props: SpeakerProps) {
   const {speaker} = props
   const {template} = useSimpleBlog()
 
-  const imageSize =
-    template.speakers?.speakerImageSize || DEFAULT_SPEAKER_IMAGE_SIZE
+  const imageSize = template.speakers.speakerImageSize
   const contentSize = (12 - imageSize) as GridSize
 
   return (

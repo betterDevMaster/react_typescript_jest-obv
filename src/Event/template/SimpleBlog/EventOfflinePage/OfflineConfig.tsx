@@ -7,11 +7,6 @@ import {PreviewBox, SectionTitle} from 'organization/Event/GeneralConfig'
 import {useSimpleBlog} from 'Event/template/SimpleBlog'
 import {onChangeCheckedHandler, onChangeStringHandler} from 'lib/dom'
 import EventOfflinePage from 'Event/template/SimpleBlog/EventOfflinePage'
-import {withDefault} from 'lib/template'
-
-export const DEFAULT_TITLE = 'Event Offline'
-export const DEFAULT_DESCRIPTION =
-  'Please check back again, or contact support for access.'
 
 export default function OfflineConfig() {
   const {template, update: updateSimpleBlog} = useSimpleBlog()
@@ -41,12 +36,12 @@ export default function OfflineConfig() {
           <TextField
             label="Title"
             fullWidth
-            value={withDefault(DEFAULT_TITLE, settings?.title)}
+            value={settings.title}
             onChange={onChangeStringHandler(update('title'))}
             inputProps={{'aria-label': 'offline page title'}}
           />
           <TextEditor
-            data={withDefault(DEFAULT_DESCRIPTION, settings?.description)}
+            data={settings.description}
             onChange={update('description')}
           />
         </Grid>

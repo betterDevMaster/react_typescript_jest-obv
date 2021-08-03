@@ -13,8 +13,7 @@ import Slider from '@material-ui/core/Slider'
 import Typography from '@material-ui/core/Typography'
 import {useOrganization} from 'organization/OrganizationProvider'
 import {api} from 'lib/url'
-import {usePanels} from 'Event/template/Panels'
-import {DEFAULT_COLUMN_SIZE} from 'Event/template/Panels/Dashboard/Sponsors/SponsorList'
+import {DEFAULTS, usePanels} from 'Event/template/Panels'
 
 const MIN_COLUMN_SIZE = 2
 const MAX_COLUMN_SIZE = 4
@@ -76,7 +75,7 @@ export default function PageSettingsDialog(props: {
             <Controller
               name="columnSize"
               defaultValue={
-                template.sponsors?.columnSize || DEFAULT_COLUMN_SIZE
+                template.sponsors?.columnSize || DEFAULTS.sponsors.columnSize
               }
               control={control}
               render={({onChange, value}) => (

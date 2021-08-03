@@ -9,7 +9,6 @@ import {
   onChangeCheckedHandler,
   onChangeStringHandler,
 } from 'lib/dom'
-import {colors} from 'lib/ui/theme'
 import {SimpleBlog, useSimpleBlog} from 'Event/template/SimpleBlog'
 import {PreviewBox, SectionTitle} from 'organization/Event/GeneralConfig'
 import {TemplateSetPasswordForm} from 'Event/Step1/SetPasswordForm'
@@ -22,16 +21,6 @@ const MAX_BORDER_RADIUS = 60
 
 type SetPassword = NonNullable<SimpleBlog['setPasswordForm']>
 type SetPasswordButton = NonNullable<SetPassword['button']>
-
-export const DEFAULT_TITLE = 'Please set a password to continue'
-export const DEFAULT_PASSWORD_LABEL = 'Password'
-export const DEFAULT_CONFIRM_PASSWORD_LABEL = 'Confirm Password'
-export const DEFAULT_BUTTON_TEXT = 'SUBMIT'
-export const DEFAULT_BUTTON_BACKGROUND_COLOR = colors.primary
-export const DEFAULT_BUTTON_TEXT_COLOR = '#FFFFFF'
-export const DEFAULT_BUTTON_BORDER_COLOR = '#FFFFFF'
-export const DEFAULT_BUTTON_BORDER_RADIUS = 56
-export const DEFAULT_BUTTON_BORDER_WIDTH = 0
 
 export default function SetPasswordFormConfig() {
   const {event} = useEvent()
@@ -92,7 +81,7 @@ function Config() {
         <Grid container spacing={2}>
           <Grid item xs={12}>
             <TextField
-              value={setPasswordForm?.title || DEFAULT_TITLE}
+              value={setPasswordForm.title}
               label="Title"
               fullWidth
               inputProps={{
@@ -103,7 +92,7 @@ function Config() {
           </Grid>
           <Grid item xs={12}>
             <TextField
-              value={setPasswordForm?.description || ''}
+              value={setPasswordForm.description}
               label="Description"
               fullWidth
               inputProps={{
@@ -116,7 +105,7 @@ function Config() {
           </Grid>
           <Grid item xs={12}>
             <TextField
-              value={setPasswordForm?.passwordLabel || DEFAULT_PASSWORD_LABEL}
+              value={setPasswordForm.passwordLabel}
               label="Password Label"
               fullWidth
               inputProps={{
@@ -129,10 +118,7 @@ function Config() {
           </Grid>
           <Grid item xs={12}>
             <TextField
-              value={
-                setPasswordForm?.confirmPasswordLabel ||
-                DEFAULT_CONFIRM_PASSWORD_LABEL
-              }
+              value={setPasswordForm.confirmPasswordLabel}
               label="Confirm Password Label"
               fullWidth
               inputProps={{
@@ -147,7 +133,7 @@ function Config() {
         <Grid container spacing={2}>
           <Grid item xs={12} md={6}>
             <TextField
-              value={setPasswordForm?.button?.text || DEFAULT_BUTTON_TEXT}
+              value={setPasswordForm.button.text}
               label="Button Label"
               fullWidth
               inputProps={{
@@ -159,10 +145,7 @@ function Config() {
           <Grid item xs={12} md={6}>
             <ColorPicker
               label="Button Background Color"
-              color={
-                setPasswordForm?.button?.backgroundColor ||
-                DEFAULT_BUTTON_BACKGROUND_COLOR
-              }
+              color={setPasswordForm.button.backgroundColor}
               onPick={updateButton('backgroundColor')}
               aria-label="button background color"
             />
@@ -170,10 +153,7 @@ function Config() {
           <Grid item xs={12} md={6}>
             <ColorPicker
               label="Button Hover Background Color"
-              color={
-                setPasswordForm?.button?.hoverBackgroundColor ||
-                DEFAULT_BUTTON_BACKGROUND_COLOR
-              }
+              color={setPasswordForm.button.hoverBackgroundColor}
               onPick={updateButton('hoverBackgroundColor')}
               aria-label="button hover background color"
             />
@@ -181,9 +161,7 @@ function Config() {
           <Grid item xs={12} md={6}>
             <ColorPicker
               label="Button Text Color"
-              color={
-                setPasswordForm?.button?.textColor || DEFAULT_BUTTON_TEXT_COLOR
-              }
+              color={setPasswordForm.button.textColor}
               onPick={updateButton('textColor')}
               aria-label="button text color"
             />
@@ -193,10 +171,7 @@ function Config() {
             <Slider
               valueLabelDisplay="auto"
               aria-label="button border radius"
-              value={
-                setPasswordForm?.button?.borderRadius ||
-                DEFAULT_BUTTON_BORDER_RADIUS
-              }
+              value={setPasswordForm.button.borderRadius}
               onChange={handleChangeSlider(updateButton('borderRadius'))}
               step={1}
               min={MIN_BORDER_RADIUS}

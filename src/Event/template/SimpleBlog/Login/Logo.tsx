@@ -2,7 +2,6 @@ import React from 'react'
 import defaultLogo from 'assets/images/logo_vertical.png'
 import {useEvent} from 'Event/EventProvider'
 import styled from 'styled-components'
-import {DEFAULT_LOGO_SIZE_PERCENT} from 'Event/template/SimpleBlog/Login/LoginConfig'
 import {useSimpleBlog} from 'Event/template/SimpleBlog'
 
 export default function Logo(props: {isHidden?: boolean}) {
@@ -11,7 +10,7 @@ export default function Logo(props: {isHidden?: boolean}) {
   const {template} = useSimpleBlog()
   const {login} = template
 
-  const size = login.logoSize || DEFAULT_LOGO_SIZE_PERCENT
+  const size = login.logoSize
 
   return (
     <Box isHidden={props.isHidden}>

@@ -3,7 +3,7 @@ import Grid from '@material-ui/core/Grid'
 import InputLabel from '@material-ui/core/InputLabel'
 import Slider from '@material-ui/core/Slider'
 import TextField from '@material-ui/core/TextField'
-import {usePanels} from 'Event/template/Panels'
+import {DEFAULTS, usePanels} from 'Event/template/Panels'
 import {handleChangeSlider, onChangeStringHandler} from 'lib/dom'
 import IconSelect from 'lib/fontawesome/IconSelect'
 import ColorPicker from 'lib/ui/ColorPicker'
@@ -105,21 +105,21 @@ export default function CheckInConfig() {
       <StepConfig
         inputLabel="Step 1"
         label={template.step1Label}
-        icon={template.step1Icon}
+        icon={template.step1Icon || DEFAULTS.step1Icon}
         onChangeLabel={update.primitive('step1Label')}
         onChangeIcon={update.primitive('step1Icon')}
       />
       <StepConfig
         inputLabel="Step 2"
         label={template.step2Label}
-        icon={template.step2Icon}
+        icon={template.step2Icon || DEFAULTS.step2Icon}
         onChangeLabel={update.primitive('step2Label')}
         onChangeIcon={update.primitive('step2Icon')}
       />
       <StepConfig
         inputLabel="Step 3"
         label={template.step3Label}
-        icon={template.step3Icon}
+        icon={template.step3Icon || DEFAULTS.step3Icon}
         onChangeLabel={update.primitive('step3Label')}
         onChangeIcon={update.primitive('step3Icon')}
       />
@@ -130,10 +130,18 @@ export default function CheckInConfig() {
 function StepConfig(props: {
   inputLabel: string
   label: string
-  icon: string | null
+  icon: string
   onChangeLabel: (label: string) => void
-  onChangeIcon: (icon: string | null) => void
+  onChangeIcon: (icon: string) => void
 }) {
+  const handleIconSelect = (icon: string | null) => {
+    if (!icon) {
+      return
+    }
+
+    props.onChangeIcon(icon)
+  }
+
   return (
     <>
       <Box mb={2}>
@@ -148,7 +156,7 @@ function StepConfig(props: {
             />
           </Grid>
           <Grid xs={6} item>
-            <IconSelect value={props.icon} onChange={props.onChangeIcon} />
+            <IconSelect value={props.icon} onChange={handleIconSelect} />
           </Grid>
         </Grid>
       </Box>

@@ -7,11 +7,6 @@ import {PreviewBox, SectionTitle} from 'organization/Event/GeneralConfig'
 import {onChangeCheckedHandler, onChangeStringHandler} from 'lib/dom'
 import EventOfflinePage from 'Event/template/Panels/EventOfflinePage'
 import {usePanels} from 'Event/template/Panels'
-import {withDefault} from 'lib/template'
-
-export const DEFAULT_TITLE = 'Event Offline'
-export const DEFAULT_DESCRIPTION =
-  'Please check back again, or contact support for access.'
 
 export default function OfflineConfig() {
   const {template, update: updateTemplate} = usePanels()
@@ -25,7 +20,7 @@ export default function OfflineConfig() {
         <Grid item md={6} xs={12}>
           <Switch
             label="Redirect to another URL?"
-            checked={settings?.shouldRedirect}
+            checked={settings.shouldRedirect}
             onChange={onChangeCheckedHandler(update('shouldRedirect'))}
             labelPlacement="end"
             color="primary"
@@ -34,20 +29,20 @@ export default function OfflineConfig() {
           <TextField
             label="Redirect URL"
             fullWidth
-            value={settings?.redirectUrl}
+            value={settings.redirectUrl}
             onChange={onChangeStringHandler(update('redirectUrl'))}
             inputProps={{'aria-label': 'redirect url'}}
           />
           <TextField
             label="Title"
             fullWidth
-            value={withDefault(DEFAULT_TITLE, settings?.title)}
+            value={settings.title}
             onChange={onChangeStringHandler(update('title'))}
             inputProps={{'aria-label': 'offline page title'}}
           />
           <TextEditorContainer>
             <TextEditor
-              data={withDefault(DEFAULT_DESCRIPTION, settings?.description)}
+              data={settings.description}
               onChange={update('description')}
             />
           </TextEditorContainer>

@@ -7,11 +7,6 @@ import SponsorList from 'Event/template/SimpleBlog/SponsorPage/SponsorList'
 import {User} from 'auth/user'
 import {useEvent} from 'Event/EventProvider'
 import SponsorEditDialog from 'Event/template/SimpleBlog/SponsorPage/SponsorEditDialog'
-import {
-  DEFAULT_BACK_TO_DASHBOARD_TEXT_COLOR,
-  DEFAULT_DESCRIPTION,
-  DEFAULT_BACK_TO_DASHBOARD_TEXT,
-} from 'Event/template/SimpleBlog/SponsorPage/SponsorList/Card'
 import {PageTitle} from 'Event/template/SimpleBlog/Page'
 import {useSimpleBlog} from 'Event/template/SimpleBlog'
 import {useVariables} from 'Event'
@@ -35,19 +30,11 @@ export default function SimpleBlogSponsorPage(props: {
       </PageTitle>
       <SubTitle>
         <Content aria-label="speakers description">
-          {v(sponsorsPageSettings?.description || DEFAULT_DESCRIPTION)}
+          {v(sponsorsPageSettings.description)}
         </Content>
       </SubTitle>
-      <BackToDashboard
-        color={
-          sponsorsPageSettings?.backToDashboardTextColor ||
-          DEFAULT_BACK_TO_DASHBOARD_TEXT_COLOR
-        }
-      >
-        <Link to="/">
-          {sponsorsPageSettings?.backToDashboardText ||
-            DEFAULT_BACK_TO_DASHBOARD_TEXT}
-        </Link>
+      <BackToDashboard color={sponsorsPageSettings.backToDashboardTextColor}>
+        <Link to="/">{sponsorsPageSettings.backToDashboardText}</Link>
       </BackToDashboard>
       <SponsorEditDialog isEditMode={props.isEditMode} />
       <SponsorList sponsors={sponsors} isEditMode={props.isEditMode} />

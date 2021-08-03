@@ -6,7 +6,6 @@ import Body from 'Event/template/Panels/Dashboard/Speakers/SpeakerList/Card/Body
 import {Speaker} from 'Event/SpeakerPage'
 import {useSpeakers} from 'organization/Event/SpeakersProvider'
 import Clickable from 'lib/ui/Clickable'
-import {DEFAULT_SPEAKER_IMAGE_SIZE} from 'Event/template/Panels/Dashboard/Speakers/SpeakerPageConfig/SpeakerPageEditDialog/Form'
 import {Draggable} from 'react-beautiful-dnd'
 import {usePanels} from 'Event/template/Panels'
 import {useVariables} from 'Event'
@@ -53,8 +52,7 @@ function Content(props: SpeakerProps) {
   const {template} = usePanels()
   const v = useVariables()
 
-  const imageSize =
-    template.speakers?.speakerImageSize || DEFAULT_SPEAKER_IMAGE_SIZE
+  const imageSize = template.speakers.speakerImageSize
   const contentSize = (12 - imageSize) as GridSize
 
   const isFirst = props.index === 0

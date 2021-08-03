@@ -1,8 +1,6 @@
 import Button from '@material-ui/core/Button'
 import React from 'react'
 
-export const DEFAULT_POINTS_UNIT = 'Points'
-
 export default function SetPointsButton(props: {
   className?: string
   onClick: () => void

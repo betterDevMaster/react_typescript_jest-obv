@@ -7,12 +7,6 @@ import TableHead from '@material-ui/core/TableHead'
 import TableCell from '@material-ui/core/TableCell'
 import TableRow from '@material-ui/core/TableRow'
 import TableBody from '@material-ui/core/TableBody'
-import {
-  DEFAULT_TITLE,
-  DEFAULT_DESCRIPTION,
-  DEFAULT_BACK_TO_DASHBOARD_TEXT_COLOR,
-  DEFAULT_BACK_TO_DASHBOARD_TEXT,
-} from 'Event/template/SimpleBlog/Leaderboard/LeaderboardConfig'
 import {useVariables} from 'Event'
 import {PageTitle} from 'Event/template/SimpleBlog/Page'
 import {useSimpleBlog} from 'Event/template/SimpleBlog'
@@ -28,20 +22,17 @@ export default function SimpleBlogLeaderboard(props: {user: Attendee}) {
 
   const v = useVariables()
 
-  let description = v(leaderboardPage?.description || DEFAULT_DESCRIPTION)
+  let description = v(leaderboardPage.description)
 
   return (
     <Page user={props.user}>
-      <PageTitle>{leaderboardPage?.title || DEFAULT_TITLE}</PageTitle>
+      <PageTitle>{leaderboardPage.title}</PageTitle>
       <Description>{description}</Description>
       <StyledRelativeLink
         to={eventRoutes.root}
-        color={
-          leaderboardPage?.backToDashboardTextColor ||
-          DEFAULT_BACK_TO_DASHBOARD_TEXT_COLOR
-        }
+        color={leaderboardPage.backToDashboardTextColor}
       >
-        {leaderboardPage?.backToDashboardText || DEFAULT_BACK_TO_DASHBOARD_TEXT}
+        {leaderboardPage.backToDashboardText}
       </StyledRelativeLink>
       <Container>
         <Table>

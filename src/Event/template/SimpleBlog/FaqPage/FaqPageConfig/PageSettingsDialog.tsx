@@ -13,12 +13,6 @@ import TextEditor, {TextEditorContainer} from 'lib/ui/form/TextEditor'
 import Typography from '@material-ui/core/Typography'
 import {useOrganization} from 'organization/OrganizationProvider'
 import {api} from 'lib/url'
-import {
-  DEFAULT_DESCRIPTION,
-  DEFAULT_TITLE,
-  DEFAULT_BACK_TO_DASHBOARD_TEXT,
-  DEFAULT_BACK_TO_DASHBOARD_TEXT_COLOR,
-} from 'Event/template/SimpleBlog/FaqPage/FaqList/Card'
 import ColorPicker from 'lib/ui/ColorPicker'
 import {SimpleBlog, useSimpleBlog} from 'Event/template/SimpleBlog'
 
@@ -85,7 +79,7 @@ export default function PageSettingsDialog(props: {
             <TextField
               label="Title"
               name="title"
-              defaultValue={pageSettings?.title || DEFAULT_TITLE}
+              defaultValue={pageSettings?.title}
               variant="outlined"
               fullWidth
               inputProps={{'aria-label': 'faq page title', ref: register}}
@@ -93,7 +87,7 @@ export default function PageSettingsDialog(props: {
             />
             <Controller
               name="description"
-              defaultValue={pageSettings?.description || DEFAULT_DESCRIPTION}
+              defaultValue={pageSettings?.description}
               control={control}
               render={({onChange, value}) => (
                 <TextEditorContainer>
@@ -102,10 +96,7 @@ export default function PageSettingsDialog(props: {
               )}
             />
             <TextField
-              defaultValue={
-                pageSettings?.backToDashboardText ||
-                DEFAULT_BACK_TO_DASHBOARD_TEXT
-              }
+              defaultValue={pageSettings?.backToDashboardText}
               name="backToDashboardText"
               label="Back to Dashboard Text"
               fullWidth
@@ -117,10 +108,7 @@ export default function PageSettingsDialog(props: {
             <Grid item xs={12}>
               <Controller
                 name="backToDashboardTextColor"
-                defaultValue={
-                  pageSettings?.backToDashboardTextColor ||
-                  DEFAULT_BACK_TO_DASHBOARD_TEXT_COLOR
-                }
+                defaultValue={pageSettings?.backToDashboardTextColor}
                 control={control}
                 render={({onChange, value}) => (
                   <ColorPicker

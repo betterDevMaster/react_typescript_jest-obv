@@ -3,7 +3,6 @@ import {replace, parseVariables} from 'lib/template'
 import {time, today} from 'lib/date-time'
 import {useCallback} from 'react'
 import {usePoints} from 'Event/PointsProvider'
-import {DEFAULT_POINTS_UNIT} from 'Event/template/SimpleBlog/Dashboard/PointsSummary/SetPointsButton'
 import {useTemplate} from 'Event/TemplateProvider'
 
 /**
@@ -105,7 +104,7 @@ export function useWithPoints() {
       const variables = {
         leaderboard_points: String(score.points),
         leaderboard_position: String(score.position),
-        points_unit: points?.unit || DEFAULT_POINTS_UNIT,
+        points_unit: points?.unit || '',
       }
 
       let result = text

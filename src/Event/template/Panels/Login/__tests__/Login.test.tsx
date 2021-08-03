@@ -8,7 +8,6 @@ import {render} from '__utils__/render'
 import App from 'App'
 import {act, wait} from '@testing-library/react'
 import axios from 'axios'
-import {DEFAULT_LOGO_SIZE_PERCENT} from 'Event/template/SimpleBlog/Login/LoginConfig'
 import {useLocation} from 'react-router-dom'
 import {fakeAttendee} from 'Event/auth/__utils__/factory'
 import {defaultScore} from 'Event/PointsProvider'
@@ -43,7 +42,6 @@ it('render login page', async () => {
           color: '#000000',
           fontSize: 18,
         },
-        logoSize: DEFAULT_LOGO_SIZE_PERCENT,
       }),
     }),
   })

@@ -13,8 +13,6 @@ import Card from '@material-ui/core/Card'
 import CardContent from '@material-ui/core/CardContent'
 import CardActions from '@material-ui/core/CardActions'
 
-export const DEFAULT_BORDER_COLOR = '#000000'
-
 export default function PanelsBackgrounds() {
   const v = useVariables()
   const {event} = useEvent()
@@ -59,9 +57,9 @@ export default function PanelsBackgrounds() {
                 <BackgroundImage
                   aria-label="background image"
                   alt="background image"
-                  borderRadius={settings?.borderRadius}
-                  borderThickness={settings?.borderThickness}
-                  borderColor={settings?.borderColor}
+                  borderRadius={settings.borderRadius}
+                  borderThickness={settings.borderThickness}
+                  borderColor={settings.borderColor}
                   onClick={() =>
                     downloadFile(v(background.image.url), background.image.name)
                   }

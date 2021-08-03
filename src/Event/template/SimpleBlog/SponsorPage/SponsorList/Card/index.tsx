@@ -9,12 +9,6 @@ import {Draggable} from 'react-beautiful-dnd'
 import SponsorForm from 'Event/template/SimpleBlog/SponsorPage/SponsorList/Card/SponsorForm'
 import {useSimpleBlog} from 'Event/template/SimpleBlog'
 
-export const DEFAULT_SPONSOR_IMAGE_SIZE = 4
-export const DEFAULT_DESCRIPTION = ''
-export const DEFAULT_BACK_TO_DASHBOARD_TEXT = 'Back to Dashboard'
-export const DEFAULT_BACK_TO_DASHBOARD_TEXT_COLOR = '#000000'
-export const DEFAULT_SPONSORS_SPACE = 0
-
 type SponsorProps = {
   index: number
   sponsor: Sponsor
@@ -51,7 +45,7 @@ function Content(props: SponsorProps) {
   const [formVisible, setFormVisible] = useState(false)
   const toggleForm = () => setFormVisible(!formVisible)
 
-  const imageSize = template.sponsors?.imageSize || DEFAULT_SPONSOR_IMAGE_SIZE
+  const imageSize = template.sponsors.imageSize
   const contentSize = (12 - imageSize) as GridSize
 
   return (

@@ -23,9 +23,9 @@ export default function BackgroundImageRow(props: {background: Background}) {
     <DraggableBox>
       <BackgroundImage
         alt="background"
-        borderRadius={templateSettings?.borderRadius}
-        borderThickness={templateSettings?.borderThickness}
-        borderColor={templateSettings?.borderColor}
+        borderRadius={templateSettings.borderRadius}
+        borderThickness={templateSettings.borderThickness}
+        borderColor={templateSettings.borderColor}
         clickable={false}
         src={background.image.url}
         width="200"

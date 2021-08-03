@@ -8,9 +8,8 @@ import {Form} from 'organization/Event/FormsProvider'
 import {useSubmissions} from 'Event/SubmissionsProvider'
 import styled from 'styled-components'
 import MuiButton, {ButtonProps} from '@material-ui/core/Button'
-import {colors} from 'lib/ui/theme'
 import {useVariables} from 'Event'
-import {usePanels} from 'Event/template/Panels'
+import {DEFAULTS, usePanels} from 'Event/template/Panels'
 import LeftPanel from 'Event/template/Panels/check-in/LeftPanel'
 import RightPanel from 'Event/template/Panels/check-in/RightPanel'
 import MobilePanel from 'Event/template/Panels/check-in/MobilePanel'
@@ -152,23 +151,29 @@ function SubmitButton(props: {canSubmit: boolean}) {
   const waiver = template.waiver
   const v = useVariables()
 
-  const textColor = waiver?.buttonTextColor || '#FFFFFF'
-  const backgroundColor = waiver?.buttonBackground || colors.primary
-  const borderColor = waiver?.buttonBorderColor || colors.primary
+  const textColor = waiver?.buttonTextColor || DEFAULTS.waiver.buttonTextColor
+  const backgroundColor =
+    waiver?.buttonBackground || DEFAULTS.waiver.buttonBackground
+  const borderColor =
+    waiver?.buttonBorderColor || DEFAULTS.waiver.buttonBorderColor
 
   return (
     <StyledButton
       textColor={textColor}
       backgroundColor={backgroundColor}
       borderColor={borderColor}
-      borderRadius={waiver?.buttonBorderRadius || 0}
-      borderWidth={waiver?.buttonBorderWidth || 0}
+      borderRadius={
+        waiver?.buttonBorderRadius || DEFAULTS.waiver.buttonBorderRadius
+      }
+      borderWidth={
+        waiver?.buttonBorderWidth || DEFAULTS.waiver.buttonBorderWidth
+      }
       aria-label="submit"
       fullWidth
       disabled={!props.canSubmit}
       type="submit"
     >
-      {v(waiver?.buttonText || 'Submit')}
+      {v(waiver?.buttonText || DEFAULTS.waiver.buttonText)}
     </StyledButton>
   )
 }

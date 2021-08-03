@@ -13,11 +13,6 @@ import Content from 'lib/ui/form/TextEditor/Content'
 import BackgroundImage from 'Event/template/SimpleBlog/Backgrounds/BackgroundsConfig/BackgroundImage'
 import {useSortBackgrounds} from 'organization/Event/Backgrounds/BackgroundsProvider'
 
-export const DEFAULT_BACK_TO_DASHBOARD_TEXT = 'Back to Dashboard'
-export const DEFAULT_BACK_TO_DASHBOARD_TEXT_COLOR = '#000000'
-export const DEFAULT_BORDER_COLOR = '#000000'
-export const DEFAULT_IMAGES_PER_ROW = 2
-
 export default function SimpleBlogBackgrounds(props: {user: Attendee}) {
   const v = useVariables()
   const {event} = useEvent()
@@ -34,23 +29,15 @@ export default function SimpleBlogBackgrounds(props: {user: Attendee}) {
     backgrounds,
   )
 
-  const perRow = (12 /
-    (settings?.imagesPerRow || DEFAULT_IMAGES_PER_ROW)) as GridSize
+  const perRow = (12 / settings.imagesPerRow) as GridSize
 
   return (
     <Page user={props.user}>
       <Title>{v(zoom_backgrounds_title || '')}</Title>
       <Content>{v(zoom_backgrounds_description || '')}</Content>
 
-      <BackToDashboard
-        color={v(
-          settings?.backToDashboardTextColor ||
-            DEFAULT_BACK_TO_DASHBOARD_TEXT_COLOR,
-        )}
-      >
-        <Link to="/">
-          {v(settings?.backToDashboardText || DEFAULT_BACK_TO_DASHBOARD_TEXT)}
-        </Link>
+      <BackToDashboard color={v(settings.backToDashboardTextColor)}>
+        <Link to="/">{v(settings.backToDashboardText)}</Link>
       </BackToDashboard>
 
       <Grid container spacing={2}>

@@ -3,11 +3,6 @@ import {FAQ} from 'Event/FaqPage'
 import Body from 'Event/template/SimpleBlog/FaqPage/FaqList/Card/Body'
 import {Draggable} from 'react-beautiful-dnd'
 
-export const DEFAULT_DESCRIPTION = ''
-export const DEFAULT_TITLE = 'FAQ'
-export const DEFAULT_BACK_TO_DASHBOARD_TEXT = 'Back to Dashboard'
-export const DEFAULT_BACK_TO_DASHBOARD_TEXT_COLOR = '#000000'
-
 export default function Card(props: {
   index: number
   faq: FAQ

@@ -6,12 +6,6 @@ import {FAQ} from 'Event/FaqPage'
 import FaqList from 'Event/template/SimpleBlog/FaqPage/FaqList'
 import {User} from 'auth/user'
 import FaqEditDialog from 'Event/template/SimpleBlog/FaqPage/FaqEditDialog'
-import {
-  DEFAULT_BACK_TO_DASHBOARD_TEXT_COLOR,
-  DEFAULT_DESCRIPTION,
-  DEFAULT_BACK_TO_DASHBOARD_TEXT,
-  DEFAULT_TITLE,
-} from 'Event/template/SimpleBlog/FaqPage/FaqList/Card'
 import {PageTitle} from 'Event/template/SimpleBlog/Page'
 import {useVariables} from 'Event'
 import {useSimpleBlog} from 'Event/template/SimpleBlog'
@@ -29,25 +23,14 @@ export default function SimpleBlogFaqPage(props: {
 
   const content = (
     <>
-      <PageTitle aria-label="faqs title">
-        {v(pageSettings?.title || DEFAULT_TITLE)}
-      </PageTitle>
+      <PageTitle aria-label="faqs title">{v(pageSettings?.title)}</PageTitle>
       <SubTitle>
         <Content aria-label="description">
-          {v(pageSettings?.description || DEFAULT_DESCRIPTION)}
+          {v(pageSettings?.description)}
         </Content>
       </SubTitle>
-      <BackToDashboard
-        color={
-          pageSettings?.backToDashboardTextColor ||
-          DEFAULT_BACK_TO_DASHBOARD_TEXT_COLOR
-        }
-      >
-        <Link to="/">
-          {v(
-            pageSettings?.backToDashboardText || DEFAULT_BACK_TO_DASHBOARD_TEXT,
-          )}
-        </Link>
+      <BackToDashboard color={pageSettings?.backToDashboardTextColor}>
+        <Link to="/">{v(pageSettings?.backToDashboardText)}</Link>
       </BackToDashboard>
       <FaqEditDialog isEditMode={props.isEditMode} />
       <FaqList faqs={faqs} isEditMode={props.isEditMode} />

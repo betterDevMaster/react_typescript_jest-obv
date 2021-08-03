@@ -3,7 +3,6 @@ import Card from 'Event/template/SimpleBlog/SpeakerPage/SpeakerList/Card'
 import Grid, {GridSpacing} from '@material-ui/core/Grid'
 import React from 'react'
 import {useTemplate} from 'Event/TemplateProvider'
-import {DEFAULT_SPEAKERS_SPACE} from 'Event/template/SimpleBlog/SpeakerPage/SpeakerPageConfig/SpeakerPageEditDialog/Form'
 import Typography from '@material-ui/core/Typography'
 import {DragDropContext, Droppable, DropResult} from 'react-beautiful-dnd'
 import {useSimpleBlog} from 'Event/template/SimpleBlog'
@@ -21,8 +20,7 @@ export default function SpeakerList(props: {
     return <Typography align="center">No speakers have been added</Typography>
   }
 
-  const spacing = (template.speakers?.speakersSpace ||
-    DEFAULT_SPEAKERS_SPACE) as GridSpacing
+  const spacing = template.speakers?.speakersSpace as GridSpacing
 
   const speakers = sortedSpeakers.map((speaker: Speaker, index: number) => (
     <Grid item xs={12} key={speaker.id}>

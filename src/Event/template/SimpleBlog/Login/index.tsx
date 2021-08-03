@@ -11,13 +11,10 @@ import Page, {
 import {RelativeLink} from 'lib/ui/link/RelativeLink'
 import {useSimpleBlog} from 'Event/template/SimpleBlog'
 
-export const DEFAULT_EMAIL_LABEL = 'Email'
-export const DEFAULT_PASSWORD_LABEL = 'Password'
-
 export default function Login(props: LoginProps) {
   const {template} = useSimpleBlog()
-  const emailLabel = template.login.emailLabel || DEFAULT_EMAIL_LABEL
-  const passwordLabel = template.login.passwordLabel || DEFAULT_PASSWORD_LABEL
+  const emailLabel = template.login.emailLabel
+  const passwordLabel = template.login.passwordLabel
 
   return (
     <Page isPreview={props.isPreview}>
@@ -75,7 +72,7 @@ export default function Login(props: LoginProps) {
             aria-label="forgot password"
             color={template.login.description.color}
           >
-            Forgot Password?
+            {template.login.passwordReset.linkLabel}
           </StyledRelativeLink>
         )}
       </>

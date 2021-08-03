@@ -17,11 +17,6 @@ import Box from '@material-ui/core/Box'
 import InputLabel from '@material-ui/core/InputLabel'
 import Alert from '@material-ui/lab/Alert'
 import AlertTitle from '@material-ui/lab/AlertTitle'
-import {withDefault} from 'lib/template'
-import {DEFAULT_POINTS_SUMMARY} from 'Event/template/SimpleBlog/Dashboard/PointsSummary'
-
-const DEFAULT_POINTS_DESCRIPTION =
-  '<p> If you would like to see where you stand on the <a href="/leaderboard"><strong>LEADERBOARD you can click HERE!</strong></a></p>'
 
 export function PointsSummaryConfig(props: ComponentConfigProps) {
   const {template} = useSimpleBlog()
@@ -72,7 +67,7 @@ export function PointsSummaryConfig(props: ComponentConfigProps) {
           <Controller
             name="summary"
             control={control}
-            defaultValue={withDefault(DEFAULT_POINTS_SUMMARY, points?.summary)}
+            defaultValue={points?.summary || ''}
             render={({value, onChange}) => (
               <TextEditor
                 data={value}
@@ -90,10 +85,7 @@ export function PointsSummaryConfig(props: ComponentConfigProps) {
           <Controller
             name="description"
             control={control}
-            defaultValue={withDefault(
-              DEFAULT_POINTS_DESCRIPTION,
-              points?.description,
-            )}
+            defaultValue={points?.description || ''}
             render={({value, onChange}) => (
               <TextEditor
                 data={value}

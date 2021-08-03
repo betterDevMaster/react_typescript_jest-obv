@@ -1,9 +1,4 @@
 import {useSimpleBlog} from 'Event/template/SimpleBlog'
-import {
-  DEFAULT_SIDEBAR_SEPARATOR_COLOR,
-  DEFAULT_SIDEBAR_SEPARATOR_STYLE,
-} from 'Event/template/SimpleBlog/Dashboard/Sidebar/SidebarContainer/SidebarContainerConfig'
-import {withDefault} from 'lib/template'
 import React from 'react'
 import styled from 'styled-components'
 
@@ -12,22 +7,15 @@ export default function Section(props: {
   className?: string
 }) {
   const {
-    template: {
-      sidebar: {separatorColor, separatorWidth, separatorStyle},
-    },
+    template: {sidebar},
   } = useSimpleBlog()
-
-  const color = separatorColor || DEFAULT_SIDEBAR_SEPARATOR_COLOR
-  const width = withDefault(1, separatorWidth)
-
-  const style = separatorStyle || DEFAULT_SIDEBAR_SEPARATOR_STYLE
 
   return (
     <Box
       className={props.className}
-      color={color}
-      width={width}
-      borderStyle={style}
+      color={sidebar.separatorColor}
+      width={sidebar.separatorWidth}
+      borderStyle={sidebar.separatorStyle}
     >
       {props.children}
     </Box>

@@ -18,7 +18,7 @@ export interface EmojiList {
   // Manually set size of each emoji, if unset
   // each emoji will take up all available
   // space
-  emojiWidth?: number
+  emojiWidth?: number | null
 }
 
 export default function EmojiList() {

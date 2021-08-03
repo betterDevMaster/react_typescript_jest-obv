@@ -6,19 +6,9 @@ import {useForm} from 'react-hook-form'
 import withStyles from '@material-ui/core/styles/withStyles'
 import {spacing} from 'lib/ui/theme'
 import {SetPasswordFormProps} from 'Event/Step1/SetPasswordForm'
-import {
-  DEFAULT_BUTTON_BACKGROUND_COLOR,
-  DEFAULT_BUTTON_BORDER_RADIUS,
-  DEFAULT_BUTTON_TEXT,
-  DEFAULT_BUTTON_TEXT_COLOR,
-  DEFAULT_CONFIRM_PASSWORD_LABEL,
-  DEFAULT_PASSWORD_LABEL,
-  DEFAULT_TITLE,
-} from 'Event/template/Panels/Step1/SetPasswordFormConfig'
 import MuiButton from '@material-ui/core/Button'
 import {useVariables} from 'Event'
 import {usePanels} from 'Event/template/Panels'
-import {withDefault} from 'lib/template'
 
 export default function Content(props: SetPasswordFormProps) {
   const {register, handleSubmit, errors, watch} = useForm()
@@ -33,12 +23,12 @@ export default function Content(props: SetPasswordFormProps) {
     <>
       <div>
         <Title align="center" variant="h3">
-          {v(withDefault(DEFAULT_TITLE, setPasswordForm?.title))}
+          {v(setPasswordForm.title)}
         </Title>
         <Description>{v(setPasswordForm?.description || '')}</Description>
         <form onSubmit={handleSubmit(props.submit)}>
           <TextField
-            label={v(setPasswordForm?.passwordLabel || DEFAULT_PASSWORD_LABEL)}
+            label={v(setPasswordForm?.passwordLabel)}
             type="password"
             fullWidth
             variant="outlined"
@@ -58,10 +48,7 @@ export default function Content(props: SetPasswordFormProps) {
             disabled={props.submitting}
           />
           <TextField
-            label={v(
-              setPasswordForm?.confirmPasswordLabel ||
-                DEFAULT_CONFIRM_PASSWORD_LABEL,
-            )}
+            label={v(setPasswordForm.confirmPasswordLabel)}
             type="password"
             fullWidth
             variant="outlined"
@@ -87,24 +74,13 @@ export default function Content(props: SetPasswordFormProps) {
             variant="contained"
             fullWidth
             type="submit"
-            backgroundColor={
-              setPasswordForm?.button?.backgroundColor ||
-              DEFAULT_BUTTON_BACKGROUND_COLOR
-            }
-            hoverColor={
-              setPasswordForm?.button?.hoverBackgroundColor ||
-              DEFAULT_BUTTON_BACKGROUND_COLOR
-            }
-            color={
-              setPasswordForm?.button?.textColor || DEFAULT_BUTTON_TEXT_COLOR
-            }
-            borderRadius={withDefault(
-              DEFAULT_BUTTON_BORDER_RADIUS,
-              setPasswordForm?.button?.borderRadius,
-            )}
+            backgroundColor={setPasswordForm.button.backgroundColor}
+            hoverColor={setPasswordForm.button.hoverBackgroundColor}
+            color={setPasswordForm.button.textColor}
+            borderRadius={setPasswordForm.button.borderRadius}
             aria-label="submit set password form"
           >
-            {v(withDefault(DEFAULT_BUTTON_TEXT, setPasswordForm?.button?.text))}
+            {v(setPasswordForm.button.text)}
           </StyledButton>
         </form>
       </div>

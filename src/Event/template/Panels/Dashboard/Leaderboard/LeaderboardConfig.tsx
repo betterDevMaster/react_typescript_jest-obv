@@ -6,13 +6,6 @@ import Button from '@material-ui/core/Button'
 import {useUpdate} from 'Event/EventProvider'
 import {Panels, usePanels} from 'Event/template/Panels'
 import {useToggle} from 'lib/toggle'
-import {DEFAULT_POINTS_UNIT} from 'Event/template/SimpleBlog/Dashboard/PointsSummary/SetPointsButton'
-
-export const DEFAULT_TITLE = 'Leaderboard'
-export const DEFAULT_DESCRIPTION =
-  '<p>{{first name}}, you have earned {{leaderboard_points}} {{points_unit}}, and you are currently {{leaderboard_position}}. Great Job!</p><p><i>The list below is the top 200 point earners! If you don’t see your name listed, there’s still time!</i></p><p><br>&nbsp;</p>'
-export const DEFAULT_BACK_TO_DASHBOARD_TEXT = 'Back to Dashboard'
-export const DEFAULT_BACK_TO_DASHBOARD_TEXT_COLOR = '#000000'
 
 export default function LeaderboardConfig(props: {onComplete?: () => void}) {
   const {template} = usePanels()
@@ -56,7 +49,7 @@ export default function LeaderboardConfig(props: {onComplete?: () => void}) {
   return (
     <form onSubmit={handleSubmit(submit)}>
       <TextField
-        defaultValue={leaderboard?.title || DEFAULT_TITLE}
+        defaultValue={leaderboard.title}
         name="title"
         label="Title"
         fullWidth
@@ -69,7 +62,7 @@ export default function LeaderboardConfig(props: {onComplete?: () => void}) {
       <Controller
         name="description"
         control={control}
-        defaultValue={leaderboard?.description || DEFAULT_DESCRIPTION}
+        defaultValue={leaderboard.description}
         rules={{
           required: 'Description is required',
         }}
@@ -84,7 +77,7 @@ export default function LeaderboardConfig(props: {onComplete?: () => void}) {
         )}
       />
       <TextField
-        defaultValue={template.points?.unit || DEFAULT_POINTS_UNIT}
+        defaultValue={template.points.unit}
         name="points_unit"
         label="Points Unit"
         fullWidth

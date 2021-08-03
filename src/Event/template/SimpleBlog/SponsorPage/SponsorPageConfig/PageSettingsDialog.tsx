@@ -21,13 +21,6 @@ import TextEditor, {TextEditorContainer} from 'lib/ui/form/TextEditor'
 import Typography from '@material-ui/core/Typography'
 import {useOrganization} from 'organization/OrganizationProvider'
 import {api} from 'lib/url'
-import {
-  DEFAULT_SPONSOR_IMAGE_SIZE,
-  DEFAULT_DESCRIPTION,
-  DEFAULT_BACK_TO_DASHBOARD_TEXT,
-  DEFAULT_BACK_TO_DASHBOARD_TEXT_COLOR,
-  DEFAULT_SPONSORS_SPACE,
-} from 'Event/template/SimpleBlog/SponsorPage/SponsorList/Card'
 import ColorPicker from 'lib/ui/ColorPicker'
 import {useSimpleBlog} from 'Event/template/SimpleBlog'
 
@@ -54,9 +47,7 @@ export default function PageSettingsDialog(props: {
   const {handleSubmit, register, control} = useForm()
   const [processing, setProcessing] = useState(false)
   const {template} = useSimpleBlog()
-  const [imageSize, setImageSize] = useState(
-    template.sponsors?.imageSize || DEFAULT_SPONSOR_IMAGE_SIZE,
-  )
+  const [imageSize, setImageSize] = useState(template.sponsors.imageSize)
   const {client} = useOrganization()
   const [image, setImage] = useState<null | File>(null)
   const [shouldRemoveImage, setShouldRemoveImage] = useState(false)
@@ -158,9 +149,7 @@ export default function PageSettingsDialog(props: {
             />
             <Controller
               name="description"
-              defaultValue={
-                sponsorsPageSettings?.description || DEFAULT_DESCRIPTION
-              }
+              defaultValue={sponsorsPageSettings?.description || ''}
               control={control}
               render={({onChange, value}) => (
                 <TextEditorContainer>
@@ -169,10 +158,7 @@ export default function PageSettingsDialog(props: {
               )}
             />
             <TextField
-              defaultValue={
-                sponsorsPageSettings?.backToDashboardText ||
-                DEFAULT_BACK_TO_DASHBOARD_TEXT
-              }
+              defaultValue={sponsorsPageSettings.backToDashboardText}
               name="backToDashboardText"
               label="Back to Dashboard Text"
               fullWidth
@@ -184,10 +170,7 @@ export default function PageSettingsDialog(props: {
             <Grid item xs={12}>
               <Controller
                 name="backToDashboardTextColor"
-                defaultValue={
-                  sponsorsPageSettings?.backToDashboardTextColor ||
-                  DEFAULT_BACK_TO_DASHBOARD_TEXT_COLOR
-                }
+                defaultValue={sponsorsPageSettings.backToDashboardTextColor}
                 control={control}
                 render={({onChange, value}) => (
                   <ColorPicker
@@ -213,9 +196,7 @@ export default function PageSettingsDialog(props: {
             <InputLabel>Space Between Sponsors</InputLabel>
             <Controller
               name="sponsorSpace"
-              defaultValue={
-                sponsorsPageSettings?.sponsorSpace || DEFAULT_SPONSORS_SPACE
-              }
+              defaultValue={sponsorsPageSettings.sponsorSpace}
               control={control}
               render={({onChange, value}) => (
                 <Slider
@@ -231,7 +212,7 @@ export default function PageSettingsDialog(props: {
             <InputLabel>Sponsors Seperator</InputLabel>
             <Controller
               name="sponsorsSeperator"
-              defaultValue={sponsorsPageSettings?.sponsorSeparator || true}
+              defaultValue={sponsorsPageSettings.sponsorSeparator}
               control={control}
               render={({onChange, value}) => (
                 <Switch

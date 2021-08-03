@@ -32,7 +32,11 @@ it('should configure backgrounds', async () => {
 
   const borderColor = faker.internet.color()
 
-  user.type(await findByLabelText('border color'), borderColor)
+  fireEvent.change(await findByLabelText('border color'), {
+    target: {
+      value: borderColor,
+    },
+  })
 
   mockPut.mockImplementationOnce(() => Promise.resolve({data: event}))
 

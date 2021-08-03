@@ -19,13 +19,6 @@ import {usePanels} from 'Event/template/Panels'
 const MIN_SPACE_SIZE = 0
 const MAX_SPACE_SIZE = 10
 
-export const DEFAULT_TITLE = 'Our Speakers'
-export const DEFAULT_DESCRIPTION = ''
-export const DEFAULT_BACK_TO_DASHBOARD_TEXT = 'Back to Dashboard'
-export const DEFAULT_BACK_TO_DASHBOARD_TEXT_COLOR = '#000000'
-export const DEFAULT_SPEAKER_IMAGE_SIZE = 2
-export const DEFAULT_SPEAKERS_SPACE = 0
-
 type UpdateFormData = {
   description: string
   backToDashboardText: string
@@ -73,7 +66,7 @@ export default function SpeakerPageConfigForm(props: {onClose: () => void}) {
         error={Boolean(titleError)}
         name="title"
         label="Speaker Page Title"
-        defaultValue={speakerPageSettings?.title || DEFAULT_TITLE}
+        defaultValue={speakerPageSettings.title}
         required
         fullWidth
         inputProps={{
@@ -84,7 +77,7 @@ export default function SpeakerPageConfigForm(props: {onClose: () => void}) {
       />
       <Controller
         name="description"
-        defaultValue={speakerPageSettings?.description || DEFAULT_DESCRIPTION}
+        defaultValue={speakerPageSettings.description}
         control={control}
         render={({onChange, value}) => (
           <TextEditorContainer>
@@ -96,9 +89,7 @@ export default function SpeakerPageConfigForm(props: {onClose: () => void}) {
         <InputLabel>Speaker Image Size</InputLabel>
         <Controller
           name="speakerImageSize"
-          defaultValue={
-            speakerPageSettings?.speakerImageSize || DEFAULT_SPEAKER_IMAGE_SIZE
-          }
+          defaultValue={speakerPageSettings.speakerImageSize}
           control={control}
           render={({onChange, value}) => (
             <Slider
@@ -116,9 +107,7 @@ export default function SpeakerPageConfigForm(props: {onClose: () => void}) {
         <InputLabel>Space Between Speakers</InputLabel>
         <Controller
           name="speakersSpace"
-          defaultValue={
-            speakerPageSettings?.speakersSpace || DEFAULT_SPEAKERS_SPACE
-          }
+          defaultValue={speakerPageSettings.speakersSpace}
           control={control}
           render={({onChange, value}) => (
             <Slider

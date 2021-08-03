@@ -10,47 +10,18 @@ import {handleChangeSlider} from 'lib/dom'
 import InputLabel from '@material-ui/core/InputLabel'
 import EventImageUpload from 'organization/Event/DashboardConfig/EventImageUpload'
 import {useEvent} from 'Event/EventProvider'
-import {Panels, usePanels} from 'Event/template/Panels'
+import {usePanels} from 'Event/template/Panels'
 import {PreviewBox, SectionTitle} from 'organization/Event/GeneralConfig'
 import Login from 'Event/auth/Login'
 
 const MAX_LOGO_SIZE_PERCENT = 100
 const MIN_LOGO_SIZE_PERCENT = 20
 
-export const DEFAULT_EMAIL_LABEL = 'Email'
-export const DEFAULT_PASSWORD_LABEL = 'Password'
-
-export const DEFAULT_LOGIN_CONFIG: NonNullable<Panels['login']> = {
-  submitButton: {
-    backgroundColor: '#FFFFFF',
-    textColor: '#FFFFFF',
-    label: 'Login',
-    borderRadius: 56,
-    hoverColor: '#FFFFFF',
-  },
-  description: {
-    text: '',
-    color: '#000000',
-    fontSize: 18,
-  },
-  backgroundColor: '#FFFFFF',
-  backgroundOpacity: 0,
-  logoSize: 20,
-  inputBorderRadius: 56,
-  logoHidden: false,
-  backgroundHidden: false,
-  emailLabel: DEFAULT_EMAIL_LABEL,
-  passwordLabel: DEFAULT_PASSWORD_LABEL,
-}
-
-export const DEFAULT_LOGO_SIZE_PERCENT = 20
-
 export default function LoginFormConfig() {
   const {template, update} = usePanels()
-  const {login: templateLogin} = template
+  const {login} = template
   const {event} = useEvent()
 
-  const login = templateLogin ? templateLogin : DEFAULT_LOGIN_CONFIG
   const updateLogin = update.primitive('login')
 
   const [emailLabel, setEmailLabel] = useState(login.emailLabel)
@@ -83,9 +54,7 @@ export default function LoginFormConfig() {
     login.backgroundHidden || false,
   )
 
-  const [logoSize, setLogoSize] = useState(
-    login.logoSize || DEFAULT_LOGO_SIZE_PERCENT,
-  )
+  const [logoSize, setLogoSize] = useState(login.logoSize)
 
   const [backgroundColor, setBackgroundColor] = useState(login.backgroundColor)
   const [backgroundOpacity, setBackgroundOpacity] = useState(
@@ -94,6 +63,21 @@ export default function LoginFormConfig() {
 
   const [submitHoverColor, setSubmitHoverColor] = useState(
     login.submitButton.hoverColor,
+  )
+
+  const [forgotPasswordText, setForgotPasswordText] = useState<string>(
+    login.passwordReset.linkLabel,
+  )
+  const [
+    forgotPasswordButtonText,
+    setForgotPasswordButtonText,
+  ] = useState<string>(login.passwordReset.buttonText)
+  const [
+    forgotPasswordDescription,
+    setForgotPasswordDescription,
+  ] = useState<string>(login.passwordReset.description)
+  const [forgotPasswordMessage, setForgotPasswordMessage] = useState<string>(
+    login.passwordReset.successMessage,
   )
 
   useEffect(() => {
@@ -112,6 +96,10 @@ export default function LoginFormConfig() {
       login.backgroundOpacity !== backgroundOpacity ||
       login.submitButton.hoverColor !== submitHoverColor ||
       login.submitButton.borderRadius !== buttonBorderRadius ||
+      login.passwordReset.linkLabel !== forgotPasswordText ||
+      login.passwordReset.description !== forgotPasswordDescription ||
+      login.passwordReset.buttonText !== forgotPasswordButtonText ||
+      login.passwordReset.successMessage !== forgotPasswordMessage ||
       login.emailLabel !== emailLabel ||
       login.passwordLabel !== passwordLabel
 
@@ -132,14 +120,20 @@ export default function LoginFormConfig() {
         color: descriptionColor,
         fontSize: descriptionFontSize,
       },
+      passwordReset: {
+        linkLabel: forgotPasswordText,
+        description: forgotPasswordDescription,
+        successMessage: forgotPasswordMessage,
+        buttonText: forgotPasswordButtonText,
+      },
       backgroundColor,
       backgroundOpacity,
       logoSize,
       inputBorderRadius,
-      logoHidden: logoHidden,
-      backgroundHidden: backgroundHidden,
-      emailLabel: emailLabel,
-      passwordLabel: passwordLabel,
+      logoHidden,
+      backgroundHidden,
+      emailLabel,
+      passwordLabel,
     })
   }, [
     login,
@@ -158,6 +152,10 @@ export default function LoginFormConfig() {
     backgroundColor,
     backgroundOpacity,
     submitHoverColor,
+    forgotPasswordButtonText,
+    forgotPasswordDescription,
+    forgotPasswordMessage,
+    forgotPasswordText,
     emailLabel,
     passwordLabel,
   ])
@@ -216,7 +214,7 @@ export default function LoginFormConfig() {
                 <Slider
                   valueLabelDisplay="auto"
                   aria-label="logo weight"
-                  value={logoSize ? logoSize : DEFAULT_LOGO_SIZE_PERCENT}
+                  value={logoSize}
                   onChange={handleChangeSlider(setLogoSize)}
                   step={1}
                   min={MIN_LOGO_SIZE_PERCENT}
@@ -328,6 +326,48 @@ export default function LoginFormConfig() {
                 step={1}
                 min={0}
                 max={60}
+              />
+              <TextField
+                id="login-label-email"
+                label="Email Label"
+                defaultValue={emailLabel}
+                onChange={onChangeStringHandler(setEmailLabel)}
+                inputProps={{'aria-label': 'login email text'}}
+              />
+              <TextField
+                id="login-label-password"
+                label="Password Label"
+                defaultValue={passwordLabel}
+                onChange={onChangeStringHandler(setPasswordLabel)}
+                inputProps={{'aria-label': 'login password label'}}
+              />
+              <TextField
+                id="login-forgot-password-text"
+                label="Forgot Password Text"
+                defaultValue={forgotPasswordText}
+                onChange={onChangeStringHandler(setForgotPasswordText)}
+                inputProps={{'aria-label': 'login forgot password text'}}
+              />
+              <TextField
+                id="login-forgot-password-button-text"
+                label="Forgot Password Button Text"
+                defaultValue={forgotPasswordButtonText}
+                onChange={onChangeStringHandler(setForgotPasswordButtonText)}
+                inputProps={{'aria-label': 'login forgot password button text'}}
+              />
+              <TextField
+                id="login-forgot-password-description"
+                label="Forgot Password Description"
+                defaultValue={forgotPasswordDescription}
+                onChange={onChangeStringHandler(setForgotPasswordDescription)}
+                inputProps={{'aria-label': 'login forgot password description'}}
+              />
+              <TextField
+                id="login-forgot-password-message"
+                label="Forgot Password Description"
+                defaultValue={forgotPasswordMessage}
+                onChange={onChangeStringHandler(setForgotPasswordMessage)}
+                inputProps={{'aria-label': 'login forgot password message'}}
               />
             </Box>
           </Box>

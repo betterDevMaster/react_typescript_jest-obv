@@ -2,7 +2,6 @@ import faker from 'faker'
 import {pipe} from 'ramda'
 import {withAgendas} from 'Event/template/SimpleBlog/Dashboard/AgendaList/__utils__/factory'
 import {withPoints} from 'Event/template/SimpleBlog/Dashboard/PointsSummary/__utils__/factory'
-import {withResources} from 'Event/template/SimpleBlog/Dashboard/ResourceList/__utils__/factory'
 import {sometimes} from '__utils__/attributes'
 import {withTicketRibbons} from 'Event/template/SimpleBlog/Dashboard/TicketRibbonList/__utils__/factory'
 import {withEmojiList} from 'Event/template/SimpleBlog/Dashboard/EmojiList/__utils__/factory'
@@ -76,6 +75,12 @@ export function fakeLogin(
       text: '',
       color: '#000000',
       fontSize: 18,
+    },
+    passwordReset: {
+      linkLabel: 'Forgot My Password?',
+      buttonText: 'Submit',
+      description: 'Please check your email once you submit.',
+      successMessage: 'Success!',
     },
     logoSize: 100,
     ...overrides,

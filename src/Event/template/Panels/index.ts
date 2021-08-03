@@ -2,23 +2,14 @@ import {GridSize} from '@material-ui/core/Grid'
 import {EmojiList} from 'Event/template/Panels/Dashboard/EmojiList'
 import {NavButtonWithSize} from 'Event/Dashboard/components/NavButton'
 import {ResourceList} from 'Event/template/Panels/Dashboard/Resources/ResourceList'
-import {BaseTemplate} from 'Event/template'
+import {BaseTemplate, BASE_DEFAULTS} from 'Event/template'
 import {TicketRibbon} from 'Event/template/Panels/Dashboard/TicketRibbons'
 import {EntityList} from 'lib/list'
 import {Column} from 'lib/ui/layout'
 import {useTemplate, useUpdate} from 'Event/TemplateProvider'
-import {
-  DEFAULT_STEP_1_ICON,
-  DEFAULT_STEP_2_ICON,
-  DEFAULT_STEP_3_ICON,
-} from 'Event/template/Panels/check-in/StepIndicator'
 import {BlogPost} from 'Event/Dashboard/components/BlogPost'
-import {DEFAULT_POINTS_UNIT} from 'Event/template/SimpleBlog/Dashboard/PointsSummary/SetPointsButton'
-import {
-  DEFAULT_REWARD_ALERT_BACKGROUND_COLOR,
-  DEFAULT_REWARD_ALERT_TEXT_COLOR,
-  DEFAULT_REWARD_TEXT,
-} from 'Event/PointsProvider'
+import {colors} from 'lib/ui/theme'
+import {DeepRequired} from 'lib/type-utils'
 
 export const PANELS = 'Panels'
 
@@ -62,6 +53,9 @@ export type Panels = BaseTemplate & {
     backgroundOpacity: number
     isDarkMode: boolean
   }
+  points: {
+    unit: string
+  }
   blogPosts: EntityList<BlogPost>
   resourceList: ResourceList
   menuIconColor: string
@@ -84,11 +78,11 @@ export type Panels = BaseTemplate & {
   }
   stepLabelColor: string
   step1Label: string
-  step1Icon: string | null
+  step1Icon?: string
   step2Label: string
-  step2Icon: string | null
+  step2Icon?: string
   step3Label: string
-  step3Icon: string | null
+  step3Icon?: string
   textColor?: string
   linkColor?: string
   linkUnderline?: boolean
@@ -141,6 +135,12 @@ export type Panels = BaseTemplate & {
       color: string
       fontSize: number
     }
+    passwordReset: {
+      linkLabel: string
+      buttonText: string
+      description: string
+      successMessage: string
+    }
     backgroundColor?: string
     backgroundOpacity?: number
     logoSize?: number
@@ -175,9 +175,6 @@ export type Panels = BaseTemplate & {
     speakersSpace?: number
     orderedIds?: number[]
   }
-  points: {
-    unit: string
-  }
   offlinePage?: {
     title: string
     description: string
@@ -186,59 +183,30 @@ export type Panels = BaseTemplate & {
   }
 }
 
-export const createPanels = (): Panels => ({
+export const createPanels = (): DeepRequired<Panels> => ({
+  ...BASE_DEFAULTS,
   version: 1,
   name: PANELS,
+  accentColor: '#B8FFF7',
   menu: {
     backgroundColor: '#54CFD6',
     iconColor: '#FFFFFF',
     textColor: '#FFFFFF',
     height: 65,
   },
-  accentColor: '#B8FFF7',
-  header: {
-    script: null,
-  },
   points: {
-    unit: DEFAULT_POINTS_UNIT,
+    unit: 'Points',
   },
+  backgroundPosition: 'fixed',
   nav: {
     entities: {},
     ids: [],
   },
-  rewardAlert: {
-    backgroundColor: DEFAULT_REWARD_ALERT_BACKGROUND_COLOR,
-    textColor: DEFAULT_REWARD_ALERT_TEXT_COLOR,
-    text: DEFAULT_REWARD_TEXT,
-  },
-  leaderboard: {
-    title: 'Leaderboard',
-    description:
-      '<p>{{first name}}, you have earned {{leaderboard_points}} {{points_unit}}, and you are currently {{leaderboard_position}}. Great Job!</p><p><i>The list below is the top 200 point earners! If you don’t see your name listed, there’s still time!</i></p><p><br>&nbsp;</p>',
-  },
-  checkInTitle: 'Check In:',
-  checkInRightPanel: {
-    backgroundColor: '#07BAB5',
-    backgroundOpacity: 1,
-    textColor: '#000000',
-  },
-  checkInLeftPanel: {
-    backgroundColor: '#FFFFFF',
-    backgroundOpacity: 0,
-    textColor: '#000000',
-    inactiveTextColor: '#C7C7C7',
-  },
-  stepLabelColor: '#07BAB5',
-  step1Label: 'Step 1',
-  step1Icon: DEFAULT_STEP_1_ICON,
-  step2Label: 'Step 2',
-  step2Icon: DEFAULT_STEP_2_ICON,
-  step3Label: 'Step 3',
-  step3Icon: DEFAULT_STEP_3_ICON,
   ticketRibbons: [],
   welcomeText: 'Welcome!',
   emojiList: {
     emojis: [],
+    emojiWidth: null,
   },
   leftPanel: {
     barBackgroundColor: '#07BAB5',
@@ -262,6 +230,104 @@ export const createPanels = (): Panels => ({
   resourceList: {
     title: 'Resources',
     resources: [],
+    cardBackgroundColor: '#FFFFFF',
+  },
+  menuIconColor: '#000000',
+  isDarkMode: false,
+  background: {
+    color: '#FFFFFF',
+    opacity: 0,
+  },
+  checkInTitle: 'Check In:',
+  checkInRightPanel: {
+    backgroundColor: '#07BAB5',
+    backgroundOpacity: 1,
+    textColor: '#000000',
+  },
+  checkInLeftPanel: {
+    backgroundColor: '#FFFFFF',
+    backgroundOpacity: 0,
+    textColor: '#000000',
+    inactiveTextColor: '#C7C7C7',
+  },
+  stepLabelColor: '#07BAB5',
+  step1Label: 'Step 1',
+  step1Icon: 'far fa-lock',
+  step2Label: 'Step 2',
+  step2Icon: 'far fa-clipboard',
+  step3Label: 'Step 3',
+  step3Icon: 'far fa-desktop',
+  textColor: '#000000',
+  linkColor: '#000000',
+  linkUnderline: true,
+  bodyHTMLEmbed: null,
+  leaderboard: {
+    title: 'Leaderboard',
+    description:
+      '<p>{{first name}}, you have earned {{leaderboard_points}} {{points_unit}}, and you are currently {{leaderboard_position}}. Great Job!</p><p><i>The list below is the top 200 point earners! If you don’t see your name listed, there’s still time!</i></p><p><br>&nbsp;</p>',
+  },
+  faq: {
+    title: 'FAQ',
+    description: '',
+    orderedIds: [],
+  },
+  zoomBackgrounds: {
+    borderColor: '#000000',
+    borderRadius: 0,
+    borderThickness: 0,
+    orderedIds: [],
+  },
+  techCheck: {
+    buttonText: 'Start Tech Check',
+    buttonBackground: colors.primary,
+    buttonTextColor: '#FFFFFF',
+    buttonBorderRadius: 0,
+    buttonBorderWidth: 0,
+    buttonBorderColor: colors.primary,
+    buttonWidth: 12,
+    hasCustomButtons: false,
+    buttons: {
+      ids: [],
+      entities: {},
+    },
+  },
+  waiver: {
+    buttonText: 'Submit',
+    buttonBackground: colors.primary,
+    buttonTextColor: '#FFFFFF',
+    buttonBorderRadius: 0,
+    buttonBorderWidth: 0,
+    buttonBorderColor: colors.primary,
+    buttonWidth: 12,
+  },
+  login: {
+    submitButton: {
+      backgroundColor: '#FFFFFF',
+      textColor: '#FFFFFF',
+      label: 'Login',
+      borderRadius: 56,
+      hoverColor: '#FFFFFF',
+    },
+    description: {
+      text: '',
+      color: '#000000',
+      fontSize: 18,
+    },
+    passwordReset: {
+      linkLabel: 'Forgot Password?',
+      buttonText: 'Send Reset Password Link',
+      description: 'Send password reset link.',
+      successMessage:
+        "Password reset link sent! Check your spam folder if you don't see it after a couple minutes.",
+    },
+    backgroundColor: '#FFFFFF',
+    backgroundOpacity: 0,
+    logoSize: 20,
+    inputBorderRadius: 56,
+    logoHidden: false,
+    backgroundHidden: false,
+    emailLabel: 'Email',
+    passwordLabel: 'Password',
   },
   setPasswordForm: {
     title: "You're almost ready",
@@ -272,8 +338,28 @@ export const createPanels = (): Panels => ({
       text: 'Next Step',
       textColor: '#FFFFFF',
       backgroundColor: '#000000',
+      hoverBackgroundColor: '#000000',
       borderRadius: 4,
     },
   },
-  menuIconColor: '#000000',
+  sponsors: {
+    description: '',
+    orderedIds: [],
+    columnSize: 2,
+  },
+  speakers: {
+    title: 'Our Speakers',
+    description: '',
+    speakerImageSize: 2,
+    speakersSpace: 0,
+    orderedIds: [],
+  },
+  offlinePage: {
+    shouldRedirect: false,
+    redirectUrl: '',
+    title: 'Event Offline',
+    description: 'Please check back again, or contact support for access.',
+  },
 })
+
+export const DEFAULTS = createPanels()

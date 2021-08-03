@@ -1,7 +1,3 @@
-import {
-  DEFAULT_TITLE as DEFAULT_SPEAKER_PAGE_TITLE,
-  DEFAULT_BACK_TO_DASHBOARD_TEXT as DEFAULT_SPEAKER_PAGE_BACK_TO_DASHBOARD_TEXT,
-} from 'Event/template/SimpleBlog/SpeakerPage/SpeakerPageConfig/SpeakerPageEditDialog/Form/index'
 import {ResourceList} from 'Event/template/SimpleBlog/Dashboard/ResourceList'
 import {ResourceGroupList} from 'Event/template/SimpleBlog/Dashboard/ResourceGroupList'
 import {Agenda} from 'Event/template/SimpleBlog/Dashboard/AgendaList'
@@ -13,26 +9,14 @@ import NavButton, {
 } from 'Event/Dashboard/components/NavButton'
 import {EntityList} from 'lib/list'
 import {colors} from 'lib/ui/theme'
-import {DEFAULT_LOGO_SIZE_PERCENT} from 'Event/template/SimpleBlog/Login/LoginConfig'
 import {Column} from 'lib/ui/layout'
-import {DEFAULT_SPONSOR_IMAGE_SIZE} from 'Event/template/SimpleBlog/SponsorPage/SponsorList/Card'
 import {FontStyle} from 'lib/ui/typography/FontStyleInput'
 import {GridSize} from '@material-ui/core/Grid'
 import {useTemplate, useUpdate} from 'Event/TemplateProvider'
-import {BaseTemplate, Header} from 'Event/template'
+import {BaseTemplate, BASE_DEFAULTS, Header} from 'Event/template'
 import {BlogPost} from 'Event/Dashboard/components/BlogPost'
 import {Points} from 'Event/template/SimpleBlog/Dashboard/PointsSummary'
-import {
-  DEFAULT_BACK_TO_DASHBOARD_TEXT,
-  DEFAULT_BACK_TO_DASHBOARD_TEXT_COLOR,
-  DEFAULT_BORDER_COLOR,
-  DEFAULT_IMAGES_PER_ROW,
-} from 'Event/template/SimpleBlog/Backgrounds'
-import {
-  DEFAULT_REWARD_ALERT_BACKGROUND_COLOR,
-  DEFAULT_REWARD_ALERT_TEXT_COLOR,
-  DEFAULT_REWARD_TEXT,
-} from 'Event/PointsProvider'
+import {DeepRequired} from 'lib/type-utils'
 
 export const SIMPLE_BLOG = 'Simple Blog'
 
@@ -143,6 +127,12 @@ export type SimpleBlog = BaseTemplate & {
       color: string
       fontSize: number
     }
+    passwordReset: {
+      linkLabel: string
+      buttonText: string
+      description: string
+      successMessage: string
+    }
     backgroundColor?: string
     backgroundOpacity?: number
     logoSize?: number
@@ -195,23 +185,6 @@ export type SimpleBlog = BaseTemplate & {
     backToDashboardTextColor?: string
     orderedIds?: number[]
   }
-  attendeePDFExport?: {
-    active?: boolean
-    header?: {
-      title: string
-      color: string
-    }
-    body?: {
-      backgroundOverlayColor: string
-      backgroundOverlayColorOpacity: number
-    }
-    footer?: {
-      backgroundColor: string
-      text: string
-      textColor: string
-    }
-    formIds?: number[] | null
-  }
   zoomBackgrounds?: {
     borderColor?: string
     borderRadius?: number
@@ -237,7 +210,8 @@ export type SimpleBlogHeader = Header & {
   disableShadow?: boolean
 }
 
-export const createSimpleBlog = (): SimpleBlog => ({
+export const createSimpleBlog = (): DeepRequired<SimpleBlog> => ({
+  ...BASE_DEFAULTS,
   version: 1,
   name: SIMPLE_BLOG,
   title: '',
@@ -249,6 +223,7 @@ export const createSimpleBlog = (): SimpleBlog => ({
   welcomeText: 'WELCOME TO YOUR DASHBOARD',
   emojiList: {
     emojis: [],
+    emojiWidth: null,
   },
   sidebar: {
     background: 'blue',
@@ -258,6 +233,9 @@ export const createSimpleBlog = (): SimpleBlog => ({
     borderColor: '#000000',
     paddingTop: 48,
     isVisible: true,
+    separatorColor: '#FFFFFF',
+    separatorStyle: 'solid',
+    separatorWidth: 1,
   },
   techCheck: {
     buttonText: 'submit',
@@ -267,6 +245,11 @@ export const createSimpleBlog = (): SimpleBlog => ({
     buttonBorderWidth: 0,
     buttonBorderColor: '#ffffff',
     buttonWidth: 12,
+    hasCustomButtons: false,
+    buttons: {
+      ids: [],
+      entities: {},
+    },
   },
   waiver: {
     buttonText: 'submit',
@@ -291,7 +274,14 @@ export const createSimpleBlog = (): SimpleBlog => ({
     description: '',
     footer: 'Agenda Time is in YOUR time zone, not ours',
     items: [],
+    footerFontStyles: [],
+    descriptionFontStyles: [],
   },
+  heroImageSize: 50,
+  isDarkMode: false,
+  textColor: '#000000',
+  linkColor: '#000000',
+  linkUnderline: true,
   points: null,
   resourceList: {
     title: 'Resources',
@@ -332,6 +322,7 @@ export const createSimpleBlog = (): SimpleBlog => ({
     submitButton: {
       backgroundColor: colors.primary,
       textColor: '#FFFFFF',
+      hoverColor: colors.primary,
       label: 'Login',
       borderRadius: 56,
     },
@@ -341,31 +332,96 @@ export const createSimpleBlog = (): SimpleBlog => ({
       color: '#000000',
       fontSize: 18,
     },
+
     logoHidden: false,
     inputBorderRadius: 56,
     backgroundColor: '#FFFFFF',
     backgroundOpacity: 0,
-    logoSize: DEFAULT_LOGO_SIZE_PERCENT,
+    logoSize: 20,
+    emailLabel: 'Email',
+    passwordLabel: 'Password',
+    passwordReset: {
+      linkLabel: 'Forgot Password?',
+      buttonText: 'Send Reset Password Link',
+      description: 'Send password reset link.',
+      successMessage:
+        "Password reset link sent! Check your spam folder if you don't see it after a couple minutes.",
+    },
   },
   bodyHTMLEmbed: null,
   sponsors: {
-    imageSize: DEFAULT_SPONSOR_IMAGE_SIZE,
+    imageSize: 4,
+    description: '',
+    backToDashboardText: 'Back to Dashboard',
+    backToDashboardTextColor: '#000000',
+    sponsorSpace: 0,
+    orderedIds: [],
+    sponsorSeparator: true,
   },
   speakers: {
-    title: DEFAULT_SPEAKER_PAGE_TITLE,
-    backToDashboardText: DEFAULT_SPEAKER_PAGE_BACK_TO_DASHBOARD_TEXT,
+    title: 'Our Speakers',
+    description: '',
+    backToDashboardText: 'Back to Dashboard',
+    backToDashboardTextColor: '#000000',
+    speakerImageSize: 2,
+    speakersSpace: 0,
+    orderedIds: [],
   },
   zoomBackgrounds: {
-    borderColor: DEFAULT_BORDER_COLOR,
+    borderColor: '#000000',
     borderRadius: 0,
     borderThickness: 0,
-    imagesPerRow: DEFAULT_IMAGES_PER_ROW,
-    backToDashboardText: DEFAULT_BACK_TO_DASHBOARD_TEXT,
-    backToDashboardTextColor: DEFAULT_BACK_TO_DASHBOARD_TEXT_COLOR,
+    imagesPerRow: 2,
+    backToDashboardText: 'Back to Dashbaord',
+    backToDashboardTextColor: '#000000',
+    orderedIds: [],
   },
-  rewardAlert: {
-    backgroundColor: DEFAULT_REWARD_ALERT_BACKGROUND_COLOR,
-    textColor: DEFAULT_REWARD_ALERT_TEXT_COLOR,
-    text: DEFAULT_REWARD_TEXT,
+  postStyles: {
+    titleTextColor: '#000000',
+    titleFontSize: 30,
+    titleCapitalize: true,
+    dateTextColor: '#adadad',
+    contentTextColor: '#000000',
+    contentFontSize: 17,
+    spacing: 32,
+  },
+  dashboardBackground: {
+    color: '#FFFFFF',
+    opacity: 0,
+  },
+  setPasswordForm: {
+    title: 'Please set a password to continue',
+    description: '',
+    passwordLabel: 'Password',
+    confirmPasswordLabel: 'Confirm Password',
+    button: {
+      text: 'Submit',
+      textColor: '#FFFFFF',
+      backgroundColor: colors.primary,
+      hoverBackgroundColor: colors.primary,
+      borderRadius: 0,
+    },
+  },
+  leaderboard: {
+    title: 'Leaderboard',
+    description:
+      '<p>{{first name}}, you have earned {{leaderboard_points}} {{points_unit}}, and you are currently {{leaderboard_position}}. Great Job!</p><p><i>The list below is the top 200 point earners! If you don’t see your name listed, there’s still time!</i></p><p><br>&nbsp;</p>',
+    backToDashboardText: 'Back to Dashboard',
+    backToDashboardTextColor: '#000000',
+  },
+  faq: {
+    title: 'FAQ',
+    description: '',
+    backToDashboardText: 'Back to Dashboard',
+    backToDashboardTextColor: '#000000',
+    orderedIds: [],
+  },
+  offlinePage: {
+    shouldRedirect: false,
+    redirectUrl: '',
+    title: 'Event Offline',
+    description: 'Please check back again, or contact support for access.',
   },
 })
+
+export const DEFAULTS = createSimpleBlog()

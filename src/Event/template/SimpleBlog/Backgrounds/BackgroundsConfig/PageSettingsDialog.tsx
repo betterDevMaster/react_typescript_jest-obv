@@ -9,10 +9,6 @@ import ColorPicker from 'lib/ui/ColorPicker'
 import TextEditor, {TextEditorContainer} from 'lib/ui/form/TextEditor'
 import {useEvent, useUpdate} from 'Event/EventProvider'
 import {useSimpleBlog} from 'Event/template/SimpleBlog'
-import {
-  DEFAULT_BACK_TO_DASHBOARD_TEXT,
-  DEFAULT_BACK_TO_DASHBOARD_TEXT_COLOR,
-} from 'Event/template/SimpleBlog/Backgrounds'
 import {useToggle} from 'lib/toggle'
 import {onChangeStringHandler} from 'lib/dom'
 
@@ -28,10 +24,10 @@ export default function PageSettingsDialog(props: {
 
   const {flag: processing, toggle: toggleProcessing} = useToggle()
   const [backToDashboardText, setBackToDashboardText] = useState(
-    DEFAULT_BACK_TO_DASHBOARD_TEXT,
+    templateSettings.backToDashboardText,
   )
   const [backToDashboardTextColor, setBackToDashboardTextColor] = useState(
-    DEFAULT_BACK_TO_DASHBOARD_TEXT_COLOR,
+    templateSettings.backToDashboardTextColor,
   )
   const [title, setTitle] = useState(event.zoom_backgrounds_title)
   const [description, setDescription] = useState(
@@ -43,13 +39,8 @@ export default function PageSettingsDialog(props: {
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
-    setBackToDashboardText(
-      templateSettings?.backToDashboardText || DEFAULT_BACK_TO_DASHBOARD_TEXT,
-    )
-    setBackToDashboardTextColor(
-      templateSettings?.backToDashboardTextColor ||
-        DEFAULT_BACK_TO_DASHBOARD_TEXT_COLOR,
-    )
+    setBackToDashboardText(templateSettings.backToDashboardText)
+    setBackToDashboardTextColor(templateSettings.backToDashboardTextColor)
 
     setLoading(false)
   }, [templateSettings])

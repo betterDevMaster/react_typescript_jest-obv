@@ -24,8 +24,6 @@ import {PageTitle} from 'Event/template/Panels/Page'
 export interface ResourceList {
   title: string
   resources: Resource[]
-  fontSize?: number
-  color?: number
   cardBackgroundColor?: string
 }
 

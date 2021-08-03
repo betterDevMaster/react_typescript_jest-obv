@@ -9,8 +9,6 @@ import {useTemplate} from 'Event/TemplateProvider'
 import {DragDropContext, Droppable, DropResult} from 'react-beautiful-dnd'
 import {usePanels} from 'Event/template/Panels'
 
-export const DEFAULT_COLUMN_SIZE = 2
-
 export default function SponsorList(props: {
   className?: string
   sponsors: Sponsor[]
@@ -18,7 +16,7 @@ export default function SponsorList(props: {
 }) {
   const handleDrag = useHandleDrag()
   const {template} = usePanels()
-  const columnSize = template.sponsors?.columnSize || DEFAULT_COLUMN_SIZE
+  const columnSize = template.sponsors.columnSize
   const size = (12 / columnSize) as GridSize
   const sortedSponsors = useSortedSponsors(props.sponsors)
 
