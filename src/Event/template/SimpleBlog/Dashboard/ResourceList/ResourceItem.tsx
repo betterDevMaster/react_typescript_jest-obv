@@ -129,6 +129,7 @@ export const Container = React.forwardRef<
 
 const Box = styled.div`
   margin-bottom: ${(props) => props.theme.spacing[2]};
+  width: 100%;
 `
 
 function resourceUrl(resource: Resource): string {
