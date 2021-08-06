@@ -45,30 +45,6 @@ export default function Page(props: {
   )
 }
 
-export function Title(props: {
-  children: string
-  'aria-label'?: string
-  disableMargin?: boolean
-}) {
-  const {template} = useSimpleBlog()
-  const color = template.login.description.color
-
-  if (!props.children) {
-    return null
-  }
-
-  return (
-    <DescriptionText
-      color={color}
-      fontSize={24}
-      disableMargin={props.disableMargin}
-      aria-label={props['aria-label']}
-    >
-      {props.children}
-    </DescriptionText>
-  )
-}
-
 export function Description(props: {children: string; 'aria-label'?: string}) {
   const {template} = useSimpleBlog()
   const color = template.login.description.color

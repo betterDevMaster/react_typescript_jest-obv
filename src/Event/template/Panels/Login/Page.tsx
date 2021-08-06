@@ -45,26 +45,6 @@ export default function Page(props: {
   )
 }
 
-export function Title(props: {children: string; 'aria-label'?: string}) {
-  const {
-    template: {login},
-  } = usePanels()
-
-  if (!props.children) {
-    return null
-  }
-
-  return (
-    <DescriptionText
-      color={login.description.color}
-      fontSize={24}
-      aria-label={props['aria-label']}
-    >
-      {props.children}
-    </DescriptionText>
-  )
-}
-
 export function Description(props: {children: string; 'aria-label'?: string}) {
   const {
     template: {login},

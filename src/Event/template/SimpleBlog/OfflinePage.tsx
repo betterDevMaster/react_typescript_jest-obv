@@ -1,15 +1,47 @@
 import {OfflinePageProps} from 'Event/JoinArea/OfflinePage'
 import React from 'react'
-import Page, {Title} from 'Event/template/SimpleBlog/Login/Page'
+import Page, {DescriptionText} from 'Event/template/SimpleBlog/Login/Page'
+import {useSimpleBlog} from 'Event/template/SimpleBlog'
 
 export default function OfflinePage(props: OfflinePageProps) {
   const {title, description, isPreview} = props
   return (
     <Page isPreview={isPreview || false}>
       <>
-        <Title disableMargin>{title}</Title>
-        <div dangerouslySetInnerHTML={{__html: description}} />
+        <Text disableMargin fontSize={24}>
+          {title}
+        </Text>
+        <Text>
+          <div dangerouslySetInnerHTML={{__html: description}} />
+        </Text>
       </>
     </Page>
+  )
+}
+
+function Text(props: {
+  children: string | React.ReactElement
+  'aria-label'?: string
+  disableMargin?: boolean
+  fontSize?: number
+}) {
+  const {template} = useSimpleBlog()
+  const color = template.login.description.color
+  const fontSize = props.fontSize
+    ? props.fontSize
+    : template.login.description.fontSize
+  if (!props.children) {
+    return null
+  }
+
+  return (
+    <DescriptionText
+      color={color}
+      fontSize={fontSize}
+      disableMargin={props.disableMargin}
+      aria-label={props['aria-label']}
+    >
+      {props.children}
+    </DescriptionText>
   )
 }
