@@ -36,7 +36,7 @@ export default function PointsProvider(props: {children: React.ReactElement}) {
   const showReceived = useShowReceived()
   const isEditMode = useEditMode()
 
-  const unit = template.points?.unit || ''
+  const unit = template.points_unit
 
   const submit = useCallback(
     (action: Action | null) => {

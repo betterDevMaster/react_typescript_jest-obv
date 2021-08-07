@@ -7,10 +7,11 @@ import axios from 'axios'
 import {loginToEventSite} from 'Event/__utils__/url'
 import faker from 'faker'
 import {fakeSimpleBlog} from 'Event/template/SimpleBlog/__utils__/factory'
-import {fakePoints} from 'Event/template/SimpleBlog/Dashboard/PointsSummary/__utils__/factory'
+import {fakePoints} from 'Event/template/SimpleBlog/Dashboard/Sidebar/SidebarItem/PointsSummary/__utils__/factory'
 import {fakeAttendee} from 'Event/auth/__utils__/factory'
 import {fakeAction} from 'Event/ActionsProvider/__utils__/factory'
 import {wait} from '@testing-library/react'
+import {createPointsSummary} from 'Event/template/SimpleBlog/Dashboard/Sidebar/SidebarItem/PointsSummary'
 
 const mockPost = axios.post as jest.Mock
 const mockGet = axios.get as jest.Mock
@@ -20,7 +21,11 @@ beforeEach(() => {
 })
 
 it('should render list of entries', async () => {
-  const event = fakeEvent({template: fakeSimpleBlog({points: fakePoints()})})
+  const event = fakeEvent({
+    template: fakeSimpleBlog({
+      sidebarItems: [createPointsSummary()],
+    }),
+  })
   const {findAllByLabelText} = await loginToEventSite({
     event,
     attendee: fakeAttendee({
@@ -45,7 +50,9 @@ it('should receive points', async () => {
   const action = fakeAction()
 
   const event = fakeEvent({
-    template: fakeSimpleBlog({points: fakePoints()}),
+    template: fakeSimpleBlog({
+      sidebarItems: [createPointsSummary()],
+    }),
     platform_actions: createPlatformActions({visit_leaderboard: action}),
   })
   const {findByText} = await loginToEventSite({

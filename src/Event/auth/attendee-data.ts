@@ -93,7 +93,7 @@ export function useWithAttendeeData() {
 export function useWithPoints() {
   const {score} = usePoints()
   const template = useTemplate()
-  const {points} = template
+  const {points_unit} = template
 
   return useCallback(
     (text: string) => {
@@ -104,7 +104,7 @@ export function useWithPoints() {
       const variables = {
         leaderboard_points: String(score.points),
         leaderboard_position: String(score.position),
-        points_unit: points?.unit || '',
+        points_unit,
       }
 
       let result = text
@@ -115,6 +115,6 @@ export function useWithPoints() {
 
       return result
     },
-    [score, points],
+    [score, points_unit],
   )
 }

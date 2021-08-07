@@ -53,9 +53,7 @@ export type Panels = BaseTemplate & {
     backgroundOpacity: number
     isDarkMode: boolean
   }
-  points: {
-    unit: string
-  }
+  points_unit: string
   blogPosts: EntityList<BlogPost>
   resourceList: ResourceList
   menuIconColor: string
@@ -194,9 +192,7 @@ export const createPanels = (): DeepRequired<Panels> => ({
     textColor: '#FFFFFF',
     height: 65,
   },
-  points: {
-    unit: 'Points',
-  },
+  points_unit: 'Points',
   backgroundPosition: 'fixed',
   nav: {
     entities: {},

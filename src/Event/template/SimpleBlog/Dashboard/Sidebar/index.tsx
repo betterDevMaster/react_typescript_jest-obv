@@ -1,28 +1,75 @@
 import React from 'react'
 import styled from 'styled-components'
-import AgendaList from 'Event/template/SimpleBlog/Dashboard/AgendaList'
-import EmojiList from 'Event/template/SimpleBlog/Dashboard/EmojiList'
-import PointsSummary from 'Event/template/SimpleBlog/Dashboard/PointsSummary'
-import {ResourceList} from 'Event/template/SimpleBlog/Dashboard/ResourceList'
-import ResourceGroupList from 'Event/template/SimpleBlog/Dashboard/ResourceGroupList'
-import TicketRibbonList from 'Event/template/SimpleBlog/Dashboard/TicketRibbonList'
-import SidebarNav from 'Event/template/SimpleBlog/Dashboard/Sidebar/SidebarNav'
 import SidebarContainer from 'Event/template/SimpleBlog/Dashboard/Sidebar/SidebarContainer'
 import {useEvent} from 'Event/EventProvider'
+import {useSimpleBlog} from 'Event/template/SimpleBlog'
+import SidebarItem from 'Event/template/SimpleBlog/Dashboard/Sidebar/SidebarItem'
+import AddSidebarItemButton from 'Event/template/SimpleBlog/Dashboard/Sidebar/AddSidebarItemButton'
+import {DragDropContext, Droppable, DropResult} from 'react-beautiful-dnd'
+import {useDispatchUpdate} from 'Event/TemplateProvider'
+import {useEditMode} from 'Event/Dashboard/editor/state/edit-mode'
 
 export default function Sidebar() {
+  const {
+    template: {sidebarItems},
+  } = useSimpleBlog()
+
+  const isEditMode = useEditMode()
+
+  const handleDrag = useHandleDrag()
+
+  if (!isEditMode) {
+    return (
+      <SidebarContainer>
+        <GylsPlayer />
+        {sidebarItems.map((item, index) => (
+          <SidebarItem key={item.id} {...item} index={index} />
+        ))}
+      </SidebarContainer>
+    )
+  }
+
   return (
     <SidebarContainer>
       <GylsPlayer />
-      <EmojiList />
-      <TicketRibbonList />
-      <AgendaList />
-      <PointsSummary />
-      <ResourceGroupList />
-      <ResourceList />
-      <SidebarNav />
+      <DragDropContext onDragEnd={handleDrag}>
+        <Droppable droppableId="sidebar_item">
+          {(provided) => (
+            <div ref={provided.innerRef} {...provided.droppableProps}>
+              {sidebarItems.map((item, index) => (
+                <SidebarItem key={item.id} {...item} index={index} />
+              ))}
+              {provided.placeholder}
+            </div>
+          )}
+        </Droppable>
+      </DragDropContext>
+      <AddSidebarItemButton />
     </SidebarContainer>
   )
+}
+
+function useHandleDrag() {
+  const {
+    template: {sidebarItems},
+  } = useSimpleBlog()
+  const update = useDispatchUpdate()
+
+  return (result: DropResult) => {
+    const {destination, source} = result
+
+    if (!destination) {
+      return
+    }
+
+    const moved = Array.from(sidebarItems)
+    const [removed] = moved.splice(source.index, 1)
+    moved.splice(destination.index, 0, removed)
+
+    update({
+      sidebarItems: moved,
+    })
+  }
 }
 
 /**

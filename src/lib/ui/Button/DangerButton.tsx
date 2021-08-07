@@ -7,26 +7,22 @@ export default function DangerButton(
   props: ButtonProps & {className?: string},
 ) {
   const isContained = props.variant === 'contained'
-  const isText = props.variant === 'text'
 
   const hoverBackground = () => {
-    if (isText) {
-      return 'transparent'
-    }
-
     if (isContained) {
       return red[700]
     }
 
-    return red[50]
+    return 'transparent'
   }
   const classes = makeStyles({
     root: {
       color: isContained ? '#FFFFFF' : red[500],
-      borderColor: red[500],
+      borderColor: isContained ? red[500] : red[300],
       background: isContained ? red[500] : 'transparent',
       '&:hover': {
         backgroundColor: hoverBackground(),
+        borderColor: red[500],
       },
     },
   })()

@@ -35,9 +35,7 @@ export default function LeaderboardConfig(props: {onComplete?: () => void}) {
         title: data.title,
         description: data.description,
       },
-      points: {
-        unit: data.points_unit,
-      },
+      points_unit: data.points_unit,
     }
 
     updateEvent({template: updated}).finally(() => {
@@ -77,7 +75,7 @@ export default function LeaderboardConfig(props: {onComplete?: () => void}) {
         )}
       />
       <TextField
-        defaultValue={template.points.unit}
+        defaultValue={template.points_unit}
         name="points_unit"
         label="Points Unit"
         fullWidth

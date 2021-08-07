@@ -7,10 +7,10 @@ import {
   useSendEmoji,
 } from 'Event/Dashboard/components/EmojiList/emoji'
 import EditModeOnly from 'Event/Dashboard/editor/views/EditModeOnly'
-import {useTemplate} from 'Event/TemplateProvider'
 import {Editable} from 'Event/Dashboard/editor/views/EditComponent'
-import {EmojiListConfig} from 'Event/Dashboard/components/EmojiList/EmojiListConfig'
 import AddEmojiButton from 'Event/Dashboard/components/EmojiList/AddEmojiButton'
+import {EmojiListConfig} from 'Event/template/Panels/Dashboard/EmojiList/EmojiListconfig'
+import {usePanels} from 'Event/template/Panels'
 
 export const EMOJI_LIST = 'Emoji List'
 
@@ -23,7 +23,7 @@ export interface EmojiList {
 }
 
 export default function EmojiList() {
-  const template = useTemplate()
+  const {template} = usePanels()
   const {emojiList: list} = template
 
   const [isEditing, setIsEditing] = useState<boolean>(false)

@@ -32,10 +32,13 @@ export default function LeaderboardConfig(props: {onComplete?: () => void}) {
     rewardAlert.textColor,
   )
 
-  const submit = (data: LeaderboardConfigData) => {
+  const submit = (
+    data: LeaderboardConfigData & {points_unit: SimpleBlog['points_unit']},
+  ) => {
     if (processing) {
       return
     }
+    const {points_unit, ...leaderboardData} = data
 
     setProcessing(true)
 
@@ -48,9 +51,10 @@ export default function LeaderboardConfig(props: {onComplete?: () => void}) {
         backgroundColor: rewardBackgroundColor,
         textColor: rewardTextColor,
       },
+      points_unit,
       leaderboard: {
         ...existing,
-        ...data,
+        ...leaderboardData,
       },
     }
 
@@ -92,6 +96,19 @@ export default function LeaderboardConfig(props: {onComplete?: () => void}) {
               </Typography>
             </div>
           </Alert>
+        </Grid>
+
+        <Grid item xs={12}>
+          <TextField
+            name="unit"
+            defaultValue={template.points_unit}
+            label="Unit"
+            fullWidth
+            inputProps={{
+              'aria-label': 'points unit',
+              ref: register,
+            }}
+          />
         </Grid>
         <Grid item xs={12}>
           <TextField

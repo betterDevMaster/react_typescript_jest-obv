@@ -4,6 +4,7 @@ import DialogTitle from '@material-ui/core/DialogTitle'
 import Dialog from 'lib/ui/Dialog'
 import DialogContent from '@material-ui/core/DialogContent'
 import Button, {ButtonProps} from '@material-ui/core/Button'
+import DangerButton from 'lib/ui/Button/DangerButton'
 
 export interface ComponentConfigProps {
   isVisible: boolean
@@ -27,18 +28,21 @@ export default function ComponentConfig(
   )
 }
 
-export const SaveButton = (props: ButtonProps) => (
-  <StyledSaveButton
-    fullWidth
-    variant="contained"
-    color="primary"
-    type="submit"
-    aria-label="save"
-    {...props}
-  >
-    SAVE
-  </StyledSaveButton>
-)
+export const SaveButton = (props: ButtonProps & {children?: string}) => {
+  const label = props.children || 'SAVE'
+  return (
+    <StyledSaveButton
+      fullWidth
+      variant="contained"
+      color="primary"
+      type="submit"
+      aria-label="save"
+      {...props}
+    >
+      {label}
+    </StyledSaveButton>
+  )
+}
 
 const StyledSaveButton = styled(Button)`
   margin-top: ${(props) => props.theme.spacing[4]}!important;
@@ -47,4 +51,24 @@ const StyledSaveButton = styled(Button)`
 
 const StyledDialogContent = styled(DialogContent)`
   padding-bottom: ${(props) => props.theme.spacing[2]}!important;
+`
+
+export const RemoveButton = (props: ButtonProps & {children?: string}) => {
+  const label = props.children || 'REMOVE'
+
+  return (
+    <StyledRemoveButton
+      fullWidth
+      variant="outlined"
+      aria-label="remove"
+      {...props}
+    >
+      {label}
+    </StyledRemoveButton>
+  )
+}
+
+export const StyledRemoveButton = styled(DangerButton)`
+  margin-top: ${(props) => props.theme.spacing[2]}!important;
+  margin-bottom: ${(props) => props.theme.spacing[2]}!important;
 `

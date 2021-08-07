@@ -13,7 +13,7 @@ import {
 import {useWithAttendeeData, useWithPoints} from 'Event/auth/attendee-data'
 import {pipe} from 'ramda'
 import {useRemoveVariables} from 'lib/template'
-import {CustomTicketRibbon} from 'Event/template/SimpleBlog/Dashboard/TicketRibbonList/TicketRibbon'
+import {CustomTicketRibbon} from 'Event/template/SimpleBlog/Dashboard/Sidebar/SidebarItem/TicketRibbonList/TicketRibbon'
 import {Speaker} from 'Event/SpeakerPage'
 import {Background} from 'organization/Event/Backgrounds/BackgroundsProvider'
 

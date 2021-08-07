@@ -1,15 +1,9 @@
 import faker from 'faker'
 import {pipe} from 'ramda'
-import {withAgendas} from 'Event/template/SimpleBlog/Dashboard/AgendaList/__utils__/factory'
-import {withPoints} from 'Event/template/SimpleBlog/Dashboard/PointsSummary/__utils__/factory'
-import {sometimes} from '__utils__/attributes'
-import {withTicketRibbons} from 'Event/template/SimpleBlog/Dashboard/TicketRibbonList/__utils__/factory'
-import {withEmojiList} from 'Event/template/SimpleBlog/Dashboard/EmojiList/__utils__/factory'
+import {withAgendas} from 'Event/template/SimpleBlog/Dashboard/Sidebar/SidebarItem/AgendaList/__utils__/factory'
+import {withTicketRibbons} from 'Event/template/SimpleBlog/Dashboard/Sidebar/SidebarItem/TicketRibbonList/__utils__/factory'
 import {withBlogPosts} from 'Event/Dashboard/components/BlogPost/__utils__/factory'
-import {
-  fakeNavButton,
-  fakeNavButtonWithSize,
-} from 'Event/Dashboard/components/NavButton/__utils__/factory'
+import {fakeNavButtonWithSize} from 'Event/Dashboard/components/NavButton/__utils__/factory'
 import {createEntityList} from 'lib/list'
 import {createSimpleBlog, SimpleBlog} from 'Event/template/SimpleBlog'
 import {colors} from 'lib/ui/theme'
@@ -19,11 +13,8 @@ export const fakeSimpleBlog = (overrides?: Partial<SimpleBlog>): SimpleBlog => {
   const makeAttributes: (d: SimpleBlog) => SimpleBlog = pipe(
     withAgendas,
     withMainNav,
-    withSidebarNav,
     withTicketRibbons,
     withBlogPosts,
-    sometimes<SimpleBlog>(withPoints),
-    sometimes<SimpleBlog>(withEmojiList),
   )
 
   return {
@@ -42,23 +33,6 @@ export function withMainNav<T extends {mainNav: SimpleBlog['mainNav']}>(
   return {
     ...attributes,
     mainNav: createEntityList(buttons),
-  }
-}
-
-export function withSidebarNav<
-  T extends {sidebarNav: SimpleBlog['sidebarNav']}
->(attributes: T): T {
-  const buttons = Array.from(
-    {length: faker.random.number({min: 1, max: 5})},
-    () =>
-      fakeNavButton({
-        borderRadius: 0,
-        hoverBorderColor: '#FFFFFF',
-      }),
-  )
-  return {
-    ...attributes,
-    sidebarNav: createEntityList(buttons),
   }
 }
 

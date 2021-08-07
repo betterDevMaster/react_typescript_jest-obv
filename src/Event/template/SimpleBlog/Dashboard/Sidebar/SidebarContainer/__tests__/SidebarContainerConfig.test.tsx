@@ -1,5 +1,4 @@
 import {fakeSimpleBlog} from 'Event/template/SimpleBlog/__utils__/factory'
-import {createEntityList} from 'lib/list'
 import {fireEvent} from '@testing-library/react'
 import {fakeEvent} from 'Event/__utils__/factory'
 import {mockRxJsAjax} from 'store/__utils__/MockStoreProvider'
@@ -15,9 +14,7 @@ afterEach(() => {
 
 it('should render sidebar config', async () => {
   const event = fakeEvent({
-    template: fakeSimpleBlog({
-      sidebarNav: createEntityList([]),
-    }),
+    template: fakeSimpleBlog(),
   })
   const {findByLabelText} = await goToDashboardConfig({
     event,

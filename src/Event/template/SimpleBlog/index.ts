@@ -1,22 +1,14 @@
-import {ResourceList} from 'Event/template/SimpleBlog/Dashboard/ResourceList'
-import {ResourceGroupList} from 'Event/template/SimpleBlog/Dashboard/ResourceGroupList'
-import {Agenda} from 'Event/template/SimpleBlog/Dashboard/AgendaList'
-import {EmojiList} from 'Event/template/SimpleBlog/Dashboard/EmojiList'
 import {Sidebar} from 'Event/template/SimpleBlog/Dashboard/Sidebar/SidebarContainer'
-import {TicketRibbon} from 'Event/template/SimpleBlog/Dashboard/TicketRibbonList/TicketRibbon'
-import NavButton, {
-  NavButtonWithSize,
-} from 'Event/Dashboard/components/NavButton'
+import {NavButtonWithSize} from 'Event/Dashboard/components/NavButton'
 import {EntityList} from 'lib/list'
 import {colors} from 'lib/ui/theme'
 import {Column} from 'lib/ui/layout'
-import {FontStyle} from 'lib/ui/typography/FontStyleInput'
 import {GridSize} from '@material-ui/core/Grid'
 import {useTemplate, useUpdate} from 'Event/TemplateProvider'
 import {BaseTemplate, BASE_DEFAULTS, Header} from 'Event/template'
 import {BlogPost} from 'Event/Dashboard/components/BlogPost'
-import {Points} from 'Event/template/SimpleBlog/Dashboard/PointsSummary'
 import {DeepRequired} from 'lib/type-utils'
+import {SidebarItem} from 'Event/template/SimpleBlog/Dashboard/Sidebar/SidebarItem'
 
 export const SIMPLE_BLOG = 'Simple Blog'
 
@@ -37,17 +29,15 @@ export type SimpleBlog = BaseTemplate & {
   isDarkMode?: boolean
   title: string
   mainNav: EntityList<NavButtonWithSize>
-  ticketRibbons: TicketRibbon[]
   welcomeText?: string
   heroImageSize?: number
-  emojiList: EmojiList
   sidebar: Sidebar
-  sidebarNav: EntityList<NavButton>
+  sidebarItems: SidebarItem[]
   blogPosts: EntityList<BlogPost>
-  points: Points | null
   textColor?: string
   linkColor?: string
   linkUnderline?: boolean
+  points_unit: string
   postStyles?: {
     titleTextColor?: string
     titleCapitalize?: boolean
@@ -57,16 +47,6 @@ export type SimpleBlog = BaseTemplate & {
     contentTextColor?: string
     spacing?: number
   }
-  agenda: {
-    title: string
-    description?: string
-    footer?: string
-    descriptionFontStyles?: FontStyle[]
-    footerFontStyles?: FontStyle[]
-    items: Agenda[]
-  }
-  resourceList: ResourceList
-  resourceGroupList: ResourceGroupList
   header: SimpleBlogHeader
   dashboardBackground?: {
     color: string
@@ -220,12 +200,8 @@ export const createSimpleBlog = (): DeepRequired<SimpleBlog> => ({
     entities: {},
     ids: [],
   },
-  ticketRibbons: [],
+  points_unit: 'Points',
   welcomeText: 'WELCOME TO YOUR DASHBOARD',
-  emojiList: {
-    emojis: [],
-    emojiWidth: null,
-  },
   sidebar: {
     background: 'blue',
     textColor: '#ffffff',
@@ -238,6 +214,7 @@ export const createSimpleBlog = (): DeepRequired<SimpleBlog> => ({
     separatorStyle: 'solid',
     separatorWidth: 1,
   },
+  sidebarItems: [],
   techCheck: {
     buttonText: 'submit',
     buttonBackground: 'blue',
@@ -261,37 +238,16 @@ export const createSimpleBlog = (): DeepRequired<SimpleBlog> => ({
     buttonBorderColor: '#ffffff',
     buttonWidth: 12,
   },
-  sidebarNav: {
-    entities: {},
-    ids: [],
-  },
   blogPosts: {
     entities: {},
     ids: [],
   },
   backgroundPosition: 'fixed',
-  agenda: {
-    title: 'Agenda',
-    description: '',
-    footer: 'Agenda Time is in YOUR time zone, not ours',
-    items: [],
-    footerFontStyles: [],
-    descriptionFontStyles: [],
-  },
   heroImageSize: 50,
   isDarkMode: false,
   textColor: '#000000',
   linkColor: '#000000',
   linkUnderline: true,
-  points: null,
-  resourceList: {
-    title: 'Resources',
-    description: '',
-    resources: [],
-  },
-  resourceGroupList: {
-    groups: [],
-  },
   header: {
     backgroundColor: '#FFFFFF',
     backgroundOpacity: 1.0,
