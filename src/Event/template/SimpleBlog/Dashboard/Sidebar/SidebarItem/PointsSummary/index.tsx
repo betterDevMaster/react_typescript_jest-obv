@@ -8,6 +8,8 @@ import {PointsSummaryConfig} from 'Event/template/SimpleBlog/Dashboard/Sidebar/S
 import {uuid} from 'lib/uuid'
 import EditModeOnly from 'Event/Dashboard/editor/views/EditModeOnly'
 import Button from '@material-ui/core/Button'
+import {useRemoveSidebarItem} from 'Event/template/SimpleBlog/Dashboard/Sidebar/SidebarItem'
+import {RemoveButton} from 'organization/Event/DashboardConfig/ComponentConfig'
 
 export const POINTS_SUMMARY = 'Points Summary'
 export interface PointsSummaryProps {
@@ -30,6 +32,7 @@ export default function PointsSummary(props: PointsSummaryProps) {
   const {summary, description} = props
   const v = useVariables()
   const {flag: configVisible, toggle: toggleConfig} = useToggle()
+  const removeItem = useRemoveSidebarItem(props)
 
   return (
     <>
@@ -41,7 +44,7 @@ export default function PointsSummary(props: PointsSummaryProps) {
       <EditModeOnly>
         <EditButton
           onClick={toggleConfig}
-          variant="outlined"
+          variant="contained"
           color="primary"
           fullWidth
           size="large"
@@ -49,6 +52,9 @@ export default function PointsSummary(props: PointsSummaryProps) {
         >
           Edit Points Summary
         </EditButton>
+        <RemoveButton size="large" onClick={removeItem}>
+          Remove Points Summary
+        </RemoveButton>
       </EditModeOnly>
       <PointsLogo />
       <Box color={sidebar.textColor}>

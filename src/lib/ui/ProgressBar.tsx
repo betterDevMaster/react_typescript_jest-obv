@@ -44,8 +44,10 @@ export default function ProgressBar(
 }
 
 const StyledLinearProgress = styled(
-  (props: ProgressBarStyleProps & LinearProgressProps) => {
-    const {barColor, borderRadius, textColor: _, ...otherProps} = props
+  (
+    props: ProgressBarStyleProps & LinearProgressProps & {showing?: boolean},
+  ) => {
+    const {barColor, borderRadius, showing, textColor: _, ...otherProps} = props
     return <LinearProgress {...otherProps} />
   },
 )`

@@ -57,18 +57,17 @@ it('should remove an agenda list', async () => {
       sidebarItems: [fakeAgendaList()],
     }),
   })
-  const {queryByText, findByLabelText, findByText} = await goToDashboardConfig({
+  const {queryByText, findByText} = await goToDashboardConfig({
     event,
   })
 
-  clickEdit(await findByLabelText('agendas'))
-  fireEvent.click(await findByText(/remove/i))
+  fireEvent.click(await findByText(/remove agenda/i))
 
   await wait(() => {
     expect(mockPost).toHaveBeenCalledTimes(1)
   })
 
-  expect(queryByText(/agenda/i)).not.toBeInTheDocument()
+  expect(queryByText(/remove agenda/i)).not.toBeInTheDocument()
 
   const [url, data] = mockPost.mock.calls[0]
   expect(url).toMatch(`/events/${event.slug}`)

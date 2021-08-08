@@ -11,14 +11,10 @@ import DialogContent from '@material-ui/core/DialogContent'
 import Dialog from 'lib/ui/Dialog'
 import {
   ComponentConfigProps,
-  RemoveButton,
   SaveButton,
 } from 'organization/Event/DashboardConfig/ComponentConfig'
 import {AgendaListProps} from 'Event/template/SimpleBlog/Dashboard/Sidebar/SidebarItem/AgendaList'
-import {
-  useRemoveSidebarItem,
-  useUpdateSidebarItem,
-} from 'Event/template/SimpleBlog/Dashboard/Sidebar/SidebarItem'
+import {useUpdateSidebarItem} from 'Event/template/SimpleBlog/Dashboard/Sidebar/SidebarItem'
 
 export function AgendaListConfig(
   props: ComponentConfigProps & {
@@ -36,7 +32,6 @@ export function AgendaListConfig(
   const [footerFontStyles, setFooterFontStyle] = useState(list.footerFontStyles)
 
   const updateItem = useUpdateSidebarItem()
-  const removeItem = useRemoveSidebarItem(list)
 
   const save = () => {
     const updated: AgendaListProps = {
@@ -119,7 +114,6 @@ export function AgendaListConfig(
           />
         </FormControl>
         <SaveButton onClick={save} />
-        <RemoveButton onClick={removeItem} />
       </DialogContent>
     </Dialog>
   )

@@ -15,7 +15,11 @@ import {useToggle} from 'lib/toggle'
 import {AgendaListConfig} from 'Event/template/SimpleBlog/Dashboard/Sidebar/SidebarItem/AgendaList/AgendaListConfig'
 import {FontStyle} from 'lib/ui/typography/FontStyleInput'
 import {uuid} from 'lib/uuid'
-import {useUpdateSidebarItem} from 'Event/template/SimpleBlog/Dashboard/Sidebar/SidebarItem'
+import {
+  useRemoveSidebarItem,
+  useUpdateSidebarItem,
+} from 'Event/template/SimpleBlog/Dashboard/Sidebar/SidebarItem'
+import {RemoveButton} from 'organization/Event/DashboardConfig/ComponentConfig'
 
 export const AGENDA_LIST = 'Agenda List'
 export type AgendaListProps = {
@@ -63,6 +67,8 @@ export default function AgendaList(props: AgendaListProps) {
   const hasAgenda = items.length > 0
   const {flag: listConfigVisible, toggle: toggleListConfig} = useToggle()
 
+  const removeItem = useRemoveSidebarItem(props)
+
   if (!hasAgenda && !isEdit) {
     return null
   }
@@ -74,6 +80,11 @@ export default function AgendaList(props: AgendaListProps) {
         isVisible={listConfigVisible}
         onClose={toggleListConfig}
       />
+      <EditModeOnly>
+        <RemoveButton size="large" onClick={removeItem}>
+          Remove Agenda
+        </RemoveButton>
+      </EditModeOnly>
       <Editable onEdit={toggleListConfig}>
         <Heading aria-label="agendas">{v(title)}</Heading>
       </Editable>

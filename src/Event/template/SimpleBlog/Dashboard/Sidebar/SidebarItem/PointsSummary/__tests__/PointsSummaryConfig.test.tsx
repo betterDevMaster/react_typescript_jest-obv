@@ -2,7 +2,6 @@ import user from '@testing-library/user-event'
 import faker from 'faker'
 import {fakeSimpleBlog} from 'Event/template/SimpleBlog/__utils__/factory'
 import {fireEvent, wait} from '@testing-library/dom'
-import {clickEdit} from '__utils__/edit'
 import {fakeEvent} from 'Event/__utils__/factory'
 import {mockRxJsAjax} from 'store/__utils__/MockStoreProvider'
 import {ObvioEvent} from 'Event'
@@ -61,8 +60,7 @@ it('should remove points', async () => {
 
   expect(await findByText(new RegExp(summary))).toBeInTheDocument()
 
-  fireEvent.click(await findByText(/edit points summary/i))
-  fireEvent.click(await findByText(/remove/i))
+  fireEvent.click(await findByText(/remove points summary/i))
 
   await wait(() => {
     expect(queryByText(/you've earned/i)).not.toBeInTheDocument()

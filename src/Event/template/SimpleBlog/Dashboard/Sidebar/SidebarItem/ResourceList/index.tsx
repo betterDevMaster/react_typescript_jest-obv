@@ -21,7 +21,11 @@ import {useSimpleBlog} from 'Event/template/SimpleBlog'
 import {useToggle} from 'lib/toggle'
 import {ResourceListConfig} from 'Event/template/SimpleBlog/Dashboard/Sidebar/SidebarItem/ResourceList/ResourceListConfig'
 import {uuid} from 'lib/uuid'
-import {useUpdateSidebarItem} from 'Event/template/SimpleBlog/Dashboard/Sidebar/SidebarItem'
+import {
+  useRemoveSidebarItem,
+  useUpdateSidebarItem,
+} from 'Event/template/SimpleBlog/Dashboard/Sidebar/SidebarItem'
+import {RemoveButton} from 'organization/Event/DashboardConfig/ComponentConfig'
 
 export const RESOURCE_LIST = 'Resource List'
 export interface ResourceListProps {
@@ -55,6 +59,7 @@ export function ResourceList(props: ResourceListProps) {
     template: {sidebar},
   } = useSimpleBlog()
   const {flag: configVisible, toggle: toggleConfig} = useToggle()
+  const removeItem = useRemoveSidebarItem(props)
 
   const v = useVariables()
 
@@ -70,6 +75,11 @@ export function ResourceList(props: ResourceListProps) {
         onClose={toggleConfig}
         list={props}
       />
+      <EditModeOnly>
+        <RemoveButton size="large" onClick={removeItem}>
+          Remove Resources
+        </RemoveButton>
+      </EditModeOnly>
       <Editable onEdit={toggleConfig}>
         <Heading aria-label="resources">{v(title)}</Heading>
       </Editable>

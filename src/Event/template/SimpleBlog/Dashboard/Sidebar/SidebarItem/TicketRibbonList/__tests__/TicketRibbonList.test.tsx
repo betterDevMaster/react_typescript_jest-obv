@@ -31,14 +31,14 @@ it('should add a ticket ribbon list', async () => {
 
   fireEvent.click(await findByText(/add item/i))
   fireEvent.mouseDown(await findByLabelText('select sidebar item'))
-  fireEvent.click(await findByText(/tickets/i))
+  fireEvent.click(await findByText(/ticket ribbons/i))
   fireEvent.click(await findByLabelText('add item'))
 
   await wait(() => {
     expect(mockPost).toHaveBeenCalledTimes(1)
   })
 
-  expect(await findByText(/remove tickets/i)).toBeInTheDocument()
+  expect(await findByText(/remove ribbons/i)).toBeInTheDocument()
 
   const [url, data] = mockPost.mock.calls[0]
   expect(url).toMatch(`/events/${event.slug}`)
@@ -55,13 +55,13 @@ it('should remove a ticket ribbon list', async () => {
     event,
   })
 
-  fireEvent.click(await findByText(/remove tickets/i))
+  fireEvent.click(await findByText(/remove ribbons/i))
 
   await wait(() => {
     expect(mockPost).toHaveBeenCalledTimes(1)
   })
 
-  expect(queryByText(/remove tickets/i)).not.toBeInTheDocument()
+  expect(queryByText(/remove ribbons/i)).not.toBeInTheDocument()
 
   const [url, data] = mockPost.mock.calls[0]
   expect(url).toMatch(`/events/${event.slug}`)

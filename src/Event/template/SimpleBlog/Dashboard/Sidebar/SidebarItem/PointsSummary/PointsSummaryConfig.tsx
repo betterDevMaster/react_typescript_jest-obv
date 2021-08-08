@@ -3,7 +3,6 @@ import EventImageUpload from 'organization/Event/DashboardConfig/EventImageUploa
 import {useEvent} from 'Event/EventProvider'
 import ComponentConfig, {
   ComponentConfigProps,
-  RemoveButton,
   SaveButton,
 } from 'organization/Event/DashboardConfig/ComponentConfig'
 import {Controller, useForm} from 'react-hook-form'
@@ -14,10 +13,7 @@ import InputLabel from '@material-ui/core/InputLabel'
 import Alert from '@material-ui/lab/Alert'
 import AlertTitle from '@material-ui/lab/AlertTitle'
 import {PointsSummaryProps} from 'Event/template/SimpleBlog/Dashboard/Sidebar/SidebarItem/PointsSummary'
-import {
-  useRemoveSidebarItem,
-  useUpdateSidebarItem,
-} from 'Event/template/SimpleBlog/Dashboard/Sidebar/SidebarItem'
+import {useUpdateSidebarItem} from 'Event/template/SimpleBlog/Dashboard/Sidebar/SidebarItem'
 
 export function PointsSummaryConfig(
   props: ComponentConfigProps & {
@@ -28,7 +24,6 @@ export function PointsSummaryConfig(
   const {event} = useEvent()
   const {handleSubmit, control} = useForm()
   const updateItem = useUpdateSidebarItem()
-  const removeItem = useRemoveSidebarItem(points)
 
   const save = (data: PointsSummaryProps) => {
     updateItem({...points, ...data})
@@ -93,7 +88,6 @@ export function PointsSummaryConfig(
           />
         </Box>
         <SaveButton />
-        <RemoveButton onClick={removeItem} />
       </form>
     </ComponentConfig>
   )

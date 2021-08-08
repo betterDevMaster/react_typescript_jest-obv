@@ -88,8 +88,8 @@ export default function AddSidebarItemConfig(props: {
             <MenuItem value={EMOJI_LIST}>Emojis</MenuItem>
             <MenuItem value={RESOURCE_LIST}>Resources</MenuItem>
             <MenuItem value={POINTS_SUMMARY}>Points Summary</MenuItem>
-            <MenuItem value={SIDEBAR_NAV}>Sidebar Nav</MenuItem>
-            <MenuItem value={TICKET_RIBBON_LIST}>Tickets</MenuItem>
+            <MenuItem value={SIDEBAR_NAV}>Sidebar Buttons</MenuItem>
+            <MenuItem value={TICKET_RIBBON_LIST}>Ticket Ribbons</MenuItem>
           </Select>
         </FormControl>
         <SaveButton type="submit" disabled={!type} aria-label="add item">

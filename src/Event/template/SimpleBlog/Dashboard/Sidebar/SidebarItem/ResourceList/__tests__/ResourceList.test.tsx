@@ -61,18 +61,17 @@ it('should remove a resource list', async () => {
       sidebarItems: [createResourceList()],
     }),
   })
-  const {queryByText, findByLabelText, findByText} = await goToDashboardConfig({
+  const {queryByText, findByText} = await goToDashboardConfig({
     event,
   })
 
-  clickEdit(await findByLabelText('resources'))
-  fireEvent.click(await findByText(/remove/i))
+  fireEvent.click(await findByText(/remove resources/i))
 
   await wait(() => {
     expect(mockPost).toHaveBeenCalledTimes(1)
   })
 
-  expect(queryByText(/resource/i)).not.toBeInTheDocument()
+  expect(queryByText(/resource resources/i)).not.toBeInTheDocument()
 
   const [url, data] = mockPost.mock.calls[0]
   expect(url).toMatch(`/events/${event.slug}`)

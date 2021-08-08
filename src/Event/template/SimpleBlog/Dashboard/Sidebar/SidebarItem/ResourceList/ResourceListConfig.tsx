@@ -2,15 +2,11 @@ import TextField from '@material-ui/core/TextField'
 import React from 'react'
 import ComponentConfig, {
   ComponentConfigProps,
-  RemoveButton,
   SaveButton,
 } from 'organization/Event/DashboardConfig/ComponentConfig'
 import {useForm} from 'react-hook-form'
 import {ResourceListProps} from 'Event/template/SimpleBlog/Dashboard/Sidebar/SidebarItem/ResourceList'
-import {
-  useRemoveSidebarItem,
-  useUpdateSidebarItem,
-} from 'Event/template/SimpleBlog/Dashboard/Sidebar/SidebarItem'
+import {useUpdateSidebarItem} from 'Event/template/SimpleBlog/Dashboard/Sidebar/SidebarItem'
 
 export function ResourceListConfig(
   props: ComponentConfigProps & {
@@ -21,7 +17,6 @@ export function ResourceListConfig(
   const {handleSubmit, register} = useForm()
 
   const updateItem = useUpdateSidebarItem()
-  const removeItem = useRemoveSidebarItem(list)
 
   const save = (data: Pick<ResourceListProps, 'title' | 'description'>) => {
     updateItem({
@@ -56,7 +51,6 @@ export function ResourceListConfig(
           fullWidth
         />
         <SaveButton />
-        <RemoveButton onClick={removeItem} />
       </form>
     </ComponentConfig>
   )

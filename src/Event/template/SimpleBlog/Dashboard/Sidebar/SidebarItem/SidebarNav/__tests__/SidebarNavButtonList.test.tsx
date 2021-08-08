@@ -27,7 +27,7 @@ it('should add a sidebar nav', async () => {
 
   fireEvent.click(await findByText(/add item/i))
   fireEvent.mouseDown(await findByLabelText('select sidebar item'))
-  fireEvent.click(await findByText(/sidebar nav/i))
+  fireEvent.click(await findByText(/sidebar buttons/i))
   fireEvent.click(await findByLabelText('add item'))
 
   await wait(() => {
