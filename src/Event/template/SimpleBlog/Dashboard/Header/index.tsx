@@ -17,6 +17,9 @@ export default function Header(props: {
   'aria-label'?: string
 }) {
   const {flag: configVisible, toggle: toggleConfig} = useToggle()
+  const {template} = useSimpleBlog()
+  const {menu} = template
+  const {iconColor} = menu
 
   return (
     <>
@@ -31,6 +34,7 @@ export default function Header(props: {
                     active={props.menuVisible}
                     onClick={props.toggleMenu}
                     aria-label="show side menu"
+                    iconColor={iconColor}
                   />
                 </Side>
                 <Middle>
