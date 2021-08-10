@@ -111,5 +111,5 @@ export function useValidatedForm<T extends Record<string, any>>() {
     responseError,
   })
 
-  return {...hookForm, errors, setResponseError}
+  return {...hookForm, errors, setResponseError, responseError}
 }

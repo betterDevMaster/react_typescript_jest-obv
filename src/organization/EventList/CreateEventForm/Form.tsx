@@ -55,18 +55,6 @@ export default function Form(props: {
     numAttendees: error('num_attendees'),
   }
 
-  const slugHelperText = () => {
-    if (errors.slug) {
-      return errors.slug
-    }
-
-    if (!slug) {
-      return 'Your event slug will be a part of your domain'
-    }
-
-    return `Your event will be accessible at: ${slug}.obv.io`
-  }
-
   return (
     <form onSubmit={onSubmit}>
       <TextField
@@ -97,7 +85,7 @@ export default function Form(props: {
         }}
         error={!!errors.slug}
         disabled={submitting}
-        helperText={slugHelperText()}
+        helperText={slugHelperText(errors, slug)}
       />
       <Controller
         name="start"
@@ -186,3 +174,15 @@ const ErrorText = withStyles({
     marginBottom: spacing[3],
   },
 })(Typography)
+
+export function slugHelperText(errors: Record<string, any>, slug?: string) {
+  if (errors.slug) {
+    return errors.slug
+  }
+
+  if (!slug) {
+    return 'Your event slug will be a part of your domain'
+  }
+
+  return `Your event will be accessible at: ${slug}.obv.io`
+}

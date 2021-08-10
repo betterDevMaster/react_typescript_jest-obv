@@ -45,6 +45,7 @@ import ReportsProvider from 'organization/Event/ReportsProvider'
 import BackgroundsProvider from 'organization/Event/Backgrounds/BackgroundsProvider'
 import Backgrounds from 'organization/Event/Backgrounds'
 import {StaticPointsProvider} from 'Event/PointsProvider'
+import DuplicateEventForm from 'organization/EventList/DuplicateEventForm'
 
 export type EventRoutes = ReturnType<typeof useEventRoutes>
 
@@ -75,6 +76,11 @@ export default function EventRoutes() {
             <AreasProvider>
               <AreaList />
             </AreasProvider>
+          </Route>
+          <Route path={routes.events[':event'].duplicate}>
+            <AuthorizedPage permission={CONFIGURE_EVENTS}>
+              <DuplicateEventForm />
+            </AuthorizedPage>
           </Route>
           <Route path={routes.events[':event'].dashboard}>
             <AuthorizedPage permission={CONFIGURE_EVENTS}>

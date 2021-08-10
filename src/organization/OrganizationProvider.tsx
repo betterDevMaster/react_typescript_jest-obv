@@ -112,6 +112,7 @@ export function createRoutesFor(organization: Organization) {
       events: {
         create: '/create',
         ':event': {
+          duplicate: '/duplicate',
           dashboard: '/dashboard',
           waiver: '/waiver',
           forms: {
