@@ -8,10 +8,6 @@ import DangerButton from 'lib/ui/Button/DangerButton'
 import RuleConfig, {useRuleConfig} from 'Event/visibility-rules/RuleConfig'
 import ConfigureRulesButton from 'Event/visibility-rules/ConfigureRulesButton'
 import DefaultRibbonSelect from 'Event/template/SimpleBlog/Dashboard/Sidebar/SidebarItem/TicketRibbonList/TicketRibbonConfig/DefaultRibbonSelect'
-import CustomRibbonUpload from 'Event/template/SimpleBlog/Dashboard/Sidebar/SidebarItem/TicketRibbonList/TicketRibbonConfig/CustomRibbonUpload'
-import CustomRibbonImage, {
-  useDeleteCustomRibbon,
-} from 'Event/template/SimpleBlog/Dashboard/Sidebar/SidebarItem/TicketRibbonList/TicketRibbonConfig/CustomRibbonImage'
 import ComponentConfig, {
   ComponentConfigProps,
   SaveButton,
@@ -19,6 +15,8 @@ import ComponentConfig, {
 import {Controller, useForm, UseFormMethods} from 'react-hook-form'
 import {TicketRibbonListProps} from 'Event/template/SimpleBlog/Dashboard/Sidebar/SidebarItem/TicketRibbonList'
 import {useUpdateSidebarItem} from 'Event/template/SimpleBlog/Dashboard/Sidebar/SidebarItem'
+import TicketRibbonUpload from 'organization/Event/DashboardConfig/TicketRibbonUpload'
+import {useDeleteCustomRibbon} from 'organization/Event/DashboardConfig/TicketRibbonUpload/UploadedTicketRibbon'
 
 const MAX_NUM_CHARACTERS = 9
 
@@ -162,8 +160,7 @@ export function TicketRibbonConfig(
           <ConfigureRulesButton onClick={toggleRuleConfig} />
           <form onSubmit={handleSubmit(save)}>
             <DefaultRibbonSelect {...configProps} />
-            <CustomRibbonUpload {...configProps} />
-            <CustomRibbonImage {...configProps} />
+            <TicketRibbonUpload {...configProps} width={800} height={150} />
             <TextField
               name="text"
               defaultValue={ticketRibbon.text}

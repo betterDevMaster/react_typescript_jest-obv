@@ -5,9 +5,14 @@ import DragHandleIcon from '@material-ui/icons/DragHandle'
 
 export function DragHandle(props: {
   handleProps?: DraggableProvidedDragHandleProps
+  className?: string
 }) {
   return (
-    <DragHandleBox {...props.handleProps} aria-label="button drag handle">
+    <DragHandleBox
+      {...props.handleProps}
+      aria-label="button drag handle"
+      className={props.className}
+    >
       <DragHandleIcon />
     </DragHandleBox>
   )

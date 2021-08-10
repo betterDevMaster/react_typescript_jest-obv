@@ -2,14 +2,12 @@ import {goToDashboardConfig} from 'organization/Event/DashboardConfig/__utils__/
 import user from '@testing-library/user-event'
 import {fireEvent, wait} from '@testing-library/react'
 import axios from 'axios'
-import {
-  fakeCustomRibbon,
-  fakeTicketRibbon,
-} from 'Event/template/SimpleBlog/Dashboard/Sidebar/SidebarItem/TicketRibbonList/__utils__/factory'
+import {fakeTicketRibbon} from 'Event/template/SimpleBlog/Dashboard/Sidebar/SidebarItem/TicketRibbonList/__utils__/factory'
 import {fakeEvent} from 'Event/__utils__/factory'
 import {fakeSimpleBlog} from 'Event/template/SimpleBlog/__utils__/factory'
 import {clickEdit} from '__utils__/edit'
 import {createTicketRibbonList} from 'Event/template/SimpleBlog/Dashboard/Sidebar/SidebarItem/TicketRibbonList'
+import {fakeCustomRibbon} from 'organization/Event/DashboardConfig/TicketRibbonUpload/__utils__/factory'
 
 const mockPost = axios.post as jest.Mock
 const mockDelete = axios.delete as jest.Mock

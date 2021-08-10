@@ -21,13 +21,13 @@ import LIGHT_PURPLE_RIBBON_IMAGE from './ribbons/light_purple.png'
 import {HasRules} from 'Event/visibility-rules'
 import {useVariables} from 'Event'
 import Typography from '@material-ui/core/Typography'
-import {FileLocation} from 'lib/http-client'
 import {useEditMode} from 'Event/Dashboard/editor/state/edit-mode'
 import {Draggable} from 'react-beautiful-dnd'
 import {DragHandle, DraggableOverlay} from 'lib/ui/drag-and-drop'
 import {TicketRibbonConfig} from 'Event/template/SimpleBlog/Dashboard/Sidebar/SidebarItem/TicketRibbonList/TicketRibbonConfig'
 import {useToggle} from 'lib/toggle'
 import {TicketRibbonListProps} from 'Event/template/SimpleBlog/Dashboard/Sidebar/SidebarItem/TicketRibbonList'
+import {CustomTicketRibbon} from 'organization/Event/DashboardConfig/TicketRibbonUpload'
 
 export const BLACK_RIBBON = 'Black'
 export const BLUE_RIBBON = 'Blue'
@@ -73,11 +73,6 @@ export type TicketRibbon = HasRules & {
   text: string
   color: string
   customRibbon?: CustomTicketRibbon | null
-}
-
-export type CustomTicketRibbon = {
-  id: number
-  image: FileLocation
 }
 
 export const TICKET_RIBBON_IMAGE: Record<string, string> = {

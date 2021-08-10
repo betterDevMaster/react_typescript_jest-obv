@@ -1,0 +1,71 @@
+import IconButton from 'lib/ui/IconButton'
+import AddOutlinedIcon from '@material-ui/icons/AddOutlined'
+import {TicketRibbon} from 'Event/template/Panels/Dashboard/TicketRibbonList/TicketRibbon'
+import React, {useState} from 'react'
+import TicketRibbonConfig from 'Event/template/Panels/Dashboard/TicketRibbonList/TicketRibbonConfig'
+import styled from 'styled-components'
+import {colors} from 'lib/ui/theme'
+
+export default function AddTicketRibbonButton(props: {className?: string}) {
+  const [ticketRibbon, setTicketRibbon] = useState<TicketRibbon | null>(null)
+
+  const add = () => {
+    const newRibbon: TicketRibbon = {
+      backgroundColor: colors.primary,
+      letter: '',
+      letterUpload: null,
+      hoverText: '',
+      hoverUpload: null,
+      textColor: '#ffffff',
+      rules: [],
+    }
+
+    setTicketRibbon(newRibbon)
+  }
+  return (
+    <>
+      <NewTicketRibbonConfig
+        ticketRibbon={ticketRibbon}
+        onClose={() => setTicketRibbon(null)}
+      />
+      <StyledIconButton
+        aria-label="add ticket ribbon"
+        onClick={add}
+        className={props.className}
+      >
+        <AddIcon />
+      </StyledIconButton>
+    </>
+  )
+}
+
+function NewTicketRibbonConfig(props: {
+  ticketRibbon: TicketRibbon | null
+  onClose: () => void
+}) {
+  if (!props.ticketRibbon) {
+    return null
+  }
+
+  return (
+    <TicketRibbonConfig
+      ticketRibbon={props.ticketRibbon}
+      onClose={props.onClose}
+      isVisible
+    />
+  )
+}
+
+const StyledIconButton = styled(IconButton)`
+  background: rgba(255, 255, 255, 0.3);
+  height: 100% !important;
+  display: flex;
+  align-items: center;
+
+  &:hover {
+    background: rgba(255, 255, 255, 0.6);
+  }
+`
+const AddIcon = styled(AddOutlinedIcon)`
+  color: white;
+`

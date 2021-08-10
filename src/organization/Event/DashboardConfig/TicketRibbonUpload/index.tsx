@@ -1,23 +1,31 @@
-import {
-  CustomTicketRibbon,
-  TicketRibbon,
-} from 'Event/template/SimpleBlog/Dashboard/Sidebar/SidebarItem/TicketRibbonList/TicketRibbon'
-import React, {useCallback, useEffect} from 'react'
+import {useOrganization} from 'organization/OrganizationProvider'
+import {api} from 'lib/url'
+import {useEvent} from 'Event/EventProvider'
+import {useCallback} from 'react'
+import {FileLocation} from 'lib/http-client'
+import React, {useEffect} from 'react'
 import ImageUpload from 'lib/ui/form/ImageUpload'
 import {useFileSelect} from 'lib/ui/form/file'
 import UploadButton from 'lib/ui/form/ImageUpload/UploadButton'
 import Box from '@material-ui/core/Box'
-import {useOrganization} from 'organization/OrganizationProvider'
-import {useEvent} from 'Event/EventProvider'
-import {api} from 'lib/url'
 import Cropper from 'lib/ui/form/ImageUpload/Cropper'
-import {TicketRibbonConfigProps} from 'Event/template/SimpleBlog/Dashboard/Sidebar/SidebarItem/TicketRibbonList/TicketRibbonConfig'
+import UploadedTicketRibbon from 'organization/Event/DashboardConfig/TicketRibbonUpload/UploadedTicketRibbon'
 
-export default function CustomRibbonUpload(
-  props: TicketRibbonConfigProps & {
-    setCustomRibbon: (customRibbon: TicketRibbon['customRibbon']) => void
-  },
-) {
+export type CustomTicketRibbon = {
+  id: number
+  image: FileLocation
+}
+
+export type TicketRibbonUploadProps = {
+  processing: boolean
+  setProcessing: (processing: boolean) => void
+  customRibbon?: CustomTicketRibbon | null
+  setCustomRibbon: (customRibbon: CustomTicketRibbon | null) => void
+  width: number
+  height: number
+}
+
+export default function TicketRibbonUpload(props: TicketRibbonUploadProps) {
   const {processing, setProcessing, setCustomRibbon, customRibbon} = props
   const customImage = useFileSelect()
   const {selected: selectedUpload, remove: removeSelectedUpload} = customImage
@@ -50,18 +58,17 @@ export default function CustomRibbonUpload(
   ])
 
   /**
-   * Already uploaded a custom image, so we won't show
-   * the upload button again.
+   * If we've uploaded an image, let's show that instead
+   * of the uploader.
    */
   if (Boolean(customRibbon)) {
-    return null
+    return <UploadedTicketRibbon {...props} />
   }
 
   return (
     <Box mb={2}>
       <ImageUpload file={customImage}>
-        {/* Same dimensions as default ribbons */}
-        <Cropper width={800} height={150} />
+        <Cropper width={props.width} height={props.height} />
         <UploadButton
           inputProps={{
             'aria-label': 'upload custom image',
@@ -74,7 +81,7 @@ export default function CustomRibbonUpload(
   )
 }
 
-function useUploadCustomRibbon() {
+export function useUploadCustomRibbon() {
   const {client} = useOrganization()
   const {event} = useEvent()
 

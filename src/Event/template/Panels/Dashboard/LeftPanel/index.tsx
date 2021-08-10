@@ -13,6 +13,7 @@ import {rgba} from 'lib/color'
 import Slide from '@material-ui/core/Slide'
 import {TOP_BAR_HEIGHT} from 'Event/template/Panels/Page'
 import {User} from 'auth/user'
+import TicketRibbonList from 'Event/template/Panels/Dashboard/TicketRibbonList'
 
 export default function LeftPanel(props: {
   onChangeTab: (tab: number) => void
@@ -46,12 +47,13 @@ export default function LeftPanel(props: {
             backgroundColor={leftPanel.barBackgroundColor}
             aria-label="left panel"
           >
-            <MenuIconButton
+            <StyledMenuIconButton
               active={menuVisible}
               iconColor={leftPanel.barTextColor}
               onClick={toggleMenu}
               aria-label="menu icon button"
             />
+            <TicketRibbonList />
           </Bar>
         </Editable>
         <Main>
@@ -92,7 +94,8 @@ const Bar = styled.div<{
   background: ${(props) => props.backgroundColor};
   border-top-left-radius: 10px;
   border-top-right-radius: 10px;
-  padding: 24px;
+  display: flex;
+  justify-content: space-between;
 `
 
 const Box = styled.div<{
@@ -124,4 +127,8 @@ const MainContent = styled.div`
 const MenuBox = styled.div`
   flex: 1;
   display: flex;
+`
+
+const StyledMenuIconButton = styled(MenuIconButton)`
+  margin-left: 24px;
 `
