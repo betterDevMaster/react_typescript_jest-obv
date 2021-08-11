@@ -34,20 +34,34 @@ import Preview from 'organization/Event/WaiverConfig/Preview'
 import TemplateFields from 'Event/template/SimpleBlog/Step2/WaiverConfig/TemplateFields'
 import Step2 from 'Event/template/SimpleBlog/Step2'
 import {useTeamMember} from 'organization/auth'
+import {fieldError} from 'lib/form'
+import {ValidationError} from 'lib/api-client'
+
 const imageUploadId = 'waived-logo-upload'
 
 type WaiverData = {
   title: string
   body: string
   agree_statement: string
+  signature_prompt: string
 }
 
 export default function WaiverConfig() {
-  const {register, handleSubmit, watch, setValue, errors, control} = useForm()
+  const {
+    register,
+    handleSubmit,
+    watch,
+    setValue,
+    errors: formErrors,
+    control,
+  } = useForm()
   const [submitting, setSubmitting] = useState(false)
   const [logo, setLogo] = useState<null | File>(null)
   const body = watch('body')
-  const [responseError, setResponseError] = useState('')
+  const [
+    responseError,
+    setResponseError,
+  ] = useState<ValidationError<WaiverData> | null>(null)
   const setWaiver = useSetWaiver()
   const dispatch = useDispatch()
   const {event} = useEvent()
@@ -59,6 +73,18 @@ export default function WaiverConfig() {
   // on browser 'back', or else the body would not be
   // set.
   const [loading, setLoading] = useState(true)
+  const error = (key: keyof WaiverData) =>
+    fieldError(key, {
+      form: formErrors,
+      response: responseError,
+    })
+
+  const errors = {
+    title: error('title'),
+    body: error('body'),
+    signature_prompt: error('signature_prompt'),
+    agree_statement: error('agree_statement'),
+  }
 
   useEffect(() => {
     if (!mounted.current) {
@@ -101,10 +127,11 @@ export default function WaiverConfig() {
 
     setWaiver(data, logo)
       .then((event) => {
+        setResponseError(null)
         dispatch(setEvent(event))
       })
       .catch((e) => {
-        setResponseError(e.message)
+        setResponseError(e)
       })
       .finally(() => {
         setSubmitting(false)
@@ -214,6 +241,7 @@ export default function WaiverConfig() {
             rows={4}
             multiline
             error={!!errors.agree_statement}
+            helperText={errors.agree_statement}
           />
           <TextField
             name="signature_prompt"
@@ -225,9 +253,10 @@ export default function WaiverConfig() {
             }}
             disabled={submitting}
             error={!!errors.signature_prompt}
+            helperText={errors.signature_prompt}
           />
 
-          <Error>{responseError}</Error>
+          <Error>{responseError?.message}</Error>
 
           <Grid container spacing={3}>
             <Grid item xs={12} md={6}>
@@ -276,12 +305,12 @@ function UploadedLogo(props: {logo: File | null; remove: () => void}) {
   )
 }
 
-function BodyError(props: {error?: {message: string}}) {
+function BodyError(props: {error?: string}) {
   if (!props.error) {
     return null
   }
 
-  return <FormHelperText error>{props.error.message}</FormHelperText>
+  return <FormHelperText error>{props.error}</FormHelperText>
 }
 
 function useSetWaiver() {
@@ -350,7 +379,7 @@ const Editor = styled.div`
   }
 `
 
-function Error(props: {children: string}) {
+function Error(props: {children?: string}) {
   if (!props.children) {
     return null
   }
