@@ -194,7 +194,7 @@ const FullHeightGrid = styled(Grid)`
 
 const SidePanel = styled(FullHeightGrid)`
   display: flex;
-  overflow: hidden;
+  overflow: visible;
 
   > * {
     flex: 1;
