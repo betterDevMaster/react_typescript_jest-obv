@@ -15,7 +15,6 @@ export interface AuthClientSettings {
     login: string
     register: string
   }
-  noCache?: boolean
 }
 
 interface TokenResponse {
@@ -46,7 +45,7 @@ export interface ResetPasswordRequestData {
 }
 
 export const useAuthClient = (settings: AuthClientSettings) => {
-  const {endpoints, tokenKey, noCache} = settings
+  const {endpoints, tokenKey} = settings
   const dispatch = useDispatch()
   /**
    * Loading here is the global app loading state, it should only be
@@ -62,7 +61,7 @@ export const useAuthClient = (settings: AuthClientSettings) => {
       return Promise.resolve()
     }
 
-    return fetchUser(tokenKey, endpoints.user, noCache)
+    return fetchUser(tokenKey, endpoints.user)
       .then((user) => {
         dispatch(setUser(user))
         dispatch(setToken(token))
@@ -71,7 +70,7 @@ export const useAuthClient = (settings: AuthClientSettings) => {
         // Token expired/invalid
         deleteToken(tokenKey)
       })
-  }, [dispatch, endpoints, token, tokenKey, noCache])
+  }, [dispatch, endpoints, token, tokenKey])
 
   // Initial Load
   useEffect(() => {
@@ -134,12 +133,10 @@ export const useAuthClient = (settings: AuthClientSettings) => {
 async function fetchUser(
   tokenKey: string,
   endpoint: string,
-  noCache?: boolean,
 ): Promise<User | null> {
   const url = api(endpoint)
   return client.get<any>(url, {
     tokenKey,
-    noCache,
   })
 }
 

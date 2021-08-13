@@ -13,7 +13,6 @@ export const useObvioAuth = () => {
         login: '/login',
         register: '/register',
       },
-      noCache: true,
     }),
     [],
   )

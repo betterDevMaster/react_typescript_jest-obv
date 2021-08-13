@@ -17,7 +17,6 @@ export const useOrganizationAuth = () => {
         login: `${baseUrl}/login`,
         register: `/register`,
       },
-      noCache: true,
     }),
     [baseUrl],
   )
