@@ -14,11 +14,13 @@ import moment from 'moment'
 import LocalizedDateTimePicker from 'lib/LocalizedDateTimePicker'
 import {useOrganization} from 'organization/OrganizationProvider'
 import {useToggle} from 'lib/toggle'
-import {useHistory} from 'react-router-dom'
 import {useEvent} from 'Event/EventProvider'
 import {api} from 'lib/url'
 import {ObvioEvent} from 'Event'
 import {slugHelperText} from 'organization/EventList/CreateEventForm/Form'
+import Center from 'lib/ui/layout/Center'
+import spinner from 'assets/images/obvio_spinner_80.gif'
+import Box from '@material-ui/core/Box'
 
 export interface DuplicateEventData {
   name: string
@@ -30,7 +32,10 @@ export interface DuplicateEventData {
   copy_rooms: boolean
 }
 
-export default function Form() {
+export default function Form(props: {
+  onComplete: (event: ObvioEvent) => void
+  onCancel: () => void
+}) {
   const {
     register,
     errors,
@@ -42,11 +47,7 @@ export default function Form() {
   } = useValidatedForm()
 
   const duplicateEvent = useDuplicateEvent()
-  const {routes} = useOrganization()
-  const history = useHistory()
   const {flag: submitting, toggle: toggleSubmitting} = useToggle()
-
-  const goToEvents = () => history.push(routes.events.root)
 
   const submit = (data: DuplicateEventData) => {
     if (submitting) {
@@ -56,7 +57,7 @@ export default function Form() {
     toggleSubmitting()
 
     duplicateEvent(data)
-      .then(goToEvents)
+      .then(props.onComplete)
       .catch((error) => {
         setResponseError(error)
         toggleSubmitting()
@@ -67,6 +68,10 @@ export default function Form() {
   const inThreeDays = moment().add(3, 'days').toISOString()
   const inSixDays = moment().add(6, 'days').toISOString()
   const slug = watch('slug')
+
+  if (submitting) {
+    return <Loader />
+  }
 
   return (
     <form onSubmit={handleSubmit(submit)}>
@@ -200,7 +205,7 @@ export default function Form() {
         fullWidth
         color="primary"
         size="large"
-        onClick={goToEvents}
+        onClick={props.onCancel}
         disabled={submitting}
       >
         Cancel
@@ -268,3 +273,37 @@ function useDuplicateEvent() {
 
   return (data: DuplicateEventData) => client.post<ObvioEvent>(url, data)
 }
+
+function Loader() {
+  return (
+    <StyledCenter>
+      <Container>
+        <Spinner src={spinner} alt="loading" />
+        <Box mb={1}>
+          <Typography variant="h5" align="center">
+            One moment, just creating a copy of everything.
+          </Typography>
+        </Box>
+        <Typography align="center">
+          We'll automatically redirect you once this is complete.
+        </Typography>
+      </Container>
+    </StyledCenter>
+  )
+}
+
+const StyledCenter = styled(Center)`
+  background: #ffffff;
+  z-index: 10000;
+`
+
+const Container = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+`
+
+const Spinner = styled.img`
+  width: 64px;
+`

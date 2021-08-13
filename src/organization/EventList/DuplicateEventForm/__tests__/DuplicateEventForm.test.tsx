@@ -69,8 +69,7 @@ it('should duplicate an event', async () => {
   const newEvent = fakeEvent()
 
   mockPost.mockImplementationOnce(() => Promise.resolve({data: newEvent}))
-  const withNewEvent = [...events, newEvent]
-  mockGet.mockImplementationOnce(() => Promise.resolve({data: withNewEvent}))
+  mockGet.mockImplementationOnce(() => Promise.resolve({data: newEvent}))
 
   await act(async () => {
     user.click(await findByLabelText('submit'))
@@ -90,6 +89,5 @@ it('should duplicate an event', async () => {
   expect(data.end).toMatch(endDate)
   expect(data.num_attendees).toBe(`${count}`)
 
-  // Rendered in list
   expect(await findByText(newEvent.name)).toBeInTheDocument()
 })
