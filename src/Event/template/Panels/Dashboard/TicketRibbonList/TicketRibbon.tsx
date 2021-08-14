@@ -9,6 +9,7 @@ import {Draggable} from 'react-beautiful-dnd'
 import TicketRibbonConfig from 'Event/template/Panels/Dashboard/TicketRibbonList/TicketRibbonConfig'
 import {useEditMode} from 'Event/Dashboard/editor/state/edit-mode'
 import {CustomTicketRibbon} from 'organization/Event/DashboardConfig/TicketRibbonUpload'
+import {DeepRequired} from 'lib/type-utils'
 
 export type TicketRibbon = HasRules & {
   textColor: string
@@ -18,13 +19,13 @@ export type TicketRibbon = HasRules & {
   hoverText: string
   hoverUpload: CustomTicketRibbon | null
   hoverTextFontStyles?: FontStyle[] | undefined
+  hoverImageWidth?: number
 }
 
-export const HOVER_IMAGE_WIDTH = 106
 export const LETTER_WIDTH = 32
 
 export default function TicketRibbon(props: {
-  ticketRibbon: TicketRibbon
+  ticketRibbon: DeepRequired<TicketRibbon>
   index: number
   className?: string
 }) {
@@ -74,12 +75,13 @@ function Body(props: {
       hoverUpload,
       hoverText,
       hoverTextFontStyles,
+      hoverImageWidth,
     },
   } = props
 
   const v = useVariables()
 
-  const hoverBoxWidth = hoverUpload ? `${HOVER_IMAGE_WIDTH}px` : 'auto'
+  const hoverBoxWidth = hoverUpload ? `${hoverImageWidth}px` : 'auto'
 
   const background = (upload?: CustomTicketRibbon | null) => {
     if (upload) {

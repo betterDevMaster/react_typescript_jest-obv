@@ -1,6 +1,8 @@
 import {useEditMode} from 'Event/Dashboard/editor/state/edit-mode'
 import {usePanels} from 'Event/template/Panels'
-import AddTicketRibbonButton from 'Event/template/Panels/Dashboard/TicketRibbonList/AddTicketRibbonButton'
+import AddTicketRibbonButton, {
+  DEFAULT_TICKET_RIBBON,
+} from 'Event/template/Panels/Dashboard/TicketRibbonList/AddTicketRibbonButton'
 import TicketRibbon, {
   LETTER_WIDTH,
 } from 'Event/template/Panels/Dashboard/TicketRibbonList/TicketRibbon'
@@ -10,6 +12,7 @@ import React from 'react'
 import {DragDropContext, Droppable, DropResult} from 'react-beautiful-dnd'
 import styled from 'styled-components'
 import 'Event/template/Panels/Dashboard/LeftPanel'
+import {withDefaults} from 'lib/object'
 
 export default function TicketRibbonList() {
   return (
@@ -55,9 +58,13 @@ function Items() {
   const {template} = usePanels()
   const {ticketRibbons} = template
 
+  const filled = ticketRibbons.map((tr) =>
+    withDefaults(DEFAULT_TICKET_RIBBON, tr),
+  )
+
   return (
     <>
-      {ticketRibbons.map((tr, index) => (
+      {filled.map((tr, index) => (
         <HiddenOnMatch rules={tr.rules} key={index}>
           <StyledTicketRibbon ticketRibbon={tr} index={index} />
         </HiddenOnMatch>

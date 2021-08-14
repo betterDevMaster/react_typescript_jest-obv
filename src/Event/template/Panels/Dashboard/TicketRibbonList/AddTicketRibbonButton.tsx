@@ -5,22 +5,28 @@ import React, {useState} from 'react'
 import TicketRibbonConfig from 'Event/template/Panels/Dashboard/TicketRibbonList/TicketRibbonConfig'
 import styled from 'styled-components'
 import {colors} from 'lib/ui/theme'
+import {DeepRequired} from 'lib/type-utils'
+
+export const DEFAULT_TICKET_RIBBON: DeepRequired<TicketRibbon> = {
+  backgroundColor: colors.primary,
+  letter: '',
+  letterUpload: null,
+  hoverText: '',
+  hoverUpload: null,
+  textColor: '#ffffff',
+  rules: [],
+  hoverImageWidth: 106,
+  hoverTextFontStyles: [],
+}
 
 export default function AddTicketRibbonButton(props: {className?: string}) {
-  const [ticketRibbon, setTicketRibbon] = useState<TicketRibbon | null>(null)
+  const [
+    ticketRibbon,
+    setTicketRibbon,
+  ] = useState<DeepRequired<TicketRibbon> | null>(null)
 
   const add = () => {
-    const newRibbon: TicketRibbon = {
-      backgroundColor: colors.primary,
-      letter: '',
-      letterUpload: null,
-      hoverText: '',
-      hoverUpload: null,
-      textColor: '#ffffff',
-      rules: [],
-    }
-
-    setTicketRibbon(newRibbon)
+    setTicketRibbon({...DEFAULT_TICKET_RIBBON})
   }
   return (
     <>
@@ -40,7 +46,7 @@ export default function AddTicketRibbonButton(props: {className?: string}) {
 }
 
 function NewTicketRibbonConfig(props: {
-  ticketRibbon: TicketRibbon | null
+  ticketRibbon: DeepRequired<TicketRibbon> | null
   onClose: () => void
 }) {
   if (!props.ticketRibbon) {
