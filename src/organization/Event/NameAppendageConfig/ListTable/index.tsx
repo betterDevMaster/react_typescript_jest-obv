@@ -45,14 +45,11 @@ export default function NameAppendageListTable(props: {
       reorder(reorderNameAppendage(nameAppendages, oldIndex, newIndex))
 
       setSubmitting(true)
-      const url = api(`/events/${event.slug}/name-appendage/sort`)
+      const url = api(`/events/${event.slug}/attendee_labels`)
 
-      client
-        .post(url, {nameAppendagesList: nameAppendages})
-        .then(() => {})
-        .finally(() => {
-          setSubmitting(false)
-        })
+      client.patch(url, {labels: nameAppendages}).finally(() => {
+        setSubmitting(false)
+      })
     }
   }
 
