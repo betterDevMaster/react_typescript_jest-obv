@@ -38,6 +38,8 @@ export default function Cropper({
   width,
   height,
   canResize,
+  disableWidthResize,
+  disableHeightResize,
 }) {
   const [croppie, setCroppie] = useState(null)
   const [el, setEl] = useState(null)
@@ -70,6 +72,10 @@ export default function Cropper({
         height: boundaryLength,
       },
       enableResize: Boolean(canResize),
+      resizeControls: {
+        width: !disableWidthResize,
+        height: !disableHeightResize,
+      },
     }
 
     const c = new Croppie(el, options)
@@ -78,7 +84,17 @@ export default function Cropper({
     })
 
     setCroppie(c)
-  }, [el, croppie, isOpen, image, width, height, canResize])
+  }, [
+    el,
+    croppie,
+    isOpen,
+    image,
+    width,
+    height,
+    canResize,
+    disableWidthResize,
+    disableHeightResize,
+  ])
 
   /**
    * Clean-up instance on close

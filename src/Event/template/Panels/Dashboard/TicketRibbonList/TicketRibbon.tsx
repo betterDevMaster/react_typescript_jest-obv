@@ -18,8 +18,7 @@ export type TicketRibbon = HasRules & {
   letterUpload: CustomTicketRibbon | null
   hoverText: string
   hoverUpload: CustomTicketRibbon | null
-  hoverTextFontStyles?: FontStyle[] | undefined
-  hoverImageWidth?: number
+  hoverTextFontStyles?: FontStyle[]
 }
 
 export const LETTER_WIDTH = 32
@@ -72,16 +71,13 @@ function Body(props: {
       letter,
       letterUpload,
       backgroundColor,
-      hoverUpload,
       hoverText,
       hoverTextFontStyles,
-      hoverImageWidth,
+      hoverUpload,
     },
   } = props
 
   const v = useVariables()
-
-  const hoverBoxWidth = hoverUpload ? `${hoverImageWidth}px` : 'auto'
 
   const background = (upload?: CustomTicketRibbon | null) => {
     if (upload) {
@@ -91,32 +87,41 @@ function Body(props: {
     return backgroundColor
   }
 
+  const hasHoverImage = Boolean(hoverUpload)
+
   return (
     <Box aria-label="ticket ribbon" className={props.className}>
       <LetterBox color={textColor} background={background(letterUpload)}>
         <Letter aria-label="ticket ribbon letter">{v(letter)}</Letter>
       </LetterBox>
-      <HoverBox
-        color={textColor}
-        background={background(hoverUpload)}
-        width={hoverBoxWidth}
-      >
+      <HoverBox color={textColor} background={backgroundColor}>
         <StyledText
           Component={HoverText}
           fontStyles={hoverTextFontStyles}
           color={textColor}
+          hasImage={hasHoverImage}
         >
           {v(hoverText)}
         </StyledText>
+        <HoverImage upload={hoverUpload} />
       </HoverBox>
     </Box>
   )
 }
 
+function HoverImage(props: {upload: CustomTicketRibbon | null}) {
+  const {upload} = props
+
+  if (!upload) {
+    return null
+  }
+
+  return <img src={upload.image.url} alt="custom ribbon" />
+}
+
 const HoverBox = styled.div<{
   color: string
   background: string
-  width: string
 }>`
   display: none;
   color: ${(props) => props.color};
@@ -126,7 +131,6 @@ const HoverBox = styled.div<{
   left: 0;
   z-index: 2;
   height: 30px;
-  width: ${(props) => props.width};
 `
 
 const Box = styled.div`
@@ -154,7 +158,8 @@ const LetterBox = styled.div<{
 `
 
 const Letter = styled.span`
-  word-wrap: break-word;
+  font-size: 30px;
+  text-align: center;
   font-size: 30px;
   text-align: center;
   font-weight: bold;
@@ -162,8 +167,9 @@ const Letter = styled.span`
   text-transform: uppercase;
 `
 
-const HoverText = styled.span`
-  word-wrap: break-word;
+const HoverText = styled.span<{hasImage: boolean}>`
+  white-space: nowrap;
+  position: ${(props) => (props.hasImage ? 'absolute' : 'relative')};
   font-size: 20px;
   padding: 0 10px;
   margin: 0;

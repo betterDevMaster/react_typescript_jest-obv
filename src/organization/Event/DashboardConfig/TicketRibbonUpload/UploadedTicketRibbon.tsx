@@ -37,12 +37,7 @@ export default function UploadedTicketRibbon(props: TicketRibbonUploadProps) {
   return (
     <Box mb={2}>
       <ImageBox>
-        <SizedImage
-          width={props.width}
-          height={props.height}
-          src={customRibbon.image.url}
-          alt="Ticket ribbon"
-        />
+        <img src={customRibbon.image.url} alt="Ticket ribbon" />
       </ImageBox>
       <DangerButton
         onClick={remove}
@@ -73,11 +68,3 @@ export function useDeleteCustomRibbon() {
     return client.delete(url)
   }
 }
-
-const SizedImage = styled.img<{
-  width: number
-  height: number
-}>`
-  width: ${(props) => props.width}px;
-  height: ${(props) => props.height}px;
-`

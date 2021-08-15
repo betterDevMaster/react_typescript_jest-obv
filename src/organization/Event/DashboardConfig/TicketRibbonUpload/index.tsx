@@ -23,10 +23,19 @@ export type TicketRibbonUploadProps = {
   setCustomRibbon: (customRibbon: CustomTicketRibbon | null) => void
   width: number
   height: number
+  canResize?: boolean
+  disableHeightResize?: boolean
 }
 
 export default function TicketRibbonUpload(props: TicketRibbonUploadProps) {
-  const {processing, setProcessing, setCustomRibbon, customRibbon} = props
+  const {
+    processing,
+    setProcessing,
+    setCustomRibbon,
+    customRibbon,
+    canResize,
+    disableHeightResize,
+  } = props
   const customImage = useFileSelect()
   const {selected: selectedUpload, remove: removeSelectedUpload} = customImage
   const uploadCustomRibbon = useUploadCustomRibbon()
@@ -68,7 +77,12 @@ export default function TicketRibbonUpload(props: TicketRibbonUploadProps) {
   return (
     <Box mb={2}>
       <ImageUpload file={customImage}>
-        <Cropper width={props.width} height={props.height} />
+        <Cropper
+          width={props.width}
+          height={props.height}
+          canResize={canResize}
+          disableHeightResize={disableHeightResize}
+        />
         <UploadButton
           inputProps={{
             'aria-label': 'upload custom image',

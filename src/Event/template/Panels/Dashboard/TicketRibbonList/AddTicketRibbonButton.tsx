@@ -15,7 +15,6 @@ export const DEFAULT_TICKET_RIBBON: DeepRequired<TicketRibbon> = {
   hoverUpload: null,
   textColor: '#ffffff',
   rules: [],
-  hoverImageWidth: 106,
   hoverTextFontStyles: [],
 }
 

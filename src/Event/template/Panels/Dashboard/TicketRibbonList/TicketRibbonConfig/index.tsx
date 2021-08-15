@@ -17,8 +17,6 @@ import React, {useEffect, useState} from 'react'
 import {Controller, useForm} from 'react-hook-form'
 import Box from '@material-ui/core/Box'
 import {DeepRequired} from 'lib/type-utils'
-import {handleChangeSlider} from 'lib/dom'
-import Slider from '@material-ui/core/Slider'
 import ConfigureRulesButton from 'Event/visibility-rules/ConfigureRulesButton'
 
 const MAX_HOVER_TEXT_CHARS = 15
@@ -47,15 +45,6 @@ export default function TicketRibbonConfig(
   )
 
   /**
-   * The user might be updating the width in which case we'd need to dynamically
-   * update the image upload as well, so we'll maintain local state
-   * here.
-   */
-  const [hoverImageWidth, setHoverImageWidth] = useState(
-    ticketRibbon.hoverImageWidth,
-  )
-
-  /**
    * Set defaults for anything that can't be set via defaultValue
    */
   useEffect(() => {
@@ -67,7 +56,6 @@ export default function TicketRibbonConfig(
     setLetterUpload(ticketRibbon.letterUpload)
     setHoverUpload(ticketRibbon.hoverUpload)
     setHoverTextFontStyles(ticketRibbon.hoverTextFontStyles)
-    setHoverImageWidth(ticketRibbon.hoverImageWidth)
   }, [isVisible, ticketRibbon])
 
   const update = (index: number, updated: TicketRibbon) => {
@@ -120,7 +108,6 @@ export default function TicketRibbonConfig(
       letterUpload,
       hoverUpload,
       hoverTextFontStyles,
-      hoverImageWidth,
     }
 
     if (index === undefined) {
@@ -182,17 +169,6 @@ export default function TicketRibbonConfig(
               width={30}
               height={65}
             />
-            <InputLabel>Hover Image Width</InputLabel>
-
-            <Slider
-              min={80}
-              max={200}
-              step={1}
-              value={hoverImageWidth || 0}
-              onChange={handleChangeSlider(setHoverImageWidth)}
-              valueLabelDisplay="auto"
-              aria-label="hover image width"
-            />
 
             <Box mb={1}>
               <InputLabel>Hover Image</InputLabel>
@@ -202,8 +178,10 @@ export default function TicketRibbonConfig(
               setProcessing={setProcessing}
               customRibbon={hoverUpload}
               setCustomRibbon={setHoverUpload}
-              width={hoverImageWidth}
               height={30}
+              width={110}
+              canResize
+              disableHeightResize
             />
             <TextField
               name="letter"
