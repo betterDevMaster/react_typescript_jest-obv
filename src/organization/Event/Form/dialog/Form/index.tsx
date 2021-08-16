@@ -20,6 +20,7 @@ import {
   LONG_ANSWER_TEXT,
   NUMERIC,
   PHONE_NUMBER,
+  PRICE,
   Question,
   RADIO,
   SELECT,
@@ -29,6 +30,7 @@ import React, {useEffect} from 'react'
 import {Controller, useForm} from 'react-hook-form'
 import {v4 as uuid} from 'uuid'
 import CharacterLimitInputs from 'organization/Event/Form/dialog/Form/CharacterLimitInputs'
+import CurrencyInput from 'organization/Event/Form/dialog/Form/CurrencyInput'
 
 const TYPE_SELECT_ID = 'question-type-select'
 const RULE_SELECT_ID = 'question-rule-select'
@@ -128,6 +130,7 @@ export default function Form(props: {
                 <MenuItem value={RADIO}>Radio</MenuItem>
                 <MenuItem value={SELECT}>Select</MenuItem>
                 <MenuItem value={CHECKBOX}>Checkbox</MenuItem>
+                <MenuItem value={PRICE}>Price</MenuItem>
               </Select>
             )}
           />
@@ -151,6 +154,11 @@ export default function Form(props: {
           question={question}
         />
         <CharacterLimitInputs
+          questionType={selectedType}
+          register={register}
+          question={question}
+        />
+        <CurrencyInput
           questionType={selectedType}
           register={register}
           question={question}
@@ -232,7 +240,7 @@ export default function Form(props: {
           color="primary"
           fullWidth
           type="submit"
-          aria-label="save"
+          aria-label="save question"
         >
           Save
         </Button>

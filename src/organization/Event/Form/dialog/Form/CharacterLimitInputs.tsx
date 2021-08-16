@@ -7,7 +7,7 @@ import {
 import React from 'react'
 import {UseFormMethods} from 'react-hook-form'
 
-export default function AllowsMultipleSwitch(props: {
+export default function CharacterLimitInputs(props: {
   questionType: string
   register: UseFormMethods['register']
   question?: Question

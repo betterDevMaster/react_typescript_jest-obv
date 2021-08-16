@@ -17,6 +17,7 @@ export interface Question {
   has_other_option: boolean
   character_limit: number | null
   character_limit_error_message: string | null
+  start_adornment: string | null
 }
 
 export interface Option {
@@ -33,6 +34,7 @@ export const LONG_ANSWER_TEXT = 'long_answer_text'
 export const RADIO = 'radio'
 export const SELECT = 'select'
 export const CHECKBOX = 'checkbox'
+export const PRICE = 'price'
 
 export type QuestionType =
   | typeof SHORT_ANSWER_TEXT
@@ -40,6 +42,7 @@ export type QuestionType =
   | typeof RADIO
   | typeof SELECT
   | typeof CHECKBOX
+  | typeof PRICE
 
 /**
  * Validation Rules
@@ -78,12 +81,12 @@ export default function QuestionsProvider(props: {
   }, [form])
 
   const add = (question: Question) => {
-    const added = [...form.questions, question]
+    const added = [...questions, question]
     setQuestions(added)
   }
 
   const update = (target: Question) => {
-    const updated = form.questions.map((q) => {
+    const updated = questions.map((q) => {
       const isTarget = q.id === target.id
       if (isTarget) {
         return target
@@ -96,7 +99,7 @@ export default function QuestionsProvider(props: {
   }
 
   const remove = (target: Question) => {
-    const remaining = form.questions.filter((q) => q.id !== target.id)
+    const remaining = questions.filter((q) => q.id !== target.id)
     setQuestions(remaining)
   }
 

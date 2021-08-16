@@ -11,6 +11,7 @@ import {
   Option,
   SELECT,
   SHORT_ANSWER_TEXT,
+  PRICE,
 } from 'organization/Event/QuestionsProvider'
 import faker from 'faker'
 
@@ -40,6 +41,7 @@ export const fakeQuestion = (overrides?: Partial<Question>): Question => ({
   validation_rule: null,
   character_limit: null,
   character_limit_error_message: null,
+  start_adornment: null,
   ...overrides,
 })
 
@@ -56,6 +58,7 @@ export function typeLabel(name: string) {
     [RADIO]: 'Radio',
     [SELECT]: 'Select',
     [CHECKBOX]: 'Checkbox',
+    [PRICE]: 'Price',
   }
 
   const label = labels[name]

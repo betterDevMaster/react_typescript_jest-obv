@@ -6,6 +6,7 @@ import axios from 'axios'
 import {CONFIGURE_EVENTS} from 'organization/PermissionsProvider'
 import {fakeForm} from 'organization/Event/FormsProvider/__utils__/factory'
 import {goToForm} from 'organization/Event/Form/__utils__/go-to-form'
+import {fireEvent} from '@testing-library/react'
 
 const mockGet = axios.get as jest.Mock
 const mockPatch = axios.patch as jest.Mock
@@ -53,7 +54,7 @@ it('should update an existing question', async () => {
 
   mockPatch.mockImplementation(() => Promise.resolve({data: updatedForm}))
 
-  user.click(await findByLabelText('save'))
+  user.click(await findByLabelText('save question'))
   user.click(await findByLabelText('save form'))
 
   await wait(() => {
@@ -88,4 +89,33 @@ it('should send submissions', async () => {
   user.click(await findByLabelText(`export ${question.label} submissions`))
 
   expect(await findByText(message)).toBeInTheDocument()
+})
+
+it('should re-edit an unsaved question', async () => {
+  const form = fakeForm({questions: []})
+
+  const {findByLabelText, findByText} = await goToForm({
+    form,
+    userPermissions: [CONFIGURE_EVENTS],
+  })
+
+  user.click(await findByLabelText('add question'))
+
+  const label = 'How much money do you want?'
+  user.type(await findByLabelText('question label'), label)
+
+  fireEvent.mouseDown(await findByLabelText('question type'))
+  user.click(await findByText(/price/i))
+
+  user.click(await findByLabelText('save question'))
+
+  expect(await findByText(label)).toBeInTheDocument()
+
+  /**
+   * Edit and resave... should still keep existing question
+   */
+  user.click(await findByLabelText('edit question'))
+  user.click(await findByLabelText('save question'))
+
+  expect(await findByText(label)).toBeInTheDocument()
 })

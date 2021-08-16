@@ -56,7 +56,7 @@ it('should add a question', async () => {
 
   const question = fakeQuestion({})
 
-  user.click(await findByLabelText('save'))
+  user.click(await findByLabelText('save question'))
 
   const added = {
     ...form,
@@ -137,7 +137,7 @@ it('should create a question with options', async () => {
 
   // Save form
 
-  user.click(await findByLabelText('save'))
+  user.click(await findByLabelText('save question'))
   user.click(await findByLabelText('save form'))
 
   await wait(() => {
@@ -158,4 +158,29 @@ it('should create a question with options', async () => {
   expect(data.questions[0].options[actionOptionIndex].action_id).toBe(
     targetAction.id,
   )
+})
+
+it('should add a price question', async () => {
+  const form = fakeForm({questions: []})
+
+  const {findByLabelText, findByText} = await goToForm({
+    form,
+    userPermissions: [CONFIGURE_EVENTS],
+  })
+
+  user.click(await findByLabelText('add question'))
+
+  const label = 'How much money do you want?'
+  user.type(await findByLabelText('question label'), label)
+
+  fireEvent.mouseDown(await findByLabelText('question type'))
+  user.click(await findByText(/price/i))
+
+  const currencySymbol = '$$$'
+  user.type(await findByLabelText('currency symbol'), currencySymbol)
+
+  user.click(await findByLabelText('save question'))
+
+  // Is displaying question
+  expect(await findByText(currencySymbol)).toBeInTheDocument()
 })
