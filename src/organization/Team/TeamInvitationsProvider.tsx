@@ -2,11 +2,13 @@ import {useAsync} from 'lib/async'
 import {api} from 'lib/url'
 import {useOrganization} from 'organization/OrganizationProvider'
 import React, {useCallback, useEffect, useState} from 'react'
+import {Role} from 'organization/Team/Roles/RolesProvider'
 
 export interface TeamInvitation {
   id: number
   email: string
   token: string
+  role: Role | null
 }
 
 interface TeamInviteContextProps {

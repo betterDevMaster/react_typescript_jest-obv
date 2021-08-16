@@ -2,7 +2,7 @@ import TextField from '@material-ui/core/TextField'
 import styled from 'styled-components'
 import IfExists from 'lib/ui/layout/HasContent'
 import React, {useState} from 'react'
-import {useForm} from 'react-hook-form'
+import {Controller, useForm} from 'react-hook-form'
 import Typography from '@material-ui/core/Typography'
 import {ValidationError} from 'lib/api-client'
 import Button from '@material-ui/core/Button'
@@ -16,13 +16,21 @@ import {
   useTeamInvitations,
 } from 'organization/Team/TeamInvitationsProvider'
 import {useTeam} from 'organization/Team/TeamProvider'
+import {onUnknownChangeHandler} from 'lib/dom'
+import MenuItem from '@material-ui/core/MenuItem'
+import Select from '@material-ui/core/Select'
+import {useRoles} from 'organization/Team/Roles/RolesProvider'
+import Grid from '@material-ui/core/Grid'
+import FormControl from '@material-ui/core/FormControl'
+import InputLabel from '@material-ui/core/InputLabel'
 
 interface InviteData {
   email: string
+  role_id: number
 }
 
 export default function AddTeamMemberForm() {
-  const {register, handleSubmit, errors, reset: resetForm} = useForm()
+  const {control, register, handleSubmit, errors, reset: resetForm} = useForm()
   const {add: addInvite} = useTeamInvitations()
   const {add: addMember} = useTeam()
   const [submitting, setSubmitting] = useState(false)
@@ -30,12 +38,12 @@ export default function AddTeamMemberForm() {
     ValidationError<InviteData>
   >(null)
   const inviteTeamMember = useInviteTeamMember()
+  const {roles} = useRoles()
 
   const submit = (data: InviteData) => {
     if (submitting) {
       return
     }
-
     setSubmitting(true)
     setResponseError(null)
 
@@ -59,22 +67,75 @@ export default function AddTeamMemberForm() {
 
   return (
     <SyledForm onSubmit={handleSubmit(submit)}>
-      <TextField
-        label="Email"
-        type="email"
-        fullWidth
-        variant="outlined"
-        disabled={submitting}
-        name="email"
-        inputProps={{
-          ref: register({
-            required: 'Email is required',
-          }),
-          'aria-label': 'team member email',
-        }}
-        error={!!errors.email}
-        helperText={errors.email && errors.email.message}
-      />
+      <Grid container spacing={2}>
+        <Grid item md={10}>
+          <TextField
+            label="Email"
+            type="email"
+            fullWidth
+            variant="outlined"
+            disabled={submitting}
+            name="email"
+            inputProps={{
+              ref: register({
+                required: 'Email is required',
+              }),
+              'aria-label': 'team member email',
+            }}
+            error={!!errors.email}
+            helperText={errors.email && errors.email.message}
+          />
+        </Grid>
+        <Grid item md={2}>
+          <Controller
+            control={control}
+            name="role_id"
+            label="Role"
+            defaultValue={''}
+            render={({value, onChange}) => (
+              <FormControl fullWidth>
+                <InputLabel variant="outlined" shrink>
+                  Role
+                </InputLabel>
+                <Select
+                  required
+                  fullWidth
+                  variant="outlined"
+                  disabled={submitting}
+                  /**
+                   * Mui Select does NOT recognize NULL values, so we'll
+                   * have to use 0 as a workaround.
+                   */
+                  value={value || 0}
+                  displayEmpty={true}
+                  onChange={onUnknownChangeHandler((val) =>
+                    /**
+                     * Handle our workaround, and set as NULL for the
+                     * request to be correct.
+                     */
+                    onChange(val || null),
+                  )}
+                  inputProps={{
+                    'aria-label': 'team member role',
+                  }}
+                >
+                  <MenuItem value={0}>None</MenuItem>
+                  {roles.map((role) => (
+                    <MenuItem
+                      value={role.id}
+                      aria-label={`pick ${role.name}`}
+                      key={role.id}
+                    >
+                      {role.name}
+                    </MenuItem>
+                  ))}
+                </Select>
+              </FormControl>
+            )}
+          />
+        </Grid>
+      </Grid>
+
       <IfExists Component={ErrorText} color="error">
         {responseError && responseError.message}
       </IfExists>
@@ -95,7 +156,10 @@ function useInviteTeamMember() {
   const url = api(`/organizations/${organization.slug}/team_members`)
 
   return (data: InviteData) =>
-    client.post<TeamMember | TeamInvitation>(url, {email: data.email})
+    client.post<TeamMember | TeamInvitation>(url, {
+      email: data.email,
+      role_id: data.role_id,
+    })
 }
 
 /**

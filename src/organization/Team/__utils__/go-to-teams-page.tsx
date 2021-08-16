@@ -20,7 +20,7 @@ export async function goToTeams(options?: {
   const invitations = options?.teamInvitations || []
   const roles = options?.roles || []
 
-  signInToOrganization({userPermissions: [UPDATE_TEAM]})
+  const userInfo = signInToOrganization({userPermissions: [UPDATE_TEAM]})
 
   const context = render(<App />)
 
@@ -30,5 +30,5 @@ export async function goToTeams(options?: {
 
   user.click(await context.findByText(/team/i))
 
-  return context
+  return {...context, ...userInfo}
 }

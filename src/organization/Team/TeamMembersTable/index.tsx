@@ -47,7 +47,7 @@ export default function TeamMemberList() {
             </TableCell>
             <TableCell>-</TableCell>
             <TableCell>-</TableCell>
-            <TableCell></TableCell>
+            <TableCell>{invite.role?.name || '-'}</TableCell>
             <TableCell>
               <DeleteIconButton
                 disabled={processing}

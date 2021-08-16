@@ -19,5 +19,6 @@ export const fakeTeamInvitation = (
   id: faker.random.number({min: 1000, max: 10000}),
   email: faker.internet.email(),
   token: faker.random.alphaNumeric(8),
+  role: null,
   ...overrides,
 })

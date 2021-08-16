@@ -29,6 +29,11 @@ const muiBaseTheme: ThemeOptions = {
         marginBottom: spacing[4],
       },
     },
+    MuiInputLabel: {
+      root: {
+        background: '#FFFFFF',
+      },
+    },
   },
 }
 
