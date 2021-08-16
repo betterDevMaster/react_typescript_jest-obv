@@ -13,7 +13,7 @@ afterEach(() => {
   jest.clearAllMocks()
 })
 
-it('should update an area', async () => {
+it('should update an area open status', async () => {
   const {areas, findByLabelText} = await goToAreas({
     userPermissions: [CONFIGURE_EVENTS],
   })
@@ -51,4 +51,44 @@ it('should update an area', async () => {
     'toggle area open status',
   )) as HTMLInputElement).checked
   expect(isChecked).toBe(!target.is_open)
+})
+
+it('should update an area re-assign offline status', async () => {
+  const {areas, findByLabelText} = await goToAreas({
+    userPermissions: [CONFIGURE_EVENTS],
+  })
+
+  const targetIndex = faker.random.number({min: 0, max: areas.length - 1})
+  const target = areas[targetIndex]
+
+  // Get area
+  mockGet.mockImplementationOnce(() => Promise.resolve({data: target}))
+  // Rooms
+  mockGet.mockImplementationOnce(() => Promise.resolve({data: []}))
+
+  // go to area config
+  user.click(await findByLabelText(`view ${target.name} area`))
+
+  const updated: Area = {
+    ...target,
+    reassign_on_offline: !target.reassign_on_offline,
+  }
+  mockPatch.mockImplementationOnce(() => Promise.resolve({data: updated}))
+
+  user.click(await findByLabelText('toggle re-assign on offline'))
+
+  await wait(() => {
+    expect(mockPatch).toHaveBeenCalledTimes(1)
+  })
+
+  const [url, data] = mockPatch.mock.calls[0]
+  expect(url).toMatch(`/areas/${target.id}`)
+  // Was toggled -- ie. sent opposite of current open status
+  expect(data.reassign_on_offline).toBe(!target.reassign_on_offline)
+
+  // Checkbox was updated
+  const isChecked = ((await findByLabelText(
+    'toggle re-assign on offline',
+  )) as HTMLInputElement).checked
+  expect(isChecked).toBe(!target.reassign_on_offline)
 })

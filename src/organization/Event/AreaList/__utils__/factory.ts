@@ -22,6 +22,7 @@ export const fakeArea = (overrides?: Partial<Area>): Area => ({
   is_tech_check: false,
   offline_title: null,
   offline_description: null,
+  reassign_on_offline: false,
   key: faker.random.alphaNumeric(16),
   ...overrides,
 })

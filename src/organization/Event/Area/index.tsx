@@ -88,20 +88,38 @@ export default function Area() {
         <Title variant="h5">{area.name}</Title>
         <HasPermission permission={CONFIGURE_EVENTS}>
           <>
-            <FormControlLabel
-              disabled={processing}
-              control={
-                <Switch
-                  checked={area.is_open}
-                  onChange={onChangeCheckedHandler(update('is_open'))}
-                  color="primary"
-                  inputProps={{
-                    'aria-label': 'toggle area open status',
-                  }}
-                />
-              }
-              label="Open"
-            />
+            <Box>
+              <FormControlLabel
+                disabled={processing}
+                control={
+                  <Switch
+                    checked={area.is_open}
+                    onChange={onChangeCheckedHandler(update('is_open'))}
+                    color="primary"
+                    inputProps={{
+                      'aria-label': 'toggle area open status',
+                    }}
+                  />
+                }
+                label="Open"
+              />
+              <FormControlLabel
+                disabled={processing}
+                control={
+                  <Switch
+                    checked={area.reassign_on_offline}
+                    onChange={onChangeCheckedHandler(
+                      update('reassign_on_offline'),
+                    )}
+                    color="primary"
+                    inputProps={{
+                      'aria-label': 'toggle re-assign on offline',
+                    }}
+                  />
+                }
+                label="Re-assign on offline"
+              />
+            </Box>
             <FormControl
               required
               component="fieldset"
