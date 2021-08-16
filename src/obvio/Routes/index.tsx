@@ -11,6 +11,7 @@ export const obvioRoutes = createRoutes({
   acceptInvitation: '/accept_invitation',
   forgotPassword: '/forgot_password',
   resetPassword: '/reset_password',
+  changePassword: '/change_password',
   organizations: {
     create: '/create',
   },

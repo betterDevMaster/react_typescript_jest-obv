@@ -63,7 +63,13 @@ export default function AppBar() {
             }}
             open={Boolean(anchorEl)}
             onClose={handleClose}
+            MenuListProps={{
+              disablePadding: true,
+            }}
           >
+            <RelativeLink disableStyles to={obvioRoutes.changePassword}>
+              <MenuItem aria-label="change password">Change Password</MenuItem>
+            </RelativeLink>
             <MenuItem onClick={handleLogout}>Logout</MenuItem>
           </Menu>
         </div>
