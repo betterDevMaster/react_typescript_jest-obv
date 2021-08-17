@@ -34,7 +34,7 @@ export const LONG_ANSWER_TEXT = 'long_answer_text'
 export const RADIO = 'radio'
 export const SELECT = 'select'
 export const CHECKBOX = 'checkbox'
-export const PRICE = 'price'
+export const CURRENCY = 'currency'
 
 export type QuestionType =
   | typeof SHORT_ANSWER_TEXT
@@ -42,7 +42,7 @@ export type QuestionType =
   | typeof RADIO
   | typeof SELECT
   | typeof CHECKBOX
-  | typeof PRICE
+  | typeof CURRENCY
 
 /**
  * Validation Rules

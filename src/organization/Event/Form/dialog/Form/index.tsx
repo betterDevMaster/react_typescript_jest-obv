@@ -20,7 +20,7 @@ import {
   LONG_ANSWER_TEXT,
   NUMERIC,
   PHONE_NUMBER,
-  PRICE,
+  CURRENCY,
   Question,
   RADIO,
   SELECT,
@@ -130,7 +130,7 @@ export default function Form(props: {
                 <MenuItem value={RADIO}>Radio</MenuItem>
                 <MenuItem value={SELECT}>Select</MenuItem>
                 <MenuItem value={CHECKBOX}>Checkbox</MenuItem>
-                <MenuItem value={PRICE}>Price</MenuItem>
+                <MenuItem value={CURRENCY}>Price</MenuItem>
               </Select>
             )}
           />

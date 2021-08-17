@@ -1,9 +1,9 @@
 import TextField from '@material-ui/core/TextField'
-import {PRICE, Question} from 'organization/Event/QuestionsProvider'
+import {CURRENCY, Question} from 'organization/Event/QuestionsProvider'
 import React from 'react'
 import {UseFormMethods} from 'react-hook-form'
 
-export default function CharacterLimitInputs(props: {
+export default function CurrencyInput(props: {
   questionType: string
   register: UseFormMethods['register']
   question?: Question
@@ -16,7 +16,7 @@ export default function CharacterLimitInputs(props: {
 
   return (
     <TextField
-      label="Currency Symbol"
+      label="Currency"
       fullWidth
       variant="outlined"
       name="start_adornment"
@@ -30,5 +30,5 @@ export default function CharacterLimitInputs(props: {
 }
 
 function canSpecifyCurrency(type: string) {
-  return type === PRICE
+  return type === CURRENCY
 }

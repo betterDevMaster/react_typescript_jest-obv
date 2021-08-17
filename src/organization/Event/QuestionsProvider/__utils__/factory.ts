@@ -11,7 +11,7 @@ import {
   Option,
   SELECT,
   SHORT_ANSWER_TEXT,
-  PRICE,
+  CURRENCY,
 } from 'organization/Event/QuestionsProvider'
 import faker from 'faker'
 
@@ -58,7 +58,7 @@ export function typeLabel(name: string) {
     [RADIO]: 'Radio',
     [SELECT]: 'Select',
     [CHECKBOX]: 'Checkbox',
-    [PRICE]: 'Price',
+    [CURRENCY]: 'Price',
   }
 
   const label = labels[name]

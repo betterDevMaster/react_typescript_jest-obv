@@ -2,7 +2,7 @@ import FormHelperText from '@material-ui/core/FormHelperText'
 import {useVariables} from 'Event'
 import Checkbox from 'Event/Question/Checkbox'
 import LongAnswerText from 'Event/Question/LongAnswerText'
-import Price from 'Event/Question/Price'
+import Price from 'Event/Question/Currency'
 import Radio from 'Event/Question/Radio'
 import Select from 'Event/Question/Select'
 import ShortAnswerText from 'Event/Question/ShortAnswerText'
@@ -12,7 +12,7 @@ import {fieldError} from 'lib/form'
 import {
   CHECKBOX,
   LONG_ANSWER_TEXT,
-  PRICE,
+  CURRENCY,
   Question as QuestionDefinition,
   RADIO,
   SELECT,
@@ -94,7 +94,7 @@ function Field(props: FieldProps) {
       return <Select {...props} />
     case CHECKBOX:
       return <Checkbox {...props} />
-    case PRICE:
+    case CURRENCY:
       return <Price {...props} />
     default:
       throw new Error(
