@@ -26,6 +26,11 @@ import TextField from '@material-ui/core/TextField'
 import ExportAreaAttendees from 'organization/Event/Area/ExportAreaAttendees'
 import ClearRoomAssignmentsButton from 'organization/Event/Area/ClearRoomAssignmentsButton'
 import ErrorAlert from 'lib/ui/alerts/ErrorAlert'
+import {useToggle} from 'lib/toggle'
+import ConfirmDialog from 'lib/ui/ConfirmDialog'
+
+const CONFIRM_TURN_OFF_TECH_CHECK_REASSIGN =
+  "This area is currently assigned to Tech Check.  If you turn this setting off, and an attendee hasn't completed their tech check, they may see an offline message when they try to check in and their original room is unavailable.  Are you sure you wish to disable?"
 
 export default function Area() {
   const {area, update, processing} = useArea()
@@ -41,13 +46,49 @@ export default function Area() {
   )
   const [error, setError] = useState<string | null>(null)
   const clearError = () => setError(null)
+  const {
+    flag: showingConfirmReassignDialog,
+    toggle: toggleConfirmReassignDialog,
+  } = useToggle()
+
+  /**
+   * If an area is assigned to Tech Check, we want to confirm with the
+   * user that they'd really want to turn OFF re-assign.
+   * @param reassign
+   * @returns
+   */
+  const handleSetReassign = (reassign: boolean) => {
+    // Not TC, free to turn on/off
+    if (!area.is_tech_check) {
+      update('reassign_on_offline')(reassign)
+      return
+    }
+
+    // Don't need to confirm on turning on
+    if (reassign) {
+      update('reassign_on_offline')(reassign)
+      return
+    }
+
+    toggleConfirmReassignDialog()
+  }
+
+  const turnOffTechCheckReassign = () => {
+    /**
+     * Only allow turning off TC re-assign via confirm dialog
+     */
+    if (!showingConfirmReassignDialog) {
+      return
+    }
+
+    update('reassign_on_offline')(false)
+    toggleConfirmReassignDialog()
+  }
 
   useEffect(() => {
     setOfflineTitle(area.offline_title || '')
     setOfflineDescription(area.offline_description || '')
   }, [area])
-
-  
 
   useBreadcrumbs([
     {
@@ -76,156 +117,162 @@ export default function Area() {
   }
 
   return (
-    <Layout>
-      <Page>
-        <StyledErrorAlert>{error}</StyledErrorAlert>
-        <Box>
-          <ExportAreaAttendees area={area} />
-          <ClearRoomAssignmentsButton
-            area={area}
-            onError={setError}
-            clearError={clearError}
-          />
-        </Box>
-        <Title variant="h5">{area.name}</Title>
-        <HasPermission permission={CONFIGURE_EVENTS}>
-          <>
-            <Box>
-              <FormControlLabel
-                disabled={processing}
-                control={
-                  <Switch
-                    checked={area.is_open}
-                    onChange={onChangeCheckedHandler(update('is_open'))}
-                    color="primary"
-                    inputProps={{
-                      'aria-label': 'toggle area open status',
-                    }}
-                  />
-                }
-                label="Open"
-              />
-              <FormControlLabel
-                disabled={processing}
-                control={
-                  <Switch
-                    checked={area.reassign_on_offline}
-                    onChange={onChangeCheckedHandler(
-                      update('reassign_on_offline'),
-                    )}
-                    color="primary"
-                    inputProps={{
-                      'aria-label': 'toggle re-assign on offline',
-                    }}
-                  />
-                }
-                label="Re-assign on offline"
-              />
-            </Box>
-            <FormControl
-              required
-              component="fieldset"
-              fullWidth
-              disabled={processing}
-            >
-              <FormControlLabel
-                control={
-                  <Checkbox
-                    checked={area.requires_approval}
-                    onChange={onChangeCheckedHandler(
-                      update('requires_approval'),
-                    )}
-                    inputProps={{
-                      'aria-label': 'toggle requires approval',
-                    }}
-                  />
-                }
-                label="Requires approval?"
-              />
-            </FormControl>
-            <FormControl
-              required
-              component="fieldset"
-              fullWidth
-              disabled={processing}
-            >
-              <FormControlLabel
-                control={
-                  <Checkbox
-                    checked={area.allows_multiple_devices}
-                    inputProps={{
-                      'aria-label': 'toggle allows multiple devices',
-                    }}
-                    onChange={onChangeCheckedHandler(
-                      update('allows_multiple_devices'),
-                    )}
-                  />
-                }
-                label="Can the same user use multiple devices to join at the same time?"
-              />
-            </FormControl>
-            <TextField
-              value={offlineTitle}
-              fullWidth
-              onChange={onChangeStringHandler(setOfflineTitle)}
-              variant="outlined"
-              label="Offline Title"
-              disabled={processing}
-              InputProps={{
-                endAdornment: (
-                  <InputAdornment position="end">
-                    <Button
-                      aria-label="save offline title"
-                      onClick={() => update('offline_title')(offlineTitle)}
-                      color="primary"
-                      disabled={processing}
-                    >
-                      Save
-                    </Button>
-                  </InputAdornment>
-                ),
-              }}
+    <>
+      <ConfirmDialog
+        description={CONFIRM_TURN_OFF_TECH_CHECK_REASSIGN}
+        onConfirm={turnOffTechCheckReassign}
+        showing={showingConfirmReassignDialog}
+        onCancel={toggleConfirmReassignDialog}
+      />
+      <Layout>
+        <Page>
+          <StyledErrorAlert>{error}</StyledErrorAlert>
+          <Box>
+            <ExportAreaAttendees area={area} />
+            <ClearRoomAssignmentsButton
+              area={area}
+              onError={setError}
+              clearError={clearError}
             />
-            <TextField
-              value={offlineDescription}
-              fullWidth
-              onChange={onChangeStringHandler(setOfflineDescription)}
-              variant="outlined"
-              label="Offline Description"
-              disabled={processing}
-              multiline
-              rows="4"
-              InputProps={{
-                endAdornment: (
-                  <InputAdornment position="end">
-                    <Button
-                      aria-label="save offline description"
-                      onClick={() =>
-                        update('offline_description')(offlineDescription)
-                      }
+          </Box>
+          <Title variant="h5">{area.name}</Title>
+          <HasPermission permission={CONFIGURE_EVENTS}>
+            <>
+              <Box>
+                <FormControlLabel
+                  disabled={processing}
+                  control={
+                    <Switch
+                      checked={area.is_open}
+                      onChange={onChangeCheckedHandler(update('is_open'))}
                       color="primary"
-                      disabled={processing}
-                    >
-                      Save
-                    </Button>
-                  </InputAdornment>
-                ),
-              }}
-            />
-            <RelativeLink to={routes.rooms.create} disableStyles>
-              <CreateRoomButton
-                variant="outlined"
-                color="primary"
-                aria-label="create room"
+                      inputProps={{
+                        'aria-label': 'toggle area open status',
+                      }}
+                    />
+                  }
+                  label="Open"
+                />
+                <FormControlLabel
+                  disabled={processing}
+                  control={
+                    <Switch
+                      checked={area.reassign_on_offline}
+                      onChange={onChangeCheckedHandler(handleSetReassign)}
+                      color="primary"
+                      inputProps={{
+                        'aria-label': 'toggle re-assign on offline',
+                      }}
+                    />
+                  }
+                  label="Re-assign on offline"
+                />
+              </Box>
+              <FormControl
+                required
+                component="fieldset"
+                fullWidth
+                disabled={processing}
               >
-                Create Room
-              </CreateRoomButton>
-            </RelativeLink>
-          </>
-        </HasPermission>
-        <RoomList rooms={rooms} />
-      </Page>
-    </Layout>
+                <FormControlLabel
+                  control={
+                    <Checkbox
+                      checked={area.requires_approval}
+                      onChange={onChangeCheckedHandler(
+                        update('requires_approval'),
+                      )}
+                      inputProps={{
+                        'aria-label': 'toggle requires approval',
+                      }}
+                    />
+                  }
+                  label="Requires approval?"
+                />
+              </FormControl>
+              <FormControl
+                required
+                component="fieldset"
+                fullWidth
+                disabled={processing}
+              >
+                <FormControlLabel
+                  control={
+                    <Checkbox
+                      checked={area.allows_multiple_devices}
+                      inputProps={{
+                        'aria-label': 'toggle allows multiple devices',
+                      }}
+                      onChange={onChangeCheckedHandler(
+                        update('allows_multiple_devices'),
+                      )}
+                    />
+                  }
+                  label="Can the same user use multiple devices to join at the same time?"
+                />
+              </FormControl>
+              <TextField
+                value={offlineTitle}
+                fullWidth
+                onChange={onChangeStringHandler(setOfflineTitle)}
+                variant="outlined"
+                label="Offline Title"
+                disabled={processing}
+                InputProps={{
+                  endAdornment: (
+                    <InputAdornment position="end">
+                      <Button
+                        aria-label="save offline title"
+                        onClick={() => update('offline_title')(offlineTitle)}
+                        color="primary"
+                        disabled={processing}
+                      >
+                        Save
+                      </Button>
+                    </InputAdornment>
+                  ),
+                }}
+              />
+              <TextField
+                value={offlineDescription}
+                fullWidth
+                onChange={onChangeStringHandler(setOfflineDescription)}
+                variant="outlined"
+                label="Offline Description"
+                disabled={processing}
+                multiline
+                rows="4"
+                InputProps={{
+                  endAdornment: (
+                    <InputAdornment position="end">
+                      <Button
+                        aria-label="save offline description"
+                        onClick={() =>
+                          update('offline_description')(offlineDescription)
+                        }
+                        color="primary"
+                        disabled={processing}
+                      >
+                        Save
+                      </Button>
+                    </InputAdornment>
+                  ),
+                }}
+              />
+              <RelativeLink to={routes.rooms.create} disableStyles>
+                <CreateRoomButton
+                  variant="outlined"
+                  color="primary"
+                  aria-label="create room"
+                >
+                  Create Room
+                </CreateRoomButton>
+              </RelativeLink>
+            </>
+          </HasPermission>
+          <RoomList rooms={rooms} />
+        </Page>
+      </Layout>
+    </>
   )
 }
 

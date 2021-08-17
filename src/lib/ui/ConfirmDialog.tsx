@@ -10,25 +10,47 @@ import React from 'react'
 
 export default function ConfirmDialog(props: {
   onConfirm: () => void
-  children: (confirm: () => void) => React.ReactElement
+  children?: (confirm: () => void) => React.ReactElement
   description: string
+  showing?: boolean
+  onCancel?: () => void
 }) {
+  const {showing, onCancel} = props
   const {flag: isVisible, toggle: toggleVisible} = useToggle()
 
   const handleConfirm = () => {
-    toggleVisible()
+    // Handling visibility internally
+    if (showing === undefined) {
+      toggleVisible()
+    }
+
     props.onConfirm()
+  }
+
+  /**
+   * If visibility is specified by parent, we'll prefer that. Otherwise
+   * manage it internally.
+   */
+  const open = showing === undefined ? isVisible : showing
+
+  const handleCancel = () => {
+    if (onCancel) {
+      onCancel()
+      return
+    }
+
+    toggleVisible()
   }
 
   return (
     <>
-      <Dialog open={isVisible} onClose={toggleVisible}>
+      <Dialog open={open} onClose={handleCancel}>
         <DialogTitle>Are you sure?</DialogTitle>
         <DialogContent>
           <Typography>{props.description}</Typography>
         </DialogContent>
         <DialogActions>
-          <Button autoFocus onClick={toggleVisible} color="primary">
+          <Button autoFocus onClick={handleCancel} color="primary">
             Cancel
           </Button>
           <DangerButton onClick={handleConfirm} aria-label="confirm">
@@ -36,8 +58,7 @@ export default function ConfirmDialog(props: {
           </DangerButton>
         </DialogActions>
       </Dialog>
-
-      {props.children(toggleVisible)}
+      {props.children && props.children(toggleVisible)}
     </>
   )
 }
