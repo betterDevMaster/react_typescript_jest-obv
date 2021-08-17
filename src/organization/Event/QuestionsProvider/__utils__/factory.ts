@@ -58,7 +58,7 @@ export function typeLabel(name: string) {
     [RADIO]: 'Radio',
     [SELECT]: 'Select',
     [CHECKBOX]: 'Checkbox',
-    [CURRENCY]: 'Price',
+    [CURRENCY]: 'Currency',
   }
 
   const label = labels[name]

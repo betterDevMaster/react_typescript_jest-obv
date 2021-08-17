@@ -130,7 +130,7 @@ export default function Form(props: {
                 <MenuItem value={RADIO}>Radio</MenuItem>
                 <MenuItem value={SELECT}>Select</MenuItem>
                 <MenuItem value={CHECKBOX}>Checkbox</MenuItem>
-                <MenuItem value={CURRENCY}>Price</MenuItem>
+                <MenuItem value={CURRENCY}>Currency</MenuItem>
               </Select>
             )}
           />
