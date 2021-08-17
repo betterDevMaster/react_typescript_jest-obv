@@ -105,7 +105,7 @@ it('should re-edit an unsaved question', async () => {
   user.type(await findByLabelText('question label'), label)
 
   fireEvent.mouseDown(await findByLabelText('question type'))
-  user.click(await findByText(/price/i))
+  user.click(await findByText(/currency/i))
 
   user.click(await findByLabelText('save question'))
 

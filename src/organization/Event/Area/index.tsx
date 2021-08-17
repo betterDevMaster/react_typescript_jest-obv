@@ -47,6 +47,8 @@ export default function Area() {
     setOfflineDescription(area.offline_description || '')
   }, [area])
 
+  
+
   useBreadcrumbs([
     {
       title: 'Events',
