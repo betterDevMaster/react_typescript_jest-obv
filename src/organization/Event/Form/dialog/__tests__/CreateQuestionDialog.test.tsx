@@ -160,7 +160,7 @@ it('should create a question with options', async () => {
   )
 })
 
-it('should add a price question', async () => {
+it('should add a currency question', async () => {
   const form = fakeForm({questions: []})
 
   const {findByLabelText, findByText} = await goToForm({
@@ -174,7 +174,7 @@ it('should add a price question', async () => {
   user.type(await findByLabelText('question label'), label)
 
   fireEvent.mouseDown(await findByLabelText('question type'))
-  user.click(await findByText(/price/i))
+  user.click(await findByText(/currency/i))
 
   const currencySymbol = '$$$'
   user.type(await findByLabelText('currency symbol'), currencySymbol)
