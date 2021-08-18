@@ -2,7 +2,6 @@ import React from 'react'
 import styled, {useTheme} from 'styled-components'
 import CloseIcon from '@material-ui/icons/Close'
 import IconButton from 'lib/ui/IconButton'
-import grey from '@material-ui/core/colors/grey'
 
 type DeleteIconButtonProps = {
   onClick?: () => void
@@ -33,10 +32,6 @@ function useColor(props: DeleteIconButtonProps) {
   const theme = useTheme()
   if (props.color) {
     return props.color
-  }
-
-  if (props.disabled) {
-    return grey[500]
   }
 
   return theme.colors.error

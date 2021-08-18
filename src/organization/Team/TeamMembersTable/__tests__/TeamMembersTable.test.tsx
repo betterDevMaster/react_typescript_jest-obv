@@ -8,13 +8,14 @@ import {
   fakeTeamInvitation,
   fakeTeamMember,
 } from 'organization/Team/__utils__/factory'
-import {wait} from '@testing-library/react'
+import {findByText, wait} from '@testing-library/react'
 import {signInToOrganization} from 'organization/__utils__/authenticate'
 import {UPDATE_TEAM} from 'organization/PermissionsProvider'
 import {goToTeams} from 'organization/Team/__utils__/go-to-teams-page'
 
 const mockGet = axios.get as jest.Mock
 const mockDelete = axios.delete as jest.Mock
+const mockPost = axios.post as jest.Mock
 
 it('should remove a team member', async () => {
   const authUser = fakeTeamMember()
@@ -87,4 +88,44 @@ it('should remove a team invitation', async () => {
   expect((await findAllByLabelText('team invitation')).length).toBe(
     teamInvitations.length - 1,
   )
+})
+
+it('should resend another invitation', async () => {
+  const invitation = fakeTeamInvitation()
+
+  const {findByLabelText, queryByText} = await goToTeams({
+    teamInvitations: [invitation],
+  })
+
+  mockPost.mockImplementationOnce(() => Promise.resolve({data: 'ok'}))
+
+  user.click(await findByLabelText('resend invitation'))
+
+  await wait(() => {
+    expect(mockPost).toHaveBeenCalledTimes(1)
+  })
+
+  const [url] = mockPost.mock.calls[0]
+  expect(url).toMatch(`/team_invitations/${invitation.id}`)
+})
+
+it('should show resend error', async () => {
+  const invitation = fakeTeamInvitation()
+
+  const {findByLabelText, findByText} = await goToTeams({
+    teamInvitations: [invitation],
+  })
+
+  const message = 'Wait until next resend'
+  mockPost.mockImplementationOnce(() =>
+    Promise.reject({
+      response: {
+        data: {message},
+      },
+    }),
+  )
+
+  user.click(await findByLabelText('resend invitation'))
+
+  expect(await findByText(new RegExp(message))).toBeInTheDocument()
 })

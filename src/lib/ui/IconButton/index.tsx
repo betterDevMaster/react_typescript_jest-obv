@@ -1,3 +1,4 @@
+import {grey} from '@material-ui/core/colors'
 import React from 'react'
 import styled from 'styled-components'
 
@@ -10,6 +11,8 @@ export default function IconButton(props: {
   type?: 'button' | 'submit'
   disabled?: boolean
 }) {
+  const color = useColor(props)
+
   return (
     <Button
       type={props.type || 'button'}
@@ -18,13 +21,22 @@ export default function IconButton(props: {
       data-testid={props.dataTestId}
       aria-label={props['aria-label']}
       disabled={props.disabled}
+      color={color}
     >
       {props.children}
     </Button>
   )
 }
 
-const Button = styled.button`
+function useColor(props: {disabled?: boolean}) {
+  if (props.disabled) {
+    return grey[500]
+  }
+
+  return undefined
+}
+
+const Button = styled.button<{color?: string}>`
   cursor: pointer;
   position: relative;
   display: inline-flex;
@@ -32,4 +44,8 @@ const Button = styled.button`
   background: 0;
   padding: 0;
   line-height: 1;
+
+  svg {
+    ${(props) => (props.color ? `color: ${props.color};` : '')};
+  }
 `

@@ -1,15 +1,11 @@
 import TextField from '@material-ui/core/TextField'
 import styled from 'styled-components'
-import IfExists from 'lib/ui/layout/HasContent'
 import React, {useState} from 'react'
 import {Controller, useForm} from 'react-hook-form'
-import Typography from '@material-ui/core/Typography'
 import {ValidationError} from 'lib/api-client'
 import Button from '@material-ui/core/Button'
 import {useOrganization} from 'organization/OrganizationProvider'
 import {api} from 'lib/url'
-import withStyles from '@material-ui/core/styles/withStyles'
-import {spacing} from 'lib/ui/theme'
 import {TeamMember} from 'auth/user'
 import {
   TeamInvitation,
@@ -23,6 +19,7 @@ import {useRoles} from 'organization/Team/Roles/RolesProvider'
 import Grid from '@material-ui/core/Grid'
 import FormControl from '@material-ui/core/FormControl'
 import InputLabel from '@material-ui/core/InputLabel'
+import ErrorAlert from 'lib/ui/alerts/ErrorAlert'
 
 interface InviteData {
   email: string
@@ -67,6 +64,7 @@ export default function AddTeamMemberForm() {
 
   return (
     <SyledForm onSubmit={handleSubmit(submit)}>
+      <StyledErrorAlert>{responseError?.message}</StyledErrorAlert>
       <Grid container spacing={2}>
         <Grid item md={10}>
           <TextField
@@ -135,10 +133,6 @@ export default function AddTeamMemberForm() {
           />
         </Grid>
       </Grid>
-
-      <IfExists Component={ErrorText} color="error">
-        {responseError && responseError.message}
-      </IfExists>
       <Button
         variant="outlined"
         type="submit"
@@ -184,8 +178,6 @@ const SyledForm = styled.form`
   margin-bottom: ${(props) => props.theme.spacing[5]};
 `
 
-const ErrorText = withStyles({
-  root: {
-    marginBottom: spacing[3],
-  },
-})(Typography)
+const StyledErrorAlert = styled(ErrorAlert)`
+  margin-bottom: ${(props) => props.theme.spacing[5]};
+`
