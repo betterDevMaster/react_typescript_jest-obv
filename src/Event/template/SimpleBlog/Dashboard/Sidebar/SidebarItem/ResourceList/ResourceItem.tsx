@@ -6,7 +6,7 @@ import {AbsoluteLink} from 'lib/ui/link/AbsoluteLink'
 import {storage} from 'lib/url'
 import {Publishable} from 'Event/Dashboard/editor/views/Published'
 import {HasRules} from 'Event/visibility-rules'
-import HiddenOnMatch from 'Event/visibility-rules/HiddenOnMatch'
+import VisibleOnMatch from 'Event/visibility-rules/VisibleOnMatch'
 import {Editable} from 'Event/Dashboard/editor/views/EditComponent'
 import Published from 'Event/Dashboard/editor/views/Published'
 import {Draggable, DraggableProvidedDraggableProps} from 'react-beautiful-dnd'
@@ -120,13 +120,13 @@ export const Container = React.forwardRef<
   }
 >((props, ref) => {
   return (
-    <HiddenOnMatch rules={props.resource.rules}>
+    <VisibleOnMatch rules={props.resource.rules}>
       <Published component={props.resource}>
         <Box ref={ref} {...props.draggableProps}>
           {props.children}
         </Box>
       </Published>
-    </HiddenOnMatch>
+    </VisibleOnMatch>
   )
 })
 

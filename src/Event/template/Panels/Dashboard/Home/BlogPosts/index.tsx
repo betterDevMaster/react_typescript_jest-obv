@@ -5,7 +5,7 @@ import Published from 'Event/Dashboard/editor/views/Published'
 import {usePanels} from 'Event/template/Panels'
 import BlogPost from 'Event/template/Panels/Dashboard/Home/BlogPosts/BlogPost'
 import {EditPost} from 'Event/Dashboard/components/BlogPost/BlogPostConfig'
-import HiddenOnMatch from 'Event/visibility-rules/HiddenOnMatch'
+import VisibleOnMatch from 'Event/visibility-rules/VisibleOnMatch'
 import React, {useState} from 'react'
 import styled from 'styled-components'
 import AddBlogPostButton from 'Event/Dashboard/components/BlogPost/AddBlogPostButton'
@@ -31,9 +31,9 @@ export default function BlogPosts() {
         return (
           <Editable onEdit={() => setEditing(id)} key={id}>
             <Published component={post}>
-              <HiddenOnMatch rules={post.rules}>
+              <VisibleOnMatch rules={post.rules}>
                 <BlogPost post={post} />
-              </HiddenOnMatch>
+              </VisibleOnMatch>
             </Published>
           </Editable>
         )

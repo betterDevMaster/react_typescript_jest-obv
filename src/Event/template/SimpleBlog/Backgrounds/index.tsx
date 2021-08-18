@@ -6,7 +6,7 @@ import styled from 'styled-components'
 import {Attendee} from 'Event/attendee'
 import {useEvent} from 'Event/EventProvider'
 import {useVariables} from 'Event'
-import HiddenOnMatch from 'Event/visibility-rules/HiddenOnMatch'
+import VisibleOnMatch from 'Event/visibility-rules/VisibleOnMatch'
 import {downloadFile} from 'lib/http-client'
 import {useSimpleBlog} from 'Event/template/SimpleBlog'
 import Content from 'lib/ui/form/TextEditor/Content'
@@ -42,7 +42,10 @@ export default function SimpleBlogBackgrounds(props: {user: Attendee}) {
 
       <Grid container spacing={2}>
         {sortedBackgrounds.map((background) => (
-          <HiddenOnMatch rules={background.settings?.rules} key={background.id}>
+          <VisibleOnMatch
+            rules={background.settings?.rules}
+            key={background.id}
+          >
             <Grid item xs={12} md={perRow}>
               <BackgroundImage
                 aria-label="background image"
@@ -58,7 +61,7 @@ export default function SimpleBlogBackgrounds(props: {user: Attendee}) {
                 width="100%"
               />
             </Grid>
-          </HiddenOnMatch>
+          </VisibleOnMatch>
         ))}
       </Grid>
     </Page>

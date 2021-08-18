@@ -3,7 +3,7 @@ import styled from 'styled-components'
 import {FAQ} from 'Event/FaqPage'
 import Card from 'Event/template/Panels/Dashboard/Faqs/FaqList/Card'
 import React from 'react'
-import HiddenOnMatch from 'Event/visibility-rules/HiddenOnMatch'
+import VisibleOnMatch from 'Event/visibility-rules/VisibleOnMatch'
 import {DragDropContext, Droppable, DropResult} from 'react-beautiful-dnd'
 import {usePanels} from 'Event/template/Panels'
 
@@ -21,9 +21,9 @@ export default function FaqList(props: {
   }
 
   const faqs = sortedFaqs.map((faq, index) => (
-    <HiddenOnMatch rules={faq.settings?.rules} key={faq.id}>
+    <VisibleOnMatch rules={faq.settings?.rules} key={faq.id}>
       <Card faq={faq} isEditMode={props.isEditMode} index={index} />
-    </HiddenOnMatch>
+    </VisibleOnMatch>
   ))
 
   if (!props.isEditMode) {

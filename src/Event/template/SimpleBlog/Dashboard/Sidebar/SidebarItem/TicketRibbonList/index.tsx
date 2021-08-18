@@ -5,7 +5,6 @@ import TicketRibbonItem, {
 import EditModeOnly from 'Event/Dashboard/editor/views/EditModeOnly'
 import React from 'react'
 import styled from 'styled-components'
-import HiddenOnMatch from 'Event/visibility-rules/HiddenOnMatch'
 import {useEditMode} from 'Event/Dashboard/editor/state/edit-mode'
 import {DragDropContext, Droppable, DropResult} from 'react-beautiful-dnd'
 import {
@@ -14,6 +13,7 @@ import {
 } from 'Event/template/SimpleBlog/Dashboard/Sidebar/SidebarItem'
 import {uuid} from 'lib/uuid'
 import {RemoveButton} from 'organization/Event/DashboardConfig/ComponentConfig'
+import VisibleOnMatch from 'Event/visibility-rules/VisibleOnMatch'
 
 export const TICKET_RIBBON_LIST = 'Ticket Ribbon List'
 export interface TicketRibbonListProps {
@@ -75,13 +75,13 @@ function TicketRibbonItemList(props: TicketRibbonListProps) {
   return (
     <>
       {props.ribbons.map((ticketRibbon: TicketRibbon, index: number) => (
-        <HiddenOnMatch rules={ticketRibbon.rules} key={index}>
+        <VisibleOnMatch rules={ticketRibbon.rules} key={index}>
           <TicketRibbonItem
             ticketRibbon={ticketRibbon}
             index={index}
             list={props}
           />
-        </HiddenOnMatch>
+        </VisibleOnMatch>
       ))}
     </>
   )

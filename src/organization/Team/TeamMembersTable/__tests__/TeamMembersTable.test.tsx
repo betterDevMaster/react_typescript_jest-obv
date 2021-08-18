@@ -8,7 +8,7 @@ import {
   fakeTeamInvitation,
   fakeTeamMember,
 } from 'organization/Team/__utils__/factory'
-import {findByText, wait} from '@testing-library/react'
+import {wait} from '@testing-library/react'
 import {signInToOrganization} from 'organization/__utils__/authenticate'
 import {UPDATE_TEAM} from 'organization/PermissionsProvider'
 import {goToTeams} from 'organization/Team/__utils__/go-to-teams-page'
@@ -93,7 +93,7 @@ it('should remove a team invitation', async () => {
 it('should resend another invitation', async () => {
   const invitation = fakeTeamInvitation()
 
-  const {findByLabelText, queryByText} = await goToTeams({
+  const {findByLabelText} = await goToTeams({
     teamInvitations: [invitation],
   })
 

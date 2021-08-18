@@ -1,5 +1,5 @@
 import Grid from '@material-ui/core/Grid'
-import HiddenOnMatch from 'Event/visibility-rules/HiddenOnMatch'
+import VisibleOnMatch from 'Event/visibility-rules/VisibleOnMatch'
 import NavButton, {
   NavButtonWithSize,
 } from 'Event/Dashboard/components/NavButton'
@@ -68,11 +68,11 @@ const Container = React.forwardRef<
   }
 >((props, ref) => {
   return (
-    <HiddenOnMatch rules={props.button.rules}>
+    <VisibleOnMatch rules={props.button.rules}>
       <Published component={props.button}>
         <NewLine ref={ref} {...props} />
       </Published>
-    </HiddenOnMatch>
+    </VisibleOnMatch>
   )
 })
 

@@ -46,7 +46,7 @@ export default function RuleForm(props: {
         <>
           <DeleteRuleButton visible={showDelete} onClick={props.onDelete} />
           <Typography paragraph>
-            {props.description ? props.description : 'Hide component when'}
+            {props.description ? props.description : 'Show component when'}
           </Typography>
           <FormControl fullWidth>
             <Select

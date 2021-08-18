@@ -3,7 +3,7 @@ import Grid from '@material-ui/core/Grid'
 import styled from 'styled-components'
 import {useEvent} from 'Event/EventProvider'
 import {useVariables} from 'Event'
-import HiddenOnMatch from 'Event/visibility-rules/HiddenOnMatch'
+import VisibleOnMatch from 'Event/visibility-rules/VisibleOnMatch'
 import {downloadFile} from 'lib/http-client'
 import {usePanels} from 'Event/template/Panels'
 import Content from 'lib/ui/form/TextEditor/Content'
@@ -49,7 +49,7 @@ export default function PanelsBackgrounds() {
       <CardActions>
         <Grid container spacing={2}>
           {sortedBackgrounds.map((background) => (
-            <HiddenOnMatch
+            <VisibleOnMatch
               rules={background.settings?.rules}
               key={background.id}
             >
@@ -68,7 +68,7 @@ export default function PanelsBackgrounds() {
                   width="100%"
                 />
               </Grid>
-            </HiddenOnMatch>
+            </VisibleOnMatch>
           ))}
         </Grid>
       </CardActions>

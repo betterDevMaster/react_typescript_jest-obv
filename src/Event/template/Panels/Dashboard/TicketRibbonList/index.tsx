@@ -7,12 +7,12 @@ import TicketRibbon, {
   LETTER_WIDTH,
 } from 'Event/template/Panels/Dashboard/TicketRibbonList/TicketRibbon'
 import {useDispatchUpdate} from 'Event/TemplateProvider'
-import HiddenOnMatch from 'Event/visibility-rules/HiddenOnMatch'
 import React from 'react'
 import {DragDropContext, Droppable, DropResult} from 'react-beautiful-dnd'
 import styled from 'styled-components'
 import 'Event/template/Panels/Dashboard/LeftPanel'
 import {withDefaults} from 'lib/object'
+import VisibleOnMatch from 'Event/visibility-rules/VisibleOnMatch'
 
 export default function TicketRibbonList() {
   return (
@@ -65,9 +65,9 @@ function Items() {
   return (
     <>
       {filled.map((tr, index) => (
-        <HiddenOnMatch rules={tr.rules} key={index}>
+        <VisibleOnMatch rules={tr.rules} key={index}>
           <StyledTicketRibbon ticketRibbon={tr} index={index} />
-        </HiddenOnMatch>
+        </VisibleOnMatch>
       ))}
     </>
   )

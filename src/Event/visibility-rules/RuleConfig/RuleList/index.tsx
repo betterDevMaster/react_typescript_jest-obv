@@ -139,7 +139,7 @@ function Rules(props: {
         <RulesDescription>
           {props.description
             ? props.description
-            : 'Component will be hidden when'}{' '}
+            : 'Component will only be visible when'}{' '}
         </RulesDescription>
       </Visible>
       {props.rules.map((rule, index) => (

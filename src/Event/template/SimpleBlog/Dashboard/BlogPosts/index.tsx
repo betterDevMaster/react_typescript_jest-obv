@@ -6,7 +6,7 @@ import React, {useState} from 'react'
 import EditModeOnly from 'Event/Dashboard/editor/views/EditModeOnly'
 import AddBlogPostButton from 'Event/Dashboard/components/BlogPost/AddBlogPostButton'
 import {useSimpleBlog} from 'Event/template/SimpleBlog'
-import HiddenOnMatch from 'Event/visibility-rules/HiddenOnMatch'
+import VisibleOnMatch from 'Event/visibility-rules/VisibleOnMatch'
 import {sortedByDate} from 'Event/Dashboard/components/BlogPost'
 import {useToggle} from 'lib/toggle'
 import Button from '@material-ui/core/Button'
@@ -41,9 +41,9 @@ export default function BlogPosts() {
         return (
           <Editable key={id} onEdit={() => setEditing(id)}>
             <Published component={post}>
-              <HiddenOnMatch rules={post.rules}>
+              <VisibleOnMatch rules={post.rules}>
                 <BlogPost post={post} isLast={isLast} />
-              </HiddenOnMatch>
+              </VisibleOnMatch>
             </Published>
           </Editable>
         )

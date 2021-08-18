@@ -3,7 +3,6 @@ import styled from 'styled-components'
 import SidebarNavButton from 'Event/template/SimpleBlog/Dashboard/Sidebar/SidebarItem/SidebarNav/SidebarNavButton'
 import NewSidebarNavButton from 'Event/template/SimpleBlog/Dashboard/Sidebar/SidebarItem/SidebarNav/NewSidebarNavButton'
 import EditModeOnly from 'Event/Dashboard/editor/views/EditModeOnly'
-import HiddenOnMatch from 'Event/visibility-rules/HiddenOnMatch'
 import {DragDropContext, Droppable, DropResult} from 'react-beautiful-dnd'
 import {useEditMode} from 'Event/Dashboard/editor/state/edit-mode'
 import NavButton from 'Event/Dashboard/components/NavButton'
@@ -14,6 +13,7 @@ import {
 } from 'Event/template/SimpleBlog/Dashboard/Sidebar/SidebarItem'
 import {uuid} from 'lib/uuid'
 import {RemoveButton} from 'organization/Event/DashboardConfig/ComponentConfig'
+import VisibleOnMatch from 'Event/visibility-rules/VisibleOnMatch'
 
 export const SIDEBAR_NAV = 'Sidebar Nav'
 export type SidebarNavProps = EntityList<NavButton> & {
@@ -49,7 +49,7 @@ export default function SidebarNav(props: SidebarNavProps) {
   const buttons = ids.map((id, index) => {
     const button = entities[id]
     return (
-      <HiddenOnMatch rules={button.rules} key={id}>
+      <VisibleOnMatch rules={button.rules} key={id}>
         <SidebarNavButton
           {...button}
           nav={props}
@@ -62,7 +62,7 @@ export default function SidebarNav(props: SidebarNavProps) {
           borderColor={button.borderColor}
           index={index}
         />
-      </HiddenOnMatch>
+      </VisibleOnMatch>
     )
   })
 
