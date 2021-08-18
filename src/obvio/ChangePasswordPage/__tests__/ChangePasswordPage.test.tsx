@@ -51,10 +51,7 @@ it('should change password', async () => {
     expect(mockPut).toHaveBeenCalledTimes(1)
   })
 
-  /**
-   * Is showing login screen on success
-   */
-  expect(await findByText(/login/i)).toBeInTheDocument()
+  expect(await findByText(/password has been updated/i)).toBeInTheDocument()
 
   /**
    * Check submitted data

@@ -5,9 +5,10 @@ import styled from 'styled-components'
 import {api} from 'lib/url'
 import {useValidatedForm} from 'lib/form'
 import {teamMemberClient} from 'obvio/obvio-client'
-import {useObvioAuth} from 'obvio/auth'
 import {useToggle} from 'lib/toggle'
 import ErrorAlert from 'lib/ui/alerts/ErrorAlert'
+import SuccessAlert from 'lib/ui/alerts/SuccessAlert'
+import {useState} from 'react'
 
 type ChangePasswordData = {
   password: string
@@ -18,6 +19,8 @@ type ChangePasswordData = {
 export default function Form() {
   const {flag: submitting, toggle: toggleSubmitting} = useToggle()
 
+  const [showSuccess, setShowSuccess] = useState(false)
+
   const {
     register,
     errors,
@@ -25,30 +28,35 @@ export default function Form() {
     responseError,
     setResponseError,
     clearErrors,
+    reset,
   } = useValidatedForm<ChangePasswordData>()
-
-  const {logout} = useObvioAuth()
 
   const submit = (data: ChangePasswordData) => {
     if (submitting) {
       return
     }
 
+    setShowSuccess(false)
+
     toggleSubmitting()
     clearErrors()
 
     teamMemberClient
       .put(api('/password'), data)
-      .then(logout)
+      .then(() => {
+        setShowSuccess(true)
+        reset()
+      })
       .catch((e) => {
         setResponseError(e)
-        toggleSubmitting()
       })
+      .finally(toggleSubmitting)
   }
 
   return (
     <>
       <StyledErrorAlert>{responseError?.message}</StyledErrorAlert>
+      <SuccessMessage showing={showSuccess} />
       <form onSubmit={handleSubmit(submit)}>
         <TextField
           label="Current Password"
@@ -113,6 +121,20 @@ export default function Form() {
   )
 }
 
+function SuccessMessage(props: {showing: boolean}) {
+  if (!props.showing) {
+    return null
+  }
+
+  return (
+    <StyledSuccessAlert>Your password has been updated.</StyledSuccessAlert>
+  )
+}
+
 const StyledErrorAlert = styled(ErrorAlert)`
+  margin-bottom: ${(props) => props.theme.spacing[5]};
+`
+
+const StyledSuccessAlert = styled(SuccessAlert)`
   margin-bottom: ${(props) => props.theme.spacing[5]};
 `

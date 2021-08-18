@@ -102,7 +102,11 @@ export const fieldErrors = <T extends Record<string, any>>(errors: {
  * errors with server validation errors from Laravel.
  */
 export function useValidatedForm<T extends Record<string, any>>() {
-  const {errors: formErrors, ...hookForm} = useForm()
+  const {
+    errors: formErrors,
+    clearErrors: clearFormErrors,
+    ...hookForm
+  } = useForm()
 
   const [responseError, setResponseError] = useState<ValidationError<T>>(null)
 
@@ -111,5 +115,13 @@ export function useValidatedForm<T extends Record<string, any>>() {
     responseError,
   })
 
-  return {...hookForm, errors, setResponseError, responseError}
+  /**
+   * Have to clear both form, AND response error
+   */
+  const clearErrors = () => {
+    clearFormErrors()
+    setResponseError(null)
+  }
+
+  return {...hookForm, errors, setResponseError, responseError, clearErrors}
 }
