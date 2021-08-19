@@ -77,6 +77,10 @@ function ResourceItemCard(props: {
   const awardPoints = () => {
     submit(DOWNLOADING_RESOURCE)
   }
+
+  const isLink = Boolean(props.resource.url)
+  const text = isLink ? 'Go to Link' : 'Download'
+
   return (
     <StyledCard
       variant="outlined"
@@ -98,7 +102,7 @@ function ResourceItemCard(props: {
           onClick={awardPoints}
           newTab
         >
-          <LinkText aria-label="resource link">Download</LinkText>
+          <LinkText aria-label="resource link">{text}</LinkText>
         </ResourceLink>
       </CardActions>
     </StyledCard>
@@ -166,6 +170,7 @@ const ResourceLink = styled(AbsoluteLink)`
 
 const LinkText = styled.span`
   font-weight: bold;
+  text-transform: uppercase;
 `
 
 const StyledCard = styled((props) => {
