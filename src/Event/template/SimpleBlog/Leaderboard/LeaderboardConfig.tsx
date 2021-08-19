@@ -100,7 +100,7 @@ export default function LeaderboardConfig(props: {onComplete?: () => void}) {
 
         <Grid item xs={12}>
           <TextField
-            name="unit"
+            name="points_unit"
             defaultValue={template.points_unit}
             label="Unit"
             fullWidth
@@ -108,6 +108,7 @@ export default function LeaderboardConfig(props: {onComplete?: () => void}) {
               'aria-label': 'points unit',
               ref: register,
             }}
+            disabled={processing}
           />
         </Grid>
         <Grid item xs={12}>

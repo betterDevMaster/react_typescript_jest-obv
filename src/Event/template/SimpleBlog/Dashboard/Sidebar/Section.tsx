@@ -8,7 +8,7 @@ const Section = React.forwardRef<
   {
     children: React.ReactNode
     className?: string
-    draggableProps: DraggableProvidedDraggableProps
+    draggableProps?: DraggableProvidedDraggableProps
     disableBorder?: boolean
   }
 >((props, ref) => {

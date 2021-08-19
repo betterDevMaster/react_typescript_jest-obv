@@ -45,7 +45,11 @@ export default function SidebarItem(props: SidebarItem & {index: number}) {
   const isFirst = props.index === 0
 
   if (!isEditMode) {
-    return <Body {...props} />
+    return (
+      <Section disableBorder={isFirst}>
+        <Body {...props} />
+      </Section>
+    )
   }
 
   return (
