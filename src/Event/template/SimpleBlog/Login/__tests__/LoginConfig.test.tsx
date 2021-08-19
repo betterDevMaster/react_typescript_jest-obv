@@ -18,12 +18,9 @@ it('should configure login template', async () => {
     event,
     userPermissions: [CONFIGURE_EVENTS],
   })
-  const backgroundColor = faker.commerce.color()
+  const textColor = faker.commerce.color()
 
-  user.type(
-    await findByLabelText('submit button background color'),
-    backgroundColor,
-  )
+  user.type(await findByLabelText('submit button color'), textColor)
 
   await wait(() => {
     expect(mockRxPost).toHaveBeenCalledTimes(1)
@@ -32,5 +29,5 @@ it('should configure login template', async () => {
   const [url, data] = mockRxPost.mock.calls[0]
   expect(url).toMatch(`/events/${event.slug}`)
 
-  expect(data.template.login.submitButton.backgroundColor).toBe(backgroundColor)
+  expect(data.template.login.submitButton.textColor).toBe(textColor)
 })

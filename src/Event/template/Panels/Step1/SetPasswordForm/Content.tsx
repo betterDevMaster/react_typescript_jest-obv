@@ -118,10 +118,10 @@ export const StyledButton = styled(
   border-radius: ${(props) => props.borderRadius}px !important;
   height: 50px;
   color: ${(props) => props.color} !important;
-  background-color: ${(props) => props.backgroundColor} !important;
+  background: ${(props) => props.backgroundColor} !important;
 
   &:hover {
-    background-color: ${(props) => props.hoverColor} !important;
+    background: ${(props) => props.hoverColor} !important;
   }
 `
 

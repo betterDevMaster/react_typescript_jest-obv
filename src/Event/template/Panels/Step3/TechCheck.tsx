@@ -170,6 +170,6 @@ const StyledButton = styled(
   color: ${(props) => props.textColor}!important;
   border: ${(props) => props.borderWidth}px solid
     ${(props) => props.borderColor} !important;
-  background-color: ${(props) => props.backgroundColor} !important;
+  background: ${(props) => props.backgroundColor} !important;
   border-radius: ${(props) => props.borderRadius}px !important;
 `

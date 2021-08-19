@@ -27,6 +27,7 @@ import ComponentConfig, {
   SaveButton,
 } from 'organization/Event/DashboardConfig/ComponentConfig'
 import {Controller, useForm} from 'react-hook-form'
+import BackgroundPicker from 'lib/ui/form/BackgroundPicker'
 
 export type ButtonConfigProps<K extends NavButton> = {
   button: K
@@ -256,10 +257,10 @@ export function MainNavButtonConfig(
             control={control}
             defaultValue={button.backgroundColor || ''}
             render={({value, onChange}) => (
-              <ColorPicker
+              <BackgroundPicker
                 label="Background Color"
-                color={value}
-                onPick={onChange}
+                background={value}
+                onChange={onChange}
               />
             )}
           />

@@ -15,6 +15,7 @@ import {TemplateSetPasswordForm} from 'Event/Step1/SetPasswordForm'
 import {useTeamMember} from 'organization/auth'
 import {useEvent, useUpdate} from 'Event/EventProvider'
 import Switch from 'lib/ui/form/Switch'
+import BackgroundPicker from 'lib/ui/form/BackgroundPicker'
 
 const MIN_BORDER_RADIUS = 0
 const MAX_BORDER_RADIUS = 60
@@ -147,19 +148,17 @@ export function Config() {
               />
             </Grid>
             <Grid item xs={12} md={6}>
-              <ColorPicker
+              <BackgroundPicker
                 label="Button Background Color"
-                color={setPasswordForm.button.backgroundColor}
-                onPick={updateButton('backgroundColor')}
-                aria-label="button background color"
+                background={setPasswordForm.button.backgroundColor}
+                onChange={updateButton('backgroundColor')}
               />
             </Grid>
             <Grid item xs={12} md={6}>
-              <ColorPicker
+              <BackgroundPicker
                 label="Button Hover Background Color"
-                color={setPasswordForm.button.hoverBackgroundColor}
-                onPick={updateButton('hoverBackgroundColor')}
-                aria-label="button hover background color"
+                background={setPasswordForm.button.hoverBackgroundColor}
+                onChange={updateButton('hoverBackgroundColor')}
               />
             </Grid>
             <Grid item xs={12} md={6}>

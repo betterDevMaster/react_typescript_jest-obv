@@ -20,6 +20,7 @@ import Slider from '@material-ui/core/Slider'
 import TargetConfig from 'Event/Dashboard/components/NavButton/NavButtonConfig/TargetConfig'
 import NavButton from 'Event/Dashboard/components/NavButton'
 import ActionSelect from 'Event/ActionsProvider/ActionSelect'
+import BackgroundPicker from 'lib/ui/form/BackgroundPicker'
 
 const MIN_BORDER_WIDTH = 0
 const MAX_BORDER_WIDTH = 50
@@ -150,11 +151,10 @@ export default function ButtonConfig(props: {
             />
           </Grid>
           <Grid item xs={6}>
-            <ColorPicker
+            <BackgroundPicker
               label="Background Color"
-              color={backgroundColor}
-              onPick={setBackgroundColor}
-              aria-label="background color"
+              background={backgroundColor}
+              onChange={setBackgroundColor}
             />
           </Grid>
           <Grid item xs={6}>

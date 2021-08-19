@@ -9,6 +9,7 @@ import TextField from '@material-ui/core/TextField'
 import Box from '@material-ui/core/Box'
 import {colors} from 'lib/ui/theme'
 import {SimpleBlog, useSimpleBlog} from 'Event/template/SimpleBlog'
+import BackgroundPicker from 'lib/ui/form/BackgroundPicker'
 
 const MIN_BUTTON_BORDER_RADIUS = 0
 const MAX_BUTTON_BORDER_RADIUS = 100
@@ -59,11 +60,10 @@ export default function TemplateFields(props: {submitting: boolean}) {
         </Grid>
 
         <Grid item xs={12} md={6}>
-          <ColorPicker
+          <BackgroundPicker
             label="Background Color"
-            color={waiver.buttonBackground}
-            onPick={updateWaiverTemplate('buttonBackground')}
-            aria-label="submit button background color"
+            background={waiver.buttonBackground}
+            onChange={updateWaiverTemplate('buttonBackground')}
             disabled={submitting}
           />
         </Grid>

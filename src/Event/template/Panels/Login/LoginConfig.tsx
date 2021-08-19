@@ -13,6 +13,7 @@ import {useEvent} from 'Event/EventProvider'
 import {usePanels} from 'Event/template/Panels'
 import {PreviewBox, SectionTitle} from 'organization/Event/GeneralConfig'
 import Login from 'Event/auth/Login'
+import BackgroundPicker from 'lib/ui/form/BackgroundPicker'
 
 const MAX_LOGO_SIZE_PERCENT = 100
 const MIN_LOGO_SIZE_PERCENT = 20
@@ -266,22 +267,20 @@ export default function LoginFormConfig() {
                 onChange={onChangeStringHandler(setSubmitLabel)}
                 inputProps={{'aria-label': 'description text'}}
               />
-              <ColorPicker
+              <BackgroundPicker
                 label="Submit Button Background Color"
-                color={submitBackgroundColor}
-                onPick={setSubmitBackgroundColor}
-                aria-label="submit button background color"
+                background={submitBackgroundColor}
+                onChange={setSubmitBackgroundColor}
+              />
+              <BackgroundPicker
+                label="Submit Button Hover Color"
+                background={submitHoverColor || submitBackgroundColor}
+                onChange={setSubmitHoverColor}
               />
               <ColorPicker
                 label="Submit Button Color"
                 color={submitTextColor}
                 onPick={setSubmitTextColor}
-                aria-label="submit button color"
-              />
-              <ColorPicker
-                label="Submit Button Hover Color"
-                color={submitHoverColor || submitBackgroundColor}
-                onPick={setSubmitHoverColor}
                 aria-label="submit button color"
               />
               <TextField

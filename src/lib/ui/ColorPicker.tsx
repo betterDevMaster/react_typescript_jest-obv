@@ -2,17 +2,18 @@ import styled from 'styled-components'
 import React, {useEffect, useRef, useState} from 'react'
 import {ColorChangeHandler, ChromePicker} from 'react-color'
 import ReactDOM from 'react-dom'
-import TextField from '@material-ui/core/TextField'
+import TextField, {TextFieldProps} from '@material-ui/core/TextField'
 import {onChangeStringHandler} from 'lib/dom'
 import makeStyles from '@material-ui/core/styles/makeStyles'
 import ColorProperties from 'color'
 
 export default function ColorPicker(props: {
-  label: string
+  label?: string
   color?: string
   onPick: (color: string) => void
   'aria-label'?: string
   disabled?: boolean
+  InputProps?: TextFieldProps['InputProps']
 }) {
   const [showPicker, setShowPicker] = useState(false)
   const value = props.color
@@ -54,6 +55,7 @@ export default function ColorPicker(props: {
       <TextField
         InputProps={{
           className: classes.input,
+          ...(props.InputProps || {}),
         }}
         disabled={props.disabled}
         // Value must be a string (not undefined), otherwise it'll

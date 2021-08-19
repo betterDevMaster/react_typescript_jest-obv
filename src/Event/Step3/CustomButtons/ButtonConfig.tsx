@@ -22,6 +22,7 @@ import Typography from '@material-ui/core/Typography'
 import FormControlLabel from '@material-ui/core/FormControlLabel'
 import Checkbox from '@material-ui/core/Checkbox'
 import {SaveButton} from 'organization/Event/DashboardConfig/ComponentConfig'
+import BackgroundPicker from 'lib/ui/form/BackgroundPicker'
 
 const MIN_BORDER_WIDTH = 0
 const MAX_BORDER_WIDTH = 50
@@ -154,13 +155,11 @@ export default function ButtonConfig(props: {
             />
           }
         />
-        <ColorPicker
+        <BackgroundPicker
           label="Background Color"
-          color={backgroundColor}
-          onPick={setBackgroundColor}
-          aria-label="background color"
+          background={backgroundColor}
+          onChange={setBackgroundColor}
         />
-
         <ColorPicker
           label="Text Color"
           color={textColor}

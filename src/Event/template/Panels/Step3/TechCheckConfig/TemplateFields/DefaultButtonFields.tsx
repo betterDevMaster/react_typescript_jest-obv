@@ -6,6 +6,7 @@ import Slider from '@material-ui/core/Slider'
 import {handleChangeSlider, onChangeStringHandler} from 'lib/dom'
 import TextField from '@material-ui/core/TextField'
 import {TemplateFieldProps} from 'Event/template/Panels/Step3/TechCheckConfig/TemplateFields'
+import BackgroundPicker from 'lib/ui/form/BackgroundPicker'
 
 const MIN_BUTTON_BORDER_RADIUS = 0
 const MAX_BUTTON_BORDER_RADIUS = 100
@@ -33,11 +34,10 @@ export default function DefaultButtonFields(props: TemplateFieldProps) {
         </Grid>
 
         <Grid item xs={12} md={6}>
-          <ColorPicker
+          <BackgroundPicker
             label="Background Color"
-            color={techCheck.buttonBackground}
-            onPick={set('buttonBackground')}
-            aria-label="submit button background color"
+            background={techCheck.buttonBackground}
+            onChange={set('buttonBackground')}
             disabled={submitting}
           />
         </Grid>

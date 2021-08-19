@@ -20,6 +20,7 @@ import {Controller, useForm} from 'react-hook-form'
 import {v4 as uuid} from 'uuid'
 import {SidebarNavProps} from 'Event/template/SimpleBlog/Dashboard/Sidebar/SidebarItem/SidebarNav'
 import {useUpdateSidebarItem} from 'Event/template/SimpleBlog/Dashboard/Sidebar/SidebarItem'
+import BackgroundPicker from 'lib/ui/form/BackgroundPicker'
 
 const MIN_BORDER_WIDTH = 0
 const MAX_BORDER_WIDTH = 50
@@ -188,10 +189,10 @@ export function SidebarNavButtonConfig(
                 control={control}
                 defaultValue={button.backgroundColor || ''}
                 render={({value, onChange}) => (
-                  <ColorPicker
+                  <BackgroundPicker
                     label="Background Color"
-                    color={value}
-                    onPick={onChange}
+                    background={value}
+                    onChange={onChange}
                   />
                 )}
               />
