@@ -1,6 +1,7 @@
 import GradientColorPicker, {
   parseValues as parseGradientValues,
 } from 'lib/ui/form/BackgroundPicker/GradientColorPicker'
+import ImagePicker from 'lib/ui/form/BackgroundPicker/ImagePicker'
 import SolidColorPicker from 'lib/ui/form/BackgroundPicker/SolidColorPicker'
 import React from 'react'
 
@@ -12,8 +13,18 @@ export type BackgroundPickerProps = {
 }
 
 export default function BackgroundPicker(props: BackgroundPickerProps) {
+  return (
+    <>
+      <ColorPickers {...props} />
+      <ImagePicker {...props} />
+    </>
+  )
+}
+
+function ColorPickers(props: BackgroundPickerProps) {
   const {background, onChange} = props
   const isGradient = background?.startsWith('linear-gradient')
+  const isImage = background?.startsWith('url')
 
   const handleSwitchToGradient = () => {
     const color1 = background || '#FFFFFF'
@@ -24,6 +35,10 @@ export default function BackgroundPicker(props: BackgroundPickerProps) {
   const switchToSolid = () => {
     const {color1} = parseGradientValues(background)
     onChange(color1)
+  }
+
+  if (isImage) {
+    return null
   }
 
   if (isGradient) {

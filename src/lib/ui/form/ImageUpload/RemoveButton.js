@@ -12,6 +12,7 @@ export default function RemoveButton(props) {
       aria-label={props['aria-label']}
       onClick={props.onClick}
       disabled={props.disabled}
+      size={props.size}
     >
       Remove
     </DangerButton>

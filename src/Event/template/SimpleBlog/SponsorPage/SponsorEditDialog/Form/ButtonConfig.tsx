@@ -152,7 +152,7 @@ export default function ButtonConfig(props: {
           </Grid>
           <Grid item xs={6}>
             <BackgroundPicker
-              label="Background Color"
+              label="Background"
               background={backgroundColor}
               onChange={setBackgroundColor}
             />

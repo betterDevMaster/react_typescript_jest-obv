@@ -156,7 +156,7 @@ export default function ButtonConfig(props: {
           }
         />
         <BackgroundPicker
-          label="Background Color"
+          label="Background"
           background={backgroundColor}
           onChange={setBackgroundColor}
         />

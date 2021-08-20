@@ -190,7 +190,7 @@ export function SidebarNavButtonConfig(
                 defaultValue={button.backgroundColor || ''}
                 render={({value, onChange}) => (
                   <BackgroundPicker
-                    label="Background Color"
+                    label="Background"
                     background={value}
                     onChange={onChange}
                   />

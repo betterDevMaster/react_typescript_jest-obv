@@ -61,7 +61,7 @@ export default function TemplateFields(props: {submitting: boolean}) {
 
         <Grid item xs={12} md={6}>
           <BackgroundPicker
-            label="Background Color"
+            label="Background"
             background={waiver.buttonBackground}
             onChange={updateWaiverTemplate('buttonBackground')}
             disabled={submitting}

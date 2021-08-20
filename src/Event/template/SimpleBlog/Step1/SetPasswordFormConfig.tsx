@@ -145,14 +145,14 @@ function Config() {
           </Grid>
           <Grid item xs={12} md={6}>
             <BackgroundPicker
-              label="Button Background Color"
+              label="Button Background"
               background={setPasswordForm.button.backgroundColor}
               onChange={updateButton('backgroundColor')}
             />
           </Grid>
           <Grid item xs={12} md={6}>
             <BackgroundPicker
-              label="Button Hover Background Color"
+              label="Button Hover Background"
               background={setPasswordForm.button.hoverBackgroundColor}
               onChange={updateButton('hoverBackgroundColor')}
             />

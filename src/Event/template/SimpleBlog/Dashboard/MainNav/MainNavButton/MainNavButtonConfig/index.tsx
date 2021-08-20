@@ -258,7 +258,7 @@ export function MainNavButtonConfig(
             defaultValue={button.backgroundColor || ''}
             render={({value, onChange}) => (
               <BackgroundPicker
-                label="Background Color"
+                label="Background"
                 background={value}
                 onChange={onChange}
               />
@@ -334,7 +334,7 @@ export function MainNavButtonConfig(
           <Controller
             name="infusionsoftTag"
             control={control}
-            defaultValue={button.infusionsoftTag}
+            defaultValue={button.infusionsoftTag || ''}
             render={({value, onChange}) => (
               <InfusionsoftTagInput value={value} onChange={onChange} />
             )}

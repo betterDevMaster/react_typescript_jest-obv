@@ -268,12 +268,12 @@ export default function LoginFormConfig() {
                 inputProps={{'aria-label': 'description text'}}
               />
               <BackgroundPicker
-                label="Submit Button Background Color"
+                label="Submit Button Background"
                 background={submitBackgroundColor}
                 onChange={setSubmitBackgroundColor}
               />
               <BackgroundPicker
-                label="Submit Button Hover Color"
+                label="Submit Button Hover Background"
                 background={submitHoverColor || submitBackgroundColor}
                 onChange={setSubmitHoverColor}
               />

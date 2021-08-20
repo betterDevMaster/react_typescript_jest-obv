@@ -36,6 +36,7 @@ export default function UploadButton(props) {
         color="primary"
         aria-label="select image to upload"
         disabled={props.disabled}
+        size={props.size}
       >
         <UploadButtonLabel htmlFor={id.current}>
           {text || 'Upload'}

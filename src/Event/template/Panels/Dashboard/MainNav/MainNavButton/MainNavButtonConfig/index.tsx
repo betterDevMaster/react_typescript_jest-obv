@@ -254,7 +254,7 @@ export default function MainNavButtonConfig(
               defaultValue={button.backgroundColor || ''}
               render={({value, onChange}) => (
                 <BackgroundPicker
-                  label="Background Color"
+                  label="Background"
                   background={value}
                   onChange={onChange}
                 />
@@ -265,10 +265,10 @@ export default function MainNavButtonConfig(
               control={control}
               defaultValue={button.hoverBackgroundColor || ''}
               render={({value, onChange}) => (
-                <ColorPicker
-                  label="Hover Background Color"
-                  color={value}
-                  onPick={onChange}
+                <BackgroundPicker
+                  label="Hover Background"
+                  background={value}
+                  onChange={onChange}
                 />
               )}
             />

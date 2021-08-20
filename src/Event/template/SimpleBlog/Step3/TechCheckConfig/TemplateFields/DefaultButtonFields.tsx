@@ -35,7 +35,7 @@ export default function DefaultButtonFields(props: TemplateFieldProps) {
 
         <Grid item xs={12} md={6}>
           <BackgroundPicker
-            label="Background Color"
+            label="Background"
             background={techCheck.buttonBackground}
             onChange={set('buttonBackground')}
             disabled={submitting}
