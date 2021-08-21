@@ -219,6 +219,7 @@ function UserRoutes() {
       <Route path={eventRoutes.changePassword}>
         <ChangePassword />
       </Route>
+
       <Redirect to={eventRoutes.root} />
     </Switch>
   )

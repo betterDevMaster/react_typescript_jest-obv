@@ -4,8 +4,7 @@ import {fireEvent} from '@testing-library/dom'
 import {fakeEvent} from 'Event/__utils__/factory'
 import user from '@testing-library/user-event'
 import {mockRxJsAjax} from 'store/__utils__/MockStoreProvider'
-import {findByText, wait} from '@testing-library/react'
-import {clickEdit} from '__utils__/edit'
+import {wait} from '@testing-library/react'
 import {goToDashboardConfig} from 'organization/Event/DashboardConfig/__utils__/go-dashboard-config'
 import {fakeTicketRibbon} from 'Event/template/Panels/Dashboard/TicketRibbonList/__utils__/factory'
 
@@ -91,10 +90,17 @@ it('should add a new ticket ribbon', async () => {
 })
 
 it('should remove a ticket ribbon', async () => {
-  const ticketRibbons = Array.from(
-    {length: faker.random.number({min: 2, max: 5})},
-    fakeTicketRibbon,
-  )
+  const ticketRibbons = [
+    fakeTicketRibbon({
+      letter: 'A',
+    }),
+    fakeTicketRibbon({
+      letter: 'B',
+    }),
+    fakeTicketRibbon({
+      letter: 'C',
+    }),
+  ]
 
   const event = fakeEvent({
     template: fakePanels({

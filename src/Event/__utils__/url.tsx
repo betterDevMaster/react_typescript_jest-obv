@@ -57,6 +57,7 @@ export async function loginToEventSite(
     submissions?: Answer[]
     pathname?: string
     skipLogin?: boolean
+    search?: string
   } = {},
 ) {
   const attendee =
@@ -66,7 +67,7 @@ export async function loginToEventSite(
       waiver: 'some_waiver.png',
     })
   const event = options.event || fakeEvent()
-  visitEventSite({event, pathname: options.pathname})
+  visitEventSite({event, pathname: options.pathname, search: options.search})
 
   const actions = options.actions || []
   const submissions = options.submissions || []

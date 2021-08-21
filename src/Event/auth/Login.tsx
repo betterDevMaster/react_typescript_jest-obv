@@ -7,6 +7,7 @@ import {SIMPLE_BLOG} from 'Event/template/SimpleBlog'
 import {useTemplate} from 'Event/TemplateProvider'
 import {PANELS} from 'Event/template/Panels'
 import PanelsLogin from 'Event/template/Panels/Login'
+import FullPageLoader from 'lib/ui/layout/FullPageLoader'
 
 export interface LoginProps {
   onSubmit: () => void
@@ -50,6 +51,7 @@ export default function Login(props: {isPreview?: boolean}) {
 
     hasAttemptedTokenLogin.current = true
     setSubmitting(true)
+
     login({
       login_token: token,
     }).catch((e) => {
@@ -61,11 +63,7 @@ export default function Login(props: {isPreview?: boolean}) {
   const isProcessingToken =
     (token && !hasAttemptedTokenLogin.current) || submitting
   if (isProcessingToken) {
-    /**
-     * Don't want to show login screen while we're trying to auto-login
-     * the Attendee.
-     */
-    return null
+    return <FullPageLoader />
   }
 
   return (

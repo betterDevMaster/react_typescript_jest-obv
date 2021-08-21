@@ -7,9 +7,16 @@ import {render} from '__utils__/render'
 import App from 'App'
 import axios from 'axios'
 import {wait} from '@testing-library/react'
+import {EVENT_TOKEN_KEY} from 'Event/auth'
+import {fakeAttendee} from 'Event/auth/__utils__/factory'
 import {fakePanels} from 'Event/template/Panels/__utils__/factory'
 
 const mockPost = axios.post as jest.Mock
+const mockGet = axios.get as jest.Mock
+
+beforeEach(() => {
+  jest.clearAllMocks()
+})
 
 it('should launch a zoom meeting', async () => {
   const event = fakeEvent({
@@ -54,4 +61,23 @@ it('should launch a zoom meeting', async () => {
   expect(data.last_name).toBe(lastName)
   expect(data.email).toBe(email)
   expect(data.token).toBe(token)
+})
+
+it('should show form with new token', async () => {
+  const event = fakeEvent({
+    template: fakePanels(),
+  })
+  const token = 'secretregistrationtoken'
+
+  visitEventSite({event, pathname: '/room', search: `?token=${token}`})
+
+  // Already authenticated
+  window.localStorage.setItem(EVENT_TOKEN_KEY, 'some_existing_token')
+
+  // existing user
+  mockGet.mockImplementationOnce(() => Promise.resolve({data: fakeAttendee()}))
+
+  const {findByLabelText} = render(<App />)
+
+  expect(await findByLabelText('join room')).toBeInTheDocument()
 })

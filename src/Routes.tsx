@@ -7,6 +7,7 @@ import ObvioRoutes from 'obvio/Routes'
 import {AutoRefreshEvent, DomainEventProvider} from 'Event/EventProvider'
 import EventRoutes from 'Event/Routes'
 import WithLiveChatSupport from 'lib/WithLiveChatSupport'
+import AuthTokenHandler from 'Event/auth/AuthTokenHandler'
 
 export default function Routes() {
   if (isObvioApp()) {
@@ -20,7 +21,9 @@ export default function Routes() {
   return (
     <DomainEventProvider>
       <AutoRefreshEvent>
-        <EventRoutes />
+        <AuthTokenHandler>
+          <EventRoutes />
+        </AuthTokenHandler>
       </AutoRefreshEvent>
     </DomainEventProvider>
   )
