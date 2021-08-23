@@ -67,3 +67,20 @@ export function useIsMounted() {
 
   return isMounted
 }
+
+/**
+ * Helper to only run the given function if component
+ * is still mounted.
+ * @returns
+ */
+export function useIfMounted() {
+  const isMounted = useIsMounted()
+
+  return (func: (...args: any[]) => any) => () => {
+    if (!isMounted.current) {
+      return
+    }
+
+    func()
+  }
+}

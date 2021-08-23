@@ -21,15 +21,32 @@ import AssignmentsDialog from 'organization/Event/AttendeeManagement/Assignments
 import PointsDialog from 'organization/Event/AttendeeManagement/PointsDialog'
 import ExportWaivers from 'organization/Event/AttendeeManagement/ExportWaivers'
 import AttendeeExport from 'organization/Event/AttendeeManagement/AttendeeExport'
+import {useEffect} from 'react'
 
 export default function AttendeeManagement() {
-  const {error: attendeesError, clearError, search} = useAttendees()
+  const {error: attendeesError, clearError, search, attendees} = useAttendees()
   const [editing, setEditing] = useState<Attendee | null>(null)
   const [viewAssignments, setViewAssignments] = useState<Attendee | null>(null)
   const [createDialogVisible, setCreateDialogVisible] = useState(false)
   const [pointsTarget, setPointsTarget] = useState<Attendee | null>(null)
   const [successMessage, setSuccessMessage] = useState<string | null>(null)
   const [errorMessage, setErrorMessage] = useState<string | null>(null)
+
+  /**
+   * Handle updated the current attendee being edited.
+   */
+  useEffect(() => {
+    if (!editing) {
+      return
+    }
+
+    const updated = attendees.find((a) => a.id === editing.id)
+    if (!updated) {
+      return
+    }
+
+    setEditing(updated)
+  }, [attendees, editing])
 
   const toggleCreateDialog = () => setCreateDialogVisible(!createDialogVisible)
 

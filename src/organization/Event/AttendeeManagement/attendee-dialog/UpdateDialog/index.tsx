@@ -14,6 +14,8 @@ import InputAdornment from '@material-ui/core/InputAdornment'
 import IconButton from 'lib/ui/IconButton'
 import FileCopyIcon from '@material-ui/icons/FileCopy'
 import grey from '@material-ui/core/colors/grey'
+import RemoveWaiverButton from 'organization/Event/AttendeeManagement/attendee-dialog/UpdateDialog/RemoveWaiverButton'
+import ClearPasswordButton from 'organization/Event/AttendeeManagement/attendee-dialog/UpdateDialog/ClearPasswordButton'
 
 export default function UpdateDialog(props: {
   attendee: Attendee | null
@@ -31,6 +33,10 @@ export default function UpdateDialog(props: {
     <Dialog open={isVisible} onClose={props.onClose}>
       <DialogTitle>Attendee</DialogTitle>
       <DialogContent>
+        <Actions>
+          <RemoveWaiverButton attendee={attendee} />
+          <ClearPasswordButton attendee={attendee} />
+        </Actions>
         <LoginUrl attendee={attendee} />
         <Form
           attendee={attendee}
@@ -91,4 +97,15 @@ function LoginUrl(props: {attendee: Attendee}) {
 
 const CopyButton = styled(IconButton)<{copied: boolean}>`
   color: ${(props) => (props.copied ? props.theme.colors.primary : grey[500])};
+`
+
+const Actions = styled.div`
+  margin-bottom: ${(props) => props.theme.spacing[5]};
+  text-align: right;
+
+  button {
+    &:not(:last-child) {
+      margin-right: ${(props) => props.theme.spacing[2]};
+    }
+  }
 `
