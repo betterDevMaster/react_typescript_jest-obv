@@ -1,7 +1,7 @@
 import {Epic, ofType} from 'redux-observable'
 import {v4 as uuid} from 'uuid'
 import {RootState} from 'store'
-import {switchMap, map} from 'rxjs/operators'
+import {switchMap, map, filter} from 'rxjs/operators'
 import {api} from 'lib/url'
 import {AjaxCreationMethod} from 'rxjs/internal/observable/dom/AjaxObservable'
 import {
@@ -20,6 +20,13 @@ export const refreshEventEpic: Epic<
 > = (action$, state$, {ajax}) =>
   action$.pipe(
     ofType<RefreshEventAction>(REFRESH_EVENT_ACTION),
+    /**
+     * Filter to ignore updates if currently saving. If we're in the middle of
+     * a save, we can't be sure which timestamp is correct, so we'll assume
+     * ours is the correct state. This fixes the bug where multiple
+     * saves results in deleted buttons re-appearing.
+     */
+    filter(() => !state$.value.editor.isSaving),
     switchMap((action) => {
       const {event} = state$.value
       if (!event) {

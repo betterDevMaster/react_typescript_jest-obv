@@ -66,9 +66,7 @@ export const saveTemplateEpic: Epic<
       return concat(
         of(setSaving(true)),
         request.pipe(
-          map((data) => {
-            return setEventUpdatedAt(data.response.updated_at)
-          }),
+          map((data) => setEventUpdatedAt(data.response.updated_at)),
         ),
         of(setSaving(false)),
       )

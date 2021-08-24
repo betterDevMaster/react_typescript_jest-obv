@@ -218,6 +218,7 @@ export default function BlogPostConfig(
               variant="outlined"
               aria-label="remove blog post"
               onClick={handleRemove}
+              disabled={!id}
             >
               DELETE POST
             </RemoveButton>

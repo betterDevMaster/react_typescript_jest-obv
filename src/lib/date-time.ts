@@ -57,5 +57,20 @@ export const getDiffDatetime = (
   return diff
 }
 
-export const isAfter = ({isAfter, target}: {isAfter: string; target: string}) =>
-  moment(target).isAfter(moment(isAfter))
+export const isAfter = ({
+  isAfter,
+  target,
+}: {
+  isAfter: string
+  target: string
+}) => {
+  /**
+   * Handle bug where sometimes moment.isAfter would return true
+   * for the same string
+   */
+  if (isAfter === target) {
+    return false
+  }
+
+  return moment(target).isAfter(moment(isAfter))
+}
