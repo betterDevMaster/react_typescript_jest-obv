@@ -133,12 +133,12 @@ export function SimpleBlogConfig(props: ComponentConfigProps) {
         <Grid container>
           <Grid item xs={12} md={6}>
             <Switch
-              checked={!headerIsCollapsed}
+              checked={headerIsCollapsed}
               onChange={onChangeCheckedHandler(setHeaderIsCollapsed)}
               arial-label="config header background image visible switch"
               labelPlacement="start"
               color="primary"
-              label="Enable/Disable Header"
+              label="Hide Header"
             />
           </Grid>
           <Grid item xs={12} md={6}>
@@ -275,12 +275,12 @@ function DropShadowToggle(props: {
 
   return (
     <Switch
-      checked={!disableShadow}
+      checked={disableShadow}
       onChange={onChangeCheckedHandler(setDisableShadow)}
       arial-label="config header dropShawdowVisible visible switch"
       labelPlacement="start"
       color="primary"
-      label={disableShadow ? 'Show Drop-Shadow' : 'Hide Drop-Shadow'}
+      label="Disable Shadow"
     />
   )
 }
