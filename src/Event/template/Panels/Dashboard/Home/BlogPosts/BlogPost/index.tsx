@@ -5,7 +5,7 @@ import {
   shouldPublish,
 } from 'Event/Dashboard/components/BlogPost'
 import {useEditMode} from 'Event/Dashboard/editor/state/edit-mode'
-import {blogPostTime} from 'lib/date-time'
+import {localTime} from 'lib/date-time'
 import React from 'react'
 import PostForm from 'Event/template/Panels/Dashboard/Home/BlogPosts/BlogPost/PostForm'
 import Content from 'lib/ui/form/TextEditor/Content'
@@ -16,7 +16,7 @@ export default function BlogPost(props: {post: BlogPostData}) {
   const v = useVariables()
 
   const date = post.publishAt || post.postedAt
-  const formattedDate = blogPostTime(date)
+  const formattedDate = localTime(date)
 
   if (!isEdit && !shouldPublish(post)) {
     return null

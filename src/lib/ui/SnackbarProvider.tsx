@@ -1,6 +1,6 @@
 import React, {useState} from 'react'
 import {SnackbarProvider as NotiStackProvider} from 'notistack'
-import {makeStyles} from '@material-ui/core'
+import {makeStyles} from '@material-ui/core/styles'
 import {useSnackbar as useNotiStackSnackbar} from 'notistack'
 
 const MAX_SNACKBAR_ON_SCREEN = 3

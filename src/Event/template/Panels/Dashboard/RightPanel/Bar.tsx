@@ -2,7 +2,7 @@ import {withStyles} from '@material-ui/core/styles'
 import {usePanels} from 'Event/template/Panels'
 import React from 'react'
 import Tabs from '@material-ui/core/Tabs'
-import {Tab} from '@material-ui/core'
+import Tab from '@material-ui/core/Tab'
 import {TOP_BAR_HEIGHT} from 'Event/template/Panels/Page'
 
 export default function Nav(props: {

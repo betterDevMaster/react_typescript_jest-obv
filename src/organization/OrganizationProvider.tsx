@@ -138,7 +138,9 @@ export function createRoutesFor(organization: Organization) {
             ':area': {
               rooms: {
                 create: '/create',
-                ':room': {},
+                ':room': {
+                  recordings: '/recordings',
+                },
               },
             },
           },

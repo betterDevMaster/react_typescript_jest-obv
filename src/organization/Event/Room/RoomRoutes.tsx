@@ -7,6 +7,7 @@ import CreateRoomForm from 'organization/Event/Room/CreateRoomForm'
 import RoomConfig from 'organization/Event/Room'
 import {RouteRoomProvider, useRoom} from 'organization/Event/Room/RoomProvider'
 import {useAreaRoutes} from 'organization/Event/Area/AreaRoutes'
+import Recordings from 'organization/Event/Room/Recordings'
 
 export function useRoomRoutes(room?: Room) {
   const {room: currentRoom} = useRoom()
@@ -34,6 +35,13 @@ export default function RoomRoutes() {
     <Switch>
       <Route path={routes.events[':event'].areas[':area'].rooms.create}>
         <CreateRoomForm />
+      </Route>
+      <Route
+        path={routes.events[':event'].areas[':area'].rooms[':room'].recordings}
+      >
+        <RouteRoomProvider>
+          <Recordings />
+        </RouteRoomProvider>
       </Route>
       <Route path={routes.events[':event'].areas[':area'].rooms[':room'].root}>
         <RouteRoomProvider>

@@ -1,5 +1,4 @@
 import React from 'react'
-import Box from '@material-ui/core/Box'
 import Button from '@material-ui/core/Button'
 import {Room} from 'Event/room'
 import {api} from 'lib/url'
@@ -21,32 +20,25 @@ export default function ExportRoomAttendees(props: {room: Room}) {
   } = useGet(client, url)
 
   return (
-    <>
+    <div>
+      <Button
+        onClick={exportAttendees}
+        disabled={processing}
+        variant="outlined"
+        aria-label="export attendees"
+      >
+        Export Attendees
+      </Button>
       <StyledErrorAlert>{errorMessage}</StyledErrorAlert>
       <StyledSuccessAlert>{successMessage}</StyledSuccessAlert>
-      <Box
-        display="flex"
-        justifyContent="space-between"
-        alignItems="center"
-        mb={2}
-      >
-        <Button
-          onClick={exportAttendees}
-          disabled={processing}
-          variant="outlined"
-          aria-label="export attendees"
-        >
-          Export Attendees
-        </Button>
-      </Box>
-    </>
+    </div>
   )
 }
 
 const StyledErrorAlert = styled(ErrorAlert)`
-  margin-bottom: ${(props) => props.theme.spacing[2]};
+  margin-top: ${(props) => props.theme.spacing[2]};
 `
 
 const StyledSuccessAlert = styled(SuccessAlert)`
-  margin-bottom: ${(props) => props.theme.spacing[2]};
+  margin-top: ${(props) => props.theme.spacing[2]};
 `

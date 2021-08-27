@@ -13,7 +13,7 @@ import {useForm} from 'react-hook-form'
 import {ValidationError} from 'lib/api-client'
 import Button from '@material-ui/core/Button'
 import {spacing} from 'lib/ui/theme'
-import {withStyles} from '@material-ui/core'
+import {withStyles} from '@material-ui/core/styles'
 
 export default function TechCheckAttendeeUpdateDialog(props: {
   attendee: Attendee | null

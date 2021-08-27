@@ -5,6 +5,7 @@ import {useLinkStyle} from 'lib/ui/link/style'
 
 type Props = LinkProps & {
   to: string
+  download?: boolean
 }
 
 export const AbsoluteLink = React.forwardRef(
@@ -26,6 +27,7 @@ export const AbsoluteLink = React.forwardRef(
         rel={rel}
         aria-label={props['aria-label']}
         disabled={props.disabled}
+        download={props.download}
       >
         {props.children}
       </StyledAnchor>

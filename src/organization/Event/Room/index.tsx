@@ -1,4 +1,5 @@
 import Button from '@material-ui/core/Button'
+import styled from 'styled-components'
 import FormControl from '@material-ui/core/FormControl'
 import FormControlLabel from '@material-ui/core/FormControlLabel'
 import {withStyles} from '@material-ui/core/styles'
@@ -31,11 +32,14 @@ import {
   CHECK_IN_ATTENDEES,
   CONFIGURE_EVENTS,
   useCanStartRooms,
+  VIEW_RECORDINGS,
 } from 'organization/PermissionsProvider'
 import OnlineSwitch from 'organization/Event/Room/OnlineSwitch'
 import ExportRoomAttendees from 'organization/Event/Room/ExportRoomAttendees'
 import RegistrationSwitch from 'organization/Event/Room/RegistrationSwitch'
 import RegistrationURL from 'organization/Event/Room/RegistrationURL'
+import recordingIcon from 'assets/images/recording-icon.png'
+import {RelativeLink} from 'lib/ui/link/RelativeLink'
 
 export const DEFAULT_MAX_NUM_ATTENDEES = 500
 
@@ -98,8 +102,22 @@ export default function RoomConfig() {
   return (
     <Layout>
       <Page>
-        <ExportRoomAttendees room={room} />
-
+        <Box
+          display="flex"
+          justifyContent="space-between"
+          alignItems="flex-start"
+          mb={2}
+        >
+          <ExportRoomAttendees room={room} />
+          <HasPermission permission={VIEW_RECORDINGS}>
+            <RelativeLink to={roomRoutes.recordings} disableStyles>
+              <Button variant="outlined">
+                <RecordingIconImage src={recordingIcon} alt="Record icon" />
+                Recordings
+              </Button>
+            </RelativeLink>
+          </HasPermission>
+        </Box>
         <Title variant="h5">{room.name}</Title>
         <FormControl>
           <FormControlLabel control={<OnlineSwitch />} label="Open" />
@@ -203,3 +221,8 @@ const Title = withStyles({
     marginBottom: spacing[4],
   },
 })(Typography)
+
+const RecordingIconImage = styled.img`
+  width: 24px;
+  margin-right: ${(props) => props.theme.spacing[1]};
+`

@@ -16,6 +16,7 @@ export const UPDATE_TEAM = 'team.update'
 export const START_ROOMS = 'rooms.start'
 export const CHECK_IN_ATTENDEES = 'attendees.check_in'
 export const UPDATE_ATTENDEES = 'attendees.update'
+export const VIEW_RECORDINGS = 'recordings.view'
 
 export type Permission =
   | typeof CREATE_EVENTS
@@ -24,6 +25,7 @@ export type Permission =
   | typeof START_ROOMS
   | typeof CHECK_IN_ATTENDEES
   | typeof UPDATE_ATTENDEES
+  | typeof VIEW_RECORDINGS
 
 interface PermissionsContextProps {
   user: Permission[]

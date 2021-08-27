@@ -11,7 +11,7 @@ import RemoveImageButton from 'lib/ui/form/ImageUpload/RemoveButton'
 import {Asset, useUploadAsset} from 'lib/asset'
 import {useCallback} from 'react'
 import Box from '@material-ui/core/Box'
-import {InputLabel} from '@material-ui/core'
+import InputLabel from '@material-ui/core/InputLabel'
 
 export default function ImagePicker(props: BackgroundPickerProps) {
   const {onChange} = props

@@ -1,6 +1,6 @@
 import React from 'react'
 import styled from 'styled-components'
-import {blogPostTime} from 'lib/date-time'
+import {localTime} from 'lib/date-time'
 import {useEditMode} from 'Event/Dashboard/editor/state/edit-mode'
 import PostForm from 'Event/template/SimpleBlog/Dashboard/BlogPosts/BlogPost/PostForm'
 import {useVariables} from 'Event'
@@ -17,7 +17,7 @@ export function BlogPost(props: {post: BlogPostData; isLast: boolean}) {
   const bottomMargin = isLast ? 0 : styles.spacing
 
   const date = post.publishAt || post.postedAt
-  const formattedDate = blogPostTime(date)
+  const formattedDate = localTime(date)
 
   if (!isEdit && !shouldPublish(post)) {
     return null

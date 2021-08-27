@@ -30,7 +30,7 @@ import 'moment/locale/zh-tw'
 import 'moment/locale/is' // Iceland
 import 'moment/locale/fi' // Finland
 
-export const blogPostTime = (date: string) =>
+export const localTime = (date: string) =>
   moment(date).tz(moment.tz.guess()).format('MMMM Do h:mma z')
 
 export const now = () => {

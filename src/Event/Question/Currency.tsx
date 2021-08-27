@@ -1,4 +1,4 @@
-import {InputAdornment} from '@material-ui/core'
+import InputAdornment from '@material-ui/core/InputAdornment'
 import TextField from '@material-ui/core/TextField'
 import {FieldProps, useSavedValue} from 'Event/Question'
 import React from 'react'

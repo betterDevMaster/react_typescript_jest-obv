@@ -1,4 +1,4 @@
-import {ButtonProps} from '@material-ui/core'
+import {ButtonProps} from '@material-ui/core/Button'
 import React from 'react'
 
 const UploadButton: React.ComponentType<{
