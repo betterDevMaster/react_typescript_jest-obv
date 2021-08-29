@@ -137,6 +137,7 @@ async function fetchUser(
   const url = api(endpoint)
   return client.get<any>(url, {
     tokenKey,
+    noCache: true,
   })
 }
 
