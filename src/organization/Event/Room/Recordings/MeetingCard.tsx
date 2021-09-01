@@ -2,7 +2,6 @@ import React from 'react'
 import styled from 'styled-components'
 import ReactPlayer from 'react-player'
 import ArrowDownIcon from '@material-ui/icons/ArrowDropDown'
-import {RecordingList} from 'organization/Event/Room/Recordings'
 import Card from '@material-ui/core/Card'
 import CardContent from '@material-ui/core/CardContent'
 import CardActions from '@material-ui/core/CardActions'
@@ -12,12 +11,16 @@ import MenuItem from '@material-ui/core/MenuItem'
 import ButtonGroup from '@material-ui/core/ButtonGroup'
 import {localTime} from 'lib/date-time'
 import {AbsoluteLink} from 'lib/ui/link/AbsoluteLink'
+import {Recording} from 'organization/Event/Room/Recordings'
 
-export default function MeetingCard(props: {list: RecordingList}) {
-  const {list} = props
+export default function MeetingCard(props: {
+  recordings: Recording[]
+  part: number
+  hasMultipleParts: boolean
+}) {
+  const {recordings, part, hasMultipleParts} = props
 
-  const hasRecordings = list.recordings.length > 0
-
+  const hasRecordings = recordings.length > 0
   if (!hasRecordings) {
     return (
       <Card>
@@ -26,12 +29,17 @@ export default function MeetingCard(props: {list: RecordingList}) {
     )
   }
 
-  const [main, ...others] = list.recordings
+  const [main, ...others] = recordings
 
   return (
     <Card elevation={4}>
       <StyledReactPlayer playing controls light url={main.download_url} />
       <CardContent>
+        <PartLabel showing={hasMultipleParts}>
+          <div>
+            Part: <b>{part}</b>
+          </div>
+        </PartLabel>
         <div>
           Start time: <b>{localTime(main.recording_start)}</b>
         </div>
@@ -85,6 +93,14 @@ export default function MeetingCard(props: {list: RecordingList}) {
       </CardActions>
     </Card>
   )
+}
+
+function PartLabel(props: {showing: boolean; children: React.ReactElement}) {
+  if (!props.showing) {
+    return null
+  }
+
+  return props.children
 }
 
 export function convertFileSizeToReadable(size: number) {

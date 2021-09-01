@@ -75,7 +75,8 @@ export default function Recordings() {
     )
   }
 
-  if (recordings.length === 0) {
+  const hasRecordings = recordings.length > 0
+  if (!hasRecordings) {
     return (
       <Layout>
         <Page>
@@ -91,15 +92,51 @@ export default function Recordings() {
       <Page>
         <Title variant="h5">Recordings</Title>
         <Grid container spacing={4}>
-          {recordings.map((record) => (
-            <Grid item xs={12} md={6} key={record.meeting_uuid}>
-              <MeetingCard list={record} />
-            </Grid>
+          {recordings.map((list) => (
+            <Items list={list} key={list.meeting_uuid} />
           ))}
         </Grid>
       </Page>
     </Layout>
   )
+}
+
+function Items(props: {list: RecordingList}) {
+  const {list} = props
+
+  const grouped = groupByStartTime(list.recordings)
+
+  /**
+   * If there's only 1 start time we won't be splitting it into parts
+   */
+  const hasParts = Object.keys(grouped).length > 1
+
+  return (
+    <>
+      {Object.values(grouped).map((recordings, index) => (
+        <Grid item xs={12} md={6} key={index}>
+          <MeetingCard
+            recordings={recordings}
+            part={index + 1}
+            hasMultipleParts={hasParts}
+          />
+        </Grid>
+      ))}
+    </>
+  )
+}
+
+function groupByStartTime(recordings: Recording[]) {
+  return recordings.reduce((acc, i) => {
+    const list = acc[i.recording_start]
+
+    const updated = list ? [...list, i] : [i]
+
+    return {
+      ...acc,
+      [i.recording_start]: updated,
+    }
+  }, {} as Record<string, Recording[]>)
 }
 
 function useRecordings() {
