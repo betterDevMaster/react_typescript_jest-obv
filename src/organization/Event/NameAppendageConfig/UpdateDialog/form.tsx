@@ -15,6 +15,8 @@ import {
   NameAppendage,
   useNameAppendages,
 } from 'organization/Event/NameAppendageConfig/NameAppendageProvider'
+import {VariablesDescription} from 'organization/Event/NameAppendageConfig/AddDialog/form'
+
 export default function NameAppendageUpdateForm(props: {
   onClose: () => void
   nameAppendage: NameAppendage | null
@@ -141,7 +143,7 @@ export default function NameAppendageUpdateForm(props: {
           <p>
             <b>Generated label:</b> <LabelPreview text={text} emoji={emoji} />
           </p>
-
+          <VariablesDescription />
           <TextField
             name="text"
             label="Label Text"

@@ -16,6 +16,9 @@ import {
   NameAppendage,
   useNameAppendages,
 } from 'organization/Event/NameAppendageConfig/NameAppendageProvider'
+import Alert from '@material-ui/lab/Alert'
+import AlertTitle from '@material-ui/lab/AlertTitle'
+import Typography from '@material-ui/core/Typography'
 
 export default function NameAppendageAddForm(props: {onClose: () => void}) {
   const {register, handleSubmit} = useForm()
@@ -125,6 +128,7 @@ export default function NameAppendageAddForm(props: {onClose: () => void}) {
           <p>
             <b>Generated label:</b> <LabelPreview text={text} emoji={emoji} />
           </p>
+          <VariablesDescription />
           <TextField
             name="text"
             label="Label Text"
@@ -158,6 +162,19 @@ export default function NameAppendageAddForm(props: {onClose: () => void}) {
         </form>
       </RuleConfig>
     </>
+  )
+}
+
+export function VariablesDescription() {
+  return (
+    <Alert severity="info">
+      <AlertTitle>Variables</AlertTitle>
+      <div>
+        <Typography variant="caption">
+          {`{{ group }} - the attendee's value for the given group`}
+        </Typography>
+      </div>
+    </Alert>
   )
 }
 
