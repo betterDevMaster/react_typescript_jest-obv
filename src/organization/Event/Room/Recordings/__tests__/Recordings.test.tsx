@@ -54,7 +54,7 @@ it('should show recordings', async () => {
   user.click(await findByText(/recordings/i))
 
   const downloadButton = (await findByLabelText(
-    'download main recording',
+    `download ${recording.name}`,
   )) as HTMLAnchorElement
 
   expect(downloadButton.href).toBe(recording.download_url)
@@ -77,18 +77,26 @@ it('should group by start times', async () => {
              * Create a list with 3 parts
              */
             fakeRecording({
+              recording_start: '2021-09-01T03:00:03.000Z',
+              name: 'Instance One Part Three',
+            }),
+            fakeRecording({
               recording_start: '2021-09-01T03:00:01.000Z',
+              name: 'Instance One Part One',
             }),
             fakeRecording({
               recording_start: '2021-09-01T03:00:02.000Z',
-            }),
-            fakeRecording({
-              recording_start: '2021-09-01T03:00:03.000Z',
+              name: 'Instance One Part Two',
             }),
           ],
         }),
         fakeRecordingList({
-          recordings: [fakeRecording()],
+          recordings: [
+            fakeRecording({
+              recording_start: '2021-09-01T02:00:03.000Z', // Previous day, should appear first
+              name: 'Instance Two',
+            }),
+          ],
         }),
       ],
     }),
@@ -96,8 +104,31 @@ it('should group by start times', async () => {
 
   user.click(await findByText(/recordings/i))
 
-  // Should include 3 parts + 1 single recording
-  expect((await findAllByLabelText('download main recording')).length).toBe(4)
+  /**
+   * Assert correctly split into parts (3 + 1 = 4)
+   */
+  const downloadLabels = await findAllByLabelText(/download/)
+  expect(downloadLabels.length).toBe(4)
 
-  expect((await findAllByText('Part:')).length).toBe(3)
+  expect((await findAllByText('Part:')).length).toBe(3) // Only show part label if there's more than 1
+
+  /**
+   * Assert sorting is correct
+   */
+
+  // Older instances first
+  expect(downloadLabels[0].getAttribute('aria-label')).toBe(
+    `download Instance Two`,
+  )
+
+  // Within an instance the parts are sorted in ascending order too
+  expect(downloadLabels[1].getAttribute('aria-label')).toBe(
+    `download Instance One Part One`,
+  )
+  expect(downloadLabels[2].getAttribute('aria-label')).toBe(
+    `download Instance One Part Two`,
+  )
+  expect(downloadLabels[3].getAttribute('aria-label')).toBe(
+    `download Instance One Part Three`,
+  )
 })

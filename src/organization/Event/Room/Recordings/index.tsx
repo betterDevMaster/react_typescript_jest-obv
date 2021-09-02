@@ -19,6 +19,7 @@ import {useCallback} from 'react'
 import {useAsync} from 'lib/async'
 import Layout from 'organization/user/Layout'
 import MeetingCard from 'organization/Event/Room/Recordings/MeetingCard'
+import {date} from 'lib/date-time'
 
 export interface RecordingList {
   meeting_uuid: string
@@ -92,7 +93,7 @@ export default function Recordings() {
       <Page>
         <Title variant="h5">Recordings</Title>
         <Grid container spacing={4}>
-          {recordings.map((list) => (
+          {sortLists(recordings).map((list) => (
             <Items list={list} key={list.meeting_uuid} />
           ))}
         </Grid>
@@ -111,9 +112,11 @@ function Items(props: {list: RecordingList}) {
    */
   const hasParts = Object.keys(grouped).length > 1
 
+  const parts = Object.values(grouped)
+
   return (
     <>
-      {Object.values(grouped).map((recordings, index) => (
+      {parts.sort(sortByStartTimes).map((recordings, index) => (
         <Grid item xs={12} md={6} key={index}>
           <MeetingCard
             recordings={recordings}
@@ -124,6 +127,61 @@ function Items(props: {list: RecordingList}) {
       ))}
     </>
   )
+}
+
+/**
+ * Sort lists by ascending start times. ie. list with older
+ * recordings come first.
+ *
+ * @param lists
+ * @returns
+ */
+function sortLists(lists: RecordingList[]) {
+  return lists.sort((a, b) => sortByStartTimes(a.recordings, b.recordings))
+}
+
+/**
+ * Sort function that compares arrays of recordings.
+ *
+ * @param a
+ * @param b
+ * @returns
+ */
+function sortByStartTimes(a: Recording[], b: Recording[]) {
+  const aStart = firstStart(a)
+  const bStart = firstStart(b)
+
+  if (aStart === bStart) {
+    return 0
+  }
+
+  return date(aStart).isAfter(bStart) ? 1 : -1
+}
+
+/**
+ * Get the first (earliest) start_time within an
+ * array of recordings.
+ *
+ * @param list
+ */
+function firstStart(recordings: Recording[]) {
+  return recordings.reduce((acc, i) => {
+    if (!acc) {
+      return i.recording_start
+    }
+
+    // Same time
+    if (acc === i.recording_start) {
+      return acc
+    }
+
+    if (date(acc).isAfter(i.recording_start)) {
+      // Found an earlier start time
+      return i.recording_start
+    }
+
+    return acc
+  }, recordings[0].recording_start) // Start with first recording's start date
 }
 
 function groupByStartTime(recordings: Recording[]) {

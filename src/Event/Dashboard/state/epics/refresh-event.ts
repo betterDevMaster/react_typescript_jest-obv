@@ -9,7 +9,7 @@ import {
   REFRESH_EVENT_ACTION,
   setEvent,
 } from 'Event/state/actions'
-import {isAfter} from 'lib/date-time'
+import {date} from 'lib/date-time'
 import {EMPTY} from 'rxjs'
 
 export const refreshEventEpic: Epic<
@@ -33,10 +33,7 @@ export const refreshEventEpic: Epic<
         throw new Error('Missing event, was it set properly in EventProvider?')
       }
 
-      const hasChanges = isAfter({
-        target: action.payload,
-        isAfter: event.updated_at,
-      })
+      const hasChanges = date(action.payload).isAfter(event.updated_at)
       if (!hasChanges) {
         return EMPTY
       }

@@ -57,7 +57,7 @@ export default function MeetingCard(props: {
               <Button
                 color="primary"
                 variant="contained"
-                aria-label="download main recording"
+                aria-label={`download ${main.name}`}
                 href={main.download_url}
                 download
               >
