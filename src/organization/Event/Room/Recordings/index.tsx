@@ -148,6 +148,26 @@ function sortLists(lists: RecordingList[]) {
  * @returns
  */
 function sortByStartTimes(a: Recording[], b: Recording[]) {
+  /**
+   * Handle case where there are 0 recordings here
+   * before we try to access the start times, or
+   * it will crash.
+   */
+  const aHasRecordings = a.length > 0
+  const bHasRecordings = b.length > 0
+
+  if (!aHasRecordings && bHasRecordings) {
+    return -1
+  }
+
+  if (aHasRecordings && !bHasRecordings) {
+    return 1
+  }
+
+  if (!aHasRecordings && !bHasRecordings) {
+    return 0
+  }
+
   const aStart = firstStart(a)
   const bStart = firstStart(b)
 
