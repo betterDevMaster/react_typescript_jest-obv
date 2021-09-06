@@ -1,7 +1,11 @@
 import user from '@testing-library/user-event'
 import {fakePanels} from 'Event/template/Panels/__utils__/factory'
 import {fakeResource} from 'Event/template/Panels/Dashboard/Resources/ResourceList/__utils__/factory'
-import {createPlatformActions, fakeEvent} from 'Event/__utils__/factory'
+import {
+  createPlatformActions,
+  fakeEvent,
+  fakeLocalization,
+} from 'Event/__utils__/factory'
 import {wait} from '@testing-library/react'
 import {fakeAction} from 'Event/ActionsProvider/__utils__/factory'
 import axios from 'axios'
@@ -54,4 +58,40 @@ it('receive points', async () => {
 
   // show points pop-up
   expect(await findByText(new RegExp(action.description))).toBeInTheDocument()
+})
+
+it('should show translated url', async () => {
+  const translatedUrl = 'https://bar.com/'
+
+  const event = fakeEvent({
+    template: fakePanels({
+      resourceList: {
+        title: faker.random.word(),
+        resources: [fakeResource({isVisible: true, url: '{{foo}}'})],
+      },
+    }),
+    localization: fakeLocalization({
+      translationsEnabled: true,
+      translations: {
+        English: {
+          foo: translatedUrl,
+        },
+      },
+    }),
+  })
+
+  const {findByLabelText} = await loginToEventSite({
+    event,
+    attendee: fakeAttendee({
+      tech_check_completed_at: 'now',
+      waiver: 'some_waiver.png',
+    }),
+  })
+
+  user.click(await findByLabelText('panels tab resources'))
+
+  const url = ((await findByLabelText('event resource')) as HTMLAnchorElement)
+    .href
+
+  expect(url).toBe(translatedUrl)
 })

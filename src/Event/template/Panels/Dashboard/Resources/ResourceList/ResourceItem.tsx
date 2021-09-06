@@ -3,7 +3,6 @@ import styled from 'styled-components'
 import {usePoints} from 'Event/PointsProvider'
 import {usePlatformActions} from 'Event/ActionsProvider/platform-actions'
 import {AbsoluteLink} from 'lib/ui/link/AbsoluteLink'
-import {storage} from 'lib/url'
 import VisibleOnMatch from 'Event/visibility-rules/VisibleOnMatch'
 import {Editable} from 'Event/Dashboard/editor/views/EditComponent'
 import Published from 'Event/Dashboard/editor/views/Published'
@@ -17,6 +16,7 @@ import Card from '@material-ui/core/Card'
 import Typography from '@material-ui/core/Typography'
 import CardContent from '@material-ui/core/CardContent'
 import CardActions from '@material-ui/core/CardActions'
+import {useResourceUrl} from 'Event/Dashboard/components/resource'
 
 type ResourceItemProps = {
   id: string
@@ -71,7 +71,7 @@ function ResourceItemCard(props: {
 }) {
   const {downloadResource: DOWNLOADING_RESOURCE} = usePlatformActions()
   const {submit} = usePoints()
-  const url = resourceUrl(props.resource)
+  const url = useResourceUrl(props.resource)
   const v = useVariables()
 
   const awardPoints = () => {
@@ -144,14 +144,6 @@ const Item = React.forwardRef<
     </Grid>
   )
 })
-
-function resourceUrl(resource: Resource): string {
-  if (resource.url) {
-    return resource.url
-  }
-
-  return storage(`/event/resources/${resource.filePath}`)
-}
 
 const ResourceLink = styled(AbsoluteLink)`
   align-items: center;
