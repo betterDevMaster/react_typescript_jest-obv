@@ -3,7 +3,7 @@ import styled from 'styled-components'
 import {FAQ} from 'Event/FaqPage'
 import Card from 'Event/template/SimpleBlog/FaqPage/FaqList/Card'
 import React from 'react'
-import VisibleOnMatch from 'Event/visibility-rules/VisibleOnMatch'
+import VisibleOnMatch from 'Event/attendee-rules/VisibleOnMatch'
 import {DragDropContext, Droppable, DropResult} from 'react-beautiful-dnd'
 import {useSimpleBlog} from 'Event/template/SimpleBlog'
 

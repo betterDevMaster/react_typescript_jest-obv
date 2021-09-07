@@ -22,6 +22,7 @@ import {onChangeCheckedHandler} from 'lib/dom'
 import Switch from '@material-ui/core/Switch'
 import {useAreaRoutes} from 'organization/Event/Area/AreaRoutes'
 import Page from 'organization/Event/Page'
+import {useRooms} from 'organization/Event/Area/RoomsProvider'
 
 interface CreateRoomData {
   name: string
@@ -41,6 +42,7 @@ export default function CreateRoomForm() {
     history.push(areaRoutes.root)
   }
   const [hasMaxNumAttendees, setHasMaxNumAttendees] = useState(false)
+  const {add} = useRooms()
 
   const submit = (all: CreateRoomData) => {
     const {max_num_attendees, ...requiredData} = all
@@ -49,7 +51,10 @@ export default function CreateRoomForm() {
 
     setSubmitting(true)
     createRoom(data)
-      .then(goToBackToArea)
+      .then((room) => {
+        add(room)
+        goToBackToArea()
+      })
       .catch((e) => {
         setServerError(e)
         setSubmitting(false)

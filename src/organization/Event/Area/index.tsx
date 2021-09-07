@@ -9,7 +9,7 @@ import styled from 'styled-components'
 import {onChangeCheckedHandler, onChangeStringHandler} from 'lib/dom'
 import {RelativeLink} from 'lib/ui/link/RelativeLink'
 import {spacing} from 'lib/ui/theme'
-import RoomList, {useRooms} from 'organization/Event/Area/RoomList'
+import RoomList from 'organization/Event/Area/RoomList'
 import {useArea} from 'organization/Event/Area/AreaProvider'
 import {useAreaRoutes} from 'organization/Event/Area/AreaRoutes'
 import Layout from 'organization/user/Layout'
@@ -28,6 +28,7 @@ import ClearRoomAssignmentsButton from 'organization/Event/Area/ClearRoomAssignm
 import ErrorAlert from 'lib/ui/alerts/ErrorAlert'
 import {useToggle} from 'lib/toggle'
 import ConfirmDialog from 'lib/ui/ConfirmDialog'
+import {useRooms} from 'organization/Event/Area/RoomsProvider'
 
 const CONFIRM_TURN_OFF_TECH_CHECK_REASSIGN =
   "This area is currently assigned to Tech Check.  If you turn this setting off, and an attendee hasn't completed their tech check, they may see an offline message when they try to check in and their original room is unavailable.  Are you sure you wish to disable?"
@@ -35,7 +36,7 @@ const CONFIRM_TURN_OFF_TECH_CHECK_REASSIGN =
 export default function Area() {
   const {area, update, processing} = useArea()
   const routes = useAreaRoutes()
-  const {rooms, loading} = useRooms()
+  const {rooms} = useRooms()
   const {event} = useEvent()
   const {routes: orgRoutes} = useOrganization()
   const eventRoutes = useEventRoutes()
@@ -102,20 +103,6 @@ export default function Area() {
     {title: area.name, url: areaRoutes.root},
   ])
 
-  if (loading) {
-    return (
-      <Layout>
-        <Page>
-          <div>loading...</div>
-        </Page>
-      </Layout>
-    )
-  }
-
-  if (!rooms) {
-    throw new Error('Failed fetching rooms')
-  }
-
   return (
     <>
       <ConfirmDialog
@@ -128,7 +115,14 @@ export default function Area() {
         <Page>
           <StyledErrorAlert>{error}</StyledErrorAlert>
           <Box>
-            <ExportAreaAttendees area={area} />
+            <Left>
+              <ExportAreaAttendees area={area} />
+              <RelativeLink to={areaRoutes.rules} disableStyles>
+                <RulesButton variant="outlined" aria-label="Area Rules">
+                  Rules
+                </RulesButton>
+              </RelativeLink>
+            </Left>
             <ClearRoomAssignmentsButton
               area={area}
               onError={setError}
@@ -294,6 +288,14 @@ const Box = styled.div`
   justify-content: space-between;
 `
 
+const Left = styled.div`
+  display: flex;
+`
+
 const StyledErrorAlert = styled(ErrorAlert)`
   margin-bottom: ${(props) => props.theme.spacing[5]};
+`
+
+const RulesButton = styled(Button)`
+  margin-left: ${(props) => props.theme.spacing[2]};
 `

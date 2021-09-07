@@ -7,9 +7,9 @@ import Button from '@material-ui/core/Button'
 import Dialog from 'lib/ui/Dialog'
 import {useVariables} from 'Event'
 import DangerButton from 'lib/ui/Button/DangerButton'
-import RuleConfig, {useRuleConfig} from 'Event/visibility-rules/RuleConfig'
-import {Rule} from 'Event/visibility-rules'
-import ConfigureRulesButton from 'Event/visibility-rules/ConfigureRulesButton'
+import RuleConfig, {useRuleConfig} from 'Event/attendee-rules/RuleConfig'
+import {Rule} from 'Event/attendee-rules'
+import ConfigureRulesButton from 'Event/attendee-rules/ConfigureRulesButton'
 import {
   Background,
   useBackgrounds,

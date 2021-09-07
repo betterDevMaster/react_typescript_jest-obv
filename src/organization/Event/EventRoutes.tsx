@@ -46,6 +46,7 @@ import BackgroundsProvider from 'organization/Event/Backgrounds/BackgroundsProvi
 import Backgrounds from 'organization/Event/Backgrounds'
 import {StaticPointsProvider} from 'Event/PointsProvider'
 import DuplicateEventForm from 'organization/EventList/DuplicateEventForm'
+import RoomsProvider from 'organization/Event/Area/RoomsProvider'
 
 export type EventRoutes = ReturnType<typeof useEventRoutes>
 
@@ -188,7 +189,9 @@ export default function EventRoutes() {
           </Route>
           <Route path={routes.events[':event'].areas[':area'].root}>
             <AreaProvider>
-              <AreaRoutes />
+              <RoomsProvider>
+                <AreaRoutes />
+              </RoomsProvider>
             </AreaProvider>
           </Route>
           <Route path={routes.events[':event'].name_appendage}>

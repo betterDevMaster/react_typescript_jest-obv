@@ -1,4 +1,4 @@
-import {Rule} from 'Event/visibility-rules'
+import {Rule} from 'Event/attendee-rules'
 
 export const ENGLISH = 'English'
 

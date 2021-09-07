@@ -142,6 +142,7 @@ export function createRoutesFor(organization: Organization) {
                   recordings: '/recordings',
                 },
               },
+              rules: '/rules',
             },
           },
           leaderboard: '/leaderboard',

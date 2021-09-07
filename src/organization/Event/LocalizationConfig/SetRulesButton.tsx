@@ -6,7 +6,7 @@ import Button from '@material-ui/core/Button'
 import {useLocalizationConfig} from 'organization/Event/LocalizationConfig'
 import Dialog from 'lib/ui/Dialog'
 import DialogContent from '@material-ui/core/DialogContent'
-import RuleConfig from 'Event/visibility-rules/RuleConfig'
+import RuleConfig from 'Event/attendee-rules/RuleConfig'
 import Box from '@material-ui/core/Box'
 import styled from 'styled-components'
 

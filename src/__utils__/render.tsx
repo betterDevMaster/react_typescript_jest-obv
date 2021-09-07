@@ -3,7 +3,7 @@ import {
   render as rtlRender,
   RenderOptions as RtlRenderOptions,
 } from '@testing-library/react'
-import AttendeeProfileProvider from 'Event/visibility-rules/AttendeeProfileProvider'
+import AttendeeProfileProvider from 'Event/attendee-rules/AttendeeProfileProvider'
 import MockStoreProvider from 'store/__utils__/MockStoreProvider'
 import Providers from 'Providers'
 import StaticEventProvider from 'Event/__utils__/StaticEventProvider'

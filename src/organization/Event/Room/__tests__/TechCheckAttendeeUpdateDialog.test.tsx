@@ -34,8 +34,6 @@ it('should check in an attendee', async () => {
   // go to area config
   user.click(await findByLabelText(`view ${area.name} area`))
 
-  // Room to be configured
-  mockGet.mockImplementationOnce(() => Promise.resolve({data: room}))
   // Start url
   mockGet.mockImplementationOnce(() =>
     Promise.resolve({

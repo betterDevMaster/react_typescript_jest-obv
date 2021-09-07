@@ -13,7 +13,7 @@ import {
 } from 'Event/template/SimpleBlog/Dashboard/Sidebar/SidebarItem'
 import {uuid} from 'lib/uuid'
 import {RemoveButton} from 'organization/Event/DashboardConfig/ComponentConfig'
-import VisibleOnMatch from 'Event/visibility-rules/VisibleOnMatch'
+import VisibleOnMatch from 'Event/attendee-rules/VisibleOnMatch'
 
 export const TICKET_RIBBON_LIST = 'Ticket Ribbon List'
 export interface TicketRibbonListProps {

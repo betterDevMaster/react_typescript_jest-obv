@@ -1,7 +1,7 @@
 import {Publishable} from 'Event/Dashboard/editor/views/Published'
 import {v4 as uid} from 'uuid'
 import {useDispatchUpdate, useTemplate} from 'Event/TemplateProvider'
-import {HasRules} from 'Event/visibility-rules'
+import {HasRules} from 'Event/attendee-rules'
 import {getDiffDatetime, now} from 'lib/date-time'
 import {EntityList} from 'lib/list'
 

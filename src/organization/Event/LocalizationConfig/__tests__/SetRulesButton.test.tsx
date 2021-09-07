@@ -6,7 +6,7 @@ import {CONFIGURE_EVENTS} from 'organization/PermissionsProvider'
 import axios from 'axios'
 import {fireEvent, wait} from '@testing-library/react'
 import {createLanguage} from 'Event/LanguageProvider/language'
-import {TAGS} from 'Event/visibility-rules/RuleConfig/RuleList/SingleRule/TagsRule'
+import {TAGS} from 'Event/attendee-rules/RuleConfig/RuleList/SingleRule/TagsRule'
 
 const mockPut = axios.put as jest.Mock
 

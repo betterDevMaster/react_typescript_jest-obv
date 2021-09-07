@@ -12,7 +12,7 @@ import {DragDropContext, Droppable, DropResult} from 'react-beautiful-dnd'
 import styled from 'styled-components'
 import 'Event/template/Panels/Dashboard/LeftPanel'
 import {withDefaults} from 'lib/object'
-import VisibleOnMatch from 'Event/visibility-rules/VisibleOnMatch'
+import VisibleOnMatch from 'Event/attendee-rules/VisibleOnMatch'
 
 export default function TicketRibbonList() {
   return (

@@ -5,8 +5,8 @@ import {TicketRibbon} from 'Event/template/SimpleBlog/Dashboard/Sidebar/SidebarI
 import React, {useEffect, useState} from 'react'
 import {onChangeStringHandler} from 'lib/dom'
 import DangerButton from 'lib/ui/Button/DangerButton'
-import RuleConfig, {useRuleConfig} from 'Event/visibility-rules/RuleConfig'
-import ConfigureRulesButton from 'Event/visibility-rules/ConfigureRulesButton'
+import RuleConfig, {useRuleConfig} from 'Event/attendee-rules/RuleConfig'
+import ConfigureRulesButton from 'Event/attendee-rules/ConfigureRulesButton'
 import DefaultRibbonSelect from 'Event/template/SimpleBlog/Dashboard/Sidebar/SidebarItem/TicketRibbonList/TicketRibbonConfig/DefaultRibbonSelect'
 import ComponentConfig, {
   ComponentConfigProps,

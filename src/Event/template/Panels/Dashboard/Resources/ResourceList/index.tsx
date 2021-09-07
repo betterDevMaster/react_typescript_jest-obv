@@ -14,7 +14,7 @@ import {
 } from 'react-beautiful-dnd'
 import {usePanels} from 'Event/template/Panels'
 import {Publishable} from 'Event/Dashboard/editor/views/Published'
-import {HasRules} from 'Event/visibility-rules'
+import {HasRules} from 'Event/attendee-rules'
 import ResourceItem from 'Event/template/Panels/Dashboard/Resources/ResourceList/ResourceItem'
 import ResourceListConfig from 'Event/template/Panels/Dashboard/Resources/ResourceList/ResourceListConfig'
 import ResourceItemConfig from 'Event/template/Panels/Dashboard/Resources/ResourceList/ResourceItemConfig'

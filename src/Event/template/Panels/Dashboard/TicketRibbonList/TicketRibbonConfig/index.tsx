@@ -3,7 +3,7 @@ import InputLabel from '@material-ui/core/InputLabel'
 import {usePanels} from 'Event/template/Panels'
 import {TicketRibbon} from 'Event/template/Panels/Dashboard/TicketRibbonList/TicketRibbon'
 import {useDispatchUpdate} from 'Event/TemplateProvider'
-import RuleConfig, {useRuleConfig} from 'Event/visibility-rules/RuleConfig'
+import RuleConfig, {useRuleConfig} from 'Event/attendee-rules/RuleConfig'
 import ColorPicker from 'lib/ui/ColorPicker'
 import FontStyleInput from 'lib/ui/typography/FontStyleInput'
 import ComponentConfig, {
@@ -17,7 +17,7 @@ import React, {useEffect, useState} from 'react'
 import {Controller, useForm} from 'react-hook-form'
 import Box from '@material-ui/core/Box'
 import {DeepRequired} from 'lib/type-utils'
-import ConfigureRulesButton from 'Event/visibility-rules/ConfigureRulesButton'
+import ConfigureRulesButton from 'Event/attendee-rules/ConfigureRulesButton'
 
 const MAX_HOVER_TEXT_CHARS = 15
 

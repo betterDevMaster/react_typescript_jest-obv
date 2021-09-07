@@ -6,7 +6,7 @@ import {useEvent} from 'Event/EventProvider'
 import {useAsync} from 'lib/async'
 import {api} from 'lib/url'
 import {Client} from 'lib/api-client'
-import {HasRules} from 'Event/visibility-rules'
+import {HasRules} from 'Event/attendee-rules'
 import {useTrackEventPage} from 'analytics'
 import {useTemplate} from 'Event/TemplateProvider'
 

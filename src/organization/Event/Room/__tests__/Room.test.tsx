@@ -42,8 +42,6 @@ it('should toggle a room on/off', async () => {
   // go to area config
   user.click(await findByLabelText(`view ${area.name} area`))
 
-  // Room to be configured
-  mockGet.mockImplementationOnce(() => Promise.resolve({data: target}))
   // Start url
   const url = faker.internet.url()
   mockGet.mockImplementationOnce(() => Promise.resolve({data: {url}}))
@@ -100,9 +98,6 @@ it('should update room attributes', async () => {
 
   // go to area config
   user.click(await findByLabelText(`view ${area.name} area`))
-
-  // Room to be configured
-  mockGet.mockImplementationOnce(() => Promise.resolve({data: target}))
 
   // go to room config
   user.click(await findByLabelText(`view ${target.name} room`))
@@ -168,7 +163,6 @@ it('should configure room registration', async () => {
   user.click(await findByLabelText(`view ${area.name} area`))
 
   // Go to room
-  mockGet.mockImplementationOnce(() => Promise.resolve({data: room}))
   user.click(await findByLabelText(`view ${room.name} room`))
 
   expect(await findByLabelText('room name input')).toBeInTheDocument()

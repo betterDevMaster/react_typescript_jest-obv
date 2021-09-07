@@ -6,8 +6,8 @@ import {
   createLanguage,
 } from 'Event/LanguageProvider/language'
 import React, {useCallback, useEffect, useState} from 'react'
-import {hasMatch} from 'Event/visibility-rules/matcher'
-import {useAttendeeProfile} from 'Event/visibility-rules/AttendeeProfileProvider'
+import {hasMatch} from 'Event/attendee-rules/matcher'
+import {useAttendeeProfile} from 'Event/attendee-rules/AttendeeProfileProvider'
 
 interface LanguageContextProps {
   current: Language['name'] | null

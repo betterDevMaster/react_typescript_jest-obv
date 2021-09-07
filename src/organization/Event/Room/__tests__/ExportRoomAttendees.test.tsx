@@ -23,7 +23,6 @@ it('should export submissions for a form', async () => {
 
   user.click(await findByLabelText(`view ${area.name} area`))
 
-  mockGet.mockImplementationOnce(() => Promise.resolve({data: room})) // room
   mockGet.mockImplementationOnce(() =>
     Promise.resolve({data: {url: 'http://zoom/start_url'}}),
   )

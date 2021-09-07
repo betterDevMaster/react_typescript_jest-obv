@@ -1,11 +1,10 @@
 import {Room} from 'Event/room'
-import {useAsync} from 'lib/async'
 import {api} from 'lib/url'
 import {useOrganization} from 'organization/OrganizationProvider'
-import React, {useCallback, useEffect, useState} from 'react'
-import {useParams} from 'react-router-dom'
-import Layout from 'organization/user/Layout'
-import Page from 'organization/Event/Page'
+import React, {useCallback, useState} from 'react'
+import {Redirect, useParams} from 'react-router-dom'
+import {useRooms} from 'organization/Event/Area/RoomsProvider'
+import {useAreaRoutes} from 'organization/Event/Area/AreaRoutes'
 
 type UpdateRoom = (updates: Partial<Room>) => Promise<void>
 
@@ -23,20 +22,17 @@ export function StaticRoomProvider(props: {
   room: Room
   children: React.ReactElement
 }) {
-  const [room, setRoom] = useState<Room>(props.room)
+  const {room} = props
   const [processing, setProcessing] = useState(false)
-  const update = useUpdateRoom(props.room.id, setRoom, setProcessing)
-  const setOnline = useSetOnline(props.room.id, setRoom, setProcessing)
-  const toggleRegistration = useToggleRegistration(
-    props.room.id,
-    setRoom,
-    setProcessing,
-  )
+
+  const update = useUpdateRoom(room.id, setProcessing)
+  const setOnline = useSetOnline(room.id, setProcessing)
+  const toggleRegistration = useToggleRegistration(room.id, setProcessing)
 
   return (
     <RoomContext.Provider
       value={{
-        room: room,
+        room,
         update,
         processing,
         setOnline,
@@ -51,29 +47,16 @@ export function StaticRoomProvider(props: {
 export function RouteRoomProvider(props: {children: React.ReactElement}) {
   const {room: routeId} = useParams<{room: string}>()
   const id = parseInt(routeId)
-  const [room, setRoom] = useState<Room | null>(null)
-  const {data: saved, loading, error: fetchError} = useSavedRoom(id)
+  const {rooms} = useRooms()
   const [processing, setProcessing] = useState(false)
-  const update = useUpdateRoom(id, setRoom, setProcessing)
-  const setOnline = useSetOnline(id, setRoom, setProcessing)
-  const setPublic = useToggleRegistration(id, setRoom, setProcessing)
+  const update = useUpdateRoom(id, setProcessing)
+  const setOnline = useSetOnline(id, setProcessing)
+  const setPublic = useToggleRegistration(id, setProcessing)
+  const areaRoutes = useAreaRoutes()
 
-  useEffect(() => {
-    setRoom(saved)
-  }, [saved])
-
-  if (loading || !room) {
-    return (
-      <Layout>
-        <Page>
-          <div>loading...</div>
-        </Page>
-      </Layout>
-    )
-  }
-
-  if (fetchError) {
-    throw new Error(fetchError.message)
+  const room = rooms.find((r) => r.id === id)
+  if (!room) {
+    return <Redirect to={areaRoutes.rooms.root} />
   }
 
   return (
@@ -91,45 +74,35 @@ export function RouteRoomProvider(props: {children: React.ReactElement}) {
   )
 }
 
-function useSavedRoom(id: number) {
-  const {client} = useOrganization()
-
-  const fetch = useCallback(() => {
-    const url = api(`/rooms/${id}`)
-    return client.get<Room>(url)
-  }, [id, client])
-
-  return useAsync(fetch)
-}
-
 function useUpdateRoom(
   id: number,
-  setRoom: (room: Room) => void,
   setProcessing: (processing: boolean) => void,
 ) {
   const {client} = useOrganization()
+  const {update} = useRooms()
 
   return useCallback<UpdateRoom>(
     (updates) => {
       const url = api(`/rooms/${id}`)
       setProcessing(true)
+
       return client
         .patch<Room>(url, updates)
-        .then(setRoom)
+        .then(update)
         .finally(() => {
           setProcessing(false)
         })
     },
-    [id, client, setRoom, setProcessing],
+    [client, setProcessing, update, id],
   )
 }
 
 function useToggleRegistration(
   id: number,
-  setRoom: (room: Room) => void,
   setProcessing: (processing: boolean) => void,
 ) {
   const {client} = useOrganization()
+  const {update} = useRooms()
 
   return useCallback(
     (enable: boolean) => {
@@ -140,21 +113,21 @@ function useToggleRegistration(
       setProcessing(true)
 
       sendRequest<Room>(url)
-        .then(setRoom)
+        .then(update)
         .finally(() => {
           setProcessing(false)
         })
     },
-    [id, client, setRoom, setProcessing],
+    [id, client, setProcessing, update],
   )
 }
 
 function useSetOnline(
   id: number,
-  setRoom: (room: Room) => void,
   setProcessing: (processing: boolean) => void,
 ) {
   const {client} = useOrganization()
+  const {update} = useRooms()
 
   return useCallback(
     (online: boolean) => {
@@ -164,12 +137,12 @@ function useSetOnline(
       setProcessing(true)
       client
         .patch<Room>(url)
-        .then(setRoom)
+        .then(update)
         .finally(() => {
           setProcessing(false)
         })
     },
-    [id, client, setRoom, setProcessing],
+    [id, client, update, setProcessing],
   )
 }
 

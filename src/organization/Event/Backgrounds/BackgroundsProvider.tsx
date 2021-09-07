@@ -1,7 +1,7 @@
 import React, {useCallback, useEffect, useState} from 'react'
 import {api} from 'lib/url'
 import {useEvent} from 'Event/EventProvider'
-import {HasRules} from 'Event/visibility-rules'
+import {HasRules} from 'Event/attendee-rules'
 import {useAsync} from 'lib/async'
 import {useOrganization} from 'organization/OrganizationProvider'
 import {useBlocking} from 'lib/requests'

@@ -6,11 +6,11 @@ import {fakeAttendee} from 'Event/auth/__utils__/factory'
 import {createLanguage, ENGLISH} from 'Event/LanguageProvider/language'
 import {languageTokenKey} from 'Event/LanguageProvider'
 import {wait} from '@testing-library/dom'
-import {AND} from 'Event/visibility-rules'
+import {AND} from 'Event/attendee-rules'
 import {
   INCLUDE,
   TAGS,
-} from 'Event/visibility-rules/RuleConfig/RuleList/SingleRule/TagsRule'
+} from 'Event/attendee-rules/RuleConfig/RuleList/SingleRule/TagsRule'
 
 it('should have set a matched language selected', async () => {
   window.localStorage.clear()

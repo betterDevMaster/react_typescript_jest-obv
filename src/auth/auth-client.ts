@@ -127,6 +127,7 @@ export const useAuthClient = (settings: AuthClientSettings) => {
     login,
     register,
     refresh: fetch,
+    token,
   }
 }
 

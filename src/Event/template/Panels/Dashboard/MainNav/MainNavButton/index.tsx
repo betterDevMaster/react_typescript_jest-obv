@@ -1,5 +1,5 @@
 import Grid from '@material-ui/core/Grid'
-import VisibleOnMatch from 'Event/visibility-rules/VisibleOnMatch'
+import VisibleOnMatch from 'Event/attendee-rules/VisibleOnMatch'
 import NavButton, {
   NavButtonWithSize,
 } from 'Event/Dashboard/components/NavButton'

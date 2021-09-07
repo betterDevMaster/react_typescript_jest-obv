@@ -1,10 +1,5 @@
-import {useEvent} from 'Event/EventProvider'
 import {Room} from 'Event/room'
-import {useAsync} from 'lib/async'
-import {api} from 'lib/url'
-import {useArea} from 'organization/Event/Area/AreaProvider'
-import {useOrganization} from 'organization/OrganizationProvider'
-import React, {useCallback} from 'react'
+import React from 'react'
 import Table from '@material-ui/core/Table'
 import TableHead from '@material-ui/core/TableHead'
 import TableRow from '@material-ui/core/TableRow'
@@ -52,23 +47,6 @@ export default function RoomList(props: {rooms: Room[]}) {
       </TableBody>
     </Table>
   )
-}
-
-export function useRooms() {
-  const {client} = useOrganization()
-  const {event} = useEvent()
-  const {area} = useArea()
-
-  const {id} = area
-
-  const fetch = useCallback(() => {
-    const url = api(`/events/${event.slug}/areas/${id}/rooms`)
-    return client.get<Room[]>(url)
-  }, [client, event, id])
-
-  const {data: rooms, ...asyncRes} = useAsync(fetch)
-
-  return {rooms, ...asyncRes}
 }
 
 function RoomLink() {
