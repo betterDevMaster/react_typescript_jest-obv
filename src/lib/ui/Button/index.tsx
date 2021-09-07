@@ -1,3 +1,4 @@
+import {grey} from '@material-ui/core/colors'
 import React from 'react'
 import styled from 'styled-components'
 
@@ -106,12 +107,16 @@ function padding(props: ButtonProps) {
 }
 
 function textColor(props: ButtonProps) {
+  if (props.disabled) {
+    return grey[500]
+  }
+
   if (props.textColor) {
     return props.textColor
   }
 
   if (isText(props.variant)) {
-    return '#000000'
+    return 'inherit'
   }
 
   return '#FFFFFF'

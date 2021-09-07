@@ -13,6 +13,9 @@ import {useOrganization} from 'organization/OrganizationProvider'
 import Layout from 'organization/user/Layout'
 import React from 'react'
 import styled from 'styled-components'
+import Alert from '@material-ui/lab/Alert'
+import Button from 'lib/ui/Button'
+import {useClearRoomAssignments} from 'organization/Event/Area/ClearRoomAssignmentsButton'
 
 export default function Rules() {
   const {routes: orgRoutes} = useOrganization()
@@ -20,7 +23,9 @@ export default function Rules() {
   const eventRoutes = useEventRoutes()
   const areaRoutes = useAreaRoutes()
   const {area} = useArea()
-  const {error, clearError} = useRules()
+  const {error, clearError, setError} = useRules()
+
+  const {processing, clear} = useClearRoomAssignments(clearError, setError)
 
   useBreadcrumbs([
     {
@@ -46,6 +51,13 @@ export default function Rules() {
           <SaveButton />
         </Actions>
         <StyledErrorAlert onClose={clearError}>{error}</StyledErrorAlert>
+        <StyledAlert severity="info">
+          Any rule changes will not affect previously assigned attendees. Click{' '}
+          <StyledButton variant="text" onClick={clear} disabled={processing}>
+            here
+          </StyledButton>{' '}
+          to clear all room assignments.
+        </StyledAlert>
         <RulesTable />
       </Page>
     </Layout>
@@ -60,4 +72,12 @@ const Actions = styled.div`
 const StyledErrorAlert = styled(ErrorAlert)`
   width: 100%;
   margin-top: ${(props) => props.theme.spacing[4]};
+`
+
+const StyledAlert = styled(Alert)`
+  margin-top: ${(props) => props.theme.spacing[4]};
+`
+
+const StyledButton = styled(Button)`
+  font-weight: bold;
 `

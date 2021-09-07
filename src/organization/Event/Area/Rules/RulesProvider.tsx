@@ -23,6 +23,7 @@ export interface RulesContextProps {
   processing: boolean
   error: string | null
   clearError: () => void
+  setError: (error: string) => void
   setRules: (rules: Rule[]) => void
   save: () => void
 }
@@ -107,6 +108,7 @@ export default function RulesProvider(props: {children: React.ReactElement}) {
         save,
         error,
         clearError,
+        setError,
         setRules,
       }}
     >

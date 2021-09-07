@@ -124,7 +124,6 @@ export default function Area() {
               </RelativeLink>
             </Left>
             <ClearRoomAssignmentsButton
-              area={area}
               onError={setError}
               clearError={clearError}
             />
