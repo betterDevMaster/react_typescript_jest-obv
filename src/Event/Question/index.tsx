@@ -1,5 +1,5 @@
 import FormHelperText from '@material-ui/core/FormHelperText'
-import {useVariables} from 'Event'
+import {useAttendeeVariables} from 'Event'
 import Checkbox from 'Event/Question/Checkbox'
 import LongAnswerText from 'Event/Question/LongAnswerText'
 import Price from 'Event/Question/Currency'
@@ -48,14 +48,14 @@ export default function Question(props: QuestionProps) {
     form: props.formErrors || {},
     response: props.responseError || null,
   })
-  const v = useVariables()
+  const v = useAttendeeVariables()
   const errorWithVariables = v(error)
 
   const hasError = Boolean(error)
 
   const HelperText = (
     <FormHelperText error={hasError}>
-      {error || props.question.helper_text}
+      {v(error || props.question.helper_text || '')}
     </FormHelperText>
   )
 

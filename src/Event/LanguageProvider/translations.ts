@@ -1,6 +1,6 @@
 import {useEvent} from 'Event/EventProvider'
 import {useLanguage} from 'Event/LanguageProvider'
-import {Language} from 'Event/LanguageProvider/language'
+import {Language, ENGLISH} from 'Event/LanguageProvider/language'
 import {systemDefault} from 'Event/LanguageProvider/system'
 import {replace, parseVariables} from 'lib/template'
 import {useCallback} from 'react'
@@ -18,33 +18,30 @@ export interface Localization {
 
 export type Translations = NonNullable<Localization['translations']>
 
-export function useWithTranslations() {
+export function useWithAttendeeTranslations() {
   const {
     current: language,
     translationsEnabled,
     defaultLanguage,
   } = useLanguage()
-  const translate = useTranslate()
 
-  return useCallback(
-    (text: string) => {
-      if (!text || !translationsEnabled) {
-        return text
-      }
+  return useHandleText({
+    language,
+    translationsEnabled,
+    defaultLanguage,
+  })
+}
 
-      /**
-       * If user (attendee) doesn't have a preferred language set, lets
-       * just return the default language translation
-       */
+export function useWithGuestTranslations() {
+  const {event} = useEvent()
+  const translationsEnabled = event.localization?.translationsEnabled || false
+  const language = event.localization?.defaultLanguage || ENGLISH
 
-      if (!language) {
-        return translate({text, target: defaultLanguage})
-      }
-
-      return translate({text, target: language, fallback: defaultLanguage})
-    },
-    [language, translate, defaultLanguage, translationsEnabled],
-  )
+  return useHandleText({
+    language,
+    defaultLanguage: language,
+    translationsEnabled,
+  })
 }
 
 function useTranslate() {
@@ -144,4 +141,33 @@ function findTranslation({
    */
 
   return value
+}
+
+function useHandleText(options: {
+  defaultLanguage: string
+  language: string | null
+  translationsEnabled: boolean
+}) {
+  const translate = useTranslate()
+  const {defaultLanguage, language, translationsEnabled} = options
+
+  return useCallback(
+    (text: string) => {
+      if (!text || !translationsEnabled) {
+        return text
+      }
+
+      /**
+       * If user (attendee) doesn't have a preferred language set, lets
+       * just return the default language translation
+       */
+
+      if (!language) {
+        return translate({text, target: defaultLanguage})
+      }
+
+      return translate({text, target: language, fallback: defaultLanguage})
+    },
+    [language, translate, defaultLanguage, translationsEnabled],
+  )
 }

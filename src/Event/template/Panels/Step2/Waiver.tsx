@@ -6,7 +6,7 @@ import Checkbox from '@material-ui/core/Checkbox'
 import Signature from 'lib/ui/form/Signature'
 import {onChangeCheckedHandler} from 'lib/dom'
 import {useWaiver} from 'Event/Step2/WaiverProvider'
-import {useVariables} from 'Event'
+import {useAttendeeVariables} from 'Event'
 import Typography from '@material-ui/core/Typography'
 import {usePanels} from 'Event/template/Panels'
 import Box from '@material-ui/core/Box'
@@ -24,14 +24,14 @@ export default function Waiver() {
 
   const {template} = usePanels()
   const {isDarkMode} = template
-  const v = useVariables()
+  const v = useAttendeeVariables()
   const color = isDarkMode ? '#FFFFFF' : '#000000'
 
   return (
     <>
       <Body
         dangerouslySetInnerHTML={{
-          __html: body,
+          __html: v(body),
         }}
       />
       <Box mb={2}>

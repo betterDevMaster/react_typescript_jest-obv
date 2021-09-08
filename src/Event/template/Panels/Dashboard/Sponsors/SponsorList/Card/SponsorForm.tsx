@@ -9,7 +9,7 @@ import {useForm} from 'react-hook-form'
 import Box from '@material-ui/core/Box'
 import {hasSubmittedForm, useSubmissions} from 'Event/SubmissionsProvider'
 import {Sponsor} from 'Event/SponsorPage'
-import {useVariables} from 'Event'
+import {useAttendeeVariables} from 'Event'
 
 export default function SponsorForm(props: {
   sponsor: Sponsor
@@ -53,7 +53,7 @@ function Body(props: {form: Form; onSubmitted: () => void}) {
   const {form} = props
   const {submit: submitAnswers, responseError, answers} = useSubmissions()
   const [submitting, setSubmitting] = useState(false)
-  const v = useVariables()
+  const v = useAttendeeVariables()
   const [isResubmitting, setIsResubmitting] = useState(false)
 
   const toggleResubmit = () => setIsResubmitting(!isResubmitting)
@@ -113,7 +113,7 @@ function Body(props: {form: Form; onSubmitted: () => void}) {
 }
 
 function SubmittedMessage(props: {form: Form; onResubmit: () => void}) {
-  const v = useVariables()
+  const v = useAttendeeVariables()
   const {form, onResubmit} = props
 
   if (!form.can_resubmit) {

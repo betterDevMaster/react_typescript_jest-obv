@@ -8,9 +8,11 @@ import FormGroup from '@material-ui/core/FormGroup'
 import {Controller} from 'react-hook-form'
 import {onChangeCheckedHandler} from 'lib/dom'
 import {Option} from 'organization/Event/QuestionsProvider'
+import {useAttendeeVariables} from 'Event'
 
 export default function Checkbox(props: FieldProps) {
   useSavedValue(props)
+  const v = useAttendeeVariables()
 
   return (
     <FormControl
@@ -19,7 +21,7 @@ export default function Checkbox(props: FieldProps) {
       error={props.hasError}
       disabled={props.disabled}
     >
-      <FormLabel component="legend">{props.question.label}</FormLabel>
+      <FormLabel component="legend">{v(props.question.label)}</FormLabel>
       <Controller
         name={props.name}
         control={props.control}

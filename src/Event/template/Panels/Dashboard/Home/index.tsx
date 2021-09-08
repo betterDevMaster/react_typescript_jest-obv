@@ -8,12 +8,14 @@ import {PageTitle} from 'Event/template/Panels/Page'
 import {useToggle} from 'lib/toggle'
 import React from 'react'
 import BodyHTMLEmbed from 'Event/template/Panels/Dashboard/Home/BodyHTMLEmbed'
+import {useAttendeeVariables} from 'Event'
 
 export default function Home() {
   const {template} = usePanels()
   const {flag: welcomeConfigVisible, toggle: toggleWelcomeConfig} = useToggle()
 
   const isEditMode = useEditMode()
+  const v = useAttendeeVariables()
 
   return (
     <>
@@ -23,7 +25,7 @@ export default function Home() {
       />
       <Editable onEdit={toggleWelcomeConfig}>
         <WelcomeText hasMinHeight={isEditMode} aria-label="welcome">
-          {template.welcomeText}
+          {v(template.welcomeText)}
         </WelcomeText>
       </Editable>
       <BlogPosts />

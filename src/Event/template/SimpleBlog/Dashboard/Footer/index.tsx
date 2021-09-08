@@ -4,7 +4,7 @@ import React from 'react'
 import styled from 'styled-components'
 import Image from 'Event/template/SimpleBlog/Dashboard/Footer/Image'
 import {useEvent} from 'Event/EventProvider'
-import {useVariables} from 'Event'
+import {useAttendeeVariables} from 'Event'
 import {useSimpleBlog} from 'Event/template/SimpleBlog'
 import {useToggle} from 'lib/toggle'
 import {FooterConfig} from 'Event/template/SimpleBlog/Dashboard/Footer/FooterConfig'
@@ -14,7 +14,7 @@ export default function Footer() {
   const {footer} = template
   const {event} = useEvent()
   const isEditMode = useEditMode()
-  const v = useVariables()
+  const v = useAttendeeVariables()
   const {flag: configVisible, toggle: toggleConfig} = useToggle()
 
   const isEmpty =

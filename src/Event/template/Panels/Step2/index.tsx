@@ -8,7 +8,7 @@ import {Form} from 'organization/Event/FormsProvider'
 import {useSubmissions} from 'Event/SubmissionsProvider'
 import styled from 'styled-components'
 import MuiButton, {ButtonProps} from '@material-ui/core/Button'
-import {useVariables} from 'Event'
+import {useAttendeeVariables} from 'Event'
 import {DEFAULTS, usePanels} from 'Event/template/Panels'
 import LeftPanel from 'Event/template/Panels/check-in/LeftPanel'
 import RightPanel from 'Event/template/Panels/check-in/RightPanel'
@@ -149,7 +149,7 @@ function WaiverOnly() {
 function SubmitButton(props: {canSubmit: boolean}) {
   const {template} = usePanels()
   const waiver = template.waiver
-  const v = useVariables()
+  const v = useAttendeeVariables()
 
   const textColor = waiver?.buttonTextColor || DEFAULTS.waiver.buttonTextColor
   const backgroundColor =

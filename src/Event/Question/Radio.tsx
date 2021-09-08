@@ -7,6 +7,7 @@ import {FieldProps, useSavedValue} from 'Event/Question'
 import React, {useState} from 'react'
 import TextField from '@material-ui/core/TextField'
 import {onChangeStringHandler} from 'lib/dom'
+import {useAttendeeVariables} from 'Event'
 
 /**
  * 'other' value. We set a default here that shouldn't conflict with
@@ -16,6 +17,7 @@ const OTHER = '__other__'
 
 export default function Radio(props: FieldProps) {
   useSavedValue(props)
+  const v = useAttendeeVariables()
 
   const [value, setValue] = useState(props.answer || '')
 
@@ -31,7 +33,7 @@ export default function Radio(props: FieldProps) {
       required={props.question.is_required}
       disabled={props.disabled}
     >
-      <FormLabel component="legend">{props.question.label}</FormLabel>
+      <FormLabel component="legend">{v(props.question.label)}</FormLabel>
       <input
         type="hidden"
         name={props.name}

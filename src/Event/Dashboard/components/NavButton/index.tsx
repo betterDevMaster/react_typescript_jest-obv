@@ -11,7 +11,7 @@ import {Publishable} from 'Event/Dashboard/editor/views/Published'
 import {InfusionsoftTag, useAddTag} from 'Event/infusionsoft'
 import {RelativeLink} from 'lib/ui/link/RelativeLink'
 import {areaRoutes} from 'Event/Routes'
-import {useVariables} from 'Event'
+import {useAttendeeVariables} from 'Event'
 import {Icon} from 'lib/fontawesome/Icon'
 
 export const NAV_BUTTON = 'NAV_BUTTON'
@@ -55,7 +55,7 @@ export default function NavButton(props: NavButton) {
   const {newTab, isAreaButton} = props
   const submitAction = useSubmitAction(props.actionId)
   const addInfusionsoftTag = useAddInfusionsoftTag(props.infusionsoftTag)
-  const v = useVariables()
+  const v = useAttendeeVariables()
 
   const handleClicked = () => {
     submitAction()
@@ -149,7 +149,7 @@ function Button(
   } & NavButton,
 ) {
   const opacity = props.isPending ? 0.8 : 1
-  const v = useVariables()
+  const v = useAttendeeVariables()
 
   return (
     <StyledButton

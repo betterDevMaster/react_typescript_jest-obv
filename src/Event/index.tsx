@@ -8,7 +8,8 @@ import React, {useCallback} from 'react'
 import {Form} from 'organization/Event/FormsProvider'
 import {
   Localization,
-  useWithTranslations,
+  useWithAttendeeTranslations,
+  useWithGuestTranslations,
 } from 'Event/LanguageProvider/translations'
 import {useWithAttendeeData, useWithPoints} from 'Event/auth/attendee-data'
 import {pipe} from 'ramda'
@@ -94,11 +95,13 @@ export default function Event() {
 }
 
 /**
- * Using variables will dynamically replace any Event text
- * with known {{ variables }}.
+ * Attendee variables will replace known {{ variables }} for
+ * a given attendee.
+ *
+ * @returns
  */
-export function useVariables() {
-  const withTranslations = useWithTranslations()
+export function useAttendeeVariables() {
+  const withTranslations = useWithAttendeeTranslations()
   const withAttendeeData = useWithAttendeeData()
   const withPoints = useWithPoints()
   const removeVariables = useRemoveVariables()
@@ -114,5 +117,24 @@ export function useVariables() {
       return process(text)
     },
     [withAttendeeData, withTranslations, withPoints, removeVariables],
+  )
+}
+
+/**
+ * Guest variables don't assume the user is logged in, and
+ * will only replace what is available as a guest.
+ *
+ * @returns
+ */
+export function useGuestVariables() {
+  const withTranslations = useWithGuestTranslations()
+  const removeVariables = useRemoveVariables()
+
+  return useCallback(
+    (text: string = '') => {
+      const process = pipe(withTranslations, removeVariables)
+      return process(text)
+    },
+    [withTranslations, removeVariables],
   )
 }

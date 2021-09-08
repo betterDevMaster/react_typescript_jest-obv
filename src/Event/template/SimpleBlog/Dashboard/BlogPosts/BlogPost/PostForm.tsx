@@ -9,7 +9,7 @@ import React from 'react'
 import {useForm} from 'react-hook-form'
 import {DEFAULT_MODAL_BUTTON_TEXT} from 'Event/Dashboard/components/BlogPost/BlogPostConfig'
 import Box from '@material-ui/core/Box'
-import {useVariables} from 'Event'
+import {useAttendeeVariables} from 'Event'
 import {BlogPost} from 'Event/Dashboard/components/BlogPost'
 import {usePostForm} from 'Event/Dashboard/components/BlogPost/form'
 
@@ -27,7 +27,7 @@ export default function PostForm(props: {post: BlogPost}) {
 
 function Content(props: {form: Form; post: BlogPost}) {
   const {form, post} = props
-  const v = useVariables()
+  const v = useAttendeeVariables()
 
   const {
     toggleDialog,
@@ -97,7 +97,7 @@ function Content(props: {form: Form; post: BlogPost}) {
 }
 
 function SubmittedMessage(props: {resubmit: () => void; form: Form}) {
-  const v = useVariables()
+  const v = useAttendeeVariables()
 
   if (!props.form.can_resubmit) {
     return <div>{v(props.form.submitted_message)}</div>

@@ -1,4 +1,4 @@
-import {useVariables} from 'Event'
+import {useAttendeeVariables} from 'Event'
 import React from 'react'
 import styled from 'styled-components'
 import {HasRules} from 'Event/attendee-rules'
@@ -77,7 +77,7 @@ function Body(props: {
     },
   } = props
 
-  const v = useVariables()
+  const v = useAttendeeVariables()
 
   const background = (upload?: CustomTicketRibbon | null) => {
     if (upload) {

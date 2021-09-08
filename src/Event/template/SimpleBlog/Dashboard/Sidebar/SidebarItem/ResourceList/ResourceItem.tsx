@@ -11,7 +11,7 @@ import Published from 'Event/Dashboard/editor/views/Published'
 import {Draggable, DraggableProvidedDraggableProps} from 'react-beautiful-dnd'
 import {useEditMode} from 'Event/Dashboard/editor/state/edit-mode'
 import {DragHandle, DraggableOverlay} from 'lib/ui/drag-and-drop'
-import {useVariables} from 'Event'
+import {useAttendeeVariables} from 'Event'
 import {Icon} from 'lib/fontawesome/Icon'
 import {useSimpleBlog} from 'Event/template/SimpleBlog'
 import {useToggle} from 'lib/toggle'
@@ -92,7 +92,7 @@ export function ResourceItemLink(props: {
   const {template} = useSimpleBlog()
   const {sidebar} = template
   const url = useResourceUrl(props.resource)
-  const v = useVariables()
+  const v = useAttendeeVariables()
 
   const awardPoints = () => {
     submit(DOWNLOADING_RESOURCE)

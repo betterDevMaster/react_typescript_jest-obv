@@ -1,7 +1,7 @@
 import React from 'react'
 import styled from 'styled-components'
 import {useEvent} from 'Event/EventProvider'
-import {useVariables} from 'Event'
+import {useAttendeeVariables} from 'Event'
 import {useSimpleBlog} from 'Event/template/SimpleBlog'
 import {useToggle} from 'lib/toggle'
 import {PointsSummaryConfig} from 'Event/template/SimpleBlog/Dashboard/Sidebar/SidebarItem/PointsSummary/PointsSummaryConfig'
@@ -30,7 +30,7 @@ export default function PointsSummary(props: PointsSummaryProps) {
   const {template} = useSimpleBlog()
   const {sidebar} = template
   const {summary, description} = props
-  const v = useVariables()
+  const v = useAttendeeVariables()
   const {flag: configVisible, toggle: toggleConfig} = useToggle()
   const removeItem = useRemoveSidebarItem(props)
 

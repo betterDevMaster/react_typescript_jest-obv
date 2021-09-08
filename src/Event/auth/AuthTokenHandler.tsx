@@ -27,7 +27,12 @@ export default function AuthTokenHandler(props: {
    * Routes that accept a token when authenticating.
    */
   const authRoutes = [eventRoutes.login, eventRoutes.room]
-  const isAuthRoute = authRoutes.includes(location.pathname)
+  /**
+   * Sometimes the pathname may have a trailing '/' which would
+   * cause the match to fail, so we'll replace it here.
+   */
+  const route = location.pathname.replace(/\/$/, '')
+  const isAuthRoute = authRoutes.includes(route)
 
   const shouldAuthenticate = isAuthRoute && hasToken
   const [processing, setProcessing] = useState(shouldAuthenticate)

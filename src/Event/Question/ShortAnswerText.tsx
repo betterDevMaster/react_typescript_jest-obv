@@ -1,21 +1,26 @@
 import TextField from '@material-ui/core/TextField'
 import {FieldProps, useSavedValue} from 'Event/Question'
 import React from 'react'
+import {useAttendeeVariables} from 'Event'
 
 export default function ShortAnswerText(props: FieldProps) {
   useSavedValue(props)
+  const v = useAttendeeVariables()
+  const helperText = v(props.error || props.question.helper_text || '')
+  const label = v(props.question.label)
+  const defaultValue = v(props.answer || '')
 
   return (
     <TextField
-      label={props.question.label}
+      label={label}
       inputProps={{
         'aria-label': props.question.label,
         ref: props.register,
       }}
-      defaultValue={props.answer}
+      defaultValue={defaultValue}
       name={props.name}
       fullWidth
-      helperText={props.error || props.question.helper_text}
+      helperText={helperText}
       required={props.question.is_required}
       error={Boolean(props.error)}
       disabled={props.disabled}

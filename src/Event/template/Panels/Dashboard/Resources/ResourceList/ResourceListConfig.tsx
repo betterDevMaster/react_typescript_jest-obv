@@ -28,6 +28,15 @@ export default function ResourceListConfig(props: {
           fullWidth
           onChange={onChangeStringHandler(updateResourceList('title'))}
         />
+        <TextField
+          value={list.menuTitle}
+          inputProps={{
+            'aria-label': 'update resources menu field',
+          }}
+          label="Menu Title"
+          fullWidth
+          onChange={onChangeStringHandler(updateResourceList('menuTitle'))}
+        />
         <ColorPicker
           label="Resource Card Background Color"
           color={list.cardBackgroundColor}

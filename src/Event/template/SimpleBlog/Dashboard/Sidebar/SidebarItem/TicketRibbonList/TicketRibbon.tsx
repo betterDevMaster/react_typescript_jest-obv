@@ -19,7 +19,7 @@ import MAGENTA_RIBBON_IMAGE from './ribbons/magenta.png'
 import LIGHT_BLUE_RIBBON_IMAGE from './ribbons/light_blue.png'
 import LIGHT_PURPLE_RIBBON_IMAGE from './ribbons/light_purple.png'
 import {HasRules} from 'Event/attendee-rules'
-import {useVariables} from 'Event'
+import {useAttendeeVariables} from 'Event'
 import Typography from '@material-ui/core/Typography'
 import {useEditMode} from 'Event/Dashboard/editor/state/edit-mode'
 import {Draggable} from 'react-beautiful-dnd'
@@ -143,7 +143,7 @@ function TicketRibbonItem(props: {ticketRibbon: TicketRibbon; index: number}) {
   const image =
     ticketRibbon.customRibbon?.image.url ||
     TICKET_RIBBON_IMAGE[props.ticketRibbon.name]
-  const v = useVariables()
+  const v = useAttendeeVariables()
 
   return (
     <Box aria-label="ticket ribbon">

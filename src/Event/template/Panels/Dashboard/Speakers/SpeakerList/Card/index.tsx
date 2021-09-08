@@ -8,7 +8,7 @@ import {useSpeakers} from 'organization/Event/SpeakersProvider'
 import Clickable from 'lib/ui/Clickable'
 import {Draggable} from 'react-beautiful-dnd'
 import {usePanels} from 'Event/template/Panels'
-import {useVariables} from 'Event'
+import {useAttendeeVariables} from 'Event'
 
 type SpeakerProps = {
   index: number
@@ -50,7 +50,7 @@ function Editable(props: SpeakerProps) {
 function Content(props: SpeakerProps) {
   const {speaker} = props
   const {template} = usePanels()
-  const v = useVariables()
+  const v = useAttendeeVariables()
 
   const imageSize = template.speakers.speakerImageSize
   const contentSize = (12 - imageSize) as GridSize

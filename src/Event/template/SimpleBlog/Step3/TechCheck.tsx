@@ -6,7 +6,7 @@ import ProgressBar from 'lib/ui/ProgressBar'
 import MuiButton, {ButtonProps} from '@material-ui/core/Button'
 import {colors} from 'lib/ui/theme'
 import Grid from '@material-ui/core/Grid'
-import {useVariables} from 'Event'
+import {useAttendeeVariables} from 'Event'
 import {areaRoutes} from 'Event/Routes'
 import {TechCheckConfig} from 'Event'
 import {RelativeLink} from 'lib/ui/link/RelativeLink'
@@ -22,7 +22,7 @@ export type SimpleBlogTechCheckProps = TechCheckProps & {
 export default function TechCheck(props: SimpleBlogTechCheckProps) {
   const {techCheck} = props
   const {template} = useSimpleBlog()
-  const v = useVariables()
+  const v = useAttendeeVariables()
 
   return (
     <SimpleBlogPage user={props.user}>
@@ -80,7 +80,7 @@ function StartButton(props: {
   settings: SimpleBlog['techCheck']
 }) {
   const {settings} = props
-  const v = useVariables()
+  const v = useAttendeeVariables()
 
   const textColor = settings?.buttonTextColor || '#FFFFFF'
   const backgroundColor = settings?.buttonBackground || colors.primary

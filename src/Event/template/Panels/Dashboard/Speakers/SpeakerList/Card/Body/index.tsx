@@ -1,11 +1,11 @@
 import React from 'react'
 import {Speaker} from 'Event/SpeakerPage'
-import {useVariables} from 'Event'
+import {useAttendeeVariables} from 'Event'
 import Content from 'lib/ui/form/TextEditor/Content'
 
 export default function Body(props: {speaker: Speaker}) {
   const {speaker} = props
-  const v = useVariables()
+  const v = useAttendeeVariables()
 
   return (
     <div>

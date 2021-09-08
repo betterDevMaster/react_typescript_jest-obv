@@ -11,13 +11,13 @@ import SimpleBlogPage from 'Event/template/SimpleBlog/Page'
 import ProgressBar from 'lib/ui/ProgressBar'
 import MuiButton from '@material-ui/core/Button'
 import Box from '@material-ui/core/Box'
-import {useVariables} from 'Event'
+import {useAttendeeVariables} from 'Event'
 import {useSimpleBlog} from 'Event/template/SimpleBlog'
 
 export default function SetPasswordForm(props: SetPasswordFormProps) {
   const {register, handleSubmit, errors, watch} = useForm()
   const {template} = useSimpleBlog()
-  const v = useVariables()
+  const v = useAttendeeVariables()
 
   const {setPasswordForm} = template
 

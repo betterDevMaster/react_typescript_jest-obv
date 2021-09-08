@@ -37,6 +37,7 @@ export type Panels = BaseTemplate & {
   nav: EntityList<NavButtonWithSize>
   ticketRibbons: TicketRibbon[]
   welcomeText: string
+  homeMenuTitle?: string
   emojiList: EmojiList
   leftPanel: {
     barBackgroundColor: string
@@ -88,6 +89,7 @@ export type Panels = BaseTemplate & {
   leaderboard: {
     title: string
     description: string
+    menuTitle?: string
   }
   faq?: {
     title?: string
@@ -172,6 +174,7 @@ export type Panels = BaseTemplate & {
     speakerImageSize?: Column
     speakersSpace?: number
     orderedIds?: number[]
+    menuTitle?: string
   }
   offlinePage?: {
     title: string
@@ -200,6 +203,7 @@ export const createPanels = (): DeepRequired<Panels> => ({
   },
   ticketRibbons: [],
   welcomeText: 'Welcome!',
+  homeMenuTitle: 'Home',
   emojiList: {
     emojis: [],
     emojiWidth: null,
@@ -227,6 +231,7 @@ export const createPanels = (): DeepRequired<Panels> => ({
     title: 'Resources',
     resources: [],
     cardBackgroundColor: '#FFFFFF',
+    menuTitle: 'Resources',
   },
   menuIconColor: '#000000',
   isDarkMode: false,
@@ -261,6 +266,7 @@ export const createPanels = (): DeepRequired<Panels> => ({
     title: 'Leaderboard',
     description:
       '<p>{{first name}}, you have earned {{leaderboard_points}} {{points_unit}}, and you are currently {{leaderboard_position}}. Great Job!</p><p><i>The list below is the top 200 point earners! If you don’t see your name listed, there’s still time!</i></p><p><br>&nbsp;</p>',
+    menuTitle: 'Points',
   },
   faq: {
     title: 'FAQ',
@@ -349,6 +355,7 @@ export const createPanels = (): DeepRequired<Panels> => ({
     speakerImageSize: 2,
     speakersSpace: 0,
     orderedIds: [],
+    menuTitle: 'Speakers',
   },
   offlinePage: {
     shouldRedirect: false,

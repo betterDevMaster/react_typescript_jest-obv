@@ -25,6 +25,7 @@ type UpdateFormData = {
   backToDashboardTextColor: string
   speakerImageSize: number
   speakersSpace: number
+  menuTitle?: string
 }
 
 export default function SpeakerPageConfigForm(props: {onClose: () => void}) {
@@ -72,6 +73,19 @@ export default function SpeakerPageConfigForm(props: {onClose: () => void}) {
         inputProps={{
           ref: register({required: 'Speaker Page title is required.'}),
           'aria-label': 'edit speaker page title',
+        }}
+        helperText={titleError}
+      />
+      <TextField
+        error={Boolean(titleError)}
+        name="menuTitle"
+        label="Speaker Page Menu Title"
+        defaultValue={speakerPageSettings.menuTitle}
+        required
+        fullWidth
+        inputProps={{
+          ref: register({required: 'Speaker Page Meny Title is required.'}),
+          'aria-label': 'edit speaker page menu title',
         }}
         helperText={titleError}
       />

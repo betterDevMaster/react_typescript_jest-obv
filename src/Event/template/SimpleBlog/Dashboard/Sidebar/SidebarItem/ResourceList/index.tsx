@@ -9,7 +9,7 @@ import ResourceItem, {
   Resource,
 } from 'Event/template/SimpleBlog/Dashboard/Sidebar/SidebarItem/ResourceList/ResourceItem'
 import Grid from '@material-ui/core/Grid'
-import {useVariables} from 'Event'
+import {useAttendeeVariables} from 'Event'
 
 import {
   DragDropContext,
@@ -61,7 +61,7 @@ export function ResourceList(props: ResourceListProps) {
   const {flag: configVisible, toggle: toggleConfig} = useToggle()
   const removeItem = useRemoveSidebarItem(props)
 
-  const v = useVariables()
+  const v = useAttendeeVariables()
 
   const hasResources = resources.length > 0
   if (!hasResources && !isEdit) {

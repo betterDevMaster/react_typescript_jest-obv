@@ -9,7 +9,7 @@ import {useEvent} from 'Event/EventProvider'
 import SponsorEditDialog from 'Event/template/SimpleBlog/SponsorPage/SponsorEditDialog'
 import {PageTitle} from 'Event/template/SimpleBlog/Page'
 import {useSimpleBlog} from 'Event/template/SimpleBlog'
-import {useVariables} from 'Event'
+import {useAttendeeVariables} from 'Event'
 import Content from 'lib/ui/form/TextEditor/Content'
 
 export default function SimpleBlogSponsorPage(props: {
@@ -21,7 +21,7 @@ export default function SimpleBlogSponsorPage(props: {
   const {event} = useEvent()
   const {template} = useSimpleBlog()
   const {sponsors: sponsorsPageSettings} = template
-  const v = useVariables()
+  const v = useAttendeeVariables()
 
   const content = (
     <>

@@ -7,7 +7,7 @@ import {render} from '__utils__/render'
 import {fakeEvent} from 'Event/__utils__/factory'
 import {
   Translations,
-  useWithTranslations,
+  useWithAttendeeTranslations,
 } from 'Event/LanguageProvider/translations'
 import {SYSTEM_DEFAULTS} from 'Event/LanguageProvider/system'
 import {languageTokenKey} from 'Event/LanguageProvider'
@@ -117,6 +117,6 @@ it('should show system default', async () => {
  */
 
 function TranslatedText(props: {children: string}) {
-  const withTranslations = useWithTranslations()
+  const withTranslations = useWithAttendeeTranslations()
   return <div>{withTranslations(props.children)}</div>
 }

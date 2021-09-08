@@ -10,11 +10,14 @@ import Page, {
 } from 'Event/template/SimpleBlog/Login/Page'
 import {RelativeLink} from 'lib/ui/link/RelativeLink'
 import {useSimpleBlog} from 'Event/template/SimpleBlog'
+import {useGuestVariables} from 'Event'
 
 export default function Login(props: LoginProps) {
   const {template} = useSimpleBlog()
-  const emailLabel = template.login.emailLabel
-  const passwordLabel = template.login.passwordLabel
+  const v = useGuestVariables()
+
+  const emailLabel = v(template.login.emailLabel)
+  const passwordLabel = v(template.login.passwordLabel)
 
   return (
     <Page isPreview={props.isPreview}>
@@ -63,7 +66,7 @@ export default function Login(props: LoginProps) {
             aria-label="submit login"
             type="submit"
           >
-            {template.login.submitButton.label}
+            {v(template.login.submitButton.label)}
           </Button>
         </form>
         {props.isPreview ? null : (
@@ -72,7 +75,7 @@ export default function Login(props: LoginProps) {
             aria-label="forgot password"
             color={template.login.description.color}
           >
-            {template.login.passwordReset.linkLabel}
+            {v(template.login.passwordReset.linkLabel)}
           </StyledRelativeLink>
         )}
       </>

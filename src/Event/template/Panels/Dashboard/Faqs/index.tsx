@@ -9,7 +9,7 @@ import {
   DEFAULT_TITLE,
 } from 'Event/template/Panels/Dashboard/Faqs/FaqList/Card'
 import {PageTitle} from 'Event/template/Panels/Page'
-import {useVariables} from 'Event'
+import {useAttendeeVariables} from 'Event'
 import {usePanels} from 'Event/template/Panels'
 import Content from 'lib/ui/form/TextEditor/Content'
 
@@ -21,7 +21,7 @@ export default function PanelsFaqPage(props: {
   const {faqs} = props
   const {template} = usePanels()
   const {faq: pageSettings} = template
-  const v = useVariables()
+  const v = useAttendeeVariables()
 
   return (
     <>

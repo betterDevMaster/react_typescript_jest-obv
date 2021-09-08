@@ -6,7 +6,7 @@ import {setUser} from 'auth/actions'
 import {useDispatch} from 'react-redux'
 import {WaiverConfig} from 'Event'
 import React from 'react'
-import {useVariables} from 'Event'
+import {useAttendeeVariables} from 'Event'
 
 interface WaiverContextProps {
   agree: boolean
@@ -39,7 +39,7 @@ export default function WaiverProvider(props: {
   const [signature, setSignature] = useState<string | null>(null)
   const [agree, setAgree] = useState(false)
   const dispatch = useDispatch()
-  const v = useVariables()
+  const v = useAttendeeVariables()
   const canSubmit = Boolean(signature) && Boolean(agree)
   const agreeStatement = v(waiver?.agree_statement || DEFAULT_AGREE_STATEMENT)
   const signaturePrompt = v(

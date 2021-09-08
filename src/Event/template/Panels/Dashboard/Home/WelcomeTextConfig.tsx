@@ -25,6 +25,15 @@ export default function WelcomeTextConfig(props: {
           value={template.welcomeText}
           onChange={onChangeStringHandler(update.primitive('welcomeText'))}
         />
+        <TextField
+          value={template.homeMenuTitle}
+          inputProps={{
+            'aria-label': 'home menu title',
+          }}
+          label="Menu Title"
+          fullWidth
+          onChange={onChangeStringHandler(update.primitive('homeMenuTitle'))}
+        />
       </DialogContent>
     </Dialog>
   )

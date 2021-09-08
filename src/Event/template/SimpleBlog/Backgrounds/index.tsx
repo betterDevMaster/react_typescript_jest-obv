@@ -5,7 +5,7 @@ import Page from 'Event/template/SimpleBlog/Page'
 import styled from 'styled-components'
 import {Attendee} from 'Event/attendee'
 import {useEvent} from 'Event/EventProvider'
-import {useVariables} from 'Event'
+import {useAttendeeVariables} from 'Event'
 import VisibleOnMatch from 'Event/attendee-rules/VisibleOnMatch'
 import {downloadFile} from 'lib/http-client'
 import {useSimpleBlog} from 'Event/template/SimpleBlog'
@@ -14,7 +14,7 @@ import BackgroundImage from 'Event/template/SimpleBlog/Backgrounds/BackgroundsCo
 import {useSortBackgrounds} from 'organization/Event/Backgrounds/BackgroundsProvider'
 
 export default function SimpleBlogBackgrounds(props: {user: Attendee}) {
-  const v = useVariables()
+  const v = useAttendeeVariables()
   const {event} = useEvent()
   const {template} = useSimpleBlog()
   const {zoomBackgrounds: settings} = template

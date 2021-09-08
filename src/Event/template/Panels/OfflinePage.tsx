@@ -2,15 +2,18 @@ import {OfflinePageProps} from 'Event/JoinArea/OfflinePage'
 import React from 'react'
 import Page, {DescriptionText} from 'Event/template/Panels/Login/Page'
 import {usePanels} from 'Event/template/Panels'
+import {useGuestVariables} from 'Event'
 
 export default function OfflinePage(props: OfflinePageProps) {
   const {title, description, isPreview} = props
+  const v = useGuestVariables()
+
   return (
     <Page isPreview={isPreview || false}>
       <>
-        <Text fontSize={24}>{title}</Text>
+        <Text fontSize={24}>{v(title)}</Text>
         <Text>
-          <div dangerouslySetInnerHTML={{__html: description}} />
+          <div dangerouslySetInnerHTML={{__html: v(description)}} />
         </Text>
       </>
     </Page>

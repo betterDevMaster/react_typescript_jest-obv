@@ -10,20 +10,22 @@ import Page, {
 } from 'Event/template/Panels/Login/Page'
 import {RelativeLink} from 'lib/ui/link/RelativeLink'
 import {usePanels} from 'Event/template/Panels'
+import {useGuestVariables} from 'Event'
 
 export default function Login(props: LoginProps) {
   const {
     template: {login},
   } = usePanels()
+  const v = useGuestVariables()
 
-  const emailLabel = login.emailLabel
-  const passwordLabel = login.passwordLabel
+  const emailLabel = v(login.emailLabel)
+  const passwordLabel = v(login.passwordLabel)
 
   return (
     <Page isPreview={props.isPreview}>
       <>
         <Description aria-label="event login description">
-          {login?.description.text || ''}
+          {v(login?.description.text || '')}
         </Description>
         <form onSubmit={props.onSubmit}>
           <TextField
@@ -75,7 +77,7 @@ export default function Login(props: LoginProps) {
             aria-label="forgot password"
             color={login.description.color}
           >
-            {login.passwordReset.linkLabel}
+            {v(login.passwordReset.linkLabel)}
           </StyledRelativeLink>
         )}
       </>

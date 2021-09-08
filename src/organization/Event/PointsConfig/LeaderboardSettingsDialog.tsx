@@ -16,26 +16,21 @@ export default function LeaderboardSettingsDialog(props: {
   visible: boolean
 }) {
   const {visible, onClose} = props
-
-  return (
-    <Dialog open={visible} onClose={onClose} fullWidth disableEnforceFocus>
-      <DialogTitle>Leaderboard Page</DialogTitle>
-      <DialogContent>
-        <Box pb={2}>
-          <TemplateLeaderboardConfig onComplete={onClose} />
-        </Box>
-      </DialogContent>
-    </Dialog>
-  )
-}
-
-function TemplateLeaderboardConfig(props: LeaderboardConfigProps) {
   const {name} = useTemplate()
 
   switch (name) {
     case SIMPLE_BLOG:
-      return <SimpleBlogLeaderboardConfig {...props} />
+      return (
+        <Dialog open={visible} onClose={onClose} fullWidth disableEnforceFocus>
+          <DialogTitle>Leaderboard Page</DialogTitle>
+          <DialogContent>
+            <Box pb={2}>
+              <SimpleBlogLeaderboardConfig onComplete={onClose} />
+            </Box>
+          </DialogContent>
+        </Dialog>
+      )
     case PANELS:
-      return <PanelsLeaderboardConfig {...props} />
+      return <PanelsLeaderboardConfig isVisible={visible} onClose={onClose} />
   }
 }

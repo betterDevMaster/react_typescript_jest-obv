@@ -2,7 +2,7 @@ import React from 'react'
 import Grid from '@material-ui/core/Grid'
 import styled from 'styled-components'
 import {useEvent} from 'Event/EventProvider'
-import {useVariables} from 'Event'
+import {useAttendeeVariables} from 'Event'
 import VisibleOnMatch from 'Event/attendee-rules/VisibleOnMatch'
 import {downloadFile} from 'lib/http-client'
 import {usePanels} from 'Event/template/Panels'
@@ -14,7 +14,7 @@ import CardContent from '@material-ui/core/CardContent'
 import CardActions from '@material-ui/core/CardActions'
 
 export default function PanelsBackgrounds() {
-  const v = useVariables()
+  const v = useAttendeeVariables()
   const {event} = useEvent()
   const {template} = usePanels()
   const {zoomBackgrounds: settings} = template

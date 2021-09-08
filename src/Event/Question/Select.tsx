@@ -6,10 +6,12 @@ import FormControl from '@material-ui/core/FormControl'
 import InputLabel from '@material-ui/core/InputLabel'
 import {Controller} from 'react-hook-form'
 import {onUnknownChangeHandler} from 'lib/dom'
+import {useAttendeeVariables} from 'Event'
 
 export default function Select(props: FieldProps) {
   const allowsMultiple = props.question.allows_multiple_options
   useSavedValue(props)
+  const v = useAttendeeVariables()
 
   /**
    * MUI Select blows up if you give it an incorrect
@@ -41,7 +43,7 @@ export default function Select(props: FieldProps) {
       error={props.hasError}
       disabled={props.disabled}
     >
-      <InputLabel>{props.question.label}</InputLabel>
+      <InputLabel>{v(props.question.label)}</InputLabel>
       <Controller
         name={props.name}
         control={props.control}

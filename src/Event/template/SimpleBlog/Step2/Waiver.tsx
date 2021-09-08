@@ -9,7 +9,7 @@ import {onChangeCheckedHandler} from 'lib/dom'
 import {useWaiver} from 'Event/Step2/WaiverProvider'
 import Grid from '@material-ui/core/Grid'
 import Box from '@material-ui/core/Box'
-import {useVariables} from 'Event'
+import {useAttendeeVariables} from 'Event'
 import Typography from '@material-ui/core/Typography'
 import {useSimpleBlog} from 'Event/template/SimpleBlog'
 import Content from 'lib/ui/form/TextEditor/Content'
@@ -27,12 +27,12 @@ export default function Waiver() {
 
   const {template} = useSimpleBlog()
   const {isDarkMode} = template
-  const v = useVariables()
+  const v = useAttendeeVariables()
   const color = isDarkMode ? '#FFFFFF' : '#000000'
 
   return (
     <>
-      <Body>{body}</Body>
+      <Body>{v(body)}</Body>
       <Grid container spacing={3}>
         <Grid item md={12} xs={12}>
           <FormControl required component="fieldset">

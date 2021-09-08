@@ -1,4 +1,4 @@
-import {useVariables} from 'Event'
+import {useAttendeeVariables} from 'Event'
 import {storage} from 'lib/url'
 
 /**
@@ -11,7 +11,7 @@ export function useResourceUrl(resource: {
   url?: string
   filePath: string
 }): string {
-  const v = useVariables()
+  const v = useAttendeeVariables()
   if (resource.url) {
     return v(resource.url)
   }

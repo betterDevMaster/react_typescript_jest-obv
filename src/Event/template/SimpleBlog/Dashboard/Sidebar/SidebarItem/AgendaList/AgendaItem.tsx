@@ -6,7 +6,7 @@ import Published from 'Event/Dashboard/editor/views/Published'
 import {useEditMode} from 'Event/Dashboard/editor/state/edit-mode'
 import {AbsoluteLink} from 'lib/ui/link/AbsoluteLink'
 import {useWithAttendeeData} from 'Event/auth/attendee-data'
-import {useVariables} from 'Event'
+import {useAttendeeVariables} from 'Event'
 import {
   Agenda,
   AgendaListProps,
@@ -141,7 +141,7 @@ function Event(props: {agenda: Agenda}) {
   const {template} = useSimpleBlog()
   const {sidebar} = template
   const withAttendeeData = useWithAttendeeData()
-  const v = useVariables()
+  const v = useAttendeeVariables()
 
   if (props.agenda.link) {
     return (

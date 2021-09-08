@@ -10,7 +10,7 @@ import {Draggable, DraggableProvidedDraggableProps} from 'react-beautiful-dnd'
 import Grid from '@material-ui/core/Grid'
 import {useEditMode} from 'Event/Dashboard/editor/state/edit-mode'
 import {DragHandle, DraggableOverlay} from 'lib/ui/drag-and-drop'
-import {useVariables} from 'Event'
+import {useAttendeeVariables} from 'Event'
 import {Resource} from 'Event/template/Panels/Dashboard/Resources/ResourceList'
 import Card from '@material-ui/core/Card'
 import Typography from '@material-ui/core/Typography'
@@ -72,7 +72,7 @@ function ResourceItemCard(props: {
   const {downloadResource: DOWNLOADING_RESOURCE} = usePlatformActions()
   const {submit} = usePoints()
   const url = useResourceUrl(props.resource)
-  const v = useVariables()
+  const v = useAttendeeVariables()
 
   const awardPoints = () => {
     submit(DOWNLOADING_RESOURCE)

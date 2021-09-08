@@ -3,7 +3,7 @@ import styled from 'styled-components'
 import {localTime} from 'lib/date-time'
 import {useEditMode} from 'Event/Dashboard/editor/state/edit-mode'
 import PostForm from 'Event/template/SimpleBlog/Dashboard/BlogPosts/BlogPost/PostForm'
-import {useVariables} from 'Event'
+import {useAttendeeVariables} from 'Event'
 import Content from 'lib/ui/form/TextEditor/Content'
 import {shouldPublish} from 'Event/Dashboard/components/BlogPost'
 import {BlogPost as BlogPostData} from 'Event/Dashboard/components/BlogPost'
@@ -12,7 +12,7 @@ import {usePostStyles} from 'Event/template/SimpleBlog/Dashboard/BlogPosts/PostS
 export function BlogPost(props: {post: BlogPostData; isLast: boolean}) {
   const {post, isLast} = props
   const isEdit = useEditMode()
-  const v = useVariables()
+  const v = useAttendeeVariables()
   const styles = usePostStyles()
   const bottomMargin = isLast ? 0 : styles.spacing
 

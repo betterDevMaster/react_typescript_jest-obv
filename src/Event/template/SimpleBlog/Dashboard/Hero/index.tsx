@@ -5,7 +5,7 @@ import withStyles from '@material-ui/core/styles/withStyles'
 import {spacing} from 'lib/ui/theme'
 import Button from '@material-ui/core/Button'
 import {HeroConfig} from 'Event/template/SimpleBlog/Dashboard/Hero/HeroConfig'
-import {useVariables} from 'Event'
+import {useAttendeeVariables} from 'Event'
 import {useSimpleBlog} from 'Event/template/SimpleBlog'
 import {useToggle} from 'lib/toggle'
 import EditModeOnly from 'Event/Dashboard/editor/views/EditModeOnly'
@@ -45,7 +45,7 @@ function EditButton() {
 function WelcomeText() {
   const {template} = useSimpleBlog()
   const {welcomeText} = template
-  const v = useVariables()
+  const v = useAttendeeVariables()
 
   if (!welcomeText) {
     return null

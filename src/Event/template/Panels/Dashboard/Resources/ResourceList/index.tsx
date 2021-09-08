@@ -5,7 +5,7 @@ import {useEditMode} from 'Event/Dashboard/editor/state/edit-mode'
 import EditModeOnly from 'Event/Dashboard/editor/views/EditModeOnly'
 import {useDispatchUpdate} from 'Event/TemplateProvider'
 import Grid from '@material-ui/core/Grid'
-import {useVariables} from 'Event'
+import {useAttendeeVariables} from 'Event'
 import {
   DragDropContext,
   Droppable,
@@ -25,6 +25,7 @@ export interface ResourceList {
   title: string
   resources: Resource[]
   cardBackgroundColor?: string
+  menuTitle?: string
 }
 
 export type Resource = Publishable &
@@ -46,7 +47,7 @@ export default function ResourceList() {
   const toggleListConfig = () => setConfigVisible(!configVisible)
 
   const {resourceList: list} = template
-  const v = useVariables()
+  const v = useAttendeeVariables()
 
   const hasResources = list.resources.length > 0
   if (!hasResources && !isEdit) {

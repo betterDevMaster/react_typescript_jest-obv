@@ -4,6 +4,7 @@ import React from 'react'
 import Tabs from '@material-ui/core/Tabs'
 import Tab from '@material-ui/core/Tab'
 import {TOP_BAR_HEIGHT} from 'Event/template/Panels/Page'
+import {useAttendeeVariables} from 'Event'
 
 export default function Nav(props: {
   currentTab: number
@@ -11,9 +12,16 @@ export default function Nav(props: {
   'aria-label'?: string
 }) {
   const {
-    template: {rightPanel},
+    template: {
+      rightPanel,
+      homeMenuTitle,
+      resourceList: {menuTitle: resourceMenuTitle},
+      leaderboard: {menuTitle: pointsMenuTitle},
+      speakers: {menuTitle: speakersMenuTitle},
+    },
   } = usePanels()
   const {currentTab, onChangeTab} = props
+  const v = useAttendeeVariables()
 
   const StyledTabs = withStyles({
     root: {
@@ -54,10 +62,16 @@ export default function Nav(props: {
       centered
       aria-label={props['aria-label']}
     >
-      <StyledTab label="Home" aria-label="panels tab home" />
-      <StyledTab label="Speakers" aria-label="panels tab speakers" />
-      <StyledTab label="Resources" aria-label="panels tab resources" />
-      <StyledTab label="Points" aria-label="panels tab points" />
+      <StyledTab label={v(homeMenuTitle)} aria-label="panels tab home" />
+      <StyledTab
+        label={v(speakersMenuTitle)}
+        aria-label="panels tab speakers"
+      />
+      <StyledTab
+        label={v(resourceMenuTitle)}
+        aria-label="panels tab resources"
+      />
+      <StyledTab label={v(pointsMenuTitle)} aria-label="panels tab points" />
     </StyledTabs>
   )
 }

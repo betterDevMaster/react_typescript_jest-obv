@@ -2,17 +2,20 @@ import {OfflinePageProps} from 'Event/JoinArea/OfflinePage'
 import React from 'react'
 import Page, {DescriptionText} from 'Event/template/SimpleBlog/Login/Page'
 import {useSimpleBlog} from 'Event/template/SimpleBlog'
+import {useGuestVariables} from 'Event'
 
 export default function OfflinePage(props: OfflinePageProps) {
   const {title, description, isPreview} = props
+  const v = useGuestVariables()
+
   return (
     <Page isPreview={isPreview || false}>
       <>
         <Text disableMargin fontSize={24}>
-          {title}
+          {v(title)}
         </Text>
         <Text>
-          <div dangerouslySetInnerHTML={{__html: description}} />
+          <div dangerouslySetInnerHTML={{__html: v(description)}} />
         </Text>
       </>
     </Page>

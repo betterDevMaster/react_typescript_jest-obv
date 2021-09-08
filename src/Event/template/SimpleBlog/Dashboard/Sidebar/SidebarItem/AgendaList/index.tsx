@@ -6,7 +6,7 @@ import {Publishable} from 'Event/Dashboard/editor/views/Published'
 import EditModeOnly from 'Event/Dashboard/editor/views/EditModeOnly'
 import AddAgendaButton from 'Event/template/SimpleBlog/Dashboard/Sidebar/SidebarItem/AgendaList/AddAgendaButton'
 import {useEditMode} from 'Event/Dashboard/editor/state/edit-mode'
-import {useVariables} from 'Event'
+import {useAttendeeVariables} from 'Event'
 import Agenda from 'Event/template/SimpleBlog/Dashboard/Sidebar/SidebarItem/AgendaList/AgendaItem'
 import {DragDropContext, Droppable, DropResult} from 'react-beautiful-dnd'
 import StyledText from 'lib/ui/typography/StyledText'
@@ -63,7 +63,7 @@ export default function AgendaList(props: AgendaListProps) {
   const {template} = useSimpleBlog()
   const {sidebar} = template
   const isEdit = useEditMode()
-  const v = useVariables()
+  const v = useAttendeeVariables()
   const hasAgenda = items.length > 0
   const {flag: listConfigVisible, toggle: toggleListConfig} = useToggle()
 

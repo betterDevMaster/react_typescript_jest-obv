@@ -3,7 +3,7 @@ import Page from 'Event/template/Panels/Page'
 import styled from 'styled-components'
 import MuiButton, {ButtonProps} from '@material-ui/core/Button'
 import Grid from '@material-ui/core/Grid'
-import {useVariables} from 'Event'
+import {useAttendeeVariables} from 'Event'
 import {areaRoutes} from 'Event/Routes'
 import {TechCheckConfig} from 'Event'
 import {RelativeLink} from 'lib/ui/link/RelativeLink'
@@ -39,7 +39,7 @@ export default function TechCheck(props: PanelsTechCheckProps) {
 
 function Content(props: TechCheckProps) {
   const {techCheck} = props
-  const v = useVariables()
+  const v = useAttendeeVariables()
 
   return (
     <div>
@@ -91,7 +91,7 @@ function StartButton(props: {
   settings: Panels['techCheck']
 }) {
   const {settings} = props
-  const v = useVariables()
+  const v = useAttendeeVariables()
 
   const textColor = settings?.buttonTextColor || '#FFFFFF'
   const backgroundColor =

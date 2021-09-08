@@ -7,7 +7,7 @@ import Box from '@material-ui/core/Box'
 import CardHeader from '@material-ui/core/CardHeader'
 import CardContent from '@material-ui/core/CardContent'
 import Collapse from '@material-ui/core/Collapse'
-import {useVariables} from 'Event'
+import {useAttendeeVariables} from 'Event'
 import {spacing} from 'lib/ui/theme'
 import grey from '@material-ui/core/colors/grey'
 import withStyles from '@material-ui/core/styles/withStyles'
@@ -46,7 +46,7 @@ function FaqCard(props: {faq: FAQ; answerVisible?: boolean}) {
     Boolean(props.answerVisible) || Boolean(faq.settings?.showAnswerOnLoad)
 
   const [expanded, setExpanded] = React.useState(startExpanded)
-  const v = useVariables()
+  const v = useAttendeeVariables()
 
   const handleExpandClick = () => {
     if (answerVisible) {

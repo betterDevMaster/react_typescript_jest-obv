@@ -5,7 +5,7 @@ import DialogTitle from '@material-ui/core/DialogTitle'
 import Box from '@material-ui/core/Box'
 import Button from '@material-ui/core/Button'
 import Dialog from 'lib/ui/Dialog'
-import {useVariables} from 'Event'
+import {useAttendeeVariables} from 'Event'
 import DangerButton from 'lib/ui/Button/DangerButton'
 import RuleConfig, {useRuleConfig} from 'Event/attendee-rules/RuleConfig'
 import {Rule} from 'Event/attendee-rules'
@@ -27,7 +27,7 @@ export default function BackgroundImageEditDialog(props: {
   const {visible: ruleConfigVisible, toggle: toggleRuleConfig} = useRuleConfig()
   const [rules, setRules] = useState<Rule[]>(background.settings?.rules || [])
   const {update, busy, remove} = useBackgrounds()
-  const v = useVariables()
+  const v = useAttendeeVariables()
   const {
     template: {zoomBackgrounds: templateSettings},
   } = useSimpleBlog()

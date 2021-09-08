@@ -1,7 +1,7 @@
 import React from 'react'
 import styled from 'styled-components'
 import {DEFAULTS, usePanels} from 'Event/template/Panels'
-import {useVariables} from 'Event'
+import {useAttendeeVariables} from 'Event'
 import {Icon} from 'lib/fontawesome/Icon'
 import {Step} from 'Event/template/Panels/GeneralConfig/CheckInConfig'
 
@@ -43,7 +43,7 @@ function CheckInLabel() {
     template: {checkInTitle: checkInLabel},
   } = usePanels()
 
-  const v = useVariables()
+  const v = useAttendeeVariables()
   return <Label>{v(checkInLabel)}</Label>
 }
 
@@ -58,7 +58,7 @@ function StepLabel(props: {step: Step}) {
 
   const label = labels[props.step]
 
-  const v = useVariables()
+  const v = useAttendeeVariables()
   return <Label color={template.stepLabelColor}>{v(label)}</Label>
 }
 

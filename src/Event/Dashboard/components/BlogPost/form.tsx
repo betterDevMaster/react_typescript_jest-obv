@@ -1,4 +1,4 @@
-import {useVariables} from 'Event'
+import {useAttendeeVariables} from 'Event'
 import {BlogPost} from 'Event/Dashboard/components/BlogPost'
 import {hasSubmittedForm, useSubmissions} from 'Event/SubmissionsProvider'
 import {Form} from 'organization/Event/FormsProvider'
@@ -9,7 +9,7 @@ export function usePostForm(post: BlogPost, form: Form) {
   const [isResubmitting, setIsResubmitting] = useState(false)
   const [dialogVisible, setDialogVisible] = useState(false)
   const {submit: submitAnswers, responseError, answers} = useSubmissions()
-  const v = useVariables()
+  const v = useAttendeeVariables()
 
   const toggleDialog = () => setDialogVisible(!dialogVisible)
 

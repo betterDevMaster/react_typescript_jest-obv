@@ -1,4 +1,4 @@
-import {useVariables} from 'Event'
+import {useAttendeeVariables} from 'Event'
 import styled from 'styled-components'
 import {
   BlogPost as BlogPostData,
@@ -13,7 +13,7 @@ import Content from 'lib/ui/form/TextEditor/Content'
 export default function BlogPost(props: {post: BlogPostData}) {
   const {post} = props
   const isEdit = useEditMode()
-  const v = useVariables()
+  const v = useAttendeeVariables()
 
   const date = post.publishAt || post.postedAt
   const formattedDate = localTime(date)

@@ -8,6 +8,7 @@ import Page, {
 } from 'Event/template/SimpleBlog/Login/Page'
 import {ForgotPasswordProps} from 'auth/password'
 import {useSimpleBlog} from 'Event/template/SimpleBlog'
+import {useGuestVariables} from 'Event'
 
 export default function ForgotPassword(props: ForgotPasswordProps) {
   return (
@@ -21,12 +22,14 @@ export function Content(props: ForgotPasswordProps) {
   const {
     template: {login},
   } = useSimpleBlog()
-  const emailLabel = login.emailLabel
+  const v = useGuestVariables()
+
+  const emailLabel = v(login.emailLabel)
 
   if (props.resetLinkSent) {
     return (
       <Description aria-label="password reset link sent">
-        {login.passwordReset.successMessage}
+        {v(login.passwordReset.successMessage)}
       </Description>
     )
   }
@@ -34,7 +37,7 @@ export function Content(props: ForgotPasswordProps) {
   return (
     <>
       <Description aria-label="event login description">
-        {login.passwordReset?.description}
+        {v(login.passwordReset?.description)}
       </Description>
       <form onSubmit={props.onSubmit}>
         <TextField
@@ -61,7 +64,7 @@ export function Content(props: ForgotPasswordProps) {
           aria-label="submit reset password"
           type="submit"
         >
-          {login.passwordReset?.buttonText}
+          {v(login.passwordReset?.buttonText)}
         </Button>
       </form>
     </>
