@@ -83,12 +83,20 @@ const Box = styled.div`
   justify-content: center;
 `
 
+/**
+ * Adjust the container according to the following requirements:
+ *
+ * - If no size is set, the emoji should expand until all available width, shared evenly.
+ * - If a size is set, show set size if possible.
+ * - If showing set size will stretch container, then render in available width.
+ */
 const Container = styled((props: any) => {
   const {width: _, ...otherProps} = props
   return <div {...otherProps} />
 })`
   margin: 0 ${(props) => props.theme.spacing[3]};
-  width: ${(props) => (props.width ? `${props.width}px` : 'auto')};
+  flex: ${(props) => (props.width ? `0 1 ${props.width}px` : '1')};
+  text-align: center;
 `
 
 const Image = styled.img`
