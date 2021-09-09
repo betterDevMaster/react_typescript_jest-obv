@@ -1,13 +1,10 @@
 import user from '@testing-library/user-event'
 import axios from 'axios'
-import faker from 'faker'
 import {fakeArea, fakeRoom} from 'organization/Event/AreaList/__utils__/factory'
 import {wait} from '@testing-library/react'
 import {fakeAttendee} from 'Event/auth/__utils__/factory'
-import {now} from 'lib/date-time'
-import {Attendee} from 'Event/attendee'
 import {CHECK_IN_ATTENDEES} from 'organization/PermissionsProvider'
-import {goToAreas} from 'organization/Event/AreaList/__utils__/go-to-areas'
+import {goToArea} from 'organization/Event/AreaList/__utils__/go-to-areas'
 
 const mockGet = axios.get as jest.Mock
 const mockPatch = axios.patch as jest.Mock
@@ -18,21 +15,13 @@ afterEach(() => {
 
 it('should check in an attendee', async () => {
   const area = fakeArea({is_tech_check: true})
-
-  const {findByLabelText, findByText} = await goToAreas({
-    userPermissions: [CHECK_IN_ATTENDEES],
-    areas: [area],
-  })
-
-  mockGet.mockImplementationOnce(() => Promise.resolve({data: area}))
-
   const room = fakeRoom()
 
-  // Rooms
-  mockGet.mockImplementationOnce(() => Promise.resolve({data: [room]}))
-
-  // go to area config
-  user.click(await findByLabelText(`view ${area.name} area`))
+  const {findByLabelText, findByText} = await goToArea({
+    userPermissions: [CHECK_IN_ATTENDEES],
+    area,
+    rooms: [room],
+  })
 
   // Start url
   mockGet.mockImplementationOnce(() =>

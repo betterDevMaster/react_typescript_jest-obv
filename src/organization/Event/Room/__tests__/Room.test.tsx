@@ -5,7 +5,10 @@ import {fakeArea, fakeRoom} from 'organization/Event/AreaList/__utils__/factory'
 import {Room} from 'Event/room'
 import {wait} from '@testing-library/react'
 import {CONFIGURE_EVENTS, START_ROOMS} from 'organization/PermissionsProvider'
-import {goToAreas} from 'organization/Event/AreaList/__utils__/go-to-areas'
+import {
+  goToArea,
+  goToAreas,
+} from 'organization/Event/AreaList/__utils__/go-to-areas'
 
 const mockGet = axios.get as jest.Mock
 const mockPatch = axios.patch as jest.Mock
@@ -22,13 +25,6 @@ Object.assign(navigator, {
 })
 
 it('should toggle a room on/off', async () => {
-  const {findByLabelText, areas} = await goToAreas({
-    userPermissions: [START_ROOMS],
-  })
-
-  const area = faker.random.arrayElement(areas)
-  mockGet.mockImplementationOnce(() => Promise.resolve({data: area}))
-
   const rooms = Array.from(
     {length: faker.random.number({min: 1, max: 3})},
     fakeRoom,
@@ -36,11 +32,10 @@ it('should toggle a room on/off', async () => {
   const targetIndex = faker.random.number({min: 0, max: rooms.length - 1})
   const target = rooms[targetIndex]
 
-  // Rooms
-  mockGet.mockImplementationOnce(() => Promise.resolve({data: rooms}))
-
-  // go to area config
-  user.click(await findByLabelText(`view ${area.name} area`))
+  const {findByLabelText} = await goToArea({
+    userPermissions: [START_ROOMS],
+    rooms,
+  })
 
   // Start url
   const url = faker.internet.url()

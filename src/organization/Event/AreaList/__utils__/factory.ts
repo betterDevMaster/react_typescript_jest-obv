@@ -1,6 +1,8 @@
 import {Area} from 'organization/Event/AreasProvider'
 import faker from 'faker'
 import {Room} from 'Event/room'
+import {RoomMetrics} from 'organization/Event/Area/RoomList'
+import {now} from 'lib/date-time'
 
 export const fakeRoom = (overrides?: Partial<Room>): Room => ({
   id: faker.random.number({min: 1000, max: 10000}),
@@ -24,5 +26,14 @@ export const fakeArea = (overrides?: Partial<Area>): Area => ({
   offline_description: null,
   reassign_on_offline: false,
   key: faker.random.alphaNumeric(16),
+  ...overrides,
+})
+
+export const fakeRoomMetrics = (
+  overrides?: Partial<RoomMetrics>,
+): RoomMetrics => ({
+  room_id: faker.random.number({min: 1000, max: 10000}),
+  num_attendees: faker.random.number({min: 1000, max: 10000}),
+  last_joined_timestamp: now(),
   ...overrides,
 })

@@ -1,6 +1,6 @@
 import axios from 'axios'
 import user from '@testing-library/user-event'
-import {goToAreas} from 'organization/Event/AreaList/__utils__/go-to-areas'
+import {goToArea} from 'organization/Event/AreaList/__utils__/go-to-areas'
 import {START_ROOMS} from 'organization/PermissionsProvider'
 import {fakeRoom} from 'organization/Event/AreaList/__utils__/factory'
 
@@ -11,17 +11,12 @@ beforeEach(() => {
 })
 
 it('should export submissions for a form', async () => {
-  const {findByLabelText, areas, findByText} = await goToAreas({
-    userPermissions: [START_ROOMS],
-  })
-
-  const area = areas[0]
-
   const room = fakeRoom()
-  mockGet.mockImplementationOnce(() => Promise.resolve({data: area}))
-  mockGet.mockImplementationOnce(() => Promise.resolve({data: [room]})) // rooms
 
-  user.click(await findByLabelText(`view ${area.name} area`))
+  const {findByLabelText, findByText} = await goToArea({
+    userPermissions: [START_ROOMS],
+    rooms: [room],
+  })
 
   mockGet.mockImplementationOnce(() =>
     Promise.resolve({data: {url: 'http://zoom/start_url'}}),

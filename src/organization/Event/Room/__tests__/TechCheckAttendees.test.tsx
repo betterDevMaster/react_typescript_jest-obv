@@ -1,43 +1,40 @@
 import user from '@testing-library/user-event'
 import axios from 'axios'
 import faker from 'faker'
-import {fakeArea, fakeRoom} from 'organization/Event/AreaList/__utils__/factory'
+import {
+  fakeArea,
+  fakeRoom,
+  fakeRoomMetrics,
+} from 'organization/Event/AreaList/__utils__/factory'
 import {wait} from '@testing-library/react'
 import {fakeAttendee} from 'Event/auth/__utils__/factory'
 import {now} from 'lib/date-time'
 import {Attendee} from 'Event/attendee'
 import {CHECK_IN_ATTENDEES} from 'organization/PermissionsProvider'
-import {goToAreas} from 'organization/Event/AreaList/__utils__/go-to-areas'
+import {goToArea} from 'organization/Event/AreaList/__utils__/go-to-areas'
 
 const mockGet = axios.get as jest.Mock
 const mockPatch = axios.patch as jest.Mock
 
-afterEach(() => {
+beforeEach(() => {
   jest.clearAllMocks()
 })
 
 it('should check in an attendee', async () => {
   const area = fakeArea({is_tech_check: true})
 
-  const {findByLabelText, findAllByLabelText} = await goToAreas({
-    userPermissions: [CHECK_IN_ATTENDEES],
-    areas: [area],
-  })
-
-  mockGet.mockImplementationOnce(() => Promise.resolve({data: area}))
-
   const rooms = Array.from(
     {length: faker.random.number({min: 1, max: 3})},
-    () => fakeRoom({max_num_attendees: null}),
+    () => fakeRoom({max_num_attendees: null, is_online: true}),
   )
   const targetRoomIndex = faker.random.number({min: 0, max: rooms.length - 1})
   const targetRoom = rooms[targetRoomIndex]
 
-  // Rooms
-  mockGet.mockImplementationOnce(() => Promise.resolve({data: rooms}))
-
-  // go to area config
-  user.click(await findByLabelText(`view ${area.name} area`))
+  const {findByLabelText, findAllByLabelText} = await goToArea({
+    userPermissions: [CHECK_IN_ATTENDEES],
+    area,
+    rooms,
+  })
 
   // Start url
   const url = faker.internet.url()
@@ -53,6 +50,10 @@ it('should check in an attendee', async () => {
   })
 
   mockGet.mockImplementationOnce(() => Promise.resolve({data: assignments}))
+
+  mockGet.mockImplementationOnce(() =>
+    Promise.resolve({data: fakeRoomMetrics({room_id: targetRoom.id})}),
+  )
 
   // go to room config
   user.click(await findByLabelText(`view ${targetRoom.name} room`))

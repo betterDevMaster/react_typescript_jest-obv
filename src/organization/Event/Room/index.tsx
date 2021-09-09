@@ -1,4 +1,5 @@
 import Button from '@material-ui/core/Button'
+import {useAsync} from 'lib/async'
 import styled from 'styled-components'
 import FormControl from '@material-ui/core/FormControl'
 import FormControlLabel from '@material-ui/core/FormControlLabel'
@@ -23,7 +24,7 @@ import {useRoom} from 'organization/Event/Room/RoomProvider'
 import {useRoomRoutes} from 'organization/Event/Room/RoomRoutes'
 import {useOrganization} from 'organization/OrganizationProvider'
 import Layout from 'organization/user/Layout'
-import React, {useState} from 'react'
+import React, {useCallback, useState} from 'react'
 import TechCheckAttendees from 'organization/Event/Room/TechCheckAttendees'
 import StartButton from 'organization/Event/Room/StartButton'
 import Box from '@material-ui/core/Box'
@@ -38,6 +39,8 @@ import OnlineSwitch from 'organization/Event/Room/OnlineSwitch'
 import ExportRoomAttendees from 'organization/Event/Room/ExportRoomAttendees'
 import RegistrationSwitch from 'organization/Event/Room/RegistrationSwitch'
 import RegistrationURL from 'organization/Event/Room/RegistrationURL'
+import {RoomMetrics} from 'organization/Event/Area/RoomList'
+import {api} from 'lib/url'
 import recordingIcon from 'assets/images/recording-icon.png'
 import {RelativeLink} from 'lib/ui/link/RelativeLink'
 
@@ -45,6 +48,7 @@ export const DEFAULT_MAX_NUM_ATTENDEES = 500
 
 export default function RoomConfig() {
   const {room, update, processing} = useRoom()
+  const metrics = useRoomMetrics(room.id)
   const [name, setName] = useState(room.name)
   const [maxNumAttendees, setMaxNumAttendees] = useState(room.max_num_attendees)
   const {event} = useEvent()
@@ -57,6 +61,8 @@ export default function RoomConfig() {
   const hasUpdatedMaxNumAttendees = maxNumAttendees !== room.max_num_attendees
   const hasUpdates = hasUpdatedName || hasUpdatedMaxNumAttendees
   const roomRoutes = useRoomRoutes()
+
+  const numAttendees = metrics?.data?.num_attendees || '0'
 
   useBreadcrumbs([
     {
@@ -119,6 +125,7 @@ export default function RoomConfig() {
           </HasPermission>
         </Box>
         <Title variant="h5">{room.name}</Title>
+        <Typography>Attendees: {numAttendees}</Typography>
         <FormControl>
           <FormControlLabel control={<OnlineSwitch />} label="Open" />
         </FormControl>
@@ -214,6 +221,17 @@ function StartRoom(props: {processing: boolean}) {
       <StartButton processing={props.processing} />
     </Box>
   )
+}
+
+export function useRoomMetrics(id: number) {
+  const {client} = useOrganization()
+
+  const request = useCallback(() => {
+    const url = api(`/rooms/${id}/metrics`)
+    return client.get<RoomMetrics>(url)
+  }, [client, id])
+
+  return useAsync(request)
 }
 
 const Title = withStyles({

@@ -1,4 +1,4 @@
-import {goToAreas} from 'organization/Event/AreaList/__utils__/go-to-areas'
+import {goToArea} from 'organization/Event/AreaList/__utils__/go-to-areas'
 import user from '@testing-library/user-event'
 import axios from 'axios'
 import {fakeArea, fakeRoom} from 'organization/Event/AreaList/__utils__/factory'
@@ -15,25 +15,22 @@ beforeEach(() => {
 
 it('should configure rules', async () => {
   const area = fakeArea()
+
+  const roomOne = fakeRoom()
+  const roomTwo = fakeRoom()
+
+  const rooms = [roomOne, roomTwo]
+
   const {
     findByLabelText,
     findByText,
     findAllByLabelText,
     event,
-  } = await goToAreas({
-    areas: [area],
+  } = await goToArea({
+    area,
+    rooms,
     userPermissions: [CONFIGURE_EVENTS],
   })
-
-  const roomOne = fakeRoom()
-  const roomTwo = fakeRoom()
-
-  mockGet.mockImplementationOnce(() => Promise.resolve({data: area}))
-  mockGet.mockImplementationOnce(() =>
-    Promise.resolve({data: [roomOne, roomTwo]}),
-  )
-
-  user.click(await findByLabelText(`view ${area.name} area`))
 
   /**
    * Start with one rule assigned to room one

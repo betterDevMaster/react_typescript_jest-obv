@@ -1,7 +1,10 @@
 import faker from 'faker'
 import user from '@testing-library/user-event'
 import axios from 'axios'
-import {fakeArea} from 'organization/Event/AreaList/__utils__/factory'
+import {
+  fakeArea,
+  fakeRoomMetrics,
+} from 'organization/Event/AreaList/__utils__/factory'
 import {CONFIGURE_EVENTS} from 'organization/PermissionsProvider'
 import {goToAreas} from 'organization/Event/AreaList/__utils__/go-to-areas'
 
@@ -44,6 +47,8 @@ it('should create a new area', async () => {
   // Newly created area
   mockGet.mockImplementationOnce(() => Promise.resolve({data: area}))
   // rooms
+  mockGet.mockImplementationOnce(() => Promise.resolve({data: []}))
+  // metrics
   mockGet.mockImplementationOnce(() => Promise.resolve({data: []}))
 
   user.click(await findByLabelText('create area'))
