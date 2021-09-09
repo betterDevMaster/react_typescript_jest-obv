@@ -255,9 +255,9 @@ export default function Area() {
                 <CreateRoomButton
                   variant="outlined"
                   color="primary"
-                  aria-label="create room"
+                  aria-label="create rooms"
                 >
-                  Create Room
+                  Create Rooms
                 </CreateRoomButton>
               </RelativeLink>
             </>

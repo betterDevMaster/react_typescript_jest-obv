@@ -17,6 +17,7 @@ import {ObvioEvent} from 'Event'
 export default function EventPage(props: {
   children: React.ReactElement | React.ReactElement[]
   disablePadding?: boolean
+  className?: string
 }) {
   const {routes: orgRoutes} = useOrganization()
   const eventRoutes = useEventRoutes()
@@ -29,7 +30,10 @@ export default function EventPage(props: {
       <Background />
       <StyledContainer maxWidth="lg">
         <ConfigNav />
-        <Content disablePadding={props.disablePadding}>
+        <Content
+          disablePadding={props.disablePadding}
+          className={props.className}
+        >
           {props.children}
         </Content>
       </StyledContainer>

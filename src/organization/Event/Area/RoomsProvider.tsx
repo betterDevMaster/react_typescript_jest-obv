@@ -31,8 +31,7 @@ export default function RoomsProvider(props: {children: React.ReactElement}) {
   }, [saved])
 
   const add = (room: Room) => {
-    const added = [...rooms, room]
-    setRooms(added)
+    setRooms((current) => [...current, room])
   }
 
   const update = useCallback(

@@ -8,13 +8,17 @@ export default function FullPageLoader() {
   return (
     <Center>
       <div>
-        <Spinner src={spinner} alt="loading" />
+        <Spinner />
         <Typography>loading...</Typography>
       </div>
     </Center>
   )
 }
 
-const Spinner = styled.img`
+export function Spinner() {
+  return <StyledImage src={spinner} alt="loading" />
+}
+
+export const StyledImage = styled.img`
   width: 64px;
 `

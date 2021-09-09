@@ -5,13 +5,12 @@ import {ValidationError} from 'lib/api-client'
 import {api} from 'lib/url'
 import {useOrganization} from 'organization/OrganizationProvider'
 import {useState} from 'react'
-import {useForm} from 'react-hook-form'
 import Layout from 'organization/user/Layout'
 import withStyles from '@material-ui/core/styles/withStyles'
 import {spacing} from 'lib/ui/theme'
 import Typography from '@material-ui/core/Typography'
 import TextField from '@material-ui/core/TextField'
-import {fieldError} from 'lib/form'
+import {useValidatedForm} from 'lib/form'
 import Button from '@material-ui/core/Button'
 import {useHistory} from 'react-router-dom'
 import {useArea} from 'organization/Event/Area/AreaProvider'
@@ -23,18 +22,26 @@ import Switch from '@material-ui/core/Switch'
 import {useAreaRoutes} from 'organization/Event/Area/AreaRoutes'
 import Page from 'organization/Event/Page'
 import {useRooms} from 'organization/Event/Area/RoomsProvider'
+import ProgressOverlay from 'organization/Event/Room/CreateRoomForm/ProgressOverlay'
 
 interface CreateRoomData {
-  name: string
   max_num_attendees?: number
 }
 
+/**
+ * How many rooms can be created at once.
+ */
+const MAX_NUM_ROOMS = 100
+
 export default function CreateRoomForm() {
-  const {register, errors, handleSubmit} = useForm()
-  const [submitting, setSubmitting] = useState(false)
-  const [serverError, setServerError] = useState<
-    ValidationError<CreateRoomData>
-  >(null)
+  const {
+    register,
+    handleSubmit,
+    clearErrors,
+    setResponseError,
+    responseError,
+  } = useValidatedForm<CreateRoomData>()
+  const [processing, setProcessing] = useState(false)
   const history = useHistory()
   const createRoom = useCreateRoom()
   const areaRoutes = useAreaRoutes()
@@ -43,49 +50,79 @@ export default function CreateRoomForm() {
   }
   const [hasMaxNumAttendees, setHasMaxNumAttendees] = useState(false)
   const {add} = useRooms()
+  const [numCreated, setNumCreated] = useState(0)
+  const [numTotal, setNumTotal] = useState(0)
 
-  const submit = (all: CreateRoomData) => {
-    const {max_num_attendees, ...requiredData} = all
+  const submit = async ({max_num_attendees, num_rooms}: any) => {
+    if (processing) {
+      return
+    }
 
-    const data = hasMaxNumAttendees ? all : requiredData
+    setNumCreated(0)
+    setNumTotal(num_rooms)
+    setProcessing(true)
+    clearErrors()
 
-    setSubmitting(true)
-    createRoom(data)
-      .then((room) => {
+    /**
+     * Create rooms sequentially. Had to fire multiple requests because a single
+     * request would timeout trying to create too many rooms.
+     */
+    for (let i = 0; i < num_rooms; i++) {
+      const data: CreateRoomData = hasMaxNumAttendees ? {max_num_attendees} : {}
+      try {
+        const room = await createRoom(data)
         add(room)
-        goToBackToArea()
-      })
-      .catch((e) => {
-        setServerError(e)
-        setSubmitting(false)
-      })
-  }
+        setNumCreated((current) => current + 1)
 
-  const nameError = fieldError('name', {form: errors, response: serverError})
+        const isLastRoom = i === num_rooms - 1
+        if (isLastRoom) {
+          goToBackToArea()
+        }
+      } catch (error: any) {
+        setResponseError(error)
+      }
+    }
+  }
 
   return (
     <Layout>
-      <Page>
+      <RelativePage>
         <Title variant="h5" align="center">
-          Create Room
+          Create Rooms
         </Title>
+        <ProgressOverlay
+          showing={processing}
+          created={numCreated}
+          total={numTotal}
+          failed={Boolean(responseError)}
+          onRetry={() => setProcessing(false)}
+        />
         <form onSubmit={handleSubmit(submit)}>
           <TextField
-            label="Room Name"
-            name="name"
+            label="Number of rooms"
+            name="num_rooms"
             required
+            defaultValue={1}
             fullWidth
+            type="number"
             variant="outlined"
             inputProps={{
               ref: register({
-                required: 'Name is required',
+                required: 'Number of rooms is required',
               }),
-              'aria-label': 'room name input',
+              'aria-label': 'number of rooms to create',
+              min: 1,
+              max: MAX_NUM_ROOMS,
             }}
-            error={Boolean(nameError)}
-            helperText={nameError}
+            helperText={`You may create up to ${MAX_NUM_ROOMS} rooms at once.`}
+            disabled={processing}
           />
-          <FormControl required component="fieldset" fullWidth>
+          <FormControl
+            required
+            component="fieldset"
+            fullWidth
+            disabled={processing}
+          >
             <FormControlLabel
               control={
                 <Switch
@@ -114,22 +151,29 @@ export default function CreateRoomForm() {
               max: 1000,
               ref: register,
             }}
-            disabled={!hasMaxNumAttendees}
+            disabled={!hasMaxNumAttendees || processing}
           />
           <div>
             <Button
               variant="contained"
               color="primary"
-              disabled={submitting}
+              disabled={processing}
               type="submit"
-              aria-label="create room"
+              aria-label="create rooms"
             >
               Create
             </Button>
+            <CancelButton
+              disabled={processing}
+              type="button"
+              onClick={goToBackToArea}
+            >
+              Cancel
+            </CancelButton>
           </div>
-          <Error>{serverError}</Error>
+          <Error>{responseError}</Error>
         </form>
-      </Page>
+      </RelativePage>
     </Layout>
   )
 }
@@ -160,4 +204,12 @@ const Title = withStyles({
 const ErrorText = styled.div`
   margin-top: ${(props) => props.theme.spacing[4]};
   color: ${(props) => props.theme.colors.error};
+`
+
+const RelativePage = styled(Page)`
+  position: relative;
+`
+
+const CancelButton = styled(Button)`
+  margin-left: ${(props) => props.theme.spacing[2]};
 `
