@@ -11,6 +11,7 @@ import Content from 'lib/ui/form/TextEditor/Content'
 import React from 'react'
 import {useToggle} from 'lib/toggle'
 import {Editable} from 'Event/Dashboard/editor/views/EditComponent'
+import EditModeOnly from 'Event/Dashboard/editor/views/EditModeOnly'
 import LeaderboardConfig from 'Event/template/Panels/Dashboard/Leaderboard/LeaderboardConfig'
 
 export default function Leaderboard() {
@@ -23,7 +24,9 @@ export default function Leaderboard() {
 
   return (
     <>
-      <LeaderboardConfig isVisible={configVisible} onClose={toggleConfig} />
+      <EditModeOnly>
+        <LeaderboardConfig isVisible={configVisible} onClose={toggleConfig} />
+      </EditModeOnly>
       <Editable onEdit={toggleConfig}>
         <PageTitle>{v(leaderboard.title)}</PageTitle>
       </Editable>
