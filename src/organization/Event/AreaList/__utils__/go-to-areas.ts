@@ -27,6 +27,14 @@ export async function goToAreas(
 
   mockGet.mockImplementationOnce(() => Promise.resolve({data: areas}))
 
+  /**
+   * Fetch metrics per area
+   */
+
+  for (const _ of areas) {
+    mockGet.mockImplementationOnce(() => Promise.resolve({data: []}))
+  }
+
   user.click(await context.findByLabelText('areas'))
 
   return {...context, areas}

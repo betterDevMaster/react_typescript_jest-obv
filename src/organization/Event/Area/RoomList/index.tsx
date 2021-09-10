@@ -1,5 +1,5 @@
 import {Room} from 'Event/room'
-import React, {useCallback} from 'react'
+import React from 'react'
 import Table from '@material-ui/core/Table'
 import TableHead from '@material-ui/core/TableHead'
 import TableRow from '@material-ui/core/TableRow'
@@ -9,11 +9,6 @@ import OnlineSwitch from 'organization/Event/Room/OnlineSwitch'
 import {StaticRoomProvider, useRoom} from 'organization/Event/Room/RoomProvider'
 import {RelativeLink} from 'lib/ui/link/RelativeLink'
 import {useRoomRoutes} from 'organization/Event/Room/RoomRoutes'
-import {useOrganization} from 'organization/OrganizationProvider'
-import {useEvent} from 'Event/EventProvider'
-import {useAsync} from 'lib/async'
-import {api} from 'lib/url'
-import {useArea} from 'organization/Event/Area/AreaProvider'
 
 export interface RoomMetrics {
   room_id: number
@@ -21,10 +16,12 @@ export interface RoomMetrics {
   last_joined_timestamp: string
 }
 
-export default function RoomList(props: {rooms: Room[]}) {
-  const {rooms} = props
+export default function RoomList(props: {
+  rooms: Room[]
+  metrics: RoomMetrics[]
+}) {
+  const {rooms, metrics} = props
   const isEmpty = rooms.length === 0
-  const {data: metrics} = useAreaMetrics()
 
   if (isEmpty) {
     return (
@@ -75,21 +72,6 @@ function numAttendees(roomId: number, metrics: RoomMetrics[] | null) {
   }
 
   return target.num_attendees
-}
-
-function useAreaMetrics() {
-  const {client} = useOrganization()
-  const {event} = useEvent()
-  const {
-    area: {id},
-  } = useArea()
-
-  const fetch = useCallback(() => {
-    const url = api(`/events/${event.slug}/areas/${id}/metrics`)
-    return client.get<RoomMetrics[]>(url)
-  }, [client, event.slug, id])
-
-  return useAsync(fetch)
 }
 
 function RoomLink() {

@@ -9,11 +9,11 @@ import styled from 'styled-components'
 import {onChangeCheckedHandler, onChangeStringHandler} from 'lib/dom'
 import {RelativeLink} from 'lib/ui/link/RelativeLink'
 import {spacing} from 'lib/ui/theme'
-import RoomList from 'organization/Event/Area/RoomList'
+import RoomList, {RoomMetrics} from 'organization/Event/Area/RoomList'
 import {useArea} from 'organization/Event/Area/AreaProvider'
 import {useAreaRoutes} from 'organization/Event/Area/AreaRoutes'
 import Layout from 'organization/user/Layout'
-import React, {useEffect, useState} from 'react'
+import React, {useEffect, useState, useCallback} from 'react'
 import Page from 'organization/Event/Page'
 import {useOrganization} from 'organization/OrganizationProvider'
 import {useEventRoutes} from 'organization/Event/EventRoutes'
@@ -29,6 +29,9 @@ import ErrorAlert from 'lib/ui/alerts/ErrorAlert'
 import {useToggle} from 'lib/toggle'
 import ConfirmDialog from 'lib/ui/ConfirmDialog'
 import {useRooms} from 'organization/Event/Area/RoomsProvider'
+import {useAsync} from 'lib/async'
+import {api} from 'lib/url'
+import {Area as AreaModel} from 'organization/Event/AreasProvider'
 
 const CONFIRM_TURN_OFF_TECH_CHECK_REASSIGN =
   "This area is currently assigned to Tech Check.  If you turn this setting off, and an attendee hasn't completed their tech check, they may see an offline message when they try to check in and their original room is unavailable.  Are you sure you wish to disable?"
@@ -51,6 +54,8 @@ export default function Area() {
     flag: showingConfirmReassignDialog,
     toggle: toggleConfirmReassignDialog,
   } = useToggle()
+  const {metrics} = useAreaMetrics()
+  const totalAttendees = sumAttendees(metrics)
 
   /**
    * If an area is assigned to Tech Check, we want to confirm with the
@@ -262,11 +267,46 @@ export default function Area() {
               </RelativeLink>
             </>
           </HasPermission>
-          <RoomList rooms={rooms} />
+          <Typography>Total Attendees: {totalAttendees}</Typography>
+          <RoomList rooms={rooms} metrics={metrics} />
         </Page>
       </Layout>
     </>
   )
+}
+
+function useAreaMetrics() {
+  const {area} = useArea()
+
+  return useFetchAreaMetrics(area)
+}
+
+export function useNumAttendees(area: AreaModel) {
+  const {metrics} = useFetchAreaMetrics(area)
+  return sumAttendees(metrics)
+}
+
+function useFetchAreaMetrics(area: AreaModel) {
+  const {client} = useOrganization()
+  const {event} = useEvent()
+
+  const fetch = useCallback(() => {
+    const url = api(`/events/${event.slug}/areas/${area.id}/metrics`)
+    return client.get<RoomMetrics[]>(url)
+  }, [client, event.slug, area])
+
+  const {data, ...res} = useAsync(fetch)
+
+  return {
+    metrics: data || [],
+    ...res,
+  }
+}
+
+function sumAttendees(metrics: RoomMetrics[]) {
+  return metrics.reduce((acc, i) => {
+    return acc + i.num_attendees
+  }, 0)
 }
 
 const Title = withStyles({
