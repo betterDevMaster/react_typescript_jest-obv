@@ -12,19 +12,10 @@ export default function ClearRoomAssignmentsButton(props: {
   onError: (error: string) => void
   clearError: () => void
 }) {
-  const {area} = useArea()
-
-  const {clear, processing} = useClearRoomAssignments(
-    props.clearError,
-    props.onError,
-  )
   return (
     <Box mb={2}>
-      <ConfirmDialog
-        onConfirm={clear}
-        description={`You're about to clear all your room assignments for ${area.name}.  This cannot be un-done.  Are you sure you want to continue?`}
-      >
-        {(confirm) => (
+      <ClearRoomAssignments {...props}>
+        {(confirm, processing) => (
           <DangerButton
             onClick={confirm}
             disabled={processing}
@@ -34,12 +25,33 @@ export default function ClearRoomAssignmentsButton(props: {
             Clear Room Assignments
           </DangerButton>
         )}
-      </ConfirmDialog>
+      </ClearRoomAssignments>
     </Box>
   )
 }
 
-export function useClearRoomAssignments(
+export function ClearRoomAssignments(props: {
+  children: (confirm: () => void, processing: boolean) => React.ReactElement
+  onError: (error: string) => void
+  clearError: () => void
+}) {
+  const {clear, processing} = useClearRoomAssignments(
+    props.clearError,
+    props.onError,
+  )
+  const {area} = useArea()
+
+  return (
+    <ConfirmDialog
+      onConfirm={clear}
+      description={`You're about to clear all your room assignments for ${area.name}.  This cannot be un-done.  Are you sure you want to continue?`}
+    >
+      {(confirm) => props.children(confirm, processing)}
+    </ConfirmDialog>
+  )
+}
+
+function useClearRoomAssignments(
   clearError: () => void,
   onError: (error: string) => void,
 ) {

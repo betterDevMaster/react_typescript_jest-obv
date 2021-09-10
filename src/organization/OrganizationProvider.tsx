@@ -136,13 +136,13 @@ export function createRoutesFor(organization: Organization) {
           areas: {
             create: '/create',
             ':area': {
+              rules: '/rules',
               rooms: {
                 create: '/create',
                 ':room': {
                   recordings: '/recordings',
                 },
               },
-              rules: '/rules',
             },
           },
           leaderboard: '/leaderboard',

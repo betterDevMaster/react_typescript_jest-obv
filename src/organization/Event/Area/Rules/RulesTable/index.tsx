@@ -32,6 +32,7 @@ export default function RulesTable() {
       <StyledTable>
         <TableHead>
           <TableRow>
+            <PriorityCell>Priority</PriorityCell>
             <ConditionsCell>Conditions</ConditionsCell>
             <RoomsCell>Rooms</RoomsCell>
             <RemoveCell>{/* Delete Button */}</RemoveCell>
@@ -53,6 +54,7 @@ export default function RulesTable() {
                       {...provided.dragHandleProps}
                       ref={provided.innerRef}
                     >
+                      <PriorityCell>{index + 1}</PriorityCell>
                       <ConditionsCell>
                         <ConditionsConfig rule={rule}>
                           <Conditions rule={rule} />
@@ -117,16 +119,24 @@ const StyledTableRow = styled(TableRow)`
  * Reference: https://github.com/atlassian/react-beautiful-dnd/blob/master/docs/patterns/tables.md
  */
 
-const ConditionsCell = styled(TableCell)`
-  width: 50%;
+const PriorityCell = styled(TableCell)`
+  width: 20%;
 
   @media (min-width: ${(props) => props.theme.breakpoints.md}) {
-    width: 60%;
+    width: 10%;
+  }
+`
+
+const ConditionsCell = styled(TableCell)`
+  width: 40%;
+
+  @media (min-width: ${(props) => props.theme.breakpoints.md}) {
+    width: 5%;
   }
 `
 
 const RoomsCell = styled(TableCell)`
-  width: 40%;
+  width: 30%;
 
   @media (min-width: ${(props) => props.theme.breakpoints.md}) {
     width: 25%;

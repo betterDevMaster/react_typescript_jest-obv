@@ -20,14 +20,21 @@ const RoomsContext = React.createContext<RoomsContextProps | undefined>(
 
 export default function RoomsProvider(props: {children: React.ReactElement}) {
   const [rooms, setRooms] = useState<Room[]>([])
-  const {data: saved, loading} = useSavedRooms()
+  /**
+   * Need to handle explicit loading state, otherwise async request
+   * would resolve before the 'setRooms'
+   */
+  const [loading, setLoading] = useState(true)
+  const {data: saved} = useSavedRooms()
 
   useEffect(() => {
     if (!saved) {
+      setLoading(false)
       return
     }
 
     setRooms(saved)
+    setLoading(false)
   }, [saved])
 
   const add = (room: Room) => {
@@ -50,7 +57,7 @@ export default function RoomsProvider(props: {children: React.ReactElement}) {
     [rooms],
   )
 
-  if (loading || !saved) {
+  if (loading) {
     return (
       <Layout>
         <Page>

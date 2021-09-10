@@ -15,7 +15,7 @@ import React from 'react'
 import styled from 'styled-components'
 import Alert from '@material-ui/lab/Alert'
 import Button from 'lib/ui/Button'
-import {useClearRoomAssignments} from 'organization/Event/Area/ClearRoomAssignmentsButton'
+import {ClearRoomAssignments} from 'organization/Event/Area/ClearRoomAssignmentsButton'
 
 export default function Rules() {
   const {routes: orgRoutes} = useOrganization()
@@ -24,8 +24,6 @@ export default function Rules() {
   const areaRoutes = useAreaRoutes()
   const {area} = useArea()
   const {error, clearError, setError} = useRules()
-
-  const {processing, clear} = useClearRoomAssignments(clearError, setError)
 
   useBreadcrumbs([
     {
@@ -53,9 +51,17 @@ export default function Rules() {
         <StyledErrorAlert onClose={clearError}>{error}</StyledErrorAlert>
         <StyledAlert severity="info">
           Any rule changes will not affect previously assigned attendees. Click{' '}
-          <StyledButton variant="text" onClick={clear} disabled={processing}>
-            here
-          </StyledButton>{' '}
+          <ClearRoomAssignments onError={setError} clearError={clearError}>
+            {(confirm, processing) => (
+              <StyledButton
+                variant="text"
+                onClick={confirm}
+                disabled={processing}
+              >
+                here
+              </StyledButton>
+            )}
+          </ClearRoomAssignments>{' '}
           to clear all room assignments.
         </StyledAlert>
         <RulesTable />

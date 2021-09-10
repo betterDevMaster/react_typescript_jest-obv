@@ -11,6 +11,8 @@ import {useArea} from 'organization/Event/Area/AreaProvider'
 import {useEvent} from 'Event/EventProvider'
 import Rules from 'organization/Event/Area/Rules'
 import RulesProvider from 'organization/Event/Area/Rules/RulesProvider'
+import CreateRoomForm from 'organization/Event/Room/CreateRoomForm'
+import {RouteRoomProvider} from 'organization/Event/Room/RoomProvider'
 
 export function useAreaRoutes() {
   const {area} = useArea()
@@ -40,8 +42,13 @@ export default function AreaRoutes() {
           <Rules />
         </RulesProvider>
       </Route>
-      <Route path={routes.events[':event'].areas[':area'].rooms.root}>
-        <RoomRoutes />
+      <Route path={routes.events[':event'].areas[':area'].rooms.create}>
+        <CreateRoomForm />
+      </Route>
+      <Route path={routes.events[':event'].areas[':area'].rooms[':room'].root}>
+        <RouteRoomProvider>
+          <RoomRoutes />
+        </RouteRoomProvider>
       </Route>
       <Route path={routes.events[':event'].areas.create}>
         <CreateAreaForm />
