@@ -34,7 +34,7 @@ export default function TargetConfig(props: TargetConfigProps) {
             aria-label="configure button to join room"
             onClick={() => setIsAreaButton(true)}
           >
-            Join Room
+            Join Area
           </ToggleButton>
         </ToggleButtonGroup>
       </FormControl>

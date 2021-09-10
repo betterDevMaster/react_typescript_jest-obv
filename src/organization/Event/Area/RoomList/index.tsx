@@ -38,7 +38,7 @@ export default function RoomList(props: {
           <TableCell>Name</TableCell>
           <TableCell>Max Num Attendees</TableCell>
           <TableCell>Num Attendees</TableCell>
-          <TableCell>Online</TableCell>
+          <TableCell>Open</TableCell>
         </TableRow>
       </TableHead>
       <TableBody>
