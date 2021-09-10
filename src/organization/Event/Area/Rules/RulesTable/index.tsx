@@ -131,7 +131,7 @@ const ConditionsCell = styled(TableCell)`
   width: 40%;
 
   @media (min-width: ${(props) => props.theme.breakpoints.md}) {
-    width: 5%;
+    width: 50%;
   }
 `
 
