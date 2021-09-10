@@ -33,7 +33,7 @@ export const fakeRoomMetrics = (
   overrides?: Partial<RoomMetrics>,
 ): RoomMetrics => ({
   room_id: faker.random.number({min: 1000, max: 10000}),
-  num_attendees: faker.random.number({min: 1000, max: 10000}),
+  num_attendees: String(faker.random.number({min: 1000, max: 10000})),
   last_joined_timestamp: now(),
   ...overrides,
 })

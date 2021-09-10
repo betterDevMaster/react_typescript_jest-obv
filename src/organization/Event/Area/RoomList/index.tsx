@@ -12,7 +12,7 @@ import {useRoomRoutes} from 'organization/Event/Room/RoomRoutes'
 
 export interface RoomMetrics {
   room_id: number
-  num_attendees: number
+  num_attendees: string
   last_joined_timestamp: string
 }
 

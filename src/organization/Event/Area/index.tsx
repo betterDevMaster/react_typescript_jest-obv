@@ -305,7 +305,13 @@ function useFetchAreaMetrics(area: AreaModel) {
 
 function sumAttendees(metrics: RoomMetrics[]) {
   return metrics.reduce((acc, i) => {
-    return acc + i.num_attendees
+    const num = parseInt(i.num_attendees)
+
+    if (isNaN(num)) {
+      return acc
+    }
+
+    return acc + num
   }, 0)
 }
 
