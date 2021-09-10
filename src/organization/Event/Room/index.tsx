@@ -1,5 +1,4 @@
 import Button from '@material-ui/core/Button'
-import {useAsync} from 'lib/async'
 import styled from 'styled-components'
 import FormControl from '@material-ui/core/FormControl'
 import FormControlLabel from '@material-ui/core/FormControlLabel'
@@ -24,7 +23,7 @@ import {useRoom} from 'organization/Event/Room/RoomProvider'
 import {useRoomRoutes} from 'organization/Event/Room/RoomRoutes'
 import {useOrganization} from 'organization/OrganizationProvider'
 import Layout from 'organization/user/Layout'
-import React, {useCallback, useState} from 'react'
+import React, {useCallback, useState, useEffect} from 'react'
 import TechCheckAttendees from 'organization/Event/Room/TechCheckAttendees'
 import StartButton from 'organization/Event/Room/StartButton'
 import Box from '@material-ui/core/Box'
@@ -43,13 +42,15 @@ import {RoomMetrics} from 'organization/Event/Area/RoomList'
 import {api} from 'lib/url'
 import recordingIcon from 'assets/images/recording-icon.png'
 import {RelativeLink} from 'lib/ui/link/RelativeLink'
+import {useInterval} from 'lib/interval'
+import {FETCH_METRICS_INTERVAL_SECS} from 'organization/Event/Area'
 
 export const DEFAULT_MAX_NUM_ATTENDEES = 500
 
 export default function RoomConfig() {
   const {room, update, processing} = useRoom()
   const metrics = useRoomMetrics(room.id)
-  const [name, setName] = useState(room.name)
+  const [description, setDescription] = useState(room.description)
   const [maxNumAttendees, setMaxNumAttendees] = useState(room.max_num_attendees)
   const {event} = useEvent()
   const areaRoutes = useAreaRoutes()
@@ -57,12 +58,12 @@ export default function RoomConfig() {
   const {routes: orgRoutes} = useOrganization()
   const {area} = useArea()
 
-  const hasUpdatedName = name !== room.name
+  const hasUpdatedName = description !== room.description
   const hasUpdatedMaxNumAttendees = maxNumAttendees !== room.max_num_attendees
   const hasUpdates = hasUpdatedName || hasUpdatedMaxNumAttendees
   const roomRoutes = useRoomRoutes()
 
-  const numAttendees = metrics?.data?.num_attendees || '0'
+  const numAttendees = metrics?.num_attendees || '0'
 
   useBreadcrumbs([
     {
@@ -74,7 +75,7 @@ export default function RoomConfig() {
       url: eventRoutes.root,
     },
     {title: area.name, url: areaRoutes.root},
-    {title: room.name, url: roomRoutes.root},
+    {title: String(room.number), url: roomRoutes.root},
   ])
 
   const canSave = hasUpdates && !processing
@@ -82,7 +83,7 @@ export default function RoomConfig() {
   const save = () => {
     const data: Room = {
       ...room,
-      name,
+      description,
       max_num_attendees: maxNumAttendees,
     }
 
@@ -124,7 +125,7 @@ export default function RoomConfig() {
             </RelativeLink>
           </HasPermission>
         </Box>
-        <Title variant="h5">{room.name}</Title>
+        <Title variant="h5">{room.number}</Title>
         <Typography>Attendees: {numAttendees}</Typography>
         <FormControl>
           <FormControlLabel control={<OnlineSwitch />} label="Open" />
@@ -142,16 +143,15 @@ export default function RoomConfig() {
         <HasPermission permission={CONFIGURE_EVENTS}>
           <>
             <TextField
-              label="Room Name"
-              required
+              label="Description"
               fullWidth
               variant="outlined"
               inputProps={{
-                'aria-label': 'room name input',
+                'aria-label': 'room description',
               }}
               disabled={processing}
-              value={name}
-              onChange={onChangeStringHandler(setName)}
+              value={description || ''}
+              onChange={onChangeStringHandler(setDescription)}
             />
             <FormControl
               required
@@ -225,13 +225,20 @@ function StartRoom(props: {processing: boolean}) {
 
 export function useRoomMetrics(id: number) {
   const {client} = useOrganization()
+  const [metrics, setMetrics] = useState<RoomMetrics | null>(null)
 
   const request = useCallback(() => {
     const url = api(`/rooms/${id}/metrics`)
-    return client.get<RoomMetrics>(url)
+    client.get<RoomMetrics>(url).then(setMetrics)
   }, [client, id])
 
-  return useAsync(request)
+  useInterval(request, FETCH_METRICS_INTERVAL_SECS * 1000)
+
+  useEffect(() => {
+    request()
+  }, [request])
+
+  return metrics
 }
 
 const Title = withStyles({

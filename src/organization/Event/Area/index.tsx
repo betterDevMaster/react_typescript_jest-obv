@@ -29,12 +29,14 @@ import ErrorAlert from 'lib/ui/alerts/ErrorAlert'
 import {useToggle} from 'lib/toggle'
 import ConfirmDialog from 'lib/ui/ConfirmDialog'
 import {useRooms} from 'organization/Event/Area/RoomsProvider'
-import {useAsync} from 'lib/async'
 import {api} from 'lib/url'
 import {Area as AreaModel} from 'organization/Event/AreasProvider'
+import {useInterval} from 'lib/interval'
 
 const CONFIRM_TURN_OFF_TECH_CHECK_REASSIGN =
   "This area is currently assigned to Tech Check.  If you turn this setting off, and an attendee hasn't completed their tech check, they may see an offline message when they try to check in and their original room is unavailable.  Are you sure you wish to disable?"
+
+export const FETCH_METRICS_INTERVAL_SECS = 30
 
 export default function Area() {
   const {area, update, processing} = useArea()
@@ -54,7 +56,7 @@ export default function Area() {
     flag: showingConfirmReassignDialog,
     toggle: toggleConfirmReassignDialog,
   } = useToggle()
-  const {metrics} = useAreaMetrics()
+  const metrics = useAreaMetrics()
   const totalAttendees = sumAttendees(metrics)
 
   /**
@@ -282,25 +284,31 @@ function useAreaMetrics() {
 }
 
 export function useNumAttendees(area: AreaModel) {
-  const {metrics} = useFetchAreaMetrics(area)
+  const metrics = useFetchAreaMetrics(area)
   return sumAttendees(metrics)
 }
 
 function useFetchAreaMetrics(area: AreaModel) {
   const {client} = useOrganization()
-  const {event} = useEvent()
+  const {
+    event: {slug},
+  } = useEvent()
+  const [metrics, setMetrics] = useState<RoomMetrics[]>([])
+
+  const {id} = area
 
   const fetch = useCallback(() => {
-    const url = api(`/events/${event.slug}/areas/${area.id}/metrics`)
-    return client.get<RoomMetrics[]>(url)
-  }, [client, event.slug, area])
+    const url = api(`/events/${slug}/areas/${id}/metrics`)
+    client.get<RoomMetrics[]>(url).then(setMetrics)
+  }, [client, slug, id])
 
-  const {data, ...res} = useAsync(fetch)
+  useInterval(fetch, FETCH_METRICS_INTERVAL_SECS * 1000)
 
-  return {
-    metrics: data || [],
-    ...res,
-  }
+  useEffect(() => {
+    fetch()
+  }, [fetch])
+
+  return metrics
 }
 
 function sumAttendees(metrics: RoomMetrics[]) {

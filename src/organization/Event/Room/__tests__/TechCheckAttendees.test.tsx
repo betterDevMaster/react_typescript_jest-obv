@@ -56,7 +56,7 @@ it('should check in an attendee', async () => {
   )
 
   // go to room config
-  user.click(await findByLabelText(`view ${targetRoom.name} room`))
+  user.click(await findByLabelText(`view ${targetRoom.number} room`))
 
   expect((await findAllByLabelText('name')).length).toBe(assignments.length)
 

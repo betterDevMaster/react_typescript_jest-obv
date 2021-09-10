@@ -35,8 +35,8 @@ export default function RoomList(props: {
     <Table>
       <TableHead>
         <TableRow>
-          <TableCell>Name</TableCell>
-          <TableCell>Max Num Attendees</TableCell>
+          <TableCell>#</TableCell>
+          <TableCell>Description</TableCell>
           <TableCell>Num Attendees</TableCell>
           <TableCell>Open</TableCell>
         </TableRow>
@@ -48,7 +48,7 @@ export default function RoomList(props: {
               <TableCell>
                 <RoomLink />
               </TableCell>
-              <TableCell>{room.max_num_attendees || '-'}</TableCell>
+              <TableCell>{room.description}</TableCell>
               <TableCell>{numAttendees(room.id, metrics) || '-'}</TableCell>
               <TableCell>
                 <OnlineSwitch />
@@ -77,11 +77,11 @@ function numAttendees(roomId: number, metrics: RoomMetrics[] | null) {
 function RoomLink() {
   const {room} = useRoom()
   const routes = useRoomRoutes(room)
-  const label = `view ${room.name} room`
+  const label = `view ${room.number} room`
 
   return (
     <RelativeLink to={routes.root} aria-label={label}>
-      {room.name}
+      {room.number}
     </RelativeLink>
   )
 }

@@ -33,5 +33,5 @@ function RoomName(props: {id: Rule['rooms'][0]}) {
     return <em>Room deleted</em>
   }
 
-  return <span>{target.name}</span>
+  return <span>{target.number}</span>
 }

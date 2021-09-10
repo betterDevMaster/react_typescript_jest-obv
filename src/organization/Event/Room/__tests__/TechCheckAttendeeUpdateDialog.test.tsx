@@ -41,8 +41,10 @@ it('should check in an attendee', async () => {
 
   mockGet.mockImplementationOnce(() => Promise.resolve({data: [assignment]}))
 
+  mockGet.mockImplementationOnce(() => Promise.resolve({data: []})) // metrics
+
   // go to room config
-  user.click(await findByLabelText(`view ${room.name} room`))
+  user.click(await findByLabelText(`view ${room.number} room`))
 
   // Edit attendee
   user.click(await findByText(`${attendee.first_name} ${attendee.last_name}`))

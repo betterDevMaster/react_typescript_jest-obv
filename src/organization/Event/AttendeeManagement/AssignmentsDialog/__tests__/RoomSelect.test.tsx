@@ -60,7 +60,7 @@ it('should assign a room', async () => {
     }),
   )
 
-  user.click(await findByLabelText(`pick ${room.name}`))
+  user.click(await findByLabelText(`pick ${room.number}`))
 
   await wait(() => {
     expect(mockPost).toBeCalledTimes(1)
@@ -73,7 +73,7 @@ it('should assign a room', async () => {
 
   expect(
     ((await findByLabelText('room select')) as HTMLDivElement).textContent,
-  ).toBe(room.name)
+  ).toBe(String(room.number))
 })
 
 it('should unassign a room', async () => {
@@ -188,7 +188,7 @@ it('it should re-assign a room', async () => {
     }),
   )
 
-  user.click(await findByLabelText(`pick ${target.name}`))
+  user.click(await findByLabelText(`pick ${target.number}`))
 
   await wait(() => {
     expect(mockDelete).toBeCalledTimes(1)

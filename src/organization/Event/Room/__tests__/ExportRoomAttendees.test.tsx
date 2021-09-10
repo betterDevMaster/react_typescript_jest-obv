@@ -1,8 +1,8 @@
 import axios from 'axios'
 import user from '@testing-library/user-event'
-import {goToArea} from 'organization/Event/AreaList/__utils__/go-to-areas'
 import {START_ROOMS} from 'organization/PermissionsProvider'
 import {fakeRoom} from 'organization/Event/AreaList/__utils__/factory'
+import {goToRoomConfig} from 'organization/Event/Room/__utils__/go-to-room-config'
 
 const mockGet = axios.get as jest.Mock
 
@@ -13,17 +13,10 @@ beforeEach(() => {
 it('should export submissions for a form', async () => {
   const room = fakeRoom()
 
-  const {findByLabelText, findByText} = await goToArea({
+  const {findByLabelText, findByText} = await goToRoomConfig({
     userPermissions: [START_ROOMS],
-    rooms: [room],
+    room,
   })
-
-  mockGet.mockImplementationOnce(() =>
-    Promise.resolve({data: {url: 'http://zoom/start_url'}}),
-  )
-
-  // go to room config
-  user.click(await findByLabelText(`view ${room.name} room`))
 
   const message = 'received export request'
   mockGet.mockImplementationOnce(() => Promise.resolve({data: {message}}))

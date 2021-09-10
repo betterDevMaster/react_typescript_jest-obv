@@ -65,7 +65,7 @@ function RoomsList(props: {
       {rooms.map((room) => (
         <div key={room.id}>
           <FormControlLabel
-            label={room.name}
+            label={room.number}
             control={
               <Checkbox
                 disableRipple
@@ -74,7 +74,7 @@ function RoomsList(props: {
                 onChange={onChangeCheckedHandler(handleSelect(room))}
                 inputProps={{
                   'aria-label': `${isSelected(room) ? 'unselect' : 'select'} ${
-                    room.name
+                    room.number
                   }`,
                 }}
               />

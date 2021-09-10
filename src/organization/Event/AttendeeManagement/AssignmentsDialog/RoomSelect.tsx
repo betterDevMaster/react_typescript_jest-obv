@@ -85,9 +85,9 @@ export default function RoomSelect(props: {
         <MenuItem
           key={room.id}
           value={room.id}
-          aria-label={`pick ${room.name}`}
+          aria-label={`pick ${room.number}`}
         >
-          {room.name}
+          {room.number}
         </MenuItem>
       ))}
       <MenuItem value={0} aria-label="unassign room">

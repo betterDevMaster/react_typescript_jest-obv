@@ -2,9 +2,12 @@ import user from '@testing-library/user-event'
 import faker from 'faker'
 import axios from 'axios'
 import {Area} from 'organization/Event/AreasProvider'
-import {findByText, wait} from '@testing-library/react'
+import {wait} from '@testing-library/react'
 import {CONFIGURE_EVENTS} from 'organization/PermissionsProvider'
-import {goToAreas} from 'organization/Event/AreaList/__utils__/go-to-areas'
+import {
+  goToArea,
+  goToAreas,
+} from 'organization/Event/AreaList/__utils__/go-to-areas'
 import {fakeArea} from 'organization/Event/AreaList/__utils__/factory'
 
 const mockGet = axios.get as jest.Mock
@@ -25,6 +28,8 @@ it('should update an area open status', async () => {
   // Get area
   mockGet.mockImplementationOnce(() => Promise.resolve({data: target}))
   // Rooms
+  mockGet.mockImplementationOnce(() => Promise.resolve({data: []}))
+  // metrics
   mockGet.mockImplementationOnce(() => Promise.resolve({data: []}))
 
   // go to area config
@@ -66,6 +71,8 @@ it('should update an area re-assign offline status', async () => {
   mockGet.mockImplementationOnce(() => Promise.resolve({data: target}))
   // Rooms
   mockGet.mockImplementationOnce(() => Promise.resolve({data: []}))
+  // metrics
+  mockGet.mockImplementationOnce(() => Promise.resolve({data: []}))
 
   // go to area config
   user.click(await findByLabelText(`view ${target.name} area`))
@@ -99,18 +106,10 @@ it('should require confirmation to turn off re-assign for Tech Check area', asyn
     reassign_on_offline: true,
     is_tech_check: true,
   })
-  const {findByLabelText, findByText} = await goToAreas({
+  const {findByLabelText, findByText} = await goToArea({
     userPermissions: [CONFIGURE_EVENTS],
-    areas: [area],
+    area,
   })
-
-  // Get area
-  mockGet.mockImplementationOnce(() => Promise.resolve({data: area}))
-  // Rooms
-  mockGet.mockImplementationOnce(() => Promise.resolve({data: []}))
-
-  // go to area config
-  user.click(await findByLabelText(`view ${area.name} area`))
 
   const updated: Area = {
     ...area,

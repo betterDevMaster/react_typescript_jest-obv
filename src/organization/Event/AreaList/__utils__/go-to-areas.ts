@@ -6,7 +6,6 @@ import faker from 'faker'
 import user from '@testing-library/user-event'
 import {
   fakeArea,
-  fakeRoom,
   fakeRoomMetrics,
 } from 'organization/Event/AreaList/__utils__/factory'
 import {Area} from 'organization/Event/AreasProvider'

@@ -56,7 +56,7 @@ export default function Recordings() {
       url: eventRoutes.root,
     },
     {title: area.name, url: areaRoutes.root},
-    {title: room.name, url: roomRoutes.root},
+    {title: String(room.number), url: roomRoutes.root},
     {title: 'Recordings', url: roomRoutes.recordings},
   ])
 

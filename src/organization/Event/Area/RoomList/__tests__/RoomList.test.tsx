@@ -4,12 +4,17 @@ import {fakeRoom} from 'organization/Event/AreaList/__utils__/factory'
 import user from '@testing-library/user-event'
 import {goToAreas} from 'organization/Event/AreaList/__utils__/go-to-areas'
 import {START_ROOMS} from 'organization/PermissionsProvider'
+import {wait} from '@testing-library/dom'
 
 const mockGet = axios.get as jest.Mock
 
 it('should render list of rooms', async () => {
   const {areas, findByLabelText, findByText} = await goToAreas({
     userPermissions: [START_ROOMS],
+  })
+
+  await wait(() => {
+    expect(mockGet).toHaveBeenCalledTimes(9 + areas.length)
   })
 
   const area = faker.random.arrayElement(areas)
@@ -21,11 +26,13 @@ it('should render list of rooms', async () => {
   )
   // Rooms
   mockGet.mockImplementationOnce(() => Promise.resolve({data: rooms}))
+  // metrics
+  mockGet.mockImplementationOnce(() => Promise.resolve({data: []}))
 
   // go to area config
   user.click(await findByLabelText(`view ${area.name} area`))
 
   for (const room of rooms) {
-    expect(await findByText(room.name)).toBeInTheDocument()
+    expect(await findByText(String(room.number))).toBeInTheDocument()
   }
 })

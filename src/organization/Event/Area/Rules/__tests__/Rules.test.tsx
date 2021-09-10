@@ -59,7 +59,7 @@ it('should configure rules', async () => {
    */
   user.click(await findByText(/new rule/i))
   user.click((await findAllByLabelText('select rooms'))[1])
-  user.click(await findByLabelText(`select ${roomTwo.name}`))
+  user.click(await findByLabelText(`select ${roomTwo.number}`))
   user.click(await findByLabelText('close dialog'))
 
   /**

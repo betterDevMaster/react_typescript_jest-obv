@@ -1,30 +1,32 @@
 import faker from 'faker'
 import user from '@testing-library/user-event'
 import axios from 'axios'
-import {fakeRoom} from 'organization/Event/AreaList/__utils__/factory'
+import {fakeArea, fakeRoom} from 'organization/Event/AreaList/__utils__/factory'
 import {wait} from '@testing-library/react'
 import {CONFIGURE_EVENTS} from 'organization/PermissionsProvider'
-import {goToAreas} from 'organization/Event/AreaList/__utils__/go-to-areas'
+import {
+  goToArea,
+  goToAreas,
+} from 'organization/Event/AreaList/__utils__/go-to-areas'
 
 const mockGet = axios.get as jest.Mock
 const mockPost = axios.post as jest.Mock
 
 it('should create a room', async () => {
-  const {event, areas, findByLabelText, findAllByLabelText} = await goToAreas({
-    userPermissions: [CONFIGURE_EVENTS],
-  })
-
-  const area = faker.random.arrayElement(areas)
-  mockGet.mockImplementationOnce(() => Promise.resolve({data: area}))
+  const area = fakeArea()
 
   // Rooms
   const existingRooms = Array.from(
     {length: faker.random.number({min: 1, max: 3})},
     fakeRoom,
   )
-  mockGet.mockImplementationOnce(() => Promise.resolve({data: existingRooms}))
 
-  user.click(await findByLabelText(`view ${area.name} area`))
+  const {event, findByLabelText, findAllByLabelText} = await goToArea({
+    userPermissions: [CONFIGURE_EVENTS],
+    area,
+    rooms: existingRooms,
+  })
+
   user.click(await findByLabelText(`create rooms`))
 
   const numRooms = faker.random.number({min: 1, max: 10})
@@ -50,6 +52,8 @@ it('should create a room', async () => {
     mockPost.mockImplementationOnce(() => Promise.resolve({data: room}))
   }
 
+  mockGet.mockImplementationOnce(() => Promise.resolve({data: []})) // metrics when back on area page
+
   user.click(await findByLabelText('create rooms'))
 
   await wait(() => {
@@ -72,22 +76,18 @@ it('should create a room', async () => {
 })
 
 it('should allow retrying room', async () => {
+  const area = fakeArea()
   const {
     areas,
     findByLabelText,
     findByText,
     findAllByLabelText,
-  } = await goToAreas({
+  } = await goToArea({
     userPermissions: [CONFIGURE_EVENTS],
+    area,
+    rooms: [], // start with 0 rooms
   })
 
-  const area = faker.random.arrayElement(areas)
-  mockGet.mockImplementationOnce(() => Promise.resolve({data: area}))
-
-  // started with 0 rooms...
-  mockGet.mockImplementationOnce(() => Promise.resolve({data: []}))
-
-  user.click(await findByLabelText(`view ${area.name} area`))
   user.click(await findByLabelText(`create rooms`))
 
   // Try create 2 rooms...
@@ -107,6 +107,8 @@ it('should allow retrying room', async () => {
   expect(await findByText('1 out of 2 completed.'))
 
   user.click(await findByText(/retry/i))
+
+  mockGet.mockImplementationOnce(() => Promise.resolve({data: []})) // metrics when back on area page
   user.click(await findByText(/cancel/i))
 
   // Is showing the 1 successful room

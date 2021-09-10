@@ -21,15 +21,17 @@ export interface EventOverrides {
 export function goToEvent(overrides: EventOverrides = {}) {
   const event = overrides.event || fakeEvent()
 
+  const userPermissions = overrides.userPermissions
+
   const orgData = signInToOrganization({
     events: [event],
-    userPermissions: overrides.userPermissions,
+    userPermissions,
   })
 
   // Fetch target event
   mockGet.mockImplementationOnce(() => Promise.resolve({data: event}))
 
-  return {event, ...orgData}
+  return {event, userPermissions, ...orgData}
 }
 
 export async function goToEventConfig(overrides: EventOverrides = {}) {

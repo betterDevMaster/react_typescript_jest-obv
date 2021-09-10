@@ -5,16 +5,13 @@ import {fakeArea, fakeRoom} from 'organization/Event/AreaList/__utils__/factory'
 import {Room} from 'Event/room'
 import {wait} from '@testing-library/react'
 import {CONFIGURE_EVENTS, START_ROOMS} from 'organization/PermissionsProvider'
-import {
-  goToArea,
-  goToAreas,
-} from 'organization/Event/AreaList/__utils__/go-to-areas'
+import {goToArea} from 'organization/Event/AreaList/__utils__/go-to-areas'
 
 const mockGet = axios.get as jest.Mock
 const mockPatch = axios.patch as jest.Mock
 const mockDelete = axios.delete as jest.Mock
 
-afterEach(() => {
+beforeEach(() => {
   jest.clearAllMocks()
 })
 
@@ -40,9 +37,10 @@ it('should toggle a room on/off', async () => {
   // Start url
   const url = faker.internet.url()
   mockGet.mockImplementationOnce(() => Promise.resolve({data: {url}}))
+  mockGet.mockImplementationOnce(() => Promise.resolve({data: []})) // metrics
 
   // go to room config
-  user.click(await findByLabelText(`view ${target.name} room`))
+  user.click(await findByLabelText(`view ${target.number} room`))
 
   expect(
     ((await findByLabelText('toggle online')) as HTMLInputElement).checked,
@@ -74,12 +72,6 @@ it('should update room attributes', async () => {
   const area = fakeArea({
     is_tech_check: false,
   })
-  const {findByLabelText} = await goToAreas({
-    userPermissions: [START_ROOMS, CONFIGURE_EVENTS],
-    areas: [area],
-  })
-
-  mockGet.mockImplementationOnce(() => Promise.resolve({data: area}))
 
   const rooms = Array.from(
     {length: faker.random.number({min: 1, max: 3})},
@@ -88,21 +80,26 @@ it('should update room attributes', async () => {
   const targetIndex = faker.random.number({min: 0, max: rooms.length - 1})
   const target = rooms[targetIndex]
 
-  // Rooms
-  mockGet.mockImplementationOnce(() => Promise.resolve({data: rooms}))
+  const {findByLabelText} = await goToArea({
+    userPermissions: [START_ROOMS, CONFIGURE_EVENTS],
+    area,
+    rooms,
+  })
 
-  // go to area config
-  user.click(await findByLabelText(`view ${area.name} area`))
+  mockGet.mockImplementationOnce(() =>
+    Promise.resolve({data: {url: 'http://starturl.zoom'}}),
+  )
+  mockGet.mockImplementationOnce(() => Promise.resolve({data: []})) // metrics
 
   // go to room config
-  user.click(await findByLabelText(`view ${target.name} room`))
+  user.click(await findByLabelText(`view ${target.number} room`))
 
-  const newName = faker.random.word()
+  const newDescription = faker.random.word()
 
   const hasMaxAttendees = faker.random.boolean()
   const maxNumAttendees = faker.random.number({min: 100, max: 400})
 
-  user.type(await findByLabelText('room name input'), newName)
+  user.type(await findByLabelText('room description'), newDescription)
 
   if (hasMaxAttendees) {
     user.click(await findByLabelText('toggle has max num attendees'))
@@ -114,7 +111,7 @@ it('should update room attributes', async () => {
 
   const updated: Room = {
     ...target,
-    name: newName,
+    description: newDescription,
     max_num_attendees: hasMaxAttendees ? null : maxNumAttendees,
   }
   mockPatch.mockImplementationOnce(() => Promise.resolve({data: updated}))
@@ -129,81 +126,9 @@ it('should update room attributes', async () => {
 
   expect(url).toMatch(`/rooms/${target.id}`)
 
-  expect(data.name).toBe(newName)
+  expect(data.description).toBe(newDescription)
 
   if (hasMaxAttendees) {
     expect(data.max_num_attendees).toBe(maxNumAttendees)
   }
-})
-
-it('should configure room registration', async () => {
-  const area = fakeArea({
-    is_tech_check: false,
-  })
-
-  const {findByLabelText, queryByLabelText} = await goToAreas({
-    areas: [area],
-    userPermissions: [CONFIGURE_EVENTS, START_ROOMS],
-  })
-
-  mockGet.mockImplementationOnce(() => Promise.resolve({data: area}))
-
-  const room = fakeRoom({
-    has_registration: false,
-    is_online: false,
-  })
-  mockGet.mockImplementationOnce(() => Promise.resolve({data: [room]}))
-
-  // Go to area
-  user.click(await findByLabelText(`view ${area.name} area`))
-
-  // Go to room
-  user.click(await findByLabelText(`view ${room.name} room`))
-
-  expect(await findByLabelText('room name input')).toBeInTheDocument()
-
-  expect(
-    ((await findByLabelText('toggle registration')) as HTMLInputElement)
-      .checked,
-  ).toBe(room.has_registration)
-
-  const registrationUrl = faker.internet.url()
-
-  const enabled: Room = {
-    ...room,
-    has_registration: true,
-    registration_url: registrationUrl,
-  }
-  mockPatch.mockImplementationOnce(() => Promise.resolve({data: enabled}))
-
-  //  Enable registration
-  user.click(await findByLabelText('toggle registration'))
-
-  const [patchUrl] = mockPatch.mock.calls[0]
-  expect(patchUrl).toMatch(`/rooms/${room.id}/registration`)
-
-  //copy an access token
-  jest.spyOn(navigator.clipboard, 'writeText')
-  user.click(await findByLabelText('copy registration url'))
-  await wait(() => {
-    expect(navigator.clipboard.writeText).toHaveBeenCalledWith(registrationUrl)
-  })
-
-  const disabled: Room = {
-    ...room,
-    has_registration: false,
-    registration_url: null,
-  }
-  mockDelete.mockImplementationOnce(() => Promise.resolve({data: disabled}))
-
-  // Disable registration
-  user.click(await findByLabelText('toggle registration'))
-
-  await wait(async () => {
-    expect(mockDelete).toHaveBeenCalledTimes(1)
-    expect(queryByLabelText('copy registration url'))
-  })
-
-  const [deleteUrl] = mockDelete.mock.calls[0]
-  expect(deleteUrl).toMatch(`/rooms/${room.id}/registration`)
 })

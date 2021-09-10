@@ -6,7 +6,8 @@ import {now} from 'lib/date-time'
 
 export const fakeRoom = (overrides?: Partial<Room>): Room => ({
   id: faker.random.number({min: 1000, max: 10000}),
-  name: faker.random.words(2),
+  number: faker.random.number({min: 1000, max: 10000}),
+  description: null,
   is_online: true,
   has_registration: false,
   registration_url: null,
