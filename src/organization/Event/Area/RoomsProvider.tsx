@@ -29,7 +29,6 @@ export default function RoomsProvider(props: {children: React.ReactElement}) {
 
   useEffect(() => {
     if (!saved) {
-      setLoading(false)
       return
     }
 
