@@ -64,14 +64,14 @@ export default function LeftPanel(props: {
               stacking while animating. 
           */}
           <Slide in={menuVisible} direction="left" mountOnEnter unmountOnExit>
-            <MenuBox>
+            <MenuBox visible={menuVisible}>
               {menuVisible ? (
                 <Menu onChangeTab={handleChangeTab} user={props.user} />
               ) : null}
             </MenuBox>
           </Slide>
           <Slide in={!menuVisible} direction="right" mountOnEnter unmountOnExit>
-            <MainContent>
+            <MainContent visible={!menuVisible}>
               {menuVisible ? null : (
                 <>
                   <div>{/* Spacer used to center buttons */}</div>
@@ -112,20 +112,30 @@ const Main = styled.div`
   display: flex;
   align-items: center;
   flex-direction: column;
-  padding: 24px;
+  padding: 24px 24px 36px;
   flex: 1;
+
+  /**
+   * Hide overflow to make menu sliding in/out disappear at panel edge, 
+   * as well as avoid any jumpiness from the transition.
+   */
+  overflow: hidden;
 `
 
-const MainContent = styled.div`
-  flex: 1;
+const MainContent = styled.div<{
+  visible: boolean
+}>`
+  flex: ${(props) => (props.visible ? 1 : 0)};
   display: flex;
   flex-direction: column;
   justify-content: space-between;
   width: 100%;
 `
 
-const MenuBox = styled.div`
-  flex: 1;
+const MenuBox = styled.div<{
+  visible: boolean
+}>`
+  flex: ${(props) => (props.visible ? 1 : 0)};
   display: flex;
 `
 

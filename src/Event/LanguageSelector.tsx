@@ -70,8 +70,8 @@ export default function LanguageSelector() {
 
 const BottomLeft = styled.div`
   position: fixed;
-  left: ${(props) => props.theme.spacing[10]};
-  bottom: ${(props) => props.theme.spacing[8]};
+  left: ${(props) => props.theme.spacing[4]};
+  bottom: ${(props) => props.theme.spacing[4]};
   z-index: 10;
   width: 50px;
 `
