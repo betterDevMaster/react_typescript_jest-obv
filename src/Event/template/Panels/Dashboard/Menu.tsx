@@ -70,6 +70,9 @@ const Box = styled.div`
   align-items: center;
   flex-direction: column;
   justify-content: space-between;
+
+  flex: 1;
+  padding: 24px 24px 72px;
 `
 
 const Bottom = styled.div``
