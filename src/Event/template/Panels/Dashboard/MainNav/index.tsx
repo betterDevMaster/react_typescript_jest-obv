@@ -110,6 +110,11 @@ const ScrollContainer = styled.div`
   height: 100%;
   overflow-x: hidden;
 
+  /**
+   * Fix scrollbar appearing in mobile resolution
+   */
+  padding: ${(props) => props.theme.spacing[2]} 0;
+
   /* Only want to enable inner scroll in desktop layout */
   @media (min-width: ${(props) => props.theme.breakpoints.md}) {
     position: absolute;
