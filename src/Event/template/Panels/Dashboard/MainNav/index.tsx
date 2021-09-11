@@ -61,9 +61,9 @@ const Container = React.forwardRef<
 >((props, ref) => (
   <Box className={props.className} ref={ref} {...props}>
     <ScrollContainer>
-      <Grid container justify="center" spacing={2}>
+      <StyledGridContainer container justify="center" spacing={2}>
         {props.children}
-      </Grid>
+      </StyledGridContainer>
     </ScrollContainer>
   </Box>
 ))
@@ -97,8 +97,18 @@ function useHandleDrag() {
 
 const Box = styled.div`
   flex: 1;
+  margin-bottom: ${(props) => props.theme.spacing[7]};
+  margin-top: ${(props) => props.theme.spacing[7]};
+  overflow-y: auto;
   width: 100%;
   position: relative;
+
+  /* Make child full height on desktop without height: 100% which
+   * breaks scroll (can't see top of container).
+   */
+  @media (min-width: ${(props) => props.theme.breakpoints.md}) {
+    display: flex;
+  }
 `
 
 const ScrollContainer = styled.div`
@@ -115,9 +125,6 @@ const ScrollContainer = styled.div`
 
   /* Only want to enable inner scroll in desktop layout */
   @media (min-width: ${(props) => props.theme.breakpoints.md}) {
-    position: absolute;
-    overflow-y: auto;
-
     /**
      * Center buttons vertically
      */
@@ -128,4 +135,14 @@ const ScrollContainer = styled.div`
 
 const StyledNewMainNavButton = styled(NewMainNavButton)`
   padding-top: ${(props) => props.theme.spacing[2]}!important;
+`
+
+const StyledGridContainer = styled(Grid)`
+  /**
+   * Fix vertical scroll not showing top when align-center.
+   * reference: https://stackoverflow.com/questions/33454533/cant-scroll-to-top-of-flex-item-that-is-overflowing-container
+ */
+  @media (min-width: ${(props) => props.theme.breakpoints.md}) {
+    margin: auto;
+  }
 `

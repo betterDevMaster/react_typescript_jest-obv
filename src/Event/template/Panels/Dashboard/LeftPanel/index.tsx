@@ -130,6 +130,10 @@ const MainContent = styled.div<{
   flex-direction: column;
   justify-content: space-between;
   width: 100%;
+  /**
+  Allow buttons to scroll if required
+  */
+  overflow-y: hidden;
 `
 
 const MenuBox = styled.div<{
