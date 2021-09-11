@@ -114,6 +114,12 @@ const ScrollContainer = styled.div`
   @media (min-width: ${(props) => props.theme.breakpoints.md}) {
     position: absolute;
     overflow-y: auto;
+
+    /**
+     * Center buttons vertically
+     */
+    display: flex;
+    align-items: center;
   }
 `
 

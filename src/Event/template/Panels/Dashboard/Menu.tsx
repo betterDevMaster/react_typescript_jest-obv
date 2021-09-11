@@ -22,18 +22,20 @@ export default function Menu(props: {
 
   return (
     <Box>
-      <Top>
-        {Object.entries(items).map(([label, url], index) => (
-          <LinkText
-            key={label}
-            onClick={() => props.onChangeTab(index)}
-            color={color}
-            aria-label={`left panel menu ${label} button`}
-          >
-            {label}
-          </LinkText>
-        ))}
-      </Top>
+      <TopCenterBox>
+        <Top>
+          {Object.entries(items).map(([label, url], index) => (
+            <LinkText
+              key={label}
+              onClick={() => props.onChangeTab(index)}
+              color={color}
+              aria-label={`left panel menu ${label} button`}
+            >
+              {label}
+            </LinkText>
+          ))}
+        </Top>
+      </TopCenterBox>
 
       <Bottom>
         <UserInfo color={color}>
@@ -71,10 +73,17 @@ const Box = styled.div`
 `
 
 const Bottom = styled.div``
+
 const Top = styled.div`
   display: flex;
   align-items: center;
   flex-direction: column;
+`
+
+const TopCenterBox = styled.div`
+  flex: 1;
+  display: flex;
+  align-items: center;
 `
 const UserInfo = styled.p<{color: string}>`
   text-align: center;
