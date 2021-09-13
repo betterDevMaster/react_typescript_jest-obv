@@ -42,6 +42,7 @@ export type Panels = BaseTemplate & {
   leftPanel: {
     barBackgroundColor: string
     barTextColor: string
+    menuTextColor?: string
     backgroundColor: string
     backgroundOpacity: number
   }
@@ -211,6 +212,7 @@ export const createPanels = (): DeepRequired<Panels> => ({
   leftPanel: {
     barBackgroundColor: '#07BAB5',
     barTextColor: '#ffffff',
+    menuTextColor: '#000000',
     backgroundColor: '#FFFFFF',
     backgroundOpacity: 0,
   },

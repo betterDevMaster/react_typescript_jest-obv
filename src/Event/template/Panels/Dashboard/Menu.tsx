@@ -17,7 +17,7 @@ export default function Menu(props: {
     Points: eventRoutes.leaderboard,
   }
   const {template} = usePanels()
-  const color = template.isDarkMode ? '#ffffff' : '#000000'
+  const color = template.leftPanel.menuTextColor || '#000000'
   const {logout} = useEventAuth()
 
   return (
@@ -28,7 +28,7 @@ export default function Menu(props: {
             <LinkText
               key={label}
               onClick={() => props.onChangeTab(index)}
-              color={color}
+              style={{color}}
               aria-label={`left panel menu ${label} button`}
             >
               {label}

@@ -46,6 +46,15 @@ export default function LeftPanelConfig(props: {
 
         <Box mb={2}>
           <ColorPicker
+            label="Menu Text Color"
+            color={leftPanel.menuTextColor}
+            onPick={updateLeftPanel('menuTextColor')}
+            aria-label="left panel menu text color"
+          />
+        </Box>
+
+        <Box mb={2}>
+          <ColorPicker
             label="Panel Background Color"
             color={leftPanel.backgroundColor}
             onPick={updateLeftPanel('backgroundColor')}
