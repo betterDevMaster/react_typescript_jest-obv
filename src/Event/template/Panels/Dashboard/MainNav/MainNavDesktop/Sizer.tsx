@@ -1,4 +1,4 @@
-import React, {useEffect, useState, useLayoutEffect, useCallback} from 'react'
+import React, {useEffect, useState, useCallback} from 'react'
 import styled from 'styled-components'
 import {usePanels} from 'Event/template/Panels'
 import MainNavButton from 'Event/template/Panels/Dashboard/MainNav/MainNavButton'
@@ -49,7 +49,7 @@ export default function Sizer(props: {
 
   const shrink = () => {
     setIsGrowing(false)
-    setPerPage((current) => current - 1)
+    setPerPage((current) => (current > 1 ? current - 1 : 1))
   }
 
   /**
@@ -62,7 +62,7 @@ export default function Sizer(props: {
 
   useOnResize(calculate) // Handle updating browser height
 
-  useLayoutEffect(() => {
+  useEffect(() => {
     const pageEls = $('.main-nav-shadow-page').toArray()
 
     const heights = pageEls.map((el) => $(el).height())
