@@ -43,7 +43,6 @@ export default function LeftPanelConfig(props: {
             aria-label="left panel bar text color"
           />
         </Box>
-
         <Box mb={2}>
           <ColorPicker
             label="Menu Text Color"
@@ -52,7 +51,14 @@ export default function LeftPanelConfig(props: {
             aria-label="left panel menu text color"
           />
         </Box>
-
+        <Box mb={2}>
+          <ColorPicker
+            label="Page Arrow Color"
+            color={leftPanel.arrowColor}
+            onPick={updateLeftPanel('arrowColor')}
+            aria-label="page arrow color"
+          />
+        </Box>
         <Box mb={2}>
           <ColorPicker
             label="Panel Background Color"

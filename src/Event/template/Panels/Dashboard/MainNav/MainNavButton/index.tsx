@@ -1,8 +1,6 @@
-import Grid from '@material-ui/core/Grid'
+import styled from 'styled-components'
 import VisibleOnMatch from 'Event/attendee-rules/VisibleOnMatch'
-import NavButton, {
-  NavButtonWithSize,
-} from 'Event/Dashboard/components/NavButton'
+import NavButton from 'Event/Dashboard/components/NavButton'
 import React from 'react'
 import Published from 'Event/Dashboard/editor/views/Published'
 import {Draggable, DraggableProvidedDraggableProps} from 'react-beautiful-dnd'
@@ -15,8 +13,10 @@ import MainNavButtonConfig from 'Event/template/Panels/Dashboard/MainNav/MainNav
 export const MAIN_NAV_BUTTON = 'Main Nav Button'
 type MainNavButtonProps = {
   id: string
-  button: NavButtonWithSize
+  button: NavButton
   index: number
+  isHidden?: boolean
+  disableEdit?: boolean
 }
 
 export default React.memo((props: MainNavButtonProps) => {
@@ -25,8 +25,12 @@ export default React.memo((props: MainNavButtonProps) => {
 
   const button = <NavButton {...props.button} aria-label="main nav button" />
 
-  if (!isEditMode) {
-    return <Container button={props.button}>{button}</Container>
+  if (!isEditMode || props.disableEdit) {
+    return (
+      <Container button={props.button} isHidden={props.isHidden}>
+        {button}
+      </Container>
+    )
   }
 
   return (
@@ -43,6 +47,7 @@ export default React.memo((props: MainNavButtonProps) => {
             button={props.button}
             ref={provided.innerRef}
             draggableProps={provided.draggableProps}
+            isHidden={props.isHidden}
           >
             <DraggableOverlay>
               <Editable onEdit={toggleConfig}>
@@ -63,40 +68,31 @@ const Container = React.forwardRef<
   HTMLDivElement,
   {
     children: React.ReactElement
-    button: NavButtonWithSize
+    button: NavButton
     draggableProps?: DraggableProvidedDraggableProps
+    isHidden?: boolean
   }
 >((props, ref) => {
   return (
     <VisibleOnMatch rules={props.button.rules}>
       <Published component={props.button}>
-        <NewLine ref={ref} {...props} />
+        <Box
+          ref={ref}
+          isHidden={props.isHidden}
+          {...props.draggableProps}
+          data-testid="main nav button container"
+        >
+          {props.children}
+        </Box>
       </Published>
     </VisibleOnMatch>
   )
 })
 
-const NewLine = React.forwardRef<
-  HTMLDivElement,
-  {
-    children: React.ReactElement
-    button: NavButtonWithSize
-    draggableProps?: DraggableProvidedDraggableProps
-  }
->((props, ref) => {
-  return (
-    <Grid item xs={12} ref={ref} {...props.draggableProps}>
-      <Grid container justify="center">
-        <Grid
-          item
-          xs={12}
-          md={props.button.size}
-          {...props.draggableProps}
-          ref={ref}
-        >
-          {props.children}
-        </Grid>
-      </Grid>
-    </Grid>
-  )
-})
+const Box = styled.div<{
+  isHidden?: boolean
+}>`
+  ${(props) => (props.isHidden ? 'display: none;' : '')}
+  width: 100%;
+  margin-bottom: ${(props) => props.theme.spacing[2]};
+`

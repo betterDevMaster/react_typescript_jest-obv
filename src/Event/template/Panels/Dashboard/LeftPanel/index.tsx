@@ -3,7 +3,6 @@ import styled from 'styled-components'
 import React, {useState} from 'react'
 import {usePanels} from 'Event/template/Panels'
 import {MenuIconButton} from 'lib/ui/IconButton/MenuIconButton'
-import MainNav from 'Event/template/Panels/Dashboard/MainNav'
 import Menu from 'Event/template/Panels/Dashboard/Menu'
 import EmojiList from 'Event/template/Panels/Dashboard/EmojiList'
 import {Editable} from 'Event/Dashboard/editor/views/EditComponent'
@@ -14,6 +13,7 @@ import Slide from '@material-ui/core/Slide'
 import {TOP_BAR_HEIGHT} from 'Event/template/Panels/Page'
 import {User} from 'auth/user'
 import TicketRibbonList from 'Event/template/Panels/Dashboard/TicketRibbonList'
+import MainNavDesktop from 'Event/template/Panels/Dashboard/MainNav/MainNavDesktop'
 
 export default function LeftPanel(props: {
   onChangeTab: (tab: number) => void
@@ -74,8 +74,7 @@ export default function LeftPanel(props: {
             <MainContent visible={!menuVisible}>
               {menuVisible ? null : (
                 <>
-                  <div>{/* Spacer used to center buttons */}</div>
-                  <MainNav />
+                  <MainNavDesktop />
                   <EmojiList />
                 </>
               )}

@@ -1,6 +1,6 @@
 import Button from '@material-ui/core/Button'
-import Grid from '@material-ui/core/Grid'
-import {NavButtonWithSize} from 'Event/Dashboard/components/NavButton'
+import styled from 'styled-components'
+import NavButton from 'Event/Dashboard/components/NavButton'
 import React, {useState} from 'react'
 import {usePanels} from 'Event/template/Panels'
 import MainNavButtonConfig from 'Event/template/Panels/Dashboard/MainNav/MainNavButton/MainNavButtonConfig'
@@ -8,17 +8,16 @@ import MainNavButtonConfig from 'Event/template/Panels/Dashboard/MainNav/MainNav
 export default function NewMainNavButton(props: {className?: string}) {
   const {template} = usePanels()
   const {nav: buttons} = template
-  const [button, setButton] = useState<NavButtonWithSize | null>(null)
+  const [button, setButton] = useState<NavButton | null>(null)
 
   if (!buttons) {
     return null
   }
 
   const addButton = () => {
-    const button: NavButtonWithSize = {
+    const button: NavButton = {
       text: 'Button',
       link: '',
-      size: 12,
       rules: [],
       isAreaButton: false,
       areaId: null,
@@ -32,24 +31,23 @@ export default function NewMainNavButton(props: {className?: string}) {
   return (
     <>
       <NewButtonConfig button={button} onClose={() => setButton(null)} />
-      <Grid item xs={12} className={props.className}>
-        <Button
-          fullWidth
-          size="large"
-          variant="outlined"
-          color="primary"
-          aria-label="add main nav button"
-          onClick={addButton}
-        >
-          New Button
-        </Button>
-      </Grid>
+      <StyledButton
+        fullWidth
+        size="large"
+        variant="outlined"
+        color="primary"
+        aria-label="add main nav button"
+        onClick={addButton}
+        className={props.className}
+      >
+        New Button
+      </StyledButton>
     </>
   )
 }
 
 function NewButtonConfig(props: {
-  button: NavButtonWithSize | null
+  button: NavButton | null
   onClose: () => void
 }) {
   if (!props.button) {
@@ -64,3 +62,7 @@ function NewButtonConfig(props: {
     />
   )
 }
+
+const StyledButton = styled(Button)`
+  margin-top: ${(props) => props.theme.spacing[2]}!important;
+`

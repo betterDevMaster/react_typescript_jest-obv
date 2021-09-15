@@ -5,7 +5,7 @@ import user from '@testing-library/user-event'
 import {fakeAttendee} from 'Event/auth/__utils__/factory'
 import {fakePanels} from 'Event/template/Panels/__utils__/factory'
 import {createEntityList} from 'lib/list'
-import {fakeNavButtonWithSize} from 'Event/Dashboard/components/NavButton/__utils__/factory'
+import {fakeNavButton} from 'Event/Dashboard/components/NavButton/__utils__/factory'
 import {eventRoutes, EVENT_PAGES} from 'Event/Routes'
 
 it('should render speakers', async () => {
@@ -14,9 +14,9 @@ it('should render speakers', async () => {
     fakeSpeaker,
   )
 
-  const button = fakeNavButtonWithSize({
+  const button = fakeNavButton({
     page: EVENT_PAGES[eventRoutes.speakers],
-    text: 'speakers',
+    text: 'speaker button',
   })
 
   const event = fakeEvent({
@@ -26,7 +26,7 @@ it('should render speakers', async () => {
     speakers,
   })
 
-  const {findByText, findAllByLabelText} = await loginToEventSite({
+  const {findAllByText, findAllByLabelText} = await loginToEventSite({
     event,
     attendee: fakeAttendee({
       tech_check_completed_at: 'now',
@@ -34,7 +34,7 @@ it('should render speakers', async () => {
     }),
   })
 
-  user.click(await findByText('speakers'))
+  user.click((await findAllByText(button.text))[0])
 
   // Showing all speakers
   expect((await findAllByLabelText('speaker')).length).toBe(speakers.length)

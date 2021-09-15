@@ -1,6 +1,8 @@
 import {GridSize} from '@material-ui/core/Grid'
 import {EmojiList} from 'Event/template/Panels/Dashboard/EmojiList'
-import {NavButtonWithSize} from 'Event/Dashboard/components/NavButton'
+import NavButton, {
+  NavButtonWithSize,
+} from 'Event/Dashboard/components/NavButton'
 import {ResourceList} from 'Event/template/Panels/Dashboard/Resources/ResourceList'
 import {BaseTemplate, BASE_DEFAULTS} from 'Event/template'
 import {EntityList} from 'lib/list'
@@ -34,7 +36,7 @@ export type Panels = BaseTemplate & {
     height: number
   }
   backgroundPosition?: 'fixed' | 'bottom'
-  nav: EntityList<NavButtonWithSize>
+  nav: EntityList<NavButton>
   ticketRibbons: TicketRibbon[]
   welcomeText: string
   homeMenuTitle?: string
@@ -43,6 +45,7 @@ export type Panels = BaseTemplate & {
     barBackgroundColor: string
     barTextColor: string
     menuTextColor?: string
+    arrowColor?: string
     backgroundColor: string
     backgroundOpacity: number
   }
@@ -213,6 +216,7 @@ export const createPanels = (): DeepRequired<Panels> => ({
     barBackgroundColor: '#07BAB5',
     barTextColor: '#ffffff',
     menuTextColor: '#000000',
+    arrowColor: '#000000',
     backgroundColor: '#FFFFFF',
     backgroundOpacity: 0,
   },

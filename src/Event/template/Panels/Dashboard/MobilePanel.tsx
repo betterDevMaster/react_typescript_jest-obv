@@ -4,7 +4,7 @@ import React, {useState} from 'react'
 import {usePanels} from 'Event/template/Panels'
 import {MenuIconButton} from 'lib/ui/IconButton/MenuIconButton'
 import Menu from 'Event/template/Panels/Dashboard/Menu'
-import MainNav from 'Event/template/Panels/Dashboard/MainNav'
+import MainNavMobile from 'Event/template/Panels/Dashboard/MainNav/MainNavMobile'
 import EmojiList from 'Event/template/Panels/Dashboard/EmojiList'
 import {rgba} from 'lib/color'
 import {User} from 'auth/user'
@@ -59,7 +59,7 @@ function Content(props: {
   return (
     <>
       <Top>
-        <MainNav />
+        <MainNavMobile />
         <EmojiList />
       </Top>
       <Panel
@@ -114,5 +114,6 @@ const StyledMenuIconButton = styled(MenuIconButton)`
 `
 
 const Top = styled.div`
+  width: 100%;
   padding: 0 40px;
 `
