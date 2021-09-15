@@ -15,7 +15,6 @@ import Leaderboard from 'Event/Leaderboard'
 import Backgrounds from 'Event/Backgrounds'
 import UnderConstruction from 'Event/UnderConstruction'
 import TemplateProvider from 'Event/TemplateProvider'
-import CustomScripts from 'organization/Event/CustomScripts'
 import HTMLHead from 'Event/HTMLHead'
 import ForgotPassword from 'Event/auth/ForgotPassword'
 import ResetPassword from 'Event/auth/ResetPassword'
@@ -111,11 +110,9 @@ export default function Routes() {
 
   return (
     <TemplateProvider template={event.template}>
-      <CustomScripts>
-        <HTMLHead>
-          <GuestRoutes />
-        </HTMLHead>
-      </CustomScripts>
+      <HTMLHead>
+        <GuestRoutes />
+      </HTMLHead>
     </TemplateProvider>
   )
 }
@@ -132,20 +129,18 @@ function Authenticated() {
     <EventActionsProvider>
       <AutoRefreshActions>
         <PointsProvider>
-          <CustomScripts>
-            <SubmissionsProvider>
-              <AttendeeProfileProvider
-                groups={attendee.groups}
-                tags={attendee.tags}
-              >
-                <EventLanguageProvider>
-                  <HTMLHead>
-                    <UserRoutes />
-                  </HTMLHead>
-                </EventLanguageProvider>
-              </AttendeeProfileProvider>
-            </SubmissionsProvider>
-          </CustomScripts>
+          <SubmissionsProvider>
+            <AttendeeProfileProvider
+              groups={attendee.groups}
+              tags={attendee.tags}
+            >
+              <EventLanguageProvider>
+                <HTMLHead>
+                  <UserRoutes />
+                </HTMLHead>
+              </EventLanguageProvider>
+            </AttendeeProfileProvider>
+          </SubmissionsProvider>
         </PointsProvider>
       </AutoRefreshActions>
     </EventActionsProvider>

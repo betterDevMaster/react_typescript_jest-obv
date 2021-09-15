@@ -23,9 +23,7 @@ it('inserts HTML into dashboard body', async () => {
 
   const event = fakeEvent({
     template: fakeSimpleBlog({
-      header: fakeHeader({
-        script: 'myFunc()',
-      }),
+      header: fakeHeader(),
 
       bodyHTMLEmbed: `
         <script>

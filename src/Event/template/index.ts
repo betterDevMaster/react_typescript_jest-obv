@@ -35,6 +35,4 @@ export const BASE_DEFAULTS: DeepRequired<BaseTemplate> = {
   },
 }
 
-export type Header = {
-  script: string | null
-}
+export type Header = {}

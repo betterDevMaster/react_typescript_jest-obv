@@ -252,7 +252,6 @@ export const createSimpleBlog = (): DeepRequired<SimpleBlog> => ({
     backgroundColor: '#FFFFFF',
     backgroundOpacity: 1.0,
     height: 150,
-    script: null,
     isCollapsed: false,
     disableShadow: false,
   },

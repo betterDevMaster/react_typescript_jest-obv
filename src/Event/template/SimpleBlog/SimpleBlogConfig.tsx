@@ -1,8 +1,4 @@
-import {
-  onChangeCheckedHandler,
-  onChangeStringHandler,
-  onUnknownChangeHandler,
-} from 'lib/dom'
+import {onChangeCheckedHandler, onUnknownChangeHandler} from 'lib/dom'
 import {useEvent} from 'Event/EventProvider'
 import EventImageUpload from 'organization/Event/DashboardConfig/EventImageUpload'
 import ColorPicker from 'lib/ui/ColorPicker'
@@ -11,7 +7,6 @@ import {SimpleBlog, useSimpleBlog} from 'Event/template/SimpleBlog'
 import Grid from '@material-ui/core/Grid'
 import Slider from '@material-ui/core/Slider'
 import {handleChangeSlider} from 'lib/dom'
-import TextField from '@material-ui/core/TextField'
 import Select from '@material-ui/core/Select'
 import InputLabel from '@material-ui/core/InputLabel'
 import MenuItem from '@material-ui/core/MenuItem'
@@ -60,7 +55,6 @@ export function SimpleBlogConfig(props: ComponentConfigProps) {
   )
   const [menuTextColor, setMenuTextColor] = useState(template.menu?.textColor)
   const [menuIconColor, setMenuIconColor] = useState(template.menu?.iconColor)
-  const [headerScript, setHeaderScript] = useState(template.header.script)
 
   useEffect(() => {
     if (isVisible) {
@@ -79,7 +73,6 @@ export function SimpleBlogConfig(props: ComponentConfigProps) {
     setMenuBackgroundColor(template.menu?.backgroundColor)
     setMenuTextColor(template.menu?.textColor)
     setMenuIconColor(template.menu?.iconColor)
-    setHeaderScript(template.header.script)
   }, [isVisible, template])
 
   const save = () => {
@@ -92,7 +85,6 @@ export function SimpleBlogConfig(props: ComponentConfigProps) {
         backgroundColor: headerBackgroundColor,
         backgroundOpacity: headerBackgroundOpacity,
         height: headerHeight,
-        script: headerScript,
       },
       dashboardBackground: {
         color: dashboardBackgroundColor || '',
@@ -243,19 +235,6 @@ export function SimpleBlogConfig(props: ComponentConfigProps) {
         color={menuIconColor}
         onPick={setMenuIconColor}
         aria-label="menu icon color"
-      />
-      <TextField
-        label="Custom Code"
-        fullWidth
-        variant="outlined"
-        name="code"
-        inputProps={{
-          'aria-label': 'set header custom code',
-        }}
-        defaultValue={headerScript || ''}
-        onChange={onChangeStringHandler(setHeaderScript)}
-        multiline
-        rows={6}
       />
       <SaveButton onClick={save} />
     </ComponentConfig>

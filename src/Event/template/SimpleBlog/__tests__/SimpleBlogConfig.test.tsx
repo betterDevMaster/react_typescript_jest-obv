@@ -107,18 +107,3 @@ it('should configure a header color settings', async () => {
     )
   })
 })
-
-it('should configure a custom code settings', async () => {
-  const event = fakeEvent({
-    template: fakeSimpleBlog(),
-  })
-  const {findByLabelText} = await goToDashboardConfig({
-    event,
-  })
-
-  clickEdit(await findByLabelText('header'))
-
-  const code = 'console.log("this is test script")'
-  expect(await findByLabelText('set header custom code')).toBeInTheDocument()
-  user.type(await findByLabelText('set header custom code'), code)
-})

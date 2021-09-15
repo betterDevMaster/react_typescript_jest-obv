@@ -68,7 +68,6 @@ export function fakeHeader(
     backgroundColor: '#FFFFFF',
     backgroundOpacity: 1,
     height: 50,
-    script: null,
     isCollapsed: false,
     disableShadow: false,
     ...overrides,
