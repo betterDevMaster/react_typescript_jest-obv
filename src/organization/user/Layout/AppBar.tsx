@@ -16,11 +16,20 @@ import Button from '@material-ui/core/Button'
 import HasPermission from 'organization/HasPermission'
 import {UPDATE_TEAM} from 'organization/PermissionsProvider'
 import {useIsOwner} from 'organization/OwnerProvider'
+import logo from 'assets/images/logo.png'
+import {obvioRoutes} from 'obvio/Routes'
 
 export default function AppBar() {
   const useStyles = makeStyles((theme) => ({
     root: {
       backgroundColor: '#ffffff',
+    },
+    toolbar: {
+      justifyContent: 'space-between',
+    },
+    logoOrganization: {
+      display: 'flex',
+      alignItems: 'center',
     },
   }))
   const classes = useStyles()
@@ -48,10 +57,17 @@ export default function AppBar() {
 
   return (
     <MuiAppBar className={classes.root}>
-      <Toolbar>
-        <HomeLink to={homeLinkTarget} disableStyles>
-          {organization.name}
-        </HomeLink>
+      <Toolbar className={classes.toolbar}>
+        <div className={classes.logoOrganization}>
+          <Logo>
+            <RelativeLink to={obvioRoutes.organizations.root} disableStyles>
+              <img src={logo} alt="Obv.io" />
+            </RelativeLink>
+          </Logo>
+          <HomeLink to={homeLinkTarget} disableStyles>
+            {organization.name}
+          </HomeLink>
+        </div>
         <div>
           <RelativeLink to={routes.events.root} disableStyles>
             <Button startIcon={<Event />}>Events</Button>
@@ -90,7 +106,20 @@ export default function AppBar() {
   )
 }
 
+const Logo = styled.div`
+  flex: 1;
+  display: flex;
+
+  a {
+    margin-right: 20px;
+    width: 120px;
+    img {
+      max-width: 100%;
+    }
+  }
+`
 const HomeLink = styled(RelativeLink)`
   flex: 1;
   color: #000000;
+  white-space: nowrap;
 `
