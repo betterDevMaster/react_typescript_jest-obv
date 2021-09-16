@@ -36,7 +36,7 @@ export default function RoomList(props: {
       <TableHead>
         <TableRow>
           <TableCell>#</TableCell>
-          <TableCell>Description</TableCell>
+          <TableCell>Internal Description</TableCell>
           <TableCell>Num Attendees</TableCell>
           <TableCell>Open</TableCell>
         </TableRow>
