@@ -31,6 +31,7 @@ export default function AttendeeManagement() {
   const [pointsTarget, setPointsTarget] = useState<Attendee | null>(null)
   const [successMessage, setSuccessMessage] = useState<string | null>(null)
   const [errorMessage, setErrorMessage] = useState<string | null>(null)
+  const [showingEditDialog, setShowingEditDialog] = useState(false)
 
   /**
    * Handle updated the current attendee being edited.
@@ -50,8 +51,14 @@ export default function AttendeeManagement() {
 
   const toggleCreateDialog = () => setCreateDialogVisible(!createDialogVisible)
 
-  const edit = (attendee: Attendee) => () => setEditing(attendee)
-  const stopEditing = () => setEditing(null)
+  const edit = (attendee: Attendee) => () => {
+    setEditing(attendee)
+    setShowingEditDialog(true)
+  }
+  const stopEditing = () => {
+    setEditing(null)
+    setShowingEditDialog(false)
+  }
 
   const viewAttendeeAssignments = (attendee: Attendee) => () =>
     setViewAssignments(attendee)
@@ -79,7 +86,11 @@ export default function AttendeeManagement() {
         isVisible={createDialogVisible}
         onClose={toggleCreateDialog}
       />
-      <UpdateDialog attendee={editing} onClose={stopEditing} />
+      <UpdateDialog
+        attendee={editing}
+        onClose={stopEditing}
+        showing={showingEditDialog}
+      />
       <AssignmentsDialog
         attendee={viewAssignments}
         onClose={stopViewingAssignments}

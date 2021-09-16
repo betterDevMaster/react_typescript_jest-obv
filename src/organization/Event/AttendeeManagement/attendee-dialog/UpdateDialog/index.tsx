@@ -18,14 +18,15 @@ import RemoveWaiverButton from 'organization/Event/AttendeeManagement/attendee-d
 import ClearPasswordButton from 'organization/Event/AttendeeManagement/attendee-dialog/UpdateDialog/ClearPasswordButton'
 
 export default function UpdateDialog(props: {
+  showing: boolean
   attendee: Attendee | null
   onClose: () => void
 }) {
-  const {attendee} = props
+  const {attendee, showing} = props
   const update = useUpdate()
   const isVisible = Boolean(props.attendee)
 
-  if (!attendee) {
+  if (!showing || !attendee) {
     return null
   }
 
