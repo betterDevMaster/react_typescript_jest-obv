@@ -1,7 +1,7 @@
 import FormControlLabel from '@material-ui/core/FormControlLabel'
 import styled from 'styled-components'
 import Switch from '@material-ui/core/Switch'
-import React from 'react'
+import React, {useCallback} from 'react'
 import {useDispatch} from 'react-redux'
 import {setEditMode} from 'Event/Dashboard/editor/state/actions'
 import {useEditMode, useIsSaving} from 'Event/Dashboard/editor/state/edit-mode'
@@ -14,9 +14,10 @@ import yellow from '@material-ui/core/colors/yellow'
 
 export default function ConfigBar() {
   const isEditMode = useEditMode()
-  const dispatch = useDispatch()
 
-  const toggle = () => dispatch(setEditMode(!isEditMode))
+  const setIsEditMode = useSetIsEditMode()
+
+  const toggle = () => setIsEditMode(!isEditMode)
 
   return (
     <Box>
@@ -28,6 +29,17 @@ export default function ConfigBar() {
       />
       <SavingIndicator />
     </Box>
+  )
+}
+
+export function useSetIsEditMode() {
+  const dispatch = useDispatch()
+
+  return useCallback(
+    (mode: boolean) => {
+      dispatch(setEditMode(mode))
+    },
+    [dispatch],
   )
 }
 

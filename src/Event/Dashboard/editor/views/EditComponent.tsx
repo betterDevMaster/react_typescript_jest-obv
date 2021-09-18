@@ -16,6 +16,8 @@ export const EDIT_COMPONENT_BUTTON_CLASS = 'edit-component-button'
 export function Editable(props: {
   children: React.ReactElement
   onEdit: () => void
+  className?: string
+  ['aria-label']?: string
 }) {
   const isEditMode = useEditMode()
   if (!isEditMode) {
@@ -23,7 +25,11 @@ export function Editable(props: {
   }
 
   return (
-    <EditComponentOverlay onClick={props.onEdit}>
+    <EditComponentOverlay
+      onClick={props.onEdit}
+      className={props.className}
+      aria-label={props['aria-label']}
+    >
       {props.children}
     </EditComponentOverlay>
   )
@@ -33,15 +39,20 @@ export function EditComponentOverlay(props: {
   onClick: () => void
   children: React.ReactElement
   disableChildInteraction?: boolean
+  className?: string
+  ['aria-label']?: string
 }) {
+  const className = `${EDIT_COMPONENT_CLASS} ${props.className}`
+  const label = props['aria-label'] ?? 'edit component'
+
   return (
-    <Box className={EDIT_COMPONENT_CLASS}>
+    <Box className={className}>
       <InteractionOverlay disable={props.disableChildInteraction} />
       <StyledEditIconButton
         onClick={props.onClick}
         className={EDIT_COMPONENT_BUTTON_CLASS}
         type="button"
-        aria-label="edit component"
+        aria-label={label}
       />
       {props.children}
     </Box>

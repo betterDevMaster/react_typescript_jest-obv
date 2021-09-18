@@ -7,6 +7,7 @@ import {emptyActions, render} from '__utils__/render'
 import {fakeEvent} from 'Event/__utils__/factory'
 import {defaultScore} from 'Event/PointsProvider'
 import {DEFAULT_EMOJIS} from 'Event/Dashboard/components/EmojiList/emoji'
+import {goToDashboardConfig} from 'organization/Event/DashboardConfig/__utils__/go-dashboard-config'
 
 afterEach(() => {
   jest.clearAllMocks()
@@ -17,15 +18,6 @@ it('should render emojis', async () => {
     {length: faker.random.number({min: 1, max: 5})},
     () => faker.random.arrayElement(DEFAULT_EMOJIS).name,
   )
-
-  const withoutEmojis = fakeEvent({
-    template: fakePanels({
-      emojiList: {
-        emojis: [],
-      },
-    }),
-  })
-
   const withEmojis = fakeEvent({
     template: fakePanels({
       emojiList: {
@@ -34,19 +26,7 @@ it('should render emojis', async () => {
     }),
   })
 
-  const {findAllByLabelText, rerender, queryByLabelText} = render(
-    <Dashboard isEditMode={false} user={fakeUser()} />,
-    {
-      event: withoutEmojis,
-      actions: emptyActions,
-      score: defaultScore,
-      withRouter: true,
-    },
-  )
-
-  expect(queryByLabelText('event emoji')).not.toBeInTheDocument()
-
-  rerender(<Dashboard isEditMode={false} user={fakeUser()} />, {
+  const {findAllByLabelText} = await goToDashboardConfig({
     event: withEmojis,
   })
 

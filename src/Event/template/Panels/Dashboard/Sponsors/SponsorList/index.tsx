@@ -1,10 +1,8 @@
 import Typography from '@material-ui/core/Typography'
-import Grid, {GridSize} from '@material-ui/core/Grid'
 import styled from 'styled-components'
 import {Sponsor} from 'Event/SponsorPage'
 import Card from 'Event/template/Panels/Dashboard/Sponsors/SponsorList/Card'
 import React from 'react'
-import grey from '@material-ui/core/colors/grey'
 import {useTemplate} from 'Event/TemplateProvider'
 import {DragDropContext, Droppable, DropResult} from 'react-beautiful-dnd'
 import {usePanels} from 'Event/template/Panels'
@@ -16,8 +14,8 @@ export default function SponsorList(props: {
 }) {
   const handleDrag = useHandleDrag()
   const {template} = usePanels()
-  const columnSize = template.sponsors.columnSize
-  const size = (12 / columnSize) as GridSize
+  const {perRow} = template.sponsors
+
   const sortedSponsors = useSortedSponsors(props.sponsors)
 
   const isEmpty = props.sponsors.length === 0
@@ -25,49 +23,31 @@ export default function SponsorList(props: {
     return <Typography align="center">No sponsor have been added</Typography>
   }
 
-  const sponsors = () => {
-    if (props.isEditMode) {
-      return sortedSponsors.map((sponsor, index) => (
-        <StyledCard
-          index={index}
-          key={sponsor.id}
-          sponsor={sponsor}
-          isEditMode={props.isEditMode}
-        />
-      ))
-    }
-
-    return sortedSponsors.map((sponsor, index) => (
-      <Grid item xs={12} md={size}>
-        <StyledCard
-          index={index}
-          key={sponsor.id}
-          sponsor={sponsor}
-          isEditMode={props.isEditMode}
-        />
-      </Grid>
-    ))
-  }
+  const sponsors = sortedSponsors.map((sponsor, index) => (
+    <Card
+      key={sponsor.id}
+      index={index}
+      sponsor={sponsor}
+      isEditMode={props.isEditMode}
+    />
+  ))
 
   if (!props.isEditMode) {
-    return (
-      <Grid container spacing={4}>
-        {sponsors()}
-      </Grid>
-    )
+    return <Box perRow={perRow}>{sponsors}</Box>
   }
 
   return (
     <DragDropContext onDragEnd={handleDrag(sortedSponsors)}>
-      <Droppable droppableId="drag-and-drop-sponsors">
+      <Droppable droppableId="drag-and-drop-sponsors" direction="horizontal">
         {(provided) => (
           <Box
             ref={provided.innerRef}
             {...provided.droppableProps}
             className={props.className}
+            perRow={perRow}
           >
             <>
-              {sponsors()}
+              {sponsors}
               {provided.placeholder}
             </>
           </Box>
@@ -128,18 +108,14 @@ function useHandleDrag() {
   }
 }
 
-const Box = styled.div`
-  width: 100%;
-`
+const Box = styled.div<{perRow: number}>`
+  display: grid;
+  grid-auto-rows: 1fr;
+  grid-template-columns: 1fr;
 
-/**
- * Fixes fowarding props (isEditMode) with undefined causing
- * app to crash
- */
-const StyledCard = styled((props) => <Card {...props} />)`
-  &:not(:last-child) {
-    padding-bottom: ${(props) => props.theme.spacing[2]};
-    margin-bottom: ${(props) => props.theme.spacing[8]};
-    border-bottom: ${(props) => (props.border ? '1px' : '0')} solid ${grey[300]};
+  grid-gap: 16px;
+
+  @media (min-width: ${(props) => props.theme.breakpoints.md}) {
+    grid-template-columns: repeat(${(props) => props.perRow}, 1fr);
   }
 `

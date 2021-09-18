@@ -1,4 +1,5 @@
 import React, {useState} from 'react'
+import styled from 'styled-components'
 import DialogContent from '@material-ui/core/DialogContent'
 import DialogTitle from '@material-ui/core/DialogTitle'
 import Dialog from 'lib/ui/Dialog'
@@ -13,13 +14,26 @@ import Slider from '@material-ui/core/Slider'
 import Typography from '@material-ui/core/Typography'
 import {useOrganization} from 'organization/OrganizationProvider'
 import {api} from 'lib/url'
-import {DEFAULTS, usePanels} from 'Event/template/Panels'
+import {usePanels} from 'Event/template/Panels'
+import TextField from '@material-ui/core/TextField'
+import {fieldError} from 'lib/form'
+import {ValidationError} from 'lib/api-client'
+import withStyles from '@material-ui/core/styles/withStyles'
+import {spacing} from 'lib/ui/theme'
+import DangerButton from 'lib/ui/Button/DangerButton'
+import ColorPicker from 'lib/ui/ColorPicker'
 
-const MIN_COLUMN_SIZE = 2
-const MAX_COLUMN_SIZE = 4
+const MIN_PER_ROW = 1
+const MAX_PER_ROW = 3
+const MAX_FILE_SIZE_BYTES = 5000000 // 5MB
+const imageUploadId = `sponsor-question-icon-upload`
 
 type SettingsFormData = {
-  columnSize: number
+  perRow: number
+  title: string
+  menuTitle: string
+  cardBackgroundColor?: string
+  cardBackgroundOpacity?: number
 }
 
 export default function PageSettingsDialog(props: {
@@ -28,19 +42,48 @@ export default function PageSettingsDialog(props: {
 }) {
   const {visible, onClose} = props
   const {event, set: updateEvent} = useEvent()
-  const {handleSubmit, control} = useForm()
+  const {handleSubmit, control, errors, register} = useForm()
   const [processing, setProcessing] = useState(false)
   const {template} = usePanels()
   const {client} = useOrganization()
+  const [serverError, setServerError] = useState<ValidationError<any>>(null)
+  const [image, setImage] = useState<null | File>(null)
+  const [shouldRemoveImage, setShouldRemoveImage] = useState(false)
 
-  const data = ({columnSize}: SettingsFormData) => {
+  const data = (formData: SettingsFormData) => {
+    const {
+      perRow,
+      title,
+      menuTitle,
+      cardBackgroundColor,
+      cardBackgroundOpacity,
+    } = formData
+
     const required = {
       template: {
         ...template,
         sponsors: {
-          columnSize,
+          title,
+          menuTitle,
+          perRow,
+          cardBackgroundColor,
+          cardBackgroundOpacity,
         },
       },
+    }
+
+    if (image) {
+      const formData = new FormData()
+      formData.set('template', JSON.stringify(required.template))
+      formData.set('sponsor_question_icon', image)
+      return formData
+    }
+
+    if (shouldRemoveImage) {
+      return {
+        ...required,
+        sponsor_question_icon: null,
+      }
     }
 
     return required
@@ -60,10 +103,31 @@ export default function PageSettingsDialog(props: {
         setProcessing(false)
         props.onClose()
       })
-      .catch(() => {
+      .catch(setServerError)
+      .finally(() => {
         setProcessing(false)
       })
   }
+
+  const handleQuestionIconSelect = (image: File) => {
+    setImage(image)
+    setShouldRemoveImage(false)
+  }
+
+  const handleRemoveImage = () => {
+    setShouldRemoveImage(true)
+    setImage(null)
+  }
+
+  const allowQuestionIconUpload = () => {
+    if (shouldRemoveImage) {
+      return true
+    }
+
+    return !event.sponsor_question_icon && !image
+  }
+
+  const titleError = fieldError('title', {form: errors, response: serverError})
 
   return (
     <Dialog open={visible} onClose={onClose} fullWidth disableEnforceFocus>
@@ -71,17 +135,41 @@ export default function PageSettingsDialog(props: {
       <DialogContent>
         <Box pb={2}>
           <form onSubmit={handleSubmit(submit)}>
-            <InputLabel>Sponsor Column Size</InputLabel>
+            <TextField
+              error={Boolean(titleError)}
+              name="title"
+              label="Sponsors Page Title"
+              defaultValue={template.sponsors?.title}
+              required
+              fullWidth
+              inputProps={{
+                ref: register({required: 'Sponsors Page title is required.'}),
+                'aria-label': 'edit sponsors page title',
+              }}
+              helperText={titleError}
+            />
+            <TextField
+              name="menuTitle"
+              label="Sponsors Page Menu Title"
+              defaultValue={template.sponsors?.menuTitle}
+              required
+              fullWidth
+              inputProps={{
+                ref: register({
+                  required: 'Sponsors Page Menu Title is required.',
+                }),
+                'aria-label': 'edit sponsors page menu title',
+              }}
+            />
+            <InputLabel>Sponsors Per Row</InputLabel>
             <Controller
-              name="columnSize"
-              defaultValue={
-                template.sponsors?.columnSize || DEFAULTS.sponsors.columnSize
-              }
+              name="perRow"
+              defaultValue={template.sponsors.perRow}
               control={control}
               render={({onChange, value}) => (
                 <Slider
-                  min={MIN_COLUMN_SIZE}
-                  max={MAX_COLUMN_SIZE}
+                  min={MIN_PER_ROW}
+                  max={MAX_PER_ROW}
                   step={1}
                   onChange={handleChangeSlider(onChange)}
                   valueLabelDisplay="auto"
@@ -89,6 +177,53 @@ export default function PageSettingsDialog(props: {
                 />
               )}
             />
+
+            <Controller
+              name="cardBackgroundColor"
+              defaultValue={template.sponsors.cardBackgroundColor}
+              control={control}
+              render={({onChange, value}) => (
+                <ColorPicker
+                  label="Container Background Color"
+                  color={value}
+                  onPick={onChange}
+                  aria-label="container background color"
+                />
+              )}
+            />
+
+            <InputLabel>Container Background Opacity</InputLabel>
+            <Controller
+              name="cardBackgroundOpacity"
+              defaultValue={template.sponsors.cardBackgroundOpacity}
+              control={control}
+              render={({onChange, value}) => (
+                <Slider
+                  min={0}
+                  max={100}
+                  step={1}
+                  onChange={handleChangeSlider(onChange)}
+                  valueLabelDisplay="auto"
+                  value={value}
+                />
+              )}
+            />
+            <Box mb={2}>
+              <Label>Question Icon</Label>
+              <QuestionIcon selected={image} isVisible={!shouldRemoveImage} />
+              <QuestionIconUploadButton
+                onSelect={handleQuestionIconSelect}
+                selected={image}
+                isVisible={allowQuestionIconUpload()}
+                disabled={processing}
+              />
+              <RemoveQuestionIconButton
+                selected={image}
+                isVisible={!shouldRemoveImage}
+                onClick={handleRemoveImage}
+                disabled={processing}
+              />
+            </Box>
             <Button
               type="submit"
               variant="contained"
@@ -105,6 +240,134 @@ export default function PageSettingsDialog(props: {
     </Dialog>
   )
 }
+
+function QuestionIcon(props: {selected: File | null; isVisible: boolean}) {
+  const {event} = useEvent()
+  const {selected} = props
+
+  if (!props.isVisible) {
+    return null
+  }
+
+  if (Boolean(selected)) {
+    const src = URL.createObjectURL(selected)
+    return (
+      <QuestionIconBox>
+        <img src={src} alt="Selected sponsor question icon" />
+      </QuestionIconBox>
+    )
+  }
+
+  if (!event.sponsor_question_icon) {
+    return null
+  }
+
+  return (
+    <QuestionIconBox>
+      <img
+        src={event.sponsor_question_icon.url}
+        alt={event.sponsor_question_icon.name}
+      />
+    </QuestionIconBox>
+  )
+}
+
+function QuestionIconUploadButton(props: {
+  onSelect: (image: File) => void
+  selected: null | File
+  isVisible: boolean
+  disabled: boolean
+}) {
+  const [error, setError] = useState<string | null>(null)
+
+  const handleFileSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files ? e.target.files[0] : null
+    if (file && file.size > MAX_FILE_SIZE_BYTES) {
+      setError('Image too large. Please select an image smaller than 5MB.')
+      return
+    }
+
+    if (!file) {
+      return
+    }
+
+    props.onSelect(file)
+  }
+
+  if (!props.isVisible) {
+    return null
+  }
+
+  return (
+    <>
+      <Button
+        variant="outlined"
+        color="primary"
+        aria-label="select image to upload"
+        disabled={props.disabled}
+      >
+        <UploadButtonLabel htmlFor={imageUploadId}>Upload</UploadButtonLabel>
+      </Button>
+      <input
+        id={imageUploadId}
+        type="file"
+        accept="image/*"
+        onChange={handleFileSelect}
+        value="" // Required to allow uploading multiple times
+        hidden
+        aria-label="question icon input"
+      />
+      <Error>{error}</Error>
+    </>
+  )
+}
+
+function RemoveQuestionIconButton(props: {
+  onClick: () => void
+  isVisible: boolean
+  selected: File | null
+  disabled: boolean
+}) {
+  const {event} = useEvent()
+
+  const hasImage =
+    Boolean(props.selected) || Boolean(event.sponsor_question_icon)
+
+  if (!hasImage || !props.isVisible) {
+    return null
+  }
+
+  return (
+    <DangerButton
+      variant="outlined"
+      aria-label="remove sponsor question icon"
+      onClick={props.onClick}
+      disabled={props.disabled}
+    >
+      Remove
+    </DangerButton>
+  )
+}
+
+const QuestionIconBox = styled.div`
+  width: 200px;
+  margin: ${(props) => props.theme.spacing[3]} 0;
+
+  img {
+    width: 100%;
+    max-height: 100%;
+  }
+`
+
+const Label = withStyles({
+  root: {
+    marginBottom: spacing[3],
+  },
+})(InputLabel)
+
+const UploadButtonLabel = styled.label`
+  cursor: pointer;
+`
 
 export function Error(props: {children: string | null}) {
   if (!props.children) {

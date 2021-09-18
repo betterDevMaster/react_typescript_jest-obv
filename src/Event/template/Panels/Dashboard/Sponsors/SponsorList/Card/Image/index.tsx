@@ -2,9 +2,9 @@ import {Sponsor} from 'Event/SponsorPage'
 import styled from 'styled-components'
 import React, {useState} from 'react'
 import ConfigDialog from 'Event/template/Panels/Dashboard/Sponsors/SponsorList/Card/Image/ConfigDialog'
-import Clickable from 'lib/ui/Clickable'
+import Grid from '@material-ui/core/Grid'
 
-export const SPONSOR_PLACEHOLDER = 'http://placehold.jp/300x100.png'
+const SPONSOR_PLACEHOLDER = 'http://placehold.jp/300x100.png'
 
 type ImageProps = {
   sponsor: Sponsor
@@ -32,34 +32,37 @@ function WithEditDialog(props: ImageProps) {
         sponsor={props.sponsor}
         onClose={toggleDialog}
       />
-      <Clickable onClick={toggleDialog}>
-        <Content {...props} />
-      </Clickable>
+      <Content {...props} onClick={toggleDialog} />
     </>
   )
 }
 
-function Content(props: ImageProps) {
+function Content(
+  props: ImageProps & {
+    onClick?: () => void
+  },
+) {
   const {sponsor} = props
   const alt = sponsor.name
 
-  if (!sponsor.image) {
-    // Placeholder
-    return (
-      <ImageBox className={props.className}>
-        <img
-          src={SPONSOR_PLACEHOLDER}
-          alt={alt}
-          aria-label="sponsor placeholder image"
-        />
-      </ImageBox>
-    )
+  if (!sponsor.image && !props.isEditMode) {
+    return null
   }
 
+  const src = sponsor.image?.url || SPONSOR_PLACEHOLDER
+
   return (
-    <ImageBox className={props.className}>
-      <img src={sponsor.image.url} alt={alt} aria-label="sponsor image" />
-    </ImageBox>
+    <Grid item xs={12}>
+      <ImageBox className={props.className}>
+        <ImageEl
+          src={src}
+          alt={alt}
+          aria-label="sponsor image"
+          onClick={props.onClick}
+          clickable={Boolean(props.onClick)}
+        />
+      </ImageBox>
+    </Grid>
   )
 }
 
@@ -70,4 +73,10 @@ const ImageBox = styled.div`
   img {
     width: 50%;
   }
+`
+
+const ImageEl = styled.img<{
+  clickable?: boolean
+}>`
+  cursor: ${(props) => (props.clickable ? 'points' : 'default')};
 `

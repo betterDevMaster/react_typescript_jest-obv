@@ -18,6 +18,7 @@ export default function Nav(props: {
       resourceList: {menuTitle: resourceMenuTitle},
       leaderboard: {menuTitle: pointsMenuTitle},
       speakers: {menuTitle: speakersMenuTitle},
+      sponsors: {menuTitle: sponsorsMenuTitle},
     },
   } = usePanels()
   const {currentTab, onChangeTab} = props
@@ -52,6 +53,7 @@ export default function Nav(props: {
       fontWeight: 'bold',
       textTransform: 'none',
       height: `${TOP_BAR_HEIGHT}px`,
+      minWidth: 'auto',
     },
   }))((props) => <Tab disableRipple {...props} />) as typeof Tab
 
@@ -66,6 +68,10 @@ export default function Nav(props: {
       <StyledTab
         label={v(speakersMenuTitle)}
         aria-label="panels tab speakers"
+      />
+      <StyledTab
+        label={v(sponsorsMenuTitle)}
+        aria-label="panels tab sponsors"
       />
       <StyledTab
         label={v(resourceMenuTitle)}

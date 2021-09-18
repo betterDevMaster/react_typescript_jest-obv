@@ -10,15 +10,25 @@ export default function Menu(props: {
   onChangeTab: (tab: number) => void
   user: User
 }) {
-  const items = {
-    Home: eventRoutes.root,
-    Speakers: eventRoutes.speakers,
-    Resources: eventRoutes.resources,
-    Points: eventRoutes.leaderboard,
-  }
   const {template} = usePanels()
   const color = template.leftPanel.menuTextColor || '#000000'
   const {logout} = useEventAuth()
+
+  const {
+    homeMenuTitle,
+    speakers: {menuTitle: speakerMenuTitle},
+    sponsors: {menuTitle: sponsorsMenuTitle},
+    resourceList: {menuTitle: resourceListMenuTitle},
+    leaderboard: {menuTitle: leaderboardMenuTitle},
+  } = template
+
+  const items = {
+    [homeMenuTitle]: eventRoutes.root,
+    [speakerMenuTitle]: eventRoutes.speakers,
+    [sponsorsMenuTitle]: eventRoutes.sponsors,
+    [resourceListMenuTitle]: eventRoutes.resources,
+    [leaderboardMenuTitle]: eventRoutes.leaderboard,
+  }
 
   return (
     <Box>

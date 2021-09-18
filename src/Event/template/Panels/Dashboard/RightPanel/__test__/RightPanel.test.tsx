@@ -21,6 +21,7 @@ it('should render right panel', async () => {
 
   expect(await findByLabelText('panels tab home')).toBeInTheDocument()
   expect(await findByLabelText('panels tab speakers')).toBeInTheDocument()
+  expect(await findByLabelText('panels tab sponsors')).toBeInTheDocument()
   expect(await findByLabelText('panels tab resources')).toBeInTheDocument()
   expect(await findByLabelText('panels tab points')).toBeInTheDocument()
 })

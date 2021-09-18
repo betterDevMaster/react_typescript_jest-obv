@@ -7,6 +7,8 @@ import {fakeEvent} from 'Event/__utils__/factory'
 import {defaultScore} from 'Event/PointsProvider'
 import {wait} from '@testing-library/dom'
 import faker from 'faker'
+import {loginToEventSite} from 'Event/__utils__/url'
+import {fakeAttendee} from 'Event/auth/__utils__/factory'
 
 afterEach(() => {
   jest.clearAllMocks()
@@ -29,15 +31,13 @@ it('inserts HTML into dashboard body', async () => {
     }),
   })
 
-  const {findByText} = render(
-    <Dashboard isEditMode={false} user={fakeUser()} />,
-    {
-      event: event,
-      score: defaultScore,
-      actions: emptyActions,
-      withRouter: true,
-    },
-  )
+  const {findByText} = await loginToEventSite({
+    event,
+    attendee: fakeAttendee({
+      waiver: 'somewaiver.pdf',
+      tech_check_completed_at: 'now',
+    }),
+  })
 
   await wait(() => {
     expect(myFunc).toHaveBeenCalledTimes(1)

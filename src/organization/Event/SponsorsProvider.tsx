@@ -1,6 +1,10 @@
-import {Sponsor, useFetchSponsors} from 'Event/SponsorPage'
+import {useEvent} from 'Event/EventProvider'
+import {Sponsor} from 'Event/SponsorPage'
+import {Client} from 'lib/api-client'
 import {useOrganization} from 'organization/OrganizationProvider'
-import React, {useEffect, useState} from 'react'
+import React, {useEffect, useState, useCallback} from 'react'
+import {useAsync} from 'lib/async'
+import {api} from 'lib/url'
 
 interface SponsorsContextProps {
   sponsors: Sponsor[]
@@ -12,15 +16,37 @@ interface SponsorsContextProps {
   editing: Sponsor | null
 }
 
-const SponsorsContext = React.createContext<undefined | SponsorsContextProps>(
-  undefined,
-)
+export const SponsorsContext = React.createContext<
+  undefined | SponsorsContextProps
+>(undefined)
 
-export default function SponsorsProvider(props: {
-  children: React.ReactElement
+export function OrganizationSponsorsProvider(props: {
+  children: React.ReactNode
 }) {
   const {client} = useOrganization()
-  const {data: saved, loading} = useFetchSponsors(client)
+  return <SponsorsProvider client={client} {...props} />
+}
+
+export function EventSponsorsProvider(props: {children: React.ReactNode}) {
+  const {client} = useEvent()
+  return <SponsorsProvider client={client} {...props} />
+}
+
+function SponsorsProvider(props: {client: Client; children: React.ReactNode}) {
+  const {client} = props
+
+  const fetch = useFetchSponsors(client)
+  const list = useSponsorsList(fetch)
+
+  return (
+    <SponsorsContext.Provider value={list}>
+      {props.children}
+    </SponsorsContext.Provider>
+  )
+}
+
+export function useSponsorsList(request: () => Promise<Sponsor[]>) {
+  const {data: saved, loading} = useAsync(request)
   const [sponsors, setSponsors] = useState<Sponsor[]>([])
   const [editing, setEditing] = useState<Sponsor | null>(null)
 
@@ -57,21 +83,7 @@ export default function SponsorsProvider(props: {
     setSponsors(removed)
   }
 
-  return (
-    <SponsorsContext.Provider
-      value={{
-        sponsors,
-        add,
-        update,
-        remove,
-        loading,
-        edit,
-        editing,
-      }}
-    >
-      {props.children}
-    </SponsorsContext.Provider>
-  )
+  return {sponsors, update, loading, editing, add, remove, edit}
 }
 
 export function useSponsors() {
@@ -82,4 +94,10 @@ export function useSponsors() {
   }
 
   return context
+}
+
+export function useFetchSponsors(client: Client) {
+  const {event} = useEvent()
+  const url = api(`/events/${event.slug}/sponsors`)
+  return useCallback(() => client.get<Sponsor[]>(url), [client, url])
 }

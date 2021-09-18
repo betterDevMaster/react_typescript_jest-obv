@@ -29,24 +29,6 @@ afterAll(() => {
 })
 
 it('should render blog posts', async () => {
-  const withoutPosts = fakeEvent({
-    template: fakePanels({
-      blogPosts: createEntityList([]),
-    }),
-  })
-
-  const {queryByLabelText, rerender, getAllByLabelText, findByText} = render(
-    <Dashboard isEditMode={false} user={fakeUser()} />,
-    {
-      event: withoutPosts,
-      actions: emptyActions,
-      score: defaultScore,
-      withRouter: true,
-    },
-  )
-
-  expect(queryByLabelText('blog post')).not.toBeInTheDocument()
-
   const numPosts = faker.random.number({min: 1, max: 5})
   const blogPosts = createEntityList(
     Array.from({length: numPosts}, () =>
@@ -65,7 +47,7 @@ it('should render blog posts', async () => {
     }),
   })
 
-  rerender(<Dashboard isEditMode={false} user={fakeUser()} />, {
+  const {findByText, getAllByLabelText} = await goToDashboardConfig({
     event: withPosts,
   })
 
@@ -188,15 +170,9 @@ it('should show in order', async () => {
     }),
   })
 
-  const {findAllByLabelText} = render(
-    <Dashboard isEditMode={false} user={fakeUser()} />,
-    {
-      event,
-      actions: emptyActions,
-      score: defaultScore,
-      withRouter: true,
-    },
-  )
+  const {findAllByLabelText} = await goToDashboardConfig({
+    event,
+  })
 
   await wait(async () => {
     expect((await findAllByLabelText('blog post')).length).toBe(3)

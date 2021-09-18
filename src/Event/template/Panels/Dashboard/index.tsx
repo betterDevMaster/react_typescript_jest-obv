@@ -12,30 +12,52 @@ import Home from 'Event/template/Panels/Dashboard/Home'
 import Leaderboard from 'Event/template/Panels/Dashboard/Leaderboard/Leaderboard'
 import Resources from 'Event/template/Panels/Dashboard/Resources'
 import {usePanels} from 'Event/template/Panels'
+import SponsorPage from 'Event/template/Panels/Dashboard/Sponsors'
+import {
+  EventSponsorsProvider,
+  OrganizationSponsorsProvider,
+  useSponsors,
+} from 'organization/Event/SponsorsProvider'
+
+import {useEditMode} from 'Event/Dashboard/editor/state/edit-mode'
+import {isAttendee} from 'Event/auth'
 
 export default function PanelsDashboard(props: {user: User}) {
+  const {user} = props
   const [tabIndex, setTabIndex] = useState(0)
+  const isEdit = useEditMode()
+
+  const SponsorsProvider = isAttendee(user)
+    ? EventSponsorsProvider
+    : OrganizationSponsorsProvider
 
   return (
-    <Page
-      Left={<LeftPanel onChangeTab={setTabIndex} user={props.user} />}
-      Right={
-        <RightPanel currentTab={tabIndex} onChangeTab={setTabIndex}>
-          <Content currentTab={tabIndex} />
-        </RightPanel>
-      }
-      Mobile={
-        <MobilePanel onChangeTab={setTabIndex} user={props.user}>
-          <Content currentTab={tabIndex} />
-        </MobilePanel>
-      }
-    />
+    <SponsorsProvider>
+      <Page
+        Left={<LeftPanel onChangeTab={setTabIndex} user={props.user} />}
+        Right={
+          <RightPanel currentTab={tabIndex} onChangeTab={setTabIndex}>
+            <Content currentTab={tabIndex} isEdit={isEdit} />
+          </RightPanel>
+        }
+        Mobile={
+          <MobilePanel onChangeTab={setTabIndex} user={props.user}>
+            <Content currentTab={tabIndex} isEdit={isEdit} />
+          </MobilePanel>
+        }
+      />
+    </SponsorsProvider>
   )
 }
 
-function Content(props: {currentTab: number}) {
-  const {currentTab} = props
+function Content(props: {currentTab: number; isEdit: boolean}) {
+  const {currentTab, isEdit} = props
   const {event} = useEvent()
+  const {sponsors, loading} = useSponsors()
+
+  if (loading) {
+    return <div>loading...</div>
+  }
   return (
     <>
       <ContentPanel index={0} currentIndex={currentTab}>
@@ -45,9 +67,12 @@ function Content(props: {currentTab: number}) {
         <SpeakerPage speakers={event.speakers} />
       </ContentPanel>
       <ContentPanel index={2} currentIndex={currentTab}>
-        <Resources />
+        <SponsorPage isEditMode={isEdit} sponsors={sponsors} />
       </ContentPanel>
       <ContentPanel index={3} currentIndex={currentTab}>
+        <Resources />
+      </ContentPanel>
+      <ContentPanel index={4} currentIndex={currentTab}>
         <Leaderboard />
       </ContentPanel>
     </>

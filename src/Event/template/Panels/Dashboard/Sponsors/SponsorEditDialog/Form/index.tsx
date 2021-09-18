@@ -7,7 +7,6 @@ import {useState} from 'react'
 import {Controller, useForm} from 'react-hook-form'
 import TextEditor from 'lib/ui/form/TextEditor'
 import Button from '@material-ui/core/Button'
-import TextField from '@material-ui/core/TextField'
 import DangerButton from 'lib/ui/Button/DangerButton'
 import {ValidationError} from 'lib/api-client'
 import {fieldError} from 'lib/form'
@@ -16,12 +15,31 @@ import {useSponsors} from 'organization/Event/SponsorsProvider'
 import FormSelect from 'organization/Event/FormsProvider/FormSelect'
 import InputLabel from '@material-ui/core/InputLabel'
 import FormControl from '@material-ui/core/FormControl'
+import Buttons, {
+  useButtons,
+} from 'Event/template/Panels/Dashboard/Sponsors/SponsorEditDialog/Form/Buttons'
+import ButtonConfig from 'Event/template/Panels/Dashboard/Sponsors/SponsorEditDialog/Form/ButtonConfig'
+import NavButton from 'Event/Dashboard/components/NavButton'
+import Typography from '@material-ui/core/Typography'
+import {withStyles} from '@material-ui/core/styles'
+import {spacing} from 'lib/ui/theme'
 
 export default function EditSponsorForm(props: {
   sponsor: Sponsor
   onDone: () => void
 }) {
-  const {register, handleSubmit, control, errors} = useForm()
+  const {
+    buttons,
+    loading: loadingButtons,
+    add: addButton,
+    edit: editButton,
+    editing: editingButton,
+    update: updateButton,
+    stopEdit: stopEditingButton,
+    remove: removeButton,
+  } = useButtons(props.sponsor)
+
+  const {handleSubmit, control, errors} = useForm()
   const [submitting, setSubmitting] = useState(false)
   const {sponsor} = props
   const {client} = useOrganization()
@@ -35,6 +53,7 @@ export default function EditSponsorForm(props: {
       ...data,
       settings: {
         ...(data.settings || {}),
+        buttons,
       },
     }
 
@@ -58,30 +77,29 @@ export default function EditSponsorForm(props: {
 
     client
       .delete<Sponsor>(url)
-      .then(() => remove(sponsor))
+      .then(() => {
+        remove(sponsor)
+        props.onDone()
+      })
       .catch(() => {
         setSubmitting(false)
       })
   }
 
-  const nameError = fieldError('name', {form: errors, response: serverError})
+  const descriptionError = fieldError('description', {
+    form: errors,
+    response: serverError,
+  })
 
   return (
     <>
-      <form onSubmit={handleSubmit(submit)}>
-        <TextField
-          name="name"
-          label="Sponsor Name"
-          required
-          fullWidth
-          inputProps={{
-            ref: register({required: 'Sponsor Name is required.'}),
-            'aria-label': 'sponsor name',
-          }}
-          error={Boolean(nameError)}
-          helperText={nameError}
-          defaultValue={sponsor.name}
-        />
+      <ButtonEditFields
+        button={editingButton}
+        onClose={stopEditingButton}
+        onChange={updateButton}
+        onRemove={removeButton}
+      />
+      <form onSubmit={handleSubmit(submit)} hidden={Boolean(editingButton)}>
         <Box mb={3}>
           <Controller
             name="description"
@@ -103,6 +121,15 @@ export default function EditSponsorForm(props: {
             </FormControl>
           )}
         />
+        <Box mb={3}>
+          <Buttons
+            buttons={buttons}
+            onAdd={addButton}
+            edit={editButton}
+            loading={loadingButtons}
+          />
+        </Box>
+        <Error>{descriptionError}</Error>
         <SaveButton
           fullWidth
           variant="contained"
@@ -126,6 +153,33 @@ export default function EditSponsorForm(props: {
     </>
   )
 }
+
+function ButtonEditFields(props: {
+  button: NavButton | null
+  onClose: () => void
+  onChange: (button: NavButton) => void
+  onRemove: () => void
+}) {
+  if (!props.button) {
+    return null
+  }
+
+  return <ButtonConfig {...props} button={props.button} />
+}
+
+function Error(props: {children?: string | null}) {
+  if (!props.children) {
+    return null
+  }
+
+  return <ErrorText color="error">{props.children}</ErrorText>
+}
+
+const ErrorText = withStyles({
+  root: {
+    marginBottom: spacing[3],
+  },
+})(Typography)
 
 const SaveButton = styled(Button)`
   margin-bottom: ${(props) => props.theme.spacing[4]}!important;

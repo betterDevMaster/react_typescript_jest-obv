@@ -168,9 +168,13 @@ export type Panels = BaseTemplate & {
     }
   }
   sponsors?: {
+    title?: string
     description?: string
     orderedIds?: number[]
-    columnSize?: number
+    perRow?: number
+    menuTitle?: string
+    cardBackgroundColor?: string
+    cardBackgroundOpacity?: number
   }
   speakers?: {
     title?: string
@@ -351,9 +355,13 @@ export const createPanels = (): DeepRequired<Panels> => ({
     },
   },
   sponsors: {
+    title: 'Sponsors',
     description: '',
     orderedIds: [],
-    columnSize: 2,
+    perRow: 2,
+    menuTitle: 'Sponsors',
+    cardBackgroundColor: '#565656',
+    cardBackgroundOpacity: 100,
   },
   speakers: {
     title: 'Our Speakers',
