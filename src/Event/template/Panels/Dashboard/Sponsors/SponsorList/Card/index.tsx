@@ -138,9 +138,7 @@ const StyledImage = styled(Image)`
 `
 
 const ButtonBox = styled.div`
-  max-width: 150px;
-  margin-left: auto;
-  margin-right: auto;
+  width: 100%;
 
   &:not(:last-child) {
     margin-bottom: 8px;
