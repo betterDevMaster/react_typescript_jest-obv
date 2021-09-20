@@ -2,7 +2,6 @@ import {Sponsor} from 'Event/SponsorPage'
 import styled from 'styled-components'
 import React, {useState} from 'react'
 import ConfigDialog from 'Event/template/Panels/Dashboard/Sponsors/SponsorList/Card/Image/ConfigDialog'
-import Grid from '@material-ui/core/Grid'
 
 const SPONSOR_PLACEHOLDER = 'http://placehold.jp/300x100.png'
 
@@ -52,17 +51,15 @@ function Content(
   const src = sponsor.image?.url || SPONSOR_PLACEHOLDER
 
   return (
-    <Grid item xs={12}>
-      <ImageBox className={props.className}>
-        <ImageEl
-          src={src}
-          alt={alt}
-          aria-label="sponsor image"
-          onClick={props.onClick}
-          clickable={Boolean(props.onClick)}
-        />
-      </ImageBox>
-    </Grid>
+    <ImageBox className={props.className}>
+      <ImageEl
+        src={src}
+        alt={alt}
+        aria-label="sponsor image"
+        onClick={props.onClick}
+        clickable={Boolean(props.onClick)}
+      />
+    </ImageBox>
   )
 }
 

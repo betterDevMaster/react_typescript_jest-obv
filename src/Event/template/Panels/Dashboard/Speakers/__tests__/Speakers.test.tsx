@@ -5,7 +5,7 @@ import user from '@testing-library/user-event'
 import {fakeAttendee} from 'Event/auth/__utils__/factory'
 import {fakePanels} from 'Event/template/Panels/__utils__/factory'
 import {createEntityList} from 'lib/list'
-import {fakeNavButton} from 'Event/Dashboard/components/NavButton/__utils__/factory'
+import {fakeNavButtonWithSize} from 'Event/Dashboard/components/NavButton/__utils__/factory'
 import {eventRoutes, EVENT_PAGES} from 'Event/Routes'
 
 it('should render speakers', async () => {
@@ -14,7 +14,7 @@ it('should render speakers', async () => {
     fakeSpeaker,
   )
 
-  const button = fakeNavButton({
+  const button = fakeNavButtonWithSize({
     page: EVENT_PAGES[eventRoutes.speakers],
     text: 'speaker button',
   })

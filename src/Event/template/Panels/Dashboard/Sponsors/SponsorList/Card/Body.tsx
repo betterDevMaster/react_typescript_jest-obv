@@ -3,7 +3,6 @@ import styled from 'styled-components'
 import {Sponsor} from 'Event/SponsorPage'
 import {useAttendeeVariables} from 'Event'
 import TextContent from 'lib/ui/form/TextEditor/Content'
-import Grid from '@material-ui/core/Grid'
 
 export const SPONSOR_QUESTION_ICON_PLACEHOLDER = 'http://placehold.jp/50x50.png'
 
@@ -16,11 +15,9 @@ export default function Body(props: {sponsor: Sponsor}) {
   }
 
   return (
-    <Grid item xs={12}>
-      <Box>
-        <TextContent>{v(sponsor.description)}</TextContent>
-      </Box>
-    </Grid>
+    <Box>
+      <TextContent>{v(sponsor.description)}</TextContent>
+    </Box>
   )
 }
 
@@ -30,4 +27,15 @@ const Box = styled.div`
   flex-direction: column;
   align-items: center;
   justify-content: center;
+  margin-top: 8px;
+
+  /** 
+   * Remove any bottom margin from the last element which
+   * would mess up vertical centering.
+  **/
+  > div {
+    > *:last-child {
+      margin-bottom: 0;
+    }
+  }
 `

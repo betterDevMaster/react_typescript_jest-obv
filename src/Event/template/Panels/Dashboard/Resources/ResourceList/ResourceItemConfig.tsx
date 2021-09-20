@@ -1,75 +1,99 @@
 import TextField from '@material-ui/core/TextField'
-import {onChangeStringHandler, onChangeCheckedHandler} from 'lib/dom'
-import styled from 'styled-components'
-import React from 'react'
-import DangerButton from 'lib/ui/Button/DangerButton'
+import {onChangeCheckedHandler} from 'lib/dom'
+import React, {useEffect, useState} from 'react'
 import {useDispatchUpdate} from 'Event/TemplateProvider'
-import {useCallback} from 'react'
-import Grid from '@material-ui/core/Grid'
 import Switch from 'lib/ui/form/Switch'
 import RuleConfig, {useRuleConfig} from 'Event/attendee-rules/RuleConfig'
 import ConfigureRulesButton from 'Event/attendee-rules/ConfigureRulesButton'
 import ToggleButtonGroup from '@material-ui/lab/ToggleButtonGroup'
 import ToggleButton from '@material-ui/lab/ToggleButton'
 import FormControl from '@material-ui/core/FormControl'
-import {usePanels} from 'Event/template/Panels'
+import {Panels, usePanels} from 'Event/template/Panels'
 import {Resource} from 'Event/template/Panels/Dashboard/Resources/ResourceList'
 import ResourceUpload, {
   useDeleteFile,
 } from 'Event/template/Panels/Dashboard/Resources/ResourceList/ResourceUpload'
-import Dialog from 'lib/ui/Dialog'
-import DialogContent from '@material-ui/core/DialogContent'
-import DialogTitle from '@material-ui/core/DialogTitle'
+import ComponentConfig, {
+  ComponentConfigProps,
+  RemoveButton,
+  SaveButton,
+} from 'organization/Event/DashboardConfig/ComponentConfig'
+import {Controller, useForm, UseFormMethods} from 'react-hook-form'
 
-export default function ResourceItemConfig(props: {
-  editing: number | null
-  onClose: () => void
-}) {
-  if (props.editing === null) {
-    return null
-  }
-
-  return <Content targetIndex={props.editing} onClose={props.onClose} />
-}
-
-function Content(props: {targetIndex: number; onClose: () => void}) {
+export default function ResourceItemConfig(
+  props: ComponentConfigProps & {
+    resource: Resource
+    targetIndex?: number
+    onClose: () => void
+  },
+) {
+  const {targetIndex, onClose, resource, isVisible} = props
   const {template} = usePanels()
   const {resourceList: list} = template
   const updateTemplate = useDispatchUpdate()
   const deleteFile = useDeleteFile()
   const {visible: ruleConfigVisible, toggle: toggleRuleConfig} = useRuleConfig()
+  const {register, handleSubmit, control} = useForm()
 
-  const setUrl = (url: string) => {
-    update('url')(url)
+  const [rules, setRules] = useState(resource.rules)
+  const [isUrl, setIsUrl] = useState(resource.isUrl)
+  const [filePath, setFilePath] = useState(resource.filePath)
+
+  const isEditing = targetIndex !== undefined
+
+  useEffect(() => {
+    if (!isVisible && ruleConfigVisible) {
+      toggleRuleConfig()
+    }
+  }, [isVisible, toggleRuleConfig, ruleConfigVisible])
+
+  const insert = (resource: Resource): Panels => {
+    return {
+      ...template,
+      resourceList: {
+        ...list,
+        resources: [...list.resources, resource],
+      },
+    }
   }
 
-  const resource = list.resources[props.targetIndex]
+  const update = (resource: Resource): Panels => {
+    return {
+      ...template,
+      resourceList: {
+        ...list,
+        resources: list.resources.map((r, index) => {
+          const isTarget = index === targetIndex
+          if (isTarget) {
+            return resource
+          }
 
-  const update = useCallback(
-    <T extends keyof Resource>(key: T) => (value: Resource[T]) => {
-      const updated = {
-        ...resource,
-        [key]: value,
-      }
+          return r
+        }),
+      },
+    }
+  }
 
-      updateTemplate({
-        resourceList: {
-          ...list,
-          resources: list.resources.map((r, index) => {
-            const isTarget = index === props.targetIndex
-            if (isTarget) {
-              return updated
-            }
+  const save = (form: any) => {
+    const data: Resource = {
+      rules,
+      isUrl,
+      filePath,
+      ...form,
+    }
 
-            return r
-          }),
-        },
-      })
-    },
-    [list, props.targetIndex, resource, updateTemplate],
-  )
+    const updated = targetIndex === undefined ? insert(data) : update(data)
+
+    updateTemplate(updated)
+
+    onClose()
+  }
 
   const remove = () => {
+    if (targetIndex === undefined) {
+      throw new Error('Missing resource item index')
+    }
+
     if (resource.filePath) {
       deleteFile(resource.filePath).catch((e) => {
         // Log error, but prevent it from crashing
@@ -77,7 +101,7 @@ function Content(props: {targetIndex: number; onClose: () => void}) {
         console.error(e)
       })
     }
-    props.onClose()
+    onClose()
 
     updateTemplate({
       resourceList: {
@@ -90,108 +114,123 @@ function Content(props: {targetIndex: number; onClose: () => void}) {
   }
 
   return (
-    <Dialog onClose={props.onClose} open={true}>
-      <DialogTitle>Resource</DialogTitle>
-      <DialogContent>
-        <RuleConfig
-          visible={ruleConfigVisible}
-          close={toggleRuleConfig}
-          rules={resource.rules}
-          onChange={update('rules')}
-        >
-          <>
-            <ConfigureRulesButton onClick={toggleRuleConfig} />
+    <ComponentConfig
+      title="Resource"
+      onClose={props.onClose}
+      isVisible={isVisible}
+    >
+      <RuleConfig
+        visible={ruleConfigVisible}
+        close={toggleRuleConfig}
+        rules={rules}
+        onChange={setRules}
+      >
+        <>
+          <ConfigureRulesButton onClick={toggleRuleConfig} />
+          <form onSubmit={handleSubmit(save)}>
+            <FormControl>
+              <Controller
+                name="isVisible"
+                control={control}
+                defaultValue={resource.isVisible || false}
+                render={({value, onChange}) => (
+                  <Switch
+                    checked={value}
+                    onChange={onChangeCheckedHandler(onChange)}
+                    arial-label="toggle reseource"
+                    labelPlacement="end"
+                    color="primary"
+                    label="Enabled"
+                  />
+                )}
+              />
+            </FormControl>
             <TextField
-              value={resource.name}
+              name="name"
+              defaultValue={resource.name}
               inputProps={{
                 'aria-label': 'resource name',
+                ref: register,
               }}
               label="Name"
               fullWidth
-              onChange={onChangeStringHandler(update('name'))}
             />
             <FormControl>
               <ToggleButtonGroup
                 value={resource.isUrl ? 'true' : 'false'}
                 exclusive
               >
-                <ToggleButton
-                  value="false"
-                  onClick={() => update('isUrl')(false)}
-                >
+                <ToggleButton value="false" onClick={() => setIsUrl(false)}>
                   File
                 </ToggleButton>
                 <ToggleButton
                   value="true"
                   aria-label="set url resource"
-                  onClick={() => update('isUrl')(true)}
+                  onClick={() => setIsUrl(true)}
                 >
                   Link
                 </ToggleButton>
               </ToggleButtonGroup>
             </FormControl>
-            <ResourceUpload resource={resource} update={update} />
-            <UrlField resource={resource} onChange={setUrl} />
-            <Grid container spacing={2}>
-              <Grid item xs={4}>
-                <Switch
-                  checked={resource.isVisible}
-                  onChange={onChangeCheckedHandler(update('isVisible'))}
-                  arial-label="config visible switch"
-                  labelPlacement="top"
-                  color="primary"
-                  label={resource.isVisible ? 'Enable' : 'Disable'}
-                />
-              </Grid>
-            </Grid>
+            <ResourceUpload
+              isUrl={isUrl}
+              filePath={filePath}
+              onChange={setFilePath}
+            />
+            <UrlField
+              defaultValue={resource.url || ''}
+              register={register}
+              isUrl={isUrl}
+            />
+
             <TextField
-              value={resource.description}
+              name="description"
+              defaultValue={resource.description}
               inputProps={{
                 'aria-label': 'resource description',
+                ref: register,
               }}
               label="Description"
               fullWidth
               rows={4}
               multiline
-              onChange={onChangeStringHandler(update('description'))}
             />
+            <SaveButton />
             <RemoveButton
               fullWidth
               variant="outlined"
               aria-label="remove resource"
               onClick={remove}
+              showing={isEditing}
             >
               REMOVE RESOURCE
             </RemoveButton>
-          </>
-        </RuleConfig>
-      </DialogContent>
-    </Dialog>
+          </form>
+        </>
+      </RuleConfig>
+    </ComponentConfig>
   )
 }
 
 function UrlField(props: {
-  resource: Resource
-  onChange: (url: string) => void
+  isUrl?: boolean
+  register: UseFormMethods['register']
+  defaultValue: string
 }) {
-  if (!props.resource.isUrl) {
+  if (!props.isUrl) {
     return null
   }
 
   return (
     <TextField
-      value={props.resource.url}
+      name="url"
+      defaultValue={props.defaultValue}
       inputProps={{
         'aria-label': 'resource external file url',
+        ref: props.register,
       }}
       label="URL starting with http:// or https://"
       fullWidth
-      onChange={onChangeStringHandler(props.onChange)}
     />
   )
 }
-
-const RemoveButton = styled(DangerButton)`
-  margin-top: ${(props) => props.theme.spacing[6]}!important;
-  margin-bottom: ${(props) => props.theme.spacing[5]}!important;
-`

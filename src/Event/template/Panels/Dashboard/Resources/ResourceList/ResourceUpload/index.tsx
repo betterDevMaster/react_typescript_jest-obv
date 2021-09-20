@@ -1,16 +1,14 @@
-import React from 'react'
+import React, {useState} from 'react'
+import {api} from 'lib/url'
+import CircularProgress from '@material-ui/core/CircularProgress'
+import withStyles from '@material-ui/core/styles/withStyles'
+import {spacing} from 'lib/ui/theme'
+import Typography from '@material-ui/core/Typography'
 import styled from 'styled-components'
 import {useEvent} from 'Event/EventProvider'
-import {Resource} from 'Event/template/Panels/Dashboard/Resources/ResourceList'
-import {api} from 'lib/url'
 import {useOrganization} from 'organization/OrganizationProvider'
-import {useState} from 'react'
-import UploadDropzone from 'Event/template/Panels/Dashboard/Resources/ResourceList/ResourceUpload/UploadDropzone'
-import UploadedFile from 'Event/template/Panels/Dashboard/Resources/ResourceList/ResourceUpload/UploadedFile'
-import CircularProgress from '@material-ui/core/CircularProgress'
-import {withStyles} from '@material-ui/core/styles'
-import Typography from '@material-ui/core/Typography'
-import {spacing} from 'lib/ui/theme'
+import UploadDropzone from 'Event/template/SimpleBlog/Dashboard/Sidebar/SidebarItem/ResourceList/ResourceUpload/UploadDropzone'
+import UploadedFile from 'Event/template/SimpleBlog/Dashboard/Sidebar/SidebarItem/ResourceList/ResourceUpload/UploadedFile'
 
 export const ACCEPTED_FILE_TYPES = ['image/*', '.pdf', '.xlsx']
 export const MAX_FILE_SIZE_BYTES = 150000000 // bytes
@@ -21,16 +19,18 @@ interface ResourceUpload {
 }
 
 export default function ResourceUpload(props: {
-  resource: Resource
-  update: <T extends keyof Resource>(key: T) => (value: Resource[T]) => void
+  filePath: string
+  isUrl?: boolean
+  onChange: (filePath: string) => void
 }) {
+  const {filePath, onChange, isUrl} = props
   const {client} = useOrganization()
   const {event} = useEvent()
   const [isUploading, setIsUploading] = useState(false)
   const [error, setError] = useState(null)
   const deleteFile = useDeleteFile()
 
-  const hasExistingFile = props.resource.filePath
+  const hasExistingFile = Boolean(filePath)
 
   const clearError = () => setError(null)
 
@@ -48,7 +48,7 @@ export default function ResourceUpload(props: {
         },
       })
       .then((upload) => {
-        props.update('filePath')(upload.file)
+        onChange(upload.file)
       })
       .catch((e) => {
         setError(e.message)
@@ -60,7 +60,7 @@ export default function ResourceUpload(props: {
 
   const handleUpload = async (acceptedFile: File) => {
     if (hasExistingFile) {
-      removeFile(props.resource).then(() => {
+      removeFile().then(() => {
         upload(acceptedFile)
       })
       return
@@ -69,11 +69,12 @@ export default function ResourceUpload(props: {
     upload(acceptedFile)
   }
 
-  const removeFile = async (resource: Resource): Promise<void> => {
+  const removeFile = () => {
     setIsUploading(true)
-    return deleteFile(resource.filePath)
+
+    return deleteFile(filePath)
       .then(() => {
-        props.update('filePath')('')
+        onChange('')
       })
       .catch((e) => {
         setError(e.message)
@@ -83,7 +84,7 @@ export default function ResourceUpload(props: {
       })
   }
 
-  if (props.resource.isUrl) {
+  if (isUrl) {
     return null
   }
 
@@ -93,7 +94,7 @@ export default function ResourceUpload(props: {
         <UploadDropzone onDrop={handleUpload} />
         <LoadingOverlay visible={isUploading} />
       </Container>
-      <UploadedFile resource={props.resource} onRemoveFile={removeFile} />
+      <UploadedFile filePath={filePath} onRemove={removeFile} />
       <Error>{error}</Error>
     </>
   )

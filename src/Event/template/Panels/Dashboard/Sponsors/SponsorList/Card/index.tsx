@@ -1,6 +1,5 @@
 import React, {useState} from 'react'
 import styled from 'styled-components'
-import Grid from '@material-ui/core/Grid'
 import {Sponsor} from 'Event/SponsorPage'
 import Image from 'Event/template/Panels/Dashboard/Sponsors/SponsorList/Card/Image'
 import Body from 'Event/template/Panels/Dashboard/Sponsors/SponsorList/Card/Body'
@@ -14,6 +13,12 @@ import {useSponsors} from 'organization/Event/SponsorsProvider'
 import {Editable} from 'Event/Dashboard/editor/views/EditComponent'
 
 export const SPONSOR_QUESTION_ICON_PLACEHOLDER = 'http://placehold.jp/50x50.png'
+
+/**
+ * Button width is fixed for all buttons. This sets the width relative
+ * to the current size of the sponsor card.
+ */
+const BUTTONS_WIDTH_PERCENT = 75
 
 type SponsorProps = {
   index: number
@@ -68,7 +73,7 @@ function Content(props: SponsorProps) {
         onClose={toggleForm}
       />
       <StyledEditable onEdit={() => edit(sponsor)} aria-label="edit sponsor">
-        <StyledGrid container spacing={2}>
+        <StyledGrid>
           <StyledImage sponsor={sponsor} isEditMode={props.isEditMode} />
           <Body sponsor={sponsor} />
           <Buttons sponsor={props.sponsor} />
@@ -87,13 +92,13 @@ function Buttons(props: {sponsor: Sponsor}) {
   }
 
   return (
-    <Grid item xs={8}>
+    <ButtonsContainer>
       {buttons.ids.map((id) => (
         <ButtonBox key={id}>
           <NavButton {...buttons.entities[id]} aria-label="sponsor button" />
         </ButtonBox>
       ))}
-    </Grid>
+    </ButtonsContainer>
   )
 }
 
@@ -103,9 +108,10 @@ const StyledEditable = styled(Editable)`
   flex-direction: column;
 `
 
-const StyledGrid = styled(Grid)`
+const StyledGrid = styled.div`
   flex: 1;
   display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
   position: relative;
@@ -135,6 +141,11 @@ const Box = styled((props) => {
 
 const StyledImage = styled(Image)`
   width: 100%;
+`
+
+const ButtonsContainer = styled.div`
+  margin-top: 8px;
+  width: ${BUTTONS_WIDTH_PERCENT}%;
 `
 
 const ButtonBox = styled.div`

@@ -2,51 +2,46 @@ import React from 'react'
 import TextField from '@material-ui/core/TextField'
 import TextEditor, {TextEditorContainer} from 'lib/ui/form/TextEditor'
 import {Controller, useForm} from 'react-hook-form'
-import Button from '@material-ui/core/Button'
-import {useUpdate} from 'Event/EventProvider'
 import {Panels, usePanels} from 'Event/template/Panels'
-import {useToggle} from 'lib/toggle'
 import ComponentConfig, {
   ComponentConfigProps,
+  SaveButton,
 } from 'organization/Event/DashboardConfig/ComponentConfig'
+import {onChangeCheckedHandler} from 'lib/dom'
+import Switch from 'lib/ui/form/Switch'
+import {FormControl} from '@material-ui/core'
+import {useDispatchUpdate} from 'Event/TemplateProvider'
 
 export default function LeaderboardConfig(props: ComponentConfigProps) {
   const {template} = usePanels()
   const {leaderboard} = template
   const {register, control, handleSubmit} = useForm()
 
-  const {flag: processing, toggle: toggleProcessing} = useToggle()
-
-  const updateEvent = useUpdate()
+  const updateTemplate = useDispatchUpdate()
 
   const submit = (data: {
     title: string
     description: string
     points_unit: string
     menuTitle: string
+    isVisible: boolean
   }) => {
-    if (processing) {
-      return
-    }
-    toggleProcessing()
-
     const existing = template.leaderboard || {}
+
+    const {points_unit, ...leaderboardData} = data
 
     const updated: Panels = {
       ...template,
       leaderboard: {
         ...existing,
-        title: data.title,
-        description: data.description,
-        menuTitle: data.menuTitle,
+        ...leaderboardData,
       },
-      points_unit: data.points_unit,
+      points_unit,
     }
 
-    updateEvent({template: updated}).finally(() => {
-      toggleProcessing()
-      props.onClose()
-    })
+    updateTemplate(updated)
+
+    props.onClose()
   }
 
   return (
@@ -56,6 +51,23 @@ export default function LeaderboardConfig(props: ComponentConfigProps) {
       title="Leaderboard"
     >
       <form onSubmit={handleSubmit(submit)}>
+        <FormControl>
+          <Controller
+            name="isVisible"
+            control={control}
+            defaultValue={leaderboard.isVisible}
+            render={({value, onChange}) => (
+              <Switch
+                checked={value}
+                onChange={onChangeCheckedHandler(onChange)}
+                arial-label="toggle points"
+                labelPlacement="end"
+                color="primary"
+                label="Enabled"
+              />
+            )}
+          />
+        </FormControl>
         <TextField
           defaultValue={leaderboard.title}
           name="title"
@@ -65,7 +77,6 @@ export default function LeaderboardConfig(props: ComponentConfigProps) {
             'aria-label': 'set leaderboard page title',
             ref: register({required: 'Title is required'}),
           }}
-          disabled={processing}
         />
         <Controller
           name="description"
@@ -76,11 +87,7 @@ export default function LeaderboardConfig(props: ComponentConfigProps) {
           }}
           render={({value, onChange}) => (
             <TextEditorContainer>
-              <TextEditor
-                data={value}
-                onChange={onChange}
-                disabled={processing}
-              />
+              <TextEditor data={value} onChange={onChange} />
             </TextEditorContainer>
           )}
         />
@@ -93,7 +100,6 @@ export default function LeaderboardConfig(props: ComponentConfigProps) {
             'aria-label': 'set leaderboard page menu title',
             ref: register({required: 'Title is required'}),
           }}
-          disabled={processing}
         />
         <TextField
           defaultValue={template.points_unit}
@@ -104,18 +110,8 @@ export default function LeaderboardConfig(props: ComponentConfigProps) {
             ref: register({required: 'Points unit is required'}),
             'aria-label': 'points unit',
           }}
-          disabled={processing}
         />
-        <Button
-          fullWidth
-          color="primary"
-          type="submit"
-          disabled={processing}
-          variant="contained"
-          aria-label="save"
-        >
-          Save
-        </Button>
+        <SaveButton>Save</SaveButton>
       </form>
     </ComponentConfig>
   )

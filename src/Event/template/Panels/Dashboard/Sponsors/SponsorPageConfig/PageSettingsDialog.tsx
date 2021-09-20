@@ -8,7 +8,7 @@ import {Controller, useForm} from 'react-hook-form'
 import {useEvent} from 'Event/EventProvider'
 import {ObvioEvent} from 'Event'
 import Button from '@material-ui/core/Button'
-import {handleChangeSlider} from 'lib/dom'
+import {handleChangeSlider, onChangeCheckedHandler} from 'lib/dom'
 import InputLabel from '@material-ui/core/InputLabel'
 import Slider from '@material-ui/core/Slider'
 import Typography from '@material-ui/core/Typography'
@@ -22,6 +22,9 @@ import withStyles from '@material-ui/core/styles/withStyles'
 import {spacing} from 'lib/ui/theme'
 import DangerButton from 'lib/ui/Button/DangerButton'
 import ColorPicker from 'lib/ui/ColorPicker'
+import TextEditor, {TextEditorContainer} from 'lib/ui/form/TextEditor'
+import Switch from 'lib/ui/form/Switch'
+import FormControl from '@material-ui/core/FormControl'
 
 const MIN_PER_ROW = 1
 const MAX_PER_ROW = 3
@@ -34,6 +37,8 @@ type SettingsFormData = {
   menuTitle: string
   cardBackgroundColor?: string
   cardBackgroundOpacity?: number
+  description?: string
+  isVisible?: string
 }
 
 export default function PageSettingsDialog(props: {
@@ -57,6 +62,8 @@ export default function PageSettingsDialog(props: {
       menuTitle,
       cardBackgroundColor,
       cardBackgroundOpacity,
+      description,
+      isVisible,
     } = formData
 
     const required = {
@@ -68,6 +75,8 @@ export default function PageSettingsDialog(props: {
           perRow,
           cardBackgroundColor,
           cardBackgroundOpacity,
+          description,
+          isVisible,
         },
       },
     }
@@ -135,6 +144,23 @@ export default function PageSettingsDialog(props: {
       <DialogContent>
         <Box pb={2}>
           <form onSubmit={handleSubmit(submit)}>
+            <FormControl>
+              <Controller
+                name="isVisible"
+                control={control}
+                defaultValue={template.sponsors.isVisible}
+                render={({value, onChange}) => (
+                  <Switch
+                    checked={value}
+                    onChange={onChangeCheckedHandler(onChange)}
+                    arial-label="toggle sponsors"
+                    labelPlacement="end"
+                    color="primary"
+                    label="Enabled"
+                  />
+                )}
+              />
+            </FormControl>
             <TextField
               error={Boolean(titleError)}
               name="title"
@@ -161,6 +187,17 @@ export default function PageSettingsDialog(props: {
                 'aria-label': 'edit sponsors page menu title',
               }}
             />
+            <Controller
+              name="description"
+              defaultValue={template.sponsors.description}
+              control={control}
+              render={({onChange, value}) => (
+                <TextEditorContainer>
+                  <TextEditor data={value} onChange={onChange} />
+                </TextEditorContainer>
+              )}
+            />
+
             <InputLabel>Sponsors Per Row</InputLabel>
             <Controller
               name="perRow"

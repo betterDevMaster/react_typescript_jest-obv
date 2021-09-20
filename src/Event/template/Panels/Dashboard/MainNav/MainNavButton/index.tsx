@@ -1,6 +1,8 @@
 import styled from 'styled-components'
 import VisibleOnMatch from 'Event/attendee-rules/VisibleOnMatch'
-import NavButton from 'Event/Dashboard/components/NavButton'
+import NavButton, {
+  NavButtonWithSize,
+} from 'Event/Dashboard/components/NavButton'
 import React from 'react'
 import Published from 'Event/Dashboard/editor/views/Published'
 import {Draggable, DraggableProvidedDraggableProps} from 'react-beautiful-dnd'
@@ -13,7 +15,7 @@ import MainNavButtonConfig from 'Event/template/Panels/Dashboard/MainNav/MainNav
 export const MAIN_NAV_BUTTON = 'Main Nav Button'
 type MainNavButtonProps = {
   id: string
-  button: NavButton
+  button: NavButtonWithSize
   index: number
   isHidden?: boolean
   disableEdit?: boolean
@@ -68,11 +70,16 @@ const Container = React.forwardRef<
   HTMLDivElement,
   {
     children: React.ReactElement
-    button: NavButton
+    button: NavButtonWithSize
     draggableProps?: DraggableProvidedDraggableProps
     isHidden?: boolean
   }
 >((props, ref) => {
+  const {button} = props
+  const {size} = button
+
+  const widthPercent = 100 * (size / 12)
+
   return (
     <VisibleOnMatch rules={props.button.rules}>
       <Published component={props.button}>
@@ -81,6 +88,7 @@ const Container = React.forwardRef<
           isHidden={props.isHidden}
           {...props.draggableProps}
           data-testid="main nav button container"
+          width={widthPercent}
         >
           {props.children}
         </Box>
@@ -91,8 +99,11 @@ const Container = React.forwardRef<
 
 const Box = styled.div<{
   isHidden?: boolean
+  width: number
 }>`
   ${(props) => (props.isHidden ? 'display: none;' : '')}
-  width: 100%;
+  width: ${(props) => props.width}%;
   margin-bottom: ${(props) => props.theme.spacing[2]};
+  margin-left: auto;
+  margin-right: auto;
 `

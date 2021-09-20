@@ -1,49 +1,62 @@
-import {eventRoutes} from 'Event/Routes'
 import styled from 'styled-components'
 import React from 'react'
 import {usePanels} from 'Event/template/Panels'
 import {User} from 'auth/user'
 import {useEventAuth} from 'Event/auth'
 import Button from 'lib/ui/Button'
+import {useEditMode} from 'Event/Dashboard/editor/state/edit-mode'
 
 export default function Menu(props: {
   onChangeTab: (tab: number) => void
   user: User
 }) {
+  const {onChangeTab} = props
   const {template} = usePanels()
   const color = template.leftPanel.menuTextColor || '#000000'
   const {logout} = useEventAuth()
 
   const {
-    homeMenuTitle,
-    speakers: {menuTitle: speakerMenuTitle},
-    sponsors: {menuTitle: sponsorsMenuTitle},
-    resourceList: {menuTitle: resourceListMenuTitle},
-    leaderboard: {menuTitle: leaderboardMenuTitle},
+    homeMenuTitle: homeTitle,
+    speakers: {menuTitle: speakerTitle, isVisible: showingSpeakers},
+    sponsors: {menuTitle: sponsorsTitle, isVisible: showingSponsors},
+    resourceList: {menuTitle: resourcesTitle, isVisible: showingResources},
+    leaderboard: {menuTitle: pointsTitle, isVisible: showingPoints},
   } = template
 
-  const items = {
-    [homeMenuTitle]: eventRoutes.root,
-    [speakerMenuTitle]: eventRoutes.speakers,
-    [sponsorsMenuTitle]: eventRoutes.sponsors,
-    [resourceListMenuTitle]: eventRoutes.resources,
-    [leaderboardMenuTitle]: eventRoutes.leaderboard,
+  const linkProps = {
+    onChangeTab,
+    color,
   }
 
   return (
     <Box>
       <TopCenterBox>
         <Top>
-          {Object.entries(items).map(([label, url], index) => (
-            <LinkText
-              key={label}
-              onClick={() => props.onChangeTab(index)}
-              style={{color}}
-              aria-label={`left panel menu ${label} button`}
-            >
-              {label}
-            </LinkText>
-          ))}
+          <LinkText {...linkProps} index={0} showing label={homeTitle} />
+          <LinkText
+            {...linkProps}
+            index={1}
+            showing={showingSpeakers}
+            label={speakerTitle}
+          />
+          <LinkText
+            {...linkProps}
+            index={2}
+            showing={showingSponsors}
+            label={sponsorsTitle}
+          />
+          <LinkText
+            {...linkProps}
+            index={3}
+            showing={showingResources}
+            label={resourcesTitle}
+          />
+          <LinkText
+            {...linkProps}
+            index={4}
+            showing={showingPoints}
+            label={pointsTitle}
+          />
         </Top>
       </TopCenterBox>
 
@@ -67,7 +80,33 @@ export default function Menu(props: {
   )
 }
 
-const LinkText = styled.span`
+function LinkText(props: {
+  onChangeTab: (tab: number) => void
+  label: string
+  showing: boolean
+  color: string
+  index: number
+}) {
+  const {label, color, index, showing} = props
+
+  const isEditMode = useEditMode()
+
+  if (!isEditMode && !showing) {
+    return null
+  }
+
+  return (
+    <TabText
+      key={label}
+      onClick={() => props.onChangeTab(index)}
+      style={{color}}
+      aria-label={`left panel menu ${label} button`}
+    >
+      {label}
+    </TabText>
+  )
+}
+const TabText = styled.span`
   font-weight: bold;
   font-size: 24px;
   line-height: 20px;

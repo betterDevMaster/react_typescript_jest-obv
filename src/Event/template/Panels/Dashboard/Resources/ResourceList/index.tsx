@@ -17,7 +17,6 @@ import {Publishable} from 'Event/Dashboard/editor/views/Published'
 import {HasRules} from 'Event/attendee-rules'
 import ResourceItem from 'Event/template/Panels/Dashboard/Resources/ResourceList/ResourceItem'
 import ResourceListConfig from 'Event/template/Panels/Dashboard/Resources/ResourceList/ResourceListConfig'
-import ResourceItemConfig from 'Event/template/Panels/Dashboard/Resources/ResourceList/ResourceItemConfig'
 import AddResourceButton from 'Event/template/Panels/Dashboard/Resources/ResourceList/AddResourceButton'
 import {PageTitle} from 'Event/template/Panels/Page'
 
@@ -25,7 +24,11 @@ export interface ResourceList {
   title: string
   resources: Resource[]
   cardBackgroundColor?: string
+  cardBackgroundOpacity?: number
+  color?: string
+  linkColor?: string
   menuTitle?: string
+  isVisible?: boolean
 }
 
 export type Resource = Publishable &
@@ -40,9 +43,6 @@ export type Resource = Publishable &
 export default function ResourceList() {
   const isEdit = useEditMode()
   const {template} = usePanels()
-  const [editing, setEditing] = useState<null | number>(null)
-  const edit = (index: number) => setEditing(index)
-  const stopEditing = () => setEditing(null)
   const [configVisible, setConfigVisible] = useState(false)
   const toggleListConfig = () => setConfigVisible(!configVisible)
 
@@ -60,26 +60,25 @@ export default function ResourceList() {
         isVisible={configVisible}
         onClose={toggleListConfig}
       />
-      <ResourceItemConfig editing={editing} onClose={stopEditing} />
       <Editable onEdit={toggleListConfig}>
         <PageTitle aria-label="resources">{v(list.title)}</PageTitle>
       </Editable>
-      <DroppableList onEdit={edit} />
+      <DroppableList />
       <EditModeOnly>
-        <StyledAddResourceButton edit={edit} />
+        <StyledAddResourceButton />
       </EditModeOnly>
     </div>
   )
 }
 
-function DroppableList(props: {onEdit: (index: number) => void}) {
+function DroppableList() {
   const handleDrag = useHandleDrag()
   const isEdit = useEditMode()
 
   if (!isEdit)
     return (
       <Container>
-        <ResourceItemList onEdit={props.onEdit} />
+        <ResourceItemList />
       </Container>
     )
 
@@ -89,7 +88,7 @@ function DroppableList(props: {onEdit: (index: number) => void}) {
         {(provided) => (
           <Container ref={provided.innerRef} {...provided.droppableProps}>
             <>
-              <ResourceItemList onEdit={props.onEdit} />
+              <ResourceItemList />
               {provided.placeholder}
             </>
           </Container>
@@ -99,7 +98,7 @@ function DroppableList(props: {onEdit: (index: number) => void}) {
   )
 }
 
-function ResourceItemList(props: {onEdit: (index: number) => void}) {
+function ResourceItemList() {
   const {template} = usePanels()
   const {resourceList: list} = template
 
@@ -107,12 +106,10 @@ function ResourceItemList(props: {onEdit: (index: number) => void}) {
     <>
       {list.resources.map((resource: Resource, index: number) => (
         <ResourceItem
-          onEdit={props.onEdit}
           key={index}
           id={`resource-item-${index}`}
           resource={resource}
           index={index}
-          cardBackgroundColor={list.cardBackgroundColor}
         />
       ))}
     </>

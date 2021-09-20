@@ -1,49 +1,167 @@
-import DialogContent from '@material-ui/core/DialogContent'
-import DialogTitle from '@material-ui/core/DialogTitle'
 import TextField from '@material-ui/core/TextField'
-import {usePanels} from 'Event/template/Panels'
-import {onChangeStringHandler} from 'lib/dom'
-import Dialog from 'lib/ui/Dialog'
+import {Panels, usePanels} from 'Event/template/Panels'
+import {handleChangeSlider, onChangeCheckedHandler} from 'lib/dom'
 import React from 'react'
 import ColorPicker from 'lib/ui/ColorPicker'
+import Switch from 'lib/ui/form/Switch'
+import Slider from '@material-ui/core/Slider'
+import InputLabel from '@material-ui/core/InputLabel'
+import FormControl from '@material-ui/core/FormControl'
+import ComponentConfig, {
+  SaveButton,
+} from 'organization/Event/DashboardConfig/ComponentConfig'
+import {Controller, useForm} from 'react-hook-form'
+import {ResourceList} from 'Event/template/Panels/Dashboard/Resources/ResourceList'
+import {useDispatchUpdate} from 'Event/TemplateProvider'
 
 export default function ResourceListConfig(props: {
   isVisible: boolean
   onClose: () => void
 }) {
-  const {template, update} = usePanels()
+  const {template} = usePanels()
   const {resourceList: list} = template
-  const updateResourceList = update.object('resourceList')
+  const {register, control, handleSubmit} = useForm()
+  const updateTemplate = useDispatchUpdate()
+
+  const submit = (
+    data: Pick<
+      ResourceList,
+      | 'isVisible'
+      | 'title'
+      | 'menuTitle'
+      | 'cardBackgroundColor'
+      | 'cardBackgroundOpacity'
+      | 'color'
+      | 'linkColor'
+    >,
+  ) => {
+    const updated: Panels['resourceList'] = {
+      ...list,
+      ...data,
+    }
+
+    updateTemplate({
+      resourceList: updated,
+    })
+
+    props.onClose()
+  }
 
   return (
-    <Dialog onClose={props.onClose} open={props.isVisible} fullWidth>
-      <DialogTitle>Resources</DialogTitle>
-      <DialogContent>
+    <ComponentConfig
+      isVisible={props.isVisible}
+      onClose={props.onClose}
+      title="Resources"
+    >
+      <form onSubmit={handleSubmit(submit)}>
+        <FormControl>
+          <Controller
+            name="isVisible"
+            control={control}
+            defaultValue={list.isVisible}
+            render={({value, onChange}) => (
+              <Switch
+                checked={value}
+                onChange={onChangeCheckedHandler(onChange)}
+                arial-label="toggle resources"
+                labelPlacement="end"
+                color="primary"
+                label="Enabled"
+              />
+            )}
+          />
+        </FormControl>
         <TextField
-          value={list.title}
+          defaultValue={list.title}
+          name="title"
+          label="Title"
           inputProps={{
             'aria-label': 'update resources title',
+            ref: register({required: 'Title is required'}),
           }}
-          label="Title"
           fullWidth
-          onChange={onChangeStringHandler(updateResourceList('title'))}
         />
         <TextField
-          value={list.menuTitle}
+          defaultValue={list.menuTitle}
+          name="menuTitle"
+          label="Menu Title"
           inputProps={{
             'aria-label': 'update resources menu field',
+            ref: register({required: 'Menu title is required'}),
           }}
-          label="Menu Title"
           fullWidth
-          onChange={onChangeStringHandler(updateResourceList('menuTitle'))}
         />
-        <ColorPicker
-          label="Resource Card Background Color"
-          color={list.cardBackgroundColor}
-          onPick={updateResourceList('cardBackgroundColor')}
-          aria-label="resource card background color"
+        <Controller
+          name="color"
+          control={control}
+          defaultValue={list.color}
+          rules={{
+            required: 'Text color is required',
+          }}
+          render={({value, onChange}) => (
+            <ColorPicker
+              label="Text Color"
+              color={value}
+              onPick={onChange}
+              aria-label="resource card color"
+            />
+          )}
         />
-      </DialogContent>
-    </Dialog>
+        <Controller
+          name="linkColor"
+          control={control}
+          defaultValue={list.linkColor}
+          rules={{
+            required: 'Link color is required',
+          }}
+          render={({value, onChange}) => (
+            <ColorPicker
+              label="Link Color"
+              color={value}
+              onPick={onChange}
+              aria-label="resource card link color"
+            />
+          )}
+        />
+
+        <Controller
+          name="cardBackgroundColor"
+          control={control}
+          defaultValue={list.cardBackgroundColor}
+          rules={{
+            required: 'Card background color is required',
+          }}
+          render={({value, onChange}) => (
+            <ColorPicker
+              label="Card Background Color"
+              color={value}
+              onPick={onChange}
+              aria-label="resource card background color"
+            />
+          )}
+        />
+
+        <InputLabel>Card Background Opacity</InputLabel>
+        <Controller
+          name="cardBackgroundOpacity"
+          control={control}
+          defaultValue={list.cardBackgroundOpacity}
+          rules={{
+            required: 'Card background opacity is required',
+          }}
+          render={({value, onChange}) => (
+            <Slider
+              min={0}
+              max={100}
+              step={1}
+              onChange={handleChangeSlider(onChange)}
+              valueLabelDisplay="auto"
+              value={value}
+            />
+          )}
+        />
+        <SaveButton />
+      </form>
+    </ComponentConfig>
   )
 }

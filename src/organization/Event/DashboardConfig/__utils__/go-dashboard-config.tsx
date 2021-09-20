@@ -13,6 +13,7 @@ const mockGet = axios.get as jest.Mock
 type Overrides = EventOverrides & {
   areas?: Area[]
   actions?: Action[]
+  beforeClick?: () => void
 }
 
 export async function goToDashboardConfig(overrides: Overrides = {}) {
@@ -26,6 +27,8 @@ export async function goToDashboardConfig(overrides: Overrides = {}) {
   // Dashboard requests
   mockGet.mockImplementationOnce(() => Promise.resolve({data: areas})) // areas
   mockGet.mockImplementationOnce(() => Promise.resolve({data: actions})) // actions
+
+  overrides.beforeClick && overrides.beforeClick()
 
   // Configure dashboard
   user.click(await context.findByLabelText('configure dashboard'))

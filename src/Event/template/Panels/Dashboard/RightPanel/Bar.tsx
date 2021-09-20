@@ -1,10 +1,12 @@
 import {withStyles} from '@material-ui/core/styles'
+import styled from 'styled-components'
 import {usePanels} from 'Event/template/Panels'
 import React from 'react'
 import Tabs from '@material-ui/core/Tabs'
-import Tab from '@material-ui/core/Tab'
+import MuiTab, {TabProps} from '@material-ui/core/Tab'
 import {TOP_BAR_HEIGHT} from 'Event/template/Panels/Page'
 import {useAttendeeVariables} from 'Event'
+import {useEditMode} from 'Event/Dashboard/editor/state/edit-mode'
 
 export default function Nav(props: {
   currentTab: number
@@ -15,10 +17,10 @@ export default function Nav(props: {
     template: {
       rightPanel,
       homeMenuTitle,
-      resourceList: {menuTitle: resourceMenuTitle},
-      leaderboard: {menuTitle: pointsMenuTitle},
-      speakers: {menuTitle: speakersMenuTitle},
-      sponsors: {menuTitle: sponsorsMenuTitle},
+      resourceList: {menuTitle: resourceMenuTitle, isVisible: showingResources},
+      leaderboard: {menuTitle: pointsMenuTitle, isVisible: showingPoints},
+      speakers: {menuTitle: speakersMenuTitle, isVisible: showingSpeakers},
+      sponsors: {menuTitle: sponsorsMenuTitle, isVisible: showingSponsors},
     },
   } = usePanels()
   const {currentTab, onChangeTab} = props
@@ -47,16 +49,6 @@ export default function Nav(props: {
     <Tabs {...props} TabIndicatorProps={{children: <span />}} />
   )) as typeof Tabs
 
-  const StyledTab = withStyles((theme) => ({
-    root: {
-      color: rightPanel.barTextColor,
-      fontWeight: 'bold',
-      textTransform: 'none',
-      height: `${TOP_BAR_HEIGHT}px`,
-      minWidth: 'auto',
-    },
-  }))((props) => <Tab disableRipple {...props} />) as typeof Tab
-
   return (
     <StyledTabs
       onChange={(_, tabIndex) => onChangeTab(tabIndex)}
@@ -64,20 +56,55 @@ export default function Nav(props: {
       centered
       aria-label={props['aria-label']}
     >
-      <StyledTab label={v(homeMenuTitle)} aria-label="panels tab home" />
-      <StyledTab
+      <Tab showing label={v(homeMenuTitle)} aria-label="panels tab home" />
+      <Tab
         label={v(speakersMenuTitle)}
         aria-label="panels tab speakers"
+        showing={showingSpeakers}
       />
-      <StyledTab
+      <Tab
         label={v(sponsorsMenuTitle)}
         aria-label="panels tab sponsors"
+        showing={showingSponsors}
       />
-      <StyledTab
+      <Tab
         label={v(resourceMenuTitle)}
         aria-label="panels tab resources"
+        showing={showingResources}
       />
-      <StyledTab label={v(pointsMenuTitle)} aria-label="panels tab points" />
+      <Tab
+        label={v(pointsMenuTitle)}
+        aria-label="panels tab points"
+        showing={showingPoints}
+      />
     </StyledTabs>
   )
 }
+
+function Tab(props: {showing: boolean} & TabProps) {
+  const {
+    template: {rightPanel},
+  } = usePanels()
+
+  const isEditMode = useEditMode()
+  const showing = isEditMode ? true : props.showing // always show tab when editing
+
+  return (
+    <StyledTab {...props} color={rightPanel.barTextColor} showing={showing} />
+  )
+}
+
+const StyledTab = styled(
+  (props: {showing: boolean; color: string} & TabProps) => {
+    const {showing, ...tabProps} = props
+
+    return <MuiTab {...tabProps} />
+  },
+)`
+  ${(props) => (props.showing ? '' : 'display: none;')}
+  color: ${(props) => props.color};
+  font-weight: bold;
+  text-transform: none;
+  height: ${TOP_BAR_HEIGHT}px;
+  min-width: auto;
+`

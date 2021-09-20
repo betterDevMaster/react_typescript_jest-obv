@@ -1,5 +1,5 @@
 import {fakeAttendee} from 'Event/auth/__utils__/factory'
-import {fakeNavButton} from 'Event/Dashboard/components/NavButton/__utils__/factory'
+import {fakeNavButtonWithSize} from 'Event/Dashboard/components/NavButton/__utils__/factory'
 import {fakePanels} from 'Event/template/Panels/__utils__/factory'
 import {fakeEvent} from 'Event/__utils__/factory'
 import {loginToEventSite} from 'Event/__utils__/url'
@@ -14,7 +14,7 @@ it('should paginate buttons', async () => {
     },
 
     (_, index) =>
-      fakeNavButton({
+      fakeNavButtonWithSize({
         text: `${index + 1}`,
       }),
   )

@@ -17,66 +17,80 @@ import Typography from '@material-ui/core/Typography'
 import CardContent from '@material-ui/core/CardContent'
 import CardActions from '@material-ui/core/CardActions'
 import {useResourceUrl} from 'Event/Dashboard/components/resource'
+import {usePanels} from 'Event/template/Panels'
+import {rgba} from 'lib/color'
+import {useToggle} from 'lib/toggle'
+import ResourceItemConfig from 'Event/template/Panels/Dashboard/Resources/ResourceList/ResourceItemConfig'
 
 type ResourceItemProps = {
   id: string
   resource: Resource
   index: number
-  cardBackgroundColor?: string
-  onEdit: (index: number) => void
 }
 
 export default React.memo((props: ResourceItemProps) => {
   const {resource, index} = props
   const isEdit = useEditMode()
+  const {flag: configVisible, toggle: toggleConfig} = useToggle()
 
   if (!isEdit)
     return (
       <Container resource={resource}>
-        <ResourceItemCard
-          resource={resource}
-          cardBackgroundColor={props.cardBackgroundColor}
-        />
+        <ResourceItemCard resource={resource} />
       </Container>
     )
 
   return (
-    <Draggable draggableId={props.id} index={index}>
-      {(provided) => (
-        <Container
-          resource={resource}
-          ref={provided.innerRef}
-          draggableProps={provided.draggableProps}
-        >
-          <DraggableOverlay>
-            <Editable onEdit={() => props.onEdit(index)}>
-              <>
-                <DragHandle handleProps={provided.dragHandleProps} />
-                <ResourceItemCard
-                  resource={resource}
-                  cardBackgroundColor={props.cardBackgroundColor}
-                />
-              </>
-            </Editable>
-          </DraggableOverlay>
-        </Container>
-      )}
-    </Draggable>
+    <>
+      <ResourceItemConfig
+        isVisible={configVisible}
+        onClose={toggleConfig}
+        resource={resource}
+        targetIndex={index}
+      />
+      <Draggable draggableId={props.id} index={index}>
+        {(provided) => (
+          <Container
+            resource={resource}
+            ref={provided.innerRef}
+            draggableProps={provided.draggableProps}
+          >
+            <DraggableOverlay>
+              <Editable onEdit={toggleConfig}>
+                <>
+                  <DragHandle handleProps={provided.dragHandleProps} />
+                  <ResourceItemCard resource={resource} />
+                </>
+              </Editable>
+            </DraggableOverlay>
+          </Container>
+        )}
+      </Draggable>
+    </>
   )
 })
 
-function ResourceItemCard(props: {
-  resource: Resource
-  cardBackgroundColor?: string
-}) {
+function ResourceItemCard(props: {resource: Resource}) {
   const {downloadResource: DOWNLOADING_RESOURCE} = usePlatformActions()
   const {submit} = usePoints()
   const url = useResourceUrl(props.resource)
   const v = useAttendeeVariables()
 
+  const {
+    template: {resourceList},
+  } = usePanels()
+
+  const {
+    cardBackgroundColor,
+    cardBackgroundOpacity: backgroundOpacity,
+    linkColor,
+  } = resourceList
+
   const awardPoints = () => {
     submit(DOWNLOADING_RESOURCE)
   }
+
+  const backgroundColor = rgba(cardBackgroundColor, backgroundOpacity / 100)
 
   const isLink = Boolean(props.resource.url)
   const text = isLink ? 'Go to Link' : 'Download'
@@ -84,8 +98,9 @@ function ResourceItemCard(props: {
   return (
     <StyledCard
       variant="outlined"
-      backgroundColor={props.cardBackgroundColor}
+      backgroundColor={backgroundColor}
       borderRadius={10}
+      color={resourceList.color}
     >
       <CardContent>
         <Typography variant="h5" component="h2">
@@ -102,7 +117,9 @@ function ResourceItemCard(props: {
           onClick={awardPoints}
           newTab
         >
-          <LinkText aria-label="resource link">{text}</LinkText>
+          <LinkText aria-label="resource link" color={linkColor}>
+            {text}
+          </LinkText>
         </ResourceLink>
       </CardActions>
     </StyledCard>
@@ -160,17 +177,19 @@ const ResourceLink = styled(AbsoluteLink)`
   }
 `
 
-const LinkText = styled.span`
+const LinkText = styled.span<{color: string}>`
   font-weight: bold;
   text-transform: uppercase;
+  color: ${(props) => props.color} !important;
 `
 
 const StyledCard = styled((props) => {
-  const {backgroundColor, borderRadius, ...otherProps} = props
+  const {backgroundColor, borderRadius, color, ...otherProps} = props
   return <Card {...otherProps} />
 })`
   background-color: ${(props) => props.backgroundColor} !important;
   border-radius: ${(props) => props.borderRadius}px !important;
+  color: ${(props) => props.color} !important;
   margin-bottom: 15px;
   opacity: 0.8;
   &:hover {

@@ -188,6 +188,20 @@ export const PageTitle = styled.h2`
   }
 `
 
+export const PageDescription = styled.h2`
+  font-size: 18px;
+  line-height: 1.2;
+  font-weight: 500;
+  text-align: left;
+  margin: 0 0 30px;
+
+  @media (max-width: ${(props) => props.theme.breakpoints.sm}) {
+    font-size: 14px;
+    line-height: 1;
+    font-weight: 500;
+  }
+`
+
 const FullHeightGrid = styled(Grid)`
   height: 100vh;
 `

@@ -38,7 +38,7 @@ export type ButtonConfigProps<K extends NavButton> = {
 
 export default function MainNavButtonConfig(
   props: ComponentConfigProps & {
-    button: NavButton
+    button: NavButtonWithSize
     id?: string
   },
 ) {
@@ -203,6 +203,21 @@ export default function MainNavButtonConfig(
               control={control}
               render={({value, onChange}) => (
                 <ActionSelect value={value} onChange={onChange} />
+              )}
+            />
+            <Typography gutterBottom>Size</Typography>
+            <Controller
+              name="size"
+              defaultValue={button.size || 0}
+              control={control}
+              render={({value, onChange}) => (
+                <Slider
+                  min={1}
+                  max={12}
+                  onChange={handleChangeSlider(onChange)}
+                  valueLabelDisplay="auto"
+                  value={value}
+                />
               )}
             />
             <Typography gutterBottom>Height</Typography>

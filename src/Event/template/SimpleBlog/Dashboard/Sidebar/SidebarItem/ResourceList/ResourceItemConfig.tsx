@@ -1,8 +1,6 @@
 import TextField from '@material-ui/core/TextField'
 import {onChangeCheckedHandler} from 'lib/dom'
-import styled from 'styled-components'
 import React, {useEffect, useState} from 'react'
-import DangerButton from 'lib/ui/Button/DangerButton'
 import ResourceUpload, {
   useDeleteFile,
 } from 'Event/template/SimpleBlog/Dashboard/Sidebar/SidebarItem/ResourceList/ResourceUpload'
@@ -17,6 +15,7 @@ import FormControl from '@material-ui/core/FormControl'
 import IconSelect from 'lib/fontawesome/IconSelect'
 import ComponentConfig, {
   ComponentConfigProps,
+  RemoveButton,
   SaveButton,
 } from 'organization/Event/DashboardConfig/ComponentConfig'
 import {Controller, useForm, UseFormMethods} from 'react-hook-form'
@@ -42,6 +41,8 @@ export function ResourceItemConfig(
   const [rules, setRules] = useState(resource.rules)
   const [isUrl, setIsUrl] = useState(resource.isUrl)
   const [filePath, setFilePath] = useState(resource.filePath)
+
+  const isEditing = index !== undefined
 
   useEffect(() => {
     if (isVisible) {
@@ -93,8 +94,8 @@ export function ResourceItemConfig(
   }
 
   const remove = () => {
-    if (index === undefined) {
-      throw new Error('Missing resource item index')
+    if (!isEditing) {
+      throw new Error('Called remove outside of editing resource.')
     }
 
     if (resource.filePath) {
@@ -195,6 +196,7 @@ export function ResourceItemConfig(
               variant="outlined"
               aria-label="remove resource"
               onClick={remove}
+              showing={isEditing}
             >
               REMOVE RESOURCE
             </RemoveButton>
@@ -227,8 +229,3 @@ function UrlField(props: {
     />
   )
 }
-
-const RemoveButton = styled(DangerButton)`
-  margin-top: ${(props) => props.theme.spacing[2]}!important;
-  margin-bottom: ${(props) => props.theme.spacing[5]}!important;
-`

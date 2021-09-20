@@ -1,8 +1,6 @@
 import {GridSize} from '@material-ui/core/Grid'
 import {EmojiList} from 'Event/template/Panels/Dashboard/EmojiList'
-import NavButton, {
-  NavButtonWithSize,
-} from 'Event/Dashboard/components/NavButton'
+import {NavButtonWithSize} from 'Event/Dashboard/components/NavButton'
 import {ResourceList} from 'Event/template/Panels/Dashboard/Resources/ResourceList'
 import {BaseTemplate, BASE_DEFAULTS} from 'Event/template'
 import {EntityList} from 'lib/list'
@@ -36,7 +34,7 @@ export type Panels = BaseTemplate & {
     height: number
   }
   backgroundPosition?: 'fixed' | 'bottom'
-  nav: EntityList<NavButton>
+  nav: EntityList<NavButtonWithSize>
   ticketRibbons: TicketRibbon[]
   welcomeText: string
   homeMenuTitle?: string
@@ -94,6 +92,7 @@ export type Panels = BaseTemplate & {
     title: string
     description: string
     menuTitle?: string
+    isVisible?: boolean
   }
   faq?: {
     title?: string
@@ -175,6 +174,7 @@ export type Panels = BaseTemplate & {
     menuTitle?: string
     cardBackgroundColor?: string
     cardBackgroundOpacity?: number
+    isVisible?: boolean
   }
   speakers?: {
     title?: string
@@ -183,6 +183,7 @@ export type Panels = BaseTemplate & {
     speakersSpace?: number
     orderedIds?: number[]
     menuTitle?: string
+    isVisible?: boolean
   }
   offlinePage?: {
     title: string
@@ -240,8 +241,12 @@ export const createPanels = (): DeepRequired<Panels> => ({
   resourceList: {
     title: 'Resources',
     resources: [],
-    cardBackgroundColor: '#FFFFFF',
     menuTitle: 'Resources',
+    isVisible: true,
+    cardBackgroundColor: '#FFFFFF',
+    cardBackgroundOpacity: 1,
+    color: '#000000',
+    linkColor: 'blue',
   },
   menuIconColor: '#000000',
   isDarkMode: false,
@@ -277,6 +282,7 @@ export const createPanels = (): DeepRequired<Panels> => ({
     description:
       '<p>{{first name}}, you have earned {{leaderboard_points}} {{points_unit}}, and you are currently {{leaderboard_position}}. Great Job!</p><p><i>The list below is the top 200 point earners! If you don’t see your name listed, there’s still time!</i></p><p><br>&nbsp;</p>',
     menuTitle: 'Points',
+    isVisible: true,
   },
   faq: {
     title: 'FAQ',
@@ -362,6 +368,7 @@ export const createPanels = (): DeepRequired<Panels> => ({
     menuTitle: 'Sponsors',
     cardBackgroundColor: '#565656',
     cardBackgroundOpacity: 100,
+    isVisible: true,
   },
   speakers: {
     title: 'Our Speakers',
@@ -370,6 +377,7 @@ export const createPanels = (): DeepRequired<Panels> => ({
     speakersSpace: 0,
     orderedIds: [],
     menuTitle: 'Speakers',
+    isVisible: true,
   },
   offlinePage: {
     shouldRedirect: false,

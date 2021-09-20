@@ -8,13 +8,15 @@ import TextField from '@material-ui/core/TextField'
 import {Controller, useForm} from 'react-hook-form'
 import {fieldError} from 'lib/form'
 import TextEditor, {TextEditorContainer} from 'lib/ui/form/TextEditor'
-import {handleChangeSlider} from 'lib/dom'
+import {handleChangeSlider, onChangeCheckedHandler} from 'lib/dom'
 import {ObvioEvent} from 'Event'
 import {useOrganization} from 'organization/OrganizationProvider'
 import {useEvent} from 'Event/EventProvider'
 import {api} from 'lib/url'
 import {ValidationError} from 'lib/api-client'
 import {usePanels} from 'Event/template/Panels'
+import Switch from 'lib/ui/form/Switch'
+import FormControl from '@material-ui/core/FormControl'
 
 const MIN_SPACE_SIZE = 0
 const MAX_SPACE_SIZE = 10
@@ -26,6 +28,7 @@ type UpdateFormData = {
   speakerImageSize: number
   speakersSpace: number
   menuTitle?: string
+  isVisible?: boolean
 }
 
 export default function SpeakerPageConfigForm(props: {onClose: () => void}) {
@@ -63,6 +66,23 @@ export default function SpeakerPageConfigForm(props: {onClose: () => void}) {
 
   return (
     <form onSubmit={handleSubmit(submit)}>
+      <FormControl>
+        <Controller
+          name="isVisible"
+          control={control}
+          defaultValue={speakerPageSettings.isVisible}
+          render={({value, onChange}) => (
+            <Switch
+              checked={value}
+              onChange={onChangeCheckedHandler(onChange)}
+              arial-label="toggle speakers"
+              labelPlacement="end"
+              color="primary"
+              label="Enabled"
+            />
+          )}
+        />
+      </FormControl>
       <TextField
         error={Boolean(titleError)}
         name="title"

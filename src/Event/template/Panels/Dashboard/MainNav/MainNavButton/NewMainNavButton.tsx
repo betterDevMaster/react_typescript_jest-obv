@@ -1,6 +1,6 @@
 import Button from '@material-ui/core/Button'
 import styled from 'styled-components'
-import NavButton from 'Event/Dashboard/components/NavButton'
+import {NavButtonWithSize} from 'Event/Dashboard/components/NavButton'
 import React, {useState} from 'react'
 import {usePanels} from 'Event/template/Panels'
 import MainNavButtonConfig from 'Event/template/Panels/Dashboard/MainNav/MainNavButton/MainNavButtonConfig'
@@ -8,19 +8,20 @@ import MainNavButtonConfig from 'Event/template/Panels/Dashboard/MainNav/MainNav
 export default function NewMainNavButton(props: {className?: string}) {
   const {template} = usePanels()
   const {nav: buttons} = template
-  const [button, setButton] = useState<NavButton | null>(null)
+  const [button, setButton] = useState<NavButtonWithSize | null>(null)
 
   if (!buttons) {
     return null
   }
 
   const addButton = () => {
-    const button: NavButton = {
+    const button: NavButtonWithSize = {
       text: 'Button',
       link: '',
       rules: [],
       isAreaButton: false,
       areaId: null,
+      size: 12,
       actionId: null,
       isVisible: true,
       infusionsoftTag: null,
@@ -47,7 +48,7 @@ export default function NewMainNavButton(props: {className?: string}) {
 }
 
 function NewButtonConfig(props: {
-  button: NavButton | null
+  button: NavButtonWithSize | null
   onClose: () => void
 }) {
   if (!props.button) {

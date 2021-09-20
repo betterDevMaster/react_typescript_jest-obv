@@ -1,51 +1,53 @@
 import Button from '@material-ui/core/Button'
-import {usePanels} from 'Event/template/Panels'
-import {useDispatchUpdate} from 'Event/TemplateProvider'
-import React from 'react'
+import {Resource} from 'Event/template/Panels/Dashboard/Resources/ResourceList'
+import ResourceItemConfig from 'Event/template/Panels/Dashboard/Resources/ResourceList/ResourceItemConfig'
+import React, {useState} from 'react'
 
-export default function AddResourceButton(props: {
-  className?: string
-  edit: (index: number) => void
-}) {
-  const {edit} = props
-  const updateTemplate = useDispatchUpdate()
-  const {template} = usePanels()
-  const {resourceList: list} = template
+export default function AddResourceButton(props: {className?: string}) {
+  const [resource, setResource] = useState<Resource | null>(null)
 
   const addResource = () => {
-    const resources = [
-      ...list.resources,
-      {
-        name: 'Resource',
-        filePath: '',
-        description: '',
-        isVisible: true,
-        rules: [],
-        icon: '',
-      },
-    ]
-    updateTemplate({
-      resourceList: {
-        ...list,
-        resources,
-      },
-    })
+    const resource: Resource = {
+      name: 'Resource',
+      filePath: '',
+      description: '',
+      isVisible: true,
+      rules: [],
+      isUrl: false,
+    }
 
-    const lastItemIndex = resources.length - 1
-    edit(lastItemIndex)
+    setResource(resource)
   }
 
   return (
-    <Button
-      fullWidth
-      size="large"
-      variant="contained"
-      color="secondary"
-      aria-label="add resource"
-      onClick={addResource}
-      className={props.className}
-    >
-      Add Resource
-    </Button>
+    <>
+      <NewResourceConfig
+        resource={resource}
+        onClose={() => setResource(null)}
+      />
+      <Button
+        fullWidth
+        size="large"
+        variant="contained"
+        color="primary"
+        aria-label="add resource"
+        onClick={addResource}
+        className={props.className}
+      >
+        Add Resource
+      </Button>
+    </>
   )
+}
+
+function NewResourceConfig(props: {
+  resource: Resource | null
+  onClose: () => void
+}) {
+  const {resource, onClose} = props
+  if (!resource) {
+    return null
+  }
+
+  return <ResourceItemConfig onClose={onClose} resource={resource} isVisible />
 }

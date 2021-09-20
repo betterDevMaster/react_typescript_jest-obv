@@ -53,7 +53,12 @@ const StyledDialogContent = styled(DialogContent)`
   padding-bottom: ${(props) => props.theme.spacing[2]}!important;
 `
 
-export const RemoveButton = (props: ButtonProps & {children?: string}) => {
+export type RemoveButtonProps = ButtonProps & {
+  children?: string
+  showing?: boolean
+}
+
+export const RemoveButton = (props: RemoveButtonProps) => {
   const label = props.children || 'REMOVE'
 
   return (
@@ -61,6 +66,7 @@ export const RemoveButton = (props: ButtonProps & {children?: string}) => {
       fullWidth
       variant="outlined"
       aria-label="remove"
+      showing={props.showing}
       {...props}
     >
       {label}
@@ -68,7 +74,11 @@ export const RemoveButton = (props: ButtonProps & {children?: string}) => {
   )
 }
 
-export const StyledRemoveButton = styled(DangerButton)`
+const StyledRemoveButton = styled((props: RemoveButtonProps) => {
+  const {showing, ...otherProps} = props
+  return <DangerButton {...otherProps} />
+})`
+  ${(props) => (props.showing ? '' : 'display: none;')}
   margin-top: ${(props) => props.theme.spacing[2]}!important;
   margin-bottom: ${(props) => props.theme.spacing[2]}!important;
 `

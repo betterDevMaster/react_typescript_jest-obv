@@ -8,12 +8,12 @@ import {fakeEvent} from 'Event/__utils__/factory'
 import {mockRxJsAjax} from 'store/__utils__/MockStoreProvider'
 import {wait} from '@testing-library/react'
 import axios from 'axios'
-import {goToDashboardConfig} from 'organization/Event/DashboardConfig/__utils__/go-dashboard-config'
+import {goToPanelsConfig} from 'Event/template/Panels/__utils__/go-to-panels-config'
 
 const mockPost = mockRxJsAjax.post as jest.Mock
 const mockDelete = axios.delete as jest.Mock
 
-afterEach(() => {
+beforeEach(() => {
   jest.clearAllMocks()
 })
 
@@ -27,15 +27,16 @@ it('should add a new resource', async () => {
 
   const event = fakeEvent({template: dashboard})
 
-  const {findByLabelText, findAllByLabelText} = await goToDashboardConfig({
+  const {findByLabelText, findAllByLabelText} = await goToPanelsConfig({
     event,
   })
 
   user.click(await findByLabelText('panels tab resources'))
 
   fireEvent.click(await findByLabelText('add resource'))
-  expect((await findAllByLabelText('event resource')).length).toBe(1)
+  fireEvent.click(await findByLabelText('save'))
 
+  expect((await findAllByLabelText('event resource')).length).toBe(1)
   // Saved
   await wait(() => {
     expect(mockPost).toHaveBeenCalledTimes(1)
@@ -56,7 +57,7 @@ it('should update resources title', async () => {
 
   const event = fakeEvent({template: dashboard})
 
-  const {findByLabelText} = await goToDashboardConfig({
+  const {findByLabelText} = await goToPanelsConfig({
     event,
   })
 
@@ -66,6 +67,7 @@ it('should update resources title', async () => {
 
   const updatedTitle = faker.random.words(2)
   user.type(await findByLabelText('update resources title'), updatedTitle)
+  fireEvent.click(await findByLabelText('save'))
 
   expect((await findByLabelText('resources')).textContent).toBe(updatedTitle)
 
@@ -93,7 +95,7 @@ it('should update a resource', async () => {
 
   const downloadLinkText = 'Download'
 
-  const {findByLabelText} = await goToDashboardConfig({
+  const {findByLabelText} = await goToPanelsConfig({
     event,
   })
 
@@ -107,6 +109,7 @@ it('should update a resource', async () => {
 
   const updatedName = faker.random.word()
   user.type(await findByLabelText('resource name'), updatedName)
+  fireEvent.click(await findByLabelText('save'))
 
   expect((await findByLabelText('resource link')).textContent).toBe(
     downloadLinkText,
@@ -140,7 +143,7 @@ it('should remove a resource', async () => {
     findAllByLabelText,
     findByLabelText,
     queryByText,
-  } = await goToDashboardConfig({
+  } = await goToPanelsConfig({
     event,
   })
 
