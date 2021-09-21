@@ -42,10 +42,10 @@ export default function LoginFormConfig() {
     login.description.fontSize,
   )
   const [inputBorderRadius, setInputBorderRadius] = useState(
-    login.inputBorderRadius || 56, // spacing[14]
+    login.inputBorderRadius, // spacing[14]
   )
   const [buttonBorderRadius, setButtonBorderRadius] = useState(
-    login.submitButton.borderRadius || 56, // spacing[14]
+    login.submitButton.borderRadius, // spacing[14]
   )
   const [logoHidden, setLogoHidden] = useState<boolean>(
     login.logoHidden || false,
