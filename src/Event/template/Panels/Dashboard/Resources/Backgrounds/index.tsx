@@ -12,6 +12,7 @@ import {useSortBackgrounds} from 'organization/Event/Backgrounds/BackgroundsProv
 import Card from '@material-ui/core/Card'
 import CardContent from '@material-ui/core/CardContent'
 import CardActions from '@material-ui/core/CardActions'
+import {rgba} from 'lib/color'
 
 export default function PanelsBackgrounds() {
   const v = useAttendeeVariables()
@@ -35,11 +36,15 @@ export default function PanelsBackgrounds() {
   if (!hasBackgrounds) {
     return null
   }
+  const backgroundColor = rgba(
+    list.cardBackgroundColor,
+    list.cardBackgroundOpacity / 100,
+  )
 
   return (
     <StyledCard
       variant="outlined"
-      backgroundColor={list.cardBackgroundColor}
+      backgroundColor={backgroundColor}
       borderRadius={10}
     >
       <CardContent>
