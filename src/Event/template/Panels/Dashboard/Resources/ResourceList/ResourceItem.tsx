@@ -93,7 +93,8 @@ function ResourceItemCard(props: {resource: Resource}) {
   const backgroundColor = rgba(cardBackgroundColor, backgroundOpacity / 100)
 
   const isLink = Boolean(props.resource.url)
-  const text = isLink ? 'Go to Link' : 'Download'
+  const defaultText = isLink ? 'Go to Link' : 'Download'
+  const text = v(props.resource.linkText || defaultText)
 
   return (
     <StyledCard

@@ -38,6 +38,7 @@ export type Resource = Publishable &
     description: string | null
     isUrl?: boolean
     url?: string
+    linkText?: string
   }
 
 export default function ResourceList() {

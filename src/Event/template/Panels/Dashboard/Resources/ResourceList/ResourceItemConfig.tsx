@@ -195,6 +195,16 @@ export default function ResourceItemConfig(
               rows={4}
               multiline
             />
+            <TextField
+              name="linkText"
+              defaultValue={resource.linkText}
+              inputProps={{
+                'aria-label': 'resource link text',
+                ref: register,
+              }}
+              label="Link Text"
+              fullWidth
+            />
             <SaveButton />
             <RemoveButton
               fullWidth

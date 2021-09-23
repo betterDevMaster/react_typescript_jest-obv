@@ -14,6 +14,7 @@ export default function AddResourceButton(props: {className?: string}) {
       isVisible: true,
       rules: [],
       isUrl: false,
+      linkText: 'Download',
     }
 
     setResource(resource)
