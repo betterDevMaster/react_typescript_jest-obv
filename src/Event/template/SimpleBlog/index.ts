@@ -47,6 +47,17 @@ export type SimpleBlog = BaseTemplate & {
     contentTextColor?: string
     spacing?: number
   }
+  postFormStyles?: {
+    width?: number
+    position?: string
+    buttonSize?: number
+    buttonRadius?: number
+    buttonColor?: string
+    buttonBackgroundColor?: string
+    buttonHoverBackgroundColor?: string
+    buttonPosition?: string
+    buttonFontSize?: number
+  }
   header: SimpleBlogHeader
   dashboardBackground?: {
     color: string
@@ -341,6 +352,17 @@ export const createSimpleBlog = (): DeepRequired<SimpleBlog> => ({
     contentTextColor: '#000000',
     contentFontSize: 17,
     spacing: 32,
+  },
+  postFormStyles: {
+    width: 100,
+    position: 'center',
+    buttonSize: 100,
+    buttonRadius: 0,
+    buttonColor: 'pink',
+    buttonBackgroundColor: 'blue',
+    buttonHoverBackgroundColor: 'blue',
+    buttonPosition: 'center',
+    buttonFontSize: 27,
   },
   dashboardBackground: {
     color: '#FFFFFF',
