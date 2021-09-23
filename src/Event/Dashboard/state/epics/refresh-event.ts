@@ -40,9 +40,10 @@ export const refreshEventEpic: Epic<
 
       /**
        * Re-fetch event, we have to make sure to include `No-Cache` header to avoid
-       * browser/cdn from returning stale data.
+       * browser/cdn from returning stale data. We'll also set latest flag to
+       * always fetch on master/write db.
        */
-      const url = api(`/events/${event.slug}?no-cache=true`)
+      const url = api(`/events/${event.slug}?no-cache=true&latest=true`)
       const request = ajax.get(url, {
         'No-Cache': uuid(),
       })
