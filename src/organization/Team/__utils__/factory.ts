@@ -10,6 +10,7 @@ export const fakeTeamMember = (
   permissions: [],
   role: null,
   has_paid: false,
+  feature_flags: [],
   ...overrides,
 })
 

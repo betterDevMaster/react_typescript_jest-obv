@@ -1,4 +1,4 @@
-import {User} from 'auth/user'
+import {TeamMember} from 'auth/user'
 import {useAsync} from 'lib/async'
 import {api} from 'lib/url'
 import {useOrganizationAuth} from 'organization/auth'
@@ -7,7 +7,7 @@ import TeamMemberOnly from 'organization/auth/TeamMemberOnly'
 import React, {useCallback} from 'react'
 import FullPageLoader from 'lib/ui/layout/FullPageLoader'
 
-type OwnerContextProps = User
+type OwnerContextProps = TeamMember
 
 const OwnerContext = React.createContext<OwnerContextProps | undefined>(
   undefined,
@@ -21,7 +21,7 @@ export default function OwnerProvider(props: {children: React.ReactNode}) {
 
   const fetch = useCallback(() => {
     const url = api(`/organizations/${slug}/owner`)
-    return client.get<User>(url)
+    return client.get<TeamMember>(url)
   }, [slug, client])
 
   const {data: owner, loading} = useAsync(fetch)

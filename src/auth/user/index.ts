@@ -11,6 +11,7 @@ export type TeamMember = User & {
   permissions: string[]
   role: Role | null
   has_paid: boolean
+  feature_flags: string[] | null
 }
 
 export function isTeamMember(user: User | null): user is TeamMember {
