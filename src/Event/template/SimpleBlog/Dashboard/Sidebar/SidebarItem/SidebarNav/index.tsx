@@ -38,7 +38,7 @@ export default function SidebarNav(props: SidebarNavProps) {
   if (!hasButtons) {
     return (
       <EditModeOnly>
-        <RemoveButton onClick={removeItem} size="large">
+        <RemoveButton onClick={removeItem} showing size="large">
           Remove Buttons
         </RemoveButton>
         <StyledNewSidebarNavButton nav={props} />

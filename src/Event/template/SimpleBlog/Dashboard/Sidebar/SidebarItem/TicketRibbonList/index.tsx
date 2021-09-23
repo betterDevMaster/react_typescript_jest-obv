@@ -34,7 +34,7 @@ export default function TicketRibbons(props: TicketRibbonListProps) {
   return (
     <>
       <EditModeOnly>
-        <RemoveButton onClick={removeItem} size="large">
+        <RemoveButton onClick={removeItem} showing size="large">
           Remove Ribbons
         </RemoveButton>
         <StyledAddTicketRibbonButton list={props} />

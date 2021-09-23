@@ -81,7 +81,7 @@ export default function AgendaList(props: AgendaListProps) {
         onClose={toggleListConfig}
       />
       <EditModeOnly>
-        <RemoveButton size="large" onClick={removeItem}>
+        <RemoveButton size="large" showing onClick={removeItem}>
           Remove Agenda
         </RemoveButton>
       </EditModeOnly>

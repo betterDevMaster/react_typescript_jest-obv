@@ -51,7 +51,7 @@ export default function EmojiList(props: EmojiListProps) {
             onClose={toggleConfig}
             list={props}
           />
-          <RemoveButton size="large" onClick={removeItem}>
+          <RemoveButton size="large" showing onClick={removeItem}>
             Remove Emojis
           </RemoveButton>
           <StyledAddEmojiListButton onClick={toggleConfig} />

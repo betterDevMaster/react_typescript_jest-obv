@@ -52,7 +52,7 @@ export default function PointsSummary(props: PointsSummaryProps) {
         >
           Edit Points Summary
         </EditButton>
-        <RemoveButton size="large" onClick={removeItem}>
+        <RemoveButton size="large" showing onClick={removeItem}>
           Remove Points Summary
         </RemoveButton>
       </EditModeOnly>

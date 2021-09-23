@@ -76,7 +76,7 @@ export function ResourceList(props: ResourceListProps) {
         list={props}
       />
       <EditModeOnly>
-        <RemoveButton size="large" onClick={removeItem}>
+        <RemoveButton size="large" showing onClick={removeItem}>
           Remove Resources
         </RemoveButton>
       </EditModeOnly>
