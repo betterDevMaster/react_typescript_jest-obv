@@ -12,7 +12,7 @@ import PageArrows from 'Event/template/Panels/Dashboard/MainNav/MainNavDesktop/P
  * the ideal per page count. Too low and we run into performance
  * issues, too high and the user will perceive layout breakage.
  */
-const RESIZE_DELAY_MS = 50
+const RESIZE_DELAY_MS = 150
 
 /**
  * Invisible sizer to help determine the number of buttons per page. The
