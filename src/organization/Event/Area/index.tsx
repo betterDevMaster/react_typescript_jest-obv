@@ -32,6 +32,7 @@ import {useRooms} from 'organization/Event/Area/RoomsProvider'
 import {api} from 'lib/url'
 import {Area as AreaModel} from 'organization/Event/AreasProvider'
 import {useInterval} from 'lib/interval'
+import NameField from 'organization/Event/Area/NameField'
 
 const CONFIRM_TURN_OFF_TECH_CHECK_REASSIGN =
   "This area is currently assigned to Tech Check.  If you turn this setting off, and an attendee hasn't completed their tech check, they may see an offline message when they try to check in and their original room is unavailable.  Are you sure you wish to disable?"
@@ -135,7 +136,7 @@ export default function Area() {
               clearError={clearError}
             />
           </Box>
-          <Title variant="h5">{area.name}</Title>
+          <NameField />
           <HasPermission permission={CONFIGURE_EVENTS}>
             <>
               <Box>
@@ -322,12 +323,6 @@ function sumAttendees(metrics: RoomMetrics[]) {
     return acc + num
   }, 0)
 }
-
-const Title = withStyles({
-  root: {
-    marginBottom: spacing[4],
-  },
-})(Typography)
 
 const CreateRoomButton = withStyles({
   root: {

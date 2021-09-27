@@ -2,7 +2,7 @@ import user from '@testing-library/user-event'
 import faker from 'faker'
 import axios from 'axios'
 import {Area} from 'organization/Event/AreasProvider'
-import {wait} from '@testing-library/react'
+import {fireEvent, wait} from '@testing-library/react'
 import {CONFIGURE_EVENTS} from 'organization/PermissionsProvider'
 import {
   goToArea,
@@ -134,4 +134,40 @@ it('should require confirmation to turn off re-assign for Tech Check area', asyn
     'toggle re-assign on offline',
   )) as HTMLInputElement).checked
   expect(isChecked).toBe(false)
+})
+
+it('should update the area name', async () => {
+  const area = fakeArea({
+    reassign_on_offline: true,
+    is_tech_check: true,
+  })
+  const {findByLabelText} = await goToArea({
+    userPermissions: [CONFIGURE_EVENTS],
+    area,
+  })
+
+  const name = 'myupdatedarea'
+
+  const updated: Area = {
+    ...area,
+    name,
+  }
+  mockPatch.mockImplementationOnce(() => Promise.resolve({data: updated}))
+
+  fireEvent.change(await findByLabelText('area name'), {
+    target: {
+      value: name,
+    },
+  })
+
+  user.click(await findByLabelText('save name'))
+
+  await wait(() => {
+    expect(mockPatch).toHaveBeenCalledTimes(1)
+  })
+
+  const [url, data] = mockPatch.mock.calls[0]
+  expect(url).toMatch(`/areas/${area.id}`)
+  // Was toggled -- ie. sent opposite of current open status
+  expect(data.name).toBe(name)
 })
