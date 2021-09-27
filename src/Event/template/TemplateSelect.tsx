@@ -6,7 +6,7 @@ import {Template} from 'Event/template'
 import {SIMPLE_BLOG} from 'Event/template/SimpleBlog'
 import {onUnknownChangeHandler} from 'lib/dom'
 import React from 'react'
-// import {PANELS} from 'Event/template/Panels'
+import {PANELS} from 'Event/template/Panels'
 
 export default function TemplateSelect(props: {
   value: Template['name'] | null
@@ -24,7 +24,7 @@ export default function TemplateSelect(props: {
         }}
       >
         <MenuItem value={SIMPLE_BLOG}>{SIMPLE_BLOG}</MenuItem>
-        {/* <MenuItem value={PANELS}>{PANELS}</MenuItem> */}
+        <MenuItem value={PANELS}>{PANELS}</MenuItem>
       </Select>
     </FormControl>
   )

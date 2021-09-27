@@ -22,6 +22,11 @@ type MainNavButtonProps = {
 export default React.memo((props: MainNavButtonProps) => {
   const isEditMode = useEditMode()
   const {flag: configVisible, toggle: toggleConfig} = useToggle()
+  const {flag: showingCopyConfig, toggle: toggleCopyConfig} = useToggle()
+
+  const edit = () => {
+    toggleConfig()
+  }
 
   const button = <NavButton {...props.button} aria-label="main nav button" />
 
@@ -37,6 +42,11 @@ export default React.memo((props: MainNavButtonProps) => {
         id={props.id}
         button={props.button}
       />
+      <MainNavButtonConfig
+        isVisible={showingCopyConfig}
+        onClose={toggleCopyConfig}
+        button={props.button}
+      />
       <Draggable draggableId={props.id} index={props.index}>
         {(provided) => (
           <Container
@@ -45,7 +55,7 @@ export default React.memo((props: MainNavButtonProps) => {
             draggableProps={provided.draggableProps}
           >
             <DraggableOverlay>
-              <Editable onEdit={toggleConfig}>
+              <Editable onEdit={edit} onCopy={toggleCopyConfig}>
                 <>
                   <DragHandle handleProps={provided.dragHandleProps} />
                   {button}

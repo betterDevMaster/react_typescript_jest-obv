@@ -3,7 +3,7 @@ import faker from 'faker'
 import {fakeSimpleBlog} from 'Event/template/SimpleBlog/__utils__/factory'
 import {fakeNavButtonWithSize} from 'Event/Dashboard/components/NavButton/__utils__/factory'
 import {createEntityList} from 'lib/list'
-import {clickEdit} from '__utils__/edit'
+import {clickEdit, clickDuplicate} from '__utils__/edit'
 import {fireEvent} from '@testing-library/react'
 import {fakeEvent} from 'Event/__utils__/factory'
 import {mockRxJsAjax} from 'store/__utils__/MockStoreProvider'
@@ -18,6 +18,51 @@ const mockGet = mockAxios.get as jest.Mock
 
 beforeEach(() => {
   jest.clearAllMocks()
+})
+
+it('should duplicate a main navbutton', async () => {
+  const buttons = Array.from(
+    {
+      length: faker.random.number({min: 1, max: 4}),
+    },
+    fakeNavButtonWithSize,
+  )
+
+  const mainNavButtons = createEntityList(buttons)
+  const event = fakeEvent({
+    template: fakeSimpleBlog({
+      mainNav: mainNavButtons,
+    }),
+  })
+  const {findByLabelText, findByText} = await goToDashboardConfig({event})
+
+  const targetIndex = faker.random.number({min: 0, max: buttons.length - 1})
+  const button = buttons[targetIndex]
+  const buttonEl = await findByText(button.text)
+
+  clickDuplicate(buttonEl)
+
+  const textInput = (await findByLabelText(
+    'button name input',
+  )) as HTMLInputElement
+  expect(textInput.value).toBe(button.text)
+
+  fireEvent.click(await findByLabelText('save'))
+
+  // Saved
+  await wait(() => {
+    expect(mockPost).toHaveBeenCalledTimes(1)
+  })
+
+  const [url, data] = mockPost.mock.calls[0]
+  expect(url).toMatch(`/events/${event.slug}`)
+
+  expect(data.template.mainNav.ids.length).toBe(mainNavButtons.ids.length + 1)
+  const newButtonId =
+    data.template.mainNav.ids[data.template.mainNav.ids.length - 1]
+  const newButton = data.template.mainNav.entities[newButtonId]
+
+  expect(newButton.text).toBe(button.text)
 })
 
 it('should edit the selected button', async () => {

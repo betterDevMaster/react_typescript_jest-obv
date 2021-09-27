@@ -20,6 +20,7 @@ export default function DangerButton(
       color: isContained ? '#FFFFFF' : red[500],
       borderColor: isContained ? red[500] : red[300],
       background: isContained ? red[500] : 'transparent',
+      display: props.hidden ? 'none' : 'flex',
       '&:hover': {
         backgroundColor: hoverBackground(),
         borderColor: red[500],

@@ -15,6 +15,11 @@ export default React.memo(
     const isEditMode = useEditMode()
 
     const {flag: configVisible, toggle: toggleConfig} = useToggle()
+    const {flag: showingCopyConfig, toggle: toggleCopyConfig} = useToggle()
+
+    const edit = () => {
+      toggleConfig()
+    }
 
     const button = (
       <Published component={props}>
@@ -41,11 +46,17 @@ export default React.memo(
           isVisible={configVisible}
           onClose={toggleConfig}
         />
+        <SidebarNavButtonConfig
+          nav={props.nav}
+          button={props}
+          isVisible={showingCopyConfig}
+          onClose={toggleCopyConfig}
+        />
         <Draggable draggableId={props.id} index={props.index}>
           {(provided) => (
             <div ref={provided.innerRef} {...provided.draggableProps}>
               <DraggableOverlay>
-                <Editable onEdit={toggleConfig}>
+                <Editable onEdit={edit} onCopy={toggleCopyConfig}>
                   <>
                     <DragHandle handleProps={provided.dragHandleProps} />
                     {button}

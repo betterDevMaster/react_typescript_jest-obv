@@ -2,6 +2,7 @@ import {fireEvent} from '@testing-library/react'
 import {
   EDIT_COMPONENT_BUTTON_CLASS,
   EDIT_COMPONENT_CLASS,
+  DUPLICATE_COMPONENT_BUTTON_CLASS,
 } from 'Event/Dashboard/editor/views/EditComponent'
 
 /**
@@ -17,6 +18,18 @@ export function clickEdit(el: HTMLElement) {
 
   if (!editButton) {
     throw new Error('Could not find edit button; is edit mode on?')
+  }
+
+  fireEvent.click(editButton)
+}
+
+export function clickDuplicate(el: HTMLElement) {
+  const editButton = el
+    .closest(`.${EDIT_COMPONENT_CLASS}`) // parent edit component div
+    ?.querySelector(`.${DUPLICATE_COMPONENT_BUTTON_CLASS}`) //  duplicate button
+
+  if (!editButton) {
+    throw new Error('Could not find duplicate button; is edit mode on?')
   }
 
   fireEvent.click(editButton)

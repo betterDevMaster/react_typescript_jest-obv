@@ -17,11 +17,19 @@ type CustomButtonProps = {
   buttons: EntityList<NavButtonWithSize>
   index: number
   update?: (buttons: EntityList<NavButtonWithSize>) => void
+  add?: (button: NavButtonWithSize) => void
 }
 
 export default React.memo((props: CustomButtonProps) => {
-  const {id, index, update, buttons} = props
+  const {id, index, update, buttons, button, add} = props
   const {flag: configVisible, toggle: toggleConfig} = useToggle()
+
+  const duplicate = () => {
+    if (!add) {
+      throw new Error('Missing button add function')
+    }
+    add(button)
+  }
 
   const removeButton = () => {
     if (!update) {
@@ -82,7 +90,7 @@ export default React.memo((props: CustomButtonProps) => {
             draggableProps={provided.draggableProps}
           >
             <DraggableOverlay>
-              <EditComponentOverlay onClick={toggleConfig}>
+              <EditComponentOverlay onClick={toggleConfig} onCopy={duplicate}>
                 <>
                   <DragHandle handleProps={provided.dragHandleProps} />
                   {buttonComponent}

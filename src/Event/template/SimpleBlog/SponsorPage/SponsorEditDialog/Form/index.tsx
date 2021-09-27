@@ -38,6 +38,7 @@ export default function EditSponsorForm(props: {
     loading: loadingButtons,
     add: addButton,
     edit: editButton,
+    duplicate: duplicateButton,
     editing: editingButton,
     update: updateButton,
     stopEdit: stopEditingButton,
@@ -120,6 +121,7 @@ export default function EditSponsorForm(props: {
             buttons={buttons}
             onAdd={addButton}
             edit={editButton}
+            duplicate={duplicateButton}
             loading={loadingButtons}
           />
         </Box>

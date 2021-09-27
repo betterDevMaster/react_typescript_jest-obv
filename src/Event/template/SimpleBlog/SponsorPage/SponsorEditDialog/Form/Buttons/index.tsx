@@ -16,9 +16,10 @@ export default function Buttons(props: {
   buttons: Buttons
   edit: ReturnType<typeof useButtons>['edit']
   onAdd: ReturnType<typeof useButtons>['add']
+  duplicate: ReturnType<typeof useButtons>['duplicate']
   loading: ReturnType<typeof useButtons>['loading']
 }) {
-  const {buttons, edit, onAdd, loading} = props
+  const {buttons, edit, onAdd, loading, duplicate} = props
 
   if (loading) {
     return null
@@ -35,7 +36,7 @@ export default function Buttons(props: {
         <InputLabel>Buttons</InputLabel>
         <AddButton onAdd={onAdd} />
       </Box>
-      <ButtonList buttons={buttons} edit={edit} />
+      <ButtonList buttons={buttons} edit={edit} duplicate={duplicate} />
     </>
   )
 }
@@ -43,8 +44,9 @@ export default function Buttons(props: {
 function ButtonList(props: {
   buttons: Buttons
   edit: ReturnType<typeof useButtons>['edit']
+  duplicate: ReturnType<typeof useButtons>['duplicate']
 }) {
-  const {buttons, edit} = props
+  const {buttons, edit, duplicate} = props
   const hasButtons = buttons.ids.length > 0
 
   if (!hasButtons) {
@@ -55,7 +57,11 @@ function ButtonList(props: {
     <>
       {buttons.ids.map((id) => (
         <ButtonBox key={id}>
-          <EditComponentOverlay onClick={edit(id)} disableChildInteraction>
+          <EditComponentOverlay
+            onClick={edit(id)}
+            disableChildInteraction
+            onCopy={() => duplicate(id)}
+          >
             <NavButton aria-label="sponsor button" {...buttons.entities[id]} />
           </EditComponentOverlay>
         </ButtonBox>
@@ -87,6 +93,11 @@ export function useButtons(sponsor: Sponsor) {
     }
 
     setButtons({ids, entities})
+  }
+
+  const duplicate = (id: string) => {
+    const button = buttons.entities[id]
+    add(button)
   }
 
   const edit = (id: string | null) => () => setEditingId(id)
@@ -134,6 +145,7 @@ export function useButtons(sponsor: Sponsor) {
     remove,
     update,
     stopEdit,
+    duplicate,
   }
 }
 

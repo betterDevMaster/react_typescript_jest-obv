@@ -2,7 +2,7 @@ import faker from 'faker'
 import {fakePanels} from 'Event/template/Panels/__utils__/factory'
 import {fakeNavButtonWithSize} from 'Event/Dashboard/components/NavButton/__utils__/factory'
 import {createEntityList} from 'lib/list'
-import {clickEdit} from '__utils__/edit'
+import {clickEdit, clickDuplicate} from '__utils__/edit'
 import {fireEvent} from '@testing-library/react'
 import {fakeEvent} from 'Event/__utils__/factory'
 import {mockRxJsAjax} from 'store/__utils__/MockStoreProvider'
@@ -76,6 +76,42 @@ it('should add a new main nav button', async () => {
   const [url, data] = mockPost.mock.calls[0]
   expect(url).toMatch(`/events/${event.slug}`)
   expect(data.template.nav.ids.length).toBe(numButtons + 1)
+})
+
+it('should duplicate a main navbutton', async () => {
+  const numButtons = faker.random.number({min: 2, max: 4})
+
+  const buttons = Array.from({length: numButtons}, fakeNavButtonWithSize)
+  const mainNavButtons = createEntityList(buttons)
+  const event = fakeEvent({
+    template: fakePanels({nav: mainNavButtons}),
+  })
+
+  const {
+    findAllByLabelText,
+    findByLabelText,
+    queryByText,
+  } = await goToDashboardConfig({event})
+
+  const buttonEls = () => findAllByLabelText('main nav button')
+  expect((await buttonEls()).length).toBe(numButtons)
+
+  const target = faker.random.arrayElement(await buttonEls())
+  expect(queryByText(target.textContent!)).toBeInTheDocument()
+
+  clickDuplicate(target)
+
+  fireEvent.click(await findByLabelText('save'))
+
+  // Saved
+  await wait(() => {
+    expect(mockPost).toHaveBeenCalledTimes(1)
+  })
+
+  const [url, data] = mockPost.mock.calls[0]
+  expect(url).toMatch(`/events/${event.slug}`)
+
+  expect(data.template.nav.ids.length).toBe(mainNavButtons.ids.length + 1)
 })
 
 it('should remove the button', async () => {

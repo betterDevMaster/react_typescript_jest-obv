@@ -88,6 +88,7 @@ function Editable(
                     index={index}
                     key={index}
                     button={entities[id]}
+                    add={addButton}
                   />
                 ))}
                 {provided.placeholder}

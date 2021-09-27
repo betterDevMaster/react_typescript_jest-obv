@@ -1,4 +1,3 @@
-import DangerButton from 'lib/ui/Button/DangerButton'
 import React, {useEffect, useState} from 'react'
 import Box from '@material-ui/core/Box'
 import RuleConfig, {useRuleConfig} from 'Event/attendee-rules/RuleConfig'
@@ -14,6 +13,7 @@ import NavButton from 'Event/Dashboard/components/NavButton'
 import ActionSelect from 'Event/ActionsProvider/ActionSelect'
 import ComponentConfig, {
   ComponentConfigProps,
+  RemoveButton,
   SaveButton,
 } from 'organization/Event/DashboardConfig/ComponentConfig'
 import {Controller, useForm} from 'react-hook-form'
@@ -57,7 +57,7 @@ export function SidebarNavButtonConfig(
     setLink(button.link)
     setPage(button.page)
     setNewTab(button.newTab)
-  }, [isVisible, button])
+  }, [isVisible, button, props.id])
 
   const {register, control, handleSubmit} = useForm()
 
@@ -263,16 +263,11 @@ export function SidebarNavButtonConfig(
             )}
           />
           <SaveButton type="submit" />
-          <Box mt={2} mb={3}>
-            <DangerButton
-              fullWidth
-              variant="outlined"
-              aria-label="remove button"
-              onClick={removeButton}
-            >
-              REMOVE BUTTON
-            </DangerButton>
-          </Box>
+          <RemoveButton
+            showing={Boolean(id)}
+            aria-label="remove button"
+            onClick={removeButton}
+          />
         </form>
       </RuleConfig>
     </ComponentConfig>

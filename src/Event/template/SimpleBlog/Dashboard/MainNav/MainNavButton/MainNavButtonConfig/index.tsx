@@ -38,7 +38,7 @@ export type ButtonConfigProps<K extends NavButton> = {
 export function MainNavButtonConfig(
   props: ComponentConfigProps & {
     button: NavButtonWithSize
-    id?: string
+    id?: string | null
   },
 ) {
   const {isVisible, onClose, id, button} = props
@@ -53,8 +53,10 @@ export function MainNavButtonConfig(
   const [link, setLink] = useState(button.link)
   const [page, setPage] = useState(button.page)
   const [newTab, setNewTab] = useState(button.newTab)
+  const [hideRemoveButton, setHideRemoveButton] = useState<boolean>(!props.id)
 
   useEffect(() => {
+    setHideRemoveButton(!props.id)
     if (isVisible) {
       return
     }
@@ -65,7 +67,7 @@ export function MainNavButtonConfig(
     setLink(button.link)
     setPage(button.page)
     setNewTab(button.newTab)
-  }, [isVisible, button])
+  }, [isVisible, button, props.id])
 
   const {visible: ruleConfigVisible, toggle: toggleRuleConfig} = useRuleConfig()
 
@@ -346,6 +348,7 @@ export function MainNavButtonConfig(
               variant="outlined"
               aria-label="remove button"
               onClick={removeButton}
+              hidden={hideRemoveButton}
             >
               REMOVE BUTTON
             </DangerButton>

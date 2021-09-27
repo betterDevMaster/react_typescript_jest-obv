@@ -121,6 +121,9 @@ it('it should set custom buttons', async () => {
   user.click(await findByLabelText('add tech check button'))
   user.click(await findByLabelText('add tech check button'))
 
+  //duplicate second button
+  user.click((await findAllByLabelText('duplicate component'))[1])
+
   // Configure second button with page
   user.click((await findAllByLabelText('edit component'))[1])
   fireEvent.mouseDown(await findByLabelText('pick page'))
@@ -142,7 +145,7 @@ it('it should set custom buttons', async () => {
 
   expect(template.techCheck.hasCustomButtons).toBe(true)
   // Removed the button
-  expect(template.techCheck.buttons.ids.length).toBe(1)
+  expect(template.techCheck.buttons.ids.length).toBe(2)
   // Did set page
   expect(
     template.techCheck.buttons.entities[template.techCheck.buttons.ids[0]].page,
