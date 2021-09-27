@@ -94,6 +94,9 @@ export default function TagsInput(props: {
               label={props.label}
               disabled={props.disabled}
               InputProps={{
+                classes: {
+                  root: classes.root,
+                },
                 startAdornment: tags.map((item) => (
                   <span aria-label="tag" key={item}>
                     <Chip
@@ -122,6 +125,9 @@ export default function TagsInput(props: {
 }
 
 const useStyles = makeStyles((theme) => ({
+  root: {
+    display: 'inline',
+  },
   chip: {
     margin: theme.spacing(0.5, 0.25),
   },
