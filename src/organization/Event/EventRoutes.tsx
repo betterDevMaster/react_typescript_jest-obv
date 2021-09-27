@@ -47,6 +47,7 @@ import Backgrounds from 'organization/Event/Backgrounds'
 import {StaticPointsProvider} from 'Event/PointsProvider'
 import DuplicateEventForm from 'organization/EventList/DuplicateEventForm'
 import RoomsProvider from 'organization/Event/Area/RoomsProvider'
+import EmojiPageSettings from 'organization/Event/EmojiPage/EmojiPageSettings'
 
 export type EventRoutes = ReturnType<typeof useEventRoutes>
 
@@ -121,7 +122,12 @@ export default function EventRoutes() {
               </AreasProvider>
             </AttendeesProvider>
           </Route>
-          <Route path={routes.events[':event'].emoji}>
+          <Route path={routes.events[':event'].emoji.settings}>
+            <AuthorizedPage permission={CONFIGURE_EVENTS}>
+              <EmojiPageSettings />
+            </AuthorizedPage>
+          </Route>
+          <Route path={routes.events[':event'].emoji.root}>
             <AuthorizedPage permission={CONFIGURE_EVENTS}>
               <HideLiveChatSupport>
                 <Emoji />

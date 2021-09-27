@@ -56,7 +56,10 @@ function ConfigureEventPages() {
         <ConfigNavItem to={routes.faqs} aria-label="configure faqs">
           FAQ
         </ConfigNavItem>
-        <ConfigNavItem to={routes.emoji} aria-label="view emoji page" newTab>
+        <ConfigNavItem
+          to={routes.emoji.settings}
+          aria-label="configure emoji page"
+        >
           Emoji Page
         </ConfigNavItem>
         <ConfigNavItem to={routes.general} aria-label="general config">

@@ -8,6 +8,7 @@ import ClickedEmoji, {
   Emoji,
 } from 'organization/Event/EmojiPage/ClickedEmoji'
 import {useInterval} from 'lib/interval'
+import {useTemplate} from 'Event/TemplateProvider'
 
 export type Emojis = string[]
 
@@ -19,6 +20,7 @@ export default function EmojiPage() {
   const [emojis, setEmojis] = useState<Emoji[]>([])
   const fetchEmojis = useFetchEmojis()
   const isMountedRef = useRef(true)
+  const {emojiPage} = useTemplate()
 
   useEffect(() => {
     return () => {
@@ -63,7 +65,7 @@ export default function EmojiPage() {
   }, [])
 
   return (
-    <Container>
+    <Container background={emojiPage.background}>
       {emojis.map((emoji) => {
         return <ClickedEmoji emoji={emoji} key={emoji.id} onComplete={remove} />
       })}
@@ -79,10 +81,10 @@ function useFetchEmojis() {
   return useCallback(() => client.get<Emojis>(url), [client, url])
 }
 
-const Container = styled.div`
+const Container = styled.div<{background: string}>`
   height: 100vh;
   width: 100%;
-  background: #000000;
+  background: ${(props) => props.background};
   position: absolute;
   overflow: hidden;
 `

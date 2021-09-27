@@ -18,6 +18,10 @@ export type BaseTemplate = {
     backgroundColor?: string
     textColor?: string
   }
+
+  emojiPage?: {
+    background?: string
+  }
 }
 
 export type Template = SimpleBlog | Panels
@@ -32,6 +36,9 @@ export const BASE_DEFAULTS: DeepRequired<BaseTemplate> = {
     textColor: '#FFFFFF',
     text:
       'Yay! You have received {{action_points}} {{points_unit}} for {{action_description}}.',
+  },
+  emojiPage: {
+    background: '#000000',
   },
 }
 

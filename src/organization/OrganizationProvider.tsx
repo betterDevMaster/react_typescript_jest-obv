@@ -118,7 +118,9 @@ export function createRoutesFor(organization: Organization) {
           forms: {
             ':form': {},
           },
-          emoji: '/emoji',
+          emoji: {
+            settings: '/settings',
+          },
           speakers: '/speakers',
           sponsors: '/sponsors',
           faqs: '/faqs',

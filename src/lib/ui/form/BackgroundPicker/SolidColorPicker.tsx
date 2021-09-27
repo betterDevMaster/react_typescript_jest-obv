@@ -17,6 +17,7 @@ export default function SolidColorPicker(
       disabled={props.disabled}
       color={background}
       onPick={onChange}
+      aria-label="solid background"
       InputProps={{
         endAdornment: (
           <InputAdornment position="end">
