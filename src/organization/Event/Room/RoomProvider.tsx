@@ -11,6 +11,7 @@ type UpdateRoom = (updates: Partial<Room>) => Promise<void>
 type RoomContextProps = {
   room: Room
   update: UpdateRoom
+  deleteRoom: () => Promise<void>
   setOnline: (online: boolean) => void
   toggleRegistration: (hasRegistration: boolean) => void
   processing: boolean
@@ -27,6 +28,7 @@ export function StaticRoomProvider(props: {
 
   const update = useUpdateRoom(room.id, setProcessing)
   const setOnline = useSetOnline(room.id, setProcessing)
+  const remove = useRemove(room.id, setProcessing)
   const toggleRegistration = useToggleRegistration(room.id, setProcessing)
 
   return (
@@ -36,6 +38,7 @@ export function StaticRoomProvider(props: {
         update,
         processing,
         setOnline,
+        deleteRoom: remove,
         toggleRegistration,
       }}
     >
@@ -51,6 +54,7 @@ export function RouteRoomProvider(props: {children: React.ReactElement}) {
   const [processing, setProcessing] = useState(false)
   const update = useUpdateRoom(id, setProcessing)
   const setOnline = useSetOnline(id, setProcessing)
+  const remove = useRemove(id, setProcessing)
   const setPublic = useToggleRegistration(id, setProcessing)
   const areaRoutes = useAreaRoutes()
 
@@ -66,6 +70,7 @@ export function RouteRoomProvider(props: {children: React.ReactElement}) {
         update,
         processing,
         setOnline,
+        deleteRoom: remove,
         toggleRegistration: setPublic,
       }}
     >
@@ -144,6 +149,21 @@ function useSetOnline(
     },
     [id, client, update, setProcessing],
   )
+}
+
+function useRemove(id: number, setProcessing: (processing: boolean) => void) {
+  const {client} = useOrganization()
+
+  return useCallback(() => {
+    const endpoint = `/rooms/${id}`
+    const url = api(endpoint)
+
+    setProcessing(true)
+    return client.delete<void>(url).catch((e) => {
+      setProcessing(false)
+      throw e // re-throw to prevent downstream from thinking it was a success
+    })
+  }, [id, client, setProcessing])
 }
 
 export function useRoom() {

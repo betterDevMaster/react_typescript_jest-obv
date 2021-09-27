@@ -44,6 +44,7 @@ import recordingIcon from 'assets/images/recording-icon.png'
 import {RelativeLink} from 'lib/ui/link/RelativeLink'
 import {useInterval} from 'lib/interval'
 import {FETCH_METRICS_INTERVAL_SECS} from 'organization/Event/Area'
+import DeleteRoomButton from 'organization/Event/Room/DeleteRoomButton'
 
 export const DEFAULT_MAX_NUM_ATTENDEES = 500
 
@@ -126,6 +127,7 @@ export default function RoomConfig() {
           </HasPermission>
         </Box>
         <Title variant="h5">{room.number}</Title>
+        <DeleteRoomButton />
         <Typography>Attendees: {numAttendees}</Typography>
         <FormControl>
           <FormControlLabel control={<OnlineSwitch />} label="Open" />

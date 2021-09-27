@@ -57,6 +57,7 @@ export interface ObvioEvent {
   ticket_ribbons: CustomTicketRibbon[]
   is_online: boolean
   requires_attendee_password: boolean
+  has_started: boolean
 }
 
 export interface WaiverConfig {

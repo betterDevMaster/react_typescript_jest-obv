@@ -11,6 +11,7 @@ import React, {useCallback, useEffect, useState} from 'react'
 type RoomsContextProps = {
   rooms: Room[]
   add: (room: Room) => void
+  remove: (room: Room) => void
   update: (room: Room) => void
 }
 
@@ -40,6 +41,11 @@ export default function RoomsProvider(props: {children: React.ReactElement}) {
     setRooms((current) => [...current, room])
   }
 
+  const remove = (room: Room) => {
+    const removed = rooms.filter((a) => a.id !== room.id)
+    setRooms(removed)
+  }
+
   const update = useCallback(
     (room: Room) => {
       const updated = rooms.map((r) => {
@@ -67,7 +73,7 @@ export default function RoomsProvider(props: {children: React.ReactElement}) {
   }
 
   return (
-    <RoomsContext.Provider value={{rooms, add, update}}>
+    <RoomsContext.Provider value={{rooms, add, remove, update}}>
       {props.children}
     </RoomsContext.Provider>
   )
