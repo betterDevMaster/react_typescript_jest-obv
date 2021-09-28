@@ -86,16 +86,17 @@ const Box = styled.div`
 const LogoBox = styled.div`
   max-width: 260px;
   max-height: 260px;
+  padding-top: ${(props) => props.theme.spacing[5]};
 `
 
 const Panel = styled.div<{
   backgroundColor: string
 }>`
   flex: 1;
-  margin-top: 24px;
+  margin-top: ${(props) => props.theme.spacing[6]}px;
   border-top-left-radius: 10px;
   border-top-right-radius: 10px;
-  padding: 24px 24px 36px;
+  padding: ${(props) => props.theme.spacing[6]} ${(props) => props.theme.spacing[6]} ${(props) => props.theme.spacing[9]};
   display: flex;
   justify-content: center;
   align-items: flex-start;
@@ -115,5 +116,5 @@ const StyledMenuIconButton = styled(MenuIconButton)`
 
 const Top = styled.div`
   width: 100%;
-  padding: 0 40px;
+  padding: 0 ${(props) => props.theme.spacing[10]};
 `
