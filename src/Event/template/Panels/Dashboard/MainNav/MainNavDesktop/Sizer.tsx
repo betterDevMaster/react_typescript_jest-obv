@@ -6,13 +6,14 @@ import $ from 'jquery'
 import useDebounce from 'lib/debounce'
 import {useOnResize} from 'lib/resize'
 import PageArrows from 'Event/template/Panels/Dashboard/MainNav/MainNavDesktop/PageArrows'
+import CountDownTimers from 'Event/template/Panels/Dashboard/CountDownTimers'
 
 /**
  * Amount of time to wait until resizing is done before calculating
  * the ideal per page count. Too low and we run into performance
  * issues, too high and the user will perceive layout breakage.
  */
-const RESIZE_DELAY_MS = 150
+const RESIZE_DELAY_MS = 300
 
 /**
  * Invisible sizer to help determine the number of buttons per page. The
@@ -109,6 +110,7 @@ export default function Sizer(props: {
             key={index}
             isLast={isLast}
             isFirst={isFirst}
+            calculate={calculate}
           />
         )
       })}
@@ -121,6 +123,7 @@ function Page(props: {
   numItems: number
   isFirst: boolean
   isLast: boolean
+  calculate: () => void
 }) {
   const {number, numItems, isLast, isFirst} = props
   const {
@@ -138,6 +141,7 @@ function Page(props: {
 
   return (
     <div className="main-nav-shadow-page">
+      <CountDownTimers onRender={props.calculate} />
       {visibleIds.map((id, index) => (
         <MainNavButton
           id={id}

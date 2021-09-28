@@ -5,6 +5,7 @@ import {useEditMode} from 'Event/Dashboard/editor/state/edit-mode'
 import {usePanels} from 'Event/template/Panels'
 import NewMainNavButton from 'Event/template/Panels/Dashboard/MainNav/MainNavButton/NewMainNavButton'
 import MainNavButton from 'Event/template/Panels/Dashboard/MainNav/MainNavButton'
+import CountDownTimers from 'Event/template/Panels/Dashboard/CountDownTimers'
 import {Container} from 'Event/template/Panels/Dashboard/MainNav/MainNavDesktop'
 
 export default function BodyEditable(props: {className?: string}) {
@@ -15,31 +16,34 @@ export default function BodyEditable(props: {className?: string}) {
   } = template
 
   return (
-    <DragDropContext onDragEnd={handleDrag}>
-      <Droppable droppableId="main_nav_buttons">
-        {(provided) => (
-          <Container
-            ref={provided.innerRef}
-            {...provided.droppableProps}
-            canScroll
-            className={props.className}
-          >
-            <>
-              {ids.map((id, index) => (
-                <MainNavButton
-                  id={id}
-                  index={index}
-                  key={id}
-                  button={entities[id]}
-                />
-              ))}
-              {provided.placeholder}
-              <NewButton />
-            </>
-          </Container>
-        )}
-      </Droppable>
-    </DragDropContext>
+    <>
+      <DragDropContext onDragEnd={handleDrag}>
+        <Droppable droppableId="main_nav_buttons">
+          {(provided) => (
+            <Container
+              ref={provided.innerRef}
+              {...provided.droppableProps}
+              canScroll
+              className={props.className}
+            >
+              <CountDownTimers />
+              <>
+                {ids.map((id, index) => (
+                  <MainNavButton
+                    id={id}
+                    index={index}
+                    key={id}
+                    button={entities[id]}
+                  />
+                ))}
+                {provided.placeholder}
+                <NewButton />
+              </>
+            </Container>
+          )}
+        </Droppable>
+      </DragDropContext>
+    </>
   )
 }
 

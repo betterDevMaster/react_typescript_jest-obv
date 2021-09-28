@@ -3,6 +3,7 @@ import {usePanels} from 'Event/template/Panels'
 import MainNavButton from 'Event/template/Panels/Dashboard/MainNav/MainNavButton'
 import Sizer from 'Event/template/Panels/Dashboard/MainNav/MainNavDesktop/Sizer'
 import PageArrows from 'Event/template/Panels/Dashboard/MainNav/MainNavDesktop/PageArrows'
+import CountDownTimers from 'Event/template/Panels/Dashboard/CountDownTimers'
 import {Container} from 'Event/template/Panels/Dashboard/MainNav/MainNavDesktop'
 
 export default function BodyLive(props: {className?: string}) {
@@ -57,6 +58,7 @@ export default function BodyLive(props: {className?: string}) {
   return (
     <Container className={props.className}>
       <>
+        <CountDownTimers />
         {ids.map((id, index) => (
           <MainNavButton
             id={id}

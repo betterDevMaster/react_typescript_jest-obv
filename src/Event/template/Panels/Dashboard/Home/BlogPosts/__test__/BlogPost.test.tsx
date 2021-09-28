@@ -28,48 +28,6 @@ afterAll(() => {
   console.error.mockRestore()
 })
 
-it('should render blog posts', async () => {
-  const numPosts = faker.random.number({min: 1, max: 5})
-  const blogPosts = createEntityList(
-    Array.from({length: numPosts}, () =>
-      fakeBlogPost({
-        publishAt: faker.random.boolean()
-          ? faker.date.past().toISOString()
-          : faker.date.future().toISOString(),
-        isVisible: faker.random.boolean(),
-      }),
-    ),
-  )
-
-  const withPosts = fakeEvent({
-    template: fakePanels({
-      blogPosts,
-    }),
-  })
-
-  const {findByText, getAllByLabelText} = await goToDashboardConfig({
-    event: withPosts,
-  })
-
-  for (const post of Object.values(blogPosts.entities)) {
-    if (
-      post.isVisible === true &&
-      post.publishAt &&
-      getDiffDatetime(post.publishAt, now()) < 0
-    )
-      expect(await findByText(post.title)).toBeInTheDocument()
-  }
-
-  const numVisiblePosts = Object.values(blogPosts.entities).filter(
-    (i) =>
-      i.isVisible && i.publishAt && getDiffDatetime(i.publishAt, now()) < 0,
-  ).length
-
-  if (numVisiblePosts > 0) {
-    expect(getAllByLabelText('blog post').length).toBe(numVisiblePosts)
-  }
-})
-
 it('should edit a blog post', async () => {
   const numPosts = faker.random.number({min: 1, max: 5})
   const blogPosts = createEntityList(

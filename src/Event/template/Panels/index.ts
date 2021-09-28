@@ -10,6 +10,7 @@ import {BlogPost} from 'Event/Dashboard/components/BlogPost'
 import {colors} from 'lib/ui/theme'
 import {DeepRequired} from 'lib/type-utils'
 import {TicketRibbon} from 'Event/template/Panels/Dashboard/TicketRibbonList/TicketRibbon'
+import {CountDownTimer} from 'Event/Dashboard/components/CountDownTimer'
 
 export const PANELS = 'Panels'
 
@@ -191,6 +192,7 @@ export type Panels = BaseTemplate & {
     redirectUrl: string
     shouldRedirect: boolean
   }
+  countDownTimers?: EntityList<CountDownTimer>
 }
 
 export const createPanels = (): DeepRequired<Panels> => ({
@@ -384,6 +386,10 @@ export const createPanels = (): DeepRequired<Panels> => ({
     redirectUrl: '',
     title: 'Event Offline',
     description: 'Please check back again, or contact support for access.',
+  },
+  countDownTimers: {
+    entities: {},
+    ids: [],
   },
 })
 

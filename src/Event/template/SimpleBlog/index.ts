@@ -9,6 +9,7 @@ import {BaseTemplate, BASE_DEFAULTS, Header} from 'Event/template'
 import {BlogPost} from 'Event/Dashboard/components/BlogPost'
 import {DeepRequired} from 'lib/type-utils'
 import {SidebarItem} from 'Event/template/SimpleBlog/Dashboard/Sidebar/SidebarItem'
+import {CountDownTimer} from 'Event/Dashboard/components/CountDownTimer'
 
 export const SIMPLE_BLOG = 'Simple Blog'
 
@@ -192,6 +193,7 @@ export type SimpleBlog = BaseTemplate & {
     description: string
     redirectUrl: string
   }
+  countDownTimers?: EntityList<CountDownTimer>
 }
 
 export type SimpleBlogHeader = Header & {
@@ -400,6 +402,10 @@ export const createSimpleBlog = (): DeepRequired<SimpleBlog> => ({
     redirectUrl: '',
     title: 'Event Offline',
     description: 'Please check back again, or contact support for access.',
+  },
+  countDownTimers: {
+    entities: {},
+    ids: [],
   },
 })
 

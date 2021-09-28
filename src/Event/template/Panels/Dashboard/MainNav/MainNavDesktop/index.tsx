@@ -41,7 +41,8 @@ const Box = styled.div<{
 }>`
   flex: 1;
   display: flex;
-  overflow: ${(props) => (props.canScroll ? 'auto' : 'hidden')};
+  overflow-y: ${(props) => (props.canScroll ? 'auto' : 'hidden')};
+  overflow-x: hidden;
 
   margin-bottom: ${(props) => props.theme.spacing[7]};
   margin-top: ${(props) => props.theme.spacing[7]};

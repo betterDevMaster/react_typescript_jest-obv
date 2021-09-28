@@ -78,3 +78,8 @@ export const date = (target: string) => {
     },
   }
 }
+
+export const duration = (start: string, end: string) => {
+  const diff = moment(end).diff(moment(start))
+  return moment.utc(diff).format('HH:mm:ss')
+}

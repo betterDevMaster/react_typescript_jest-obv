@@ -5,6 +5,7 @@ import Hidden from '@material-ui/core/Hidden'
 import BlogPosts from 'Event/template/SimpleBlog/Dashboard/BlogPosts'
 import Sidebar from 'Event/template/SimpleBlog/Dashboard/Sidebar'
 import MainNav from 'Event/template/SimpleBlog/Dashboard/MainNav'
+import CountDownTimers from 'Event/template/SimpleBlog/Dashboard/CountDownTimers'
 import SimpleBlogPage from 'Event/template/SimpleBlog/Page'
 import Hero from 'Event/template/SimpleBlog/Dashboard/Hero'
 import BodyHTMLEmbed from 'Event/template/SimpleBlog/Dashboard/BodyHTMLEmbed'
@@ -19,6 +20,7 @@ export default function SimpleBlogDashboard(props: {user: User}) {
   return (
     <SimpleBlogPage user={props.user}>
       <Hero />
+      <CountDownTimers />
       <MainNav />
       <FullHeightGrid container spacing={4}>
         <Hidden mdUp>
