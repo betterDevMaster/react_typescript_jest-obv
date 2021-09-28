@@ -12,6 +12,7 @@ type AreaContextProps = {
   area: Area
   update: <T extends keyof Area>(key: T) => (val: Area[T]) => void
   processing: boolean
+  deleteArea: () => Promise<void>
 }
 
 const AreaContext = React.createContext<AreaContextProps | undefined>(undefined)
@@ -21,7 +22,9 @@ export function AreaProvider(props: {children: React.ReactElement}) {
   const id = parseInt(routeId)
   const [area, setArea] = useState<Area | null>(null)
   const {data: saved, loading, error} = useAreaWithId(id)
-  const {update, processing} = useUpdateArea(id, setArea)
+  const [processing, setProcessing] = useState(false)
+  const update = useUpdateArea(id, setArea, setProcessing)
+  const deleteArea = useDeleteArea(id, setProcessing)
 
   useEffect(() => {
     setArea(saved)
@@ -42,7 +45,7 @@ export function AreaProvider(props: {children: React.ReactElement}) {
   }
 
   return (
-    <AreaContext.Provider value={{area, update, processing}}>
+    <AreaContext.Provider value={{area, update, processing, deleteArea}}>
       {props.children}
     </AreaContext.Provider>
   )
@@ -60,10 +63,13 @@ function useAreaWithId(id: number) {
   return useAsync(fetch)
 }
 
-function useUpdateArea(id: number, setArea: (area: Area) => void) {
+function useUpdateArea(
+  id: number,
+  setArea: (area: Area) => void,
+  setProcessing: (processing: boolean) => void,
+) {
   const {client} = useOrganization()
   const {event} = useEvent()
-  const [processing, setProcessing] = useState(false)
 
   const update = useCallback(
     <T extends keyof Area>(key: T) => {
@@ -78,10 +84,29 @@ function useUpdateArea(id: number, setArea: (area: Area) => void) {
           })
       }
     },
-    [client, event, setArea, id],
+    [client, event, setArea, id, setProcessing],
   )
 
-  return {processing, update}
+  return update
+}
+
+function useDeleteArea(
+  id: number,
+  setProcessing: (processing: boolean) => void,
+) {
+  const {event} = useEvent()
+  const {client} = useOrganization()
+
+  return useCallback(() => {
+    const endpoint = `/events/${event.slug}/areas/${id}`
+    const url = api(endpoint)
+
+    setProcessing(true)
+    return client.delete<void>(url).catch((e) => {
+      setProcessing(false)
+      throw e // re-throw to prevent downstream from thinking it was a success
+    })
+  }, [id, client, setProcessing, event])
 }
 
 export function useArea() {

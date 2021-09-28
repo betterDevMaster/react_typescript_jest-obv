@@ -8,12 +8,20 @@ import {useAreaRoutes} from 'organization/Event/Area/AreaRoutes'
 import {useHistory} from 'react-router-dom'
 import {useRooms} from 'organization/Event/Area/RoomsProvider'
 import Box from '@material-ui/core/Box'
-import {Room} from 'Event/room'
+import {
+  CONFIGURE_EVENTS,
+  usePermissions,
+} from 'organization/PermissionsProvider'
 
-export default function DeleteRoom() {
+export default function DeleteRoomButton() {
   const {event} = useEvent()
-  const {room, processing} = useRoom()
-  const deleteRoom = useDeleteRoom(room)
+  const {processing} = useRoom()
+  const deleteRoom = useDeleteRoom()
+
+  const {can} = usePermissions()
+  if (!can(CONFIGURE_EVENTS)) {
+    return null
+  }
 
   const canDelete = !event.has_started && !processing
 
@@ -52,11 +60,11 @@ function DisabledDescription(props: {showing: boolean}) {
   )
 }
 
-function useDeleteRoom(room: Room) {
+function useDeleteRoom() {
+  const {deleteRoom, room} = useRoom()
   const areaRoutes = useAreaRoutes()
   const history = useHistory()
   const {remove} = useRooms()
-  const {deleteRoom} = useRoom()
 
   const goToBackToArea = () => {
     history.push(areaRoutes.root)

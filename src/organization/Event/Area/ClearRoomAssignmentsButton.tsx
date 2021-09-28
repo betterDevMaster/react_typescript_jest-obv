@@ -1,5 +1,4 @@
 import React from 'react'
-import Box from '@material-ui/core/Box'
 import {useOrganization} from 'organization/OrganizationProvider'
 import {api} from 'lib/url'
 import {useEvent} from 'Event/EventProvider'
@@ -13,20 +12,18 @@ export default function ClearRoomAssignmentsButton(props: {
   clearError: () => void
 }) {
   return (
-    <Box mb={2}>
-      <ClearRoomAssignments {...props}>
-        {(confirm, processing) => (
-          <DangerButton
-            onClick={confirm}
-            disabled={processing}
-            variant="outlined"
-            aria-label="clear room assignments"
-          >
-            Clear Room Assignments
-          </DangerButton>
-        )}
-      </ClearRoomAssignments>
-    </Box>
+    <ClearRoomAssignments {...props}>
+      {(confirm, processing) => (
+        <DangerButton
+          onClick={confirm}
+          disabled={processing}
+          variant="outlined"
+          aria-label="clear room assignments"
+        >
+          Clear Room Assignments
+        </DangerButton>
+      )}
+    </ClearRoomAssignments>
   )
 }
 

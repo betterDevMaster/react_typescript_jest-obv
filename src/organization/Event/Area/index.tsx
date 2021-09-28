@@ -33,6 +33,7 @@ import {api} from 'lib/url'
 import {Area as AreaModel} from 'organization/Event/AreasProvider'
 import {useInterval} from 'lib/interval'
 import NameField from 'organization/Event/Area/NameField'
+import DeleteAreaButton from 'organization/Event/Area/DeleteAreaButton'
 
 const CONFIRM_TURN_OFF_TECH_CHECK_REASSIGN =
   "This area is currently assigned to Tech Check.  If you turn this setting off, and an attendee hasn't completed their tech check, they may see an offline message when they try to check in and their original room is unavailable.  Are you sure you wish to disable?"
@@ -131,12 +132,15 @@ export default function Area() {
                 </RulesButton>
               </RelativeLink>
             </Left>
-            <ClearRoomAssignmentsButton
-              onError={setError}
-              clearError={clearError}
-            />
+            <div>
+              <ClearRoomAssignmentsButton
+                onError={setError}
+                clearError={clearError}
+              />
+            </div>
           </Box>
           <NameField />
+          <DeleteAreaButton onError={setError} clearError={clearError} />
           <HasPermission permission={CONFIGURE_EVENTS}>
             <>
               <Box>
