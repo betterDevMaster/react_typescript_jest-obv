@@ -96,7 +96,8 @@ const Panel = styled.div<{
   margin-top: ${(props) => props.theme.spacing[6]}px;
   border-top-left-radius: 10px;
   border-top-right-radius: 10px;
-  padding: ${(props) => props.theme.spacing[6]} ${(props) => props.theme.spacing[6]} ${(props) => props.theme.spacing[9]};
+  padding: ${(props) => props.theme.spacing[6]}
+    ${(props) => props.theme.spacing[6]} ${(props) => props.theme.spacing[9]};
   display: flex;
   justify-content: center;
   align-items: flex-start;
