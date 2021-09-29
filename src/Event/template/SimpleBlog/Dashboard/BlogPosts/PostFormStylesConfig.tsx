@@ -36,6 +36,21 @@ export default function PostFormStylesConfig() {
   const [buttonPosition, setButtonPosition] = useState(styles.buttonPosition)
   const [buttonFontSize, setButtonFontSize] = useState(styles.buttonFontSize)
 
+  const [labelColor, setLabelColor] = useState(styles.formStyle.labelColor)
+  const [inputBoxBorderColor, setInputBoxBorderColor] = useState(
+    styles.formStyle.borderColor,
+  )
+  const [inputBoxBackgroundColor, setInputBoxBackgroundColor] = useState(
+    styles.formStyle.backgroundColor,
+  )
+  const [inputBoxBackgroundOpacity, setInputBoxBackgroundOpacity] = useState(
+    styles.formStyle.backgroundOpacity,
+  )
+  const [inputBoxColor, setInputBoxColor] = useState(styles.formStyle.textColor)
+  const [helperTextColor, setHelperTextColor] = useState(
+    styles.formStyle.helperTextColor,
+  )
+
   const save = () => {
     const updated: SimpleBlog['postFormStyles'] = {
       width,
@@ -47,6 +62,14 @@ export default function PostFormStylesConfig() {
       buttonHoverBackgroundColor,
       buttonPosition,
       buttonFontSize,
+      inputStyles: {
+        labelColor,
+        borderColor: inputBoxBorderColor,
+        backgroundColor: inputBoxBackgroundColor,
+        backgroundOpacity: inputBoxBackgroundOpacity,
+        textColor: inputBoxColor,
+        helperTextColor,
+      },
     }
     update.primitive('postFormStyles')(updated)
     togglePostFormStyleConfig()
@@ -65,6 +88,13 @@ export default function PostFormStylesConfig() {
     setButtonHoverBackgroundColor(styles.buttonHoverBackgroundColor)
     setButtonPosition(styles.buttonPosition)
     setButtonFontSize(styles.buttonFontSize)
+
+    setLabelColor(styles.formStyle.labelColor)
+    setInputBoxBorderColor(styles.formStyle.borderColor)
+    setInputBoxBackgroundColor(styles.formStyle.backgroundColor)
+    setInputBoxBackgroundOpacity(styles.formStyle.backgroundOpacity)
+    setInputBoxColor(styles.formStyle.textColor)
+    setHelperTextColor(styles.formStyle.helperTextColor)
   }, [isVisible, styles])
 
   return (
@@ -99,9 +129,50 @@ export default function PostFormStylesConfig() {
             <MenuItem value="flex-start">Left</MenuItem>
           </Select>
         </Box>
+        <ColorPicker
+          label="Label Text Color"
+          color={labelColor}
+          onPick={setLabelColor}
+          aria-label="latel text color"
+        />
+        <ColorPicker
+          label="Input Border Color"
+          color={inputBoxBorderColor}
+          onPick={setInputBoxBorderColor}
+          aria-label="input box border color"
+        />
+        <ColorPicker
+          label="Input Background Color"
+          color={inputBoxBackgroundColor}
+          onPick={setInputBoxBackgroundColor}
+          aria-label="input box background color"
+        />
+        <TextField
+          value={inputBoxBackgroundOpacity}
+          label="Input Background Color Opacity"
+          type="number"
+          fullWidth
+          inputProps={{
+            min: 1,
+            max: 100,
+          }}
+          onChange={onChangeNumberHandler(setInputBoxBackgroundOpacity)}
+        />
+        <ColorPicker
+          label="Input Text Color"
+          color={inputBoxColor}
+          onPick={setInputBoxColor}
+          aria-label="input box text color"
+        />
+        <ColorPicker
+          label="Helper Text Color"
+          color={helperTextColor}
+          onPick={setHelperTextColor}
+          aria-label="helper text color"
+        />
         <TextField
           value={buttonSize}
-          label="Form Button Size"
+          label="Form Button Size %"
           type="number"
           fullWidth
           inputProps={{
@@ -183,6 +254,7 @@ export function usePostFormStyles() {
       buttonHoverBackgroundColor: postFormStyles.buttonHoverBackgroundColor,
       buttonPosition: postFormStyles.buttonPosition,
       buttonFontSize: postFormStyles.buttonFontSize,
+      formStyle: postFormStyles.inputStyles,
     }),
     [postFormStyles],
   )

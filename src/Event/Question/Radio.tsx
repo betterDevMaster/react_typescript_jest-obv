@@ -3,11 +3,11 @@ import FormControlLabel from '@material-ui/core/FormControlLabel'
 import FormLabel from '@material-ui/core/FormLabel'
 import RadioGroup from '@material-ui/core/RadioGroup'
 import RadioInput from '@material-ui/core/Radio'
-import {FieldProps, useSavedValue} from 'Event/Question'
+import {FieldProps, useSavedValue, FormTextField} from 'Event/Question'
 import React, {useState} from 'react'
-import TextField from '@material-ui/core/TextField'
 import {onChangeStringHandler} from 'lib/dom'
 import {useAttendeeVariables} from 'Event'
+import styled from 'styled-components'
 
 /**
  * 'other' value. We set a default here that shouldn't conflict with
@@ -33,7 +33,9 @@ export default function Radio(props: FieldProps) {
       required={props.question.is_required}
       disabled={props.disabled}
     >
-      <FormLabel component="legend">{v(props.question.label)}</FormLabel>
+      <StyledFormLabel component="legend" color={props.inputStyles?.labelColor}>
+        {v(props.question.label)}
+      </StyledFormLabel>
       <input
         type="hidden"
         name={props.name}
@@ -46,21 +48,24 @@ export default function Radio(props: FieldProps) {
         value={value}
       >
         {props.question.options.map((option, index) => (
-          <FormControlLabel
+          <StyledFormControlLabel
             key={index}
             value={option.value}
             control={<RadioInput />}
             label={option.value}
+            color={props.inputStyles?.textColor}
           />
         ))}
         <OtherOption
           isVisible={props.question.has_other_option}
           hasOtherValue={otherInputVisible}
+          {...props}
         />
         <OtherInput
           isVisible={otherInputVisible}
           onChange={setValue}
           value={value}
+          {...props}
         />
       </RadioGroup>
       {props.HelperText}
@@ -68,27 +73,32 @@ export default function Radio(props: FieldProps) {
   )
 }
 
-function OtherOption(props: {isVisible: boolean; hasOtherValue: boolean}) {
+function OtherOption(
+  props: FieldProps & {isVisible: boolean; hasOtherValue: boolean},
+) {
   if (!props.isVisible) {
     return null
   }
 
   return (
     <>
-      <FormControlLabel
+      <StyledFormControlLabel
         value={OTHER}
         control={<RadioInput checked={props.hasOtherValue} />}
         label="Other"
+        color={props.inputStyles?.textColor}
       />
     </>
   )
 }
 
-function OtherInput(props: {
-  isVisible: boolean
-  value: string
-  onChange: (value: string) => void
-}) {
+function OtherInput(
+  props: FieldProps & {
+    isVisible: boolean
+    value: string
+    onChange: (value: string) => void
+  },
+) {
   if (!props.isVisible) {
     return null
   }
@@ -109,13 +119,29 @@ function OtherInput(props: {
   }
 
   return (
-    <TextField
+    <FormTextField
       label="Other"
       inputProps={{
         'aria-label': 'other value',
       }}
       value={value}
       onChange={onChangeStringHandler(handleOnChange)}
+      styles={props.inputStyles}
     />
   )
 }
+
+const StyledFormLabel = styled((props) => {
+  const {color, ...otherProps} = props
+
+  return <FormLabel {...otherProps} />
+})`
+  color: ${(props) => (props.color ? `${props.color} !important;` : '')};
+`
+const StyledFormControlLabel = styled((props) => {
+  const {color, ...otherProps} = props
+
+  return <FormControlLabel {...otherProps} />
+})`
+  color: ${(props) => (props.color ? `${props.color} !important;` : '')};
+`

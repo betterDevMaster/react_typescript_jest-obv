@@ -20,6 +20,19 @@ import {
 } from 'organization/Event/QuestionsProvider'
 import React, {useEffect} from 'react'
 import {UseFormMethods} from 'react-hook-form'
+import styled from 'styled-components'
+import {makeStyles} from '@material-ui/core/styles'
+import {rgba} from 'lib/color'
+import TextField, {TextFieldProps} from '@material-ui/core/TextField'
+
+export interface InputStyles {
+  labelColor?: string
+  borderColor?: string
+  backgroundColor?: string
+  backgroundOpacity?: number
+  textColor?: string
+  helperTextColor?: string
+}
 
 export interface QuestionProps {
   index: number
@@ -31,6 +44,7 @@ export interface QuestionProps {
   responseError?: ValidationError<any>
   answers?: Answer[]
   disabled?: boolean
+  inputStyles?: InputStyles
 }
 
 export type FieldProps = QuestionProps & {
@@ -52,11 +66,15 @@ export default function Question(props: QuestionProps) {
   const errorWithVariables = v(error)
 
   const hasError = Boolean(error)
+  const {inputStyles: questionFormStyle} = props
 
   const HelperText = (
-    <FormHelperText error={hasError}>
+    <StyledFormHelperText
+      error={hasError}
+      color={questionFormStyle?.helperTextColor}
+    >
       {v(error || props.question.helper_text || '')}
-    </FormHelperText>
+    </StyledFormHelperText>
   )
 
   const answer = findAnswer(props.question, props.answers)
@@ -116,4 +134,68 @@ export function useSavedValue(props: {
 
     setValue(name, answer)
   }, [setValue, answer, name])
+}
+
+const StyledFormHelperText = styled((props) => {
+  const {color, ...otherProps} = props
+  return <FormHelperText {...otherProps} />
+})`
+  color: ${(props) => props.color} !important;
+`
+
+export function FormTextField(
+  props: TextFieldProps & {
+    styles?: InputStyles
+    startAdornment?: JSX.Element
+  },
+) {
+  const useStyles = makeStyles({
+    root: {
+      backgroundColor: rgba(
+        props.styles?.backgroundColor || '#ffffff',
+        (props.styles?.backgroundOpacity || 0) / 100,
+      ),
+      color: props.styles?.textColor,
+    },
+    labelRoot: {
+      color: props.styles?.labelColor,
+      '&$labelFocused': {
+        color: props.styles?.labelColor,
+      },
+    },
+    underline: {
+      borderBottom: `1px solid ${props.styles?.borderColor}`,
+      '&::after': {
+        borderBottom: `1px solid ${props.styles?.borderColor}`,
+      },
+    },
+    helper: {
+      color: props.styles?.helperTextColor,
+    },
+    labelFocused: {},
+  })
+
+  const classes = useStyles()
+
+  return (
+    <TextField
+      InputProps={{
+        classes: {
+          root: classes.root,
+          underline: classes.underline,
+        },
+        startAdornment: props.startAdornment,
+      }}
+      InputLabelProps={{
+        classes: {
+          root: classes.labelRoot,
+          focused: classes.labelFocused,
+        },
+      }}
+      FormHelperTextProps={{
+        className: classes.helper,
+      }}
+      {...props}
+    />
+  )
 }

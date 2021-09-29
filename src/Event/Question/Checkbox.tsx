@@ -9,6 +9,7 @@ import {Controller} from 'react-hook-form'
 import {onChangeCheckedHandler} from 'lib/dom'
 import {Option} from 'organization/Event/QuestionsProvider'
 import {useAttendeeVariables} from 'Event'
+import styled from 'styled-components'
 
 export default function Checkbox(props: FieldProps) {
   useSavedValue(props)
@@ -21,7 +22,9 @@ export default function Checkbox(props: FieldProps) {
       error={props.hasError}
       disabled={props.disabled}
     >
-      <FormLabel component="legend">{v(props.question.label)}</FormLabel>
+      <StyledFormLabel component="legend" color={props.inputStyles?.labelColor}>
+        {v(props.question.label)}
+      </StyledFormLabel>
       <Controller
         name={props.name}
         control={props.control}
@@ -99,7 +102,7 @@ function Inputs(
   return (
     <FormGroup>
       {props.question.options.map((option, index) => (
-        <FormControlLabel
+        <StyledFormControlLabel
           key={index}
           control={
             <CheckboxInput
@@ -108,8 +111,24 @@ function Inputs(
             />
           }
           label={option.value}
+          color={props.inputStyles?.textColor}
         />
       ))}
     </FormGroup>
   )
 }
+
+const StyledFormLabel = styled((props) => {
+  const {color, ...otherProps} = props
+
+  return <FormLabel {...otherProps} />
+})`
+  color: ${(props) => (props.color ? `${props.color} !important;` : '')};
+`
+const StyledFormControlLabel = styled((props) => {
+  const {color, ...otherProps} = props
+
+  return <FormControlLabel {...otherProps} />
+})`
+  color: ${(props) => (props.color ? `${props.color} !important;` : '')};
+`

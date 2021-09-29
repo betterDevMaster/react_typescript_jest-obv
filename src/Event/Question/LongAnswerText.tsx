@@ -1,5 +1,4 @@
-import TextField from '@material-ui/core/TextField'
-import {FieldProps, useSavedValue} from 'Event/Question'
+import {FieldProps, useSavedValue, FormTextField} from 'Event/Question'
 import React from 'react'
 import {useAttendeeVariables} from 'Event'
 
@@ -10,7 +9,7 @@ export default function LongAnswerText(props: FieldProps) {
   const label = v(props.question.label)
 
   return (
-    <TextField
+    <FormTextField
       label={label}
       inputProps={{
         'aria-label': props.question.label,
@@ -24,6 +23,7 @@ export default function LongAnswerText(props: FieldProps) {
       required={props.question.is_required}
       disabled={props.disabled}
       error={Boolean(props.error)}
+      styles={props.inputStyles}
     />
   )
 }

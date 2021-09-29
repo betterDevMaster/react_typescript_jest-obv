@@ -7,11 +7,13 @@ import InputLabel from '@material-ui/core/InputLabel'
 import {Controller} from 'react-hook-form'
 import {onUnknownChangeHandler} from 'lib/dom'
 import {useAttendeeVariables} from 'Event'
+import styled from 'styled-components'
 
 export default function Select(props: FieldProps) {
   const allowsMultiple = props.question.allows_multiple_options
   useSavedValue(props)
   const v = useAttendeeVariables()
+  const {inputStyles: questionFormStyle} = props
 
   /**
    * MUI Select blows up if you give it an incorrect
@@ -43,7 +45,9 @@ export default function Select(props: FieldProps) {
       error={props.hasError}
       disabled={props.disabled}
     >
-      <InputLabel>{v(props.question.label)}</InputLabel>
+      <StyledInputLabel color={questionFormStyle?.labelColor}>
+        {v(props.question.label)}
+      </StyledInputLabel>
       <Controller
         name={props.name}
         control={props.control}
@@ -80,3 +84,11 @@ export default function Select(props: FieldProps) {
     </FormControl>
   )
 }
+
+const StyledInputLabel = styled((props) => {
+  const {color, ...otherProps} = props
+
+  return <InputLabel {...otherProps} />
+})`
+  color: ${(props) => (props.color ? `${props.color} !important;` : '')};
+`

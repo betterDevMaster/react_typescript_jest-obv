@@ -9,6 +9,7 @@ import {BaseTemplate, BASE_DEFAULTS, Header} from 'Event/template'
 import {BlogPost} from 'Event/Dashboard/components/BlogPost'
 import {DeepRequired} from 'lib/type-utils'
 import {SidebarItem} from 'Event/template/SimpleBlog/Dashboard/Sidebar/SidebarItem'
+import {InputStyles} from 'Event/Question'
 import {CountDownTimer} from 'Event/Dashboard/components/CountDownTimer'
 
 export const SIMPLE_BLOG = 'Simple Blog'
@@ -58,6 +59,7 @@ export type SimpleBlog = BaseTemplate & {
     buttonHoverBackgroundColor?: string
     buttonPosition?: string
     buttonFontSize?: number
+    inputStyles?: InputStyles
   }
   header: SimpleBlogHeader
   dashboardBackground?: {
@@ -365,6 +367,14 @@ export const createSimpleBlog = (): DeepRequired<SimpleBlog> => ({
     buttonHoverBackgroundColor: 'blue',
     buttonPosition: 'center',
     buttonFontSize: 27,
+    inputStyles: {
+      labelColor: '#7d7a7a',
+      borderColor: '#7d7a7a',
+      backgroundColor: '#7d7a7a',
+      backgroundOpacity: 0,
+      textColor: '#7d7a7a',
+      helperTextColor: '#7d7a7a',
+    },
   },
   dashboardBackground: {
     color: '#FFFFFF',

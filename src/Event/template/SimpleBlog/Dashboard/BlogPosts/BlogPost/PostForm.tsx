@@ -72,6 +72,7 @@ function Content(props: {form: Form; post: BlogPost}) {
             responseError={responseError}
             setValue={setValue}
             disabled={submitting}
+            inputStyles={formStyles.formStyle}
           />
         ))}
         <Container justifyContent={formStyles.buttonPosition}>
