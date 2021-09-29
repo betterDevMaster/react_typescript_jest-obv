@@ -30,7 +30,7 @@ export default function DeleteAreaButton(props: {
   return (
     <ConfirmDialog
       onConfirm={deleteArea}
-      description="Deleting an area cannot be undone."
+      description="Deleting an area will delete the Area, as well as all rooms within the Area, and can NOT be undone."
     >
       {(confirm) => (
         <Box mb={2}>
