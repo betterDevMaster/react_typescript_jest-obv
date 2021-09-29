@@ -14,16 +14,12 @@ export interface CountDownTimer {
   description?: string
 }
 
-export default function CountDownTimer(props: {
-  enabled: boolean
-  textColor?: string
-  backgroundColor?: string
-  opacity?: number
-  start?: string
-  description?: string
-  isEditMode: boolean
-  onRender?: () => void
-}) {
+export default function CountDownTimer(
+  props: CountDownTimer & {
+    isEditMode: boolean
+    onRender?: () => void
+  },
+) {
   const [showing, setShowing] = useState(true)
   const [timeLeft, setTimeLeft] = useState('')
 
@@ -31,7 +27,7 @@ export default function CountDownTimer(props: {
     textColor,
     backgroundColor,
     opacity,
-    start,
+    end,
     enabled,
     description,
     isEditMode,
@@ -43,18 +39,18 @@ export default function CountDownTimer(props: {
     : '#000000'
 
   const update = useCallback(() => {
-    if (!showing || !enabled || !start) {
+    if (!showing || !enabled || !end) {
       // Nothing to update
       return
     }
 
     const current = now()
-    const isAfter = date(start).isAfter(current)
-    const diff = duration(current, start)
+    const isAfter = date(end).isAfter(current)
+    const diff = duration(current, end)
 
     setShowing(isAfter)
     setTimeLeft(diff)
-  }, [enabled, start, showing])
+  }, [enabled, end, showing])
 
   useInterval(update, 1000)
 
@@ -69,7 +65,7 @@ export default function CountDownTimer(props: {
   const value = () => {
     if (isEditMode) {
       const fullDateFormat = 'MMM Do YYYY HH:MM:SS'
-      return start ? formatDate(start, fullDateFormat) : ''
+      return end ? formatDate(end, fullDateFormat) : ''
     }
 
     return timeLeft
