@@ -11,7 +11,7 @@ import {goToDashboardConfig} from 'organization/Event/DashboardConfig/__utils__/
 
 const mockPost = mockRxJsAjax.post as jest.Mock
 
-afterEach(() => {
+beforeEach(() => {
   jest.clearAllMocks()
 })
 

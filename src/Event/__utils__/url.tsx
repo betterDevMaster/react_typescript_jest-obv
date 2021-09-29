@@ -47,19 +47,19 @@ export function visitEventSite(
   return event
 }
 
-export async function loginToEventSite(
-  options: {
-    attendee?: Attendee
-    event?: ObvioEvent
-    actions?: Action[]
-    beforeRender?: () => void
-    beforeLogin?: () => void
-    submissions?: Answer[]
-    pathname?: string
-    skipLogin?: boolean
-    search?: string
-  } = {},
-) {
+export type LoginToEventSiteOptions = {
+  attendee?: Attendee
+  event?: ObvioEvent
+  actions?: Action[]
+  beforeRender?: () => void
+  beforeLogin?: () => void
+  submissions?: Answer[]
+  pathname?: string
+  skipLogin?: boolean
+  search?: string
+}
+
+export async function loginToEventSite(options: LoginToEventSiteOptions = {}) {
   const attendee =
     options.attendee ||
     fakeAttendee({
