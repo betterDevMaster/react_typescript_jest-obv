@@ -116,15 +116,15 @@ export default function TimerConfig(
           />
         </FormControl>
         <Controller
-          name="start"
+          name="end"
           control={control}
-          defaultValue={countDownTimer.start || null}
+          defaultValue={countDownTimer.end || null}
           render={({onChange, value}) => (
             <LocalizedDateTimePicker
               value={value}
               onChange={(date) => onChange(date?.toISOString() || '')}
               fullWidth
-              label="Start"
+              label="End"
               inputProps={{
                 'aria-label': 'start time',
                 onChange,

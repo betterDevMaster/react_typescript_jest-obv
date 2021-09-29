@@ -7,7 +7,7 @@ import {useInterval} from 'lib/interval'
 
 export interface CountDownTimer {
   enabled: boolean
-  start?: string
+  end?: string
   backgroundColor?: string
   textColor?: string
   opacity?: number
