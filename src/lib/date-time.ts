@@ -80,6 +80,18 @@ export const date = (target: string) => {
 }
 
 export const duration = (start: string, end: string) => {
-  const diff = moment(end).diff(moment(start))
-  return moment.utc(diff).format('HH:mm:ss')
+  const duration = moment.duration(moment(end).diff(moment(start)))
+
+  const days = Math.floor(duration.asDays())
+
+  const hours = duration.hours() + 24 * days
+  const hoursFormatted = hours < 10 ? `0${hours} : ` : ` ${hours} : `
+
+  const minutes = duration.minutes()
+  const minutesFormatted = minutes < 10 ? `0${minutes} : ` : ` ${minutes} : `
+
+  const seconds = duration.seconds()
+  const secondsFormatted = seconds < 10 ? ` 0${seconds}` : ` ${seconds}`
+
+  return [hoursFormatted, minutesFormatted, secondsFormatted].join('')
 }
