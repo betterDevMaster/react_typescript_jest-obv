@@ -159,6 +159,7 @@ export function FormTextField(
     },
     labelRoot: {
       color: props.styles?.labelColor,
+      zIndex: 2, // prevent background from hiding label
       '&$labelFocused': {
         color: props.styles?.labelColor,
       },
