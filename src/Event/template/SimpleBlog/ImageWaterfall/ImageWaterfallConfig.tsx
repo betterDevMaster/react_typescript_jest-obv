@@ -116,13 +116,10 @@ export default function SimpleBlogImageWaterfallConfig(props: {
             name="uploadFormDescription"
             control={control}
             defaultValue={current.uploadFormDescription}
-            render={({value, onChange}) => (
-              <TextField
-                label="Upload Form Description"
-                value={value}
-                onChange={onChange}
-                inputProps={{'aria-label': 'uploadFormDescription'}}
-              />
+            render={({onChange, value}) => (
+              <TextEditorContainer>
+                <TextEditor data={value} onChange={onChange} />
+              </TextEditorContainer>
             )}
           />
         </FormControl>
