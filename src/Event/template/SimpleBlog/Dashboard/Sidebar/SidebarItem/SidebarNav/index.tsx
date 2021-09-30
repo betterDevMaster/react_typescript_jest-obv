@@ -8,6 +8,7 @@ import {useEditMode} from 'Event/Dashboard/editor/state/edit-mode'
 import NavButton from 'Event/Dashboard/components/NavButton'
 import {EntityList} from 'lib/list'
 import {
+  SidebarItemProps,
   useRemoveSidebarItem,
   useUpdateSidebarItem,
 } from 'Event/template/SimpleBlog/Dashboard/Sidebar/SidebarItem'
@@ -16,10 +17,11 @@ import {RemoveButton} from 'organization/Event/DashboardConfig/ComponentConfig'
 import VisibleOnMatch from 'Event/attendee-rules/VisibleOnMatch'
 
 export const SIDEBAR_NAV = 'Sidebar Nav'
-export type SidebarNavProps = EntityList<NavButton> & {
-  id: string
-  type: typeof SIDEBAR_NAV
-}
+export type SidebarNavProps = EntityList<NavButton> &
+  SidebarItemProps & {
+    id: string
+    type: typeof SIDEBAR_NAV
+  }
 
 export const createSidebarNav = (): SidebarNavProps => ({
   id: uuid(),

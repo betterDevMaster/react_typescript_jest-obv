@@ -29,8 +29,11 @@ import TicketRibbons, {
 import {Draggable} from 'react-beautiful-dnd'
 import {DraggableOverlay} from 'lib/ui/drag-and-drop'
 import DragHandleBar from 'Event/template/SimpleBlog/Dashboard/Sidebar/SidebarItem/DragHandleBar'
-import Section from 'Event/template/SimpleBlog/Dashboard/Sidebar/Section'
 import {useEditMode} from 'Event/Dashboard/editor/state/edit-mode'
+
+export type SidebarItemProps = {
+  isFirst?: boolean
+}
 
 export type SidebarItem =
   | AgendaListProps
@@ -45,28 +48,20 @@ export default function SidebarItem(props: SidebarItem & {index: number}) {
   const isFirst = props.index === 0
 
   if (!isEditMode) {
-    return (
-      <Section disableBorder={isFirst}>
-        <Body {...props} />
-      </Section>
-    )
+    return <Body {...props} isFirst={isFirst} />
   }
 
   return (
     <Draggable draggableId={props.id} index={props.index}>
       {(provided) => (
-        <Section
-          ref={provided.innerRef}
-          draggableProps={provided.draggableProps}
-          disableBorder={isFirst}
-        >
+        <div ref={provided.innerRef} {...provided.draggableProps}>
           <DraggableOverlay>
             <>
               <DragHandleBar handleProps={provided.dragHandleProps} />
-              <Body {...props} />
+              <Body {...props} isFirst={isFirst} />
             </>
           </DraggableOverlay>
-        </Section>
+        </div>
       )}
     </Draggable>
   )

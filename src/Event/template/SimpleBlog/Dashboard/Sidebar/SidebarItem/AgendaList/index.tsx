@@ -16,13 +16,15 @@ import {AgendaListConfig} from 'Event/template/SimpleBlog/Dashboard/Sidebar/Side
 import {FontStyle} from 'lib/ui/typography/FontStyleInput'
 import {uuid} from 'lib/uuid'
 import {
+  SidebarItemProps,
   useRemoveSidebarItem,
   useUpdateSidebarItem,
 } from 'Event/template/SimpleBlog/Dashboard/Sidebar/SidebarItem'
 import {RemoveButton} from 'organization/Event/DashboardConfig/ComponentConfig'
+import Section from 'Event/template/SimpleBlog/Dashboard/Sidebar/Section'
 
 export const AGENDA_LIST = 'Agenda List'
-export type AgendaListProps = {
+export type AgendaListProps = SidebarItemProps & {
   id: string
   type: typeof AGENDA_LIST
   title: string
@@ -74,7 +76,7 @@ export default function AgendaList(props: AgendaListProps) {
   }
 
   return (
-    <>
+    <Section disableBorder={props.isFirst}>
       <AgendaListConfig
         list={props}
         isVisible={listConfigVisible}
@@ -108,7 +110,7 @@ export default function AgendaList(props: AgendaListProps) {
       <EditModeOnly>
         <StyledAddAgendaEventButton list={props} />
       </EditModeOnly>
-    </>
+    </Section>
   )
 }
 

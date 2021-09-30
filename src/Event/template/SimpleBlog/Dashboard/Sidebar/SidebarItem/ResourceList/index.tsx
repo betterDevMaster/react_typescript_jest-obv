@@ -22,13 +22,15 @@ import {useToggle} from 'lib/toggle'
 import {ResourceListConfig} from 'Event/template/SimpleBlog/Dashboard/Sidebar/SidebarItem/ResourceList/ResourceListConfig'
 import {uuid} from 'lib/uuid'
 import {
+  SidebarItemProps,
   useRemoveSidebarItem,
   useUpdateSidebarItem,
 } from 'Event/template/SimpleBlog/Dashboard/Sidebar/SidebarItem'
 import {RemoveButton} from 'organization/Event/DashboardConfig/ComponentConfig'
+import Section from 'Event/template/SimpleBlog/Dashboard/Sidebar/Section'
 
 export const RESOURCE_LIST = 'Resource List'
-export interface ResourceListProps {
+export interface ResourceListProps extends SidebarItemProps {
   id: string
   type: typeof RESOURCE_LIST
   title: string
@@ -69,7 +71,7 @@ export function ResourceList(props: ResourceListProps) {
   }
 
   return (
-    <>
+    <Section disableBorder={props.isFirst}>
       <ResourceListConfig
         isVisible={configVisible}
         onClose={toggleConfig}
@@ -90,7 +92,7 @@ export function ResourceList(props: ResourceListProps) {
       <EditModeOnly>
         <StyledAddResourceButton list={props} />
       </EditModeOnly>
-    </>
+    </Section>
   )
 }
 

@@ -1,6 +1,5 @@
 import {useSimpleBlog} from 'Event/template/SimpleBlog'
 import React from 'react'
-import {DraggableProvidedDraggableProps} from 'react-beautiful-dnd'
 import styled from 'styled-components'
 
 const Section = React.forwardRef<
@@ -8,7 +7,6 @@ const Section = React.forwardRef<
   {
     children: React.ReactNode
     className?: string
-    draggableProps?: DraggableProvidedDraggableProps
     disableBorder?: boolean
   }
 >((props, ref) => {
@@ -24,7 +22,6 @@ const Section = React.forwardRef<
       width={sidebar.separatorWidth}
       disableBorder={props.disableBorder}
       borderStyle={sidebar.separatorStyle}
-      {...props.draggableProps}
     >
       {props.children}
     </Box>
