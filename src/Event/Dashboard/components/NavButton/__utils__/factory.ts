@@ -13,6 +13,7 @@ export const fakeNavButton = (overrides?: Partial<NavButton>): NavButton => {
     newTab: false,
     rules: [],
     isAreaButton: false,
+    isFormButton: false,
     areaId: null,
     actionId: null,
     isVisible: true,

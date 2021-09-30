@@ -13,6 +13,7 @@ import {RelativeLink} from 'lib/ui/link/RelativeLink'
 import {areaRoutes} from 'Event/Routes'
 import {useAttendeeVariables} from 'Event'
 import {Icon} from 'lib/fontawesome/Icon'
+import ImageWaterfallUpload from 'Event/ImageWaterfall/ImageWaterfallUpload'
 
 export const NAV_BUTTON = 'NAV_BUTTON'
 
@@ -35,6 +36,7 @@ export default interface NavButton extends HasRules, Publishable {
   height?: number
   hoverBorderColor?: string
   isAreaButton: boolean
+  isFormButton: boolean
   areaId: string | null
   actionId: string | null
   infusionsoftTag: InfusionsoftTag | null
@@ -52,7 +54,7 @@ export type NavButtonWithSize = NavButton & {
 export const DEFAULT_BUTTON_HEIGHT = 64
 
 export default function NavButton(props: NavButton) {
-  const {newTab, isAreaButton} = props
+  const {newTab, isAreaButton, isFormButton} = props
   const submitAction = useSubmitAction(props.actionId)
   const addInfusionsoftTag = useAddInfusionsoftTag(props.infusionsoftTag)
   const v = useAttendeeVariables()
@@ -60,6 +62,10 @@ export default function NavButton(props: NavButton) {
   const handleClicked = () => {
     submitAction()
     addInfusionsoftTag()
+  }
+
+  if (isFormButton) {
+    return <ImageWaterfallUpload {...props} />
   }
 
   if (isAreaButton && props.areaId) {

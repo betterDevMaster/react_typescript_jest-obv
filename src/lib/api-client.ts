@@ -52,7 +52,7 @@ export const client = {
     ),
   post: <T>(url: string, data: {} | FormData = {}, options?: RequestOptions) =>
     handleAxiosResult<T>(axios.post(url, data, createOptions(options))),
-  put: <T>(url: string, data: {} | FormData, options?: RequestOptions) => {
+  put: <T>(url: string, data: {} | FormData = {}, options?: RequestOptions) => {
     if (isFormData(data)) {
       return handleAxiosResult<T>(
         axios.post(

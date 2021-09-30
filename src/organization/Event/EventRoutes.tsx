@@ -47,7 +47,10 @@ import Backgrounds from 'organization/Event/Backgrounds'
 import {StaticPointsProvider} from 'Event/PointsProvider'
 import DuplicateEventForm from 'organization/EventList/DuplicateEventForm'
 import RoomsProvider from 'organization/Event/Area/RoomsProvider'
+import ImageEntries from 'organization/Event/ImageEntries'
+import ImageEntriesProvider from 'organization/Event/ImageEntriesProvider'
 import EmojiPageSettings from 'organization/Event/EmojiPage/EmojiPageSettings'
+import {OrganizationActionsProvider} from 'Event/ActionsProvider'
 
 export type EventRoutes = ReturnType<typeof useEventRoutes>
 
@@ -212,6 +215,15 @@ export default function EventRoutes() {
               <ReportsProvider>
                 <Reports />
               </ReportsProvider>
+            </AuthorizedPage>
+          </Route>
+          <Route path={routes.events[':event'].image_entries}>
+            <AuthorizedPage permission={CONFIGURE_EVENTS}>
+              <OrganizationActionsProvider>
+                <ImageEntriesProvider>
+                  <ImageEntries />
+                </ImageEntriesProvider>
+              </OrganizationActionsProvider>
             </AuthorizedPage>
           </Route>
           <Redirect to={routes.events[':event'].root} />

@@ -8,6 +8,7 @@ import {fakeSimpleBlog} from 'Event/template/SimpleBlog/__utils__/factory'
 import faker from 'faker'
 import {now} from 'lib/date-time'
 import {createLanguage, ENGLISH} from 'Event/LanguageProvider/language'
+import {ImageEntry} from 'organization/Event/ImageEntriesProvider'
 
 export const fakeEvent = (overrides?: Partial<ObvioEvent>): ObvioEvent => ({
   id: faker.random.number({min: 1000, max: 10000}),
@@ -153,5 +154,19 @@ export const fakeBackground = (
   event_id: faker.random.number({min: 1000, max: 10000}),
   created_at: now(),
   updated_at: now(),
+  ...overrides,
+})
+
+export const fakeImageEntry = (
+  overrides?: Partial<ImageEntry>,
+): ImageEntry => ({
+  id: faker.random.alphaNumeric(8),
+  file: {
+    url: faker.internet.url(),
+    name: 'someimage.jepg',
+  },
+  status: 'pending',
+  title: 'My entry',
+  description: 'description about my entry',
   ...overrides,
 })

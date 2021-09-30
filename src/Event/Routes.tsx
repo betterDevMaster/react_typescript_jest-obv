@@ -34,6 +34,7 @@ import DownloadA360iReport from 'Event/DownloadA360iReport'
 import EventOfflinePage from 'Event/EventOfflinePage'
 import PagePoints, {LEADERBOARD} from 'Event/PointsProvider/PagePoints'
 import CompletedOnboarding from 'Event/CompletedOnboarding'
+import ImageWaterfall from 'Event/ImageWaterfall'
 
 export const eventRoutes = createRoutes({
   login: '/login',
@@ -55,6 +56,7 @@ export const eventRoutes = createRoutes({
   },
   report: '/report',
   backgrounds: '/backgrounds',
+  image_waterfall: '/image_waterfall',
 })
 
 /**
@@ -69,6 +71,7 @@ export const EVENT_PAGES = {
   [eventRoutes.leaderboard]: 'Leaderboard',
   [eventRoutes.backgrounds]: 'Backgrounds',
   [eventRoutes.report]: 'Download Report',
+  [eventRoutes.image_waterfall]: 'Image Waterfall',
 }
 
 export type EventPages = typeof EVENT_PAGES
@@ -213,6 +216,9 @@ function UserRoutes() {
       </Route>
       <Route path={eventRoutes.changePassword}>
         <ChangePassword />
+      </Route>
+      <Route path={eventRoutes.image_waterfall}>
+        <ImageWaterfall />
       </Route>
 
       <Redirect to={eventRoutes.root} />

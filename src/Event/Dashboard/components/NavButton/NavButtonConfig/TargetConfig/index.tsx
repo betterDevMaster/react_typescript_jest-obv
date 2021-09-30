@@ -9,6 +9,8 @@ export type TargetConfigProps = {
   disablePageSelect?: boolean
   isAreaButton: boolean
   setIsAreaButton: (isAreaButton: boolean) => void
+  isFormButton: boolean
+  setIsImageUploadButton: (isImageUploadButton: boolean) => void
   areaId: string | null
   setAreaId: (areaId: string | null) => void
   link: string
@@ -20,21 +22,57 @@ export type TargetConfigProps = {
 }
 
 export default function TargetConfig(props: TargetConfigProps) {
-  const {setIsAreaButton, isAreaButton} = props
+  const {
+    setIsAreaButton,
+    isAreaButton,
+    setIsImageUploadButton,
+    isFormButton,
+  } = props
+
+  const value = () => {
+    if (isFormButton) {
+      return 2
+    }
+
+    if (isAreaButton) {
+      return 1
+    }
+
+    return 0
+  }
 
   return (
     <>
       <FormControl>
-        <ToggleButtonGroup value={isAreaButton ? 'true' : 'false'} exclusive>
-          <ToggleButton value="false" onClick={() => setIsAreaButton(false)}>
+        <ToggleButtonGroup value={value()} exclusive>
+          <ToggleButton
+            value={0}
+            onClick={() => {
+              setIsAreaButton(false)
+              setIsImageUploadButton(false)
+            }}
+          >
             Link
           </ToggleButton>
           <ToggleButton
-            value="true"
+            value={1}
             aria-label="configure button to join room"
-            onClick={() => setIsAreaButton(true)}
+            onClick={() => {
+              setIsAreaButton(true)
+              setIsImageUploadButton(false)
+            }}
           >
             Join Area
+          </ToggleButton>
+          <ToggleButton
+            value={2}
+            aria-label="configure button to image upload"
+            onClick={() => {
+              setIsImageUploadButton(true)
+              setIsAreaButton(false)
+            }}
+          >
+            Image Uploader
           </ToggleButton>
         </ToggleButtonGroup>
       </FormControl>

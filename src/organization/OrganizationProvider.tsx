@@ -149,6 +149,7 @@ export function createRoutesFor(organization: Organization) {
           },
           leaderboard: '/leaderboard',
           reports: '/reports',
+          image_entries: '/image_entries',
         },
       },
     },

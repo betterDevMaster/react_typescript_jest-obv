@@ -41,6 +41,9 @@ export function SidebarNavButtonConfig(
 
   const [rules, setRules] = useState(button.rules)
   const [isAreaButton, setIsAreaButton] = useState(button.isAreaButton)
+  const [isImageUploadButton, setIsImageUploadButton] = useState(
+    button.isFormButton,
+  )
   const [areaId, setAreaId] = useState(button.areaId)
   const [link, setLink] = useState(button.link)
   const [page, setPage] = useState(button.page)
@@ -53,6 +56,7 @@ export function SidebarNavButtonConfig(
 
     setRules(button.rules)
     setIsAreaButton(button.isAreaButton)
+    setIsImageUploadButton(button.isFormButton)
     setAreaId(button.areaId)
     setLink(button.link)
     setPage(button.page)
@@ -105,6 +109,7 @@ export function SidebarNavButtonConfig(
       ...formData,
       rules,
       isAreaButton,
+      isFormButton: isImageUploadButton,
       areaId,
       link,
       page,
@@ -173,6 +178,8 @@ export function SidebarNavButtonConfig(
           <TargetConfig
             isAreaButton={isAreaButton}
             setIsAreaButton={setIsAreaButton}
+            isFormButton={isImageUploadButton}
+            setIsImageUploadButton={setIsImageUploadButton}
             areaId={areaId}
             setAreaId={setAreaId}
             link={link}

@@ -6,7 +6,7 @@ export const eventClient: Client = {
     client.get(url, {...options, tokenKey: EVENT_TOKEN_KEY}),
   post: (url: string, data: {} = {}, options?: RequestOptions) =>
     client.post(url, data, {...options, tokenKey: EVENT_TOKEN_KEY}),
-  put: (url: string, data: {}, options?: RequestOptions) =>
+  put: (url: string, data: {} = {}, options?: RequestOptions) =>
     client.put(url, data, {...options, tokenKey: EVENT_TOKEN_KEY}),
   patch: (url: string, data: {} = {}, options?: RequestOptions) =>
     client.patch(url, data, {...options, tokenKey: EVENT_TOKEN_KEY}),

@@ -130,6 +130,7 @@ export default function ButtonConfig(props: {
         />
         <LinkConfig
           isAreaButton={isAreaButton}
+          isFormButton={false}
           page={page}
           setPage={setPage}
           link={link}

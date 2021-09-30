@@ -86,6 +86,9 @@ function ConfigureEventPages() {
         <ConfigNavItem to={routes.backgrounds} aria-label="backgrounds">
           Zoom Backgrounds
         </ConfigNavItem>
+        <ConfigNavItem to={routes.image_entries} aria-label="image entries">
+          Image Entries
+        </ConfigNavItem>
       </>
     </HasPermission>
   )

@@ -43,6 +43,9 @@ export default function ButtonConfig(props: {
   const [text, setText] = useState(button.text)
   const [actionId, setActionId] = useState(button.actionId)
   const [isAreaButton, setIsAreaButton] = useState(button.isAreaButton)
+  const [isImageUploadButton, setIsImageUploadButton] = useState(
+    button.isFormButton,
+  )
   const [areaId, setAreaId] = useState(button.areaId)
   const [link, setLink] = useState(button.link)
   const [page, setPage] = useState(button.page)
@@ -61,6 +64,7 @@ export default function ButtonConfig(props: {
     setButtonIsVisible(button.isVisible)
     setText(button.text)
     setIsAreaButton(button.isAreaButton)
+    setIsImageUploadButton(button.isFormButton)
     setAreaId(button.areaId)
     setLink(button.link)
     setPage(button.page)
@@ -83,6 +87,7 @@ export default function ButtonConfig(props: {
       text,
       actionId,
       isAreaButton,
+      isFormButton: isImageUploadButton,
       areaId,
       link,
       page,
@@ -128,6 +133,8 @@ export default function ButtonConfig(props: {
           disablePageSelect
           isAreaButton={isAreaButton}
           setIsAreaButton={setIsAreaButton}
+          isFormButton={isImageUploadButton}
+          setIsImageUploadButton={setIsImageUploadButton}
           areaId={areaId}
           setAreaId={setAreaId}
           link={link}

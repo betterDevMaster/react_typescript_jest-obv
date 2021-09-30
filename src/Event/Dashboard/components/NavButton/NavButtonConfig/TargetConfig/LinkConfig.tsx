@@ -18,6 +18,7 @@ import {TargetConfigProps} from 'Event/Dashboard/components/NavButton/NavButtonC
 type LinkConfigProps = Pick<
   TargetConfigProps,
   | 'isAreaButton'
+  | 'isFormButton'
   | 'page'
   | 'setPage'
   | 'disablePageSelect'
@@ -30,7 +31,7 @@ type LinkConfigProps = Pick<
 }
 
 export default function LinkConfig(props: LinkConfigProps) {
-  if (props.isAreaButton) {
+  if (props.isAreaButton || props.isFormButton) {
     return null
   }
 
