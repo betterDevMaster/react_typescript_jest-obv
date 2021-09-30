@@ -193,6 +193,19 @@ export type Panels = BaseTemplate & {
     shouldRedirect: boolean
   }
   countDownTimers?: EntityList<CountDownTimer>
+  imageWaterfall?: {
+    title?: string
+    description?: string
+    uploadFormTitle?: string
+    uploadFormDescription?: string
+    uploadButtonText?: string
+    uploadButtonFontSize?: number
+    uploadButtonBorderRadius?: number
+    uploadButtonTextColor?: string
+    uploadButtonBackgroundColor?: string
+    uploadButtonBorderColor?: string
+    actionId?: string | null
+  }
 }
 
 export const createPanels = (): DeepRequired<Panels> => ({
@@ -390,6 +403,19 @@ export const createPanels = (): DeepRequired<Panels> => ({
   countDownTimers: {
     entities: {},
     ids: [],
+  },
+  imageWaterfall: {
+    title: 'Image Waterfall',
+    description: 'Image Waterfall',
+    uploadFormTitle: 'Upload Image',
+    uploadFormDescription: 'Upload Waterfall Image',
+    uploadButtonText: 'Upload',
+    uploadButtonFontSize: 12,
+    uploadButtonBorderRadius: 0,
+    uploadButtonTextColor: '#000000',
+    uploadButtonBackgroundColor: '#FFFFFF',
+    uploadButtonBorderColor: '#000000',
+    actionId: null,
   },
 })
 

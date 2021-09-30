@@ -12,7 +12,7 @@ export default function NewMainNavButton(props: {
       size: 12,
       rules: [],
       isAreaButton: false,
-      isFormButton: false,
+      isImageUpload: false,
       areaId: null,
       newTab: true,
       actionId: null,

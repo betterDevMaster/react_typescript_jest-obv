@@ -14,7 +14,7 @@ export default function AddButton(props: {
       link: '',
       rules: [],
       isAreaButton: false,
-      isFormButton: false,
+      isImageUpload: false,
       areaId: null,
       actionId: null,
       isVisible: true,

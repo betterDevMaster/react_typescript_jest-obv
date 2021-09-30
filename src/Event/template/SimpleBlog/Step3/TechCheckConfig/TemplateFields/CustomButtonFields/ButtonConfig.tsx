@@ -48,7 +48,7 @@ export default function ButtonConfig(
   const {register, control, handleSubmit} = useForm()
 
   const [isAreaButton, setIsAreaButton] = useState(button.isAreaButton)
-  const [isFormButton, setIsFormButton] = useState(button.isFormButton)
+  const [isImageUpload, setisImageUpload] = useState(button.isImageUpload)
   const [areaId, setAreaId] = useState(button.areaId)
   const [link, setLink] = useState(button.link)
   const [page, setPage] = useState(button.page)
@@ -60,7 +60,7 @@ export default function ButtonConfig(
     }
 
     setIsAreaButton(button.isAreaButton)
-    setIsFormButton(button.isFormButton)
+    setisImageUpload(button.isImageUpload)
     setAreaId(button.areaId)
     setLink(button.link)
     setPage(button.page)
@@ -92,7 +92,7 @@ export default function ButtonConfig(
 
         <LinkConfig
           isAreaButton={isAreaButton}
-          isFormButton={isFormButton}
+          isImageUpload={isImageUpload}
           page={page}
           setPage={setPage}
           link={link}

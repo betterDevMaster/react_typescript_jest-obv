@@ -16,7 +16,7 @@ export default function NewMainNavButton(props: {className?: string}) {
       size: 12,
       rules: [],
       isAreaButton: false,
-      isFormButton: false,
+      isImageUpload: false,
       areaId: null,
       actionId: null,
       isVisible: true,

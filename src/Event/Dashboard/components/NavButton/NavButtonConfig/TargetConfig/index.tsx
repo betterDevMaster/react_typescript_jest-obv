@@ -9,7 +9,7 @@ export type TargetConfigProps = {
   disablePageSelect?: boolean
   isAreaButton: boolean
   setIsAreaButton: (isAreaButton: boolean) => void
-  isFormButton: boolean
+  isImageUpload: boolean
   setIsImageUploadButton: (isImageUploadButton: boolean) => void
   areaId: string | null
   setAreaId: (areaId: string | null) => void
@@ -26,11 +26,11 @@ export default function TargetConfig(props: TargetConfigProps) {
     setIsAreaButton,
     isAreaButton,
     setIsImageUploadButton,
-    isFormButton,
+    isImageUpload,
   } = props
 
   const value = () => {
-    if (isFormButton) {
+    if (isImageUpload) {
       return 2
     }
 

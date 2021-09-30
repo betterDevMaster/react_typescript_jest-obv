@@ -26,7 +26,7 @@ it('should upload an image', async () => {
         mainNav: createEntityList([
           fakeNavButtonWithSize({
             text: buttonText,
-            isFormButton: true,
+            isImageUpload: true,
           }),
         ]),
       }),
@@ -35,17 +35,26 @@ it('should upload an image', async () => {
 
   user.click(await findByText(buttonText))
 
-  const image = new File([], 'myimage.jpg')
-  const input = await findByLabelText('image input')
-  Object.defineProperty(input, 'files', {
-    value: [image],
+  const image = new File([], 'myimage.png', {
+    type: 'image/png',
+  })
+  const input = await findByLabelText('image upload')
+  const filePath = 'somegeneratedfilepath.jpeg'
+
+  fireEvent.change(input, {
+    target: {
+      files: [image],
+    },
   })
 
-  fireEvent.change(input)
-
-  user.click(await findByLabelText('cancel image resize'))
-
-  mockPost.mockImplementationOnce(() => Promise.resolve({data: 'ok'})) // don't actually care about returned entry
+  // Server responds with file path
+  mockPost.mockImplementationOnce(() =>
+    Promise.resolve({
+      data: {
+        file: filePath,
+      },
+    }),
+  )
 
   user.click(await findByLabelText('upload image'))
 

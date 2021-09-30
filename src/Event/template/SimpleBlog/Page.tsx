@@ -12,6 +12,7 @@ import LanguageSelectMenu from 'Event/LanguageSelector'
 import {muiDarkTheme, muiTheme} from 'lib/ui/theme'
 import {ThemeProvider} from '@material-ui/core/styles'
 import {withStyles} from '@material-ui/core/styles'
+import {RelativeLink} from 'lib/ui/link/RelativeLink'
 
 export default function SimpleBlogPage(props: {
   user: User
@@ -134,4 +135,19 @@ export const PageTitle = styled.h2`
   line-height: 1.5;
   text-transform: uppercase;
   text-align: center;
+`
+
+export const Subtitle = styled.div`
+  text-align: center;
+  margin: 20px 20px;
+`
+
+export const BackToDashboardLink = styled(RelativeLink)<{
+  color?: string
+}>`
+  display: block;
+  text-align: center;
+  margin-bottom: 20px;
+  line-height: 1.5;
+  color: ${(props) => props.color || '#000000'};
 `

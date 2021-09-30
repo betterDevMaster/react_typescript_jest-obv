@@ -1,8 +1,8 @@
 import React, {useState} from 'react'
 import NavButton from 'Event/Dashboard/components/NavButton'
-import UploadButton from 'Event/ImageWaterfall/ImageWaterfallUpload/UploadButton'
-import UploadDialog from 'Event/ImageWaterfall/ImageWaterfallUpload/UploadDialog'
 import {useEditMode} from 'Event/Dashboard/editor/state/edit-mode'
+import UploadButton from 'Event/Dashboard/components/NavButton/ImageEntryUpload/UploadButton'
+import UploadDialog from 'Event/Dashboard/components/NavButton/ImageEntryUpload/UploadDialog'
 
 export default function ImageWaterfallUpload(props: NavButton) {
   const [visibleUploadForm, setVisibleUploadForm] = useState(false)

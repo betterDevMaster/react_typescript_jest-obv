@@ -50,7 +50,7 @@ export function MainNavButtonConfig(
   const [rules, setRules] = useState(button.rules)
   const [isAreaButton, setIsAreaButton] = useState(button.isAreaButton)
   const [isImageUploadButton, setIsImageUploadButton] = useState(
-    button.isFormButton,
+    button.isImageUpload,
   )
   const [areaId, setAreaId] = useState(button.areaId)
   const [link, setLink] = useState(button.link)
@@ -66,7 +66,7 @@ export function MainNavButtonConfig(
 
     setRules(button.rules)
     setIsAreaButton(button.isAreaButton)
-    setIsImageUploadButton(button.isFormButton)
+    setIsImageUploadButton(button.isImageUpload)
     setAreaId(button.areaId)
     setLink(button.link)
     setPage(button.page)
@@ -124,7 +124,7 @@ export function MainNavButtonConfig(
       ...formData,
       rules,
       isAreaButton,
-      isFormButton: isImageUploadButton,
+      isImageUpload: isImageUploadButton,
       areaId,
       link,
       page,
@@ -250,7 +250,7 @@ export function MainNavButtonConfig(
           <TargetConfig
             isAreaButton={isAreaButton}
             setIsAreaButton={setIsAreaButton}
-            isFormButton={isImageUploadButton}
+            isImageUpload={isImageUploadButton}
             setIsImageUploadButton={setIsImageUploadButton}
             areaId={areaId}
             setAreaId={setAreaId}

@@ -101,8 +101,9 @@ const CopyButton = styled(IconButton)<{copied: boolean}>`
 `
 
 const Actions = styled.div`
+  display: flex;
+  justify-content: flex-end;
   margin-bottom: ${(props) => props.theme.spacing[5]};
-  text-align: right;
 
   button {
     &:not(:last-child) {

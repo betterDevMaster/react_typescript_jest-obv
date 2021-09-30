@@ -7,6 +7,7 @@ import {fakeNavButtonWithSize} from 'Event/Dashboard/components/NavButton/__util
 import {createEntityList} from 'lib/list'
 import {createSimpleBlog, SimpleBlog} from 'Event/template/SimpleBlog'
 import {colors} from 'lib/ui/theme'
+
 export const fakeSimpleBlog = (overrides?: Partial<SimpleBlog>): SimpleBlog => {
   const defaultAttributes: SimpleBlog = createSimpleBlog()
 

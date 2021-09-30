@@ -196,6 +196,21 @@ export type SimpleBlog = BaseTemplate & {
     redirectUrl: string
   }
   countDownTimers?: EntityList<CountDownTimer>
+  imageWaterfall?: {
+    title?: string
+    description?: string
+    backToDashboardText?: string
+    backToDashboardTextColor?: string
+    uploadFormTitle?: string
+    uploadFormDescription?: string
+    uploadButtonText?: string
+    uploadButtonFontSize?: number
+    uploadButtonBorderRadius?: number
+    uploadButtonTextColor?: string
+    uploadButtonBackgroundColor?: string
+    uploadButtonBorderColor?: string
+    actionId?: string | null
+  }
 }
 
 export type SimpleBlogHeader = Header & {
@@ -416,6 +431,21 @@ export const createSimpleBlog = (): DeepRequired<SimpleBlog> => ({
   countDownTimers: {
     entities: {},
     ids: [],
+  },
+  imageWaterfall: {
+    title: 'Image Waterfall',
+    description: 'Image Waterfall',
+    backToDashboardText: 'Back to Dashboard',
+    backToDashboardTextColor: '#000000',
+    uploadFormTitle: 'Upload Image',
+    uploadFormDescription: 'Upload Waterfall Image',
+    uploadButtonText: 'Upload',
+    uploadButtonFontSize: 12,
+    uploadButtonBorderRadius: 0,
+    uploadButtonTextColor: '#000000',
+    uploadButtonBackgroundColor: '#FFFFFF',
+    uploadButtonBorderColor: '#000000',
+    actionId: null,
   },
 })
 

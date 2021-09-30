@@ -20,7 +20,7 @@ export default function NewMainNavButton(props: {className?: string}) {
       link: '',
       rules: [],
       isAreaButton: false,
-      isFormButton: false,
+      isImageUpload: false,
       areaId: null,
       size: 12,
       actionId: null,
