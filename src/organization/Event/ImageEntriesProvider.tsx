@@ -62,22 +62,14 @@ export default function ImageEntriesProvider(props: {
 
   const [prevPageIds, setPrevPageIds] = useState<string[]>([])
 
-  const update = (entry: ImageEntry) => {
-    setEntries((entries) =>
-      entries.map((e) => {
-        const isTarget = e.id === entry.id
-
-        if (isTarget) {
-          return entry
-        }
-
-        return e
-      }),
-    )
+  const remove = (entry: ImageEntry) => {
+    setEntries((entries) => {
+      return entries.filter((e) => e.id !== entry.id)
+    })
   }
 
-  const approve = (entry: ImageEntry) => requestApprove(entry).then(update)
-  const reject = (entry: ImageEntry) => requestReject(entry).then(update)
+  const approve = (entry: ImageEntry) => requestApprove(entry).then(remove)
+  const reject = (entry: ImageEntry) => requestReject(entry).then(remove)
 
   const goToFirstPage = () => {
     setStartId('')

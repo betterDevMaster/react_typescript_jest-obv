@@ -26,7 +26,7 @@ export default function ImageEntryCard(props: {entry: ImageEntry}) {
 
     toggleProcessing()
 
-    action().finally(toggleProcessing)
+    action().catch(toggleProcessing)
   }
 
   const canSet = (status: ImageEntry['status']) =>
