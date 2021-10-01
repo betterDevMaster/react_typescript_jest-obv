@@ -152,3 +152,26 @@ it('should complete self-checkin', async () => {
     expect(await findByLabelText('welcome')).toBeInTheDocument()
   })
 })
+
+it('should skip step 3 for certain TVE3 attendees', async () => {
+  const completedStep2 = fakeAttendee({
+    has_password: true,
+    waiver: faker.internet.url(),
+    tech_check_completed_at: null,
+    tags: ['2997'],
+  })
+
+  const event = fakeEvent({
+    tech_check: fakeTechCheck({is_enabled: true}),
+    template: fakeSimpleBlog(),
+    slug: 'tve3',
+  })
+
+  const {findByLabelText} = await loginToEventSite({
+    attendee: completedStep2,
+    event,
+  })
+
+  // Has welcome image
+  expect(await findByLabelText('welcome')).toBeInTheDocument()
+})
