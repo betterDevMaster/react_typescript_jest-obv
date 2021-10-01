@@ -64,7 +64,7 @@ export default function CountDownTimer(
 
   const value = () => {
     if (isEditMode) {
-      const fullDateFormat = 'MMM Do YYYY HH:MM:SS'
+      const fullDateFormat = 'MMM Do YYYY HH:mm:ss'
       return end ? formatDate(end, fullDateFormat) : ''
     }
 
