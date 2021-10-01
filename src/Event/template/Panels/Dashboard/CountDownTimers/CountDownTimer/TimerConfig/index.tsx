@@ -118,11 +118,11 @@ export default function TimerConfig(
         <Controller
           name="end"
           control={control}
-          defaultValue={countDownTimer.end || null}
+          defaultValue={countDownTimer.end}
           render={({onChange, value}) => (
             <LocalizedDateTimePicker
               value={value}
-              onChange={(date) => onChange(date?.toISOString() || '')}
+              onChange={(date) => onChange(date?.toISOString())}
               fullWidth
               label="End"
               inputProps={{
@@ -136,7 +136,7 @@ export default function TimerConfig(
           <Controller
             name="backgroundColor"
             control={control}
-            defaultValue={countDownTimer.backgroundColor || ''}
+            defaultValue={countDownTimer.backgroundColor}
             render={({value, onChange}) => (
               <ColorPicker
                 label="Background Color"
@@ -148,8 +148,8 @@ export default function TimerConfig(
         </FormControl>
         <InputLabel>Background Opacity</InputLabel>
         <Controller
-          name="opacity"
-          defaultValue={countDownTimer.opacity || 1}
+          name="backgroundOpacity"
+          defaultValue={countDownTimer.backgroundOpacity}
           control={control}
           render={({value, onChange}) => (
             <Slider
@@ -165,7 +165,7 @@ export default function TimerConfig(
         <Controller
           name="textColor"
           control={control}
-          defaultValue={countDownTimer.textColor || ''}
+          defaultValue={countDownTimer.textColor}
           render={({value, onChange}) => (
             <ColorPicker label="Text Color" color={value} onPick={onChange} />
           )}
@@ -173,7 +173,7 @@ export default function TimerConfig(
         <TextField
           label="Description"
           name="description"
-          defaultValue={countDownTimer.description || ''}
+          defaultValue={countDownTimer.description}
           inputProps={{
             'aria-label': 'description input',
             ref: register,

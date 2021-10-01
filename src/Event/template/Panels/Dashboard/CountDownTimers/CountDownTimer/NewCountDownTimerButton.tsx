@@ -1,7 +1,10 @@
 import Button from '@material-ui/core/Button'
 import Grid from '@material-ui/core/Grid'
 import React, {useState} from 'react'
-import {CountDownTimer} from 'Event/Dashboard/components/CountDownTimer'
+import {
+  CountDownTimer,
+  createCountdown,
+} from 'Event/Dashboard/components/CountDownTimer'
 import TimerConfig from 'Event/template/Panels/Dashboard/CountDownTimers/CountDownTimer/TimerConfig'
 
 export default function NewCountDownTimerButton(props: {className?: string}) {
@@ -12,11 +15,7 @@ export default function NewCountDownTimerButton(props: {className?: string}) {
   const clearCountDownTimer = () => setCountDownTimer(null)
 
   const addCountDownTimer = () => {
-    const timer: CountDownTimer = {
-      enabled: true,
-    }
-
-    setCountDownTimer(timer)
+    setCountDownTimer(createCountdown())
   }
   return (
     <>

@@ -1,18 +1,27 @@
 import React, {useCallback, useState, useEffect} from 'react'
 import styled from 'styled-components'
 import Typography from '@material-ui/core/Typography'
-import {now, date, duration, formatDate} from 'lib/date-time'
+import {now, date, duration, formatDate, inThreeDays} from 'lib/date-time'
 import {rgba} from 'lib/color'
 import {useInterval} from 'lib/interval'
 
 export interface CountDownTimer {
   enabled: boolean
-  end?: string
-  backgroundColor?: string
-  textColor?: string
-  opacity?: number
-  description?: string
+  end: string
+  backgroundColor: string
+  textColor: string
+  backgroundOpacity: number
+  description: string
 }
+
+export const createCountdown = (): CountDownTimer => ({
+  enabled: true,
+  description: '',
+  end: inThreeDays(),
+  backgroundColor: '#FFFFFF',
+  backgroundOpacity: 1,
+  textColor: '#000000',
+})
 
 export default function CountDownTimer(
   props: CountDownTimer & {
@@ -26,7 +35,7 @@ export default function CountDownTimer(
   const {
     textColor,
     backgroundColor,
-    opacity,
+    backgroundOpacity: opacity,
     end,
     enabled,
     description,

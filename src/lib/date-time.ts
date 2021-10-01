@@ -95,3 +95,5 @@ export const duration = (start: string, end: string) => {
 
   return [hoursFormatted, minutesFormatted, secondsFormatted].join('')
 }
+
+export const inThreeDays = () => moment().add(3, 'days').toISOString()
