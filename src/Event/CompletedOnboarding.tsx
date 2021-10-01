@@ -19,7 +19,7 @@ export default function CompletedOnboarding(props: {
   const {step} = props
   const attendee = useAttendee()
   const {hasTechCheck, hasWaiver} = useEvent()
-  const shouldSkipSpanishAttendees = useShouldSkipTechCheckForSpanishAttendees()
+  const shouldSkipTve3TechCheck = useShouldSkipTve3TechCheck()
   const needsToSetPassword = useNeedsToSetPassword()
 
   if (needsToSetPassword) {
@@ -39,7 +39,7 @@ export default function CompletedOnboarding(props: {
     return props.children
   }
 
-  if (shouldSkipSpanishAttendees) {
+  if (shouldSkipTve3TechCheck) {
     return props.children
   }
 
@@ -53,19 +53,20 @@ export default function CompletedOnboarding(props: {
 }
 
 /**
- * CUSTOM EVENT CODE - Want to skip spanish attendees for
- * the RankMakersLive event.
+ * TEMPORARY CUSTOM EVENT CODE - Want to skip TechCheck for
+ * certain TVE3 attendees.
  */
-export function useShouldSkipTechCheckForSpanishAttendees() {
+export function useShouldSkipTve3TechCheck() {
   const {event} = useEvent()
   const attendee = useAttendee()
 
-  const isRankMakerEvent = event.slug === 'RankMakersLive'
+  const isTve3 = event.slug === 'tve3'
+
   /**
    * Skip tech check if attendee has one of these tags...
    */
-  const spanishTags = ['12094', '12136', '12082']
-  return isRankMakerEvent && hasTags(spanishTags, attendee)
+  const tags = ['2997']
+  return isTve3 && hasTags(tags, attendee)
 }
 
 function hasTags(tags: string[], attendee: Attendee) {
