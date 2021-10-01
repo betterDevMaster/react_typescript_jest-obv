@@ -87,11 +87,9 @@ it('should remove the timer', async () => {
     template: fakePanels({countDownTimers: mainTimers}),
   })
 
-  const {
-    findAllByLabelText,
-    findByLabelText,
-    queryByText,
-  } = await goToDashboardConfig({event})
+  const {findAllByLabelText, findByLabelText} = await goToDashboardConfig({
+    event,
+  })
 
   const timerEls = () => findAllByLabelText('count down timer')
   expect((await timerEls()).length).toBe(numCountDownTimer)

@@ -56,6 +56,5 @@ const CloseButton = styled(IconButton)`
 `
 
 const SubTitle = styled.div`
-  text-align: center;
   margin: 20px 20px;
 `
