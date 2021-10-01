@@ -87,25 +87,20 @@ it('should remove the timer', async () => {
     template: fakePanels({countDownTimers: mainTimers}),
   })
 
-  const {
-    findAllByLabelText,
-    findByLabelText,
-    queryByText,
-  } = await goToDashboardConfig({event})
+  const {findAllByLabelText, findByLabelText} = await goToDashboardConfig({
+    event,
+  })
 
   const timerEls = () => findAllByLabelText('count down timer')
   expect((await timerEls()).length).toBe(numCountDownTimer)
 
   const target = faker.random.arrayElement(await timerEls())
-  expect(queryByText(target.textContent!)).toBeInTheDocument()
 
   clickEdit(target)
 
   fireEvent.click(await findByLabelText('remove countdown'))
 
   expect((await timerEls()).length).toBe(numCountDownTimer - 1)
-
-  expect(queryByText(target.textContent!)).not.toBeInTheDocument()
 
   // Saved
   await wait(() => {
