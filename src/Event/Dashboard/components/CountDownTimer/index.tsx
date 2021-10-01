@@ -118,7 +118,7 @@ const StyledCountDownTimer = styled((props) => {
   font-size: 60px;
   font-weight: bold;
   line-height: 1em;
-  color: ${(props) => props.color || '#ffffff'};
+  color: ${(props) => props.color};
   background-color: ${(props) => props.background};
-  opacity: ${(props) => props.opacity || 1};
+  opacity: ${(props) => props.opacity};
 `
