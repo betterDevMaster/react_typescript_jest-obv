@@ -20,8 +20,7 @@ export default function Step3() {
     return <Redirect to={eventRoutes.root} />
   }
 
-  const hasCompletedTechCheck = Boolean(attendee.tech_check_completed_at)
-  if (hasCompletedTechCheck || !hasTechCheck) {
+  if (attendee.has_completed_tech_check || !hasTechCheck) {
     return <Redirect to={eventRoutes.root} />
   }
 

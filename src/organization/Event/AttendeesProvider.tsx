@@ -19,8 +19,7 @@ export interface AttendeesContextProps {
   loading: boolean
   groups: string[]
   search: (term: string) => void
-  isCheckedIn: (attendee: Attendee) => boolean
-  toggleCheckIn: (attendee: Attendee) => () => void
+  toggleTechCheckComplete: (attendee: Attendee) => () => void
   error: string | null
   clearError: () => void
   exportAttendees: () => Promise<AttendeeExportResult>
@@ -48,8 +47,8 @@ export default function AttendeesProvider(props: {
   const {data: results, loading} = useFetchAttendees(debouncedSearch)
   const [groups, setGroups] = useState<string[]>([])
   const [error, setError] = useState<string | null>(null)
-  const checkIn = useCheckIn()
-  const checkOut = useCheckOut()
+  const MarkTechCheckComplete = useMarkTechCheckComplete()
+  const markTechCheckIncomplete = useMarkTechCheckIncomplete()
   const exportAttendees = useExport({onError: setError})
 
   const insert = (items: Attendee[] | Attendee) => {
@@ -133,11 +132,10 @@ export default function AttendeesProvider(props: {
     setAttendees(updated)
   }
 
-  const isCheckedIn = (attendee: Attendee) =>
-    Boolean(attendee.tech_check_completed_at)
-
-  const toggleCheckIn = (attendee: Attendee) => () => {
-    const process = isCheckedIn(attendee) ? checkOut : checkIn
+  const toggleTechCheckComplete = (attendee: Attendee) => () => {
+    const process = attendee.has_completed_tech_check
+      ? markTechCheckIncomplete
+      : MarkTechCheckComplete
 
     clearError()
 
@@ -156,8 +154,7 @@ export default function AttendeesProvider(props: {
         loading,
         search: setSearch,
         groups,
-        isCheckedIn,
-        toggleCheckIn,
+        toggleTechCheckComplete,
         error,
         clearError,
         exportAttendees,
@@ -200,7 +197,7 @@ function fetchUrl(event: ObvioEvent, search: string) {
   return `${baseUrl}?search=${search}`
 }
 
-export function useCheckIn() {
+export function useMarkTechCheckComplete() {
   const {event} = useEvent()
   const {client} = useOrganization()
 
@@ -210,7 +207,7 @@ export function useCheckIn() {
   }
 }
 
-export function useCheckOut() {
+export function useMarkTechCheckIncomplete() {
   const {event} = useEvent()
   const {client} = useOrganization()
 

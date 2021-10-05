@@ -33,8 +33,7 @@ export default function AttendeesTable(props: {
   const {
     attendees,
     groups,
-    isCheckedIn,
-    toggleCheckIn,
+    toggleTechCheckComplete: toggleCheckIn,
     loading: loadingAttendees,
   } = useAttendees()
 
@@ -77,9 +76,11 @@ export default function AttendeesTable(props: {
                   {group}
                 </TableCell>
               ))}
-              <HasPermission permission={CHECK_IN_ATTENDEES}>
-                <TableCell align="center">Check In</TableCell>
-              </HasPermission>
+              <HasTechCheck>
+                <HasPermission permission={CHECK_IN_ATTENDEES}>
+                  <TableCell align="center">Tech Check</TableCell>
+                </HasPermission>
+              </HasTechCheck>
               <TableCell>{/* Room Assignments Cell */}</TableCell>
             </TableRow>
           </TableHead>
@@ -102,17 +103,19 @@ export default function AttendeesTable(props: {
                     {attendee.groups[key]}
                   </TableCell>
                 ))}
-                <HasPermission permission={CHECK_IN_ATTENDEES}>
-                  <TableCell align="center">
-                    <ToggleCheckInButton
-                      isCheckedIn={isCheckedIn(attendee)}
-                      onClick={toggleCheckIn(attendee)}
-                    />
-                    <CheckedInAt>
-                      {attendee.tech_check_completed_at}
-                    </CheckedInAt>
-                  </TableCell>
-                </HasPermission>
+                <HasTechCheck>
+                  <HasPermission permission={CHECK_IN_ATTENDEES}>
+                    <TableCell align="center">
+                      <ToggleCheckInButton
+                        isCheckedIn={attendee.has_completed_tech_check}
+                        onClick={toggleCheckIn(attendee)}
+                      />
+                      <CheckedInAt>
+                        {attendee.tech_check_completed_at}
+                      </CheckedInAt>
+                    </TableCell>
+                  </HasPermission>
+                </HasTechCheck>
                 <TableCell>
                   <IconButton
                     color="primary"
@@ -136,6 +139,15 @@ export default function AttendeesTable(props: {
       </TableBox>
     </>
   )
+}
+
+function HasTechCheck(props: {children: React.ReactElement}) {
+  const {hasTechCheck} = useEvent()
+  if (!hasTechCheck) {
+    return null
+  }
+
+  return props.children
 }
 
 function ToggleCheckInButton(props: {

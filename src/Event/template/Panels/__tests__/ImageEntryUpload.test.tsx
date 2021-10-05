@@ -16,11 +16,6 @@ it('should upload an image', async () => {
   const buttonText = 'upload image'
 
   const {findAllByText, findByLabelText} = await loginToEventSite({
-    attendee: fakeAttendee({
-      waiver: 'some.pdf',
-      tech_check_completed_at: 'now',
-      has_password: true,
-    }),
     event: fakeEvent({
       template: fakePanels({
         nav: createEntityList([

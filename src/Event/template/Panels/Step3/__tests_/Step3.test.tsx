@@ -13,6 +13,7 @@ import {fakeAction} from 'Event/ActionsProvider/__utils__/factory'
 import {createEntityList} from 'lib/list'
 import {fakeNavButtonWithSize} from 'Event/Dashboard/components/NavButton/__utils__/factory'
 import {fakePanels} from 'Event/template/Panels/__utils__/factory'
+import {Attendee} from 'Event/attendee'
 
 const mockGet = axios.get as jest.Mock
 const mockPost = axios.post as jest.Mock
@@ -27,6 +28,7 @@ it('should show dashboard if completed tech check', async () => {
     has_password: true,
     waiver: faker.internet.url(),
     tech_check_completed_at: faker.date.recent().toISOString(),
+    has_completed_tech_check: true,
   })
   const {findByLabelText} = await loginToEventSite({
     attendee,
@@ -70,11 +72,13 @@ it('should complete tech check', async () => {
     has_password: true,
     waiver: faker.internet.url(),
     tech_check_completed_at: null,
+    has_completed_tech_check: false,
   })
 
-  const afterCheckIn = {
+  const afterCheckIn: Attendee = {
     ...beforeCheckIn,
     tech_check_completed_at: faker.date.recent().toISOString(),
+    has_completed_tech_check: true,
   }
   const {findByLabelText} = await loginToEventSite({
     attendee: beforeCheckIn,
@@ -119,11 +123,12 @@ it('should complete self-checkin', async () => {
     has_password: true,
     waiver: faker.internet.url(),
     tech_check_completed_at: null,
+    has_completed_tech_check: false,
   })
 
   const buttonText = 'Check Myself In'
   const button = fakeNavButtonWithSize({
-    page: '/check_in',
+    page: '/tech_check',
     text: buttonText,
   })
 
@@ -138,9 +143,10 @@ it('should complete self-checkin', async () => {
     }),
   })
 
-  const afterCheckIn = {
+  const afterCheckIn: Attendee = {
     ...beforeCheckIn,
     tech_check_completed_at: faker.date.recent().toISOString(),
+    has_completed_tech_check: true,
   }
 
   const {findByLabelText, findByText} = await loginToEventSite({

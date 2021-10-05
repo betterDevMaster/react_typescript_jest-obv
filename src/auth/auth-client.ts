@@ -1,4 +1,4 @@
-import {setLoading, setToken, setUser} from 'auth/actions'
+import {setLoading, setToken, setUser as setUserAction} from 'auth/actions'
 import {deleteToken, getToken, saveToken} from 'auth/token'
 import {User} from 'auth/user'
 import {client} from 'lib/api-client'
@@ -55,6 +55,11 @@ export const useAuthClient = (settings: AuthClientSettings) => {
   const {slug: organizationSlug} = useOrganizationUrl()
   const token = getToken(tokenKey)
 
+  const setUser = useCallback(
+    (user: User | null) => dispatch(setUserAction(user)),
+    [dispatch],
+  )
+
   const fetch = useCallback(() => {
     // No need to try fetch authenticated user
     if (!token) {
@@ -63,14 +68,14 @@ export const useAuthClient = (settings: AuthClientSettings) => {
 
     return fetchUser(tokenKey, endpoints.user)
       .then((user) => {
-        dispatch(setUser(user))
+        setUser(user)
         dispatch(setToken(token))
       })
       .catch(() => {
         // Token expired/invalid
         deleteToken(tokenKey)
       })
-  }, [dispatch, endpoints, token, tokenKey])
+  }, [endpoints, token, tokenKey, setUser, dispatch])
 
   // Initial Load
   useEffect(() => {
@@ -96,11 +101,9 @@ export const useAuthClient = (settings: AuthClientSettings) => {
           dispatch(setToken(token))
           return fetchUser(tokenKey, endpoints.user)
         })
-        .then((user) => {
-          dispatch(setUser(user))
-        })
+        .then(setUser)
     },
-    [dispatch, endpoints, tokenKey],
+    [endpoints, tokenKey, dispatch, setUser],
   )
 
   const register = useCallback(
@@ -110,15 +113,15 @@ export const useAuthClient = (settings: AuthClientSettings) => {
           saveToken(tokenKey, token)
           return fetchUser(tokenKey, endpoints.user)
         })
-        .then((user) => dispatch(setUser(user))),
-    [dispatch, endpoints, tokenKey],
+        .then(setUser),
+    [endpoints, tokenKey, setUser],
   )
 
   const logout = useCallback(() => {
     deleteToken(tokenKey)
-    dispatch(setUser(null))
+    setUser(null)
     dispatch(setToken(null))
-  }, [dispatch, tokenKey])
+  }, [dispatch, tokenKey, setUser])
 
   return {
     user,
@@ -128,6 +131,7 @@ export const useAuthClient = (settings: AuthClientSettings) => {
     register,
     refresh: fetch,
     token,
+    setUser,
   }
 }
 

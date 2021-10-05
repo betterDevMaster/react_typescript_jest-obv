@@ -50,7 +50,7 @@ export const eventRoutes = createRoutes({
   resources: '/resources',
   faq: '/faq',
   leaderboard: '/leaderboard',
-  checkIn: '/check_in',
+  techCheck: '/tech_check',
   area: {
     ':area': {},
   },
@@ -209,7 +209,7 @@ function UserRoutes() {
           <Backgrounds />
         </CompletedOnboarding>
       </Route>
-      <Route path={eventRoutes.checkIn}>
+      <Route path={eventRoutes.techCheck}>
         <CompletedOnboarding step={2}>
           <SelfCheckIn />
         </CompletedOnboarding>

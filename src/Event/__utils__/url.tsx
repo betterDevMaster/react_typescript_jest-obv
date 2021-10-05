@@ -65,6 +65,8 @@ export async function loginToEventSite(options: LoginToEventSiteOptions = {}) {
     fakeAttendee({
       tech_check_completed_at: 'now',
       waiver: 'some_waiver.png',
+      has_checked_in: true,
+      has_completed_tech_check: true,
     })
   const event = options.event || fakeEvent()
   visitEventSite({event, pathname: options.pathname, search: options.search})

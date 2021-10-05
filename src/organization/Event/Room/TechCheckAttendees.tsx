@@ -6,7 +6,7 @@ import TableBody from '@material-ui/core/TableBody'
 import TableCell from '@material-ui/core/TableCell'
 import TableHead from '@material-ui/core/TableHead'
 import TableRow from '@material-ui/core/TableRow'
-import {useCheckIn} from 'organization/Event/AttendeesProvider'
+import {useMarkTechCheckComplete} from 'organization/Event/AttendeesProvider'
 import Typography from '@material-ui/core/Typography'
 import {spacing} from 'lib/ui/theme'
 import withStyles from '@material-ui/core/styles/withStyles'
@@ -35,7 +35,7 @@ export default function TechCheckAttendees() {
 function Content() {
   const assignments = useTechCheckAssignments()
   const [attendees, setAttendees] = useState<Attendee[]>([])
-  const checkIn = useCheckIn()
+  const checkIn = useMarkTechCheckComplete()
   const [error, setError] = useState('')
   const [isProcessing, setIsProcessing] = useState(false)
 

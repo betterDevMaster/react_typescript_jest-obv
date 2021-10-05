@@ -44,7 +44,8 @@ export default function CompletedOnboarding(props: {
   }
 
   const shouldRedirectToStep3 =
-    hasTechCheck && !attendee.tech_check_completed_at
+    hasTechCheck && !attendee.has_completed_tech_check
+
   if (shouldRedirectToStep3) {
     return <Redirect to={eventRoutes.step3} />
   }

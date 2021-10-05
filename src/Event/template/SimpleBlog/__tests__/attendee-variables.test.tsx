@@ -9,9 +9,11 @@ import {wait} from '@testing-library/react'
 import {fakeSimpleBlog} from 'Event/template/SimpleBlog/__utils__/factory'
 import {createEntityList} from 'lib/list'
 import {fakeNavButtonWithSize} from 'Event/Dashboard/components/NavButton/__utils__/factory'
+import {Attendee} from 'Event/attendee'
 
 const mockGet = axios.get as jest.Mock
 const mockPost = axios.post as jest.Mock
+const mockPut = axios.put as jest.Mock
 
 beforeEach(() => {
   jest.clearAllMocks()
@@ -26,6 +28,9 @@ it('should render with attendee data', async () => {
     groups: {
       groupUrl,
     },
+    has_completed_tech_check: false,
+    tech_check_completed_at: null,
+    has_checked_in: false,
   })
 
   const groupLinkButton = fakeNavButtonWithSize({
@@ -75,12 +80,13 @@ it('should render with attendee data', async () => {
     await findByText(`${attendee.last_name}'s tech check`),
   ).toBeInTheDocument()
 
-  const afterCheckIn = {
+  const completedTechCheck: Attendee = {
     ...withWaiver,
     tech_check_completed_at: faker.date.recent().toISOString(),
+    has_completed_tech_check: true,
   }
 
-  mockGet.mockImplementation(() => Promise.resolve({data: afterCheckIn}))
+  mockGet.mockImplementation(() => Promise.resolve({data: completedTechCheck}))
 
   await wait(
     () => {
@@ -91,15 +97,23 @@ it('should render with attendee data', async () => {
     },
   )
 
-  // Has finished tech check, and is showing dashboard
+  mockPut.mockImplementationOnce(() =>
+    Promise.resolve({data: {...completedTechCheck, has_checked_in: true}}),
+  )
+
   await wait(
-    async () => {
-      expect(await findByLabelText('welcome')).toBeInTheDocument()
+    () => {
+      expect(mockPut).toHaveBeenCalledTimes(1)
     },
     {
       timeout: 30000,
     },
   )
+
+  // Has finished tech check, and is showing dashboard
+  await wait(async () => {
+    expect(await findByLabelText('welcome')).toBeInTheDocument()
+  })
 
   // replaced welcome text with email
   expect(await findByText(`welcome ${attendee.email}`)).toBeInTheDocument()

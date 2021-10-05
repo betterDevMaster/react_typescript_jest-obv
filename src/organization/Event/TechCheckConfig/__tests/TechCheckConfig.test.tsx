@@ -149,7 +149,7 @@ it('it should set custom buttons', async () => {
   // Did set page
   expect(
     template.techCheck.buttons.entities[template.techCheck.buttons.ids[0]].page,
-  ).toBe('/check_in')
+  ).toBe('/tech_check')
 })
 
 async function goToTechCheckConfig(

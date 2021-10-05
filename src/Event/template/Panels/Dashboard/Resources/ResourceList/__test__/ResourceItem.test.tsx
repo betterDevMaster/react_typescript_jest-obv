@@ -37,10 +37,6 @@ it('receive points', async () => {
 
   const {findByLabelText, findByText} = await loginToEventSite({
     event,
-    attendee: fakeAttendee({
-      tech_check_completed_at: 'now',
-      waiver: 'some_waiver.png',
-    }),
   })
 
   mockPost.mockImplementationOnce(() => Promise.resolve({data: 'ok'}))
@@ -82,10 +78,6 @@ it('should show translated url', async () => {
 
   const {findByLabelText} = await loginToEventSite({
     event,
-    attendee: fakeAttendee({
-      tech_check_completed_at: 'now',
-      waiver: 'some_waiver.png',
-    }),
   })
 
   user.click(await findByLabelText('panels tab resources'))

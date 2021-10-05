@@ -30,10 +30,6 @@ it('should launch zoom meeting', async () => {
     event: fakeEvent({
       template: fakePanels(),
     }),
-    attendee: fakeAttendee({
-      waiver: 'waiver.png',
-      tech_check_completed_at: 'now',
-    }),
     pathname: `/area/${areaId}`,
     skipLogin: true,
   })
@@ -52,10 +48,6 @@ it('should show generic offline message', async () => {
   const areaId = faker.random.number({min: 1000, max: 10000})
 
   const {findByText} = await loginToEventSite({
-    attendee: fakeAttendee({
-      waiver: 'waiver.png',
-      tech_check_completed_at: 'now',
-    }),
     event: fakeEvent({
       template: fakePanels(),
     }),
@@ -82,10 +74,6 @@ it('should show defined offline message', async () => {
   )
 
   const {findByText} = await loginToEventSite({
-    attendee: fakeAttendee({
-      waiver: 'waiver.png',
-      tech_check_completed_at: 'now',
-    }),
     event: fakeEvent({
       template: fakePanels(),
     }),

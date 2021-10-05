@@ -11,6 +11,7 @@ import {
   UPDATE_ATTENDEES,
 } from 'organization/PermissionsProvider'
 import {fakePaginate} from 'lib/__utils__/pagination-factory'
+import {fakeEvent} from 'Event/__utils__/factory'
 
 const mockGet = axios.get as jest.Mock
 const mockPatch = axios.patch as jest.Mock
@@ -35,7 +36,11 @@ it('should show list of attendees', async () => {
 it('should complete tech check for an attendee', async () => {
   const attendees = Array.from(
     {length: faker.random.number({min: 1, max: 5})},
-    () => fakeAttendee({tech_check_completed_at: null}),
+    () =>
+      fakeAttendee({
+        tech_check_completed_at: null,
+        has_completed_tech_check: false,
+      }),
   )
   const {findAllByLabelText, findByLabelText} = await goToAttendeeManagement({
     attendees,
@@ -45,7 +50,11 @@ it('should complete tech check for an attendee', async () => {
   const targetIndex = faker.random.number({min: 0, max: attendees.length - 1})
   const target = attendees[targetIndex]
   const today = now()
-  const updated: Attendee = {...target, tech_check_completed_at: today}
+  const updated: Attendee = {
+    ...target,
+    tech_check_completed_at: today,
+    has_completed_tech_check: true,
+  }
 
   mockPatch.mockImplementationOnce(() => Promise.resolve({data: updated}))
 
@@ -70,7 +79,11 @@ it('should reverse tech check', async () => {
 
   const targetIndex = faker.random.number({min: 0, max: attendees.length - 1})
   const target = attendees[targetIndex]
-  const updated: Attendee = {...target, tech_check_completed_at: null}
+  const updated: Attendee = {
+    ...target,
+    tech_check_completed_at: null,
+    has_completed_tech_check: false,
+  }
 
   mockDelete.mockImplementationOnce(() => Promise.resolve({data: updated}))
 
@@ -211,4 +224,17 @@ it('should search for an attendee', async () => {
 
   // Updated list to only show results
   expect((await findAllByLabelText('name')).length).toBe(1)
+})
+
+it('should hide tech check column if tech check is not enabled', async () => {
+  const withoutTechCheck = fakeEvent({tech_check: null})
+
+  const {queryByText} = await goToAttendeeManagement({
+    userPermissions: [UPDATE_ATTENDEES, CHECK_IN_ATTENDEES],
+    event: withoutTechCheck,
+  })
+
+  await wait(() => {
+    expect(queryByText(/tech check/i)).not.toBeInTheDocument()
+  })
 })

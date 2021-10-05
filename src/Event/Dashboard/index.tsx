@@ -8,6 +8,7 @@ import {setEditMode} from 'Event/Dashboard/editor/state/actions'
 import {SIMPLE_BLOG} from 'Event/template/SimpleBlog'
 import {PANELS} from 'Event/template/Panels'
 import PanelsDashboard from 'Event/template/Panels/Dashboard'
+import {useCheckIn} from 'Event/attendee'
 
 export type DashboardProps = {
   isEditMode?: boolean
@@ -20,6 +21,8 @@ export default function Dashboard(props: DashboardProps) {
   useEffect(() => {
     dispatch(setEditMode(props.isEditMode || false))
   }, [props.isEditMode, dispatch])
+
+  useCheckIn(props.user)
 
   return (
     <ConfigComponents isEditMode={props.isEditMode}>

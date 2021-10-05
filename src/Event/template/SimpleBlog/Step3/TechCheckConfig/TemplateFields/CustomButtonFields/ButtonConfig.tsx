@@ -72,7 +72,7 @@ export default function ButtonConfig(
    * buttons to nativate to self check-in page.
    */
   const pages = {
-    [eventRoutes.checkIn]: 'Check-In',
+    [eventRoutes.techCheck]: 'Check-In',
   }
 
   return (
