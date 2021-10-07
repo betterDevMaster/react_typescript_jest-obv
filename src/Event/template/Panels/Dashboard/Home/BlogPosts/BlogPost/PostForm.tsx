@@ -12,6 +12,8 @@ import Box from '@material-ui/core/Box'
 import {useAttendeeVariables} from 'Event'
 import {BlogPost} from 'Event/Dashboard/components/BlogPost'
 import {usePostForm} from 'Event/Dashboard/components/BlogPost/form'
+import {usePostFormStyles} from 'Event/template/Panels/Dashboard/Home/BlogPosts/PostFormStylesConfig'
+import styled from 'styled-components'
 
 export default function PostForm(props: {post: BlogPost}) {
   const {post} = props
@@ -50,32 +52,45 @@ function Content(props: {form: Form; post: BlogPost}) {
     setValue,
   } = useForm()
 
+  const formStyles = usePostFormStyles()
+
   if (alreadySubmitted) {
     return <SubmittedMessage resubmit={resubmit} form={form} />
   }
 
   const body = (
-    <form onSubmit={handleSubmit(submit)}>
-      {form.questions.map((question, index) => (
-        <Question
-          formErrors={formErrors}
-          key={question.id}
-          index={index}
-          control={control}
-          question={question}
-          answers={answers}
-          register={register}
-          responseError={responseError}
-          setValue={setValue}
-          disabled={submitting}
-        />
-      ))}
-      <div>
-        <Button type="submit" variant="outlined" disabled={submitting}>
-          {v(form.submit_label)}
-        </Button>
-      </div>
-    </form>
+    <Container justifyContent={formStyles.position}>
+      <StyledForm onSubmit={handleSubmit(submit)} width={formStyles.width}>
+        {form.questions.map((question, index) => (
+          <Question
+            formErrors={formErrors}
+            key={question.id}
+            index={index}
+            control={control}
+            question={question}
+            answers={answers}
+            register={register}
+            responseError={responseError}
+            setValue={setValue}
+            disabled={submitting}
+          />
+        ))}
+        <Container justifyContent={formStyles.buttonPosition}>
+          <StyledFormButton
+            type="submit"
+            variant="outlined"
+            disabled={submitting}
+            color={formStyles.buttonColor}
+            backgroundColor={formStyles.buttonBackgroundColor}
+            backgroundHoverColor={formStyles.buttonHoverBackgroundColor}
+            raidus={formStyles.buttonRadius}
+            width={formStyles.buttonSize}
+          >
+            {v(form.submit_label)}
+          </StyledFormButton>
+        </Container>
+      </StyledForm>
+    </Container>
   )
 
   if (!post.isModalForm) {
@@ -118,3 +133,46 @@ function SubmittedMessage(props: {resubmit: () => void; form: Form}) {
     </div>
   )
 }
+
+const StyledForm = styled.form<{
+  width: number
+}>`
+  width: ${(props) => props.width}%;
+`
+
+const StyledFormButton = styled((props) => {
+  const {
+    color,
+    backgroundColor,
+    backgroundHoverColor,
+    raidus,
+    fontSize,
+    width,
+    ...otherProps
+  } = props
+  return <Button {...otherProps} />
+})<{
+  color: string
+  backgroundColor: string
+  backgroundHoverColor: string
+  radius: string
+  fontSize: number
+  width: number
+}>`
+  color: ${(props) => props.color} !important;
+  cursor: pointer;
+  font-size: ${(props) => props.fontSize} !important;
+  border-radius: ${(props) => props.raidus}px !important;
+  background-color: ${(props) => props.backgroundColor} !important;
+  width: ${(props) => props.width}% !important;
+  &:hover {
+    background-color: ${(props) => props.backgroundHoverColor} !important;
+  }
+`
+
+const Container = styled.div<{
+  justifyContent: string
+}>`
+  display: flex;
+  justify-content: ${(props) => props.justifyContent};
+`

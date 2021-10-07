@@ -9,11 +9,13 @@ import {localTime} from 'lib/date-time'
 import React from 'react'
 import PostForm from 'Event/template/Panels/Dashboard/Home/BlogPosts/BlogPost/PostForm'
 import Content from 'lib/ui/form/TextEditor/Content'
+import {usePostStyles} from 'Event/template/Panels/Dashboard/Home/BlogPosts/PostStylesConfig'
 
 export default function BlogPost(props: {post: BlogPostData}) {
   const {post} = props
   const isEdit = useEditMode()
   const v = useAttendeeVariables()
+  const styles = usePostStyles()
 
   const date = post.publishAt || post.postedAt
   const formattedDate = localTime(date)
@@ -24,20 +26,33 @@ export default function BlogPost(props: {post: BlogPostData}) {
 
   return (
     <Post aria-label="blog post">
-      <Title>{v(post.title)}</Title>
+      <Title
+        color={styles.titleTextColor}
+        fontSize={styles.titleFontSize}
+        capitalize={styles.titleCapitalize}
+      >
+        {v(post.title)}
+      </Title>
       <Date hidden={post.hideDate}>{formattedDate}</Date>
-      <StyledContent>{v(post.content)}</StyledContent>
+      <StyledContent
+        fontSize={styles.contentFontSize}
+        color={styles.contentTextColor}
+      >
+        {v(post.content)}
+      </StyledContent>
       <PostForm post={post} />
     </Post>
   )
 }
 
 function Date(props: {children: React.ReactNode; hidden?: boolean}) {
+  const styles = usePostStyles()
+
   if (props.hidden) {
     return null
   }
 
-  return <DateText>{props.children}</DateText>
+  return <DateText color={styles.dateTextColor}>{props.children}</DateText>
 }
 
 const Post = styled.div`
@@ -49,17 +64,23 @@ const Post = styled.div`
   }
 `
 
-const Title = styled.h2`
-  text-transform: uppercase;
-  margin-bottom: 14px;
-  font-size: 28px;
-  line-height: 22px;
+const Title = styled.h2<{
+  color: string
+  fontSize: number
+  capitalize: boolean
+}>`
+  text-transform: ${(props) => (props.capitalize ? 'uppercase' : 'none')};
+  color: ${(props) => props.color};
+  margin: 0;
+  font-size: ${(props) => props.fontSize}px;
 `
 
-const DateText = styled.span`
+const DateText = styled.span<{
+  color: string
+}>`
   font-size: 14px;
   line-height: 16px;
-  color: #adadad;
+  color: ${(props) => props.color};
   display: block;
   position: relative;
   margin: 0 0 16px;
@@ -77,4 +98,10 @@ const DateText = styled.span`
   }
 `
 
-const StyledContent = styled(Content)``
+const StyledContent = styled(Content)<{
+  fontSize: number
+  color: string
+}>`
+  font-size: ${(props) => props.fontSize}px;
+  color: ${(props) => props.color};
+`

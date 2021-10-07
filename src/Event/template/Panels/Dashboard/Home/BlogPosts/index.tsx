@@ -9,6 +9,8 @@ import VisibleOnMatch from 'Event/attendee-rules/VisibleOnMatch'
 import React, {useState} from 'react'
 import styled from 'styled-components'
 import AddBlogPostButton from 'Event/Dashboard/components/BlogPost/AddBlogPostButton'
+import PostStylesConfig from 'Event/template/Panels/Dashboard/Home/BlogPosts/PostStylesConfig'
+import PostFormStylesConfig from 'Event/template/Panels/Dashboard/Home/BlogPosts/PostFormStylesConfig'
 
 export default function BlogPosts() {
   const {
@@ -24,6 +26,8 @@ export default function BlogPosts() {
     <>
       <EditPost id={editing} onClose={stopEditing} />
       <EditModeOnly>
+        <PostStylesConfig />
+        <PostFormStylesConfig />
         <StyledAddBlogPostButton />
       </EditModeOnly>
       {sortedIds.map((id) => {

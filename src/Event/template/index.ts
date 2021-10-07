@@ -1,5 +1,6 @@
 import {Panels} from 'Event/template/Panels'
 import {SimpleBlog} from 'Event/template/SimpleBlog'
+import {InputStyles} from 'Event/Question'
 import {DeepRequired} from 'lib/type-utils'
 
 /**
@@ -22,6 +23,29 @@ export type BaseTemplate = {
   emojiPage?: {
     background?: string
   }
+
+  postStyles?: {
+    titleTextColor?: string
+    titleCapitalize?: boolean
+    titleFontSize?: number
+    dateTextColor?: string
+    contentFontSize?: number
+    contentTextColor?: string
+    spacing?: number
+  }
+
+  postFormStyles?: {
+    width?: number
+    position?: string
+    buttonSize?: number
+    buttonRadius?: number
+    buttonColor?: string
+    buttonBackgroundColor?: string
+    buttonHoverBackgroundColor?: string
+    buttonPosition?: string
+    buttonFontSize?: number
+    inputStyles?: InputStyles
+  }
 }
 
 export type Template = SimpleBlog | Panels
@@ -39,6 +63,34 @@ export const BASE_DEFAULTS: DeepRequired<BaseTemplate> = {
   },
   emojiPage: {
     background: '#000000',
+  },
+  postStyles: {
+    titleTextColor: '#000000',
+    titleFontSize: 30,
+    titleCapitalize: true,
+    dateTextColor: '#adadad',
+    contentTextColor: '#000000',
+    contentFontSize: 17,
+    spacing: 32,
+  },
+  postFormStyles: {
+    width: 100,
+    position: 'center',
+    buttonSize: 100,
+    buttonRadius: 0,
+    buttonColor: 'pink',
+    buttonBackgroundColor: 'blue',
+    buttonHoverBackgroundColor: 'blue',
+    buttonPosition: 'center',
+    buttonFontSize: 27,
+    inputStyles: {
+      labelColor: '#7d7a7a',
+      borderColor: '#7d7a7a',
+      backgroundColor: '#7d7a7a',
+      backgroundOpacity: 0,
+      textColor: '#7d7a7a',
+      helperTextColor: '#7d7a7a',
+    },
   },
 }
 

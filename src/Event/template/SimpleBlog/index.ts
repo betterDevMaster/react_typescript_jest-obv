@@ -9,7 +9,6 @@ import {BaseTemplate, BASE_DEFAULTS, Header} from 'Event/template'
 import {BlogPost} from 'Event/Dashboard/components/BlogPost'
 import {DeepRequired} from 'lib/type-utils'
 import {SidebarItem} from 'Event/template/SimpleBlog/Dashboard/Sidebar/SidebarItem'
-import {InputStyles} from 'Event/Question'
 import {CountDownTimer} from 'Event/Dashboard/components/CountDownTimer'
 
 export const SIMPLE_BLOG = 'Simple Blog'
@@ -40,27 +39,6 @@ export type SimpleBlog = BaseTemplate & {
   linkColor?: string
   linkUnderline?: boolean
   points_unit: string
-  postStyles?: {
-    titleTextColor?: string
-    titleCapitalize?: boolean
-    titleFontSize?: number
-    dateTextColor?: string
-    contentFontSize?: number
-    contentTextColor?: string
-    spacing?: number
-  }
-  postFormStyles?: {
-    width?: number
-    position?: string
-    buttonSize?: number
-    buttonRadius?: number
-    buttonColor?: string
-    buttonBackgroundColor?: string
-    buttonHoverBackgroundColor?: string
-    buttonPosition?: string
-    buttonFontSize?: number
-    inputStyles?: InputStyles
-  }
   header: SimpleBlogHeader
   dashboardBackground?: {
     color: string
@@ -362,34 +340,6 @@ export const createSimpleBlog = (): DeepRequired<SimpleBlog> => ({
     backToDashboardText: 'Back to Dashbaord',
     backToDashboardTextColor: '#000000',
     orderedIds: [],
-  },
-  postStyles: {
-    titleTextColor: '#000000',
-    titleFontSize: 30,
-    titleCapitalize: true,
-    dateTextColor: '#adadad',
-    contentTextColor: '#000000',
-    contentFontSize: 17,
-    spacing: 32,
-  },
-  postFormStyles: {
-    width: 100,
-    position: 'center',
-    buttonSize: 100,
-    buttonRadius: 0,
-    buttonColor: 'pink',
-    buttonBackgroundColor: 'blue',
-    buttonHoverBackgroundColor: 'blue',
-    buttonPosition: 'center',
-    buttonFontSize: 27,
-    inputStyles: {
-      labelColor: '#7d7a7a',
-      borderColor: '#7d7a7a',
-      backgroundColor: '#7d7a7a',
-      backgroundOpacity: 0,
-      textColor: '#7d7a7a',
-      helperTextColor: '#7d7a7a',
-    },
   },
   dashboardBackground: {
     color: '#FFFFFF',
