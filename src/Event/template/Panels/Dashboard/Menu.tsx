@@ -5,6 +5,7 @@ import {User} from 'auth/user'
 import {useEventAuth} from 'Event/auth'
 import Button from 'lib/ui/Button'
 import {useEditMode} from 'Event/Dashboard/editor/state/edit-mode'
+import {useAttendeeVariables} from 'Event'
 
 export default function Menu(props: {
   onChangeTab: (tab: number) => void
@@ -90,6 +91,7 @@ function LinkText(props: {
   const {label, color, index, showing} = props
 
   const isEditMode = useEditMode()
+  const v = useAttendeeVariables()
 
   if (!isEditMode && !showing) {
     return null
@@ -102,7 +104,7 @@ function LinkText(props: {
       style={{color}}
       aria-label={`left panel menu ${label} button`}
     >
-      {label}
+      {v(label)}
     </TabText>
   )
 }
