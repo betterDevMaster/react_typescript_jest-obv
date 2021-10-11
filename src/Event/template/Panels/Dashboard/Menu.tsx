@@ -109,6 +109,7 @@ function LinkText(props: {
   )
 }
 const TabText = styled.span`
+  text-align: center;
   font-weight: bold;
   font-size: 24px;
   line-height: 20px;
