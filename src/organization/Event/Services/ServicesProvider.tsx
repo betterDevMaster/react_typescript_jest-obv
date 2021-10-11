@@ -3,6 +3,7 @@ import {useAsync} from 'lib/async'
 import {api} from 'lib/url'
 import Page from 'organization/Event/Page'
 import {InfusionsoftIntegration} from 'organization/Event/Services/Apps/Infusionsoft'
+import {MailchimpIntegration} from 'organization/Event/Services/Apps/Mailchimp'
 import {ZapierIntegration} from 'organization/Event/Services/Apps/Zapier'
 import {useOrganization} from 'organization/OrganizationProvider'
 import Layout from 'organization/user/Layout'
@@ -10,15 +11,19 @@ import React, {useCallback, useEffect, useState} from 'react'
 
 export const ZAPIER = 'Zapier'
 export const INFUSIONSOFT = 'Infusionsoft'
+export const MAILCHIMP = 'Mailchimp'
 
-export type Service = typeof ZAPIER | typeof INFUSIONSOFT
+export type Service = typeof ZAPIER | typeof INFUSIONSOFT | typeof MAILCHIMP
 
 export type BaseIntegration = {
   service: Service
   is_linked: boolean
 }
 
-export type Integration = ZapierIntegration | InfusionsoftIntegration
+export type Integration =
+  | ZapierIntegration
+  | InfusionsoftIntegration
+  | MailchimpIntegration
 
 export interface ServicesContextProps {
   integrations: Integration[]
@@ -128,19 +133,23 @@ export function useInfusionsoft() {
 }
 
 function useUnlink() {
-  const {event} = useEvent()
   const {client} = useOrganization()
+  const url = useLinkUrl()
+
+  return (service: Service) => client.delete(api(url(service)))
+}
+
+function useLinkUrl() {
+  const {event} = useEvent()
 
   return (service: Service) => {
     switch (service) {
       case ZAPIER:
-        return client.delete(
-          api(`/events/${event.slug}/integrations/zapier/link`),
-        )
+        return `/events/${event.slug}/integrations/zapier/link`
       case INFUSIONSOFT:
-        return client.delete(
-          api(`/events/${event.slug}/integrations/infusionsoft/link`),
-        )
+        return `/events/${event.slug}/integrations/infusionsoft/link`
+      case MAILCHIMP:
+        return `/events/${event.slug}/integrations/mailchimp/link`
     }
   }
 }

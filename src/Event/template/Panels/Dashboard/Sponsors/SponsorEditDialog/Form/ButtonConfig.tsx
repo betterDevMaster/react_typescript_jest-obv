@@ -21,6 +21,7 @@ import TargetConfig from 'Event/Dashboard/components/NavButton/NavButtonConfig/T
 import NavButton from 'Event/Dashboard/components/NavButton'
 import ActionSelect from 'Event/ActionsProvider/ActionSelect'
 import BackgroundPicker from 'lib/ui/form/BackgroundPicker'
+import MailchimpTagInput from 'organization/Event/DashboardConfig/MailchimpTagInput'
 
 const MIN_BORDER_WIDTH = 0
 const MAX_BORDER_WIDTH = 50
@@ -58,6 +59,7 @@ export default function ButtonConfig(props: {
   const [padding, setPadding] = useState(button.padding)
   const [fontSize, setFontSize] = useState(button.fontSize)
   const [infusionsoftTag, setInfusionsoftTag] = useState(button.infusionsoftTag)
+  const [mailchimpTag, setMailchimpTag] = useState(button.mailchimpTag)
 
   useEffect(() => {
     setActionId(button.actionId)
@@ -78,6 +80,7 @@ export default function ButtonConfig(props: {
     setPadding(button.padding)
     setFontSize(button.fontSize)
     setInfusionsoftTag(button.infusionsoftTag)
+    setMailchimpTag(button.mailchimpTag)
   }, [button])
 
   const save = () => {
@@ -100,6 +103,7 @@ export default function ButtonConfig(props: {
       padding,
       fontSize,
       infusionsoftTag,
+      mailchimpTag,
     }
 
     onChange(data)
@@ -230,6 +234,7 @@ export default function ButtonConfig(props: {
           value={infusionsoftTag}
           onChange={setInfusionsoftTag}
         />
+        <MailchimpTagInput value={mailchimpTag} onChange={setMailchimpTag} />
       </Box>
       <Box mb={2}>
         <Button color="primary" variant="outlined" onClick={save} fullWidth>

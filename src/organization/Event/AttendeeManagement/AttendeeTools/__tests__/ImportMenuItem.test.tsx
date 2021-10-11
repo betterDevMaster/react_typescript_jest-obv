@@ -1,4 +1,5 @@
 import faker from 'faker'
+import user from '@testing-library/user-event'
 import axios from 'axios'
 import {fakeAttendee} from 'Event/auth/__utils__/factory'
 import {fireEvent} from '@testing-library/react'
@@ -21,6 +22,8 @@ it('should import attendees', async () => {
     attendees,
     userPermissions: [UPDATE_ATTENDEES],
   })
+
+  user.click(await findByLabelText('select other action'))
 
   const file = new File([], 'attendees.csv')
   const fileInput = await findByLabelText('attendee import input')

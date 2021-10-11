@@ -138,7 +138,7 @@ it('should throw a normal error', async () => {
   mockGet.mockImplementation(() => Promise.reject(message))
   try {
     await client.get('/test')
-  } catch (error) {
+  } catch (error: any) {
     expect(error.message).toBe(message)
   }
 })

@@ -4,6 +4,7 @@ import CreateOrganizationForm from 'obvio/Organizations/CreateOrganizationForm'
 import React from 'react'
 import {Redirect, Route, Switch} from 'react-router-dom'
 import ChangePassword from 'obvio/ChangePasswordPage'
+import AuthCallbackHandler from 'organization/Event/Services/Apps/Mailchimp/AuthCallbackHandler'
 
 export default function UserRoutes() {
   return (
@@ -16,6 +17,9 @@ export default function UserRoutes() {
       </Route>
       <Route path={obvioRoutes.changePassword}>
         <ChangePassword />
+      </Route>
+      <Route path={obvioRoutes.mailchimp.auth}>
+        <AuthCallbackHandler />
       </Route>
       <Redirect to={obvioRoutes.organizations.root} />
     </Switch>

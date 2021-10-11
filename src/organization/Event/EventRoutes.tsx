@@ -51,6 +51,8 @@ import ImageEntries from 'organization/Event/ImageEntries'
 import ImageEntriesProvider from 'organization/Event/ImageEntriesProvider'
 import EmojiPageSettings from 'organization/Event/EmojiPage/EmojiPageSettings'
 import {OrganizationActionsProvider} from 'Event/ActionsProvider'
+import Mailchimp from 'organization/Event/Services/Apps/Mailchimp'
+import AccessTokensProvider from 'organization/Event/Services/AccessTokens/AccessTokensProvider'
 
 export type EventRoutes = ReturnType<typeof useEventRoutes>
 
@@ -180,7 +182,9 @@ export default function EventRoutes() {
           <Route path={routes.events[':event'].services.root}>
             <AuthorizedPage permission={CONFIGURE_EVENTS}>
               <ServicesProvider>
-                <ServiceRoutes />
+                <AccessTokensProvider>
+                  <ServiceRoutes />
+                </AccessTokensProvider>
               </ServicesProvider>
             </AuthorizedPage>
           </Route>
@@ -243,6 +247,9 @@ function ServiceRoutes() {
       </Route>
       <Route path={routes.events[':event'].services.infusionsoft}>
         <Infusionsoft />
+      </Route>
+      <Route path={routes.events[':event'].services.mailchimp}>
+        <Mailchimp />
       </Route>
       <Route path={routes.events[':event'].services.root}>
         <Services />

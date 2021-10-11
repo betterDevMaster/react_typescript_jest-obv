@@ -17,6 +17,7 @@ export const fakeAttendee = (overrides?: Partial<Attendee>): Attendee => {
     tags: [],
     has_completed_tech_check: true,
     has_checked_in: true,
+    has_mailchimp: false,
     ...overrides,
   }
 }

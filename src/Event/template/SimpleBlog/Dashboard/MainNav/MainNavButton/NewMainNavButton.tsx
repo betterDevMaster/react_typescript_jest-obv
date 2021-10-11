@@ -21,6 +21,7 @@ export default function NewMainNavButton(props: {className?: string}) {
       actionId: null,
       isVisible: true,
       infusionsoftTag: null,
+      mailchimpTag: null,
     }
 
     setButton(button)

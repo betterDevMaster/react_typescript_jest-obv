@@ -16,6 +16,7 @@ import FileCopyIcon from '@material-ui/icons/FileCopy'
 import grey from '@material-ui/core/colors/grey'
 import RemoveWaiverButton from 'organization/Event/AttendeeManagement/attendee-dialog/UpdateDialog/RemoveWaiverButton'
 import ClearPasswordButton from 'organization/Event/AttendeeManagement/attendee-dialog/UpdateDialog/ClearPasswordButton'
+import SyncMailchimpTagsButton from 'organization/Event/AttendeeManagement/attendee-dialog/UpdateDialog/SyncMailchimpTagsButton'
 
 export default function UpdateDialog(props: {
   showing: boolean
@@ -37,6 +38,7 @@ export default function UpdateDialog(props: {
         <Actions>
           <RemoveWaiverButton attendee={attendee} />
           <ClearPasswordButton attendee={attendee} />
+          <SyncMailchimpTagsButton attendee={attendee} />
         </Actions>
         <LoginUrl attendee={attendee} />
         <Form

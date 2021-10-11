@@ -24,6 +24,7 @@ export type Attendee = User & {
   login_url: string
   has_checked_in: boolean
   has_completed_tech_check: boolean
+  has_mailchimp: boolean
 }
 
 /**

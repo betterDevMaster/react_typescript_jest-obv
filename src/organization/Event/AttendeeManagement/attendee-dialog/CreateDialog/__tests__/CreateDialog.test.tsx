@@ -32,12 +32,13 @@ it('should add a new', async () => {
     findByLabelText,
     event,
     findAllByLabelText,
+    findByText,
   } = await goToAttendeeManagement({
     attendees,
     userPermissions: [UPDATE_ATTENDEES],
   })
 
-  user.click(await findByLabelText('add attendee'))
+  user.click(await findByText(/add attendee/i))
 
   // Base Attributes
   const firstName = faker.name.firstName()

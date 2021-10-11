@@ -19,6 +19,7 @@ export default function AddButton(props: {
       actionId: null,
       isVisible: true,
       infusionsoftTag: null,
+      mailchimpTag: null,
       width: DEFAULT_BUTTON_WIDTH_PERCENT,
       fontSize: 16,
       padding: 8,

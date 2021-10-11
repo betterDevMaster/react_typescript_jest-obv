@@ -21,6 +21,7 @@ import {v4 as uuid} from 'uuid'
 import {SidebarNavProps} from 'Event/template/SimpleBlog/Dashboard/Sidebar/SidebarItem/SidebarNav'
 import {useUpdateSidebarItem} from 'Event/template/SimpleBlog/Dashboard/Sidebar/SidebarItem'
 import BackgroundPicker from 'lib/ui/form/BackgroundPicker'
+import MailchimpTagInput from 'organization/Event/DashboardConfig/MailchimpTagInput'
 
 const MIN_BORDER_WIDTH = 0
 const MAX_BORDER_WIDTH = 50
@@ -267,6 +268,14 @@ export function SidebarNavButtonConfig(
             defaultValue={button.infusionsoftTag}
             render={({value, onChange}) => (
               <InfusionsoftTagInput value={value} onChange={onChange} />
+            )}
+          />
+          <Controller
+            name="mailchimpTag"
+            control={control}
+            defaultValue={button.mailchimpTag}
+            render={({value, onChange}) => (
+              <MailchimpTagInput value={value} onChange={onChange} />
             )}
           />
           <SaveButton type="submit" />

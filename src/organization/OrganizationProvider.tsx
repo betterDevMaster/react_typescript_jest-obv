@@ -132,6 +132,7 @@ export function createRoutesFor(organization: Organization) {
           services: {
             zapier: '/zapier',
             infusionsoft: '/infusionsoft',
+            mailchimp: '/mailchimp',
           },
           name_appendage: '/name_appendage',
           backgrounds: '/zoom_backgrounds',

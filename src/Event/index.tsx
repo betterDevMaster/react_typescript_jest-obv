@@ -58,6 +58,7 @@ export interface ObvioEvent {
   is_online: boolean
   requires_attendee_password: boolean
   has_started: boolean
+  has_mailchimp: boolean
 }
 
 export interface WaiverConfig {

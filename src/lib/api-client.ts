@@ -171,7 +171,7 @@ async function handleAxiosResult<T>(promise: Promise<{data: T}>) {
   try {
     const res = await promise
     return res.data
-  } catch (error) {
+  } catch (error: any) {
     // Response object
     if (error.response) {
       throw error.response.data

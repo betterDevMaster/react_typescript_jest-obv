@@ -4,24 +4,19 @@ import Layout from 'organization/user/Layout'
 import {spacing} from 'lib/ui/theme'
 import withStyles from '@material-ui/core/styles/withStyles'
 import {Attendee} from 'Event/attendee'
-import Button from '@material-ui/core/Button'
-import AttendeeImport from 'organization/Event/AttendeeManagement/AttendeeImport'
 import {useAttendees} from 'organization/Event/AttendeesProvider'
 import Alert from '@material-ui/lab/Alert'
 import Page from 'organization/Event/Page'
 import TextField from '@material-ui/core/TextField'
 import {onChangeStringHandler} from 'lib/dom'
-import Box from '@material-ui/core/Box'
 import UpdateDialog from 'organization/Event/AttendeeManagement/attendee-dialog/UpdateDialog'
 import CreateDialog from 'organization/Event/AttendeeManagement/attendee-dialog/CreateDialog'
-import {UPDATE_ATTENDEES} from 'organization/PermissionsProvider'
-import HasPermission from 'organization/HasPermission'
 import AttendeesTable from 'organization/Event/AttendeeManagement/AttendeesTable'
 import AssignmentsDialog from 'organization/Event/AttendeeManagement/AssignmentsDialog'
 import PointsDialog from 'organization/Event/AttendeeManagement/PointsDialog'
-import ExportWaivers from 'organization/Event/AttendeeManagement/ExportWaivers'
-import AttendeeExport from 'organization/Event/AttendeeManagement/AttendeeExport'
 import {useEffect} from 'react'
+import AttendeeTools from 'organization/Event/AttendeeManagement/AttendeeTools'
+import AddAttendeeButton from 'organization/Event/AttendeeManagement/AddAttendeeButton'
 
 export default function AttendeeManagement() {
   const {error: attendeesError, clearError, search, attendees} = useAttendees()
@@ -98,38 +93,12 @@ export default function AttendeeManagement() {
       <PointsDialog attendee={pointsTarget} onClose={hidePointsDialog} />
       <Layout>
         <Page>
-          <Box mb={2}>
-            <AttendeeExport onSuccess={onSuccess} />
-            <HasPermission permission={UPDATE_ATTENDEES}>
-              <>
-                <AttendeeImport
-                  button={(inputId, submitting) => (
-                    <Button
-                      variant="outlined"
-                      color="primary"
-                      aria-label="import attendees"
-                      onClick={clearError}
-                      disabled={submitting}
-                    >
-                      <ImportButtonLabel htmlFor={inputId}>
-                        Import
-                      </ImportButtonLabel>
-                    </Button>
-                  )}
-                  onSuccess={onSuccess}
-                />
-                <CreateAttendeeButton
-                  variant="outlined"
-                  color="primary"
-                  aria-label="add attendee"
-                  onClick={toggleCreateDialog}
-                >
-                  Create
-                </CreateAttendeeButton>
-              </>
-            </HasPermission>
-            <ExportWaivers onSuccess={onSuccess} onError={onError} />
-          </Box>
+          <Success onClose={onCloseSuccess}>{successMessage}</Success>
+          <Error onClose={clearError}>{error}</Error>
+          <Actions>
+            <AddAttendeeButton onClick={toggleCreateDialog} />
+            <AttendeeTools onSuccess={onSuccess} onError={onError} />
+          </Actions>
           <TextField
             variant="outlined"
             label="Search"
@@ -139,8 +108,6 @@ export default function AttendeeManagement() {
               'aria-label': 'search for attendee',
             }}
           />
-          <Success onClose={onCloseSuccess}>{successMessage}</Success>
-          <Error onClose={clearError}>{error}</Error>
           <AttendeesTable
             onSelectEdit={edit}
             onSelectAssignments={viewAttendeeAssignments}
@@ -176,18 +143,22 @@ function Error(props: {children: string | null; onClose: () => void}) {
   )
 }
 
-const ImportButtonLabel = styled.label`
-  cursor: pointer;
-`
-
 const StyledAlert = withStyles({
   root: {
     marginBottom: spacing[2],
   },
 })(Alert)
 
-const CreateAttendeeButton = withStyles({
-  root: {
-    marginLeft: spacing[2],
-  },
-})(Button)
+const Actions = styled.div`
+  margin-bottom: ${(props) => props.theme.spacing[5]};
+  display: flex;
+  justify-content: space-between;
+
+  /**
+   * If there is not AddAttendee button, we still want to right-align
+   * the Attendee Tools button.
+   */
+  button:only-child {
+    margin-left: auto;
+  }
+`

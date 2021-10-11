@@ -18,6 +18,7 @@ export const fakeNavButton = (overrides?: Partial<NavButton>): NavButton => {
     actionId: null,
     isVisible: true,
     infusionsoftTag: null,
+    mailchimpTag: null,
   }
 
   const makeAttributes: (nb: NavButton) => NavButton = pipe(

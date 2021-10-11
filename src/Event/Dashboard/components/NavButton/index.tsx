@@ -8,12 +8,16 @@ import {findAction} from 'Event/ActionsProvider/platform-actions'
 import {useActions} from 'Event/ActionsProvider'
 import {usePoints} from 'Event/PointsProvider'
 import {Publishable} from 'Event/Dashboard/editor/views/Published'
-import {InfusionsoftTag, useAddTag} from 'Event/infusionsoft'
+import {
+  InfusionsoftTag,
+  useAddTag as useAddInfusionsoftTag,
+} from 'Event/infusionsoft'
 import {RelativeLink} from 'lib/ui/link/RelativeLink'
 import {areaRoutes} from 'Event/Routes'
 import {useAttendeeVariables} from 'Event'
 import {Icon} from 'lib/fontawesome/Icon'
 import ImageEntryUpload from 'Event/Dashboard/components/NavButton/ImageEntryUpload'
+import {MailchimpTag, useAddTag as useAddMailchimpTag} from 'Event/mailchimp'
 
 export const NAV_BUTTON = 'NAV_BUTTON'
 
@@ -45,6 +49,7 @@ export default interface NavButton extends HasRules, Publishable {
   padding?: number
   width?: number
   icon?: string | null
+  mailchimpTag: MailchimpTag | null
 }
 
 export type NavButtonWithSize = NavButton & {
@@ -56,12 +61,21 @@ export const DEFAULT_BUTTON_HEIGHT = 64
 export default function NavButton(props: NavButton) {
   const {newTab, isAreaButton, isImageUpload} = props
   const submitAction = useSubmitAction(props.actionId)
-  const addInfusionsoftTag = useAddInfusionsoftTag(props.infusionsoftTag)
+  const addInfusionsoftTag = useAddInfusionsoftTag()
+  const addMailchimpTag = useAddMailchimpTag()
+
   const v = useAttendeeVariables()
 
   const handleClicked = () => {
     submitAction()
-    addInfusionsoftTag()
+
+    if (props.infusionsoftTag) {
+      addInfusionsoftTag(props.infusionsoftTag)
+    }
+
+    if (props.mailchimpTag) {
+      addMailchimpTag(props.mailchimpTag)
+    }
   }
 
   if (isImageUpload) {
@@ -116,18 +130,6 @@ function useSubmitAction(actionKey: NavButton['actionId']) {
     }
 
     submit(action)
-  }
-}
-
-function useAddInfusionsoftTag(tag: NavButton['infusionsoftTag']) {
-  const addTag = useAddTag()
-
-  return () => {
-    if (!tag) {
-      return
-    }
-
-    addTag(tag)
   }
 }
 

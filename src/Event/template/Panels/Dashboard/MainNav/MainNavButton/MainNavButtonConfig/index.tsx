@@ -30,6 +30,7 @@ import {
 import {Controller, useForm} from 'react-hook-form'
 import {v4 as uuid} from 'uuid'
 import BackgroundPicker from 'lib/ui/form/BackgroundPicker'
+import MailchimpTagInput from 'organization/Event/DashboardConfig/MailchimpTagInput'
 
 export type ButtonConfigProps<K extends NavButton> = {
   button: K
@@ -337,13 +338,20 @@ export default function MainNavButtonConfig(
                 ref: register,
               }}
             />
-
             <Controller
               name="infusionsoftTag"
               control={control}
               defaultValue={button.infusionsoftTag}
               render={({value, onChange}) => (
                 <InfusionsoftTagInput value={value} onChange={onChange} />
+              )}
+            />
+            <Controller
+              name="mailchimpTag"
+              control={control}
+              defaultValue={button.mailchimpTag}
+              render={({value, onChange}) => (
+                <MailchimpTagInput value={value} onChange={onChange} />
               )}
             />
             <SaveButton type="submit" />

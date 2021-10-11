@@ -2,10 +2,12 @@ import styled from 'styled-components'
 import React from 'react'
 import Card from 'organization/Event/Services/Apps/Card'
 import {useEventRoutes} from 'organization/Event/EventRoutes'
-import zapierLogo from 'organization/Event/Services/Apps/logos/zapier.jpg'
-import infusionsoftLogo from 'organization/Event/Services/Apps/logos/infusionsoft.jpg'
+import zapierLogo from 'organization/Event/Services/Apps/Zapier/logo.jpg'
+import infusionsoftLogo from 'organization/Event/Services/Apps/Infusionsoft/logo.jpg'
+import mailchimpLogo from 'organization/Event/Services/Apps/Mailchimp/logo.png'
 import {
   INFUSIONSOFT,
+  MAILCHIMP,
   ZAPIER,
 } from 'organization/Event/Services/ServicesProvider'
 
@@ -21,6 +23,11 @@ export default function Apps() {
         service={INFUSIONSOFT}
         link={routes.services.infusionsoft}
         logo={infusionsoftLogo}
+      />
+      <Card
+        service={MAILCHIMP}
+        link={routes.services.mailchimp}
+        logo={mailchimpLogo}
       />
     </Grid>
   )

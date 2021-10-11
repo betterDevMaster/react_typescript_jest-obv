@@ -15,6 +15,9 @@ export const obvioRoutes = createRoutes({
   organizations: {
     create: '/create',
   },
+  mailchimp: {
+    auth: '/auth',
+  },
 })
 
 export default function ObvioRoutes() {

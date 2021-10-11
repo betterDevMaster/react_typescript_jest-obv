@@ -1,6 +1,5 @@
 import faker from 'faker'
-
-import {AccessToken} from 'organization/Event/Services/AccessTokens'
+import {AccessToken} from 'organization/Event/Services/AccessTokens/AccessTokensProvider'
 
 export const fakeAccessToken = (
   overrides?: Partial<AccessToken>,

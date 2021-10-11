@@ -7,10 +7,13 @@ const mockGet = axios.get as jest.Mock
 it('should show exported message', async () => {
   const {findByLabelText, findByText} = await goToAttendeeManagement()
 
-  const message = 'Form export request received!'
+  user.click(await findByLabelText('select other action'))
+
+  const message =
+    "We will send you email with download link once it's generated."
   mockGet.mockImplementationOnce(() => Promise.resolve({data: {message}}))
 
-  user.click(await findByLabelText('export attendees'))
+  user.click(await findByLabelText('export waivers'))
 
   expect(await findByText(message)).toBeInTheDocument()
 })

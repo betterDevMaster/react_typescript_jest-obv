@@ -1,9 +1,5 @@
 import Button from '@material-ui/core/Button'
-import {useEvent} from 'Event/EventProvider'
-import {useAsync} from 'lib/async'
-import {api} from 'lib/url'
-import {useOrganization} from 'organization/OrganizationProvider'
-import React, {useCallback, useEffect, useState} from 'react'
+import React, {useState} from 'react'
 import Grid from '@material-ui/core/Grid'
 import Box from '@material-ui/core/Box'
 import List from '@material-ui/core/List'
@@ -15,71 +11,24 @@ import DeleteIcon from '@material-ui/icons/Delete'
 import FileCopyIcon from '@material-ui/icons/FileCopy'
 import Divider from '@material-ui/core/Divider'
 import Tooltip from '@material-ui/core/Tooltip'
-
-export interface AccessToken {
-  id: number
-  value: string
-}
+import {useAccessTokens} from 'organization/Event/Services/AccessTokens/AccessTokensProvider'
 
 export const ACCESS_TOKENS = 'Access Tokens'
 
 export default function AccessTokens() {
-  const [tokens, setTokens] = useState<AccessToken[]>([])
-  const [processing, setProcessing] = useState(false)
   const [copiedToken, setCopiedToken] = useState('')
 
-  const {data: fetched, loading} = useAccessTokens()
-  const create = useCreateToken()
-  const deleteSelectedToken = useDeleteToken()
-  useEffect(() => {
-    if (!fetched) {
-      return
-    }
+  const {
+    addToken: newToken,
+    processing,
+    tokens,
+    deleteToken,
+  } = useAccessTokens()
 
-    setTokens(fetched)
-  }, [fetched])
-
-  const addToken = (target: AccessToken) => {
-    setTokens((tokens) => [...tokens, target])
-  }
-
-  const newToken = () => {
-    if (processing) {
-      return
-    }
-    setProcessing(true)
-
-    create()
-      .then(addToken)
-      .finally(() => {
-        setProcessing(false)
-      })
-  }
-
-  const copyCodeToClipboard = (acessToken: string) => {
-    navigator.clipboard.writeText(acessToken).then(() => {
-      setCopiedToken(acessToken)
+  const copyCodeToClipboard = (accessToken: string) => {
+    navigator.clipboard.writeText(accessToken).then(() => {
+      setCopiedToken(accessToken)
     })
-  }
-
-  const deleteToken = (token: AccessToken) => {
-    if (processing) {
-      return
-    }
-    setProcessing(true)
-    deleteSelectedToken(token)
-      .then(() => {
-        const index = tokens.indexOf(token, 0)
-        tokens.splice(index, 1)
-        setTokens((tokens) => tokens)
-      })
-      .finally(() => {
-        setProcessing(false)
-      })
-  }
-
-  if (loading) {
-    return <div>loading...</div>
   }
 
   return (
@@ -126,9 +75,7 @@ export default function AccessTokens() {
                       <IconButton
                         edge="end"
                         aria-label="delete"
-                        onClick={() => {
-                          deleteToken(token)
-                        }}
+                        onClick={() => deleteToken(token)}
                       >
                         <DeleteIcon />
                       </IconButton>
@@ -143,33 +90,4 @@ export default function AccessTokens() {
       </Grid>
     </>
   )
-}
-
-function useAccessTokens() {
-  const {event} = useEvent()
-  const {client} = useOrganization()
-  const url = api(`/events/${event.slug}/access_tokens`)
-  const request = useCallback(() => client.get<AccessToken[]>(url), [
-    client,
-    url,
-  ])
-
-  return useAsync(request)
-}
-
-function useCreateToken() {
-  const {event} = useEvent()
-  const {client} = useOrganization()
-  const url = api(`/events/${event.slug}/access_tokens`)
-
-  return () => client.post<AccessToken>(url)
-}
-
-function useDeleteToken() {
-  const {event} = useEvent()
-  const {client} = useOrganization()
-  return (token: AccessToken) => {
-    const url = api(`/events/${event.slug}/access_tokens/${token.id}`)
-    return client.delete<AccessToken>(url)
-  }
 }
