@@ -81,7 +81,7 @@ export default function AccessTokenAutoSelect() {
    */
 
   useEffect(() => {
-    if (loading) {
+    if (!loading) {
       // already done
       return
     }
