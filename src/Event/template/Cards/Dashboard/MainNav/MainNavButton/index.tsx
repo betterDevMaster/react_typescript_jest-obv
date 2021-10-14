@@ -91,7 +91,7 @@ const Container = React.forwardRef<
   return (
     <VisibleOnMatch rules={props.button.rules}>
       <Published component={props.button}>
-        <Box ref={ref} {...props} />
+        <Box ref={ref} {...props} {...props.draggableProps} />
       </Published>
     </VisibleOnMatch>
   )
