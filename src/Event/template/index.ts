@@ -2,6 +2,7 @@ import {Panels} from 'Event/template/Panels'
 import {SimpleBlog} from 'Event/template/SimpleBlog'
 import {InputStyles} from 'Event/Question'
 import {DeepRequired} from 'lib/type-utils'
+import {Cards} from 'Event/template/Cards'
 
 /**
  * Base properties shared by all templates
@@ -48,7 +49,7 @@ export type BaseTemplate = {
   }
 }
 
-export type Template = SimpleBlog | Panels
+export type Template = SimpleBlog | Panels | Cards
 
 export const BASE_DEFAULTS: DeepRequired<BaseTemplate> = {
   version: 1,

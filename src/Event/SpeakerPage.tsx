@@ -12,6 +12,8 @@ import {useTrackEventPage} from 'analytics'
 import PagePoints, {SPEAKERS} from 'Event/PointsProvider/PagePoints'
 import {PANELS} from 'Event/template/Panels'
 import PanelsSpeakers from 'Event/template/Panels/Dashboard/Speakers'
+import {CARDS} from 'Event/template/Cards'
+import CardsSpeakers from 'Event/template/Cards/Speakers'
 
 export interface Speaker {
   id: number
@@ -44,6 +46,8 @@ function Speakers() {
       return <SimpleBlogSpeakers user={user} speakers={speakers} />
     case PANELS:
       return <PanelsSpeakers speakers={speakers} />
+    case CARDS:
+      return <CardsSpeakers user={user} speakers={speakers} />
     default:
       throw new Error(`Missing speaker page for template: ${name}`)
   }

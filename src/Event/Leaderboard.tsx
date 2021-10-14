@@ -8,6 +8,8 @@ import {useTrackEventPage} from 'analytics'
 import {useEvent} from 'Event/EventProvider'
 import {api} from 'lib/url'
 import {useAsync} from 'lib/async'
+import {CARDS} from './template/Cards'
+import CardsLeaderboard from 'Event/template/Cards/Leaderboard'
 
 export interface Entry {
   attendee: Pick<Attendee, 'id' | 'first_name' | 'last_name' | 'email'>
@@ -25,6 +27,8 @@ export default function Leaderboard() {
   switch (template.name) {
     case SIMPLE_BLOG:
       return <SimpleBlogLeaderboard user={user} />
+    case CARDS:
+      return <CardsLeaderboard user={user} />
     default:
       throw new Error(`Missing leaderboard for template: ${template.name}`)
   }

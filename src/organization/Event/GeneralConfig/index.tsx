@@ -7,9 +7,11 @@ import {SIMPLE_BLOG} from 'Event/template/SimpleBlog'
 import {PANELS} from 'Event/template/Panels'
 import SimpleBlogGeneralConfig from 'Event/template/SimpleBlog/GeneralConfig'
 import PanelsGeneralConfig from 'Event/template/Panels/GeneralConfig'
+import CardsGeneralConfig from 'Event/template/Cards/GeneralConfig'
 import {withStyles} from '@material-ui/core/styles'
 import {spacing} from 'lib/ui/theme'
 import Typography from '@material-ui/core/Typography'
+import {CARDS} from 'Event/template/Cards'
 
 export default function GeneralConfig() {
   return (
@@ -28,6 +30,8 @@ function TemplateGeneralConfig() {
       return <SimpleBlogGeneralConfig />
     case PANELS:
       return <PanelsGeneralConfig />
+    case CARDS:
+      return <CardsGeneralConfig />
     default:
       throw new Error('Missing a template')
   }

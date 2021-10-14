@@ -15,7 +15,7 @@ import {
 import {RelativeLink} from 'lib/ui/link/RelativeLink'
 import {areaRoutes} from 'Event/Routes'
 import {useAttendeeVariables} from 'Event'
-import {Icon} from 'lib/fontawesome/Icon'
+import {Icon, IconProps} from 'lib/fontawesome/Icon'
 import ImageEntryUpload from 'Event/Dashboard/components/NavButton/ImageEntryUpload'
 import {MailchimpTag, useAddTag as useAddMailchimpTag} from 'Event/mailchimp'
 
@@ -49,6 +49,8 @@ export default interface NavButton extends HasRules, Publishable {
   padding?: number
   width?: number
   icon?: string | null
+  iconSize?: number
+  iconStacked?: boolean
   mailchimpTag: MailchimpTag | null
 }
 
@@ -57,6 +59,7 @@ export type NavButtonWithSize = NavButton & {
   newLine?: boolean
 }
 export const DEFAULT_BUTTON_HEIGHT = 64
+const DEFAULT_FONT_SIZE = 29
 
 export default function NavButton(props: NavButton) {
   const {newTab, isAreaButton, isImageUpload} = props
@@ -149,7 +152,7 @@ function JoinAreaButton(
   )
 }
 
-function Button(
+export function Button(
   props: {
     disabled?: boolean
     onClick?: () => void
@@ -158,6 +161,9 @@ function Button(
 ) {
   const opacity = props.isPending ? 0.8 : 1
   const v = useAttendeeVariables()
+
+  const fontSize = props.fontSize || DEFAULT_FONT_SIZE
+  const iconSize = props.iconSize || props.fontSize || DEFAULT_FONT_SIZE
 
   return (
     <StyledButton
@@ -178,10 +184,15 @@ function Button(
       opacity={opacity}
       padding={props.padding}
       width={props.width}
-      fontSize={props.fontSize}
+      fontSize={fontSize}
     >
       <>
-        <StyledIcon iconClass={props.icon} color={props.textColor} />
+        <StyledIcon
+          iconClass={props.icon}
+          color={props.textColor}
+          iconSize={iconSize}
+          iconStacked={props.iconStacked}
+        />
         {v(props.text)}
       </>
     </StyledButton>
@@ -194,7 +205,6 @@ const StyledAbsoluteLink = styled(AbsoluteLink)`
 `
 
 const StyledButton = styled(ButtonBase)`
-  font-size: 29px;
   font-weight: 700;
   padding: 15px 30px;
 
@@ -203,6 +213,19 @@ const StyledButton = styled(ButtonBase)`
   }
 `
 
-const StyledIcon = styled(Icon)`
-  margin-right: ${(props) => props.theme.spacing[2]};
+const StyledIcon = styled(
+  (
+    props: IconProps & {
+      iconSize?: number
+      iconStacked?: boolean
+    },
+  ) => {
+    const {iconSize, iconStacked: stackedIcon, ...otherProps} = props
+    return <Icon {...otherProps} />
+  },
+)`
+  margin-right: ${(props) => (props.iconStacked ? 0 : props.theme.spacing[2])};
+  margin-bottom: ${(props) => (props.iconStacked ? props.theme.spacing[2] : 0)};
+  font-size: ${(props) => props.iconSize}px !important;
+  ${(props) => (props.iconStacked ? 'display: block;' : '')}
 `

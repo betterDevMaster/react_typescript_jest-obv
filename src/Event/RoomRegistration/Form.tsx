@@ -6,6 +6,8 @@ import {ValidationError} from 'lib/api-client'
 import {RoomRegistrationData} from 'Event/RoomRegistration'
 import {PANELS} from 'Event/template/Panels'
 import PanelsRoomRegistrationForm from 'Event/template/Panels/RoomRegistrationForm'
+import {CARDS} from 'Event/template/Cards'
+import CardsRoomRegistrationForm from 'Event/template/Cards/RoomRegistrationForm'
 
 export interface RoomRegistrationFormProps {
   submit: (data: RoomRegistrationData) => void
@@ -23,6 +25,8 @@ export default function TemplateRoomRegistrationForm(
       return <SimpleBlogRoomRegistrationForm {...props} />
     case PANELS:
       return <PanelsRoomRegistrationForm {...props} />
+    case CARDS:
+      return <CardsRoomRegistrationForm {...props} />
     default:
       throw new Error(`Missing room registration form for template: ${name}`)
   }

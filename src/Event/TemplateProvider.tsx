@@ -1,6 +1,7 @@
 import {updateTemplate} from 'Event/state/actions'
 import {Template} from 'Event/template'
 import {PANELS, DEFAULTS as PANELS_DEFAULTS} from 'Event/template/Panels'
+import {CARDS, DEFAULTS as CARDS_DEFAULTS} from 'Event/template/Cards'
 import {
   DEFAULTS as SIMPLE_BLOG_DEFAULTS,
   SIMPLE_BLOG,
@@ -41,6 +42,8 @@ function defaultsFor(template: Template): DeepRequired<Template> {
       return SIMPLE_BLOG_DEFAULTS
     case PANELS:
       return PANELS_DEFAULTS
+    case CARDS:
+      return CARDS_DEFAULTS
   }
 }
 

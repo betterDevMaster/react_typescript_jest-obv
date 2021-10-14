@@ -5,9 +5,11 @@ import DialogTitle from '@material-ui/core/DialogTitle'
 import Dialog from 'lib/ui/Dialog'
 import SimpleBlogLeaderboardConfig from 'Event/template/SimpleBlog/Leaderboard/LeaderboardConfig'
 import PanelsLeaderboardConfig from 'Event/template/Panels/Dashboard/Leaderboard/LeaderboardConfig'
+import CardsLeaderboardConfig from 'Event/template/Cards/Leaderboard/LeaderboardConfig'
 import {useTemplate} from 'Event/TemplateProvider'
 import {SIMPLE_BLOG} from 'Event/template/SimpleBlog'
 import {PANELS} from 'Event/template/Panels'
+import {CARDS} from 'Event/template/Cards'
 
 export type LeaderboardConfigProps = {onComplete: () => void}
 
@@ -32,5 +34,7 @@ export default function LeaderboardSettingsDialog(props: {
       )
     case PANELS:
       return <PanelsLeaderboardConfig isVisible={visible} onClose={onClose} />
+    case CARDS:
+      return <CardsLeaderboardConfig isVisible={visible} onClose={onClose} />
   }
 }

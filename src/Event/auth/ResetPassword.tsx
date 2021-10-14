@@ -9,6 +9,8 @@ import {useEvent} from 'Event/EventProvider'
 import {api} from 'lib/url'
 import {useTemplate} from 'Event/TemplateProvider'
 import {PANELS} from 'Event/template/Panels'
+import {CARDS} from 'Event/template/Cards'
+import CardsResetPassword from 'Event/template/Cards/Login/ResetPassword'
 
 export default function ResetPassword() {
   const {name} = useTemplate()
@@ -28,6 +30,8 @@ export default function ResetPassword() {
       )
     case PANELS:
       return <PanelsResetPassword goBacktoLogin={goBacktoLogin} {...reset} />
+    case CARDS:
+      return <CardsResetPassword goBacktoLogin={goBacktoLogin} {...reset} />
     default:
       throw new Error(`Missing reset password page for template: ${name}`)
   }

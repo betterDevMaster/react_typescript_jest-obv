@@ -3,6 +3,7 @@ import {EventState} from 'Event/state'
 import {Template} from 'Event/template'
 import {createPanels, PANELS} from 'Event/template/Panels'
 import {createSimpleBlog, SIMPLE_BLOG} from 'Event/template/SimpleBlog'
+import {createCards, CARDS} from 'Event/template/Cards'
 
 export const SET_EVENT_ACTION = 'SET_EVENT'
 export interface SetEventAction {
@@ -51,6 +52,8 @@ function newTemplate(name: Template['name']) {
       return createSimpleBlog()
     case PANELS:
       return createPanels()
+    case CARDS:
+      return createCards()
   }
 }
 

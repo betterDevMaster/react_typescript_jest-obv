@@ -1,10 +1,9 @@
 import React, {useState} from 'react'
-import NavButton from 'Event/Dashboard/components/NavButton'
 import {useEditMode} from 'Event/Dashboard/editor/state/edit-mode'
-import UploadButton from 'Event/Dashboard/components/NavButton/ImageEntryUpload/UploadButton'
 import UploadDialog from 'Event/Dashboard/components/NavButton/ImageEntryUpload/UploadDialog'
+import NavButton, {Button} from 'Event/Dashboard/components/NavButton'
 
-export default function ImageWaterfallUpload(props: NavButton) {
+export default function ImageEntryUpload(props: NavButton) {
   const [visibleUploadForm, setVisibleUploadForm] = useState(false)
   const isEditMode = useEditMode()
 
@@ -14,7 +13,7 @@ export default function ImageWaterfallUpload(props: NavButton) {
    * Don't show uploader in edit mode or the user might think it works
    */
   if (isEditMode) {
-    return <UploadButton {...props} onClick={toggleVisibleUploadForm} />
+    return <Button {...props} onClick={toggleVisibleUploadForm} />
   }
 
   return (
@@ -23,7 +22,8 @@ export default function ImageWaterfallUpload(props: NavButton) {
         onClose={toggleVisibleUploadForm}
         visible={visibleUploadForm}
       />
-      <UploadButton {...props} onClick={toggleVisibleUploadForm} />
+
+      <Button {...props} onClick={toggleVisibleUploadForm} />
     </>
   )
 }

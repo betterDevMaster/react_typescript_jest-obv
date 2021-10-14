@@ -6,10 +6,13 @@ import {useTemplate} from 'Event/TemplateProvider'
 import {SIMPLE_BLOG} from 'Event/template/SimpleBlog'
 import SimpleBlogStep2 from 'Event/template/SimpleBlog/Step2'
 import PanelsStep2 from 'Event/template/Panels/Step2'
+import CardsStep2 from 'Event/template/Cards/Step2'
+
 import {useEvent} from 'Event/EventProvider'
 import WaiverProvider from 'Event/Step2/WaiverProvider'
 import {useTrackEventPage} from 'analytics'
 import {PANELS} from 'Event/template/Panels'
+import {CARDS} from 'Event/template/Cards'
 
 export default function Step2() {
   const attendee = useAttendee()
@@ -49,6 +52,8 @@ function TemplateStep2() {
       return <SimpleBlogStep2 user={user} />
     case PANELS:
       return <PanelsStep2 />
+    case CARDS:
+      return <CardsStep2 user={user} />
     default:
       throw new Error(`Missing step 2 for template.`)
   }

@@ -4,6 +4,8 @@ import {SIMPLE_BLOG} from 'Event/template/SimpleBlog'
 import SimpleBlogEventOffline from 'Event/template/SimpleBlog/EventOfflinePage'
 import {PANELS} from 'Event/template/Panels'
 import PanelsEventOffline from 'Event/template/Panels/EventOfflinePage'
+import {CARDS} from 'Event/template/Cards'
+import CardsEventOffline from 'Event/template/Cards/EventOfflinePage'
 
 export default function EventOfflinePage(props: {isPreview?: boolean}) {
   const template = useTemplate()
@@ -20,6 +22,8 @@ export default function EventOfflinePage(props: {isPreview?: boolean}) {
       return <SimpleBlogEventOffline isPreview={isPreview} />
     case PANELS:
       return <PanelsEventOffline isPreview={isPreview} />
+    case CARDS:
+      return <CardsEventOffline isPreview={isPreview} />
     default:
       throw new Error(`Missing offline page for template: ${name}`)
   }

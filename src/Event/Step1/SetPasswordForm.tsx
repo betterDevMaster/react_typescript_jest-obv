@@ -14,7 +14,8 @@ import {usePoints} from 'Event/PointsProvider'
 import {usePlatformActions} from 'Event/ActionsProvider/platform-actions'
 import {User} from 'auth/user'
 import {PANELS} from 'Event/template/Panels'
-
+import {CARDS} from 'Event/template/Cards'
+import CardsSetPasswordForm from 'Event/template/Cards/Step1/SetPasswordForm'
 interface SetPasswordData {
   password: string
   password_confirmation: string
@@ -73,6 +74,8 @@ export function TemplateSetPasswordForm(props: SetPasswordFormProps) {
       return <SimpleBlogSetPasswordForm {...props} />
     case PANELS:
       return <PanelsSetPasswordForm {...props} />
+    case CARDS:
+      return <CardsSetPasswordForm {...props} />
     default:
       throw new Error(`Missing set password form for template.`)
   }

@@ -4,10 +4,13 @@ import {ObvioEvent} from 'Event'
 import Page from 'organization/Event/Page'
 import SimpleBlogConfig from 'Event/template/SimpleBlog/Step3/TechCheckConfig'
 import PanelsConfig from 'Event/template/Panels/Step3/TechCheckConfig'
+import CardsConfig from 'Event/template/Cards/Step3/TechCheckConfig'
+
 import {OrganizationActionsProvider} from 'Event/ActionsProvider'
 import {useTemplate} from 'Event/TemplateProvider'
 import {SIMPLE_BLOG} from 'Event/template/SimpleBlog'
 import {PANELS} from 'Event/template/Panels'
+import {CARDS} from 'Event/template/Cards'
 
 export interface TechCheckData {
   body: string
@@ -36,6 +39,8 @@ function TemplateTechCheckConfig() {
       return <SimpleBlogConfig />
     case PANELS:
       return <PanelsConfig />
+    case CARDS:
+      return <CardsConfig />
     default:
       throw new Error('Missing tech check config for template')
   }

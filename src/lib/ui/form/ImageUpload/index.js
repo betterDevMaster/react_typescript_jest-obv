@@ -57,12 +57,20 @@ export default function ImageUpload(props) {
       }
 
       if (is(Image, component)) {
+        const isVisible = () => {
+          if (!props.autoUpload) {
+            return !file.wasRemoved
+          }
+
+          return Boolean(file.current)
+        }
+
         return (
           <Image
             {...component.props}
             current={file.current}
             selected={file.selected}
-            isVisible={!file.wasRemoved}
+            isVisible={isVisible()}
             key={index}
           />
         )

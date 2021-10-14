@@ -1,6 +1,7 @@
 import {appRoot, isProduction, isStaging, OBVIO_SUBDOMAIN} from 'env'
 import {ExtendRecursively} from 'lib/type-utils'
 import {useLocation} from 'react-router-dom'
+import {FileLocation} from 'lib/http-client'
 
 /**
  * obv.io Domains
@@ -206,4 +207,52 @@ export function useQueryParams() {
   }
 
   return result
+}
+
+export function parseFileLocation(value?: string): FileLocation | null {
+  return createFileLocation(parseUrl(value))
+}
+
+/**
+ * Get asset file url.
+ * API returns file url wrapped with url() function, so need to parse this to get file path directly.
+ */
+export function parseUrl(value?: string | null): string | null {
+  if (!value) {
+    return null
+  }
+
+  const urlRegex = /url\((.*)\)/
+
+  const isFile = urlRegex.test(value)
+  if (!isFile) {
+    return null
+  }
+
+  const matches = value.match(urlRegex)
+  if (!matches || matches.length !== 2) {
+    return null
+  }
+
+  /**
+   * Parse values out of the background CSS style
+   */
+  return matches[1]
+}
+
+/**
+ * Create a FileLocation object from a given URL. This is just a simple factory function
+ * that parses the file name out of a url.
+ * @param url
+ * @returns
+ */
+export function createFileLocation(url?: string | null): FileLocation | null {
+  if (!url) {
+    return null
+  }
+
+  const urlParts = url.split('/')
+  const name = urlParts[urlParts.length - 1]
+
+  return {url, name}
 }

@@ -8,6 +8,8 @@ import {setEditMode} from 'Event/Dashboard/editor/state/actions'
 import {SIMPLE_BLOG} from 'Event/template/SimpleBlog'
 import {PANELS} from 'Event/template/Panels'
 import PanelsDashboard from 'Event/template/Panels/Dashboard'
+import {CARDS} from 'Event/template/Cards'
+import CardsDashboard from 'Event/template/Cards/Dashboard'
 import {useCheckIn} from 'Event/attendee'
 
 export type DashboardProps = {
@@ -55,6 +57,8 @@ function TemplateDashboard(props: {user: User}) {
       return <SimpleBlogDashboard user={props.user} />
     case PANELS:
       return <PanelsDashboard user={props.user} />
+    case CARDS:
+      return <CardsDashboard user={props.user} />
     default:
       throw new Error(`Missing dashboard for template: ${name}`)
   }

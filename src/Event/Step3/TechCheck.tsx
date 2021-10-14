@@ -7,9 +7,12 @@ import {PANELS} from 'Event/template/Panels'
 import {TechCheckConfig} from 'Event'
 import SimpleBlogTechCheck from 'Event/template/SimpleBlog/Step3/TechCheck'
 import PanelsTechCheck from 'Event/template/Panels/Step3/TechCheck'
+import CardsTechCheck from 'Event/template/Cards/Step3/TechCheck'
+
 import {usePlatformActions} from 'Event/ActionsProvider/platform-actions'
 import {usePoints} from 'Event/PointsProvider'
 import {User} from 'auth/user'
+import {CARDS} from 'Event/template/Cards'
 
 const TECH_CHECK_POLL_SECS = 10
 
@@ -35,6 +38,9 @@ export default function TechCheck() {
   const template = useTemplate()
   const user = useAttendee()
 
+  /**
+   * Poll to check if attendee has been marked as tech check completed.
+   */
   useEffect(() => {
     const pollTimer = setInterval(attendee.refresh, TECH_CHECK_POLL_SECS * 1000)
 
@@ -59,27 +65,21 @@ export default function TechCheck() {
     throw new Error(`Missing event tech check`)
   }
 
+  const props = {
+    user,
+    techCheck,
+    progress: 75,
+    isPreview: false,
+    settings: template.techCheck,
+  }
+
   switch (template.name) {
     case SIMPLE_BLOG:
-      return (
-        <SimpleBlogTechCheck
-          user={user}
-          techCheck={techCheck}
-          progress={75}
-          isPreview={false}
-          settings={template.techCheck}
-        />
-      )
+      return <SimpleBlogTechCheck {...props} />
     case PANELS:
-      return (
-        <PanelsTechCheck
-          user={user}
-          techCheck={techCheck}
-          progress={75}
-          isPreview={false}
-          settings={template.techCheck}
-        />
-      )
+      return <PanelsTechCheck {...props} />
+    case CARDS:
+      return <CardsTechCheck {...props} />
     default:
       throw new Error(`Missing tech check for template`)
   }

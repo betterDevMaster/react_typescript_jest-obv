@@ -3,7 +3,10 @@ import {SIMPLE_BLOG} from 'Event/template/SimpleBlog'
 import {useTemplate} from 'Event/TemplateProvider'
 import SimpleBlogWaiverConfig from 'Event/template/SimpleBlog/Step2/WaiverConfig'
 import PanelsWaiverConfig from 'Event/template/Panels/Step2/WaiverConfig'
+import CardsWaiverConfig from 'Event/template/Cards/Step2/WaiverConfig'
+
 import {PANELS} from 'Event/template/Panels'
+import {CARDS} from 'Event/template/Cards'
 
 export default function WaiverConfig() {
   const template = useTemplate()
@@ -13,6 +16,8 @@ export default function WaiverConfig() {
       return <SimpleBlogWaiverConfig />
     case PANELS:
       return <PanelsWaiverConfig />
+    case CARDS:
+      return <CardsWaiverConfig />
     default:
       break
   }

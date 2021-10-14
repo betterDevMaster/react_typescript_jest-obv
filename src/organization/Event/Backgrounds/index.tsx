@@ -8,6 +8,8 @@ import {SIMPLE_BLOG} from 'Event/template/SimpleBlog'
 import {PANELS} from 'Event/template/Panels'
 import SimpleBlogBackgroundsConfig from 'Event/template/SimpleBlog/Backgrounds/BackgroundsConfig'
 import PanelsBackgroundsConfig from 'Event/template/Panels/Dashboard/Resources/Backgrounds/BackgroundsConfig'
+import CardsBackgroundsConfig from 'Event/template/Cards/Backgrounds/BackgroundsConfig'
+import {CARDS} from 'Event/template/Cards'
 
 export default function Backgrounds() {
   const {event} = useEvent()
@@ -35,6 +37,8 @@ function TemplateConfig() {
       return <SimpleBlogBackgroundsConfig />
     case PANELS:
       return <PanelsBackgroundsConfig />
+    case CARDS:
+      return <CardsBackgroundsConfig />
     default:
       throw new Error(`Missing backgrounds config for template: ${name}`)
   }

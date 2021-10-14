@@ -8,6 +8,8 @@ import {api} from 'lib/url'
 import {useTemplate} from 'Event/TemplateProvider'
 import {PANELS} from 'Event/template/Panels'
 import PanelsForgotPassword from 'Event/template/Panels/Login/ForgotPassword'
+import {CARDS} from 'Event/template/Cards'
+import CardsForgotPassword from 'Event/template/Cards/Login/ForgotPassword'
 
 export default function ForgotPassword() {
   const {name} = useTemplate()
@@ -24,6 +26,8 @@ export default function ForgotPassword() {
       return <SimpleBlogForgotPassword {...forgotPassword} />
     case PANELS:
       return <PanelsForgotPassword {...forgotPassword} />
+    case CARDS:
+      return <CardsForgotPassword {...forgotPassword} />
     default:
       throw new Error(`Missing forgot password page for template: ${name}`)
   }

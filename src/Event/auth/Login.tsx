@@ -7,6 +7,8 @@ import {SIMPLE_BLOG} from 'Event/template/SimpleBlog'
 import {useTemplate} from 'Event/TemplateProvider'
 import {PANELS} from 'Event/template/Panels'
 import PanelsLogin from 'Event/template/Panels/Login'
+import {CARDS} from 'Event/template/Cards'
+import CardsLogin from 'Event/template/Cards/Login'
 import FullPageLoader from 'lib/ui/layout/FullPageLoader'
 
 export interface LoginProps {
@@ -86,6 +88,8 @@ function TemplateLogin(props: LoginProps) {
       return <SimpleBlogLogin {...props} />
     case PANELS:
       return <PanelsLogin {...props} />
+    case CARDS:
+      return <CardsLogin {...props} />
     default:
       throw new Error(`Missing login for template`)
   }

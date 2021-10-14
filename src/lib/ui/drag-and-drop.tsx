@@ -11,7 +11,7 @@ export function DragHandle(props: {
     <DragHandleBox
       {...props.handleProps}
       aria-label="button drag handle"
-      className={props.className}
+      className={`${props.className || ''} drag-handle`}
     >
       <DragHandleIcon />
     </DragHandleBox>

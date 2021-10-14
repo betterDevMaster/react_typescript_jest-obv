@@ -13,6 +13,8 @@ import {useTemplate} from 'Event/TemplateProvider'
 import PagePoints, {SPONSORS} from 'Event/PointsProvider/PagePoints'
 import {useSponsors} from 'organization/Event/SponsorsProvider'
 import {EventSponsorsProvider} from 'organization/Event/SponsorsProvider'
+import {CARDS} from 'Event/template/Cards'
+import CardsSponsorPage from 'Event/template/Cards/Sponsors'
 
 export interface Sponsor {
   id: number
@@ -55,6 +57,8 @@ function Sponsors() {
       return <SimpleBlogSponsorPage user={user} sponsors={sponsors} />
     case PANELS:
       return <PanelsSponsorPage sponsors={sponsors} />
+    case CARDS:
+      return <CardsSponsorPage user={user} sponsors={sponsors} />
     default:
       throw new Error(`Missing sponsor page for template: ${name}`)
   }
