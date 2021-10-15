@@ -1,4 +1,3 @@
-import styled from 'styled-components'
 import React, {useCallback, useEffect, useRef, useState} from 'react'
 import {useEvent} from 'Event/EventProvider'
 import {api} from 'lib/url'
@@ -8,7 +7,7 @@ import ClickedEmoji, {
   Emoji,
 } from 'organization/Event/EmojiPage/ClickedEmoji'
 import {useInterval} from 'lib/interval'
-import {useTemplate} from 'Event/TemplateProvider'
+import Page from 'organization/Event/EmojiPage/Page'
 
 export type Emojis = string[]
 
@@ -20,7 +19,6 @@ export default function EmojiPage() {
   const [emojis, setEmojis] = useState<Emoji[]>([])
   const fetchEmojis = useFetchEmojis()
   const isMountedRef = useRef(true)
-  const {emojiPage} = useTemplate()
 
   useEffect(() => {
     return () => {
@@ -65,11 +63,11 @@ export default function EmojiPage() {
   }, [])
 
   return (
-    <Container background={emojiPage.background}>
+    <Page>
       {emojis.map((emoji) => {
         return <ClickedEmoji emoji={emoji} key={emoji.id} onComplete={remove} />
       })}
-    </Container>
+    </Page>
   )
 }
 
@@ -80,11 +78,3 @@ function useFetchEmojis() {
 
   return useCallback(() => client.get<Emojis>(url), [client, url])
 }
-
-const Container = styled.div<{background: string}>`
-  height: 100vh;
-  width: 100%;
-  background: ${(props) => props.background};
-  position: absolute;
-  overflow: hidden;
-`

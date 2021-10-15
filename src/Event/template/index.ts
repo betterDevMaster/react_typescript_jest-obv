@@ -22,7 +22,9 @@ export type BaseTemplate = {
   }
 
   emojiPage?: {
-    background?: string
+    backgroundColor?: string
+    backgroundOpacity?: number
+    backgroundHidden?: boolean
   }
 
   postStyles?: {
@@ -63,7 +65,9 @@ export const BASE_DEFAULTS: DeepRequired<BaseTemplate> = {
       'Yay! You have received {{action_points}} {{points_unit}} for {{action_description}}.',
   },
   emojiPage: {
-    background: '#000000',
+    backgroundColor: '#000000',
+    backgroundOpacity: 1,
+    backgroundHidden: false,
   },
   postStyles: {
     titleTextColor: '#000000',
