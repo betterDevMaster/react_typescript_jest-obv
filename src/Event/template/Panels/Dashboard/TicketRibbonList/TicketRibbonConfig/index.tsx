@@ -44,6 +44,8 @@ export default function TicketRibbonConfig(
     ticketRibbon.hoverTextFontStyles,
   )
 
+  const showingRemoveButton = index !== undefined
+
   /**
    * Set defaults for anything that can't be set via defaultValue
    */
@@ -220,6 +222,7 @@ export default function TicketRibbonConfig(
               variant="outlined"
               aria-label="remove ticket ribbon"
               onClick={remove}
+              showing={showingRemoveButton}
             >
               REMOVE TICKET RIBBON
             </RemoveButton>

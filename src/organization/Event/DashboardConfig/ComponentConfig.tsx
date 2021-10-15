@@ -61,12 +61,17 @@ export type RemoveButtonProps = ButtonProps & {
 export const RemoveButton = (props: RemoveButtonProps) => {
   const label = props.children || 'REMOVE'
 
+  /**
+   * If we didn't specify a showing prop, let's show by default
+   */
+  const showing = props.showing === undefined ? true : props.showing
+
   return (
     <StyledRemoveButton
       fullWidth
       variant="outlined"
       aria-label="remove"
-      showing={props.showing}
+      showing={showing}
       {...props}
     >
       {label}
