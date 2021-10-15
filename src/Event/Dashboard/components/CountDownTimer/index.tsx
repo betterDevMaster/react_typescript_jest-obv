@@ -114,11 +114,15 @@ const StyledCountDownTimer = styled((props) => {
   return <div {...props} />
 })`
   text-align: center;
-  padding: 25px 25px;
+  padding: ${(props) => props.theme.spacing[6]};
   font-size: 60px;
   font-weight: bold;
   line-height: 1em;
   color: ${(props) => props.color};
   background-color: ${(props) => props.background};
   opacity: ${(props) => props.opacity};
+
+  @media (min-width: ${(props) => props.theme.breakpoints.md}) {
+    font-size: 36px;
+  }
 `

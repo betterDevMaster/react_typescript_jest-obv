@@ -65,13 +65,29 @@ const Container = React.forwardRef<
     className?: string
     children: React.ReactElement | React.ReactElement[]
   } & Partial<DroppableProvidedProps>
->((props, ref) => (
-  <Box className={props.className} ref={ref} {...props}>
-    <Grid container justify="center" spacing={2}>
-      {props.children}
-    </Grid>
-  </Box>
-))
+>((props, ref) => {
+  const {template} = usePanels()
+  const {countDownTimers} = template
+
+  const hasTimers = countDownTimers.ids.length > 0
+  const isEditMode = useEditMode()
+
+  /**
+   * Fix case where empty container has margin
+   */
+  const hideEmptyContainer = !hasTimers && !isEditMode
+  if (hideEmptyContainer) {
+    return null
+  }
+
+  return (
+    <Box className={props.className} ref={ref} {...props}>
+      <Grid container justify="center" spacing={2}>
+        {props.children}
+      </Grid>
+    </Box>
+  )
+})
 
 function useHandleDrag() {
   const {template} = usePanels()
