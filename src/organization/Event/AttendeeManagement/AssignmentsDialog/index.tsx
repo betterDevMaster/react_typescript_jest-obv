@@ -57,7 +57,9 @@ function Body(props: {
 
 function useAssignments(attendee: Attendee | null) {
   const {client} = useOrganization()
-  const {event: slug} = useEvent()
+  const {
+    event: {slug},
+  } = useEvent()
 
   const request = useCallback(() => {
     if (!attendee) {

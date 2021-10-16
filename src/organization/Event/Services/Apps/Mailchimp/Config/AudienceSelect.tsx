@@ -91,7 +91,9 @@ export default function AudienceSelect() {
 
 function useAudiences() {
   const {client} = useOrganization()
-  const {event: slug} = useEvent()
+  const {
+    event: {slug},
+  } = useEvent()
 
   const request = useCallback(() => {
     return client.get<Audience[]>(
