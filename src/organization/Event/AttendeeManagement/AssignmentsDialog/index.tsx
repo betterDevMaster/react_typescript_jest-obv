@@ -57,19 +57,17 @@ function Body(props: {
 
 function useAssignments(attendee: Attendee | null) {
   const {client} = useOrganization()
-  const {event} = useEvent()
+  const {event: slug} = useEvent()
 
   const request = useCallback(() => {
     if (!attendee) {
       return Promise.resolve(null)
     }
 
-    const url = api(
-      `/events/${event.slug}/attendees/${attendee.id}/room_assignments`,
-    )
+    const url = api(`/events/${slug}/attendees/${attendee.id}/room_assignments`)
 
     return client.get<RoomAssignment[]>(url)
-  }, [client, event, attendee])
+  }, [client, slug, attendee])
 
   return useAsync(request)
 }

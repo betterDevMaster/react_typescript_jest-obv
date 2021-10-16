@@ -158,7 +158,10 @@ export interface RequestJoinUrlError {
 }
 
 export function useJoinUrl(areaId: string) {
-  const {event, client} = useEvent()
+  const {
+    event: {slug},
+    client,
+  } = useEvent()
   const [joinUrl, setJoinUrl] = useState<null | string>(null)
   const isEditMode = useEditMode()
   const [error, setError] = useState<RequestJoinUrlError | null>(null)
@@ -168,7 +171,7 @@ export function useJoinUrl(areaId: string) {
       return
     }
 
-    const url = api(`/events/${event.slug}/areas/${areaId}/join`)
+    const url = api(`/events/${slug}/areas/${areaId}/join`)
 
     client
       .get<{url: string | null}>(url)
@@ -177,7 +180,7 @@ export function useJoinUrl(areaId: string) {
         setError(e)
         console.error(`Could not fetch join url: ${e.message}`)
       })
-  }, [client, event, areaId, isEditMode])
+  }, [client, slug, areaId, isEditMode])
 
   // Fetch once on load without waiting for interval
   useEffect(() => {

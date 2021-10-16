@@ -185,13 +185,12 @@ function useNumAttendees() {
   const {event} = useEvent()
   const {client} = useOrganization()
 
-  const request = useCallback(
-    () =>
-      client.get<{num_attendees: number}>(
-        api(`/events/${event.slug}/attendees/count`),
-      ),
-    [event, client],
-  )
+  const url = api(`/events/${event.slug}/attendees/count`)
+
+  const request = useCallback(() => client.get<{num_attendees: number}>(url), [
+    url,
+    client,
+  ])
 
   return useAsync(request)
 }

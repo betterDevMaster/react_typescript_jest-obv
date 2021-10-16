@@ -111,7 +111,7 @@ export default function UpdatePointsDialog(props: {
 }
 
 function useCurrentPoints(attendee: Attendee | null) {
-  const {event} = useEvent()
+  const {event: slug} = useEvent()
   const {client} = useOrganization()
 
   const getPoints = useCallback(() => {
@@ -120,10 +120,11 @@ function useCurrentPoints(attendee: Attendee | null) {
         points: 0,
       })
     }
+
     return client.get<{points: number}>(
-      api(`/events/${event.slug}/attendees/${attendee.id}/points`),
+      api(`/events/${slug}/attendees/${attendee.id}/points`),
     )
-  }, [client, event, attendee])
+  }, [client, slug, attendee])
 
   return useAsync(getPoints)
 }

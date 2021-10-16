@@ -91,13 +91,13 @@ export default function AudienceSelect() {
 
 function useAudiences() {
   const {client} = useOrganization()
-  const {event} = useEvent()
+  const {event: slug} = useEvent()
 
   const request = useCallback(() => {
     return client.get<Audience[]>(
-      api(`/events/${event.slug}/integrations/mailchimp/audiences`),
+      api(`/events/${slug}/integrations/mailchimp/audiences`),
     )
-  }, [client, event])
+  }, [client, slug])
 
   const {data, loading} = useAsync(request)
 

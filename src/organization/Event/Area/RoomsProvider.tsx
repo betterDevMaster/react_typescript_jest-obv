@@ -90,14 +90,16 @@ export function useRooms() {
 
 function useSavedRooms() {
   const {client} = useOrganization()
-  const {event} = useEvent()
+  const {
+    event: {slug},
+  } = useEvent()
   const {area} = useArea()
   const {id} = area
 
   const request = useCallback(() => {
-    const url = api(`/events/${event.slug}/areas/${id}/rooms`)
+    const url = api(`/events/${slug}/areas/${id}/rooms`)
     return client.get<Room[]>(url)
-  }, [client, event, id])
+  }, [client, slug, id])
 
   return useAsync(request)
 }

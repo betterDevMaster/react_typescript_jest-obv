@@ -53,12 +53,14 @@ export function AreaProvider(props: {children: React.ReactElement}) {
 
 function useAreaWithId(id: number) {
   const {client} = useOrganization()
-  const {event} = useEvent()
+  const {
+    event: {slug},
+  } = useEvent()
 
   const fetch = useCallback(() => {
-    const url = api(`/events/${event.slug}/areas/${id}`)
+    const url = api(`/events/${slug}/areas/${id}`)
     return client.get<Area>(url)
-  }, [id, client, event])
+  }, [id, client, slug])
 
   return useAsync(fetch)
 }
@@ -69,11 +71,13 @@ function useUpdateArea(
   setProcessing: (processing: boolean) => void,
 ) {
   const {client} = useOrganization()
-  const {event} = useEvent()
+  const {
+    event: {slug},
+  } = useEvent()
 
   const update = useCallback(
     <T extends keyof Area>(key: T) => {
-      const url = api(`/events/${event.slug}/areas/${id}`)
+      const url = api(`/events/${slug}/areas/${id}`)
       return (value: Area[T]) => {
         setProcessing(true)
         client
@@ -84,7 +88,7 @@ function useUpdateArea(
           })
       }
     },
-    [client, event, setArea, id, setProcessing],
+    [client, slug, setArea, id, setProcessing],
   )
 
   return update

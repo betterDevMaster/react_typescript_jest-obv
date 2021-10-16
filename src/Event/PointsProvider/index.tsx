@@ -29,7 +29,10 @@ export const PointsContext = React.createContext<
 >(undefined)
 
 export default function PointsProvider(props: {children: React.ReactElement}) {
-  const {client, event} = useEvent()
+  const {
+    client,
+    event: {slug},
+  } = useEvent()
   const template = useTemplate()
   const fetchScore = useFetchScore()
   const {score, add} = useAttendeeScore(fetchScore)
@@ -44,7 +47,7 @@ export default function PointsProvider(props: {children: React.ReactElement}) {
         return
       }
 
-      const url = api(`/events/${event.slug}/actions/${action.key}`)
+      const url = api(`/events/${slug}/actions/${action.key}`)
 
       client
         .post(url)
@@ -60,7 +63,7 @@ export default function PointsProvider(props: {children: React.ReactElement}) {
            */
         })
     },
-    [isEditMode, event.slug, client, showReceived, unit, add],
+    [isEditMode, slug, client, showReceived, unit, add],
   )
 
   return (

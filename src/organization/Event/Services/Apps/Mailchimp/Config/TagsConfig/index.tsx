@@ -56,11 +56,11 @@ function useSavedTags() {
   const {client} = useOrganization()
   const {event} = useEvent()
 
+  const url = api(`/events/${event.slug}/integrations/mailchimp/tags`)
+
   const request = useCallback(() => {
-    return client.get<Tag[]>(
-      api(`/events/${event.slug}/integrations/mailchimp/tags`),
-    )
-  }, [client, event])
+    return client.get<Tag[]>(url)
+  }, [client, url])
 
   return useAsync(request)
 }
