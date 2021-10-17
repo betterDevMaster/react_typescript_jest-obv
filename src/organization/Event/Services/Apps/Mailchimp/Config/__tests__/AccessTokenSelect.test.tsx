@@ -33,7 +33,7 @@ beforeEach(() => {
 
 it('should pre-select a single token', async () => {
   const token = fakeAccessToken()
-  const linkedMailchimp = fakeMailchimpIntegration({is_linked: true})
+  const linkedMailchimp = fakeMailchimpIntegration({has_completed_setup: true})
 
   const audience = fakeAudience({
     name: 'My attendees',

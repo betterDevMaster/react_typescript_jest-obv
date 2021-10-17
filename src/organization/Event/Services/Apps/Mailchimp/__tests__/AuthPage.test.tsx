@@ -73,7 +73,10 @@ it('should complete authorization', async () => {
   // event
   mockGet.mockImplementationOnce(() => Promise.resolve({data: event}))
 
-  const unlinked = fakeMailchimpIntegration({is_linked: false})
+  const unlinked = fakeMailchimpIntegration({
+    is_linked: false,
+    has_completed_setup: false,
+  })
   mockGet.mockImplementationOnce(() => Promise.resolve({data: [unlinked]}))
 
   mockGet.mockImplementationOnce(() => Promise.resolve({data: []})) // tokens
@@ -81,7 +84,8 @@ it('should complete authorization', async () => {
   mockPost.mockImplementationOnce(() =>
     Promise.resolve({
       data: fakeMailchimpIntegration({
-        is_linked: true,
+        is_linked: false,
+        has_completed_setup: true,
       }),
     }),
   )

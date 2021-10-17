@@ -1,18 +1,6 @@
-import Alert from '@material-ui/lab/Alert'
+import Alert, {AlertLevelProps} from 'lib/ui/alerts/Alert'
 import React from 'react'
 
-export default function ErrorAlert(props: {
-  children?: string | null
-  onClose?: () => void
-  className?: string
-}) {
-  if (!props.children) {
-    return null
-  }
-
-  return (
-    <Alert severity="error" onClose={props.onClose} className={props.className}>
-      {props.children}
-    </Alert>
-  )
+export default function ErrorAlert(props: AlertLevelProps) {
+  return <Alert {...props} severity="error" />
 }

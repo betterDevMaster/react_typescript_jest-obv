@@ -7,13 +7,11 @@ import {
   fakeMailchimpIntegration,
 } from 'organization/Event/Services/Apps/Mailchimp/__utils__/factory'
 import {wait} from '@testing-library/react'
-import {MailchimpIntegration} from 'organization/Event/Services/Apps/Mailchimp'
 import {fakeAccessToken} from 'organization/Event/Services/AccessTokens/__utils__/factory'
 import {goToMailchimp} from 'organization/Event/Services/Apps/Mailchimp/__utils__/go-to-mailchimp'
 
 const mockGet = axios.get as jest.Mock
-const mockDelete = axios.delete as jest.Mock
-const mockPut = axios.put as jest.Mock
+const mockPost = axios.post as jest.Mock
 
 /**
  * Silence console.warn because <Select/> throws an error
@@ -33,7 +31,7 @@ beforeEach(() => {
   jest.clearAllMocks()
 })
 
-it('should enable tags auto-sync', async () => {
+it('should send a request to sync', async () => {
   const token = fakeAccessToken()
   const field = fakeField()
   const audience = fakeAudience()
@@ -50,7 +48,7 @@ it('should enable tags auto-sync', async () => {
     has_completed_setup: true,
   })
 
-  const {findByLabelText, event} = await goToMailchimp({
+  const {findByText, event} = await goToMailchimp({
     userPermissions: [CONFIGURE_EVENTS],
     integrations: [mailchimp],
     tokens: [token],
@@ -61,41 +59,16 @@ it('should enable tags auto-sync', async () => {
     },
   })
 
-  const syncEnabled: MailchimpIntegration = {
-    ...mailchimp,
-    auto_sync_tags_enabled: true,
-  }
+  mockPost.mockImplementationOnce(() => Promise.resolve({data: 'ok'}))
 
-  /**
-   * Because we're 'enabling', we expect it to be a PUT
-   */
-  mockPut.mockImplementationOnce(() => Promise.resolve({data: syncEnabled}))
-
-  user.click(await findByLabelText('toggle auto sync tags'))
+  user.click(await findByText(/import audience/i))
 
   await wait(() => {
-    expect(mockPut).toHaveBeenCalledTimes(1)
+    expect(mockPost).toHaveBeenCalledTimes(1)
   })
 
-  const [enableUrl] = mockPut.mock.calls[0]
-  expect(enableUrl).toMatch(
-    `/events/${event.slug}/integrations/mailchimp/tags/sync`,
-  )
-
-  /**
-   * Assert toggling off (sends a DELETE)
-   */
-
-  mockDelete.mockImplementationOnce(() => Promise.resolve({data: syncEnabled}))
-
-  user.click(await findByLabelText('toggle auto sync tags'))
-
-  await wait(() => {
-    expect(mockDelete).toHaveBeenCalledTimes(1)
-  })
-
-  const [disableUrl] = mockDelete.mock.calls[0]
-  expect(disableUrl).toMatch(
-    `/events/${event.slug}/integrations/mailchimp/tags/sync`,
+  const [importUrl] = mockPost.mock.calls[0]
+  expect(importUrl).toMatch(
+    `/events/${event.slug}/integrations/mailchimp/audiences/import`,
   )
 })

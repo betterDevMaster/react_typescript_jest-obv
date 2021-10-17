@@ -13,6 +13,8 @@ import SyncMailchimpTagsItem, {
   useSyncMailchimpTags,
 } from 'organization/Event/AttendeeManagement/AttendeeTools/SyncMailchimpTagsItem'
 import Menu from 'lib/Menu'
+import ImportMailchimpAudienceMenuItem from 'organization/Event/AttendeeManagement/AttendeeTools/ImportMailchimpAudienceMenuItem'
+import {useImportAudience} from 'organization/Event/Services/Apps/Mailchimp/Config/ImportAudienceButton'
 
 export type MenuItemActionProps = {
   disabled?: boolean
@@ -35,6 +37,11 @@ export default function AttendeeTools(props: {
     onSuccess,
     onError,
   )
+
+  const {
+    processing: processingAudienceImport,
+    importAudience: startImport,
+  } = useImportAudience(onSuccess)
 
   const {
     processing: processingMailchimpSync,
@@ -76,6 +83,10 @@ export default function AttendeeTools(props: {
         <SyncMailchimpTagsItem
           disabled={processingMailchimpSync}
           onClick={handle(syncMailchimpTags)}
+        />
+        <ImportMailchimpAudienceMenuItem
+          disabled={processingAudienceImport}
+          onClick={startImport}
         />
       </Menu>
     </>

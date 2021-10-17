@@ -39,6 +39,7 @@ it('should create a new field to use', async () => {
     audience_id: 'someaudienceid', // already have audience
     access_token_id: token.id, // already have access token
     login_url_field_id: null,
+    has_completed_setup: true,
   })
 
   const {findByLabelText, findByText, event} = await goToMailchimp({

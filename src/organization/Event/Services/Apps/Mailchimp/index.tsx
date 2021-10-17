@@ -34,9 +34,7 @@ export interface Tag {
 }
 
 export default function Mailchimp() {
-  const {isLinked} = useServices()
-
-  const linked = isLinked(MAILCHIMP)
+  const mailchimp = useFindMailchimp()
 
   /**
    * Mailchimp redirects back with an auth code
@@ -44,7 +42,7 @@ export default function Mailchimp() {
    */
   const {code} = useQueryParams()
 
-  if (linked) {
+  if (mailchimp?.has_completed_setup) {
     return <Config />
   }
 
@@ -56,6 +54,15 @@ export default function Mailchimp() {
 }
 
 export function useMailchimp() {
+  const mailchimp = useFindMailchimp()
+  if (!mailchimp) {
+    throw new Error('Mailchimp integration has not been created')
+  }
+
+  return mailchimp
+}
+
+function useFindMailchimp() {
   const {integrations} = useServices()
 
   for (const integration of integrations) {
@@ -64,5 +71,5 @@ export function useMailchimp() {
     }
   }
 
-  throw new Error('Mailchimp integration has not been created')
+  return null
 }

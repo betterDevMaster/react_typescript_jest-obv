@@ -32,7 +32,7 @@ beforeEach(() => {
 })
 
 it('should show selector with multiple tokens', async () => {
-  const linkedMailchimp = fakeMailchimpIntegration({is_linked: true})
+  const linkedMailchimp = fakeMailchimpIntegration({has_completed_setup: true})
 
   const tokenOne = fakeAccessToken()
   const tokenTwo = fakeAccessToken()

@@ -39,7 +39,7 @@ beforeEach(() => {
 })
 
 it('should complete mailchimp setup', async () => {
-  const linkedMailchimp = fakeMailchimpIntegration({is_linked: true})
+  const linkedMailchimp = fakeMailchimpIntegration({has_completed_setup: true})
 
   const audience = fakeAudience({
     name: 'My attendees',
@@ -60,6 +60,7 @@ it('should complete mailchimp setup', async () => {
   const withAudience: MailchimpIntegration = {
     ...linkedMailchimp,
     audience_id: audience.id,
+    is_linked: true,
   }
 
   mockPut.mockImplementationOnce(() => Promise.resolve({data: withAudience}))
