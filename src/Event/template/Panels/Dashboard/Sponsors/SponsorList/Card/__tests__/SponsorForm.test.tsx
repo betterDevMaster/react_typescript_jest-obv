@@ -1,7 +1,7 @@
 import user from '@testing-library/user-event'
 import faker from 'faker'
 import {fakePanels} from 'Event/template/Panels/__utils__/factory'
-import {fakeEvent, fakeSponsor} from 'Event/__utils__/factory'
+import {fakeEvent, fakeFaq, fakeSponsor} from 'Event/__utils__/factory'
 import {fakeAction} from 'Event/ActionsProvider/__utils__/factory'
 import {loginToEventSite} from 'Event/__utils__/url'
 import {fakeAttendee} from 'Event/auth/__utils__/factory'
@@ -30,6 +30,11 @@ afterAll(() => {
 })
 
 it('should submit a sponsor form', async () => {
+  const faqs = Array.from(
+    {length: faker.random.number({min: 1, max: 5})},
+    fakeFaq,
+  )
+
   const action = fakeAction()
 
   const option = fakeOption({
@@ -63,6 +68,7 @@ it('should submit a sponsor form', async () => {
     }),
     event,
     beforeLogin: () => {
+      mockGet.mockImplementationOnce(() => Promise.resolve({data: faqs}))
       mockGet.mockImplementationOnce(() => Promise.resolve({data: [sponsor]}))
     },
   })

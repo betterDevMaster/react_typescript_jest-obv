@@ -1,5 +1,7 @@
+import {useEvent} from 'Event/EventProvider'
 import {FAQ, useFetchFaqs} from 'Event/FaqPage'
 import {useOrganization} from 'organization/OrganizationProvider'
+import {Client} from 'lib/api-client'
 import React, {useEffect, useState} from 'react'
 
 interface FaqsContextProps {
@@ -14,8 +16,21 @@ interface FaqsContextProps {
 
 const FaqsContext = React.createContext<undefined | FaqsContextProps>(undefined)
 
-export default function FaqsProvider(props: {children: React.ReactElement}) {
+export function OrganizationFaqsProvider(props: {children: React.ReactNode}) {
   const {client} = useOrganization()
+  return <FaqsProvider client={client} {...props} />
+}
+
+export function EventFaqsProvider(props: {children: React.ReactNode}) {
+  const {client} = useEvent()
+  return <FaqsProvider client={client} {...props} />
+}
+
+export default function FaqsProvider(props: {
+  client: Client
+  children: React.ReactNode
+}) {
+  const {client} = props
   const {data: saved, loading} = useFetchFaqs(client)
   const [faqs, setFaqs] = useState<FAQ[]>([])
   const [editing, setEditing] = useState<FAQ | null>(null)

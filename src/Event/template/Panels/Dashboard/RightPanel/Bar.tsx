@@ -21,6 +21,7 @@ export default function Nav(props: {
       leaderboard: {menuTitle: pointsMenuTitle, isVisible: showingPoints},
       speakers: {menuTitle: speakersMenuTitle, isVisible: showingSpeakers},
       sponsors: {menuTitle: sponsorsMenuTitle, isVisible: showingSponsors},
+      faq: {menuTitle: faqsMenuTitle, isVisible: showingFaqs},
     },
   } = usePanels()
   const {currentTab, onChangeTab} = props
@@ -76,6 +77,11 @@ export default function Nav(props: {
         label={v(pointsMenuTitle)}
         aria-label="panels tab points"
         showing={showingPoints}
+      />
+      <Tab
+        label={v(faqsMenuTitle)}
+        aria-label="panels tab faqs"
+        showing={showingFaqs}
       />
     </StyledTabs>
   )

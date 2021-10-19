@@ -18,7 +18,12 @@ import {
   OrganizationSponsorsProvider,
   useSponsors,
 } from 'organization/Event/SponsorsProvider'
-
+import FaqPage from 'Event/template/Panels/Dashboard/Faqs'
+import {
+  useFaqs,
+  OrganizationFaqsProvider,
+  EventFaqsProvider,
+} from 'organization/Event/FaqsProvider'
 import {useEditMode} from 'Event/Dashboard/editor/state/edit-mode'
 import {isAttendee} from 'Event/auth'
 
@@ -31,21 +36,27 @@ export default function PanelsDashboard(props: {user: User}) {
     ? EventSponsorsProvider
     : OrganizationSponsorsProvider
 
+  const FaqsProvider = isAttendee(user)
+    ? EventFaqsProvider
+    : OrganizationFaqsProvider
+
   return (
     <SponsorsProvider>
-      <Page
-        Left={<LeftPanel onChangeTab={setTabIndex} user={props.user} />}
-        Right={
-          <RightPanel currentTab={tabIndex} onChangeTab={setTabIndex}>
-            <Content currentTab={tabIndex} isEdit={isEdit} />
-          </RightPanel>
-        }
-        Mobile={
-          <MobilePanel onChangeTab={setTabIndex} user={props.user}>
-            <Content currentTab={tabIndex} isEdit={isEdit} />
-          </MobilePanel>
-        }
-      />
+      <FaqsProvider>
+        <Page
+          Left={<LeftPanel onChangeTab={setTabIndex} user={props.user} />}
+          Right={
+            <RightPanel currentTab={tabIndex} onChangeTab={setTabIndex}>
+              <Content currentTab={tabIndex} isEdit={isEdit} />
+            </RightPanel>
+          }
+          Mobile={
+            <MobilePanel onChangeTab={setTabIndex} user={props.user}>
+              <Content currentTab={tabIndex} isEdit={isEdit} />
+            </MobilePanel>
+          }
+        />
+      </FaqsProvider>
     </SponsorsProvider>
   )
 }
@@ -54,6 +65,7 @@ function Content(props: {currentTab: number; isEdit: boolean}) {
   const {currentTab, isEdit} = props
   const {event} = useEvent()
   const {sponsors, loading} = useSponsors()
+  const {faqs} = useFaqs()
 
   if (loading) {
     return <div>loading...</div>
@@ -74,6 +86,9 @@ function Content(props: {currentTab: number; isEdit: boolean}) {
       </ContentPanel>
       <ContentPanel index={4} currentIndex={currentTab}>
         <Leaderboard />
+      </ContentPanel>
+      <ContentPanel index={5} currentIndex={currentTab}>
+        <FaqPage isEditMode={isEdit} faqs={faqs} />
       </ContentPanel>
     </>
   )

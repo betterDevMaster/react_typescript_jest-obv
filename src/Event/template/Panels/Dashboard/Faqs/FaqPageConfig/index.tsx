@@ -7,7 +7,6 @@ import AddFaqButton from 'Event/template/Panels/Dashboard/Faqs/FaqPageConfig/Add
 import Button from '@material-ui/core/Button'
 import Box from '@material-ui/core/Box'
 import PageSettingsDialog from 'Event/template/Panels/Dashboard/Faqs/FaqPageConfig/PageSettingsDialog'
-import {useTeamMember} from 'organization/auth'
 import {useTemplate} from 'Event/TemplateProvider'
 import PanelsFaqPage from 'Event/template/Panels/Dashboard/Faqs'
 import {PANELS} from 'Event/template/Panels'
@@ -60,12 +59,11 @@ export default function FaqPageConfig() {
 
 function FaqPage() {
   const template = useTemplate()
-  const user = useTeamMember()
   const {faqs} = useFaqs()
 
   switch (template.name) {
     case PANELS:
-      return <PanelsFaqPage user={user} isEditMode faqs={faqs} />
+      return <PanelsFaqPage isEditMode faqs={faqs} />
     default:
       throw new Error(`Missing Faq page for template: ${template.name}`)
   }

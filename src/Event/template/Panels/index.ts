@@ -99,6 +99,8 @@ export type Panels = BaseTemplate & {
     title?: string
     description?: string
     orderedIds?: number[]
+    menuTitle?: string
+    isVisible?: boolean
   }
   zoomBackgrounds?: {
     borderColor?: string
@@ -303,6 +305,8 @@ export const createPanels = (): DeepRequired<Panels> => ({
     title: 'FAQ',
     description: '',
     orderedIds: [],
+    menuTitle: 'Faqs',
+    isVisible: true,
   },
   zoomBackgrounds: {
     borderColor: '#000000',

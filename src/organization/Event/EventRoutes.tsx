@@ -37,7 +37,7 @@ import {useEvent} from 'Event/EventProvider'
 import SelectTemplateForm from 'organization/Event/SelectTemplateForm'
 import TemplateProvider from 'Event/TemplateProvider'
 import {OrganizationSponsorsProvider} from 'organization/Event/SponsorsProvider'
-import FaqsProvider from 'organization/Event/FaqsProvider'
+import {OrganizationFaqsProvider} from 'organization/Event/FaqsProvider'
 import SpeakersProvider from 'organization/Event/SpeakersProvider'
 import NameAppendageProvider from 'organization/Event/NameAppendageConfig/NameAppendageProvider'
 import Reports from 'organization/Event/Reports'
@@ -158,9 +158,9 @@ export default function EventRoutes() {
           <Route path={routes.events[':event'].faqs}>
             <AuthorizedPage permission={CONFIGURE_EVENTS}>
               <AreasProvider>
-                <FaqsProvider>
+                <OrganizationFaqsProvider>
                   <FaqPageConfig />
-                </FaqsProvider>
+                </OrganizationFaqsProvider>
               </AreasProvider>
             </AuthorizedPage>
           </Route>

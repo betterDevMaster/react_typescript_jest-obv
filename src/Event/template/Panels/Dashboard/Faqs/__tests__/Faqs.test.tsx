@@ -12,14 +12,10 @@ beforeEach(() => {
   jest.clearAllMocks()
 })
 
-it('should render sponsors', async () => {
+it('should render faqs', async () => {
   const faqs = Array.from(
     {length: faker.random.number({min: 1, max: 5})},
     fakeFaq,
-  )
-  const sponsors = Array.from(
-    {length: faker.random.number({min: 1, max: 5})},
-    fakeSponsor,
   )
 
   const event = fakeEvent({
@@ -34,12 +30,11 @@ it('should render sponsors', async () => {
     }),
     beforeLogin: () => {
       mockGet.mockImplementationOnce(() => Promise.resolve({data: faqs}))
-      mockGet.mockImplementationOnce(() => Promise.resolve({data: sponsors}))
     },
   })
 
-  user.click(await findByLabelText('panels tab sponsors'))
+  user.click(await findByLabelText('panels tab faqs'))
 
-  // Showing all sponsors
-  expect((await findAllByLabelText('sponsor')).length).toBe(sponsors.length)
+  // Showing all faqs
+  expect((await findAllByLabelText('faq')).length).toBe(faqs.length)
 })

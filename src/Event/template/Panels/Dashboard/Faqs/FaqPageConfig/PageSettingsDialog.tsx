@@ -17,6 +17,9 @@ import {
   DEFAULT_TITLE,
 } from 'Event/template/Panels/Dashboard/Faqs/FaqList/Card'
 import {Panels, usePanels} from 'Event/template/Panels'
+import Switch from 'lib/ui/form/Switch'
+import FormControl from '@material-ui/core/FormControl'
+import {onChangeCheckedHandler} from 'lib/dom'
 
 type FAQPageSettings = NonNullable<Panels['faq']>
 
@@ -33,13 +36,20 @@ export default function PageSettingsDialog(props: {
 
   const {faq: pageSettings} = template
 
-  const data = ({title, description}: FAQPageSettings) => {
+  const data = ({
+    title,
+    description,
+    menuTitle,
+    isVisible,
+  }: FAQPageSettings) => {
     const required = {
       template: {
         ...template,
         faq: {
           title,
           description,
+          menuTitle,
+          isVisible,
         },
       },
     }
@@ -71,6 +81,23 @@ export default function PageSettingsDialog(props: {
       <DialogContent>
         <Box pb={2}>
           <form onSubmit={handleSubmit(submit)}>
+            <FormControl>
+              <Controller
+                name="isVisible"
+                control={control}
+                defaultValue={pageSettings.isVisible}
+                render={({value, onChange}) => (
+                  <Switch
+                    checked={value}
+                    onChange={onChangeCheckedHandler(onChange)}
+                    arial-label="toggle faq"
+                    labelPlacement="end"
+                    color="primary"
+                    label="Enabled"
+                  />
+                )}
+              />
+            </FormControl>
             <TextField
               label="Title"
               name="title"
@@ -79,6 +106,19 @@ export default function PageSettingsDialog(props: {
               fullWidth
               inputProps={{'aria-label': 'faq page title', ref: register}}
               disabled={processing}
+            />
+            <TextField
+              name="menuTitle"
+              label="Faq Page Menu Title"
+              defaultValue={pageSettings.menuTitle || DEFAULT_TITLE}
+              required
+              fullWidth
+              inputProps={{
+                ref: register({
+                  required: 'Faq Page Menu Title is required.',
+                }),
+                'aria-label': 'edit faq page menu title',
+              }}
             />
             <Controller
               name="description"
