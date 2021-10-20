@@ -46,6 +46,10 @@ export default function EventSocketConnection(props: {
       setIsConnected(true)
     })
 
+    connection.bind('disconnected', () => {
+      setIsConnected(false)
+    })
+
     return () => {
       echo.leave(channel)
     }
