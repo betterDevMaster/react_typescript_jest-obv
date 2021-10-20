@@ -34,6 +34,14 @@ export default function EventSocketConnection(props: {
       .listen('.event.updated', (data: {updated_at: string}) => {
         refreshEvent(data.updated_at)
       })
+      .error((error: {type: string}) => {
+        /**
+         * Handle authentication failure which would mean we would never receive auth updates
+         */
+        if (error.type === 'AuthError') {
+          setIsConnected(false)
+        }
+      })
 
     /**
      * Bind socket connected/disconnected events
