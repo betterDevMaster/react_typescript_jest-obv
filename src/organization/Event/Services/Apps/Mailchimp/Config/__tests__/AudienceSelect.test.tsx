@@ -12,7 +12,6 @@ import {fakeAccessToken} from 'organization/Event/Services/AccessTokens/__utils_
 import {goToMailchimp} from 'organization/Event/Services/Apps/Mailchimp/__utils__/go-to-mailchimp'
 
 const mockGet = axios.get as jest.Mock
-const mockDelete = axios.delete as jest.Mock
 const mockPut = axios.put as jest.Mock
 
 /**
@@ -47,6 +46,7 @@ it('should prompt confirmation', async () => {
     audience_id: existingAudience.id,
     access_token_id: token.id,
     login_url_field_id: field.id,
+    has_completed_setup: true,
   })
 
   const {findByLabelText, findByText, event} = await goToMailchimp({
