@@ -20,6 +20,7 @@ const MAX_BUTTON_BORDER_WIDTH = 20
 const DEFAULT_WAIVER_PROPS: NonNullable<SimpleBlog['waiver']> = {
   buttonText: 'Submit',
   buttonBackground: colors.primary,
+  buttonHoverBackground: colors.primary,
   buttonTextColor: '#FFFFFF',
   buttonBorderColor: colors.primary,
   buttonBorderRadius: 4,
@@ -64,6 +65,12 @@ export default function TemplateFields(props: {submitting: boolean}) {
             label="Background"
             background={waiver.buttonBackground}
             onChange={updateWaiverTemplate('buttonBackground')}
+            disabled={submitting}
+          />
+          <BackgroundPicker
+            label="Hover"
+            background={waiver.buttonHoverBackground}
+            onChange={updateWaiverTemplate('buttonHoverBackground')}
             disabled={submitting}
           />
         </Grid>

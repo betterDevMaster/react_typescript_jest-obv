@@ -22,7 +22,7 @@ interface WaiverContextProps {
   body: string
 }
 
-export const DEFAULT_AGREE_STATEMENT = `I hereby certify that I have read the forgoing and fully understand the meaning effect thereof, and intending to be legally bound, have signed it.`
+export const DEFAULT_AGREE_STATEMENT = `I, {{first name}} {{last name}}, hereby certify that I have read the forgoing and fully understand the meaning effect thereof, and intending to be legally bound, have signed it.`
 export const DEFAULT_SIGNATURE_PROMPT = `Please Sign Below with your finger or mouse.`
 
 const WaiverContext = React.createContext<WaiverContextProps | undefined>(

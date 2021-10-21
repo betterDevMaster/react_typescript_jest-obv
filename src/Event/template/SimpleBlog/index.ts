@@ -73,6 +73,7 @@ export type SimpleBlog = BaseTemplate & {
   waiver?: {
     buttonText?: string
     buttonBackground?: string
+    buttonHoverBackground?: string
     buttonTextColor?: string
     buttonBorderRadius?: number
     buttonBorderWidth?: number
@@ -240,6 +241,7 @@ export const createSimpleBlog = (): DeepRequired<SimpleBlog> => ({
   waiver: {
     buttonText: 'submit',
     buttonBackground: 'blue',
+    buttonHoverBackground: 'blue',
     buttonTextColor: '#ffffff',
     buttonBorderRadius: 0,
     buttonBorderWidth: 0,

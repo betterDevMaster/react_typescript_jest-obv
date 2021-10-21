@@ -48,7 +48,7 @@ export default function Waiver() {
                 }}
               />
             }
-            label={agreeStatement}
+            label={v(agreeStatement)}
           />
         </FormControl>
       </Box>

@@ -147,6 +147,8 @@ export default function WaiverConfig() {
     setLogo(null)
   }
 
+  const is_enabled = watch('is_enabled')
+
   return (
     <Layout>
       <Page>
@@ -214,7 +216,7 @@ export default function WaiverConfig() {
               aria-label="waiver body"
               ref={register({required: 'Body is required.'})}
             />
-            <BodyLabel required error={!!errors.body}>
+            <BodyLabel required={Boolean(is_enabled)} error={!!errors.body}>
               Body
             </BodyLabel>
             {loading ? null : (
@@ -223,13 +225,12 @@ export default function WaiverConfig() {
                 onChange={(value) => setValue('body', value)}
               />
             )}
-
             <BodyError error={errors.body} />
           </Editor>
           <TextField
             name="agree_statement"
             label="Agree Statement"
-            required
+            required={Boolean(is_enabled)}
             fullWidth
             inputProps={{
               ref: register({
@@ -246,6 +247,7 @@ export default function WaiverConfig() {
           <TextField
             name="signature_prompt"
             label="Signature Prompt"
+            required={Boolean(is_enabled)}
             fullWidth
             inputProps={{
               ref: register,

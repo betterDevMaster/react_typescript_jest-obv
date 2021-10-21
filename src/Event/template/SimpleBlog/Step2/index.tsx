@@ -13,6 +13,7 @@ import {useSubmissions} from 'Event/SubmissionsProvider'
 import Box from '@material-ui/core/Box'
 import styled from 'styled-components'
 import MuiButton, {ButtonProps} from '@material-ui/core/Button'
+import Grid from '@material-ui/core/Grid'
 import {colors} from 'lib/ui/theme'
 import {useAttendeeVariables} from 'Event'
 import {useSimpleBlog} from 'Event/template/SimpleBlog'
@@ -125,6 +126,9 @@ function WaiverOnly() {
 
   const canSubmit = !submitting && canSubmitWaiver
 
+  const {template} = useSimpleBlog()
+  const waiver = template.waiver
+
   /**
    * Submitting dynamic user defined form, no way of
    * knowing the data type, so we'll have to
@@ -145,9 +149,11 @@ function WaiverOnly() {
   const body = (
     <>
       <Waiver />
-      <Box display="flex" justifyContent="center" m={1}>
-        <SubmitButton canSubmit={canSubmit} />
-      </Box>
+      <Center>
+        <Grid item xs={waiver.buttonWidth}>
+          <SubmitButton canSubmit={canSubmit} />
+        </Grid>
+      </Center>
     </>
   )
 
@@ -165,12 +171,14 @@ function SubmitButton(props: {canSubmit: boolean}) {
 
   const textColor = waiver?.buttonTextColor || '#FFFFFF'
   const backgroundColor = waiver?.buttonBackground || colors.primary
+  const backgroundHoverColor = waiver?.buttonHoverBackground || colors.primary
   const borderColor = waiver?.buttonBorderColor || colors.primary
 
   return (
     <StyledButton
       textColor={textColor}
       backgroundColor={backgroundColor}
+      backgroundHoverColor={backgroundHoverColor}
       borderColor={borderColor}
       borderRadius={waiver?.buttonBorderRadius || 0}
       borderWidth={waiver?.buttonBorderWidth || 0}
@@ -188,6 +196,7 @@ const StyledButton = styled(
   ({
     textColor,
     backgroundColor,
+    backgroundHoverColor,
     borderRadius,
     borderColor,
     borderWidth,
@@ -195,6 +204,7 @@ const StyledButton = styled(
   }: ButtonProps & {
     textColor: string
     backgroundColor: string
+    backgroundHoverColor: string
     borderRadius: number
     borderColor: string
     borderWidth: number
@@ -205,8 +215,14 @@ const StyledButton = styled(
     ${(props) => props.borderColor} !important;
   background: ${(props) => props.backgroundColor} !important;
   border-radius: ${(props) => props.borderRadius}px !important;
-
+  &:hover {
+    background: ${(props) => props.backgroundHoverColor} !important;
+  }
   &:disabled {
     opacity: 0.6;
   }
+`
+const Center = styled.div`
+  display: flex;
+  justify-content: center;
 `
