@@ -3,13 +3,15 @@ import Box from '@material-ui/core/Box'
 import RuleConfig, {useRuleConfig} from 'Event/attendee-rules/RuleConfig'
 import ConfigureRulesButton from 'Event/attendee-rules/ConfigureRulesButton'
 import TextField from '@material-ui/core/TextField'
-import {onChangeCheckedHandler} from 'lib/dom'
+import {onChangeCheckedHandler, handleChangeSlider} from 'lib/dom'
 import Switch from 'lib/ui/form/Switch'
 import Grid from '@material-ui/core/Grid'
 import InfusionsoftTagInput from 'organization/Event/DashboardConfig/InfusionsoftTagInput'
 import ColorPicker from 'lib/ui/ColorPicker'
 import TargetConfig from 'Event/Dashboard/components/NavButton/NavButtonConfig/TargetConfig'
-import NavButton from 'Event/Dashboard/components/NavButton'
+import NavButton, {
+  DEFAULT_FONT_SIZE,
+} from 'Event/Dashboard/components/NavButton'
 import ActionSelect from 'Event/ActionsProvider/ActionSelect'
 import ComponentConfig, {
   ComponentConfigProps,
@@ -22,6 +24,8 @@ import {SidebarNavProps} from 'Event/template/SimpleBlog/Dashboard/Sidebar/Sideb
 import {useUpdateSidebarItem} from 'Event/template/SimpleBlog/Dashboard/Sidebar/SidebarItem'
 import BackgroundPicker from 'lib/ui/form/BackgroundPicker'
 import MailchimpTagInput from 'organization/Event/DashboardConfig/MailchimpTagInput'
+import InputLabel from '@material-ui/core/InputLabel'
+import Slider from '@material-ui/core/Slider'
 
 const MIN_BORDER_WIDTH = 0
 const MAX_BORDER_WIDTH = 50
@@ -276,6 +280,24 @@ export function SidebarNavButtonConfig(
             defaultValue={button.mailchimpTag}
             render={({value, onChange}) => (
               <MailchimpTagInput value={value} onChange={onChange} />
+            )}
+          />
+
+          <InputLabel>Button Font Size</InputLabel>
+          <Controller
+            name="fontSize"
+            defaultValue={button.fontSize || DEFAULT_FONT_SIZE}
+            control={control}
+            render={({value, onChange}) => (
+              <Slider
+                min={1}
+                max={100}
+                step={1}
+                onChange={handleChangeSlider(onChange)}
+                valueLabelDisplay="auto"
+                value={value}
+                aria-label="sidebar nav button font size"
+              />
             )}
           />
           <SaveButton type="submit" />

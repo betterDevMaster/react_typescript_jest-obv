@@ -59,7 +59,7 @@ export type NavButtonWithSize = NavButton & {
   newLine?: boolean
 }
 export const DEFAULT_BUTTON_HEIGHT = 64
-const DEFAULT_FONT_SIZE = 29
+export const DEFAULT_FONT_SIZE = 29
 
 export default function NavButton(props: NavButton) {
   const {newTab, isAreaButton, isImageUpload} = props

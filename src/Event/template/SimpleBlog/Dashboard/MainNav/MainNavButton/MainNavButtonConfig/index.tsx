@@ -5,6 +5,7 @@ import Typography from '@material-ui/core/Typography'
 import NavButton, {
   NavButtonWithSize,
   DEFAULT_BUTTON_HEIGHT,
+  DEFAULT_FONT_SIZE,
 } from 'Event/Dashboard/components/NavButton'
 import {handleChangeSlider, onChangeCheckedHandler} from 'lib/dom'
 import DangerButton from 'lib/ui/Button/DangerButton'
@@ -248,6 +249,22 @@ export function MainNavButtonConfig(
               />
             )}
           />
+          <Typography gutterBottom>Font Size</Typography>
+          <Controller
+            name="fontSize"
+            defaultValue={button.fontSize || DEFAULT_FONT_SIZE}
+            control={control}
+            render={({value, onChange}) => (
+              <Slider
+                min={1}
+                max={100}
+                onChange={handleChangeSlider(onChange)}
+                valueLabelDisplay="auto"
+                value={value}
+              />
+            )}
+          />
+
           <TargetConfig
             isAreaButton={isAreaButton}
             setIsAreaButton={setIsAreaButton}
