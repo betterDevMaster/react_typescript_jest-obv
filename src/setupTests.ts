@@ -19,5 +19,7 @@ beforeAll(() => {
 beforeEach(() => {
   window.localStorage.clear()
 
+  // Allways mock window.scrollTo
+  Object.defineProperty(window, 'scrollTo', {value: jest.fn(), writable: true})
   jest.clearAllMocks()
 })

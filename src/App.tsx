@@ -4,6 +4,7 @@ import {BrowserRouter as Router} from 'react-router-dom'
 import {GlobalStyles} from 'lib/ui/theme/GlobalStyles'
 import Routes from 'Routes'
 import {useAnalytics} from 'analytics'
+import ScrollOnNav from 'lib/ScrollOnNav'
 
 export default function App() {
   useAnalytics()
@@ -13,6 +14,7 @@ export default function App() {
       <GlobalStyles />
       <Router>
         <Routes />
+        <ScrollOnNav />
       </Router>
       <ColorPickerPopover />
     </>
