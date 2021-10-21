@@ -6,8 +6,8 @@ import {Template} from 'Event/template'
 import {SIMPLE_BLOG} from 'Event/template/SimpleBlog'
 import {onUnknownChangeHandler} from 'lib/dom'
 import React from 'react'
-// import {PANELS} from 'Event/template/Panels'
-// import {CARDS} from 'Event/template/Cards'
+import {PANELS} from 'Event/template/Panels'
+import {CARDS} from 'Event/template/Cards'
 
 export default function TemplateSelect(props: {
   value: Template['name'] | null
@@ -24,9 +24,9 @@ export default function TemplateSelect(props: {
           'aria-label': 'template select',
         }}
       >
-        <MenuItem value={SIMPLE_BLOG}>{SIMPLE_BLOG}</MenuItem>
-        {/* <MenuItem value={CARDS}>{CARDS}</MenuItem> */}
-        {/* <MenuItem value={PANELS}>{PANELS}</MenuItem> */}
+        <MenuItem value={SIMPLE_BLOG}>Classic</MenuItem>
+        <MenuItem value={CARDS}>{CARDS}</MenuItem>
+        <MenuItem value={PANELS}>{PANELS}</MenuItem>
       </Select>
     </FormControl>
   )
