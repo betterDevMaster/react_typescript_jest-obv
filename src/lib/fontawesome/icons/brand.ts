@@ -400,7 +400,6 @@ export const brandIcons: IconName[] = [
   'tiktok',
   'trade-federation',
   'trello',
-  // 'tripadvisor',
   'tumblr',
   'tumblr-square',
   'twitch',
