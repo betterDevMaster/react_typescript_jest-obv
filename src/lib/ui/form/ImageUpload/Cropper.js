@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react'
+import React, {useState, useEffect, useMemo} from 'react'
 import styled from 'styled-components'
 import Box from '@material-ui/core/Box'
 import Button from '@material-ui/core/Button'
@@ -11,8 +11,28 @@ import Container from '@material-ui/core/Container'
 
 import 'croppie/croppie.css'
 
+/**
+ * Default image resolution if none is specified
+ */
+
 const DEFAULT_WIDTH = 300
 const DEFAULT_HEIGHT = 200
+
+/**
+ * Set the maximum viewport (crop window) size. If this is not limited, the
+ * crop window will require the user to scroll.
+ */
+
+const MAX_VIEWPORT_WIDTH = 600
+const MAX_VIEWPORT_HEIGHT = 400
+
+/**
+ * Set the canvas size which should always be larger than either viewport edges.
+ */
+
+const canvasSize = (width, height) => Math.max(width, height) + 100
+
+const MAX_CANVAS_SIZE = canvasSize(MAX_VIEWPORT_WIDTH, MAX_VIEWPORT_HEIGHT)
 
 const DEFAULT_OPTIONS = {
   showZoomer: true,
@@ -20,13 +40,13 @@ const DEFAULT_OPTIONS = {
   mouseWheelZoom: 'ctrl',
   enableExif: true,
   viewport: {
-    width: DEFAULT_WIDTH,
-    height: DEFAULT_HEIGHT,
+    width: MAX_VIEWPORT_WIDTH,
+    height: MAX_VIEWPORT_HEIGHT,
     type: 'square',
   },
   boundary: {
-    width: 500,
-    height: 500,
+    width: MAX_CANVAS_SIZE,
+    height: MAX_CANVAS_SIZE,
   },
 }
 
@@ -44,6 +64,26 @@ export default function Cropper({
   const [croppie, setCroppie] = useState(null)
   const [el, setEl] = useState(null)
 
+  const [croppiedImageWidth, setCroppiedImageWidth] = useState(
+    width || DEFAULT_WIDTH,
+  )
+  const [croppiedImageHeight, setCroppiedImageHeight] = useState(
+    height || DEFAULT_HEIGHT,
+  )
+
+  /**
+   * Calculate the ratio of width and height for croppied image and use the result to get size(width, height) for cropper.
+   * Max Cropper Width: DEFAULT_VIEWPORT_WIDTH
+   * Max Cropper Height: DEFAULT_VIEWPORT_HEIGHT
+   */
+
+  const viewport = useMemo(() => {
+    const imageWidth = width || DEFAULT_WIDTH
+    const imageHeight = height || DEFAULT_HEIGHT
+
+    return calculateViewport(imageWidth, imageHeight)
+  }, [height, width])
+
   /**
    * Init croppie
    */
@@ -53,19 +93,20 @@ export default function Cropper({
       return
     }
 
-    const activeWidth = width || DEFAULT_WIDTH
-    const activeHeight = height || DEFAULT_HEIGHT
+    // Set the size for croppied imaage result.
+    setCroppiedImageWidth(width || DEFAULT_WIDTH)
+    setCroppiedImageHeight(height || DEFAULT_HEIGHT)
 
-    const longestEdge = Math.max(activeWidth, activeHeight)
+    const {width: viewPortWidth, height: viewPortHeight} = viewport
 
-    const boundaryLength = longestEdge + 100
+    const boundaryLength = canvasSize(viewPortWidth, viewPortHeight)
 
     const options = {
       ...DEFAULT_OPTIONS,
       viewport: {
         ...DEFAULT_OPTIONS.viewport,
-        width: width || DEFAULT_WIDTH,
-        height: height || DEFAULT_HEIGHT,
+        width: viewPortWidth,
+        height: viewPortHeight,
       },
       boundary: {
         width: boundaryLength,
@@ -94,6 +135,7 @@ export default function Cropper({
     canResize,
     disableWidthResize,
     disableHeightResize,
+    viewport,
   ])
 
   /**
@@ -115,14 +157,31 @@ export default function Cropper({
       return
     }
 
-    croppie.result({type: 'blob'}).then((blob) => {
+    /**
+     * Set resulting crop of the image(type, size, quality, format, circle).
+     * size: size of croppied image default to 'viewport'
+     */
+    const coppiedImageResultOption = {
+      type: 'blob',
+      size: {
+        width: croppiedImageWidth,
+        height: croppiedImageHeight,
+      },
+    }
+
+    croppie.result(coppiedImageResultOption).then((blob) => {
       const cropped = blobToFile(blob, image.name)
       onCrop(cropped)
     })
   }
 
   return (
-    <Dialog open={!!isOpen} onClose={onCancel} fullScreen disableEnforceFocus>
+    <Dialog
+      open={!!isOpen}
+      onClose={onCancel}
+      disableEnforceFocus
+      maxWidth="lg"
+    >
       <DialogTitle disableTypography>
         <Typography align="center" variant="h5">
           Re-size Image
@@ -163,6 +222,26 @@ export default function Cropper({
 function blobToFile(blob, fileName) {
   const newFile = new File([blob], fileName)
   return newFile
+}
+
+export function calculateViewport(width, height) {
+  const widthRatio = width / MAX_VIEWPORT_WIDTH
+  const heightRatio = height / MAX_VIEWPORT_HEIGHT
+
+  const maxRatio = Math.max(widthRatio, heightRatio)
+
+  if (maxRatio < 1) {
+    // Below viewport limits...
+    return {
+      width,
+      height,
+    }
+  }
+
+  return {
+    width: width / maxRatio,
+    height: height / maxRatio,
+  }
 }
 
 const CroppyContainer = styled.div`
