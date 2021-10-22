@@ -1,17 +1,21 @@
 import {
   EditorAction,
   handleSetEditMode,
-  handlesetSaving,
+  handleSetIsConnected,
+  handleSetSaving,
   SET_EDIT_MODE,
+  SET_IS_CONNECTED,
   SET_SAVING_ACTION,
 } from 'Event/Dashboard/editor/state/actions'
 
 export type DashboardEditorState = {
   isEditMode: boolean
   isSaving: boolean
+  isConnected: boolean
 }
 
 export const defaultState: DashboardEditorState = {
+  isConnected: true,
   isEditMode: false,
   isSaving: false,
 }
@@ -25,8 +29,10 @@ export function editorReducer(
       return handleSetEditMode(state, action)
     }
     case SET_SAVING_ACTION: {
-      return handlesetSaving(state, action)
+      return handleSetSaving(state, action)
     }
+    case SET_IS_CONNECTED:
+      return handleSetIsConnected(state, action)
     default: {
       return state
     }

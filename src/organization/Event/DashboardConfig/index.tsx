@@ -5,6 +5,7 @@ import React from 'react'
 import Layout from 'organization/user/Layout'
 import Page from 'organization/Event/Page'
 import {OrganizationActionsProvider} from 'Event/ActionsProvider'
+import EditorDisconnectedDialog from 'organization/Event/DashboardConfig/EditorDisconnectedDialog'
 
 export default function DashboardConfig() {
   const {user} = useOrganizationAuth()
@@ -19,7 +20,10 @@ export default function DashboardConfig() {
         <OrganizationActionsProvider
           loader={<LoadingText>loading...</LoadingText>}
         >
-          <Dashboard user={user} isEditMode={true} />
+          <>
+            <EditorDisconnectedDialog />
+            <Dashboard user={user} isEditMode />
+          </>
         </OrganizationActionsProvider>
       </Page>
     </Layout>

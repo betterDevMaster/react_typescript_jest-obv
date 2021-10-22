@@ -26,7 +26,7 @@ export const setSaving = (isSaving: boolean): SetSavingAction => ({
   type: SET_SAVING_ACTION,
   payload: isSaving,
 })
-export const handlesetSaving = (
+export const handleSetSaving = (
   state: DashboardEditorState,
   action: SetSavingAction,
 ): DashboardEditorState => ({
@@ -34,4 +34,27 @@ export const handlesetSaving = (
   isSaving: action.payload,
 })
 
-export type EditorAction = SetEditModeAction | SetSavingAction
+export const SET_IS_CONNECTED = 'SET_IS_CONNECTED'
+export interface SetIsConnected {
+  type: typeof SET_IS_CONNECTED
+  isConnected: boolean
+}
+export const setIsConnected = (isConnected: boolean): SetIsConnected => ({
+  type: SET_IS_CONNECTED,
+  isConnected,
+})
+export const handleSetIsConnected = (
+  state: DashboardEditorState,
+  action: SetIsConnected,
+): DashboardEditorState => {
+  if (!state) {
+    return state
+  }
+
+  return {
+    ...state,
+    isConnected: action.isConnected,
+  }
+}
+
+export type EditorAction = SetEditModeAction | SetSavingAction | SetIsConnected

@@ -7,6 +7,9 @@ export const useEditMode = () =>
 export const useIsSaving = () =>
   useSelector((state: RootState) => state.editor.isSaving)
 
+export const useIsConnected = () =>
+  useSelector((state: RootState) => state.editor.isConnected)
+
 export function useCurrent<T>(
   currentSelector: (state: RootState) => T | undefined,
   saved: T,

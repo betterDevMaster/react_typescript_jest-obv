@@ -1,8 +1,8 @@
 import {Epic, ofType} from 'redux-observable'
 import {RootState} from 'store'
-import {debounceTime, switchMap, map} from 'rxjs/operators'
+import {debounceTime, switchMap, map, catchError} from 'rxjs/operators'
 import {api} from 'lib/url'
-import {setSaving} from 'Event/Dashboard/editor/state/actions'
+import {setIsConnected, setSaving} from 'Event/Dashboard/editor/state/actions'
 import {of, concat} from 'rxjs'
 import {AjaxCreationMethod} from 'rxjs/internal/observable/dom/AjaxObservable'
 import {
@@ -68,6 +68,7 @@ export const saveTemplateEpic: Epic<
         of(setSaving(true)),
         request.pipe(
           map((data) => setEventUpdatedAt(data.response.updated_at)),
+          catchError(() => of(setIsConnected(false))),
         ),
         of(setSaving(false)),
       )

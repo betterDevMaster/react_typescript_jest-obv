@@ -1,11 +1,10 @@
-import user from '@testing-library/user-event'
 import {fakePanels} from 'Event/template/Panels/__utils__/factory'
 import {fakeEvent} from 'Event/__utils__/factory'
-import faker from 'faker'
 import {goToDashboardConfig} from 'organization/Event/DashboardConfig/__utils__/go-dashboard-config'
 import {clickEdit} from '__utils__/edit'
 import {mockRxJsAjax} from 'store/__utils__/MockStoreProvider'
-import {wait} from '@testing-library/react'
+import {fireEvent, wait} from '@testing-library/react'
+import {Subject} from 'rxjs'
 
 const mockPost = mockRxJsAjax.post as jest.Mock
 
@@ -13,26 +12,34 @@ afterEach(() => {
   jest.clearAllMocks()
 })
 
-it('should update welcome Text', async () => {
+it('it should show network error', async () => {
   const event = fakeEvent({template: fakePanels(), header_background: null})
-  const {findByLabelText} = await goToDashboardConfig({
+  const {findByLabelText, findByText} = await goToDashboardConfig({
     event,
   })
 
   clickEdit(await findByLabelText('welcome'))
 
-  const welcomeText = faker.random.words(2)
+  /**
+   * Need to mock the subject to manually emit an error.
+   */
+  const subject = new Subject()
 
-  user.type(await findByLabelText('welcome text'), welcomeText)
+  mockPost.mockImplementationOnce(() => {
+    return subject
+  })
 
-  expect((await findByLabelText('welcome')).textContent).toBe(welcomeText)
+  fireEvent.change(await findByLabelText('welcome text'), {
+    target: {
+      value: 'some value',
+    },
+  })
+
+  subject.error('bad save')
 
   await wait(() => {
     expect(mockPost).toHaveBeenCalledTimes(1)
   })
 
-  const [url, data] = mockPost.mock.calls[0]
-
-  expect(url).toMatch(`/events/${event.slug}`)
-  expect(data.template.welcomeText).toBe(welcomeText)
+  expect(await findByText(/network connection error/i)).toBeInTheDocument()
 })

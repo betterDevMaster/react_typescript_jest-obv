@@ -10,7 +10,7 @@ export default function Dialog(
   props: {
     children: React.ReactElement | React.ReactElement[]
     open: boolean
-    onClose: () => void
+    onClose?: () => void
     className?: string
   } & DialogProps,
 ) {
@@ -25,7 +25,11 @@ export default function Dialog(
         disableEnforceFocus={props.disableEnforceFocus}
         className={props.className}
       >
-        <CloseButton onClick={props.onClose} aria-label="close dialog">
+        <CloseButton
+          onClick={props.onClose}
+          aria-label="close dialog"
+          hidden={!props.onClose}
+        >
           <CloseIcon fontSize="small" />
         </CloseButton>
         <>{props.children}</>
@@ -34,7 +38,10 @@ export default function Dialog(
   )
 }
 
-const CloseButton = styled(IconButton)`
+const CloseButton = styled(IconButton)<{
+  hidden?: boolean
+}>`
+  ${(props) => (props.hidden ? 'display: none;' : '')}
   position: absolute;
   top: ${(props) => props.theme.spacing[2]};
   right: ${(props) => props.theme.spacing[2]};
