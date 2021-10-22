@@ -1,20 +1,27 @@
 import {OfflinePageProps} from 'Event/JoinArea/OfflinePage'
 import React from 'react'
-import Page, {DescriptionText} from 'Event/template/Cards/Login/Page'
+import Page, {
+  DescriptionText,
+  StyledPaper,
+  StyledFormContainer,
+  Title,
+} from 'Event/template/Cards/Login/Page'
 import {useCards} from 'Event/template/Cards'
+import {useGuestVariables} from 'Event'
 
 export default function OfflinePage(props: OfflinePageProps) {
   const {title, description, isPreview} = props
+  const v = useGuestVariables()
   return (
     <Page isPreview={isPreview || false}>
-      <>
-        <Text disableMargin fontSize={24}>
-          {title}
-        </Text>
-        <Text>
-          <div dangerouslySetInnerHTML={{__html: description}} />
-        </Text>
-      </>
+      <StyledPaper>
+        <StyledFormContainer>
+          <Title>{v(title)}</Title>
+          <Text>
+            <div dangerouslySetInnerHTML={{__html: v(description)}} />
+          </Text>
+        </StyledFormContainer>
+      </StyledPaper>
     </Page>
   )
 }
