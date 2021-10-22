@@ -158,18 +158,20 @@ it('should complete self-checkin', async () => {
   })
 })
 
-it('should skip step 3 for certain TVE3 attendees', async () => {
+it('should skip step 3 for certain 10xbootcamp attendees', async () => {
   const completedStep2 = fakeAttendee({
     has_password: true,
     waiver: faker.internet.url(),
     tech_check_completed_at: null,
-    tags: ['2997'],
+    groups: {
+      Preview: 'Yes',
+    },
   })
 
   const event = fakeEvent({
     tech_check: fakeTechCheck({is_enabled: true}),
     template: fakeSimpleBlog(),
-    slug: 'tve3',
+    slug: '10xbootcamp',
   })
 
   const {findByLabelText} = await loginToEventSite({

@@ -4,7 +4,6 @@ import {useEvent} from 'Event/EventProvider'
 import {useNeedsToSetPassword} from 'Event/Step1'
 import {Redirect} from 'react-router-dom'
 import {eventRoutes} from 'Event/Routes'
-import {Attendee} from 'Event/attendee'
 
 /**
  * Requires specific on-boarding steps to be completed. If no step is
@@ -19,7 +18,7 @@ export default function CompletedOnboarding(props: {
   const {step} = props
   const attendee = useAttendee()
   const {hasTechCheck, hasWaiver} = useEvent()
-  const shouldSkipTve3TechCheck = useShouldSkipTve3TechCheck()
+  const shouldSkipTve3TechCheck = useShouldSkip10xbootcampTechCheck()
   const needsToSetPassword = useNeedsToSetPassword()
 
   if (needsToSetPassword) {
@@ -55,30 +54,17 @@ export default function CompletedOnboarding(props: {
 
 /**
  * TEMPORARY CUSTOM EVENT CODE - Want to skip TechCheck for
- * certain TVE3 attendees.
+ * certain 10xbootcamp (Oct, 2021) attendees.
  */
-export function useShouldSkipTve3TechCheck() {
+export function useShouldSkip10xbootcampTechCheck() {
   const {event} = useEvent()
   const attendee = useAttendee()
 
-  const isTve3 = event.slug === 'tve3'
+  const isTargetEvent = event.slug === '10xbootcamp'
 
-  /**
-   * Skip tech check if attendee has one of these tags...
-   */
-  const tags = ['2997']
-  return isTve3 && hasTags(tags, attendee)
-}
-
-function hasTags(tags: string[], attendee: Attendee) {
-  let exists = false
-
-  for (const tag of attendee.tags) {
-    if (tags.includes(tag)) {
-      exists = true
-      break
-    }
+  if (!isTargetEvent) {
+    return false
   }
 
-  return exists
+  return attendee.groups['Preview'] === 'Yes'
 }
