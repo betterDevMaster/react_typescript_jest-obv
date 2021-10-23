@@ -1,4 +1,5 @@
 import React, {useCallback, useEffect, useRef, useState} from 'react'
+import {createGlobalStyle} from 'styled-components'
 import {useEvent} from 'Event/EventProvider'
 import {api} from 'lib/url'
 import {useOrganization} from 'organization/OrganizationProvider'
@@ -64,9 +65,14 @@ export default function EmojiPage() {
 
   return (
     <Page>
-      {emojis.map((emoji) => {
-        return <ClickedEmoji emoji={emoji} key={emoji.id} onComplete={remove} />
-      })}
+      <>
+        <RemoveScrollbar />
+        {emojis.map((emoji) => {
+          return (
+            <ClickedEmoji emoji={emoji} key={emoji.id} onComplete={remove} />
+          )
+        })}
+      </>
     </Page>
   )
 }
@@ -78,3 +84,10 @@ function useFetchEmojis() {
 
   return useCallback(() => client.get<Emojis>(url), [client, url])
 }
+
+const RemoveScrollbar = createGlobalStyle`
+  html,
+  body {
+    overflow: hidden;
+  }
+`
