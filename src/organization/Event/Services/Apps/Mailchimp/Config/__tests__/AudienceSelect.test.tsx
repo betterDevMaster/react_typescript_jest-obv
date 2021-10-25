@@ -49,7 +49,7 @@ it('should prompt confirmation', async () => {
     has_completed_setup: true,
   })
 
-  const {findByLabelText, findByText, event} = await goToMailchimp({
+  const {findByLabelText, event} = await goToMailchimp({
     userPermissions: [CONFIGURE_EVENTS],
     integrations: [mailchimp],
     tokens: [token],

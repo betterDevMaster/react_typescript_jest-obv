@@ -224,12 +224,18 @@ export function AutoRefreshEvent(props: {children: React.ReactElement}) {
   return props.children
 }
 
+export type RefreshEventParams = {
+  updatedAt: string
+  socketId?: string | null
+  id?: string | null
+}
+
 export function useRefreshEvent() {
   const dispatch = useDispatch()
 
   return useCallback(
-    (updatedAt: string) => {
-      dispatch(refreshEvent(updatedAt))
+    (params: RefreshEventParams) => {
+      dispatch(refreshEvent(params))
     },
     [dispatch],
   )

@@ -1,8 +1,22 @@
 import {useEvent, useRefreshEvent} from 'Event/EventProvider'
+import {Channel} from 'laravel-echo/dist/channel'
 import FullPageLoader from 'lib/ui/layout/FullPageLoader'
+import {useOrganization} from 'organization/OrganizationProvider'
 import {useOrganizationEcho} from 'organization/OrganizationProvider'
 import PrivateChannel from 'pusher-js/types/src/core/channels/private_channel'
-import React, {useEffect, useState} from 'react'
+import React, {useEffect, useState, useCallback} from 'react'
+import {
+  socketConnected,
+  socketDisconnected,
+} from 'organization/Event/EventSocketNotification'
+
+/**
+ * Event names start with a '.' to prevent Laravel's
+ * auto name-spacing event.
+ *
+ * Reference: https://laravel.com/docs/8.x/broadcasting#namespaces
+ */
+const UPDATED_EVENT = '.event.updated'
 
 /**
  * Subscribes to live updates to the event model. This means
@@ -12,7 +26,10 @@ import React, {useEffect, useState} from 'react'
 export default function EventSocketConnection(props: {
   children: React.ReactElement
 }) {
-  const [isConnected, setIsConnected] = useState(false)
+  const [socketId, setSocketId] = useState<string | null>(null)
+  const [channel, setChannel] = useState<Channel | null>(null)
+
+  const isConnected = Boolean(socketId)
 
   const {
     event: {slug},
@@ -20,26 +37,20 @@ export default function EventSocketConnection(props: {
   const echo = useOrganizationEcho()
   const refreshEvent = useRefreshEvent()
 
+  const {client} = useOrganization()
+
+  const disconnect = useCallback(() => setSocketId(null), [])
+
   useEffect(() => {
     const channel = `event.${slug}`
     const privateChannel = echo
       .private(channel)
-
-      /**
-       * Event names start with a '.' to prevent Laravel's
-       * auto name-spacing event.
-       *
-       * Reference: https://laravel.com/docs/8.x/broadcasting#namespaces
-       */
-      .listen('.event.updated', (data: {updated_at: string}) => {
-        refreshEvent(data.updated_at)
-      })
       .error((error: {type: string}) => {
         /**
          * Handle authentication failure which would mean we would never receive auth updates
          */
         if (error.type === 'AuthError') {
-          setIsConnected(false)
+          disconnect()
         }
       })
 
@@ -51,17 +62,43 @@ export default function EventSocketConnection(props: {
       .connection
 
     connection.bind('connected', () => {
-      setIsConnected(true)
+      setSocketId(connection.socket_id)
+      socketConnected(client, slug, connection.socket_id)
     })
 
-    connection.bind('disconnected', () => {
-      setIsConnected(false)
-    })
+    connection.bind('disconnected', disconnect)
+
+    setChannel(privateChannel)
 
     return () => {
       echo.leave(channel)
+      socketDisconnected(client, slug, connection.socket_id)
     }
-  }, [slug, echo, refreshEvent])
+  }, [client, slug, echo, disconnect])
+
+  useEffect(() => {
+    if (!channel || !socketId) {
+      return
+    }
+
+    channel.listen(
+      UPDATED_EVENT,
+      (data: {
+        updated_at: string // Event updated at timestamp
+        id: string // Update identifier for tracking
+      }) => {
+        refreshEvent({
+          updatedAt: data.updated_at,
+          id: data.id,
+          socketId,
+        })
+      },
+    )
+
+    return () => {
+      channel.stopListening(UPDATED_EVENT)
+    }
+  }, [channel, socketId, refreshEvent])
 
   if (!isConnected) {
     return <FullPageLoader />

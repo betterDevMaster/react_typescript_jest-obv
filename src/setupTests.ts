@@ -8,6 +8,7 @@ import 'jest-canvas-mock'
 
 // Always mock echo (sockets in test)
 jest.mock('lib/echo')
+jest.mock('organization/Event/EventSocketNotification')
 
 beforeAll(() => {
   // Required to render <Hidden/> components in tests

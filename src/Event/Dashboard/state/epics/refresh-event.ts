@@ -33,17 +33,33 @@ export const refreshEventEpic: Epic<
         throw new Error('Missing event, was it set properly in EventProvider?')
       }
 
-      const hasChanges = date(action.payload).isAfter(event.updated_at)
+      const {updatedAt} = action.payload
+
+      const hasChanges = date(updatedAt).isAfter(event.updated_at)
       if (!hasChanges) {
         return EMPTY
       }
+
+      /**
+       * For tracking client refresh requests, we'll send over the socket id
+       * if one is specified.
+       */
+      const socketId = action.payload.socketId || ''
+
+      /**
+       * To track which update we're requesting, we'll also send back the id (hash)
+       * that was originally given with the 'update' event.
+       */
+      const id = action.payload.id || ''
 
       /**
        * Re-fetch event, we have to make sure to include `No-Cache` header to avoid
        * browser/cdn from returning stale data. We'll also set latest flag to
        * always fetch on master/write db.
        */
-      const url = api(`/events/${event.slug}?no-cache=true&latest=true`)
+      const url = api(
+        `/events/${event.slug}?no-cache=true&latest=true&socket_id=${socketId}&id=${id}`,
+      )
       const request = ajax.get(url, {
         'No-Cache': uuid(),
       })

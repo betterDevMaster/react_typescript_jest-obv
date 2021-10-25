@@ -4,6 +4,7 @@ import {Template} from 'Event/template'
 import {createPanels, PANELS} from 'Event/template/Panels'
 import {createSimpleBlog, SIMPLE_BLOG} from 'Event/template/SimpleBlog'
 import {createCards, CARDS} from 'Event/template/Cards'
+import {RefreshEventParams} from 'Event/EventProvider'
 
 export const SET_EVENT_ACTION = 'SET_EVENT'
 export interface SetEventAction {
@@ -111,11 +112,13 @@ export const sendEmoji = (emoji: ClickedEmoji): SendEmojiAction => ({
 export const REFRESH_EVENT_ACTION = 'REFRESH_EVENT'
 export interface RefreshEventAction {
   type: typeof REFRESH_EVENT_ACTION
-  payload: string
+  payload: RefreshEventParams
 }
-export const refreshEvent = (updatedAt: string): RefreshEventAction => ({
+export const refreshEvent = (
+  params: RefreshEventParams,
+): RefreshEventAction => ({
   type: REFRESH_EVENT_ACTION,
-  payload: updatedAt,
+  payload: params,
 })
 
 export const SET_EVENT_UPDATED_AT_ACTION = 'SET_EVENT_UPDATED_AT'
