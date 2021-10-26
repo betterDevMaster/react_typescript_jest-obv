@@ -64,13 +64,6 @@ export default function Cropper({
   const [croppie, setCroppie] = useState(null)
   const [el, setEl] = useState(null)
 
-  const [croppiedImageWidth, setCroppiedImageWidth] = useState(
-    width || DEFAULT_WIDTH,
-  )
-  const [croppiedImageHeight, setCroppiedImageHeight] = useState(
-    height || DEFAULT_HEIGHT,
-  )
-
   /**
    * Calculate the ratio of width and height for croppied image and use the result to get size(width, height) for cropper.
    * Max Cropper Width: DEFAULT_VIEWPORT_WIDTH
@@ -92,10 +85,6 @@ export default function Cropper({
     if (!el || croppie || !isOpen) {
       return
     }
-
-    // Set the size for croppied imaage result.
-    setCroppiedImageWidth(width || DEFAULT_WIDTH)
-    setCroppiedImageHeight(height || DEFAULT_HEIGHT)
 
     const {width: viewPortWidth, height: viewPortHeight} = viewport
 
@@ -163,10 +152,6 @@ export default function Cropper({
      */
     const coppiedImageResultOption = {
       type: 'blob',
-      size: {
-        width: croppiedImageWidth,
-        height: croppiedImageHeight,
-      },
     }
 
     croppie.result(coppiedImageResultOption).then((blob) => {
