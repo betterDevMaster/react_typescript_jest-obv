@@ -13,6 +13,7 @@ import {
 import {EventRoutes, useEventRoutes} from 'organization/Event/EventRoutes'
 import {useEvent} from 'Event/EventProvider'
 import {ObvioEvent} from 'Event'
+import Typography from '@material-ui/core/Typography'
 
 export default function EventPage(props: {
   children: React.ReactElement | React.ReactElement[]
@@ -71,8 +72,25 @@ const StyledContainer = withStyles({
   },
 })(Container)
 
+export function SectionTitle(props: {children: string}) {
+  return <TitleText variant="h4">{props.children}</TitleText>
+}
+
+const TitleText = withStyles({
+  root: {
+    marginTop: spacing[4],
+    marginBottom: spacing[4],
+  },
+})(Typography)
+
 const Content = styled.div<{disablePadding?: boolean}>`
   background: #ffffff;
   padding: ${(props) => (props.disablePadding ? 0 : props.theme.spacing[6])};
   border-radius: 3px;
+`
+
+export const PreviewBox = styled.div`
+  padding: ${(props) => props.theme.spacing[2]};
+  border: 1px solid ${(props) => props.theme.colors.border};
+  border-radius: 4px;
 `

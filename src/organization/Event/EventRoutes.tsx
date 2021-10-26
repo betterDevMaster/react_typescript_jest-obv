@@ -14,7 +14,6 @@ import {routesWithValue} from 'lib/url'
 import {AreaProvider} from 'organization/Event/Area/AreaProvider'
 import AreaRoutes from 'organization/Event/Area/AreaRoutes'
 import PointsConfig from 'organization/Event/PointsConfig'
-import GeneralConfig from 'organization/Event/GeneralConfig'
 import LocalizationConfig from 'organization/Event/LocalizationConfig'
 import AttendeesProvider from 'organization/Event/AttendeesProvider'
 import Services from 'organization/Event/Services'
@@ -53,6 +52,7 @@ import EmojiPageSettings from 'organization/Event/EmojiPage/EmojiPageSettings'
 import {OrganizationActionsProvider} from 'Event/ActionsProvider'
 import Mailchimp from 'organization/Event/Services/Apps/Mailchimp'
 import AccessTokensProvider from 'organization/Event/Services/AccessTokens/AccessTokensProvider'
+import TemplateConfigRoutes from 'organization/Event/TemplateConfigRoutes'
 
 export type EventRoutes = ReturnType<typeof useEventRoutes>
 
@@ -169,11 +169,6 @@ export default function EventRoutes() {
               <PointsConfig />
             </AuthorizedPage>
           </Route>
-          <Route path={routes.events[':event'].general}>
-            <AuthorizedPage permission={CONFIGURE_EVENTS}>
-              <GeneralConfig />
-            </AuthorizedPage>
-          </Route>
           <Route path={routes.events[':event'].localization}>
             <AuthorizedPage permission={CONFIGURE_EVENTS}>
               <LocalizationConfig />
@@ -230,6 +225,7 @@ export default function EventRoutes() {
               </OrganizationActionsProvider>
             </AuthorizedPage>
           </Route>
+          <TemplateConfigRoutes />
           <Redirect to={routes.events[':event'].root} />
         </Switch>
       </StaticPointsProvider>

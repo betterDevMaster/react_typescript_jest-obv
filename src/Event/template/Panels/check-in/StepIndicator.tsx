@@ -3,7 +3,7 @@ import styled from 'styled-components'
 import {DEFAULTS, usePanels} from 'Event/template/Panels'
 import {useAttendeeVariables} from 'Event'
 import {Icon} from 'lib/fontawesome/Icon'
-import {Step} from 'Event/template/Panels/GeneralConfig/CheckInConfig'
+import {Step} from 'Event/template/Panels/check-in/CheckInConfig'
 
 export default function StepIndicator(props: {
   step: Step

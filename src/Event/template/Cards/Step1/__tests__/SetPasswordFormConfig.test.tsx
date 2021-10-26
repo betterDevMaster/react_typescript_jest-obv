@@ -1,5 +1,4 @@
 import {fakeEvent} from 'Event/__utils__/factory'
-import {goToGeneralConfig} from 'organization/Event/GeneralConfig/__utils__/go-to-general-config'
 import user from '@testing-library/user-event'
 import faker from 'faker'
 import {mockRxJsAjax} from 'store/__utils__/MockStoreProvider'
@@ -7,6 +6,7 @@ import {wait} from '@testing-library/react'
 import {CONFIGURE_EVENTS} from 'organization/PermissionsProvider'
 import axios from 'axios'
 import {fakeCards} from 'Event/template/Cards/__utils__/factory'
+import {goToCreatePasswordPageConfig} from 'organization/Event/Page/__utils__/go-to-create-password-page-config'
 
 const mockRxPost = mockRxJsAjax.post as jest.Mock
 const mockPut = axios.put as jest.Mock
@@ -19,7 +19,7 @@ it('should configure set password form template', async () => {
   const event = fakeEvent({
     template: fakeCards(),
   })
-  const {findByLabelText} = await goToGeneralConfig({
+  const {findByLabelText} = await goToCreatePasswordPageConfig({
     event,
     userPermissions: [CONFIGURE_EVENTS],
   })
@@ -44,7 +44,10 @@ it('should disable requiring a password', async () => {
     requires_attendee_password: true,
   })
 
-  const {findByLabelText, queryByLabelText} = await goToGeneralConfig({
+  const {
+    findByLabelText,
+    queryByLabelText,
+  } = await goToCreatePasswordPageConfig({
     event,
     userPermissions: [CONFIGURE_EVENTS],
   })

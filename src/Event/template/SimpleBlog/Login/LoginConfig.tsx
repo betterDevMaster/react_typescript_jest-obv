@@ -11,9 +11,11 @@ import InputLabel from '@material-ui/core/InputLabel'
 import EventImageUpload from 'organization/Event/DashboardConfig/EventImageUpload'
 import {useEvent} from 'Event/EventProvider'
 import {useSimpleBlog} from 'Event/template/SimpleBlog'
-import {PreviewBox, SectionTitle} from 'organization/Event/GeneralConfig'
+import {PreviewBox, SectionTitle} from 'organization/Event/Page'
 import Login from 'Event/auth/Login'
 import BackgroundPicker from 'lib/ui/form/BackgroundPicker'
+import Layout from 'organization/user/Layout'
+import Page from 'organization/Event/Page'
 
 const MAX_LOGO_SIZE_PERCENT = 100
 const MIN_LOGO_SIZE_PERCENT = 20
@@ -162,207 +164,215 @@ export default function LoginFormConfig() {
   ])
 
   return (
-    <>
-      <SectionTitle>Login</SectionTitle>
-      <Grid container spacing={3}>
-        <Grid item xs={12} md={6}>
-          <Box display="flex" flexDirection="row" flex="2">
-            <Box my={1} display="flex" flexDirection="column" flex="1">
-              <Grid container spacing={3}>
-                <Grid item xs={12} md={6}>
-                  <EventImageUpload
-                    label="Background"
-                    property="login_background"
-                    current={event.login_background}
-                    width={1920}
-                    height={1200}
-                    canResize
-                  />
-                  <Box display="flex" flexDirection="column" flex="1" mb={2}>
-                    <InputLabel>Hide Background</InputLabel>
-                    <Switch
-                      checked={backgroundHidden}
-                      onChange={onChangeCheckedHandler(setBackgroundHidden)}
-                      color="primary"
-                      inputProps={{
-                        'aria-label': 'toggle background visible',
-                      }}
+    <Layout>
+      <Page>
+        <SectionTitle>Login</SectionTitle>
+        <Grid container spacing={3}>
+          <Grid item xs={12} md={6}>
+            <Box display="flex" flexDirection="row" flex="2">
+              <Box my={1} display="flex" flexDirection="column" flex="1">
+                <Grid container spacing={3}>
+                  <Grid item xs={12} md={6}>
+                    <EventImageUpload
+                      label="Background"
+                      property="login_background"
+                      current={event.login_background}
+                      width={1920}
+                      height={1200}
+                      canResize
                     />
-                  </Box>
-                </Grid>
-                <Grid item xs={12} md={6}>
-                  <EventImageUpload
-                    label="Logo"
-                    property="login_logo"
-                    current={event.login_logo}
-                  />
-                  <Box display="flex" flexDirection="column" flex="1" mb={2}>
-                    <InputLabel>Hide Logo</InputLabel>
-                    <Switch
-                      checked={logoHidden}
-                      onChange={onChangeCheckedHandler(setLogoHidden)}
-                      color="primary"
-                      inputProps={{
-                        'aria-label': 'toggle logo visible',
-                      }}
+                    <Box display="flex" flexDirection="column" flex="1" mb={2}>
+                      <InputLabel>Hide Background</InputLabel>
+                      <Switch
+                        checked={backgroundHidden}
+                        onChange={onChangeCheckedHandler(setBackgroundHidden)}
+                        color="primary"
+                        inputProps={{
+                          'aria-label': 'toggle background visible',
+                        }}
+                      />
+                    </Box>
+                  </Grid>
+                  <Grid item xs={12} md={6}>
+                    <EventImageUpload
+                      label="Logo"
+                      property="login_logo"
+                      current={event.login_logo}
                     />
-                  </Box>
+                    <Box display="flex" flexDirection="column" flex="1" mb={2}>
+                      <InputLabel>Hide Logo</InputLabel>
+                      <Switch
+                        checked={logoHidden}
+                        onChange={onChangeCheckedHandler(setLogoHidden)}
+                        color="primary"
+                        inputProps={{
+                          'aria-label': 'toggle logo visible',
+                        }}
+                      />
+                    </Box>
+                  </Grid>
                 </Grid>
-              </Grid>
 
-              <Box mb={1}>
-                <InputLabel>Logo Size</InputLabel>
+                <Box mb={1}>
+                  <InputLabel>Logo Size</InputLabel>
+                  <Slider
+                    valueLabelDisplay="auto"
+                    aria-label="logo weight"
+                    value={logoSize}
+                    onChange={handleChangeSlider(setLogoSize)}
+                    step={1}
+                    min={MIN_LOGO_SIZE_PERCENT}
+                    max={MAX_LOGO_SIZE_PERCENT}
+                  />
+                </Box>
+                <ColorPicker
+                  label="Background Color"
+                  color={login.backgroundColor || '#FFFFFF'}
+                  onPick={setBackgroundColor}
+                  aria-label="login background color"
+                />
+                <Box mb={1}>
+                  <InputLabel>Background Opacity</InputLabel>
+                  <Slider
+                    valueLabelDisplay="auto"
+                    aria-label="logo background opacity"
+                    value={login.backgroundOpacity || 0}
+                    valueLabelFormat={() => (
+                      <div>{(login.backgroundOpacity || 0) * 100}</div>
+                    )}
+                    onChange={handleChangeSlider(setBackgroundOpacity)}
+                    step={0.01}
+                    min={0}
+                    max={1}
+                  />
+                </Box>
+                <Box display="flex" flexDirection="row" flex="2">
+                  <Box mr={1} display="flex" flexDirection="column" flex="1">
+                    <TextField
+                      label="Email Label"
+                      value={emailLabel}
+                      onChange={onChangeStringHandler(setEmailLabel)}
+                      inputProps={{'aria-label': 'email label'}}
+                    />
+                  </Box>
+                  <Box ml={1} display="flex" flexDirection="column" flex="1">
+                    <TextField
+                      label="Password Label"
+                      value={passwordLabel}
+                      onChange={onChangeStringHandler(setPasswordLabel)}
+                      inputProps={{'aria-label': 'password label'}}
+                    />
+                  </Box>
+                </Box>
+                <TextField
+                  label="Submit Label"
+                  value={submitLabel}
+                  onChange={onChangeStringHandler(setSubmitLabel)}
+                  inputProps={{'aria-label': 'description text'}}
+                />
+                <BackgroundPicker
+                  label="Submit Button Background"
+                  background={submitBackgroundColor}
+                  onChange={setSubmitBackgroundColor}
+                />
+                <ColorPicker
+                  label="Submit Button Color"
+                  color={submitTextColor}
+                  onPick={setSubmitTextColor}
+                  aria-label="submit button color"
+                />
+                <BackgroundPicker
+                  label="Submit Button Hover Background"
+                  background={submitHoverColor || submitBackgroundColor}
+                  onChange={setSubmitHoverColor}
+                />
+                <TextField
+                  id="description-text"
+                  label="Description Text"
+                  defaultValue={descriptionText}
+                  onChange={onChangeStringHandler(setDescriptionText)}
+                  inputProps={{'aria-label': 'description text'}}
+                />
+                <ColorPicker
+                  label="Description Text Color"
+                  color={descriptionColor}
+                  onPick={setDescriptionColor}
+                  aria-label="description text color"
+                />
+                <InputLabel>Description Font Size</InputLabel>
                 <Slider
                   valueLabelDisplay="auto"
-                  aria-label="logo weight"
-                  value={logoSize}
-                  onChange={handleChangeSlider(setLogoSize)}
+                  aria-label="description font size"
+                  value={descriptionFontSize ? descriptionFontSize : 20}
+                  onChange={handleChangeSlider(setDescriptionFontSize)}
                   step={1}
-                  min={MIN_LOGO_SIZE_PERCENT}
-                  max={MAX_LOGO_SIZE_PERCENT}
+                  min={5}
+                  max={50}
                 />
-              </Box>
-              <ColorPicker
-                label="Background Color"
-                color={login.backgroundColor || '#FFFFFF'}
-                onPick={setBackgroundColor}
-                aria-label="login background color"
-              />
-              <Box mb={1}>
-                <InputLabel>Background Opacity</InputLabel>
+                <InputLabel>Input Border Radius</InputLabel>
                 <Slider
                   valueLabelDisplay="auto"
-                  aria-label="logo background opacity"
-                  value={login.backgroundOpacity || 0}
-                  valueLabelFormat={() => (
-                    <div>{(login.backgroundOpacity || 0) * 100}</div>
-                  )}
-                  onChange={handleChangeSlider(setBackgroundOpacity)}
-                  step={0.01}
+                  aria-label="input border radius"
+                  value={inputBorderRadius}
+                  onChange={handleChangeSlider(setInputBorderRadius)}
+                  step={1}
                   min={0}
-                  max={1}
+                  max={60}
+                />
+                <InputLabel>Button Border Radius</InputLabel>
+                <Slider
+                  valueLabelDisplay="auto"
+                  aria-label="button border radius"
+                  value={buttonBorderRadius}
+                  onChange={handleChangeSlider(setButtonBorderRadius)}
+                  step={1}
+                  min={0}
+                  max={60}
+                />
+                <TextField
+                  id="login-forgot-password-text"
+                  label="Forgot Password Text"
+                  defaultValue={passwordResetLinkLabel}
+                  onChange={onChangeStringHandler(setPasswordResetLinkLabel)}
+                  inputProps={{'aria-label': 'login forgot password text'}}
+                />
+                <TextField
+                  id="login-forgot-password-button-text"
+                  label="Forgot Password Button Text"
+                  defaultValue={passwordResetButtonText}
+                  onChange={onChangeStringHandler(setPasswordResetButtonText)}
+                  inputProps={{
+                    'aria-label': 'login forgot password button text',
+                  }}
+                />
+                <TextField
+                  id="login-forgot-password-description"
+                  label="Forgot Password Description"
+                  defaultValue={passwordResetDescription}
+                  onChange={onChangeStringHandler(setPasswordResetDescription)}
+                  inputProps={{
+                    'aria-label': 'login forgot password description',
+                  }}
+                />
+                <TextField
+                  id="login-forgot-password-message"
+                  label="Forgot Password Description"
+                  defaultValue={passwordResetSuccessMessage}
+                  onChange={onChangeStringHandler(
+                    setPasswordResetSuccessMessage,
+                  )}
+                  inputProps={{'aria-label': 'login forgot password message'}}
                 />
               </Box>
-              <Box display="flex" flexDirection="row" flex="2">
-                <Box mr={1} display="flex" flexDirection="column" flex="1">
-                  <TextField
-                    label="Email Label"
-                    value={emailLabel}
-                    onChange={onChangeStringHandler(setEmailLabel)}
-                    inputProps={{'aria-label': 'email label'}}
-                  />
-                </Box>
-                <Box ml={1} display="flex" flexDirection="column" flex="1">
-                  <TextField
-                    label="Password Label"
-                    value={passwordLabel}
-                    onChange={onChangeStringHandler(setPasswordLabel)}
-                    inputProps={{'aria-label': 'password label'}}
-                  />
-                </Box>
-              </Box>
-              <TextField
-                label="Submit Label"
-                value={submitLabel}
-                onChange={onChangeStringHandler(setSubmitLabel)}
-                inputProps={{'aria-label': 'description text'}}
-              />
-              <BackgroundPicker
-                label="Submit Button Background"
-                background={submitBackgroundColor}
-                onChange={setSubmitBackgroundColor}
-              />
-              <ColorPicker
-                label="Submit Button Color"
-                color={submitTextColor}
-                onPick={setSubmitTextColor}
-                aria-label="submit button color"
-              />
-              <BackgroundPicker
-                label="Submit Button Hover Background"
-                background={submitHoverColor || submitBackgroundColor}
-                onChange={setSubmitHoverColor}
-              />
-              <TextField
-                id="description-text"
-                label="Description Text"
-                defaultValue={descriptionText}
-                onChange={onChangeStringHandler(setDescriptionText)}
-                inputProps={{'aria-label': 'description text'}}
-              />
-              <ColorPicker
-                label="Description Text Color"
-                color={descriptionColor}
-                onPick={setDescriptionColor}
-                aria-label="description text color"
-              />
-              <InputLabel>Description Font Size</InputLabel>
-              <Slider
-                valueLabelDisplay="auto"
-                aria-label="description font size"
-                value={descriptionFontSize ? descriptionFontSize : 20}
-                onChange={handleChangeSlider(setDescriptionFontSize)}
-                step={1}
-                min={5}
-                max={50}
-              />
-              <InputLabel>Input Border Radius</InputLabel>
-              <Slider
-                valueLabelDisplay="auto"
-                aria-label="input border radius"
-                value={inputBorderRadius}
-                onChange={handleChangeSlider(setInputBorderRadius)}
-                step={1}
-                min={0}
-                max={60}
-              />
-              <InputLabel>Button Border Radius</InputLabel>
-              <Slider
-                valueLabelDisplay="auto"
-                aria-label="button border radius"
-                value={buttonBorderRadius}
-                onChange={handleChangeSlider(setButtonBorderRadius)}
-                step={1}
-                min={0}
-                max={60}
-              />
-              <TextField
-                id="login-forgot-password-text"
-                label="Forgot Password Text"
-                defaultValue={passwordResetLinkLabel}
-                onChange={onChangeStringHandler(setPasswordResetLinkLabel)}
-                inputProps={{'aria-label': 'login forgot password text'}}
-              />
-              <TextField
-                id="login-forgot-password-button-text"
-                label="Forgot Password Button Text"
-                defaultValue={passwordResetButtonText}
-                onChange={onChangeStringHandler(setPasswordResetButtonText)}
-                inputProps={{'aria-label': 'login forgot password button text'}}
-              />
-              <TextField
-                id="login-forgot-password-description"
-                label="Forgot Password Description"
-                defaultValue={passwordResetDescription}
-                onChange={onChangeStringHandler(setPasswordResetDescription)}
-                inputProps={{'aria-label': 'login forgot password description'}}
-              />
-              <TextField
-                id="login-forgot-password-message"
-                label="Forgot Password Description"
-                defaultValue={passwordResetSuccessMessage}
-                onChange={onChangeStringHandler(setPasswordResetSuccessMessage)}
-                inputProps={{'aria-label': 'login forgot password message'}}
-              />
             </Box>
-          </Box>
+          </Grid>
+          <Grid item xs={12} md={6}>
+            <PreviewBox>
+              <Login isPreview />
+            </PreviewBox>
+          </Grid>
         </Grid>
-        <Grid item xs={12} md={6}>
-          <PreviewBox>
-            <Login isPreview />
-          </PreviewBox>
-        </Grid>
-      </Grid>
-    </>
+      </Page>
+    </Layout>
   )
 }

@@ -1,5 +1,5 @@
 import {fakeEvent} from 'Event/__utils__/factory'
-import {goToGeneralConfig} from 'organization/Event/GeneralConfig/__utils__/go-to-general-config'
+import {goToLoginPageConfig} from 'organization/Event/Page/__utils__/go-to-login-page-config'
 import user from '@testing-library/user-event'
 import faker from 'faker'
 import {mockRxJsAjax} from 'store/__utils__/MockStoreProvider'
@@ -14,7 +14,8 @@ beforeEach(() => {
 
 it('should configure login template', async () => {
   const event = fakeEvent()
-  const {findByLabelText} = await goToGeneralConfig({
+
+  const {findByLabelText} = await goToLoginPageConfig({
     event,
     userPermissions: [CONFIGURE_EVENTS],
   })

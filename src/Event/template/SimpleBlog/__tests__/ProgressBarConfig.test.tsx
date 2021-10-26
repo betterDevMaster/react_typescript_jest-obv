@@ -1,9 +1,9 @@
 import {fakeEvent} from 'Event/__utils__/factory'
 import user from '@testing-library/user-event'
-import {goToGeneralConfig} from 'organization/Event/GeneralConfig/__utils__/go-to-general-config'
 import {mockRxJsAjax} from 'store/__utils__/MockStoreProvider'
 import {wait} from '@testing-library/react'
 import {CONFIGURE_EVENTS} from 'organization/PermissionsProvider'
+import {goToEventConfig} from 'organization/Event/__utils__/event'
 
 const mockPost = mockRxJsAjax.post as jest.Mock
 
@@ -11,21 +11,14 @@ beforeEach(() => {
   jest.clearAllMocks()
 })
 
-it('should show select template form', async () => {
-  const event = fakeEvent({template: null})
-  const {findByLabelText} = await goToGeneralConfig({
-    event,
-    userPermissions: [CONFIGURE_EVENTS],
-  })
-  expect(await findByLabelText('template select')).toBeInTheDocument()
-})
-
 it('should update progress bar color', async () => {
   const event = fakeEvent()
-  const {findByLabelText} = await goToGeneralConfig({
+  const {findByLabelText} = await goToEventConfig({
     event,
     userPermissions: [CONFIGURE_EVENTS],
   })
+
+  user.click(await findByLabelText('progress bar'))
 
   const color = '#e7e7e7'
   user.type(await findByLabelText('bar color'), color)

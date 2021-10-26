@@ -10,12 +10,14 @@ import {
   onChangeStringHandler,
 } from 'lib/dom'
 import {Cards, useCards} from 'Event/template/Cards'
-import {PreviewBox, SectionTitle} from 'organization/Event/GeneralConfig'
+import {PreviewBox, SectionTitle} from 'organization/Event/Page'
 import {TemplateSetPasswordForm} from 'Event/Step1/SetPasswordForm'
 import {useTeamMember} from 'organization/auth'
 import {useEvent, useUpdate} from 'Event/EventProvider'
 import Switch from 'lib/ui/form/Switch'
 import BackgroundPicker from 'lib/ui/form/BackgroundPicker'
+import Layout from 'organization/user/Layout'
+import Page from 'organization/Event/Page'
 
 const MIN_BORDER_RADIUS = 0
 const MAX_BORDER_RADIUS = 60
@@ -34,22 +36,24 @@ export default function SetPasswordFormConfig() {
   }
 
   return (
-    <>
-      <SectionTitle>Set Password Form</SectionTitle>
-      <Grid container spacing={3}>
-        <Grid item xs={12}>
-          <Switch
-            onChange={onChangeCheckedHandler(setRequiresPassword)}
-            labelPlacement="end"
-            checked={event.requires_attendee_password}
-            aria-label="toggle requires attendee password"
-            label="Require password"
-            color="primary"
-          />
+    <Layout>
+      <Page>
+        <SectionTitle>Set Password Form</SectionTitle>
+        <Grid container spacing={3}>
+          <Grid item xs={12}>
+            <Switch
+              onChange={onChangeCheckedHandler(setRequiresPassword)}
+              labelPlacement="end"
+              checked={event.requires_attendee_password}
+              aria-label="toggle requires attendee password"
+              label="Require password"
+              color="primary"
+            />
+          </Grid>
+          <Config />
         </Grid>
-        <Config />
-      </Grid>
-    </>
+      </Page>
+    </Layout>
   )
 }
 

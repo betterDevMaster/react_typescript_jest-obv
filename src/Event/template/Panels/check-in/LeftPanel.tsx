@@ -2,7 +2,7 @@ import StepIndicator from 'Event/template/Panels/check-in/StepIndicator'
 import styled from 'styled-components'
 import React from 'react'
 import Logo from 'Event/Logo'
-import {Step} from 'Event/template/Panels/GeneralConfig/CheckInConfig'
+import {Step} from 'Event/template/Panels/check-in/CheckInConfig'
 import {usePanels} from 'Event/template/Panels'
 import {rgba} from 'lib/color'
 

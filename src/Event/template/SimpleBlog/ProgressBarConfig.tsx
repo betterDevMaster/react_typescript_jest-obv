@@ -3,11 +3,13 @@ import Typography from '@material-ui/core/Typography'
 import Grid from '@material-ui/core/Grid'
 import Slider from '@material-ui/core/Slider'
 import ColorPicker from 'lib/ui/ColorPicker'
-import ProgressBarPreview from 'Event/template/SimpleBlog/GeneralConfig/ProgressBarPreview'
 import {handleChangeSlider, onChangeCheckedHandler} from 'lib/dom'
 import {useSimpleBlog} from 'Event/template/SimpleBlog'
-import {SectionTitle} from 'organization/Event/GeneralConfig'
+import {SectionTitle} from 'organization/Event/Page'
 import Switch from 'lib/ui/form/Switch'
+import Layout from 'organization/user/Layout'
+import Page from 'organization/Event/Page'
+import ProgressBar, {ProgressBarProps} from 'lib/ui/ProgressBar'
 
 export interface ProgressBar {
   background: string
@@ -27,29 +29,31 @@ export default function ProgressBarConfig() {
   const updateProgressBar = update.object('progressBar')
 
   return (
-    <>
-      <SectionTitle>Progress Bar</SectionTitle>
-      <ProgressBarPreview
-        showing={progressBar.showing}
-        barColor={progressBar.barColor}
-        textColor={progressBar.textColor}
-        thickness={progressBar.thickness}
-        borderRadius={progressBar.borderRadius}
-      />
-      <Grid container spacing={2}>
-        <Grid item xs={12}>
-          <Switch
-            label="Show"
-            checked={progressBar.showing}
-            onChange={onChangeCheckedHandler(updateProgressBar('showing'))}
-            labelPlacement="end"
-            color="primary"
-            aria-label="progress bar visible"
-          />
+    <Layout>
+      <Page>
+        <SectionTitle>Progress Bar</SectionTitle>
+        <ProgressBarPreview
+          showing={progressBar.showing}
+          barColor={progressBar.barColor}
+          textColor={progressBar.textColor}
+          thickness={progressBar.thickness}
+          borderRadius={progressBar.borderRadius}
+        />
+        <Grid container spacing={2}>
+          <Grid item xs={12}>
+            <Switch
+              label="Show"
+              checked={progressBar.showing}
+              onChange={onChangeCheckedHandler(updateProgressBar('showing'))}
+              labelPlacement="end"
+              color="primary"
+              aria-label="progress bar visible"
+            />
+          </Grid>
+          <Config />
         </Grid>
-        <Config />
-      </Grid>
-    </>
+      </Page>
+    </Layout>
   )
 }
 
@@ -109,4 +113,21 @@ function Config() {
       </Grid>
     </>
   )
+}
+
+export function ProgressBarPreview(props: Omit<ProgressBarProps, 'value'>) {
+  const [progress, setProgress] = React.useState(10)
+
+  React.useEffect(() => {
+    const timer = setInterval(() => {
+      setProgress((prevProgress) =>
+        prevProgress >= 100 ? 10 : prevProgress + 10,
+      )
+    }, 800)
+    return () => {
+      clearInterval(timer)
+    }
+  }, [])
+
+  return <ProgressBar {...props} value={progress} />
 }

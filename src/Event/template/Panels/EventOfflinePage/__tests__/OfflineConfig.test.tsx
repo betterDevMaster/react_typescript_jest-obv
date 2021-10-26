@@ -1,5 +1,5 @@
 import {fakeEvent} from 'Event/__utils__/factory'
-import {goToGeneralConfig} from 'organization/Event/GeneralConfig/__utils__/go-to-general-config'
+import {goToOfflinePageConfig} from 'organization/Event/Page/__utils__/go-to-offline-page-config'
 import user from '@testing-library/user-event'
 import {mockRxJsAjax} from 'store/__utils__/MockStoreProvider'
 import {wait} from '@testing-library/react'
@@ -16,7 +16,8 @@ it('should configure offline page settings', async () => {
   const event = fakeEvent({
     template: fakePanels(),
   })
-  const {findByLabelText} = await goToGeneralConfig({
+
+  const {findByLabelText} = await goToOfflinePageConfig({
     event,
     userPermissions: [CONFIGURE_EVENTS],
   })

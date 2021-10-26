@@ -1,5 +1,5 @@
 import {fakeEvent} from 'Event/__utils__/factory'
-import {goToGeneralConfig} from 'organization/Event/GeneralConfig/__utils__/go-to-general-config'
+import {goToCreatePasswordPageConfig} from 'organization/Event/Page/__utils__/go-to-create-password-page-config'
 import user from '@testing-library/user-event'
 import faker from 'faker'
 import {mockRxJsAjax} from 'store/__utils__/MockStoreProvider'
@@ -16,7 +16,7 @@ beforeEach(() => {
 
 it('should configure set password form template', async () => {
   const event = fakeEvent()
-  const {findByLabelText} = await goToGeneralConfig({
+  const {findByLabelText} = await goToCreatePasswordPageConfig({
     event,
     userPermissions: [CONFIGURE_EVENTS],
   })
@@ -40,7 +40,10 @@ it('should disable requiring a password', async () => {
     requires_attendee_password: true,
   })
 
-  const {findByLabelText, queryByLabelText} = await goToGeneralConfig({
+  const {
+    findByLabelText,
+    queryByLabelText,
+  } = await goToCreatePasswordPageConfig({
     event,
     userPermissions: [CONFIGURE_EVENTS],
   })

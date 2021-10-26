@@ -1,10 +1,11 @@
 import {fakeEvent} from 'Event/__utils__/factory'
-import {goToGeneralConfig} from 'organization/Event/GeneralConfig/__utils__/go-to-general-config'
 import user from '@testing-library/user-event'
 import faker from 'faker'
 import {mockRxJsAjax} from 'store/__utils__/MockStoreProvider'
 import {wait} from '@testing-library/react'
 import {CONFIGURE_EVENTS} from 'organization/PermissionsProvider'
+import {fakeCards} from 'Event/template/Cards/__utils__/factory'
+import {goToLoginPageConfig} from 'organization/Event/Page/__utils__/go-to-login-page-config'
 
 const mockRxPost = mockRxJsAjax.post as jest.Mock
 
@@ -13,8 +14,10 @@ beforeEach(() => {
 })
 
 it('should configure login template', async () => {
-  const event = fakeEvent()
-  const {findByLabelText} = await goToGeneralConfig({
+  const event = fakeEvent({
+    template: fakeCards(),
+  })
+  const {findByLabelText} = await goToLoginPageConfig({
     event,
     userPermissions: [CONFIGURE_EVENTS],
   })

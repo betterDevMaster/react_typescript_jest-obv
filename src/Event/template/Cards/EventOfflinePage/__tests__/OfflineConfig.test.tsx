@@ -1,10 +1,10 @@
 import {fakeEvent} from 'Event/__utils__/factory'
-import {goToGeneralConfig} from 'organization/Event/GeneralConfig/__utils__/go-to-general-config'
 import user from '@testing-library/user-event'
 import {mockRxJsAjax} from 'store/__utils__/MockStoreProvider'
 import {wait} from '@testing-library/react'
 import {CONFIGURE_EVENTS} from 'organization/PermissionsProvider'
 import {fakeCards} from 'Event/template/Cards/__utils__/factory'
+import {goToOfflinePageConfig} from 'organization/Event/Page/__utils__/go-to-offline-page-config'
 
 beforeEach(() => {
   jest.clearAllMocks()
@@ -16,7 +16,7 @@ it('should configure offline page settings', async () => {
   const event = fakeEvent({
     template: fakeCards(),
   })
-  const {findByLabelText} = await goToGeneralConfig({
+  const {findByLabelText} = await goToOfflinePageConfig({
     event,
     userPermissions: [CONFIGURE_EVENTS],
   })

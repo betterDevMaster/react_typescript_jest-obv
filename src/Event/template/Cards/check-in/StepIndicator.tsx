@@ -3,7 +3,7 @@ import styled from 'styled-components'
 import {useCards} from 'Event/template/Cards'
 import {useAttendeeVariables} from 'Event'
 import {Icon} from 'lib/fontawesome/Icon'
-import {Step} from 'Event/template/Cards/GeneralConfig/CheckInConfig'
+import {Step} from 'Event/template/Cards/check-in/CheckInConfig'
 
 export default function StepIndicator(props: {step: Step; className?: string}) {
   const {template} = useCards()

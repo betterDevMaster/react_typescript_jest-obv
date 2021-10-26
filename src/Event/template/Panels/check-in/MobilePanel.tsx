@@ -3,7 +3,7 @@ import styled from 'styled-components'
 import StepIndicator from 'Event/template/Panels/check-in/StepIndicator'
 import React from 'react'
 import {usePanels} from 'Event/template/Panels'
-import {Step} from 'Event/template/Panels/GeneralConfig/CheckInConfig'
+import {Step} from 'Event/template/Panels/check-in/CheckInConfig'
 import {rgba} from 'lib/color'
 
 export default function MobilePanel(props: {
