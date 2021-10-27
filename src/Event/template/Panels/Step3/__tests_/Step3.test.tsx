@@ -163,3 +163,42 @@ it('should complete self-checkin', async () => {
     expect(await findByLabelText('welcome')).toBeInTheDocument()
   })
 })
+
+it('should show a custom button that joins the tech check area', async () => {
+  const area_key = 'tcareakey'
+
+  const beforeCheckIn = fakeAttendee({
+    has_password: true,
+    waiver: faker.internet.url(),
+    tech_check_completed_at: null,
+    has_completed_tech_check: false,
+  })
+
+  const button = fakeNavButtonWithSize({
+    page: '/tech_check',
+    text: 'Join TC from custom button',
+    isAreaButton: true, // is join TC area button
+  })
+
+  const event = fakeEvent({
+    tech_check: fakeTechCheck({
+      area_key,
+    }),
+    template: fakePanels({
+      techCheck: {
+        hasCustomButtons: true,
+        buttons: createEntityList([button]),
+      },
+    }),
+  })
+
+  const {findByText} = await loginToEventSite({
+    attendee: beforeCheckIn,
+    event,
+  })
+
+  const buttonEl = await findByText(button.text)
+
+  const link = buttonEl.parentElement?.getAttribute('href')
+  expect(link).toMatch(area_key)
+})

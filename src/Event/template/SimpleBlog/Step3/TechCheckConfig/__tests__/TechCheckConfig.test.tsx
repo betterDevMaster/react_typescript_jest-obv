@@ -3,17 +3,11 @@ import axios from 'axios'
 import {fakeEvent, fakeTechCheck} from 'Event/__utils__/factory'
 import user from '@testing-library/user-event'
 import {fireEvent, wait} from '@testing-library/react'
-import {
-  EventOverrides,
-  goToEventConfig,
-} from 'organization/Event/__utils__/event'
 import {CONFIGURE_EVENTS} from 'organization/PermissionsProvider'
 import {now} from 'lib/date-time'
-import {Area} from 'organization/Event/AreasProvider'
-import {fakeArea} from 'organization/Event/AreaList/__utils__/factory'
 import {fakeSimpleBlog} from 'Event/template/SimpleBlog/__utils__/factory'
+import {goToTechCheckConfig} from 'organization/Event/TechCheckConfig/__utils__/go-to-tech-check-config'
 
-const mockGet = axios.get as jest.Mock
 const mockPut = axios.put as jest.Mock
 
 beforeEach(() => {
@@ -121,13 +115,18 @@ it('it should set custom buttons', async () => {
   user.click(await findByLabelText('add tech check button'))
   user.click(await findByLabelText('add tech check button'))
 
-  //duplicate second button
+  // duplicate second button  = 3 buttons total
   user.click((await findAllByLabelText('duplicate component'))[1])
 
-  // Configure second button with page
+  // Configure SECOND button with page
   user.click((await findAllByLabelText('edit component'))[1])
   fireEvent.mouseDown(await findByLabelText('pick page'))
   user.click(await findByLabelText('Check-In page'))
+  fireEvent.click(await findByLabelText('save'))
+
+  // Configure THIRD button to join TC area
+  user.click((await findAllByLabelText('edit component'))[2])
+  user.click(await findByLabelText('set join tech check area'))
   fireEvent.click(await findByLabelText('save'))
 
   // Remove first button
@@ -146,25 +145,15 @@ it('it should set custom buttons', async () => {
   expect(template.techCheck.hasCustomButtons).toBe(true)
   // Removed the button
   expect(template.techCheck.buttons.ids.length).toBe(2)
+
   // Did set page
   expect(
     template.techCheck.buttons.entities[template.techCheck.buttons.ids[0]].page,
   ).toBe('/tech_check')
+
+  // Did set as TC Area button
+  expect(
+    template.techCheck.buttons.entities[template.techCheck.buttons.ids[1]]
+      .isAreaButton,
+  ).toBe(true)
 })
-
-async function goToTechCheckConfig(
-  overrides: EventOverrides & {areas?: Area[]} = {},
-) {
-  const context = await goToEventConfig(overrides)
-
-  const areas =
-    overrides.areas ||
-    Array.from({length: faker.random.number({min: 1, max: 5})}, fakeArea)
-
-  // areas
-  mockGet.mockImplementationOnce(() => Promise.resolve({data: areas}))
-
-  user.click(await context.findByLabelText('configure tech check'))
-
-  return {...context, areas}
-}

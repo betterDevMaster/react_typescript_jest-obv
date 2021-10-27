@@ -5,10 +5,17 @@
 import '@testing-library/jest-dom/extend-expect'
 import {setWindowMatchMedia} from '__utils__/media-query'
 import 'jest-canvas-mock'
+import resizeObserver from 'resize-observer-polyfill'
 
 // Always mock echo (sockets in test)
 jest.mock('lib/echo')
 jest.mock('organization/Event/EventSocketNotification')
+
+/**
+ * Mock resize observer
+ */
+
+window.ResizeObserver = resizeObserver
 
 beforeAll(() => {
   // Required to render <Hidden/> components in tests

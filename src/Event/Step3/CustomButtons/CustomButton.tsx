@@ -10,6 +10,7 @@ import {EditComponentOverlay} from 'Event/Dashboard/editor/views/EditComponent'
 import {useToggle} from 'lib/toggle'
 import {EntityList} from 'lib/list'
 import ButtonConfig from 'Event/Step3/CustomButtons/ButtonConfig'
+import {useEvent} from 'Event/EventProvider'
 
 type CustomButtonProps = {
   id: string
@@ -63,12 +64,12 @@ export default React.memo((props: CustomButtonProps) => {
     update(updated)
   }
 
-  const buttonComponent = (
-    <NavButton {...props.button} aria-label="tech check button" />
-  )
-
   if (!update) {
-    return <Container button={props.button}>{buttonComponent}</Container>
+    return (
+      <Container button={props.button}>
+        <Button {...props} />
+      </Container>
+    )
   }
 
   return (
@@ -93,7 +94,7 @@ export default React.memo((props: CustomButtonProps) => {
               <EditComponentOverlay onClick={toggleConfig} onCopy={duplicate}>
                 <>
                   <DragHandle handleProps={provided.dragHandleProps} />
-                  {buttonComponent}
+                  <Button {...props} />
                 </>
               </EditComponentOverlay>
             </DraggableOverlay>
@@ -103,6 +104,24 @@ export default React.memo((props: CustomButtonProps) => {
     </>
   )
 })
+
+function Button(props: CustomButtonProps) {
+  const {event} = useEvent()
+
+  /**
+   * Since we only ever want to allow TC buttons to join the TC assigned area,
+   * we'll automatically set it here. If the button is marked as
+   * `isAreaButton`, then this area will be joined.
+   */
+  const areaId = event.tech_check?.area_key || null
+
+  const buttonProps: NavButton = {
+    ...props.button,
+    areaId,
+  }
+
+  return <NavButton {...buttonProps} aria-label="tech check button" />
+}
 
 const Container = React.forwardRef<
   HTMLDivElement,

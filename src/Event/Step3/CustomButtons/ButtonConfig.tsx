@@ -23,6 +23,9 @@ import FormControlLabel from '@material-ui/core/FormControlLabel'
 import Checkbox from '@material-ui/core/Checkbox'
 import {SaveButton} from 'organization/Event/DashboardConfig/ComponentConfig'
 import BackgroundPicker from 'lib/ui/form/BackgroundPicker'
+import FormControl from '@material-ui/core/FormControl'
+import ToggleButtonGroup from '@material-ui/lab/ToggleButtonGroup'
+import ToggleButton from '@material-ui/lab/ToggleButton'
 
 const MIN_BORDER_WIDTH = 0
 const MAX_BORDER_WIDTH = 50
@@ -115,6 +118,8 @@ export default function ButtonConfig(props: {
     onClose()
   }
 
+  const targetValue = isAreaButton ? 1 : 0
+
   return (
     <Dialog open={isVisible} onClose={props.onClose} fullWidth>
       <DialogTitle>Edit Button</DialogTitle>
@@ -128,6 +133,27 @@ export default function ButtonConfig(props: {
           }}
           fullWidth
         />
+        <FormControl>
+          <ToggleButtonGroup value={targetValue} exclusive>
+            <ToggleButton
+              value={0}
+              onClick={() => {
+                setIsAreaButton(false)
+              }}
+            >
+              Link
+            </ToggleButton>
+            <ToggleButton
+              value={1}
+              aria-label="set join tech check area"
+              onClick={() => {
+                setIsAreaButton(true)
+              }}
+            >
+              Join Tech Check
+            </ToggleButton>
+          </ToggleButtonGroup>
+        </FormControl>
         <LinkConfig
           isAreaButton={isAreaButton}
           isImageUpload={false}
