@@ -1,11 +1,15 @@
 import {Epic, ofType} from 'redux-observable'
 import {RootState} from 'store'
-import {mapTo, switchMap} from 'rxjs/operators'
+import {catchError, map, mapTo, switchMap} from 'rxjs/operators'
 import {api} from 'lib/url'
-import {setSaving} from 'Event/Dashboard/editor/state/actions'
+import {setIsConnected, setSaving} from 'Event/Dashboard/editor/state/actions'
 import {of, concat} from 'rxjs'
 import {AjaxCreationMethod} from 'rxjs/internal/observable/dom/AjaxObservable'
-import {CreateTemplateAction, CREATE_TEMPLATE_ACTION} from 'Event/state/actions'
+import {
+  CreateTemplateAction,
+  CREATE_TEMPLATE_ACTION,
+  setEventUpdatedAt,
+} from 'Event/state/actions'
 import {jsonHeader, put} from 'lib/api-client'
 
 export const createDashboardEpic: Epic<
@@ -27,6 +31,14 @@ export const createDashboardEpic: Epic<
 
       const request = ajax.post(url, put(event), jsonHeader(auth.token))
 
-      return concat(of(setSaving(true)), request.pipe(mapTo(setSaving(false))))
+      // Set saving status after request completes
+      return concat(
+        of(setSaving(true)),
+        request.pipe(
+          map((data) => setEventUpdatedAt(data.response.updated_at)),
+          catchError(() => of(setIsConnected(false))),
+        ),
+        of(setSaving(false)),
+      )
     }),
   )
