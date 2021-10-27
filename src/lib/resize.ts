@@ -6,8 +6,6 @@ import {useEffect} from 'react'
  * @param {*} handler
  */
 export function useOnResize(handler: () => void) {
-  useEffect(handler, [handler])
-
   useEffect(() => {
     window.addEventListener('resize', handler)
 

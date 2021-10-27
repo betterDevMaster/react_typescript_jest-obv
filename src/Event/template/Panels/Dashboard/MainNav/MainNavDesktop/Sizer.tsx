@@ -38,6 +38,7 @@ export default function Sizer(props: {
   const [perPage, setPerPage] = useState(1)
   const [isGrowing, setIsGrowing] = useState(true)
   const debouncedPerPage = useDebounce(perPage, RESIZE_DELAY_MS)
+  const [parentHeight, setParentHeight] = useState(0)
 
   const numItems = ids.length
 
@@ -54,6 +55,22 @@ export default function Sizer(props: {
   }
 
   /**
+   * Setup watcher to set parent height. We'll set up an observer in case
+   * components come/go which would affect the space we have to
+   * work with.
+   */
+  useEffect(() => {
+    const parent = $('#main-nav')
+
+    const observer = new ResizeObserver((entries) => {
+      const height = entries[0].contentRect.height
+      setParentHeight(height)
+    })
+
+    observer.observe(parent[0])
+  }, [])
+
+  /**
    * Kick-off sizing...
    */
   const calculate = useCallback(() => {
@@ -61,9 +78,18 @@ export default function Sizer(props: {
     grow()
   }, [setPerPage, grow])
 
+  /**
+   * Initial render
+   */
+  useEffect(calculate, [calculate])
+
   useOnResize(calculate) // Handle updating browser height
 
   useEffect(() => {
+    if (!parentHeight) {
+      return
+    }
+
     const pageEls = $('.main-nav-shadow-page').toArray()
 
     const heights = pageEls.map((el) => $(el).height())
@@ -72,9 +98,6 @@ export default function Sizer(props: {
       (acc: number, i) => Math.max(acc, i || 0),
       0,
     )
-
-    const parent = $('#main-nav')
-    const parentHeight = parent.height() || 0
 
     const hasSpace = maxHeight < parentHeight // Whether content exceeds container space
     const hasMoreItems = perPage <= numItems // ie. won't fit on 1 page
@@ -88,7 +111,7 @@ export default function Sizer(props: {
     if (canShrink) {
       shrink()
     }
-  }, [perPage, numItems, isGrowing, grow])
+  }, [perPage, numItems, isGrowing, grow, parentHeight])
 
   /**
    * Notify parent of result
