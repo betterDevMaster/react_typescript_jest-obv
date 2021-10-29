@@ -73,6 +73,7 @@ export default function PageSettingsDialog(props: {
           backToDashboardTextColor,
           sponsorSpace,
           sponsorSeperator,
+          orderedIds: sponsorsPageSettings.orderedIds,
         },
       },
     }

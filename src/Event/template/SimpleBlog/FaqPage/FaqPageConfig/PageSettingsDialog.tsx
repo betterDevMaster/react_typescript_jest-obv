@@ -45,6 +45,7 @@ export default function PageSettingsDialog(props: {
           description,
           backToDashboardText,
           backToDashboardTextColor,
+          orderedIds: pageSettings.orderedIds,
         },
       },
     }
