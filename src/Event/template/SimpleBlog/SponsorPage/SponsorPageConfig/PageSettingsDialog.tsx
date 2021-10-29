@@ -67,13 +67,13 @@ export default function PageSettingsDialog(props: {
       template: {
         ...template,
         sponsors: {
+          ...sponsorsPageSettings,
           imageSize,
           description,
           backToDashboardText,
           backToDashboardTextColor,
           sponsorSpace,
           sponsorSeperator,
-          orderedIds: sponsorsPageSettings.orderedIds,
         },
       },
     }

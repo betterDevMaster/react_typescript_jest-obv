@@ -49,8 +49,8 @@ export default function SpeakerPageConfigForm(props: {onClose: () => void}) {
         template: {
           ...template,
           speakers: {
+            ...speakerPageSettings,
             ...data,
-            orderedIds: speakerPageSettings.orderedIds,
           },
         },
       })

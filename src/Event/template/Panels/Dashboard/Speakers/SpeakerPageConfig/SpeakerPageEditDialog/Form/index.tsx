@@ -22,6 +22,7 @@ const MIN_SPACE_SIZE = 0
 const MAX_SPACE_SIZE = 10
 
 type UpdateFormData = {
+  title: string
   description: string
   backToDashboardText: string
   backToDashboardTextColor: string
@@ -49,8 +50,8 @@ export default function SpeakerPageConfigForm(props: {onClose: () => void}) {
         template: {
           ...template,
           speakers: {
+            ...speakerPageSettings,
             ...data,
-            orderedIds: speakerPageSettings.orderedIds,
           },
         },
       })

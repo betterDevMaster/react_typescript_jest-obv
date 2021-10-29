@@ -70,6 +70,7 @@ export default function PageSettingsDialog(props: {
       template: {
         ...template,
         sponsors: {
+          ...template.sponsors,
           title,
           menuTitle,
           perRow,
@@ -77,7 +78,6 @@ export default function PageSettingsDialog(props: {
           cardBackgroundOpacity,
           description,
           isVisible,
-          orderedIds: template.sponsors.orderedIds,
         },
       },
     }

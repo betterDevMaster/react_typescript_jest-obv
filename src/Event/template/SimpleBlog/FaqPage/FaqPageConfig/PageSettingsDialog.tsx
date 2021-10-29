@@ -41,11 +41,11 @@ export default function PageSettingsDialog(props: {
       template: {
         ...template,
         faq: {
+          ...pageSettings,
           title,
           description,
           backToDashboardText,
           backToDashboardTextColor,
-          orderedIds: pageSettings.orderedIds,
         },
       },
     }

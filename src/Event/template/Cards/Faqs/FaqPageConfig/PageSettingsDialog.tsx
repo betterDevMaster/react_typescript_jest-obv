@@ -42,11 +42,11 @@ export default function PageSettingsDialog(props: {
       template: {
         ...template,
         faq: {
+          ...pageSettings,
           title,
           description,
           isVisible,
           menuTitle,
-          orderIds: pageSettings.orderedIds,
         },
       },
     }
