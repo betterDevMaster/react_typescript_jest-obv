@@ -46,6 +46,7 @@ export default function PageSettingsDialog(props: {
           description,
           isVisible,
           menuTitle,
+          orderIds: pageSettings.orderedIds,
         },
       },
     }

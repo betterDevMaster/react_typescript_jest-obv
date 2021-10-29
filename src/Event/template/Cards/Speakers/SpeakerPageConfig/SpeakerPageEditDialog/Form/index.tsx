@@ -48,7 +48,10 @@ export default function SpeakerPageConfigForm(props: {onClose: () => void}) {
       .put<ObvioEvent>(url, {
         template: {
           ...template,
-          speakers: data,
+          speakers: {
+            ...data,
+            orderedIds: speakerPageSettings.orderedIds,
+          },
         },
       })
       .then((event) => {
