@@ -1,4 +1,4 @@
-import React, {useCallback} from 'react'
+import React from 'react'
 import styled from 'styled-components'
 import {colors} from 'lib/ui/theme'
 import {Attendee} from 'Event/attendee'
@@ -19,11 +19,8 @@ import AssignmentOutlined from '@material-ui/icons/AssignmentOutlined'
 import Box from '@material-ui/core/Box'
 import CircularProgress from '@material-ui/core/CircularProgress'
 import Typography from '@material-ui/core/Typography'
-import {useEvent} from 'Event/EventProvider'
-import {useAsync} from 'lib/async'
-import {api} from 'lib/url'
-import {useOrganization} from 'organization/OrganizationProvider'
 import EmojiEventsIcon from '@material-ui/icons/EmojiEvents'
+import {useEvent} from 'Event/EventProvider'
 
 export default function AttendeesTable(props: {
   onSelectEdit: (attendee: Attendee) => () => void
@@ -37,11 +34,11 @@ export default function AttendeesTable(props: {
     loading: loadingAttendees,
   } = useAttendees()
 
-  const numAttendees = useNumAttendees()
+  const {event} = useEvent()
 
   const hasAttendees = attendees.length > 0
 
-  const loading = loadingAttendees || numAttendees.loading
+  const loading = loadingAttendees
 
   if (loading) {
     return (
@@ -62,8 +59,7 @@ export default function AttendeesTable(props: {
   return (
     <>
       <Typography align="right" variant="subtitle1">
-        Showing {attendees.length} of {numAttendees.data?.num_attendees}{' '}
-        attendees
+        Showing {attendees.length} of {event.num_registered_attendees} attendees
       </Typography>
       <TableBox>
         <Table>
@@ -179,20 +175,6 @@ function ToggleCheckInButton(props: {
       Check-In
     </Button>
   )
-}
-
-function useNumAttendees() {
-  const {event} = useEvent()
-  const {client} = useOrganization()
-
-  const url = api(`/events/${event.slug}/attendees/count`)
-
-  const request = useCallback(() => client.get<{num_attendees: number}>(url), [
-    url,
-    client,
-  ])
-
-  return useAsync(request)
 }
 
 function CheckedInAt(props: {children: Attendee['tech_check_completed_at']}) {

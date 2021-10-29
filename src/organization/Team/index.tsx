@@ -1,4 +1,4 @@
-import Page from 'organization/user/Layout/Page'
+import Page from 'lib/ui/layout/Page'
 import React, {useState} from 'react'
 import TeamMembersTable from 'organization/Team/TeamMembersTable'
 import AddTeamMemberForm from 'organization/Team/AddTeamMemberForm'

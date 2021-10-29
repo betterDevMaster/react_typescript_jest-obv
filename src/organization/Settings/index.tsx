@@ -10,14 +10,13 @@ import {
   useOrganization,
   createRoutesFor,
 } from 'organization/OrganizationProvider'
-import Page from 'organization/user/Layout/Page'
 import {fieldError} from 'lib/form'
 
 import Form from 'organization/Settings/Form'
 import {appRoot} from 'env'
-import Box from '@material-ui/core/Box'
 import {Redirect, useHistory} from 'react-router-dom'
 import {useIsOwner} from 'organization/OwnerProvider'
+import Page from 'lib/ui/layout/Page'
 
 export interface Data {
   name: string
@@ -82,17 +81,15 @@ export default function Settings() {
   return (
     <Layout>
       <Page>
-        <Box pt={5}>
-          <Form
-            onSubmit={handleSubmit(submit)}
-            submitting={submitting}
-            serverError={serverError}
-            nameError={nameError}
-            slugError={slugError}
-            slugHelperText={slugHelperText}
-            register={register}
-          />
-        </Box>
+        <Form
+          onSubmit={handleSubmit(submit)}
+          submitting={submitting}
+          serverError={serverError}
+          nameError={nameError}
+          slugError={slugError}
+          slugHelperText={slugHelperText}
+          register={register}
+        />
       </Page>
     </Layout>
   )

@@ -27,7 +27,7 @@ export interface DuplicateEventData {
   slug: string
   start: string
   end: string
-  num_attendees: number
+  num_expected_attendees: number
   copy_areas: boolean
   copy_rooms: boolean
 }
@@ -151,7 +151,7 @@ export default function Form(props: {
         required
         label="Expected Number of Attendees"
         type="number"
-        name="num_attendees"
+        name="num_expected_attendees"
         fullWidth
         inputProps={{
           ref: register({

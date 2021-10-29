@@ -9,6 +9,7 @@ import {routesWithValue} from 'lib/url'
 import {useBreadcrumbs} from 'lib/ui/BreadcrumbProvider'
 import Form, {UpdateEventData} from 'organization/Event/EventSettings/Form'
 import {useFileSelect} from 'lib/ui/form/file'
+import InsufficientCreditsPopup from 'obvio/Billing/InsufficientCreditsPopup'
 
 export default function UpdateEventForm() {
   const [submitting, setSubmitting] = useState(false)
@@ -77,6 +78,10 @@ export default function UpdateEventForm() {
   return (
     <Layout>
       <Page>
+        <InsufficientCreditsPopup
+          error={responseError}
+          onDismiss={() => setResponseError(null)}
+        />
         <Form
           onSubmit={handleSubmit(submit)}
           register={register}

@@ -8,7 +8,7 @@ export default function ChangePasswordPage() {
   useBreadcrumbs([
     {
       title: 'Change Password',
-      url: obvioRoutes.changePassword,
+      url: obvioRoutes.change_password,
     },
   ])
 

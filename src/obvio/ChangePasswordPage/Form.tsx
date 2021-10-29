@@ -1,7 +1,6 @@
 import React from 'react'
 import TextField from '@material-ui/core/TextField'
 import Button from '@material-ui/core/Button'
-import styled from 'styled-components'
 import {api} from 'lib/url'
 import {useValidatedForm} from 'lib/form'
 import {teamMemberClient} from 'obvio/obvio-client'
@@ -55,7 +54,7 @@ export default function Form() {
 
   return (
     <>
-      <StyledErrorAlert>{responseError?.message}</StyledErrorAlert>
+      <ErrorAlert>{responseError?.message}</ErrorAlert>
       <SuccessMessage showing={showSuccess} />
       <form onSubmit={handleSubmit(submit)}>
         <TextField
@@ -126,15 +125,5 @@ function SuccessMessage(props: {showing: boolean}) {
     return null
   }
 
-  return (
-    <StyledSuccessAlert>Your password has been updated.</StyledSuccessAlert>
-  )
+  return <SuccessAlert>Your password has been updated.</SuccessAlert>
 }
-
-const StyledErrorAlert = styled(ErrorAlert)`
-  margin-bottom: ${(props) => props.theme.spacing[5]};
-`
-
-const StyledSuccessAlert = styled(SuccessAlert)`
-  margin-bottom: ${(props) => props.theme.spacing[5]};
-`

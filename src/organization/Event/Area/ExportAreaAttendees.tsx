@@ -1,5 +1,4 @@
 import React from 'react'
-import styled from 'styled-components'
 import Box from '@material-ui/core/Box'
 import Button from '@material-ui/core/Button'
 import {useOrganization} from 'organization/OrganizationProvider'
@@ -26,8 +25,8 @@ export default function ExportAreaAttendees(props: {area: Area}) {
 
   return (
     <>
-      <StyledErrorAlert>{errorMessage}</StyledErrorAlert>
-      <StyledSuccessAlert>{successMessage}</StyledSuccessAlert>
+      <ErrorAlert>{errorMessage}</ErrorAlert>
+      <SuccessAlert>{successMessage}</SuccessAlert>
       <Box mb={2}>
         <Button
           onClick={exportAttendees}
@@ -41,11 +40,3 @@ export default function ExportAreaAttendees(props: {area: Area}) {
     </>
   )
 }
-
-const StyledErrorAlert = styled(ErrorAlert)`
-  margin-bottom: ${(props) => props.theme.spacing[2]};
-`
-
-const StyledSuccessAlert = styled(SuccessAlert)`
-  margin-bottom: ${(props) => props.theme.spacing[2]};
-`

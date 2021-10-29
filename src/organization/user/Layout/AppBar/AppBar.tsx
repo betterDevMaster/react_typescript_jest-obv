@@ -15,6 +15,8 @@ import {useOrganizationAuth} from 'organization/auth'
 import Button from '@material-ui/core/Button'
 import HasPermission from 'organization/HasPermission'
 import {UPDATE_TEAM} from 'organization/PermissionsProvider'
+import CreditsMenuItem from 'obvio/Billing/CreditsMenuItem'
+import Divider from '@material-ui/core/Divider'
 import {useIsOwner} from 'organization/OwnerProvider'
 import logo from 'assets/images/logo.png'
 import {obvioRoutes} from 'obvio/Routes'
@@ -85,6 +87,9 @@ export default function AppBar() {
             Account
           </Button>
           <Menu
+            MenuListProps={{
+              disablePadding: true,
+            }}
             anchorEl={anchorEl}
             anchorOrigin={{
               vertical: 'top',
@@ -98,6 +103,8 @@ export default function AppBar() {
             open={Boolean(anchorEl)}
             onClose={handleClose}
           >
+            <CreditsMenuItem />
+            <Divider />
             <MenuItem onClick={handleLogout}>Logout</MenuItem>
           </Menu>
         </div>

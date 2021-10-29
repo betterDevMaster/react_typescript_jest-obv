@@ -28,7 +28,8 @@ export interface ObvioEvent {
   start: string
   end: string
   has_ended: boolean
-  num_attendees: number
+  num_expected_attendees: number
+  num_registered_attendees: number
   template: Template | null
   waiver: WaiverConfig | null
   tech_check: TechCheckConfig | null
@@ -55,6 +56,7 @@ export interface ObvioEvent {
   zoom_backgrounds_title: string | null
   zoom_backgrounds_description: string | null
   ticket_ribbons: CustomTicketRibbon[]
+  has_paid: boolean
   is_online: boolean
   requires_attendee_password: boolean
   has_started: boolean

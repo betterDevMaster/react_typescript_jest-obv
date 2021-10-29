@@ -12,6 +12,8 @@ import {useHistory} from 'react-router-dom'
 import {obvioRoutes} from 'obvio/Routes'
 import logo from 'assets/images/logo.png'
 import {RelativeLink} from 'lib/ui/link/RelativeLink'
+import CreditsMenuItem from 'obvio/Billing/CreditsMenuItem'
+import Divider from '@material-ui/core/Divider'
 
 export default function AppBar() {
   const useStyles = makeStyles((theme) => ({
@@ -47,10 +49,18 @@ export default function AppBar() {
           </RelativeLink>
         </Logo>
         <div>
-          <IconButton aria-haspopup="true" onClick={handleMenu} color="default">
+          <IconButton
+            aria-haspopup="true"
+            onClick={handleMenu}
+            color="default"
+            aria-label="account menu"
+          >
             <AccountCircle />
           </IconButton>
           <Menu
+            MenuListProps={{
+              disablePadding: true,
+            }}
             anchorEl={anchorEl}
             anchorOrigin={{
               vertical: 'top',
@@ -63,11 +73,10 @@ export default function AppBar() {
             }}
             open={Boolean(anchorEl)}
             onClose={handleClose}
-            MenuListProps={{
-              disablePadding: true,
-            }}
           >
-            <RelativeLink disableStyles to={obvioRoutes.changePassword}>
+            <CreditsMenuItem />
+            <Divider />
+            <RelativeLink disableStyles to={obvioRoutes.change_password}>
               <MenuItem aria-label="change password">Change Password</MenuItem>
             </RelativeLink>
             <MenuItem onClick={handleLogout}>Logout</MenuItem>

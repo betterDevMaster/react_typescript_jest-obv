@@ -64,8 +64,6 @@ function useClearRoomAssignments(
     }
     clearError()
 
-    toggleProcessing()
-
     client
       .delete(url)
       .catch((e) => {

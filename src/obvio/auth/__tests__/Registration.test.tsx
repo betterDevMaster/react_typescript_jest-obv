@@ -9,6 +9,7 @@ import {fakeUser} from 'auth/user/__utils__/factory'
 import {TEAM_MEMBER_TOKEN_KEY} from 'obvio/auth'
 import {useLocation} from 'react-router-dom'
 import {setObvioAppUrl} from 'organization/__utils__/authenticate'
+import {fakeTeamMember} from 'organization/Team/__utils__/factory'
 
 const mockPost = mockAxios.post as jest.Mock
 const mockGet = mockAxios.get as jest.Mock
@@ -24,7 +25,13 @@ it('should register, and sign in', async () => {
   mockPost.mockImplementationOnce(() =>
     Promise.resolve({data: {access_token: token}}),
   )
-  mockGet.mockImplementationOnce(() => Promise.resolve({data: fakeUser()}))
+  mockGet.mockImplementationOnce(() =>
+    Promise.resolve({
+      data: fakeTeamMember({
+        has_active_subscription: true,
+      }),
+    }),
+  )
 
   const {findByLabelText, findByText} = render(<App />)
 

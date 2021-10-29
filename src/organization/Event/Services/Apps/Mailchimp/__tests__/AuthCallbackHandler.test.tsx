@@ -66,11 +66,13 @@ it('should redirect to event auth page with code', async () => {
     },
   })
 
-  // Organization
-  mockGet.mockImplementationOnce(() => Promise.resolve({data: organization}))
   // User
   mockGet.mockImplementationOnce(() =>
-    Promise.resolve({data: fakeTeamMember()}),
+    Promise.resolve({
+      data: fakeTeamMember({
+        has_active_subscription: true,
+      }),
+    }),
   )
 
   const route = `/organization/${organization.slug}/events/${event.slug}/services/mailchimp`

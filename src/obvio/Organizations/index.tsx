@@ -27,7 +27,7 @@ export default function Organizations() {
 
 function CreateOrganizationButton() {
   const user = useObvioUser()
-  if (!user.has_paid) {
+  if (!user.has_active_subscription) {
     return null
   }
 

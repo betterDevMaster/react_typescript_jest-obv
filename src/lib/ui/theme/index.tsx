@@ -11,10 +11,11 @@ export const breakpoints = {
 export const colors = {
   primary: '#3490DC',
   secondary: '#2066a7',
-  border: '#e2e2e2',
+  success: '#20A746',
+  border: '#a0a9b0',
   error: red[500],
   text: {
-    muted: '#B1B1B1',
+    muted: '#606F7B',
   },
 }
 
@@ -29,6 +30,11 @@ const muiBaseTheme: ThemeOptions = {
         marginBottom: spacing[4],
       },
     },
+    MuiButton: {
+      outlined: {
+        border: '1px solid #000000',
+      },
+    },
   },
 }
 
@@ -41,6 +47,22 @@ export const muiTheme = createMuiTheme(
       secondary: {
         main: colors.secondary,
       },
+    },
+
+    typography: {
+      fontFamily: [
+        'Rubik',
+        '-apple-system',
+        'BlinkMacSystemFont',
+        '"Segoe UI"',
+        'Roboto',
+        '"Helvetica Neue"',
+        'Arial',
+        'sans-serif',
+        '"Apple Color Emoji"',
+        '"Segoe UI Emoji"',
+        '"Segoe UI Symbol"',
+      ].join(','),
     },
   },
   muiBaseTheme,

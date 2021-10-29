@@ -16,13 +16,13 @@ export default function GuestRoutes() {
       <Route path={obvioRoutes.registration}>
         <Registration />
       </Route>
-      <Route path={obvioRoutes.forgotPassword}>
+      <Route path={obvioRoutes.forgot_password}>
         <ForgotPassword />
       </Route>
-      <Route path={obvioRoutes.resetPassword}>
+      <Route path={obvioRoutes.reset_password}>
         <ResetPassword />
       </Route>
-      <Route path={obvioRoutes.acceptInvitation}>
+      <Route path={obvioRoutes.accept_invitation}>
         <AcceptInvitation />
       </Route>
       <Redirect

@@ -9,7 +9,10 @@ export const fakeTeamMember = (
   ...fakeUser(),
   permissions: [],
   role: null,
-  has_paid: false,
+  has_active_subscription: false,
+  credits: 0,
+  plan: null,
+  has_payment_method: false,
   feature_flags: [],
   ...overrides,
 })

@@ -8,12 +8,16 @@ import FullPageLoader from 'lib/ui/layout/FullPageLoader'
 export const obvioRoutes = createRoutes({
   login: '/login',
   registration: '/register',
-  acceptInvitation: '/accept_invitation',
-  forgotPassword: '/forgot_password',
-  resetPassword: '/reset_password',
-  changePassword: '/change_password',
+  accept_invitation: '/accept_invitation',
+  forgot_password: '/forgot_password',
+  reset_password: '/reset_password',
+  change_password: '/change_password',
   organizations: {
     create: '/create',
+  },
+  billing: {
+    buy_credits: '/buy_credits',
+    change_plan: '/change_plan',
   },
   mailchimp: {
     auth: '/auth',

@@ -7,11 +7,12 @@ import mockAxios from 'axios'
 import {fakeUser} from 'auth/user/__utils__/factory'
 import {act, wait} from '@testing-library/react'
 import {TEAM_MEMBER_TOKEN_KEY} from 'obvio/auth'
+import {fakeTeamMember} from 'organization/Team/__utils__/factory'
 
 const mockPost = mockAxios.post as jest.Mock
 const mockGet = mockAxios.get as jest.Mock
 
-afterEach(() => {
+beforeEach(() => {
   jest.clearAllMocks()
 })
 
@@ -33,7 +34,19 @@ it('should login a user', async () => {
   mockPost.mockImplementationOnce(() =>
     Promise.resolve({data: {access_token: token}}),
   )
-  mockGet.mockImplementationOnce(() => Promise.resolve({data: fakeUser()}))
+  mockGet.mockImplementationOnce(() =>
+    Promise.resolve({
+      data: fakeTeamMember({
+        has_active_subscription: true,
+      }),
+    }),
+  )
+
+  Object.defineProperty(window, 'location', {
+    value: {
+      host: `app.obv.io`, // Root, no subdomain
+    },
+  })
 
   const {findByLabelText, findByText} = render(<App />)
 

@@ -12,7 +12,7 @@ beforeEach(() => {
   jest.clearAllMocks()
 })
 
-it('should add a new', async () => {
+it('should add a new attendee', async () => {
   const group = faker.random.word()
   const tags = Array.from(
     {length: faker.random.number({min: 1, max: 3})},
@@ -92,4 +92,36 @@ it('should add a new', async () => {
 
   // Added new attendee to list
   expect((await findAllByLabelText('name')).length).toBe(attendees.length + 1)
+})
+
+it('should show insufficient credits error', async () => {
+  const {findByLabelText, findByText} = await goToAttendeeManagement({
+    attendees: [],
+    userPermissions: [UPDATE_ATTENDEES],
+  })
+
+  user.click(await findByText(/add attendee/i))
+
+  // Base Attributes
+  const firstName = faker.name.firstName()
+  user.type(await findByLabelText('first name'), firstName)
+
+  const lastName = faker.name.lastName()
+  user.type(await findByLabelText('last name'), lastName)
+
+  const email = faker.internet.email()
+  user.type(await findByLabelText('email input'), email)
+
+  // reject with not enough credits
+  mockPost.mockImplementationOnce(() =>
+    Promise.reject({
+      response: {
+        data: {type: 'insufficient_credits'},
+      },
+    }),
+  )
+
+  user.click(await findByLabelText('save'))
+
+  expect(await findByText(/not enough credits/i)).toBeInTheDocument()
 })

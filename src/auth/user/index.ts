@@ -1,3 +1,4 @@
+import {PlanName} from 'obvio/Billing/plans'
 import {Role} from 'organization/Team/Roles/RolesProvider'
 
 export interface User {
@@ -10,7 +11,10 @@ export interface User {
 export type TeamMember = User & {
   permissions: string[]
   role: Role | null
-  has_paid: boolean
+  has_active_subscription: boolean
+  credits: number
+  plan: PlanName | null
+  has_payment_method: boolean
   feature_flags: string[] | null
 }
 

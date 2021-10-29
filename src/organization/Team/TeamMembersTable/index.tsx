@@ -47,9 +47,7 @@ export default function TeamMemberList() {
   }
   return (
     <>
-      <StyledErrorAlert onClose={clearResendError}>
-        {resendError}
-      </StyledErrorAlert>
+      <ErrorAlert onClose={clearResendError}>{resendError}</ErrorAlert>
       <Table>
         <TableHead>
           <TableRow>
@@ -149,8 +147,4 @@ const IconBox = styled.div`
 
 const StyledResendButton = styled(ResendButton)`
   margin-left: ${(props) => props.theme.spacing[1]};
-`
-
-const StyledErrorAlert = styled(ErrorAlert)`
-  margin-bottom: ${(props) => props.theme.spacing[5]};
 `

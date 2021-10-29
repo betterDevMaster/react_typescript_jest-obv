@@ -13,7 +13,7 @@ import LocalizedDateTimePicker from 'lib/LocalizedDateTimePicker'
 
 export type CreateEventData = Pick<
   ObvioEvent,
-  'name' | 'slug' | 'start' | 'end' | 'num_attendees'
+  'name' | 'slug' | 'start' | 'end' | 'num_expected_attendees'
 >
 
 export default function Form(props: {
@@ -52,7 +52,7 @@ export default function Form(props: {
     slug: error('slug'),
     start: error('start'),
     end: error('end'),
-    numAttendees: error('num_attendees'),
+    numAttendees: error('num_expected_attendees'),
   }
 
   return (
@@ -133,7 +133,7 @@ export default function Form(props: {
         required
         label="Expected Number of Attendees"
         type="number"
-        name="num_attendees"
+        name="num_expected_attendees"
         fullWidth
         inputProps={{
           ref: register({

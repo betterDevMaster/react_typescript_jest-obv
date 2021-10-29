@@ -1,4 +1,7 @@
+import Box from '@material-ui/core/Box'
 import Button from '@material-ui/core/Button'
+import Typography from '@material-ui/core/Typography'
+import {useEvent} from 'Event/EventProvider'
 import {useIsMounted} from 'lib/dom'
 import {AbsoluteLink} from 'lib/ui/link/AbsoluteLink'
 import {api} from 'lib/url'
@@ -11,8 +14,7 @@ export default function StartButton(props: {processing: boolean}) {
   const [url, setUrl] = useState<string | null>(null)
   const {client} = useOrganization()
   const isMounted = useIsMounted()
-
-  const canStart = Boolean(url) && room.is_online && !props.processing
+  const canStart = useCanStart(props.processing, url)
 
   useEffect(() => {
     if (!room.is_online) {
@@ -31,24 +33,51 @@ export default function StartButton(props: {processing: boolean}) {
     })
   }, [client, room, isMounted])
 
-  const button = (
-    <Button
-      variant="contained"
-      color="primary"
-      aria-label="start room"
-      disabled={!canStart}
-    >
-      Start
-    </Button>
+  return (
+    <>
+      <AbsoluteLink to={url || ''} newTab disableStyles disabled={!canStart}>
+        <Button
+          variant="contained"
+          color="primary"
+          aria-label="start room"
+          disabled={!canStart}
+        >
+          Start
+        </Button>
+      </AbsoluteLink>
+      <PaidOnlyDescription />
+    </>
   )
+}
 
-  if (!url) {
-    return button
+/**
+ * Whether a host is able to start a room.
+ *
+ * @param processing
+ * @param url
+ * @returns
+ */
+function useCanStart(processing: boolean, url: string | null) {
+  const {room} = useRoom()
+
+  if (processing) {
+    return false
+  }
+
+  return Boolean(url) && room.is_online
+}
+
+function PaidOnlyDescription() {
+  const {event} = useEvent()
+  if (event.has_paid) {
+    return null
   }
 
   return (
-    <AbsoluteLink to={url} newTab disableStyles disabled={!canStart}>
-      {button}
-    </AbsoluteLink>
+    <Box>
+      <Typography variant="caption">
+        *Start will be disabled until event starts.
+      </Typography>
+    </Box>
   )
 }

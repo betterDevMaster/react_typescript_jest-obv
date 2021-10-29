@@ -53,7 +53,9 @@ it('should create an account', async () => {
   )
 
   // Gets a user on login
-  mockGet.mockImplementationOnce(() => Promise.resolve({data: fakeUser()}))
+  mockGet.mockImplementationOnce(() =>
+    Promise.resolve({data: fakeTeamMember({has_active_subscription: true})}),
+  )
 
   user.click(await findByLabelText('create account'))
 

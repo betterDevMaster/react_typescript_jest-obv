@@ -42,12 +42,6 @@ export async function goToAttendeeManagement(
     Promise.resolve({data: fakePaginate({data: attendees})}),
   )
 
-  mockGet.mockImplementationOnce(() =>
-    Promise.resolve({
-      data: {num_attendees: faker.random.number({min: 5, max: 100})},
-    }),
-  )
-
   user.click(await renderResult.findByLabelText('attendee management'))
 
   // Wait for attendees to load

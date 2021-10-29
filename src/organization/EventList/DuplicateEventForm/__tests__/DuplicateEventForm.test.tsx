@@ -87,7 +87,7 @@ it('should duplicate an event', async () => {
   expect(data.start).toMatch(startDate)
 
   expect(data.end).toMatch(endDate)
-  expect(data.num_attendees).toBe(`${count}`)
+  expect(data.num_expected_attendees).toBe(`${count}`)
 
   expect(await findByText(newEvent.name)).toBeInTheDocument()
 })

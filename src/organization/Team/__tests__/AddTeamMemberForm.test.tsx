@@ -127,3 +127,43 @@ it('should add with a pre-assigned role', async () => {
   expect(url).toMatch(`/organizations/${organization.slug}/team_members`)
   expect(data.role_id).toBe(targetRole.id)
 })
+
+it('should show insufficient credits error', async () => {
+  const authUser = fakeTeamMember()
+  signInToOrganization({
+    authUser,
+    owner: authUser,
+    userPermissions: [UPDATE_TEAM],
+  })
+
+  const teamMembers = Array.from(
+    {
+      length: faker.random.number({min: 1, max: 5}),
+    },
+    fakeTeamMember,
+  )
+
+  const {findByText, findByLabelText} = render(<App />)
+
+  expect(await findByText(/team/i)).toBeInTheDocument()
+
+  mockGet.mockImplementationOnce(() => Promise.resolve({data: teamMembers})) // team members
+  mockGet.mockImplementationOnce(() => Promise.resolve({data: []})) // roles
+
+  user.click(await findByText(/team/i))
+
+  const email = faker.internet.email()
+  user.type(await findByLabelText('team member email'), email)
+
+  mockPost.mockImplementationOnce(() =>
+    Promise.reject({
+      response: {
+        data: {type: 'insufficient_credits'},
+      },
+    }),
+  )
+
+  user.click(await findByLabelText('add team member'))
+
+  expect(await findByText(/not enough credits/i)).toBeInTheDocument()
+})

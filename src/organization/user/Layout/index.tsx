@@ -1,7 +1,7 @@
 import Container from '@material-ui/core/Container'
 import styled from 'styled-components'
 import NavBar from 'lib/ui/layout/NavBar'
-import AppBar from 'organization/user/Layout/AppBar'
+import AppBar from 'organization/user/Layout/AppBar/AppBar'
 import React from 'react'
 
 export default function Layout(props: {

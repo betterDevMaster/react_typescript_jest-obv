@@ -30,7 +30,7 @@ function Content() {
     responseError,
   } = useForgotPassword({
     url: api('/forgot_password'),
-    resetFormUrl: obvioUrl(obvioRoutes.resetPassword),
+    resetFormUrl: obvioUrl(obvioRoutes.reset_password),
   })
 
   if (resetLinkSent) {

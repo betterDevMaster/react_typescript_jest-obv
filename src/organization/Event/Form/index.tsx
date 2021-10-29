@@ -72,7 +72,7 @@ export default function Form() {
             />
             <QuestionEditDialog question={editing} onClose={stopEditing} />
             <StyledFormActions />
-            <StyledErrorAlert>{responseError?.message}</StyledErrorAlert>
+            <ErrorAlert>{responseError?.message}</ErrorAlert>
 
             <Typography variant="h6">Questions</Typography>
             <Box display="flex" justifyContent="flex-end">
@@ -294,9 +294,5 @@ const FormConfig = React.forwardRef<
 })
 
 const StyledFormActions = styled(FormActions)`
-  margin-bottom: ${(props) => props.theme.spacing[4]};
-`
-
-const StyledErrorAlert = styled(ErrorAlert)`
   margin-bottom: ${(props) => props.theme.spacing[4]};
 `

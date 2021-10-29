@@ -9,7 +9,6 @@ import {goToArea} from 'organization/Event/AreaList/__utils__/go-to-areas'
 
 const mockGet = axios.get as jest.Mock
 const mockPatch = axios.patch as jest.Mock
-const mockDelete = axios.delete as jest.Mock
 
 beforeEach(() => {
   jest.clearAllMocks()

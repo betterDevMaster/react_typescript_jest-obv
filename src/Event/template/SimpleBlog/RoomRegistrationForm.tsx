@@ -1,5 +1,4 @@
 import React from 'react'
-import styled from 'styled-components'
 import Page, {Button, TextField} from 'Event/template/SimpleBlog/Login/Page'
 import {useForm} from 'react-hook-form'
 import {useEventAuth} from 'Event/auth'
@@ -22,7 +21,7 @@ export default function SimpleBlogRoomRegistrationForm(
   return (
     <Page>
       <>
-        <StyledErrorAlert>{responseError?.message}</StyledErrorAlert>
+        <ErrorAlert>{responseError?.message}</ErrorAlert>
         <form onSubmit={handleSubmit(submit)}>
           <TextField
             label="First name"
@@ -82,8 +81,3 @@ export default function SimpleBlogRoomRegistrationForm(
     </Page>
   )
 }
-
-const StyledErrorAlert = styled(ErrorAlert)`
-  width: 100%;
-  margin-bottom: ${(props) => props.theme.spacing[4]};
-`

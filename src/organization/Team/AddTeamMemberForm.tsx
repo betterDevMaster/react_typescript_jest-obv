@@ -20,6 +20,7 @@ import Grid from '@material-ui/core/Grid'
 import FormControl from '@material-ui/core/FormControl'
 import InputLabel from '@material-ui/core/InputLabel'
 import ErrorAlert from 'lib/ui/alerts/ErrorAlert'
+import InsufficientCreditsPopup from 'obvio/Billing/InsufficientCreditsPopup'
 
 interface InviteData {
   email: string
@@ -63,85 +64,91 @@ export default function AddTeamMemberForm() {
   }
 
   return (
-    <SyledForm onSubmit={handleSubmit(submit)}>
-      <StyledErrorAlert>{responseError?.message}</StyledErrorAlert>
-      <Grid container spacing={2}>
-        <Grid item md={10}>
-          <TextField
-            label="Email"
-            type="email"
-            fullWidth
-            variant="outlined"
-            disabled={submitting}
-            name="email"
-            inputProps={{
-              ref: register({
-                required: 'Email is required',
-              }),
-              'aria-label': 'team member email',
-            }}
-            error={!!errors.email}
-            helperText={errors.email && errors.email.message}
-          />
-        </Grid>
-        <Grid item md={2}>
-          <Controller
-            control={control}
-            name="role_id"
-            label="Role"
-            defaultValue={''}
-            render={({value, onChange}) => (
-              <FormControl fullWidth>
-                <InputLabel variant="outlined" shrink>
-                  Role
-                </InputLabel>
-                <Select
-                  required
-                  fullWidth
-                  variant="outlined"
-                  disabled={submitting}
-                  /**
-                   * Mui Select does NOT recognize NULL values, so we'll
-                   * have to use 0 as a workaround.
-                   */
-                  value={value || 0}
-                  displayEmpty={true}
-                  onChange={onUnknownChangeHandler((val) =>
+    <>
+      <InsufficientCreditsPopup
+        error={responseError}
+        onDismiss={() => setResponseError(null)}
+      />
+      <SyledForm onSubmit={handleSubmit(submit)}>
+        <ErrorAlert>{responseError?.message}</ErrorAlert>
+        <Grid container spacing={2}>
+          <Grid item md={10}>
+            <TextField
+              label="Email"
+              type="email"
+              fullWidth
+              variant="outlined"
+              disabled={submitting}
+              name="email"
+              inputProps={{
+                ref: register({
+                  required: 'Email is required',
+                }),
+                'aria-label': 'team member email',
+              }}
+              error={!!errors.email}
+              helperText={errors.email && errors.email.message}
+            />
+          </Grid>
+          <Grid item md={2}>
+            <Controller
+              control={control}
+              name="role_id"
+              label="Role"
+              defaultValue={''}
+              render={({value, onChange}) => (
+                <FormControl fullWidth>
+                  <InputLabel variant="outlined" shrink>
+                    Role
+                  </InputLabel>
+                  <Select
+                    required
+                    fullWidth
+                    variant="outlined"
+                    disabled={submitting}
                     /**
-                     * Handle our workaround, and set as NULL for the
-                     * request to be correct.
+                     * Mui Select does NOT recognize NULL values, so we'll
+                     * have to use 0 as a workaround.
                      */
-                    onChange(val || null),
-                  )}
-                  inputProps={{
-                    'aria-label': 'team member role',
-                  }}
-                >
-                  <MenuItem value={0}>None</MenuItem>
-                  {roles.map((role) => (
-                    <MenuItem
-                      value={role.id}
-                      aria-label={`pick ${role.name}`}
-                      key={role.id}
-                    >
-                      {role.name}
-                    </MenuItem>
-                  ))}
-                </Select>
-              </FormControl>
-            )}
-          />
+                    value={value || 0}
+                    displayEmpty={true}
+                    onChange={onUnknownChangeHandler((val) =>
+                      /**
+                       * Handle our workaround, and set as NULL for the
+                       * request to be correct.
+                       */
+                      onChange(val || null),
+                    )}
+                    inputProps={{
+                      'aria-label': 'team member role',
+                    }}
+                  >
+                    <MenuItem value={0}>None</MenuItem>
+                    {roles.map((role) => (
+                      <MenuItem
+                        value={role.id}
+                        aria-label={`pick ${role.name}`}
+                        key={role.id}
+                      >
+                        {role.name}
+                      </MenuItem>
+                    ))}
+                  </Select>
+                </FormControl>
+              )}
+            />
+          </Grid>
         </Grid>
-      </Grid>
-      <Button
-        variant="outlined"
-        type="submit"
-        disabled={submitting}
-        aria-label="add team member"
-      >
-        Invite
-      </Button>
-    </SyledForm>
+        <Button
+          variant="outlined"
+          type="submit"
+          disabled={submitting}
+          aria-label="add team member"
+        >
+          Invite
+        </Button>
+      </SyledForm>
+    </>
   )
 }
 
@@ -175,9 +182,5 @@ function isInvitation(
 const SyledForm = styled.form`
   padding: ${(props) => props.theme.spacing[5]};
   border: 1px solid ${(props) => props.theme.colors.border};
-  margin-bottom: ${(props) => props.theme.spacing[5]};
-`
-
-const StyledErrorAlert = styled(ErrorAlert)`
   margin-bottom: ${(props) => props.theme.spacing[5]};
 `

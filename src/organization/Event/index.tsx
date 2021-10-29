@@ -39,7 +39,7 @@ export default function Event() {
           </Typography>
         </Box>
         <Typography variant="h6">Expected Number of Attendees</Typography>
-        <Typography>{event.num_attendees}</Typography>
+        <Typography>{event.num_expected_attendees}</Typography>
       </Page>
     </Layout>
   )

@@ -68,7 +68,7 @@ export default function AppBarV4() {
               disablePadding: true,
             }}
           >
-            <RelativeLink disableStyles to={obvioRoutes.changePassword}>
+            <RelativeLink disableStyles to={obvioRoutes.change_password}>
               <MenuItem aria-label="change password">Change Password</MenuItem>
             </RelativeLink>
             <MenuItem onClick={handleLogout}>Logout</MenuItem>

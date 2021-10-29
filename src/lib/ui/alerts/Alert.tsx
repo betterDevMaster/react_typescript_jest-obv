@@ -1,4 +1,5 @@
 import MuiAlert, {AlertProps as MuiAlertProps} from '@material-ui/lab/Alert'
+import styled from 'styled-components'
 import React from 'react'
 
 export type AlertProps = {
@@ -16,12 +17,16 @@ export default function Alert(props: AlertProps) {
   }
 
   return (
-    <MuiAlert
+    <StyledAlert
       severity={props.severity}
       onClose={props.onClose}
       className={props.className}
     >
       {props.children}
-    </MuiAlert>
+    </StyledAlert>
   )
 }
+
+const StyledAlert = styled(MuiAlert)`
+  margin-bottom: ${(props) => props.theme.spacing[4]};
+`

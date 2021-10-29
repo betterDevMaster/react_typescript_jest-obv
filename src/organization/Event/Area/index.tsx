@@ -122,7 +122,7 @@ export default function Area() {
       />
       <Layout>
         <Page>
-          <StyledErrorAlert>{error}</StyledErrorAlert>
+          <ErrorAlert>{error}</ErrorAlert>
           <Box>
             <Left>
               <ExportAreaAttendees area={area} />
@@ -342,10 +342,6 @@ const Box = styled.div`
 
 const Left = styled.div`
   display: flex;
-`
-
-const StyledErrorAlert = styled(ErrorAlert)`
-  margin-bottom: ${(props) => props.theme.spacing[5]};
 `
 
 const RulesButton = styled(Button)`

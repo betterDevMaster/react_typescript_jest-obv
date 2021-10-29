@@ -19,7 +19,7 @@ beforeEach(() => {
 
 it('should create a new organization', async () => {
   setObvioAppUrl()
-  authenticate(fakeTeamMember({has_paid: true}))
+  authenticate(fakeTeamMember({has_active_subscription: true}))
   mockGet.mockImplementationOnce(() =>
     Promise.resolve({
       data: [],

@@ -24,7 +24,7 @@ import {useEvent} from 'Event/EventProvider'
 
 export type UpdateEventData = Pick<
   ObvioEvent,
-  'name' | 'slug' | 'start' | 'end' | 'num_attendees' | 'is_online'
+  'name' | 'slug' | 'start' | 'end' | 'num_expected_attendees' | 'is_online'
 >
 
 export default function Form(props: {
@@ -61,7 +61,7 @@ export default function Form(props: {
     slug: error('slug'),
     start: error('start'),
     end: error('end'),
-    numAttendees: error('num_attendees'),
+    numAttendees: error('num_expected_attendees'),
   }
 
   const slugHelperText = () => {
@@ -173,8 +173,8 @@ export default function Form(props: {
         required
         label="Expected Number of Attendees"
         type="number"
-        name="num_attendees"
-        defaultValue={event.num_attendees}
+        name="num_expected_attendees"
+        defaultValue={event.num_expected_attendees}
         fullWidth
         inputProps={{
           ref: register({
