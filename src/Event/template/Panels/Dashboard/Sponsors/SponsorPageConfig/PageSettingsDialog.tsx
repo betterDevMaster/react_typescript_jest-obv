@@ -77,6 +77,7 @@ export default function PageSettingsDialog(props: {
           cardBackgroundOpacity,
           description,
           isVisible,
+          orderedIds: template.sponsors.orderedIds,
         },
       },
     }

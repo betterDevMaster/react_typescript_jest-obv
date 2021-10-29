@@ -50,6 +50,7 @@ export default function PageSettingsDialog(props: {
           description,
           menuTitle,
           isVisible,
+          orderedIds: pageSettings.orderedIds,
         },
       },
     }
