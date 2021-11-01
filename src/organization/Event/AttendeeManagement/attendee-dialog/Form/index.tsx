@@ -1,11 +1,14 @@
 import {Attendee} from 'Event/attendee'
 import React, {useEffect, useRef, useState} from 'react'
 import TextField from '@material-ui/core/TextField'
+import Switch from '@material-ui/core/Switch'
 import {fieldError} from 'lib/form'
-import {useForm} from 'react-hook-form'
+import {useForm, Controller} from 'react-hook-form'
 import {ValidationError} from 'lib/api-client'
 import {useAttendees} from 'organization/Event/AttendeesProvider'
 import Button from '@material-ui/core/Button'
+import FormControl from '@material-ui/core/FormControl'
+import FormControlLabel from '@material-ui/core/FormControlLabel'
 import {spacing} from 'lib/ui/theme'
 import withStyles from '@material-ui/core/styles/withStyles'
 import TagsInput, {Tag} from 'lib/ui/form/TagsInput'
@@ -29,7 +32,7 @@ export default function Form(props: {
   isVisible: boolean
   attendee?: Attendee
 }) {
-  const {register, handleSubmit, errors} = useForm()
+  const {register, handleSubmit, errors, control} = useForm()
   const [serverError, setServerError] = useState<
     ValidationError<Partial<Attendee>>
   >(null)
@@ -122,6 +125,26 @@ export default function Form(props: {
     <>
       <InsufficientCreditsPopup error={serverError} onDismiss={clearError} />
       <form onSubmit={handleSubmit(submit)}>
+        <FormControl fullWidth disabled={submitting}>
+          <FormControlLabel
+            control={
+              <Controller
+                type="checkbox"
+                name="is_active"
+                defaultValue={attendee?.is_active}
+                control={control}
+                render={({onChange, value}) => (
+                  <Switch
+                    checked={!!value}
+                    onChange={(e) => onChange(e.target.checked)}
+                    inputProps={{'aria-label': 'toggle active'}}
+                  />
+                )}
+              />
+            }
+            label="Active"
+          />
+        </FormControl>
         <TextField
           label="First Name"
           fullWidth

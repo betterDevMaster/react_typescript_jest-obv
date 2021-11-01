@@ -61,9 +61,11 @@ it('should edit an attendee', async () => {
   user.click(await findByLabelText('add group'))
   user.type(await findByLabelText('group name'), newGroupKey)
   user.type(await findByLabelText('group value'), newGroupValue)
+  user.click(await findByLabelText('toggle active'))
 
   const updated = {
     ...target,
+    is_active: false,
     first_name: newName,
     tags: [...tags, newTag],
     groups: {
@@ -89,6 +91,7 @@ it('should edit an attendee', async () => {
   expect(data.tags.includes(newTag)).toBe(true)
   expect(data.groups[group]).toBe(updatedGroupValue)
   expect(data.groups[newGroupKey]).toBe(newGroupValue)
+  expect(data.is_active).toBe(false)
 })
 
 it('should copy the login url', async () => {
