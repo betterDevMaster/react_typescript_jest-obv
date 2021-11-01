@@ -7,7 +7,7 @@ import IconButton from '@material-ui/core/IconButton'
 import AccountCircle from '@material-ui/icons/AccountCircle'
 import MenuItem from '@material-ui/core/MenuItem'
 import styled from 'styled-components'
-import {useObvioAuth} from 'obvio/auth'
+import {useObvioAuth, useObvioUser} from 'obvio/auth'
 import {useHistory} from 'react-router-dom'
 import {obvioRoutes} from 'obvio/Routes'
 import logo from 'assets/images/logo.png'
@@ -26,6 +26,7 @@ export default function AppBar() {
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null)
   const {logout} = useObvioAuth()
   const history = useHistory()
+  const user = useObvioUser()
 
   const handleClose = () => {
     setAnchorEl(null)
@@ -74,6 +75,12 @@ export default function AppBar() {
             open={Boolean(anchorEl)}
             onClose={handleClose}
           >
+            <UserEmail>
+              <LoggedInAsLabel>Logged in as</LoggedInAsLabel>
+              <br />
+              {user.email}
+            </UserEmail>
+            <Divider />
             <CreditsMenuItem />
             <Divider />
             <RelativeLink disableStyles to={obvioRoutes.change_password}>
@@ -97,4 +104,13 @@ const Logo = styled.div`
       max-width: 100%;
     }
   }
+`
+
+const UserEmail = styled.div`
+  padding: 6px 16px;
+`
+
+const LoggedInAsLabel = styled.span`
+  color: ${(props) => props.theme.colors.text.muted};
+  font-size: 0.75rem;
 `

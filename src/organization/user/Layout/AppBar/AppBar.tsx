@@ -11,7 +11,7 @@ import styled from 'styled-components'
 import {useHistory} from 'react-router-dom'
 import {RelativeLink} from 'lib/ui/link/RelativeLink'
 import {useOrganization} from 'organization/OrganizationProvider'
-import {useOrganizationAuth} from 'organization/auth'
+import {useOrganizationAuth, useTeamMember} from 'organization/auth'
 import Button from '@material-ui/core/Button'
 import HasPermission from 'organization/HasPermission'
 import {UPDATE_TEAM} from 'organization/PermissionsProvider'
@@ -41,6 +41,7 @@ export default function AppBar() {
   const history = useHistory()
   const {routes, organization} = useOrganization()
   const isOwner = useIsOwner()
+  const user = useTeamMember()
 
   const homeLinkTarget = isOwner ? routes.settings : routes.events.root
 
@@ -103,6 +104,12 @@ export default function AppBar() {
             open={Boolean(anchorEl)}
             onClose={handleClose}
           >
+            <UserEmail>
+              <LoggedInAsLabel>Logged in as</LoggedInAsLabel>
+              <br />
+              {user.email}
+            </UserEmail>
+            <Divider />
             <CreditsMenuItem />
             <Divider />
             <MenuItem onClick={handleLogout}>Logout</MenuItem>
@@ -129,4 +136,13 @@ const HomeLink = styled(RelativeLink)`
   flex: 1;
   color: #000000;
   white-space: nowrap;
+`
+
+const UserEmail = styled.div`
+  padding: 6px 16px;
+`
+
+const LoggedInAsLabel = styled.span`
+  color: ${(props) => props.theme.colors.text.muted};
+  font-size: 0.75rem;
 `

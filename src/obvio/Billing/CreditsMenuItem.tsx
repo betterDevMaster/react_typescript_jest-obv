@@ -9,20 +9,18 @@ import CreditBalance from 'obvio/Billing/CreditBalance'
  * them here. The actual type is crazy long, since it's
  * in MUI domain we'll just 'any' type it.
  */
-const CreditsBillingItem = React.forwardRef<MenuItemProps, any>(
-  (props, ref) => {
-    return (
-      <MenuItem ref={ref} {...props}>
-        <RelativeLink
-          to={obvioRoutes.billing.root}
-          disableStyles
-          aria-label="billing settings"
-        >
-          <CreditBalance />
-        </RelativeLink>
-      </MenuItem>
-    )
-  },
-)
+const CreditsMenuItem = React.forwardRef<MenuItemProps, any>((props, ref) => {
+  return (
+    <MenuItem ref={ref} {...props}>
+      <RelativeLink
+        to={obvioRoutes.billing.root}
+        disableStyles
+        aria-label="billing settings"
+      >
+        <CreditBalance />
+      </RelativeLink>
+    </MenuItem>
+  )
+})
 
-export default CreditsBillingItem
+export default CreditsMenuItem
