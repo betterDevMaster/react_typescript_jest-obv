@@ -8,7 +8,6 @@ import styled from 'styled-components'
 import {useEditMode} from 'Event/Dashboard/editor/state/edit-mode'
 import {DragDropContext, Droppable, DropResult} from 'react-beautiful-dnd'
 import {
-  SidebarItemProps,
   useRemoveSidebarItem,
   useUpdateSidebarItem,
 } from 'Event/template/SimpleBlog/Dashboard/Sidebar/SidebarItem'
@@ -16,9 +15,10 @@ import {uuid} from 'lib/uuid'
 import {RemoveButton} from 'organization/Event/DashboardConfig/ComponentConfig'
 import VisibleOnMatch from 'Event/attendee-rules/VisibleOnMatch'
 import Section from 'Event/template/SimpleBlog/Dashboard/Sidebar/Section'
+import {useHasVisibleItems} from 'Event/attendee-rules/matcher'
 
 export const TICKET_RIBBON_LIST = 'Ticket Ribbon List'
-export interface TicketRibbonListProps extends SidebarItemProps {
+export interface TicketRibbonListProps {
   id: string
   type: typeof TICKET_RIBBON_LIST
   ribbons: TicketRibbon[]
@@ -32,11 +32,16 @@ export const createTicketRibbonList = (): TicketRibbonListProps => ({
 
 export default function TicketRibbons(props: TicketRibbonListProps) {
   const removeItem = useRemoveSidebarItem(props)
+  const {ribbons} = props
+  const isEditMode = useEditMode()
 
-  const hasRibbons = props.ribbons.length > 0
+  const hasVisibleItems = useHasVisibleItems(ribbons)
+  if (!hasVisibleItems && !isEditMode) {
+    return null
+  }
 
   return (
-    <Section disableBorder={props.isFirst || !hasRibbons}>
+    <Section>
       <EditModeOnly>
         <RemoveButton onClick={removeItem} showing size="large">
           Remove Ribbons

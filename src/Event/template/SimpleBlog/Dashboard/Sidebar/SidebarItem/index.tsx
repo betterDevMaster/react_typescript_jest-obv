@@ -31,10 +31,6 @@ import {DraggableOverlay} from 'lib/ui/drag-and-drop'
 import DragHandleBar from 'Event/template/SimpleBlog/Dashboard/Sidebar/SidebarItem/DragHandleBar'
 import {useEditMode} from 'Event/Dashboard/editor/state/edit-mode'
 
-export type SidebarItemProps = {
-  isFirst?: boolean
-}
-
 export type SidebarItem =
   | AgendaListProps
   | ResourceListProps
@@ -45,10 +41,9 @@ export type SidebarItem =
 
 export default function SidebarItem(props: SidebarItem & {index: number}) {
   const isEditMode = useEditMode()
-  const isFirst = props.index === 0
 
   if (!isEditMode) {
-    return <Body {...props} isFirst={isFirst} />
+    return <Body {...props} />
   }
 
   return (
@@ -58,7 +53,7 @@ export default function SidebarItem(props: SidebarItem & {index: number}) {
           <DraggableOverlay>
             <>
               <DragHandleBar handleProps={provided.dragHandleProps} />
-              <Body {...props} isFirst={isFirst} />
+              <Body {...props} />
             </>
           </DraggableOverlay>
         </div>

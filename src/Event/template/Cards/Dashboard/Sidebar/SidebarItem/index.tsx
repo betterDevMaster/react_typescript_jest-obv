@@ -29,7 +29,6 @@ import TicketRibbons, {
 import {Draggable} from 'react-beautiful-dnd'
 import {DraggableOverlay} from 'lib/ui/drag-and-drop'
 import DragHandleBar from 'Event/template/Cards/Dashboard/Sidebar/SidebarItem/DragHandleBar'
-import Section from 'Event/template/Cards/Dashboard/Sidebar/Section'
 import {useEditMode} from 'Event/Dashboard/editor/state/edit-mode'
 
 export type SidebarItem =
@@ -42,8 +41,6 @@ export type SidebarItem =
 
 export default function SidebarItem(props: SidebarItem & {index: number}) {
   const isEditMode = useEditMode()
-  const isFirst = props.index === 0
-
   if (!isEditMode) {
     return <Body {...props} />
   }
@@ -51,18 +48,14 @@ export default function SidebarItem(props: SidebarItem & {index: number}) {
   return (
     <Draggable draggableId={props.id} index={props.index}>
       {(provided) => (
-        <Section
-          ref={provided.innerRef}
-          draggableProps={provided.draggableProps}
-          disableBorder={isFirst}
-        >
+        <div ref={provided.innerRef} {...provided.draggableProps}>
           <DraggableOverlay>
             <>
               <DragHandleBar handleProps={provided.dragHandleProps} />
               <Body {...props} />
             </>
           </DraggableOverlay>
-        </Section>
+        </div>
       )}
     </Draggable>
   )

@@ -22,15 +22,15 @@ import {useToggle} from 'lib/toggle'
 import {ResourceListConfig} from 'Event/template/SimpleBlog/Dashboard/Sidebar/SidebarItem/ResourceList/ResourceListConfig'
 import {uuid} from 'lib/uuid'
 import {
-  SidebarItemProps,
   useRemoveSidebarItem,
   useUpdateSidebarItem,
 } from 'Event/template/SimpleBlog/Dashboard/Sidebar/SidebarItem'
 import {RemoveButton} from 'organization/Event/DashboardConfig/ComponentConfig'
 import Section from 'Event/template/SimpleBlog/Dashboard/Sidebar/Section'
+import {useHasVisibleItems} from 'Event/attendee-rules/matcher'
 
 export const RESOURCE_LIST = 'Resource List'
-export interface ResourceListProps extends SidebarItemProps {
+export interface ResourceListProps {
   id: string
   type: typeof RESOURCE_LIST
   title: string
@@ -65,13 +65,13 @@ export function ResourceList(props: ResourceListProps) {
 
   const v = useAttendeeVariables()
 
-  const hasResources = resources.length > 0
-  if (!hasResources && !isEdit) {
+  const hasVisibleItems = useHasVisibleItems(resources)
+  if (!hasVisibleItems && !isEdit) {
     return null
   }
 
   return (
-    <Section disableBorder={props.isFirst}>
+    <Section>
       <ResourceListConfig
         isVisible={configVisible}
         onClose={toggleConfig}

@@ -13,14 +13,11 @@ import {useToggle} from 'lib/toggle'
 import {uuid} from 'lib/uuid'
 import {EmojiListConfig} from 'Event/template/SimpleBlog/Dashboard/Sidebar/SidebarItem/EmojiList/EmojiListConfig'
 import {RemoveButton} from 'organization/Event/DashboardConfig/ComponentConfig'
-import {
-  SidebarItemProps,
-  useRemoveSidebarItem,
-} from 'Event/template/SimpleBlog/Dashboard/Sidebar/SidebarItem'
+import {useRemoveSidebarItem} from 'Event/template/SimpleBlog/Dashboard/Sidebar/SidebarItem'
 import Section from 'Event/template/SimpleBlog/Dashboard/Sidebar/Section'
 
 export const EMOJI_LIST = 'Emoji List'
-export interface EmojiListProps extends SidebarItemProps {
+export interface EmojiListProps {
   id: string
   type: typeof EMOJI_LIST
   emojis: Emoji['name'][]
@@ -49,7 +46,7 @@ export default function EmojiList(props: EmojiListProps) {
     // Add button to create emoji list
     return (
       <EditModeOnly>
-        <Section disableBorder={props.isFirst}>
+        <Section>
           <EmojiListConfig
             isVisible={configVisible}
             onClose={toggleConfig}
@@ -65,7 +62,7 @@ export default function EmojiList(props: EmojiListProps) {
   }
 
   return (
-    <Section disableBorder={props.isFirst}>
+    <Section>
       <EditModeOnly>
         <EmojiListConfig
           isVisible={configVisible}

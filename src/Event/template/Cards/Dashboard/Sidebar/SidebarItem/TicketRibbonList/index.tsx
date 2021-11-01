@@ -14,6 +14,8 @@ import {
 } from 'Event/template/Cards/Dashboard/Sidebar/SidebarItem'
 import {uuid} from 'lib/uuid'
 import {RemoveButton} from 'organization/Event/DashboardConfig/ComponentConfig'
+import {useHasVisibleItems} from 'Event/attendee-rules/matcher'
+import Section from 'Event/template/Cards/Dashboard/Sidebar/Section'
 
 export const TICKET_RIBBON_LIST = 'Ticket Ribbon List'
 export interface TicketRibbonListProps {
@@ -30,9 +32,14 @@ export const createTicketRibbonList = (): TicketRibbonListProps => ({
 
 export default function TicketRibbons(props: TicketRibbonListProps) {
   const removeItem = useRemoveSidebarItem(props)
+  const isEditMode = useEditMode()
+  const hasVisibleItems = useHasVisibleItems(props.ribbons)
+  if (!hasVisibleItems && !isEditMode) {
+    return null
+  }
 
   return (
-    <>
+    <Section>
       <EditModeOnly>
         <RemoveButton onClick={removeItem} showing size="large">
           Remove Ribbons
@@ -40,7 +47,7 @@ export default function TicketRibbons(props: TicketRibbonListProps) {
         <StyledAddTicketRibbonButton list={props} />
       </EditModeOnly>
       <DroppableList {...props} />
-    </>
+    </Section>
   )
 }
 
@@ -50,9 +57,9 @@ function DroppableList(props: TicketRibbonListProps) {
 
   if (!isEdit)
     return (
-      <RibbonsContainer>
+      <div>
         <TicketRibbonItemList {...props} />
-      </RibbonsContainer>
+      </div>
     )
 
   return (
@@ -107,8 +114,6 @@ function useHandleDrag(props: TicketRibbonListProps) {
     })
   }
 }
-
-const RibbonsContainer = styled.div``
 
 const StyledAddTicketRibbonButton = styled(AddTicketRibbonButton)`
   margin-bottom: ${(props) => props.theme.spacing[6]}!important;

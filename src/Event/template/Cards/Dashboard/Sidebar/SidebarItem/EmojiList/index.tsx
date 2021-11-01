@@ -14,6 +14,7 @@ import {uuid} from 'lib/uuid'
 import {EmojiListConfig} from 'Event/template/Cards/Dashboard/Sidebar/SidebarItem/EmojiList/EmojiListConfig'
 import {RemoveButton} from 'organization/Event/DashboardConfig/ComponentConfig'
 import {useRemoveSidebarItem} from 'Event/template/Cards/Dashboard/Sidebar/SidebarItem'
+import Section from 'Event/template/Cards/Dashboard/Sidebar/Section'
 
 export const EMOJI_LIST = 'Emoji List'
 export interface EmojiListProps {
@@ -45,7 +46,7 @@ export default function EmojiList(props: EmojiListProps) {
     // Add button to create emoji list
     return (
       <EditModeOnly>
-        <>
+        <Section>
           <EmojiListConfig
             isVisible={configVisible}
             onClose={toggleConfig}
@@ -55,13 +56,13 @@ export default function EmojiList(props: EmojiListProps) {
             Remove Emojis
           </RemoveButton>
           <StyledAddEmojiListButton onClick={toggleConfig} />
-        </>
+        </Section>
       </EditModeOnly>
     )
   }
 
   return (
-    <>
+    <Section>
       <EditModeOnly>
         <EmojiListConfig
           isVisible={configVisible}
@@ -81,7 +82,7 @@ export default function EmojiList(props: EmojiListProps) {
           ))}
         </Box>
       </Editable>
-    </>
+    </Section>
   )
 }
 

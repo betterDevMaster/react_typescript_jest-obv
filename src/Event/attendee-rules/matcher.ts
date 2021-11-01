@@ -1,3 +1,4 @@
+import {useAttendeeProfile} from 'Event/attendee-rules/AttendeeProfileProvider'
 import {AND, OR, Rule} from 'Event/attendee-rules'
 import {matchesTagsRule} from 'Event/attendee-rules/RuleConfig/RuleList/SingleRule/TagsRule/matcher'
 import {NESTED_RULE} from 'Event/attendee-rules/RuleConfig/RuleList/SingleRule/NestedRule'
@@ -32,4 +33,23 @@ function isTrue(groups: Groups, tags: Tags, r: Rule) {
     case TAGS:
       return matchesTagsRule(tags, r)
   }
+}
+
+/**
+ * Check whether there is at least one visible item
+ * @param resources
+ * @returns
+ */
+export function useHasVisibleItems(items: {rules?: Rule[]}[]) {
+  const {groups, tags} = useAttendeeProfile()
+
+  return (
+    items.filter(({rules}) => {
+      if (!rules || rules.length === 0) {
+        return true
+      }
+
+      return hasMatch({groups, tags}, rules)
+    }).length > 0
+  )
 }

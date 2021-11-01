@@ -20,6 +20,7 @@ import {
   useUpdateSidebarItem,
 } from 'Event/template/Cards/Dashboard/Sidebar/SidebarItem'
 import {RemoveButton} from 'organization/Event/DashboardConfig/ComponentConfig'
+import Section from 'Event/template/Cards/Dashboard/Sidebar/Section'
 
 export const AGENDA_LIST = 'Agenda List'
 export type AgendaListProps = {
@@ -74,7 +75,7 @@ export default function AgendaList(props: AgendaListProps) {
   }
 
   return (
-    <>
+    <Section>
       <AgendaListConfig
         list={props}
         isVisible={listConfigVisible}
@@ -108,7 +109,7 @@ export default function AgendaList(props: AgendaListProps) {
       <EditModeOnly>
         <StyledAddAgendaEventButton list={props} />
       </EditModeOnly>
-    </>
+    </Section>
   )
 }
 

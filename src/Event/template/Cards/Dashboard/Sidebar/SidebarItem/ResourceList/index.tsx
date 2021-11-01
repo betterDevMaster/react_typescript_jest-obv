@@ -26,6 +26,8 @@ import {
   useUpdateSidebarItem,
 } from 'Event/template/Cards/Dashboard/Sidebar/SidebarItem'
 import {RemoveButton} from 'organization/Event/DashboardConfig/ComponentConfig'
+import {useHasVisibleItems} from 'Event/attendee-rules/matcher'
+import Section from 'Event/template/Cards/Dashboard/Sidebar/Section'
 
 export const RESOURCE_LIST = 'Resource List'
 export interface ResourceListProps {
@@ -63,13 +65,13 @@ export function ResourceList(props: ResourceListProps) {
 
   const v = useAttendeeVariables()
 
-  const hasResources = resources.length > 0
+  const hasResources = useHasVisibleItems(resources)
   if (!hasResources && !isEdit) {
     return null
   }
 
   return (
-    <>
+    <Section>
       <ResourceListConfig
         isVisible={configVisible}
         onClose={toggleConfig}
@@ -90,7 +92,7 @@ export function ResourceList(props: ResourceListProps) {
       <EditModeOnly>
         <StyledAddResourceButton list={props} />
       </EditModeOnly>
-    </>
+    </Section>
   )
 }
 

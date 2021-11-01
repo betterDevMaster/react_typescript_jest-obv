@@ -7,20 +7,21 @@ const Section = React.forwardRef<
   {
     children: React.ReactNode
     className?: string
-    disableBorder?: boolean
   }
 >((props, ref) => {
   const {
     template: {sidebar},
   } = useSimpleBlog()
 
+  /**
+   * If empty is true, padding should be ignored.
+   */
   return (
     <Box
       ref={ref}
       className={props.className}
       color={sidebar.separatorColor}
       width={sidebar.separatorWidth}
-      disableBorder={props.disableBorder}
       borderStyle={sidebar.separatorStyle}
     >
       {props.children}
@@ -34,13 +35,13 @@ const Box = styled.div<{
   color: string
   width: number
   borderStyle: string
-  disableBorder?: boolean
-  disableTopPadding?: boolean
 }>`
   border-top: ${(props) =>
-    props.disableBorder
-      ? 'none'
-      : `${props.color} ${props.width}px ${props.borderStyle}`};
+    `${props.color} ${props.width}px ${props.borderStyle}`};
 
   padding: ${(props) => props.theme.spacing[8]} 0;
+
+  &:first-child {
+    border-top: none;
+  }
 `

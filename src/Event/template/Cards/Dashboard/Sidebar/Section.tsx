@@ -1,6 +1,5 @@
 import {useCards} from 'Event/template/Cards'
 import React from 'react'
-import {DraggableProvidedDraggableProps} from 'react-beautiful-dnd'
 import styled from 'styled-components'
 
 const Section = React.forwardRef<
@@ -8,8 +7,6 @@ const Section = React.forwardRef<
   {
     children: React.ReactNode
     className?: string
-    draggableProps: DraggableProvidedDraggableProps
-    disableBorder?: boolean
   }
 >((props, ref) => {
   const {
@@ -22,9 +19,7 @@ const Section = React.forwardRef<
       className={props.className}
       color={sidebar.separatorColor}
       width={sidebar.separatorWidth}
-      disableBorder={props.disableBorder}
       borderStyle={sidebar.separatorStyle}
-      {...props.draggableProps}
     >
       {props.children}
     </Box>
@@ -41,9 +36,11 @@ const Box = styled.div<{
   disableTopPadding?: boolean
 }>`
   border-top: ${(props) =>
-    props.disableBorder
-      ? 'none'
-      : `${props.color} ${props.width}px ${props.borderStyle}`};
+    `${props.color} ${props.width}px ${props.borderStyle}`};
 
   padding: ${(props) => props.theme.spacing[8]} 0;
+
+  &:first-child {
+    border-top: none;
+  }
 `

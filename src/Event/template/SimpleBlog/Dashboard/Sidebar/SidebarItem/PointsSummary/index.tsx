@@ -8,15 +8,12 @@ import {PointsSummaryConfig} from 'Event/template/SimpleBlog/Dashboard/Sidebar/S
 import {uuid} from 'lib/uuid'
 import EditModeOnly from 'Event/Dashboard/editor/views/EditModeOnly'
 import Button from '@material-ui/core/Button'
-import {
-  SidebarItemProps,
-  useRemoveSidebarItem,
-} from 'Event/template/SimpleBlog/Dashboard/Sidebar/SidebarItem'
+import {useRemoveSidebarItem} from 'Event/template/SimpleBlog/Dashboard/Sidebar/SidebarItem'
 import {RemoveButton} from 'organization/Event/DashboardConfig/ComponentConfig'
 import Section from 'Event/template/SimpleBlog/Dashboard/Sidebar/Section'
 
 export const POINTS_SUMMARY = 'Points Summary'
-export interface PointsSummaryProps extends SidebarItemProps {
+export interface PointsSummaryProps {
   id: string
   type: typeof POINTS_SUMMARY
   description: string
@@ -39,7 +36,7 @@ export default function PointsSummary(props: PointsSummaryProps) {
   const removeItem = useRemoveSidebarItem(props)
 
   return (
-    <Section disableBorder={props.isFirst}>
+    <Section>
       <PointsSummaryConfig
         isVisible={configVisible}
         onClose={toggleConfig}
