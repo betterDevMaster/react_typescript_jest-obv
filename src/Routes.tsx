@@ -8,12 +8,15 @@ import {AutoRefreshEvent, DomainEventProvider} from 'Event/EventProvider'
 import EventRoutes from 'Event/Routes'
 import WithLiveChatSupport from 'lib/WithLiveChatSupport'
 import AuthTokenHandler from 'Event/auth/AuthTokenHandler'
+import BillingProvider from 'obvio/Billing/BillingProvider'
 
 export default function Routes() {
   if (isObvioApp()) {
     return (
       <WithLiveChatSupport>
-        <AdminRoutes />
+        <BillingProvider>
+          <AdminRoutes />
+        </BillingProvider>
       </WithLiveChatSupport>
     )
   }

@@ -5,54 +5,46 @@ import React from 'react'
 import {Icon} from 'lib/fontawesome/Icon'
 import Typography from '@material-ui/core/Typography'
 import Button from '@material-ui/core/Button'
-import {RelativeLink} from 'lib/ui/link/RelativeLink'
 import {obvioRoutes} from 'obvio/Routes'
+import {useBilling} from 'obvio/Billing/BillingProvider'
+import {useHistory} from 'react-router'
 
-export type CreditsError = {
-  type: 'insufficient_credits'
-  credits_short: number
-}
+export default function InsufficientCreditsPopup() {
+  const {missingCredits, setMissingCredits} = useBilling()
+  const history = useHistory()
 
-export default function InsufficientCreditsPopup(props: {
-  error?: any
-  onDismiss: () => void
-}) {
-  const {error, onDismiss} = props
+  const clearMissingCredits = () => setMissingCredits(0)
 
-  const creditLabel = (num: number) => (num > 1 ? 'credits' : 'credit')
-
-  if (!error || !isCreditsError(error)) {
-    return null
+  const handleAddCredits = () => {
+    clearMissingCredits()
+    history.push(obvioRoutes.billing.root)
   }
 
+  const creditLabel = missingCredits > 1 ? 'credits' : 'credit'
+
   return (
-    <Dialog open={true} onClose={onDismiss}>
+    <Dialog open={Boolean(missingCredits)} onClose={clearMissingCredits}>
       <DialogContent>
         <Box>
           <Icon className="sad-tear" />
           <CreditsNeeded>Not Enough Credits</CreditsNeeded>
           <Typography>
-            Add{' '}
-            <strong>{`${error.credits_short} ${creditLabel(
-              error.credits_short,
-            )}`}</strong>{' '}
-            to complete the request.
+            Add <strong>{`${missingCredits} ${creditLabel}`}</strong> to
+            complete the request.
           </Typography>
           <AddCreditsBox>
-            <RelativeLink to={obvioRoutes.billing.root} disableStyles>
-              <Button variant="contained" color="primary">
-                Add Credits
-              </Button>
-            </RelativeLink>
+            <Button
+              variant="contained"
+              color="primary"
+              onClick={handleAddCredits}
+            >
+              Add Credits
+            </Button>
           </AddCreditsBox>
         </Box>
       </DialogContent>
     </Dialog>
   )
-}
-
-function isCreditsError(error: {type: string}): error is CreditsError {
-  return error.type === 'insufficient_credits'
 }
 
 const Box = styled.div`

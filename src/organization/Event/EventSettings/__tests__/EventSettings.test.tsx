@@ -91,25 +91,3 @@ it('should update event values', async () => {
   const [_removeUrl, removeFavicon] = mockPut.mock.calls[1]
   expect(removeFavicon.favicon).toBe(null)
 })
-
-it('should show insufficient credits error', async () => {
-  const {findByLabelText, findByText} = await goToEventConfig({
-    userPermissions: [CONFIGURE_EVENTS],
-  })
-
-  await act(async () => {
-    user.type(await findByLabelText('event name'), 'some update')
-  })
-
-  mockPut.mockImplementationOnce(() =>
-    Promise.reject({
-      response: {
-        data: {type: 'insufficient_credits'},
-      },
-    }),
-  )
-
-  user.click(await findByLabelText('submit'))
-
-  expect(await findByText(/not enough credits/i)).toBeInTheDocument()
-})

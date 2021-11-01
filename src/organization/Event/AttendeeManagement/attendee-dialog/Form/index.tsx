@@ -19,7 +19,6 @@ import {
 } from 'organization/PermissionsProvider'
 import HasPermission from 'organization/HasPermission'
 import NewGroupInput from 'organization/Event/AttendeeManagement/attendee-dialog/Form/NewGroupInput'
-import InsufficientCreditsPopup from 'obvio/Billing/InsufficientCreditsPopup'
 
 export interface NewGroup {
   key: string
@@ -42,8 +41,6 @@ export default function Form(props: {
   const {groups} = useAttendees()
   const isMounted = useRef(true)
   const [tags, setTags] = useState<Tag[]>(attendee?.tags || [])
-
-  const clearError = () => setServerError(null)
 
   const {can} = usePermissions()
   const canEdit = can(UPDATE_ATTENDEES)
@@ -122,124 +119,121 @@ export default function Form(props: {
   })
 
   return (
-    <>
-      <InsufficientCreditsPopup error={serverError} onDismiss={clearError} />
-      <form onSubmit={handleSubmit(submit)}>
-        <FormControl fullWidth disabled={submitting}>
-          <FormControlLabel
-            control={
-              <Controller
-                type="checkbox"
-                name="is_active"
-                defaultValue={attendee?.is_active}
-                control={control}
-                render={({onChange, value}) => (
-                  <Switch
-                    checked={!!value}
-                    onChange={(e) => onChange(e.target.checked)}
-                    inputProps={{'aria-label': 'toggle active'}}
-                  />
-                )}
-              />
-            }
-            label="Active"
-          />
-        </FormControl>
-        <TextField
-          label="First Name"
-          fullWidth
-          variant="outlined"
-          name="first_name"
-          defaultValue={attendee?.first_name || ''}
-          inputProps={{
-            ref: register({
-              required: 'First name is required',
-            }),
-            'aria-label': 'first name',
-          }}
-          error={Boolean(firstNameError)}
-          helperText={firstNameError}
+    <form onSubmit={handleSubmit(submit)}>
+      <FormControl fullWidth disabled={submitting}>
+        <FormControlLabel
+          control={
+            <Controller
+              type="checkbox"
+              name="is_active"
+              defaultValue={attendee?.is_active}
+              control={control}
+              render={({onChange, value}) => (
+                <Switch
+                  checked={!!value}
+                  onChange={(e) => onChange(e.target.checked)}
+                  inputProps={{'aria-label': 'toggle active'}}
+                />
+              )}
+            />
+          }
+          label="Active"
         />
-        <TextField
-          label="Last Name"
-          fullWidth
-          variant="outlined"
-          name="last_name"
-          defaultValue={attendee?.last_name || ''}
-          inputProps={{
-            ref: register({
-              required: 'Last name is required',
-            }),
-            'aria-label': 'last name',
-          }}
-          error={Boolean(lastNameError)}
-          helperText={lastNameError}
-        />
-        <TextField
-          label="Email"
-          fullWidth
-          variant="outlined"
-          name="email"
-          defaultValue={attendee?.email || ''}
-          inputProps={{
-            ref: register({
-              required: 'Email is required',
-            }),
-            'aria-label': 'email input',
-          }}
-          error={Boolean(emailError)}
-          helperText={emailError}
+      </FormControl>
+      <TextField
+        label="First Name"
+        fullWidth
+        variant="outlined"
+        name="first_name"
+        defaultValue={attendee?.first_name || ''}
+        inputProps={{
+          ref: register({
+            required: 'First name is required',
+          }),
+          'aria-label': 'first name',
+        }}
+        error={Boolean(firstNameError)}
+        helperText={firstNameError}
+      />
+      <TextField
+        label="Last Name"
+        fullWidth
+        variant="outlined"
+        name="last_name"
+        defaultValue={attendee?.last_name || ''}
+        inputProps={{
+          ref: register({
+            required: 'Last name is required',
+          }),
+          'aria-label': 'last name',
+        }}
+        error={Boolean(lastNameError)}
+        helperText={lastNameError}
+      />
+      <TextField
+        label="Email"
+        fullWidth
+        variant="outlined"
+        name="email"
+        defaultValue={attendee?.email || ''}
+        inputProps={{
+          ref: register({
+            required: 'Email is required',
+          }),
+          'aria-label': 'email input',
+        }}
+        error={Boolean(emailError)}
+        helperText={emailError}
+        disabled={!canEdit}
+      />
+      <TagsInput
+        value={tags}
+        onChange={setTags}
+        name="tags"
+        aria-label="tags"
+        label="Tags"
+        disabled={!canEdit}
+      />
+      {groups.map((group) => (
+        <GroupInput
+          key={group}
+          group={group}
+          attendee={attendee}
+          ref={register}
           disabled={!canEdit}
         />
-        <TagsInput
-          value={tags}
-          onChange={setTags}
-          name="tags"
-          aria-label="tags"
-          label="Tags"
-          disabled={!canEdit}
+      ))}
+      {newGroups.map((group, index) => (
+        <NewGroupInput
+          key={index}
+          group={group}
+          onChange={updateNewGroup(index)}
         />
-        {groups.map((group) => (
-          <GroupInput
-            key={group}
-            group={group}
-            attendee={attendee}
-            ref={register}
-            disabled={!canEdit}
-          />
-        ))}
-        {newGroups.map((group, index) => (
-          <NewGroupInput
-            key={index}
-            group={group}
-            onChange={updateNewGroup(index)}
-          />
-        ))}
-        <HasPermission permission={UPDATE_ATTENDEES}>
-          <AddGroupButton
-            aria-label="add group"
-            variant="outlined"
-            color="primary"
-            onClick={addGroup}
-            fullWidth
-            size="large"
-          >
-            Add Group
-          </AddGroupButton>
-        </HasPermission>
-        <SaveButton
-          type="submit"
-          variant="contained"
-          fullWidth
+      ))}
+      <HasPermission permission={UPDATE_ATTENDEES}>
+        <AddGroupButton
+          aria-label="add group"
+          variant="outlined"
           color="primary"
+          onClick={addGroup}
+          fullWidth
           size="large"
-          disabled={submitting}
-          aria-label="save"
         >
-          Save
-        </SaveButton>
-      </form>
-    </>
+          Add Group
+        </AddGroupButton>
+      </HasPermission>
+      <SaveButton
+        type="submit"
+        variant="contained"
+        fullWidth
+        color="primary"
+        size="large"
+        disabled={submitting}
+        aria-label="save"
+      >
+        Save
+      </SaveButton>
+    </form>
   )
 }
 
