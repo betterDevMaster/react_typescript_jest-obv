@@ -14,6 +14,11 @@ import {BlogPost} from 'Event/Dashboard/components/BlogPost'
 import {usePostForm} from 'Event/Dashboard/components/BlogPost/form'
 import styled from 'styled-components'
 import {useCards} from 'Event/template/Cards'
+import {
+  DEFAULT_RESUBMIT_LABEL,
+  DEFAULT_SUBMITTED_MESSAGE,
+  DEFAULT_SUBMIT_LABEL,
+} from 'organization/Event/Form'
 
 export default function PostForm(props: {post: BlogPost}) {
   const {post} = props
@@ -88,7 +93,7 @@ function Content(props: {form: Form; post: BlogPost}) {
             raidus={formStyles.buttonRadius}
             width={formStyles.buttonSize}
           >
-            {v(form.submit_label)}
+            {v(form.submit_label || DEFAULT_SUBMIT_LABEL)}
           </StyledFormButton>
         </Container>
       </StyledForm>
@@ -118,14 +123,16 @@ function SubmittedMessage(props: {resubmit: () => void; form: Form}) {
   const v = useAttendeeVariables()
 
   if (!props.form.can_resubmit) {
-    return <div>{v(props.form.submitted_message)}</div>
+    return (
+      <div>{v(props.form.submitted_message || DEFAULT_SUBMITTED_MESSAGE)}</div>
+    )
   }
 
   return (
     <div>
-      <p>{v(props.form.submitted_message)}</p>
+      <p>{v(props.form.submitted_message || DEFAULT_SUBMITTED_MESSAGE)}</p>
       <Button variant="text" onClick={props.resubmit}>
-        {v(props.form.resubmit_button_label)}
+        {v(props.form.resubmit_button_label || DEFAULT_RESUBMIT_LABEL)}
       </Button>
     </div>
   )

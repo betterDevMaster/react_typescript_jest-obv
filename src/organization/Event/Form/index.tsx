@@ -28,6 +28,10 @@ import InfusionsoftTagInput from 'organization/Event/DashboardConfig/Infusionsof
 import {fieldError} from 'lib/form'
 import ErrorAlert from 'lib/ui/alerts/ErrorAlert'
 
+export const DEFAULT_RESUBMIT_LABEL = 'Edit your answer'
+export const DEFAULT_SUBMIT_LABEL = 'Submit'
+export const DEFAULT_SUBMITTED_MESSAGE = 'Thank you'
+
 export default function Form() {
   const {form, processing, responseError} = useEventForm()
   const [editing, setEditing] = useState<Question | null>(null)
@@ -196,7 +200,7 @@ const FormConfig = React.forwardRef<
         <TextField
           label="Resubmit Button Label"
           name="resubmit_button_label"
-          defaultValue={form.resubmit_button_label}
+          defaultValue={form.resubmit_button_label || DEFAULT_RESUBMIT_LABEL}
           inputProps={{
             'aria-label': 'resubmit button label',
             ref: register,
@@ -209,7 +213,7 @@ const FormConfig = React.forwardRef<
         <TextField
           label="Submit Label"
           name="submit_label"
-          defaultValue={form.submit_label}
+          defaultValue={form.submit_label || DEFAULT_SUBMIT_LABEL}
           inputProps={{
             'aria-label': 'form submit label',
             ref: register,
@@ -223,7 +227,7 @@ const FormConfig = React.forwardRef<
         <TextField
           label="Submitted Message"
           name="submitted_message"
-          defaultValue={form.submitted_message}
+          defaultValue={form.submitted_message || DEFAULT_SUBMITTED_MESSAGE}
           inputProps={{
             'aria-label': 'form submitted message',
             ref: register,

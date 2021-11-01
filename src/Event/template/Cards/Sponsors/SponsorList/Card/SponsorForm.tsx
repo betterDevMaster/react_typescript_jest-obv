@@ -10,6 +10,11 @@ import Box from '@material-ui/core/Box'
 import {hasSubmittedForm, useSubmissions} from 'Event/SubmissionsProvider'
 import {Sponsor} from 'Event/SponsorPage'
 import {useAttendeeVariables} from 'Event'
+import {
+  DEFAULT_RESUBMIT_LABEL,
+  DEFAULT_SUBMITTED_MESSAGE,
+  DEFAULT_SUBMIT_LABEL,
+} from 'organization/Event/Form'
 
 export default function SponsorForm(props: {
   sponsor: Sponsor
@@ -106,7 +111,7 @@ function Body(props: {form: Form; onSubmitted: () => void}) {
         />
       ))}
       <Button type="submit" variant="outlined" disabled={submitting} fullWidth>
-        {v(form.submit_label)}
+        {v(form.submit_label || DEFAULT_SUBMIT_LABEL)}
       </Button>
     </form>
   )
@@ -119,16 +124,16 @@ function SubmittedMessage(props: {form: Form; onResubmit: () => void}) {
   if (!form.can_resubmit) {
     return (
       <div>
-        <p>{v(props.form.submitted_message)}</p>
+        <p>{v(props.form.submitted_message || DEFAULT_SUBMITTED_MESSAGE)}</p>
       </div>
     )
   }
 
   return (
     <div>
-      <p>{v(props.form.submitted_message)}</p>
+      <p>{v(props.form.submitted_message || DEFAULT_SUBMITTED_MESSAGE)}</p>
       <Button variant="text" onClick={onResubmit}>
-        {v(props.form.resubmit_button_label)}
+        {v(props.form.resubmit_button_label || DEFAULT_RESUBMIT_LABEL)}
       </Button>
     </div>
   )
