@@ -6,6 +6,7 @@ import OwnerProvider from 'organization/OwnerProvider'
 import PermissionsProvider from 'organization/PermissionsProvider'
 import FullPageLoader from 'lib/ui/layout/FullPageLoader'
 import TextEditorProvider from 'lib/ui/form/TextEditor/TextEditorProvider'
+import {OrganizationBillingStatusOverlay} from 'organization/OrganizationBillingStatusOverlay'
 
 export default function OrganizationRoutes() {
   const {user, loading} = useOrganizationAuth()
@@ -22,6 +23,7 @@ export default function OrganizationRoutes() {
   if (user) {
     return (
       <OwnerProvider>
+        <OrganizationBillingStatusOverlay />
         <PermissionsProvider>
           <TextEditorProvider>
             <UserRoutes />

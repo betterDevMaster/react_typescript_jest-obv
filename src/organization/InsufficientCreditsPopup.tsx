@@ -6,7 +6,7 @@ import {Icon} from 'lib/fontawesome/Icon'
 import Typography from '@material-ui/core/Typography'
 import Button from '@material-ui/core/Button'
 import {obvioRoutes} from 'obvio/Routes'
-import {useBilling} from 'obvio/Billing/BillingProvider'
+import {useBilling} from 'BillingProvider'
 import {useHistory} from 'react-router'
 
 export default function InsufficientCreditsPopup() {

@@ -1,7 +1,4 @@
-import Box from '@material-ui/core/Box'
 import Button from '@material-ui/core/Button'
-import Typography from '@material-ui/core/Typography'
-import {useEvent} from 'Event/EventProvider'
 import {useIsMounted} from 'lib/dom'
 import {AbsoluteLink} from 'lib/ui/link/AbsoluteLink'
 import {api} from 'lib/url'
@@ -34,19 +31,16 @@ export default function StartButton(props: {processing: boolean}) {
   }, [client, room, isMounted])
 
   return (
-    <>
-      <AbsoluteLink to={url || ''} newTab disableStyles disabled={!canStart}>
-        <Button
-          variant="contained"
-          color="primary"
-          aria-label="start room"
-          disabled={!canStart}
-        >
-          Start
-        </Button>
-      </AbsoluteLink>
-      <PaidOnlyDescription />
-    </>
+    <AbsoluteLink to={url || ''} newTab disableStyles disabled={!canStart}>
+      <Button
+        variant="contained"
+        color="primary"
+        aria-label="start room"
+        disabled={!canStart}
+      >
+        Start
+      </Button>
+    </AbsoluteLink>
   )
 }
 
@@ -65,19 +59,4 @@ function useCanStart(processing: boolean, url: string | null) {
   }
 
   return Boolean(url) && room.is_online
-}
-
-function PaidOnlyDescription() {
-  const {event} = useEvent()
-  if (event.has_paid) {
-    return null
-  }
-
-  return (
-    <Box>
-      <Typography variant="caption">
-        *Start will be disabled until event starts.
-      </Typography>
-    </Box>
-  )
 }

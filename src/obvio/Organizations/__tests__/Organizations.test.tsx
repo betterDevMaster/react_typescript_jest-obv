@@ -7,7 +7,6 @@ import {fakeOrganization} from 'obvio/Organizations/__utils__/factory'
 import {TEAM_MEMBER_TOKEN_KEY} from 'obvio/auth'
 import {setObvioAppUrl} from 'organization/__utils__/authenticate'
 import {fakeTeamMember} from 'organization/Team/__utils__/factory'
-import {signInToObvio} from 'obvio/__utils__/sign-in-to-obvio'
 
 const mockGet = mockAxios.get as jest.Mock
 
@@ -44,22 +43,4 @@ it('should show the user organizations', async () => {
   }
 
   expect(mockGet).toBeCalledTimes(2)
-})
-
-it('should redirect to billing', async () => {
-  const teamMember = fakeTeamMember({
-    has_active_subscription: false, // no subscription
-    has_payment_method: false,
-    plan: null,
-  })
-
-  const {findByText} = await signInToObvio({
-    beforeRender: () => {
-      // Has no paymetn method
-      mockGet.mockResolvedValueOnce({data: null})
-    },
-    user: teamMember,
-  })
-
-  expect(await findByText('Billing & Subscription')).toBeInTheDocument()
 })

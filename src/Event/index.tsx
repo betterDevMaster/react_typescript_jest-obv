@@ -56,12 +56,12 @@ export interface ObvioEvent {
   zoom_backgrounds_title: string | null
   zoom_backgrounds_description: string | null
   ticket_ribbons: CustomTicketRibbon[]
-  has_paid: boolean
   is_online: boolean
   requires_attendee_password: boolean
   has_started: boolean
   emoji_page_background: FileLocation | null
   has_mailchimp: boolean
+  is_live: boolean
 }
 
 export interface WaiverConfig {

@@ -2,11 +2,11 @@ import {obvioRoutes} from 'obvio/Routes'
 import Organizations from 'obvio/Organizations'
 import CreateOrganizationForm from 'obvio/Organizations/CreateOrganizationForm'
 import React from 'react'
-import {Redirect, Route, Switch, useLocation} from 'react-router-dom'
+import {Redirect, Route, Switch} from 'react-router-dom'
 import ChangePassword from 'obvio/ChangePasswordPage'
 import BillingRoutes from 'obvio/Billing/BillingRoutes'
 import AuthCallbackHandler from 'organization/Event/Services/Apps/Mailchimp/AuthCallbackHandler'
-import {useObvioUser} from 'obvio/auth'
+import BillingStatusOverlay from 'obvio/BillingStatusOverlay'
 
 export default function UserRoutes() {
   return (
@@ -15,6 +15,7 @@ export default function UserRoutes() {
         <BillingRoutes />
       </Route>
       <Route>
+        <BillingStatusOverlay />
         <SubscribedUserRoutes />
       </Route>
     </Switch>
@@ -22,15 +23,6 @@ export default function UserRoutes() {
 }
 
 function SubscribedUserRoutes() {
-  /**
-   * If a user doesn't have an active subscription we'll redirect
-   * them back to billing.
-   */
-  const shouldRedirectToBilling = useShouldRedirectToBilling()
-  if (shouldRedirectToBilling) {
-    return <Redirect to={obvioRoutes.billing.root} />
-  }
-
   return (
     <Switch>
       <Route path={obvioRoutes.organizations.create}>
@@ -48,20 +40,4 @@ function SubscribedUserRoutes() {
       <Redirect to={obvioRoutes.organizations.root} />
     </Switch>
   )
-}
-
-/**
- * If the user does NOT have an active subscription, we'll ALWAYS.
- * redirect them to the billing page.
- */
-function useShouldRedirectToBilling() {
-  const user = useObvioUser()
-  const {pathname} = useLocation()
-  const isBillingRoute = /\/billing.*/.test(pathname)
-
-  if (user.has_active_subscription) {
-    return false
-  }
-
-  return !isBillingRoute
 }

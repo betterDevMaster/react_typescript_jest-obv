@@ -16,6 +16,7 @@ export type TeamMember = User & {
   plan: PlanName | null
   has_payment_method: boolean
   feature_flags: string[] | null
+  has_unpaid_transactions: boolean
 }
 
 export function isTeamMember(user: User | null): user is TeamMember {

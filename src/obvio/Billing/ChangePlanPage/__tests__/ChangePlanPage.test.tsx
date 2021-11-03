@@ -24,17 +24,23 @@ it('should show add card button', async () => {
 
   const plan: PlanName = 'basic'
 
-  const {findByText, findAllByText} = await signInToObvio({
+  const {findByText, findAllByText, findByLabelText} = await signInToObvio({
     beforeRender: () => {
       mockUseLocation.mockImplementation(() => ({
         pathname: '/',
         search: `?plan=${plan}`,
       }))
-      // Has no paymetn method
-      mockGet.mockResolvedValueOnce({data: null})
+
+      mockGet.mockResolvedValueOnce({data: []}) // organizations
     },
     user: teamMember,
   })
+
+  // Has no paymetn method
+  mockGet.mockResolvedValueOnce({data: null})
+
+  user.click(await findByLabelText('account menu'))
+  user.click(await findByLabelText('billing settings'))
 
   // select first (basic) plan
 
@@ -54,20 +60,25 @@ it('should create a subscription', async () => {
 
   const plan: PlanName = 'basic'
 
-  const {findByText, findAllByText} = await signInToObvio({
+  const {findByText, findAllByText, findByLabelText} = await signInToObvio({
     beforeRender: () => {
       mockUseLocation.mockImplementation(() => ({
         pathname: '/',
         search: `?plan=${plan}`,
       }))
 
-      // Mock payment method (ie. user already has a card) because we're not able
-      // to cleanly mock stripe's elements API, nor do we want to in case they
-      // change it. So we'll just assume Stripe works / leave for E2E tests.
-      mockGet.mockResolvedValueOnce({data: paymentMethod})
+      mockGet.mockResolvedValueOnce({data: []}) // organizations
     },
     user: teamMember,
   })
+
+  // Mock payment method (ie. user already has a card) because we're not able
+  // to cleanly mock stripe's elements API, nor do we want to in case they
+  // change it. So we'll just assume Stripe works / leave for E2E tests.
+  mockGet.mockResolvedValueOnce({data: paymentMethod})
+
+  user.click(await findByLabelText('account menu'))
+  user.click(await findByLabelText('billing settings'))
 
   // select first (basic) plan
 

@@ -12,7 +12,7 @@ const HELP_ARTICLE_URL = 'https://help.obv.io/test-mode/'
 
 export default function TestModeNoticeDialog() {
   const {
-    event: {has_paid},
+    event: {is_live: is_now},
   } = useEvent()
 
   const {
@@ -24,10 +24,10 @@ export default function TestModeNoticeDialog() {
   const closeDialog = () => setShowing(false)
 
   useEffect(() => {
-    const isTestMode = !has_paid && is_online
+    const isTestMode = !is_now && is_online
 
     setShowing(isTestMode)
-  }, [is_online, has_paid])
+  }, [is_online, is_now])
 
   return (
     <Dialog open={showing} onClose={closeDialog}>

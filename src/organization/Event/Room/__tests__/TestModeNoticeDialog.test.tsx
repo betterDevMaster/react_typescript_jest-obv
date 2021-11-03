@@ -1,7 +1,7 @@
 import user from '@testing-library/user-event'
 import axios from 'axios'
 import faker from 'faker'
-import {fakeArea, fakeRoom} from 'organization/Event/AreaList/__utils__/factory'
+import {fakeRoom} from 'organization/Event/AreaList/__utils__/factory'
 import {Room} from 'Event/room'
 import {wait} from '@testing-library/react'
 import {START_ROOMS} from 'organization/PermissionsProvider'
@@ -22,7 +22,7 @@ Object.assign(navigator, {
 })
 
 it('should show test mode notice', async () => {
-  const event = fakeEvent({has_paid: false})
+  const event = fakeEvent({is_live: false})
   const room = fakeRoom()
 
   const {findByLabelText, findByText} = await goToArea({

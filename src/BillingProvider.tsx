@@ -1,4 +1,4 @@
-import InsufficientCreditsPopup from 'obvio/Billing/InsufficientCreditsPopup'
+import InsufficientCreditsPopup from 'organization/InsufficientCreditsPopup'
 import React, {useState, useEffect} from 'react'
 import axios from 'axios'
 
