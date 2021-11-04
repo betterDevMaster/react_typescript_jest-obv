@@ -59,6 +59,20 @@ export function useCheckIn(user: User) {
     toggleProcessing()
 
     const url = api('/check_in')
-    client.put<Attendee>(url).then(setUser).finally(toggleProcessing)
+    client
+      .put<Attendee>(url)
+      .then((updated) => {
+        // Instead of setting the entire updated user, we'll only replace
+        // the relevant fields. This is to fix a bug where a user would
+        // be re-directed back after landing on dashboard.
+        const withCheckedIn: Attendee = {
+          ...user,
+          has_checked_in: updated.has_checked_in,
+          checked_in_at: updated.checked_in_at,
+        }
+
+        setUser(withCheckedIn)
+      })
+      .finally(toggleProcessing)
   }, [user, client, setUser, toggleProcessing, processing])
 }
