@@ -10,6 +10,8 @@ import {useAsync} from 'lib/async'
 import {ImageEntry} from 'organization/Event/ImageEntriesProvider'
 import {SIMPLE_BLOG} from 'Event/template/SimpleBlog'
 import SimpleBlogImageWaterfall from 'Event/template/SimpleBlog/ImageWaterfall'
+import {CARDS} from 'Event/template/Cards'
+import CardsImageWaterfall from 'Event/template/Cards/ImageWaterfall'
 
 export default function ImageWaterfall() {
   const {name} = useTemplate()
@@ -17,6 +19,8 @@ export default function ImageWaterfall() {
   switch (name) {
     case SIMPLE_BLOG:
       return <SimpleBlogImageWaterfall />
+    case CARDS:
+      return <CardsImageWaterfall />
     default:
       throw new Error(`ImageWaterfall not implemented for template: ${name}`)
   }

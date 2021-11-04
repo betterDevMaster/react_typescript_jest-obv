@@ -7,6 +7,7 @@ import {Editable} from 'Event/Dashboard/editor/views/EditComponent'
 import {eventRoutes} from 'Event/Routes'
 import {useEditMode} from 'Event/Dashboard/editor/state/edit-mode'
 import {RelativeLink} from 'lib/ui/link/RelativeLink'
+import {useAttendeeVariables} from 'Event'
 
 export default function PageLinks() {
   const {template} = useCards()
@@ -22,6 +23,10 @@ export default function PageLinks() {
     leaderboard: {menuTitle: pointsTitle, isVisible: showingPoints},
     faq: {menuTitle: faqsTitle, isVisible: showingFaqs},
     pageLinks: {textColor, dividerColor: tabSeparatorColor},
+    imageWaterfall: {
+      menuTitle: imageWaterfallTitle,
+      isVisible: showingImageWaterfall,
+    },
   } = template
   const {flag: barConfigVisible, toggle: toggleBarConfig} = useToggle()
 
@@ -73,6 +78,13 @@ export default function PageLinks() {
               to={eventRoutes.faq}
               aria-label="faq link"
             />
+            <Link
+              color={textColor}
+              showing={showingImageWaterfall}
+              label={imageWaterfallTitle}
+              to={eventRoutes.image_waterfall}
+              aria-label="faq link"
+            />
           </>
         </Editable>
       </Box>
@@ -88,7 +100,7 @@ function Link(props: {
   'aria-label': string
 }) {
   const {label, color, showing} = props
-
+  const v = useAttendeeVariables()
   const isEditMode = useEditMode()
   if (!isEditMode && !showing) {
     return null
@@ -100,7 +112,7 @@ function Link(props: {
       aria-label={props['aria-label']}
       color={color}
     >
-      {label}
+      {v(label)}
     </StyledRelativeLink>
   )
 }

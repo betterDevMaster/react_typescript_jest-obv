@@ -61,6 +61,10 @@ function Links() {
     },
     leaderboard: {menuTitle: pointsTitle, isVisible: showingPoints},
     faq: {menuTitle: faqsTitle, isVisible: showingFaqs},
+    imageWaterfall: {
+      menuTitle: imageWaterfallTitle,
+      isVisible: showingImageWaterfall,
+    },
   } = template
 
   const menuTextColor = menu?.textColor || DEFAULT_MENU_TEXT_COLOR
@@ -119,6 +123,15 @@ function Links() {
           color={menuTextColor}
           showing={showingFaqs}
           text={v(faqsTitle)}
+        />
+      </ListItem>
+      <ListItem>
+        <Item
+          to={eventRoutes.image_waterfall}
+          aria-label="menu link image waterfall"
+          color={menuTextColor}
+          showing={showingImageWaterfall}
+          text={v(imageWaterfallTitle)}
         />
       </ListItem>
       <ListItem>

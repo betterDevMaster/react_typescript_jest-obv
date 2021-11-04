@@ -226,8 +226,6 @@ export type Cards = BaseTemplate &
     imageWaterfall?: {
       title?: string
       description?: string
-      backToDashboardText?: string
-      backToDashboardTextColor?: string
       uploadFormTitle?: string
       uploadFormDescription?: string
       uploadButtonText?: string
@@ -237,6 +235,8 @@ export type Cards = BaseTemplate &
       uploadButtonBackgroundColor?: string
       uploadButtonBorderColor?: string
       actionId?: string | null
+      menuTitle?: string
+      isVisible?: boolean
     }
   }
 
@@ -523,8 +523,6 @@ export const createCards = (): DeepRequired<Cards> => ({
   imageWaterfall: {
     title: 'Image Waterfall',
     description: 'Image Waterfall',
-    backToDashboardText: 'Back to Dashboard',
-    backToDashboardTextColor: '#000000',
     uploadFormTitle: 'Upload Image',
     uploadFormDescription: 'Upload Waterfall Image',
     uploadButtonText: 'Upload',
@@ -534,6 +532,8 @@ export const createCards = (): DeepRequired<Cards> => ({
     uploadButtonBackgroundColor: '#FFFFFF',
     uploadButtonBorderColor: '#000000',
     actionId: null,
+    menuTitle: 'Image Waterfall',
+    isVisible: true,
   },
   backgroundImage1: null,
   backgroundImage2: null,

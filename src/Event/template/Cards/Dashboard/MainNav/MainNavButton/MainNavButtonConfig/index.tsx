@@ -56,9 +56,7 @@ export function MainNavButtonConfig(
   const [link, setLink] = useState(button.link)
   const [page, setPage] = useState(button.page)
   const [newTab, setNewTab] = useState(button.newTab)
-  const [isImageUploadButton, setIsImageUploadButton] = useState(
-    button.isImageUpload,
-  )
+  const [isImageUpload, setIsImageUpload] = useState(button.isImageUpload)
   const [hideRemoveButton, setHideRemoveButton] = useState<boolean>(!props.id)
 
   useEffect(() => {
@@ -73,7 +71,7 @@ export function MainNavButtonConfig(
     setLink(button.link)
     setPage(button.page)
     setNewTab(button.newTab)
-    setIsImageUploadButton(button.isImageUpload)
+    setIsImageUpload(button.isImageUpload)
   }, [isVisible, button, props.id])
 
   const {visible: ruleConfigVisible, toggle: toggleRuleConfig} = useRuleConfig()
@@ -133,6 +131,7 @@ export function MainNavButtonConfig(
       link,
       page,
       newTab,
+      isImageUpload,
     }
 
     if (id) {
@@ -225,8 +224,8 @@ export function MainNavButtonConfig(
             setIsAreaButton={setIsAreaButton}
             areaId={areaId}
             setAreaId={setAreaId}
-            isImageUpload={isImageUploadButton}
-            setIsImageUploadButton={setIsImageUploadButton}
+            isImageUpload={isImageUpload}
+            setIsImageUploadButton={setIsImageUpload}
             link={link}
             setLink={setLink}
             page={page}

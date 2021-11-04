@@ -3,6 +3,8 @@ import {useTemplate} from 'Event/TemplateProvider'
 import {SIMPLE_BLOG} from 'Event/template/SimpleBlog'
 import SimpleBlogImageWaterfallConfig from 'Event/template/SimpleBlog/ImageWaterfall/ImageWaterfallConfig'
 import ComponentConfig from 'organization/Event/DashboardConfig/ComponentConfig'
+import {CARDS} from 'Event/template/Cards'
+import CardsImageWaterfallConfig from 'Event/template/Cards/ImageWaterfall/ImageWaterfallConfig'
 import {PANELS} from 'Event/template/Panels'
 import PanelsImageWaterfallConfig from 'Event/template/Panels/Dashboard/ImageWaterfall/ImageWaterfallConfig'
 
@@ -31,6 +33,8 @@ function TemplateConfig(props: ImageWaterfallConfigProps) {
   switch (name) {
     case SIMPLE_BLOG:
       return <SimpleBlogImageWaterfallConfig {...props} />
+    case CARDS:
+      return <CardsImageWaterfallConfig {...props} />
     case PANELS:
       return <PanelsImageWaterfallConfig {...props} />
     default:
