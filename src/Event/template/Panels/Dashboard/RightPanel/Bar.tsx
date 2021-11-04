@@ -21,6 +21,10 @@ export default function Nav(props: {
       leaderboard: {menuTitle: pointsMenuTitle, isVisible: showingPoints},
       speakers: {menuTitle: speakersMenuTitle, isVisible: showingSpeakers},
       sponsors: {menuTitle: sponsorsMenuTitle, isVisible: showingSponsors},
+      imageWaterfall: {
+        menuTitle: imageWaterfallTitle,
+        isVisible: showingImageWaterfall,
+      },
       faq: {menuTitle: faqsMenuTitle, isVisible: showingFaqs},
     },
   } = usePanels()
@@ -77,6 +81,11 @@ export default function Nav(props: {
         label={v(pointsMenuTitle)}
         aria-label="panels tab points"
         showing={showingPoints}
+      />
+      <Tab
+        label={v(imageWaterfallTitle)}
+        aria-label="panels tab image water fall"
+        showing={showingImageWaterfall}
       />
       <Tab
         label={v(faqsMenuTitle)}

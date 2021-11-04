@@ -24,6 +24,9 @@ it('should render right panel', async () => {
   expect(await findByLabelText('panels tab sponsors')).toBeInTheDocument()
   expect(await findByLabelText('panels tab resources')).toBeInTheDocument()
   expect(await findByLabelText('panels tab points')).toBeInTheDocument()
+  expect(
+    await findByLabelText('panels tab image water fall'),
+  ).toBeInTheDocument()
   expect(await findByLabelText('panels tab faqs')).toBeInTheDocument()
 })
 

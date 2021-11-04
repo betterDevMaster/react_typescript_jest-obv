@@ -13,6 +13,7 @@ import Leaderboard from 'Event/template/Panels/Dashboard/Leaderboard/Leaderboard
 import Resources from 'Event/template/Panels/Dashboard/Resources'
 import {usePanels} from 'Event/template/Panels'
 import SponsorPage from 'Event/template/Panels/Dashboard/Sponsors'
+import ImageWaterfall from 'Event/template/Panels/Dashboard/ImageWaterfall'
 import {
   EventSponsorsProvider,
   OrganizationSponsorsProvider,
@@ -88,6 +89,9 @@ function Content(props: {currentTab: number; isEdit: boolean}) {
         <Leaderboard />
       </ContentPanel>
       <ContentPanel index={5} currentIndex={currentTab}>
+        <ImageWaterfall />
+      </ContentPanel>
+      <ContentPanel index={6} currentIndex={currentTab}>
         <FaqPage isEditMode={isEdit} faqs={faqs} />
       </ContentPanel>
     </>

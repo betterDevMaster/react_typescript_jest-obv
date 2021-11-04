@@ -197,6 +197,7 @@ export type Panels = BaseTemplate & {
   countDownTimers?: EntityList<CountDownTimer>
   imageWaterfall?: {
     title?: string
+    menuTitle?: string
     description?: string
     uploadFormTitle?: string
     uploadFormDescription?: string
@@ -207,6 +208,7 @@ export type Panels = BaseTemplate & {
     uploadButtonBackgroundColor?: string
     uploadButtonBorderColor?: string
     actionId?: string | null
+    isVisible?: boolean
   }
 }
 
@@ -410,6 +412,7 @@ export const createPanels = (): DeepRequired<Panels> => ({
   },
   imageWaterfall: {
     title: 'Image Waterfall',
+    menuTitle: 'Image Waterfall',
     description: 'Image Waterfall',
     uploadFormTitle: 'Upload Image',
     uploadFormDescription: 'Upload Waterfall Image',
@@ -420,6 +423,7 @@ export const createPanels = (): DeepRequired<Panels> => ({
     uploadButtonBackgroundColor: '#FFFFFF',
     uploadButtonBorderColor: '#000000',
     actionId: null,
+    isVisible: true,
   },
 })
 
