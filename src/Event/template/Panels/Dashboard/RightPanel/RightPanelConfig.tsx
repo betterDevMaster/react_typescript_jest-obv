@@ -25,7 +25,7 @@ export default function RightPanelConfig(props: {
 
   return (
     <Dialog open={isVisible} onClose={onClose} fullWidth>
-      <DialogTitle>Left Panel Bar</DialogTitle>
+      <DialogTitle>Right Panel Config</DialogTitle>
       <DialogContent>
         <Box mb={2}>
           <Switch
