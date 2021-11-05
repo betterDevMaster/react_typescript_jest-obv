@@ -1,4 +1,3 @@
-import Box from '@material-ui/core/Box'
 import styled from 'styled-components'
 import Button from '@material-ui/core/Button'
 import Dialog from '@material-ui/core/Dialog'
@@ -50,7 +49,7 @@ export function Overlay(props: {
     <Dialog open>
       <DialogContent>
         <Box>
-          <Icon iconClass="exclamation-triangle" />
+          <WarningIcon iconClass="far fa-exclamation-triangle" />
           <Title>{props.title}</Title>
           <Description>{props.description}</Description>
           <Actions hidden={props.hideButton}>
@@ -71,10 +70,20 @@ const Actions = styled.div`
   margin-bottom: ${(props) => props.theme.spacing[5]};
 `
 
+const Box = styled.div`
+  text-align: center;
+`
+
 const Title = styled.h1`
   margin: 0 0 ${(props) => props.theme.spacing[2]};
 `
 
 const Description = styled.p`
   margin: 0 0 ${(props) => props.theme.spacing[5]};
+`
+
+const WarningIcon = styled(Icon)`
+  color: ${(props) => props.theme.colors.error};
+  font-size: 4rem;
+  margin-bottom: ${(props) => props.theme.spacing[4]};
 `

@@ -20,6 +20,7 @@ import CreditCardManagement from 'obvio/Billing/CreditCardManagement'
 import {usePaymentMethod} from 'obvio/Billing/PaymentMethodProvider'
 import IfHasRegisteredCard from 'obvio/Billing/IfHasRegisteredCard'
 import {useObvioUser} from 'obvio/auth'
+import UnpaidCredits from 'obvio/Billing/UnpaidCredits'
 
 export default function Billing() {
   useBreadcrumbs([
@@ -40,8 +41,12 @@ export default function Billing() {
         <Section>
           <Subheading>Credits</Subheading>
           <StyledCreditBalance />
+          <UnpaidCredits />
           <IfHasRegisteredCard>
-            <RelativeLink to={obvioRoutes.billing.buy_credits} disableStyles>
+            <PurchaseCreditsLink
+              to={obvioRoutes.billing.buy_credits}
+              disableStyles
+            >
               <Button
                 variant="contained"
                 color="primary"
@@ -49,8 +54,16 @@ export default function Billing() {
               >
                 Purchase Credits
               </Button>
-            </RelativeLink>
+            </PurchaseCreditsLink>
           </IfHasRegisteredCard>
+          <RelativeLink
+            to={obvioRoutes.billing.credit_transactions}
+            disableStyles
+          >
+            <Button variant="outlined" color="primary">
+              View Transactions
+            </Button>
+          </RelativeLink>
         </Section>
         <Divider />
         <Subheading>Plans & Pricing</Subheading>
@@ -108,4 +121,8 @@ const StyledCreditBalance = styled(CreditBalance)`
 
 const Section = styled.div`
   margin-bottom: ${(props) => props.theme.spacing[16]};
+`
+
+const PurchaseCreditsLink = styled(RelativeLink)`
+  margin-right: ${(props) => props.theme.spacing[2]};
 `

@@ -28,7 +28,7 @@ const StyledStarIcon = styled(StarIcon)`
 `
 
 const NumCredits = styled.span`
-  color: #a72020;
+  color: ${(props) => props.theme.colors.accent};
   font-weight: bold;
   font-size: 20px;
   margin-left: ${(props) => props.theme.spacing[7]};

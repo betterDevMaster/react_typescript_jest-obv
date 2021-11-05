@@ -6,6 +6,7 @@ import {Route, Switch} from 'react-router-dom'
 import {obvioRoutes} from 'obvio/Routes'
 import ChangePlanPage from 'obvio/Billing/ChangePlanPage/ChangePlanPage'
 import PlanProvider from 'obvio/Billing/PlanProvider'
+import CreditTransactions from 'obvio/Billing/CreditTransactions'
 
 export default function BillingRoutes() {
   return (
@@ -17,6 +18,9 @@ export default function BillingRoutes() {
           </Route>
           <Route path={obvioRoutes.billing.buy_credits}>
             <BuyCreditsPage />
+          </Route>
+          <Route path={obvioRoutes.billing.credit_transactions}>
+            <CreditTransactions />
           </Route>
           <Route path={obvioRoutes.billing.root}>
             <Billing />

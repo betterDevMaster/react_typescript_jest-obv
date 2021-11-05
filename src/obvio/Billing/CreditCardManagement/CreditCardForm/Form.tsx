@@ -40,7 +40,6 @@ export type CreditCardFormProps = {
 }
 
 export default function CreditCardForm(props: CreditCardFormProps) {
-  console.log('stripe: ', stripe)
   return (
     <Elements stripe={stripe} options={options}>
       <Content {...props} />
