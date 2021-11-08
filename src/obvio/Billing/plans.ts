@@ -35,17 +35,6 @@ export interface CreditPackage {
   price: number
 }
 
-export const isPlan = (name?: string): name is PlanName => {
-  switch (name) {
-    case BASIC:
-    case PROFESSIONAL:
-    case ENTERPRISE:
-      return true
-    default:
-      return false
-  }
-}
-
 export const BASIC_PLAN: Plan = {
   name: BASIC,
   description:
@@ -288,6 +277,18 @@ export const PLANS = [
   ENTERPRISE_PLAN,
   FOUNDER_PLAN,
 ]
+
+export const isPlan = (name?: string): name is PlanName => {
+  switch (name) {
+    case BASIC:
+    case PROFESSIONAL:
+    case ENTERPRISE:
+    case FOUNDER:
+      return true
+    default:
+      return false
+  }
+}
 
 export function useAvailablePlans() {
   const user = useObvioUser()
