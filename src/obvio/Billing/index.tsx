@@ -12,7 +12,7 @@ import Button from '@material-ui/core/Button'
 import Typography from '@material-ui/core/Typography'
 import TextContainer from 'lib/ui/typography/TextContainer'
 import Box from '@material-ui/core/Box'
-import {PLANS} from 'obvio/Billing/plans'
+import {useAvailablePlans} from 'obvio/Billing/plans'
 import Grid from '@material-ui/core/Grid'
 import PlanCard from 'obvio/Billing/PlanCard'
 import {RelativeLink} from 'lib/ui/link/RelativeLink'
@@ -31,6 +31,8 @@ export default function Billing() {
   ])
 
   const {paymentMethod} = usePaymentMethod()
+
+  const plans = useAvailablePlans()
 
   return (
     <Layout>
@@ -76,8 +78,8 @@ export default function Billing() {
           </TextContainer>
         </Box>
         <Grid container spacing={8}>
-          {PLANS.map((plan) => (
-            <Grid xs={12} lg={4} key={plan.name} item>
+          {plans.map((plan) => (
+            <Grid xs={12} lg key={plan.name} item>
               <PlanCard plan={plan} />
             </Grid>
           ))}

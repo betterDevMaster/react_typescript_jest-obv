@@ -15,6 +15,8 @@ export const fakeTeamMember = (
   has_payment_method: false,
   feature_flags: [],
   has_unpaid_transactions: false,
+  is_subscribed: false,
+  is_founder: false,
   ...overrides,
 })
 

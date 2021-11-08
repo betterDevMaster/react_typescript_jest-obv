@@ -19,6 +19,7 @@ it('should show add card button', async () => {
   const teamMember = fakeTeamMember({
     has_active_subscription: false, // no subscription
     has_payment_method: false,
+    is_subscribed: true,
     plan: null,
   })
 
@@ -54,13 +55,19 @@ it('should create a subscription', async () => {
     has_active_subscription: false, // no subscription
     has_payment_method: true,
     plan: null,
+    is_subscribed: true,
   })
 
   const paymentMethod = fakePaymentMethod()
 
   const plan: PlanName = 'basic'
 
-  const {findByText, findAllByText, findByLabelText} = await signInToObvio({
+  const {
+    findByText,
+    findAllByText,
+    findByLabelText,
+    queryByText,
+  } = await signInToObvio({
     beforeRender: () => {
       mockUseLocation.mockImplementation(() => ({
         pathname: '/',
@@ -104,6 +111,9 @@ it('should create a subscription', async () => {
   expect(url).toMatch('/subscribe')
   expect(data.payment_method_id).toBe(paymentMethod.id)
   expect(data.plan).toBe(plan)
+
+  // Assert that founder is missing
+  expect(queryByText(/founder/i)).not.toBeInTheDocument()
 })
 
 it('should upgrade a subscription', async () => {
@@ -111,6 +121,7 @@ it('should upgrade a subscription', async () => {
     has_active_subscription: true, // no subscription
     has_payment_method: true,
     plan: 'professional', // current
+    is_subscribed: true,
   })
 
   const newPlan: PlanName = 'enterprise'
@@ -165,4 +176,36 @@ it('should upgrade a subscription', async () => {
   const [url, data] = mockPut.mock.calls[0]
   expect(url).toMatch('/subscribe')
   expect(data.plan).toBe(newPlan)
+})
+
+it('should show founder plan', async () => {
+  const teamMember = fakeTeamMember({
+    has_active_subscription: false, // no subscription
+    has_payment_method: false,
+    is_subscribed: false,
+    is_founder: true,
+    plan: null,
+  })
+
+  const plan: PlanName = 'basic'
+
+  const {findByText, findByLabelText} = await signInToObvio({
+    beforeRender: () => {
+      mockUseLocation.mockImplementation(() => ({
+        pathname: '/',
+        search: `?plan=${plan}`,
+      }))
+
+      mockGet.mockResolvedValueOnce({data: []}) // organizations
+    },
+    user: teamMember,
+  })
+
+  mockGet.mockResolvedValueOnce({data: null})
+
+  user.click(await findByLabelText('account menu'))
+  user.click(await findByLabelText('billing settings'))
+
+  // Can see founder plan
+  expect(await findByText(/founder/i)).toBeInTheDocument()
 })

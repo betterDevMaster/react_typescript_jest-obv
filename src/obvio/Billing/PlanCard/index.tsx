@@ -9,10 +9,6 @@ import ChoosePlanButton from 'obvio/Billing/PlanCard/ChoosePlanButton'
 export default function PlanCard(props: {plan: Plan}) {
   const {plan} = props
 
-  if (!plan.canSubscribe) {
-    return null
-  }
-
   return (
     <Box>
       <Name>{plan.name}</Name>
@@ -72,7 +68,7 @@ const Dollars = styled.h2`
   font-family: Inter, sans-serif;
   font-style: normal;
   font-weight: 600;
-  font-size: 42px;
+  font-size: 38px;
   line-height: 48px;
   margin: 0;
 `

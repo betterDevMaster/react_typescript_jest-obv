@@ -1,6 +1,6 @@
 import {useObserve} from 'lib/rx'
 import {api} from 'lib/url'
-import {useObvioAuth} from 'obvio/auth'
+import {useObvioAuth, useObvioUser} from 'obvio/auth'
 import {useEffect, useState} from 'react'
 import {ajax} from 'rxjs/ajax'
 import {debounceTime, map, switchMap, tap} from 'rxjs/operators'
@@ -18,7 +18,6 @@ export type PlanName =
 
 export interface Plan {
   name: PlanName
-  canSubscribe: boolean
   description: string
   price: number
   features: Feature[]
@@ -49,7 +48,6 @@ export const isPlan = (name?: string): name is PlanName => {
 
 export const BASIC_PLAN: Plan = {
   name: BASIC,
-  canSubscribe: true,
   description:
     'Flexible pricing without monthly fees and a 5% fee per transaction.',
   price: 997,
@@ -108,7 +106,6 @@ export const BASIC_PLAN: Plan = {
 
 export const PROFESSIONAL_PLAN: Plan = {
   name: PROFESSIONAL,
-  canSubscribe: true,
   description:
     'Flexible pricing without monthly fees and a 5% fee per transaction.',
   price: 1997,
@@ -167,7 +164,6 @@ export const PROFESSIONAL_PLAN: Plan = {
 
 export const ENTERPRISE_PLAN: Plan = {
   name: ENTERPRISE,
-  canSubscribe: true,
   description:
     'Flexible pricing without monthly fees and a 5% fee per transaction.',
   price: 4997,
@@ -226,7 +222,6 @@ export const ENTERPRISE_PLAN: Plan = {
 
 export const FOUNDER_PLAN: Plan = {
   name: FOUNDER,
-  canSubscribe: false,
   description:
     'Flexible pricing without monthly fees and a 5% fee per transaction.',
   price: 1500,
@@ -293,6 +288,17 @@ export const PLANS = [
   ENTERPRISE_PLAN,
   FOUNDER_PLAN,
 ]
+
+export function useAvailablePlans() {
+  const user = useObvioUser()
+
+  if (user.is_founder) {
+    return PLANS
+  }
+
+  // Normal users can NOT subscribe to 'founder' plan
+  return PLANS.filter((p) => p !== FOUNDER_PLAN)
+}
 
 export const getPlan = (plan: PlanName) => {
   const target = PLANS.find((p) => p.name === plan)
