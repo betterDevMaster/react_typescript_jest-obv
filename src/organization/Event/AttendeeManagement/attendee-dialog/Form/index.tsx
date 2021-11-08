@@ -118,6 +118,10 @@ export default function Form(props: {
     response: serverError,
   })
 
+  // If 'is_active' is undefined, ie. we're creating a new user, we want to set
+  // it to TRUE by default. So we need to explicitly check it here.
+  const isActive = attendee?.is_active === undefined ? true : attendee.is_active
+
   return (
     <form onSubmit={handleSubmit(submit)}>
       <FormControl fullWidth disabled={submitting}>
@@ -126,7 +130,7 @@ export default function Form(props: {
             <Controller
               type="checkbox"
               name="is_active"
-              defaultValue={attendee?.is_active}
+              defaultValue={isActive}
               control={control}
               render={({onChange, value}) => (
                 <Switch
