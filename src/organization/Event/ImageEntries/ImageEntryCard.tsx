@@ -11,11 +11,13 @@ import {useImageEntries} from 'organization/Event/ImageEntriesProvider'
 import DangerButton from 'lib/ui/Button/DangerButton'
 import {useToggle} from 'lib/toggle'
 
-export default function ImageEntryCard(props: {entry: ImageEntry}) {
-  const {entry} = props
+export default function ImageEntryCard(props: {
+  entry: ImageEntry
+  setSelected: (entry: ImageEntry) => void
+}) {
+  const {entry, setSelected} = props
 
   const {approve, reject} = useImageEntries()
-  const [isZoomIn, setZoomIn] = React.useState(false)
 
   const {flag: processing, toggle: toggleProcessing} = useToggle()
 
@@ -33,17 +35,8 @@ export default function ImageEntryCard(props: {entry: ImageEntry}) {
     !processing && entry.status !== status
 
   return (
-    <ImageEntryCardContainer
-      item
-      container
-      direction="column"
-      isZoomIn={isZoomIn}
-    >
-      <ImageContainer
-        container
-        onClick={() => setZoomIn(!isZoomIn)}
-        isZoomIn={isZoomIn}
-      >
+    <ImageEntryCardContainer item container direction="column">
+      <ImageContainer container onClick={() => setSelected(entry)}>
         <ImageItem image={`${entry.file.url}`} aria-label="image entry" />
       </ImageContainer>
       <StyledButton
@@ -67,22 +60,18 @@ export default function ImageEntryCard(props: {entry: ImageEntry}) {
 }
 
 const ImageEntryCardContainer = styled((props: any) => {
-  const {isZoomIn, ...otherProps} = props
-  return <Grid {...otherProps} />
-})<{isZoomIn: boolean}>`
+  return <Grid {...props} />
+})`
   margin: ${(props) => props.theme.spacing[3]};
   width: 180px;
   transition: transform 0.5s ease-in-out;
-  transform: ${(props) => (props.isZoomIn ? 'scale(1.5)' : 'scale(1)')};
-  z-index: ${(props) => (props.isZoomIn ? 1 : 0)};
+  z-index: 0;
 `
 
 const ImageContainer = styled((props: any) => {
-  const {isZoomIn, ...otherProps} = props
-  return <Grid {...otherProps} />
-})<{isZoomIn: boolean}>`
+  return <Grid {...props} />
+})`
   height: 200px;
-  cursor: ${(props) => (props.isZoomIn ? 'zoom-out' : 'zoom-in')};
   margin-bottom: ${(props) => props.theme.spacing[2]};
 `
 

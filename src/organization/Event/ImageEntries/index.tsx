@@ -1,4 +1,4 @@
-import React from 'react'
+import React, {useState} from 'react'
 import Layout from 'organization/user/Layout'
 import Page from 'organization/Event/Page'
 import StatusSelect from 'organization/Event/ImageEntries/StatusSelect'
@@ -12,6 +12,8 @@ import PageLimitSelect from 'organization/Event/ImageEntries/PageLimitSelect'
 import Pagination from 'organization/Event/ImageEntries/Pagination'
 import {useToggle} from 'lib/toggle'
 import Box from '@material-ui/core/Box'
+import SelectedImage from 'Event/ImageWaterfall/SelectedImage'
+import {ImageEntry} from 'organization/Event/ImageEntriesProvider'
 
 export default function ImageEntries() {
   const {
@@ -52,6 +54,8 @@ export default function ImageEntries() {
 function Entries() {
   const {entries} = useImageEntries()
 
+  const [selected, setSelected] = useState<ImageEntry | null>(null)
+
   const isEmpty = entries.length === 0
   if (isEmpty) {
     return <div>No Image Entries Available</div>
@@ -60,8 +64,17 @@ function Entries() {
   return (
     <Grid container wrap="wrap">
       {entries.map((entry) => (
-        <ImageEntryCard key={entry.id} entry={entry} />
+        <ImageEntryCard
+          key={entry.id}
+          entry={entry}
+          setSelected={setSelected}
+        />
       ))}
+      <SelectedImage
+        appBarPresent
+        selected={selected}
+        onClose={() => setSelected(null)}
+      />
     </Grid>
   )
 }
