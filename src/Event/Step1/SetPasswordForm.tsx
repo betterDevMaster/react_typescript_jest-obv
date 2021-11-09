@@ -30,7 +30,6 @@ export interface SetPasswordFormProps {
 }
 
 export default function SetPasswordForm() {
-  const {hasTechCheck} = useEvent()
   const [submitting, setSubmitting] = useState(false)
   const [responseError, setResponseError] = useState<
     SetPasswordFormProps['responseError']
@@ -39,7 +38,7 @@ export default function SetPasswordForm() {
   const dispatch = useDispatch()
   const {submit: submitAction} = usePoints()
   const {createPassword: CREATE_PASSWORD} = usePlatformActions()
-  const progress = hasTechCheck ? 25 : 33
+  const progress = useStep1Progress()
   const user = useAttendee()
 
   const submit = (data: SetPasswordData) => {
@@ -64,6 +63,20 @@ export default function SetPasswordForm() {
       progress={progress}
     />
   )
+}
+
+function useStep1Progress() {
+  const {hasTechCheck, hasWaiver} = useEvent()
+
+  if (hasTechCheck && hasWaiver) {
+    return 25
+  }
+
+  if (!hasTechCheck && !hasWaiver) {
+    return 50
+  }
+
+  return 33
 }
 
 export function TemplateSetPasswordForm(props: SetPasswordFormProps) {

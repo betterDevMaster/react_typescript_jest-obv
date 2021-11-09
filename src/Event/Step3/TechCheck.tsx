@@ -37,6 +37,7 @@ export default function TechCheck() {
   const {submit: submitAction} = usePoints()
   const template = useTemplate()
   const user = useAttendee()
+  const progress = useStep3Progress()
 
   /**
    * Poll to check if attendee has been marked as tech check completed.
@@ -68,7 +69,7 @@ export default function TechCheck() {
   const props = {
     user,
     techCheck,
-    progress: 75,
+    progress,
     isPreview: false,
     settings: template.techCheck,
   }
@@ -83,4 +84,13 @@ export default function TechCheck() {
     default:
       throw new Error(`Missing tech check for template`)
   }
+}
+
+function useStep3Progress() {
+  const {hasWaiver} = useEvent()
+  if (hasWaiver) {
+    return 75
+  }
+
+  return 67
 }
