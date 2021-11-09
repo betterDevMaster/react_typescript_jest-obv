@@ -55,6 +55,11 @@ export const BASIC_PLAN: Plan = {
   ],
   features: [
     {
+      details: 'Unlimited Events',
+      isGood: true,
+      isActive: true,
+    },
+    {
       details: 'Unlimited Attendees in Zoom Meetings',
       isGood: true,
       isActive: true,
@@ -106,6 +111,11 @@ export const PROFESSIONAL_PLAN: Plan = {
     },
   ],
   features: [
+    {
+      details: 'Unlimited Events',
+      isGood: true,
+      isActive: true,
+    },
     {
       details: 'Unlimited Attendees in Zoom Meetings',
       isGood: true,
@@ -160,6 +170,11 @@ export const ENTERPRISE_PLAN: Plan = {
   ],
   features: [
     {
+      details: 'Unlimited Events',
+      isGood: true,
+      isActive: true,
+    },
+    {
       details: 'Unlimited Attendees in Zoom Meetings',
       isGood: true,
       isActive: true,
@@ -212,6 +227,11 @@ export const FOUNDER_PLAN: Plan = {
     },
   ],
   features: [
+    {
+      details: 'Unlimited Events',
+      isGood: true,
+      isActive: true,
+    },
     {
       details: 'Unlimited Attendees in Zoom Meetings',
       isGood: true,

@@ -68,7 +68,7 @@ const Dollars = styled.h2`
   font-family: Inter, sans-serif;
   font-style: normal;
   font-weight: 600;
-  font-size: 38px;
+  font-size: 36px;
   line-height: 48px;
   margin: 0;
 `
@@ -86,6 +86,8 @@ const Description = styled.p`
   line-height: 24px;
   margin: 0 0 ${(props) => props.theme.spacing[5]};
   color: ${(props) => props.theme.colors.text.muted};
+  /* Fixed height to keep all cards aligned */
+  min-height: 100px;
 `
 
 const FeatureBox = styled.div`

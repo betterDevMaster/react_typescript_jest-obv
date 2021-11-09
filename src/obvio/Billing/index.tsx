@@ -77,7 +77,7 @@ export default function Billing() {
             </Typography>
           </TextContainer>
         </Box>
-        <Grid container spacing={8}>
+        <Grid container spacing={2}>
           {plans.map((plan) => (
             <Grid xs={12} lg key={plan.name} item>
               <PlanCard plan={plan} />
