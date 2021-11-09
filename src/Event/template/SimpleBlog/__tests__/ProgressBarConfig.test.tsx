@@ -18,7 +18,7 @@ it('should update progress bar color', async () => {
     userPermissions: [CONFIGURE_EVENTS],
   })
 
-  user.click(await findByLabelText('progress bar'))
+  user.click(await findByLabelText('check in'))
 
   const color = '#e7e7e7'
   user.type(await findByLabelText('bar color'), color)

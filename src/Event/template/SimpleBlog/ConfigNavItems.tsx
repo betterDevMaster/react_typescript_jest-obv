@@ -16,8 +16,8 @@ export default function SimpleBlogConfigNavItems() {
       <ConfigNavItem to={routes.password_create} aria-label="password create">
         Password Create
       </ConfigNavItem>
-      <ConfigNavItem to={routes.progress_bar} aria-label="progress bar">
-        Progress Bar
+      <ConfigNavItem to={routes.check_in} aria-label="check in">
+        Check In
       </ConfigNavItem>
       <ConfigNavItem to={routes.global_styles} aria-label="global styles">
         Global Styles

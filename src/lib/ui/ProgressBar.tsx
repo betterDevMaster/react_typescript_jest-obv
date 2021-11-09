@@ -9,6 +9,7 @@ import Container from '@material-ui/core/Container'
 
 export interface ProgressBarStyleProps {
   barColor?: string
+  backgroundColor?: string
   textColor?: string
   thickness?: number
   borderRadius?: number
@@ -29,9 +30,9 @@ export default function ProgressBar(
   return (
     <Container maxWidth="sm">
       <Box display="flex" alignItems="center" mb={3}>
-        <Box width="100%" mr={1}>
+        <BarContainer backgroundColor={props.backgroundColor}>
           <StyledLinearProgress variant="determinate" {...props} />
-        </Box>
+        </BarContainer>
         <Box minWidth={35}>
           <StyledTypography
             variant="body2"
@@ -43,16 +44,32 @@ export default function ProgressBar(
   )
 }
 
+const BarContainer = styled.div<{
+  backgroundColor: string | undefined
+}>`
+  width: 100% !important;
+  margin-right: ${(props) => props.theme.spacing[2]} !important;
+`
+
 const StyledLinearProgress = styled(
   (
     props: ProgressBarStyleProps & LinearProgressProps & {showing?: boolean},
   ) => {
-    const {barColor, borderRadius, showing, textColor: _, ...otherProps} = props
+    const {
+      barColor,
+      backgroundColor,
+      borderRadius,
+      showing,
+      textColor: _,
+      ...otherProps
+    } = props
     return <LinearProgress {...otherProps} />
   },
 )`
   height: ${(props) => props.thickness}px !important;
   border-radius: ${(props) => props.borderRadius}px !important;
+  background: ${(props) => props.backgroundColor}!important;
+
   div {
     background: ${(props) => props.barColor} !important;
   }

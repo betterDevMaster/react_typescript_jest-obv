@@ -6,7 +6,7 @@ import LoginPageConfig from 'Event/template/SimpleBlog/Login/LoginConfig'
 import OfflinePageConfig from 'Event/template/SimpleBlog/EventOfflinePage/OfflineConfig'
 import {useOrganization} from 'organization/OrganizationProvider'
 import CreatePasswordPageConfig from 'Event/template/SimpleBlog/Step1/SetPasswordFormConfig'
-import ProgressBarConfig from 'Event/template/SimpleBlog/ProgressBarConfig'
+import CheckInConfig from 'Event/template/SimpleBlog/check-in/CheckInConfig'
 import GlobalStylesConfig from 'Event/template/SimpleBlog/GlobalStylesConfig'
 
 export default function SimpleBlogConfigRoutes() {
@@ -29,9 +29,9 @@ export default function SimpleBlogConfigRoutes() {
           <CreatePasswordPageConfig />
         </AuthorizedPage>
       </Route>
-      <Route path={routes.events[':event'].progress_bar}>
+      <Route path={routes.events[':event'].check_in}>
         <AuthorizedPage permission={CONFIGURE_EVENTS}>
-          <ProgressBarConfig />
+          <CheckInConfig />
         </AuthorizedPage>
       </Route>
       <Route path={routes.events[':event'].global_styles}>

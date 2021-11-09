@@ -153,7 +153,6 @@ export function createRoutesFor(organization: Organization) {
           login: '/login',
           event_offline: '/event_offline',
           password_create: '/password_create',
-          progress_bar: '/progress_bar',
           global_styles: '/global_styles',
           check_in: '/check_in',
         },

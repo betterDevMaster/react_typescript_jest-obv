@@ -1,14 +1,12 @@
 import React from 'react'
 import Typography from '@material-ui/core/Typography'
+import Box from '@material-ui/core/Box'
 import Grid from '@material-ui/core/Grid'
 import Slider from '@material-ui/core/Slider'
 import ColorPicker from 'lib/ui/ColorPicker'
 import {handleChangeSlider, onChangeCheckedHandler} from 'lib/dom'
 import {useSimpleBlog} from 'Event/template/SimpleBlog'
-import {SectionTitle} from 'organization/Event/Page'
 import Switch from 'lib/ui/form/Switch'
-import Layout from 'organization/user/Layout'
-import Page from 'organization/Event/Page'
 import ProgressBar, {ProgressBarProps} from 'lib/ui/ProgressBar'
 
 export interface ProgressBar {
@@ -29,31 +27,32 @@ export default function ProgressBarConfig() {
   const updateProgressBar = update.object('progressBar')
 
   return (
-    <Layout>
-      <Page>
-        <SectionTitle>Progress Bar</SectionTitle>
-        <ProgressBarPreview
-          showing={progressBar.showing}
-          barColor={progressBar.barColor}
-          textColor={progressBar.textColor}
-          thickness={progressBar.thickness}
-          borderRadius={progressBar.borderRadius}
-        />
-        <Grid container spacing={2}>
-          <Grid item xs={12}>
-            <Switch
-              label="Show"
-              checked={progressBar.showing}
-              onChange={onChangeCheckedHandler(updateProgressBar('showing'))}
-              labelPlacement="end"
-              color="primary"
-              aria-label="progress bar visible"
-            />
-          </Grid>
-          <Config />
+    <>
+      <Box mb={1}>
+        <Typography variant="h6">Progress Bar</Typography>
+      </Box>
+      <ProgressBarPreview
+        showing={progressBar.showing}
+        barColor={progressBar.barColor}
+        backgroundColor={progressBar.backgroundColor}
+        textColor={progressBar.textColor}
+        thickness={progressBar.thickness}
+        borderRadius={progressBar.borderRadius}
+      />
+      <Grid container spacing={2}>
+        <Grid item xs={12}>
+          <Switch
+            label="Show"
+            checked={progressBar.showing}
+            onChange={onChangeCheckedHandler(updateProgressBar('showing'))}
+            labelPlacement="end"
+            color="primary"
+            aria-label="progress bar visible"
+          />
         </Grid>
-      </Page>
-    </Layout>
+        <Config />
+      </Grid>
+    </>
   )
 }
 
@@ -77,6 +76,12 @@ function Config() {
           color={progressBar.barColor}
           onPick={updateProgressBar('barColor')}
           aria-label="bar color"
+        />
+        <ColorPicker
+          label="Background Color"
+          color={progressBar.backgroundColor}
+          onPick={updateProgressBar('backgroundColor')}
+          aria-label="bar background color"
         />
         <Typography variant="subtitle2" style={{opacity: 0.7}}>
           Thickness

@@ -54,6 +54,7 @@ export type SimpleBlog = BaseTemplate & {
   }
   progressBar: {
     barColor: string
+    backgroundColor: string
     textColor: string
     thickness: number
     borderRadius: number
@@ -275,6 +276,7 @@ export const createSimpleBlog = (): DeepRequired<SimpleBlog> => ({
   },
   progressBar: {
     barColor: '#0969d6',
+    backgroundColor: '#b1d4f1',
     textColor: '#000000',
     thickness: 15,
     borderRadius: 50,
