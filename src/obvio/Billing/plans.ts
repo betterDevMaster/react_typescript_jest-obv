@@ -37,8 +37,7 @@ export interface CreditPackage {
 
 export const BASIC_PLAN: Plan = {
   name: BASIC,
-  description:
-    'Flexible pricing without monthly fees and a 5% fee per transaction.',
+  description: '1 Organization, 600 Annual Credits, 3 Rooms per Event',
   price: 997,
   creditPackages: [
     {
@@ -56,37 +55,32 @@ export const BASIC_PLAN: Plan = {
   ],
   features: [
     {
-      details: 'No transaction fees',
+      details: 'Unlimited Attendees in Zoom Meetings',
       isGood: true,
       isActive: true,
     },
     {
-      details: 'Unlimited projects',
+      details: 'Custom Dashboard',
       isGood: true,
-      isActive: false,
+      isActive: true,
     },
     {
-      details: 'Unlimited payments',
+      details: 'No Zoom account required - Hosts, or Attendees',
       isGood: true,
-      isActive: false,
+      isActive: true,
     },
     {
-      details: 'Email notifications',
+      details: 'Control the Attendee Name with custom emojis',
       isGood: true,
-      isActive: false,
+      isActive: true,
     },
     {
-      details: 'Weekly reports',
+      details: '24 Hour Support - Normal Biz Hours',
       isGood: true,
-      isActive: false,
+      isActive: true,
     },
     {
-      details: 'Customisation options',
-      isGood: true,
-      isActive: false,
-    },
-    {
-      details: 'No whitelabel branding',
+      details: 'Priority Support Within 60 mins - 24/7',
       isGood: true,
       isActive: false,
     },
@@ -95,8 +89,7 @@ export const BASIC_PLAN: Plan = {
 
 export const PROFESSIONAL_PLAN: Plan = {
   name: PROFESSIONAL,
-  description:
-    'Flexible pricing without monthly fees and a 5% fee per transaction.',
+  description: '3 Organizations, 1,200 Annual Credits, 10 Rooms per Event',
   price: 1997,
   creditPackages: [
     {
@@ -114,39 +107,34 @@ export const PROFESSIONAL_PLAN: Plan = {
   ],
   features: [
     {
-      details: 'No transaction fees',
+      details: 'Unlimited Attendees in Zoom Meetings',
       isGood: true,
       isActive: true,
     },
     {
-      details: 'Unlimited projects',
+      details: 'Custom Dashboard',
       isGood: true,
       isActive: true,
     },
     {
-      details: 'Unlimited payments',
+      details: 'No Zoom account required - Hosts, or Attendees',
       isGood: true,
       isActive: true,
     },
     {
-      details: 'Email notifications',
+      details: 'Control the Attendee Name with custom emojis',
       isGood: true,
       isActive: true,
     },
     {
-      details: 'Weekly reports',
+      details: '24 Hour Support - Normal Biz Hours',
       isGood: true,
       isActive: true,
     },
     {
-      details: 'Customisation options',
+      details: 'Priority Support Within 60 mins - 24/7',
       isGood: true,
-      isActive: true,
-    },
-    {
-      details: 'No whitelabel branding',
-      isGood: true,
-      isActive: true,
+      isActive: false,
     },
   ],
 }
@@ -154,7 +142,7 @@ export const PROFESSIONAL_PLAN: Plan = {
 export const ENTERPRISE_PLAN: Plan = {
   name: ENTERPRISE,
   description:
-    'Flexible pricing without monthly fees and a 5% fee per transaction.',
+    'Unlimited Organizations, 3,600 Annual Credits, 25 Rooms per Event',
   price: 4997,
   creditPackages: [
     {
@@ -172,37 +160,32 @@ export const ENTERPRISE_PLAN: Plan = {
   ],
   features: [
     {
-      details: 'No transaction fees',
+      details: 'Unlimited Attendees in Zoom Meetings',
       isGood: true,
       isActive: true,
     },
     {
-      details: 'Unlimited projects',
+      details: 'Custom Dashboard',
       isGood: true,
       isActive: true,
     },
     {
-      details: 'Unlimited payments',
+      details: 'No Zoom account required - Hosts, or Attendees',
       isGood: true,
       isActive: true,
     },
     {
-      details: 'Email notifications',
+      details: 'Control the Attendee Name with custom emojis',
       isGood: true,
       isActive: true,
     },
     {
-      details: 'Weekly reports',
+      details: '24 Hour Support - Normal Biz Hours',
       isGood: true,
       isActive: true,
     },
     {
-      details: 'Customisation options',
-      isGood: true,
-      isActive: true,
-    },
-    {
-      details: 'No whitelabel branding',
+      details: 'Priority Support Within 60 mins - 24/7',
       isGood: true,
       isActive: true,
     },
@@ -212,7 +195,7 @@ export const ENTERPRISE_PLAN: Plan = {
 export const FOUNDER_PLAN: Plan = {
   name: FOUNDER,
   description:
-    'Flexible pricing without monthly fees and a 5% fee per transaction.',
+    'Unlimited Organizations, 1,000 Annual Credits, 3 Rooms per Event',
   price: 1500,
   creditPackages: [
     {
@@ -230,39 +213,34 @@ export const FOUNDER_PLAN: Plan = {
   ],
   features: [
     {
-      details: 'No transaction fees',
+      details: 'Unlimited Attendees in Zoom Meetings',
       isGood: true,
       isActive: true,
     },
     {
-      details: 'Unlimited projects',
+      details: 'Custom Dashboard',
       isGood: true,
       isActive: true,
     },
     {
-      details: 'Unlimited payments',
+      details: 'No Zoom account required - Hosts, or Attendees',
       isGood: true,
       isActive: true,
     },
     {
-      details: 'Email notifications',
+      details: 'Control the Attendee Name with custom emojis',
       isGood: true,
       isActive: true,
     },
     {
-      details: 'Weekly reports',
+      details: '24 Hour Support - Normal Biz Hours',
       isGood: true,
       isActive: true,
     },
     {
-      details: 'Customisation options',
+      details: 'Priority Support Within 60 mins - 24/7',
       isGood: true,
-      isActive: true,
-    },
-    {
-      details: 'No whitelabel branding',
-      isGood: true,
-      isActive: true,
+      isActive: false,
     },
   ],
 }
