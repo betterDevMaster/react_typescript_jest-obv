@@ -4,6 +4,7 @@ import {useEvent} from 'Event/EventProvider'
 import {useNeedsToSetPassword} from 'Event/Step1'
 import {Redirect} from 'react-router-dom'
 import {eventRoutes} from 'Event/Routes'
+import {useMatchesRulesToSkipTechCheck} from 'Event/Step3'
 
 /**
  * Requires specific on-boarding steps to be completed. If no step is
@@ -18,8 +19,9 @@ export default function CompletedOnboarding(props: {
   const {step} = props
   const attendee = useAttendee()
   const {hasTechCheck, hasWaiver} = useEvent()
-  const shouldSkipTve3TechCheck = useShouldSkip10xbootcampTechCheck()
   const needsToSetPassword = useNeedsToSetPassword()
+
+  const canSkipTechCheck = useMatchesRulesToSkipTechCheck()
 
   if (needsToSetPassword) {
     return <Redirect to={eventRoutes.step1} />
@@ -38,33 +40,12 @@ export default function CompletedOnboarding(props: {
     return props.children
   }
 
-  if (shouldSkipTve3TechCheck) {
-    return props.children
-  }
-
   const shouldRedirectToStep3 =
-    hasTechCheck && !attendee.has_completed_tech_check
+    hasTechCheck && !attendee.has_completed_tech_check && !canSkipTechCheck
 
   if (shouldRedirectToStep3) {
     return <Redirect to={eventRoutes.step3} />
   }
 
   return props.children
-}
-
-/**
- * TEMPORARY CUSTOM EVENT CODE - Want to skip TechCheck for
- * certain 10xbootcamp (Oct, 2021) attendees.
- */
-export function useShouldSkip10xbootcampTechCheck() {
-  const {event} = useEvent()
-  const attendee = useAttendee()
-
-  const isTargetEvent = event.slug === '10xbootcamp'
-
-  if (!isTargetEvent) {
-    return false
-  }
-
-  return attendee.groups['Preview'] === 'Yes'
 }

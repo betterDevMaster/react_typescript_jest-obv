@@ -221,3 +221,40 @@ it('should show a custom button that joins the tech check area', async () => {
   const link = buttonEl.parentElement?.getAttribute('href')
   expect(link).toMatch(area_key)
 })
+
+it('should skip tech check on rules match', async () => {
+  const tag = 'some tag'
+
+  const completedStep2 = fakeAttendee({
+    has_password: true,
+    waiver: faker.internet.url(),
+    tech_check_completed_at: null,
+    groups: {
+      Preview: 'Yes',
+    },
+    has_completed_tech_check: false,
+    tags: [tag],
+  })
+
+  const event = fakeEvent({
+    tech_check: fakeTechCheck({is_enabled: true}),
+    template: fakeSimpleBlog({
+      skipTechCheckRules: [
+        {
+          source: 'Tags',
+          condition: 'And',
+          type: 'include',
+          target: tag,
+        },
+      ],
+    }),
+  })
+
+  const {findByLabelText} = await loginToEventSite({
+    attendee: completedStep2,
+    event,
+  })
+
+  // Has welcome image
+  expect(await findByLabelText('welcome')).toBeInTheDocument()
+})

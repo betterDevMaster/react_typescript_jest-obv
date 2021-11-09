@@ -157,3 +157,55 @@ it('it should set custom buttons', async () => {
       .isAreaButton,
   ).toBe(true)
 })
+
+it('it should set rules to skip', async () => {
+  const event = fakeEvent({
+    tech_check: null,
+    template: fakeSimpleBlog({
+      techCheck: undefined,
+      skipTechCheckRules: [],
+    }),
+  })
+
+  const {findByLabelText, areas, findByText} = await goToTechCheckConfig({
+    event,
+    userPermissions: [CONFIGURE_EVENTS],
+  })
+
+  const area = faker.random.arrayElement(areas)
+
+  fireEvent.mouseDown(await findByLabelText('pick area'))
+  user.click(await findByLabelText(`pick ${area.name}`))
+
+  fireEvent.change(await findByLabelText('tech check start'), {
+    target: {
+      value: now(),
+    },
+  })
+
+  // Manually set body input because we can't type into CKEditor
+  const body = faker.lorem.paragraph()
+  const bodyEl = (await findByLabelText('tech check body')) as HTMLInputElement
+  bodyEl.value = body
+
+  user.click(await findByText(/skip tech check rules/i))
+  user.click(await findByText(/add rule/i))
+  const tag = 'foo'
+  fireEvent.mouseDown(await findByLabelText('pick rule source'))
+  user.click(await findByText(/tags/i))
+  user.type(await findByLabelText('new tag target'), tag)
+  user.click(await findByLabelText('save rule'))
+
+  user.click(await findByLabelText('save tech check'))
+
+  await wait(() => {
+    expect(mockPut).toHaveBeenCalledTimes(1)
+  })
+
+  const [_, data] = mockPut.mock.calls[0]
+  const {template} = data
+
+  expect(template.skipTechCheckRules.length).toBe(1)
+
+  expect(template.skipTechCheckRules[0].target).toBe(tag)
+})

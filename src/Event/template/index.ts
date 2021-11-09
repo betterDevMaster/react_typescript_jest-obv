@@ -3,6 +3,7 @@ import {SimpleBlog} from 'Event/template/SimpleBlog'
 import {InputStyles} from 'Event/Question'
 import {DeepRequired} from 'lib/type-utils'
 import {Cards} from 'Event/template/Cards'
+import {Rule} from 'Event/attendee-rules'
 
 /**
  * Base properties shared by all templates
@@ -49,6 +50,8 @@ export type BaseTemplate = {
     buttonFontSize?: number
     inputStyles?: InputStyles
   }
+
+  skipTechCheckRules: Rule[]
 }
 
 export type Template = SimpleBlog | Panels | Cards
@@ -97,6 +100,7 @@ export const BASE_DEFAULTS: DeepRequired<BaseTemplate> = {
       helperTextColor: '#7d7a7a',
     },
   },
+  skipTechCheckRules: [],
 }
 
 export type Header = {}

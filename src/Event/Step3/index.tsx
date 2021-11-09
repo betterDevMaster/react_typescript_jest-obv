@@ -5,19 +5,18 @@ import {Redirect} from 'react-router-dom'
 import TechCheck from 'Event/Step3/TechCheck'
 import {useEvent} from 'Event/EventProvider'
 import {useTrackEventPage} from 'analytics'
-import {useShouldSkip10xbootcampTechCheck} from 'Event/CompletedOnboarding'
+import {useTemplate} from 'Event/TemplateProvider'
+import {hasMatch} from 'Event/attendee-rules/matcher'
 
 export default function Step3() {
   const attendee = useAttendee()
   const {hasTechCheck} = useEvent()
-
-  const shouldSkip10xBootcampTechCheck = useShouldSkip10xbootcampTechCheck()
+  const matchesRulestoSkip = useMatchesRulesToSkipTechCheck()
 
   useTrackEventPage({
     page: 'Visited Step 3',
   })
-
-  if (shouldSkip10xBootcampTechCheck) {
+  if (matchesRulestoSkip) {
     return <Redirect to={eventRoutes.root} />
   }
 
@@ -26,4 +25,11 @@ export default function Step3() {
   }
 
   return <TechCheck />
+}
+
+export function useMatchesRulesToSkipTechCheck() {
+  const template = useTemplate()
+  const attendee = useAttendee()
+
+  return hasMatch(attendee, template.skipTechCheckRules)
 }

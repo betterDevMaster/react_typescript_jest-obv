@@ -28,6 +28,7 @@ import Box from '@material-ui/core/Box'
 import {Cards, useCards} from 'Event/template/Cards'
 import TechCheck from 'Event/template/Cards/Step3/TechCheck'
 import LocalizedDateTimePicker from 'lib/LocalizedDateTimePicker'
+import SkipTechCheckRulesConfig from 'Event/template/SimpleBlog/Step3/TechCheckConfig/SkipTechCheckRulesConfig'
 
 /**
  * Default props to use for techCheck. These will be set when an
@@ -81,6 +82,7 @@ export default function Form() {
   const {template} = useCards()
   const {techCheck, set: setTemplateProp} = useTemplateTechCheckProps()
   const {event} = useEvent()
+  const [rules, setRules] = useState(template.skipTechCheckRules)
 
   const areaKey = watch('area_key')
   const canSave = !submitting && Boolean(areaKey)
@@ -109,6 +111,7 @@ export default function Form() {
       template: {
         ...template,
         techCheck,
+        skipTechCheckRules: rules,
       },
     }
 
@@ -147,122 +150,126 @@ export default function Form() {
   }, [event, setValue])
 
   return (
-    <form onSubmit={handleSubmit(submit)}>
-      <FormControl fullWidth disabled={submitting}>
-        <FormControlLabel
-          control={
-            <Controller
-              type="checkbox"
-              name="is_enabled"
-              defaultValue={false}
-              control={control}
-              render={({onChange, value}) => (
-                <Switch
-                  checked={!!value}
-                  onChange={(e) => onChange(e.target.checked)}
-                  inputProps={{'aria-label': 'toggle enabled'}}
-                />
-              )}
-            />
-          }
-          label="Enable"
-        />
-      </FormControl>
-      <Controller
-        name="start"
-        control={control}
-        defaultValue={now()}
-        rules={{
-          required: 'Start is required',
-        }}
-        render={({onChange, value}) => (
-          <LocalizedDateTimePicker
-            disabled={submitting}
-            value={value}
-            onChange={(date) => {
-              onChange(date?.toISOString() || '')
-            }}
-            inputProps={{
-              'aria-label': 'tech check start',
-              onChange,
-            }}
-            fullWidth
-            label="Start"
-          />
-        )}
-      />
-      <Controller
-        control={control}
-        name="area_key"
-        defaultValue={event.tech_check?.area_key || ''}
-        render={({onChange, value}) => (
-          <AreaSelect value={value} onPick={onChange} required />
-        )}
-      />
-      <Editor>
-        <input
-          type="hidden"
-          name="body"
-          aria-label="tech check body"
-          ref={register({required: 'Body is required.'})}
-        />
-        <BodyLabel required error={!!errors.body}>
-          Body
-        </BodyLabel>
-        {loading ? null : (
-          <TextEditor
-            data={watch('body')}
-            onChange={(val) => setValue('body', val)}
-          />
-        )}
-        <BodyError error={errors.body} />
-      </Editor>
-      <TemplateFields
-        techCheck={techCheck}
-        set={setTemplateProp}
-        submitting={submitting}
-      />
-      <Box mb={4}>
-        <Grid container spacing={2}>
-          <Grid item xs={12} md={6}>
-            <Editor>
-              <input
-                type="hidden"
-                name="additional_content"
-                aria-label="tech check content"
-                ref={register}
+    <SkipTechCheckRulesConfig rules={rules} onChange={setRules}>
+      <form onSubmit={handleSubmit(submit)}>
+        <FormControl fullWidth disabled={submitting}>
+          <FormControlLabel
+            control={
+              <Controller
+                type="checkbox"
+                name="is_enabled"
+                defaultValue={false}
+                control={control}
+                render={({onChange, value}) => (
+                  <Switch
+                    checked={!!value}
+                    onChange={(e) => onChange(e.target.checked)}
+                    inputProps={{'aria-label': 'toggle enabled'}}
+                  />
+                )}
               />
-              <BodyLabel>Additional Content</BodyLabel>
-              {loading ? null : (
-                <TextEditor
-                  data={watch('additional_content')}
-                  onChange={(val) => setValue('additional_content', val)}
-                />
-              )}
-            </Editor>
-          </Grid>
-          <Grid item xs={12} md={6}>
-            <PreviewBodyLabel>Preview</PreviewBodyLabel>
-            <TechCheckPreview
-              body={watch('body')}
-              content={watch('additional_content')}
-              render={(props) => <TechCheck {...props} settings={techCheck} />}
+            }
+            label="Enable"
+          />
+        </FormControl>
+        <Controller
+          name="start"
+          control={control}
+          defaultValue={now()}
+          rules={{
+            required: 'Start is required',
+          }}
+          render={({onChange, value}) => (
+            <LocalizedDateTimePicker
+              disabled={submitting}
+              value={value}
+              onChange={(date) => {
+                onChange(date?.toISOString() || '')
+              }}
+              inputProps={{
+                'aria-label': 'tech check start',
+                onChange,
+              }}
+              fullWidth
+              label="Start"
             />
+          )}
+        />
+        <Controller
+          control={control}
+          name="area_key"
+          defaultValue={event.tech_check?.area_key || ''}
+          render={({onChange, value}) => (
+            <AreaSelect value={value} onPick={onChange} required />
+          )}
+        />
+        <Editor>
+          <input
+            type="hidden"
+            name="body"
+            aria-label="tech check body"
+            ref={register({required: 'Body is required.'})}
+          />
+          <BodyLabel required error={!!errors.body}>
+            Body
+          </BodyLabel>
+          {loading ? null : (
+            <TextEditor
+              data={watch('body')}
+              onChange={(val) => setValue('body', val)}
+            />
+          )}
+          <BodyError error={errors.body} />
+        </Editor>
+        <TemplateFields
+          techCheck={techCheck}
+          set={setTemplateProp}
+          submitting={submitting}
+        />
+        <Box mb={4}>
+          <Grid container spacing={2}>
+            <Grid item xs={12} md={6}>
+              <Editor>
+                <input
+                  type="hidden"
+                  name="additional_content"
+                  aria-label="tech check content"
+                  ref={register}
+                />
+                <BodyLabel>Additional Content</BodyLabel>
+                {loading ? null : (
+                  <TextEditor
+                    data={watch('additional_content')}
+                    onChange={(val) => setValue('additional_content', val)}
+                  />
+                )}
+              </Editor>
+            </Grid>
+            <Grid item xs={12} md={6}>
+              <PreviewBodyLabel>Preview</PreviewBodyLabel>
+              <TechCheckPreview
+                body={watch('body')}
+                content={watch('additional_content')}
+                render={(props) => (
+                  <TechCheck {...props} settings={techCheck} />
+                )}
+              />
+            </Grid>
           </Grid>
-        </Grid>
-      </Box>
-      <Error>{responseError?.message}</Error>
-      <Button
-        fullWidth
-        variant="contained"
-        color="primary"
-        type="submit"
-        aria-label="save tech check"
-        disabled={!canSave}
-      >
-        Save
-      </Button>
-    </form>
+        </Box>
+        <Error>{responseError?.message}</Error>
+        <Button
+          fullWidth
+          variant="contained"
+          color="primary"
+          type="submit"
+          aria-label="save tech check"
+          disabled={!canSave}
+        >
+          Save
+        </Button>
+      </form>
+    </SkipTechCheckRulesConfig>
   )
 }
 

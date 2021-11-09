@@ -3,6 +3,7 @@ import Image from 'lib/ui/form/ImageUpload/Image'
 import UploadButton from 'lib/ui/form/ImageUpload/UploadButton'
 import RemoveButton from 'lib/ui/form/ImageUpload/RemoveButton'
 import Cropper from 'lib/ui/form/ImageUpload/Cropper'
+import {is, hasChildren} from 'lib/react-utils'
 
 export const MAX_FILE_SIZE_BYTES = 5000000 // 5MB
 
@@ -107,9 +108,7 @@ export default function ImageUpload(props) {
        * come across children comps we'll recursively map over those
        * too to add our props.
        */
-
-      const hasChildren = typeof component.props.children === 'object'
-      if (hasChildren) {
+      if (hasChildren(component)) {
         return React.cloneElement(component, {
           children: withProps(component.props.children),
           key: index,
@@ -126,11 +125,6 @@ export default function ImageUpload(props) {
   }
 
   return withProps(components)
-}
-
-function is(fn, component) {
-  const componentName = component.type ? component.type.name : null
-  return fn.name === componentName
 }
 
 function hasComponent(target, components) {
