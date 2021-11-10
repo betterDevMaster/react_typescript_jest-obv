@@ -1,27 +1,28 @@
-import BillingStatusOverlay, {Overlay} from 'obvio/BillingStatusOverlay'
+import {useObvioUser} from 'obvio/auth'
+import {HasUnpaidTransactionsOverlay, Overlay} from 'obvio/BillingStatusOverlay'
 import {useOwner} from 'organization/OwnerProvider'
 import React from 'react'
 
 export function OrganizationBillingStatusOverlay() {
   const owner = useOwner()
+  const user = useObvioUser()
 
-  const userOverlay = BillingStatusOverlay()
-  if (userOverlay) {
-    return <>{userOverlay}</>
+  if (user.has_unpaid_transactions) {
+    return <HasUnpaidTransactionsOverlay />
   }
 
   if (!owner.has_active_subscription) {
-    return <SubscriptionRequiredOverlay />
+    return <OwnerRequiresSubscriptionOverlay />
   }
 
   if (owner.has_unpaid_transactions) {
-    return <HasUnpaidTransactionsOverlay />
+    return <OnwerHasUnpaidTransactionsOverlay />
   }
 
   return null
 }
 
-function SubscriptionRequiredOverlay() {
+function OwnerRequiresSubscriptionOverlay() {
   return (
     <Overlay
       title="Inactive Subscription"
@@ -31,7 +32,7 @@ function SubscriptionRequiredOverlay() {
   )
 }
 
-function HasUnpaidTransactionsOverlay() {
+function OnwerHasUnpaidTransactionsOverlay() {
   return (
     <Overlay
       title="Unpaid Credit Transactions"

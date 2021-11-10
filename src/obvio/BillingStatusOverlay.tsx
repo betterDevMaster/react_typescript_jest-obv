@@ -31,7 +31,7 @@ function SubscriptionRequiredOverlay() {
   )
 }
 
-function HasUnpaidTransactionsOverlay() {
+export function HasUnpaidTransactionsOverlay() {
   return (
     <Overlay
       title="Unpaid Credit Transactions"
