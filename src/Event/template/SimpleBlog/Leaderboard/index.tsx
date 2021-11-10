@@ -8,7 +8,7 @@ import TableCell from '@material-ui/core/TableCell'
 import TableRow from '@material-ui/core/TableRow'
 import TableBody from '@material-ui/core/TableBody'
 import {useAttendeeVariables} from 'Event'
-import {PageTitle} from 'Event/template/SimpleBlog/Page'
+import {PageTitle, PageDescription} from 'Event/template/SimpleBlog/Page'
 import {useSimpleBlog} from 'Event/template/SimpleBlog'
 import Content from 'lib/ui/form/TextEditor/Content'
 import {eventRoutes} from 'Event/Routes'
@@ -27,7 +27,9 @@ export default function SimpleBlogLeaderboard(props: {user: Attendee}) {
   return (
     <Page user={props.user}>
       <PageTitle>{leaderboardPage.title}</PageTitle>
-      <Description>{description}</Description>
+      <PageDescription>
+        <Content>{description}</Content>
+      </PageDescription>
       <StyledRelativeLink
         to={eventRoutes.root}
         color={leaderboardPage.backToDashboardTextColor}
@@ -63,10 +65,6 @@ export default function SimpleBlogLeaderboard(props: {user: Attendee}) {
     </Page>
   )
 }
-
-const Description = styled(Content)`
-  text-align: center;
-`
 
 const Container = styled.div`
   margin-bottom: ${(props) => props.theme.spacing[8]};

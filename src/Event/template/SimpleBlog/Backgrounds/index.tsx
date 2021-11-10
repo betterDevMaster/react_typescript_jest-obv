@@ -12,6 +12,7 @@ import {useSimpleBlog} from 'Event/template/SimpleBlog'
 import Content from 'lib/ui/form/TextEditor/Content'
 import BackgroundImage from 'Event/template/SimpleBlog/Backgrounds/BackgroundsConfig/BackgroundImage'
 import {useSortBackgrounds} from 'organization/Event/Backgrounds/BackgroundsProvider'
+import {PageTitle, PageDescription} from 'Event/template/SimpleBlog/Page'
 
 export default function SimpleBlogBackgrounds(props: {user: Attendee}) {
   const v = useAttendeeVariables()
@@ -33,8 +34,10 @@ export default function SimpleBlogBackgrounds(props: {user: Attendee}) {
 
   return (
     <Page user={props.user}>
-      <Title>{v(zoom_backgrounds_title || '')}</Title>
-      <Content>{v(zoom_backgrounds_description || '')}</Content>
+      <PageTitle>{v(zoom_backgrounds_title || '')}</PageTitle>
+      <PageDescription>
+        <Content>{v(zoom_backgrounds_description || '')}</Content>
+      </PageDescription>
 
       <BackToDashboard color={v(settings.backToDashboardTextColor)}>
         <Link to="/">{v(settings.backToDashboardText)}</Link>
@@ -67,13 +70,6 @@ export default function SimpleBlogBackgrounds(props: {user: Attendee}) {
     </Page>
   )
 }
-
-const Title = styled.h2`
-  font-size: 42px;
-  line-height: 1.5;
-  text-transform: uppercase;
-  text-align: center;
-`
 
 const BackToDashboard = styled.div`
   text-align: center;

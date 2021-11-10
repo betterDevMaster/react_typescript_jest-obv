@@ -7,7 +7,7 @@ import SponsorList from 'Event/template/SimpleBlog/SponsorPage/SponsorList'
 import {User} from 'auth/user'
 import {useEvent} from 'Event/EventProvider'
 import SponsorEditDialog from 'Event/template/SimpleBlog/SponsorPage/SponsorEditDialog'
-import {PageTitle} from 'Event/template/SimpleBlog/Page'
+import {PageTitle, PageDescription} from 'Event/template/SimpleBlog/Page'
 import {useSimpleBlog} from 'Event/template/SimpleBlog'
 import {useAttendeeVariables} from 'Event'
 import Content from 'lib/ui/form/TextEditor/Content'
@@ -28,11 +28,11 @@ export default function SimpleBlogSponsorPage(props: {
       <PageTitle aria-label="sponsors title">
         {event.sponsor_page_title}
       </PageTitle>
-      <SubTitle>
+      <PageDescription>
         <Content aria-label="speakers description">
           {v(sponsorsPageSettings.description)}
         </Content>
-      </SubTitle>
+      </PageDescription>
       <BackToDashboard color={sponsorsPageSettings.backToDashboardTextColor}>
         <Link to="/">{sponsorsPageSettings.backToDashboardText}</Link>
       </BackToDashboard>
@@ -47,11 +47,6 @@ export default function SimpleBlogSponsorPage(props: {
 
   return <Page user={props.user}>{content}</Page>
 }
-
-const SubTitle = styled.div`
-  text-align: center;
-  margin: 20px 20px;
-`
 
 const BackToDashboard = styled.div`
   text-align: center;

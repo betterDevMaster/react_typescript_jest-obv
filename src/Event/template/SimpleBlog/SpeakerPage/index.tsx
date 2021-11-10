@@ -6,7 +6,7 @@ import {Link} from 'react-router-dom'
 import {Speaker} from 'Event/SpeakerPage'
 import SpeakerList from 'Event/template/SimpleBlog/SpeakerPage/SpeakerList'
 import SpeakerEditDialog from 'Event/template/SimpleBlog/SpeakerPage/SpeakerEditDialog'
-import {PageTitle} from 'Event/template/SimpleBlog/Page'
+import {PageTitle, PageDescription} from 'Event/template/SimpleBlog/Page'
 import {useAttendeeVariables} from 'Event'
 import {useSimpleBlog} from 'Event/template/SimpleBlog'
 import Content from 'lib/ui/form/TextEditor/Content'
@@ -26,11 +26,11 @@ export default function SimpleBlogSpeakerPage(props: {
       <PageTitle aria-label="speakers title">
         {v(speakerPageSettings.title)}
       </PageTitle>
-      <SubTitle>
+      <PageDescription>
         <Content aria-label="speakers description">
           {v(speakerPageSettings?.description)}
         </Content>
-      </SubTitle>
+      </PageDescription>
       <BackToDashboard color={speakerPageSettings.backToDashboardTextColor}>
         <Link to="/">{v(speakerPageSettings.backToDashboardText)}</Link>
       </BackToDashboard>
@@ -45,11 +45,6 @@ export default function SimpleBlogSpeakerPage(props: {
 
   return <Page user={props.user}>{content}</Page>
 }
-
-const SubTitle = styled.div`
-  text-align: center;
-  margin: 20px 20px;
-`
 
 const BackToDashboard = styled.div`
   text-align: center;

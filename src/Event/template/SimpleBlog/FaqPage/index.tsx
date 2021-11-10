@@ -6,7 +6,7 @@ import {FAQ} from 'Event/FaqPage'
 import FaqList from 'Event/template/SimpleBlog/FaqPage/FaqList'
 import {User} from 'auth/user'
 import FaqEditDialog from 'Event/template/SimpleBlog/FaqPage/FaqEditDialog'
-import {PageTitle} from 'Event/template/SimpleBlog/Page'
+import {PageTitle, PageDescription} from 'Event/template/SimpleBlog/Page'
 import {useAttendeeVariables} from 'Event'
 import {useSimpleBlog} from 'Event/template/SimpleBlog'
 import Content from 'lib/ui/form/TextEditor/Content'
@@ -24,11 +24,11 @@ export default function SimpleBlogFaqPage(props: {
   const content = (
     <>
       <PageTitle aria-label="faqs title">{v(pageSettings?.title)}</PageTitle>
-      <SubTitle>
+      <PageDescription>
         <Content aria-label="description">
           {v(pageSettings?.description)}
         </Content>
-      </SubTitle>
+      </PageDescription>
       <BackToDashboard color={pageSettings?.backToDashboardTextColor}>
         <Link to="/">{v(pageSettings?.backToDashboardText)}</Link>
       </BackToDashboard>
@@ -43,11 +43,6 @@ export default function SimpleBlogFaqPage(props: {
 
   return <Page user={props.user}>{content}</Page>
 }
-
-const SubTitle = styled.div`
-  text-align: center;
-  margin: 20px 20px;
-`
 
 const BackToDashboard = styled.div`
   text-align: center;

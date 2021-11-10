@@ -136,10 +136,12 @@ export const PageTitle = styled.h2`
   text-transform: uppercase;
   text-align: center;
 `
-
-export const Subtitle = styled.div`
-  text-align: center;
-  margin: 20px 20px;
+export const PageDescription = styled.div`
+  margin: ${(props) => props.theme.spacing[5]};
+  width: 90%;
+  @media (min-width: ${(props) => props.theme.breakpoints.md}) {
+    width: 70%;
+  }
 `
 
 export const BackToDashboardLink = styled(RelativeLink)<{

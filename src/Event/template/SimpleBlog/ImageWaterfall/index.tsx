@@ -3,7 +3,7 @@ import {ImageMasonryWall, useFetchEntries} from 'Event/ImageWaterfall'
 import Page, {
   BackToDashboardLink,
   PageTitle,
-  Subtitle,
+  PageDescription,
 } from 'Event/template/SimpleBlog/Page'
 import FullPageLoader from 'lib/ui/layout/FullPageLoader'
 import React from 'react'
@@ -27,9 +27,9 @@ export default function SimpleBlogImageWaterfall() {
   return (
     <Page user={user}>
       <PageTitle>{v(pageSettings.title)}</PageTitle>
-      <Subtitle>
+      <PageDescription>
         <TextContent>{v(pageSettings?.description)}</TextContent>
-      </Subtitle>
+      </PageDescription>
       <BackToDashboardLink
         color={pageSettings.backToDashboardTextColor}
         to={eventRoutes.root}
