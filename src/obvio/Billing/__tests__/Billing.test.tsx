@@ -11,6 +11,7 @@ it('should remove a credit card', async () => {
   const teamMember = fakeTeamMember({
     has_active_subscription: true,
     plan: 'enterprise',
+    is_subscribed: true,
     credits: 0, // start with 0 credits
   })
 

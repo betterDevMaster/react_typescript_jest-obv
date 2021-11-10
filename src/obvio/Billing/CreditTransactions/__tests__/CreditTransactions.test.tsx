@@ -16,6 +16,7 @@ it('should show transactions', async () => {
     has_active_subscription: true,
     has_unpaid_transactions: false,
     plan: 'enterprise',
+    is_subscribed: true,
     credits: 0, // start with 0 credits
   })
 

@@ -9,6 +9,7 @@ const mockGet = axios.get as jest.Mock
 it('should show missing credits', async () => {
   const teamMember = fakeTeamMember({
     has_active_subscription: true,
+    is_subscribed: true,
     has_unpaid_transactions: true,
     plan: 'enterprise',
     credits: 0, // start with 0 credits

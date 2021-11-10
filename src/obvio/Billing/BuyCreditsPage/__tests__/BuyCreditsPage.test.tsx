@@ -25,6 +25,7 @@ it('should purchase selected credits', async () => {
     has_active_subscription: true,
     plan,
     credits: 0, // start with 0 credits
+    is_founder: true,
   })
 
   const {findByText, findByLabelText, findAllByLabelText} = await signInToObvio(
@@ -114,6 +115,7 @@ it('should require a payment method', async () => {
     has_active_subscription: true,
     plan,
     credits: 0, // start with 0 credits
+    is_subscribed: true,
   })
 
   const {findByText, findByLabelText} = await signInToObvio({
@@ -139,6 +141,7 @@ it('should require a plan', async () => {
     has_active_subscription: true,
     plan: null, // no plan
     credits: 0,
+    is_subscribed: true,
   })
 
   const {findByText, findByLabelText} = await signInToObvio({
