@@ -77,13 +77,24 @@ export default function Billing() {
             </Typography>
           </TextContainer>
         </Box>
-        <Grid container spacing={2}>
-          {plans.map((plan) => (
-            <Grid xs={12} lg key={plan.name} item>
-              <PlanCard plan={plan} />
-            </Grid>
-          ))}
-        </Grid>
+        <Box mb={4}>
+          <Grid container spacing={2}>
+            {plans.map((plan) => (
+              <Grid xs={12} lg key={plan.name} item>
+                <PlanCard plan={plan} />
+              </Grid>
+            ))}
+          </Grid>
+        </Box>
+        <Condition>
+          * Additional Rooms can be added to events for 10 credits each.
+        </Condition>
+        <Condition>
+          ** Additional credits reduce in price depending on quantity pruchased.
+          Price shown is highest for up to 500 credits. Price reduces by $0.25
+          for next 500 credits, by $0.50 for next 2,000 credits, by $0.75 for
+          next 7,000 credits, and by $1,000 for next 10,000 credits.
+        </Condition>
       </Page>
     </Layout>
   )
@@ -127,4 +138,9 @@ const Section = styled.div`
 
 const PurchaseCreditsLink = styled(RelativeLink)`
   margin-right: ${(props) => props.theme.spacing[2]};
+`
+
+const Condition = styled.p`
+  font-size: 0.75rem;
+  font-style: italic;
 `

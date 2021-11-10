@@ -18,6 +18,7 @@ export type PlanName =
 
 export interface Plan {
   name: PlanName
+  label: string
   description: string
   price: number
   features: Feature[]
@@ -37,6 +38,7 @@ export interface CreditPackage {
 
 export const BASIC_PLAN: Plan = {
   name: BASIC,
+  label: 'Obvio',
   description: '1 Organization, 600 Annual Credits, 3 Rooms per Event',
   price: 997,
   creditPackages: [
@@ -60,40 +62,46 @@ export const BASIC_PLAN: Plan = {
       isActive: true,
     },
     {
-      details: 'Unlimited Attendees in Zoom Meetings',
+      details: '600 Attendee Credits',
       isGood: true,
       isActive: true,
     },
     {
-      details: 'Custom Dashboard',
+      details: 'Event Durations up to 4 Days',
       isGood: true,
       isActive: true,
     },
     {
-      details: 'No Zoom account required - Hosts, or Attendees',
+      details: '3 Zoom Rooms Per Event *',
       isGood: true,
       isActive: true,
     },
     {
-      details: 'Control the Attendee Name with custom emojis',
+      details: 'Cloud Based Event Recording',
       isGood: true,
       isActive: true,
     },
     {
-      details: '24 Hour Support - Normal Biz Hours',
+      details: 'Unlimited Team Members',
       isGood: true,
       isActive: true,
     },
     {
-      details: 'Priority Support Within 60 mins - 24/7',
+      details: 'Includes 1 Organization',
       isGood: true,
-      isActive: false,
+      isActive: true,
+    },
+    {
+      details: 'Additional Credits from $3.00 **',
+      isGood: true,
+      isActive: true,
     },
   ],
 }
 
 export const PROFESSIONAL_PLAN: Plan = {
   name: PROFESSIONAL,
+  label: 'Obvio Pro',
   description: '3 Organizations, 1,200 Annual Credits, 10 Rooms per Event',
   price: 1997,
   creditPackages: [
@@ -112,45 +120,31 @@ export const PROFESSIONAL_PLAN: Plan = {
   ],
   features: [
     {
-      details: 'Unlimited Events',
+      details: 'Includes All Obvio Features, Plus',
       isGood: true,
       isActive: true,
     },
     {
-      details: 'Unlimited Attendees in Zoom Meetings',
+      details: '1,200 Total Attendee Credits',
       isGood: true,
       isActive: true,
     },
     {
-      details: 'Custom Dashboard',
+      details: '10 Rooms per Event **',
       isGood: true,
       isActive: true,
     },
     {
-      details: 'No Zoom account required - Hosts, or Attendees',
+      details: 'Includes 3 Organizations',
       isGood: true,
       isActive: true,
-    },
-    {
-      details: 'Control the Attendee Name with custom emojis',
-      isGood: true,
-      isActive: true,
-    },
-    {
-      details: '24 Hour Support - Normal Biz Hours',
-      isGood: true,
-      isActive: true,
-    },
-    {
-      details: 'Priority Support Within 60 mins - 24/7',
-      isGood: true,
-      isActive: false,
     },
   ],
 }
 
 export const ENTERPRISE_PLAN: Plan = {
   name: ENTERPRISE,
+  label: 'Obvio Enterprise',
   description:
     'Unlimited Organizations, 3,600 Annual Credits, 25 Rooms per Event',
   price: 4997,
@@ -170,37 +164,27 @@ export const ENTERPRISE_PLAN: Plan = {
   ],
   features: [
     {
-      details: 'Unlimited Events',
+      details: 'Includes All Obvio Pro Features Plus',
       isGood: true,
       isActive: true,
     },
     {
-      details: 'Unlimited Attendees in Zoom Meetings',
+      details: '3,600 Total Attendee Credits',
       isGood: true,
       isActive: true,
     },
     {
-      details: 'Custom Dashboard',
+      details: '25 Rooms per Event *',
       isGood: true,
       isActive: true,
     },
     {
-      details: 'No Zoom account required - Hosts, or Attendees',
+      details: 'Unlimited Organizations',
       isGood: true,
       isActive: true,
     },
     {
-      details: 'Control the Attendee Name with custom emojis',
-      isGood: true,
-      isActive: true,
-    },
-    {
-      details: '24 Hour Support - Normal Biz Hours',
-      isGood: true,
-      isActive: true,
-    },
-    {
-      details: 'Priority Support Within 60 mins - 24/7',
+      details: 'Additional Credits $1.00 **',
       isGood: true,
       isActive: true,
     },
@@ -209,6 +193,7 @@ export const ENTERPRISE_PLAN: Plan = {
 
 export const FOUNDER_PLAN: Plan = {
   name: FOUNDER,
+  label: 'Obvio Founders',
   description:
     'Unlimited Organizations, 1,000 Annual Credits, 3 Rooms per Event',
   price: 1500,
@@ -228,39 +213,29 @@ export const FOUNDER_PLAN: Plan = {
   ],
   features: [
     {
-      details: 'Unlimited Events',
+      details: 'Includes All Features of Obvio Plus',
       isGood: true,
       isActive: true,
     },
     {
-      details: 'Unlimited Attendees in Zoom Meetings',
+      details: '1,000 Total Attendee Credits',
       isGood: true,
       isActive: true,
     },
     {
-      details: 'Custom Dashboard',
+      details: '3 Rooms per Event *',
       isGood: true,
       isActive: true,
     },
     {
-      details: 'No Zoom account required - Hosts, or Attendees',
+      details: 'Unlimited Organizations',
       isGood: true,
       isActive: true,
     },
     {
-      details: 'Control the Attendee Name with custom emojis',
+      details: 'Additional Credits $1.00 **',
       isGood: true,
       isActive: true,
-    },
-    {
-      details: '24 Hour Support - Normal Biz Hours',
-      isGood: true,
-      isActive: true,
-    },
-    {
-      details: 'Priority Support Within 60 mins - 24/7',
-      isGood: true,
-      isActive: false,
     },
   ],
 }

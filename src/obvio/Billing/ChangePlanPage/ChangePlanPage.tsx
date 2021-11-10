@@ -51,7 +51,7 @@ function Content(props: {plan: PlanName}) {
             <ErrorAlert>{error}</ErrorAlert>
             <Box mb={4}>
               <Typography>
-                You are subscribing to the <strong>{plan}</strong> plan.
+                You are subscribing to the <strong>{info.label}</strong> plan.
               </Typography>
               <Typography>
                 <strong>

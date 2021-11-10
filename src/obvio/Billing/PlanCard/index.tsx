@@ -11,17 +11,18 @@ export default function PlanCard(props: {plan: Plan}) {
 
   return (
     <Box>
-      <Name>{plan.name}</Name>
-      <Price>
-        <Dollars>${plan.price}</Dollars>
-        <MonthLabel>/ Year</MonthLabel>
-      </Price>
-      <Description>{plan.description}</Description>
-      <FeatureSection>
-        {plan.features.map((f) => (
-          <Feature feature={f} key={f.details} />
-        ))}
-      </FeatureSection>
+      <div>
+        <Name>{plan.label}</Name>
+        <Price>
+          <Dollars>${plan.price}</Dollars>
+          <MonthLabel>/ Year</MonthLabel>
+        </Price>
+        <FeatureSection>
+          {plan.features.map((f) => (
+            <Feature feature={f} key={f.details} />
+          ))}
+        </FeatureSection>
+      </div>
       <ChoosePlanButton plan={plan} />
     </Box>
   )
@@ -51,6 +52,10 @@ const Box = styled.div`
   border: 1px solid ${(props) => props.theme.colors.border};
   padding: ${(props) => `${props.theme.spacing[6]} ${props.theme.spacing[10]}`};
   border-radius: 15px;
+  height: 100%;
+  display: flex;
+  justify-content: space-between;
+  flex-direction: column;
 `
 
 const Name = styled.h3`
@@ -77,17 +82,6 @@ const MonthLabel = styled.span`
   color: ${(props) => props.theme.colors.text.muted};
   font-weight: 300;
   margin: 0 0 4px;
-`
-
-const Description = styled.p`
-  font-family: Rubik;
-  font-weight: 300;
-  font-size: 16px;
-  line-height: 24px;
-  margin: 0 0 ${(props) => props.theme.spacing[5]};
-  color: ${(props) => props.theme.colors.text.muted};
-  /* Fixed height to keep all cards aligned */
-  min-height: 100px;
 `
 
 const FeatureBox = styled.div`
