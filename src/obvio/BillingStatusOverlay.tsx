@@ -11,24 +11,11 @@ import React from 'react'
 export default function BillingStatusOverlay() {
   const user = useObvioUser()
 
-  if (!user.has_active_subscription) {
-    return <SubscriptionRequiredOverlay />
-  }
-
   if (user.has_unpaid_transactions) {
     return <HasUnpaidTransactionsOverlay />
   }
 
   return null
-}
-
-function SubscriptionRequiredOverlay() {
-  return (
-    <Overlay
-      title="Inactive Subscription"
-      description="Click the button below to re-activate your subscription."
-    />
-  )
 }
 
 export function HasUnpaidTransactionsOverlay() {

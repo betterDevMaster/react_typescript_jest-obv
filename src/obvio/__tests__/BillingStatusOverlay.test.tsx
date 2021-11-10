@@ -8,23 +8,6 @@ beforeEach(() => {
   jest.clearAllMocks()
 })
 
-it('should show invalid subscription overlay', async () => {
-  const teamMember = fakeTeamMember({
-    has_active_subscription: false, // no subscription
-    has_payment_method: false,
-    plan: null,
-  })
-
-  const {findByText} = await signInToObvio({
-    beforeRender: () => {
-      mockGet.mockResolvedValueOnce({data: []}) // organizations
-    },
-    user: teamMember,
-  })
-
-  expect(await findByText(/inactive subscription/i)).toBeInTheDocument()
-})
-
 it('should show unpaid transactions overlay', async () => {
   const teamMember = fakeTeamMember({
     has_active_subscription: true,
