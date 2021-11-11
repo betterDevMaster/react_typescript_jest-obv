@@ -18,19 +18,32 @@ export default function BillingStatusOverlay() {
   return null
 }
 
+export function SubscriptionRequiredOverlay() {
+  return (
+    <Overlay
+      title="Inactive Subscription"
+      description="Click the button below to re-activate your subscription."
+    >
+      <GoToBillingButton />
+    </Overlay>
+  )
+}
+
 export function HasUnpaidTransactionsOverlay() {
   return (
     <Overlay
       title="Unpaid Credit Transactions"
       description="To continue using your Obv.io account please add more credits."
-    />
+    >
+      <GoToBillingButton />
+    </Overlay>
   )
 }
 
 export function Overlay(props: {
   title: string
   description: string
-  hideButton?: boolean
+  children: React.ReactElement
 }) {
   return (
     <Dialog open>
@@ -39,16 +52,20 @@ export function Overlay(props: {
           <WarningIcon iconClass="far fa-exclamation-triangle" />
           <Title>{props.title}</Title>
           <Description>{props.description}</Description>
-          <Actions hidden={props.hideButton}>
-            <RelativeLink to={obvioRoutes.billing.root} disableStyles>
-              <Button variant="contained" color="primary">
-                Go To Billing
-              </Button>
-            </RelativeLink>
-          </Actions>
+          <Actions>{props.children}</Actions>
         </Box>
       </DialogContent>
     </Dialog>
+  )
+}
+
+function GoToBillingButton() {
+  return (
+    <RelativeLink to={obvioRoutes.billing.root} disableStyles>
+      <Button variant="contained" color="primary">
+        Go To Billing
+      </Button>
+    </RelativeLink>
   )
 }
 

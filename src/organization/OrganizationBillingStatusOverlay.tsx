@@ -1,11 +1,23 @@
+import Button from '@material-ui/core/Button'
+import {RelativeLink} from 'lib/ui/link/RelativeLink'
 import {useObvioUser} from 'obvio/auth'
-import {HasUnpaidTransactionsOverlay, Overlay} from 'obvio/BillingStatusOverlay'
-import {useOwner} from 'organization/OwnerProvider'
+import {
+  HasUnpaidTransactionsOverlay,
+  Overlay,
+  SubscriptionRequiredOverlay,
+} from 'obvio/BillingStatusOverlay'
+import {obvioRoutes} from 'obvio/Routes'
+import {useIsOwner, useOwner} from 'organization/OwnerProvider'
 import React from 'react'
 
 export function OrganizationBillingStatusOverlay() {
   const owner = useOwner()
   const user = useObvioUser()
+
+  const isOwner = useIsOwner()
+  if (isOwner && !user.has_active_subscription) {
+    return <SubscriptionRequiredOverlay />
+  }
 
   if (user.has_unpaid_transactions) {
     return <HasUnpaidTransactionsOverlay />
@@ -27,8 +39,9 @@ function OwnerRequiresSubscriptionOverlay() {
     <Overlay
       title="Inactive Subscription"
       description="The owner of this event does not have an active subscription."
-      hideButton
-    />
+    >
+      <BackToOrganizationsButton />
+    </Overlay>
   )
 }
 
@@ -37,7 +50,18 @@ function OnwerHasUnpaidTransactionsOverlay() {
     <Overlay
       title="Unpaid Credit Transactions"
       description="The owner of this event needs to add more credits."
-      hideButton
-    />
+    >
+      <BackToOrganizationsButton />
+    </Overlay>
+  )
+}
+
+function BackToOrganizationsButton() {
+  return (
+    <RelativeLink to={obvioRoutes.organizations.root} disableStyles>
+      <Button variant="contained" color="primary">
+        Return to My Organizations
+      </Button>
+    </RelativeLink>
   )
 }
