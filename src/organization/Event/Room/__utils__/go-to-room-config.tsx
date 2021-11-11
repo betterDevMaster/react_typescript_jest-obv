@@ -13,10 +13,14 @@ export async function goToRoomConfig(
   options: EventOverrides & {
     area?: Area
     room?: Room
+    startUrl?: string
   } = {},
 ) {
   const room = options.room || fakeRoom()
+
   const area = options.area || fakeArea()
+
+  const startUrl = options.startUrl || 'http://zoom/start_url'
 
   const context = await goToArea({
     ...options,
@@ -26,7 +30,7 @@ export async function goToRoomConfig(
 
   if (room.is_online && context.userPermissions?.includes(START_ROOMS)) {
     mockGet.mockImplementationOnce(() =>
-      Promise.resolve({data: {url: 'http://zoom/start_url'}}),
+      Promise.resolve({data: {url: startUrl}}),
     )
   }
 

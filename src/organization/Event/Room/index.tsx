@@ -45,7 +45,6 @@ import {RelativeLink} from 'lib/ui/link/RelativeLink'
 import {useInterval} from 'lib/interval'
 import {FETCH_METRICS_INTERVAL_SECS} from 'organization/Event/Area'
 import DeleteRoomButton from 'organization/Event/Room/DeleteRoomButton'
-import TestModeNoticeDialog from 'organization/Event/Room/TestModeNoticeDialog'
 
 export const DEFAULT_MAX_NUM_ATTENDEES = 500
 
@@ -109,110 +108,107 @@ export default function RoomConfig() {
   const canSetMaxNumAttendees = hasMaxNumAttendees && !processing
 
   return (
-    <>
-      <TestModeNoticeDialog />
-      <Layout>
-        <Page>
-          <Box
-            display="flex"
-            justifyContent="space-between"
-            alignItems="flex-start"
-            mb={2}
-          >
-            <ExportRoomAttendees room={room} />
-            <HasPermission permission={VIEW_RECORDINGS}>
-              <RelativeLink to={roomRoutes.recordings} disableStyles>
-                <Button variant="outlined">
-                  <RecordingIconImage src={recordingIcon} alt="Record icon" />
-                  Recordings
-                </Button>
-              </RelativeLink>
-            </HasPermission>
-          </Box>
-          <Title variant="h5">{room.number}</Title>
-          <DeleteRoomButton />
-          <Typography>Attendees: {numAttendees}</Typography>
+    <Layout>
+      <Page>
+        <Box
+          display="flex"
+          justifyContent="space-between"
+          alignItems="flex-start"
+          mb={2}
+        >
+          <ExportRoomAttendees room={room} />
+          <HasPermission permission={VIEW_RECORDINGS}>
+            <RelativeLink to={roomRoutes.recordings} disableStyles>
+              <Button variant="outlined">
+                <RecordingIconImage src={recordingIcon} alt="Record icon" />
+                Recordings
+              </Button>
+            </RelativeLink>
+          </HasPermission>
+        </Box>
+        <Title variant="h5">{room.number}</Title>
+        <DeleteRoomButton />
+        <Typography>Attendees: {numAttendees}</Typography>
+        <FormControl>
+          <FormControlLabel control={<OnlineSwitch />} label="Open" />
+        </FormControl>
+        <StartRoom processing={processing} />
+        <HasPermission permission={CONFIGURE_EVENTS}>
           <FormControl>
-            <FormControlLabel control={<OnlineSwitch />} label="Open" />
+            <FormControlLabel
+              control={<RegistrationSwitch />}
+              label="Registration Enabled"
+            />
           </FormControl>
-          <StartRoom processing={processing} />
-          <HasPermission permission={CONFIGURE_EVENTS}>
-            <FormControl>
+        </HasPermission>
+        <RegistrationURL room={room} />
+        <HasPermission permission={CONFIGURE_EVENTS}>
+          <>
+            <TextField
+              label="Description"
+              fullWidth
+              variant="outlined"
+              inputProps={{
+                'aria-label': 'room description',
+              }}
+              disabled={processing}
+              value={description || ''}
+              onChange={onChangeStringHandler(setDescription)}
+            />
+            <FormControl
+              required
+              component="fieldset"
+              fullWidth
+              disabled={processing}
+            >
               <FormControlLabel
-                control={<RegistrationSwitch />}
-                label="Registration Enabled"
+                control={
+                  <Switch
+                    checked={hasMaxNumAttendees}
+                    onChange={onChangeCheckedHandler(
+                      handleToggleMaxNumAttendees,
+                    )}
+                    color="primary"
+                    inputProps={{
+                      'aria-label': 'toggle has max num attendees',
+                    }}
+                  />
+                }
+                label="Limit maximum number of attendees in room?"
               />
             </FormControl>
-          </HasPermission>
-          <RegistrationURL room={room} />
-          <HasPermission permission={CONFIGURE_EVENTS}>
-            <>
-              <TextField
-                label="Description"
-                fullWidth
-                variant="outlined"
-                inputProps={{
-                  'aria-label': 'room description',
-                }}
-                disabled={processing}
-                value={description || ''}
-                onChange={onChangeStringHandler(setDescription)}
-              />
-              <FormControl
-                required
-                component="fieldset"
-                fullWidth
-                disabled={processing}
-              >
-                <FormControlLabel
-                  control={
-                    <Switch
-                      checked={hasMaxNumAttendees}
-                      onChange={onChangeCheckedHandler(
-                        handleToggleMaxNumAttendees,
-                      )}
-                      color="primary"
-                      inputProps={{
-                        'aria-label': 'toggle has max num attendees',
-                      }}
-                    />
-                  }
-                  label="Limit maximum number of attendees in room?"
-                />
-              </FormControl>
-              <TextField
-                label="Maximum number of attendees"
-                type="number"
-                name="max_num_attendees"
-                fullWidth
-                variant="outlined"
-                value={maxNumAttendees || ''}
-                inputProps={{
-                  'aria-label': 'set max number of attendees',
-                  min: 0,
-                  max: 1000,
-                }}
-                onChange={onChangeNumberHandler(setMaxNumAttendees)}
-                disabled={!canSetMaxNumAttendees}
-              />
-              <Button
-                color="primary"
-                disabled={!canSave}
-                variant="contained"
-                onClick={save}
-                aria-label="update room"
-              >
-                Save
-              </Button>
-            </>
-          </HasPermission>
+            <TextField
+              label="Maximum number of attendees"
+              type="number"
+              name="max_num_attendees"
+              fullWidth
+              variant="outlined"
+              value={maxNumAttendees || ''}
+              inputProps={{
+                'aria-label': 'set max number of attendees',
+                min: 0,
+                max: 1000,
+              }}
+              onChange={onChangeNumberHandler(setMaxNumAttendees)}
+              disabled={!canSetMaxNumAttendees}
+            />
+            <Button
+              color="primary"
+              disabled={!canSave}
+              variant="contained"
+              onClick={save}
+              aria-label="update room"
+            >
+              Save
+            </Button>
+          </>
+        </HasPermission>
 
-          <HasPermission permission={CHECK_IN_ATTENDEES}>
-            <TechCheckAttendees />
-          </HasPermission>
-        </Page>
-      </Layout>
-    </>
+        <HasPermission permission={CHECK_IN_ATTENDEES}>
+          <TechCheckAttendees />
+        </HasPermission>
+      </Page>
+    </Layout>
   )
 }
 

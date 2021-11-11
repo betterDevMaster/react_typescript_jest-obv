@@ -1,4 +1,4 @@
-import Button from '@material-ui/core/Button'
+import Button, {ButtonProps} from '@material-ui/core/Button'
 import DialogActions from '@material-ui/core/DialogActions'
 import DialogContent from '@material-ui/core/DialogContent'
 import DialogTitle from '@material-ui/core/DialogTitle'
@@ -8,12 +8,21 @@ import DangerButton from 'lib/ui/Button/DangerButton'
 import Dialog from 'lib/ui/Dialog'
 import React from 'react'
 
+const DEFAULT_TITLE = 'Are you sure?'
+const DEFAULT_CONFIRM_LABEL = 'Confirm'
+
+type ConfirmationDialogVariant = 'info' | 'dangerous'
+
 export default function ConfirmDialog(props: {
   onConfirm: () => void
   children?: (confirm: () => void) => React.ReactElement
-  description: string
+  description: string | React.ReactElement
   showing?: boolean
+  title?: string
   onCancel?: () => void
+  confirmLabel?: string
+  variant?: ConfirmationDialogVariant
+  skip?: boolean
 }) {
   const {showing, onCancel} = props
   const {flag: isVisible, toggle: toggleVisible} = useToggle()
@@ -25,6 +34,15 @@ export default function ConfirmDialog(props: {
     }
 
     props.onConfirm()
+  }
+
+  const handleAction = () => {
+    if (props.skip) {
+      props.onConfirm()
+      return
+    }
+
+    toggleVisible()
   }
 
   /**
@@ -42,23 +60,69 @@ export default function ConfirmDialog(props: {
     toggleVisible()
   }
 
+  const title = props.title || DEFAULT_TITLE
+  const confirmLabel = props.confirmLabel || DEFAULT_CONFIRM_LABEL
+
+  const variant: ConfirmationDialogVariant = props.variant || 'dangerous'
+
   return (
     <>
       <Dialog open={open} onClose={handleCancel}>
-        <DialogTitle>Are you sure?</DialogTitle>
+        <DialogTitle>{title}</DialogTitle>
         <DialogContent>
-          <Typography>{props.description}</Typography>
+          <Content>{props.description}</Content>
         </DialogContent>
         <DialogActions>
-          <Button autoFocus onClick={handleCancel} color="primary">
-            Cancel
-          </Button>
-          <DangerButton onClick={handleConfirm} aria-label="confirm">
-            Confirm
-          </DangerButton>
+          <CancelButton
+            dialogVariant={variant}
+            onClick={handleCancel}
+            autoFocus
+          />
+          <ConfirmButton
+            dialogVariant={variant}
+            onClick={handleConfirm}
+            aria-label="confirm"
+          >
+            {confirmLabel}
+          </ConfirmButton>
         </DialogActions>
       </Dialog>
-      {props.children && props.children(toggleVisible)}
+      {props.children && props.children(handleAction)}
     </>
   )
+}
+
+function CancelButton(
+  props: ButtonProps & {dialogVariant: ConfirmationDialogVariant},
+) {
+  const {dialogVariant, ...buttonProps} = props
+  const color: ButtonProps['color'] =
+    dialogVariant === 'dangerous' ? 'primary' : 'default'
+
+  return (
+    <Button {...buttonProps} color={color}>
+      Cancel
+    </Button>
+  )
+}
+
+function ConfirmButton(
+  props: ButtonProps & {dialogVariant: ConfirmationDialogVariant},
+) {
+  const {dialogVariant, ...buttonProps} = props
+  if (dialogVariant === 'dangerous') {
+    return <DangerButton {...buttonProps} />
+  }
+
+  return <Button {...buttonProps} color="primary" />
+}
+
+function Content(props: {children: string | React.ReactElement}) {
+  // If we're supplied a component for description, we'll
+  // just render that as-is.
+  if (typeof props.children === 'object') {
+    return props.children
+  }
+
+  return <Typography>{props.children}</Typography>
 }
