@@ -35,6 +35,12 @@ export default function CountDownTimers(props: {
   ))
 
   if (!isEditMode) {
+    if (
+      timers.length === 0 ||
+      timers[0].props.countDownTimer.enabled === false
+    ) {
+      return null
+    }
     return <Container className={props.className}>{timers}</Container>
   }
 
