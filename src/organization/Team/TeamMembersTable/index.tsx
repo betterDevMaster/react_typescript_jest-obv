@@ -18,6 +18,7 @@ import {useToggle} from 'lib/toggle'
 import {useOrganization} from 'organization/OrganizationProvider'
 import {useState} from 'react'
 import ErrorAlert from 'lib/ui/alerts/ErrorAlert'
+import {useOwner} from 'organization/OwnerProvider'
 
 export default function TeamMemberList() {
   const {
@@ -37,14 +38,11 @@ export default function TeamMemberList() {
     error: resendError,
     clearError: clearResendError,
   } = useResendInvitation()
+  const owner = useOwner()
 
   const processing =
     processingTeamMember || processingInvites || processingResend
 
-  const hasTeamMembers = members.length > 0 || memberInvites.length > 0
-  if (!hasTeamMembers) {
-    return <EmptyPlaceholder>No team members have been added.</EmptyPlaceholder>
-  }
   return (
     <>
       <ErrorAlert onClose={clearResendError}>{resendError}</ErrorAlert>
@@ -59,6 +57,15 @@ export default function TeamMemberList() {
           </TableRow>
         </TableHead>
         <TableBody>
+          {/* owner */}
+          <TableRow>
+            <TableCell>{owner.email}</TableCell>
+            <TableCell>{owner.last_name}</TableCell>
+            <TableCell>{owner.first_name}</TableCell>
+            <TableCell>Owner</TableCell>
+            <TableCell>{/* No action for owner */}</TableCell>
+          </TableRow>
+          {/* invites */}
           {memberInvites.map((invite) => (
             <TableRow key={invite.id} aria-label="team invitation">
               <TableCell>{invite.email}</TableCell>
@@ -81,7 +88,7 @@ export default function TeamMemberList() {
               </TableCell>
             </TableRow>
           ))}
-
+          {/* members */}
           {members.map((member) => (
             <TableRow key={member.id} aria-label="team member">
               <TableCell>{member.email}</TableCell>
@@ -135,10 +142,6 @@ function useResendInvitation() {
     clearError,
   }
 }
-
-const EmptyPlaceholder = styled.p`
-  text-align: center;
-`
 
 const IconBox = styled.div`
   display: flex;
