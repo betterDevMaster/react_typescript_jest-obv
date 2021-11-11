@@ -51,6 +51,7 @@ export const fakeEvent = (overrides?: Partial<ObvioEvent>): ObvioEvent => ({
   has_started: true,
   emoji_page_background: null,
   has_mailchimp: false,
+  has_zapier: false,
   is_live: false,
   ...overrides,
 })

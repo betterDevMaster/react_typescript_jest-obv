@@ -23,6 +23,7 @@ export default function AddButton(props: {
       padding: 8,
       isImageUpload: false,
       mailchimpTag: null,
+      zapierTag: null,
     }
 
     props.onAdd(button)

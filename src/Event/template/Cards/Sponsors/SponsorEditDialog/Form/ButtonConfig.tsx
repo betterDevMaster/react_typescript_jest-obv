@@ -98,6 +98,7 @@ export default function ButtonConfig(props: {
       infusionsoftTag,
       isImageUpload,
       mailchimpTag: null,
+      zapierTag: null,
     }
 
     onChange(data)

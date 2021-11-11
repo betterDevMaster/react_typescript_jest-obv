@@ -88,3 +88,36 @@ it('should add an infusionsoft tag', async () => {
   expect(url).toMatch(`/events/${event.slug}/integrations/infusionsoft/add_tag`)
   expect(data.id).toBe(id)
 })
+
+it('should add a zapier tag', async () => {
+  const action = fakeAction()
+
+  const tag = 'Some Tag'
+  const button = fakeNavButtonWithSize({
+    zapierTag: tag,
+  })
+
+  const mainNav = createEntityList([button])
+  const event = fakeEvent({template: fakeSimpleBlog({mainNav})})
+
+  const {findByText} = await loginToEventSite({
+    actions: [action],
+    attendee: fakeAttendee({
+      waiver: 'waiver.png',
+      tech_check_completed_at: 'now',
+    }),
+    event,
+  })
+
+  mockPost.mockImplementationOnce(() => Promise.resolve({data: 'ok'}))
+
+  user.click(await findByText(button.text))
+
+  await wait(() => {
+    expect(mockPost).toHaveBeenCalledTimes(2)
+  })
+
+  const [url, data] = mockPost.mock.calls[1]
+  expect(url).toMatch(`/events/${event.slug}/integrations/zapier/add_tag`)
+  expect(data.name).toBe(tag)
+})

@@ -26,6 +26,7 @@ import BackgroundPicker from 'lib/ui/form/BackgroundPicker'
 import MailchimpTagInput from 'organization/Event/DashboardConfig/MailchimpTagInput'
 import InputLabel from '@material-ui/core/InputLabel'
 import Slider from '@material-ui/core/Slider'
+import ZapierTagInput from 'organization/Event/DashboardConfig/ZapierTagInput'
 
 const MIN_BORDER_WIDTH = 0
 const MAX_BORDER_WIDTH = 50
@@ -282,7 +283,14 @@ export function SidebarNavButtonConfig(
               <MailchimpTagInput value={value} onChange={onChange} />
             )}
           />
-
+          <Controller
+            name="zapierTag"
+            control={control}
+            defaultValue={button.zapierTag}
+            render={({value, onChange}) => (
+              <ZapierTagInput value={value} onChange={onChange} />
+            )}
+          />
           <InputLabel>Button Font Size</InputLabel>
           <Controller
             name="fontSize"

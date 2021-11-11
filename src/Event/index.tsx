@@ -61,6 +61,7 @@ export interface ObvioEvent {
   has_started: boolean
   emoji_page_background: FileLocation | null
   has_mailchimp: boolean
+  has_zapier: boolean
   is_live: boolean
 }
 

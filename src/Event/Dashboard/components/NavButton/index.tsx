@@ -18,6 +18,7 @@ import {useAttendeeVariables} from 'Event'
 import {Icon, IconProps} from 'lib/fontawesome/Icon'
 import ImageEntryUpload from 'Event/Dashboard/components/NavButton/ImageEntryUpload'
 import {MailchimpTag, useAddTag as useAddMailchimpTag} from 'Event/mailchimp'
+import {ZapierTag, useAddTag as useAddZapierTag} from 'Event/zapier'
 
 export const NAV_BUTTON = 'NAV_BUTTON'
 
@@ -52,6 +53,7 @@ export default interface NavButton extends HasRules, Publishable {
   iconSize?: number
   iconStacked?: boolean
   mailchimpTag: MailchimpTag | null
+  zapierTag: ZapierTag | null
 }
 
 export type NavButtonWithSize = NavButton & {
@@ -66,6 +68,7 @@ export default function NavButton(props: NavButton) {
   const submitAction = useSubmitAction(props.actionId)
   const addInfusionsoftTag = useAddInfusionsoftTag()
   const addMailchimpTag = useAddMailchimpTag()
+  const addZapierTag = useAddZapierTag()
 
   const v = useAttendeeVariables()
 
@@ -78,6 +81,10 @@ export default function NavButton(props: NavButton) {
 
     if (props.mailchimpTag) {
       addMailchimpTag(props.mailchimpTag)
+    }
+
+    if (props.zapierTag) {
+      addZapierTag(props.zapierTag)
     }
   }
 

@@ -31,6 +31,7 @@ export default function NewSidebarNavButton(props: {
       infusionsoftTag: null,
       isImageUpload: false,
       mailchimpTag: null,
+      zapierTag: null,
     }
     const entities = {
       ...nav.entities,

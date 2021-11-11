@@ -22,6 +22,7 @@ export default function NewMainNavButton(props: {className?: string}) {
       infusionsoftTag: null,
       row: 1,
       mailchimpTag: null,
+      zapierTag: null,
       fontSize: 18,
       textColor: '#ffffff',
     }
