@@ -8,7 +8,6 @@ import {spacing} from 'lib/ui/theme'
 import React from 'react'
 import {Controller, UseFormMethods} from 'react-hook-form'
 import {ObvioEvent} from 'Event'
-import {fieldError} from 'lib/form'
 import {FileSelect} from 'lib/ui/form/file'
 import ImageUpload from 'lib/ui/form/ImageUpload'
 import Label from 'lib/ui/form/ImageUpload/Label'
@@ -30,7 +29,7 @@ export type UpdateEventData = Pick<
 export default function Form(props: {
   onSubmit: () => void
   register: UseFormMethods['register']
-  formErrors: UseFormMethods['errors']
+  errors: UseFormMethods['errors']
   submitting: boolean
   responseError: ValidationError<UpdateEventData>
   slug?: string
@@ -40,7 +39,7 @@ export default function Form(props: {
 }) {
   const {
     submitting,
-    formErrors,
+    errors,
     responseError,
     slug,
     register,
@@ -49,20 +48,6 @@ export default function Form(props: {
     submitLabel,
   } = props
   const {event} = useEvent()
-
-  const error = (key: keyof UpdateEventData) =>
-    fieldError(key, {
-      form: formErrors,
-      response: responseError,
-    })
-
-  const errors = {
-    name: error('name'),
-    slug: error('slug'),
-    start: error('start'),
-    end: error('end'),
-    numAttendees: error('num_expected_attendees'),
-  }
 
   const slugHelperText = () => {
     if (errors.slug) {
@@ -145,6 +130,8 @@ export default function Form(props: {
               'aria-label': 'start',
               onChange,
             }}
+            error={Boolean(errors.start)}
+            helperText={errors.start}
           />
         )}
       />
@@ -166,6 +153,8 @@ export default function Form(props: {
               'aria-label': 'end',
               onChange,
             }}
+            error={Boolean(errors.end)}
+            helperText={errors.end}
           />
         )}
       />
@@ -199,7 +188,6 @@ export default function Form(props: {
           <RemoveButton aria-label="remove favicon" />
         </ImageUpload>
       </Box>
-
       <Error>{responseError && responseError.message}</Error>
       <Button
         type="submit"
