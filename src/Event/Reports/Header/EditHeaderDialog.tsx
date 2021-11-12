@@ -10,12 +10,8 @@ import {DEFAULT_TITLE, DEFAULT_TITLE_COLOR} from 'Event/Reports/ReportsConfig'
 import ColorPicker from 'lib/ui/ColorPicker'
 import {useReportsConfig} from 'organization/Event/Reports'
 import {Report} from 'organization/Event/ReportsProvider'
-import {useFileSelect} from 'lib/ui/form/file'
 import {Controller, useForm} from 'react-hook-form'
-import UploadButton from 'lib/ui/form/ImageUpload/UploadButton'
-import ImageUpload from 'lib/ui/form/ImageUpload'
-import Image from 'lib/ui/form/ImageUpload/Image'
-import RemoveImageButton from 'lib/ui/form/ImageUpload/RemoveButton'
+import ImageAssetUploader from 'lib/asset/ImageAssetUploader'
 
 type HeaderSettings = NonNullable<NonNullable<Report['settings']>['header']>
 
@@ -28,26 +24,10 @@ export default function EditHeaderDialog(props: {
   const {control, handleSubmit, register} = useForm()
   const header = report.settings?.header
 
-  const headerBackground = useFileSelect(report.header_background)
-
   const createData = (values: HeaderSettings) => {
     const settings = {
       ...(report.settings || {}),
       header: values,
-    }
-
-    if (headerBackground.selected) {
-      const formData = new FormData()
-      formData.set('settings', JSON.stringify(settings))
-      formData.set('header_background', headerBackground.selected)
-      return formData
-    }
-
-    if (headerBackground.wasRemoved) {
-      return {
-        settings,
-        header_background: null,
-      }
     }
 
     return {
@@ -92,19 +72,21 @@ export default function EditHeaderDialog(props: {
                 />
               )}
             />
-            <Box mb={2}>
-              <ImageUpload file={headerBackground}>
-                <Image alt="header background" width={100} />
-                <UploadButton
-                  inputProps={{
-                    'aria-label': 'upload header background image',
-                  }}
-                >
-                  Upload Header Background
-                </UploadButton>
-                <RemoveImageButton aria-label="remove header background" />
-              </ImageUpload>
-            </Box>
+            <Controller
+              name="background"
+              control={control}
+              defaultValue={header?.background}
+              render={({onChange, value}) => (
+                <ImageAssetUploader
+                  label="Header Background"
+                  onChange={onChange}
+                  value={value}
+                  canResize
+                  width={1148}
+                  height={200}
+                />
+              )}
+            />
             <SaveButton
               fullWidth
               variant="contained"

@@ -9,7 +9,6 @@ import {Form} from 'organization/Event/FormsProvider'
 export interface Report {
   id: number
   is_active?: boolean
-  header_background: FileLocation | null
   body_background: FileLocation | null
   forms: Form[]
   settings: null | ReportSettings
@@ -19,6 +18,7 @@ export interface ReportSettings {
   header?: {
     title?: string
     color?: string
+    background?: string
   }
   body?: {
     backgroundColor?: string

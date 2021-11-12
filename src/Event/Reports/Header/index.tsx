@@ -3,7 +3,6 @@ import withStyles from '@material-ui/core/styles/withStyles'
 import styled from 'styled-components'
 import Button from '@material-ui/core/Button'
 import {spacing} from 'lib/ui/theme'
-import {FileLocation} from 'lib/http-client'
 import {DEFAULT_TITLE, DEFAULT_TITLE_COLOR} from 'Event/Reports/ReportsConfig'
 import EditHeaderDialog from 'Event/Reports/Header/EditHeaderDialog'
 import {useReportsConfig} from 'organization/Event/Reports'
@@ -17,7 +16,7 @@ export default function Header(props: {isPreview: boolean}) {
   return (
     <>
       <EditHeaderDialog visible={editing} onClose={toggleEditing} />
-      <Container image={report.header_background}>
+      <Container image={header?.background}>
         <Title aria-label="title" color={header?.color || DEFAULT_TITLE_COLOR}>
           {header?.title || DEFAULT_TITLE}
         </Title>
@@ -57,10 +56,9 @@ const Container = styled.div`
   background-position: center center;
   background-repeat: no-repeat;
   background-size: cover;
-  ${(props: {image: FileLocation | null}) =>
-    props.image &&
-    props.image.url &&
-    `background-image: url(${props.image.url})`}
+  height: 200px;
+  ${(props: {image?: string}) =>
+    props.image && `background-image: url(${props.image})`}
 `
 
 const Title = styled.h2`
