@@ -23,8 +23,6 @@ export default function DownloadReport() {
       return
     }
 
-    setDownloaded(true)
-
     if (reports?.length) {
       const report = reports[0]
       const {settings} = report
@@ -39,11 +37,12 @@ export default function DownloadReport() {
           header: headerText,
           footer: footerText,
         })
-        .then((files) =>
+        .then((files) => {
           files.forEach((file: FileLocation) =>
             downloadFile(file.url, file.name),
-          ),
-        )
+          )
+          setDownloaded(true)
+        })
     }
   }, [downloaded, client, url, reports, v])
 
