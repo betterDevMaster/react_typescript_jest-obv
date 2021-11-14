@@ -30,14 +30,19 @@ export default function CountDownTimers(props: {className?: string}) {
     />
   ))
 
+  const enabledTimers = []
+
+  for (let i = 0; i < timers.length; i++) {
+    if (timers[i].props.countDownTimer.enabled === true) {
+      enabledTimers.push(timers[i])
+    }
+  }
+
   if (!isEditMode) {
-    if (
-      timers.length === 0 ||
-      timers[0].props.countDownTimer.enabled === false
-    ) {
+    if (enabledTimers.length === 0) {
       return null
     }
-    return <Container className={props.className}>{timers}</Container>
+    return <Container className={props.className}>{enabledTimers}</Container>
   }
 
   return (
