@@ -12,6 +12,7 @@ import {useEditMode} from 'Event/Dashboard/editor/state/edit-mode'
 import {useSimpleBlog} from 'Event/template/SimpleBlog'
 import CountDownTimer from 'Event/template/SimpleBlog/Dashboard/CountDownTimers/CountDownTimer'
 import NewCountDownTimerButton from 'Event/template/SimpleBlog/Dashboard/CountDownTimers/CountDownTimer/NewCountDownTimerButton'
+import {useHasCountDownTimers} from 'lib/countdown-timers'
 
 export default function CountDownTimers(props: {className?: string}) {
   const {template} = useSimpleBlog()
@@ -20,6 +21,7 @@ export default function CountDownTimers(props: {className?: string}) {
   const handleDrag = useHandleDrag()
 
   const {ids, entities} = countDownTimers
+  const hasTimers = useHasCountDownTimers(countDownTimers.entities)
 
   const timers = ids.map((id, index) => (
     <CountDownTimer
@@ -30,19 +32,10 @@ export default function CountDownTimers(props: {className?: string}) {
     />
   ))
 
-  const enabledTimers = []
-
-  for (let i = 0; i < timers.length; i++) {
-    if (timers[i].props.countDownTimer.enabled === true) {
-      enabledTimers.push(timers[i])
-    }
-  }
-
   if (!isEditMode) {
-    if (enabledTimers.length === 0) {
-      return null
-    }
-    return <Container className={props.className}>{enabledTimers}</Container>
+    return (
+      hasTimers && <Container className={props.className}>{timers}</Container>
+    )
   }
 
   return (

@@ -12,6 +12,7 @@ import {useEditMode} from 'Event/Dashboard/editor/state/edit-mode'
 import {useCards} from 'Event/template/Cards'
 import CountDownTimer from 'Event/template/Cards/Dashboard/CountDownTimers/CountDownTimer'
 import NewCountDownTimerButton from 'Event/template/Cards/Dashboard/CountDownTimers/CountDownTimer/NewCountDownTimerButton'
+import {useHasCountDownTimers} from 'lib/countdown-timers'
 
 export default function CountDownTimers(props: {className?: string}) {
   const {template} = useCards()
@@ -20,6 +21,7 @@ export default function CountDownTimers(props: {className?: string}) {
   const handleDrag = useHandleDrag()
 
   const {ids, entities} = countDownTimers
+  const hasTimers = useHasCountDownTimers(countDownTimers.entities)
 
   const timers = ids.map((id, index) => (
     <CountDownTimer
@@ -31,13 +33,9 @@ export default function CountDownTimers(props: {className?: string}) {
   ))
 
   if (!isEditMode) {
-    if (
-      timers.length === 0 ||
-      timers[0].props.countDownTimer.enabled === false
-    ) {
-      return null
-    }
-    return <Container className={props.className}>{timers}</Container>
+    return (
+      hasTimers && <Container className={props.className}>{timers}</Container>
+    )
   }
 
   return (

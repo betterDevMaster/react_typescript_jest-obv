@@ -12,6 +12,7 @@ import {useEditMode} from 'Event/Dashboard/editor/state/edit-mode'
 import {usePanels} from 'Event/template/Panels'
 import CountDownTimer from 'Event/template/Panels/Dashboard/CountDownTimers/CountDownTimer'
 import NewCountDownTimerButton from 'Event/template/Panels/Dashboard/CountDownTimers/CountDownTimer/NewCountDownTimerButton'
+import {useHasCountDownTimers} from 'lib/countdown-timers'
 
 export default function CountDownTimers(props: {
   className?: string
@@ -23,6 +24,7 @@ export default function CountDownTimers(props: {
   const handleDrag = useHandleDrag()
 
   const {ids, entities} = countDownTimers
+  const hasTimers = useHasCountDownTimers(countDownTimers.entities)
 
   const timers = ids.map((id, index) => (
     <CountDownTimer
@@ -35,13 +37,9 @@ export default function CountDownTimers(props: {
   ))
 
   if (!isEditMode) {
-    if (
-      timers.length === 0 ||
-      timers[0].props.countDownTimer.enabled === false
-    ) {
-      return null
-    }
-    return <Container className={props.className}>{timers}</Container>
+    return (
+      hasTimers && <Container className={props.className}>{timers}</Container>
+    )
   }
 
   return (
