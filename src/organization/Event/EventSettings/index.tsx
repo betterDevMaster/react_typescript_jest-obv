@@ -22,6 +22,7 @@ export default function UpdateEventForm() {
     responseError,
     setResponseError,
     watch,
+    setValue,
   } = useValidatedForm()
 
   const {set: setBreadcrumbs} = useBreadcrumbs()
@@ -93,6 +94,7 @@ export default function UpdateEventForm() {
           submitting={submitting}
           control={control}
           favicon={favicon}
+          setValue={setValue}
         />
       </Page>
     </Layout>

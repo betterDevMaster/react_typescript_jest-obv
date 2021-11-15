@@ -17,7 +17,14 @@ import Form, {
 } from 'organization/EventList/CreateEventForm/Form'
 
 export default function CreateEventForm() {
-  const {register, errors: formErrors, handleSubmit, watch, control} = useForm()
+  const {
+    register,
+    errors: formErrors,
+    handleSubmit,
+    watch,
+    control,
+    setValue,
+  } = useForm()
   const slug = watch('slug')
   const [submitting, setSubmitting] = useState(false)
   const [responseError, setResponseError] = useState<
@@ -59,6 +66,7 @@ export default function CreateEventForm() {
           responseError={responseError}
           submitLabel="Submit"
           control={control}
+          setValue={setValue}
         />
       </Page>
     </Layout>

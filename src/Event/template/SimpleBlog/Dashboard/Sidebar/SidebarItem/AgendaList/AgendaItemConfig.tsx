@@ -7,7 +7,11 @@ import {
   Agenda,
   AgendaListProps,
 } from 'Event/template/SimpleBlog/Dashboard/Sidebar/SidebarItem/AgendaList'
-import {onChangeStringHandler, onChangeCheckedHandler} from 'lib/dom'
+import {
+  onChangeStringHandler,
+  onChangeCheckedHandler,
+  onChangeDate,
+} from 'lib/dom'
 import {MaterialUiPickersDate} from '@material-ui/pickers/typings/date'
 import Switch from 'lib/ui/form/Switch'
 import Box from '@material-ui/core/Box'
@@ -95,20 +99,12 @@ export function AgendaItemConfig(
     })
   }
 
-  const handleDate = (setter: (value: string) => void) => (
-    date: MaterialUiPickersDate,
-  ) => {
+  const handleStartDate = (date: MaterialUiPickersDate) => {
     if (!date) {
       throw new Error('Date is required')
     }
-
-    setter(date.toISOString())
-  }
-
-  const handleNullableDate = (setter: (value: string | null) => void) => (
-    date: MaterialUiPickersDate,
-  ) => {
-    setter(date ? date.toISOString() : null)
+    setStartDate(date.toISOString())
+    setEndDate(date.toISOString())
   }
 
   return (
@@ -136,7 +132,7 @@ export function AgendaItemConfig(
         <Grid item xs={6}>
           <LocalizedDateTimePicker
             value={startDate}
-            onChange={handleDate(setStartDate)}
+            onChange={handleStartDate}
             fullWidth
             label="Start"
             inputProps={{
@@ -148,7 +144,7 @@ export function AgendaItemConfig(
           <LocalizedDateTimePicker
             clearable
             value={endDate}
-            onChange={handleNullableDate(setEndDate)}
+            onChange={onChangeDate(setEndDate)}
             fullWidth
             label="End"
             inputProps={{

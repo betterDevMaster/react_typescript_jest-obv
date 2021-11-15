@@ -10,6 +10,7 @@ import {ObvioEvent} from 'Event'
 import {fieldError} from 'lib/form'
 import moment from 'moment'
 import LocalizedDateTimePicker from 'lib/LocalizedDateTimePicker'
+import {MaterialUiPickersDate} from '@material-ui/pickers/typings/date'
 
 export type CreateEventData = Pick<
   ObvioEvent,
@@ -26,6 +27,7 @@ export default function Form(props: {
   slug?: string
   submitLabel: string
   control: UseFormMethods['control']
+  setValue: UseFormMethods['setValue']
 }) {
   const {
     submitting,
@@ -34,6 +36,7 @@ export default function Form(props: {
     slug,
     register,
     onSubmit,
+    setValue,
     submitLabel,
   } = props
   const inThreeDays = moment().add(3, 'days').toISOString()
@@ -53,6 +56,21 @@ export default function Form(props: {
     start: error('start'),
     end: error('end'),
     numAttendees: error('num_expected_attendees'),
+  }
+
+  const handleStartDate = (date: MaterialUiPickersDate) => {
+    if (!date) {
+      throw new Error('Date is required')
+    }
+    setValue('start', date.toISOString())
+    setValue('end', date.toISOString())
+  }
+
+  const handleEndDate = (date: MaterialUiPickersDate) => {
+    if (!date) {
+      throw new Error('Date is required')
+    }
+    setValue('end', date.toISOString())
   }
 
   return (
@@ -98,7 +116,7 @@ export default function Form(props: {
           <LocalizedDateTimePicker
             disabled={submitting}
             value={value}
-            onChange={(date) => onChange(date?.toISOString() || '')}
+            onChange={handleStartDate}
             fullWidth
             label="Start"
             inputProps={{
@@ -119,7 +137,7 @@ export default function Form(props: {
           <LocalizedDateTimePicker
             disabled={submitting}
             value={value}
-            onChange={(date) => onChange(date?.toISOString() || '')}
+            onChange={handleEndDate}
             fullWidth
             label="End"
             inputProps={{
@@ -145,7 +163,7 @@ export default function Form(props: {
         helperText={errors.numAttendees}
         disabled={submitting}
       />
-      <Error>{responseError && responseError.message}</Error>
+      <ErrorMessage>{responseError && responseError.message}</ErrorMessage>
       <Button
         type="submit"
         variant="contained"
@@ -161,7 +179,7 @@ export default function Form(props: {
   )
 }
 
-function Error(props: {children: string | null}) {
+function ErrorMessage(props: {children: string | null}) {
   if (!props.children) {
     return null
   }

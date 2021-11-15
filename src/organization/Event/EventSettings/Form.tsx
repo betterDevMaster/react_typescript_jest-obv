@@ -5,7 +5,7 @@ import TextField from '@material-ui/core/TextField'
 import Typography from '@material-ui/core/Typography'
 import {ValidationError} from 'lib/api-client'
 import {spacing} from 'lib/ui/theme'
-import React from 'react'
+import React, {useState} from 'react'
 import {Controller, UseFormMethods} from 'react-hook-form'
 import {ObvioEvent} from 'Event'
 import {FileSelect} from 'lib/ui/form/file'
@@ -20,6 +20,7 @@ import LocalizedDateTimePicker from 'lib/LocalizedDateTimePicker'
 import {onChangeCheckedHandler} from 'lib/dom'
 import Switch from 'lib/ui/form/Switch'
 import {useEvent} from 'Event/EventProvider'
+import {MaterialUiPickersDate} from '@material-ui/pickers/typings/date'
 
 export type UpdateEventData = Pick<
   ObvioEvent,
@@ -36,6 +37,7 @@ export default function Form(props: {
   submitLabel: string
   control: UseFormMethods['control']
   favicon: FileSelect
+  setValue: UseFormMethods['setValue']
 }) {
   const {
     submitting,
@@ -46,6 +48,7 @@ export default function Form(props: {
     onSubmit,
     control,
     submitLabel,
+    setValue,
   } = props
   const {event} = useEvent()
 
@@ -59,6 +62,21 @@ export default function Form(props: {
     }
 
     return `Your event will be accessible at: ${slug}.obv.io`
+  }
+
+  const handleStartDate = (date: MaterialUiPickersDate) => {
+    if (!date) {
+      throw new Error('Date is required')
+    }
+    setValue('start', date.toISOString())
+    setValue('end', date.toISOString())
+  }
+
+  const handleEndDate = (date: MaterialUiPickersDate) => {
+    if (!date) {
+      throw new Error('Date is required')
+    }
+    setValue('end', date.toISOString())
   }
 
   return (
@@ -123,7 +141,7 @@ export default function Form(props: {
           <LocalizedDateTimePicker
             disabled={submitting}
             value={value}
-            onChange={(date) => onChange(date?.toISOString() || '')}
+            onChange={handleStartDate}
             fullWidth
             label="Start"
             inputProps={{
@@ -146,7 +164,7 @@ export default function Form(props: {
           <LocalizedDateTimePicker
             disabled={submitting}
             value={value}
-            onChange={(date) => onChange(date?.toISOString() || '')}
+            onChange={handleEndDate}
             fullWidth
             label="End"
             inputProps={{
@@ -188,7 +206,7 @@ export default function Form(props: {
           <RemoveButton aria-label="remove favicon" />
         </ImageUpload>
       </Box>
-      <Error>{responseError && responseError.message}</Error>
+      <ErrorMessage>{responseError && responseError.message}</ErrorMessage>
       <Button
         type="submit"
         variant="contained"
@@ -204,7 +222,7 @@ export default function Form(props: {
   )
 }
 
-function Error(props: {children: string | null}) {
+function ErrorMessage(props: {children: string | null}) {
   if (!props.children) {
     return null
   }
