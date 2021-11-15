@@ -28,6 +28,8 @@ export default function Form(props: {
   submitLabel: string
   control: UseFormMethods['control']
   setValue: UseFormMethods['setValue']
+  hasEndDateTimeChange: boolean
+  setHasEndDateTimeChange: (flag: boolean) => void
 }) {
   const {
     submitting,
@@ -38,6 +40,8 @@ export default function Form(props: {
     onSubmit,
     setValue,
     submitLabel,
+    hasEndDateTimeChange,
+    setHasEndDateTimeChange,
   } = props
   const inThreeDays = moment().add(3, 'days').toISOString()
   const inSixDays = moment().add(6, 'days').toISOString()
@@ -63,7 +67,9 @@ export default function Form(props: {
       throw new Error('Date is required')
     }
     setValue('start', date.toISOString())
-    setValue('end', date.toISOString())
+    if (!hasEndDateTimeChange) {
+      setValue('end', date.toISOString())
+    }
   }
 
   const handleEndDate = (date: MaterialUiPickersDate) => {
@@ -71,6 +77,7 @@ export default function Form(props: {
       throw new Error('Date is required')
     }
     setValue('end', date.toISOString())
+    setHasEndDateTimeChange(true)
   }
 
   return (

@@ -7,11 +7,7 @@ import {
   Agenda,
   AgendaListProps,
 } from 'Event/template/SimpleBlog/Dashboard/Sidebar/SidebarItem/AgendaList'
-import {
-  onChangeStringHandler,
-  onChangeCheckedHandler,
-  onChangeDate,
-} from 'lib/dom'
+import {onChangeStringHandler, onChangeCheckedHandler} from 'lib/dom'
 import {MaterialUiPickersDate} from '@material-ui/pickers/typings/date'
 import Switch from 'lib/ui/form/Switch'
 import Box from '@material-ui/core/Box'
@@ -36,6 +32,7 @@ export function AgendaItemConfig(
   const [startDate, setStartDate] = useState(agenda.startDate)
   const [endDate, setEndDate] = useState(agenda.endDate)
   const [link, setLink] = useState(agenda.link)
+  const [hasEndDateTimeChange, setHasEndDateTimeChange] = useState(false)
 
   const updateItem = useUpdateSidebarItem()
 
@@ -50,6 +47,7 @@ export function AgendaItemConfig(
     setStartDate(agenda.startDate)
     setEndDate(agenda.endDate)
     setLink(agenda.link)
+    setHasEndDateTimeChange(false)
   }, [agenda, visible])
 
   const update = (data: Agenda, index: number) =>
@@ -104,9 +102,19 @@ export function AgendaItemConfig(
       throw new Error('Date is required')
     }
     setStartDate(date.toISOString())
-    setEndDate(date.toISOString())
+
+    if (!hasEndDateTimeChange) {
+      setEndDate(date.toISOString())
+    }
   }
 
+  const handleEndDate = (date: MaterialUiPickersDate) => {
+    if (!date) {
+      throw new Error('Date is required')
+    }
+    setEndDate(date.toISOString())
+    setHasEndDateTimeChange(true)
+  }
   return (
     <ComponentConfig isVisible={visible} onClose={onClose} title="Agenda">
       <Box display="flex" justifyContent="flex-end">
@@ -144,7 +152,7 @@ export function AgendaItemConfig(
           <LocalizedDateTimePicker
             clearable
             value={endDate}
-            onChange={onChangeDate(setEndDate)}
+            onChange={handleEndDate}
             fullWidth
             label="End"
             inputProps={{

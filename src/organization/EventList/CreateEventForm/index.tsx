@@ -32,7 +32,7 @@ export default function CreateEventForm() {
   >(null)
   const history = useHistory()
   const {routes, organization, client} = useOrganization()
-
+  const [hasEndDateTimeChange, setHasEndDateTimeChange] = useState(false)
   useBreadcrumbs([{title: 'Events', url: routes.events.root}])
 
   const goToEvents = () => {
@@ -48,6 +48,7 @@ export default function CreateEventForm() {
       .catch((error) => {
         setResponseError(error)
         setSubmitting(false)
+        setHasEndDateTimeChange(false)
       })
   }
 
@@ -67,6 +68,8 @@ export default function CreateEventForm() {
           submitLabel="Submit"
           control={control}
           setValue={setValue}
+          setHasEndDateTimeChange={setHasEndDateTimeChange}
+          hasEndDateTimeChange={hasEndDateTimeChange}
         />
       </Page>
     </Layout>

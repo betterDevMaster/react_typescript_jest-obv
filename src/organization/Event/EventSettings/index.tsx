@@ -14,6 +14,7 @@ export default function UpdateEventForm() {
   const {event} = useEvent()
   const {routes: organizationRoutes} = useOrganization()
 
+  const [hasEndDateTimeChange, setHasEndDateTimeChange] = useState(false)
   const {
     register,
     errors,
@@ -78,6 +79,7 @@ export default function UpdateEventForm() {
       })
       .finally(() => {
         setSubmitting(false)
+        setHasEndDateTimeChange(false)
       })
   }
 
@@ -95,6 +97,8 @@ export default function UpdateEventForm() {
           control={control}
           favicon={favicon}
           setValue={setValue}
+          hasEndDateTimeChange={hasEndDateTimeChange}
+          setHasEndDateTimeChange={setHasEndDateTimeChange}
         />
       </Page>
     </Layout>

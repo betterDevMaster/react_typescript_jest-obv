@@ -38,6 +38,8 @@ export default function Form(props: {
   control: UseFormMethods['control']
   favicon: FileSelect
   setValue: UseFormMethods['setValue']
+  hasEndDateTimeChange: boolean
+  setHasEndDateTimeChange: (flag: boolean) => void
 }) {
   const {
     submitting,
@@ -49,6 +51,8 @@ export default function Form(props: {
     control,
     submitLabel,
     setValue,
+    hasEndDateTimeChange,
+    setHasEndDateTimeChange,
   } = props
   const {event} = useEvent()
 
@@ -69,7 +73,9 @@ export default function Form(props: {
       throw new Error('Date is required')
     }
     setValue('start', date.toISOString())
-    setValue('end', date.toISOString())
+    if (!hasEndDateTimeChange) {
+      setValue('end', date.toISOString())
+    }
   }
 
   const handleEndDate = (date: MaterialUiPickersDate) => {
@@ -77,6 +83,7 @@ export default function Form(props: {
       throw new Error('Date is required')
     }
     setValue('end', date.toISOString())
+    setHasEndDateTimeChange(true)
   }
 
   return (
