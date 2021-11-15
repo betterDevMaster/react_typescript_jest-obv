@@ -146,15 +146,7 @@ export default function Cropper({
       return
     }
 
-    /**
-     * Set resulting crop of the image(type, size, quality, format, circle).
-     * size: size of croppied image default to 'viewport'
-     */
-    const coppiedImageResultOption = {
-      type: 'blob',
-    }
-
-    croppie.result(coppiedImageResultOption).then((blob) => {
+    croppie.result({type: 'blob', size: 'original'}).then((blob) => {
       const cropped = blobToFile(blob, image.name)
       onCrop(cropped)
     })
