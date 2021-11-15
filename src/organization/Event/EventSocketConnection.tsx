@@ -50,7 +50,7 @@ export default function EventSocketConnection(props: {
          * Handle authentication failure which would mean we would never receive auth updates
          */
         if (error.type === 'AuthError') {
-          // disconnect()
+          disconnect()
         }
       })
 
