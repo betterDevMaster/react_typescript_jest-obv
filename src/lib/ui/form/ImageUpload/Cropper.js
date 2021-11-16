@@ -146,7 +146,15 @@ export default function Cropper({
       return
     }
 
-    croppie.result({type: 'blob', size: 'original'}).then((blob) => {
+    // Croppie is expecting the final crop size to be the actual viewport size
+    // in pixels. Since we're hacking the viewport to be responsive, this
+    // messes with the size. Setting it to 'original' will keep the
+    // resolution, but results in wasted image size, so if the
+    // size was fixed, we'll just use the specified size.
+    const hasFixedSize = !canResize && width && height
+    const size = hasFixedSize ? {width, height} : 'original'
+
+    croppie.result({type: 'blob', size}).then((blob) => {
       const cropped = blobToFile(blob, image.name)
       onCrop(cropped)
     })

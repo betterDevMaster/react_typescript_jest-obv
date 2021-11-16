@@ -194,12 +194,13 @@ export function Button(
       fontSize={fontSize}
     >
       <>
-        <StyledIcon
-          iconClass={props.icon}
-          color={props.textColor}
-          iconSize={iconSize}
-          iconStacked={props.iconStacked}
-        />
+        <IconBox stacked={props.iconStacked}>
+          <StyledIcon
+            iconClass={props.icon}
+            color={props.textColor}
+            iconSize={iconSize}
+          />
+        </IconBox>
         {v(props.text)}
       </>
     </StyledButton>
@@ -220,19 +221,25 @@ const StyledButton = styled(ButtonBase)`
   }
 `
 
+const IconBox = styled.div<{
+  stacked?: boolean
+}>`
+  margin-right: ${(props) => (props.stacked ? 0 : props.theme.spacing[2])};
+  margin-bottom: ${(props) => (props.stacked ? props.theme.spacing[2] : 0)};
+  display: ${(props) => (props.stacked ? 'block' : 'inline-block')} !important;
+`
+
 const StyledIcon = styled(
   (
     props: IconProps & {
       iconSize?: number
-      iconStacked?: boolean
     },
   ) => {
-    const {iconSize, iconStacked: stackedIcon, ...otherProps} = props
+    const {iconSize, ...otherProps} = props
     return <Icon {...otherProps} />
   },
 )`
-  margin-right: ${(props) => (props.iconStacked ? 0 : props.theme.spacing[2])};
-  margin-bottom: ${(props) => (props.iconStacked ? props.theme.spacing[2] : 0)};
   font-size: ${(props) => props.iconSize}px !important;
-  ${(props) => (props.iconStacked ? 'display: block;' : '')}
+  width: ${(props) => props.iconSize}px;
+  height: ${(props) => props.iconSize}px;
 `
