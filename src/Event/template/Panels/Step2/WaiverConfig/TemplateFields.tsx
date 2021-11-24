@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react'
+import React from 'react'
 import InputLabel from '@material-ui/core/InputLabel'
 import Typography from '@material-ui/core/Typography'
 import ColorPicker from 'lib/ui/ColorPicker'
@@ -8,7 +8,7 @@ import {handleChangeSlider, onChangeStringHandler} from 'lib/dom'
 import TextField from '@material-ui/core/TextField'
 import Box from '@material-ui/core/Box'
 import {colors} from 'lib/ui/theme'
-import {Panels, usePanels} from 'Event/template/Panels'
+import {Panels} from 'Event/template/Panels'
 import BackgroundPicker from 'lib/ui/form/BackgroundPicker'
 
 const MIN_BUTTON_BORDER_RADIUS = 0
@@ -17,7 +17,7 @@ const MAX_BUTTON_BORDER_RADIUS = 100
 const MIN_BUTTON_BORDER_WIDTH = 0
 const MAX_BUTTON_BORDER_WIDTH = 20
 
-const DEFAULT_WAIVER_PROPS: NonNullable<Panels['waiver']> = {
+export const DEFAULT_WAIVER_CONFIG_PROPS: NonNullable<Panels['waiver']> = {
   buttonText: '',
   buttonBackground: colors.primary,
   buttonTextColor: '#FFFFFF',
@@ -26,19 +26,23 @@ const DEFAULT_WAIVER_PROPS: NonNullable<Panels['waiver']> = {
   buttonBorderWidth: 0,
   buttonWidth: 12,
 }
-export default function TemplateFields(props: {submitting: boolean}) {
-  const {submitting} = props
-  const {template, update} = usePanels()
-  const updateWaiverTemplate = update.object('waiver')
 
-  const [waiver, setWaiver] = useState(DEFAULT_WAIVER_PROPS)
+export type PanelsWaiverTemplateProps = NonNullable<Panels['waiver']>
 
-  useEffect(() => {
-    if (!template?.waiver) {
-      return
-    }
-    setWaiver(template.waiver)
-  }, [template])
+export type WaiverTemplatePropSetter = <
+  K extends keyof PanelsWaiverTemplateProps
+>(
+  key: K,
+) => (value: PanelsWaiverTemplateProps[K]) => void
+
+export interface TemplateFieldProps {
+  waiver: PanelsWaiverTemplateProps
+  set: WaiverTemplatePropSetter
+  submitting: boolean
+}
+
+export default function TemplateFields(props: TemplateFieldProps) {
+  const {waiver, set, submitting} = props
 
   return (
     <>
@@ -55,7 +59,7 @@ export default function TemplateFields(props: {submitting: boolean}) {
               'aria-label': 'tech check submit button label',
             }}
             disabled={submitting}
-            onChange={onChangeStringHandler(updateWaiverTemplate('buttonText'))}
+            onChange={onChangeStringHandler(set('buttonText'))}
           />
         </Grid>
 
@@ -63,7 +67,7 @@ export default function TemplateFields(props: {submitting: boolean}) {
           <BackgroundPicker
             label="Background"
             background={waiver.buttonBackground}
-            onChange={updateWaiverTemplate('buttonBackground')}
+            onChange={set('buttonBackground')}
             disabled={submitting}
           />
         </Grid>
@@ -71,7 +75,7 @@ export default function TemplateFields(props: {submitting: boolean}) {
           <ColorPicker
             label="Text Color"
             color={waiver.buttonTextColor}
-            onPick={updateWaiverTemplate('buttonTextColor')}
+            onPick={set('buttonTextColor')}
             aria-label="button text color"
             disabled={submitting}
           />
@@ -81,7 +85,7 @@ export default function TemplateFields(props: {submitting: boolean}) {
           <ColorPicker
             label="Border Color"
             color={waiver.buttonBorderColor}
-            onPick={updateWaiverTemplate('buttonBorderColor')}
+            onPick={set('buttonBorderColor')}
             aria-label="submit button text color"
             disabled={submitting}
           />
@@ -92,9 +96,7 @@ export default function TemplateFields(props: {submitting: boolean}) {
             valueLabelDisplay="auto"
             aria-label="submit button border radius"
             value={waiver.buttonBorderRadius}
-            onChange={handleChangeSlider(
-              updateWaiverTemplate('buttonBorderRadius'),
-            )}
+            onChange={handleChangeSlider(set('buttonBorderRadius'))}
             step={1}
             min={MIN_BUTTON_BORDER_RADIUS}
             max={MAX_BUTTON_BORDER_RADIUS}
@@ -107,9 +109,7 @@ export default function TemplateFields(props: {submitting: boolean}) {
             valueLabelDisplay="auto"
             aria-label="submit button border width"
             value={waiver.buttonBorderWidth}
-            onChange={handleChangeSlider(
-              updateWaiverTemplate('buttonBorderWidth'),
-            )}
+            onChange={handleChangeSlider(set('buttonBorderWidth'))}
             step={1}
             min={MIN_BUTTON_BORDER_WIDTH}
             max={MAX_BUTTON_BORDER_WIDTH}
@@ -122,7 +122,7 @@ export default function TemplateFields(props: {submitting: boolean}) {
             valueLabelDisplay="auto"
             aria-label="submit button width"
             value={waiver.buttonWidth as number}
-            onChange={handleChangeSlider(updateWaiverTemplate('buttonWidth'))}
+            onChange={handleChangeSlider(set('buttonWidth'))}
             step={1}
             min={1}
             max={12}

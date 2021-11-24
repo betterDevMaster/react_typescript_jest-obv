@@ -1,7 +1,7 @@
 import {OfflinePageProps} from 'Event/JoinArea/OfflinePage'
 import React from 'react'
 import Page, {DescriptionText} from 'Event/template/Panels/Login/Page'
-import {usePanels} from 'Event/template/Panels'
+import {usePanelsTemplate} from 'Event/template/Panels'
 import {useGuestVariables} from 'Event'
 
 export default function OfflinePage(props: OfflinePageProps) {
@@ -25,7 +25,7 @@ function Text(props: {
   'aria-label'?: string
   fontSize?: number
 }) {
-  const {template} = usePanels()
+  const template = usePanelsTemplate()
   const color = template.login.description.color
   const fontSize = props.fontSize
     ? props.fontSize

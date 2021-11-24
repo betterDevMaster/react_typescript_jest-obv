@@ -4,8 +4,8 @@ import TextField from '@material-ui/core/TextField'
 import ColorPicker from 'lib/ui/ColorPicker'
 import TextEditor, {TextEditorContainer} from 'lib/ui/form/TextEditor'
 import {Controller, useForm} from 'react-hook-form'
-import {Cards, useCards} from 'Event/template/Cards'
-import {useUpdate} from 'Event/EventProvider'
+import {Cards} from 'Event/template/Cards'
+import {useCardsTemplate, useCardsUpdate} from 'Event/template/Cards'
 import Typography from '@material-ui/core/Typography'
 import styled from 'styled-components'
 import SnackbarContent from '@material-ui/core/SnackbarContent'
@@ -24,11 +24,10 @@ import ComponentConfig, {
 export type LeaderboardConfigData = NonNullable<Cards['leaderboard']>
 
 export default function LeaderboardConfig(props: ComponentConfigProps) {
-  const {template} = useCards()
+  const template = useCardsTemplate()
   const {leaderboard, rewardAlert} = template
   const {register, control, handleSubmit} = useForm()
-  const [processing, setProcessing] = useState(false)
-  const updateEvent = useUpdate()
+  const updateCards = useCardsUpdate()
 
   const [rewardText, setRewardText] = useState<string>(rewardAlert.text)
   const [rewardBackgroundColor, setRewardBackgroundColor] = useState<string>(
@@ -41,33 +40,20 @@ export default function LeaderboardConfig(props: ComponentConfigProps) {
   const submit = (
     data: LeaderboardConfigData & {points_unit: Cards['points_unit']},
   ) => {
-    if (processing) {
-      return
-    }
     const {points_unit, ...leaderboardData} = data
 
-    setProcessing(true)
-
-    const existing = template.leaderboard || {}
-
     const updated = {
-      ...template,
       rewardAlert: {
         text: rewardText,
         backgroundColor: rewardBackgroundColor,
         textColor: rewardTextColor,
       },
       points_unit,
-      leaderboard: {
-        ...existing,
-        ...leaderboardData,
-      },
+      leaderboard: leaderboardData,
     }
 
-    updateEvent({template: updated}).finally(() => {
-      setProcessing(false)
-      props.onClose()
-    })
+    updateCards(updated)
+    props.onClose()
   }
 
   return (
@@ -138,7 +124,6 @@ export default function LeaderboardConfig(props: ComponentConfigProps) {
                 'aria-label': 'points unit',
                 ref: register,
               }}
-              disabled={processing}
             />
           </Grid>
           <Grid item xs={12}>
@@ -151,7 +136,6 @@ export default function LeaderboardConfig(props: ComponentConfigProps) {
                 'aria-label': 'set leaderboard page title',
                 ref: register({required: 'Title is required'}),
               }}
-              disabled={processing}
             />
           </Grid>
 
@@ -165,7 +149,6 @@ export default function LeaderboardConfig(props: ComponentConfigProps) {
                 'aria-label': 'set leaderboard menu title',
                 ref: register,
               }}
-              disabled={processing}
             />
           </Grid>
 
@@ -179,11 +162,7 @@ export default function LeaderboardConfig(props: ComponentConfigProps) {
               }}
               render={({value, onChange}) => (
                 <TextEditorContainer>
-                  <TextEditor
-                    data={value}
-                    onChange={onChange}
-                    disabled={processing}
-                  />
+                  <TextEditor data={value} onChange={onChange} />
                 </TextEditorContainer>
               )}
             />
@@ -228,7 +207,6 @@ export default function LeaderboardConfig(props: ComponentConfigProps) {
                 'aria-label': 'set leaderboard popup text',
                 ref: register({required: 'Title is required'}),
               }}
-              disabled={processing}
             />
           </Grid>
         </Grid>

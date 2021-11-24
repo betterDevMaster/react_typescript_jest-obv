@@ -5,7 +5,7 @@ import {Route} from 'react-router-dom'
 import LoginPageConfig from 'Event/template/SimpleBlog/Login/LoginConfig'
 import OfflinePageConfig from 'Event/template/SimpleBlog/EventOfflinePage/OfflineConfig'
 import {useOrganization} from 'organization/OrganizationProvider'
-import CreatePasswordPageConfig from 'Event/template/SimpleBlog/Step1/SetPasswordFormConfig'
+import SetPasswordFormConfig from 'Event/template/SimpleBlog/Step1/SetPasswordFormConfig'
 import CheckInConfig from 'Event/template/SimpleBlog/check-in/CheckInConfig'
 import GlobalStylesConfig from 'Event/template/SimpleBlog/GlobalStylesConfig'
 
@@ -26,7 +26,7 @@ export default function SimpleBlogConfigRoutes() {
       </Route>
       <Route path={routes.events[':event'].password_create}>
         <AuthorizedPage permission={CONFIGURE_EVENTS}>
-          <CreatePasswordPageConfig />
+          <SetPasswordFormConfig />
         </AuthorizedPage>
       </Route>
       <Route path={routes.events[':event'].check_in}>

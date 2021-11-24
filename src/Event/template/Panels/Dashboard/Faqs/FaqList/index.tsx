@@ -5,14 +5,13 @@ import Card from 'Event/template/Panels/Dashboard/Faqs/FaqList/Card'
 import React from 'react'
 import VisibleOnMatch from 'Event/attendee-rules/VisibleOnMatch'
 import {DragDropContext, Droppable, DropResult} from 'react-beautiful-dnd'
-import {usePanels} from 'Event/template/Panels'
+import {usePanelsTemplate, usePanelsUpdate} from 'Event/template/Panels'
 
 export default function FaqList(props: {
   className?: string
   faqs: FAQ[]
   isEditMode?: boolean
 }) {
-  const handleDrag = useHandleDrag()
   const sortedFaqs = useSortedFaqs(props.faqs)
 
   const isEmpty = props.faqs.length === 0
@@ -26,12 +25,24 @@ export default function FaqList(props: {
     </VisibleOnMatch>
   ))
 
-  if (!props.isEditMode) {
-    return <Box className={props.className}>{faqs}</Box>
-  }
+  return !props.isEditMode ? (
+    <Box className={props.className}>{faqs}</Box>
+  ) : (
+    <DraggableContent className={props.className} sortedFaqs={sortedFaqs}>
+      {faqs}
+    </DraggableContent>
+  )
+}
+
+const DraggableContent = (props: {
+  className?: string
+  sortedFaqs: FAQ[]
+  children: React.ReactElement[]
+}) => {
+  const handleDrag = useHandleDrag()
 
   return (
-    <DragDropContext onDragEnd={handleDrag(sortedFaqs)}>
+    <DragDropContext onDragEnd={handleDrag(props.sortedFaqs)}>
       <Droppable droppableId="drag-and-drop-faq">
         {(provided) => (
           <Box
@@ -40,7 +51,7 @@ export default function FaqList(props: {
             className={props.className}
           >
             <>
-              {faqs}
+              {props.children}
               {provided.placeholder}
             </>
           </Box>
@@ -60,9 +71,7 @@ export default function FaqList(props: {
  * @returns
  */
 function useSortedFaqs(faqs: FAQ[]) {
-  const {
-    template: {faq: pageSettings},
-  } = usePanels()
+  const {faq: pageSettings} = usePanelsTemplate()
 
   const order = pageSettings?.orderedIds || []
 
@@ -84,8 +93,7 @@ function useSortedFaqs(faqs: FAQ[]) {
 }
 
 function useHandleDrag() {
-  const panels = usePanels()
-  const update = panels.update.object('faq')
+  const update = usePanelsUpdate()
 
   return (faqs: FAQ[]) => (result: DropResult) => {
     const {destination, source} = result
@@ -99,7 +107,7 @@ function useHandleDrag() {
     moved.splice(destination.index, 0, removed)
 
     const orderedIds = moved.map((f) => f.id)
-    update('orderedIds')(orderedIds)
+    update({faq: {orderedIds: orderedIds}})
   }
 }
 

@@ -5,7 +5,7 @@ import Published from 'Event/Dashboard/editor/views/Published'
 import React, {useState} from 'react'
 import EditModeOnly from 'Event/Dashboard/editor/views/EditModeOnly'
 import AddBlogPostButton from 'Event/Dashboard/components/BlogPost/AddBlogPostButton'
-import {useCards} from 'Event/template/Cards'
+import {useCardsTemplate} from 'Event/template/Cards'
 import VisibleOnMatch from 'Event/attendee-rules/VisibleOnMatch'
 import {sortedByDate} from 'Event/Dashboard/components/BlogPost'
 import {useToggle} from 'lib/toggle'
@@ -15,8 +15,7 @@ import PostFormStylesConfig from 'Event/template/Cards/Dashboard/BlogPosts/PostF
 import {EditPost} from 'Event/Dashboard/components/BlogPost/BlogPostConfig'
 
 export default function BlogPosts() {
-  const {template} = useCards()
-  const {blogPosts: posts} = template
+  const {blogPosts: posts} = useCardsTemplate()
   const {flag: styleConfigVisible, toggle: toggleStyleConfig} = useToggle()
   const {
     flag: styleFormConfigVisible,

@@ -8,7 +8,6 @@ import {CONFIGURE_EVENTS} from 'organization/PermissionsProvider'
 import axios from 'axios'
 import {fakePanels} from 'Event/template/Panels/__utils__/factory'
 
-const mockRxPost = mockRxJsAjax.post as jest.Mock
 const mockPut = axios.put as jest.Mock
 
 it('should configure set password form template', async () => {
@@ -24,15 +23,16 @@ it('should configure set password form template', async () => {
   const description = faker.lorem.sentence()
 
   user.type(await findByLabelText('set password form description'), description)
+  user.click(await findByLabelText('save'))
 
   await wait(() => {
-    expect(mockRxPost).toHaveBeenCalledTimes(1)
+    expect(mockPut).toHaveBeenCalledTimes(1)
   })
 
-  const [url, data] = mockRxPost.mock.calls[0]
+  const [url, data] = mockPut.mock.calls[0]
   expect(url).toMatch(`/events/${event.slug}`)
 
-  expect(data.template.setPasswordForm.description).toBe(description)
+  expect(data.template['setPasswordForm.description']).toBe(description)
 })
 
 it('should disable requiring a password', async () => {

@@ -1,13 +1,20 @@
-import React from 'react'
+import React, {useEffect} from 'react'
 import Typography from '@material-ui/core/Typography'
 import Box from '@material-ui/core/Box'
 import Grid from '@material-ui/core/Grid'
 import Slider from '@material-ui/core/Slider'
 import ColorPicker from 'lib/ui/ColorPicker'
 import {handleChangeSlider, onChangeCheckedHandler} from 'lib/dom'
-import {useSimpleBlog} from 'Event/template/SimpleBlog'
+import {
+  SimpleBlog,
+  useSimpleBlogTemplate,
+  useSimpleBlogUpdate,
+} from 'Event/template/SimpleBlog'
 import Switch from 'lib/ui/form/Switch'
 import ProgressBar, {ProgressBarProps} from 'lib/ui/ProgressBar'
+import {Controller, useForm, UseFormMethods} from 'react-hook-form'
+import Button from '@material-ui/core/Button'
+import InputLabel from '@material-ui/core/InputLabel'
 
 export interface ProgressBar {
   background: string
@@ -20,11 +27,20 @@ const MIN_PROGRESS_BAR_BORDER_RADIUS = 0
 const MAX_PROGRESS_BAR_BORDER_RADIUS = 25
 
 export default function ProgressBarConfig() {
-  const {
-    update,
-    template: {progressBar},
-  } = useSimpleBlog()
-  const updateProgressBar = update.object('progressBar')
+  const {progressBar} = useSimpleBlogTemplate()
+  const update = useSimpleBlogUpdate()
+  const {control, handleSubmit, watch, setValue} = useForm()
+
+  // Need to init 'requires_attendee_password' on load so the form knows
+  // whether to show template config fields.
+  const showingConfig = watch('showing')
+  useEffect(() => {
+    setValue('showing', progressBar.showing)
+  }, [progressBar, setValue])
+
+  const submit = (data: SimpleBlog['progressBar']) => {
+    update({progressBar: data})
+  }
 
   return (
     <>
@@ -41,79 +57,124 @@ export default function ProgressBarConfig() {
       />
       <Grid container spacing={2}>
         <Grid item xs={12}>
-          <Switch
-            label="Show"
-            checked={progressBar.showing}
-            onChange={onChangeCheckedHandler(updateProgressBar('showing'))}
-            labelPlacement="end"
-            color="primary"
-            aria-label="progress bar visible"
-          />
+          <form onSubmit={handleSubmit(submit)}>
+            <Controller
+              name="showing"
+              defaultValue={progressBar.showing}
+              control={control}
+              render={({value, onChange}) => (
+                <Switch
+                  checked={value}
+                  onChange={onChangeCheckedHandler(onChange)}
+                  label="Show"
+                  labelPlacement="end"
+                  color="primary"
+                  aria-label="progress bar visible"
+                />
+              )}
+            />
+            <Button
+              variant="contained"
+              aria-label="save"
+              type="submit"
+              color="primary"
+            >
+              Save
+            </Button>
+          </form>
         </Grid>
-        <Config />
+        <Config control={control} showing={showingConfig} />
       </Grid>
     </>
   )
 }
 
-function Config() {
-  const {
-    update,
-    template: {progressBar},
-  } = useSimpleBlog()
+function Config(props: {showing: boolean} & Pick<UseFormMethods, 'control'>) {
+  const {control, showing} = props
+  const {progressBar} = useSimpleBlogTemplate()
 
-  const updateProgressBar = update.object('progressBar')
-
-  if (!progressBar.showing) {
+  if (!showing) {
     return null
   }
 
   return (
     <>
       <Grid item xs={6}>
-        <ColorPicker
-          label="Bar Color"
-          color={progressBar.barColor}
-          onPick={updateProgressBar('barColor')}
-          aria-label="bar color"
+        <Controller
+          name="barColor"
+          defaultValue={progressBar.barColor}
+          control={control}
+          render={({value, onChange}) => (
+            <ColorPicker
+              label="Bar Color"
+              color={value}
+              onPick={onChange}
+              aria-label="bar color"
+            />
+          )}
         />
-        <ColorPicker
-          label="Background Color"
-          color={progressBar.backgroundColor}
-          onPick={updateProgressBar('backgroundColor')}
-          aria-label="bar background color"
+        <Controller
+          name="backgroundColor"
+          defaultValue={progressBar.backgroundColor}
+          control={control}
+          render={({value, onChange}) => (
+            <ColorPicker
+              label="Background Color"
+              color={value}
+              onPick={onChange}
+              aria-label="bar background color"
+            />
+          )}
         />
-        <Typography variant="subtitle2" style={{opacity: 0.7}}>
-          Thickness
-        </Typography>
-        <Slider
-          valueLabelDisplay="auto"
-          aria-label="progress bar thickness"
-          value={progressBar.thickness || 0}
-          onChange={handleChangeSlider(updateProgressBar('thickness'))}
-          step={1}
-          min={MIN_PROGRESS_BAR_THICKNESS}
-          max={MAX_PROGRESS_BAR_THICKNESS}
+        <InputLabel>Thickness</InputLabel>
+        <Controller
+          name="thickness"
+          defaultValue={progressBar.thickness}
+          control={control}
+          render={({value, onChange}) => (
+            <Slider
+              valueLabelDisplay="auto"
+              aria-label="progress bar thickness"
+              value={value}
+              onChange={handleChangeSlider(onChange)}
+              step={1}
+              min={MIN_PROGRESS_BAR_THICKNESS}
+              max={MAX_PROGRESS_BAR_THICKNESS}
+            />
+          )}
         />
       </Grid>
       <Grid item xs={6}>
-        <ColorPicker
-          label="Text Color"
-          color={progressBar.textColor}
-          onPick={updateProgressBar('textColor')}
-          aria-label="text color"
+        <Controller
+          name="textColor"
+          defaultValue={progressBar.textColor}
+          control={control}
+          render={({value, onChange}) => (
+            <ColorPicker
+              label="Text Color"
+              color={value}
+              onPick={onChange}
+              aria-label="text color"
+            />
+          )}
         />
-        <Typography variant="subtitle2" style={{opacity: 0.7}}>
-          Border Radius
-        </Typography>
-        <Slider
-          valueLabelDisplay="auto"
-          aria-label="progress bar border"
-          value={progressBar.borderRadius || 0}
-          onChange={handleChangeSlider(updateProgressBar('borderRadius'))}
-          step={1}
-          min={MIN_PROGRESS_BAR_BORDER_RADIUS}
-          max={MAX_PROGRESS_BAR_BORDER_RADIUS}
+        <InputLabel>Thickness</InputLabel>
+
+        <Controller
+          name="borderRadius"
+          defaultValue={progressBar.borderRadius}
+          control={control}
+          render={({value, onChange}) => (
+            <Slider
+              valueLabelDisplay="auto"
+              aria-label="progress bar border"
+              value={value}
+              onChange={handleChangeSlider(onChange)}
+              step={1}
+              min={MIN_PROGRESS_BAR_BORDER_RADIUS}
+              max={MAX_PROGRESS_BAR_BORDER_RADIUS}
+            />
+          )}
         />
       </Grid>
     </>

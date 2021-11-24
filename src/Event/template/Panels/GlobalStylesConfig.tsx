@@ -3,7 +3,12 @@ import Grid from '@material-ui/core/Grid'
 import InputLabel from '@material-ui/core/InputLabel'
 import Slider from '@material-ui/core/Slider'
 import {useEvent} from 'Event/EventProvider'
-import {DEFAULTS as TEMPLATE_DEFAULTS, usePanels} from 'Event/template/Panels'
+import {
+  DEFAULTS as TEMPLATE_DEFAULTS,
+  Panels,
+  usePanelsTemplate,
+  usePanelsUpdate,
+} from 'Event/template/Panels'
 import {handleChangeSlider, onChangeCheckedHandler} from 'lib/dom'
 import ColorPicker from 'lib/ui/ColorPicker'
 import Switch from 'lib/ui/form/Switch'
@@ -12,13 +17,22 @@ import {SectionTitle} from 'organization/Event/Page'
 import Page from 'organization/Event/Page'
 import Layout from 'organization/user/Layout'
 import React from 'react'
+import {useForm, Controller} from 'react-hook-form'
+import Button from '@material-ui/core/Button'
 
 const DEFAULT = TEMPLATE_DEFAULTS.background
 
 export default function GlobalStylesConfig() {
-  const {template, update} = usePanels()
-  const updateBackground = update.object('background')
+  const update = usePanelsUpdate()
+  const template = usePanelsTemplate()
+
   const {event} = useEvent()
+
+  const {handleSubmit, control} = useForm()
+
+  const submit = (data: Panels) => {
+    update(data)
+  }
 
   return (
     <Layout>
@@ -56,62 +70,119 @@ export default function GlobalStylesConfig() {
             </Box>
           </Grid>
         </Grid>
-        <Box mb={2}>
-          <Switch
-            checked={template.isDarkMode}
-            onChange={onChangeCheckedHandler(update.primitive('isDarkMode'))}
-            arial-label="set dark mode"
-            labelPlacement="end"
-            color="primary"
-            label="Dark Mode"
+
+        <form onSubmit={handleSubmit(submit)}>
+          <Box mb={2}>
+            <Controller
+              name="isDarkMode"
+              defaultValue={template.isDarkMode}
+              control={control}
+              render={({value, onChange}) => (
+                <Switch
+                  checked={value}
+                  onChange={onChangeCheckedHandler(onChange)}
+                  arial-label="set dark mode"
+                  labelPlacement="end"
+                  color="primary"
+                  label="Dark Mode"
+                />
+              )}
+            />
+          </Box>
+          <Box mb={2}>
+            <Controller
+              name="accentColor"
+              defaultValue={template.accentColor}
+              control={control}
+              render={({value, onChange}) => (
+                <ColorPicker
+                  label="Accent Color"
+                  color={value}
+                  onPick={onChange}
+                  aria-label="accent color"
+                />
+              )}
+            />
+          </Box>
+          <Box mb={2}>
+            <Controller
+              name="background.color"
+              defaultValue={template.background?.color}
+              control={control}
+              render={({value, onChange}) => (
+                <ColorPicker
+                  label="Background Color"
+                  color={value}
+                  onPick={onChange}
+                  aria-label="dashboard background color"
+                />
+              )}
+            />
+          </Box>
+          <InputLabel>Background Color Opacity</InputLabel>
+
+          <Controller
+            name="background.opacity"
+            defaultValue={template.background?.opacity || DEFAULT.opacity}
+            control={control}
+            render={({value, onChange}) => (
+              <Slider
+                min={0}
+                max={1}
+                step={0.1}
+                onChange={handleChangeSlider(onChange)}
+                valueLabelDisplay="auto"
+                value={value}
+                valueLabelFormat={() => (
+                  <div>{template.background?.opacity || DEFAULT.opacity}</div>
+                )}
+                aria-label="background color opacity"
+              />
+            )}
           />
-        </Box>
-        <Box mb={2}>
-          <ColorPicker
-            label="Accent Color"
-            color={template.accentColor}
-            onPick={update.primitive('accentColor')}
-            aria-label="accent color"
-          />
-        </Box>
-        <Box mb={2}>
-          <ColorPicker
-            label="Background Color"
-            color={template.background?.color}
-            onPick={updateBackground('color')}
-            aria-label="dashboard background color"
-          />
-        </Box>
-        <InputLabel>Background Color Opacity</InputLabel>
-        <Slider
-          min={0}
-          max={1}
-          step={0.1}
-          onChange={handleChangeSlider(updateBackground('opacity'))}
-          valueLabelDisplay="auto"
-          value={template.background?.opacity || DEFAULT.opacity}
-          valueLabelFormat={() => (
-            <div>{template.background?.opacity || DEFAULT.opacity}</div>
-          )}
-          aria-label="background color opacity"
-        />
-        <Box mb={2}>
-          <ColorPicker
-            label="Link Color"
-            color={template.linkColor}
-            onPick={update.primitive('linkColor')}
-            aria-label="link color"
-          />
-        </Box>
-        <Box mb={2}>
-          <Switch
-            label="Link Underline"
-            checked={template.linkUnderline}
-            onChange={onChangeCheckedHandler(update.primitive('linkUnderline'))}
-            labelPlacement="end"
-            color="primary"
-          />
-        </Box>
+
+          <Box mb={2}>
+            <Controller
+              name="linkColor"
+              defaultValue={template.linkColor}
+              control={control}
+              render={({value, onChange}) => (
+                <ColorPicker
+                  label="Link Color"
+                  color={value}
+                  onPick={onChange}
+                  aria-label="link color"
+                />
+              )}
+            />
+          </Box>
+          <Box mb={2}>
+            <Controller
+              name="linkUnderline"
+              defaultValue={template.linkUnderline}
+              control={control}
+              render={({value, onChange}) => (
+                <Switch
+                  label="Link Underline"
+                  checked={value}
+                  onChange={onChangeCheckedHandler(onChange)}
+                  labelPlacement="end"
+                  color="primary"
+                />
+              )}
+            />
+          </Box>
+          <Box mb={2}>
+            <Button
+              variant="contained"
+              aria-label="save"
+              type="submit"
+              color="primary"
+            >
+              Save
+            </Button>
+          </Box>
+        </form>
       </Page>
     </Layout>
   )

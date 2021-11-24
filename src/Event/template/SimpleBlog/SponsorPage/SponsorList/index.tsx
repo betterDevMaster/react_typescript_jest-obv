@@ -6,17 +6,19 @@ import React from 'react'
 import grey from '@material-ui/core/colors/grey'
 import {useTemplate} from 'Event/TemplateProvider'
 import {DragDropContext, Droppable, DropResult} from 'react-beautiful-dnd'
-import {useSimpleBlog} from 'Event/template/SimpleBlog'
+import {
+  useSimpleBlogTemplate,
+  useSimpleBlogUpdate,
+} from 'Event/template/SimpleBlog'
 
 export default function SponsorList(props: {
   className?: string
   sponsors: Sponsor[]
   isEditMode?: boolean
 }) {
-  const {template} = useSimpleBlog()
+  const template = useSimpleBlogTemplate()
   const {sponsors: sponsorPageSettings} = template
 
-  const handleDrag = useHandleDrag()
   const sortedSponsors = useSortedSponsors(props.sponsors)
 
   const isEmpty = props.sponsors.length === 0
@@ -39,7 +41,21 @@ export default function SponsorList(props: {
   }
 
   return (
-    <DragDropContext onDragEnd={handleDrag(sortedSponsors)}>
+    <DraggableList sponsors={sortedSponsors} className={props.className}>
+      {sponsors}
+    </DraggableList>
+  )
+}
+
+function DraggableList(props: {
+  children: React.ReactElement[]
+  sponsors: Sponsor[]
+  className?: string
+}) {
+  const handleDrag = useHandleDrag()
+
+  return (
+    <DragDropContext onDragEnd={handleDrag(props.sponsors)}>
       <Droppable droppableId="drag-and-drop-sponsors">
         {(provided) => (
           <Box
@@ -48,7 +64,7 @@ export default function SponsorList(props: {
             className={props.className}
           >
             <>
-              {sponsors}
+              {props.children}
               {provided.placeholder}
             </>
           </Box>
@@ -90,8 +106,7 @@ function useSortedSponsors(sponsors: Sponsor[]) {
 }
 
 function useHandleDrag() {
-  const {update: updateTemplate} = useSimpleBlog()
-  const update = updateTemplate.object('sponsors')
+  const update = useSimpleBlogUpdate()
 
   return (sponsors: Sponsor[]) => (result: DropResult) => {
     const {destination, source} = result
@@ -105,7 +120,12 @@ function useHandleDrag() {
     moved.splice(destination.index, 0, removed)
 
     const orderedIds = moved.map((f) => f.id)
-    update('orderedIds')(orderedIds)
+
+    update({
+      sponsors: {
+        orderedIds,
+      },
+    })
   }
 }
 

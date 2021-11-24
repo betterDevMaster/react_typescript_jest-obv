@@ -9,13 +9,14 @@ import {fireEvent} from '@testing-library/dom'
 import {fakeEvent} from 'Event/__utils__/factory'
 import {fakeTicketRibbon} from 'Event/template/SimpleBlog/Dashboard/Sidebar/SidebarItem/TicketRibbonList/__utils__/factory'
 import user from '@testing-library/user-event'
-import {mockRxJsAjax} from 'store/__utils__/MockStoreProvider'
 import {wait} from '@testing-library/react'
 import {clickEdit} from '__utils__/edit'
 import {goToDashboardConfig} from 'organization/Event/DashboardConfig/__utils__/go-dashboard-config'
 import {createTicketRibbonList} from 'Event/template/SimpleBlog/Dashboard/Sidebar/SidebarItem/TicketRibbonList'
+import axios from 'axios'
+import {createEntityList} from 'lib/list'
 
-const mockPost = mockRxJsAjax.post as jest.Mock
+const mockPut = axios.put as jest.Mock
 
 beforeEach(() => {
   jest.clearAllMocks()
@@ -35,20 +36,25 @@ it('should add a ticket ribbon list', async () => {
   fireEvent.click(await findByLabelText('add item'))
 
   await wait(() => {
-    expect(mockPost).toHaveBeenCalledTimes(1)
+    expect(mockPut).toHaveBeenCalledTimes(1)
   })
 
   expect(await findByText(/remove ribbons/i)).toBeInTheDocument()
 
-  const [url, data] = mockPost.mock.calls[0]
-  expect(url).toMatch(`/events/${event.slug}`)
-  expect(data.template.sidebarItems[0].type).toBe('Ticket Ribbon List')
+  const [url, data] = mockPut.mock.calls[0]
+  expect(url).toMatch(`/events/${event.slug}/template`)
+
+  const id = data.template['sidebarItems.ids'][0]
+  expect(data.template[`sidebarItems.entities.${id}.type`]).toBe(
+    'Ticket Ribbon List',
+  )
 })
 
 it('should remove a ticket ribbon list', async () => {
+  const sidebarItems = createEntityList([createTicketRibbonList()])
   const event = fakeEvent({
     template: fakeSimpleBlog({
-      sidebarItems: [createTicketRibbonList()],
+      sidebarItems,
     }),
   })
   const {queryByText, findByText} = await goToDashboardConfig({
@@ -58,14 +64,14 @@ it('should remove a ticket ribbon list', async () => {
   fireEvent.click(await findByText(/remove ribbons/i))
 
   await wait(() => {
-    expect(mockPost).toHaveBeenCalledTimes(1)
+    expect(mockPut).toHaveBeenCalledTimes(1)
   })
 
   expect(queryByText(/remove ribbons/i)).not.toBeInTheDocument()
 
-  const [url, data] = mockPost.mock.calls[0]
-  expect(url).toMatch(`/events/${event.slug}`)
-  expect(data.template.sidebarItems.length).toBe(0)
+  const [url, data] = mockPut.mock.calls[0]
+  expect(url).toMatch(`/events/${event.slug}/template`)
+  expect(data.template['sidebarItems.ids'].length).toBe(0)
 })
 
 it('should edit an existing ticket ribbon', async () => {
@@ -73,15 +79,18 @@ it('should edit an existing ticket ribbon', async () => {
     {length: faker.random.number({min: 2, max: 5})},
     fakeTicketRibbon,
   )
+  const ribbons = createEntityList(ticketRibbons)
+
+  const sidebarItems = createEntityList([
+    {
+      ...createTicketRibbonList(),
+      ribbons,
+    },
+  ])
 
   const event = fakeEvent({
     template: fakeSimpleBlog({
-      sidebarItems: [
-        {
-          ...createTicketRibbonList(),
-          ribbons: ticketRibbons,
-        },
-      ],
+      sidebarItems,
     }),
   })
 
@@ -117,25 +126,35 @@ it('should edit an existing ticket ribbon', async () => {
   // Saved
   await wait(
     () => {
-      expect(mockRxJsAjax.post).toHaveBeenCalledTimes(1)
+      expect(mockPut).toHaveBeenCalledTimes(1)
     },
     {timeout: 30000},
   )
 
-  const [url, data] = mockPost.mock.calls[0]
-  expect(url).toMatch(`/events/${event.slug}`)
-  expect(data.template.sidebarItems[0].ribbons[targetIndex].name).toBe(ribbon)
+  const [url, data] = mockPut.mock.calls[0]
+  expect(url).toMatch(`/events/${event.slug}/template`)
+
+  const sidebarId = sidebarItems.ids[0]
+  const ribbonId = ribbons.ids[targetIndex]
+
+  expect(
+    data.template[
+      `sidebarItems.entities.${sidebarId}.ribbons.entities.${ribbonId}.name`
+    ],
+  ).toBe(ribbon)
 })
 
 it('should add a new ticket ribbon', async () => {
+  const sidebarItems = createEntityList([
+    {
+      ...createTicketRibbonList(),
+      ribbons: createEntityList([]),
+    },
+  ])
+
   const withoutRibbons = fakeEvent({
     template: fakeSimpleBlog({
-      sidebarItems: [
-        {
-          ...createTicketRibbonList(),
-          ribbons: [],
-        },
-      ],
+      sidebarItems,
     }),
   })
 
@@ -165,28 +184,40 @@ it('should add a new ticket ribbon', async () => {
 
   // Saved
   await wait(() => {
-    expect(mockRxJsAjax.post).toHaveBeenCalledTimes(1)
+    expect(mockPut).toHaveBeenCalledTimes(1)
   })
 
-  const [url, data] = mockPost.mock.calls[0]
-  expect(url).toMatch(`/events/${withoutRibbons.slug}`)
-  expect(data.template.sidebarItems[0].ribbons[0].text).toBe(text)
+  const [url, data] = mockPut.mock.calls[0]
+  expect(url).toMatch(`/events/${withoutRibbons.slug}/template`)
+
+  const sidebarId = sidebarItems.ids[0]
+
+  const ribbonId =
+    data.template[`sidebarItems.entities.${sidebarId}.ribbons.ids`][0]
+
+  expect(
+    data.template[
+      `sidebarItems.entities.${sidebarId}.ribbons.entities.${ribbonId}.text`
+    ],
+  ).toBe(text)
 })
 
 it('should remove a ticket ribbon', async () => {
-  const ticketRibbons = Array.from(
-    {length: faker.random.number({min: 2, max: 5})},
-    fakeTicketRibbon,
-  )
+  const numRibbons = faker.random.number({min: 2, max: 5})
+  const ticketRibbons = Array.from({length: numRibbons}, fakeTicketRibbon)
+
+  const ribbons = createEntityList(ticketRibbons)
+
+  const sidebarItems = createEntityList([
+    {
+      ...createTicketRibbonList(),
+      ribbons,
+    },
+  ])
 
   const event = fakeEvent({
     template: fakeSimpleBlog({
-      sidebarItems: [
-        {
-          ...createTicketRibbonList(),
-          ribbons: ticketRibbons,
-        },
-      ],
+      sidebarItems,
     }),
   })
 
@@ -217,13 +248,15 @@ it('should remove a ticket ribbon', async () => {
 
   // Saved
   await wait(() => {
-    expect(mockRxJsAjax.post).toHaveBeenCalledTimes(1)
+    expect(mockPut).toHaveBeenCalledTimes(1)
   })
 
-  const [url, data] = mockPost.mock.calls[0]
-  expect(url).toMatch(`/events/${event.slug}`)
-  // one less ribbon saved
-  expect(data.template.sidebarItems[0].ribbons.length).toBe(
-    ticketRibbons.length - 1,
-  )
+  const [url, data] = mockPut.mock.calls[0]
+  expect(url).toMatch(`/events/${event.slug}/template`)
+
+  const sidebarId = sidebarItems.ids[0]
+
+  expect(
+    data.template[`sidebarItems.entities.${sidebarId}.ribbons.ids`].length,
+  ).toBe(numRibbons - 1)
 })

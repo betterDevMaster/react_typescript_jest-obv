@@ -1,9 +1,9 @@
 import React from 'react'
-import {useCards} from 'Event/template/Cards'
+import {useCardsTemplate} from 'Event/template/Cards'
 import OfflinePage from 'Event/template/Cards/OfflinePage'
 
 export default function EventOfflinePage(props: {isPreview?: boolean}) {
-  const {template} = useCards()
+  const template = useCardsTemplate()
   const {offlinePage: offline} = template
 
   return (

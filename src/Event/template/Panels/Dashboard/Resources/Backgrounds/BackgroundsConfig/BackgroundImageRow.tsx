@@ -1,7 +1,7 @@
 import React, {useState} from 'react'
 import Button from '@material-ui/core/Button'
 import styled from 'styled-components'
-import {usePanels} from 'Event/template/Panels'
+import {usePanelsTemplate} from 'Event/template/Panels'
 import {
   Background,
   useBackgrounds,
@@ -12,9 +12,7 @@ import BackgroundImageEditDialog from 'Event/template/Panels/Dashboard/Resources
 export default function BackgroundImageRow(props: {background: Background}) {
   const [visibleEditDialog, setVisibleEditDialog] = useState(false)
   const {background} = props
-  const {
-    template: {zoomBackgrounds: templateSettings},
-  } = usePanels()
+  const {zoomBackgrounds: templateSettings} = usePanelsTemplate()
   const {busy} = useBackgrounds()
 
   const toggleEditDialog = () => setVisibleEditDialog(!visibleEditDialog)

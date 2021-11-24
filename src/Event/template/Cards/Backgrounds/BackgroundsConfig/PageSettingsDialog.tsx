@@ -7,7 +7,7 @@ import TextField from '@material-ui/core/TextField'
 import Button from '@material-ui/core/Button'
 import TextEditor, {TextEditorContainer} from 'lib/ui/form/TextEditor'
 import {useEvent, useUpdate} from 'Event/EventProvider'
-import {useCards} from 'Event/template/Cards'
+import {useCardsTemplate, useCardsUpdate} from 'Event/template/Cards'
 import {useToggle} from 'lib/toggle'
 import {onChangeStringHandler, onChangeCheckedHandler} from 'lib/dom'
 import Switch from 'lib/ui/form/Switch'
@@ -18,7 +18,7 @@ export default function PageSettingsDialog(props: {
 }) {
   const {visible, onClose} = props
   const {event} = useEvent()
-  const {template} = useCards()
+  const template = useCardsTemplate()
 
   const templateSettings = template.zoomBackgrounds
 
@@ -31,6 +31,7 @@ export default function PageSettingsDialog(props: {
   )
 
   const update = useUpdate()
+  const updateCards = useCardsUpdate()
 
   const [loading, setLoading] = useState(true)
 
@@ -43,19 +44,18 @@ export default function PageSettingsDialog(props: {
       return
     }
 
+    updateCards({
+      zoomBackgrounds: {
+        menuTitle,
+        isVisible,
+      },
+    })
+
     toggleProcessing()
 
     update({
       zoom_backgrounds_title: title,
       zoom_backgrounds_description: description,
-      template: {
-        ...template,
-        zoomBackgrounds: {
-          ...template.zoomBackgrounds,
-          menuTitle,
-          isVisible,
-        },
-      },
     })
       .then(() => {
         toggleProcessing()

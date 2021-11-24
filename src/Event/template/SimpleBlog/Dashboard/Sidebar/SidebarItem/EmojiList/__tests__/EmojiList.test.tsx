@@ -5,13 +5,14 @@ import {inputElementFor} from '__utils__/render'
 import {fireEvent} from '@testing-library/dom'
 import {clickEdit} from '__utils__/edit'
 import {fakeEvent} from 'Event/__utils__/factory'
-import {mockRxJsAjax} from 'store/__utils__/MockStoreProvider'
 import {wait} from '@testing-library/react'
 import {DEFAULT_EMOJIS, EMOJI} from 'Event/Dashboard/components/EmojiList/emoji'
 import {goToDashboardConfig} from 'organization/Event/DashboardConfig/__utils__/go-dashboard-config'
 import {createEmojiList} from 'Event/template/SimpleBlog/Dashboard/Sidebar/SidebarItem/EmojiList'
+import axios from 'axios'
+import {createEntityList} from 'lib/list'
 
-const mockPost = mockRxJsAjax.post as jest.Mock
+const mockPut = axios.put as jest.Mock
 
 afterEach(() => {
   jest.clearAllMocks()
@@ -31,20 +32,23 @@ it('should add an emoji list', async () => {
   fireEvent.click(await findByLabelText('add item'))
 
   await wait(() => {
-    expect(mockPost).toHaveBeenCalledTimes(1)
+    expect(mockPut).toHaveBeenCalledTimes(1)
   })
 
   expect(await findByText(/remove emojis/i)).toBeInTheDocument()
 
-  const [url, data] = mockPost.mock.calls[0]
-  expect(url).toMatch(`/events/${event.slug}`)
-  expect(data.template.sidebarItems[0].type).toBe('Emoji List')
+  const [url, data] = mockPut.mock.calls[0]
+  expect(url).toMatch(`/events/${event.slug}/template`)
+  const sidebarId = data.template['sidebarItems.ids'][0]
+  expect(data.template[`sidebarItems.entities.${sidebarId}.type`]).toBe(
+    'Emoji List',
+  )
 })
 
 it('should remove an emoji list', async () => {
   const event = fakeEvent({
     template: fakeSimpleBlog({
-      sidebarItems: [createEmojiList()],
+      sidebarItems: createEntityList([createEmojiList()]),
     }),
   })
   const {queryByText, findByText} = await goToDashboardConfig({
@@ -54,20 +58,21 @@ it('should remove an emoji list', async () => {
   fireEvent.click(await findByText(/remove emojis/i))
 
   await wait(() => {
-    expect(mockPost).toHaveBeenCalledTimes(1)
+    expect(mockPut).toHaveBeenCalledTimes(1)
   })
 
   expect(queryByText(/remove emojis/i)).not.toBeInTheDocument()
 
-  const [url, data] = mockPost.mock.calls[0]
-  expect(url).toMatch(`/events/${event.slug}`)
-  expect(data.template.sidebarItems.length).toBe(0)
+  const [url, data] = mockPut.mock.calls[0]
+  expect(url).toMatch(`/events/${event.slug}/template`)
+  expect(data.template['sidebarItems.ids'].length).toBe(0)
 })
 
 it('should pick an emoji', async () => {
+  const sidebarItems = createEntityList([createEmojiList()])
   const event = fakeEvent({
     template: fakeSimpleBlog({
-      sidebarItems: [createEmojiList()],
+      sidebarItems,
     }),
   })
 
@@ -98,27 +103,34 @@ it('should pick an emoji', async () => {
 
   // Saved
   await wait(() => {
-    expect(mockPost).toHaveBeenCalledTimes(1)
+    expect(mockPut).toHaveBeenCalledTimes(1)
   })
 
-  const [url, data] = mockPost.mock.calls[0]
-  expect(url).toMatch(`/events/${event.slug}`)
-  expect(data.template.sidebarItems[0].emojis.length).toBe(1)
+  const [url, data] = mockPut.mock.calls[0]
+  expect(url).toMatch(`/events/${event.slug}/template`)
+  const sidebarId = sidebarItems.ids[0]
+  expect(
+    data.template[`sidebarItems.entities.${sidebarId}.emojis`].length,
+  ).toBe(1)
 })
 
 it('should remove an existing emoji', async () => {
+  const numEmojis = faker.random.number({min: 2, max: 5})
   const emojis = Array.from(
-    {length: faker.random.number({min: 2, max: 5})},
+    {length: numEmojis},
     () => faker.random.arrayElement(DEFAULT_EMOJIS).name,
   )
+
+  const sidebarItems = createEntityList([
+    {
+      ...createEmojiList(),
+      emojis,
+    },
+  ])
+
   const event = fakeEvent({
     template: fakeSimpleBlog({
-      sidebarItems: [
-        {
-          ...createEmojiList(),
-          emojis,
-        },
-      ],
+      sidebarItems,
     }),
   })
   const {findByLabelText, findAllByLabelText} = await goToDashboardConfig({
@@ -137,10 +149,14 @@ it('should remove an existing emoji', async () => {
 
   // Saved
   await wait(() => {
-    expect(mockPost).toHaveBeenCalledTimes(1)
+    expect(mockPut).toHaveBeenCalledTimes(1)
   })
 
-  const [url, data] = mockPost.mock.calls[0]
-  expect(url).toMatch(`/events/${event.slug}`)
-  expect(data.template.sidebarItems[0].emojis.length).toBe(emojis.length - 1)
+  const [url, data] = mockPut.mock.calls[0]
+  expect(url).toMatch(`/events/${event.slug}/template`)
+
+  const sidebarId = sidebarItems.ids[0]
+  expect(
+    data.template[`sidebarItems.entities.${sidebarId}.emojis`].length,
+  ).toBe(numEmojis - 1)
 })

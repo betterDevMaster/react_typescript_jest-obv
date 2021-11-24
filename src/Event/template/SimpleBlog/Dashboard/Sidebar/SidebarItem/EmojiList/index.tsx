@@ -10,15 +10,13 @@ import {Editable} from 'Event/Dashboard/editor/views/EditComponent'
 import AddEmojiButton from 'Event/Dashboard/components/EmojiList/AddEmojiButton'
 import EditModeOnly from 'Event/Dashboard/editor/views/EditModeOnly'
 import {useToggle} from 'lib/toggle'
-import {uuid} from 'lib/uuid'
 import {EmojiListConfig} from 'Event/template/SimpleBlog/Dashboard/Sidebar/SidebarItem/EmojiList/EmojiListConfig'
 import {RemoveButton} from 'organization/Event/DashboardConfig/ComponentConfig'
-import {useRemoveSidebarItem} from 'Event/template/SimpleBlog/Dashboard/Sidebar/SidebarItem'
 import Section from 'Event/template/SimpleBlog/Dashboard/Sidebar/Section'
+import {useEditSidebarItem} from 'Event/template/SimpleBlog/Dashboard/Sidebar/SidebarItem'
 
 export const EMOJI_LIST = 'Emoji List'
 export interface EmojiListProps {
-  id: string
   type: typeof EMOJI_LIST
   emojis: Emoji['name'][]
   /**
@@ -30,7 +28,6 @@ export interface EmojiListProps {
 }
 
 export const createEmojiList = (): EmojiListProps => ({
-  id: uuid(),
   type: EMOJI_LIST,
   emojis: [],
   emojiWidth: null,
@@ -39,7 +36,7 @@ export const createEmojiList = (): EmojiListProps => ({
 export default function EmojiList(props: EmojiListProps) {
   const {flag: configVisible, toggle: toggleConfig} = useToggle()
   const {emojis, emojiWidth} = props
-  const removeItem = useRemoveSidebarItem(props)
+  const {remove} = useEditSidebarItem()
 
   const isEmpty = emojis.length === 0
   if (isEmpty) {
@@ -52,7 +49,7 @@ export default function EmojiList(props: EmojiListProps) {
             onClose={toggleConfig}
             list={props}
           />
-          <RemoveButton size="large" showing onClick={removeItem}>
+          <RemoveButton size="large" showing onClick={remove}>
             Remove Emojis
           </RemoveButton>
           <StyledAddEmojiListButton onClick={toggleConfig} />
@@ -69,7 +66,7 @@ export default function EmojiList(props: EmojiListProps) {
           onClose={toggleConfig}
           list={props}
         />
-        <RemoveButton size="large" onClick={removeItem}>
+        <RemoveButton size="large" onClick={remove}>
           Remove Emojis
         </RemoveButton>
       </EditModeOnly>

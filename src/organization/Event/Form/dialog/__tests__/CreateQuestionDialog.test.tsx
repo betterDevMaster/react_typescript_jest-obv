@@ -21,6 +21,15 @@ afterEach(() => {
   jest.clearAllMocks()
 })
 
+beforeAll(() => {
+  jest.spyOn(console, 'error').mockImplementation(() => {})
+})
+
+afterAll(() => {
+  // @ts-ignore
+  console.error.mockRestore()
+})
+
 it('should add a question', async () => {
   const form = fakeForm({questions: []})
 

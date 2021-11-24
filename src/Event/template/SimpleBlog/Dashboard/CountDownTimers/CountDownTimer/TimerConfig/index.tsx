@@ -6,9 +6,11 @@ import TextField from '@material-ui/core/TextField'
 import {handleChangeSlider, onChangeCheckedHandler} from 'lib/dom'
 import ColorPicker from 'lib/ui/ColorPicker'
 import Switch from 'lib/ui/form/Switch'
-import {useDispatchUpdate} from 'Event/TemplateProvider'
 import LocalizedDateTimePicker from 'lib/LocalizedDateTimePicker'
-import {useSimpleBlog} from 'Event/template/SimpleBlog'
+import {
+  useSimpleBlogTemplate,
+  useSimpleBlogUpdate,
+} from 'Event/template/SimpleBlog'
 import ComponentConfig, {
   ComponentConfigProps,
   RemoveButton,
@@ -17,6 +19,7 @@ import ComponentConfig, {
 import {CountDownTimer} from 'Event/Dashboard/components/CountDownTimer'
 import InputLabel from '@material-ui/core/InputLabel'
 import FormControl from '@material-ui/core/FormControl'
+import {REMOVE} from 'Event/TemplateUpdateProvider'
 
 export default function TimerConfig(
   props: ComponentConfigProps & {
@@ -25,19 +28,16 @@ export default function TimerConfig(
   },
 ) {
   const {isVisible, onClose, id, countDownTimer} = props
-  const {template} = useSimpleBlog()
+  const template = useSimpleBlogTemplate()
+  const updateTemplate = useSimpleBlogUpdate()
   const {countDownTimers} = template
 
   const {control, handleSubmit, register} = useForm()
 
-  const updateTemplate = useDispatchUpdate()
-
   const update = (id: string, updated: CountDownTimer) => {
     updateTemplate({
       countDownTimers: {
-        ...countDownTimers,
         entities: {
-          ...countDownTimers.entities,
           [id]: updated,
         },
       },
@@ -51,7 +51,6 @@ export default function TimerConfig(
       countDownTimers: {
         ids: [...countDownTimers.ids, id],
         entities: {
-          ...countDownTimers.entities,
           [id]: countDownTimer,
         },
       },
@@ -63,12 +62,13 @@ export default function TimerConfig(
       throw new Error('Missing count down timer id')
     }
 
-    const {[id]: target, ...otherTimers} = countDownTimers.entities
     const updatedIds = countDownTimers.ids.filter((i) => i !== id)
 
     updateTemplate({
       countDownTimers: {
-        entities: otherTimers,
+        entities: {
+          [id]: REMOVE,
+        },
         ids: updatedIds,
       },
     })

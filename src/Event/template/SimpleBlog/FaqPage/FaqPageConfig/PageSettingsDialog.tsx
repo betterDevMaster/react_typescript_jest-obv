@@ -1,4 +1,4 @@
-import React, {useState} from 'react'
+import React from 'react'
 import DialogContent from '@material-ui/core/DialogContent'
 import DialogTitle from '@material-ui/core/DialogTitle'
 import Dialog from 'lib/ui/Dialog'
@@ -6,15 +6,15 @@ import Box from '@material-ui/core/Box'
 import TextField from '@material-ui/core/TextField'
 import Grid from '@material-ui/core/Grid'
 import {Controller, useForm} from 'react-hook-form'
-import {useEvent} from 'Event/EventProvider'
-import {ObvioEvent} from 'Event'
 import Button from '@material-ui/core/Button'
 import TextEditor, {TextEditorContainer} from 'lib/ui/form/TextEditor'
 import Typography from '@material-ui/core/Typography'
-import {useOrganization} from 'organization/OrganizationProvider'
-import {api} from 'lib/url'
 import ColorPicker from 'lib/ui/ColorPicker'
-import {SimpleBlog, useSimpleBlog} from 'Event/template/SimpleBlog'
+import {
+  SimpleBlog,
+  useSimpleBlogTemplate,
+  useSimpleBlogUpdate,
+} from 'Event/template/SimpleBlog'
 
 type FAQPageSettings = NonNullable<SimpleBlog['faq']>
 
@@ -23,52 +23,19 @@ export default function PageSettingsDialog(props: {
   visible: boolean
 }) {
   const {visible, onClose} = props
-  const {event, set: updateEvent} = useEvent()
   const {handleSubmit, register, control} = useForm()
-  const [processing, setProcessing] = useState(false)
-  const {template} = useSimpleBlog()
-  const {client} = useOrganization()
+  const template = useSimpleBlogTemplate()
+
+  const update = useSimpleBlogUpdate()
 
   const {faq: pageSettings} = template
 
-  const data = ({
-    title,
-    description,
-    backToDashboardText,
-    backToDashboardTextColor,
-  }: FAQPageSettings) => {
-    const required = {
-      template: {
-        ...template,
-        faq: {
-          ...pageSettings,
-          title,
-          description,
-          backToDashboardText,
-          backToDashboardTextColor,
-        },
-      },
-    }
-    return required
-  }
-
   const submit = (form: FAQPageSettings) => {
-    if (processing) {
-      return
-    }
+    update({
+      faq: form,
+    })
 
-    setProcessing(true)
-    const url = api(`/events/${event.slug}`)
-    client
-      .put<ObvioEvent>(url, data(form))
-      .then((event) => {
-        updateEvent(event)
-        setProcessing(false)
-        props.onClose()
-      })
-      .catch(() => {
-        setProcessing(false)
-      })
+    props.onClose()
   }
 
   return (
@@ -84,7 +51,6 @@ export default function PageSettingsDialog(props: {
               variant="outlined"
               fullWidth
               inputProps={{'aria-label': 'faq page title', ref: register}}
-              disabled={processing}
             />
             <Controller
               name="description"
@@ -126,7 +92,6 @@ export default function PageSettingsDialog(props: {
               variant="contained"
               color="primary"
               fullWidth
-              disabled={processing}
               aria-label="save"
             >
               Save

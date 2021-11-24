@@ -8,7 +8,7 @@ import {User} from 'auth/user'
 import FaqEditDialog from 'Event/template/SimpleBlog/FaqPage/FaqEditDialog'
 import {PageTitle, PageDescription} from 'Event/template/SimpleBlog/Page'
 import {useAttendeeVariables} from 'Event'
-import {useSimpleBlog} from 'Event/template/SimpleBlog'
+import {useSimpleBlogTemplate} from 'Event/template/SimpleBlog'
 import Content from 'lib/ui/form/TextEditor/Content'
 
 export default function SimpleBlogFaqPage(props: {
@@ -17,7 +17,7 @@ export default function SimpleBlogFaqPage(props: {
   faqs: FAQ[]
 }) {
   const {faqs} = props
-  const {template} = useSimpleBlog()
+  const template = useSimpleBlogTemplate()
   const {faq: pageSettings} = template
   const v = useAttendeeVariables()
 

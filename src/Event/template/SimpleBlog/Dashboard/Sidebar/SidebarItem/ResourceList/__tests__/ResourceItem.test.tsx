@@ -13,6 +13,7 @@ import {loginToEventSite} from 'Event/__utils__/url'
 import {fakeAttendee} from 'Event/auth/__utils__/factory'
 import faker from 'faker'
 import {createResourceList} from 'Event/template/SimpleBlog/Dashboard/Sidebar/SidebarItem/ResourceList'
+import {createEntityList} from 'lib/list'
 
 const mockPost = axios.post as jest.Mock
 
@@ -26,14 +27,14 @@ it('receives points', async () => {
 
   const event = fakeEvent({
     template: fakeSimpleBlog({
-      sidebarItems: [
+      sidebarItems: createEntityList([
         {
           ...createResourceList(),
           title: faker.random.word(),
           description: '',
-          resources: [fakeResource({isVisible: true})],
+          resources: createEntityList([fakeResource({isVisible: true})]),
         },
-      ],
+      ]),
     }),
     platform_actions: createPlatformActions({
       download_resource: action,
@@ -68,14 +69,16 @@ it('should show translated url', async () => {
 
   const event = fakeEvent({
     template: fakeSimpleBlog({
-      sidebarItems: [
+      sidebarItems: createEntityList([
         {
           ...createResourceList(),
           title: faker.random.word(),
           description: '',
-          resources: [fakeResource({isVisible: true, url: '{{foo}}'})],
+          resources: createEntityList([
+            fakeResource({isVisible: true, url: '{{foo}}'}),
+          ]),
         },
-      ],
+      ]),
     }),
     localization: fakeLocalization({
       translationsEnabled: true,

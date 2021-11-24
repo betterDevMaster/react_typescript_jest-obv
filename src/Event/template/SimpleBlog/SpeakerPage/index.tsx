@@ -8,7 +8,7 @@ import SpeakerList from 'Event/template/SimpleBlog/SpeakerPage/SpeakerList'
 import SpeakerEditDialog from 'Event/template/SimpleBlog/SpeakerPage/SpeakerEditDialog'
 import {PageTitle, PageDescription} from 'Event/template/SimpleBlog/Page'
 import {useAttendeeVariables} from 'Event'
-import {useSimpleBlog} from 'Event/template/SimpleBlog'
+import {useSimpleBlogTemplate} from 'Event/template/SimpleBlog'
 import Content from 'lib/ui/form/TextEditor/Content'
 
 export default function SimpleBlogSpeakerPage(props: {
@@ -16,9 +16,7 @@ export default function SimpleBlogSpeakerPage(props: {
   isEditMode?: boolean
   speakers: Speaker[]
 }) {
-  const {
-    template: {speakers: speakerPageSettings},
-  } = useSimpleBlog()
+  const {speakers: speakerPageSettings} = useSimpleBlogTemplate()
   const v = useAttendeeVariables()
 
   const content = (

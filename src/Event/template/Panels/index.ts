@@ -1,28 +1,32 @@
-import {GridSize} from '@material-ui/core/Grid'
+import {GridSize, GridSpacing} from '@material-ui/core/Grid'
 import {EmojiList} from 'Event/template/Panels/Dashboard/EmojiList'
 import {NavButtonWithSize} from 'Event/Dashboard/components/NavButton'
 import {ResourceList} from 'Event/template/Panels/Dashboard/Resources/ResourceList'
 import {BaseTemplate, BASE_DEFAULTS} from 'Event/template'
 import {EntityList} from 'lib/list'
 import {Column} from 'lib/ui/layout'
-import {useTemplate, useUpdate} from 'Event/TemplateProvider'
+import {useTemplate} from 'Event/TemplateProvider'
 import {BlogPost} from 'Event/Dashboard/components/BlogPost'
 import {colors} from 'lib/ui/theme'
 import {DeepRequired} from 'lib/type-utils'
 import {TicketRibbon} from 'Event/template/Panels/Dashboard/TicketRibbonList/TicketRibbon'
 import {CountDownTimer} from 'Event/Dashboard/components/CountDownTimer'
+import {useTemplateUpdate} from 'Event/TemplateUpdateProvider'
 
 export const PANELS = 'Panels'
 
-export function usePanels() {
+export function usePanelsTemplate() {
   const template = useTemplate()
-  const update = useUpdate<Panels>()
 
   if (template.name !== PANELS) {
     throw new Error('usePanels called with wrong template')
   }
 
-  return {template, update}
+  return template
+}
+
+export function usePanelsUpdate() {
+  return useTemplateUpdate<Panels>()
 }
 
 export type Panels = BaseTemplate & {
@@ -183,7 +187,7 @@ export type Panels = BaseTemplate & {
     title?: string
     description?: string
     speakerImageSize?: Column
-    speakersSpace?: number
+    speakersSpace?: GridSpacing
     orderedIds?: number[]
     menuTitle?: string
     isVisible?: boolean

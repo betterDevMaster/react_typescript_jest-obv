@@ -15,7 +15,7 @@ import {
   useBackgrounds,
 } from 'organization/Event/Backgrounds/BackgroundsProvider'
 import BackgroundImage from 'Event/template/SimpleBlog/Backgrounds/BackgroundsConfig/BackgroundImage'
-import {useSimpleBlog} from 'Event/template/SimpleBlog'
+import {useSimpleBlogTemplate} from 'Event/template/SimpleBlog'
 
 export default function BackgroundImageEditDialog(props: {
   onClose: () => void
@@ -28,9 +28,7 @@ export default function BackgroundImageEditDialog(props: {
   const [rules, setRules] = useState<Rule[]>(background.settings?.rules || [])
   const {update, busy, remove} = useBackgrounds()
   const v = useAttendeeVariables()
-  const {
-    template: {zoomBackgrounds: templateSettings},
-  } = useSimpleBlog()
+  const {zoomBackgrounds: templateSettings} = useSimpleBlogTemplate()
 
   const save = () => {
     update(background, {

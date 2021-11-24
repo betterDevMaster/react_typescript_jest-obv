@@ -3,11 +3,11 @@ import {useEvent} from 'Event/EventProvider'
 import React from 'react'
 import styled from 'styled-components'
 import {DEFAULT_FOOTER_IMAGE_SIZE} from 'Event/template/SimpleBlog/Dashboard/Footer/FooterConfig'
-import {useSimpleBlog} from 'Event/template/SimpleBlog'
+import {useSimpleBlogTemplate} from 'Event/template/SimpleBlog'
 
 export default function Image() {
   const {event} = useEvent()
-  const {template} = useSimpleBlog()
+  const template = useSimpleBlogTemplate()
   const {footer} = template
 
   if (!event.footer_image) {

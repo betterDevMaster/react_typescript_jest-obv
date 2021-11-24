@@ -11,6 +11,7 @@ import {
 import {CONFIGURE_EVENTS} from 'organization/PermissionsProvider'
 
 const mockPost = axios.post as jest.Mock
+const mockPut = axios.put as jest.Mock
 
 beforeAll(() => {
   // Hide JSDOM nav unimplemented error
@@ -85,10 +86,15 @@ it('should submit a waiver', async () => {
   })
   fireEvent.change(imageInput)
 
+  // Set template data
+  const buttonText = 'foobar'
+  user.type(await findByLabelText('waiver button text'), buttonText)
+
   user.click(await findByLabelText('save waiver'))
 
   await wait(() => {
     expect(mockPost).toHaveBeenCalledTimes(1)
+    expect(mockPut).toHaveBeenCalledTimes(1)
   })
 
   const data = mockPost.mock.calls[0][1]
@@ -96,6 +102,10 @@ it('should submit a waiver', async () => {
   expect(data.get('title')).toBe(title)
   expect(data.get('body')).toBe(`<p>${body}</p>`) // CKEditor automatically converts to HTML
   expect(data.get('logo')).toBe(image)
+
+  // Did save template data
+  const [_, templateData] = mockPut.mock.calls[0]
+  expect(templateData.template['waiver.buttonText']).toBe(buttonText)
 })
 
 async function goToWaiverConfig(overrides: EventOverrides = {}) {

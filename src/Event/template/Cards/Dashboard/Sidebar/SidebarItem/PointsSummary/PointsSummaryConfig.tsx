@@ -13,7 +13,7 @@ import InputLabel from '@material-ui/core/InputLabel'
 import Alert from '@material-ui/lab/Alert'
 import AlertTitle from '@material-ui/lab/AlertTitle'
 import {PointsSummaryProps} from 'Event/template/Cards/Dashboard/Sidebar/SidebarItem/PointsSummary'
-import {useUpdateSidebarItem} from 'Event/template/Cards/Dashboard/Sidebar/SidebarItem'
+import {useEditSidebarItem} from 'Event/template/Cards/Dashboard/Sidebar/SidebarItem'
 
 export function PointsSummaryConfig(
   props: ComponentConfigProps & {
@@ -23,10 +23,10 @@ export function PointsSummaryConfig(
   const {isVisible, onClose, points} = props
   const {event} = useEvent()
   const {handleSubmit, control} = useForm()
-  const updateItem = useUpdateSidebarItem()
+  const {update} = useEditSidebarItem()
 
   const save = (data: PointsSummaryProps) => {
-    updateItem({...points, ...data})
+    update(data)
     onClose()
   }
 

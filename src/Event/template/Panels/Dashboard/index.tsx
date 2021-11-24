@@ -11,7 +11,7 @@ import TabPanel from 'lib/ui/tabs/TabPanel'
 import Home from 'Event/template/Panels/Dashboard/Home'
 import Leaderboard from 'Event/template/Panels/Dashboard/Leaderboard/Leaderboard'
 import Resources from 'Event/template/Panels/Dashboard/Resources'
-import {usePanels} from 'Event/template/Panels'
+import {usePanelsTemplate} from 'Event/template/Panels'
 import SponsorPage from 'Event/template/Panels/Dashboard/Sponsors'
 import ImageWaterfall from 'Event/template/Panels/Dashboard/ImageWaterfall'
 import {
@@ -104,10 +104,8 @@ function ContentPanel(props: {
   children: React.ReactElement
 }) {
   const {
-    template: {
-      rightPanel: {textColor},
-    },
-  } = usePanels()
+    rightPanel: {textColor},
+  } = usePanelsTemplate()
 
   return (
     <StyledTabPanel
@@ -124,9 +122,9 @@ function ContentPanel(props: {
 const StyledTabPanel = styled(TabPanel)<{
   textColor: string
 }>`
-  /* 
+  /*
     Explicitly set color to avoid dark mode's white color from
-    rendering text invisible on white background. 
+    rendering text invisible on white background.
   */
   color: ${(props) => props.textColor}!important;
   width: 100%;

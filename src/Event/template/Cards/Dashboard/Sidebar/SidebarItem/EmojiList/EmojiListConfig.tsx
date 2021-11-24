@@ -21,10 +21,7 @@ import ComponentConfig, {
 import EmojiSelect from 'Event/Dashboard/components/EmojiList/EmojiSelect'
 import EmojiUpload from 'Event/Dashboard/components/EmojiList/EmojiUpload'
 import {EmojiListProps} from 'Event/template/Cards/Dashboard/Sidebar/SidebarItem/EmojiList'
-import {
-  useRemoveSidebarItem,
-  useUpdateSidebarItem,
-} from 'Event/template/Cards/Dashboard/Sidebar/SidebarItem'
+import {useEditSidebarItem} from 'Event/template/Cards/Dashboard/Sidebar/SidebarItem'
 
 export function EmojiListConfig(
   props: ComponentConfigProps & {
@@ -36,8 +33,7 @@ export function EmojiListConfig(
   const deleteFile = useDeleteFile()
   const [emojiWidth, setEmojiWidth] = useState(list.emojiWidth)
   const [emojis, setEmojis] = useState(list.emojis)
-  const updateItem = useUpdateSidebarItem()
-  const removeItem = useRemoveSidebarItem(list)
+  const {remove: removeItem, update: updateItem} = useEditSidebarItem()
 
   useEffect(() => {
     if (isVisible) {

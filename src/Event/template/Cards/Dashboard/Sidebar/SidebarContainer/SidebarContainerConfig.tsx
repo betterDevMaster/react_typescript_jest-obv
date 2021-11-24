@@ -11,7 +11,7 @@ import EventImageUpload from 'organization/Event/DashboardConfig/EventImageUploa
 import {useEvent} from 'Event/EventProvider'
 import Switch from 'lib/ui/form/Switch'
 import Box from '@material-ui/core/Box'
-import {useCards} from 'Event/template/Cards'
+import {Cards, useCardsTemplate, useCardsUpdate} from 'Event/template/Cards'
 import ComponentConfig, {
   ComponentConfigProps,
   SaveButton,
@@ -35,16 +35,18 @@ const MAX_SIDEBAR_HEAD_BORDER_RADIUS = 25
 
 export function SidebarContainerConfig(props: ComponentConfigProps) {
   const {isVisible, onClose} = props
-  const {
-    template: {sidebar},
-    update,
-  } = useCards()
+
+  const {sidebar} = useCardsTemplate()
+  const update = useCardsUpdate()
+
   const {event} = useEvent()
 
   const {control, handleSubmit} = useForm()
 
-  const save = (data: any) => {
-    update.primitive('sidebar')(data)
+  const save = (data: Cards['sidebar']) => {
+    update({
+      sidebar: data,
+    })
     onClose()
   }
 

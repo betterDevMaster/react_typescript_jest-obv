@@ -11,7 +11,7 @@ import Grid from '@material-ui/core/Grid'
 import Box from '@material-ui/core/Box'
 import {useAttendeeVariables} from 'Event'
 import Typography from '@material-ui/core/Typography'
-import {useCards} from 'Event/template/Cards'
+import {useCardsTemplate} from 'Event/template/Cards'
 import Content from 'lib/ui/form/TextEditor/Content'
 
 export default function Waiver() {
@@ -25,10 +25,9 @@ export default function Waiver() {
     body,
   } = useWaiver()
 
-  const {template} = useCards()
-  const {isDarkMode} = template
+  const {isDarkMode, waiver} = useCardsTemplate()
   const v = useAttendeeVariables()
-  const color = template.waiver.checkBoxColor
+  const color = waiver.checkBoxColor
 
   return (
     <>

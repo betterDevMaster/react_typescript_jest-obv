@@ -4,16 +4,28 @@ import Grid from '@material-ui/core/Grid'
 import Switch from 'lib/ui/form/Switch'
 import TextEditor from 'lib/ui/form/TextEditor'
 import {PreviewBox, SectionTitle} from 'organization/Event/Page'
-import {useSimpleBlog} from 'Event/template/SimpleBlog'
-import {onChangeCheckedHandler, onChangeStringHandler} from 'lib/dom'
+import {
+  SimpleBlog,
+  useSimpleBlogTemplate,
+  useSimpleBlogUpdate,
+} from 'Event/template/SimpleBlog'
+import {onChangeCheckedHandler} from 'lib/dom'
 import EventOfflinePage from 'Event/template/SimpleBlog/EventOfflinePage'
 import Layout from 'organization/user/Layout'
 import Page from 'organization/Event/Page'
+import {Controller, useForm} from 'react-hook-form'
+import Button from '@material-ui/core/Button'
 
 export default function OfflineConfig() {
-  const {template, update: updateSimpleBlog} = useSimpleBlog()
-  const update = updateSimpleBlog.object('offlinePage')
+  const template = useSimpleBlogTemplate()
+  const update = useSimpleBlogUpdate()
+  const {handleSubmit, control, register} = useForm()
+
   const {offlinePage: settings} = template
+
+  const submit = (data: SimpleBlog['offlinePage']) => {
+    update({offlinePage: data})
+  }
 
   return (
     <Layout>
@@ -21,32 +33,53 @@ export default function OfflineConfig() {
         <SectionTitle>Event Offline Preferences</SectionTitle>
         <Grid container spacing={3}>
           <Grid item md={6} xs={12}>
-            <Switch
-              label="Redirect to another URL?"
-              checked={settings?.shouldRedirect}
-              onChange={onChangeCheckedHandler(update('shouldRedirect'))}
-              labelPlacement="end"
-              color="primary"
-              aria-label="is redirect"
-            />
-            <TextField
-              label="Redirect URL"
-              fullWidth
-              value={settings?.redirectUrl}
-              onChange={onChangeStringHandler(update('redirectUrl'))}
-              inputProps={{'aria-label': 'redirect url'}}
-            />
-            <TextField
-              label="Title"
-              fullWidth
-              value={settings.title}
-              onChange={onChangeStringHandler(update('title'))}
-              inputProps={{'aria-label': 'offline page title'}}
-            />
-            <TextEditor
-              data={settings.description}
-              onChange={update('description')}
-            />
+            <form onSubmit={handleSubmit(submit)}>
+              <Controller
+                name="shouldRedirect"
+                defaultValue={settings.shouldRedirect}
+                control={control}
+                render={({value, onChange}) => (
+                  <Switch
+                    label="Redirect to another URL?"
+                    checked={value}
+                    onChange={onChangeCheckedHandler(onChange)}
+                    labelPlacement="end"
+                    color="primary"
+                    aria-label="is redirect"
+                  />
+                )}
+              />
+              <TextField
+                name="redirectUrl"
+                label="Redirect URL"
+                fullWidth
+                defaultValue={settings.redirectUrl}
+                inputProps={{'aria-label': 'redirect url', ref: register}}
+              />
+              <TextField
+                name="title"
+                label="Title"
+                fullWidth
+                defaultValue={settings.title}
+                inputProps={{'aria-label': 'offline page title', ref: register}}
+              />
+              <Controller
+                name="description"
+                defaultValue={settings.description}
+                control={control}
+                render={({value, onChange}) => (
+                  <TextEditor data={value} onChange={onChange} />
+                )}
+              />
+              <Button
+                variant="contained"
+                aria-label="save"
+                type="submit"
+                color="primary"
+              >
+                Save
+              </Button>
+            </form>
           </Grid>
           <Grid item xs={12} md={6}>
             <PreviewBox>

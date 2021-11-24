@@ -10,37 +10,35 @@ import {useAttendeeVariables} from 'Event'
 import Agenda from 'Event/template/SimpleBlog/Dashboard/Sidebar/SidebarItem/AgendaList/AgendaItem'
 import {DragDropContext, Droppable, DropResult} from 'react-beautiful-dnd'
 import StyledText from 'lib/ui/typography/StyledText'
-import {useSimpleBlog} from 'Event/template/SimpleBlog'
+import {useSimpleBlogTemplate} from 'Event/template/SimpleBlog'
 import {useToggle} from 'lib/toggle'
 import {AgendaListConfig} from 'Event/template/SimpleBlog/Dashboard/Sidebar/SidebarItem/AgendaList/AgendaListConfig'
 import {FontStyle} from 'lib/ui/typography/FontStyleInput'
-import {uuid} from 'lib/uuid'
-import {
-  useRemoveSidebarItem,
-  useUpdateSidebarItem,
-} from 'Event/template/SimpleBlog/Dashboard/Sidebar/SidebarItem'
 import {RemoveButton} from 'organization/Event/DashboardConfig/ComponentConfig'
 import Section from 'Event/template/SimpleBlog/Dashboard/Sidebar/Section'
+import {EntityList} from 'lib/list'
+import {useEditSidebarItem} from 'Event/template/SimpleBlog/Dashboard/Sidebar/SidebarItem'
 
 export const AGENDA_LIST = 'Agenda List'
 export type AgendaListProps = {
-  id: string
   type: typeof AGENDA_LIST
   title: string
   description?: string
   footer?: string
   descriptionFontStyles?: FontStyle[]
   footerFontStyles?: FontStyle[]
-  items: Agenda[]
+  items: EntityList<Agenda>
 }
 
 export const createAgendaList = (): AgendaListProps => ({
-  id: uuid(),
   type: AGENDA_LIST,
   title: 'Agenda',
   description: '',
   footer: 'Agenda Time is in YOUR time zone, not ours',
-  items: [],
+  items: {
+    ids: [],
+    entities: {},
+  },
   footerFontStyles: [],
   descriptionFontStyles: [],
 })
@@ -61,14 +59,13 @@ export default function AgendaList(props: AgendaListProps) {
     description,
     footerFontStyles,
   } = props
-  const {template} = useSimpleBlog()
+  const template = useSimpleBlogTemplate()
   const {sidebar} = template
   const isEdit = useEditMode()
   const v = useAttendeeVariables()
-  const hasAgenda = items.length > 0
+  const hasAgenda = items.ids.length > 0
   const {flag: listConfigVisible, toggle: toggleListConfig} = useToggle()
-
-  const removeItem = useRemoveSidebarItem(props)
+  const {remove: removeItem} = useEditSidebarItem()
 
   if (!hasAgenda && !isEdit) {
     return null
@@ -140,16 +137,19 @@ function DroppableList(props: AgendaListProps) {
 function AgendaItemList(props: AgendaListProps) {
   return (
     <>
-      {props.items.map((item: Agenda, index: number) => (
-        <Agenda agenda={item} index={index} key={index} list={props} />
-      ))}
+      {props.items.ids.map((id, index) => {
+        const agenda = props.items.entities[id]
+        return (
+          <Agenda agenda={agenda} id={id} key={id} list={props} index={index} />
+        )
+      })}
     </>
   )
 }
 
 function useHandleDrag(props: AgendaListProps) {
   const {items} = props
-  const updateSidebarItem = useUpdateSidebarItem()
+  const {update} = useEditSidebarItem()
 
   return (result: DropResult) => {
     const {destination, source} = result
@@ -158,13 +158,14 @@ function useHandleDrag(props: AgendaListProps) {
       return
     }
 
-    const moved = Array.from(items)
+    const moved = Array.from(items.ids)
     const [removed] = moved.splice(source.index, 1)
     moved.splice(destination.index, 0, removed)
 
-    updateSidebarItem({
-      ...props,
-      items: moved,
+    update({
+      items: {
+        ids: moved,
+      },
     })
   }
 }

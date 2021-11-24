@@ -6,10 +6,11 @@ import {eventRoutes} from 'Event/Routes'
 import {RelativeLink} from 'lib/ui/link/RelativeLink'
 import {useEvent} from 'Event/EventProvider'
 import {rgba} from 'lib/color'
-import {useSimpleBlog} from 'Event/template/SimpleBlog'
+import {useSimpleBlogTemplate} from 'Event/template/SimpleBlog'
 import {useToggle} from 'lib/toggle'
 import {Editable} from 'Event/Dashboard/editor/views/EditComponent'
 import {SimpleBlogConfig} from 'Event/template/SimpleBlog/SimpleBlogConfig'
+import {useEditMode} from 'Event/Dashboard/editor/state/edit-mode'
 
 export default function Header(props: {
   toggleMenu: () => void
@@ -17,44 +18,51 @@ export default function Header(props: {
   'aria-label'?: string
 }) {
   const {flag: configVisible, toggle: toggleConfig} = useToggle()
-  const {template} = useSimpleBlog()
+  const template = useSimpleBlogTemplate()
   const {menu} = template
   const {iconColor} = menu
+  const isEditMode = useEditMode()
+
+  const content = (
+    <CollapsableBackground>
+      <CollapsableColorOverlay>
+        <Container maxWidth="lg">
+          <Layout>
+            <Side>
+              <MenuIconButton
+                active={props.menuVisible}
+                onClick={props.toggleMenu}
+                aria-label="show side menu"
+                iconColor={iconColor}
+              />
+            </Side>
+            <Middle>
+              <RelativeLink to={eventRoutes.root} disableStyles>
+                <CollapsableLogo />
+              </RelativeLink>
+            </Middle>
+            <Side />
+          </Layout>
+        </Container>
+      </CollapsableColorOverlay>
+    </CollapsableBackground>
+  )
+
+  if (!isEditMode) {
+    return content
+  }
 
   return (
     <>
       <SimpleBlogConfig isVisible={configVisible} onClose={toggleConfig} />
-      <Editable onEdit={toggleConfig}>
-        <CollapsableBackground>
-          <CollapsableColorOverlay>
-            <Container maxWidth="lg">
-              <Layout>
-                <Side>
-                  <MenuIconButton
-                    active={props.menuVisible}
-                    onClick={props.toggleMenu}
-                    aria-label="show side menu"
-                    iconColor={iconColor}
-                  />
-                </Side>
-                <Middle>
-                  <RelativeLink to={eventRoutes.root} disableStyles>
-                    <CollapsableLogo />
-                  </RelativeLink>
-                </Middle>
-                <Side />
-              </Layout>
-            </Container>
-          </CollapsableColorOverlay>
-        </CollapsableBackground>
-      </Editable>
+      <Editable onEdit={toggleConfig}>{content}</Editable>
     </>
   )
 }
 
 function CollapsableBackground(props: {children: React.ReactElement}) {
   const {event} = useEvent()
-  const {template} = useSimpleBlog()
+  const template = useSimpleBlogTemplate()
   const {header} = template
   const backgroundImage = header.isCollapsed
     ? ''
@@ -73,7 +81,7 @@ function CollapsableBackground(props: {children: React.ReactElement}) {
 
 function CollapsableLogo() {
   const {event} = useEvent()
-  const {template} = useSimpleBlog()
+  const template = useSimpleBlogTemplate()
   const {title, header} = template
   const logo = event.logo ? event.logo.url : ''
 
@@ -84,7 +92,7 @@ function CollapsableLogo() {
 }
 
 function Layout(props: {children: React.ReactElement | React.ReactElement[]}) {
-  const {template} = useSimpleBlog()
+  const template = useSimpleBlogTemplate()
   const {header} = template
 
   const height = header.isCollapsed ? 50 : header.height
@@ -102,7 +110,7 @@ function Layout(props: {children: React.ReactElement | React.ReactElement[]}) {
 }
 
 function CollapsableColorOverlay(props: {children: React.ReactElement}) {
-  const {template} = useSimpleBlog()
+  const template = useSimpleBlogTemplate()
   const {header} = template
   const backgroundColorRgb = rgba(
     header.backgroundColor,

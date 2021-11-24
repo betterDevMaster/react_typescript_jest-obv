@@ -3,12 +3,12 @@ import {fakePanels} from 'Event/template/Panels/__utils__/factory'
 import {fireEvent} from '@testing-library/dom'
 import {fakeEvent} from 'Event/__utils__/factory'
 import user from '@testing-library/user-event'
-import {mockRxJsAjax} from 'store/__utils__/MockStoreProvider'
 import {wait} from '@testing-library/react'
 import {goToDashboardConfig} from 'organization/Event/DashboardConfig/__utils__/go-dashboard-config'
 import {fakeTicketRibbon} from 'Event/template/Panels/Dashboard/TicketRibbonList/__utils__/factory'
+import axios from 'axios'
 
-const mockPost = mockRxJsAjax.post as jest.Mock
+const mockPut = axios.put as jest.Mock
 
 beforeEach(() => {
   jest.clearAllMocks()
@@ -49,11 +49,11 @@ it('should edit an existing ticket ribbon', async () => {
 
   // Saved
   await wait(() => {
-    expect(mockRxJsAjax.post).toHaveBeenCalledTimes(1)
+    expect(mockPut).toHaveBeenCalledTimes(1)
   })
 
-  const [url, data] = mockPost.mock.calls[0]
-  expect(url).toMatch(`/events/${event.slug}`)
+  const [url, data] = mockPut.mock.calls[0]
+  expect(url).toMatch(`/events/${event.slug}/template`)
   expect(data.template.ticketRibbons[1].letter).toBe('V')
 
   expect(queryByText('B')).not.toBeInTheDocument()
@@ -79,12 +79,12 @@ it('should add a new ticket ribbon', async () => {
 
   // Saved
   await wait(() => {
-    expect(mockRxJsAjax.post).toHaveBeenCalledTimes(1)
+    expect(mockPut).toHaveBeenCalledTimes(1)
   })
 
-  const [url, data] = mockPost.mock.calls[0]
-  expect(url).toMatch(`/events/${withoutRibbons.slug}`)
-  expect(data.template.ticketRibbons.length).toBe(1)
+  const [url, data] = mockPut.mock.calls[0]
+  expect(url).toMatch(`/events/${withoutRibbons.slug}/template`)
+  expect(data.template['ticketRibbons'].length).toBe(1)
 
   expect(await findByText(letter)).toBeInTheDocument()
 })
@@ -108,7 +108,7 @@ it('should remove a ticket ribbon', async () => {
     }),
   })
 
-  const {findByLabelText, findByText, queryByText} = await goToDashboardConfig({
+  const {findByText, queryByText} = await goToDashboardConfig({
     event,
   })
 
@@ -125,13 +125,13 @@ it('should remove a ticket ribbon', async () => {
 
   // Saved
   await wait(() => {
-    expect(mockRxJsAjax.post).toHaveBeenCalledTimes(1)
+    expect(mockPut).toHaveBeenCalledTimes(1)
   })
 
-  const [url, data] = mockPost.mock.calls[0]
-  expect(url).toMatch(`/events/${event.slug}`)
+  const [url, data] = mockPut.mock.calls[0]
+  expect(url).toMatch(`/events/${event.slug}/template`)
   // one less ribbon saved
-  expect(data.template.ticketRibbons.length).toBe(ticketRibbons.length - 1)
+  expect(data.template['ticketRibbons'].length).toBe(ticketRibbons.length - 1)
 
   // Target ribbon was removed
   expect(queryByText(target.letter)).not.toBeInTheDocument()

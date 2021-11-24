@@ -4,7 +4,7 @@ import Grid from '@material-ui/core/Grid'
 import {useEvent} from 'Event/EventProvider'
 import {rgba} from 'lib/color'
 import {ThemeProvider} from '@material-ui/core/styles'
-import {Panels, usePanels} from 'Event/template/Panels'
+import {Panels, usePanelsTemplate} from 'Event/template/Panels'
 import Hidden from '@material-ui/core/Hidden'
 import {
   createMuiDarkTheme,
@@ -22,9 +22,7 @@ export default function Page(props: {
   Mobile: React.ReactElement
 }) {
   const {Left, Right, Mobile} = props
-  const {
-    template: {linkUnderline, backgroundPosition, isDarkMode},
-  } = usePanels()
+  const {linkUnderline, backgroundPosition, isDarkMode} = usePanelsTemplate()
 
   const background = useBackground()
   const backgroundColor = useBackgroundColor()
@@ -71,9 +69,7 @@ function useBackground() {
 }
 
 function useBackgroundColor() {
-  const {
-    template: {background},
-  } = usePanels()
+  const {background} = usePanelsTemplate()
 
   if (!background || !background.color) {
     return DEFAULT_BACKGROUND_COLOR
@@ -84,17 +80,13 @@ function useBackgroundColor() {
 }
 
 function useTextColor() {
-  const {
-    template: {isDarkMode},
-  } = usePanels()
+  const {isDarkMode} = usePanelsTemplate()
 
   return isDarkMode ? '#FFFFFF' : '#000000'
 }
 
 function useLinkColor() {
-  const {
-    template: {linkColor},
-  } = usePanels()
+  const {linkColor} = usePanelsTemplate()
 
   const textColor = useTextColor()
 
@@ -106,7 +98,7 @@ function useLinkColor() {
 }
 
 export function useTheme(isDarkMode?: boolean) {
-  const {template} = usePanels()
+  const template = usePanelsTemplate()
 
   const options: MuiThemeOptions = {
     secondaryColor: template.accentColor,

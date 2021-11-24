@@ -5,14 +5,13 @@ import Card from 'Event/template/Cards/Faqs/FaqList/Card'
 import React from 'react'
 import VisibleOnMatch from 'Event/attendee-rules/VisibleOnMatch'
 import {DragDropContext, Droppable, DropResult} from 'react-beautiful-dnd'
-import {useCards} from 'Event/template/Cards'
+import {useCardsTemplate, useCardsUpdate} from 'Event/template/Cards'
 
 export default function FaqList(props: {
   className?: string
   faqs: FAQ[]
   isEditMode?: boolean
 }) {
-  const handleDrag = useHandleDrag()
   const sortedFaqs = useSortedFaqs(props.faqs)
 
   const isEmpty = props.faqs.length === 0
@@ -31,7 +30,21 @@ export default function FaqList(props: {
   }
 
   return (
-    <DragDropContext onDragEnd={handleDrag(sortedFaqs)}>
+    <DraggableList className={props.className} faqs={sortedFaqs}>
+      {faqs}
+    </DraggableList>
+  )
+}
+
+function DraggableList(props: {
+  children: React.ReactElement[]
+  faqs: FAQ[]
+  className?: string
+}) {
+  const handleDrag = useHandleDrag()
+
+  return (
+    <DragDropContext onDragEnd={handleDrag(props.faqs)}>
       <Droppable droppableId="drag-and-drop-faq">
         {(provided) => (
           <Box
@@ -40,7 +53,7 @@ export default function FaqList(props: {
             className={props.className}
           >
             <>
-              {faqs}
+              {props.children}
               {provided.placeholder}
             </>
           </Box>
@@ -60,9 +73,7 @@ export default function FaqList(props: {
  * @returns
  */
 function useSortedFaqs(faqs: FAQ[]) {
-  const {
-    template: {faq: pageSettings},
-  } = useCards()
+  const {faq: pageSettings} = useCardsTemplate()
 
   const order = pageSettings?.orderedIds || []
 
@@ -84,8 +95,7 @@ function useSortedFaqs(faqs: FAQ[]) {
 }
 
 function useHandleDrag() {
-  const Cards = useCards()
-  const update = Cards.update.object('faq')
+  const update = useCardsUpdate()
 
   return (faqs: FAQ[]) => (result: DropResult) => {
     const {destination, source} = result
@@ -99,7 +109,12 @@ function useHandleDrag() {
     moved.splice(destination.index, 0, removed)
 
     const orderedIds = moved.map((f) => f.id)
-    update('orderedIds')(orderedIds)
+
+    update({
+      faq: {
+        orderedIds,
+      },
+    })
   }
 }
 

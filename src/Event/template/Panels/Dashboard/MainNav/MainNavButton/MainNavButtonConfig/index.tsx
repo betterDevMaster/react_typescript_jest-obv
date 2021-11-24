@@ -12,13 +12,12 @@ import React, {useEffect, useState} from 'react'
 import Box from '@material-ui/core/Box'
 import RuleConfig, {useRuleConfig} from 'Event/attendee-rules/RuleConfig'
 import ConfigureRulesButton from 'Event/attendee-rules/ConfigureRulesButton'
-import {useDispatchUpdate} from 'Event/TemplateProvider'
 import ActionSelect from 'Event/ActionsProvider/ActionSelect'
 import Switch from 'lib/ui/form/Switch'
 import InfusionsoftTagInput from 'organization/Event/DashboardConfig/InfusionsoftTagInput'
 import TargetConfig from 'Event/Dashboard/components/NavButton/NavButtonConfig/TargetConfig'
 import IconSelect from 'lib/fontawesome/IconSelect'
-import {usePanels} from 'Event/template/Panels'
+import {usePanelsTemplate, usePanelsUpdate} from 'Event/template/Panels'
 import Dialog from 'lib/ui/Dialog'
 import DialogContent from '@material-ui/core/DialogContent'
 import DialogTitle from '@material-ui/core/DialogTitle'
@@ -32,6 +31,7 @@ import {v4 as uuid} from 'uuid'
 import BackgroundPicker from 'lib/ui/form/BackgroundPicker'
 import MailchimpTagInput from 'organization/Event/DashboardConfig/MailchimpTagInput'
 import ZapierTagInput from 'organization/Event/DashboardConfig/ZapierTagInput'
+import {REMOVE} from 'Event/TemplateUpdateProvider'
 
 export type ButtonConfigProps<K extends NavButton> = {
   button: K
@@ -45,9 +45,9 @@ export default function MainNavButtonConfig(
   },
 ) {
   const {button, id, isVisible, onClose} = props
-  const {template} = usePanels()
+  const template = usePanelsTemplate()
   const {nav: buttons} = template
-  const updateTemplate = useDispatchUpdate()
+  const updateTemplate = usePanelsUpdate()
 
   const [rules, setRules] = useState(button.rules)
   const [isAreaButton, setIsAreaButton] = useState(button.isAreaButton)
@@ -80,9 +80,7 @@ export default function MainNavButtonConfig(
   const update = (id: string, updated: NavButtonWithSize) => {
     updateTemplate({
       nav: {
-        ...buttons,
         entities: {
-          ...buttons.entities,
           [id]: updated,
         },
       },
@@ -94,13 +92,14 @@ export default function MainNavButtonConfig(
       throw new Error('Missing button id')
     }
 
-    const {[id]: target, ...otherButtons} = buttons.entities
     const updatedIds = buttons.ids.filter((i) => i !== id)
 
     props.onClose()
     updateTemplate({
       nav: {
-        entities: otherButtons,
+        entities: {
+          [id]: REMOVE,
+        },
         ids: updatedIds,
       },
     })
@@ -113,7 +112,6 @@ export default function MainNavButtonConfig(
       nav: {
         ids: [...buttons.ids, id],
         entities: {
-          ...buttons.entities,
           [id]: button,
         },
       },

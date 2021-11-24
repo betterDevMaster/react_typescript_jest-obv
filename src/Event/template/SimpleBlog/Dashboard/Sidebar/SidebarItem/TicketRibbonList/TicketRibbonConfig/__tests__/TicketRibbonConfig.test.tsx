@@ -8,6 +8,7 @@ import {fakeSimpleBlog} from 'Event/template/SimpleBlog/__utils__/factory'
 import {clickEdit} from '__utils__/edit'
 import {createTicketRibbonList} from 'Event/template/SimpleBlog/Dashboard/Sidebar/SidebarItem/TicketRibbonList'
 import {fakeCustomRibbon} from 'organization/Event/DashboardConfig/TicketRibbonUpload/__utils__/factory'
+import {createEntityList} from 'lib/list'
 
 const mockPost = axios.post as jest.Mock
 const mockDelete = axios.delete as jest.Mock
@@ -16,17 +17,27 @@ beforeEach(() => {
   jest.clearAllMocks()
 })
 
+beforeAll(() => {
+  jest.spyOn(console, 'error').mockImplementation(() => {})
+})
+
+afterAll(() => {
+  // @ts-ignore
+  console.error.mockRestore()
+})
+
 it('should add a custom ticket ribbon', async () => {
   const customRibbon = fakeCustomRibbon()
 
+  const sidebarItems = createEntityList([
+    {
+      ...createTicketRibbonList(),
+      ribbons: createEntityList([]),
+    },
+  ])
   const event = fakeEvent({
     template: fakeSimpleBlog({
-      sidebarItems: [
-        {
-          ...createTicketRibbonList(),
-          ribbons: [],
-        },
-      ],
+      sidebarItems,
     }),
   })
 
@@ -88,16 +99,16 @@ it('should remove a custom image on delete', async () => {
 
   const event = fakeEvent({
     template: fakeSimpleBlog({
-      sidebarItems: [
+      sidebarItems: createEntityList([
         {
           ...createTicketRibbonList(),
-          ribbons: [
+          ribbons: createEntityList([
             fakeTicketRibbon({
               customRibbon,
             }),
-          ],
+          ]),
         },
-      ],
+      ]),
     }),
   })
 
@@ -123,10 +134,10 @@ it('should remove a custom image on delete', async () => {
 it('should handle a failed custom delete', async () => {
   const event = fakeEvent({
     template: fakeSimpleBlog({
-      sidebarItems: [
+      sidebarItems: createEntityList([
         {
           ...createTicketRibbonList(),
-          ribbons: [
+          ribbons: createEntityList([
             fakeTicketRibbon({
               customRibbon: {
                 id: 10,
@@ -136,9 +147,9 @@ it('should handle a failed custom delete', async () => {
                 },
               },
             }),
-          ],
+          ]),
         },
-      ],
+      ]),
     }),
   })
 

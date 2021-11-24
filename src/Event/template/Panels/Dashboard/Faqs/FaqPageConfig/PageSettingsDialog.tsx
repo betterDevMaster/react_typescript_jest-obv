@@ -1,24 +1,20 @@
-import React, {useState} from 'react'
+import React from 'react'
+import Box from '@material-ui/core/Box'
+import Button from '@material-ui/core/Button'
 import DialogContent from '@material-ui/core/DialogContent'
 import DialogTitle from '@material-ui/core/DialogTitle'
-import Dialog from 'lib/ui/Dialog'
-import Box from '@material-ui/core/Box'
+import FormControl from '@material-ui/core/FormControl'
 import TextField from '@material-ui/core/TextField'
-import {Controller, useForm} from 'react-hook-form'
-import {useEvent} from 'Event/EventProvider'
-import {ObvioEvent} from 'Event'
-import Button from '@material-ui/core/Button'
-import TextEditor, {TextEditorContainer} from 'lib/ui/form/TextEditor'
 import Typography from '@material-ui/core/Typography'
-import {useOrganization} from 'organization/OrganizationProvider'
-import {api} from 'lib/url'
+import Dialog from 'lib/ui/Dialog'
+import {Controller, useForm} from 'react-hook-form'
+import TextEditor, {TextEditorContainer} from 'lib/ui/form/TextEditor'
 import {
   DEFAULT_DESCRIPTION,
   DEFAULT_TITLE,
 } from 'Event/template/Panels/Dashboard/Faqs/FaqList/Card'
-import {Panels, usePanels} from 'Event/template/Panels'
+import {Panels, usePanelsTemplate, usePanelsUpdate} from 'Event/template/Panels'
 import Switch from 'lib/ui/form/Switch'
-import FormControl from '@material-ui/core/FormControl'
 import {onChangeCheckedHandler} from 'lib/dom'
 
 type FAQPageSettings = NonNullable<Panels['faq']>
@@ -28,11 +24,9 @@ export default function PageSettingsDialog(props: {
   visible: boolean
 }) {
   const {visible, onClose} = props
-  const {event, set: updateEvent} = useEvent()
   const {handleSubmit, register, control} = useForm()
-  const [processing, setProcessing] = useState(false)
-  const {template} = usePanels()
-  const {client} = useOrganization()
+  const template = usePanelsTemplate()
+  const updateTemplate = usePanelsUpdate()
 
   const {faq: pageSettings} = template
 
@@ -43,37 +37,19 @@ export default function PageSettingsDialog(props: {
     isVisible,
   }: FAQPageSettings) => {
     const required = {
-      template: {
-        ...template,
-        faq: {
-          ...pageSettings,
-          title,
-          description,
-          menuTitle,
-          isVisible,
-        },
+      faq: {
+        title,
+        description,
+        menuTitle,
+        isVisible,
       },
     }
     return required
   }
 
   const submit = (form: FAQPageSettings) => {
-    if (processing) {
-      return
-    }
-
-    setProcessing(true)
-    const url = api(`/events/${event.slug}`)
-    client
-      .put<ObvioEvent>(url, data(form))
-      .then((event) => {
-        updateEvent(event)
-        setProcessing(false)
-        props.onClose()
-      })
-      .catch(() => {
-        setProcessing(false)
-      })
+    updateTemplate(data(form))
+    props.onClose()
   }
 
   return (
@@ -106,7 +82,6 @@ export default function PageSettingsDialog(props: {
               variant="outlined"
               fullWidth
               inputProps={{'aria-label': 'faq page title', ref: register}}
-              disabled={processing}
             />
             <TextField
               name="menuTitle"
@@ -136,7 +111,6 @@ export default function PageSettingsDialog(props: {
               variant="contained"
               color="primary"
               fullWidth
-              disabled={processing}
               aria-label="save"
             >
               Save

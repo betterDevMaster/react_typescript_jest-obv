@@ -1,24 +1,23 @@
 import React, {useState} from 'react'
 import styled from 'styled-components'
-import {Editable} from 'Event/Dashboard/editor/views/EditComponent'
-import {useEditMode} from 'Event/Dashboard/editor/state/edit-mode'
-import EditModeOnly from 'Event/Dashboard/editor/views/EditModeOnly'
-import {useDispatchUpdate} from 'Event/TemplateProvider'
-import Grid from '@material-ui/core/Grid'
-import {useAttendeeVariables} from 'Event'
 import {
   DragDropContext,
   Droppable,
   DroppableProvidedProps,
   DropResult,
 } from 'react-beautiful-dnd'
-import {usePanels} from 'Event/template/Panels'
-import {Publishable} from 'Event/Dashboard/editor/views/Published'
+import Grid from '@material-ui/core/Grid'
+import {useAttendeeVariables} from 'Event'
 import {HasRules} from 'Event/attendee-rules'
-import ResourceItem from 'Event/template/Panels/Dashboard/Resources/ResourceList/ResourceItem'
-import ResourceListConfig from 'Event/template/Panels/Dashboard/Resources/ResourceList/ResourceListConfig'
-import AddResourceButton from 'Event/template/Panels/Dashboard/Resources/ResourceList/AddResourceButton'
+import {useEditMode} from 'Event/Dashboard/editor/state/edit-mode'
+import {Editable} from 'Event/Dashboard/editor/views/EditComponent'
+import EditModeOnly from 'Event/Dashboard/editor/views/EditModeOnly'
+import {Publishable} from 'Event/Dashboard/editor/views/Published'
+import {usePanelsTemplate, usePanelsUpdate} from 'Event/template/Panels'
 import {PageTitle} from 'Event/template/Panels/Page'
+import ResourceItem from 'Event/template/Panels/Dashboard/Resources/ResourceList/ResourceItem'
+import AddResourceButton from 'Event/template/Panels/Dashboard/Resources/ResourceList/AddResourceButton'
+import ResourceListConfig from 'Event/template/Panels/Dashboard/Resources/ResourceList/ResourceListConfig'
 
 export interface ResourceList {
   title: string
@@ -43,7 +42,7 @@ export type Resource = Publishable &
 
 export default function ResourceList() {
   const isEdit = useEditMode()
-  const {template} = usePanels()
+  const template = usePanelsTemplate()
   const [configVisible, setConfigVisible] = useState(false)
   const toggleListConfig = () => setConfigVisible(!configVisible)
 
@@ -57,14 +56,16 @@ export default function ResourceList() {
 
   return (
     <div>
-      <ResourceListConfig
-        isVisible={configVisible}
-        onClose={toggleListConfig}
-      />
+      <EditModeOnly>
+        <ResourceListConfig
+          isVisible={configVisible}
+          onClose={toggleListConfig}
+        />
+      </EditModeOnly>
       <Editable onEdit={toggleListConfig}>
         <PageTitle aria-label="resources">{v(list.title)}</PageTitle>
       </Editable>
-      <DroppableList />
+      <ItemListing />
       <EditModeOnly>
         <StyledAddResourceButton />
       </EditModeOnly>
@@ -72,8 +73,7 @@ export default function ResourceList() {
   )
 }
 
-function DroppableList() {
-  const handleDrag = useHandleDrag()
+function ItemListing() {
   const isEdit = useEditMode()
 
   if (!isEdit)
@@ -82,6 +82,12 @@ function DroppableList() {
         <ResourceItemList />
       </Container>
     )
+
+  return <DroppableList />
+}
+
+function DroppableList() {
+  const handleDrag = useHandleDrag()
 
   return (
     <DragDropContext onDragEnd={handleDrag}>
@@ -100,7 +106,7 @@ function DroppableList() {
 }
 
 function ResourceItemList() {
-  const {template} = usePanels()
+  const template = usePanelsTemplate()
   const {resourceList: list} = template
 
   return (
@@ -130,8 +136,8 @@ const Container = React.forwardRef<
 ))
 
 function useHandleDrag() {
-  const updateTemplate = useDispatchUpdate()
-  const {template} = usePanels()
+  const template = usePanelsTemplate()
+  const updateTemplate = usePanelsUpdate()
 
   const {resourceList: list} = template
 
@@ -148,7 +154,6 @@ function useHandleDrag() {
 
     updateTemplate({
       resourceList: {
-        ...list,
         resources: moved,
       },
     })

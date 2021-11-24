@@ -6,7 +6,7 @@ import {User} from 'auth/user'
 import FaqEditDialog from 'Event/template/Cards/Faqs/FaqEditDialog'
 import {PageTitle, PageDescription} from 'Event/template/Cards/Page'
 import {useAttendeeVariables} from 'Event'
-import {useCards} from 'Event/template/Cards'
+import {useCardsTemplate} from 'Event/template/Cards'
 import Content from 'lib/ui/form/TextEditor/Content'
 
 export default function CardsFaqPage(props: {
@@ -15,7 +15,7 @@ export default function CardsFaqPage(props: {
   faqs: FAQ[]
 }) {
   const {faqs} = props
-  const {template} = useCards()
+  const template = useCardsTemplate()
   const {faq: pageSettings} = template
   const v = useAttendeeVariables()
 

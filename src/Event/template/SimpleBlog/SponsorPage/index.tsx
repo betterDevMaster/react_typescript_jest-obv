@@ -8,7 +8,7 @@ import {User} from 'auth/user'
 import {useEvent} from 'Event/EventProvider'
 import SponsorEditDialog from 'Event/template/SimpleBlog/SponsorPage/SponsorEditDialog'
 import {PageTitle, PageDescription} from 'Event/template/SimpleBlog/Page'
-import {useSimpleBlog} from 'Event/template/SimpleBlog'
+import {useSimpleBlogTemplate} from 'Event/template/SimpleBlog'
 import {useAttendeeVariables} from 'Event'
 import Content from 'lib/ui/form/TextEditor/Content'
 
@@ -19,7 +19,7 @@ export default function SimpleBlogSponsorPage(props: {
 }) {
   const {sponsors} = props
   const {event} = useEvent()
-  const {template} = useSimpleBlog()
+  const template = useSimpleBlogTemplate()
   const {sponsors: sponsorsPageSettings} = template
   const v = useAttendeeVariables()
 

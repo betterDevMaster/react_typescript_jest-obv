@@ -3,7 +3,11 @@ import {useEvent} from 'Event/EventProvider'
 import EventImageUpload from 'organization/Event/DashboardConfig/EventImageUpload'
 import ColorPicker from 'lib/ui/ColorPicker'
 import React, {useEffect, useState} from 'react'
-import {SimpleBlog, useSimpleBlog} from 'Event/template/SimpleBlog'
+import {
+  SimpleBlog,
+  useSimpleBlogTemplate,
+  useSimpleBlogUpdate,
+} from 'Event/template/SimpleBlog'
 import Grid from '@material-ui/core/Grid'
 import Slider from '@material-ui/core/Slider'
 import {handleChangeSlider} from 'lib/dom'
@@ -16,15 +20,15 @@ import ComponentConfig, {
   ComponentConfigProps,
   SaveButton,
 } from 'organization/Event/DashboardConfig/ComponentConfig'
-import {useDispatchUpdate} from 'Event/TemplateProvider'
+import {DeepPartial} from 'lib/type-utils'
 
 const MIN_HEADER_HEIGHT = 30
 const MAX_HEADER_HEIGHT = 200
 
 export function SimpleBlogConfig(props: ComponentConfigProps) {
   const {isVisible, onClose} = props
-  const {template} = useSimpleBlog()
-  const update = useDispatchUpdate()
+  const template = useSimpleBlogTemplate()
+  const update = useSimpleBlogUpdate()
   const {event} = useEvent()
 
   const [isDarkMode, setIsDarkMode] = useState(template.isDarkMode)
@@ -76,8 +80,7 @@ export function SimpleBlogConfig(props: ComponentConfigProps) {
   }, [isVisible, template])
 
   const save = () => {
-    const data: SimpleBlog = {
-      ...template,
+    const data: DeepPartial<SimpleBlog> = {
       isDarkMode,
       header: {
         isCollapsed: headerIsCollapsed,

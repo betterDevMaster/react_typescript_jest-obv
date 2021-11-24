@@ -6,13 +6,15 @@ import TextField from '@material-ui/core/TextField'
 import {handleChangeSlider} from 'lib/dom'
 import InputLabel from '@material-ui/core/InputLabel'
 import Slider from '@material-ui/core/Slider'
-import {SimpleBlog, useSimpleBlog} from 'Event/template/SimpleBlog'
 import ComponentConfig, {
   ComponentConfigProps,
   SaveButton,
 } from 'organization/Event/DashboardConfig/ComponentConfig'
 import {Controller, useForm} from 'react-hook-form'
-import {useDispatchUpdate} from 'Event/TemplateProvider'
+import {
+  useSimpleBlogTemplate,
+  useSimpleBlogUpdate,
+} from 'Event/template/SimpleBlog'
 
 const MIN_HERO_IMAGE_SIZE_PERCENT = 20
 const MAX_HERO_IMAGE_SIZE_PERCENT = 100
@@ -20,22 +22,18 @@ const MAX_HERO_IMAGE_SIZE_PERCENT = 100
 export function HeroConfig(props: ComponentConfigProps) {
   const {isVisible, onClose} = props
   const {event} = useEvent()
-  const {template} = useSimpleBlog()
-
-  const update = useDispatchUpdate()
+  const template = useSimpleBlogTemplate()
+  const update = useSimpleBlogUpdate()
 
   const {welcomeText, heroImageSize} = template
 
   const {register, handleSubmit, control} = useForm()
 
   const save = ({heroImageSize, welcomeText}: any) => {
-    const data: SimpleBlog = {
-      ...template,
+    update({
       welcomeText,
       heroImageSize,
-    }
-
-    update(data)
+    })
     onClose()
   }
 

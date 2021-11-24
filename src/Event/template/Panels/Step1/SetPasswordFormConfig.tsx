@@ -4,12 +4,8 @@ import TextField from '@material-ui/core/TextField'
 import Slider from '@material-ui/core/Slider'
 import InputLabel from '@material-ui/core/InputLabel'
 import ColorPicker from 'lib/ui/ColorPicker'
-import {
-  handleChangeSlider,
-  onChangeCheckedHandler,
-  onChangeStringHandler,
-} from 'lib/dom'
-import {Panels, usePanels} from 'Event/template/Panels'
+import {handleChangeSlider, onChangeCheckedHandler} from 'lib/dom'
+import {Panels, usePanelsTemplate, usePanelsUpdate} from 'Event/template/Panels'
 import {PreviewBox, SectionTitle} from 'organization/Event/Page'
 import {TemplateSetPasswordForm} from 'Event/Step1/SetPasswordForm'
 import {useTeamMember} from 'organization/auth'
@@ -18,12 +14,11 @@ import Switch from 'lib/ui/form/Switch'
 import BackgroundPicker from 'lib/ui/form/BackgroundPicker'
 import Layout from 'organization/user/Layout'
 import Page from 'organization/Event/Page'
+import {useForm, Controller} from 'react-hook-form'
+import Button from '@material-ui/core/Button'
 
 const MIN_BORDER_RADIUS = 0
 const MAX_BORDER_RADIUS = 60
-
-type SetPassword = NonNullable<Panels['setPasswordForm']>
-type SetPasswordButton = NonNullable<SetPassword['button']>
 
 export default function SetPasswordFormConfig() {
   const {event} = useEvent()
@@ -58,23 +53,16 @@ export default function SetPasswordFormConfig() {
 }
 
 export function Config() {
-  const {template, update} = usePanels()
+  const template = usePanelsTemplate()
+  const update = usePanelsUpdate()
   const user = useTeamMember()
-  const {setPasswordForm} = template
   const {event} = useEvent()
 
-  const updateSetPasswordForm = update.object('setPasswordForm')
+  const {handleSubmit, control, register} = useForm()
+  const {setPasswordForm} = template
 
-  const updateButton = <T extends keyof SetPasswordButton>(key: T) => (
-    value: SetPasswordButton[T],
-  ) => {
-    const current = setPasswordForm?.button || {}
-    const button = {
-      ...current,
-      [key]: value,
-    }
-
-    updateSetPasswordForm('button')(button)
+  const submit = (data: Panels) => {
+    update(data)
   }
 
   if (!event.requires_attendee_password) {
@@ -84,109 +72,152 @@ export function Config() {
   return (
     <>
       <SectionTitle>Set Password Form</SectionTitle>
-      <Grid container spacing={3}>
-        <Grid item xs={12} md={12}>
-          <Grid container spacing={2}>
-            <Grid item xs={12}>
-              <TextField
-                value={setPasswordForm.title}
-                label="Title"
-                fullWidth
-                inputProps={{
-                  'aria-label': 'set password form title',
-                }}
-                onChange={onChangeStringHandler(updateSetPasswordForm('title'))}
-              />
-            </Grid>
-            <Grid item xs={12}>
-              <TextField
-                value={setPasswordForm.description}
-                label="Description"
-                fullWidth
-                inputProps={{
-                  'aria-label': 'set password form description',
-                }}
-                onChange={onChangeStringHandler(
-                  updateSetPasswordForm('description'),
-                )}
-              />
-            </Grid>
-            <Grid item xs={12}>
-              <TextField
-                value={setPasswordForm.passwordLabel}
-                label="Password Label"
-                fullWidth
-                inputProps={{
-                  'aria-label': 'password label',
-                }}
-                onChange={onChangeStringHandler(
-                  updateSetPasswordForm('passwordLabel'),
-                )}
-              />
-            </Grid>
-            <Grid item xs={12}>
-              <TextField
-                value={setPasswordForm.confirmPasswordLabel}
-                label="Confirm Password Label"
-                fullWidth
-                inputProps={{
-                  'aria-label': 'confirm password label',
-                }}
-                onChange={onChangeStringHandler(
-                  updateSetPasswordForm('confirmPasswordLabel'),
-                )}
-              />
-            </Grid>
-          </Grid>
 
-          <Grid container spacing={2}>
-            <Grid item xs={12} md={6}>
-              <TextField
-                value={setPasswordForm.button.text}
-                label="Button Label"
-                fullWidth
-                inputProps={{
-                  'aria-label': 'submit button label',
-                }}
-                onChange={onChangeStringHandler(updateButton('text'))}
-              />
+      <form onSubmit={handleSubmit(submit)}>
+        <Grid container spacing={3}>
+          <Grid item xs={12} md={12}>
+            <Grid container spacing={2}>
+              <Grid item xs={12}>
+                <TextField
+                  label="Title"
+                  fullWidth
+                  name="setPasswordForm.title"
+                  defaultValue={setPasswordForm.title}
+                  inputProps={{
+                    'aria-label': 'set password form title',
+                    ref: register,
+                  }}
+                />
+              </Grid>
+              <Grid item xs={12}>
+                <TextField
+                  label="Description"
+                  fullWidth
+                  name="setPasswordForm.description"
+                  defaultValue={setPasswordForm.description}
+                  inputProps={{
+                    'aria-label': 'set password form description',
+                    ref: register,
+                  }}
+                />
+              </Grid>
+              <Grid item xs={12}>
+                <TextField
+                  label="Password Label"
+                  fullWidth
+                  name="setPasswordForm.passwordLabel"
+                  defaultValue={setPasswordForm.passwordLabel}
+                  inputProps={{
+                    'aria-label': 'password label',
+                    ref: register,
+                  }}
+                />
+              </Grid>
+              <Grid item xs={12}>
+                <TextField
+                  label="Confirm Password Label"
+                  fullWidth
+                  name="setPasswordForm.confirmPasswordLabel"
+                  defaultValue={setPasswordForm.confirmPasswordLabel}
+                  inputProps={{
+                    'aria-label': 'confirm password label',
+                    ref: register,
+                  }}
+                />
+              </Grid>
             </Grid>
-            <Grid item xs={12} md={6}>
-              <BackgroundPicker
-                label="Button Background"
-                background={setPasswordForm.button.backgroundColor}
-                onChange={updateButton('backgroundColor')}
-              />
-            </Grid>
-            <Grid item xs={12} md={6}>
-              <BackgroundPicker
-                label="Button Hover Background"
-                background={setPasswordForm.button.hoverBackgroundColor}
-                onChange={updateButton('hoverBackgroundColor')}
-              />
-            </Grid>
-            <Grid item xs={12} md={6}>
-              <ColorPicker
-                label="Button Text Color"
-                color={setPasswordForm.button.textColor}
-                onPick={updateButton('textColor')}
-                aria-label="button text color"
-              />
-            </Grid>
-            <Grid item xs={12} md={6}>
-              <InputLabel>Border Radius</InputLabel>
-              <Slider
-                valueLabelDisplay="auto"
-                aria-label="button border radius"
-                value={setPasswordForm.button.borderRadius}
-                onChange={handleChangeSlider(updateButton('borderRadius'))}
-                step={1}
-                min={MIN_BORDER_RADIUS}
-                max={MAX_BORDER_RADIUS}
-              />
+
+            <Grid container spacing={2}>
+              <Grid item xs={12} md={6}>
+                <TextField
+                  label="Button Label"
+                  fullWidth
+                  name="setPasswordForm.button.text"
+                  defaultValue={setPasswordForm.button.text}
+                  inputProps={{
+                    'aria-label': 'submit button label',
+                    ref: register,
+                  }}
+                />
+              </Grid>
+              <Grid item xs={12} md={6}>
+                <Controller
+                  name="setPasswordForm.button.backgroundColor"
+                  defaultValue={setPasswordForm.button.backgroundColor}
+                  control={control}
+                  render={({value, onChange}) => (
+                    <BackgroundPicker
+                      label="Button Background"
+                      background={value}
+                      onChange={onChange}
+                    />
+                  )}
+                />
+              </Grid>
+              <Grid item xs={12} md={6}>
+                <Controller
+                  name="setPasswordForm.button.hoverBackgroundColor"
+                  defaultValue={setPasswordForm.button.hoverBackgroundColor}
+                  control={control}
+                  render={({value, onChange}) => (
+                    <BackgroundPicker
+                      label="Button Hover Background"
+                      background={value}
+                      onChange={onChange}
+                    />
+                  )}
+                />
+              </Grid>
+              <Grid item xs={12} md={6}>
+                <Controller
+                  name="setPasswordForm.button.textColor"
+                  defaultValue={setPasswordForm.button.textColor}
+                  control={control}
+                  render={({value, onChange}) => (
+                    <ColorPicker
+                      label="Button Text Color"
+                      color={value}
+                      onPick={onChange}
+                      aria-label="button text color"
+                    />
+                  )}
+                />
+              </Grid>
+              <Grid item xs={12} md={6}>
+                <InputLabel>Border Radius</InputLabel>
+
+                <Controller
+                  name="setPasswordForm.button.borderRadius"
+                  defaultValue={setPasswordForm.button.borderRadius}
+                  control={control}
+                  render={({value, onChange}) => (
+                    <Slider
+                      valueLabelDisplay="auto"
+                      aria-label="button border radius"
+                      value={value}
+                      onChange={handleChangeSlider(onChange)}
+                      step={1}
+                      min={MIN_BORDER_RADIUS}
+                      max={MAX_BORDER_RADIUS}
+                    />
+                  )}
+                />
+              </Grid>
+              <Grid item xs={12} md={12}>
+                <Button
+                  variant="contained"
+                  aria-label="save"
+                  type="submit"
+                  color="primary"
+                >
+                  Save
+                </Button>
+              </Grid>
             </Grid>
           </Grid>
         </Grid>
+      </form>
+      <Grid container spacing={3} style={{marginTop: '15px'}}>
         <Grid item xs={12} md={12}>
           <PreviewBox>
             <TemplateSetPasswordForm

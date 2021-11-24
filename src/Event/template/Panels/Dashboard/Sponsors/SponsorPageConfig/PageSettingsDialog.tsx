@@ -14,7 +14,6 @@ import Slider from '@material-ui/core/Slider'
 import Typography from '@material-ui/core/Typography'
 import {useOrganization} from 'organization/OrganizationProvider'
 import {api} from 'lib/url'
-import {usePanels} from 'Event/template/Panels'
 import TextField from '@material-ui/core/TextField'
 import {fieldError} from 'lib/form'
 import {ValidationError} from 'lib/api-client'
@@ -25,21 +24,12 @@ import ColorPicker from 'lib/ui/ColorPicker'
 import TextEditor, {TextEditorContainer} from 'lib/ui/form/TextEditor'
 import Switch from 'lib/ui/form/Switch'
 import FormControl from '@material-ui/core/FormControl'
+import {Panels, usePanelsTemplate, usePanelsUpdate} from 'Event/template/Panels'
 
 const MIN_PER_ROW = 1
 const MAX_PER_ROW = 3
 const MAX_FILE_SIZE_BYTES = 5000000 // 5MB
 const imageUploadId = `sponsor-question-icon-upload`
-
-type SettingsFormData = {
-  perRow: number
-  title: string
-  menuTitle: string
-  cardBackgroundColor?: string
-  cardBackgroundOpacity?: number
-  description?: string
-  isVisible?: string
-}
 
 export default function PageSettingsDialog(props: {
   onClose: () => void
@@ -49,65 +39,50 @@ export default function PageSettingsDialog(props: {
   const {event, set: updateEvent} = useEvent()
   const {handleSubmit, control, errors, register} = useForm()
   const [processing, setProcessing] = useState(false)
-  const {template} = usePanels()
+  const template = usePanelsTemplate()
   const {client} = useOrganization()
   const [serverError, setServerError] = useState<ValidationError<any>>(null)
   const [image, setImage] = useState<null | File>(null)
   const [shouldRemoveImage, setShouldRemoveImage] = useState(false)
+  const updateTemplate = usePanelsUpdate()
 
-  const data = (formData: SettingsFormData) => {
-    const {
-      perRow,
-      title,
-      menuTitle,
-      cardBackgroundColor,
-      cardBackgroundOpacity,
-      description,
-      isVisible,
-    } = formData
-
-    const required = {
-      template: {
-        ...template,
-        sponsors: {
-          ...template.sponsors,
-          title,
-          menuTitle,
-          perRow,
-          cardBackgroundColor,
-          cardBackgroundOpacity,
-          description,
-          isVisible,
-        },
-      },
-    }
-
+  const eventData = () => {
     if (image) {
       const formData = new FormData()
-      formData.set('template', JSON.stringify(required.template))
       formData.set('sponsor_question_icon', image)
       return formData
     }
 
     if (shouldRemoveImage) {
       return {
-        ...required,
         sponsor_question_icon: null,
       }
     }
 
-    return required
+    return null
   }
 
-  const submit = (form: SettingsFormData) => {
+  const submit = (form: Partial<Panels['sponsors']>) => {
     if (processing) {
       return
     }
 
     setProcessing(true)
+
+    updateTemplate({
+      sponsors: form,
+    })
+
+    const data = eventData()
+    if (!data) {
+      setProcessing(false)
+      props.onClose()
+      return
+    }
+
     const url = api(`/events/${event.slug}`)
     client
-      .put<ObvioEvent>(url, data(form))
+      .put<ObvioEvent>(url, data)
       .then((event) => {
         updateEvent(event)
         setProcessing(false)

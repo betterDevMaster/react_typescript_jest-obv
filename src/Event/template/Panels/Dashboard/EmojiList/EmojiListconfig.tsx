@@ -9,8 +9,6 @@ import React, {useEffect, useState} from 'react'
 import CloseIcon from '@material-ui/icons/Close'
 import IconButton from 'lib/ui/IconButton'
 import TextField from '@material-ui/core/TextField'
-import {onUnknownChangeHandler} from 'lib/dom'
-import {useDispatchUpdate} from 'Event/TemplateProvider'
 import {useEvent} from 'Event/EventProvider'
 import {useOrganization} from 'organization/OrganizationProvider'
 import {api} from 'lib/url'
@@ -18,15 +16,16 @@ import ComponentConfig, {
   ComponentConfigProps,
   SaveButton,
 } from 'organization/Event/DashboardConfig/ComponentConfig'
-import {usePanels} from 'Event/template/Panels'
+import {usePanelsTemplate, usePanelsUpdate} from 'Event/template/Panels'
 import {EmojiList} from 'Event/template/Panels/Dashboard/EmojiList'
 import EmojiSelect from 'Event/Dashboard/components/EmojiList/EmojiSelect'
 import EmojiUpload from 'Event/Dashboard/components/EmojiList/EmojiUpload'
+import {onUnknownChangeHandler} from 'lib/dom'
 
 export function EmojiListConfig(props: ComponentConfigProps) {
   const {isVisible, onClose} = props
-  const updateTemplate = useDispatchUpdate()
-  const {template} = usePanels()
+  const template = usePanelsTemplate()
+  const updateTemplate = usePanelsUpdate()
   const {emojiList} = template
   const deleteFile = useDeleteFile()
 

@@ -1,11 +1,5 @@
 import faker from 'faker'
-import {
-  findAllByText,
-  fireEvent,
-  queryAllByText,
-  queryByText,
-  wait,
-} from '@testing-library/react'
+import {fireEvent, wait} from '@testing-library/react'
 import {fakeCards} from 'Event/template/Cards/__utils__/factory'
 import {
   fakeAgenda,
@@ -14,10 +8,11 @@ import {
 import {clickEdit} from '__utils__/edit'
 import user from '@testing-library/user-event'
 import {fakeEvent} from 'Event/__utils__/factory'
-import {mockRxJsAjax} from 'store/__utils__/MockStoreProvider'
 import {goToDashboardConfig} from 'organization/Event/DashboardConfig/__utils__/go-dashboard-config'
+import axios from 'axios'
+import {createEntityList} from 'lib/list'
 
-const mockPost = mockRxJsAjax.post as jest.Mock
+const mockPut = axios.put as jest.Mock
 
 afterEach(() => {
   jest.clearAllMocks()
@@ -41,20 +36,24 @@ it('should add an agenda list', async () => {
   fireEvent.click(await findByLabelText('add item'))
 
   await wait(() => {
-    expect(mockPost).toHaveBeenCalledTimes(1)
+    expect(mockPut).toHaveBeenCalledTimes(1)
   })
 
   expect((await findAllByText(/agenda/i)).length).toBeGreaterThan(0)
 
-  const [url, data] = mockPost.mock.calls[0]
-  expect(url).toMatch(`/events/${event.slug}`)
-  expect(data.template.sidebarItems[0].type).toBe('Agenda List')
+  const [url, data] = mockPut.mock.calls[0]
+  expect(url).toMatch(`/events/${event.slug}/template`)
+
+  const id = data.template['sidebarItems.ids'][0]
+  expect(data.template[`sidebarItems.entities.${id}.type`]).toBe('Agenda List')
 })
 
 it('should remove an agenda list', async () => {
+  const sidebarItems = createEntityList([fakeAgendaList()])
+
   const event = fakeEvent({
     template: fakeCards({
-      sidebarItems: [fakeAgendaList()],
+      sidebarItems,
     }),
   })
   const {queryByText, findByText} = await goToDashboardConfig({
@@ -64,14 +63,14 @@ it('should remove an agenda list', async () => {
   fireEvent.click(await findByText(/remove agenda/i))
 
   await wait(() => {
-    expect(mockPost).toHaveBeenCalledTimes(1)
+    expect(mockPut).toHaveBeenCalledTimes(1)
   })
 
   expect(queryByText(/remove agenda/i)).not.toBeInTheDocument()
 
-  const [url, data] = mockPost.mock.calls[0]
-  expect(url).toMatch(`/events/${event.slug}`)
-  expect(data.template.sidebarItems.length).toBe(0)
+  const [url, data] = mockPut.mock.calls[0]
+  expect(url).toMatch(`/events/${event.slug}/template`)
+  expect(data.template['sidebarItems.ids'].length).toBe(0)
 })
 
 it('should edit an agenda', async () => {
@@ -79,9 +78,13 @@ it('should edit an agenda', async () => {
     {length: faker.random.number({min: 2, max: 4})},
     fakeAgenda,
   )
+  const items = createEntityList(list)
+
   const title = faker.random.word()
+  const sidebarItems = createEntityList([fakeAgendaList({title, items})])
+
   const dashboard = fakeCards({
-    sidebarItems: [fakeAgendaList({title, items: list})],
+    sidebarItems,
   })
   const event = fakeEvent({template: dashboard})
 
@@ -111,20 +114,29 @@ it('should edit an agenda', async () => {
 
   // Saved
   await wait(() => {
-    expect(mockRxJsAjax.post).toHaveBeenCalledTimes(1)
+    expect(mockPut).toHaveBeenCalledTimes(1)
   })
 
-  const [url, data] = mockPost.mock.calls[0]
-  expect(url).toMatch(`/events/${event.slug}`)
-  expect(data.template.sidebarItems[0].items[targetIndex].text).toBe(
-    updatedText,
-  )
+  const [url, data] = mockPut.mock.calls[0]
+  expect(url).toMatch(`/events/${event.slug}/template`)
+
+  const sidebarId = sidebarItems.ids[0]
+  const agendaId = items.ids[targetIndex]
+  expect(
+    data.template[
+      `sidebarItems.entities.${sidebarId}.items.entities.${agendaId}.text`
+    ],
+  ).toBe(updatedText)
 })
 
 it('should add a new agenda', async () => {
   const title = faker.random.word()
+  const sidebarItems = createEntityList([
+    fakeAgendaList({title, items: createEntityList([])}),
+  ])
+
   const dashboard = fakeCards({
-    sidebarItems: [fakeAgendaList({title, items: []})],
+    sidebarItems,
   })
   const event = fakeEvent({template: dashboard})
 
@@ -144,22 +156,28 @@ it('should add a new agenda', async () => {
 
   // Saved
   await wait(() => {
-    expect(mockRxJsAjax.post).toHaveBeenCalledTimes(1)
+    expect(mockPut).toHaveBeenCalledTimes(1)
   })
 
-  const [url, data] = mockPost.mock.calls[0]
-  expect(url).toMatch(`/events/${event.slug}`)
-  expect(data.template.sidebarItems[0].items.length).toBe(1)
+  const [url, data] = mockPut.mock.calls[0]
+  expect(url).toMatch(`/events/${event.slug}/template`)
+  const sidebarId = sidebarItems.ids[0]
+  expect(
+    data.template[`sidebarItems.entities.${sidebarId}.items.ids`].length,
+  ).toBe(1)
 })
 
 it('should remove an agenda', async () => {
-  const list = Array.from(
-    {length: faker.random.number({min: 2, max: 4})},
-    fakeAgenda,
-  )
+  const numItems = faker.random.number({min: 2, max: 4})
+
+  const list = Array.from({length: numItems}, fakeAgenda)
+  const items = createEntityList(list)
+
   const title = faker.random.word()
+  const sidebarItems = createEntityList([fakeAgendaList({title, items})])
+
   const dashboard = fakeCards({
-    sidebarItems: [fakeAgendaList({title, items: list})],
+    sidebarItems,
   })
   const event = fakeEvent({template: dashboard})
 
@@ -189,12 +207,16 @@ it('should remove an agenda', async () => {
 
   // Saved
   await wait(() => {
-    expect(mockPost).toHaveBeenCalledTimes(1)
+    expect(mockPut).toHaveBeenCalledTimes(1)
   })
 
-  const [url, data] = mockPost.mock.calls[0]
-  expect(url).toMatch(`/events/${event.slug}`)
-  expect(data.template.sidebarItems[0].items.length).toBe(list.length - 1)
+  const [url, data] = mockPut.mock.calls[0]
+  expect(url).toMatch(`/events/${event.slug}/template`)
+
+  const sidebarId = sidebarItems.ids[0]
+  expect(
+    data.template[`sidebarItems.entities.${sidebarId}.items.ids`].length,
+  ).toBe(numItems - 1)
 })
 
 it('should update agendas list title', async () => {
@@ -202,9 +224,13 @@ it('should update agendas list title', async () => {
     {length: faker.random.number({min: 2, max: 4})},
     fakeAgenda,
   )
+  const items = createEntityList(list)
+
   const title = faker.random.word()
+  const sidebarItems = createEntityList([fakeAgendaList({title, items})])
+
   const dashboard = fakeCards({
-    sidebarItems: [fakeAgendaList({title, items: list})],
+    sidebarItems,
   })
   const event = fakeEvent({template: dashboard})
 
@@ -221,10 +247,15 @@ it('should update agendas list title', async () => {
 
   // Saved
   await wait(() => {
-    expect(mockRxJsAjax.post).toHaveBeenCalledTimes(1)
+    expect(mockPut).toHaveBeenCalledTimes(1)
   })
 
-  const [url, data] = mockPost.mock.calls[0]
-  expect(url).toMatch(`/events/${event.slug}`)
-  expect(data.template.sidebarItems[0].title).toBe(updatedTitle)
+  const [url, data] = mockPut.mock.calls[0]
+  expect(url).toMatch(`/events/${event.slug}/template`)
+
+  const sidebarId = sidebarItems.ids[0]
+
+  expect(data.template[`sidebarItems.entities.${sidebarId}.title`]).toBe(
+    updatedTitle,
+  )
 })

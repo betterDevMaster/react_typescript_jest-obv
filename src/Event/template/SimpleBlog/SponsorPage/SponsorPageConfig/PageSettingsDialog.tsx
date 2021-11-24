@@ -22,7 +22,10 @@ import Typography from '@material-ui/core/Typography'
 import {useOrganization} from 'organization/OrganizationProvider'
 import {api} from 'lib/url'
 import ColorPicker from 'lib/ui/ColorPicker'
-import {useSimpleBlog} from 'Event/template/SimpleBlog'
+import {
+  useSimpleBlogTemplate,
+  useSimpleBlogUpdate,
+} from 'Event/template/SimpleBlog'
 
 const imageUploadId = `sponsor-question-icon-upload`
 const MAX_FILE_SIZE_BYTES = 5000000 // 5MB
@@ -46,7 +49,8 @@ export default function PageSettingsDialog(props: {
   const {event, set: updateEvent} = useEvent()
   const {handleSubmit, register, control} = useForm()
   const [processing, setProcessing] = useState(false)
-  const {template} = useSimpleBlog()
+  const template = useSimpleBlogTemplate()
+  const updateTemplate = useSimpleBlogUpdate()
   const [imageSize, setImageSize] = useState(template.sponsors.imageSize)
   const {client} = useOrganization()
   const [image, setImage] = useState<null | File>(null)
@@ -64,24 +68,11 @@ export default function PageSettingsDialog(props: {
   }: SettingsFormData) => {
     const required = {
       sponsor_page_title,
-      template: {
-        ...template,
-        sponsors: {
-          ...sponsorsPageSettings,
-          imageSize,
-          description,
-          backToDashboardText,
-          backToDashboardTextColor,
-          sponsorSpace,
-          sponsorSeperator,
-        },
-      },
     }
 
     if (image) {
       const formData = new FormData()
       formData.set('sponsor_page_title', sponsor_page_title)
-      formData.set('template', JSON.stringify(required.template))
       formData.set('sponsor_question_icon', image)
       return formData
     }
@@ -100,6 +91,12 @@ export default function PageSettingsDialog(props: {
     if (processing) {
       return
     }
+
+    const {sponsor_page_title, ...templateProperties} = form
+
+    updateTemplate({
+      sponsors: templateProperties,
+    })
 
     setProcessing(true)
     const url = api(`/events/${event.slug}`)

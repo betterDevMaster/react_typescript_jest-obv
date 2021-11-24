@@ -1,4 +1,3 @@
-import {fakeSimpleBlog} from 'Event/template/SimpleBlog/__utils__/factory'
 import {fakeEvent} from 'Event/__utils__/factory'
 import {visitEventSite} from 'Event/__utils__/url'
 import React from 'react'

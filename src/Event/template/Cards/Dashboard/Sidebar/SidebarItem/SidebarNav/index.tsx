@@ -8,21 +8,15 @@ import {DragDropContext, Droppable, DropResult} from 'react-beautiful-dnd'
 import {useEditMode} from 'Event/Dashboard/editor/state/edit-mode'
 import NavButton from 'Event/Dashboard/components/NavButton'
 import {EntityList} from 'lib/list'
-import {
-  useRemoveSidebarItem,
-  useUpdateSidebarItem,
-} from 'Event/template/Cards/Dashboard/Sidebar/SidebarItem'
-import {uuid} from 'lib/uuid'
 import {RemoveButton} from 'organization/Event/DashboardConfig/ComponentConfig'
+import {useEditSidebarItem} from 'Event/template/Cards/Dashboard/Sidebar/SidebarItem'
 
 export const SIDEBAR_NAV = 'Sidebar Nav'
 export type SidebarNavProps = EntityList<NavButton> & {
-  id: string
   type: typeof SIDEBAR_NAV
 }
 
 export const createSidebarNav = (): SidebarNavProps => ({
-  id: uuid(),
   type: SIDEBAR_NAV,
   ids: [],
   entities: {},
@@ -30,17 +24,13 @@ export const createSidebarNav = (): SidebarNavProps => ({
 
 export default function SidebarNav(props: SidebarNavProps) {
   const {ids, entities} = props
-  const handleDrag = useHandleDrag(props)
   const isEditMode = useEditMode()
-  const removeItem = useRemoveSidebarItem(props)
 
   const hasButtons = ids.length > 0
   if (!hasButtons) {
     return (
       <EditModeOnly>
-        <RemoveButton onClick={removeItem} size="large">
-          Remove Buttons
-        </RemoveButton>
+        <RemoveSidebarNavButton />
         <StyledNewSidebarNavButton nav={props} />
       </EditModeOnly>
     )
@@ -72,14 +62,34 @@ export default function SidebarNav(props: SidebarNavProps) {
 
   return (
     <>
-      <RemoveButton onClick={removeItem} showing size="large">
-        Remove Buttons
-      </RemoveButton>
+      <DroppleList {...props}>{buttons}</DroppleList>
+    </>
+  )
+}
+
+function RemoveSidebarNavButton() {
+  const {remove: removeItem} = useEditSidebarItem()
+
+  return (
+    <RemoveButton onClick={removeItem} size="large">
+      Remove Buttons
+    </RemoveButton>
+  )
+}
+
+function DroppleList(
+  props: SidebarNavProps & {children: React.ReactElement[]},
+) {
+  const handleDrag = useHandleDrag(props)
+
+  return (
+    <>
+      <RemoveSidebarNavButton />
       <DragDropContext onDragEnd={handleDrag}>
         <Droppable droppableId="sidebar_nav_buttons">
           {(provided) => (
             <div ref={provided.innerRef} {...provided.droppableProps}>
-              {buttons}
+              {props.children}
               {provided.placeholder}
             </div>
           )}
@@ -91,7 +101,7 @@ export default function SidebarNav(props: SidebarNavProps) {
 }
 
 function useHandleDrag(props: SidebarNavProps) {
-  const updateItem = useUpdateSidebarItem()
+  const {update} = useEditSidebarItem()
 
   return (result: DropResult) => {
     const {destination, source} = result
@@ -104,12 +114,8 @@ function useHandleDrag(props: SidebarNavProps) {
     const [removed] = moved.splice(source.index, 1)
     moved.splice(destination.index, 0, removed)
 
-    updateItem({
-      ...props,
+    update({
       ids: moved,
-      entities: {
-        ...props.entities,
-      },
     })
   }
 }

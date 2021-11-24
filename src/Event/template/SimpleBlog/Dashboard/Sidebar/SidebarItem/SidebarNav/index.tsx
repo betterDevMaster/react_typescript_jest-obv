@@ -7,22 +7,17 @@ import {DragDropContext, Droppable, DropResult} from 'react-beautiful-dnd'
 import {useEditMode} from 'Event/Dashboard/editor/state/edit-mode'
 import NavButton from 'Event/Dashboard/components/NavButton'
 import {EntityList} from 'lib/list'
-import {
-  useRemoveSidebarItem,
-  useUpdateSidebarItem,
-} from 'Event/template/SimpleBlog/Dashboard/Sidebar/SidebarItem'
-import {uuid} from 'lib/uuid'
 import {RemoveButton} from 'organization/Event/DashboardConfig/ComponentConfig'
 import VisibleOnMatch from 'Event/attendee-rules/VisibleOnMatch'
+import {useSimpleBlogUpdate} from 'Event/template/SimpleBlog'
+import {useEditSidebarItem} from 'Event/template/SimpleBlog/Dashboard/Sidebar/SidebarItem'
 
 export const SIDEBAR_NAV = 'Sidebar Nav'
 export type SidebarNavProps = EntityList<NavButton> & {
-  id: string
   type: typeof SIDEBAR_NAV
 }
 
 export const createSidebarNav = (): SidebarNavProps => ({
-  id: uuid(),
   type: SIDEBAR_NAV,
   ids: [],
   entities: {},
@@ -32,7 +27,7 @@ export default function SidebarNav(props: SidebarNavProps) {
   const {ids, entities} = props
   const handleDrag = useHandleDrag(props)
   const isEditMode = useEditMode()
-  const removeItem = useRemoveSidebarItem(props)
+  const {remove: removeItem} = useEditSidebarItem()
 
   const hasButtons = ids.length > 0
   if (!hasButtons) {
@@ -91,7 +86,7 @@ export default function SidebarNav(props: SidebarNavProps) {
 }
 
 function useHandleDrag(props: SidebarNavProps) {
-  const updateItem = useUpdateSidebarItem()
+  const update = useSimpleBlogUpdate()
 
   return (result: DropResult) => {
     const {destination, source} = result
@@ -104,11 +99,9 @@ function useHandleDrag(props: SidebarNavProps) {
     const [removed] = moved.splice(source.index, 1)
     moved.splice(destination.index, 0, removed)
 
-    updateItem({
-      ...props,
-      ids: moved,
-      entities: {
-        ...props.entities,
+    update({
+      sidebarItems: {
+        ids: moved,
       },
     })
   }

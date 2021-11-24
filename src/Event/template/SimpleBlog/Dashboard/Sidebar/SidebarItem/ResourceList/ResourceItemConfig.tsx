@@ -1,4 +1,5 @@
 import TextField from '@material-ui/core/TextField'
+import {v4 as uuid} from 'uuid'
 import {onChangeCheckedHandler} from 'lib/dom'
 import React, {useEffect, useState} from 'react'
 import ResourceUpload, {
@@ -20,18 +21,18 @@ import ComponentConfig, {
 } from 'organization/Event/DashboardConfig/ComponentConfig'
 import {Controller, useForm, UseFormMethods} from 'react-hook-form'
 import {ResourceListProps} from 'Event/template/SimpleBlog/Dashboard/Sidebar/SidebarItem/ResourceList'
-import {useUpdateSidebarItem} from 'Event/template/SimpleBlog/Dashboard/Sidebar/SidebarItem'
+import {REMOVE} from 'Event/TemplateUpdateProvider'
+import {useEditSidebarItem} from 'Event/template/SimpleBlog/Dashboard/Sidebar/SidebarItem'
 
 export function ResourceItemConfig(
   props: ComponentConfigProps & {
+    id?: string
     resource: Resource
-    index?: number
     list: ResourceListProps
   },
 ) {
-  const {resource, index, isVisible, onClose} = props
+  const {resource, id, isVisible, onClose} = props
   const {list} = props
-  const updateItem = useUpdateSidebarItem()
 
   const deleteFile = useDeleteFile()
   const {visible: ruleConfigVisible, toggle: toggleRuleConfig} = useRuleConfig()
@@ -41,8 +42,7 @@ export function ResourceItemConfig(
   const [rules, setRules] = useState(resource.rules)
   const [isUrl, setIsUrl] = useState(resource.isUrl)
   const [filePath, setFilePath] = useState(resource.filePath)
-
-  const isEditing = index !== undefined
+  const {update: updateItem} = useEditSidebarItem()
 
   useEffect(() => {
     if (isVisible) {
@@ -54,37 +54,42 @@ export function ResourceItemConfig(
     setFilePath(resource.filePath)
   }, [resource, isVisible])
 
-  const update = (index: number, data: Resource) => {
+  const update = (id: string, data: Resource) => {
     updateItem({
-      ...list,
-      resources: list.resources.map((r, i) => {
-        const isTarget = i === index
-        if (isTarget) {
-          return data
-        }
-
-        return r
-      }),
+      resources: {
+        entities: {
+          [id]: data,
+        },
+      },
     })
   }
 
   const insert = (newResource: Resource) => {
+    const id = uuid()
+    const added = [...list.resources.ids, id]
+
     updateItem({
-      ...list,
-      resources: [...list.resources, newResource],
+      resources: {
+        ids: added,
+        entities: {
+          [id]: newResource,
+        },
+      },
     })
   }
 
-  const save = (formData: any) => {
+  const save = (
+    form: Pick<Resource, 'name' | 'url' | 'isVisible' | 'icon'>,
+  ) => {
     const data: Resource = {
+      ...form,
       rules,
       isUrl,
       filePath,
-      ...formData,
     }
 
-    if (index !== undefined) {
-      update(index, data)
+    if (id !== undefined) {
+      update(id, data)
       onClose()
       return
     }
@@ -94,7 +99,7 @@ export function ResourceItemConfig(
   }
 
   const remove = () => {
-    if (!isEditing) {
+    if (!id) {
       throw new Error('Called remove outside of editing resource.')
     }
 
@@ -106,11 +111,18 @@ export function ResourceItemConfig(
       })
     }
 
-    onClose()
+    const removed = list.resources.ids.filter((i) => i !== id)
+
     updateItem({
-      ...list,
-      resources: list.resources.filter((_, i) => i !== index),
+      resources: {
+        ids: removed,
+        entities: {
+          id: REMOVE,
+        },
+      },
     })
+
+    onClose()
   }
 
   return (
@@ -196,7 +208,7 @@ export function ResourceItemConfig(
               variant="outlined"
               aria-label="remove resource"
               onClick={remove}
-              showing={isEditing}
+              showing={Boolean(id)}
             >
               REMOVE RESOURCE
             </RemoveButton>

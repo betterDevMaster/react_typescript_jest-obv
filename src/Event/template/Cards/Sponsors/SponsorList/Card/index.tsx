@@ -7,7 +7,7 @@ import Image from 'Event/template/Cards/Sponsors/SponsorList/Card/Image'
 import Body from 'Event/template/Cards/Sponsors/SponsorList/Card/Body'
 import {Draggable} from 'react-beautiful-dnd'
 import SponsorForm from 'Event/template/Cards/Sponsors/SponsorList/Card/SponsorForm'
-import {useCards} from 'Event/template/Cards'
+import {useCardsTemplate} from 'Event/template/Cards'
 
 type SponsorProps = {
   index: number
@@ -41,7 +41,7 @@ export default function Card(props: SponsorProps) {
 
 function Content(props: SponsorProps) {
   const {sponsor} = props
-  const {template} = useCards()
+  const template = useCardsTemplate()
   const [formVisible, setFormVisible] = useState(false)
   const toggleForm = () => setFormVisible(!formVisible)
 

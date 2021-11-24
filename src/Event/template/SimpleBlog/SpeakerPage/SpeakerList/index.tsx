@@ -5,14 +5,16 @@ import React from 'react'
 import {useTemplate} from 'Event/TemplateProvider'
 import Typography from '@material-ui/core/Typography'
 import {DragDropContext, Droppable, DropResult} from 'react-beautiful-dnd'
-import {useSimpleBlog} from 'Event/template/SimpleBlog'
+import {
+  useSimpleBlogTemplate,
+  useSimpleBlogUpdate,
+} from 'Event/template/SimpleBlog'
 
 export default function SpeakerList(props: {
   speakers: Speaker[]
   isEditMode?: boolean
 }) {
-  const {template} = useSimpleBlog()
-  const handleDrag = useHandleDrag()
+  const template = useSimpleBlogTemplate()
   const sortedSpeakers = useSortedSpeakers(props.speakers)
 
   const isEmpty = props.speakers.length === 0
@@ -37,17 +39,29 @@ export default function SpeakerList(props: {
   }
 
   return (
-    <DragDropContext onDragEnd={handleDrag(sortedSpeakers)}>
+    <DraggableSpeakers speakers={sortedSpeakers}>{speakers}</DraggableSpeakers>
+  )
+}
+
+function DraggableSpeakers(props: {
+  speakers: Speaker[]
+  children: React.ReactElement[]
+}) {
+  const handleDrag = useHandleDrag()
+  const template = useSimpleBlogTemplate()
+
+  return (
+    <DragDropContext onDragEnd={handleDrag(props.speakers)}>
       <Droppable droppableId="drag-and-drop-speaker">
         {(provided) => (
           <Grid
             container
-            spacing={spacing}
+            spacing={template.speakers.speakersSpace as GridSpacing}
             ref={provided.innerRef}
             {...provided.droppableProps}
           >
             <>
-              {speakers}
+              {props.children}
               {provided.placeholder}
             </>
           </Grid>
@@ -89,8 +103,7 @@ function useSortedSpeakers(speakers: Speaker[]) {
 }
 
 function useHandleDrag() {
-  const {update: updateTemplate} = useSimpleBlog()
-  const update = updateTemplate.object('speakers')
+  const update = useSimpleBlogUpdate()
 
   return (speakers: Speaker[]) => (result: DropResult) => {
     const {destination, source} = result
@@ -104,6 +117,10 @@ function useHandleDrag() {
     moved.splice(destination.index, 0, removed)
 
     const orderedIds = moved.map((s) => s.id)
-    update('orderedIds')(orderedIds)
+    update({
+      speakers: {
+        orderedIds,
+      },
+    })
   }
 }

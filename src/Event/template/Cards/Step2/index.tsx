@@ -12,7 +12,7 @@ import styled from 'styled-components'
 import MuiButton, {ButtonProps} from '@material-ui/core/Button'
 import {colors} from 'lib/ui/theme'
 import {useAttendeeVariables} from 'Event'
-import {useCards} from 'Event/template/Cards'
+import {useCardsTemplate} from 'Event/template/Cards'
 import CheckInPage from 'Event/template/Cards/check-in/Page'
 import StepIndicator from 'Event/template/Cards/check-in/StepIndicator'
 
@@ -146,8 +146,7 @@ function WaiverOnly() {
 }
 
 function SubmitButton(props: {canSubmit: boolean}) {
-  const {template} = useCards()
-  const waiver = template.waiver
+  const {waiver} = useCardsTemplate()
   const v = useAttendeeVariables()
 
   const textColor = waiver?.buttonTextColor || '#FFFFFF'

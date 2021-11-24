@@ -8,17 +8,15 @@ import {
 } from 'Event/Dashboard/components/EmojiList/emoji'
 import {Editable} from 'Event/Dashboard/editor/views/EditComponent'
 import AddEmojiButton from 'Event/Dashboard/components/EmojiList/AddEmojiButton'
-import EditModeOnly from 'Event/Dashboard/editor/views/EditModeOnly'
 import {useToggle} from 'lib/toggle'
-import {uuid} from 'lib/uuid'
 import {EmojiListConfig} from 'Event/template/Cards/Dashboard/Sidebar/SidebarItem/EmojiList/EmojiListConfig'
 import {RemoveButton} from 'organization/Event/DashboardConfig/ComponentConfig'
-import {useRemoveSidebarItem} from 'Event/template/Cards/Dashboard/Sidebar/SidebarItem'
 import Section from 'Event/template/Cards/Dashboard/Sidebar/Section'
+import {useEditMode} from 'Event/Dashboard/editor/state/edit-mode'
+import {useEditSidebarItem} from 'Event/template/Cards/Dashboard/Sidebar/SidebarItem'
 
 export const EMOJI_LIST = 'Emoji List'
 export interface EmojiListProps {
-  id: string
   type: typeof EMOJI_LIST
   emojis: Emoji['name'][]
   /**
@@ -30,59 +28,69 @@ export interface EmojiListProps {
 }
 
 export const createEmojiList = (): EmojiListProps => ({
-  id: uuid(),
   type: EMOJI_LIST,
   emojis: [],
   emojiWidth: null,
 })
 
 export default function EmojiList(props: EmojiListProps) {
-  const {flag: configVisible, toggle: toggleConfig} = useToggle()
   const {emojis, emojiWidth} = props
-  const removeItem = useRemoveSidebarItem(props)
 
-  const isEmpty = emojis.length === 0
-  if (isEmpty) {
-    // Add button to create emoji list
-    return (
-      <EditModeOnly>
-        <Section>
-          <EmojiListConfig
-            isVisible={configVisible}
-            onClose={toggleConfig}
-            list={props}
-          />
-          <RemoveButton size="large" showing onClick={removeItem}>
-            Remove Emojis
-          </RemoveButton>
-          <StyledAddEmojiListButton onClick={toggleConfig} />
-        </Section>
-      </EditModeOnly>
-    )
+  const isEditMode = useEditMode()
+
+  const emojiList = emojis.map((name, index) => (
+    <Container key={index} width={emojiWidth}>
+      <EmojiImage name={name} src={emojiWithName(name).image} />
+    </Container>
+  ))
+
+  if (isEditMode) {
+    return <WithConfig {...props}>{emojiList}</WithConfig>
   }
 
   return (
     <Section>
-      <EditModeOnly>
-        <EmojiListConfig
-          isVisible={configVisible}
-          onClose={toggleConfig}
-          list={props}
-        />
-        <RemoveButton size="large" onClick={removeItem}>
-          Remove Emojis
-        </RemoveButton>
-      </EditModeOnly>
-      <Editable onEdit={toggleConfig}>
-        <Box aria-label="emoji list">
-          {emojis.map((name, index) => (
-            <Container key={index} width={emojiWidth}>
-              <EmojiImage name={name} src={emojiWithName(name).image} />
-            </Container>
-          ))}
-        </Box>
-      </Editable>
+      <Box aria-label="emoji list">{emojiList}</Box>
     </Section>
+  )
+}
+
+function WithConfig(props: EmojiListProps & {children: React.ReactElement[]}) {
+  const {flag: configVisible, toggle: toggleConfig} = useToggle()
+  const {remove: removeItem} = useEditSidebarItem()
+
+  return (
+    <Section>
+      <EmojiListConfig
+        isVisible={configVisible}
+        onClose={toggleConfig}
+        list={props}
+      />
+      <RemoveButton size="large" onClick={removeItem}>
+        Remove Emojis
+      </RemoveButton>
+      <EditableContent onEdit={toggleConfig} {...props} />
+    </Section>
+  )
+}
+
+function EditableContent(
+  props: EmojiListProps & {
+    onEdit: () => void
+    children: React.ReactElement[]
+  },
+) {
+  const {onEdit, emojis} = props
+
+  const isEmpty = emojis.length === 0
+  if (isEmpty) {
+    return <StyledAddEmojiListButton onClick={onEdit} />
+  }
+
+  return (
+    <Editable onEdit={onEdit}>
+      <Box aria-label="emoji list">{props.children}</Box>
+    </Editable>
   )
 }
 

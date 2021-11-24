@@ -10,7 +10,8 @@ import {wait} from '@testing-library/react'
 import axios from 'axios'
 import {goToPanelsConfig} from 'Event/template/Panels/__utils__/go-to-panels-config'
 
-const mockPost = mockRxJsAjax.post as jest.Mock
+// const mockPost = mockRxJsAjax.post as jest.Mock
+const mockPut = axios.put as jest.Mock
 const mockDelete = axios.delete as jest.Mock
 
 beforeEach(() => {
@@ -39,12 +40,12 @@ it('should add a new resource', async () => {
   expect((await findAllByLabelText('event resource')).length).toBe(1)
   // Saved
   await wait(() => {
-    expect(mockPost).toHaveBeenCalledTimes(1)
+    expect(mockPut).toHaveBeenCalledTimes(1)
   })
 
-  const [url, data] = mockPost.mock.calls[0]
-  expect(url).toMatch(`/events/${event.slug}`)
-  expect(data.template.resourceList.resources.length).toBe(1)
+  const [url, data] = mockPut.mock.calls[0]
+  expect(url).toMatch(`/events/${event.slug}/template`)
+  expect(data.template['resourceList.resources'].length).toBe(1)
 })
 
 it('should update resources title', async () => {
@@ -73,12 +74,12 @@ it('should update resources title', async () => {
 
   // Saved
   await wait(() => {
-    expect(mockPost).toHaveBeenCalledTimes(1)
+    expect(mockPut).toHaveBeenCalledTimes(1)
   })
 
-  const [url, data] = mockPost.mock.calls[0]
-  expect(url).toMatch(`/events/${event.slug}`)
-  expect(data.template.resourceList.title).toBe(updatedTitle)
+  const [url, data] = mockPut.mock.calls[0]
+  expect(url).toMatch(`/events/${event.slug}/template`)
+  expect(data.template['resourceList.title']).toBe(updatedTitle)
 })
 
 it('should update a resource', async () => {
@@ -117,12 +118,12 @@ it('should update a resource', async () => {
 
   // Saved
   await wait(() => {
-    expect(mockPost).toHaveBeenCalledTimes(1)
+    expect(mockPut).toHaveBeenCalledTimes(1)
   })
 
-  const [url, data] = mockPost.mock.calls[0]
-  expect(url).toMatch(`/events/${event.slug}`)
-  expect(data.template.resourceList.resources[0].name).toBe(updatedName)
+  const [url, data] = mockPut.mock.calls[0]
+  expect(url).toMatch(`/events/${event.slug}/template`)
+  expect(data.template['resourceList.resources'][0].name).toBe(updatedName)
 })
 
 it('should remove a resource', async () => {
@@ -173,12 +174,14 @@ it('should remove a resource', async () => {
 
   // Saved
   await wait(() => {
-    expect(mockPost).toHaveBeenCalledTimes(1)
+    expect(mockPut).toHaveBeenCalledTimes(1)
   })
 
-  const [url, data] = mockPost.mock.calls[0]
-  expect(url).toMatch(`/events/${event.slug}`)
-  expect(data.template.resourceList.resources.length).toBe(resources.length - 1)
+  const [url, data] = mockPut.mock.calls[0]
+  expect(url).toMatch(`/events/${event.slug}/template`)
+  expect(data.template['resourceList.resources'].length).toBe(
+    resources.length - 1,
+  )
 
   expect(mockDelete).toHaveBeenCalledTimes(1)
   const [deleteUrl] = mockDelete.mock.calls[0]

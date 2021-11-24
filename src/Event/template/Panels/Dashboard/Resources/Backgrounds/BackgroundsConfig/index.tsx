@@ -7,10 +7,9 @@ import Typography from '@material-ui/core/Typography'
 import withStyles from '@material-ui/core/styles/withStyles'
 import Box from '@material-ui/core/Box'
 import ColorPicker from 'lib/ui/ColorPicker'
-import {Panels, usePanels} from 'Event/template/Panels'
+import {usePanelsTemplate, usePanelsUpdate} from 'Event/template/Panels'
 import {handleChangeSlider} from 'lib/dom'
 import {spacing} from 'lib/ui/theme'
-import {useUpdate} from 'Event/EventProvider'
 import {useForm} from 'react-hook-form'
 import {useToggle} from 'lib/toggle'
 import BackgroundImage from 'Event/template/Panels/Dashboard/Resources/Backgrounds/BackgroundsConfig/BackgroundImage'
@@ -27,11 +26,10 @@ export default function BackgroundsConfig() {
   const {flag: pageSettingsVisible, toggle: togglePageSettings} = useToggle()
   const {flag: processing, toggle: toggleProcessing} = useToggle()
   const {handleSubmit} = useForm()
-  const {template} = usePanels()
+  const template = usePanelsTemplate()
+  const updateTemplate = usePanelsUpdate()
 
   const templateSettings = template.zoomBackgrounds
-
-  const updateEvent = useUpdate()
 
   const [borderColor, setBorderColor] = useState(templateSettings.borderColor)
   const [borderRadius, setBorderRadius] = useState(
@@ -52,21 +50,17 @@ export default function BackgroundsConfig() {
     toggleProcessing()
     clearError()
 
-    const updatedTemplate: Panels = {
-      ...template,
+    const update = {
       zoomBackgrounds: {
-        ...(template.zoomBackgrounds || {}),
         borderColor,
         borderRadius,
         borderThickness,
       },
     }
 
-    updateEvent({
-      template: updatedTemplate,
-    })
-      .catch(setError)
-      .finally(toggleProcessing)
+    updateTemplate(update)
+
+    toggleProcessing()
   }
 
   return (

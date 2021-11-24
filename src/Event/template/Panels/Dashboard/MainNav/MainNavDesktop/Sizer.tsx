@@ -1,6 +1,6 @@
 import React, {useEffect, useState, useCallback} from 'react'
 import styled from 'styled-components'
-import {usePanels} from 'Event/template/Panels'
+import {usePanelsTemplate} from 'Event/template/Panels'
 import MainNavButton from 'Event/template/Panels/Dashboard/MainNav/MainNavButton'
 import $ from 'jquery'
 import useDebounce from 'lib/debounce'
@@ -29,11 +29,9 @@ export default function Sizer(props: {
   perPage: number | null
   onChange: (perPage: number) => void
 }) {
-  const {
-    template: {
-      nav: {ids},
-    },
-  } = usePanels()
+  const template = usePanelsTemplate()
+  const ids = template.nav.ids
+
   const {onChange} = props
   const [perPage, setPerPage] = useState(1)
   const [isGrowing, setIsGrowing] = useState(true)
@@ -149,11 +147,10 @@ function Page(props: {
   calculate: () => void
 }) {
   const {number, numItems, isLast, isFirst} = props
-  const {
-    template: {
-      nav: {ids, entities},
-    },
-  } = usePanels()
+
+  const template = usePanelsTemplate()
+  const entities = template.nav.entities
+  const ids = template.nav.ids
 
   /**
    * Only render the visible buttons for a given page.

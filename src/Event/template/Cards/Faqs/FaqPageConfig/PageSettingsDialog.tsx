@@ -1,18 +1,14 @@
-import React, {useState} from 'react'
+import React from 'react'
 import DialogContent from '@material-ui/core/DialogContent'
 import DialogTitle from '@material-ui/core/DialogTitle'
 import Dialog from 'lib/ui/Dialog'
 import Box from '@material-ui/core/Box'
 import TextField from '@material-ui/core/TextField'
 import {Controller, useForm} from 'react-hook-form'
-import {useEvent} from 'Event/EventProvider'
-import {ObvioEvent} from 'Event'
 import Button from '@material-ui/core/Button'
 import TextEditor, {TextEditorContainer} from 'lib/ui/form/TextEditor'
 import Typography from '@material-ui/core/Typography'
-import {useOrganization} from 'organization/OrganizationProvider'
-import {api} from 'lib/url'
-import {Cards, useCards} from 'Event/template/Cards'
+import {Cards, useCardsTemplate, useCardsUpdate} from 'Event/template/Cards'
 import Switch from 'lib/ui/form/Switch'
 import FormControl from '@material-ui/core/FormControl'
 import {onChangeCheckedHandler} from 'lib/dom'
@@ -24,52 +20,16 @@ export default function PageSettingsDialog(props: {
   visible: boolean
 }) {
   const {visible, onClose} = props
-  const {event, set: updateEvent} = useEvent()
   const {handleSubmit, register, control} = useForm()
-  const [processing, setProcessing] = useState(false)
-  const {template} = useCards()
-  const {client} = useOrganization()
-
+  const template = useCardsTemplate()
+  const updateCards = useCardsUpdate()
   const {faq: pageSettings} = template
 
-  const data = ({
-    title,
-    description,
-    isVisible,
-    menuTitle,
-  }: FAQPageSettings) => {
-    const required = {
-      template: {
-        ...template,
-        faq: {
-          ...pageSettings,
-          title,
-          description,
-          isVisible,
-          menuTitle,
-        },
-      },
-    }
-    return required
-  }
-
-  const submit = (form: FAQPageSettings) => {
-    if (processing) {
-      return
-    }
-
-    setProcessing(true)
-    const url = api(`/events/${event.slug}`)
-    client
-      .put<ObvioEvent>(url, data(form))
-      .then((event) => {
-        updateEvent(event)
-        setProcessing(false)
-        props.onClose()
-      })
-      .catch(() => {
-        setProcessing(false)
-      })
+  const submit = (data: FAQPageSettings) => {
+    updateCards({
+      faq: data,
+    })
+    props.onClose()
   }
 
   return (
@@ -102,7 +62,6 @@ export default function PageSettingsDialog(props: {
               variant="outlined"
               fullWidth
               inputProps={{'aria-label': 'faq page title', ref: register}}
-              disabled={processing}
             />
             <Controller
               name="description"
@@ -130,7 +89,6 @@ export default function PageSettingsDialog(props: {
               variant="contained"
               color="primary"
               fullWidth
-              disabled={processing}
               aria-label="save"
             >
               Save

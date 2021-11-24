@@ -6,13 +6,13 @@ import {spacing} from 'lib/ui/theme'
 import Button from '@material-ui/core/Button'
 import {HeroConfig} from 'Event/template/Cards/Dashboard/Hero/HeroConfig'
 import {useAttendeeVariables} from 'Event'
-import {useCards} from 'Event/template/Cards'
+import {useCardsTemplate} from 'Event/template/Cards'
 import {useToggle} from 'lib/toggle'
 import EditModeOnly from 'Event/Dashboard/editor/views/EditModeOnly'
 import {useEditMode} from 'Event/Dashboard/editor/state/edit-mode'
 
 export default function Hero() {
-  const {template} = useCards()
+  const template = useCardsTemplate()
   const isEdit = useEditMode()
 
   if (!isEdit && template.header.isCollapsed) {
@@ -53,10 +53,10 @@ function EditButton() {
 }
 
 function WelcomeText() {
-  const {template} = useCards()
   const {
     hero: {welcomeText, welcomeFontSize, welcomeTextColor},
-  } = template
+  } = useCardsTemplate()
+
   const v = useAttendeeVariables()
 
   if (!welcomeText) {
@@ -76,10 +76,9 @@ function WelcomeText() {
 
 function Image() {
   const {event} = useEvent()
-  const {template} = useCards()
   const {
     hero: {heroImageSize},
-  } = template
+  } = useCardsTemplate()
 
   const size = heroImageSize
 

@@ -2,12 +2,12 @@ import React from 'react'
 import defaultLogo from 'assets/images/logo_vertical.png'
 import {useEvent} from 'Event/EventProvider'
 import styled from 'styled-components'
-import {useCards} from 'Event/template/Cards'
+import {useCardsTemplate} from 'Event/template/Cards'
 
 export default function Logo(props: {isHidden?: boolean}) {
   const {event} = useEvent()
   const logo = event.login_logo ? event.login_logo.url : defaultLogo
-  const {template} = useCards()
+  const template = useCardsTemplate()
   const {login} = template
 
   const size = login.logoSize

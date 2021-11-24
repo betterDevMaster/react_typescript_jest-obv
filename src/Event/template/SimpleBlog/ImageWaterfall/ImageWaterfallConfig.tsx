@@ -1,5 +1,4 @@
 import React from 'react'
-import {useDispatchUpdate} from 'Event/TemplateProvider'
 import {Controller, useForm} from 'react-hook-form'
 import FormControl from '@material-ui/core/FormControl'
 import Slider from '@material-ui/core/Slider'
@@ -9,25 +8,26 @@ import ColorPicker from 'lib/ui/ColorPicker'
 import InputLabel from '@material-ui/core/InputLabel'
 import styled from 'styled-components'
 import ActionSelect from 'Event/ActionsProvider/ActionSelect'
-import {SimpleBlog, useSimpleBlog} from 'Event/template/SimpleBlog'
+import {
+  SimpleBlog,
+  useSimpleBlogTemplate,
+  useSimpleBlogUpdate,
+} from 'Event/template/SimpleBlog'
 import {SaveButton} from 'organization/Event/DashboardConfig/ComponentConfig'
 import TextEditor, {TextEditorContainer} from 'lib/ui/form/TextEditor'
 
 export default function SimpleBlogImageWaterfallConfig(props: {
   onClose: () => void
 }) {
-  const {template} = useSimpleBlog()
+  const template = useSimpleBlogTemplate()
   const {imageWaterfall: current} = template
   const {control, handleSubmit} = useForm()
 
-  const updateTemplate = useDispatchUpdate()
+  const updateTemplate = useSimpleBlogUpdate()
 
   const submit = (data: SimpleBlog['imageWaterfall']) => {
     updateTemplate({
-      imageWaterfall: {
-        ...current,
-        ...data,
-      },
+      imageWaterfall: data,
     })
 
     props.onClose()

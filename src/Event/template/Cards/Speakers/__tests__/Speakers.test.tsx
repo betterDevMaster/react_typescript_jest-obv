@@ -5,7 +5,6 @@ import user from '@testing-library/user-event'
 import {fakeAttendee} from 'Event/auth/__utils__/factory'
 import {fakeCards} from 'Event/template/Cards/__utils__/factory'
 import {createEntityList} from 'lib/list'
-import {fakeNavButtonWithSize} from 'Event/Dashboard/components/NavButton/__utils__/factory'
 import {eventRoutes, EVENT_PAGES} from 'Event/Routes'
 import {fakeCardsNavButton} from 'Event/template/Cards/Dashboard/CardsNavButton/__utils__/factory'
 

@@ -14,7 +14,7 @@ import {
   SaveButton,
 } from 'organization/Event/DashboardConfig/ComponentConfig'
 import {AgendaListProps} from 'Event/template/SimpleBlog/Dashboard/Sidebar/SidebarItem/AgendaList'
-import {useUpdateSidebarItem} from 'Event/template/SimpleBlog/Dashboard/Sidebar/SidebarItem'
+import {useEditSidebarItem} from 'Event/template/SimpleBlog/Dashboard/Sidebar/SidebarItem'
 
 export function AgendaListConfig(
   props: ComponentConfigProps & {
@@ -30,8 +30,7 @@ export function AgendaListConfig(
   )
   const [footer, setFooter] = useState(list.footer)
   const [footerFontStyles, setFooterFontStyle] = useState(list.footerFontStyles)
-
-  const updateItem = useUpdateSidebarItem()
+  const {update: updateItem} = useEditSidebarItem()
 
   const save = () => {
     const updated: AgendaListProps = {

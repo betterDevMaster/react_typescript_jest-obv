@@ -8,9 +8,12 @@ import Button from '@material-ui/core/Button'
 import ColorPicker from 'lib/ui/ColorPicker'
 import TextEditor, {TextEditorContainer} from 'lib/ui/form/TextEditor'
 import {useEvent, useUpdate} from 'Event/EventProvider'
-import {useSimpleBlog} from 'Event/template/SimpleBlog'
 import {useToggle} from 'lib/toggle'
 import {onChangeStringHandler} from 'lib/dom'
+import {
+  useSimpleBlogTemplate,
+  useSimpleBlogUpdate,
+} from 'Event/template/SimpleBlog'
 
 export default function PageSettingsDialog(props: {
   onClose: () => void
@@ -18,7 +21,7 @@ export default function PageSettingsDialog(props: {
 }) {
   const {visible, onClose} = props
   const {event} = useEvent()
-  const {template} = useSimpleBlog()
+  const template = useSimpleBlogTemplate()
 
   const templateSettings = template.zoomBackgrounds
 
@@ -34,7 +37,9 @@ export default function PageSettingsDialog(props: {
     event.zoom_backgrounds_description,
   )
 
-  const update = useUpdate()
+  const updateTemplate = useSimpleBlogUpdate()
+
+  const updateEvent = useUpdate()
 
   const [loading, setLoading] = useState(true)
 
@@ -52,17 +57,16 @@ export default function PageSettingsDialog(props: {
 
     toggleProcessing()
 
-    update({
+    updateTemplate({
+      zoomBackgrounds: {
+        backToDashboardText,
+        backToDashboardTextColor,
+      },
+    })
+
+    updateEvent({
       zoom_backgrounds_title: title,
       zoom_backgrounds_description: description,
-      template: {
-        ...template,
-        zoomBackgrounds: {
-          ...template.zoomBackgrounds,
-          backToDashboardText,
-          backToDashboardTextColor,
-        },
-      },
     })
       .then(() => {
         toggleProcessing()

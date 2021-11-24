@@ -3,13 +3,12 @@ import faker from 'faker'
 import {fakeSimpleBlog} from 'Event/template/SimpleBlog/__utils__/factory'
 import {fireEvent, wait} from '@testing-library/dom'
 import {fakeEvent} from 'Event/__utils__/factory'
-import {mockRxJsAjax} from 'store/__utils__/MockStoreProvider'
 import {ObvioEvent} from 'Event'
 import axios from 'axios'
 import {goToDashboardConfig} from 'organization/Event/DashboardConfig/__utils__/go-dashboard-config'
 import {createPointsSummary} from 'Event/template/SimpleBlog/Dashboard/Sidebar/SidebarItem/PointsSummary'
+import {createEntityList} from 'lib/list'
 
-const mockRxPost = mockRxJsAjax.post as jest.Mock
 const mockAxiosPost = axios.post as jest.Mock
 const mockPut = axios.put as jest.Mock
 
@@ -33,24 +32,27 @@ it('should configure points', async () => {
 
   // Saved
   await wait(() => {
-    expect(mockRxPost).toHaveBeenCalledTimes(1)
+    expect(mockPut).toHaveBeenCalledTimes(1)
   })
 
-  const [url, data] = mockRxPost.mock.calls[0]
-  expect(url).toMatch(`/events/${event.slug}`)
-  expect(data.template.sidebarItems[0].type).toBe('Points Summary')
+  const [url, data] = mockPut.mock.calls[0]
+  expect(url).toMatch(`/events/${event.slug}/template`)
+  const sidebarId = data.template['sidebarItems.ids'][0]
+  expect(data.template[`sidebarItems.entities.${sidebarId}.type`]).toBe(
+    'Points Summary',
+  )
 })
 
 it('should remove points', async () => {
   const summary = 'your points'
   const event = fakeEvent({
     template: fakeSimpleBlog({
-      sidebarItems: [
+      sidebarItems: createEntityList([
         {
           ...createPointsSummary(),
           summary,
         },
-      ],
+      ]),
     }),
   })
 
@@ -68,12 +70,12 @@ it('should remove points', async () => {
 
   // Saved
   await wait(() => {
-    expect(mockRxPost).toHaveBeenCalledTimes(1)
+    expect(mockPut).toHaveBeenCalledTimes(1)
   })
 
-  const [url, data] = mockRxPost.mock.calls[0]
-  expect(url).toMatch(`/events/${event.slug}`)
-  expect(data.template.sidebarItems.length).toBe(0)
+  const [url, data] = mockPut.mock.calls[0]
+  expect(url).toMatch(`/events/${event.slug}/template`)
+  expect(data.template['sidebarItems.ids'].length).toBe(0)
 })
 
 it('should upload a logo', async () => {
@@ -81,7 +83,7 @@ it('should upload a logo', async () => {
 
   const event = fakeEvent({
     template: fakeSimpleBlog({
-      sidebarItems: [createPointsSummary()],
+      sidebarItems: createEntityList([createPointsSummary()]),
     }),
   })
 
@@ -122,7 +124,7 @@ it('should remove the logo', async () => {
   }
   const event = fakeEvent({
     template: fakeSimpleBlog({
-      sidebarItems: [createPointsSummary()],
+      sidebarItems: createEntityList([createPointsSummary()]),
     }),
     points_summary_logo: logo,
   })

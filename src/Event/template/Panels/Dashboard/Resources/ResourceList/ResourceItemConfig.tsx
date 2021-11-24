@@ -1,14 +1,14 @@
-import TextField from '@material-ui/core/TextField'
-import {onChangeCheckedHandler} from 'lib/dom'
 import React, {useEffect, useState} from 'react'
-import {useDispatchUpdate} from 'Event/TemplateProvider'
+import {Controller, useForm, UseFormMethods} from 'react-hook-form'
+import FormControl from '@material-ui/core/FormControl'
+import TextField from '@material-ui/core/TextField'
+import ToggleButton from '@material-ui/lab/ToggleButton'
+import ToggleButtonGroup from '@material-ui/lab/ToggleButtonGroup'
+import {onChangeCheckedHandler} from 'lib/dom'
 import Switch from 'lib/ui/form/Switch'
 import RuleConfig, {useRuleConfig} from 'Event/attendee-rules/RuleConfig'
 import ConfigureRulesButton from 'Event/attendee-rules/ConfigureRulesButton'
-import ToggleButtonGroup from '@material-ui/lab/ToggleButtonGroup'
-import ToggleButton from '@material-ui/lab/ToggleButton'
-import FormControl from '@material-ui/core/FormControl'
-import {Panels, usePanels} from 'Event/template/Panels'
+import {usePanelsTemplate, usePanelsUpdate} from 'Event/template/Panels'
 import {Resource} from 'Event/template/Panels/Dashboard/Resources/ResourceList'
 import ResourceUpload, {
   useDeleteFile,
@@ -18,7 +18,6 @@ import ComponentConfig, {
   RemoveButton,
   SaveButton,
 } from 'organization/Event/DashboardConfig/ComponentConfig'
-import {Controller, useForm, UseFormMethods} from 'react-hook-form'
 
 export default function ResourceItemConfig(
   props: ComponentConfigProps & {
@@ -28,9 +27,9 @@ export default function ResourceItemConfig(
   },
 ) {
   const {targetIndex, onClose, resource, isVisible} = props
-  const {template} = usePanels()
+  const template = usePanelsTemplate()
+  const updateTemplate = usePanelsUpdate()
   const {resourceList: list} = template
-  const updateTemplate = useDispatchUpdate()
   const deleteFile = useDeleteFile()
   const {visible: ruleConfigVisible, toggle: toggleRuleConfig} = useRuleConfig()
   const {register, handleSubmit, control} = useForm()
@@ -47,21 +46,17 @@ export default function ResourceItemConfig(
     }
   }, [isVisible, toggleRuleConfig, ruleConfigVisible])
 
-  const insert = (resource: Resource): Panels => {
+  const insert = (resource: Resource) => {
     return {
-      ...template,
       resourceList: {
-        ...list,
         resources: [...list.resources, resource],
       },
     }
   }
 
-  const update = (resource: Resource): Panels => {
+  const update = (resource: Resource) => {
     return {
-      ...template,
       resourceList: {
-        ...list,
         resources: list.resources.map((r, index) => {
           const isTarget = index === targetIndex
           if (isTarget) {
@@ -96,8 +91,7 @@ export default function ResourceItemConfig(
 
     if (resource.filePath) {
       deleteFile(resource.filePath).catch((e) => {
-        // Log error, but prevent it from crashing
-        // app
+        // Log error, but prevent it from crashing app
         console.error(e)
       })
     }
@@ -105,7 +99,6 @@ export default function ResourceItemConfig(
 
     updateTemplate({
       resourceList: {
-        ...list,
         resources: list.resources.filter(
           (_, index) => index !== props.targetIndex,
         ),

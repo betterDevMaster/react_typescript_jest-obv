@@ -6,7 +6,7 @@ import {useEventAuth} from 'Event/auth'
 import Button from 'lib/ui/Button'
 import {eventRoutes} from 'Event/Routes'
 import {RelativeLink} from 'lib/ui/link/RelativeLink'
-import {useSimpleBlog} from 'Event/template/SimpleBlog'
+import {useSimpleBlogTemplate} from 'Event/template/SimpleBlog'
 
 export const DEFAULT_MENU_TEXT_COLOR = '#FFFFFF'
 export const DEFAULT_MENU_ICON_COLOR = '#000000'
@@ -17,7 +17,7 @@ export default function Menu(props: {
   toggle: () => void
   user: User
 }) {
-  const {template} = useSimpleBlog()
+  const template = useSimpleBlogTemplate()
   const {menu} = template
 
   const background = menu?.backgroundColor || DEFAULT_MENU_BACKGROUND_COLOR
@@ -33,7 +33,7 @@ export default function Menu(props: {
 }
 
 function UserInfo(props: {email: string}) {
-  const {template} = useSimpleBlog()
+  const template = useSimpleBlogTemplate()
   const {menu} = template
   const menuTextColor = menu?.textColor || DEFAULT_MENU_TEXT_COLOR
   return (
@@ -46,7 +46,7 @@ function UserInfo(props: {email: string}) {
 
 function Links() {
   const {logout} = useEventAuth()
-  const {template} = useSimpleBlog()
+  const template = useSimpleBlogTemplate()
   const {menu} = template
 
   const menuTextColor = menu?.textColor || DEFAULT_MENU_TEXT_COLOR

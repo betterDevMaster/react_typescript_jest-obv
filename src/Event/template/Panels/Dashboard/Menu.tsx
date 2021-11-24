@@ -1,6 +1,6 @@
 import styled from 'styled-components'
 import React from 'react'
-import {usePanels} from 'Event/template/Panels'
+import {usePanelsTemplate} from 'Event/template/Panels'
 import {User} from 'auth/user'
 import {useEventAuth} from 'Event/auth'
 import Button from 'lib/ui/Button'
@@ -12,7 +12,7 @@ export default function Menu(props: {
   user: User
 }) {
   const {onChangeTab} = props
-  const {template} = usePanels()
+  const template = usePanelsTemplate()
   const color = template.leftPanel.menuTextColor || '#000000'
   const {logout} = useEventAuth()
 

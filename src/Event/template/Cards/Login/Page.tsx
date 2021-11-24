@@ -8,14 +8,14 @@ import {makeStyles} from '@material-ui/core/styles'
 import {spacing} from 'lib/ui/theme'
 import Logo from 'Event/template/Cards/Login/Logo'
 import {rgba} from 'lib/color'
-import {useCards} from 'Event/template/Cards'
+import {useCardsTemplate} from 'Event/template/Cards'
 import Paper from '@material-ui/core/Paper'
 
 export default function Page(props: {
   isPreview?: LoginProps['isPreview']
   children: React.ReactElement | React.ReactElement[]
 }) {
-  const {template} = useCards()
+  const template = useCardsTemplate()
   const {login} = template
 
   const background = useRandomBackground()
@@ -39,7 +39,7 @@ export default function Page(props: {
 }
 
 export function Title(props: {children: string; 'aria-label'?: string}) {
-  const {template} = useCards()
+  const template = useCardsTemplate()
   const color = template.login.welcome.color
   const fontSize = template.login.welcome.fontSize
 
@@ -59,7 +59,7 @@ export function Title(props: {children: string; 'aria-label'?: string}) {
 }
 
 export function Description(props: {children: string; 'aria-label'?: string}) {
-  const {template} = useCards()
+  const template = useCardsTemplate()
   const color = template.login.description.color
   const fontSize = template.login.description.fontSize
 
@@ -87,7 +87,7 @@ export function ErrorMessage(props: {children?: string}) {
 }
 
 export function Button(props: ButtonProps) {
-  const {template} = useCards()
+  const template = useCardsTemplate()
   const {login} = template
   const borderRadius = `${login.submitButton.borderRadius}px` || spacing[14]
   const hoverColor =
@@ -174,7 +174,7 @@ const ColorOverlay = styled.div<{
 `
 
 export function TextField(props: TextFieldProps) {
-  const {template} = useCards()
+  const template = useCardsTemplate()
   const {login} = template
 
   const useStyles = makeStyles({
@@ -293,7 +293,7 @@ export const ErrorText = styled(Typography)`
 `
 
 export function useRandomBackground() {
-  const {template} = useCards()
+  const template = useCardsTemplate()
 
   /**
    * This is annoying, but we need to pull out all individual background property

@@ -6,7 +6,7 @@ import {spacing} from 'lib/ui/theme'
 import Button from '@material-ui/core/Button'
 import {useAttendeeVariables} from 'Event'
 import withStyles from '@material-ui/core/styles/withStyles'
-import {useCards} from 'Event/template/Cards'
+import {useCardsTemplate} from 'Event/template/Cards'
 import {BodyHTMLEmbedConfig} from 'Event/template/Cards/Dashboard/BodyHTMLEmbed/BodyHTMLEmbedConfig'
 import {useToggle} from 'lib/toggle'
 
@@ -14,8 +14,7 @@ export default function BodyHTMLEmbed() {
   const anchor = useRef<HTMLDivElement>(null)
   const [isLoading, setIsLoading] = useState(false)
   const [scriptElements, setScriptElements] = useState<HTMLElement[]>([])
-  const {template} = useCards()
-  const {bodyHTMLEmbed: bodyEmbed} = template
+  const {bodyHTMLEmbed: bodyEmbed} = useCardsTemplate()
   const isEditMode = useEditMode()
   const v = useAttendeeVariables()
 
@@ -93,7 +92,9 @@ export default function BodyHTMLEmbed() {
 
   return (
     <>
-      <EditButton />
+      <EditModeOnly>
+        <EditButton />
+      </EditModeOnly>
       <div
         ref={anchor}
         dangerouslySetInnerHTML={{__html: contentElements}}

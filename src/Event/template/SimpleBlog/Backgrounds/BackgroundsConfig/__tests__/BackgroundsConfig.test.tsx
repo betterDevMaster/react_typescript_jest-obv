@@ -48,8 +48,10 @@ it('should configure backgrounds', async () => {
 
   const [updateImageUrl, updateImageData] = mockPut.mock.calls[0]
 
-  expect(updateImageUrl).toMatch(`/events/${event.slug}`)
-  expect(updateImageData.template.zoomBackgrounds.borderColor).toBe(borderColor)
+  expect(updateImageUrl).toMatch(`/events/${event.slug}/template`)
+  expect(updateImageData.template['zoomBackgrounds.borderColor']).toBe(
+    borderColor,
+  )
 
   /**
    * Updates page settings
@@ -71,16 +73,26 @@ it('should configure backgrounds', async () => {
   user.click(await findByLabelText('save'))
 
   await wait(() => {
-    expect(mockPut).toHaveBeenCalledTimes(2)
+    expect(mockPut).toHaveBeenCalledTimes(3)
   })
 
-  const [pageSettingsUrl, pageSettingsData] = mockPut.mock.calls[1]
+  // Updated template
+  const [
+    pageSettingsTemplateUrl,
+    pageSettingsTemplateData,
+  ] = mockPut.mock.calls[1]
+  expect(pageSettingsTemplateUrl).toMatch(`/events/${event.slug}/template`)
+  expect(
+    pageSettingsTemplateData.template[
+      'zoomBackgrounds.backToDashboardTextColor'
+    ],
+  ).toBe(backToDashboardColor)
+
+  // Did update page setting title
+  const [pageSettingsUrl, pageSettingsData] = mockPut.mock.calls[2]
   expect(pageSettingsUrl).toMatch(`/events/${event.slug}`)
 
   expect(pageSettingsData.zoom_backgrounds_title).toBe(title)
-  expect(
-    pageSettingsData.template.zoomBackgrounds.backToDashboardTextColor,
-  ).toBe(backToDashboardColor)
 
   /**
    * Uploads background

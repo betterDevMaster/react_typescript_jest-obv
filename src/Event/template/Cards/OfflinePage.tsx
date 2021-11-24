@@ -6,7 +6,7 @@ import Page, {
   StyledFormContainer,
   Title,
 } from 'Event/template/Cards/Login/Page'
-import {useCards} from 'Event/template/Cards'
+import {useCardsTemplate} from 'Event/template/Cards'
 import {useGuestVariables} from 'Event'
 
 export default function OfflinePage(props: OfflinePageProps) {
@@ -32,7 +32,7 @@ function Text(props: {
   disableMargin?: boolean
   fontSize?: number
 }) {
-  const {template} = useCards()
+  const template = useCardsTemplate()
   const color = template.login.description.color
   const fontSize = props.fontSize
     ? props.fontSize

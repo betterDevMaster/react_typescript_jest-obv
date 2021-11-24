@@ -5,16 +5,16 @@ import Card from 'Event/template/Panels/Dashboard/Sponsors/SponsorList/Card'
 import React from 'react'
 import {useTemplate} from 'Event/TemplateProvider'
 import {DragDropContext, Droppable, DropResult} from 'react-beautiful-dnd'
-import {usePanels} from 'Event/template/Panels'
+import {usePanelsTemplate, usePanelsUpdate} from 'Event/template/Panels'
 
 export default function SponsorList(props: {
   className?: string
   sponsors: Sponsor[]
   isEditMode?: boolean
 }) {
-  const handleDrag = useHandleDrag()
-  const {template} = usePanels()
-  const {perRow} = template.sponsors
+  const {
+    sponsors: {perRow},
+  } = usePanelsTemplate()
 
   const sortedSponsors = useSortedSponsors(props.sponsors)
 
@@ -37,7 +37,24 @@ export default function SponsorList(props: {
   }
 
   return (
-    <DragDropContext onDragEnd={handleDrag(sortedSponsors)}>
+    <DraggableList sponsors={sortedSponsors} className={props.className}>
+      {sponsors}
+    </DraggableList>
+  )
+}
+
+function DraggableList(props: {
+  sponsors: Sponsor[]
+  children: React.ReactElement[]
+  className?: string
+}) {
+  const {
+    sponsors: {perRow},
+  } = usePanelsTemplate()
+  const handleDrag = useHandleDrag()
+
+  return (
+    <DragDropContext onDragEnd={handleDrag(props.sponsors)}>
       <Droppable droppableId="drag-and-drop-sponsors" direction="horizontal">
         {(provided) => (
           <Box
@@ -47,7 +64,7 @@ export default function SponsorList(props: {
             perRow={perRow}
           >
             <>
-              {sponsors}
+              {props.children}
               {provided.placeholder}
             </>
           </Box>
@@ -89,8 +106,7 @@ function useSortedSponsors(sponsors: Sponsor[]) {
 }
 
 function useHandleDrag() {
-  const {update: updateTemplate} = usePanels()
-  const update = updateTemplate.object('sponsors')
+  const update = usePanelsUpdate()
 
   return (sponsors: Sponsor[]) => (result: DropResult) => {
     const {destination, source} = result
@@ -104,7 +120,12 @@ function useHandleDrag() {
     moved.splice(destination.index, 0, removed)
 
     const orderedIds = moved.map((f) => f.id)
-    update('orderedIds')(orderedIds)
+
+    update({
+      sponsors: {
+        orderedIds,
+      },
+    })
   }
 }
 

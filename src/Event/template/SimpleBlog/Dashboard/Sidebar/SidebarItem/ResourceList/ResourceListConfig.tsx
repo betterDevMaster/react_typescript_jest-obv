@@ -6,7 +6,7 @@ import ComponentConfig, {
 } from 'organization/Event/DashboardConfig/ComponentConfig'
 import {useForm} from 'react-hook-form'
 import {ResourceListProps} from 'Event/template/SimpleBlog/Dashboard/Sidebar/SidebarItem/ResourceList'
-import {useUpdateSidebarItem} from 'Event/template/SimpleBlog/Dashboard/Sidebar/SidebarItem'
+import {useEditSidebarItem} from 'Event/template/SimpleBlog/Dashboard/Sidebar/SidebarItem'
 
 export function ResourceListConfig(
   props: ComponentConfigProps & {
@@ -15,14 +15,10 @@ export function ResourceListConfig(
 ) {
   const {isVisible, onClose, list} = props
   const {handleSubmit, register} = useForm()
-
-  const updateItem = useUpdateSidebarItem()
+  const {update} = useEditSidebarItem()
 
   const save = (data: Pick<ResourceListProps, 'title' | 'description'>) => {
-    updateItem({
-      ...list,
-      ...data,
-    })
+    update(data)
     onClose()
   }
 

@@ -1,94 +1,154 @@
-import DialogContent from '@material-ui/core/DialogContent'
-import InputLabel from '@material-ui/core/InputLabel'
-import Box from '@material-ui/core/Box'
-import DialogTitle from '@material-ui/core/DialogTitle'
-import {usePanels} from 'Event/template/Panels'
-import ColorPicker from 'lib/ui/ColorPicker'
-import Dialog from 'lib/ui/Dialog'
 import React from 'react'
+import {Controller, useForm} from 'react-hook-form'
+import Box from '@material-ui/core/Box'
+import InputLabel from '@material-ui/core/InputLabel'
 import Slider from '@material-ui/core/Slider'
-import {handleChangeSlider, onChangeCheckedHandler} from 'lib/dom'
+import {handleChangeSlider} from 'lib/dom'
+import ColorPicker from 'lib/ui/ColorPicker'
 import Switch from 'lib/ui/form/Switch'
+import {Panels, usePanelsTemplate, usePanelsUpdate} from 'Event/template/Panels'
+import ComponentConfig, {
+  SaveButton,
+} from 'organization/Event/DashboardConfig/ComponentConfig'
 
 export default function RightPanelConfig(props: {
   isVisible: boolean
   onClose: () => void
 }) {
-  const {
-    template: {rightPanel},
-    update,
-  } = usePanels()
-
   const {isVisible, onClose} = props
 
-  const updateRightPanel = update.object('rightPanel')
+  const template = usePanelsTemplate()
+  const update = usePanelsUpdate()
+  const {rightPanel} = template
+  const {control, handleSubmit} = useForm()
+
+  const submit = (data: Panels['rightPanel']) => {
+    update({rightPanel: data})
+
+    onClose()
+  }
 
   return (
-    <Dialog open={isVisible} onClose={onClose} fullWidth>
-      <DialogTitle>Right Panel Config</DialogTitle>
-      <DialogContent>
-        <Box mb={2}>
-          <Switch
-            checked={rightPanel.isDarkMode}
-            onChange={onChangeCheckedHandler(updateRightPanel('isDarkMode'))}
-            arial-label="set dark mode"
-            labelPlacement="end"
-            color="primary"
-            label="Dark Mode"
-          />
-        </Box>
-        <Box mb={2}>
-          <ColorPicker
-            label="Bar Background Color"
-            color={rightPanel.barBackgroundColor}
-            onPick={updateRightPanel('barBackgroundColor')}
-            aria-label="bar background color"
-          />
-        </Box>
-        <Box mb={2}>
-          <ColorPicker
-            label="Bar Text Color"
-            color={rightPanel.barTextColor}
-            onPick={updateRightPanel('barTextColor')}
-            aria-label="bar text color"
-          />
-        </Box>
-        <Box mb={2}>
-          <ColorPicker
-            label="Tab Underline Color"
-            color={rightPanel.tabUnderlineColor}
-            onPick={updateRightPanel('tabUnderlineColor')}
-            aria-label="Tab underline color"
-          />
-        </Box>
-        <Box mb={2}>
-          <ColorPicker
-            label="Text Color"
-            color={rightPanel.textColor}
-            onPick={updateRightPanel('textColor')}
-            aria-label="panel text color"
-          />
-        </Box>
-        <Box mb={2}>
-          <ColorPicker
-            label="Panel Background Color"
-            color={rightPanel.backgroundColor}
-            onPick={updateRightPanel('backgroundColor')}
-            aria-label="panel background color"
-          />
-        </Box>
-        <Box mb={2}>
-          <InputLabel>Background Opacity</InputLabel>
-          <Slider
-            min={0}
-            max={1}
-            step={0.1}
-            onChange={handleChangeSlider(updateRightPanel('backgroundOpacity'))}
-            valueLabelDisplay="auto"
-            value={rightPanel.backgroundOpacity}
-          />
-        </Box>
-      </DialogContent>
-    </Dialog>
+    <>
+      <ComponentConfig
+        isVisible={isVisible}
+        onClose={onClose}
+        title="Right Panel Config"
+      >
+        <form onSubmit={handleSubmit(submit)}>
+          <Box mb={2}>
+            <Controller
+              name="isDarkMode"
+              defaultValue={rightPanel.isDarkMode}
+              control={control}
+              render={({value, onChange}) => (
+                <Switch
+                  checked={value}
+                  onChange={onChange}
+                  arial-label="set dark mode"
+                  labelPlacement="end"
+                  color="primary"
+                  label="Dark Mode"
+                />
+              )}
+            />
+          </Box>
+          <Box mb={2}>
+            <Controller
+              name="barBackgroundColor"
+              defaultValue={rightPanel.barBackgroundColor}
+              control={control}
+              render={({value, onChange}) => (
+                <ColorPicker
+                  label="Bar Background Color"
+                  color={value}
+                  onPick={onChange}
+                  aria-label="bar background color"
+                />
+              )}
+            />
+          </Box>
+          <Box mb={2}>
+            <Controller
+              name="barTextColor"
+              defaultValue={rightPanel.barTextColor}
+              control={control}
+              render={({value, onChange}) => (
+                <ColorPicker
+                  label="Bar Text Color"
+                  color={value}
+                  onPick={onChange}
+                  aria-label="bar text color"
+                />
+              )}
+            />
+          </Box>
+          <Box mb={2}>
+            <Controller
+              name="tabUnderlineColor"
+              defaultValue={rightPanel.tabUnderlineColor}
+              control={control}
+              render={({value, onChange}) => (
+                <ColorPicker
+                  label="Tab Underline Color"
+                  color={value}
+                  onPick={onChange}
+                  aria-label="Tab underline color"
+                />
+              )}
+            />
+          </Box>
+          <Box mb={2}>
+            <Controller
+              name="textColor"
+              defaultValue={rightPanel.textColor}
+              control={control}
+              render={({value, onChange}) => (
+                <ColorPicker
+                  label="Text Color"
+                  color={value}
+                  onPick={onChange}
+                  aria-label="panel text color"
+                />
+              )}
+            />
+          </Box>
+          <Box mb={2}>
+            <Controller
+              name="backgroundColor"
+              defaultValue={rightPanel.backgroundColor}
+              control={control}
+              render={({value, onChange}) => (
+                <ColorPicker
+                  label="Panel Background Color"
+                  color={value}
+                  onPick={onChange}
+                  aria-label="panel background color"
+                />
+              )}
+            />
+          </Box>
+          <Box mb={2}>
+            <InputLabel>Background Opacity</InputLabel>
+            <Controller
+              name="backgroundOpacity"
+              defaultValue={rightPanel.backgroundOpacity}
+              control={control}
+              render={({value, onChange}) => (
+                <Slider
+                  min={0}
+                  max={1}
+                  step={0.1}
+                  onChange={handleChangeSlider(onChange)}
+                  valueLabelDisplay="auto"
+                  value={value}
+                />
+              )}
+            />
+          </Box>
+          <SaveButton />
+        </form>
+      </ComponentConfig>
+    </>
   )
 }

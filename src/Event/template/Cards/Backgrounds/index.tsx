@@ -4,7 +4,7 @@ import {useEvent} from 'Event/EventProvider'
 import {useAttendeeVariables} from 'Event'
 import VisibleOnMatch from 'Event/attendee-rules/VisibleOnMatch'
 import {downloadFile} from 'lib/http-client'
-import {useCards} from 'Event/template/Cards'
+import {useCardsTemplate} from 'Event/template/Cards'
 import Content from 'lib/ui/form/TextEditor/Content'
 import BackgroundImage from 'Event/template/Cards/Backgrounds/BackgroundsConfig/BackgroundImage'
 import {useSortBackgrounds} from 'organization/Event/Backgrounds/BackgroundsProvider'
@@ -15,7 +15,7 @@ import {User} from 'auth/user'
 export default function CardsBackgrounds(props: {user: User}) {
   const v = useAttendeeVariables()
   const {event} = useEvent()
-  const {template} = useCards()
+  const template = useCardsTemplate()
   const {zoomBackgrounds: settings} = template
   const {
     backgrounds,

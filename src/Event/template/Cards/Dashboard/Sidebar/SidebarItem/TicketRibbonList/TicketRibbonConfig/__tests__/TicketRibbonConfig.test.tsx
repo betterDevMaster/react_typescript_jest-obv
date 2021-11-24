@@ -8,6 +8,7 @@ import {fakeCards} from 'Event/template/Cards/__utils__/factory'
 import {clickEdit} from '__utils__/edit'
 import {createTicketRibbonList} from 'Event/template/Cards/Dashboard/Sidebar/SidebarItem/TicketRibbonList'
 import {fakeCustomRibbon} from 'organization/Event/DashboardConfig/TicketRibbonUpload/__utils__/factory'
+import {createEntityList} from 'lib/list'
 
 const mockPost = axios.post as jest.Mock
 const mockDelete = axios.delete as jest.Mock
@@ -18,15 +19,15 @@ beforeEach(() => {
 
 it('should add a custom ticket ribbon', async () => {
   const customRibbon = fakeCustomRibbon()
-
+  const sidebarItems = createEntityList([
+    {
+      ...createTicketRibbonList(),
+      ribbons: createEntityList([]),
+    },
+  ])
   const event = fakeEvent({
     template: fakeCards({
-      sidebarItems: [
-        {
-          ...createTicketRibbonList(),
-          ribbons: [],
-        },
-      ],
+      sidebarItems,
     }),
   })
 
@@ -88,16 +89,16 @@ it('should remove a custom image on delete', async () => {
 
   const event = fakeEvent({
     template: fakeCards({
-      sidebarItems: [
+      sidebarItems: createEntityList([
         {
           ...createTicketRibbonList(),
-          ribbons: [
+          ribbons: createEntityList([
             fakeTicketRibbon({
               customRibbon,
             }),
-          ],
+          ]),
         },
-      ],
+      ]),
     }),
   })
 
@@ -123,10 +124,10 @@ it('should remove a custom image on delete', async () => {
 it('should handle a failed custom delete', async () => {
   const event = fakeEvent({
     template: fakeCards({
-      sidebarItems: [
+      sidebarItems: createEntityList([
         {
           ...createTicketRibbonList(),
-          ribbons: [
+          ribbons: createEntityList([
             fakeTicketRibbon({
               customRibbon: {
                 id: 10,
@@ -136,9 +137,9 @@ it('should handle a failed custom delete', async () => {
                 },
               },
             }),
-          ],
+          ]),
         },
-      ],
+      ]),
     }),
   })
 

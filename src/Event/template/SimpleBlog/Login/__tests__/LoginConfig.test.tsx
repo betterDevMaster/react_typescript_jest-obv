@@ -2,11 +2,11 @@ import {fakeEvent} from 'Event/__utils__/factory'
 import {goToLoginPageConfig} from 'organization/Event/Page/__utils__/go-to-login-page-config'
 import user from '@testing-library/user-event'
 import faker from 'faker'
-import {mockRxJsAjax} from 'store/__utils__/MockStoreProvider'
 import {wait} from '@testing-library/react'
 import {CONFIGURE_EVENTS} from 'organization/PermissionsProvider'
+import axios from 'axios'
 
-const mockRxPost = mockRxJsAjax.post as jest.Mock
+const mockPut = axios.put as jest.Mock
 
 beforeEach(() => {
   jest.clearAllMocks()
@@ -15,7 +15,7 @@ beforeEach(() => {
 it('should configure login template', async () => {
   const event = fakeEvent()
 
-  const {findByLabelText} = await goToLoginPageConfig({
+  const {findByLabelText, findByText} = await goToLoginPageConfig({
     event,
     userPermissions: [CONFIGURE_EVENTS],
   })
@@ -23,12 +23,14 @@ it('should configure login template', async () => {
 
   user.type(await findByLabelText('submit button color'), textColor)
 
+  user.click(await findByText(/save/i))
+
   await wait(() => {
-    expect(mockRxPost).toHaveBeenCalledTimes(1)
+    expect(mockPut).toHaveBeenCalledTimes(1)
   })
 
-  const [url, data] = mockRxPost.mock.calls[0]
-  expect(url).toMatch(`/events/${event.slug}`)
+  const [url, data] = mockPut.mock.calls[0]
+  expect(url).toMatch(`/events/${event.slug}/template`)
 
-  expect(data.template.login.submitButton.textColor).toBe(textColor)
+  expect(data.template['login.submitButton.textColor']).toBe(textColor)
 })

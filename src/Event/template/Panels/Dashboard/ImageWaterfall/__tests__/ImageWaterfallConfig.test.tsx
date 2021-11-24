@@ -1,11 +1,11 @@
 import {goToImageEntries} from 'organization/Event/ImageEntries/__utils__/go-to-image-entries'
 import user from '@testing-library/user-event'
 import {fireEvent, wait} from '@testing-library/dom'
-import {mockRxJsAjax} from 'store/__utils__/MockStoreProvider'
 import {fakePanels} from 'Event/template/Panels/__utils__/factory'
 import {fakeEvent} from 'Event/__utils__/factory'
+import axios from 'axios'
 
-const mockPost = mockRxJsAjax.post as jest.Mock
+const mockPut = axios.put as jest.Mock
 
 beforeEach(() => {
   jest.clearAllMocks()
@@ -31,12 +31,12 @@ it('should update image waterfall config', async () => {
   user.click(await findByLabelText('save'))
 
   await wait(() => {
-    expect(mockPost).toHaveBeenCalledTimes(1)
+    expect(mockPut).toHaveBeenCalledTimes(1)
   })
 
-  const [url, data] = mockPost.mock.calls[0]
+  const [url, data] = mockPut.mock.calls[0]
 
   expect(url).toMatch(`/events/${event.slug}`)
 
-  expect(data.template.imageWaterfall.title).toBe(title) // did save config data
+  expect(data.template['imageWaterfall.title']).toBe(title) // did save config data
 })

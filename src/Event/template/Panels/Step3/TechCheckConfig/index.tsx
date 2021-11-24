@@ -25,7 +25,7 @@ import {now} from 'lib/date-time'
 import TemplateFields from 'Event/template/Panels/Step3/TechCheckConfig/TemplateFields'
 import {TechCheckPreview} from 'organization/Event/TechCheckConfig/TechCheckPreview'
 import Box from '@material-ui/core/Box'
-import {usePanels} from 'Event/template/Panels'
+import {usePanelsTemplate} from 'Event/template/Panels'
 import {Panels} from 'Event/template/Panels'
 import TechCheck from 'Event/template/Panels/Step3/TechCheck'
 import LocalizedDateTimePicker from 'lib/LocalizedDateTimePicker'
@@ -80,7 +80,7 @@ export default function Form() {
   const setTechCheck = useSetTechCheck()
   const dispatch = useDispatch()
   const mounted = useRef(true)
-  const {template} = usePanels()
+  const template = usePanelsTemplate()
   const {techCheck, set: setTemplateProp} = useTemplateTechCheckProps()
   const {event} = useEvent()
   const [rules, setRules] = useState(template.skipTechCheckRules)

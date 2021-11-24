@@ -7,13 +7,13 @@ import {useAttendeeVariables} from 'Event'
 import Content from 'lib/ui/form/TextEditor/Content'
 import {shouldPublish} from 'Event/Dashboard/components/BlogPost'
 import {BlogPost as BlogPostData} from 'Event/Dashboard/components/BlogPost'
-import {usePostStyles} from 'Event/template/SimpleBlog/Dashboard/BlogPosts/PostStylesConfig'
+import {useSimpleBlogTemplate} from 'Event/template/SimpleBlog'
 
 export function BlogPost(props: {post: BlogPostData; isLast: boolean}) {
   const {post, isLast} = props
   const isEdit = useEditMode()
   const v = useAttendeeVariables()
-  const styles = usePostStyles()
+  const {postStyles: styles} = useSimpleBlogTemplate()
   const bottomMargin = isLast ? 0 : styles.spacing
 
   const date = post.publishAt || post.postedAt
@@ -45,13 +45,12 @@ export function BlogPost(props: {post: BlogPostData; isLast: boolean}) {
 }
 
 function Date(props: {children: React.ReactNode; hidden?: boolean}) {
-  const styles = usePostStyles()
-
+  const {postStyles} = useSimpleBlogTemplate()
   if (props.hidden) {
     return null
   }
 
-  return <DateText color={styles.dateTextColor}>{props.children}</DateText>
+  return <DateText color={postStyles.dateTextColor}>{props.children}</DateText>
 }
 
 const Post = styled.div<{marginBottom: number}>`

@@ -10,6 +10,14 @@ import {
   socketDisconnected,
 } from 'organization/Event/EventSocketNotification'
 
+type EventSocketContextProps = {
+  channel: Channel
+}
+
+const EventSocketContext = React.createContext<
+  EventSocketContextProps | undefined
+>(undefined)
+
 /**
  * Event names start with a '.' to prevent Laravel's
  * auto name-spacing event.
@@ -23,13 +31,11 @@ const UPDATED_EVENT = '.event.updated'
  * multiple people can edit the dashboard at the same
  * time without overwriting each other's changes.
  */
-export default function EventSocketConnection(props: {
+export default function EventSocketProvider(props: {
   children: React.ReactElement
 }) {
   const [socketId, setSocketId] = useState<string | null>(null)
   const [channel, setChannel] = useState<Channel | null>(null)
-
-  const isConnected = Boolean(socketId)
 
   const {
     event: {slug},
@@ -100,9 +106,23 @@ export default function EventSocketConnection(props: {
     }
   }, [channel, socketId, refreshEvent])
 
-  if (!isConnected) {
+  // Loading...
+  if (!socketId || !channel) {
     return <FullPageLoader />
   }
 
-  return props.children
+  return (
+    <EventSocketContext.Provider value={{channel}}>
+      {props.children}
+    </EventSocketContext.Provider>
+  )
+}
+
+export function useEventSocket() {
+  const context = React.useContext(EventSocketContext)
+  if (context === undefined) {
+    throw new Error('useEventSocket must be used within a EventSocketProvider')
+  }
+
+  return context
 }

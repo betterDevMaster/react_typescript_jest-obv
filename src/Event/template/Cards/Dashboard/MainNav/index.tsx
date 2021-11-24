@@ -1,7 +1,6 @@
 import MainNavButton from 'Event/template/Cards/Dashboard/MainNav/MainNavButton'
 import styled from 'styled-components'
 import React from 'react'
-import {useDispatchUpdate} from 'Event/TemplateProvider'
 import {
   DragDropContext,
   Droppable,
@@ -12,14 +11,13 @@ import {useEditMode} from 'Event/Dashboard/editor/state/edit-mode'
 import NewMainNavButton from 'Event/template/Cards/Dashboard/MainNav/MainNavButton/NewMainNavButton'
 import MainNavConfig from 'Event/template/Cards/Dashboard/MainNav/MainNavConfig'
 import Button from '@material-ui/core/Button'
-
-import {useCards} from 'Event/template/Cards'
+import {useCardsTemplate, useCardsUpdate} from 'Event/template/Cards'
 import EditModeOnly from 'Event/Dashboard/editor/views/EditModeOnly'
 import {useToggle} from 'lib/toggle'
 import Grid from '@material-ui/core/Grid'
 
 export default function MainNav() {
-  const {template} = useCards()
+  const template = useCardsTemplate()
   const {mainNav} = template
 
   const isEditMode = useEditMode()
@@ -103,32 +101,38 @@ export function RowButtons(props: {
   rowId: number
 }) {
   const isEditMode = useEditMode()
-  const handleDrag = useHandleDrag(props.rowId)
-  const {buttons} = props
-
   if (!isEditMode) {
-    return <Container className={props.className}>{buttons}</Container>
+    return <Container className={props.className}>{props.buttons}</Container>
   }
 
+  return <DraggableList {...props} />
+}
+
+function DraggableList(props: {
+  className?: string
+  buttons: JSX.Element[]
+  droppableId: string
+  rowId: number
+}) {
+  const handleDrag = useHandleDrag(props.rowId)
+
   return (
-    <>
-      <DragDropContext onDragEnd={handleDrag}>
-        <Droppable droppableId={props.droppableId} direction="horizontal">
-          {(provided) => (
-            <Container
-              className={props.className}
-              ref={provided.innerRef}
-              {...provided.droppableProps}
-            >
-              <>
-                {buttons}
-                {provided.placeholder}
-              </>
-            </Container>
-          )}
-        </Droppable>
-      </DragDropContext>
-    </>
+    <DragDropContext onDragEnd={handleDrag}>
+      <Droppable droppableId={props.droppableId} direction="horizontal">
+        {(provided) => (
+          <Container
+            className={props.className}
+            ref={provided.innerRef}
+            {...provided.droppableProps}
+          >
+            <>
+              {props.buttons}
+              {provided.placeholder}
+            </>
+          </Container>
+        )}
+      </Droppable>
+    </DragDropContext>
   )
 }
 
@@ -145,9 +149,9 @@ const Container = React.forwardRef<
 ))
 
 function useHandleDrag(rowIndex: number) {
-  const {template} = useCards()
+  const template = useCardsTemplate()
   const {mainNav: buttons} = template
-  const updateTemplate = useDispatchUpdate()
+  const updateTemplate = useCardsUpdate()
 
   const buttonsInRow = buttons.ids.filter(
     (id) => buttons.entities[id].row === rowIndex,
@@ -169,11 +173,7 @@ function useHandleDrag(rowIndex: number) {
 
     updateTemplate({
       mainNav: {
-        ...template.mainNav,
         ids: moved.concat(buttonsInAnother),
-        entities: {
-          ...buttons.entities,
-        },
       },
     })
   }

@@ -1,7 +1,7 @@
 import React, {useState} from 'react'
 import Button from '@material-ui/core/Button'
 import styled from 'styled-components'
-import {useCards} from 'Event/template/Cards'
+import {useCardsTemplate} from 'Event/template/Cards'
 import {
   Background,
   useBackgrounds,
@@ -12,9 +12,7 @@ import BackgroundImageEditDialog from 'Event/template/Cards/Backgrounds/Backgrou
 export default function BackgroundImageRow(props: {background: Background}) {
   const [visibleEditDialog, setVisibleEditDialog] = useState(false)
   const {background} = props
-  const {
-    template: {zoomBackgrounds: templateSettings},
-  } = useCards()
+  const {zoomBackgrounds: templateSettings} = useCardsTemplate()
   const {busy} = useBackgrounds()
 
   const toggleEditDialog = () => setVisibleEditDialog(!visibleEditDialog)

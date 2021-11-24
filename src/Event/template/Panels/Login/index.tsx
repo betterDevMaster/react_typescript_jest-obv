@@ -9,13 +9,12 @@ import Page, {
   TextField,
 } from 'Event/template/Panels/Login/Page'
 import {RelativeLink} from 'lib/ui/link/RelativeLink'
-import {usePanels} from 'Event/template/Panels'
+import {usePanelsTemplate} from 'Event/template/Panels'
 import {useGuestVariables} from 'Event'
 
 export default function Login(props: LoginProps) {
-  const {
-    template: {login},
-  } = usePanels()
+  const template = usePanelsTemplate()
+  const {login} = template
   const v = useGuestVariables()
 
   const emailLabel = v(login.emailLabel)

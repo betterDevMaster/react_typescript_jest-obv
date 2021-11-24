@@ -2,7 +2,7 @@ import Button from '@material-ui/core/Button'
 import EditModeOnly from 'Event/Dashboard/editor/views/EditModeOnly'
 import React from 'react'
 import styled from 'styled-components'
-import {Cards, useCards} from 'Event/template/Cards'
+import {Cards, useCardsTemplate} from 'Event/template/Cards'
 import BackgroundImage from 'Event/template/Cards/Dashboard/Sidebar/SidebarContainer/BackgroundImage'
 import {Publishable} from 'Event/Dashboard/editor/views/Published'
 import Published from 'Event/Dashboard/editor/views/Published'
@@ -25,17 +25,18 @@ export type Sidebar = Publishable & {
 }
 
 export default function SidebarContainer(props: {children: React.ReactNode}) {
-  const {template} = useCards()
-  const {sidebar} = template
+  const {sidebar} = useCardsTemplate()
 
   const {flag: configVisible, toggle: toggleConfig} = useToggle()
 
   return (
     <>
-      <SidebarContainerConfig
-        isVisible={configVisible}
-        onClose={toggleConfig}
-      />
+      <EditModeOnly>
+        <SidebarContainerConfig
+          isVisible={configVisible}
+          onClose={toggleConfig}
+        />
+      </EditModeOnly>
       <Published component={sidebar}>
         <Box {...sidebar}>
           <TopLayer>

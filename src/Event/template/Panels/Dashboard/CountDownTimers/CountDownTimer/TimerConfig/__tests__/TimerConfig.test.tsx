@@ -5,12 +5,12 @@ import {createEntityList} from 'lib/list'
 import {clickEdit} from '__utils__/edit'
 import {fireEvent} from '@testing-library/react'
 import {fakeEvent} from 'Event/__utils__/factory'
-import {mockRxJsAjax} from 'store/__utils__/MockStoreProvider'
 import {wait} from '@testing-library/react'
 import {goToDashboardConfig} from 'organization/Event/DashboardConfig/__utils__/go-dashboard-config'
 import {fakePanels} from 'Event/template/Panels/__utils__/factory'
+import axios from 'axios'
 
-const mockPost = mockRxJsAjax.post as jest.Mock
+const mockPut = axios.put as jest.Mock
 
 beforeEach(() => {
   jest.clearAllMocks()
@@ -34,6 +34,7 @@ it('should edit the selected timer', async () => {
 
   const targetIndex = faker.random.number({min: 0, max: timers.length - 1})
   const timer = timers[targetIndex]
+  const timerId = countDownTimers.ids[targetIndex]
   const timerEl = await findByText(timer.description || '')
 
   clickEdit(timerEl)
@@ -58,13 +59,12 @@ it('should edit the selected timer', async () => {
 
   // Saved
   await wait(() => {
-    expect(mockPost).toHaveBeenCalledTimes(1)
+    expect(mockPut).toHaveBeenCalledTimes(1)
   })
 
-  const [url, data] = mockPost.mock.calls[0]
-  expect(url).toMatch(`/events/${event.slug}`)
-  const id = data.template.countDownTimers.ids[targetIndex]
-  expect(data.template.countDownTimers.entities[id].description).toBe(
+  const [url, data] = mockPut.mock.calls[0]
+  expect(url).toMatch(`/events/${event.slug}/template`)
+  expect(data.template[`countDownTimers.entities.${timerId}.description`]).toBe(
     updatedValue,
   )
 })
@@ -92,12 +92,12 @@ it('should remove a timer', async () => {
 
   // Saved
   await wait(() => {
-    expect(mockPost).toHaveBeenCalledTimes(1)
+    expect(mockPut).toHaveBeenCalledTimes(1)
   })
 
-  const [url, data] = mockPost.mock.calls[0]
-  expect(url).toMatch(`/events/${event.slug}`)
-  expect(data.template.countDownTimers.ids.length).toBe(1)
+  const [url, data] = mockPut.mock.calls[0]
+  expect(url).toMatch(`/events/${event.slug}/template`)
+  expect(data.template['countDownTimers.ids'].length).toBe(1)
 
   await wait(() => {
     expect(queryByText('first timer')).not.toBeInTheDocument()

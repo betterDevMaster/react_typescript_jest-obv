@@ -102,9 +102,10 @@ export default function TicketRibbon(props: {
   ticketRibbon: TicketRibbon
   index: number
   list: TicketRibbonListProps
+  id: string
 }) {
   const isEdit = useEditMode()
-  const {ticketRibbon, index} = props
+  const {ticketRibbon, index, id} = props
   const {flag: configVisible, toggle: toggleConfig} = useToggle()
 
   if (!isEdit) {
@@ -116,8 +117,8 @@ export default function TicketRibbon(props: {
       <TicketRibbonConfig
         isVisible={configVisible}
         ticketRibbon={ticketRibbon}
-        index={index}
         list={props.list}
+        id={id}
         onClose={toggleConfig}
       />
       <Draggable draggableId={String(index)} index={index}>

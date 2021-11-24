@@ -6,11 +6,11 @@ import Body from 'Event/template/Panels/Dashboard/Sponsors/SponsorList/Card/Body
 import {Draggable} from 'react-beautiful-dnd'
 import SponsorForm from 'Event/template/Panels/Dashboard/Sponsors/SponsorList/Card/SponsorForm'
 import NavButton from 'Event/Dashboard/components/NavButton'
-import {usePanels} from 'Event/template/Panels'
 import {rgba} from 'lib/color'
 import QuestionIcon from 'Event/template/Panels/Dashboard/Sponsors/SponsorList/Card/QuestionIcon'
 import {useSponsors} from 'organization/Event/SponsorsProvider'
 import {Editable} from 'Event/Dashboard/editor/views/EditComponent'
+import {usePanelsTemplate} from 'Event/template/Panels'
 
 export const SPONSOR_QUESTION_ICON_PLACEHOLDER = 'http://placehold.jp/50x50.png'
 
@@ -57,10 +57,8 @@ function Content(props: SponsorProps) {
   const {edit} = useSponsors()
 
   const {
-    template: {
-      sponsors: {cardBackgroundColor, cardBackgroundOpacity},
-    },
-  } = usePanels()
+    sponsors: {cardBackgroundColor, cardBackgroundOpacity},
+  } = usePanelsTemplate()
 
   const backgroundColor = rgba(cardBackgroundColor, cardBackgroundOpacity / 100)
 

@@ -5,7 +5,7 @@ import {useEvent} from 'Event/EventProvider'
 import {useAttendeeVariables} from 'Event'
 import VisibleOnMatch from 'Event/attendee-rules/VisibleOnMatch'
 import {downloadFile} from 'lib/http-client'
-import {usePanels} from 'Event/template/Panels'
+import {usePanelsTemplate} from 'Event/template/Panels'
 import Content from 'lib/ui/form/TextEditor/Content'
 import BackgroundImage from 'Event/template/Panels/Dashboard/Resources/Backgrounds/BackgroundsConfig/BackgroundImage'
 import {useSortBackgrounds} from 'organization/Event/Backgrounds/BackgroundsProvider'
@@ -17,9 +17,7 @@ import {rgba} from 'lib/color'
 export default function PanelsBackgrounds() {
   const v = useAttendeeVariables()
   const {event} = useEvent()
-  const {template} = usePanels()
-  const {zoomBackgrounds: settings} = template
-  const {resourceList: list} = template
+  const {zoomBackgrounds: settings, resourceList: list} = usePanelsTemplate()
 
   const {
     backgrounds,

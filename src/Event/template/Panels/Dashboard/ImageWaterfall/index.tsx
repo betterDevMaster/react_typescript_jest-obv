@@ -5,7 +5,7 @@ import FullPageLoader from 'lib/ui/layout/FullPageLoader'
 import React from 'react'
 import TextContent from 'lib/ui/form/TextEditor/Content'
 import {useAttendeeVariables} from 'Event'
-import {usePanels} from 'Event/template/Panels'
+import {usePanelsTemplate} from 'Event/template/Panels'
 import {useToggle} from 'lib/toggle'
 import PanelsImageWaterfallConfig from 'Event/template/Panels/Dashboard/ImageWaterfall/ImageWaterfallConfig'
 import {Editable} from 'Event/Dashboard/editor/views/EditComponent'
@@ -13,9 +13,7 @@ import ComponentConfig from 'organization/Event/DashboardConfig/ComponentConfig'
 
 export default function PanelsImageWaterfall() {
   const {loading, entries} = useFetchEntries()
-  const {
-    template: {imageWaterfall: pageSettings},
-  } = usePanels()
+  const {imageWaterfall: pageSettings} = usePanelsTemplate()
   const v = useAttendeeVariables()
   const {flag: configVisible, toggle: toggleConfig} = useToggle()
 

@@ -29,7 +29,12 @@ it('should show dashboard if completed tech check', async () => {
     waiver: faker.internet.url(),
     tech_check_completed_at: faker.date.recent().toISOString(),
   })
-  const {findByLabelText} = await loginToEventSite({attendee})
+  const {findByLabelText} = await loginToEventSite({
+    attendee,
+    event: fakeEvent({
+      template: fakeCards(),
+    }),
+  })
 
   // Has welcome image
   expect(await findByLabelText('welcome')).toBeInTheDocument()

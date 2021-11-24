@@ -1,12 +1,12 @@
 import {fakeEvent} from 'Event/__utils__/factory'
 import {goToOfflinePageConfig} from 'organization/Event/Page/__utils__/go-to-offline-page-config'
 import user from '@testing-library/user-event'
-import {mockRxJsAjax} from 'store/__utils__/MockStoreProvider'
 import {wait} from '@testing-library/react'
 import {CONFIGURE_EVENTS} from 'organization/PermissionsProvider'
 import {fakePanels} from 'Event/template/Panels/__utils__/factory'
+import axios from 'axios'
 
-const mockRxPost = mockRxJsAjax.post as jest.Mock
+const mockPut = axios.put as jest.Mock
 
 beforeEach(() => {
   jest.clearAllMocks()
@@ -23,14 +23,15 @@ it('should configure offline page settings', async () => {
   })
   const header = 'This event is offline'
 
-  user.type(await findByLabelText('offline page title'), header)
+  await user.type(await findByLabelText('offline page title'), header)
+  await user.click(await findByLabelText('save'))
 
   await wait(() => {
-    expect(mockRxPost).toHaveBeenCalledTimes(1)
+    expect(mockPut).toHaveBeenCalledTimes(1)
   })
 
-  const [url, data] = mockRxPost.mock.calls[0]
+  const [url, data] = mockPut.mock.calls[0]
   expect(url).toMatch(`/events/${event.slug}`)
 
-  expect(data.template.offlinePage.title).toBe(header)
+  expect(data.template['offlinePage.title']).toBe(header)
 })

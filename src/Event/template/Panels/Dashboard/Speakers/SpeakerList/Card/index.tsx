@@ -7,7 +7,7 @@ import {Speaker} from 'Event/SpeakerPage'
 import {useSpeakers} from 'organization/Event/SpeakersProvider'
 import Clickable from 'lib/ui/Clickable'
 import {Draggable} from 'react-beautiful-dnd'
-import {usePanels} from 'Event/template/Panels'
+import {usePanelsTemplate} from 'Event/template/Panels'
 import {useAttendeeVariables} from 'Event'
 
 type SpeakerProps = {
@@ -49,7 +49,7 @@ function Editable(props: SpeakerProps) {
 
 function Content(props: SpeakerProps) {
   const {speaker} = props
-  const {template} = usePanels()
+  const template = usePanelsTemplate()
   const v = useAttendeeVariables()
 
   const imageSize = template.speakers.speakerImageSize

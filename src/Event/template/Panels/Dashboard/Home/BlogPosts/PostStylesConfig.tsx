@@ -2,7 +2,7 @@ import TextField from '@material-ui/core/TextField'
 import ComponentConfig, {
   SaveButton,
 } from 'organization/Event/DashboardConfig/ComponentConfig'
-import {Panels, usePanels} from 'Event/template/Panels'
+import {Panels, usePanelsTemplate, usePanelsUpdate} from 'Event/template/Panels'
 import {onChangeCheckedHandler, onChangeNumberHandler} from 'lib/dom'
 import ColorPicker from 'lib/ui/ColorPicker'
 import Switch from 'lib/ui/form/Switch'
@@ -20,7 +20,7 @@ const MIN_SPACING = 1
 export default function PostStylesConfig() {
   const {flag: isVisible, toggle: onClose} = useToggle()
 
-  const {update} = usePanels()
+  const update = usePanelsUpdate()
 
   const styles = usePostStyles()
 
@@ -59,7 +59,9 @@ export default function PostStylesConfig() {
       spacing,
     }
 
-    update.primitive('postStyles')(updated)
+    update({
+      postStyles: updated,
+    })
   }
 
   return (
@@ -133,9 +135,7 @@ export default function PostStylesConfig() {
 }
 
 export function usePostStyles() {
-  const {
-    template: {postStyles},
-  } = usePanels()
+  const {postStyles} = usePanelsTemplate()
 
   return useMemo(
     () => ({

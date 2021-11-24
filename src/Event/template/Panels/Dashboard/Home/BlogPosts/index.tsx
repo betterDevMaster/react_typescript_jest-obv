@@ -2,20 +2,18 @@ import {sortedByDate} from 'Event/Dashboard/components/BlogPost'
 import {Editable} from 'Event/Dashboard/editor/views/EditComponent'
 import EditModeOnly from 'Event/Dashboard/editor/views/EditModeOnly'
 import Published from 'Event/Dashboard/editor/views/Published'
-import {usePanels} from 'Event/template/Panels'
+import {usePanelsTemplate} from 'Event/template/Panels'
 import BlogPost from 'Event/template/Panels/Dashboard/Home/BlogPosts/BlogPost'
-import {EditPost} from 'Event/Dashboard/components/BlogPost/BlogPostConfig'
 import VisibleOnMatch from 'Event/attendee-rules/VisibleOnMatch'
 import React, {useState} from 'react'
 import styled from 'styled-components'
 import AddBlogPostButton from 'Event/Dashboard/components/BlogPost/AddBlogPostButton'
 import PostStylesConfig from 'Event/template/Panels/Dashboard/Home/BlogPosts/PostStylesConfig'
 import PostFormStylesConfig from 'Event/template/Panels/Dashboard/Home/BlogPosts/PostFormStylesConfig'
+import {EditPost} from 'Event/Dashboard/components/BlogPost/BlogPostConfig'
 
 export default function BlogPosts() {
-  const {
-    template: {blogPosts},
-  } = usePanels()
+  const {blogPosts} = usePanelsTemplate()
 
   const [editing, setEditing] = useState<string | null>(null)
   const stopEditing = () => setEditing(null)

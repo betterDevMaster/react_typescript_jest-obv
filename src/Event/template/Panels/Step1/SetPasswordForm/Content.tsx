@@ -8,11 +8,11 @@ import {spacing} from 'lib/ui/theme'
 import {SetPasswordFormProps} from 'Event/Step1/SetPasswordForm'
 import MuiButton from '@material-ui/core/Button'
 import {useAttendeeVariables} from 'Event'
-import {usePanels} from 'Event/template/Panels'
+import {usePanelsTemplate} from 'Event/template/Panels'
 
 export default function Content(props: SetPasswordFormProps) {
   const {register, handleSubmit, errors, watch} = useForm()
-  const {template} = usePanels()
+  const template = usePanelsTemplate()
   const v = useAttendeeVariables()
 
   const {setPasswordForm} = template

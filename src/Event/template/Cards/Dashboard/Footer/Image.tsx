@@ -3,12 +3,11 @@ import {useEvent} from 'Event/EventProvider'
 import React from 'react'
 import styled from 'styled-components'
 import {DEFAULT_FOOTER_IMAGE_SIZE} from 'Event/template/Cards/Dashboard/Footer/FooterConfig'
-import {useCards} from 'Event/template/Cards'
+import {useCardsTemplate} from 'Event/template/Cards'
 
 export default function Image() {
   const {event} = useEvent()
-  const {template} = useCards()
-  const {footer} = template
+  const {footer} = useCardsTemplate()
 
   if (!event.footer_image) {
     return null

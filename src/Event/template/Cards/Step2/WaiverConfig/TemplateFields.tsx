@@ -1,15 +1,15 @@
-import React, {useEffect, useState} from 'react'
+import React from 'react'
 import InputLabel from '@material-ui/core/InputLabel'
 import Typography from '@material-ui/core/Typography'
 import ColorPicker from 'lib/ui/ColorPicker'
 import Grid from '@material-ui/core/Grid'
 import Slider from '@material-ui/core/Slider'
-import {handleChangeSlider, onChangeStringHandler} from 'lib/dom'
+import {handleChangeSlider} from 'lib/dom'
 import TextField from '@material-ui/core/TextField'
 import Box from '@material-ui/core/Box'
-import {colors} from 'lib/ui/theme'
-import {Cards, useCards} from 'Event/template/Cards'
+import {useCardsTemplate} from 'Event/template/Cards'
 import BackgroundPicker from 'lib/ui/form/BackgroundPicker'
+import {Controller, UseFormMethods} from 'react-hook-form'
 
 const MIN_BUTTON_BORDER_RADIUS = 0
 const MAX_BUTTON_BORDER_RADIUS = 100
@@ -17,29 +17,12 @@ const MAX_BUTTON_BORDER_RADIUS = 100
 const MIN_BUTTON_BORDER_WIDTH = 0
 const MAX_BUTTON_BORDER_WIDTH = 20
 
-const DEFAULT_WAIVER_PROPS: NonNullable<Cards['waiver']> = {
-  buttonText: 'Submit',
-  buttonBackground: colors.primary,
-  buttonTextColor: '#FFFFFF',
-  buttonBorderColor: colors.primary,
-  buttonBorderRadius: 4,
-  buttonBorderWidth: 1,
-  buttonWidth: 12,
-  checkBoxColor: '#FFFFFF',
-}
-export default function TemplateFields(props: {submitting: boolean}) {
-  const {submitting} = props
-  const {template, update} = useCards()
-  const updateWaiverTemplate = update.object('waiver')
+export default function TemplateFields(
+  props: {submitting: boolean} & Pick<UseFormMethods, 'control' | 'register'>,
+) {
+  const {control, register, submitting} = props
 
-  const [waiver, setWaiver] = useState(DEFAULT_WAIVER_PROPS)
-
-  useEffect(() => {
-    if (!template?.waiver) {
-      return
-    }
-    setWaiver(template.waiver)
-  }, [template])
+  const {waiver} = useCardsTemplate()
 
   return (
     <>
@@ -49,85 +32,123 @@ export default function TemplateFields(props: {submitting: boolean}) {
       <Grid container spacing={2}>
         <Grid item xs={12} md={6}>
           <TextField
-            value={waiver.buttonText}
+            defaultValue={waiver.buttonText}
             label="Label"
             fullWidth
             inputProps={{
               'aria-label': 'tech check submit button label',
+              ref: register,
             }}
             disabled={submitting}
-            onChange={onChangeStringHandler(updateWaiverTemplate('buttonText'))}
           />
         </Grid>
 
         <Grid item xs={12} md={6}>
-          <BackgroundPicker
-            label="Background"
-            background={waiver.buttonBackground}
-            onChange={updateWaiverTemplate('buttonBackground')}
-            disabled={submitting}
+          <Controller
+            name="template.buttonBackground"
+            defaultValue={waiver.buttonBackground}
+            control={control}
+            render={({value, onChange}) => (
+              <BackgroundPicker
+                label="Background"
+                background={value}
+                onChange={onChange}
+                disabled={submitting}
+              />
+            )}
           />
         </Grid>
         <Grid item xs={12} md={6}>
-          <ColorPicker
-            label="Text Color"
-            color={waiver.buttonTextColor}
-            onPick={updateWaiverTemplate('buttonTextColor')}
-            aria-label="button text color"
-            disabled={submitting}
+          <Controller
+            name="template.buttonTextColor"
+            defaultValue={waiver.buttonTextColor}
+            control={control}
+            render={({value, onChange}) => (
+              <ColorPicker
+                label="Text Color"
+                color={value}
+                onPick={onChange}
+                aria-label="button text color"
+                disabled={submitting}
+              />
+            )}
           />
         </Grid>
 
         <Grid item xs={12} md={6}>
-          <ColorPicker
-            label="Border Color"
-            color={waiver.buttonBorderColor}
-            onPick={updateWaiverTemplate('buttonBorderColor')}
-            aria-label="submit button text color"
-            disabled={submitting}
+          <Controller
+            name="template.buttonBorderColor"
+            defaultValue={waiver.buttonBorderColor}
+            control={control}
+            render={({value, onChange}) => (
+              <ColorPicker
+                label="Border Color"
+                color={value}
+                onPick={onChange}
+                aria-label="submit button text color"
+                disabled={submitting}
+              />
+            )}
           />
         </Grid>
         <Grid item xs={12} md={6}>
           <InputLabel>Border Radius</InputLabel>
-          <Slider
-            valueLabelDisplay="auto"
-            aria-label="submit button border radius"
-            value={waiver.buttonBorderRadius}
-            onChange={handleChangeSlider(
-              updateWaiverTemplate('buttonBorderRadius'),
+          <Controller
+            name="template.buttonBorderRadius"
+            defaultValue={waiver.buttonBorderRadius}
+            control={control}
+            render={({value, onChange}) => (
+              <Slider
+                valueLabelDisplay="auto"
+                aria-label="submit button border radius"
+                value={value}
+                onChange={handleChangeSlider(onChange)}
+                step={1}
+                min={MIN_BUTTON_BORDER_RADIUS}
+                max={MAX_BUTTON_BORDER_RADIUS}
+                disabled={submitting}
+              />
             )}
-            step={1}
-            min={MIN_BUTTON_BORDER_RADIUS}
-            max={MAX_BUTTON_BORDER_RADIUS}
-            disabled={submitting}
           />
         </Grid>
         <Grid item xs={12} md={6}>
           <InputLabel>Border Width</InputLabel>
-          <Slider
-            valueLabelDisplay="auto"
-            aria-label="submit button border width"
-            value={waiver.buttonBorderWidth}
-            onChange={handleChangeSlider(
-              updateWaiverTemplate('buttonBorderWidth'),
+          <Controller
+            name="template.buttonBorderWidth"
+            defaultValue={waiver.buttonBorderWidth}
+            control={control}
+            render={({value, onChange}) => (
+              <Slider
+                valueLabelDisplay="auto"
+                aria-label="submit button border width"
+                value={value}
+                onChange={handleChangeSlider(onChange)}
+                step={1}
+                min={MIN_BUTTON_BORDER_WIDTH}
+                max={MAX_BUTTON_BORDER_WIDTH}
+                disabled={submitting}
+              />
             )}
-            step={1}
-            min={MIN_BUTTON_BORDER_WIDTH}
-            max={MAX_BUTTON_BORDER_WIDTH}
-            disabled={submitting}
           />
         </Grid>
         <Grid item xs={12}>
           <InputLabel>Size</InputLabel>
-          <Slider
-            valueLabelDisplay="auto"
-            aria-label="submit button width"
-            value={waiver.buttonWidth as number}
-            onChange={handleChangeSlider(updateWaiverTemplate('buttonWidth'))}
-            step={1}
-            min={1}
-            max={12}
-            disabled={submitting}
+          <Controller
+            name="template.buttonWidth"
+            defaultValue={waiver.buttonWidth}
+            control={control}
+            render={({value, onChange}) => (
+              <Slider
+                valueLabelDisplay="auto"
+                aria-label="submit button width"
+                value={value}
+                onChange={handleChangeSlider(onChange)}
+                step={1}
+                min={1}
+                max={12}
+                disabled={submitting}
+              />
+            )}
           />
         </Grid>
       </Grid>
@@ -136,12 +157,19 @@ export default function TemplateFields(props: {submitting: boolean}) {
       </Box>
       <Grid container spacing={3}>
         <Grid item xs={12} md={12}>
-          <ColorPicker
-            label="CheckBox Color"
-            color={waiver.checkBoxColor}
-            onPick={updateWaiverTemplate('checkBoxColor')}
-            aria-label="submit button text color"
-            disabled={submitting}
+          <Controller
+            name="template.checkBoxColor"
+            defaultValue={waiver.checkBoxColor}
+            control={control}
+            render={({value, onChange}) => (
+              <ColorPicker
+                label="Text Color"
+                color={value}
+                onPick={onChange}
+                aria-label="check box color"
+                disabled={submitting}
+              />
+            )}
           />
         </Grid>
       </Grid>

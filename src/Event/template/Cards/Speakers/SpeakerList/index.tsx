@@ -2,17 +2,15 @@ import {Speaker} from 'Event/SpeakerPage'
 import Card from 'Event/template/Cards/Speakers/SpeakerList/Card'
 import Grid, {GridSpacing} from '@material-ui/core/Grid'
 import React from 'react'
-import {useTemplate} from 'Event/TemplateProvider'
 import Typography from '@material-ui/core/Typography'
 import {DragDropContext, Droppable, DropResult} from 'react-beautiful-dnd'
-import {useCards} from 'Event/template/Cards'
+import {useCardsTemplate, useCardsUpdate} from 'Event/template/Cards'
 
 export default function SpeakerList(props: {
   speakers: Speaker[]
   isEditMode?: boolean
 }) {
-  const {template} = useCards()
-  const handleDrag = useHandleDrag()
+  const template = useCardsTemplate()
   const sortedSpeakers = useSortedSpeakers(props.speakers)
 
   const isEmpty = props.speakers.length === 0
@@ -35,19 +33,32 @@ export default function SpeakerList(props: {
       </Grid>
     )
   }
+  return (
+    <DroppableList sortedSpeakers={sortedSpeakers} spacing={spacing}>
+      {speakers}
+    </DroppableList>
+  )
+}
+
+function DroppableList(props: {
+  sortedSpeakers: Speaker[]
+  spacing: GridSpacing
+  children: React.ReactNode[]
+}) {
+  const handleDrag = useHandleDrag()
 
   return (
-    <DragDropContext onDragEnd={handleDrag(sortedSpeakers)}>
+    <DragDropContext onDragEnd={handleDrag(props.sortedSpeakers)}>
       <Droppable droppableId="drag-and-drop-speaker">
         {(provided) => (
           <Grid
             container
-            spacing={spacing}
+            spacing={props.spacing}
             ref={provided.innerRef}
             {...provided.droppableProps}
           >
             <>
-              {speakers}
+              {props.children}
               {provided.placeholder}
             </>
           </Grid>
@@ -67,7 +78,7 @@ export default function SpeakerList(props: {
  * @returns
  */
 function useSortedSpeakers(speakers: Speaker[]) {
-  const {speakers: pageSettings} = useTemplate()
+  const {speakers: pageSettings} = useCardsTemplate()
 
   const order = pageSettings?.orderedIds || []
 
@@ -89,8 +100,7 @@ function useSortedSpeakers(speakers: Speaker[]) {
 }
 
 function useHandleDrag() {
-  const {update: updateTemplate} = useCards()
-  const update = updateTemplate.object('speakers')
+  const update = useCardsUpdate()
 
   return (speakers: Speaker[]) => (result: DropResult) => {
     const {destination, source} = result
@@ -104,6 +114,10 @@ function useHandleDrag() {
     moved.splice(destination.index, 0, removed)
 
     const orderedIds = moved.map((s) => s.id)
-    update('orderedIds')(orderedIds)
+    update({
+      speakers: {
+        orderedIds,
+      },
+    })
   }
 }

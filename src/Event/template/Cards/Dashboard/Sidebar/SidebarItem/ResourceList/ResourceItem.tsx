@@ -14,7 +14,7 @@ import {useEditMode} from 'Event/Dashboard/editor/state/edit-mode'
 import {DragHandle, DraggableOverlay} from 'lib/ui/drag-and-drop'
 import {useAttendeeVariables} from 'Event'
 import {Icon} from 'lib/fontawesome/Icon'
-import {useCards} from 'Event/template/Cards'
+import {useCardsTemplate} from 'Event/template/Cards'
 import {useToggle} from 'lib/toggle'
 import {ResourceItemConfig} from 'Event/template/Cards/Dashboard/Sidebar/SidebarItem/ResourceList/ResourceItemConfig'
 import {ResourceListProps} from 'Event/template/Cards/Dashboard/Sidebar/SidebarItem/ResourceList'
@@ -35,10 +35,11 @@ export type ResourceItemProps = {
   iconColor?: string
   index: number
   list: ResourceListProps
+  droppleid: string
 }
 
 export default React.memo((props: ResourceItemProps) => {
-  const {resource, index} = props
+  const {resource, index, id, droppleid} = props
   const isEdit = useEditMode()
   const {flag: configVisible, toggle: toggleConfig} = useToggle()
 
@@ -55,10 +56,10 @@ export default React.memo((props: ResourceItemProps) => {
         isVisible={configVisible}
         onClose={toggleConfig}
         resource={resource}
-        index={index}
+        id={id}
         list={props.list}
       />
-      <Draggable draggableId={props.id} index={index}>
+      <Draggable draggableId={droppleid} index={index}>
         {(provided) => (
           <Container
             resource={resource}
@@ -89,8 +90,7 @@ export function ResourceItemLink(props: {
 }) {
   const {downloadResource: DOWNLOADING_RESOURCE} = usePlatformActions()
   const {submit} = usePoints()
-  const {template} = useCards()
-  const {sidebar} = template
+  const {sidebar} = useCardsTemplate()
   const url = resourceUrl(props.resource)
   const v = useAttendeeVariables()
 

@@ -6,6 +6,7 @@ import {clickEdit} from '__utils__/edit'
 import axios from 'axios'
 import {goToDashboardConfig} from 'organization/Event/DashboardConfig/__utils__/go-dashboard-config'
 import {createResourceList} from 'Event/template/Cards/Dashboard/Sidebar/SidebarItem/ResourceList'
+import {createEntityList} from 'lib/list'
 
 const mockAjaxPost = axios.post as jest.Mock
 const mockAjaxDelete = axios.delete as jest.Mock
@@ -19,12 +20,12 @@ it('should remove the existing file', async () => {
   const withExistingFile = fakeResource({filePath: existingFile})
 
   const template = fakeCards({
-    sidebarItems: [
+    sidebarItems: createEntityList([
       {
         ...createResourceList(),
-        resources: [withExistingFile],
+        resources: createEntityList([withExistingFile]),
       },
-    ],
+    ]),
   })
 
   const event = fakeEvent({

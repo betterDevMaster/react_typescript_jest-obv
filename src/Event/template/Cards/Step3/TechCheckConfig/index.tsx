@@ -25,7 +25,7 @@ import {now} from 'lib/date-time'
 import TemplateFields from 'Event/template/Cards/Step3/TechCheckConfig/TemplateFields'
 import {TechCheckPreview} from 'organization/Event/TechCheckConfig/TechCheckPreview'
 import Box from '@material-ui/core/Box'
-import {Cards, useCards} from 'Event/template/Cards'
+import {Cards, useCardsTemplate, useCardsUpdate} from 'Event/template/Cards'
 import TechCheck from 'Event/template/Cards/Step3/TechCheck'
 import LocalizedDateTimePicker from 'lib/LocalizedDateTimePicker'
 import SkipTechCheckRulesConfig from 'Event/template/SimpleBlog/Step3/TechCheckConfig/SkipTechCheckRulesConfig'
@@ -58,7 +58,6 @@ export interface TechCheckData {
   body: string
   start: string
   is_enabled: boolean
-  template: ObvioEvent['template']
   content: string
 }
 
@@ -79,7 +78,8 @@ export default function Form() {
   const setTechCheck = useSetTechCheck()
   const dispatch = useDispatch()
   const mounted = useRef(true)
-  const {template} = useCards()
+  const template = useCardsTemplate()
+  const updateTemplate = useCardsUpdate()
   const {techCheck, set: setTemplateProp} = useTemplateTechCheckProps()
   const {event} = useEvent()
   const [rules, setRules] = useState(template.skipTechCheckRules)
@@ -101,21 +101,12 @@ export default function Form() {
   const submit = (data: Omit<TechCheckData, 'template'>) => {
     setSubmitting(true)
 
-    /**
-     * Add in template props. Template props are handled outside
-     * of react hook forms so we'll mix them in here to be
-     * saved together with the template.
-     */
-    const withTemplate = {
-      ...data,
-      template: {
-        ...template,
-        techCheck,
-        skipTechCheckRules: rules,
-      },
-    }
+    updateTemplate({
+      techCheck,
+      skipTechCheckRules: rules,
+    })
 
-    setTechCheck(withTemplate)
+    setTechCheck(data)
       .then((event) => {
         dispatch(setEvent(event))
       })

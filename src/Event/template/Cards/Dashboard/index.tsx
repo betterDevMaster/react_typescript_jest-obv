@@ -9,7 +9,7 @@ import BodyHTMLEmbed from 'Event/template/Cards/Dashboard/BodyHTMLEmbed'
 import {useEditMode} from 'Event/Dashboard/editor/state/edit-mode'
 import {spacing} from 'lib/ui/theme'
 import withStyles from '@material-ui/core/styles/withStyles'
-import {useCards} from 'Event/template/Cards'
+import {useCardsTemplate} from 'Event/template/Cards'
 
 export default function CardsDashboard(props: {user: User}) {
   return (
@@ -26,8 +26,7 @@ export default function CardsDashboard(props: {user: User}) {
 
 function useSidebarWidth() {
   const isEditMode = useEditMode()
-  const {template} = useCards()
-  const {sidebar} = template
+  const {sidebar} = useCardsTemplate()
 
   if (isEditMode || sidebar.isVisible) {
     return 4

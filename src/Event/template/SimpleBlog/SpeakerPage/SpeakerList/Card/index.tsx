@@ -7,7 +7,7 @@ import {Speaker} from 'Event/SpeakerPage'
 import {useSpeakers} from 'organization/Event/SpeakersProvider'
 import Clickable from 'lib/ui/Clickable'
 import {Draggable} from 'react-beautiful-dnd'
-import {useSimpleBlog} from 'Event/template/SimpleBlog'
+import {useSimpleBlogTemplate} from 'Event/template/SimpleBlog'
 
 type SpeakerProps = {
   index: number
@@ -48,7 +48,7 @@ function Editable(props: SpeakerProps) {
 
 function Content(props: SpeakerProps) {
   const {speaker} = props
-  const {template} = useSimpleBlog()
+  const template = useSimpleBlogTemplate()
 
   const imageSize = template.speakers.speakerImageSize
   const contentSize = (12 - imageSize) as GridSize

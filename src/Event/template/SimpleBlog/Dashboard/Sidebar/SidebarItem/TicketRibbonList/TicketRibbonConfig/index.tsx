@@ -1,4 +1,5 @@
 import styled from 'styled-components'
+import {v4 as uuid} from 'uuid'
 import TextField from '@material-ui/core/TextField'
 import ColorPicker from 'lib/ui/ColorPicker'
 import {TicketRibbon} from 'Event/template/SimpleBlog/Dashboard/Sidebar/SidebarItem/TicketRibbonList/TicketRibbon'
@@ -14,9 +15,10 @@ import ComponentConfig, {
 } from 'organization/Event/DashboardConfig/ComponentConfig'
 import {Controller, useForm, UseFormMethods} from 'react-hook-form'
 import {TicketRibbonListProps} from 'Event/template/SimpleBlog/Dashboard/Sidebar/SidebarItem/TicketRibbonList'
-import {useUpdateSidebarItem} from 'Event/template/SimpleBlog/Dashboard/Sidebar/SidebarItem'
 import TicketRibbonUpload from 'organization/Event/DashboardConfig/TicketRibbonUpload'
 import {useDeleteCustomRibbon} from 'organization/Event/DashboardConfig/TicketRibbonUpload/UploadedTicketRibbon'
+import {REMOVE} from 'Event/TemplateUpdateProvider'
+import {useEditSidebarItem} from 'Event/template/SimpleBlog/Dashboard/Sidebar/SidebarItem'
 
 const MAX_NUM_CHARACTERS = 9
 
@@ -31,23 +33,22 @@ export interface TicketRibbonConfigProps {
 
 export function TicketRibbonConfig(
   props: ComponentConfigProps & {
+    id?: string
     list: TicketRibbonListProps
-    index?: number
     ticketRibbon: TicketRibbon
   },
 ) {
-  const {index, isVisible, onClose, ticketRibbon, list} = props
-  const {ribbons: ticketRibbons} = list
+  const {isVisible, onClose, ticketRibbon, list, id} = props
   const {visible: ruleConfigVisible, toggle: toggleRuleConfig} = useRuleConfig()
   const [error, setError] = useState('')
   const [processing, setProcessing] = useState(false)
   const deleteCustomRibbon = useDeleteCustomRibbon()
   const {control, handleSubmit} = useForm()
-  const updateItem = useUpdateSidebarItem()
 
   const [rules, setRules] = useState(ticketRibbon.rules)
   const [text, setText] = useState(ticketRibbon.text)
   const [customRibbon, setCustomRibbon] = useState(ticketRibbon.customRibbon)
+  const {update: updateItem} = useEditSidebarItem()
 
   useEffect(() => {
     if (isVisible) {
@@ -59,24 +60,26 @@ export function TicketRibbonConfig(
     setCustomRibbon(ticketRibbon.customRibbon)
   }, [isVisible, ticketRibbon])
 
-  const update = (index: number, updated: TicketRibbon) => {
+  const update = (id: string, updated: TicketRibbon) => {
     updateItem({
-      ...list,
-      ribbons: ticketRibbons.map((tr, i) => {
-        const isTarget = i === index
-        if (isTarget) {
-          return updated
-        }
-
-        return tr
-      }),
+      ribbons: {
+        entities: {
+          [id]: updated,
+        },
+      },
     })
   }
 
   const insert = (newRibbon: TicketRibbon) => {
+    const id = uuid()
+
     updateItem({
-      ...list,
-      ribbons: [...ticketRibbons, newRibbon],
+      ribbons: {
+        ids: [...list.ribbons.ids, id],
+        entities: {
+          [id]: newRibbon,
+        },
+      },
     })
   }
 
@@ -88,8 +91,8 @@ export function TicketRibbonConfig(
       customRibbon,
     }
 
-    if (index !== undefined) {
-      update(index, ribbon)
+    if (id !== undefined) {
+      update(id, ribbon)
       onClose()
       return
     }
@@ -108,8 +111,8 @@ export function TicketRibbonConfig(
   }
 
   const remove = async () => {
-    if (index === undefined) {
-      throw new Error('Missing index for ticket ribbon')
+    if (!id) {
+      throw new Error('Missing id')
     }
 
     if (ticketRibbon.customRibbon) {
@@ -124,12 +127,17 @@ export function TicketRibbonConfig(
       }
     }
 
-    const removed = ticketRibbons.filter((_, i) => i !== index)
-    onClose()
+    const removed = list.ribbons.ids.filter((i) => i !== id)
     updateItem({
-      ...list,
-      ribbons: removed,
+      ribbons: {
+        ids: removed,
+        entities: {
+          [id]: REMOVE,
+        },
+      },
     })
+
+    onClose()
   }
 
   const onChangeText = (val: string) => {

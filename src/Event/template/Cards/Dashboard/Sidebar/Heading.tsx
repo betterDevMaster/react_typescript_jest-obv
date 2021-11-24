@@ -1,4 +1,4 @@
-import {useCards} from 'Event/template/Cards'
+import {useCardsTemplate} from 'Event/template/Cards'
 import React from 'react'
 import styled from 'styled-components'
 
@@ -6,8 +6,7 @@ export default function Heading(props: {
   children: string
   'aria-label'?: string
 }) {
-  const {template} = useCards()
-  const {sidebar} = template
+  const {sidebar} = useCardsTemplate()
   return (
     <StyledContainer
       color={sidebar.headBackgroundColor}

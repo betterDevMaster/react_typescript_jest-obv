@@ -4,19 +4,16 @@ import {Sponsor} from 'Event/SponsorPage'
 import Card from 'Event/template/Cards/Sponsors/SponsorList/Card'
 import React from 'react'
 import grey from '@material-ui/core/colors/grey'
-import {useTemplate} from 'Event/TemplateProvider'
 import {DragDropContext, Droppable, DropResult} from 'react-beautiful-dnd'
-import {useCards} from 'Event/template/Cards'
+import {useCardsTemplate, useCardsUpdate} from 'Event/template/Cards'
 
 export default function SponsorList(props: {
   className?: string
   sponsors: Sponsor[]
   isEditMode?: boolean
 }) {
-  const {template} = useCards()
-  const {sponsors: sponsorPageSettings} = template
+  const {sponsors: sponsorPageSettings} = useCardsTemplate()
 
-  const handleDrag = useHandleDrag()
   const sortedSponsors = useSortedSponsors(props.sponsors)
 
   const isEmpty = props.sponsors.length === 0
@@ -39,7 +36,21 @@ export default function SponsorList(props: {
   }
 
   return (
-    <DragDropContext onDragEnd={handleDrag(sortedSponsors)}>
+    <DroppableList sortedSponsors={sortedSponsors} className={props.className}>
+      {sponsors}
+    </DroppableList>
+  )
+}
+
+function DroppableList(props: {
+  sortedSponsors: Sponsor[]
+  className?: string
+  children: React.ReactNode[]
+}) {
+  const handleDrag = useHandleDrag()
+
+  return (
+    <DragDropContext onDragEnd={handleDrag(props.sortedSponsors)}>
       <Droppable droppableId="drag-and-drop-sponsors">
         {(provided) => (
           <Box
@@ -48,7 +59,7 @@ export default function SponsorList(props: {
             className={props.className}
           >
             <>
-              {sponsors}
+              {props.children}
               {provided.placeholder}
             </>
           </Box>
@@ -68,7 +79,7 @@ export default function SponsorList(props: {
  * @returns
  */
 function useSortedSponsors(sponsors: Sponsor[]) {
-  const {sponsors: pageSettings} = useTemplate()
+  const {sponsors: pageSettings} = useCardsTemplate()
 
   const order = pageSettings?.orderedIds || []
 
@@ -90,8 +101,7 @@ function useSortedSponsors(sponsors: Sponsor[]) {
 }
 
 function useHandleDrag() {
-  const {update: updateTemplate} = useCards()
-  const update = updateTemplate.object('sponsors')
+  const update = useCardsUpdate()
 
   return (sponsors: Sponsor[]) => (result: DropResult) => {
     const {destination, source} = result
@@ -105,7 +115,11 @@ function useHandleDrag() {
     moved.splice(destination.index, 0, removed)
 
     const orderedIds = moved.map((f) => f.id)
-    update('orderedIds')(orderedIds)
+    update({
+      sponsors: {
+        orderedIds,
+      },
+    })
   }
 }
 

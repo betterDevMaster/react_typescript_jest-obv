@@ -1,8 +1,7 @@
 import TextField from '@material-ui/core/TextField'
 import InputLabel from '@material-ui/core/InputLabel'
-import {usePanels} from 'Event/template/Panels'
+import {usePanelsTemplate, usePanelsUpdate} from 'Event/template/Panels'
 import {TicketRibbon} from 'Event/template/Panels/Dashboard/TicketRibbonList/TicketRibbon'
-import {useDispatchUpdate} from 'Event/TemplateProvider'
 import RuleConfig, {useRuleConfig} from 'Event/attendee-rules/RuleConfig'
 import ColorPicker from 'lib/ui/ColorPicker'
 import FontStyleInput from 'lib/ui/typography/FontStyleInput'
@@ -32,10 +31,8 @@ export default function TicketRibbonConfig(
   const [processing, setProcessing] = useState(false)
   const deleteCustomRibbon = useDeleteCustomRibbon()
   const {control, handleSubmit, register, errors} = useForm()
-  const saveTemplate = useDispatchUpdate()
-  const {
-    template: {ticketRibbons},
-  } = usePanels()
+  const saveTemplate = usePanelsUpdate()
+  const {ticketRibbons} = usePanelsTemplate()
 
   const [rules, setRules] = useState(ticketRibbon.rules)
   const [letterUpload, setLetterUpload] = useState(ticketRibbon.letterUpload)

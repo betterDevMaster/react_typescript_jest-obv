@@ -11,7 +11,7 @@ import Grid from '@material-ui/core/Grid'
 import Box from '@material-ui/core/Box'
 import {useAttendeeVariables} from 'Event'
 import Typography from '@material-ui/core/Typography'
-import {useSimpleBlog} from 'Event/template/SimpleBlog'
+import {useSimpleBlogTemplate} from 'Event/template/SimpleBlog'
 import Content from 'lib/ui/form/TextEditor/Content'
 
 export default function Waiver() {
@@ -25,7 +25,7 @@ export default function Waiver() {
     body,
   } = useWaiver()
 
-  const {template} = useSimpleBlog()
+  const template = useSimpleBlogTemplate()
   const {isDarkMode} = template
   const v = useAttendeeVariables()
   const color = isDarkMode ? '#FFFFFF' : '#000000'

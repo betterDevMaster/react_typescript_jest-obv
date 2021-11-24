@@ -13,6 +13,7 @@ import {api} from 'lib/url'
 import {useOrganization} from 'organization/OrganizationProvider'
 import {ObvioEvent} from 'Event'
 import {setEvent} from 'Event/state/actions'
+import {Panels, usePanelsTemplate, usePanelsUpdate} from 'Event/template/Panels'
 import {useDispatch} from 'react-redux'
 import {waiverLogoPath} from 'Event/Step2/WaiverProvider'
 import {fetchFile} from 'lib/http-client'
@@ -31,7 +32,11 @@ import {
   DEFAULT_SIGNATURE_PROMPT,
 } from 'Event/Step2/WaiverProvider'
 
-import TemplateFields from 'Event/template/Panels/Step2/WaiverConfig/TemplateFields'
+import TemplateFields, {
+  DEFAULT_WAIVER_CONFIG_PROPS,
+  PanelsWaiverTemplateProps,
+  WaiverTemplatePropSetter,
+} from 'Event/template/Panels/Step2/WaiverConfig/TemplateFields'
 import Preview from 'organization/Event/WaiverConfig/Preview'
 import Step2 from 'Event/template/Panels/Step2'
 import {fieldError} from 'lib/form'
@@ -57,6 +62,11 @@ export default function WaiverConfig() {
   } = useForm()
   const [submitting, setSubmitting] = useState(false)
   const [logo, setLogo] = useState<null | File>(null)
+  const {
+    waiverConfig,
+    set: setTemplateProp,
+    updateTemplate,
+  } = useTemplateWaiverProps()
   const body = watch('body')
   const agree_statement = watch('agree_statement')
   const signature_prompt = watch('signature_prompt')
@@ -132,6 +142,9 @@ export default function WaiverConfig() {
       .then((event) => {
         setResponseError(null)
         dispatch(setEvent(event))
+      })
+      .then((event) => {
+        updateTemplate({waiver: waiverConfig})
       })
       .catch((e) => {
         setResponseError(e)
@@ -266,7 +279,11 @@ export default function WaiverConfig() {
 
           <Grid container spacing={3}>
             <Grid item xs={12} md={12}>
-              <TemplateFields submitting={submitting} />
+              <TemplateFields
+                waiver={waiverConfig}
+                set={setTemplateProp}
+                submitting={submitting}
+              />
             </Grid>
             <Grid item xs={12} md={12}>
               <Grid item xs={12} md={12}>
@@ -319,6 +336,35 @@ function BodyError(props: {error?: string}) {
   }
 
   return <FormHelperText error>{props.error}</FormHelperText>
+}
+
+function useTemplateWaiverProps() {
+  const updateTemplate = usePanelsUpdate()
+
+  const [waiverConfig, setWaiverConfig] = useState<PanelsWaiverTemplateProps>(
+    DEFAULT_WAIVER_CONFIG_PROPS,
+  )
+
+  const {waiver} = usePanelsTemplate()
+
+  useEffect(() => {
+    if (!waiver) {
+      return
+    }
+    const fetchedTechCheck = waiver as Panels['waiver']
+    setWaiverConfig(fetchedTechCheck || DEFAULT_WAIVER_CONFIG_PROPS)
+  }, [waiver])
+
+  const set: WaiverTemplatePropSetter = (key) => (value) => {
+    const updated = {
+      ...waiver,
+      [key]: value,
+    }
+
+    setWaiverConfig(updated)
+  }
+
+  return {waiverConfig, set, updateTemplate}
 }
 
 function useSetWaiver() {

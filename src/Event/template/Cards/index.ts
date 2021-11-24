@@ -4,7 +4,7 @@ import {EntityList} from 'lib/list'
 import {colors} from 'lib/ui/theme'
 import {Column} from 'lib/ui/layout'
 import {GridSize} from '@material-ui/core/Grid'
-import {useTemplate, useUpdate} from 'Event/TemplateProvider'
+import {useTemplate} from 'Event/TemplateProvider'
 import {BaseTemplate, BASE_DEFAULTS, Header} from 'Event/template'
 import {BlogPost} from 'Event/Dashboard/components/BlogPost'
 import {DeepRequired} from 'lib/type-utils'
@@ -13,18 +13,21 @@ import {InputStyles} from 'Event/Question'
 import {CountDownTimer} from 'Event/Dashboard/components/CountDownTimer'
 import {Hero} from 'Event/template/Cards/Dashboard/Hero/HeroConfig'
 import {CardsNavButtonProps} from 'Event/template/Cards/Dashboard/CardsNavButton'
+import {useTemplateUpdate} from 'Event/TemplateUpdateProvider'
 export const CARDS = 'Cards'
 
-export function useCards() {
+export function useCardsTemplate() {
   const template = useTemplate()
-
-  const update = useUpdate<Cards>()
 
   if (template.name !== CARDS) {
     throw new Error('useCards called with wrong template')
   }
 
-  return {template, update}
+  return template
+}
+
+export function useCardsUpdate() {
+  return useTemplateUpdate<Cards>()
 }
 
 export type Cards = BaseTemplate &
@@ -43,7 +46,7 @@ export type Cards = BaseTemplate &
     }
     hero: Hero
     sidebar: Sidebar
-    sidebarItems: SidebarItem[]
+    sidebarItems: EntityList<SidebarItem>
     blogPosts: EntityList<BlogPost>
     textColor?: string
     linkColor?: string
@@ -314,7 +317,10 @@ export const createCards = (): DeepRequired<Cards> => ({
     headBackgroundBorder: 15,
     headTextColor: '#ffffff',
   },
-  sidebarItems: [],
+  sidebarItems: {
+    entities: {},
+    ids: [],
+  },
   techCheck: {
     buttonText: 'submit',
     buttonBackground: 'blue',

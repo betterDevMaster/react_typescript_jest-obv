@@ -2,38 +2,35 @@ import React from 'react'
 import styled from 'styled-components'
 import {useEvent} from 'Event/EventProvider'
 import {useAttendeeVariables} from 'Event'
-import {useSimpleBlog} from 'Event/template/SimpleBlog'
+import {useSimpleBlogTemplate} from 'Event/template/SimpleBlog'
 import {useToggle} from 'lib/toggle'
 import {PointsSummaryConfig} from 'Event/template/SimpleBlog/Dashboard/Sidebar/SidebarItem/PointsSummary/PointsSummaryConfig'
-import {uuid} from 'lib/uuid'
 import EditModeOnly from 'Event/Dashboard/editor/views/EditModeOnly'
 import Button from '@material-ui/core/Button'
-import {useRemoveSidebarItem} from 'Event/template/SimpleBlog/Dashboard/Sidebar/SidebarItem'
 import {RemoveButton} from 'organization/Event/DashboardConfig/ComponentConfig'
 import Section from 'Event/template/SimpleBlog/Dashboard/Sidebar/Section'
+import {useEditSidebarItem} from 'Event/template/SimpleBlog/Dashboard/Sidebar/SidebarItem'
 
 export const POINTS_SUMMARY = 'Points Summary'
 export interface PointsSummaryProps {
-  id: string
   type: typeof POINTS_SUMMARY
   description: string
   summary?: string
 }
 
 export const createPointsSummary = (): PointsSummaryProps => ({
-  id: uuid(),
   type: POINTS_SUMMARY,
   description: '',
   summary: '',
 })
 
 export default function PointsSummary(props: PointsSummaryProps) {
-  const {template} = useSimpleBlog()
+  const template = useSimpleBlogTemplate()
   const {sidebar} = template
   const {summary, description} = props
   const v = useAttendeeVariables()
   const {flag: configVisible, toggle: toggleConfig} = useToggle()
-  const removeItem = useRemoveSidebarItem(props)
+  const {remove: removeItem} = useEditSidebarItem()
 
   return (
     <Section>

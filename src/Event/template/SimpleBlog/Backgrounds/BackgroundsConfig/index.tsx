@@ -7,10 +7,12 @@ import Typography from '@material-ui/core/Typography'
 import withStyles from '@material-ui/core/styles/withStyles'
 import Box from '@material-ui/core/Box'
 import ColorPicker from 'lib/ui/ColorPicker'
-import {SimpleBlog, useSimpleBlog} from 'Event/template/SimpleBlog'
+import {
+  useSimpleBlogTemplate,
+  useSimpleBlogUpdate,
+} from 'Event/template/SimpleBlog'
 import {handleChangeSlider} from 'lib/dom'
 import {spacing} from 'lib/ui/theme'
-import {useUpdate} from 'Event/EventProvider'
 import {useForm} from 'react-hook-form'
 import {useToggle} from 'lib/toggle'
 import BackgroundImage from 'Event/template/SimpleBlog/Backgrounds/BackgroundsConfig/BackgroundImage'
@@ -27,13 +29,11 @@ const PER_ROW_MAX = 3
 
 export default function BackgroundsConfig() {
   const {flag: pageSettingsVisible, toggle: togglePageSettings} = useToggle()
-  const {flag: processing, toggle: toggleProcessing} = useToggle()
   const {handleSubmit} = useForm()
-  const {template} = useSimpleBlog()
+  const template = useSimpleBlogTemplate()
+  const updateTemplate = useSimpleBlogUpdate()
 
   const templateSettings = template.zoomBackgrounds
-
-  const updateEvent = useUpdate()
 
   const [borderColor, setBorderColor] = useState(templateSettings.borderColor)
   const [borderRadius, setBorderRadius] = useState(
@@ -45,34 +45,16 @@ export default function BackgroundsConfig() {
   const [imagesPerRow, setImagesPerRow] = useState(
     templateSettings.imagesPerRow,
   )
-  const [error, setError] = useState<string | null>(null)
-
-  const clearError = () => setError(null)
 
   const submit = () => {
-    if (processing) {
-      return
-    }
-
-    toggleProcessing()
-    clearError()
-
-    const updatedTemplate: SimpleBlog = {
-      ...template,
+    updateTemplate({
       zoomBackgrounds: {
-        ...(template.zoomBackgrounds || {}),
         borderColor,
         borderRadius,
         borderThickness,
         imagesPerRow,
       },
-    }
-
-    updateEvent({
-      template: updatedTemplate,
     })
-      .catch(setError)
-      .finally(toggleProcessing)
   }
 
   return (
@@ -158,11 +140,9 @@ export default function BackgroundsConfig() {
           />
         </Grid>
       </Grid>
-      <Error>{error}</Error>
       <StyledSaveButton
         aria-label="create zoom backgrounds page"
         color="primary"
-        disabled={processing}
         fullWidth
         type="submit"
         variant="contained"
@@ -186,17 +166,3 @@ const StyledSaveButton = withStyles({
     marginTop: `${spacing[8]}!important`,
   },
 })(Button)
-
-const Error = (props: {children: string | null}) => {
-  if (!props.children) {
-    return null
-  }
-
-  return <ErrorText color="error">{props.children}</ErrorText>
-}
-
-const ErrorText = withStyles({
-  root: {
-    marginBottom: spacing[3],
-  },
-})(Typography)

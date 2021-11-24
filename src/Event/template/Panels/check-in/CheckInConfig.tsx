@@ -3,129 +3,217 @@ import Grid from '@material-ui/core/Grid'
 import InputLabel from '@material-ui/core/InputLabel'
 import Slider from '@material-ui/core/Slider'
 import TextField from '@material-ui/core/TextField'
-import {DEFAULTS, usePanels} from 'Event/template/Panels'
-import {handleChangeSlider, onChangeStringHandler} from 'lib/dom'
+import {
+  DEFAULTS,
+  Panels,
+  usePanelsTemplate,
+  usePanelsUpdate,
+} from 'Event/template/Panels'
+import {handleChangeSlider} from 'lib/dom'
 import IconSelect from 'lib/fontawesome/IconSelect'
 import ColorPicker from 'lib/ui/ColorPicker'
 import {SectionTitle} from 'organization/Event/Page'
 import Page from 'organization/Event/Page'
 import Layout from 'organization/user/Layout'
 import React from 'react'
+import Button from '@material-ui/core/Button'
+import {Control, Controller, FieldElement, useForm} from 'react-hook-form'
 
 export type Step = 1 | 2 | 3
 
 export default function CheckInConfig() {
-  const {template, update} = usePanels()
+  const update = usePanelsUpdate()
+  const template = usePanelsTemplate()
 
-  const updateCheckInLeftPanel = update.object('checkInLeftPanel')
-  const updateCheckInRightPanel = update.object('checkInRightPanel')
+  const {handleSubmit, control, register} = useForm()
+
+  const submit = (data: Panels) => {
+    update(data)
+  }
 
   return (
     <Layout>
       <Page>
-        <SectionTitle>Check In</SectionTitle>
-        <Box mb={2}>
-          <TextField
-            label="Title"
-            value={template.checkInTitle}
-            onChange={onChangeStringHandler(update.primitive('checkInTitle'))}
-            inputProps={{'aria-label': 'check in title'}}
-            fullWidth
-          />
-        </Box>
-        <Box mb={2}>
-          <Grid container spacing={2}>
-            <Grid xs={12} md={6} item>
-              <Box mb={1}>
-                <InputLabel>Left Panel</InputLabel>
-              </Box>
-              <ColorPicker
-                label="Background Color"
-                color={template.checkInLeftPanel.backgroundColor}
-                onPick={updateCheckInLeftPanel('backgroundColor')}
-                aria-label="check in left panel background color"
-              />
-              <Box mb={2}>
-                <InputLabel>Background Opacity</InputLabel>
-                <Slider
-                  min={0}
-                  max={1}
-                  step={0.1}
-                  onChange={handleChangeSlider(
-                    updateCheckInLeftPanel('backgroundOpacity'),
+        <form onSubmit={handleSubmit(submit)}>
+          <SectionTitle>Check In</SectionTitle>
+          <Box mb={2}>
+            <TextField
+              label="Title"
+              name="checkInTitle"
+              defaultValue={template.checkInTitle}
+              inputProps={{
+                'aria-label': 'check in title',
+                ref: register,
+              }}
+              fullWidth
+            />
+          </Box>
+          <Box mb={2}>
+            <Grid container spacing={2}>
+              <Grid xs={12} md={6} item>
+                <Box mb={1}>
+                  <InputLabel>Left Panel</InputLabel>
+                </Box>
+                <Controller
+                  name="checkInLeftPanel.backgroundColor"
+                  defaultValue={template.checkInLeftPanel.backgroundColor}
+                  control={control}
+                  render={({value, onChange}) => (
+                    <ColorPicker
+                      label="Background Color"
+                      color={value}
+                      onPick={onChange}
+                      aria-label="check in left panel background color"
+                    />
                   )}
-                  valueLabelDisplay="auto"
-                  value={template.checkInLeftPanel.backgroundOpacity}
                 />
-              </Box>
-              <ColorPicker
-                label="Text Color"
-                color={template.checkInLeftPanel.textColor}
-                onPick={updateCheckInLeftPanel('textColor')}
-                aria-label="check in left panel text color"
-              />
-            </Grid>
-            <Grid xs={12} md={6} item>
-              <Box mb={1}>
-                <InputLabel>Right Panel</InputLabel>
-              </Box>
-              <ColorPicker
-                label="Background Color"
-                color={template.checkInRightPanel.backgroundColor}
-                onPick={updateCheckInRightPanel('backgroundColor')}
-                aria-label="check in right panel background color"
-              />
-              <Box mb={2}>
-                <InputLabel>Background Opacity</InputLabel>
-                <Slider
-                  min={0}
-                  max={1}
-                  step={0.1}
-                  onChange={handleChangeSlider(
-                    updateCheckInRightPanel('backgroundOpacity'),
+
+                <Box mb={2}>
+                  <InputLabel>Background Opacity</InputLabel>
+                  <Controller
+                    name="checkInLeftPanel.backgroundOpacity"
+                    defaultValue={template.checkInLeftPanel.backgroundOpacity}
+                    control={control}
+                    render={({value, onChange}) => (
+                      <Slider
+                        key={`checkInLeftPanel-backgroundOpacity-${value}`}
+                        min={0}
+                        max={1}
+                        step={0.1}
+                        onChange={handleChangeSlider(onChange)}
+                        valueLabelDisplay="auto"
+                        defaultValue={value}
+                      />
+                    )}
+                  />
+                </Box>
+                <Controller
+                  name="checkInLeftPanel.textColor"
+                  defaultValue={template.checkInLeftPanel.textColor}
+                  control={control}
+                  render={({value, onChange}) => (
+                    <ColorPicker
+                      label="Text Color"
+                      color={value}
+                      onPick={onChange}
+                      aria-label="check in left panel text color"
+                    />
                   )}
-                  valueLabelDisplay="auto"
-                  value={template.checkInRightPanel.backgroundOpacity}
                 />
-              </Box>
-              <ColorPicker
-                label="Text Color"
-                color={template.checkInRightPanel.textColor}
-                onPick={updateCheckInRightPanel('textColor')}
-                aria-label="check in right panel text color"
-              />
+              </Grid>
+              <Grid xs={12} md={6} item>
+                <Box mb={1}>
+                  <InputLabel>Right Panel</InputLabel>
+                </Box>
+                <Controller
+                  name="checkInRightPanel.backgroundColor"
+                  defaultValue={template.checkInRightPanel.backgroundColor}
+                  control={control}
+                  render={({value, onChange}) => (
+                    <ColorPicker
+                      label="Background Color"
+                      color={value}
+                      onPick={onChange}
+                      aria-label="check in right panel background color"
+                    />
+                  )}
+                />
+
+                <Box mb={2}>
+                  <InputLabel>Background Opacity</InputLabel>
+
+                  <Controller
+                    name="checkInRightPanel.backgroundOpacity"
+                    defaultValue={template.checkInRightPanel.backgroundOpacity}
+                    control={control}
+                    render={({value, onChange}) => (
+                      <Slider
+                        key={`checkInRightPanel-backgroundOpacity-${value}`}
+                        min={0}
+                        max={1}
+                        step={0.1}
+                        onChange={handleChangeSlider(onChange)}
+                        valueLabelDisplay="auto"
+                        defaultValue={value}
+                      />
+                    )}
+                  />
+                </Box>
+
+                <Controller
+                  name="checkInRightPanel.textColor"
+                  defaultValue={template.checkInRightPanel.textColor}
+                  control={control}
+                  render={({value, onChange}) => (
+                    <ColorPicker
+                      label="Text Color"
+                      color={value}
+                      onPick={onChange}
+                      aria-label="check in right panel text color"
+                    />
+                  )}
+                />
+              </Grid>
             </Grid>
-          </Grid>
-        </Box>
-        <Box mb={2}>
-          <ColorPicker
-            label="Step Label Color"
-            color={template.stepLabelColor}
-            onPick={update.primitive('stepLabelColor')}
-            aria-label="step label color"
+          </Box>
+          <Box mb={2}>
+            <Controller
+              name="stepLabelColor"
+              defaultValue={template.stepLabelColor}
+              control={control}
+              render={({value, onChange}) => (
+                <ColorPicker
+                  label="Step Label Color"
+                  color={value}
+                  onPick={onChange}
+                  aria-label="step label color"
+                />
+              )}
+            />
+
+            <ColorPicker
+              label="Step Label Color"
+              color={template.stepLabelColor}
+              onPick={(value) => update({stepLabelColor: value})}
+              aria-label="step label color"
+            />
+          </Box>
+          <StepConfig
+            inputLabel="Step 1"
+            label={template.step1Label}
+            icon={template.step1Icon || DEFAULTS.step1Icon}
+            labelFieldName="step1Label"
+            iconFieldName="step1Icon"
+            control={control}
+            register={register}
           />
-        </Box>
-        <StepConfig
-          inputLabel="Step 1"
-          label={template.step1Label}
-          icon={template.step1Icon || DEFAULTS.step1Icon}
-          onChangeLabel={update.primitive('step1Label')}
-          onChangeIcon={update.primitive('step1Icon')}
-        />
-        <StepConfig
-          inputLabel="Step 2"
-          label={template.step2Label}
-          icon={template.step2Icon || DEFAULTS.step2Icon}
-          onChangeLabel={update.primitive('step2Label')}
-          onChangeIcon={update.primitive('step2Icon')}
-        />
-        <StepConfig
-          inputLabel="Step 3"
-          label={template.step3Label}
-          icon={template.step3Icon || DEFAULTS.step3Icon}
-          onChangeLabel={update.primitive('step3Label')}
-          onChangeIcon={update.primitive('step3Icon')}
-        />
+          <StepConfig
+            inputLabel="Step 2"
+            label={template.step2Label}
+            icon={template.step2Icon || DEFAULTS.step2Icon}
+            labelFieldName="step2Label"
+            iconFieldName="step2Icon"
+            control={control}
+            register={register}
+          />
+          <StepConfig
+            inputLabel="Step 3"
+            label={template.step3Label}
+            icon={template.step3Icon || DEFAULTS.step3Icon}
+            labelFieldName="step3Label"
+            iconFieldName="step3Icon"
+            control={control}
+            register={register}
+          />
+          <Button
+            variant="contained"
+            aria-label="save"
+            type="submit"
+            color="primary"
+          >
+            Save
+          </Button>
+        </form>
       </Page>
     </Layout>
   )
@@ -134,18 +222,12 @@ export default function CheckInConfig() {
 function StepConfig(props: {
   inputLabel: string
   label: string
+  labelFieldName: string
   icon: string
-  onChangeLabel: (label: string) => void
-  onChangeIcon: (icon: string) => void
+  iconFieldName: string
+  control: Control
+  register: FieldElement
 }) {
-  const handleIconSelect = (icon: string | null) => {
-    if (!icon) {
-      return
-    }
-
-    props.onChangeIcon(icon)
-  }
-
   return (
     <>
       <Box mb={2}>
@@ -153,14 +235,24 @@ function StepConfig(props: {
           <Grid xs={6} item>
             <TextField
               label={props.inputLabel}
-              value={props.label}
-              onChange={onChangeStringHandler(props.onChangeLabel)}
-              inputProps={{'aria-label': props.inputLabel}}
               fullWidth
+              name={props.labelFieldName}
+              defaultValue={props.label}
+              inputProps={{
+                'aria-label': props.inputLabel,
+                ref: props.register,
+              }}
             />
           </Grid>
           <Grid xs={6} item>
-            <IconSelect value={props.icon} onChange={handleIconSelect} />
+            <Controller
+              name={props.iconFieldName}
+              defaultValue={props.icon}
+              control={props.control}
+              render={({value, onChange}) => (
+                <IconSelect value={value} onChange={onChange} />
+              )}
+            />
           </Grid>
         </Grid>
       </Box>

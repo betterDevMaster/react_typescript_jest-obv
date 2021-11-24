@@ -1,33 +1,29 @@
-import React, {useEffect, useState} from 'react'
+import React from 'react'
 import TextField from '@material-ui/core/TextField'
-import {onChangeStringHandler} from 'lib/dom'
 import Typography from '@material-ui/core/Typography'
 import Box from '@material-ui/core/Box'
 import styled from 'styled-components'
-import {useSimpleBlog} from 'Event/template/SimpleBlog'
+import {
+  SimpleBlog,
+  useSimpleBlogTemplate,
+  useSimpleBlogUpdate,
+} from 'Event/template/SimpleBlog'
 import ComponentConfig, {
   ComponentConfigProps,
   SaveButton,
 } from 'organization/Event/DashboardConfig/ComponentConfig'
+import {useForm} from 'react-hook-form'
 
 export function BodyHTMLEmbedConfig(props: ComponentConfigProps) {
   const {isVisible: visible, onClose} = props
-  const {template, update} = useSimpleBlog()
-  const {bodyHTMLEmbed} = template
-  const updateHTML = update.primitive('bodyHTMLEmbed')
+  const template = useSimpleBlogTemplate()
+  const update = useSimpleBlogUpdate()
+  const {handleSubmit, register} = useForm()
 
-  const [embed, setEmbed] = useState(bodyHTMLEmbed)
-
-  useEffect(() => {
-    if (visible) {
-      return
-    }
-
-    setEmbed(bodyHTMLEmbed)
-  }, [visible, bodyHTMLEmbed])
-
-  const save = () => {
-    updateHTML(embed)
+  const save = (data: Pick<SimpleBlog, 'bodyHTMLEmbed'>) => {
+    update({
+      ...data,
+    })
     onClose()
   }
 
@@ -49,19 +45,22 @@ export function BodyHTMLEmbedConfig(props: ComponentConfigProps) {
           <li>If the HTML crashes the app, refresh to try again.</li>
         </List>
       </Box>
-      <TextField
-        value={embed || ''}
-        label="HTML"
-        multiline
-        rows={10}
-        variant="outlined"
-        fullWidth
-        onChange={onChangeStringHandler(setEmbed)}
-        inputProps={{
-          'aria-label': 'body embed html input',
-        }}
-      />
-      <SaveButton onClick={save} />
+      <form onSubmit={handleSubmit(save)}>
+        <TextField
+          name="bodyHTMLEmbed"
+          defaultValue={template.bodyHTMLEmbed}
+          label="HTML"
+          multiline
+          rows={10}
+          variant="outlined"
+          fullWidth
+          inputProps={{
+            'aria-label': 'body embed html input',
+            ref: register,
+          }}
+        />
+        <SaveButton />
+      </form>
     </ComponentConfig>
   )
 }

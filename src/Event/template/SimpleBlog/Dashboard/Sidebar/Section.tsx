@@ -1,4 +1,4 @@
-import {useSimpleBlog} from 'Event/template/SimpleBlog'
+import {useSimpleBlogTemplate} from 'Event/template/SimpleBlog'
 import React from 'react'
 import styled from 'styled-components'
 
@@ -9,9 +9,7 @@ const Section = React.forwardRef<
     className?: string
   }
 >((props, ref) => {
-  const {
-    template: {sidebar},
-  } = useSimpleBlog()
+  const {sidebar} = useSimpleBlogTemplate()
 
   /**
    * If empty is true, padding should be ignored.

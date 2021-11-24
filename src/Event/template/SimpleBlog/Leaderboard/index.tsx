@@ -9,7 +9,7 @@ import TableRow from '@material-ui/core/TableRow'
 import TableBody from '@material-ui/core/TableBody'
 import {useAttendeeVariables} from 'Event'
 import {PageTitle, PageDescription} from 'Event/template/SimpleBlog/Page'
-import {useSimpleBlog} from 'Event/template/SimpleBlog'
+import {useSimpleBlogTemplate} from 'Event/template/SimpleBlog'
 import Content from 'lib/ui/form/TextEditor/Content'
 import {eventRoutes} from 'Event/Routes'
 import {RelativeLink} from 'lib/ui/link/RelativeLink'
@@ -17,7 +17,7 @@ import {useEntries} from 'Event/Leaderboard'
 
 export default function SimpleBlogLeaderboard(props: {user: Attendee}) {
   const {entries} = useEntries()
-  const {template} = useSimpleBlog()
+  const template = useSimpleBlogTemplate()
   const {leaderboard: leaderboardPage} = template
 
   const v = useAttendeeVariables()

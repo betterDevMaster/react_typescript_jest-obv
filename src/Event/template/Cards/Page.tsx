@@ -5,7 +5,7 @@ import Header from 'Event/template/Cards/Dashboard/Header'
 import Menu from 'Event/template/Cards/Menu'
 import {User} from 'auth/user'
 import Footer from 'Event/template/Cards/Dashboard/Footer'
-import {useCards} from 'Event/template/Cards'
+import {useCardsTemplate} from 'Event/template/Cards'
 import LanguageSelectMenu from 'Event/LanguageSelector'
 import {muiDarkTheme, muiTheme} from 'lib/ui/theme'
 import {ThemeProvider} from '@material-ui/core/styles'
@@ -23,9 +23,7 @@ export default function CardsPage(props: {
 }) {
   const [menuVisible, setMenuVisible] = useState(false)
   const toggleMenu = () => setMenuVisible(!menuVisible)
-  const {template} = useCards()
-
-  const {isDarkMode} = template
+  const {isDarkMode} = useCardsTemplate()
 
   const theme = isDarkMode ? muiDarkTheme : muiTheme
 
@@ -53,10 +51,10 @@ export default function CardsPage(props: {
 }
 
 export function useTheme(isDarkMode?: boolean) {
-  const {template} = useCards()
+  const {accentColor} = useCardsTemplate()
 
   const options: MuiThemeOptions = {
-    secondaryColor: template.accentColor,
+    secondaryColor: accentColor,
   }
 
   return isDarkMode ? createMuiDarkTheme(options) : createMuiLightTheme(options)

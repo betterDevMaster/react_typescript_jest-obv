@@ -2,13 +2,13 @@ import React from 'react'
 import styled from 'styled-components'
 import {DraggableProvidedDragHandleProps} from 'react-beautiful-dnd'
 import {useEditMode} from 'Event/Dashboard/editor/state/edit-mode'
-import {useCards} from 'Event/template/Cards'
+import {useCardsTemplate} from 'Event/template/Cards'
 
 export default function DragHandleBar(props: {
   handleProps?: DraggableProvidedDragHandleProps
 }) {
   const isEditMode = useEditMode()
-  const {template} = useCards()
+  const {sidebar} = useCardsTemplate()
   if (!isEditMode) {
     return null
   }
@@ -16,8 +16,8 @@ export default function DragHandleBar(props: {
   return (
     <Box>
       <Handle {...props.handleProps}>
-        <Bar color={template.sidebar.textColor} />
-        <Bar color={template.sidebar.textColor} />
+        <Bar color={sidebar.textColor} />
+        <Bar color={sidebar.textColor} />
       </Handle>
     </Box>
   )

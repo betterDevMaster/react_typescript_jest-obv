@@ -6,7 +6,7 @@ import {spacing} from 'lib/ui/theme'
 import Button from '@material-ui/core/Button'
 import {useAttendeeVariables} from 'Event'
 import withStyles from '@material-ui/core/styles/withStyles'
-import {useSimpleBlog} from 'Event/template/SimpleBlog'
+import {useSimpleBlogTemplate} from 'Event/template/SimpleBlog'
 import {BodyHTMLEmbedConfig} from 'Event/template/SimpleBlog/Dashboard/BodyHTMLEmbed/BodyHTMLEmbedConfig'
 import {useToggle} from 'lib/toggle'
 
@@ -14,7 +14,7 @@ export default function BodyHTMLEmbed() {
   const anchor = useRef<HTMLDivElement>(null)
   const [isLoading, setIsLoading] = useState(false)
   const [scriptElements, setScriptElements] = useState<HTMLElement[]>([])
-  const {template} = useSimpleBlog()
+  const template = useSimpleBlogTemplate()
   const {bodyHTMLEmbed: bodyEmbed} = template
   const isEditMode = useEditMode()
   const v = useAttendeeVariables()
@@ -125,8 +125,8 @@ function EditButton() {
 
   return (
     <>
-      <BodyHTMLEmbedConfig isVisible={configVisible} onClose={toggleConfig} />
       <EditModeOnly>
+        <BodyHTMLEmbedConfig isVisible={configVisible} onClose={toggleConfig} />
         <StyledEditButton
           onClick={toggleConfig}
           fullWidth

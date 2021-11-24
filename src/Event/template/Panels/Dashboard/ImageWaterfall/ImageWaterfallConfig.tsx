@@ -1,32 +1,29 @@
 import React from 'react'
-import {useDispatchUpdate} from 'Event/TemplateProvider'
-import {Controller, useForm} from 'react-hook-form'
 import FormControl from '@material-ui/core/FormControl'
-import Slider from '@material-ui/core/Slider'
-import {handleChangeSlider, onChangeCheckedHandler} from 'lib/dom'
-import TextField from '@material-ui/core/TextField'
-import ColorPicker from 'lib/ui/ColorPicker'
 import InputLabel from '@material-ui/core/InputLabel'
+import Slider from '@material-ui/core/Slider'
+import TextField from '@material-ui/core/TextField'
+import {Controller, useForm} from 'react-hook-form'
 import styled from 'styled-components'
-import ActionSelect from 'Event/ActionsProvider/ActionSelect'
-import {Panels, usePanels} from 'Event/template/Panels'
-import {SaveButton} from 'organization/Event/DashboardConfig/ComponentConfig'
+import {handleChangeSlider, onChangeCheckedHandler} from 'lib/dom'
+import ColorPicker from 'lib/ui/ColorPicker'
 import TextEditor, {TextEditorContainer} from 'lib/ui/form/TextEditor'
 import Switch from 'lib/ui/form/Switch'
+import ActionSelect from 'Event/ActionsProvider/ActionSelect'
+import {Panels, usePanelsTemplate, usePanelsUpdate} from 'Event/template/Panels'
+import {SaveButton} from 'organization/Event/DashboardConfig/ComponentConfig'
 
 export default function PanelsImageWaterfallConfig(props: {
   onClose: () => void
 }) {
-  const {template} = usePanels()
+  const template = usePanelsTemplate()
+  const updateTemplate = usePanelsUpdate()
   const {imageWaterfall: current} = template
   const {control, handleSubmit, register} = useForm()
-
-  const updateTemplate = useDispatchUpdate()
 
   const submit = (data: Panels['imageWaterfall']) => {
     updateTemplate({
       imageWaterfall: {
-        ...current,
         ...data,
       },
     })

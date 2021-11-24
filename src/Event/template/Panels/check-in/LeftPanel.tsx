@@ -3,13 +3,12 @@ import styled from 'styled-components'
 import React from 'react'
 import Logo from 'Event/Logo'
 import {Step} from 'Event/template/Panels/check-in/CheckInConfig'
-import {usePanels} from 'Event/template/Panels'
+import {usePanelsTemplate} from 'Event/template/Panels'
 import {rgba} from 'lib/color'
 
 export default function LeftPanel(props: {step: Step}) {
-  const {
-    template: {checkInLeftPanel},
-  } = usePanels()
+  const template = usePanelsTemplate()
+  const {checkInLeftPanel} = template
 
   return (
     <Box

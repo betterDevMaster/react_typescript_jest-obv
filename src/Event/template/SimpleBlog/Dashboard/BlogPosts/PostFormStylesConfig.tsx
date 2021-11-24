@@ -1,12 +1,16 @@
 import TextField from '@material-ui/core/TextField'
-import {SimpleBlog, useSimpleBlog} from 'Event/template/SimpleBlog'
-import {onChangeNumberHandler, onUnknownChangeHandler} from 'lib/dom'
+import {
+  SimpleBlog,
+  useSimpleBlogTemplate,
+  useSimpleBlogUpdate,
+} from 'Event/template/SimpleBlog'
+import {onUnknownChangeHandler} from 'lib/dom'
 import ColorPicker from 'lib/ui/ColorPicker'
 import Select from '@material-ui/core/Select'
 import InputLabel from '@material-ui/core/InputLabel'
 import MenuItem from '@material-ui/core/MenuItem'
 import Box from '@material-ui/core/Box'
-import React, {useEffect, useMemo, useState} from 'react'
+import React from 'react'
 import Button from '@material-ui/core/Button'
 import styled from 'styled-components'
 import ComponentConfig, {
@@ -14,249 +18,239 @@ import ComponentConfig, {
 } from 'organization/Event/DashboardConfig/ComponentConfig'
 
 import {useToggle} from 'lib/toggle'
+import {Controller, useForm} from 'react-hook-form'
 
 export default function PostFormStylesConfig() {
-  const {flag: isVisible, toggle: togglePostFormStyleConfig} = useToggle()
+  const {flag: showingConfig, toggle: toggleConfig} = useToggle()
 
-  const {update} = useSimpleBlog()
+  const {postFormStyles} = useSimpleBlogTemplate()
+  const update = useSimpleBlogUpdate()
+  const {register, control, handleSubmit} = useForm()
 
-  const styles = usePostFormStyles()
+  const submit = (data: SimpleBlog['postFormStyles']) => {
+    update({
+      postFormStyles: data,
+    })
 
-  const [width, setWidth] = useState(styles.width)
-  const [position, setPosition] = useState(styles.position)
-  const [buttonSize, setButtonSize] = useState(styles.buttonSize)
-  const [buttonRadius, setButtonRadius] = useState(styles.buttonRadius)
-  const [buttonColor, setButtonColor] = useState(styles.buttonColor)
-  const [buttonBackgroundColor, setButtonBackgroundColor] = useState(
-    styles.buttonBackgroundColor,
-  )
-  const [buttonHoverBackgroundColor, setButtonHoverBackgroundColor] = useState(
-    styles.buttonHoverBackgroundColor,
-  )
-  const [buttonPosition, setButtonPosition] = useState(styles.buttonPosition)
-  const [buttonFontSize, setButtonFontSize] = useState(styles.buttonFontSize)
-
-  const [labelColor, setLabelColor] = useState(styles.formStyle.labelColor)
-  const [inputBoxBorderColor, setInputBoxBorderColor] = useState(
-    styles.formStyle.borderColor,
-  )
-  const [inputBoxBackgroundColor, setInputBoxBackgroundColor] = useState(
-    styles.formStyle.backgroundColor,
-  )
-  const [inputBoxBackgroundOpacity, setInputBoxBackgroundOpacity] = useState(
-    styles.formStyle.backgroundOpacity,
-  )
-  const [inputBoxColor, setInputBoxColor] = useState(styles.formStyle.textColor)
-  const [helperTextColor, setHelperTextColor] = useState(
-    styles.formStyle.helperTextColor,
-  )
-
-  const save = () => {
-    const updated: SimpleBlog['postFormStyles'] = {
-      width,
-      position,
-      buttonSize,
-      buttonRadius,
-      buttonColor,
-      buttonBackgroundColor,
-      buttonHoverBackgroundColor,
-      buttonPosition,
-      buttonFontSize,
-      inputStyles: {
-        labelColor,
-        borderColor: inputBoxBorderColor,
-        backgroundColor: inputBoxBackgroundColor,
-        backgroundOpacity: inputBoxBackgroundOpacity,
-        textColor: inputBoxColor,
-        helperTextColor,
-      },
-    }
-    update.primitive('postFormStyles')(updated)
-    togglePostFormStyleConfig()
+    toggleConfig()
   }
-
-  useEffect(() => {
-    if (isVisible) {
-      return
-    }
-    setWidth(styles.width)
-    setPosition(styles.position)
-    setButtonSize(styles.buttonSize)
-    setButtonRadius(styles.buttonRadius)
-    setButtonColor(styles.buttonColor)
-    setButtonBackgroundColor(styles.buttonBackgroundColor)
-    setButtonHoverBackgroundColor(styles.buttonHoverBackgroundColor)
-    setButtonPosition(styles.buttonPosition)
-    setButtonFontSize(styles.buttonFontSize)
-
-    setLabelColor(styles.formStyle.labelColor)
-    setInputBoxBorderColor(styles.formStyle.borderColor)
-    setInputBoxBackgroundColor(styles.formStyle.backgroundColor)
-    setInputBoxBackgroundOpacity(styles.formStyle.backgroundOpacity)
-    setInputBoxColor(styles.formStyle.textColor)
-    setHelperTextColor(styles.formStyle.helperTextColor)
-  }, [isVisible, styles])
 
   return (
     <>
-      <StyledEditPostFormStylesButton onClick={togglePostFormStyleConfig} />
-
+      <StyledEditPostFormStylesButton onClick={toggleConfig} />
       <ComponentConfig
-        isVisible={isVisible}
-        onClose={togglePostFormStyleConfig}
+        isVisible={showingConfig}
+        onClose={toggleConfig}
         title="Post Form Styles"
       >
-        <TextField
-          value={width}
-          label="Form Width %"
-          type="number"
-          fullWidth
-          inputProps={{
-            min: 1,
-            max: 100,
-          }}
-          onChange={onChangeNumberHandler(setWidth)}
-        />
-        <Box mb={2}>
-          <InputLabel>Form Position</InputLabel>
-          <Select
-            value={position}
-            onChange={onUnknownChangeHandler(setPosition)}
+        <form onSubmit={handleSubmit(submit)}>
+          <TextField
+            name="width"
+            defaultValue={postFormStyles.width}
+            label="Form Width %"
+            type="number"
             fullWidth
-          >
-            <MenuItem value="flex-end">Right</MenuItem>
-            <MenuItem value="center">Center</MenuItem>
-            <MenuItem value="flex-start">Left</MenuItem>
-          </Select>
-        </Box>
-        <ColorPicker
-          label="Label Text Color"
-          color={labelColor}
-          onPick={setLabelColor}
-          aria-label="latel text color"
-        />
-        <ColorPicker
-          label="Input Border Color"
-          color={inputBoxBorderColor}
-          onPick={setInputBoxBorderColor}
-          aria-label="input box border color"
-        />
-        <ColorPicker
-          label="Input Background Color"
-          color={inputBoxBackgroundColor}
-          onPick={setInputBoxBackgroundColor}
-          aria-label="input box background color"
-        />
-        <TextField
-          value={inputBoxBackgroundOpacity}
-          label="Input Background Color Opacity"
-          type="number"
-          fullWidth
-          inputProps={{
-            min: 1,
-            max: 100,
-          }}
-          onChange={onChangeNumberHandler(setInputBoxBackgroundOpacity)}
-        />
-        <ColorPicker
-          label="Input Text Color"
-          color={inputBoxColor}
-          onPick={setInputBoxColor}
-          aria-label="input box text color"
-        />
-        <ColorPicker
-          label="Helper Text Color"
-          color={helperTextColor}
-          onPick={setHelperTextColor}
-          aria-label="helper text color"
-        />
-        <TextField
-          value={buttonSize}
-          label="Form Button Size %"
-          type="number"
-          fullWidth
-          inputProps={{
-            min: 1,
-            max: 100,
-          }}
-          onChange={onChangeNumberHandler(setButtonSize)}
-        />
-        <TextField
-          value={buttonRadius}
-          label="Form Button Radius"
-          type="number"
-          fullWidth
-          inputProps={{
-            min: 1,
-            max: 50,
-          }}
-          onChange={onChangeNumberHandler(setButtonRadius)}
-        />
-        <ColorPicker
-          label="Submit Button Text Color"
-          color={buttonColor}
-          onPick={setButtonColor}
-          aria-label="submit button color"
-        />
-        <ColorPicker
-          label="Submit Button Background Color"
-          color={buttonBackgroundColor}
-          onPick={setButtonBackgroundColor}
-          aria-label="submit button background color"
-        />
-        <ColorPicker
-          label="Submit Button Background Hover Color"
-          color={buttonHoverBackgroundColor}
-          onPick={setButtonHoverBackgroundColor}
-          aria-label="submit button background hover color"
-        />
-        <TextField
-          value={buttonFontSize}
-          label="Submit Button Font Size"
-          type="number"
-          fullWidth
-          inputProps={{
-            min: 0,
-            max: 50,
-          }}
-          onChange={onChangeNumberHandler(setButtonFontSize)}
-        />
-        <Box mb={2}>
-          <InputLabel>Submit Button Position</InputLabel>
-          <Select
-            value={buttonPosition}
-            onChange={onUnknownChangeHandler(setButtonPosition)}
+            inputProps={{
+              min: 1,
+              max: 100,
+              ref: register,
+            }}
+          />
+          <Box mb={2}>
+            <InputLabel>Form Position</InputLabel>
+            <Controller
+              name="position"
+              defaultValue={postFormStyles.position}
+              control={control}
+              render={({value, onChange}) => (
+                <Select
+                  value={value}
+                  onChange={onUnknownChangeHandler(onChange)}
+                  fullWidth
+                >
+                  <MenuItem value="flex-end">Right</MenuItem>
+                  <MenuItem value="center">Center</MenuItem>
+                  <MenuItem value="flex-start">Left</MenuItem>
+                </Select>
+              )}
+            />
+          </Box>
+          <Controller
+            name="inputStyles.labelColor"
+            defaultValue={postFormStyles.inputStyles.labelColor}
+            control={control}
+            render={({value, onChange}) => (
+              <ColorPicker
+                label="Label Text Color"
+                color={value}
+                onPick={onChange}
+                aria-label="label text color"
+              />
+            )}
+          />
+          <Controller
+            name="inputStyles.borderColor"
+            defaultValue={postFormStyles.inputStyles.borderColor}
+            control={control}
+            render={({value, onChange}) => (
+              <ColorPicker
+                label="Input Border Color"
+                color={value}
+                onPick={onChange}
+                aria-label="input box border color"
+              />
+            )}
+          />
+          <Controller
+            name="inputStyles.backgroundColor"
+            defaultValue={postFormStyles.inputStyles.backgroundColor}
+            control={control}
+            render={({value, onChange}) => (
+              <ColorPicker
+                label="Input Background Color"
+                color={value}
+                onPick={onChange}
+                aria-label="input box background color"
+              />
+            )}
+          />
+          <TextField
+            name="inputStyles.backgroundOpacity"
+            defaultValue={postFormStyles.inputStyles.backgroundOpacity}
+            label="Input Background Color Opacity"
+            type="number"
             fullWidth
-          >
-            <MenuItem value="flex-end">Right</MenuItem>
-            <MenuItem value="center">Center</MenuItem>
-            <MenuItem value="flex-start">Left</MenuItem>
-          </Select>
-        </Box>
-        <SaveButton onClick={save} />
+            inputProps={{
+              min: 1,
+              max: 100,
+              ref: register,
+            }}
+          />
+          <Controller
+            name="inputStyles.textColor"
+            defaultValue={postFormStyles.inputStyles.textColor}
+            control={control}
+            render={({value, onChange}) => (
+              <ColorPicker
+                label="Input Text Color"
+                color={value}
+                onPick={onChange}
+                aria-label="input box text color"
+              />
+            )}
+          />
+          <Controller
+            name="inputStyles.helperTextColor"
+            defaultValue={postFormStyles.inputStyles.helperTextColor}
+            control={control}
+            render={({value, onChange}) => (
+              <ColorPicker
+                label="Helper Text Color"
+                color={value}
+                onPick={onChange}
+                aria-label="helper text color"
+              />
+            )}
+          />
+          <TextField
+            name="buttonSize"
+            defaultValue={postFormStyles.buttonSize}
+            label="Form Button Size %"
+            type="number"
+            fullWidth
+            inputProps={{
+              min: 1,
+              max: 100,
+              ref: register,
+            }}
+          />
+          <TextField
+            name="buttonRadius"
+            defaultValue={postFormStyles.buttonRadius}
+            label="Form Button Radius"
+            type="number"
+            fullWidth
+            inputProps={{
+              min: 1,
+              max: 50,
+              ref: register,
+            }}
+          />
+          <Controller
+            name="buttonColor"
+            defaultValue={postFormStyles.buttonColor}
+            control={control}
+            render={({value, onChange}) => (
+              <ColorPicker
+                label="Submit Button Text Color"
+                color={value}
+                onPick={onChange}
+                aria-label="submit button color"
+              />
+            )}
+          />
+          <Controller
+            name="buttonBackgroundColor"
+            defaultValue={postFormStyles.buttonBackgroundColor}
+            control={control}
+            render={({value, onChange}) => (
+              <ColorPicker
+                label="Submit Button Background Color"
+                color={value}
+                onPick={onChange}
+                aria-label="submit button background color"
+              />
+            )}
+          />
+          <Controller
+            name="buttonHoverBackgroundColor"
+            defaultValue={postFormStyles.buttonHoverBackgroundColor}
+            control={control}
+            render={({value, onChange}) => (
+              <ColorPicker
+                label="Submit Button Background Hover Color"
+                color={value}
+                onPick={onChange}
+                aria-label="submit button background hover color"
+              />
+            )}
+          />
+          <TextField
+            name="buttonFontSize"
+            defaultValue={postFormStyles.buttonFontSize}
+            label="Submit Button Font Size"
+            type="number"
+            fullWidth
+            inputProps={{
+              min: 0,
+              max: 50,
+              ref: register,
+            }}
+          />
+          <Box mb={2}>
+            <InputLabel>Submit Button Position</InputLabel>
+
+            <Controller
+              name="buttonPosition"
+              defaultValue={postFormStyles.buttonPosition}
+              control={control}
+              render={({value, onChange}) => (
+                <Select
+                  value={value}
+                  onChange={onUnknownChangeHandler(onChange)}
+                  fullWidth
+                >
+                  <MenuItem value="flex-end">Right</MenuItem>
+                  <MenuItem value="center">Center</MenuItem>
+                  <MenuItem value="flex-start">Left</MenuItem>
+                </Select>
+              )}
+            />
+          </Box>
+          <SaveButton />
+        </form>
       </ComponentConfig>
     </>
-  )
-}
-export function usePostFormStyles() {
-  const {
-    template: {postFormStyles},
-  } = useSimpleBlog()
-
-  return useMemo(
-    () => ({
-      width: postFormStyles.width,
-      position: postFormStyles.position,
-      buttonSize: postFormStyles.buttonSize,
-      buttonRadius: postFormStyles.buttonRadius,
-      buttonColor: postFormStyles.buttonColor,
-      buttonBackgroundColor: postFormStyles.buttonBackgroundColor,
-      buttonHoverBackgroundColor: postFormStyles.buttonHoverBackgroundColor,
-      buttonPosition: postFormStyles.buttonPosition,
-      buttonFontSize: postFormStyles.buttonFontSize,
-      formStyle: postFormStyles.inputStyles,
-    }),
-    [postFormStyles],
   )
 }
 

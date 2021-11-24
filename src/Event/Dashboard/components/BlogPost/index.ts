@@ -1,9 +1,10 @@
 import {Publishable} from 'Event/Dashboard/editor/views/Published'
 import {v4 as uid} from 'uuid'
-import {useDispatchUpdate, useTemplate} from 'Event/TemplateProvider'
+import {useTemplate} from 'Event/TemplateProvider'
 import {HasRules} from 'Event/attendee-rules'
 import {getDiffDatetime, now} from 'lib/date-time'
 import {EntityList} from 'lib/list'
+import {REMOVE, useTemplateUpdate} from 'Event/TemplateUpdateProvider'
 
 export type BlogPost = Publishable &
   HasRules & {
@@ -58,15 +59,12 @@ export function sortedByDate(posts: EntityList<BlogPost>) {
 }
 
 export function useUpdatePost() {
-  const updateTemplate = useDispatchUpdate()
-  const {blogPosts: current} = useTemplate()
+  const updateTemplate = useTemplateUpdate()
 
   return (id: string, updated: BlogPost) => {
     updateTemplate({
       blogPosts: {
-        ...current,
         entities: {
-          ...current.entities,
           [id]: updated,
         },
       },
@@ -75,21 +73,19 @@ export function useUpdatePost() {
 }
 
 export function useInsertPost() {
-  const updateTemplate = useDispatchUpdate()
+  const updateTemplate = useTemplateUpdate()
   const {blogPosts} = useTemplate()
 
   return (post: BlogPost) => {
     const id = uid()
 
-    const entities = {
-      ...blogPosts.entities,
-      [id]: post,
-    }
     const ids = [id, ...blogPosts.ids]
 
     updateTemplate({
       blogPosts: {
-        entities,
+        entities: {
+          [id]: post,
+        },
         ids,
       },
     })
@@ -97,16 +93,17 @@ export function useInsertPost() {
 }
 
 export function useRemovePost() {
-  const updateTemplate = useDispatchUpdate()
+  const updateTemplate = useTemplateUpdate()
   const {blogPosts} = useTemplate()
 
   return (id: string) => {
-    const {[id]: target, ...otherPosts} = blogPosts.entities
     const updatedIds = blogPosts.ids.filter((i) => i !== id)
 
     updateTemplate({
       blogPosts: {
-        entities: otherPosts,
+        entities: {
+          [id]: REMOVE,
+        },
         ids: updatedIds,
       },
     })

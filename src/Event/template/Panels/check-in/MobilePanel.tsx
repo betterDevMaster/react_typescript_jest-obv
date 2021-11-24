@@ -2,7 +2,7 @@ import Logo from 'Event/Logo'
 import styled from 'styled-components'
 import StepIndicator from 'Event/template/Panels/check-in/StepIndicator'
 import React from 'react'
-import {usePanels} from 'Event/template/Panels'
+import {usePanelsTemplate} from 'Event/template/Panels'
 import {Step} from 'Event/template/Panels/check-in/CheckInConfig'
 import {rgba} from 'lib/color'
 
@@ -10,9 +10,8 @@ export default function MobilePanel(props: {
   children: React.ReactElement
   step: Step
 }) {
-  const {
-    template: {checkInRightPanel},
-  } = usePanels()
+  const template = usePanelsTemplate()
+  const {checkInRightPanel} = template
 
   return (
     <Box>

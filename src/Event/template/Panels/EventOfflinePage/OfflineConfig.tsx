@@ -4,58 +4,97 @@ import Grid from '@material-ui/core/Grid'
 import Switch from 'lib/ui/form/Switch'
 import TextEditor, {TextEditorContainer} from 'lib/ui/form/TextEditor'
 import {PreviewBox, SectionTitle} from 'organization/Event/Page'
-import {onChangeCheckedHandler, onChangeStringHandler} from 'lib/dom'
+import {onChangeCheckedHandler} from 'lib/dom'
 import EventOfflinePage from 'Event/template/Panels/EventOfflinePage'
-import {usePanels} from 'Event/template/Panels'
+import {Panels, usePanelsTemplate, usePanelsUpdate} from 'Event/template/Panels'
 import Layout from 'organization/user/Layout'
 import Page from 'organization/Event/Page'
+import {useForm, Controller} from 'react-hook-form'
+import Button from '@material-ui/core/Button'
 
 export default function OfflineConfig() {
-  const {template, update: updateTemplate} = usePanels()
-  const update = updateTemplate.object('offlinePage')
-  const {offlinePage: settings} = template
+  const template = usePanelsTemplate()
+  const update = usePanelsUpdate()
+
+  const {offlinePage} = template
+
+  const {handleSubmit, control, register} = useForm()
+
+  const submit = (data: Pick<Panels, 'offlinePage'>) => {
+    update(data)
+  }
 
   return (
     <Layout>
       <Page>
-        <SectionTitle>Event Offline Preferences</SectionTitle>
-        <Grid container spacing={3}>
-          <Grid item md={6} xs={12}>
-            <Switch
-              label="Redirect to another URL?"
-              checked={settings.shouldRedirect}
-              onChange={onChangeCheckedHandler(update('shouldRedirect'))}
-              labelPlacement="end"
-              color="primary"
-              aria-label="is redirect"
-            />
-            <TextField
-              label="Redirect URL"
-              fullWidth
-              value={settings.redirectUrl}
-              onChange={onChangeStringHandler(update('redirectUrl'))}
-              inputProps={{'aria-label': 'redirect url'}}
-            />
-            <TextField
-              label="Title"
-              fullWidth
-              value={settings.title}
-              onChange={onChangeStringHandler(update('title'))}
-              inputProps={{'aria-label': 'offline page title'}}
-            />
-            <TextEditorContainer>
-              <TextEditor
-                data={settings.description}
-                onChange={update('description')}
+        <form onSubmit={handleSubmit(submit)}>
+          <SectionTitle>Event Offline Preferences</SectionTitle>
+          <Grid container spacing={3}>
+            <Grid item md={6} xs={12}>
+              <Controller
+                name="offlinePage.shouldRedirect"
+                defaultValue={offlinePage.shouldRedirect}
+                control={control}
+                render={({value, onChange}) => (
+                  <Switch
+                    label="Redirect to another URL?"
+                    checked={value}
+                    onChange={onChangeCheckedHandler(onChange)}
+                    labelPlacement="end"
+                    color="primary"
+                    aria-label="is redirect"
+                  />
+                )}
               />
-            </TextEditorContainer>
+
+              <TextField
+                label="Redirect URL"
+                fullWidth
+                name="offlinePage.redirectUrl"
+                defaultValue={offlinePage.redirectUrl}
+                inputProps={{
+                  'aria-label': 'redirect url',
+                  ref: register,
+                }}
+              />
+              <TextField
+                label="Title"
+                fullWidth
+                name="offlinePage.title"
+                defaultValue={offlinePage.title}
+                inputProps={{
+                  'aria-label': 'offline page title',
+                  ref: register,
+                }}
+              />
+
+              <Controller
+                name="offlinePage.description"
+                defaultValue={offlinePage.description}
+                control={control}
+                render={({value, onChange}) => (
+                  <TextEditorContainer>
+                    <TextEditor data={value} onChange={onChange} />
+                  </TextEditorContainer>
+                )}
+              />
+
+              <Button
+                variant="contained"
+                aria-label="save"
+                type="submit"
+                color="primary"
+              >
+                Save
+              </Button>
+            </Grid>
+            <Grid item xs={12} md={6}>
+              <PreviewBox>
+                <EventOfflinePage isPreview />
+              </PreviewBox>
+            </Grid>
           </Grid>
-          <Grid item xs={12} md={6}>
-            <PreviewBox>
-              <EventOfflinePage isPreview />
-            </PreviewBox>
-          </Grid>
-        </Grid>
+        </form>
       </Page>
     </Layout>
   )

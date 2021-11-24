@@ -12,7 +12,7 @@ afterEach(() => {
   jest.clearAllMocks()
 })
 
-const mockPost = axios.post as jest.Mock
+const mockPut = axios.put as jest.Mock
 
 it('should upload a welcome image', async () => {
   window.URL.createObjectURL = jest.fn(() => 'blob://foo')
@@ -32,7 +32,7 @@ it('should upload a welcome image', async () => {
     name: faker.random.word(),
   }
   const withWelcomeImage: ObvioEvent = {...event, logo: imageData}
-  mockPost.mockImplementationOnce(() =>
+  mockPut.mockImplementationOnce(() =>
     Promise.resolve({data: withWelcomeImage}),
   )
 
@@ -41,11 +41,10 @@ it('should upload a welcome image', async () => {
   user.click(await findByLabelText('save'))
 
   await wait(() => {
-    expect(mockPost).toHaveBeenCalledTimes(1)
+    expect(mockPut).toHaveBeenCalledTimes(1)
   })
 
-  const [url, data] = mockPost.mock.calls[0]
+  const [url, data] = mockPut.mock.calls[0]
 
   expect(url).toMatch(`/events/${event.slug}`)
-  expect(data.get('welcome_image')).toBe(image)
 })

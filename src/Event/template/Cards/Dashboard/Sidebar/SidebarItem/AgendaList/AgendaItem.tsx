@@ -13,17 +13,19 @@ import {
 } from 'Event/template/Cards/Dashboard/Sidebar/SidebarItem/AgendaList'
 import {Draggable} from 'react-beautiful-dnd'
 import {DragHandle, DraggableOverlay} from 'lib/ui/drag-and-drop'
-import {useCards} from 'Event/template/Cards'
+import {useCardsTemplate} from 'Event/template/Cards'
 import {useToggle} from 'lib/toggle'
 import {AgendaItemConfig} from 'Event/template/Cards/Dashboard/Sidebar/SidebarItem/AgendaList/AgendaItemConfig'
 import {useLocalization} from 'lib/LocalizationProvider'
+import EditModeOnly from 'Event/Dashboard/editor/views/EditModeOnly'
 
 export default function AgendaItem(props: {
   agenda: Agenda
   index: number
   list: AgendaListProps
+  id: string
 }) {
-  const {agenda, index} = props
+  const {agenda, index, id} = props
   const isEditMode = useEditMode()
   const {flag: configVisible, toggle: toggleConfig} = useToggle()
 
@@ -40,13 +42,15 @@ export default function AgendaItem(props: {
 
   return (
     <>
-      <AgendaItemConfig
-        list={props.list}
-        isVisible={configVisible}
-        onClose={toggleConfig}
-        agenda={agenda}
-        index={index}
-      />
+      <EditModeOnly>
+        <AgendaItemConfig
+          list={props.list}
+          isVisible={configVisible}
+          onClose={toggleConfig}
+          agenda={agenda}
+          id={id}
+        />
+      </EditModeOnly>
       <Draggable draggableId={`drag-and-drop-agenda-${index}`} index={index}>
         {(provided) => (
           <div ref={provided.innerRef} {...provided.draggableProps}>
@@ -85,8 +89,7 @@ function Times(props: {agenda: Agenda}) {
 
   const getTimezone = (date: moment.Moment) =>
     date.tz(moment.tz.guess()).format('z')
-  const {template} = useCards()
-  const {sidebar} = template
+  const {sidebar} = useCardsTemplate()
   const sidebarTextColor = sidebar.textColor
 
   const tz = getTimezone(start)
@@ -138,8 +141,7 @@ function Times(props: {agenda: Agenda}) {
 }
 
 function Event(props: {agenda: Agenda}) {
-  const {template} = useCards()
-  const {sidebar} = template
+  const {sidebar} = useCardsTemplate()
   const withAttendeeData = useWithAttendeeData()
   const v = useAttendeeVariables()
 

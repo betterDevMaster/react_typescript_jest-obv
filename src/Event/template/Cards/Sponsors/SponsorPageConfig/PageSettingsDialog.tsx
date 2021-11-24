@@ -14,7 +14,7 @@ import Slider from '@material-ui/core/Slider'
 import Typography from '@material-ui/core/Typography'
 import {useOrganization} from 'organization/OrganizationProvider'
 import {api} from 'lib/url'
-import {useCards} from 'Event/template/Cards'
+import {useCardsTemplate} from 'Event/template/Cards'
 import TextField from '@material-ui/core/TextField'
 import {fieldError} from 'lib/form'
 import {ValidationError} from 'lib/api-client'
@@ -38,7 +38,7 @@ type SettingsFormData = {
   cardBackgroundColor?: string
   cardBackgroundOpacity?: number
   description?: string
-  isVisible?: string
+  isVisible?: boolean
 }
 
 export default function PageSettingsDialog(props: {
@@ -49,7 +49,7 @@ export default function PageSettingsDialog(props: {
   const {event, set: updateEvent} = useEvent()
   const {handleSubmit, control, errors, register} = useForm()
   const [processing, setProcessing] = useState(false)
-  const {template} = useCards()
+  const template = useCardsTemplate()
   const {client} = useOrganization()
   const [serverError, setServerError] = useState<ValidationError<any>>(null)
   const [image, setImage] = useState<null | File>(null)

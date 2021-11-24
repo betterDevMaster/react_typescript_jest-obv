@@ -1,31 +1,32 @@
-import styled from 'styled-components'
 import React from 'react'
-import {usePanels} from 'Event/template/Panels'
+import styled from 'styled-components'
+import {ThemeProvider} from '@material-ui/core/styles'
 import {rgba} from 'lib/color'
 import {useToggle} from 'lib/toggle'
+import {Editable} from 'Event/Dashboard/editor/views/EditComponent'
+import EditModeOnly from 'Event/Dashboard/editor/views/EditModeOnly'
+import {usePanelsTemplate} from 'Event/template/Panels'
+import {useTheme} from 'Event/template/Panels/Page'
 import Bar from 'Event/template/Panels/Dashboard/RightPanel/Bar'
 import RightPanelConfig from 'Event/template/Panels/Dashboard/RightPanel/RightPanelConfig'
-import {Editable} from 'Event/Dashboard/editor/views/EditComponent'
-import {useTheme} from 'Event/template/Panels/Page'
-import {ThemeProvider} from '@material-ui/core/styles'
 
 export default function RightPanel(props: {
   children: React.ReactElement
   currentTab: number
   onChangeTab: (tab: number) => void
 }) {
-  const {
-    template: {rightPanel},
-  } = usePanels()
+  const {rightPanel} = usePanelsTemplate()
   const {flag: barConfigVisible, toggle: toggleBarConfig} = useToggle()
   const theme = useTheme(rightPanel.isDarkMode)
 
   return (
     <>
-      <RightPanelConfig
-        isVisible={barConfigVisible}
-        onClose={toggleBarConfig}
-      />
+      <EditModeOnly>
+        <RightPanelConfig
+          isVisible={barConfigVisible}
+          onClose={toggleBarConfig}
+        />
+      </EditModeOnly>
       <ThemeProvider theme={theme}>
         <Box>
           <Editable onEdit={toggleBarConfig}>

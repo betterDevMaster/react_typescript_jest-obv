@@ -10,14 +10,12 @@ import React from 'react'
 import TextContent from 'lib/ui/form/TextEditor/Content'
 import {useAttendeeVariables} from 'Event'
 import {eventRoutes} from 'Event/Routes'
-import {useSimpleBlog} from 'Event/template/SimpleBlog'
+import {useSimpleBlogTemplate} from 'Event/template/SimpleBlog'
 
 export default function SimpleBlogImageWaterfall() {
   const user = useAttendee()
   const {loading, entries} = useFetchEntries()
-  const {
-    template: {imageWaterfall: pageSettings},
-  } = useSimpleBlog()
+  const {imageWaterfall: pageSettings} = useSimpleBlogTemplate()
   const v = useAttendeeVariables()
 
   if (loading) {

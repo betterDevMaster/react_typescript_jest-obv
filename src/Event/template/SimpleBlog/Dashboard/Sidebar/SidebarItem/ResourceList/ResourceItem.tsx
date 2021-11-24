@@ -13,7 +13,7 @@ import {useEditMode} from 'Event/Dashboard/editor/state/edit-mode'
 import {DragHandle, DraggableOverlay} from 'lib/ui/drag-and-drop'
 import {useAttendeeVariables} from 'Event'
 import {Icon} from 'lib/fontawesome/Icon'
-import {useSimpleBlog} from 'Event/template/SimpleBlog'
+import {useSimpleBlogTemplate} from 'Event/template/SimpleBlog'
 import {useToggle} from 'lib/toggle'
 import {ResourceItemConfig} from 'Event/template/SimpleBlog/Dashboard/Sidebar/SidebarItem/ResourceList/ResourceItemConfig'
 import {ResourceListProps} from 'Event/template/SimpleBlog/Dashboard/Sidebar/SidebarItem/ResourceList'
@@ -38,7 +38,7 @@ export type ResourceItemProps = {
 }
 
 export default React.memo((props: ResourceItemProps) => {
-  const {resource, index} = props
+  const {resource, index, id} = props
   const isEdit = useEditMode()
   const {flag: configVisible, toggle: toggleConfig} = useToggle()
 
@@ -55,7 +55,7 @@ export default React.memo((props: ResourceItemProps) => {
         isVisible={configVisible}
         onClose={toggleConfig}
         resource={resource}
-        index={index}
+        id={id}
         list={props.list}
       />
       <Draggable draggableId={props.id} index={index}>
@@ -89,7 +89,7 @@ export function ResourceItemLink(props: {
 }) {
   const {downloadResource: DOWNLOADING_RESOURCE} = usePlatformActions()
   const {submit} = usePoints()
-  const {template} = useSimpleBlog()
+  const template = useSimpleBlogTemplate()
   const {sidebar} = template
   const url = useResourceUrl(props.resource)
   const v = useAttendeeVariables()

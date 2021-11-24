@@ -10,16 +10,14 @@ import {SetPasswordFormProps} from 'Event/Step1/SetPasswordForm'
 import MuiButton from '@material-ui/core/Button'
 import Box from '@material-ui/core/Box'
 import {useAttendeeVariables} from 'Event'
-import {useCards} from 'Event/template/Cards'
+import {useCardsTemplate} from 'Event/template/Cards'
 import StepIndicator from 'Event/template/Cards/check-in/StepIndicator'
 import CheckInPage from 'Event/template/Cards/check-in/Page'
 
 export default function SetPasswordForm(props: SetPasswordFormProps) {
   const {register, handleSubmit, errors, watch} = useForm()
-  const {template} = useCards()
+  const {setPasswordForm} = useCardsTemplate()
   const v = useAttendeeVariables()
-
-  const {setPasswordForm} = template
 
   const password = watch('password')
 

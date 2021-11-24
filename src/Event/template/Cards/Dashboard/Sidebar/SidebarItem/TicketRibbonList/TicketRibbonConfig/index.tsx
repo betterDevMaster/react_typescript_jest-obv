@@ -14,9 +14,11 @@ import ComponentConfig, {
 } from 'organization/Event/DashboardConfig/ComponentConfig'
 import {Controller, useForm, UseFormMethods} from 'react-hook-form'
 import {TicketRibbonListProps} from 'Event/template/Cards/Dashboard/Sidebar/SidebarItem/TicketRibbonList'
-import {useUpdateSidebarItem} from 'Event/template/Cards/Dashboard/Sidebar/SidebarItem'
 import TicketRibbonUpload from 'organization/Event/DashboardConfig/TicketRibbonUpload'
 import {useDeleteCustomRibbon} from 'organization/Event/DashboardConfig/TicketRibbonUpload/UploadedTicketRibbon'
+import {v4 as uuid} from 'uuid'
+import {useEditSidebarItem} from 'Event/template/Cards/Dashboard/Sidebar/SidebarItem'
+import {REMOVE} from 'Event/TemplateUpdateProvider'
 
 const MAX_NUM_CHARACTERS = 9
 
@@ -32,18 +34,18 @@ export interface TicketRibbonConfigProps {
 export function TicketRibbonConfig(
   props: ComponentConfigProps & {
     list: TicketRibbonListProps
-    index?: number
     ticketRibbon: TicketRibbon
+    id?: string
   },
 ) {
-  const {index, isVisible, onClose, ticketRibbon, list} = props
+  const {id, isVisible, onClose, ticketRibbon, list} = props
   const {ribbons: ticketRibbons} = list
   const {visible: ruleConfigVisible, toggle: toggleRuleConfig} = useRuleConfig()
   const [error, setError] = useState('')
   const [processing, setProcessing] = useState(false)
   const deleteCustomRibbon = useDeleteCustomRibbon()
   const {control, handleSubmit} = useForm()
-  const updateItem = useUpdateSidebarItem()
+  const {update: updateItem} = useEditSidebarItem()
 
   const [rules, setRules] = useState(ticketRibbon.rules)
   const [text, setText] = useState(ticketRibbon.text)
@@ -59,24 +61,26 @@ export function TicketRibbonConfig(
     setCustomRibbon(ticketRibbon.customRibbon)
   }, [isVisible, ticketRibbon])
 
-  const update = (index: number, updated: TicketRibbon) => {
+  const update = (id: string, updated: TicketRibbon) => {
     updateItem({
-      ...list,
-      ribbons: ticketRibbons.map((tr, i) => {
-        const isTarget = i === index
-        if (isTarget) {
-          return updated
-        }
-
-        return tr
-      }),
+      ribbons: {
+        entities: {
+          [id]: updated,
+        },
+      },
     })
   }
 
   const insert = (newRibbon: TicketRibbon) => {
+    const id = uuid()
+
     updateItem({
-      ...list,
-      ribbons: [...ticketRibbons, newRibbon],
+      ribbons: {
+        ids: [...list.ribbons.ids, id],
+        entities: {
+          [id]: newRibbon,
+        },
+      },
     })
   }
 
@@ -88,8 +92,8 @@ export function TicketRibbonConfig(
       customRibbon,
     }
 
-    if (index !== undefined) {
-      update(index, ribbon)
+    if (id !== undefined) {
+      update(id, ribbon)
       onClose()
       return
     }
@@ -108,7 +112,7 @@ export function TicketRibbonConfig(
   }
 
   const remove = async () => {
-    if (index === undefined) {
+    if (!id) {
       throw new Error('Missing index for ticket ribbon')
     }
 
@@ -124,12 +128,17 @@ export function TicketRibbonConfig(
       }
     }
 
-    const removed = ticketRibbons.filter((_, i) => i !== index)
-    onClose()
+    const removed = ticketRibbons.ids.filter((i) => i !== id)
     updateItem({
-      ...list,
-      ribbons: removed,
+      ribbons: {
+        ids: removed,
+        entities: {
+          [id]: REMOVE,
+        },
+      },
     })
+
+    onClose()
   }
 
   const onChangeText = (val: string) => {

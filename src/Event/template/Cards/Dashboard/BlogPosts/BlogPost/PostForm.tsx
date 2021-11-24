@@ -13,7 +13,7 @@ import {useAttendeeVariables} from 'Event'
 import {BlogPost} from 'Event/Dashboard/components/BlogPost'
 import {usePostForm} from 'Event/Dashboard/components/BlogPost/form'
 import styled from 'styled-components'
-import {useCards} from 'Event/template/Cards'
+import {useCardsTemplate} from 'Event/template/Cards'
 import {
   DEFAULT_RESUBMIT_LABEL,
   DEFAULT_SUBMITTED_MESSAGE,
@@ -56,9 +56,7 @@ function Content(props: {form: Form; post: BlogPost}) {
     setValue,
   } = useForm()
 
-  const {
-    template: {postFormStyles: formStyles},
-  } = useCards()
+  const {postFormStyles: formStyles} = useCardsTemplate()
 
   if (alreadySubmitted) {
     return <SubmittedMessage resubmit={resubmit} form={form} />

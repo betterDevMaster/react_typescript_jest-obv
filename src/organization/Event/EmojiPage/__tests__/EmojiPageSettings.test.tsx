@@ -6,14 +6,21 @@ import {wait} from '@testing-library/dom'
 import axios from 'axios'
 import {ObvioEvent} from 'Event'
 import {fireEvent} from '@testing-library/react'
-import {mockRxJsAjax} from 'store/__utils__/MockStoreProvider'
 
 const mockPut = axios.put as jest.Mock
 const mockPost = axios.post as jest.Mock
-const mockRxPost = mockRxJsAjax.post as jest.Mock
 
 beforeEach(() => {
   jest.clearAllMocks()
+})
+
+beforeAll(() => {
+  jest.spyOn(console, 'error').mockImplementation(() => {})
+})
+
+afterAll(() => {
+  // @ts-ignore
+  console.error.mockRestore()
 })
 
 it('should update emoji page background image', async () => {
@@ -56,6 +63,8 @@ it('should update emoji page background image', async () => {
   expect(url).toMatch(`/events/${event.slug}`)
   expect(data.get('emoji_page_background')).toBe(background)
 
+  mockPut.mockImplementationOnce(() => Promise.resolve({event}))
+
   user.click(await findByLabelText('remove emoji_page_background image'))
 
   await wait(() => {
@@ -76,15 +85,16 @@ it('should toggle visible emoji page background image', async () => {
   user.click(await findByLabelText('configure emoji page'))
 
   user.click(await findByLabelText('toggle background visible'))
+  user.click(await findByLabelText('save'))
 
   await wait(() => {
-    expect(mockRxPost).toHaveBeenCalledTimes(1)
+    expect(mockPut).toHaveBeenCalledTimes(1)
   })
 
-  const [url, data] = mockRxPost.mock.calls[0]
+  const [url, data] = mockPut.mock.calls[0]
 
-  expect(url).toMatch(`/events/${event.slug}`)
-  expect(data.template.emojiPage.backgroundHidden).toBe(true)
+  expect(url).toMatch(`/events/${event.slug}/template`)
+  expect(data.template['emojiPage.backgroundHidden']).toBe(true)
 })
 
 it('should set emoji page background color', async () => {
@@ -96,13 +106,14 @@ it('should set emoji page background color', async () => {
 
   const color = faker.commerce.color()
   user.type(await findByLabelText('emoji page background color'), color)
+  user.click(await findByLabelText('save'))
 
   await wait(() => {
-    expect(mockRxPost).toHaveBeenCalledTimes(1)
+    expect(mockPut).toHaveBeenCalledTimes(1)
   })
 
-  const [url, data] = mockRxPost.mock.calls[0]
+  const [url, data] = mockPut.mock.calls[0]
 
-  expect(url).toMatch(`/events/${event.slug}`)
-  expect(data.template.emojiPage.backgroundColor).toBe(color)
+  expect(url).toMatch(`/events/${event.slug}/template`)
+  expect(data.template['emojiPage.backgroundColor']).toBe(color)
 })

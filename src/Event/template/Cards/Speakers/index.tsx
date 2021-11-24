@@ -4,7 +4,7 @@ import SpeakerList from 'Event/template/Cards/Speakers/SpeakerList'
 import SpeakerEditDialog from 'Event/template/Cards/Speakers/SpeakerEditDialog'
 import {PageDescription, PageTitle} from 'Event/template/Cards/Page'
 import {useAttendeeVariables} from 'Event'
-import {useCards} from 'Event/template/Cards'
+import {useCardsTemplate} from 'Event/template/Cards'
 import Content from 'lib/ui/form/TextEditor/Content'
 import CardsPage from 'Event/template/Cards/Page'
 import {User} from 'auth/user'
@@ -14,9 +14,7 @@ export default function SpeakerPage(props: {
   speakers: Speaker[]
   user: User
 }) {
-  const {
-    template: {speakers: speakerPageSettings},
-  } = useCards()
+  const {speakers: speakerPageSettings} = useCardsTemplate()
   const v = useAttendeeVariables()
 
   const content = (

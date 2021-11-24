@@ -9,6 +9,7 @@ import {loginToEventSite} from 'Event/__utils__/url'
 import {fakeAttendee} from 'Event/auth/__utils__/factory'
 import faker from 'faker'
 import {createResourceList} from 'Event/template/Cards/Dashboard/Sidebar/SidebarItem/ResourceList'
+import {createEntityList} from 'lib/list'
 
 const mockPost = axios.post as jest.Mock
 
@@ -22,14 +23,14 @@ it('receives points', async () => {
 
   const event = fakeEvent({
     template: fakeCards({
-      sidebarItems: [
+      sidebarItems: createEntityList([
         {
           ...createResourceList(),
           title: faker.random.word(),
           description: '',
-          resources: [fakeResource({isVisible: true})],
+          resources: createEntityList([fakeResource({isVisible: true})]),
         },
-      ],
+      ]),
     }),
     platform_actions: createPlatformActions({
       download_resource: action,

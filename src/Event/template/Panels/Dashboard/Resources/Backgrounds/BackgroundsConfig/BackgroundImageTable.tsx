@@ -10,7 +10,7 @@ import {
   Droppable,
   DropResult,
 } from 'react-beautiful-dnd'
-import {usePanels} from 'Event/template/Panels'
+import {usePanelsTemplate, usePanelsUpdate} from 'Event/template/Panels'
 import {
   Background,
   useBackgrounds,
@@ -21,9 +21,7 @@ import BackgroundImageRow from 'Event/template/Panels/Dashboard/Resources/Backgr
 export default function BackgroundImageTable() {
   const {backgrounds, loading} = useBackgrounds()
   const hasBackgrounds = backgrounds.length > 0
-  const handleDrag = useHandleDrag()
-  const {template} = usePanels()
-  const {zoomBackgrounds: pageSettings} = template
+  const {zoomBackgrounds: pageSettings} = usePanelsTemplate()
 
   const sortedBackgrounds = useSortBackgrounds(
     pageSettings?.orderedIds,
@@ -62,22 +60,31 @@ export default function BackgroundImageTable() {
     )
   }
 
-  if (!hasBackgrounds) {
-    return (
-      <Box paddingY={4}>
-        <Typography align="center">No Backgrounds Available</Typography>
-      </Box>
-    )
-  }
+  return !hasBackgrounds ? (
+    <Box paddingY={4}>
+      <Typography align="center">No Backgrounds Available</Typography>
+    </Box>
+  ) : (
+    <DraggableContent sortedBackgrounds={sortedBackgrounds}>
+      {draggableBackgrounds}
+    </DraggableContent>
+  )
+}
+
+const DraggableContent = (props: {
+  sortedBackgrounds: Background[]
+  children: React.ReactElement[]
+}) => {
+  const handleDrag = useHandleDrag()
 
   return (
-    <DragDropContext onDragEnd={handleDrag(sortedBackgrounds)}>
+    <DragDropContext onDragEnd={handleDrag(props.sortedBackgrounds)}>
       <Droppable droppableId="drag-and-drop-backgrounds">
         {(provided) => (
           <DroppableBox ref={provided.innerRef} {...provided.droppableProps}>
             <>
               <Grid container spacing={2}>
-                {draggableBackgrounds}
+                {props.children}
                 {provided.placeholder}
               </Grid>
             </>
@@ -89,7 +96,7 @@ export default function BackgroundImageTable() {
 }
 
 function useHandleDrag() {
-  const {update} = usePanels()
+  const update = usePanelsUpdate()
 
   return (backgrounds: Background[]) => (result: DropResult) => {
     const {destination, source} = result
@@ -103,7 +110,7 @@ function useHandleDrag() {
     moved.splice(destination.index, 0, removed)
 
     const orderedIds = moved.map((f) => f.id)
-    update.object('zoomBackgrounds')('orderedIds')(orderedIds)
+    update({zoomBackgrounds: {orderedIds: orderedIds}})
   }
 }
 

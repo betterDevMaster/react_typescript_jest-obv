@@ -1,18 +1,17 @@
 import {Speaker} from 'Event/SpeakerPage'
 import Card from 'Event/template/Panels/Dashboard/Speakers/SpeakerList/Card'
-import Grid, {GridSpacing} from '@material-ui/core/Grid'
+import Grid from '@material-ui/core/Grid'
 import React from 'react'
 import {useTemplate} from 'Event/TemplateProvider'
 import Typography from '@material-ui/core/Typography'
 import {DragDropContext, Droppable, DropResult} from 'react-beautiful-dnd'
-import {usePanels} from 'Event/template/Panels'
+import {usePanelsTemplate, usePanelsUpdate} from 'Event/template/Panels'
 
 export default function SpeakerList(props: {
   speakers: Speaker[]
   isEditMode?: boolean
 }) {
-  const {template} = usePanels()
-  const handleDrag = useHandleDrag()
+  const template = usePanelsTemplate()
   const sortedSpeakers = useSortedSpeakers(props.speakers)
 
   const isEmpty = props.speakers.length === 0
@@ -20,9 +19,7 @@ export default function SpeakerList(props: {
     return <Typography align="center">No speakers have been added</Typography>
   }
 
-  const spacing = template.speakers.speakersSpace as GridSpacing
-
-  const speakers = sortedSpeakers.map((speaker: Speaker, index: number) => (
+  const cards = sortedSpeakers.map((speaker: Speaker, index: number) => (
     <Grid item xs={12} key={speaker.id}>
       <Card speaker={speaker} isEditMode={props.isEditMode} index={index} />
     </Grid>
@@ -30,24 +27,34 @@ export default function SpeakerList(props: {
 
   if (!props.isEditMode) {
     return (
-      <Grid container spacing={spacing}>
-        {speakers}
+      <Grid container spacing={template.speakers.speakersSpace}>
+        {cards}
       </Grid>
     )
   }
 
+  return <DraggableList speakers={sortedSpeakers}>{cards}</DraggableList>
+}
+
+function DraggableList(props: {
+  children: React.ReactElement[]
+  speakers: Speaker[]
+}) {
+  const handleDrag = useHandleDrag()
+  const {speakers} = usePanelsTemplate()
+
   return (
-    <DragDropContext onDragEnd={handleDrag(sortedSpeakers)}>
+    <DragDropContext onDragEnd={handleDrag(props.speakers)}>
       <Droppable droppableId="drag-and-drop-speaker">
         {(provided) => (
           <Grid
             container
-            spacing={spacing}
+            spacing={speakers.speakersSpace}
             ref={provided.innerRef}
             {...provided.droppableProps}
           >
             <>
-              {speakers}
+              {props.children}
               {provided.placeholder}
             </>
           </Grid>
@@ -89,8 +96,7 @@ function useSortedSpeakers(speakers: Speaker[]) {
 }
 
 function useHandleDrag() {
-  const {update: updateTemplate} = usePanels()
-  const update = updateTemplate.object('speakers')
+  const update = usePanelsUpdate()
 
   return (speakers: Speaker[]) => (result: DropResult) => {
     const {destination, source} = result
@@ -104,6 +110,11 @@ function useHandleDrag() {
     moved.splice(destination.index, 0, removed)
 
     const orderedIds = moved.map((s) => s.id)
-    update('orderedIds')(orderedIds)
+
+    update({
+      speakers: {
+        orderedIds,
+      },
+    })
   }
 }

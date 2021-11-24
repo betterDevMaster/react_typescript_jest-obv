@@ -5,13 +5,13 @@ import {fakeResource} from 'Event/template/SimpleBlog/Dashboard/Sidebar/SidebarI
 import {fireEvent} from '@testing-library/dom'
 import {clickEdit} from '__utils__/edit'
 import {fakeEvent} from 'Event/__utils__/factory'
-import {mockRxJsAjax} from 'store/__utils__/MockStoreProvider'
 import {wait} from '@testing-library/react'
 import axios from 'axios'
 import {goToDashboardConfig} from 'organization/Event/DashboardConfig/__utils__/go-dashboard-config'
 import {createResourceList} from 'Event/template/SimpleBlog/Dashboard/Sidebar/SidebarItem/ResourceList'
+import {createEntityList} from 'lib/list'
 
-const mockPost = mockRxJsAjax.post as jest.Mock
+const mockPut = axios.put as jest.Mock
 const mockDelete = axios.delete as jest.Mock
 
 beforeAll(() => {
@@ -45,20 +45,24 @@ it('should add a resource list', async () => {
   fireEvent.click(await findByLabelText('add item'))
 
   await wait(() => {
-    expect(mockPost).toHaveBeenCalledTimes(1)
+    expect(mockPut).toHaveBeenCalledTimes(1)
   })
 
   expect((await findAllByText(/resource/i)).length).toBeGreaterThan(0)
 
-  const [url, data] = mockPost.mock.calls[0]
-  expect(url).toMatch(`/events/${event.slug}`)
-  expect(data.template.sidebarItems[0].type).toBe('Resource List')
+  const [url, data] = mockPut.mock.calls[0]
+  expect(url).toMatch(`/events/${event.slug}/template`)
+
+  const id = data.template['sidebarItems.ids'][0]
+  expect(data.template[`sidebarItems.entities.${id}.type`]).toBe(
+    'Resource List',
+  )
 })
 
 it('should remove a resource list', async () => {
   const event = fakeEvent({
     template: fakeSimpleBlog({
-      sidebarItems: [createResourceList()],
+      sidebarItems: createEntityList([createResourceList()]),
     }),
   })
   const {queryByText, findByText} = await goToDashboardConfig({
@@ -68,26 +72,27 @@ it('should remove a resource list', async () => {
   fireEvent.click(await findByText(/remove resources/i))
 
   await wait(() => {
-    expect(mockPost).toHaveBeenCalledTimes(1)
+    expect(mockPut).toHaveBeenCalledTimes(1)
   })
 
   expect(queryByText(/resource resources/i)).not.toBeInTheDocument()
 
-  const [url, data] = mockPost.mock.calls[0]
-  expect(url).toMatch(`/events/${event.slug}`)
-  expect(data.template.sidebarItems.length).toBe(0)
+  const [url, data] = mockPut.mock.calls[0]
+  expect(url).toMatch(`/events/${event.slug}/template`)
+  expect(data.template['sidebarItems.ids'].length).toBe(0)
 })
 
 it('should add a new resource', async () => {
+  const sidebarItems = createEntityList([
+    {
+      ...createResourceList(),
+      title: faker.random.word(),
+      description: '',
+      resources: createEntityList([]),
+    },
+  ])
   const dashboard = fakeSimpleBlog({
-    sidebarItems: [
-      {
-        ...createResourceList(),
-        title: faker.random.word(),
-        description: '',
-        resources: [],
-      },
-    ],
+    sidebarItems,
   })
 
   const event = fakeEvent({template: dashboard})
@@ -106,26 +111,31 @@ it('should add a new resource', async () => {
 
   // Saved
   await wait(() => {
-    expect(mockPost).toHaveBeenCalledTimes(1)
+    expect(mockPut).toHaveBeenCalledTimes(1)
   })
 
-  const [url, data] = mockPost.mock.calls[0]
-  expect(url).toMatch(`/events/${event.slug}`)
-  expect(data.template.sidebarItems[0].resources.length).toBe(1)
+  const [url, data] = mockPut.mock.calls[0]
+  expect(url).toMatch(`/events/${event.slug}/template`)
+
+  const id = sidebarItems.ids[0]
+  expect(
+    data.template[`sidebarItems.entities.${id}.resources.ids`].length,
+  ).toBe(1)
 })
 
 it('should update resources description', async () => {
   const description = faker.random.words(5)
+  const sidebarItems = createEntityList([
+    {
+      ...createResourceList(),
+      title: faker.random.word(),
+      description,
+      resources: createEntityList([]),
+    },
+  ])
 
   const dashboard = fakeSimpleBlog({
-    sidebarItems: [
-      {
-        ...createResourceList(),
-        title: faker.random.word(),
-        description,
-        resources: [],
-      },
-    ],
+    sidebarItems,
   })
 
   const event = fakeEvent({template: dashboard})
@@ -158,27 +168,35 @@ it('should update resources description', async () => {
 
   // Saved
   await wait(() => {
-    expect(mockPost).toHaveBeenCalledTimes(1)
+    expect(mockPut).toHaveBeenCalledTimes(1)
   })
 
-  const [url, data] = mockPost.mock.calls[0]
-  expect(url).toMatch(`/events/${event.slug}`)
-  expect(data.template.sidebarItems[0].description).toBe(updatedDescription)
-  expect(data.template.sidebarItems[0].title).toBe(updatedTitle)
+  const [url, data] = mockPut.mock.calls[0]
+  expect(url).toMatch(`/events/${event.slug}/template`)
+
+  const id = sidebarItems.ids[0]
+
+  expect(data.template[`sidebarItems.entities.${id}.description`]).toBe(
+    updatedDescription,
+  )
+  expect(data.template[`sidebarItems.entities.${id}.title`]).toBe(updatedTitle)
 })
 
 it('should update a resource', async () => {
   const name = faker.random.word()
 
+  const resources = createEntityList([fakeResource({name})])
+  const sidebarItems = createEntityList([
+    {
+      ...createResourceList(),
+      title: faker.random.word(),
+      description: '',
+      resources,
+    },
+  ])
+
   const dashboard = fakeSimpleBlog({
-    sidebarItems: [
-      {
-        ...createResourceList(),
-        title: faker.random.word(),
-        description: '',
-        resources: [fakeResource({name})],
-      },
-    ],
+    sidebarItems,
   })
 
   const event = fakeEvent({template: dashboard})
@@ -200,29 +218,40 @@ it('should update a resource', async () => {
 
   // Saved
   await wait(() => {
-    expect(mockPost).toHaveBeenCalledTimes(1)
+    expect(mockPut).toHaveBeenCalledTimes(1)
   })
 
-  const [url, data] = mockPost.mock.calls[0]
-  expect(url).toMatch(`/events/${event.slug}`)
-  expect(data.template.sidebarItems[0].resources[0].name).toBe(updatedName)
+  const [url, data] = mockPut.mock.calls[0]
+  expect(url).toMatch(`/events/${event.slug}/template`)
+
+  const itemId = sidebarItems.ids[0]
+  const resourceId = resources.ids[0]
+
+  expect(
+    data.template[
+      `sidebarItems.entities.${itemId}.resources.entities.${resourceId}.name`
+    ],
+  ).toBe(updatedName)
 })
 
 it('should remove a resource', async () => {
-  const resources = Array.from(
-    {length: faker.random.number({min: 2, max: 5})},
-    fakeResource,
+  const numResources = faker.random.number({min: 2, max: 5})
+
+  const resources = createEntityList(
+    Array.from({length: numResources}, fakeResource),
   )
 
+  const sidebarItems = createEntityList([
+    {
+      ...createResourceList(),
+      title: faker.random.word(),
+      description: '',
+      resources,
+    },
+  ])
+
   const dashboard = fakeSimpleBlog({
-    sidebarItems: [
-      {
-        ...createResourceList(),
-        title: faker.random.word(),
-        description: '',
-        resources,
-      },
-    ],
+    sidebarItems,
   })
   const event = fakeEvent({template: dashboard})
 
@@ -233,12 +262,16 @@ it('should remove a resource', async () => {
   } = await goToDashboardConfig({event})
 
   expect((await findAllByLabelText('event resource')).length).toBe(
-    resources.length,
+    resources.ids.length,
   )
 
-  const targetIndex = faker.random.number({min: 0, max: resources.length - 1})
-  const target = resources[targetIndex]
-  const targetName = resources[targetIndex].name
+  const targetIndex = faker.random.number({
+    min: 0,
+    max: resources.ids.length - 1,
+  })
+  const targetId = resources.ids[targetIndex]
+  const target = resources.entities[targetId]
+  const targetName = target.name
 
   clickEdit((await findAllByLabelText('event resource'))[targetIndex])
 
@@ -249,21 +282,23 @@ it('should remove a resource', async () => {
   fireEvent.click(await findByLabelText('remove resource'))
 
   expect((await findAllByLabelText('event resource')).length).toBe(
-    resources.length - 1,
+    numResources - 1,
   )
 
   expect(queryByText(targetName)).not.toBeInTheDocument()
 
   // Saved
   await wait(() => {
-    expect(mockPost).toHaveBeenCalledTimes(1)
+    expect(mockPut).toHaveBeenCalledTimes(1)
   })
 
-  const [url, data] = mockPost.mock.calls[0]
-  expect(url).toMatch(`/events/${event.slug}`)
-  expect(data.template.sidebarItems[0].resources.length).toBe(
-    resources.length - 1,
-  )
+  const [url, data] = mockPut.mock.calls[0]
+  expect(url).toMatch(`/events/${event.slug}/template`)
+
+  const itemId = sidebarItems.ids[0]
+  expect(
+    data.template[`sidebarItems.entities.${itemId}.resources.ids`].length,
+  ).toBe(numResources - 1)
 
   expect(mockDelete).toHaveBeenCalledTimes(1)
   const [deleteUrl] = mockDelete.mock.calls[0]

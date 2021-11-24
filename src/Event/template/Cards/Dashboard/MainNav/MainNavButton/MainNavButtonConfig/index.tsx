@@ -12,13 +12,11 @@ import React, {useEffect, useState} from 'react'
 import Box from '@material-ui/core/Box'
 import RuleConfig, {useRuleConfig} from 'Event/attendee-rules/RuleConfig'
 import ConfigureRulesButton from 'Event/attendee-rules/ConfigureRulesButton'
-import {useDispatchUpdate} from 'Event/TemplateProvider'
 import ActionSelect from 'Event/ActionsProvider/ActionSelect'
 import Switch from 'lib/ui/form/Switch'
 import InfusionsoftTagInput from 'organization/Event/DashboardConfig/InfusionsoftTagInput'
 import TargetConfig from 'Event/Dashboard/components/NavButton/NavButtonConfig/TargetConfig'
 import IconPicker from 'lib/ui/form/IconPicker'
-import {useCards} from 'Event/template/Cards'
 import ComponentConfig, {
   ComponentConfigProps,
   SaveButton,
@@ -31,6 +29,8 @@ import MenuItem from '@material-ui/core/MenuItem'
 import FormControl from '@material-ui/core/FormControl'
 import Slider from '@material-ui/core/Slider'
 import {CardsNavButtonProps} from 'Event/template/Cards/Dashboard/CardsNavButton'
+import {useCardsTemplate, useCardsUpdate} from 'Event/template/Cards'
+import {REMOVE} from 'Event/TemplateUpdateProvider'
 
 export type ButtonConfigProps<K extends NavButton> = {
   button: K
@@ -45,8 +45,7 @@ export function MainNavButtonConfig(
   },
 ) {
   const {isVisible, onClose, id, button} = props
-  const {template} = useCards()
-  const {mainNav: buttons} = template
+  const {mainNav: buttons} = useCardsTemplate()
 
   const {register, control, handleSubmit} = useForm()
 
@@ -76,14 +75,12 @@ export function MainNavButtonConfig(
 
   const {visible: ruleConfigVisible, toggle: toggleRuleConfig} = useRuleConfig()
 
-  const updateTemplate = useDispatchUpdate()
+  const updateCards = useCardsUpdate()
 
   const update = (id: string, updated: CardsNavButtonProps) => {
-    updateTemplate({
+    updateCards({
       mainNav: {
-        ...buttons,
         entities: {
-          ...buttons.entities,
           [id]: updated,
         },
       },
@@ -93,12 +90,10 @@ export function MainNavButtonConfig(
   const insert = (button: CardsNavButtonProps) => {
     const id = uuid()
 
-    updateTemplate({
+    updateCards({
       mainNav: {
-        ...buttons,
         ids: [...buttons.ids, id],
         entities: {
-          ...buttons.entities,
           [id]: button,
         },
       },
@@ -110,13 +105,13 @@ export function MainNavButtonConfig(
       throw new Error('Missing button id')
     }
 
-    const {[id]: target, ...otherButtons} = buttons.entities
     const updatedIds = buttons.ids.filter((i) => i !== id)
 
-    updateTemplate({
+    updateCards({
       mainNav: {
-        ...buttons,
-        entities: otherButtons,
+        entities: {
+          [id]: REMOVE,
+        },
         ids: updatedIds,
       },
     })

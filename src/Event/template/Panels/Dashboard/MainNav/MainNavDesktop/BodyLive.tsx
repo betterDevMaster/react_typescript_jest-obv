@@ -1,5 +1,5 @@
 import React, {useState, useCallback, useEffect} from 'react'
-import {usePanels} from 'Event/template/Panels'
+import {usePanelsTemplate} from 'Event/template/Panels'
 import MainNavButton from 'Event/template/Panels/Dashboard/MainNav/MainNavButton'
 import Sizer from 'Event/template/Panels/Dashboard/MainNav/MainNavDesktop/Sizer'
 import PageArrows from 'Event/template/Panels/Dashboard/MainNav/MainNavDesktop/PageArrows'
@@ -13,7 +13,7 @@ export default function BodyLive(props: {className?: string}) {
    */
   const [cursor, setCursor] = useState(0)
   const [perPage, setPerPage] = useState(0)
-  const {template} = usePanels()
+  const template = usePanelsTemplate()
   const {
     nav: {ids, entities},
   } = template

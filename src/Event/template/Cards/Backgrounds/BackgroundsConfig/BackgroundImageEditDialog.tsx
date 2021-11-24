@@ -15,7 +15,7 @@ import {
   useBackgrounds,
 } from 'organization/Event/Backgrounds/BackgroundsProvider'
 import BackgroundImage from 'Event/template/Cards/Backgrounds/BackgroundsConfig/BackgroundImage'
-import {useCards} from 'Event/template/Cards'
+import {useCardsTemplate} from 'Event/template/Cards'
 
 export default function BackgroundImageEditDialog(props: {
   onClose: () => void
@@ -28,9 +28,7 @@ export default function BackgroundImageEditDialog(props: {
   const [rules, setRules] = useState<Rule[]>(background.settings?.rules || [])
   const {update, busy, remove} = useBackgrounds()
   const v = useAttendeeVariables()
-  const {
-    template: {zoomBackgrounds: templateSettings},
-  } = useCards()
+  const {zoomBackgrounds: templateSettings} = useCardsTemplate()
 
   const save = () => {
     update(background, {

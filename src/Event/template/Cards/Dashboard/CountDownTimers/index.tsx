@@ -1,6 +1,5 @@
 import styled from 'styled-components'
 import React from 'react'
-import {useDispatchUpdate} from 'Event/TemplateProvider'
 import {
   DragDropContext,
   Droppable,
@@ -9,16 +8,14 @@ import {
 } from 'react-beautiful-dnd'
 import Grid from '@material-ui/core/Grid'
 import {useEditMode} from 'Event/Dashboard/editor/state/edit-mode'
-import {useCards} from 'Event/template/Cards'
+import {useCardsTemplate, useCardsUpdate} from 'Event/template/Cards'
 import CountDownTimer from 'Event/template/Cards/Dashboard/CountDownTimers/CountDownTimer'
 import NewCountDownTimerButton from 'Event/template/Cards/Dashboard/CountDownTimers/CountDownTimer/NewCountDownTimerButton'
 import {useHasCountDownTimers} from 'lib/countdown-timers'
 
 export default function CountDownTimers(props: {className?: string}) {
-  const {template} = useCards()
-  const {countDownTimers} = template
+  const {countDownTimers} = useCardsTemplate()
   const isEditMode = useEditMode()
-  const handleDrag = useHandleDrag()
 
   const {ids, entities} = countDownTimers
   const hasTimers = useHasCountDownTimers(countDownTimers.entities)
@@ -32,11 +29,19 @@ export default function CountDownTimers(props: {className?: string}) {
     />
   ))
 
-  if (!isEditMode) {
-    return (
-      hasTimers && <Container className={props.className}>{timers}</Container>
-    )
+  if (isEditMode) {
+    return <Editable className={props.className}>{timers}</Editable>
   }
+
+  if (!hasTimers) {
+    return null
+  }
+
+  return <Container className={props.className}>{timers}</Container>
+}
+
+function Editable(props: {className?: string; children: React.ReactElement[]}) {
+  const handleDrag = useHandleDrag()
 
   return (
     <DragDropContext onDragEnd={handleDrag}>
@@ -48,7 +53,7 @@ export default function CountDownTimers(props: {className?: string}) {
             {...provided.droppableProps}
           >
             <>
-              {timers}
+              {props.children}
               {provided.placeholder}
               <StyledNewCountDownTimer />
             </>
@@ -74,9 +79,8 @@ const Container = React.forwardRef<
 ))
 
 function useHandleDrag() {
-  const {template} = useCards()
-  const {countDownTimers} = template
-  const updateTemplate = useDispatchUpdate()
+  const {countDownTimers} = useCardsTemplate()
+  const updateTemplate = useCardsUpdate()
 
   return (result: DropResult) => {
     const {destination, source} = result
@@ -92,9 +96,6 @@ function useHandleDrag() {
     updateTemplate({
       countDownTimers: {
         ids: moved,
-        entities: {
-          ...countDownTimers.entities,
-        },
       },
     })
   }

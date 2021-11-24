@@ -6,13 +6,12 @@ import TextField from '@material-ui/core/TextField'
 import {handleChangeSlider} from 'lib/dom'
 import InputLabel from '@material-ui/core/InputLabel'
 import Slider from '@material-ui/core/Slider'
-import {Cards, useCards} from 'Event/template/Cards'
+import {useCardsTemplate, useCardsUpdate} from 'Event/template/Cards'
 import ComponentConfig, {
   ComponentConfigProps,
   SaveButton,
 } from 'organization/Event/DashboardConfig/ComponentConfig'
 import {Controller, useForm} from 'react-hook-form'
-import {useDispatchUpdate} from 'Event/TemplateProvider'
 import ColorPicker from 'lib/ui/ColorPicker'
 
 const MIN_HERO_IMAGE_SIZE_PERCENT = 20
@@ -31,34 +30,18 @@ export type Hero = {
 export function HeroConfig(props: ComponentConfigProps) {
   const {isVisible, onClose} = props
   const {event} = useEvent()
-  const {template} = useCards()
-
-  const update = useDispatchUpdate()
-
   const {
     hero: {welcomeText, heroImageSize, welcomeTextColor, welcomeFontSize},
-  } = template
+  } = useCardsTemplate()
+
+  const update = useCardsUpdate()
 
   const {register, handleSubmit, control} = useForm()
 
-  const save = ({
-    heroImageSize,
-    welcomeText,
-    welcomeTextColor,
-    welcomeFontSize,
-  }: Hero) => {
-    const data: Cards = {
-      ...template,
-      hero: {
-        ...template.hero,
-        welcomeText,
-        heroImageSize,
-        welcomeTextColor,
-        welcomeFontSize,
-      },
-    }
-
-    update(data)
+  const save = (data: Hero) => {
+    update({
+      hero: data,
+    })
     onClose()
   }
 

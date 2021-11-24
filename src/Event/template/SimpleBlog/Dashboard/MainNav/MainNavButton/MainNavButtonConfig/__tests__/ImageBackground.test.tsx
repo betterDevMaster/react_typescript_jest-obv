@@ -6,14 +6,13 @@ import {createEntityList} from 'lib/list'
 import {clickEdit} from '__utils__/edit'
 import {fireEvent} from '@testing-library/react'
 import {fakeEvent} from 'Event/__utils__/factory'
-import {mockRxJsAjax} from 'store/__utils__/MockStoreProvider'
 import {wait} from '@testing-library/react'
 import mockAxios from 'axios'
 import {goToDashboardConfig} from 'organization/Event/DashboardConfig/__utils__/go-dashboard-config'
 import axios from 'axios'
 
+const mockPut = axios.put as jest.Mock
 const mockPost = axios.post as jest.Mock
-const mockRxPost = mockRxJsAjax.post as jest.Mock
 const mockGet = mockAxios.get as jest.Mock
 
 beforeEach(() => {
@@ -24,9 +23,12 @@ it('should configure background image', async () => {
   window.URL.createObjectURL = jest.fn(() => 'blob://foo')
 
   const button = fakeNavButtonWithSize()
+  const mainNav = createEntityList([button])
+  const id = mainNav.ids[0]
+
   const event = fakeEvent({
     template: fakeSimpleBlog({
-      mainNav: createEntityList([button]),
+      mainNav,
     }),
     has_infusionsoft: true,
   })
@@ -71,13 +73,12 @@ it('should configure background image', async () => {
 
   // Saved
   await wait(() => {
-    expect(mockRxPost).toHaveBeenCalledTimes(1)
+    expect(mockPut).toHaveBeenCalledTimes(1)
   })
 
-  const [url, data] = mockRxPost.mock.calls[0]
+  const [url, data] = mockPut.mock.calls[0]
   expect(url).toMatch(`/events/${event.slug}`)
 
-  const saved = Object.values(data.template.mainNav.entities)[0] as any
-
-  expect(saved.backgroundColor).toBe(`url(${file.url})`)
+  const saved = data.template[`mainNav.entities.${id}.backgroundColor`]
+  expect(saved).toBe(`url(${file.url})`)
 })

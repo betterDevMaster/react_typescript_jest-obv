@@ -8,32 +8,30 @@ import styled from 'styled-components'
 import VisibleOnMatch from 'Event/attendee-rules/VisibleOnMatch'
 import {useEditMode} from 'Event/Dashboard/editor/state/edit-mode'
 import {DragDropContext, Droppable, DropResult} from 'react-beautiful-dnd'
-import {
-  useRemoveSidebarItem,
-  useUpdateSidebarItem,
-} from 'Event/template/Cards/Dashboard/Sidebar/SidebarItem'
-import {uuid} from 'lib/uuid'
 import {RemoveButton} from 'organization/Event/DashboardConfig/ComponentConfig'
 import {useHasVisibleItems} from 'Event/attendee-rules/matcher'
 import Section from 'Event/template/Cards/Dashboard/Sidebar/Section'
+import {useEditSidebarItem} from 'Event/template/Cards/Dashboard/Sidebar/SidebarItem'
+import {EntityList} from 'lib/list'
 
 export const TICKET_RIBBON_LIST = 'Ticket Ribbon List'
 export interface TicketRibbonListProps {
-  id: string
   type: typeof TICKET_RIBBON_LIST
-  ribbons: TicketRibbon[]
+  ribbons: EntityList<TicketRibbon>
 }
 
 export const createTicketRibbonList = (): TicketRibbonListProps => ({
-  id: uuid(),
   type: TICKET_RIBBON_LIST,
-  ribbons: [],
+  ribbons: {
+    ids: [],
+    entities: {},
+  },
 })
 
 export default function TicketRibbons(props: TicketRibbonListProps) {
-  const removeItem = useRemoveSidebarItem(props)
   const isEditMode = useEditMode()
-  const hasVisibleItems = useHasVisibleItems(props.ribbons)
+  const {ribbons} = props
+  const hasVisibleItems = useHasVisibleItems(Object.values(ribbons.entities))
   if (!hasVisibleItems && !isEditMode) {
     return null
   }
@@ -41,26 +39,41 @@ export default function TicketRibbons(props: TicketRibbonListProps) {
   return (
     <Section>
       <EditModeOnly>
-        <RemoveButton onClick={removeItem} showing size="large">
-          Remove Ribbons
-        </RemoveButton>
+        <RemoveTicketRibbonsButton {...props} />
+      </EditModeOnly>
+      <Content {...props} />
+      <EditModeOnly>
         <StyledAddTicketRibbonButton list={props} />
       </EditModeOnly>
-      <DroppableList {...props} />
     </Section>
+  )
+}
+
+function RemoveTicketRibbonsButton(props: TicketRibbonListProps) {
+  const {remove: removeItem} = useEditSidebarItem()
+
+  return (
+    <RemoveButton onClick={removeItem} showing size="large">
+      Remove Ribbons
+    </RemoveButton>
+  )
+}
+
+function Content(props: TicketRibbonListProps) {
+  const isEdit = useEditMode()
+  if (isEdit) {
+    return <DroppableList {...props} />
+  }
+
+  return (
+    <div>
+      <TicketRibbonItemList {...props} />
+    </div>
   )
 }
 
 function DroppableList(props: TicketRibbonListProps) {
   const handleDrag = useHandleDrag(props)
-  const isEdit = useEditMode()
-
-  if (!isEdit)
-    return (
-      <div>
-        <TicketRibbonItemList {...props} />
-      </div>
-    )
 
   return (
     <DragDropContext onDragEnd={handleDrag}>
@@ -81,21 +94,26 @@ function DroppableList(props: TicketRibbonListProps) {
 function TicketRibbonItemList(props: TicketRibbonListProps) {
   return (
     <>
-      {props.ribbons.map((ticketRibbon: TicketRibbon, index: number) => (
-        <VisibleOnMatch rules={ticketRibbon.rules} key={index}>
-          <TicketRibbonItem
-            ticketRibbon={ticketRibbon}
-            index={index}
-            list={props}
-          />
-        </VisibleOnMatch>
-      ))}
+      {props.ribbons.ids.map((id: string, index: number) => {
+        const ticketRibbon = props.ribbons.entities[id]
+
+        return (
+          <VisibleOnMatch rules={ticketRibbon.rules} key={index}>
+            <TicketRibbonItem
+              ticketRibbon={ticketRibbon}
+              index={index}
+              list={props}
+              id={id}
+            />
+          </VisibleOnMatch>
+        )
+      })}
     </>
   )
 }
 
 function useHandleDrag(props: TicketRibbonListProps) {
-  const updateItem = useUpdateSidebarItem()
+  const {update} = useEditSidebarItem()
 
   return (result: DropResult) => {
     const {destination, source} = result
@@ -104,13 +122,14 @@ function useHandleDrag(props: TicketRibbonListProps) {
       return
     }
 
-    const moved = Array.from(props.ribbons)
+    const moved = Array.from(props.ribbons.ids)
     const [removed] = moved.splice(source.index, 1)
     moved.splice(destination.index, 0, removed)
 
-    updateItem({
-      ...props,
-      ribbons: moved,
+    update({
+      ribbons: {
+        ids: moved,
+      },
     })
   }
 }

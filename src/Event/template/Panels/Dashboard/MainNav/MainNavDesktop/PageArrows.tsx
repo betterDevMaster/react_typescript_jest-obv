@@ -2,7 +2,7 @@ import styled from 'styled-components'
 import {Icon} from 'lib/fontawesome/Icon'
 import IconButton from 'lib/ui/IconButton'
 import React from 'react'
-import {usePanels} from 'Event/template/Panels'
+import {usePanelsTemplate} from 'Event/template/Panels'
 
 export default function PageArrows(props: {
   hasNext: boolean
@@ -35,11 +35,8 @@ function Arrow(props: {
   onClick: () => void
   disableLabel?: boolean
 }) {
-  const {
-    template: {
-      leftPanel: {arrowColor},
-    },
-  } = usePanels()
+  const template = usePanelsTemplate()
+
   if (!props.showing) {
     return null
   }
@@ -50,7 +47,10 @@ function Arrow(props: {
 
   return (
     <IconButton onClick={props.onClick} aria-label={label}>
-      <ArrowIcon iconClass={`far ${faClass}`} color={arrowColor} />
+      <ArrowIcon
+        iconClass={`far ${faClass}`}
+        color={template.leftPanel.arrowColor}
+      />
     </IconButton>
   )
 }

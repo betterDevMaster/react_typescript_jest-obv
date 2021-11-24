@@ -1,6 +1,6 @@
 import styled from 'styled-components'
 import React from 'react'
-import {useCards} from 'Event/template/Cards'
+import {useCardsTemplate} from 'Event/template/Cards'
 import {useToggle} from 'lib/toggle'
 import PageLinksConfig from 'Event/template/Cards/Dashboard/PageLinks/PageLinksConfig'
 import {Editable} from 'Event/Dashboard/editor/views/EditComponent'
@@ -8,9 +8,10 @@ import {eventRoutes} from 'Event/Routes'
 import {useEditMode} from 'Event/Dashboard/editor/state/edit-mode'
 import {RelativeLink} from 'lib/ui/link/RelativeLink'
 import {useAttendeeVariables} from 'Event'
+import EditModeOnly from 'Event/Dashboard/editor/views/EditModeOnly'
 
 export default function PageLinks() {
-  const {template} = useCards()
+  const template = useCardsTemplate()
 
   const {
     homeMenuTitle: homeTitle,
@@ -32,7 +33,12 @@ export default function PageLinks() {
 
   return (
     <>
-      <PageLinksConfig isVisible={barConfigVisible} onClose={toggleBarConfig} />
+      <EditModeOnly>
+        <PageLinksConfig
+          isVisible={barConfigVisible}
+          onClose={toggleBarConfig}
+        />
+      </EditModeOnly>
       <Box borderBottomColor={tabSeparatorColor} aria-label="page links">
         <Editable onEdit={toggleBarConfig} aria-label="edit page links">
           <>

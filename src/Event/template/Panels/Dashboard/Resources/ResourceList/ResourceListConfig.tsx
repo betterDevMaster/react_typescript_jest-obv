@@ -1,27 +1,26 @@
-import TextField from '@material-ui/core/TextField'
-import {Panels, usePanels} from 'Event/template/Panels'
-import {handleChangeSlider, onChangeCheckedHandler} from 'lib/dom'
 import React from 'react'
+import {Controller, useForm} from 'react-hook-form'
+import FormControl from '@material-ui/core/FormControl'
+import InputLabel from '@material-ui/core/InputLabel'
+import Slider from '@material-ui/core/Slider'
+import TextField from '@material-ui/core/TextField'
+import {handleChangeSlider, onChangeCheckedHandler} from 'lib/dom'
 import ColorPicker from 'lib/ui/ColorPicker'
 import Switch from 'lib/ui/form/Switch'
-import Slider from '@material-ui/core/Slider'
-import InputLabel from '@material-ui/core/InputLabel'
-import FormControl from '@material-ui/core/FormControl'
+import {usePanelsTemplate, usePanelsUpdate} from 'Event/template/Panels'
+import {ResourceList} from 'Event/template/Panels/Dashboard/Resources/ResourceList'
 import ComponentConfig, {
   SaveButton,
 } from 'organization/Event/DashboardConfig/ComponentConfig'
-import {Controller, useForm} from 'react-hook-form'
-import {ResourceList} from 'Event/template/Panels/Dashboard/Resources/ResourceList'
-import {useDispatchUpdate} from 'Event/TemplateProvider'
 
 export default function ResourceListConfig(props: {
   isVisible: boolean
   onClose: () => void
 }) {
-  const {template} = usePanels()
+  const template = usePanelsTemplate()
+  const updateTemplate = usePanelsUpdate()
   const {resourceList: list} = template
   const {register, control, handleSubmit} = useForm()
-  const updateTemplate = useDispatchUpdate()
 
   const submit = (
     data: Pick<
@@ -35,13 +34,8 @@ export default function ResourceListConfig(props: {
       | 'linkColor'
     >,
   ) => {
-    const updated: Panels['resourceList'] = {
-      ...list,
-      ...data,
-    }
-
     updateTemplate({
-      resourceList: updated,
+      resourceList: data,
     })
 
     props.onClose()

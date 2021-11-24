@@ -7,7 +7,7 @@ import Image from 'Event/template/SimpleBlog/SponsorPage/SponsorList/Card/Image'
 import Body from 'Event/template/SimpleBlog/SponsorPage/SponsorList/Card/Body'
 import {Draggable} from 'react-beautiful-dnd'
 import SponsorForm from 'Event/template/SimpleBlog/SponsorPage/SponsorList/Card/SponsorForm'
-import {useSimpleBlog} from 'Event/template/SimpleBlog'
+import {useSimpleBlogTemplate} from 'Event/template/SimpleBlog'
 
 type SponsorProps = {
   index: number
@@ -41,7 +41,7 @@ export default function Card(props: SponsorProps) {
 
 function Content(props: SponsorProps) {
   const {sponsor} = props
-  const {template} = useSimpleBlog()
+  const template = useSimpleBlogTemplate()
   const [formVisible, setFormVisible] = useState(false)
   const toggleForm = () => setFormVisible(!formVisible)
 

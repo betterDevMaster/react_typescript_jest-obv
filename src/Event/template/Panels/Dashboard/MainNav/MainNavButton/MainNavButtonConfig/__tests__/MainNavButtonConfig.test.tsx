@@ -5,15 +5,15 @@ import {createEntityList} from 'lib/list'
 import {clickEdit} from '__utils__/edit'
 import {fireEvent} from '@testing-library/react'
 import {fakeEvent} from 'Event/__utils__/factory'
-import {mockRxJsAjax} from 'store/__utils__/MockStoreProvider'
 import {wait} from '@testing-library/react'
 import {fakeArea} from 'organization/Event/AreaList/__utils__/factory'
 import mockAxios from 'axios'
 import {fakeAction} from 'Event/ActionsProvider/__utils__/factory'
 import {goToDashboardConfig} from 'organization/Event/DashboardConfig/__utils__/go-dashboard-config'
 import {fakePanels} from 'Event/template/Panels/__utils__/factory'
+import axios from 'axios'
 
-const mockPost = mockRxJsAjax.post as jest.Mock
+const mockPut = axios.put as jest.Mock
 const mockGet = mockAxios.get as jest.Mock
 
 beforeEach(() => {
@@ -62,13 +62,13 @@ it('should edit the selected button', async () => {
 
   // Saved
   await wait(() => {
-    expect(mockPost).toHaveBeenCalledTimes(1)
+    expect(mockPut).toHaveBeenCalledTimes(1)
   })
 
-  const [url, data] = mockPost.mock.calls[0]
+  const [url, data] = mockPut.mock.calls[0]
   expect(url).toMatch(`/events/${event.slug}`)
-  const id = data.template.nav.ids[targetIndex]
-  expect(data.template.nav.entities[id].text).toBe(updatedValue)
+  const id = navButtons.ids[targetIndex]
+  expect(data.template[`nav.entities.${id}.text`]).toBe(updatedValue)
 })
 
 it('should set an area button', async () => {
@@ -116,21 +116,22 @@ it('should set an area button', async () => {
 
   // Saved
   await wait(() => {
-    expect(mockPost).toHaveBeenCalledTimes(1)
+    expect(mockPut).toHaveBeenCalledTimes(1)
   })
 
-  const [url, data] = mockPost.mock.calls[0]
+  const [url, data] = mockPut.mock.calls[0]
   expect(url).toMatch(`/events/${event.slug}`)
-  const id = data.template.nav.ids[targetIndex]
-  expect(data.template.nav.entities[id]['isAreaButton']).toBe(true)
-  expect(data.template.nav.entities[id]['areaId']).toBe(target.key) // Set area ID
+  const id = mainNavButtons.ids[targetIndex]
+  expect(data.template[`nav.entities.${id}.isAreaButton`]).toBe(true)
+  expect(data.template[`nav.entities.${id}.areaId`]).toBe(target.key) // Set area ID
 })
 
 it('should assign an action for points', async () => {
   const button = fakeNavButtonWithSize()
+  const mainNavButtons = createEntityList([button])
   const event = fakeEvent({
     template: fakePanels({
-      nav: createEntityList([button]),
+      nav: mainNavButtons,
     }),
   })
 
@@ -160,21 +161,24 @@ it('should assign an action for points', async () => {
 
   // Saved
   await wait(() => {
-    expect(mockPost).toHaveBeenCalledTimes(1)
+    expect(mockPut).toHaveBeenCalledTimes(1)
   })
 
-  const [url, data] = mockPost.mock.calls[0]
+  const [url, data] = mockPut.mock.calls[0]
   expect(url).toMatch(`/events/${event.slug}`)
 
-  const id = data.template.nav.ids[0] // only one button
-  expect(data.template.nav.entities[id]['actionId']).toBe(target.key) // Did assign action id
+  const savedButtonId = mainNavButtons.ids[0]
+  expect(data.template[`nav.entities.${savedButtonId}.actionId`]).toBe(
+    target.key,
+  ) // Did assign action id
 })
 
 it('should set an infusionsoft tag', async () => {
   const button = fakeNavButtonWithSize()
+  const mainNavButtons = createEntityList([button])
   const event = fakeEvent({
     template: fakePanels({
-      nav: createEntityList([button]),
+      nav: mainNavButtons,
     }),
     has_infusionsoft: true,
   })
@@ -197,14 +201,16 @@ it('should set an infusionsoft tag', async () => {
 
   // Saved
   await wait(() => {
-    expect(mockPost).toHaveBeenCalledTimes(1)
+    expect(mockPut).toHaveBeenCalledTimes(1)
   })
 
-  const [url, data] = mockPost.mock.calls[0]
+  const [url, data] = mockPut.mock.calls[0]
   expect(url).toMatch(`/events/${event.slug}`)
 
-  const saved = Object.values(data.template.nav.entities)[0] as any
-  expect(saved.infusionsoftTag.id).toBe(id)
+  const savedButtonId = mainNavButtons.ids[0]
+  expect(
+    data.template[`nav.entities.${savedButtonId}.infusionsoftTag.id`],
+  ).toBe(id)
 })
 
 it('should not have a page select', async () => {

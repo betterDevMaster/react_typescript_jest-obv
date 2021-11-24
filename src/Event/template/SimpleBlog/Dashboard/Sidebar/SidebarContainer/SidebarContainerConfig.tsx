@@ -11,7 +11,11 @@ import EventImageUpload from 'organization/Event/DashboardConfig/EventImageUploa
 import {useEvent} from 'Event/EventProvider'
 import Switch from 'lib/ui/form/Switch'
 import Box from '@material-ui/core/Box'
-import {useSimpleBlog} from 'Event/template/SimpleBlog'
+import {
+  SimpleBlog,
+  useSimpleBlogTemplate,
+  useSimpleBlogUpdate,
+} from 'Event/template/SimpleBlog'
 import ComponentConfig, {
   ComponentConfigProps,
   SaveButton,
@@ -32,16 +36,16 @@ const MAX_SIDEBAR_BORDER_RADIUS = 25
 
 export function SidebarContainerConfig(props: ComponentConfigProps) {
   const {isVisible, onClose} = props
-  const {
-    template: {sidebar},
-    update,
-  } = useSimpleBlog()
+  const {sidebar} = useSimpleBlogTemplate()
+  const update = useSimpleBlogUpdate()
   const {event} = useEvent()
 
   const {control, handleSubmit} = useForm()
 
-  const save = (data: any) => {
-    update.primitive('sidebar')(data)
+  const save = (data: SimpleBlog['sidebar']) => {
+    update({
+      sidebar: data,
+    })
     onClose()
   }
 
@@ -73,7 +77,7 @@ export function SidebarContainerConfig(props: ComponentConfigProps) {
         <InputLabel>Top Padding</InputLabel>
         <Controller
           name="paddingTop"
-          defaultValue={sidebar.paddingTop || 48}
+          defaultValue={sidebar.paddingTop}
           control={control}
           render={({value, onChange}) => (
             <Slider

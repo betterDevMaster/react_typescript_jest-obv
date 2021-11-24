@@ -7,7 +7,6 @@ import TextField from '@material-ui/core/TextField'
 import {handleChangeSlider, onChangeCheckedHandler} from 'lib/dom'
 import ColorPicker from 'lib/ui/ColorPicker'
 import Switch from 'lib/ui/form/Switch'
-import {useDispatchUpdate} from 'Event/TemplateProvider'
 import LocalizedDateTimePicker from 'lib/LocalizedDateTimePicker'
 import ComponentConfig, {
   ComponentConfigProps,
@@ -15,7 +14,7 @@ import ComponentConfig, {
   SaveButton,
 } from 'organization/Event/DashboardConfig/ComponentConfig'
 import {CountDownTimer} from 'Event/Dashboard/components/CountDownTimer'
-import {usePanels} from 'Event/template/Panels'
+import {usePanelsTemplate, usePanelsUpdate} from 'Event/template/Panels'
 import FormControl from '@material-ui/core/FormControl'
 
 export default function TimerConfig(
@@ -25,19 +24,16 @@ export default function TimerConfig(
   },
 ) {
   const {isVisible, onClose, id, countDownTimer} = props
-  const {template} = usePanels()
+  const template = usePanelsTemplate()
+  const updateTemplate = usePanelsUpdate()
   const {countDownTimers} = template
 
   const {control, handleSubmit, register} = useForm()
 
-  const updateTemplate = useDispatchUpdate()
-
   const update = (id: string, updated: CountDownTimer) => {
     updateTemplate({
       countDownTimers: {
-        ...countDownTimers,
         entities: {
-          ...countDownTimers.entities,
           [id]: updated,
         },
       },

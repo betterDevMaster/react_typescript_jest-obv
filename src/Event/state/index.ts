@@ -3,10 +3,8 @@ import {
   EventAction,
   handleCreateTemplate,
   handleSetEvent,
-  handleUpdateTemplate,
   CREATE_TEMPLATE_ACTION,
   SET_EVENT_ACTION,
-  UPDATE_TEMPLATE_ACTION,
   SET_EVENT_UPDATED_AT_ACTION,
   handleSetEventUpdatedAt,
 } from 'Event/state/actions'
@@ -20,9 +18,6 @@ export function eventReducer(state: EventState = null, action: EventAction) {
     }
     case CREATE_TEMPLATE_ACTION: {
       return handleCreateTemplate(state, action)
-    }
-    case UPDATE_TEMPLATE_ACTION: {
-      return handleUpdateTemplate(state, action)
     }
     case SET_EVENT_UPDATED_AT_ACTION: {
       return handleSetEventUpdatedAt(state, action)

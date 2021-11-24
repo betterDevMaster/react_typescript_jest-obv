@@ -1,6 +1,6 @@
 import React from 'react'
 import styled from 'styled-components'
-import {DEFAULTS, usePanels} from 'Event/template/Panels'
+import {DEFAULTS, usePanelsTemplate} from 'Event/template/Panels'
 import {useAttendeeVariables} from 'Event'
 import {Icon} from 'lib/fontawesome/Icon'
 import {Step} from 'Event/template/Panels/check-in/CheckInConfig'
@@ -10,7 +10,7 @@ export default function StepIndicator(props: {
   className?: string
   horizontal?: boolean
 }) {
-  const {template} = usePanels()
+  const template = usePanelsTemplate()
 
   return (
     <Box className={props.className}>
@@ -39,16 +39,14 @@ export default function StepIndicator(props: {
 }
 
 function CheckInLabel() {
-  const {
-    template: {checkInTitle: checkInLabel},
-  } = usePanels()
+  const template = usePanelsTemplate()
 
   const v = useAttendeeVariables()
-  return <Label>{v(checkInLabel)}</Label>
+  return <Label>{v(template.checkInTitle)}</Label>
 }
 
 function StepLabel(props: {step: Step}) {
-  const {template} = usePanels()
+  const template = usePanelsTemplate()
 
   const labels = {
     1: template.step1Label,
@@ -64,7 +62,7 @@ function StepLabel(props: {step: Step}) {
 
 function StepIcon(props: {icon: string; isActive: boolean}) {
   const {isActive} = props
-  const {template} = usePanels()
+  const template = usePanelsTemplate()
 
   const color = () => {
     if (!isActive) {
@@ -78,7 +76,7 @@ function StepIcon(props: {icon: string; isActive: boolean}) {
 
 function Divider(props: {isActive: boolean; horizontal?: boolean}) {
   const {isActive, horizontal} = props
-  const {template} = usePanels()
+  const template = usePanelsTemplate()
 
   const color = () => {
     if (!isActive) {

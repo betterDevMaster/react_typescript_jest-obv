@@ -1,6 +1,5 @@
 import styled from 'styled-components'
 import React from 'react'
-import {useDispatchUpdate} from 'Event/TemplateProvider'
 import {
   DragDropContext,
   Droppable,
@@ -8,12 +7,12 @@ import {
   DropResult,
 } from 'react-beautiful-dnd'
 import {useEditMode} from 'Event/Dashboard/editor/state/edit-mode'
-import {usePanels} from 'Event/template/Panels'
+import {usePanelsTemplate, usePanelsUpdate} from 'Event/template/Panels'
 import NewMainNavButton from 'Event/template/Panels/Dashboard/MainNav/MainNavButton/NewMainNavButton'
 import MainNavButton from 'Event/template/Panels/Dashboard/MainNav/MainNavButton'
 
 export default function MainNavMobile(props: {className?: string}) {
-  const {template} = usePanels()
+  const template = usePanelsTemplate()
   const {nav} = template
   const isEditMode = useEditMode()
   const handleDrag = useHandleDrag()
@@ -62,9 +61,9 @@ const Container = React.forwardRef<
 ))
 
 function useHandleDrag() {
-  const {template} = usePanels()
+  const template = usePanelsTemplate()
   const {nav: buttons} = template
-  const updateTemplate = useDispatchUpdate()
+  const updateTemplate = usePanelsUpdate()
 
   return (result: DropResult) => {
     const {destination, source} = result
@@ -80,9 +79,6 @@ function useHandleDrag() {
     updateTemplate({
       nav: {
         ids: moved,
-        entities: {
-          ...buttons.entities,
-        },
       },
     })
   }

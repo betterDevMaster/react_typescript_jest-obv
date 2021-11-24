@@ -8,7 +8,7 @@ import {onChangeCheckedHandler} from 'lib/dom'
 import {useWaiver} from 'Event/Step2/WaiverProvider'
 import {useAttendeeVariables} from 'Event'
 import Typography from '@material-ui/core/Typography'
-import {usePanels} from 'Event/template/Panels'
+import {usePanelsTemplate} from 'Event/template/Panels'
 import Box from '@material-ui/core/Box'
 
 export default function Waiver() {
@@ -22,8 +22,7 @@ export default function Waiver() {
     body,
   } = useWaiver()
 
-  const {template} = usePanels()
-  const {isDarkMode} = template
+  const {isDarkMode} = usePanelsTemplate()
   const v = useAttendeeVariables()
   const color = isDarkMode ? '#FFFFFF' : '#000000'
 

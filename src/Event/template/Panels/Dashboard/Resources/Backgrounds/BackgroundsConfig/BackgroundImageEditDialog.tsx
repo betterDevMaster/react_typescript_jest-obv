@@ -15,7 +15,10 @@ import {
   useBackgrounds,
 } from 'organization/Event/Backgrounds/BackgroundsProvider'
 import BackgroundImage from 'Event/template/Panels/Dashboard/Resources/Backgrounds/BackgroundsConfig/BackgroundImage'
-import {DEFAULTS as TEMPLATE_DEFAULTS, usePanels} from 'Event/template/Panels'
+import {
+  DEFAULTS as TEMPLATE_DEFAULTS,
+  usePanelsTemplate,
+} from 'Event/template/Panels'
 
 const DEFAULT = TEMPLATE_DEFAULTS.zoomBackgrounds
 
@@ -30,9 +33,7 @@ export default function BackgroundImageEditDialog(props: {
   const [rules, setRules] = useState<Rule[]>(background.settings?.rules || [])
   const {update, busy, remove} = useBackgrounds()
   const v = useAttendeeVariables()
-  const {
-    template: {zoomBackgrounds: templateSettings},
-  } = usePanels()
+  const {zoomBackgrounds: templateSettings} = usePanelsTemplate()
 
   const save = () => {
     update(background, {

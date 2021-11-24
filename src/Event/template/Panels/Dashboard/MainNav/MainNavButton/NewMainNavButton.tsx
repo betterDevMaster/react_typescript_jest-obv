@@ -2,11 +2,11 @@ import Button from '@material-ui/core/Button'
 import styled from 'styled-components'
 import {NavButtonWithSize} from 'Event/Dashboard/components/NavButton'
 import React, {useState} from 'react'
-import {usePanels} from 'Event/template/Panels'
+import {usePanelsTemplate} from 'Event/template/Panels'
 import MainNavButtonConfig from 'Event/template/Panels/Dashboard/MainNav/MainNavButton/MainNavButtonConfig'
 
 export default function NewMainNavButton(props: {className?: string}) {
-  const {template} = usePanels()
+  const template = usePanelsTemplate()
   const {nav: buttons} = template
   const [button, setButton] = useState<NavButtonWithSize | null>(null)
 

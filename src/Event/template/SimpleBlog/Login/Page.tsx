@@ -10,14 +10,14 @@ import {makeStyles} from '@material-ui/core/styles'
 import {spacing} from 'lib/ui/theme'
 import Logo from 'Event/template/SimpleBlog/Login/Logo'
 import {rgba} from 'lib/color'
-import {useSimpleBlog} from 'Event/template/SimpleBlog'
+import {useSimpleBlogTemplate} from 'Event/template/SimpleBlog'
 
 export default function Page(props: {
   isPreview?: LoginProps['isPreview']
   children: React.ReactElement | React.ReactElement[]
 }) {
   const {event} = useEvent()
-  const {template} = useSimpleBlog()
+  const template = useSimpleBlogTemplate()
   const {login} = template
 
   const background = event.login_background
@@ -46,7 +46,7 @@ export default function Page(props: {
 }
 
 export function Description(props: {children: string; 'aria-label'?: string}) {
-  const {template} = useSimpleBlog()
+  const template = useSimpleBlogTemplate()
   const color = template.login.description.color
   const fontSize = template.login.description.fontSize
 
@@ -74,7 +74,7 @@ export function ErrorMessage(props: {children?: string}) {
 }
 
 export function Button(props: ButtonProps) {
-  const {template} = useSimpleBlog()
+  const template = useSimpleBlogTemplate()
   const {login} = template
   const borderRadius = `${login.submitButton.borderRadius}px` || spacing[14]
   const hoverColor =
@@ -134,7 +134,7 @@ export const ColorOverlay = styled.div<{
 `
 
 export function TextField(props: TextFieldProps) {
-  const {template} = useSimpleBlog()
+  const template = useSimpleBlogTemplate()
   const {login} = template
 
   const useStyles = makeStyles({

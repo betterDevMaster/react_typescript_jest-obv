@@ -1,4 +1,4 @@
-import {useCards} from 'Event/template/Cards'
+import {useCardsTemplate} from 'Event/template/Cards'
 import React from 'react'
 import styled from 'styled-components'
 
@@ -9,9 +9,7 @@ const Section = React.forwardRef<
     className?: string
   }
 >((props, ref) => {
-  const {
-    template: {sidebar},
-  } = useCards()
+  const {sidebar} = useCardsTemplate()
 
   return (
     <Box

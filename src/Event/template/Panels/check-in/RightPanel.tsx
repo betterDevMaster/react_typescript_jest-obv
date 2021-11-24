@@ -1,4 +1,4 @@
-import {usePanels} from 'Event/template/Panels'
+import {usePanelsTemplate} from 'Event/template/Panels'
 import {rgba} from 'lib/color'
 import React from 'react'
 import styled from 'styled-components'
@@ -7,9 +7,8 @@ export default function RightPanel(props: {
   children: React.ReactElement
   center?: boolean
 }) {
-  const {
-    template: {checkInRightPanel},
-  } = usePanels()
+  const template = usePanelsTemplate()
+  const {checkInRightPanel} = template
 
   return (
     <Box

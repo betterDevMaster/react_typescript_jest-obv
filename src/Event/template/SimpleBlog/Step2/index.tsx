@@ -16,10 +16,10 @@ import MuiButton, {ButtonProps} from '@material-ui/core/Button'
 import Grid from '@material-ui/core/Grid'
 import {colors} from 'lib/ui/theme'
 import {useAttendeeVariables} from 'Event'
-import {useSimpleBlog} from 'Event/template/SimpleBlog'
+import {useSimpleBlogTemplate} from 'Event/template/SimpleBlog'
 
 export default function Step2(props: {user: User}) {
-  const {template} = useSimpleBlog()
+  const template = useSimpleBlogTemplate()
   const {progressBar} = template
   const {hasTechCheck} = useEvent()
   const progress = hasTechCheck ? 50 : 67
@@ -126,7 +126,7 @@ function WaiverOnly() {
 
   const canSubmit = !submitting && canSubmitWaiver
 
-  const {template} = useSimpleBlog()
+  const template = useSimpleBlogTemplate()
   const waiver = template.waiver
 
   /**
@@ -165,7 +165,7 @@ function WaiverOnly() {
 }
 
 function SubmitButton(props: {canSubmit: boolean}) {
-  const {template} = useSimpleBlog()
+  const template = useSimpleBlogTemplate()
   const waiver = template.waiver
   const v = useAttendeeVariables()
 

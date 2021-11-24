@@ -4,7 +4,7 @@ import SponsorList from 'Event/template/Cards/Sponsors/SponsorList'
 import SponsorEditDialog from 'Event/template/Cards/Sponsors/SponsorEditDialog'
 import {useAttendeeVariables} from 'Event'
 import {PageTitle, PageDescription} from 'Event/template/Cards/Page'
-import {useCards} from 'Event/template/Cards'
+import {useCardsTemplate} from 'Event/template/Cards'
 import Content from 'lib/ui/form/TextEditor/Content'
 import CardsPage from 'Event/template/Cards/Page'
 import {User} from 'auth/user'
@@ -14,9 +14,7 @@ export default function CardsSponsorPage(props: {
   sponsors: Sponsor[]
   user: User
 }) {
-  const {
-    template: {sponsors: sponsorsPageSettings},
-  } = useCards()
+  const {sponsors: sponsorsPageSettings} = useCardsTemplate()
   const {sponsors} = props
   const v = useAttendeeVariables()
 

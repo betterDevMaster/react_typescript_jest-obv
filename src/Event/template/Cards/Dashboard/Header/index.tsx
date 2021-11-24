@@ -6,12 +6,13 @@ import {eventRoutes} from 'Event/Routes'
 import {RelativeLink} from 'lib/ui/link/RelativeLink'
 import {useEvent} from 'Event/EventProvider'
 import {rgba} from 'lib/color'
-import {useCards} from 'Event/template/Cards'
+import {useCardsTemplate} from 'Event/template/Cards'
 import {useToggle} from 'lib/toggle'
 import {Editable} from 'Event/Dashboard/editor/views/EditComponent'
 import {CardsConfig} from 'Event/template/Cards/CardsConfig'
 import Hero from 'Event/template/Cards/Dashboard/Hero'
 import {useRandomBackground} from 'Event/template/Cards/Login/Page'
+import EditModeOnly from 'Event/Dashboard/editor/views/EditModeOnly'
 
 export default function Header(props: {
   toggleMenu: () => void
@@ -21,13 +22,14 @@ export default function Header(props: {
   isDashboardHeader: boolean
 }) {
   const {flag: configVisible, toggle: toggleConfig} = useToggle()
-  const {template} = useCards()
-  const {menu} = template
+  const {menu} = useCardsTemplate()
   const {iconColor} = menu
 
   return (
     <>
-      <CardsConfig isVisible={configVisible} onClose={toggleConfig} />
+      <EditModeOnly>
+        <CardsConfig isVisible={configVisible} onClose={toggleConfig} />
+      </EditModeOnly>
       <Editable onEdit={toggleConfig}>
         <CollapsableBackground isDashboardHeader={props.isDashboardHeader}>
           <CollapsableColorOverlay>
@@ -72,26 +74,19 @@ function CollapsableBackground(props: {
 
 function CollapsableLogo(props: {hideLogo?: boolean}) {
   const {event} = useEvent()
-  const {template} = useCards()
-  const {title, header} = template
+  const {title, header} = useCardsTemplate()
   const logo = event.logo ? event.logo.url : ''
 
   if (header.isCollapsed || props.hideLogo === true) {
     return null
   }
   return (
-    <Logo
-      src={logo}
-      alt={title}
-      aria-label="logo"
-      width={template.header.logoSize}
-    />
+    <Logo src={logo} alt={title} aria-label="logo" width={header.logoSize} />
   )
 }
 
 function CollapsableColorOverlay(props: {children: React.ReactElement}) {
-  const {template} = useCards()
-  const {header} = template
+  const {header} = useCardsTemplate()
   const backgroundColorRgb = rgba(
     header.backgroundColor,
     header.backgroundOpacity,

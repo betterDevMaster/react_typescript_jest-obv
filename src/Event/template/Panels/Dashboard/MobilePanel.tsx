@@ -1,7 +1,7 @@
 import Logo from 'Event/Logo'
 import styled from 'styled-components'
 import React, {useState} from 'react'
-import {usePanels} from 'Event/template/Panels'
+import {usePanelsTemplate} from 'Event/template/Panels'
 import {MenuIconButton} from 'lib/ui/IconButton/MenuIconButton'
 import Menu from 'Event/template/Panels/Dashboard/Menu'
 import MainNavMobile from 'Event/template/Panels/Dashboard/MainNav/MainNavMobile'
@@ -17,7 +17,7 @@ export default function MobilePanel(props: {
 }) {
   const [menuVisible, setMenuVisible] = useState(false)
   const toggleMenu = () => setMenuVisible(!menuVisible)
-  const {template} = usePanels()
+  const template = usePanelsTemplate()
 
   const handleChangeTab = (tab: number) => {
     props.onChangeTab(tab)
@@ -51,7 +51,7 @@ function Content(props: {
   onChangeTab: (tab: number) => void
   user: User
 }) {
-  const {template} = usePanels()
+  const template = usePanelsTemplate()
 
   if (props.menuVisible) {
     return <Menu onChangeTab={props.onChangeTab} user={props.user} />

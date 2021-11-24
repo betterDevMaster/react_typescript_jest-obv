@@ -1,6 +1,6 @@
 import ColorPicker from 'lib/ui/ColorPicker'
 import React, {useEffect, useState} from 'react'
-import {Cards, useCards} from 'Event/template/Cards'
+import {useCardsTemplate, useCardsUpdate} from 'Event/template/Cards'
 import Slider from '@material-ui/core/Slider'
 import {handleChangeSlider, onChangeStringHandler} from 'lib/dom'
 import InputLabel from '@material-ui/core/InputLabel'
@@ -8,7 +8,6 @@ import ComponentConfig, {
   ComponentConfigProps,
   SaveButton,
 } from 'organization/Event/DashboardConfig/ComponentConfig'
-import {useDispatchUpdate} from 'Event/TemplateProvider'
 import TextField from '@material-ui/core/TextField'
 
 const MIN_MAIN_NAV_WIDTH = 10
@@ -22,8 +21,8 @@ const MAX_MAIN_NAV_BORDER_RADIUS = 100
 
 export default function MainNavConfig(props: ComponentConfigProps) {
   const {isVisible, onClose} = props
-  const {template} = useCards()
-  const update = useDispatchUpdate()
+  const template = useCardsTemplate()
+  const update = useCardsUpdate()
 
   const [mainNavWidth, setMainNavWidth] = useState(template.mainNav.width)
   const [mainNavButtonHeight, setMainNavButtonHeight] = useState(
@@ -54,19 +53,15 @@ export default function MainNavConfig(props: ComponentConfigProps) {
   }, [isVisible, template])
 
   const save = () => {
-    const data: Cards = {
-      ...template,
+    update({
       mainNav: {
-        ...template.mainNav,
         width: mainNavWidth,
         buttonHeight: mainNavButtonHeight,
         borderRadius: mainNavBorderRadius,
         scrollDownText,
         scrollDownArrowColor,
       },
-    }
-
-    update(data)
+    })
     onClose()
   }
 

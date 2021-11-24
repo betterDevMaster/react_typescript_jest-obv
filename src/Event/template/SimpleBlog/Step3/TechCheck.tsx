@@ -11,7 +11,7 @@ import {areaRoutes} from 'Event/Routes'
 import {TechCheckConfig} from 'Event'
 import {RelativeLink} from 'lib/ui/link/RelativeLink'
 import CustomButtons from 'Event/Step3/CustomButtons'
-import {SimpleBlog, useSimpleBlog} from 'Event/template/SimpleBlog'
+import {SimpleBlog, useSimpleBlogTemplate} from 'Event/template/SimpleBlog'
 import Content from 'lib/ui/form/TextEditor/Content'
 import {TechCheckProps} from 'Event/Step3/TechCheck'
 
@@ -21,7 +21,7 @@ export type SimpleBlogTechCheckProps = TechCheckProps & {
 
 export default function TechCheck(props: SimpleBlogTechCheckProps) {
   const {techCheck} = props
-  const {template} = useSimpleBlog()
+  const template = useSimpleBlogTemplate()
   const v = useAttendeeVariables()
 
   return (

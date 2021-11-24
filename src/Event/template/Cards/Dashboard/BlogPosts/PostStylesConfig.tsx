@@ -2,7 +2,7 @@ import TextField from '@material-ui/core/TextField'
 import ComponentConfig, {
   SaveButton,
 } from 'organization/Event/DashboardConfig/ComponentConfig'
-import {Cards, useCards} from 'Event/template/Cards'
+import {useCardsTemplate, useCardsUpdate} from 'Event/template/Cards'
 import {onChangeCheckedHandler, onChangeNumberHandler} from 'lib/dom'
 import ColorPicker from 'lib/ui/ColorPicker'
 import Switch from 'lib/ui/form/Switch'
@@ -20,7 +20,7 @@ export default function PostStylesConfig(props: {
 }) {
   const {isVisible, onClose} = props
 
-  const {update} = useCards()
+  const update = useCardsUpdate()
 
   const styles = usePostStyles()
 
@@ -49,17 +49,17 @@ export default function PostStylesConfig(props: {
   }, [isVisible, styles])
 
   const save = () => {
-    const updated: Cards['postStyles'] = {
-      titleTextColor,
-      titleFontSize,
-      titleCapitalize,
-      dateTextColor,
-      contentTextColor,
-      contentFontSize,
-      spacing,
-    }
-
-    update.primitive('postStyles')(updated)
+    update({
+      postStyles: {
+        titleTextColor,
+        titleFontSize,
+        titleCapitalize,
+        dateTextColor,
+        contentTextColor,
+        contentFontSize,
+        spacing,
+      },
+    })
   }
 
   return (
@@ -129,9 +129,7 @@ export default function PostStylesConfig(props: {
 }
 
 export function usePostStyles() {
-  const {
-    template: {postStyles},
-  } = useCards()
+  const {postStyles} = useCardsTemplate()
 
   return useMemo(
     () => ({

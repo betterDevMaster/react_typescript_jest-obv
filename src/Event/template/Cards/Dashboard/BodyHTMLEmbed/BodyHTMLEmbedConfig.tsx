@@ -4,7 +4,7 @@ import {onChangeStringHandler} from 'lib/dom'
 import Typography from '@material-ui/core/Typography'
 import Box from '@material-ui/core/Box'
 import styled from 'styled-components'
-import {useCards} from 'Event/template/Cards'
+import {useCardsTemplate, useCardsUpdate} from 'Event/template/Cards'
 import ComponentConfig, {
   ComponentConfigProps,
   SaveButton,
@@ -12,9 +12,8 @@ import ComponentConfig, {
 
 export function BodyHTMLEmbedConfig(props: ComponentConfigProps) {
   const {isVisible: visible, onClose} = props
-  const {template, update} = useCards()
-  const {bodyHTMLEmbed} = template
-  const updateHTML = update.primitive('bodyHTMLEmbed')
+  const {bodyHTMLEmbed} = useCardsTemplate()
+  const update = useCardsUpdate()
 
   const [embed, setEmbed] = useState(bodyHTMLEmbed)
 
@@ -27,7 +26,9 @@ export function BodyHTMLEmbedConfig(props: ComponentConfigProps) {
   }, [visible, bodyHTMLEmbed])
 
   const save = () => {
-    updateHTML(embed)
+    update({
+      bodyHTMLEmbed: embed,
+    })
     onClose()
   }
 

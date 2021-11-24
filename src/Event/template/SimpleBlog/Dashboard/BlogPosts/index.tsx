@@ -5,7 +5,7 @@ import Published from 'Event/Dashboard/editor/views/Published'
 import React, {useState} from 'react'
 import EditModeOnly from 'Event/Dashboard/editor/views/EditModeOnly'
 import AddBlogPostButton from 'Event/Dashboard/components/BlogPost/AddBlogPostButton'
-import {useSimpleBlog} from 'Event/template/SimpleBlog'
+import {useSimpleBlogTemplate} from 'Event/template/SimpleBlog'
 import VisibleOnMatch from 'Event/attendee-rules/VisibleOnMatch'
 import {sortedByDate} from 'Event/Dashboard/components/BlogPost'
 import PostStylesConfig from 'Event/template/SimpleBlog/Dashboard/BlogPosts/PostStylesConfig'
@@ -13,7 +13,7 @@ import {EditPost} from 'Event/Dashboard/components/BlogPost/BlogPostConfig'
 import PostFormStylesConfig from 'Event/template/SimpleBlog/Dashboard/BlogPosts/PostFormStylesConfig'
 
 export default function BlogPosts() {
-  const {template} = useSimpleBlog()
+  const template = useSimpleBlogTemplate()
   const {blogPosts: posts} = template
 
   const [editing, setEditing] = useState<string | null>(null)

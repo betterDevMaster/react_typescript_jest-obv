@@ -5,7 +5,7 @@ import TableHead from '@material-ui/core/TableHead'
 import TableRow from '@material-ui/core/TableRow'
 import {useAttendeeVariables} from 'Event'
 import {useEntries} from 'Event/Leaderboard'
-import {useCards} from 'Event/template/Cards'
+import {useCardsTemplate} from 'Event/template/Cards'
 import {PageTitle} from 'Event/template/Cards/Page'
 import Content from 'lib/ui/form/TextEditor/Content'
 import React from 'react'
@@ -14,9 +14,7 @@ import CardsPage from 'Event/template/Cards/Page'
 
 export default function Leaderboard(props: {user: User}) {
   const v = useAttendeeVariables()
-  const {
-    template: {leaderboard},
-  } = useCards()
+  const {leaderboard} = useCardsTemplate()
   const {entries} = useEntries()
 
   return (

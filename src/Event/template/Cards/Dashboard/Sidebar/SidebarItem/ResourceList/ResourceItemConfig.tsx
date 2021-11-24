@@ -21,18 +21,20 @@ import ComponentConfig, {
 } from 'organization/Event/DashboardConfig/ComponentConfig'
 import {Controller, useForm, UseFormMethods} from 'react-hook-form'
 import {ResourceListProps} from 'Event/template/Cards/Dashboard/Sidebar/SidebarItem/ResourceList'
-import {useUpdateSidebarItem} from 'Event/template/Cards/Dashboard/Sidebar/SidebarItem'
+import {useEditSidebarItem} from 'Event/template/Cards/Dashboard/Sidebar/SidebarItem'
+import {v4 as uuid} from 'uuid'
+import {REMOVE} from 'Event/TemplateUpdateProvider'
 
 export function ResourceItemConfig(
   props: ComponentConfigProps & {
     resource: Resource
-    index?: number
+    id?: string
     list: ResourceListProps
   },
 ) {
-  const {resource, index, isVisible, onClose} = props
+  const {resource, id, isVisible, onClose} = props
   const {list} = props
-  const updateItem = useUpdateSidebarItem()
+  const {update: updateItem} = useEditSidebarItem()
 
   const deleteFile = useDeleteFile()
   const {visible: ruleConfigVisible, toggle: toggleRuleConfig} = useRuleConfig()
@@ -53,28 +55,33 @@ export function ResourceItemConfig(
     setFilePath(resource.filePath)
   }, [resource, isVisible])
 
-  const update = (index: number, data: Resource) => {
+  const update = (id: string, data: Resource) => {
     updateItem({
-      ...list,
-      resources: list.resources.map((r, i) => {
-        const isTarget = i === index
-        if (isTarget) {
-          return data
-        }
-
-        return r
-      }),
+      resources: {
+        entities: {
+          [id]: data,
+        },
+      },
     })
   }
 
   const insert = (newResource: Resource) => {
+    const id = uuid()
+    const added = [...list.resources.ids, id]
+
     updateItem({
-      ...list,
-      resources: [...list.resources, newResource],
+      resources: {
+        ids: added,
+        entities: {
+          [id]: newResource,
+        },
+      },
     })
   }
 
-  const save = (formData: any) => {
+  const save = (
+    formData: Pick<Resource, 'name' | 'url' | 'isVisible' | 'icon'>,
+  ) => {
     const data: Resource = {
       rules,
       isUrl,
@@ -82,8 +89,8 @@ export function ResourceItemConfig(
       ...formData,
     }
 
-    if (index !== undefined) {
-      update(index, data)
+    if (id !== undefined) {
+      update(id, data)
       onClose()
       return
     }
@@ -93,7 +100,7 @@ export function ResourceItemConfig(
   }
 
   const remove = () => {
-    if (index === undefined) {
+    if (id === undefined) {
       throw new Error('Missing resource item index')
     }
 
@@ -106,9 +113,16 @@ export function ResourceItemConfig(
     }
 
     onClose()
+
+    const removed = list.resources.ids.filter((i) => i !== id)
+
     updateItem({
-      ...list,
-      resources: list.resources.filter((_, i) => i !== index),
+      resources: {
+        ids: removed,
+        entities: {
+          id: REMOVE,
+        },
+      },
     })
   }
 

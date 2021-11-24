@@ -7,35 +7,33 @@ import React from 'react'
 import styled from 'styled-components'
 import {useEditMode} from 'Event/Dashboard/editor/state/edit-mode'
 import {DragDropContext, Droppable, DropResult} from 'react-beautiful-dnd'
-import {
-  useRemoveSidebarItem,
-  useUpdateSidebarItem,
-} from 'Event/template/SimpleBlog/Dashboard/Sidebar/SidebarItem'
-import {uuid} from 'lib/uuid'
 import {RemoveButton} from 'organization/Event/DashboardConfig/ComponentConfig'
 import VisibleOnMatch from 'Event/attendee-rules/VisibleOnMatch'
 import Section from 'Event/template/SimpleBlog/Dashboard/Sidebar/Section'
 import {useHasVisibleItems} from 'Event/attendee-rules/matcher'
+import {EntityList} from 'lib/list'
+import {useEditSidebarItem} from 'Event/template/SimpleBlog/Dashboard/Sidebar/SidebarItem'
 
 export const TICKET_RIBBON_LIST = 'Ticket Ribbon List'
 export interface TicketRibbonListProps {
-  id: string
   type: typeof TICKET_RIBBON_LIST
-  ribbons: TicketRibbon[]
+  ribbons: EntityList<TicketRibbon>
 }
 
 export const createTicketRibbonList = (): TicketRibbonListProps => ({
-  id: uuid(),
   type: TICKET_RIBBON_LIST,
-  ribbons: [],
+  ribbons: {
+    ids: [],
+    entities: {},
+  },
 })
 
 export default function TicketRibbons(props: TicketRibbonListProps) {
-  const removeItem = useRemoveSidebarItem(props)
+  const {remove: removeItem} = useEditSidebarItem()
   const {ribbons} = props
   const isEditMode = useEditMode()
 
-  const hasVisibleItems = useHasVisibleItems(ribbons)
+  const hasVisibleItems = useHasVisibleItems(Object.values(ribbons.entities))
   if (!hasVisibleItems && !isEditMode) {
     return null
   }
@@ -83,21 +81,25 @@ function DroppableList(props: TicketRibbonListProps) {
 function TicketRibbonItemList(props: TicketRibbonListProps) {
   return (
     <>
-      {props.ribbons.map((ticketRibbon: TicketRibbon, index: number) => (
-        <VisibleOnMatch rules={ticketRibbon.rules} key={index}>
-          <TicketRibbonItem
-            ticketRibbon={ticketRibbon}
-            index={index}
-            list={props}
-          />
-        </VisibleOnMatch>
-      ))}
+      {props.ribbons.ids.map((id, index) => {
+        const ticketRibbon = props.ribbons.entities[id]
+        return (
+          <VisibleOnMatch rules={ticketRibbon.rules} key={index}>
+            <TicketRibbonItem
+              ticketRibbon={ticketRibbon}
+              index={index}
+              list={props}
+              id={id}
+            />
+          </VisibleOnMatch>
+        )
+      })}
     </>
   )
 }
 
 function useHandleDrag(props: TicketRibbonListProps) {
-  const updateItem = useUpdateSidebarItem()
+  const {update} = useEditSidebarItem()
 
   return (result: DropResult) => {
     const {destination, source} = result
@@ -106,13 +108,14 @@ function useHandleDrag(props: TicketRibbonListProps) {
       return
     }
 
-    const moved = Array.from(props.ribbons)
+    const moved = Array.from(props.ribbons.ids)
     const [removed] = moved.splice(source.index, 1)
     moved.splice(destination.index, 0, removed)
 
-    updateItem({
-      ...props,
-      ribbons: moved,
+    update({
+      ribbons: {
+        ids: moved,
+      },
     })
   }
 }

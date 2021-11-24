@@ -2,7 +2,7 @@ import TextField from '@material-ui/core/TextField'
 import {onChangeStringHandler} from 'lib/dom'
 import ColorPicker from 'lib/ui/ColorPicker'
 import React, {useEffect, useState} from 'react'
-import {Cards, useCards} from 'Event/template/Cards'
+import {Cards, useCardsTemplate, useCardsUpdate} from 'Event/template/Cards'
 import EventImageUpload from 'organization/Event/DashboardConfig/EventImageUpload'
 import {useEvent} from 'Event/EventProvider'
 import InputLabel from '@material-ui/core/InputLabel'
@@ -19,11 +19,8 @@ export const DEFAULT_FOOTER_IMAGE_SIZE = 100
 
 export function FooterConfig(props: ComponentConfigProps) {
   const {isVisible, onClose} = props
-  const {
-    template: {footer},
-    update,
-  } = useCards()
-
+  const {footer} = useCardsTemplate()
+  const update = useCardsUpdate()
   const [background, setBackground] = useState(footer.background)
   const [textColor, setTextColor] = useState(footer.textColor)
   const [imageSize, setImageSize] = useState(footer.imageSize)
@@ -56,7 +53,10 @@ export function FooterConfig(props: ComponentConfigProps) {
       copyrightText,
     }
 
-    update.primitive('footer')(data)
+    update({
+      footer: data,
+    })
+
     onClose()
   }
 

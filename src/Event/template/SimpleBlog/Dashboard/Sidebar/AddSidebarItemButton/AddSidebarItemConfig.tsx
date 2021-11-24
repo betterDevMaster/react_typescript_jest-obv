@@ -1,4 +1,5 @@
 import FormControl from '@material-ui/core/FormControl'
+import {v4 as uuid} from 'uuid'
 import InputLabel from '@material-ui/core/InputLabel'
 import MenuItem from '@material-ui/core/MenuItem'
 import {EMOJI_LIST} from 'Event/template/Panels/Dashboard/EmojiList'
@@ -30,8 +31,10 @@ import {
 } from 'Event/template/SimpleBlog/Dashboard/Sidebar/SidebarItem/TicketRibbonList'
 import Select from '@material-ui/core/Select'
 import {useForm} from 'react-hook-form'
-import {useDispatchUpdate} from 'Event/TemplateProvider'
-import {useSimpleBlog} from 'Event/template/SimpleBlog'
+import {
+  useSimpleBlogTemplate,
+  useSimpleBlogUpdate,
+} from 'Event/template/SimpleBlog'
 import {createEmojiList} from 'Event/template/SimpleBlog/Dashboard/Sidebar/SidebarItem/EmojiList'
 
 export default function AddSidebarItemConfig(props: {
@@ -41,8 +44,9 @@ export default function AddSidebarItemConfig(props: {
   const {showing, onClose} = props
   const [type, setType] = useState<SidebarItem['type'] | null>(null)
   const {handleSubmit} = useForm()
-  const update = useDispatchUpdate()
-  const {template} = useSimpleBlog()
+  const update = useSimpleBlogUpdate()
+  const template = useSimpleBlogTemplate()
+  const {sidebarItems} = template
 
   /**
    * Reset selecter on close
@@ -58,11 +62,18 @@ export default function AddSidebarItemConfig(props: {
       return
     }
 
+    const id = uuid()
     const item = createItem(type)
 
-    const added = [...template.sidebarItems, item]
+    const ids = [...sidebarItems.ids, id]
+
     update({
-      sidebarItems: added,
+      sidebarItems: {
+        ids,
+        entities: {
+          [id]: item,
+        },
+      },
     })
 
     onClose()

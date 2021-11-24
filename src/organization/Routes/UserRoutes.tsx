@@ -13,7 +13,7 @@ import OrganizationSetting from 'organization/Settings'
 import {OrganizationLanguageProvider} from 'Event/LanguageProvider'
 import AttendeeProfileProvider from 'Event/attendee-rules/AttendeeProfileProvider'
 import {StaticSubmissionsProvider} from 'Event/SubmissionsProvider'
-import EventSocketConnection from 'organization/Event/EventSocketConnection'
+import EventSocketProvider from 'organization/Event/EventSocketProvider'
 import DownloadAreaAttendees from 'organization/Event/Area/DownloadAreaAttendees'
 import DownloadFormSubmissions from 'organization/Event/Form/DownloadFormSubmissions'
 import DownloadQuestionSubmissions from 'organization/Event/Form/DownloadQuestionSubmissions'
@@ -72,9 +72,9 @@ export default function UserRoutes() {
             <OrganizationLanguageProvider>
               <StaticSubmissionsProvider>
                 <AttendeeProfileProvider groups={{}} tags={[]}>
-                  <EventSocketConnection>
+                  <EventSocketProvider>
                     <EventRoutes />
-                  </EventSocketConnection>
+                  </EventSocketProvider>
                 </AttendeeProfileProvider>
               </StaticSubmissionsProvider>
             </OrganizationLanguageProvider>

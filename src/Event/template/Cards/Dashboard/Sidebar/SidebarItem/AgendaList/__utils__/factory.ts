@@ -5,7 +5,6 @@ import {
   createAgendaList,
 } from 'Event/template/Cards/Dashboard/Sidebar/SidebarItem/AgendaList'
 import faker from 'faker'
-import {uuid} from 'lib/uuid'
 
 export const fakeAgenda = (overrides?: Partial<Agenda>): Agenda => ({
   startDate: faker.date.past().toISOString(),

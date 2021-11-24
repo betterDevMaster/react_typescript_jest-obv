@@ -21,12 +21,13 @@ import ComponentConfig, {
 import {Controller, useForm} from 'react-hook-form'
 import {v4 as uuid} from 'uuid'
 import {SidebarNavProps} from 'Event/template/SimpleBlog/Dashboard/Sidebar/SidebarItem/SidebarNav'
-import {useUpdateSidebarItem} from 'Event/template/SimpleBlog/Dashboard/Sidebar/SidebarItem'
 import BackgroundPicker from 'lib/ui/form/BackgroundPicker'
 import MailchimpTagInput from 'organization/Event/DashboardConfig/MailchimpTagInput'
 import InputLabel from '@material-ui/core/InputLabel'
 import Slider from '@material-ui/core/Slider'
 import ZapierTagInput from 'organization/Event/DashboardConfig/ZapierTagInput'
+import {REMOVE} from 'Event/TemplateUpdateProvider'
+import {useEditSidebarItem} from 'Event/template/SimpleBlog/Dashboard/Sidebar/SidebarItem'
 
 const MIN_BORDER_WIDTH = 0
 const MAX_BORDER_WIDTH = 50
@@ -43,7 +44,6 @@ export function SidebarNavButtonConfig(
 ) {
   const {button, id, isVisible, onClose, nav} = props
   const {visible: ruleConfigVisible, toggle: toggleRuleConfig} = useRuleConfig()
-  const updateItem = useUpdateSidebarItem()
 
   const [rules, setRules] = useState(button.rules)
   const [isAreaButton, setIsAreaButton] = useState(button.isAreaButton)
@@ -54,6 +54,7 @@ export function SidebarNavButtonConfig(
   const [link, setLink] = useState(button.link)
   const [page, setPage] = useState(button.page)
   const [newTab, setNewTab] = useState(button.newTab)
+  const {update: updateItem} = useEditSidebarItem()
 
   useEffect(() => {
     if (isVisible) {
@@ -73,9 +74,7 @@ export function SidebarNavButtonConfig(
 
   const update = (id: string, updated: NavButton) => {
     updateItem({
-      ...nav,
       entities: {
-        ...nav.entities,
         [id]: updated,
       },
     })
@@ -86,14 +85,15 @@ export function SidebarNavButtonConfig(
       throw new Error('Missing id')
     }
 
-    const {[id]: target, ...otherButtons} = nav.entities
-    const updatedIds = nav.ids.filter((i) => i !== id)
+    const removed = nav.ids.filter((i) => i !== id)
 
     onClose()
+
     updateItem({
-      ...nav,
-      entities: otherButtons,
-      ids: updatedIds,
+      ids: removed,
+      entities: {
+        [id]: REMOVE,
+      },
     })
   }
 
@@ -101,10 +101,8 @@ export function SidebarNavButtonConfig(
     const id = uuid()
 
     updateItem({
-      ...nav,
       ids: [...nav.ids, id],
       entities: {
-        ...nav.entities,
         [id]: button,
       },
     })

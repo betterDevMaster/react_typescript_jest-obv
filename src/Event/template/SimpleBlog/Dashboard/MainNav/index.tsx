@@ -1,7 +1,6 @@
 import MainNavButton from 'Event/template/SimpleBlog/Dashboard/MainNav/MainNavButton'
 import styled from 'styled-components'
 import React from 'react'
-import {useDispatchUpdate} from 'Event/TemplateProvider'
 import {
   DragDropContext,
   Droppable,
@@ -11,23 +10,30 @@ import {
 import Grid from '@material-ui/core/Grid'
 import {useEditMode} from 'Event/Dashboard/editor/state/edit-mode'
 import NewMainNavButton from 'Event/template/SimpleBlog/Dashboard/MainNav/MainNavButton/NewMainNavButton'
-import {useSimpleBlog} from 'Event/template/SimpleBlog'
+import {
+  useSimpleBlogTemplate,
+  useSimpleBlogUpdate,
+} from 'Event/template/SimpleBlog'
 
 export default function MainNav(props: {className?: string}) {
-  const {template} = useSimpleBlog()
+  const template = useSimpleBlogTemplate()
   const {mainNav} = template
   const isEditMode = useEditMode()
-  const handleDrag = useHandleDrag()
-
   const {ids, entities} = mainNav
 
   const buttons = ids.map((id, index) => (
     <MainNavButton id={id} index={index} key={id} button={entities[id]} />
   ))
 
-  if (!isEditMode) {
-    return <Container className={props.className}>{buttons}</Container>
+  if (isEditMode) {
+    return <Editable className={props.className}>{buttons}</Editable>
   }
+
+  return <Container className={props.className}>{buttons}</Container>
+}
+
+function Editable(props: {children: JSX.Element[]; className?: string}) {
+  const handleDrag = useHandleDrag()
 
   return (
     <DragDropContext onDragEnd={handleDrag}>
@@ -39,7 +45,7 @@ export default function MainNav(props: {className?: string}) {
             {...provided.droppableProps}
           >
             <>
-              {buttons}
+              {props.children}
               {provided.placeholder}
               <StyledNewMainNavButton />
             </>
@@ -65,9 +71,9 @@ const Container = React.forwardRef<
 ))
 
 function useHandleDrag() {
-  const {template} = useSimpleBlog()
+  const set = useSimpleBlogUpdate()
+  const template = useSimpleBlogTemplate()
   const {mainNav: buttons} = template
-  const updateTemplate = useDispatchUpdate()
 
   return (result: DropResult) => {
     const {destination, source} = result
@@ -80,12 +86,9 @@ function useHandleDrag() {
     const [removed] = moved.splice(source.index, 1)
     moved.splice(destination.index, 0, removed)
 
-    updateTemplate({
+    set({
       mainNav: {
         ids: moved,
-        entities: {
-          ...buttons.entities,
-        },
       },
     })
   }

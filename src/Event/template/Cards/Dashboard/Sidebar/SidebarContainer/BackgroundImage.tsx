@@ -1,12 +1,11 @@
 import {useEvent} from 'Event/EventProvider'
-import {useCards} from 'Event/template/Cards'
+import {useCardsTemplate} from 'Event/template/Cards'
 import React from 'react'
 import styled from 'styled-components'
 
 export default function BackgroundImage() {
   const {event} = useEvent()
-  const {template} = useCards()
-  const {sidebar} = template
+  const {sidebar} = useCardsTemplate()
 
   if (!event.sidebar_background) {
     return null

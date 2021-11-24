@@ -1,5 +1,4 @@
 import React from 'react'
-import {useDispatchUpdate} from 'Event/TemplateProvider'
 import {Controller, useForm} from 'react-hook-form'
 import FormControl from '@material-ui/core/FormControl'
 import Slider from '@material-ui/core/Slider'
@@ -9,7 +8,8 @@ import ColorPicker from 'lib/ui/ColorPicker'
 import InputLabel from '@material-ui/core/InputLabel'
 import styled from 'styled-components'
 import ActionSelect from 'Event/ActionsProvider/ActionSelect'
-import {Cards, useCards} from 'Event/template/Cards'
+import {Cards} from 'Event/template/Cards'
+import {useCardsTemplate, useCardsUpdate} from 'Event/template/Cards'
 import {SaveButton} from 'organization/Event/DashboardConfig/ComponentConfig'
 import TextEditor, {TextEditorContainer} from 'lib/ui/form/TextEditor'
 import Switch from 'lib/ui/form/Switch'
@@ -17,16 +17,15 @@ import Switch from 'lib/ui/form/Switch'
 export default function CardsImageWaterfallConfig(props: {
   onClose: () => void
 }) {
-  const {template} = useCards()
+  const template = useCardsTemplate()
   const {imageWaterfall: current} = template
   const {control, handleSubmit, register} = useForm()
 
-  const updateTemplate = useDispatchUpdate()
+  const updateTemplate = useCardsUpdate()
 
   const submit = (data: Cards['imageWaterfall']) => {
     updateTemplate({
       imageWaterfall: {
-        ...current,
         ...data,
       },
     })

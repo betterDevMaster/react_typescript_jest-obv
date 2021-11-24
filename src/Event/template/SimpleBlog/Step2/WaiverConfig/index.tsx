@@ -36,6 +36,8 @@ import Step2 from 'Event/template/SimpleBlog/Step2'
 import {useTeamMember} from 'organization/auth'
 import {fieldError} from 'lib/form'
 import {ValidationError} from 'lib/api-client'
+import {Template} from 'Event/template'
+import {useSimpleBlogUpdate} from 'Event/template/SimpleBlog'
 
 const imageUploadId = 'waived-logo-upload'
 
@@ -66,6 +68,7 @@ export default function WaiverConfig() {
   const dispatch = useDispatch()
   const {event} = useEvent()
   const user = useTeamMember()
+  const updateTemplate = useSimpleBlogUpdate()
 
   // Prevent updating unmounted component
   const mounted = useRef(true)
@@ -122,10 +125,15 @@ export default function WaiverConfig() {
     }
   }, [event, setValue])
 
-  const submit = (data: WaiverData) => {
+  const submit = (data: WaiverData & {template: Template['waiver']}) => {
+    const {template, ...waiverConfig} = data
     setSubmitting(true)
 
-    setWaiver(data, logo)
+    updateTemplate({
+      waiver: template,
+    })
+
+    setWaiver(waiverConfig, logo)
       .then((event) => {
         setResponseError(null)
         dispatch(setEvent(event))
@@ -262,7 +270,11 @@ export default function WaiverConfig() {
 
           <Grid container spacing={3}>
             <Grid item xs={12} md={6}>
-              <TemplateFields submitting={submitting} />
+              <TemplateFields
+                control={control}
+                register={register}
+                submitting={submitting}
+              />
             </Grid>
             <Grid item xs={12} md={6}>
               <Preview

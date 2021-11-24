@@ -2,32 +2,35 @@ import React from 'react'
 import styled from 'styled-components'
 import SidebarContainer from 'Event/template/Cards/Dashboard/Sidebar/SidebarContainer'
 import {useEvent} from 'Event/EventProvider'
-import {useCards} from 'Event/template/Cards'
+import {useCardsTemplate, useCardsUpdate} from 'Event/template/Cards'
 import SidebarItem from 'Event/template/Cards/Dashboard/Sidebar/SidebarItem'
 import AddSidebarItemButton from 'Event/template/Cards/Dashboard/Sidebar/AddSidebarItemButton'
 import {DragDropContext, Droppable, DropResult} from 'react-beautiful-dnd'
-import {useDispatchUpdate} from 'Event/TemplateProvider'
 import {useEditMode} from 'Event/Dashboard/editor/state/edit-mode'
 
 export default function Sidebar() {
-  const {
-    template: {sidebarItems},
-  } = useCards()
-
+  const {sidebarItems} = useCardsTemplate()
   const isEditMode = useEditMode()
 
-  const handleDrag = useHandleDrag()
+  const items = sidebarItems.ids.map((id, index) => {
+    const item = sidebarItems.entities[id]
+    return <SidebarItem key={id} {...item} index={index} id={id} />
+  })
 
-  if (!isEditMode) {
-    return (
-      <SidebarContainer>
-        <GylsPlayer />
-        {sidebarItems.map((item, index) => (
-          <SidebarItem key={item.id} {...item} index={index} />
-        ))}
-      </SidebarContainer>
-    )
+  if (isEditMode) {
+    return <DraggableList>{items}</DraggableList>
   }
+
+  return (
+    <SidebarContainer>
+      <GylsPlayer />
+      {items}
+    </SidebarContainer>
+  )
+}
+
+function DraggableList(props: {children: React.ReactElement[]}) {
+  const handleDrag = useHandleDrag()
 
   return (
     <SidebarContainer>
@@ -36,9 +39,7 @@ export default function Sidebar() {
         <Droppable droppableId="sidebar_item">
           {(provided) => (
             <div ref={provided.innerRef} {...provided.droppableProps}>
-              {sidebarItems.map((item, index) => (
-                <SidebarItem key={item.id} {...item} index={index} />
-              ))}
+              {props.children}
               {provided.placeholder}
             </div>
           )}
@@ -50,10 +51,8 @@ export default function Sidebar() {
 }
 
 function useHandleDrag() {
-  const {
-    template: {sidebarItems},
-  } = useCards()
-  const update = useDispatchUpdate()
+  const {sidebarItems} = useCardsTemplate()
+  const update = useCardsUpdate()
 
   return (result: DropResult) => {
     const {destination, source} = result
@@ -62,12 +61,14 @@ function useHandleDrag() {
       return
     }
 
-    const moved = Array.from(sidebarItems)
+    const moved = Array.from(sidebarItems.ids)
     const [removed] = moved.splice(source.index, 1)
     moved.splice(destination.index, 0, removed)
 
     update({
-      sidebarItems: moved,
+      sidebarItems: {
+        ids: moved,
+      },
     })
   }
 }

@@ -1,7 +1,6 @@
 import user from '@testing-library/user-event'
 import faker from 'faker'
 import {fakeCards} from 'Event/template/Cards/__utils__/factory'
-import {fakeNavButtonWithSize} from 'Event/Dashboard/components/NavButton/__utils__/factory'
 import {createEntityList} from 'lib/list'
 import {fakeEvent} from 'Event/__utils__/factory'
 import {wait} from '@testing-library/react'

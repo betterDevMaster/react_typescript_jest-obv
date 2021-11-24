@@ -1,4 +1,4 @@
-export const createPrivate = jest.fn(() => {
+export const createChannel = () => {
   const channel: any = {
     private: jest.fn(() => channel),
     leave: jest.fn(),
@@ -22,4 +22,6 @@ export const createPrivate = jest.fn(() => {
   }
 
   return channel
-})
+}
+
+export const createPrivate = jest.fn(() => createChannel())

@@ -6,7 +6,7 @@ import Menu from 'Event/template/SimpleBlog/Menu'
 import {User} from 'auth/user'
 import Footer from 'Event/template/SimpleBlog/Dashboard/Footer'
 import {useEvent} from 'Event/EventProvider'
-import {SimpleBlog, useSimpleBlog} from 'Event/template/SimpleBlog'
+import {SimpleBlog, useSimpleBlogTemplate} from 'Event/template/SimpleBlog'
 import {rgba} from 'lib/color'
 import LanguageSelectMenu from 'Event/LanguageSelector'
 import {muiDarkTheme, muiTheme} from 'lib/ui/theme'
@@ -20,7 +20,7 @@ export default function SimpleBlogPage(props: {
 }) {
   const [menuVisible, setMenuVisible] = useState(false)
   const toggleMenu = () => setMenuVisible(!menuVisible)
-  const {template} = useSimpleBlog()
+  const template = useSimpleBlogTemplate()
   const {
     backgroundPosition,
     dashboardBackground: dashboard,

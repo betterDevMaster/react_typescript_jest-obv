@@ -7,7 +7,6 @@ import TextField from '@material-ui/core/TextField'
 import Button from '@material-ui/core/Button'
 import TextEditor, {TextEditorContainer} from 'lib/ui/form/TextEditor'
 import {useEvent, useUpdate} from 'Event/EventProvider'
-import {usePanels} from 'Event/template/Panels'
 
 import {useToggle} from 'lib/toggle'
 import {onChangeStringHandler} from 'lib/dom'
@@ -18,7 +17,6 @@ export default function PageSettingsDialog(props: {
 }) {
   const {visible, onClose} = props
   const {event} = useEvent()
-  const {template} = usePanels()
 
   const {flag: processing, toggle: toggleProcessing} = useToggle()
 
@@ -39,13 +37,10 @@ export default function PageSettingsDialog(props: {
     update({
       zoom_backgrounds_title: title,
       zoom_backgrounds_description: description,
-      template: {
-        ...template,
-        zoomBackgrounds: {
-          ...template.zoomBackgrounds,
-        },
-      },
-    }).finally(toggleProcessing)
+    }).finally(() => {
+      toggleProcessing()
+      onClose()
+    })
   }
 
   return (

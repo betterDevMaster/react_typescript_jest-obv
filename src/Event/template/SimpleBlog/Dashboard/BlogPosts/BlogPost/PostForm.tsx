@@ -12,13 +12,13 @@ import Box from '@material-ui/core/Box'
 import {useAttendeeVariables} from 'Event'
 import {BlogPost} from 'Event/Dashboard/components/BlogPost'
 import {usePostForm} from 'Event/Dashboard/components/BlogPost/form'
-import {usePostFormStyles} from 'Event/template/SimpleBlog/Dashboard/BlogPosts/PostFormStylesConfig'
 import styled from 'styled-components'
 import {
   DEFAULT_RESUBMIT_LABEL,
   DEFAULT_SUBMITTED_MESSAGE,
   DEFAULT_SUBMIT_LABEL,
 } from 'organization/Event/Form'
+import {useSimpleBlogTemplate} from 'Event/template/SimpleBlog'
 
 export default function PostForm(props: {post: BlogPost}) {
   const {post} = props
@@ -35,6 +35,8 @@ export default function PostForm(props: {post: BlogPost}) {
 function Content(props: {form: Form; post: BlogPost}) {
   const {form, post} = props
   const v = useAttendeeVariables()
+
+  const {postFormStyles: formStyles} = useSimpleBlogTemplate()
 
   const {
     toggleDialog,
@@ -56,8 +58,6 @@ function Content(props: {form: Form; post: BlogPost}) {
     setValue,
   } = useForm()
 
-  const formStyles = usePostFormStyles()
-
   if (alreadySubmitted) {
     return <SubmittedMessage resubmit={resubmit} form={form} />
   }
@@ -77,7 +77,7 @@ function Content(props: {form: Form; post: BlogPost}) {
             responseError={responseError}
             setValue={setValue}
             disabled={submitting}
-            inputStyles={formStyles.formStyle}
+            inputStyles={formStyles.inputStyles}
           />
         ))}
         <Container justifyContent={formStyles.buttonPosition}>

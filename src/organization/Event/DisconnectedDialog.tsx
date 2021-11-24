@@ -6,7 +6,7 @@ import Button from 'lib/ui/Button'
 import Dialog from 'lib/ui/Dialog'
 import React from 'react'
 
-export default function EditorDisconnectedDialog() {
+export default function DisconnectedDialog() {
   const isConnected = useIsConnected()
 
   const refresh = () => window.location.reload()

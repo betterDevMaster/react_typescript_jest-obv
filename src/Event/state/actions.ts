@@ -58,42 +58,6 @@ function newTemplate(name: Template['name']) {
   }
 }
 
-export const UPDATE_TEMPLATE_ACTION = 'UPDATE_TEMPLATE'
-export interface UpdateTemplateAction {
-  type: typeof UPDATE_TEMPLATE_ACTION
-  payload: Partial<Template>
-}
-export const updateTemplate = (
-  updates: Partial<Template>,
-): UpdateTemplateAction => ({
-  type: UPDATE_TEMPLATE_ACTION,
-  payload: updates,
-})
-export const handleUpdateTemplate = (
-  state: EventState,
-  action: UpdateTemplateAction,
-): EventState => {
-  if (!state) {
-    throw new Error('Missing event; was it set in the store?')
-  }
-
-  if (!state.template) {
-    throw new Error('Template missing; create one before updating')
-  }
-
-  /**
-   * Need to explicitly cast to EventState here as TS will complain that
-   * it can't determine the specific template type. We'll assume this
-   * is safe as the user will only ever edit the current template.
-   */
-  return {
-    ...state,
-    template: {
-      ...state.template,
-      ...action.payload,
-    },
-  } as EventState
-}
 export interface ClickedEmoji {
   id: number | null
   name: string | null
@@ -149,7 +113,6 @@ export const handleSetEventUpdatedAt = (
 export type EventAction =
   | SetEventAction
   | CreateTemplateAction
-  | UpdateTemplateAction
   | SendEmojiAction
   | RefreshEventAction
   | SetEventUpdatedAtAction

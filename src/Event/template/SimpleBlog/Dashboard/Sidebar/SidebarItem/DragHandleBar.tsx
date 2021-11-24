@@ -2,13 +2,13 @@ import React from 'react'
 import styled from 'styled-components'
 import {DraggableProvidedDragHandleProps} from 'react-beautiful-dnd'
 import {useEditMode} from 'Event/Dashboard/editor/state/edit-mode'
-import {useSimpleBlog} from 'Event/template/SimpleBlog'
+import {useSimpleBlogTemplate} from 'Event/template/SimpleBlog'
 
 export default function DragHandleBar(props: {
   handleProps?: DraggableProvidedDragHandleProps
 }) {
   const isEditMode = useEditMode()
-  const {template} = useSimpleBlog()
+  const template = useSimpleBlogTemplate()
   if (!isEditMode) {
     return null
   }

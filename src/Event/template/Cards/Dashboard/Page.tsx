@@ -5,7 +5,7 @@ import Header from 'Event/template/Cards/Dashboard/Header'
 import Menu from 'Event/template/Cards/Menu'
 import {User} from 'auth/user'
 import Footer from 'Event/template/Cards/Dashboard/Footer'
-import {Cards, useCards} from 'Event/template/Cards'
+import {Cards, useCardsTemplate} from 'Event/template/Cards'
 import {rgba} from 'lib/color'
 import LanguageSelectMenu from 'Event/LanguageSelector'
 import {muiDarkTheme, muiTheme} from 'lib/ui/theme'
@@ -32,7 +32,7 @@ export default function CardsPage(props: {
 }) {
   const [menuVisible, setMenuVisible] = useState(false)
   const toggleMenu = () => setMenuVisible(!menuVisible)
-  const {template} = useCards()
+  const template = useCardsTemplate()
 
   const {background, isDarkMode} = template
 
@@ -87,9 +87,7 @@ export default function CardsPage(props: {
 function ScrollDown(props: {contentRef: React.RefObject<HTMLDivElement>}) {
   const v = useAttendeeVariables()
 
-  const {
-    template: {mainNav},
-  } = useCards()
+  const {mainNav} = useCardsTemplate()
 
   const executeScroll = () => {
     if (!props.contentRef || !props.contentRef.current) {
@@ -114,7 +112,7 @@ function ScrollDown(props: {contentRef: React.RefObject<HTMLDivElement>}) {
 }
 
 export function useTheme(isDarkMode?: boolean) {
-  const {template} = useCards()
+  const template = useCardsTemplate()
 
   const options: MuiThemeOptions = {
     secondaryColor: template.accentColor,

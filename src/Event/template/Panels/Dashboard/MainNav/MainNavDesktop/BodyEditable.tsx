@@ -1,8 +1,7 @@
 import React from 'react'
-import {useDispatchUpdate} from 'Event/TemplateProvider'
 import {DragDropContext, Droppable, DropResult} from 'react-beautiful-dnd'
 import {useEditMode} from 'Event/Dashboard/editor/state/edit-mode'
-import {usePanels} from 'Event/template/Panels'
+import {usePanelsTemplate, usePanelsUpdate} from 'Event/template/Panels'
 import NewMainNavButton from 'Event/template/Panels/Dashboard/MainNav/MainNavButton/NewMainNavButton'
 import MainNavButton from 'Event/template/Panels/Dashboard/MainNav/MainNavButton'
 import CountDownTimers from 'Event/template/Panels/Dashboard/CountDownTimers'
@@ -10,7 +9,7 @@ import {Container} from 'Event/template/Panels/Dashboard/MainNav/MainNavDesktop'
 
 export default function BodyEditable(props: {className?: string}) {
   const handleDrag = useHandleDrag()
-  const {template} = usePanels()
+  const template = usePanelsTemplate()
   const {
     nav: {ids, entities},
   } = template
@@ -48,10 +47,9 @@ export default function BodyEditable(props: {className?: string}) {
 }
 
 function useHandleDrag() {
-  const {template} = usePanels()
+  const template = usePanelsTemplate()
+  const updateTemplate = usePanelsUpdate()
   const {nav: buttons} = template
-
-  const updateTemplate = useDispatchUpdate()
 
   return (result: DropResult) => {
     const {destination, source} = result
@@ -67,9 +65,6 @@ function useHandleDrag() {
     updateTemplate({
       nav: {
         ids: moved,
-        entities: {
-          ...buttons.entities,
-        },
       },
     })
   }

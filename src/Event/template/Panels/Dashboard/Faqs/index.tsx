@@ -12,7 +12,7 @@ import {PageTitle} from 'Event/template/Panels/Page'
 import EditModeOnly from 'Event/Dashboard/editor/views/EditModeOnly'
 import {useToggle} from 'lib/toggle'
 import {useAttendeeVariables} from 'Event'
-import {usePanels} from 'Event/template/Panels'
+import {usePanelsTemplate} from 'Event/template/Panels'
 import PageSettingsDialog from 'Event/template/Panels/Dashboard/Faqs/FaqPageConfig/PageSettingsDialog'
 import Content from 'lib/ui/form/TextEditor/Content'
 
@@ -21,7 +21,7 @@ export default function PanelsFaqPage(props: {
   faqs: FAQ[]
 }) {
   const {faqs} = props
-  const {template} = usePanels()
+  const template = usePanelsTemplate()
   const {faq: pageSettings} = template
   const v = useAttendeeVariables()
   const {flag: configVisible, toggle: toggleConfig} = useToggle()

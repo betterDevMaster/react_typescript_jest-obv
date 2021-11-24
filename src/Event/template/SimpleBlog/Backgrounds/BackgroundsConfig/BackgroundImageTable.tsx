@@ -10,7 +10,10 @@ import {
   Droppable,
   DropResult,
 } from 'react-beautiful-dnd'
-import {useSimpleBlog} from 'Event/template/SimpleBlog'
+import {
+  useSimpleBlogTemplate,
+  useSimpleBlogUpdate,
+} from 'Event/template/SimpleBlog'
 import {
   Background,
   useBackgrounds,
@@ -22,7 +25,7 @@ export default function BackgroundImageTable() {
   const {backgrounds, loading} = useBackgrounds()
   const hasBackgrounds = backgrounds.length > 0
   const handleDrag = useHandleDrag()
-  const {template} = useSimpleBlog()
+  const template = useSimpleBlogTemplate()
   const {zoomBackgrounds: pageSettings} = template
 
   const sortedBackgrounds = useSortBackgrounds(
@@ -89,7 +92,7 @@ export default function BackgroundImageTable() {
 }
 
 function useHandleDrag() {
-  const {update} = useSimpleBlog()
+  const update = useSimpleBlogUpdate()
 
   return (backgrounds: Background[]) => (result: DropResult) => {
     const {destination, source} = result
@@ -103,7 +106,11 @@ function useHandleDrag() {
     moved.splice(destination.index, 0, removed)
 
     const orderedIds = moved.map((f) => f.id)
-    update.object('zoomBackgrounds')('orderedIds')(orderedIds)
+    update({
+      zoomBackgrounds: {
+        orderedIds,
+      },
+    })
   }
 }
 

@@ -1,12 +1,12 @@
 import {fakePanels} from 'Event/template/Panels/__utils__/factory'
+import user from '@testing-library/user-event'
 import {fakeEvent} from 'Event/__utils__/factory'
 import {goToDashboardConfig} from 'organization/Event/DashboardConfig/__utils__/go-dashboard-config'
 import {clickEdit} from '__utils__/edit'
-import {mockRxJsAjax} from 'store/__utils__/MockStoreProvider'
 import {fireEvent, wait} from '@testing-library/react'
-import {Subject} from 'rxjs'
+import axios from 'axios'
 
-const mockPost = mockRxJsAjax.post as jest.Mock
+const mockPut = axios.put as jest.Mock
 
 afterEach(() => {
   jest.clearAllMocks()
@@ -20,25 +20,24 @@ it('it should show network error', async () => {
 
   clickEdit(await findByLabelText('welcome'))
 
-  /**
-   * Need to mock the subject to manually emit an error.
-   */
-  const subject = new Subject()
-
-  mockPost.mockImplementationOnce(() => {
-    return subject
-  })
-
   fireEvent.change(await findByLabelText('welcome text'), {
     target: {
       value: 'some value',
     },
   })
 
-  subject.error('bad save')
+  mockPut.mockImplementationOnce(() =>
+    Promise.reject({
+      response: {
+        data: 'bad save',
+      },
+    }),
+  )
+
+  user.click(await findByLabelText('save welcome text'))
 
   await wait(() => {
-    expect(mockPost).toHaveBeenCalledTimes(1)
+    expect(mockPut).toHaveBeenCalledTimes(1)
   })
 
   expect(await findByText(/network connection error/i)).toBeInTheDocument()

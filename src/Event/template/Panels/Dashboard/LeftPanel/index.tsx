@@ -1,19 +1,20 @@
-import Logo from 'Event/Logo'
-import styled from 'styled-components'
 import React, {useState} from 'react'
-import {usePanels} from 'Event/template/Panels'
-import {MenuIconButton} from 'lib/ui/IconButton/MenuIconButton'
-import Menu from 'Event/template/Panels/Dashboard/Menu'
-import EmojiList from 'Event/template/Panels/Dashboard/EmojiList'
-import {Editable} from 'Event/Dashboard/editor/views/EditComponent'
-import LeftPanelConfig from 'Event/template/Panels/Dashboard/LeftPanel/LeftPanelConfig'
-import {useToggle} from 'lib/toggle'
-import {rgba} from 'lib/color'
+import styled from 'styled-components'
 import Slide from '@material-ui/core/Slide'
-import {TOP_BAR_HEIGHT} from 'Event/template/Panels/Page'
 import {User} from 'auth/user'
-import TicketRibbonList from 'Event/template/Panels/Dashboard/TicketRibbonList'
+import {rgba} from 'lib/color'
+import {useToggle} from 'lib/toggle'
+import {MenuIconButton} from 'lib/ui/IconButton/MenuIconButton'
+import {Editable} from 'Event/Dashboard/editor/views/EditComponent'
+import EditModeOnly from 'Event/Dashboard/editor/views/EditModeOnly'
+import Logo from 'Event/Logo'
+import {usePanelsTemplate} from 'Event/template/Panels'
+import EmojiList from 'Event/template/Panels/Dashboard/EmojiList'
+import LeftPanelConfig from 'Event/template/Panels/Dashboard/LeftPanel/LeftPanelConfig'
 import MainNavDesktop from 'Event/template/Panels/Dashboard/MainNav/MainNavDesktop'
+import Menu from 'Event/template/Panels/Dashboard/Menu'
+import {TOP_BAR_HEIGHT} from 'Event/template/Panels/Page'
+import TicketRibbonList from 'Event/template/Panels/Dashboard/TicketRibbonList'
 
 export default function LeftPanel(props: {
   onChangeTab: (tab: number) => void
@@ -24,9 +25,7 @@ export default function LeftPanel(props: {
 
   const {flag: barConfigVisible, toggle: toggleBarConfig} = useToggle()
 
-  const {
-    template: {leftPanel},
-  } = usePanels()
+  const {leftPanel} = usePanelsTemplate()
 
   const handleChangeTab = (tab: number) => {
     props.onChangeTab(tab)
@@ -35,7 +34,12 @@ export default function LeftPanel(props: {
 
   return (
     <>
-      <LeftPanelConfig isVisible={barConfigVisible} onClose={toggleBarConfig} />
+      <EditModeOnly>
+        <LeftPanelConfig
+          isVisible={barConfigVisible}
+          onClose={toggleBarConfig}
+        />
+      </EditModeOnly>
       <Box
         backgroundColor={rgba(
           leftPanel.backgroundColor,
@@ -58,10 +62,10 @@ export default function LeftPanel(props: {
         </Editable>
         <Main>
           <Logo />
-          {/* 
+          {/*
               Menu slide-in-out animation. Need to set content to null to avoid
               the exiting content from having a height, and the divs
-              stacking while animating. 
+              stacking while animating.
           */}
           <Slide in={menuVisible} direction="left" mountOnEnter unmountOnExit>
             <MenuBox visible={menuVisible}>
@@ -115,7 +119,7 @@ const Main = styled.div`
   flex: 1;
 
   /**
-   * Hide overflow to make menu sliding in/out disappear at panel edge, 
+   * Hide overflow to make menu sliding in/out disappear at panel edge,
    * as well as avoid any jumpiness from the transition.
    */
   overflow: hidden;

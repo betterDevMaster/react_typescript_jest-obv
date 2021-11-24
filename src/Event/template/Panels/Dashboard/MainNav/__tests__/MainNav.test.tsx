@@ -5,11 +5,11 @@ import {createEntityList} from 'lib/list'
 import {clickEdit, clickDuplicate} from '__utils__/edit'
 import {fireEvent} from '@testing-library/react'
 import {fakeEvent} from 'Event/__utils__/factory'
-import {mockRxJsAjax} from 'store/__utils__/MockStoreProvider'
 import {wait} from '@testing-library/react'
 import {goToDashboardConfig} from 'organization/Event/DashboardConfig/__utils__/go-dashboard-config'
+import axios from 'axios'
 
-const mockPost = mockRxJsAjax.post as jest.Mock
+const mockPut = axios.put as jest.Mock
 
 afterEach(() => {
   jest.clearAllMocks()
@@ -70,12 +70,12 @@ it('should add a new main nav button', async () => {
 
   // Saved
   await wait(() => {
-    expect(mockPost).toHaveBeenCalledTimes(1)
+    expect(mockPut).toHaveBeenCalledTimes(1)
   })
 
-  const [url, data] = mockPost.mock.calls[0]
+  const [url, data] = mockPut.mock.calls[0]
   expect(url).toMatch(`/events/${event.slug}`)
-  expect(data.template.nav.ids.length).toBe(numButtons + 1)
+  expect(data.template['nav.ids'].length).toBe(numButtons + 1)
 })
 
 it('should duplicate a main navbutton', async () => {
@@ -105,13 +105,13 @@ it('should duplicate a main navbutton', async () => {
 
   // Saved
   await wait(() => {
-    expect(mockPost).toHaveBeenCalledTimes(1)
+    expect(mockPut).toHaveBeenCalledTimes(1)
   })
 
-  const [url, data] = mockPost.mock.calls[0]
+  const [url, data] = mockPut.mock.calls[0]
   expect(url).toMatch(`/events/${event.slug}`)
 
-  expect(data.template.nav.ids.length).toBe(mainNavButtons.ids.length + 1)
+  expect(data.template['nav.ids'].length).toBe(numButtons + 1)
 })
 
 it('should remove the button', async () => {
@@ -145,10 +145,10 @@ it('should remove the button', async () => {
 
   // Saved
   await wait(() => {
-    expect(mockPost).toHaveBeenCalledTimes(1)
+    expect(mockPut).toHaveBeenCalledTimes(1)
   })
 
-  const [url, data] = mockPost.mock.calls[0]
+  const [url, data] = mockPut.mock.calls[0]
   expect(url).toMatch(`/events/${event.slug}`)
-  expect(data.template.nav.ids.length).toBe(numButtons - 1)
+  expect(data.template['nav.ids'].length).toBe(numButtons - 1)
 })

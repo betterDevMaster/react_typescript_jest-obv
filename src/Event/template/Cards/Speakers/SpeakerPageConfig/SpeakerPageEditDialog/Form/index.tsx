@@ -1,4 +1,4 @@
-import React, {useState} from 'react'
+import React from 'react'
 import styled from 'styled-components'
 import Grid from '@material-ui/core/Grid'
 import Button from '@material-ui/core/Button'
@@ -6,66 +6,39 @@ import InputLabel from '@material-ui/core/InputLabel'
 import Slider from '@material-ui/core/Slider'
 import TextField from '@material-ui/core/TextField'
 import {Controller, useForm} from 'react-hook-form'
-import {fieldError} from 'lib/form'
 import TextEditor, {TextEditorContainer} from 'lib/ui/form/TextEditor'
 import {handleChangeSlider, onChangeCheckedHandler} from 'lib/dom'
-import {ObvioEvent} from 'Event'
-import {useOrganization} from 'organization/OrganizationProvider'
-import {useEvent} from 'Event/EventProvider'
-import {api} from 'lib/url'
-import {ValidationError} from 'lib/api-client'
-import {useCards} from 'Event/template/Cards'
+import {useCardsTemplate, useCardsUpdate} from 'Event/template/Cards'
 import Switch from 'lib/ui/form/Switch'
 import FormControl from '@material-ui/core/FormControl'
+import {Column} from 'lib/ui/layout'
 
 const MIN_SPACE_SIZE = 0
 const MAX_SPACE_SIZE = 10
 
 type UpdateFormData = {
-  description: string
-  backToDashboardText: string
-  backToDashboardTextColor: string
-  speakerImageSize: number
-  speakersSpace: number
+  title?: string
+  description?: string
+  speakerImageSize?: Column
+  speakersSpace?: number
+  orderedIds?: number[]
   menuTitle?: string
   isVisible?: boolean
 }
 
 export default function SpeakerPageConfigForm(props: {onClose: () => void}) {
-  const {register, handleSubmit, errors, control} = useForm()
-  const [submitting, setSubmitting] = useState(false)
-  const {event, set: setEvent} = useEvent()
-  const {client} = useOrganization()
-  const [serverError, setServerError] = useState<ValidationError<any>>(null)
+  const {register, handleSubmit, control} = useForm()
 
-  const {template} = useCards()
-  const {speakers: speakerPageSettings} = template
+  const {speakers: speakerPageSettings} = useCardsTemplate()
+  const update = useCardsUpdate()
 
   const submit = (data: UpdateFormData) => {
-    setSubmitting(true)
-    const url = api(`/events/${event.slug}`)
-    client
-      .put<ObvioEvent>(url, {
-        template: {
-          ...template,
-          speakers: {
-            ...speakerPageSettings,
-            ...data,
-          },
-        },
-      })
-      .then((event) => {
-        setEvent(event)
-        setSubmitting(false)
-        props.onClose()
-      })
-      .catch(setServerError)
-      .finally(() => {
-        setSubmitting(false)
-      })
-  }
+    update({
+      speakers: data,
+    })
 
-  const titleError = fieldError('title', {form: errors, response: serverError})
+    props.onClose()
+  }
 
   return (
     <form onSubmit={handleSubmit(submit)}>
@@ -87,7 +60,6 @@ export default function SpeakerPageConfigForm(props: {onClose: () => void}) {
         />
       </FormControl>
       <TextField
-        error={Boolean(titleError)}
         name="title"
         label="Speaker Page Title"
         defaultValue={speakerPageSettings.title}
@@ -97,7 +69,6 @@ export default function SpeakerPageConfigForm(props: {onClose: () => void}) {
           ref: register({required: 'Speaker Page title is required.'}),
           'aria-label': 'edit speaker page title',
         }}
-        helperText={titleError}
       />
       <TextField
         name="menuTitle"
@@ -162,7 +133,6 @@ export default function SpeakerPageConfigForm(props: {onClose: () => void}) {
         color="primary"
         type="submit"
         aria-label="save speaker page config"
-        disabled={submitting}
       >
         SAVE
       </SaveButton>

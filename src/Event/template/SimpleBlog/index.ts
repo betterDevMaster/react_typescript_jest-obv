@@ -4,25 +4,28 @@ import {EntityList} from 'lib/list'
 import {colors} from 'lib/ui/theme'
 import {Column} from 'lib/ui/layout'
 import {GridSize} from '@material-ui/core/Grid'
-import {useTemplate, useUpdate} from 'Event/TemplateProvider'
+import {useTemplate} from 'Event/TemplateProvider'
 import {BaseTemplate, BASE_DEFAULTS, Header} from 'Event/template'
 import {BlogPost} from 'Event/Dashboard/components/BlogPost'
 import {DeepRequired} from 'lib/type-utils'
 import {SidebarItem} from 'Event/template/SimpleBlog/Dashboard/Sidebar/SidebarItem'
 import {CountDownTimer} from 'Event/Dashboard/components/CountDownTimer'
+import {useTemplateUpdate} from 'Event/TemplateUpdateProvider'
 
 export const SIMPLE_BLOG = 'Simple Blog'
 
-export function useSimpleBlog() {
+export function useSimpleBlogTemplate() {
   const template = useTemplate()
-
-  const update = useUpdate<SimpleBlog>()
 
   if (template.name !== SIMPLE_BLOG) {
     throw new Error('useSimpleBlog called with wrong template')
   }
 
-  return {template, update}
+  return template
+}
+
+export function useSimpleBlogUpdate() {
+  return useTemplateUpdate<SimpleBlog>()
 }
 
 export type SimpleBlog = BaseTemplate & {
@@ -33,7 +36,7 @@ export type SimpleBlog = BaseTemplate & {
   welcomeText?: string
   heroImageSize?: number
   sidebar: Sidebar
-  sidebarItems: SidebarItem[]
+  sidebarItems: EntityList<SidebarItem>
   blogPosts: EntityList<BlogPost>
   textColor?: string
   linkColor?: string
@@ -170,10 +173,10 @@ export type SimpleBlog = BaseTemplate & {
     orderedIds?: number[]
   }
   offlinePage?: {
-    shouldRedirect: boolean
-    title: string
-    description: string
-    redirectUrl: string
+    shouldRedirect?: boolean
+    title?: string
+    description?: string
+    redirectUrl?: string
   }
   countDownTimers?: EntityList<CountDownTimer>
   imageWaterfall?: {
@@ -224,7 +227,10 @@ export const createSimpleBlog = (): DeepRequired<SimpleBlog> => ({
     separatorStyle: 'solid',
     separatorWidth: 1,
   },
-  sidebarItems: [],
+  sidebarItems: {
+    entities: {},
+    ids: [],
+  },
   techCheck: {
     buttonText: 'submit',
     buttonBackground: 'blue',

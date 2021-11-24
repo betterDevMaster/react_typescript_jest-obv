@@ -17,17 +17,15 @@ import {
   DroppableProvidedProps,
   DropResult,
 } from 'react-beautiful-dnd'
-import {useCards} from 'Event/template/Cards'
+import {useCardsTemplate} from 'Event/template/Cards'
 import {useToggle} from 'lib/toggle'
 import {ResourceListConfig} from 'Event/template/Cards/Dashboard/Sidebar/SidebarItem/ResourceList/ResourceListConfig'
 import {uuid} from 'lib/uuid'
-import {
-  useRemoveSidebarItem,
-  useUpdateSidebarItem,
-} from 'Event/template/Cards/Dashboard/Sidebar/SidebarItem'
 import {RemoveButton} from 'organization/Event/DashboardConfig/ComponentConfig'
 import {useHasVisibleItems} from 'Event/attendee-rules/matcher'
 import Section from 'Event/template/Cards/Dashboard/Sidebar/Section'
+import {EntityList} from 'lib/list'
+import {useEditSidebarItem} from 'Event/template/Cards/Dashboard/Sidebar/SidebarItem'
 
 export const RESOURCE_LIST = 'Resource List'
 export interface ResourceListProps {
@@ -35,7 +33,7 @@ export interface ResourceListProps {
   type: typeof RESOURCE_LIST
   title: string
   description: string
-  resources: Resource[]
+  resources: EntityList<Resource>
 }
 
 export const createResourceList = (): ResourceListProps => ({
@@ -43,7 +41,10 @@ export const createResourceList = (): ResourceListProps => ({
   type: RESOURCE_LIST,
   title: 'Resources',
   description: '',
-  resources: [],
+  resources: {
+    ids: [],
+    entities: {},
+  },
 })
 
 export const RESOURCE_ICON = {
@@ -57,30 +58,26 @@ export const RESOURCE_ICON = {
 export function ResourceList(props: ResourceListProps) {
   const isEdit = useEditMode()
   const {resources, description, title} = props
-  const {
-    template: {sidebar},
-  } = useCards()
+  const {sidebar} = useCardsTemplate()
   const {flag: configVisible, toggle: toggleConfig} = useToggle()
-  const removeItem = useRemoveSidebarItem(props)
 
   const v = useAttendeeVariables()
 
-  const hasResources = useHasVisibleItems(resources)
-  if (!hasResources && !isEdit) {
+  const hasVisibleItems = useHasVisibleItems(Object.values(resources.entities))
+
+  if (!hasVisibleItems && !isEdit) {
     return null
   }
 
   return (
     <Section>
-      <ResourceListConfig
-        isVisible={configVisible}
-        onClose={toggleConfig}
-        list={props}
-      />
       <EditModeOnly>
-        <RemoveButton size="large" showing onClick={removeItem}>
-          Remove Resources
-        </RemoveButton>
+        <ResourceListConfig
+          isVisible={configVisible}
+          onClose={toggleConfig}
+          list={props}
+        />
+        <RemoveResourcesButton {...props} />
       </EditModeOnly>
       <Editable onEdit={toggleConfig}>
         <Heading aria-label="resources">{v(title)}</Heading>
@@ -88,7 +85,7 @@ export function ResourceList(props: ResourceListProps) {
       <Description aria-label="resource description" color={sidebar.textColor}>
         {v(description)}
       </Description>
-      <DroppableList {...props} />
+      <Content {...props} />
       <EditModeOnly>
         <StyledAddResourceButton list={props} />
       </EditModeOnly>
@@ -96,17 +93,31 @@ export function ResourceList(props: ResourceListProps) {
   )
 }
 
+function RemoveResourcesButton(props: ResourceListProps) {
+  const {remove: removeItem} = useEditSidebarItem()
+
+  return (
+    <RemoveButton size="large" showing onClick={removeItem}>
+      Remove Resources
+    </RemoveButton>
+  )
+}
+
+function Content(props: ResourceListProps) {
+  const isEdit = useEditMode()
+  if (isEdit) {
+    return <DroppableList {...props} />
+  }
+
+  return (
+    <Container>
+      <Resources {...props} />
+    </Container>
+  )
+}
+
 function DroppableList(props: ResourceListProps) {
   const handleDrag = useHandleDrag(props)
-
-  const isEditMode = useEditMode()
-  if (!isEditMode) {
-    return (
-      <Container>
-        <Resources {...props} />
-      </Container>
-    )
-  }
 
   return (
     <DragDropContext onDragEnd={handleDrag}>
@@ -125,21 +136,24 @@ function DroppableList(props: ResourceListProps) {
 }
 
 function Resources(props: ResourceListProps) {
-  const {template} = useCards()
-  const {sidebar} = template
+  const {sidebar} = useCardsTemplate()
 
   return (
     <>
-      {props.resources.map((resource: Resource, index: number) => (
-        <ResourceItem
-          id={`resource-item-${index}`}
-          resource={resource}
-          iconColor={sidebar.textColor}
-          index={index}
-          key={index}
-          list={props}
-        />
-      ))}
+      {props.resources.ids.map((id: string, index: number) => {
+        const resource = props.resources.entities[id]
+        return (
+          <ResourceItem
+            droppleid={`resource-item-${index}`}
+            id={id}
+            resource={resource}
+            iconColor={sidebar.textColor}
+            index={index}
+            key={index}
+            list={props}
+          />
+        )
+      })}
     </>
   )
 }
@@ -157,7 +171,7 @@ const Container = React.forwardRef<
 ))
 
 function useHandleDrag(props: ResourceListProps) {
-  const updateItem = useUpdateSidebarItem()
+  const {update} = useEditSidebarItem()
 
   return (result: DropResult) => {
     const {destination, source} = result
@@ -166,13 +180,14 @@ function useHandleDrag(props: ResourceListProps) {
       return
     }
 
-    const moved = Array.from(props.resources)
+    const moved = Array.from(props.resources.ids)
     const [removed] = moved.splice(source.index, 1)
     moved.splice(destination.index, 0, removed)
 
-    updateItem({
-      ...props,
-      resources: moved,
+    update({
+      resources: {
+        ids: moved,
+      },
     })
   }
 }

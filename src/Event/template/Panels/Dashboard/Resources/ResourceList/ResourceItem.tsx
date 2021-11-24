@@ -17,7 +17,7 @@ import Typography from '@material-ui/core/Typography'
 import CardContent from '@material-ui/core/CardContent'
 import CardActions from '@material-ui/core/CardActions'
 import {useResourceUrl} from 'Event/Dashboard/components/resource'
-import {usePanels} from 'Event/template/Panels'
+import {usePanelsTemplate} from 'Event/template/Panels'
 import {rgba} from 'lib/color'
 import {useToggle} from 'lib/toggle'
 import ResourceItemConfig from 'Event/template/Panels/Dashboard/Resources/ResourceList/ResourceItemConfig'
@@ -76,9 +76,7 @@ function ResourceItemCard(props: {resource: Resource}) {
   const url = useResourceUrl(props.resource)
   const v = useAttendeeVariables()
 
-  const {
-    template: {resourceList},
-  } = usePanels()
+  const {resourceList} = usePanelsTemplate()
 
   const {
     cardBackgroundColor,

@@ -1,5 +1,5 @@
 import TextField from '@material-ui/core/TextField'
-import {Panels, usePanels} from 'Event/template/Panels'
+import {Panels, usePanelsTemplate, usePanelsUpdate} from 'Event/template/Panels'
 import {onChangeNumberHandler, onUnknownChangeHandler} from 'lib/dom'
 import ColorPicker from 'lib/ui/ColorPicker'
 import Select from '@material-ui/core/Select'
@@ -17,7 +17,7 @@ import {useToggle} from 'lib/toggle'
 export default function PostFormStylesConfig() {
   const {flag: isVisible, toggle: togglePostFormStyleConfig} = useToggle()
 
-  const {update} = usePanels()
+  const update = usePanelsUpdate()
 
   const styles = usePostFormStyles()
 
@@ -70,7 +70,10 @@ export default function PostFormStylesConfig() {
         helperTextColor,
       },
     }
-    update.primitive('postFormStyles')(updated)
+
+    update({
+      postFormStyles: updated,
+    })
     togglePostFormStyleConfig()
   }
 
@@ -238,9 +241,7 @@ export default function PostFormStylesConfig() {
   )
 }
 export function usePostFormStyles() {
-  const {
-    template: {postFormStyles},
-  } = usePanels()
+  const {postFormStyles} = usePanelsTemplate()
 
   return useMemo(
     () => ({

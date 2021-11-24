@@ -5,14 +5,16 @@ import Card from 'Event/template/SimpleBlog/FaqPage/FaqList/Card'
 import React from 'react'
 import VisibleOnMatch from 'Event/attendee-rules/VisibleOnMatch'
 import {DragDropContext, Droppable, DropResult} from 'react-beautiful-dnd'
-import {useSimpleBlog} from 'Event/template/SimpleBlog'
+import {
+  useSimpleBlogTemplate,
+  useSimpleBlogUpdate,
+} from 'Event/template/SimpleBlog'
 
 export default function FaqList(props: {
   className?: string
   faqs: FAQ[]
   isEditMode?: boolean
 }) {
-  const handleDrag = useHandleDrag()
   const sortedFaqs = useSortedFaqs(props.faqs)
 
   const isEmpty = props.faqs.length === 0
@@ -31,7 +33,21 @@ export default function FaqList(props: {
   }
 
   return (
-    <DragDropContext onDragEnd={handleDrag(sortedFaqs)}>
+    <DraggableList className={props.className} faqs={sortedFaqs}>
+      {faqs}
+    </DraggableList>
+  )
+}
+
+function DraggableList(props: {
+  children: React.ReactElement[]
+  faqs: FAQ[]
+  className?: string
+}) {
+  const handleDrag = useHandleDrag()
+
+  return (
+    <DragDropContext onDragEnd={handleDrag(props.faqs)}>
       <Droppable droppableId="drag-and-drop-faq">
         {(provided) => (
           <Box
@@ -40,7 +56,7 @@ export default function FaqList(props: {
             className={props.className}
           >
             <>
-              {faqs}
+              {props.children}
               {provided.placeholder}
             </>
           </Box>
@@ -60,9 +76,7 @@ export default function FaqList(props: {
  * @returns
  */
 function useSortedFaqs(faqs: FAQ[]) {
-  const {
-    template: {faq: pageSettings},
-  } = useSimpleBlog()
+  const {faq: pageSettings} = useSimpleBlogTemplate()
 
   const order = pageSettings?.orderedIds || []
 
@@ -84,8 +98,7 @@ function useSortedFaqs(faqs: FAQ[]) {
 }
 
 function useHandleDrag() {
-  const simpleBlog = useSimpleBlog()
-  const update = simpleBlog.update.object('faq')
+  const update = useSimpleBlogUpdate()
 
   return (faqs: FAQ[]) => (result: DropResult) => {
     const {destination, source} = result
@@ -99,7 +112,12 @@ function useHandleDrag() {
     moved.splice(destination.index, 0, removed)
 
     const orderedIds = moved.map((f) => f.id)
-    update('orderedIds')(orderedIds)
+
+    update({
+      faq: {
+        orderedIds,
+      },
+    })
   }
 }
 

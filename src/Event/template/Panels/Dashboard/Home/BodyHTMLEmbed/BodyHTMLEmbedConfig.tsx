@@ -8,13 +8,13 @@ import ComponentConfig, {
   ComponentConfigProps,
   SaveButton,
 } from 'organization/Event/DashboardConfig/ComponentConfig'
-import {usePanels} from 'Event/template/Panels'
+import {usePanelsTemplate, usePanelsUpdate} from 'Event/template/Panels'
 
 export function BodyHTMLEmbedConfig(props: ComponentConfigProps) {
   const {isVisible: visible, onClose} = props
-  const {template, update} = usePanels()
+  const template = usePanelsTemplate()
+  const update = usePanelsUpdate()
   const {bodyHTMLEmbed} = template
-  const updateHTML = update.primitive('bodyHTMLEmbed')
 
   const [embed, setEmbed] = useState(bodyHTMLEmbed)
 
@@ -27,7 +27,9 @@ export function BodyHTMLEmbedConfig(props: ComponentConfigProps) {
   }, [visible, bodyHTMLEmbed])
 
   const save = () => {
-    updateHTML(embed)
+    update({
+      bodyHTMLEmbed: embed,
+    })
     onClose()
   }
 

@@ -13,11 +13,11 @@ import Page, {
   DescriptionText,
 } from 'Event/template/Cards/Login/Page'
 import {RelativeLink} from 'lib/ui/link/RelativeLink'
-import {useCards} from 'Event/template/Cards'
+import {useCardsTemplate} from 'Event/template/Cards'
 import {Icon} from 'lib/fontawesome/Icon'
 
 export default function Login(props: LoginProps) {
-  const {template} = useCards()
+  const template = useCardsTemplate()
   const emailLabel = template.login.emailLabel
   const passwordLabel = template.login.passwordLabel
 

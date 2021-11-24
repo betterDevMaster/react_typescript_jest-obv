@@ -1,6 +1,6 @@
 import {withStyles} from '@material-ui/core/styles'
 import styled from 'styled-components'
-import {usePanels} from 'Event/template/Panels'
+import {usePanelsTemplate} from 'Event/template/Panels'
 import React from 'react'
 import Tabs from '@material-ui/core/Tabs'
 import MuiTab, {TabProps} from '@material-ui/core/Tab'
@@ -14,20 +14,18 @@ export default function Nav(props: {
   'aria-label'?: string
 }) {
   const {
-    template: {
-      rightPanel,
-      homeMenuTitle,
-      resourceList: {menuTitle: resourceMenuTitle, isVisible: showingResources},
-      leaderboard: {menuTitle: pointsMenuTitle, isVisible: showingPoints},
-      speakers: {menuTitle: speakersMenuTitle, isVisible: showingSpeakers},
-      sponsors: {menuTitle: sponsorsMenuTitle, isVisible: showingSponsors},
-      imageWaterfall: {
-        menuTitle: imageWaterfallTitle,
-        isVisible: showingImageWaterfall,
-      },
-      faq: {menuTitle: faqsMenuTitle, isVisible: showingFaqs},
+    rightPanel,
+    homeMenuTitle,
+    resourceList: {menuTitle: resourceMenuTitle, isVisible: showingResources},
+    leaderboard: {menuTitle: pointsMenuTitle, isVisible: showingPoints},
+    speakers: {menuTitle: speakersMenuTitle, isVisible: showingSpeakers},
+    sponsors: {menuTitle: sponsorsMenuTitle, isVisible: showingSponsors},
+    imageWaterfall: {
+      menuTitle: imageWaterfallTitle,
+      isVisible: showingImageWaterfall,
     },
-  } = usePanels()
+    faq: {menuTitle: faqsMenuTitle, isVisible: showingFaqs},
+  } = usePanelsTemplate()
   const {currentTab, onChangeTab} = props
   const v = useAttendeeVariables()
 
@@ -97,9 +95,7 @@ export default function Nav(props: {
 }
 
 function Tab(props: {showing: boolean} & TabProps) {
-  const {
-    template: {rightPanel},
-  } = usePanels()
+  const {rightPanel} = usePanelsTemplate()
 
   const isEditMode = useEditMode()
   const showing = isEditMode ? true : props.showing // always show tab when editing

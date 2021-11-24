@@ -1,22 +1,32 @@
-import {CustomBackgrounds, useCards} from 'Event/template/Cards'
+import {CustomBackgrounds, useCardsTemplate} from 'Event/template/Cards'
 import ImageAssetUploader from 'lib/asset/ImageAssetUploader'
 import React from 'react'
+import {Controller, UseFormMethods} from 'react-hook-form'
 
 export default function BackgroundImageUploader(props: {
   label: string
   property: keyof CustomBackgrounds
+  control: UseFormMethods['control']
 }) {
-  const {template, update} = useCards()
-  const value = template[props.property]
+  const template = useCardsTemplate()
+  const {control, property, label} = props
 
+  const url = template[property]
   return (
-    <ImageAssetUploader
-      label={props.label}
-      onChange={update.primitive(props.property)}
-      value={value}
-      canResize
-      width={1920}
-      height={1200}
+    <Controller
+      name={property}
+      defaultValue={url}
+      control={control}
+      render={({value, onChange}) => (
+        <ImageAssetUploader
+          label={label}
+          onChange={onChange}
+          value={value}
+          canResize
+          width={1920}
+          height={1200}
+        />
+      )}
     />
   )
 }

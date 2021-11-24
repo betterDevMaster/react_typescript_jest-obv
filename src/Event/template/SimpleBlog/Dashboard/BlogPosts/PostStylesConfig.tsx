@@ -2,152 +2,146 @@ import TextField from '@material-ui/core/TextField'
 import ComponentConfig, {
   SaveButton,
 } from 'organization/Event/DashboardConfig/ComponentConfig'
-import {SimpleBlog, useSimpleBlog} from 'Event/template/SimpleBlog'
-import {onChangeCheckedHandler, onChangeNumberHandler} from 'lib/dom'
+import {
+  SimpleBlog,
+  useSimpleBlogTemplate,
+  useSimpleBlogUpdate,
+} from 'Event/template/SimpleBlog'
+import {onChangeCheckedHandler} from 'lib/dom'
 import ColorPicker from 'lib/ui/ColorPicker'
 import Switch from 'lib/ui/form/Switch'
-import React, {useEffect, useMemo, useState} from 'react'
+import React from 'react'
 import InputLabel from '@material-ui/core/InputLabel'
 import Slider from '@material-ui/core/Slider'
 import {handleChangeSlider} from 'lib/dom'
 import {useToggle} from 'lib/toggle'
 import Button from '@material-ui/core/Button'
 import styled from 'styled-components'
+import {Controller, useForm} from 'react-hook-form'
 
 const MAX_SPACING = 250
 const MIN_SPACING = 1
 
 export default function PostStylesConfig() {
-  const {flag: isVisible, toggle: onClose} = useToggle()
+  const {flag: showingConfig, toggle: toggleConfig} = useToggle()
+  const {register, control, handleSubmit} = useForm()
+  const update = useSimpleBlogUpdate()
+  const {postStyles} = useSimpleBlogTemplate()
 
-  const {update} = useSimpleBlog()
+  const save = (data: SimpleBlog['postStyles']) => {
+    update({
+      postStyles: data,
+    })
 
-  const styles = usePostStyles()
-
-  const [titleTextColor, setTitleTextColor] = useState(styles.titleTextColor)
-  const [titleFontSize, setTitleFontSize] = useState(styles.titleFontSize)
-  const [titleCapitalize, setTitleCapitalize] = useState(styles.titleCapitalize)
-  const [dateTextColor, setDateTextColor] = useState(styles.dateTextColor)
-  const [spacing, setSpacing] = useState(styles.spacing)
-  const [contentTextColor, setContentTextColor] = useState(
-    styles.contentTextColor,
-  )
-  const [contentFontSize, setContentFontSize] = useState(styles.contentFontSize)
-
-  useEffect(() => {
-    if (isVisible) {
-      return
-    }
-
-    setTitleTextColor(styles.titleTextColor)
-    setTitleFontSize(styles.titleFontSize)
-    setTitleCapitalize(styles.titleCapitalize)
-    setDateTextColor(styles.dateTextColor)
-    setContentTextColor(styles.contentTextColor)
-    setContentFontSize(styles.contentFontSize)
-    setSpacing(styles.spacing)
-  }, [isVisible, styles])
-
-  const save = () => {
-    const updated: SimpleBlog['postStyles'] = {
-      titleTextColor,
-      titleFontSize,
-      titleCapitalize,
-      dateTextColor,
-      contentTextColor,
-      contentFontSize,
-      spacing,
-    }
-
-    update.primitive('postStyles')(updated)
+    toggleConfig()
   }
 
   return (
     <>
-      <StyledEditPostStylesButton onClick={onClose} />
-
+      <StyledEditPostStylesButton onClick={toggleConfig} />
       <ComponentConfig
-        isVisible={isVisible}
-        onClose={onClose}
+        isVisible={showingConfig}
+        onClose={toggleConfig}
         title="Post Styles"
       >
-        <ColorPicker
-          label="Title Text Color"
-          color={titleTextColor}
-          onPick={setTitleTextColor}
-          aria-label="title text color"
-        />
-        <TextField
-          value={titleFontSize}
-          label="Title Font Size"
-          type="number"
-          fullWidth
-          inputProps={{
-            min: 0,
-          }}
-          onChange={onChangeNumberHandler(setTitleFontSize)}
-        />
-        <Switch
-          label="Capitalize Title"
-          checked={titleCapitalize}
-          onChange={onChangeCheckedHandler(setTitleCapitalize)}
-          labelPlacement="end"
-          color="primary"
-          aria-label="capitalize title"
-        />
-        <ColorPicker
-          label="Date Text Color"
-          color={dateTextColor}
-          onPick={setDateTextColor}
-          aria-label="date text color"
-        />
-        <ColorPicker
-          label="Content Text Color"
-          color={contentTextColor}
-          onPick={setContentTextColor}
-          aria-label="content text color"
-        />
-        <TextField
-          value={contentFontSize}
-          label="Content Font Size"
-          type="number"
-          fullWidth
-          inputProps={{
-            min: 0,
-          }}
-          onChange={onChangeNumberHandler(setContentFontSize)}
-        />
-        <InputLabel>Space Between Posts</InputLabel>
-        <Slider
-          min={MIN_SPACING}
-          max={MAX_SPACING}
-          step={1}
-          onChange={handleChangeSlider(setSpacing)}
-          valueLabelDisplay="auto"
-          value={spacing}
-        />
-        <SaveButton onClick={save} />
+        <form onSubmit={handleSubmit(save)}>
+          <Controller
+            name="titleTextColor"
+            defaultValue={postStyles.titleTextColor}
+            control={control}
+            render={({value, onChange}) => (
+              <ColorPicker
+                label="Title Text Color"
+                color={value}
+                onPick={onChange}
+                aria-label="title text color"
+              />
+            )}
+          />
+          <TextField
+            name="titleFontSize"
+            defaultValue={postStyles.titleFontSize}
+            label="Title Font Size"
+            type="number"
+            fullWidth
+            inputProps={{
+              min: 0,
+              ref: register,
+            }}
+          />
+          <Controller
+            name="titleCapitalize"
+            defaultValue={postStyles.titleCapitalize}
+            control={control}
+            render={({value, onChange}) => (
+              <Switch
+                label="Capitalize Title"
+                checked={value}
+                onChange={onChangeCheckedHandler(onChange)}
+                labelPlacement="end"
+                color="primary"
+                aria-label="capitalize title"
+              />
+            )}
+          />
+          <Controller
+            name="dateTextColor"
+            defaultValue={postStyles.dateTextColor}
+            control={control}
+            render={({value, onChange}) => (
+              <ColorPicker
+                label="Date Text Color"
+                color={value}
+                onPick={onChange}
+                aria-label="date text color"
+              />
+            )}
+          />
+          <Controller
+            name="contentTextColor"
+            defaultValue={postStyles.contentTextColor}
+            control={control}
+            render={({value, onChange}) => (
+              <ColorPicker
+                label="Content Text Color"
+                color={value}
+                onPick={onChange}
+                aria-label="content text color"
+              />
+            )}
+          />
+          <TextField
+            name="contentFontSize"
+            defaultValue={postStyles.contentFontSize}
+            label="Content Font Size"
+            type="number"
+            fullWidth
+            inputProps={{
+              min: 0,
+              ref: register,
+            }}
+          />
+          <InputLabel>Space Between Posts</InputLabel>
+
+          <Controller
+            name="spacing"
+            defaultValue={postStyles.spacing}
+            control={control}
+            render={({value, onChange}) => (
+              <Slider
+                min={MIN_SPACING}
+                max={MAX_SPACING}
+                step={1}
+                onChange={handleChangeSlider(onChange)}
+                valueLabelDisplay="auto"
+                value={value}
+              />
+            )}
+          />
+          <SaveButton />
+        </form>
       </ComponentConfig>
     </>
-  )
-}
-
-export function usePostStyles() {
-  const {
-    template: {postStyles},
-  } = useSimpleBlog()
-
-  return useMemo(
-    () => ({
-      titleTextColor: postStyles.titleTextColor,
-      titleFontSize: postStyles.titleFontSize,
-      titleCapitalize: postStyles.titleCapitalize,
-      dateTextColor: postStyles.dateTextColor,
-      contentTextColor: postStyles.contentTextColor,
-      contentFontSize: postStyles.contentFontSize,
-      spacing: postStyles.spacing,
-    }),
-    [postStyles],
   )
 }
 

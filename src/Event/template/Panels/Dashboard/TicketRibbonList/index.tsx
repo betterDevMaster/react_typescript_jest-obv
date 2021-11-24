@@ -1,18 +1,17 @@
+import React from 'react'
+import {DragDropContext, Droppable, DropResult} from 'react-beautiful-dnd'
+import styled from 'styled-components'
+import {withDefaults} from 'lib/object'
+import VisibleOnMatch from 'Event/attendee-rules/VisibleOnMatch'
 import {useEditMode} from 'Event/Dashboard/editor/state/edit-mode'
-import {usePanels} from 'Event/template/Panels'
+import {usePanelsTemplate, usePanelsUpdate} from 'Event/template/Panels'
+import 'Event/template/Panels/Dashboard/LeftPanel'
 import AddTicketRibbonButton, {
   DEFAULT_TICKET_RIBBON,
 } from 'Event/template/Panels/Dashboard/TicketRibbonList/AddTicketRibbonButton'
 import TicketRibbon, {
   LETTER_WIDTH,
 } from 'Event/template/Panels/Dashboard/TicketRibbonList/TicketRibbon'
-import {useDispatchUpdate} from 'Event/TemplateProvider'
-import React from 'react'
-import {DragDropContext, Droppable, DropResult} from 'react-beautiful-dnd'
-import styled from 'styled-components'
-import 'Event/template/Panels/Dashboard/LeftPanel'
-import {withDefaults} from 'lib/object'
-import VisibleOnMatch from 'Event/attendee-rules/VisibleOnMatch'
 
 export default function TicketRibbonList() {
   return (
@@ -55,8 +54,7 @@ function DraggableItems() {
 }
 
 function Items() {
-  const {template} = usePanels()
-  const {ticketRibbons} = template
+  const {ticketRibbons} = usePanelsTemplate()
 
   const filled = ticketRibbons.map((tr) =>
     withDefaults(DEFAULT_TICKET_RIBBON, tr),
@@ -74,9 +72,8 @@ function Items() {
 }
 
 function useHandleDrag() {
-  const updateTemplate = useDispatchUpdate()
-  const {template} = usePanels()
-  const {ticketRibbons} = template
+  const updateTemplate = usePanelsUpdate()
+  const {ticketRibbons} = usePanelsTemplate()
 
   return (result: DropResult) => {
     const {destination, source} = result

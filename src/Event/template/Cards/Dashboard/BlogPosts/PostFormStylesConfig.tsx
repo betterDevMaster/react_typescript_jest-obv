@@ -1,5 +1,5 @@
 import TextField from '@material-ui/core/TextField'
-import {Cards, useCards} from 'Event/template/Cards'
+import {Cards, useCardsTemplate, useCardsUpdate} from 'Event/template/Cards'
 import {onUnknownChangeHandler} from 'lib/dom'
 import ColorPicker from 'lib/ui/ColorPicker'
 import Select from '@material-ui/core/Select'
@@ -20,22 +20,13 @@ export default function PostFormStylesConfig(props: {
 
   const {handleSubmit, control, register} = useForm()
 
-  const {
-    update,
-    template: {postFormStyles},
-  } = useCards()
+  const update = useCardsUpdate()
+  const {postFormStyles} = useCardsTemplate()
 
   const save = (data: Cards['postFormStyles']) => {
-    const updated: Cards['postFormStyles'] = {
-      ...postFormStyles,
-      ...data,
-      inputStyles: {
-        ...postFormStyles.inputStyles,
-        ...data?.inputStyles,
-      },
-    }
-
-    update.primitive('postFormStyles')(updated)
+    update({
+      postFormStyles: data,
+    })
     onClose()
   }
 
@@ -48,7 +39,7 @@ export default function PostFormStylesConfig(props: {
       <form onSubmit={handleSubmit(save)}>
         <TextField
           name="width"
-          value={postFormStyles.width}
+          defaultValue={postFormStyles.width}
           label="Form Width %"
           type="number"
           fullWidth

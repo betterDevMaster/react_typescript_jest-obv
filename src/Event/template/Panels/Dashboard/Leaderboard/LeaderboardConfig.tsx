@@ -1,23 +1,22 @@
 import React from 'react'
 import TextField from '@material-ui/core/TextField'
-import TextEditor, {TextEditorContainer} from 'lib/ui/form/TextEditor'
+import {FormControl} from '@material-ui/core'
 import {Controller, useForm} from 'react-hook-form'
-import {Panels, usePanels} from 'Event/template/Panels'
+import {onChangeCheckedHandler} from 'lib/dom'
+import Switch from 'lib/ui/form/Switch'
+import TextEditor, {TextEditorContainer} from 'lib/ui/form/TextEditor'
+import {usePanelsTemplate, usePanelsUpdate} from 'Event/template/Panels'
 import ComponentConfig, {
   ComponentConfigProps,
   SaveButton,
 } from 'organization/Event/DashboardConfig/ComponentConfig'
-import {onChangeCheckedHandler} from 'lib/dom'
-import Switch from 'lib/ui/form/Switch'
-import {FormControl} from '@material-ui/core'
-import {useDispatchUpdate} from 'Event/TemplateProvider'
 
 export default function LeaderboardConfig(props: ComponentConfigProps) {
-  const {template} = usePanels()
+  const template = usePanelsTemplate()
   const {leaderboard} = template
   const {register, control, handleSubmit} = useForm()
 
-  const updateTemplate = useDispatchUpdate()
+  const updateTemplate = usePanelsUpdate()
 
   const submit = (data: {
     title: string
@@ -26,20 +25,12 @@ export default function LeaderboardConfig(props: ComponentConfigProps) {
     menuTitle: string
     isVisible: boolean
   }) => {
-    const existing = template.leaderboard || {}
-
     const {points_unit, ...leaderboardData} = data
 
-    const updated: Panels = {
-      ...template,
-      leaderboard: {
-        ...existing,
-        ...leaderboardData,
-      },
-      points_unit,
-    }
-
-    updateTemplate(updated)
+    updateTemplate({
+      leaderboard: leaderboardData,
+      points_unit: points_unit,
+    })
 
     props.onClose()
   }

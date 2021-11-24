@@ -6,15 +6,9 @@ import InputLabel from '@material-ui/core/InputLabel'
 import Slider from '@material-ui/core/Slider'
 import TextField from '@material-ui/core/TextField'
 import {Controller, useForm} from 'react-hook-form'
-import {fieldError} from 'lib/form'
 import TextEditor, {TextEditorContainer} from 'lib/ui/form/TextEditor'
 import {handleChangeSlider, onChangeCheckedHandler} from 'lib/dom'
-import {ObvioEvent} from 'Event'
-import {useOrganization} from 'organization/OrganizationProvider'
-import {useEvent} from 'Event/EventProvider'
-import {api} from 'lib/url'
-import {ValidationError} from 'lib/api-client'
-import {usePanels} from 'Event/template/Panels'
+import {Panels, usePanelsTemplate, usePanelsUpdate} from 'Event/template/Panels'
 import Switch from 'lib/ui/form/Switch'
 import FormControl from '@material-ui/core/FormControl'
 
@@ -33,40 +27,22 @@ type UpdateFormData = {
 }
 
 export default function SpeakerPageConfigForm(props: {onClose: () => void}) {
-  const {register, handleSubmit, errors, control} = useForm()
+  const {register, handleSubmit, control} = useForm()
   const [submitting, setSubmitting] = useState(false)
-  const {event, set: setEvent} = useEvent()
-  const {client} = useOrganization()
-  const [serverError, setServerError] = useState<ValidationError<any>>(null)
 
-  const {template} = usePanels()
+  const template = usePanelsTemplate()
   const {speakers: speakerPageSettings} = template
+  const update = usePanelsUpdate()
 
-  const submit = (data: UpdateFormData) => {
+  const submit = (data: Partial<Panels['speakers']>) => {
     setSubmitting(true)
-    const url = api(`/events/${event.slug}`)
-    client
-      .put<ObvioEvent>(url, {
-        template: {
-          ...template,
-          speakers: {
-            ...speakerPageSettings,
-            ...data,
-          },
-        },
-      })
-      .then((event) => {
-        setEvent(event)
-        setSubmitting(false)
-        props.onClose()
-      })
-      .catch(setServerError)
-      .finally(() => {
-        setSubmitting(false)
-      })
-  }
 
-  const titleError = fieldError('title', {form: errors, response: serverError})
+    update({
+      speakers: data,
+    })
+
+    props.onClose()
+  }
 
   return (
     <form onSubmit={handleSubmit(submit)}>
@@ -88,7 +64,6 @@ export default function SpeakerPageConfigForm(props: {onClose: () => void}) {
         />
       </FormControl>
       <TextField
-        error={Boolean(titleError)}
         name="title"
         label="Speaker Page Title"
         defaultValue={speakerPageSettings.title}
@@ -98,10 +73,8 @@ export default function SpeakerPageConfigForm(props: {onClose: () => void}) {
           ref: register({required: 'Speaker Page title is required.'}),
           'aria-label': 'edit speaker page title',
         }}
-        helperText={titleError}
       />
       <TextField
-        error={Boolean(titleError)}
         name="menuTitle"
         label="Speaker Page Menu Title"
         defaultValue={speakerPageSettings.menuTitle}
@@ -111,7 +84,6 @@ export default function SpeakerPageConfigForm(props: {onClose: () => void}) {
           ref: register({required: 'Speaker Page Meny Title is required.'}),
           'aria-label': 'edit speaker page menu title',
         }}
-        helperText={titleError}
       />
       <Controller
         name="description"

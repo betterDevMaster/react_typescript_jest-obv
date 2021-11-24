@@ -3,7 +3,7 @@ import styled from 'styled-components'
 import Container from '@material-ui/core/Container'
 import {User} from 'auth/user'
 import Footer from 'Event/template/Cards/Dashboard/Footer'
-import {useCards} from 'Event/template/Cards'
+import {useCardsTemplate} from 'Event/template/Cards'
 import {rgba} from 'lib/color'
 import LanguageSelectMenu from 'Event/LanguageSelector'
 import {muiDarkTheme, muiTheme} from 'lib/ui/theme'
@@ -18,7 +18,7 @@ export default function CheckInPage(props: {
   user: User
   children: React.ReactElement | React.ReactElement[]
 }) {
-  const {template} = useCards()
+  const template = useCardsTemplate()
 
   const {background, isDarkMode} = template
 
@@ -75,7 +75,6 @@ const ColorOverlay = styled.div<{
   display: flex;
   flex-direction: column;
   overflow: auto;
-  min-height: 100vh;
 `
 
 const StyledContainer = withStyles({

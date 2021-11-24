@@ -6,7 +6,7 @@ import {spacing} from 'lib/ui/theme'
 import Button from '@material-ui/core/Button'
 import {HeroConfig} from 'Event/template/SimpleBlog/Dashboard/Hero/HeroConfig'
 import {useAttendeeVariables} from 'Event'
-import {useSimpleBlog} from 'Event/template/SimpleBlog'
+import {useSimpleBlogTemplate} from 'Event/template/SimpleBlog'
 import {useToggle} from 'lib/toggle'
 import EditModeOnly from 'Event/Dashboard/editor/views/EditModeOnly'
 
@@ -43,7 +43,7 @@ function EditButton() {
 }
 
 function WelcomeText() {
-  const {template} = useSimpleBlog()
+  const template = useSimpleBlogTemplate()
   const {welcomeText} = template
   const v = useAttendeeVariables()
 
@@ -56,7 +56,7 @@ function WelcomeText() {
 
 function Image() {
   const {event} = useEvent()
-  const {template} = useSimpleBlog()
+  const template = useSimpleBlogTemplate()
   const {heroImageSize} = template
 
   const size = heroImageSize

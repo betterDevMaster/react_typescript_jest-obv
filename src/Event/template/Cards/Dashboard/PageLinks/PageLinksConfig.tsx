@@ -1,6 +1,6 @@
 import DialogContent from '@material-ui/core/DialogContent'
 import DialogTitle from '@material-ui/core/DialogTitle'
-import {Cards, useCards} from 'Event/template/Cards'
+import {Cards, useCardsTemplate, useCardsUpdate} from 'Event/template/Cards'
 import ColorPicker from 'lib/ui/ColorPicker'
 import Dialog from 'lib/ui/Dialog'
 import React from 'react'
@@ -12,22 +12,16 @@ export default function PageLinksConfig(props: {
   isVisible: boolean
   onClose: () => void
 }) {
-  const {
-    template: {pageLinks},
-    update,
-  } = useCards()
-
+  const {pageLinks} = useCardsTemplate()
+  const update = useCardsUpdate()
   const {isVisible, onClose} = props
 
   const {handleSubmit, control} = useForm()
 
   const save = (data: Cards['pageLinks']) => {
-    const updated = {
-      ...pageLinks,
-      ...data,
-    }
-
-    update.primitive('pageLinks')(updated)
+    update({
+      pageLinks: data,
+    })
     onClose()
   }
 

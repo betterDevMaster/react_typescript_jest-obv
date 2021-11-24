@@ -16,17 +16,18 @@ import ComponentConfig, {
   SaveButton,
 } from 'organization/Event/DashboardConfig/ComponentConfig'
 import LocalizedDateTimePicker from 'lib/LocalizedDateTimePicker'
-import {useUpdateSidebarItem} from 'Event/template/Cards/Dashboard/Sidebar/SidebarItem'
+import {REMOVE} from 'Event/TemplateUpdateProvider'
+import {useEditSidebarItem} from 'Event/template/Cards/Dashboard/Sidebar/SidebarItem'
+import {v4 as uuid} from 'uuid'
 
 export function AgendaItemConfig(
   props: {
     agenda: Agenda
-    index?: number
     list: AgendaListProps
+    id?: string
   } & ComponentConfigProps,
 ) {
-  const {isVisible: visible, onClose, agenda, index} = props
-  const {list: agendas} = props
+  const {isVisible: visible, onClose, agenda, list, id} = props
   const [isVisible, setIsVisible] = useState(agenda.isVisible)
   const [text, setText] = useState(agenda.text)
   const [startDate, setStartDate] = useState(agenda.startDate)
@@ -34,7 +35,7 @@ export function AgendaItemConfig(
   const [link, setLink] = useState(agenda.link)
   const [hasEndDateTimeChange, setHasEndDateTimeChange] = useState(false)
 
-  const updateItem = useUpdateSidebarItem()
+  const {update: updateItem} = useEditSidebarItem()
 
   useEffect(() => {
     if (visible) {
@@ -50,24 +51,48 @@ export function AgendaItemConfig(
     setHasEndDateTimeChange(false)
   }, [agenda, visible])
 
-  const update = (data: Agenda, index: number) =>
+  const update = (id: string, updated: Agenda) => {
     updateItem({
-      ...agendas,
-      items: agendas.items.map((r, i) => {
-        const isTarget = i === index
-        if (isTarget) {
-          return data
-        }
+      items: {
+        entities: {
+          [id]: updated,
+        },
+      },
+    })
+  }
 
-        return r
-      }),
+  const insert = (item: Agenda) => {
+    const id = uuid()
+    const ids = [...list.items.ids, id]
+
+    updateItem({
+      items: {
+        ids,
+        entities: {
+          [id]: item,
+        },
+      },
+    })
+  }
+
+  const remove = () => {
+    if (!id) {
+      throw new Error("Missing 'id' of agenda to remove.")
+    }
+
+    const removed = list.items.ids.filter((i) => i !== id)
+
+    updateItem({
+      items: {
+        ids: removed,
+        entities: {
+          [id]: REMOVE,
+        },
+      },
     })
 
-  const insert = (item: Agenda) =>
-    updateItem({
-      ...agendas,
-      items: [...agendas.items, item],
-    })
+    onClose()
+  }
 
   const save = () => {
     const data: Agenda = {
@@ -78,23 +103,14 @@ export function AgendaItemConfig(
       link,
     }
 
-    if (index === undefined) {
+    if (id === undefined) {
       insert(data)
       onClose()
       return
     }
 
-    update(data, index)
+    update(id, data)
     onClose()
-  }
-
-  const remove = () => {
-    const withoutTarget = agendas.items.filter((_, i) => i !== index)
-    onClose()
-    updateItem({
-      ...agendas,
-      items: withoutTarget,
-    })
   }
 
   const handleStartDate = (date: MaterialUiPickersDate) => {
@@ -177,7 +193,7 @@ export function AgendaItemConfig(
         variant="outlined"
         aria-label="remove agenda"
         onClick={remove}
-        hidden={!index}
+        hidden={!id}
       >
         REMOVE AGENDA
       </RemoveAgendaButton>

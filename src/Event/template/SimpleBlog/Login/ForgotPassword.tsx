@@ -7,7 +7,7 @@ import Page, {
   ErrorMessage,
 } from 'Event/template/SimpleBlog/Login/Page'
 import {ForgotPasswordProps} from 'auth/password'
-import {useSimpleBlog} from 'Event/template/SimpleBlog'
+import {useSimpleBlogTemplate} from 'Event/template/SimpleBlog'
 import {useGuestVariables} from 'Event'
 
 export default function ForgotPassword(props: ForgotPasswordProps) {
@@ -19,9 +19,7 @@ export default function ForgotPassword(props: ForgotPasswordProps) {
 }
 
 export function Content(props: ForgotPasswordProps) {
-  const {
-    template: {login},
-  } = useSimpleBlog()
+  const {login} = useSimpleBlogTemplate()
   const v = useGuestVariables()
 
   const emailLabel = v(login.emailLabel)

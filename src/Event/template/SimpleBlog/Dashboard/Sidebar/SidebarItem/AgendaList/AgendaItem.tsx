@@ -13,17 +13,18 @@ import {
 } from 'Event/template/SimpleBlog/Dashboard/Sidebar/SidebarItem/AgendaList'
 import {Draggable} from 'react-beautiful-dnd'
 import {DragHandle, DraggableOverlay} from 'lib/ui/drag-and-drop'
-import {useSimpleBlog} from 'Event/template/SimpleBlog'
+import {useSimpleBlogTemplate} from 'Event/template/SimpleBlog'
 import {useToggle} from 'lib/toggle'
 import {AgendaItemConfig} from 'Event/template/SimpleBlog/Dashboard/Sidebar/SidebarItem/AgendaList/AgendaItemConfig'
 import {useLocalization} from 'lib/LocalizationProvider'
 
 export default function AgendaItem(props: {
   agenda: Agenda
-  index: number
   list: AgendaListProps
+  id: string
+  index: number
 }) {
-  const {agenda, index} = props
+  const {agenda, id, list, index} = props
   const isEditMode = useEditMode()
   const {flag: configVisible, toggle: toggleConfig} = useToggle()
 
@@ -41,11 +42,11 @@ export default function AgendaItem(props: {
   return (
     <>
       <AgendaItemConfig
-        list={props.list}
+        list={list}
         isVisible={configVisible}
         onClose={toggleConfig}
         agenda={agenda}
-        index={index}
+        id={id}
       />
       <Draggable draggableId={`drag-and-drop-agenda-${index}`} index={index}>
         {(provided) => (
@@ -85,7 +86,7 @@ function Times(props: {agenda: Agenda}) {
 
   const getTimezone = (date: moment.Moment) =>
     date.tz(moment.tz.guess()).format('z')
-  const {template} = useSimpleBlog()
+  const template = useSimpleBlogTemplate()
   const {sidebar} = template
   const sidebarTextColor = sidebar.textColor
 
@@ -138,7 +139,7 @@ function Times(props: {agenda: Agenda}) {
 }
 
 function Event(props: {agenda: Agenda}) {
-  const {template} = useSimpleBlog()
+  const template = useSimpleBlogTemplate()
   const {sidebar} = template
   const withAttendeeData = useWithAttendeeData()
   const v = useAttendeeVariables()

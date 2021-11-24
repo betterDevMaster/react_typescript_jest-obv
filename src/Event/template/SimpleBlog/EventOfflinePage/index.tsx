@@ -1,9 +1,9 @@
 import React from 'react'
-import {useSimpleBlog} from 'Event/template/SimpleBlog'
+import {useSimpleBlogTemplate} from 'Event/template/SimpleBlog'
 import OfflinePage from 'Event/template/SimpleBlog/OfflinePage'
 
 export default function EventOfflinePage(props: {isPreview?: boolean}) {
-  const {template} = useSimpleBlog()
+  const template = useSimpleBlogTemplate()
   const {offlinePage: offline} = template
 
   return (

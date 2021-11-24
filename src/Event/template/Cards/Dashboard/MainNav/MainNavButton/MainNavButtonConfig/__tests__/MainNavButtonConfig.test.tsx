@@ -1,12 +1,10 @@
 import user from '@testing-library/user-event'
 import faker from 'faker'
 import {fakeCards} from 'Event/template/Cards/__utils__/factory'
-import {fakeNavButtonWithSize} from 'Event/Dashboard/components/NavButton/__utils__/factory'
 import {createEntityList} from 'lib/list'
 import {clickEdit} from '__utils__/edit'
 import {fireEvent} from '@testing-library/react'
 import {fakeEvent} from 'Event/__utils__/factory'
-import {mockRxJsAjax} from 'store/__utils__/MockStoreProvider'
 import {wait} from '@testing-library/react'
 import {fakeArea} from 'organization/Event/AreaList/__utils__/factory'
 import mockAxios from 'axios'
@@ -14,11 +12,20 @@ import {fakeAction} from 'Event/ActionsProvider/__utils__/factory'
 import {goToDashboardConfig} from 'organization/Event/DashboardConfig/__utils__/go-dashboard-config'
 import {fakeCardsNavButton} from 'Event/template/Cards/Dashboard/CardsNavButton/__utils__/factory'
 
-const mockPost = mockRxJsAjax.post as jest.Mock
+const mockPut = mockAxios.put as jest.Mock
 const mockGet = mockAxios.get as jest.Mock
 
 beforeEach(() => {
   jest.clearAllMocks()
+})
+
+beforeAll(() => {
+  jest.spyOn(console, 'error').mockImplementation(() => {})
+})
+
+afterAll(() => {
+  // @ts-ignore
+  console.error.mockRestore()
 })
 
 it('should edit the selected button', async () => {
@@ -63,13 +70,13 @@ it('should edit the selected button', async () => {
 
   // Saved
   await wait(() => {
-    expect(mockPost).toHaveBeenCalledTimes(1)
+    expect(mockPut).toHaveBeenCalledTimes(1)
   })
 
-  const [url, data] = mockPost.mock.calls[0]
+  const [url, data] = mockPut.mock.calls[0]
   expect(url).toMatch(`/events/${event.slug}`)
-  const id = data.template.mainNav.ids[targetIndex]
-  expect(data.template.mainNav.entities[id].text).toBe(updatedValue)
+  const id = mainNavButtons.ids[targetIndex]
+  expect(data.template[`mainNav.entities.${id}.text`]).toBe(updatedValue)
 })
 
 it('should set an area button', async () => {
@@ -117,21 +124,22 @@ it('should set an area button', async () => {
 
   // Saved
   await wait(() => {
-    expect(mockPost).toHaveBeenCalledTimes(1)
+    expect(mockPut).toHaveBeenCalledTimes(1)
   })
 
-  const [url, data] = mockPost.mock.calls[0]
+  const [url, data] = mockPut.mock.calls[0]
   expect(url).toMatch(`/events/${event.slug}`)
-  const id = data.template.mainNav.ids[targetIndex]
-  expect(data.template.mainNav.entities[id]['isAreaButton']).toBe(true)
-  expect(data.template.mainNav.entities[id]['areaId']).toBe(target.key) // Set area ID
+  const id = mainNavButtons.ids[targetIndex]
+  expect(data.template[`mainNav.entities.${id}.isAreaButton`]).toBe(true)
+  expect(data.template[`mainNav.entities.${id}.areaId`]).toBe(target.key) // Set area ID
 })
 
 it('should assign an action for points', async () => {
   const button = fakeCardsNavButton()
+  const mainNav = createEntityList([button])
   const event = fakeEvent({
     template: fakeCards({
-      mainNav: createEntityList([button]),
+      mainNav: mainNav,
     }),
   })
 
@@ -161,21 +169,22 @@ it('should assign an action for points', async () => {
 
   // Saved
   await wait(() => {
-    expect(mockPost).toHaveBeenCalledTimes(1)
+    expect(mockPut).toHaveBeenCalledTimes(1)
   })
 
-  const [url, data] = mockPost.mock.calls[0]
+  const [url, data] = mockPut.mock.calls[0]
   expect(url).toMatch(`/events/${event.slug}`)
 
-  const id = data.template.mainNav.ids[0] // only one button
-  expect(data.template.mainNav.entities[id]['actionId']).toBe(target.key) // Did assign action id
+  const id = mainNav.ids[0] // only one button
+  expect(data.template[`mainNav.entities.${id}.actionId`]).toBe(target.key) // Did assign action id
 })
 
 it('should set an infusionsoft tag', async () => {
   const button = fakeCardsNavButton()
+  const mainNav = createEntityList([button])
   const event = fakeEvent({
     template: fakeCards({
-      mainNav: createEntityList([button]),
+      mainNav: mainNav,
     }),
     has_infusionsoft: true,
   })
@@ -198,12 +207,14 @@ it('should set an infusionsoft tag', async () => {
 
   // Saved
   await wait(() => {
-    expect(mockPost).toHaveBeenCalledTimes(1)
+    expect(mockPut).toHaveBeenCalledTimes(1)
   })
 
-  const [url, data] = mockPost.mock.calls[0]
+  const [url, data] = mockPut.mock.calls[0]
   expect(url).toMatch(`/events/${event.slug}`)
 
-  const saved = Object.values(data.template.mainNav.entities)[0] as any
-  expect(saved.infusionsoftTag.id).toBe(id)
+  const buttonId = mainNav.ids[0]
+  expect(data.template[`mainNav.entities.${buttonId}.infusionsoftTag.id`]).toBe(
+    id,
+  )
 })

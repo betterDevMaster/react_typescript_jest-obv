@@ -4,7 +4,7 @@ import TextField from '@material-ui/core/TextField'
 import ColorPicker from 'lib/ui/ColorPicker'
 import TextEditor, {TextEditorContainer} from 'lib/ui/form/TextEditor'
 import {Controller, useForm} from 'react-hook-form'
-import {SimpleBlog, useSimpleBlog} from 'Event/template/SimpleBlog'
+import {SimpleBlog, useSimpleBlogTemplate} from 'Event/template/SimpleBlog'
 import Button from '@material-ui/core/Button'
 import {useUpdate} from 'Event/EventProvider'
 import Typography from '@material-ui/core/Typography'
@@ -18,7 +18,7 @@ import AlertTitle from '@material-ui/lab/AlertTitle'
 export type LeaderboardConfigData = NonNullable<SimpleBlog['leaderboard']>
 
 export default function LeaderboardConfig(props: {onComplete?: () => void}) {
-  const {template} = useSimpleBlog()
+  const template = useSimpleBlogTemplate()
   const {leaderboard, rewardAlert} = template
   const {register, control, handleSubmit} = useForm()
   const [processing, setProcessing] = useState(false)

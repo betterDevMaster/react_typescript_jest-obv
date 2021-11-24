@@ -23,7 +23,7 @@ it('should show template select', async () => {
   expect(await findByLabelText('template select')).toBeInTheDocument()
 })
 
-it('should configure backgrounds', async () => {
+it('should configure backgrounds template', async () => {
   const {findByLabelText, event} = await goToBackgrounds()
 
   /**
@@ -34,7 +34,15 @@ it('should configure backgrounds', async () => {
 
   user.type(await findByLabelText('border color'), borderColor)
 
-  mockPut.mockImplementationOnce(() => Promise.resolve({data: event}))
+  mockPut.mockImplementationOnce(() =>
+    Promise.resolve({
+      data: {
+        template: {
+          'zoomBackgrounds.borderColor': borderColor,
+        },
+      },
+    }),
+  )
 
   user.click(await findByLabelText('create zoom backgrounds page'))
 
@@ -44,9 +52,14 @@ it('should configure backgrounds', async () => {
 
   const [updateImageUrl, updateImageData] = mockPut.mock.calls[0]
 
-  expect(updateImageUrl).toMatch(`/events/${event.slug}`)
-  expect(updateImageData.template.zoomBackgrounds.borderColor).toBe(borderColor)
+  expect(updateImageUrl).toMatch(`/events/${event.slug}/template`)
+  expect(updateImageData.template['zoomBackgrounds.borderColor']).toBe(
+    borderColor,
+  )
+})
 
+it('should configure backgrounds page settings', async () => {
+  const {findByLabelText, event} = await goToBackgrounds()
   /**
    * Updates page settings
    */
@@ -68,7 +81,10 @@ it('should configure backgrounds', async () => {
   expect(pageSettingsUrl).toMatch(`/events/${event.slug}`)
 
   expect(pageSettingsData.zoom_backgrounds_title).toBe(title)
+})
 
+it('should upload a background', async () => {
+  const {findByLabelText} = await goToBackgrounds()
   /**
    * Uploads background
    */

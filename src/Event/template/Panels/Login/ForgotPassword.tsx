@@ -7,7 +7,7 @@ import Page, {
   ErrorMessage,
 } from 'Event/template/Panels/Login/Page'
 import {ForgotPasswordProps} from 'auth/password'
-import {usePanels} from 'Event/template/Panels'
+import {usePanelsTemplate} from 'Event/template/Panels'
 import {useGuestVariables} from 'Event'
 
 export default function ForgotPassword(props: ForgotPasswordProps) {
@@ -19,9 +19,8 @@ export default function ForgotPassword(props: ForgotPasswordProps) {
 }
 
 export function Content(props: ForgotPasswordProps) {
-  const {
-    template: {login},
-  } = usePanels()
+  const template = usePanelsTemplate()
+  const {login} = template
   const v = useGuestVariables()
 
   const emailLabel = v(login.emailLabel)

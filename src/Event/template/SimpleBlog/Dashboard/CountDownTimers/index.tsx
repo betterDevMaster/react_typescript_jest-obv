@@ -1,6 +1,5 @@
 import styled from 'styled-components'
 import React from 'react'
-import {useDispatchUpdate} from 'Event/TemplateProvider'
 import {
   DragDropContext,
   Droppable,
@@ -9,16 +8,18 @@ import {
 } from 'react-beautiful-dnd'
 import Grid from '@material-ui/core/Grid'
 import {useEditMode} from 'Event/Dashboard/editor/state/edit-mode'
-import {useSimpleBlog} from 'Event/template/SimpleBlog'
+import {
+  useSimpleBlogTemplate,
+  useSimpleBlogUpdate,
+} from 'Event/template/SimpleBlog'
 import CountDownTimer from 'Event/template/SimpleBlog/Dashboard/CountDownTimers/CountDownTimer'
 import NewCountDownTimerButton from 'Event/template/SimpleBlog/Dashboard/CountDownTimers/CountDownTimer/NewCountDownTimerButton'
 import {useHasCountDownTimers} from 'lib/countdown-timers'
 
 export default function CountDownTimers(props: {className?: string}) {
-  const {template} = useSimpleBlog()
+  const template = useSimpleBlogTemplate()
   const {countDownTimers} = template
   const isEditMode = useEditMode()
-  const handleDrag = useHandleDrag()
 
   const {ids, entities} = countDownTimers
   const hasTimers = useHasCountDownTimers(countDownTimers.entities)
@@ -38,6 +39,15 @@ export default function CountDownTimers(props: {className?: string}) {
     )
   }
 
+  return <DraggableList className={props.className}>{timers}</DraggableList>
+}
+
+function DraggableList(props: {
+  className?: string
+  children: React.ReactElement[]
+}) {
+  const handleDrag = useHandleDrag()
+
   return (
     <DragDropContext onDragEnd={handleDrag}>
       <Droppable droppableId="countdown_timers">
@@ -48,7 +58,7 @@ export default function CountDownTimers(props: {className?: string}) {
             {...provided.droppableProps}
           >
             <>
-              {timers}
+              {props.children}
               {provided.placeholder}
               <StyledNewCountDownTimer />
             </>
@@ -74,9 +84,9 @@ const Container = React.forwardRef<
 ))
 
 function useHandleDrag() {
-  const {template} = useSimpleBlog()
+  const template = useSimpleBlogTemplate()
   const {countDownTimers} = template
-  const updateTemplate = useDispatchUpdate()
+  const update = useSimpleBlogUpdate()
 
   return (result: DropResult) => {
     const {destination, source} = result
@@ -89,12 +99,9 @@ function useHandleDrag() {
     const [removed] = moved.splice(source.index, 1)
     moved.splice(destination.index, 0, removed)
 
-    updateTemplate({
+    update({
       countDownTimers: {
         ids: moved,
-        entities: {
-          ...countDownTimers.entities,
-        },
       },
     })
   }

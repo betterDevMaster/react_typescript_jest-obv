@@ -5,13 +5,12 @@ import styled from 'styled-components'
 import Image from 'Event/template/Cards/Dashboard/Footer/Image'
 import {useEvent} from 'Event/EventProvider'
 import {useAttendeeVariables} from 'Event'
-import {useCards} from 'Event/template/Cards'
+import {useCardsTemplate} from 'Event/template/Cards'
 import {useToggle} from 'lib/toggle'
 import {FooterConfig} from 'Event/template/Cards/Dashboard/Footer/FooterConfig'
 
 export default function Footer() {
-  const {template} = useCards()
-  const {footer} = template
+  const {footer} = useCardsTemplate()
   const {event} = useEvent()
   const isEditMode = useEditMode()
   const v = useAttendeeVariables()

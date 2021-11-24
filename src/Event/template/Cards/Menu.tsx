@@ -6,7 +6,7 @@ import {useEventAuth} from 'Event/auth'
 import Button from 'lib/ui/Button'
 import {eventRoutes} from 'Event/Routes'
 import {RelativeLink} from 'lib/ui/link/RelativeLink'
-import {useCards} from 'Event/template/Cards'
+import {useCardsTemplate} from 'Event/template/Cards'
 import {useAttendeeVariables} from 'Event'
 
 export const DEFAULT_MENU_TEXT_COLOR = '#FFFFFF'
@@ -18,8 +18,7 @@ export default function Menu(props: {
   toggle: () => void
   user: User
 }) {
-  const {template} = useCards()
-  const {menu} = template
+  const {menu} = useCardsTemplate()
 
   const background = menu?.backgroundColor || DEFAULT_MENU_BACKGROUND_COLOR
 
@@ -34,8 +33,7 @@ export default function Menu(props: {
 }
 
 function UserInfo(props: {email: string}) {
-  const {template} = useCards()
-  const {menu} = template
+  const {menu} = useCardsTemplate()
   const menuTextColor = menu?.textColor || DEFAULT_MENU_TEXT_COLOR
   return (
     <UserInfoText color={menuTextColor}>
@@ -47,7 +45,7 @@ function UserInfo(props: {email: string}) {
 
 function Links() {
   const {logout} = useEventAuth()
-  const {template} = useCards()
+  const template = useCardsTemplate()
   const {menu} = template
   const v = useAttendeeVariables()
 

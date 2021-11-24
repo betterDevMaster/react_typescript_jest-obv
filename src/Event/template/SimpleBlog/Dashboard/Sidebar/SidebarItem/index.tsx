@@ -20,8 +20,10 @@ import SidebarNav, {
   SidebarNavProps,
   SIDEBAR_NAV,
 } from 'Event/template/SimpleBlog/Dashboard/Sidebar/SidebarItem/SidebarNav'
-import {useSimpleBlog} from 'Event/template/SimpleBlog'
-import {useDispatchUpdate} from 'Event/TemplateProvider'
+import {
+  useSimpleBlogTemplate,
+  useSimpleBlogUpdate,
+} from 'Event/template/SimpleBlog'
 import TicketRibbons, {
   TicketRibbonListProps,
   TICKET_RIBBON_LIST,
@@ -30,6 +32,8 @@ import {Draggable} from 'react-beautiful-dnd'
 import {DraggableOverlay} from 'lib/ui/drag-and-drop'
 import DragHandleBar from 'Event/template/SimpleBlog/Dashboard/Sidebar/SidebarItem/DragHandleBar'
 import {useEditMode} from 'Event/Dashboard/editor/state/edit-mode'
+import {REMOVE} from 'Event/TemplateUpdateProvider'
+import {DeepPartialSubstitute} from 'lib/type-utils'
 
 export type SidebarItem =
   | AgendaListProps
@@ -39,11 +43,21 @@ export type SidebarItem =
   | TicketRibbonListProps
   | SidebarNavProps
 
-export default function SidebarItem(props: SidebarItem & {index: number}) {
-  const isEditMode = useEditMode()
+type SidebarItemContextProps = {
+  update: (data: DeepPartialSubstitute<SidebarItem, typeof REMOVE>) => void
+  remove: () => void
+}
 
+const SidebarItemContext = React.createContext<
+  SidebarItemContextProps | undefined
+>(undefined)
+
+export default function SidebarItem(
+  props: SidebarItem & {id: string; index: number},
+) {
+  const isEditMode = useEditMode()
   if (!isEditMode) {
-    return <Body {...props} />
+    return <Item {...props} />
   }
 
   return (
@@ -53,7 +67,7 @@ export default function SidebarItem(props: SidebarItem & {index: number}) {
           <DraggableOverlay>
             <>
               <DragHandleBar handleProps={provided.dragHandleProps} />
-              <Body {...props} />
+              <Editable {...props} />
             </>
           </DraggableOverlay>
         </div>
@@ -62,7 +76,44 @@ export default function SidebarItem(props: SidebarItem & {index: number}) {
   )
 }
 
-function Body(props: SidebarItem) {
+function Editable(props: SidebarItem & {id: string}) {
+  const {id} = props
+  const updateTemplate = useSimpleBlogUpdate()
+  const {sidebarItems} = useSimpleBlogTemplate()
+
+  const update = (
+    updated: DeepPartialSubstitute<SidebarItem, typeof REMOVE>,
+  ) => {
+    updateTemplate({
+      sidebarItems: {
+        entities: {
+          [id]: updated,
+        },
+      },
+    })
+  }
+
+  const remove = () => {
+    const removed = sidebarItems.ids.filter((i) => i !== id)
+
+    updateTemplate({
+      sidebarItems: {
+        ids: removed,
+        entities: {
+          [id]: REMOVE,
+        },
+      },
+    })
+  }
+
+  return (
+    <SidebarItemContext.Provider value={{update, remove}}>
+      <Item {...props} />
+    </SidebarItemContext.Provider>
+  )
+}
+
+function Item(props: SidebarItem) {
   switch (props.type) {
     case AGENDA_LIST:
       return <AgendaList {...props} />
@@ -79,35 +130,13 @@ function Body(props: SidebarItem) {
   }
 }
 
-export function useUpdateSidebarItem() {
-  const update = useDispatchUpdate()
-  const {template} = useSimpleBlog()
-
-  return (item: SidebarItem) => {
-    const updated = template.sidebarItems.map((i) => {
-      const isTarget = i.id === item.id
-      if (isTarget) {
-        return item
-      }
-
-      return i
-    })
-
-    update({
-      sidebarItems: updated,
-    })
+export function useEditSidebarItem() {
+  const context = React.useContext(SidebarItemContext)
+  if (context === undefined) {
+    throw new Error(
+      'useEditSidebarItem must be used within a Editable sidebar item',
+    )
   }
-}
 
-export function useRemoveSidebarItem(item: SidebarItem) {
-  const update = useDispatchUpdate()
-  const {template} = useSimpleBlog()
-
-  return () => {
-    const removed = template.sidebarItems.filter((i) => i.id !== item.id)
-
-    update({
-      sidebarItems: removed,
-    })
-  }
+  return context
 }

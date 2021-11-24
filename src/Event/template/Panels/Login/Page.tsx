@@ -9,16 +9,15 @@ import defaultBackground from 'assets/images/background_login.png'
 import {makeStyles} from '@material-ui/core/styles'
 import Logo from 'Event/template/Panels/Login/Logo'
 import {rgba} from 'lib/color'
-import {usePanels} from 'Event/template/Panels'
+import {usePanelsTemplate} from 'Event/template/Panels'
 
 export default function Page(props: {
   isPreview?: LoginProps['isPreview']
   children: React.ReactElement | React.ReactElement[]
 }) {
   const {event} = useEvent()
-  const {
-    template: {login},
-  } = usePanels()
+  const template = usePanelsTemplate()
+  const {login} = template
 
   const background = event.login_background
     ? event.login_background.url
@@ -46,9 +45,8 @@ export default function Page(props: {
 }
 
 export function Description(props: {children: string; 'aria-label'?: string}) {
-  const {
-    template: {login},
-  } = usePanels()
+  const template = usePanelsTemplate()
+  const {login} = template
   const color = login.description.color
   const fontSize = login.description.fontSize
 
@@ -76,9 +74,8 @@ export function ErrorMessage(props: {children?: string}) {
 }
 
 export function Button(props: ButtonProps) {
-  const {
-    template: {login},
-  } = usePanels()
+  const template = usePanelsTemplate()
+  const {login} = template
   const borderRadius = `${login.submitButton.borderRadius}px`
   const hoverColor = login.submitButton.hoverColor
   return (
@@ -134,9 +131,8 @@ export const ColorOverlay = styled.div<{
 `
 
 export function TextField(props: TextFieldProps) {
-  const {
-    template: {login},
-  } = usePanels()
+  const template = usePanelsTemplate()
+  const {login} = template
 
   const useStyles = makeStyles({
     root: {

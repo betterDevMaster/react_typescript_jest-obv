@@ -2,7 +2,10 @@ import TextField from '@material-ui/core/TextField'
 import {onChangeStringHandler} from 'lib/dom'
 import ColorPicker from 'lib/ui/ColorPicker'
 import React, {useEffect, useState} from 'react'
-import {SimpleBlog, useSimpleBlog} from 'Event/template/SimpleBlog'
+import {
+  useSimpleBlogTemplate,
+  useSimpleBlogUpdate,
+} from 'Event/template/SimpleBlog'
 import EventImageUpload from 'organization/Event/DashboardConfig/EventImageUpload'
 import {useEvent} from 'Event/EventProvider'
 import InputLabel from '@material-ui/core/InputLabel'
@@ -19,10 +22,9 @@ export const DEFAULT_FOOTER_IMAGE_SIZE = 100
 
 export function FooterConfig(props: ComponentConfigProps) {
   const {isVisible, onClose} = props
-  const {
-    template: {footer},
-    update,
-  } = useSimpleBlog()
+
+  const {footer} = useSimpleBlogTemplate()
+  const update = useSimpleBlogUpdate()
 
   const [background, setBackground] = useState(footer.background)
   const [textColor, setTextColor] = useState(footer.textColor)
@@ -47,16 +49,16 @@ export function FooterConfig(props: ComponentConfigProps) {
   const {event} = useEvent()
 
   const save = () => {
-    const data: SimpleBlog['footer'] = {
-      background,
-      textColor,
-      imageSize,
-      termsLink,
-      privacyLink,
-      copyrightText,
-    }
-
-    update.primitive('footer')(data)
+    update({
+      footer: {
+        background,
+        textColor,
+        imageSize,
+        termsLink,
+        privacyLink,
+        copyrightText,
+      },
+    })
     onClose()
   }
 

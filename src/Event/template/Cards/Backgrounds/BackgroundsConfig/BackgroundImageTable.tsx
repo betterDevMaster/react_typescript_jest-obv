@@ -10,7 +10,7 @@ import {
   Droppable,
   DropResult,
 } from 'react-beautiful-dnd'
-import {useCards} from 'Event/template/Cards'
+import {useCardsTemplate, useCardsUpdate} from 'Event/template/Cards'
 import {
   Background,
   useBackgrounds,
@@ -22,7 +22,7 @@ export default function BackgroundImageTable() {
   const {backgrounds, loading} = useBackgrounds()
   const hasBackgrounds = backgrounds.length > 0
   const handleDrag = useHandleDrag()
-  const {template} = useCards()
+  const template = useCardsTemplate()
   const {zoomBackgrounds: pageSettings} = template
 
   const sortedBackgrounds = useSortBackgrounds(
@@ -89,7 +89,7 @@ export default function BackgroundImageTable() {
 }
 
 function useHandleDrag() {
-  const {update} = useCards()
+  const update = useCardsUpdate()
 
   return (backgrounds: Background[]) => (result: DropResult) => {
     const {destination, source} = result
@@ -103,7 +103,12 @@ function useHandleDrag() {
     moved.splice(destination.index, 0, removed)
 
     const orderedIds = moved.map((f) => f.id)
-    update.object('zoomBackgrounds')('orderedIds')(orderedIds)
+
+    update({
+      zoomBackgrounds: {
+        orderedIds,
+      },
+    })
   }
 }
 

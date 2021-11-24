@@ -5,7 +5,7 @@ import TableHead from '@material-ui/core/TableHead'
 import TableRow from '@material-ui/core/TableRow'
 import {useAttendeeVariables} from 'Event'
 import {useEntries} from 'Event/Leaderboard'
-import {usePanels} from 'Event/template/Panels'
+import {usePanelsTemplate} from 'Event/template/Panels'
 import {PageTitle} from 'Event/template/Panels/Page'
 import Content from 'lib/ui/form/TextEditor/Content'
 import React from 'react'
@@ -16,9 +16,7 @@ import LeaderboardConfig from 'Event/template/Panels/Dashboard/Leaderboard/Leade
 
 export default function Leaderboard() {
   const v = useAttendeeVariables()
-  const {
-    template: {leaderboard},
-  } = usePanels()
+  const {leaderboard} = usePanelsTemplate()
   const {entries} = useEntries()
   const {flag: configVisible, toggle: toggleConfig} = useToggle()
 

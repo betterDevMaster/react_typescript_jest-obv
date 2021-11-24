@@ -23,3 +23,15 @@ export declare type DeepPartial<T> = T extends Array<infer U>
       [K in keyof T]?: DeepPartial<T[K]>
     }
   : T
+
+export declare type DeepPartialSubstitute<T, K> = T extends Array<infer U>
+  ? Array<DeepPartialSubstitute<U, K>>
+  : T extends ReadonlyArray<infer U>
+  ? ReadonlyArray<DeepPartialSubstitute<U, K>>
+  : T extends {
+      [key in keyof T]: T[key]
+    }
+  ? {
+      [Z in keyof T]?: DeepPartialSubstitute<T[Z], K> | K
+    }
+  : T

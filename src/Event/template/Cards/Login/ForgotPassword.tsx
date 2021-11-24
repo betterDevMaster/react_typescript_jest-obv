@@ -10,7 +10,7 @@ import Page, {
   Title,
 } from 'Event/template/Cards/Login/Page'
 import {ForgotPasswordProps} from 'auth/password'
-import {useCards} from 'Event/template/Cards'
+import {useCardsTemplate} from 'Event/template/Cards'
 
 export default function ForgotPassword(props: ForgotPasswordProps) {
   return (
@@ -25,9 +25,7 @@ export default function ForgotPassword(props: ForgotPasswordProps) {
 }
 
 export function Content(props: ForgotPasswordProps) {
-  const {
-    template: {login},
-  } = useCards()
+  const {login} = useCardsTemplate()
   const emailLabel = login.emailLabel
 
   if (props.resetLinkSent) {

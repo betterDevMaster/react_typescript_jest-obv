@@ -14,7 +14,6 @@ import React, {useEffect, useState} from 'react'
 import Box from '@material-ui/core/Box'
 import RuleConfig, {useRuleConfig} from 'Event/attendee-rules/RuleConfig'
 import ConfigureRulesButton from 'Event/attendee-rules/ConfigureRulesButton'
-import {useDispatchUpdate} from 'Event/TemplateProvider'
 import ActionSelect from 'Event/ActionsProvider/ActionSelect'
 import Switch from 'lib/ui/form/Switch'
 import InfusionsoftTagInput from 'organization/Event/DashboardConfig/InfusionsoftTagInput'
@@ -22,7 +21,6 @@ import Checkbox from '@material-ui/core/Checkbox'
 import FormControlLabel from '@material-ui/core/FormControlLabel'
 import TargetConfig from 'Event/Dashboard/components/NavButton/NavButtonConfig/TargetConfig'
 import IconSelect from 'lib/fontawesome/IconSelect'
-import {useSimpleBlog} from 'Event/template/SimpleBlog'
 import ComponentConfig, {
   ComponentConfigProps,
   SaveButton,
@@ -31,6 +29,11 @@ import {Controller, useForm} from 'react-hook-form'
 import BackgroundPicker from 'lib/ui/form/BackgroundPicker'
 import MailchimpTagInput from 'organization/Event/DashboardConfig/MailchimpTagInput'
 import ZapierTagInput from 'organization/Event/DashboardConfig/ZapierTagInput'
+import {
+  useSimpleBlogTemplate,
+  useSimpleBlogUpdate,
+} from 'Event/template/SimpleBlog'
+import {REMOVE} from 'Event/TemplateUpdateProvider'
 
 export type ButtonConfigProps<K extends NavButton> = {
   button: K
@@ -45,7 +48,7 @@ export function MainNavButtonConfig(
   },
 ) {
   const {isVisible, onClose, id, button} = props
-  const {template} = useSimpleBlog()
+  const template = useSimpleBlogTemplate()
   const {mainNav: buttons} = template
 
   const {register, control, handleSubmit} = useForm()
@@ -60,6 +63,8 @@ export function MainNavButtonConfig(
   const [page, setPage] = useState(button.page)
   const [newTab, setNewTab] = useState(button.newTab)
   const [hideRemoveButton, setHideRemoveButton] = useState<boolean>(!props.id)
+
+  const set = useSimpleBlogUpdate()
 
   useEffect(() => {
     setHideRemoveButton(!props.id)
@@ -78,14 +83,10 @@ export function MainNavButtonConfig(
 
   const {visible: ruleConfigVisible, toggle: toggleRuleConfig} = useRuleConfig()
 
-  const updateTemplate = useDispatchUpdate()
-
   const update = (id: string, updated: NavButtonWithSize) => {
-    updateTemplate({
+    set({
       mainNav: {
-        ...buttons,
         entities: {
-          ...buttons.entities,
           [id]: updated,
         },
       },
@@ -95,11 +96,10 @@ export function MainNavButtonConfig(
   const insert = (button: NavButtonWithSize) => {
     const id = uuid()
 
-    updateTemplate({
+    set({
       mainNav: {
         ids: [...buttons.ids, id],
         entities: {
-          ...buttons.entities,
           [id]: button,
         },
       },
@@ -111,13 +111,14 @@ export function MainNavButtonConfig(
       throw new Error('Missing button id')
     }
 
-    const {[id]: target, ...otherButtons} = buttons.entities
-    const updatedIds = buttons.ids.filter((i) => i !== id)
+    const removed = buttons.ids.filter((i) => i !== id)
 
-    updateTemplate({
+    set({
       mainNav: {
-        entities: otherButtons,
-        ids: updatedIds,
+        entities: {
+          [id]: REMOVE,
+        },
+        ids: removed,
       },
     })
   }

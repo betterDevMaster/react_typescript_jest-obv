@@ -7,7 +7,7 @@ import EditModeOnly from 'Event/Dashboard/editor/views/EditModeOnly'
 import {useToggle} from 'lib/toggle'
 import {useAttendeeVariables} from 'Event'
 import {PageTitle, PageDescription} from 'Event/template/Panels/Page'
-import {usePanels} from 'Event/template/Panels'
+import {usePanelsTemplate} from 'Event/template/Panels'
 import PageSettingsDialog from 'Event/template/Panels/Dashboard/Sponsors/SponsorPageConfig/PageSettingsDialog'
 import Content from 'lib/ui/form/TextEditor/Content'
 
@@ -15,9 +15,7 @@ export default function PanelsSponsorPage(props: {
   isEditMode?: boolean
   sponsors: Sponsor[]
 }) {
-  const {
-    template: {sponsors: sponsorsPageSettings},
-  } = usePanels()
+  const {sponsors: sponsorsPageSettings} = usePanelsTemplate()
   const {sponsors} = props
   const v = useAttendeeVariables()
   const {flag: configVisible, toggle: toggleConfig} = useToggle()
