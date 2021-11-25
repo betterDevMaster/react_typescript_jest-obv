@@ -65,7 +65,6 @@ export default function AgendaList(props: AgendaListProps) {
   const v = useAttendeeVariables()
   const hasAgenda = items.ids.length > 0
   const {flag: listConfigVisible, toggle: toggleListConfig} = useToggle()
-  const {remove: removeItem} = useEditSidebarItem()
 
   if (!hasAgenda && !isEdit) {
     return null
@@ -73,15 +72,13 @@ export default function AgendaList(props: AgendaListProps) {
 
   return (
     <Section>
-      <AgendaListConfig
-        list={props}
-        isVisible={listConfigVisible}
-        onClose={toggleListConfig}
-      />
       <EditModeOnly>
-        <RemoveButton size="large" showing onClick={removeItem}>
-          Remove Agenda
-        </RemoveButton>
+        <AgendaListConfig
+          list={props}
+          isVisible={listConfigVisible}
+          onClose={toggleListConfig}
+        />
+        <RemoveAgendaListButton />
       </EditModeOnly>
       <Editable onEdit={toggleListConfig}>
         <Heading aria-label="agendas">{v(title)}</Heading>
@@ -94,7 +91,7 @@ export default function AgendaList(props: AgendaListProps) {
       >
         {v(description || '')}
       </StyledText>
-      <Agendas {...props} />
+      <AgendaListContent {...props} />
       <StyledText
         Component={Text}
         fontStyles={footerFontStyles}
@@ -110,12 +107,21 @@ export default function AgendaList(props: AgendaListProps) {
   )
 }
 
-function Agendas(props: AgendaListProps) {
+function RemoveAgendaListButton() {
+  const {remove: removeItem} = useEditSidebarItem()
+
+  return (
+    <RemoveButton size="large" showing onClick={removeItem}>
+      Remove Agenda
+    </RemoveButton>
+  )
+}
+
+function AgendaListContent(props: AgendaListProps) {
   const isEdit = useEditMode()
   if (!isEdit) {
     return <AgendaItemList {...props} />
   }
-
   return <DraggableList {...props} />
 }
 

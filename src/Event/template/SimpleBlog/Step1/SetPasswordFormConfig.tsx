@@ -192,7 +192,7 @@ function TemplateConfigFields(
         </Grid>
         <Grid item xs={12} md={6}>
           <Controller
-            name="setPasswordForm.button.backgroundColor"
+            name="setPasswordForm.button.hoverBackgroundColor"
             defaultValue={setPasswordForm.button.hoverBackgroundColor}
             control={control}
             render={({value, onChange}) => (
