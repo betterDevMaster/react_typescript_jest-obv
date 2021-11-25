@@ -154,13 +154,7 @@ function AgendaItemList(props: AgendaListProps) {
       {props.items.ids.map((id: string, index: number) => {
         const agenda = props.items.entities[id]
         return (
-          <Agenda
-            id={id}
-            agenda={agenda}
-            index={index}
-            key={index}
-            list={props}
-          />
+          <Agenda id={id} agenda={agenda} index={index} key={id} list={props} />
         )
       })}
     </>

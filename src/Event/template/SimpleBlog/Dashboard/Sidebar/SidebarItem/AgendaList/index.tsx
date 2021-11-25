@@ -94,7 +94,7 @@ export default function AgendaList(props: AgendaListProps) {
       >
         {v(description || '')}
       </StyledText>
-      <DroppableList {...props} />
+      <Agendas {...props} />
       <StyledText
         Component={Text}
         fontStyles={footerFontStyles}
@@ -110,13 +110,17 @@ export default function AgendaList(props: AgendaListProps) {
   )
 }
 
-function DroppableList(props: AgendaListProps) {
-  const handleDrag = useHandleDrag(props)
+function Agendas(props: AgendaListProps) {
   const isEdit = useEditMode()
-
   if (!isEdit) {
     return <AgendaItemList {...props} />
   }
+
+  return <DraggableList {...props} />
+}
+
+function DraggableList(props: AgendaListProps) {
+  const handleDrag = useHandleDrag(props)
 
   return (
     <DragDropContext onDragEnd={handleDrag}>

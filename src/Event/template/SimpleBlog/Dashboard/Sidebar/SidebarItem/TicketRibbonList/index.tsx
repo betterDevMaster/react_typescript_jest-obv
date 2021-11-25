@@ -84,7 +84,7 @@ function TicketRibbonItemList(props: TicketRibbonListProps) {
       {props.ribbons.ids.map((id, index) => {
         const ticketRibbon = props.ribbons.entities[id]
         return (
-          <VisibleOnMatch rules={ticketRibbon.rules} key={index}>
+          <VisibleOnMatch rules={ticketRibbon.rules} key={id}>
             <TicketRibbonItem
               ticketRibbon={ticketRibbon}
               index={index}

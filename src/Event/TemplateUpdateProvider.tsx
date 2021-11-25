@@ -11,6 +11,7 @@ import {useEventSocket} from 'organization/Event/EventSocketProvider'
 import moment from 'moment'
 import {useDispatch} from 'react-redux'
 import {setIsConnected} from 'Event/Dashboard/editor/state/actions'
+import {clone} from 'ramda'
 
 // Updated template event broadcasted by Laravel via
 // Pusher
@@ -97,8 +98,10 @@ export default function TemplateUpdateProvider(props: {
     (keyPaths: KeyPaths) => {
       // We're using lodash's _.set() func here which unfortunately is a
       // mutating function, so we'll need to clone the template before
-      // modifying it to avoid potential shared state bugs.
-      const updated = {...template}
+      // modifying it to avoid potential shared state bugs. Note
+      // we're using Ramda's clone, because Lodash's had a
+      // weird bug that wouldn't clone an empty object.
+      const updated = clone(template)
 
       for (const [keyPath, val] of Object.entries(keyPaths)) {
         setAtPath(updated, keyPath, val)

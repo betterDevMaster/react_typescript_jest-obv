@@ -12,6 +12,7 @@ import {CARDS} from 'Event/template/Cards'
 export default function TemplateSelect(props: {
   value: Template['name'] | null
   onPick: (template: Template['name']) => void
+  disabled?: boolean
 }) {
   return (
     <FormControl fullWidth>
@@ -23,6 +24,7 @@ export default function TemplateSelect(props: {
         inputProps={{
           'aria-label': 'template select',
         }}
+        disabled={props.disabled}
       >
         <MenuItem value={SIMPLE_BLOG}>Classic</MenuItem>
         <MenuItem value={CARDS}>{CARDS}</MenuItem>

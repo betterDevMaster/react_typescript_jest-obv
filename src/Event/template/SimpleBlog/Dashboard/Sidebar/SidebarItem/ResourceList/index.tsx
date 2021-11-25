@@ -149,7 +149,7 @@ function Resources(props: ResourceListProps) {
             resource={resource}
             iconColor={sidebar.textColor}
             index={index}
-            key={index}
+            key={id}
             list={props}
           />
         )

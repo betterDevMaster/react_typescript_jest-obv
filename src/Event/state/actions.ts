@@ -1,9 +1,5 @@
 import {ObvioEvent} from 'Event'
 import {EventState} from 'Event/state'
-import {Template} from 'Event/template'
-import {createPanels, PANELS} from 'Event/template/Panels'
-import {createSimpleBlog, SIMPLE_BLOG} from 'Event/template/SimpleBlog'
-import {createCards, CARDS} from 'Event/template/Cards'
 import {RefreshEventParams} from 'Event/EventProvider'
 
 export const SET_EVENT_ACTION = 'SET_EVENT'
@@ -20,42 +16,6 @@ export const handleSetEvent = (
   action: SetEventAction,
 ): EventState => {
   return action.payload || null // Have to return `null` in case undefined
-}
-
-export const CREATE_TEMPLATE_ACTION = 'CREATE_TEMPLATE'
-export interface CreateTemplateAction {
-  type: typeof CREATE_TEMPLATE_ACTION
-  payload: Template['name']
-}
-export const createTemplate = (
-  template: Template['name'],
-): CreateTemplateAction => ({
-  type: CREATE_TEMPLATE_ACTION,
-  payload: template,
-})
-export const handleCreateTemplate = (
-  state: EventState,
-  action: CreateTemplateAction,
-): EventState => {
-  if (!state) {
-    throw new Error('Missing event; was it set in the store?')
-  }
-
-  const template = newTemplate(action.payload)
-  return {
-    ...state,
-    template,
-  }
-}
-function newTemplate(name: Template['name']) {
-  switch (name) {
-    case SIMPLE_BLOG:
-      return createSimpleBlog()
-    case PANELS:
-      return createPanels()
-    case CARDS:
-      return createCards()
-  }
 }
 
 export interface ClickedEmoji {
@@ -112,7 +72,6 @@ export const handleSetEventUpdatedAt = (
 
 export type EventAction =
   | SetEventAction
-  | CreateTemplateAction
   | SendEmojiAction
   | RefreshEventAction
   | SetEventUpdatedAtAction
