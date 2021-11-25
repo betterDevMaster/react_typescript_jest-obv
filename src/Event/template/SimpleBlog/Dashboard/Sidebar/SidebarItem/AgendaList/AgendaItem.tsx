@@ -48,7 +48,7 @@ export default function AgendaItem(props: {
         agenda={agenda}
         id={id}
       />
-      <Draggable draggableId={`drag-and-drop-agenda-${index}`} index={index}>
+      <Draggable draggableId={id} index={index}>
         {(provided) => (
           <div ref={provided.innerRef} {...provided.draggableProps}>
             <DraggableOverlay>

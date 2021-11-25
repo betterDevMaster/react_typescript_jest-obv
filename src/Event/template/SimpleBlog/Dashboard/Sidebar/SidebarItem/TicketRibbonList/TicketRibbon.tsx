@@ -121,7 +121,7 @@ export default function TicketRibbon(props: {
         id={id}
         onClose={toggleConfig}
       />
-      <Draggable draggableId={String(index)} index={index}>
+      <Draggable draggableId={id} index={index}>
         {(provided) => (
           <div ref={provided.innerRef} {...provided.draggableProps}>
             <DraggableOverlay>
