@@ -2,7 +2,7 @@ import AgendaList, {
   AGENDA_LIST,
   AgendaListProps,
 } from 'Event/template/SimpleBlog/Dashboard/Sidebar/SidebarItem/AgendaList'
-import React from 'react'
+import React, {useCallback} from 'react'
 import EmojiList, {
   EMOJI_LIST,
   EmojiListProps,
@@ -20,10 +20,7 @@ import SidebarNav, {
   SidebarNavProps,
   SIDEBAR_NAV,
 } from 'Event/template/SimpleBlog/Dashboard/Sidebar/SidebarItem/SidebarNav'
-import {
-  useSimpleBlogTemplate,
-  useSimpleBlogUpdate,
-} from 'Event/template/SimpleBlog'
+import {useSimpleBlogUpdate} from 'Event/template/SimpleBlog'
 import TicketRibbons, {
   TicketRibbonListProps,
   TICKET_RIBBON_LIST,
@@ -79,29 +76,22 @@ export default function SidebarItem(
 function Editable(props: SidebarItem & {id: string}) {
   const {id} = props
   const updateTemplate = useSimpleBlogUpdate()
-  const {sidebarItems} = useSimpleBlogTemplate()
 
-  const update = (
-    updated: DeepPartialSubstitute<SidebarItem, typeof REMOVE>,
-  ) => {
-    updateTemplate({
-      sidebarItems: {
-        entities: {
+  const update = useCallback(
+    (updated: DeepPartialSubstitute<SidebarItem, typeof REMOVE>) => {
+      updateTemplate({
+        sidebarItems: {
           [id]: updated,
         },
-      },
-    })
-  }
+      })
+    },
+    [id, updateTemplate],
+  )
 
   const remove = () => {
-    const removed = sidebarItems.ids.filter((i) => i !== id)
-
     updateTemplate({
       sidebarItems: {
-        ids: removed,
-        entities: {
-          [id]: REMOVE,
-        },
+        [id]: REMOVE,
       },
     })
   }

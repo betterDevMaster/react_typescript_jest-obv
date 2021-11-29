@@ -1,15 +1,9 @@
 import React, {useState} from 'react'
 import Button from '@material-ui/core/Button'
-import {
-  Agenda,
-  AgendaListProps,
-} from 'Event/template/SimpleBlog/Dashboard/Sidebar/SidebarItem/AgendaList'
+import {Agenda} from 'Event/template/SimpleBlog/Dashboard/Sidebar/SidebarItem/AgendaList'
 import {AgendaItemConfig} from 'Event/template/SimpleBlog/Dashboard/Sidebar/SidebarItem/AgendaList/AgendaItemConfig'
 
-export default function AddAgendaButton(props: {
-  className?: string
-  list: AgendaListProps
-}) {
+export default function AddAgendaButton(props: {className?: string}) {
   const [agenda, setAgenda] = useState<Agenda | null>(null)
 
   const newAgenda = (): Agenda => ({
@@ -22,11 +16,7 @@ export default function AddAgendaButton(props: {
 
   return (
     <>
-      <NewAgendaConfig
-        agenda={agenda}
-        onClose={() => setAgenda(null)}
-        list={props.list}
-      />
+      <NewAgendaConfig agenda={agenda} onClose={() => setAgenda(null)} />
       <Button
         fullWidth
         size="large"
@@ -42,17 +32,11 @@ export default function AddAgendaButton(props: {
   )
 }
 
-function NewAgendaConfig(props: {
-  agenda: Agenda | null
-  onClose: () => void
-  list: AgendaListProps
-}) {
-  const {agenda, onClose, list} = props
+function NewAgendaConfig(props: {agenda: Agenda | null; onClose: () => void}) {
+  const {agenda, onClose} = props
   if (!agenda) {
     return null
   }
 
-  return (
-    <AgendaItemConfig onClose={onClose} agenda={agenda} list={list} isVisible />
-  )
+  return <AgendaItemConfig onClose={onClose} agenda={agenda} isVisible />
 }

@@ -12,20 +12,21 @@ import {useCardsTemplate, useCardsUpdate} from 'Event/template/Cards'
 import CountDownTimer from 'Event/template/Cards/Dashboard/CountDownTimers/CountDownTimer'
 import NewCountDownTimerButton from 'Event/template/Cards/Dashboard/CountDownTimers/CountDownTimer/NewCountDownTimerButton'
 import {useHasCountDownTimers} from 'lib/countdown-timers'
+import {createPositions, orderedIdsByPosition} from 'lib/list'
 
 export default function CountDownTimers(props: {className?: string}) {
   const {countDownTimers} = useCardsTemplate()
   const isEditMode = useEditMode()
 
-  const {ids, entities} = countDownTimers
-  const hasTimers = useHasCountDownTimers(countDownTimers.entities)
+  const hasTimers = useHasCountDownTimers(countDownTimers)
+  const ids = orderedIdsByPosition(countDownTimers)
 
   const timers = ids.map((id, index) => (
     <CountDownTimer
       id={id}
       index={index}
       key={id}
-      countDownTimer={entities[id]}
+      countDownTimer={countDownTimers[id]}
     />
   ))
 
@@ -89,14 +90,12 @@ function useHandleDrag() {
       return
     }
 
-    const moved = Array.from(countDownTimers.ids)
-    const [removed] = moved.splice(source.index, 1)
-    moved.splice(destination.index, 0, removed)
+    const ids = orderedIdsByPosition(countDownTimers)
+    const [removed] = ids.splice(source.index, 1)
+    ids.splice(destination.index, 0, removed)
 
     updateTemplate({
-      countDownTimers: {
-        ids: moved,
-      },
+      countDownTimers: createPositions(ids),
     })
   }
 }

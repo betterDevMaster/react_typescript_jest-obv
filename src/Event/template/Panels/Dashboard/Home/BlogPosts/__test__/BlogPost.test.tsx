@@ -1,17 +1,11 @@
-import React from 'react'
 import user from '@testing-library/user-event'
 import faker from 'faker'
 import {fakePanels} from 'Event/template/Panels/__utils__/factory'
-import {fakeUser} from 'auth/user/__utils__/factory'
-import Dashboard from 'Event/Dashboard'
 import {fakeBlogPost} from 'Event/Dashboard/components/BlogPost/__utils__/factory'
-import {createEntityList} from 'lib/list'
+import {createHashMap} from 'lib/list'
 import {clickEdit} from '__utils__/edit'
 import {fireEvent, wait} from '@testing-library/react'
-import {emptyActions, render} from '__utils__/render'
 import {fakeEvent} from 'Event/__utils__/factory'
-import {defaultScore} from 'Event/PointsProvider'
-import {getDiffDatetime, now} from 'lib/date-time'
 import moment from 'moment'
 import {goToDashboardConfig} from 'organization/Event/DashboardConfig/__utils__/go-dashboard-config'
 
@@ -30,9 +24,7 @@ afterAll(() => {
 
 it('should edit a blog post', async () => {
   const numPosts = faker.random.number({min: 1, max: 5})
-  const blogPosts = createEntityList(
-    Array.from({length: numPosts}, fakeBlogPost),
-  )
+  const blogPosts = createHashMap(Array.from({length: numPosts}, fakeBlogPost))
 
   const event = fakeEvent({
     template: fakePanels({blogPosts}),
@@ -61,9 +53,7 @@ it('should edit a blog post', async () => {
 it('should add a new blog post', async () => {
   const numPosts = faker.random.number({min: 1, max: 3})
 
-  const blogPosts = createEntityList(
-    Array.from({length: numPosts}, fakeBlogPost),
-  )
+  const blogPosts = createHashMap(Array.from({length: numPosts}, fakeBlogPost))
 
   const event = fakeEvent({template: fakePanels({blogPosts})})
 
@@ -81,9 +71,7 @@ it('should add a new blog post', async () => {
 it('should remove a blog post', async () => {
   const numPosts = faker.random.number({min: 2, max: 3})
 
-  const blogPosts = createEntityList(
-    Array.from({length: numPosts}, fakeBlogPost),
-  )
+  const blogPosts = createHashMap(Array.from({length: numPosts}, fakeBlogPost))
 
   const event = fakeEvent({template: fakePanels({blogPosts})})
 
@@ -124,7 +112,7 @@ it('should show in order', async () => {
 
   const event = fakeEvent({
     template: fakePanels({
-      blogPosts: createEntityList([firstPost, secondPost, thirdPost]),
+      blogPosts: createHashMap([firstPost, secondPost, thirdPost]),
     }),
   })
 

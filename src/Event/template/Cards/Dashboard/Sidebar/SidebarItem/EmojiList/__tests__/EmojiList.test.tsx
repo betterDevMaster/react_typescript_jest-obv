@@ -10,7 +10,8 @@ import {DEFAULT_EMOJIS, EMOJI} from 'Event/Dashboard/components/EmojiList/emoji'
 import {goToDashboardConfig} from 'organization/Event/DashboardConfig/__utils__/go-dashboard-config'
 import {createEmojiList} from 'Event/template/Cards/Dashboard/Sidebar/SidebarItem/EmojiList'
 import axios from 'axios'
-import {createEntityList} from 'lib/list'
+import {createHashMap} from 'lib/list'
+import {REMOVE} from 'Event/TemplateUpdateProvider'
 
 const mockPut = axios.put as jest.Mock
 
@@ -39,16 +40,16 @@ it('should add an emoji list', async () => {
 
   const [url, data] = mockPut.mock.calls[0]
   expect(url).toMatch(`/events/${event.slug}/template`)
-  const sidebarId = data.template['sidebarItems.ids'][0]
-  expect(data.template[`sidebarItems.entities.${sidebarId}.type`]).toBe(
-    'Emoji List',
-  )
+  const values = Object.values(data.template)
+  expect(values.includes('Emoji List')).toBe(true)
 })
 
 it('should remove an emoji list', async () => {
+  const sidebarItems = createHashMap([createEmojiList()])
+
   const event = fakeEvent({
     template: fakeCards({
-      sidebarItems: createEntityList([createEmojiList()]),
+      sidebarItems,
     }),
   })
   const {queryByText, findByText} = await goToDashboardConfig({
@@ -65,11 +66,13 @@ it('should remove an emoji list', async () => {
 
   const [url, data] = mockPut.mock.calls[0]
   expect(url).toMatch(`/events/${event.slug}/template`)
-  expect(data.template['sidebarItems.ids'].length).toBe(0)
+
+  const id = Object.keys(sidebarItems)[0]
+  expect(data.template[`sidebarItems.${id}`]).toBe(REMOVE)
 })
 
 it('should pick an emoji', async () => {
-  const sidebarItems = createEntityList([createEmojiList()])
+  const sidebarItems = createHashMap([createEmojiList()])
 
   const event = fakeEvent({
     template: fakeCards({
@@ -109,10 +112,8 @@ it('should pick an emoji', async () => {
 
   const [url, data] = mockPut.mock.calls[0]
   expect(url).toMatch(`/events/${event.slug}/template`)
-  const sidebarId = sidebarItems.ids[0]
-  expect(
-    data.template[`sidebarItems.entities.${sidebarId}.emojis`].length,
-  ).toBe(1)
+  const sidebarId = Object.keys(sidebarItems)[0]
+  expect(data.template[`sidebarItems.${sidebarId}.emojis`].length).toBe(1)
 })
 
 it('should remove an existing emoji', async () => {
@@ -123,7 +124,7 @@ it('should remove an existing emoji', async () => {
     () => faker.random.arrayElement(DEFAULT_EMOJIS).name,
   )
 
-  const sidebarItems = createEntityList([
+  const sidebarItems = createHashMap([
     {
       ...createEmojiList(),
       emojis,
@@ -157,8 +158,8 @@ it('should remove an existing emoji', async () => {
   const [url, data] = mockPut.mock.calls[0]
   expect(url).toMatch(`/events/${event.slug}/template`)
 
-  const sidebarId = sidebarItems.ids[0]
-  expect(
-    data.template[`sidebarItems.entities.${sidebarId}.emojis`].length,
-  ).toBe(numEmojis - 1)
+  const sidebarId = Object.keys(sidebarItems)[0]
+  expect(data.template[`sidebarItems.${sidebarId}.emojis`].length).toBe(
+    numEmojis - 1,
+  )
 })

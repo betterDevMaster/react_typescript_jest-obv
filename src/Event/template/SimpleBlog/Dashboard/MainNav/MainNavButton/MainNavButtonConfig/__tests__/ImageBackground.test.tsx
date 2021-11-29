@@ -2,7 +2,7 @@ import user from '@testing-library/user-event'
 import faker from 'faker'
 import {fakeSimpleBlog} from 'Event/template/SimpleBlog/__utils__/factory'
 import {fakeNavButtonWithSize} from 'Event/Dashboard/components/NavButton/__utils__/factory'
-import {createEntityList} from 'lib/list'
+import {createHashMap} from 'lib/list'
 import {clickEdit} from '__utils__/edit'
 import {fireEvent} from '@testing-library/react'
 import {fakeEvent} from 'Event/__utils__/factory'
@@ -23,8 +23,7 @@ it('should configure background image', async () => {
   window.URL.createObjectURL = jest.fn(() => 'blob://foo')
 
   const button = fakeNavButtonWithSize()
-  const mainNav = createEntityList([button])
-  const id = mainNav.ids[0]
+  const mainNav = createHashMap([button])
 
   const event = fakeEvent({
     template: fakeSimpleBlog({
@@ -77,8 +76,10 @@ it('should configure background image', async () => {
   })
 
   const [url, data] = mockPut.mock.calls[0]
-  expect(url).toMatch(`/events/${event.slug}`)
+  expect(url).toMatch(`/events/${event.slug}/template`)
 
-  const saved = data.template[`mainNav.entities.${id}.backgroundColor`]
+  const id = Object.keys(mainNav)[0]
+
+  const saved = data.template[`mainNav.${id}.backgroundColor`]
   expect(saved).toBe(`url(${file.url})`)
 })

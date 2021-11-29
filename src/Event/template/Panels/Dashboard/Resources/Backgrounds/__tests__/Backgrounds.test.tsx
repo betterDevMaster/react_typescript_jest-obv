@@ -6,7 +6,7 @@ import {fakePanels} from 'Event/template/Panels/__utils__/factory'
 import {wait} from '@testing-library/react'
 import {eventRoutes, EVENT_PAGES} from 'Event/Routes'
 import {fakeNavButtonWithSize} from 'Event/Dashboard/components/NavButton/__utils__/factory'
-import {createEntityList} from 'lib/list'
+import {createHashMap} from 'lib/list'
 
 beforeAll(() => {
   jest.spyOn(console, 'error').mockImplementation(() => {})
@@ -40,7 +40,7 @@ it('should render backgrounds', async () => {
     zoom_backgrounds_title: 'Zoom backgrounds',
     zoom_backgrounds_description: 'description',
     template: fakePanels({
-      nav: createEntityList([button]),
+      nav: createHashMap([button]),
     }),
   })
 

@@ -2,11 +2,10 @@ import user from '@testing-library/user-event'
 import faker from 'faker'
 import {fakeSimpleBlog} from 'Event/template/SimpleBlog/__utils__/factory'
 import {fakeNavButtonWithSize} from 'Event/Dashboard/components/NavButton/__utils__/factory'
-import {createEntityList} from 'lib/list'
+import {createHashMap} from 'lib/list'
 import {clickEdit} from '__utils__/edit'
 import {fireEvent} from '@testing-library/react'
 import {fakeEvent} from 'Event/__utils__/factory'
-import {mockRxJsAjax} from 'store/__utils__/MockStoreProvider'
 import {wait} from '@testing-library/react'
 import mockAxios from 'axios'
 import {goToDashboardConfig} from 'organization/Event/DashboardConfig/__utils__/go-dashboard-config'
@@ -27,8 +26,7 @@ it('should configure background gradient', async () => {
   const button = fakeNavButtonWithSize({
     backgroundColor: color1,
   })
-  const mainNav = createEntityList([button])
-  const id = mainNav.ids[0]
+  const mainNav = createHashMap([button])
   const event = fakeEvent({
     template: fakeSimpleBlog({
       mainNav,
@@ -69,6 +67,8 @@ it('should configure background gradient', async () => {
   const [url, data] = mockPut.mock.calls[0]
   expect(url).toMatch(`/events/${event.slug}`)
 
-  const saved = data.template[`mainNav.entities.${id}.backgroundColor`]
+  const id = Object.keys(mainNav)[0]
+
+  const saved = data.template[`mainNav.${id}.backgroundColor`]
   expect(saved).toBe(`linear-gradient(${deg}deg,${color1},${color2})`)
 })

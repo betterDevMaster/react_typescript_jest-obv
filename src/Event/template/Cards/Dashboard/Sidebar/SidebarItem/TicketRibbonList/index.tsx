@@ -12,26 +12,25 @@ import {RemoveButton} from 'organization/Event/DashboardConfig/ComponentConfig'
 import {useHasVisibleItems} from 'Event/attendee-rules/matcher'
 import Section from 'Event/template/Cards/Dashboard/Sidebar/Section'
 import {useEditSidebarItem} from 'Event/template/Cards/Dashboard/Sidebar/SidebarItem'
-import {EntityList} from 'lib/list'
+import {HashMap, orderedIdsByPosition, createPositions, Ordered} from 'lib/list'
+import {useRemoveIfEmpty} from 'Event/TemplateUpdateProvider'
 
 export const TICKET_RIBBON_LIST = 'Ticket Ribbon List'
-export interface TicketRibbonListProps {
+export interface TicketRibbonListProps extends Ordered {
   type: typeof TICKET_RIBBON_LIST
-  ribbons: EntityList<TicketRibbon>
+  ribbons: HashMap<TicketRibbon>
+  position?: number
 }
 
 export const createTicketRibbonList = (): TicketRibbonListProps => ({
   type: TICKET_RIBBON_LIST,
-  ribbons: {
-    ids: [],
-    entities: {},
-  },
+  ribbons: {},
 })
 
 export default function TicketRibbons(props: TicketRibbonListProps) {
   const isEditMode = useEditMode()
   const {ribbons} = props
-  const hasVisibleItems = useHasVisibleItems(Object.values(ribbons.entities))
+  const hasVisibleItems = useHasVisibleItems(Object.values(ribbons))
   if (!hasVisibleItems && !isEditMode) {
     return null
   }
@@ -43,7 +42,7 @@ export default function TicketRibbons(props: TicketRibbonListProps) {
       </EditModeOnly>
       <Content {...props} />
       <EditModeOnly>
-        <StyledAddTicketRibbonButton list={props} />
+        <StyledAddTicketRibbonButton />
       </EditModeOnly>
     </Section>
   )
@@ -51,6 +50,7 @@ export default function TicketRibbons(props: TicketRibbonListProps) {
 
 function RemoveTicketRibbonsButton(props: TicketRibbonListProps) {
   const {remove: removeItem} = useEditSidebarItem()
+  useRemoveIfEmpty(removeItem, props)
 
   return (
     <RemoveButton onClick={removeItem} showing size="large">
@@ -92,10 +92,12 @@ function DroppableList(props: TicketRibbonListProps) {
 }
 
 function TicketRibbonItemList(props: TicketRibbonListProps) {
+  const ids = orderedIdsByPosition(props.ribbons)
+
   return (
     <>
-      {props.ribbons.ids.map((id: string, index: number) => {
-        const ticketRibbon = props.ribbons.entities[id]
+      {ids.map((id: string, index: number) => {
+        const ticketRibbon = props.ribbons[id]
 
         return (
           <VisibleOnMatch rules={ticketRibbon.rules} key={index}>
@@ -121,15 +123,13 @@ function useHandleDrag(props: TicketRibbonListProps) {
     if (!destination) {
       return
     }
+    const ids = orderedIdsByPosition(props.ribbons)
 
-    const moved = Array.from(props.ribbons.ids)
-    const [removed] = moved.splice(source.index, 1)
-    moved.splice(destination.index, 0, removed)
+    const [removed] = ids.splice(source.index, 1)
+    ids.splice(destination.index, 0, removed)
 
     update({
-      ribbons: {
-        ids: moved,
-      },
+      ribbons: createPositions(ids),
     })
   }
 }

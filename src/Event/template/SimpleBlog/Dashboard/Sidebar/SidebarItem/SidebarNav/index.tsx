@@ -6,43 +6,41 @@ import EditModeOnly from 'Event/Dashboard/editor/views/EditModeOnly'
 import {DragDropContext, Droppable, DropResult} from 'react-beautiful-dnd'
 import {useEditMode} from 'Event/Dashboard/editor/state/edit-mode'
 import NavButton from 'Event/Dashboard/components/NavButton'
-import {EntityList} from 'lib/list'
+import {createPositions, HashMap, orderedIdsByPosition} from 'lib/list'
 import {RemoveButton} from 'organization/Event/DashboardConfig/ComponentConfig'
 import VisibleOnMatch from 'Event/attendee-rules/VisibleOnMatch'
 import {useSimpleBlogUpdate} from 'Event/template/SimpleBlog'
 import {useEditSidebarItem} from 'Event/template/SimpleBlog/Dashboard/Sidebar/SidebarItem'
+import {useRemoveIfEmpty} from 'Event/TemplateUpdateProvider'
 
 export const SIDEBAR_NAV = 'Sidebar Nav'
-export type SidebarNavProps = EntityList<NavButton> & {
+export type SidebarNavProps = {
   type: typeof SIDEBAR_NAV
+  position?: number
+  buttons: HashMap<NavButton>
 }
 
 export const createSidebarNav = (): SidebarNavProps => ({
   type: SIDEBAR_NAV,
-  ids: [],
-  entities: {},
+  buttons: {},
 })
 
 export default function SidebarNav(props: SidebarNavProps) {
-  const {ids, entities} = props
-  const handleDrag = useHandleDrag(props)
   const isEditMode = useEditMode()
-  const {remove: removeItem} = useEditSidebarItem()
+  const {buttons} = props
 
-  const hasButtons = ids.length > 0
+  const hasButtons = Object.keys(buttons).length > 0
   if (!hasButtons) {
     return (
       <EditModeOnly>
-        <RemoveButton onClick={removeItem} showing size="large">
-          Remove Buttons
-        </RemoveButton>
-        <StyledNewSidebarNavButton nav={props} />
+        <EmptyConfig {...props} />
       </EditModeOnly>
     )
   }
 
-  const buttons = ids.map((id, index) => {
-    const button = entities[id]
+  const ids = orderedIdsByPosition(buttons)
+  const buttonComponents = ids.map((id, index) => {
+    const button = buttons[id]
     return (
       <VisibleOnMatch rules={button.rules} key={id}>
         <SidebarNavButton
@@ -62,19 +60,33 @@ export default function SidebarNav(props: SidebarNavProps) {
   })
 
   if (!isEditMode) {
-    return <>{buttons}</>
+    return <>{buttonComponents}</>
   }
+
+  return <DraggableList {...props}>{buttonComponents}</DraggableList>
+}
+
+function EmptyConfig(props: SidebarNavProps) {
+  return (
+    <>
+      <RemoveSidebarNavButton {...props} />
+      <StyledNewSidebarNavButton nav={props} />
+    </>
+  )
+}
+function DraggableList(
+  props: SidebarNavProps & {children: React.ReactElement[]},
+) {
+  const handleDrag = useHandleDrag(props)
 
   return (
     <>
-      <RemoveButton onClick={removeItem} size="large">
-        Remove Buttons
-      </RemoveButton>
+      <RemoveSidebarNavButton {...props} />
       <DragDropContext onDragEnd={handleDrag}>
         <Droppable droppableId="sidebar_nav_buttons">
           {(provided) => (
             <div ref={provided.innerRef} {...provided.droppableProps}>
-              {buttons}
+              {props.children}
               {provided.placeholder}
             </div>
           )}
@@ -82,6 +94,18 @@ export default function SidebarNav(props: SidebarNavProps) {
         <StyledNewSidebarNavButton nav={props} />
       </DragDropContext>
     </>
+  )
+}
+
+function RemoveSidebarNavButton(props: SidebarNavProps) {
+  const {remove} = useEditSidebarItem()
+
+  useRemoveIfEmpty(remove, props)
+
+  return (
+    <RemoveButton onClick={remove} size="large">
+      Remove Buttons
+    </RemoveButton>
   )
 }
 
@@ -95,14 +119,12 @@ function useHandleDrag(props: SidebarNavProps) {
       return
     }
 
-    const moved = Array.from(props.ids)
-    const [removed] = moved.splice(source.index, 1)
-    moved.splice(destination.index, 0, removed)
+    const ids = orderedIdsByPosition(props.buttons)
+    const [removed] = ids.splice(source.index, 1)
+    ids.splice(destination.index, 0, removed)
 
     update({
-      sidebarItems: {
-        ids: moved,
-      },
+      sidebarItems: createPositions(ids),
     })
   }
 }

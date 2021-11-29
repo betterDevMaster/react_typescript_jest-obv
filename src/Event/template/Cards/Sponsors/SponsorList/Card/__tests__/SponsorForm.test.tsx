@@ -1,7 +1,7 @@
 import user from '@testing-library/user-event'
 import faker from 'faker'
 import {fakeCards} from 'Event/template/Cards/__utils__/factory'
-import {createEntityList} from 'lib/list'
+import {createHashMap} from 'lib/list'
 import {fakeEvent, fakeSponsor} from 'Event/__utils__/factory'
 import {fakeAction} from 'Event/ActionsProvider/__utils__/factory'
 import {loginToEventSite} from 'Event/__utils__/url'
@@ -58,7 +58,7 @@ it('should submit a sponsor form', async () => {
 
   const event = fakeEvent({
     template: fakeCards({
-      mainNav: createEntityList([button]),
+      mainNav: {buttons: createHashMap([button])},
     }),
     forms: [form],
   })

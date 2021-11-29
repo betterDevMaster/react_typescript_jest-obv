@@ -10,7 +10,7 @@ import NavButton, {
 import {handleChangeSlider, onChangeCheckedHandler} from 'lib/dom'
 import DangerButton from 'lib/ui/Button/DangerButton'
 import ColorPicker from 'lib/ui/ColorPicker'
-import React, {useEffect, useState} from 'react'
+import React, {useEffect, useState, useCallback} from 'react'
 import Box from '@material-ui/core/Box'
 import RuleConfig, {useRuleConfig} from 'Event/attendee-rules/RuleConfig'
 import ConfigureRulesButton from 'Event/attendee-rules/ConfigureRulesButton'
@@ -30,10 +30,10 @@ import BackgroundPicker from 'lib/ui/form/BackgroundPicker'
 import MailchimpTagInput from 'organization/Event/DashboardConfig/MailchimpTagInput'
 import ZapierTagInput from 'organization/Event/DashboardConfig/ZapierTagInput'
 import {
-  useSimpleBlogTemplate,
   useSimpleBlogUpdate,
+  useSimpleBlogTemplate,
 } from 'Event/template/SimpleBlog'
-import {REMOVE} from 'Event/TemplateUpdateProvider'
+import {REMOVE, useRemoveIfEmpty} from 'Event/TemplateUpdateProvider'
 
 export type ButtonConfigProps<K extends NavButton> = {
   button: K
@@ -48,8 +48,6 @@ export function MainNavButtonConfig(
   },
 ) {
   const {isVisible, onClose, id, button} = props
-  const template = useSimpleBlogTemplate()
-  const {mainNav: buttons} = template
 
   const {register, control, handleSubmit} = useForm()
 
@@ -63,6 +61,7 @@ export function MainNavButtonConfig(
   const [page, setPage] = useState(button.page)
   const [newTab, setNewTab] = useState(button.newTab)
   const [hideRemoveButton, setHideRemoveButton] = useState<boolean>(!props.id)
+  const {mainNav} = useSimpleBlogTemplate()
 
   const set = useSimpleBlogUpdate()
 
@@ -86,9 +85,7 @@ export function MainNavButtonConfig(
   const update = (id: string, updated: NavButtonWithSize) => {
     set({
       mainNav: {
-        entities: {
-          [id]: updated,
-        },
+        [id]: updated,
       },
     })
   }
@@ -96,32 +93,31 @@ export function MainNavButtonConfig(
   const insert = (button: NavButtonWithSize) => {
     const id = uuid()
 
+    const numButtons = Object.keys(mainNav).length
+    const position = numButtons + 1
+
     set({
       mainNav: {
-        ids: [...buttons.ids, id],
-        entities: {
-          [id]: button,
-        },
+        [id]: {...button, position},
       },
     })
   }
 
-  const removeButton = () => {
+  const removeButton = useCallback(() => {
     if (!id) {
       throw new Error('Missing button id')
     }
 
-    const removed = buttons.ids.filter((i) => i !== id)
-
     set({
       mainNav: {
-        entities: {
-          [id]: REMOVE,
-        },
-        ids: removed,
+        [id]: REMOVE,
       },
     })
-  }
+  }, [set, id])
+
+  useRemoveIfEmpty(removeButton, button, {
+    shouldSkip: !id,
+  })
 
   const save = (formData: any) => {
     const data: NavButtonWithSize = {

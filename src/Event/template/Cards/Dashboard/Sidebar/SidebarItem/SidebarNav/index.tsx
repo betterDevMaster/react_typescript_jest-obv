@@ -7,37 +7,40 @@ import VisibleOnMatch from 'Event/attendee-rules/VisibleOnMatch'
 import {DragDropContext, Droppable, DropResult} from 'react-beautiful-dnd'
 import {useEditMode} from 'Event/Dashboard/editor/state/edit-mode'
 import NavButton from 'Event/Dashboard/components/NavButton'
-import {EntityList} from 'lib/list'
+import {HashMap, orderedIdsByPosition, createPositions} from 'lib/list'
 import {RemoveButton} from 'organization/Event/DashboardConfig/ComponentConfig'
 import {useEditSidebarItem} from 'Event/template/Cards/Dashboard/Sidebar/SidebarItem'
+import {useRemoveIfEmpty} from 'Event/TemplateUpdateProvider'
 
 export const SIDEBAR_NAV = 'Sidebar Nav'
-export type SidebarNavProps = EntityList<NavButton> & {
+export type SidebarNavProps = {
   type: typeof SIDEBAR_NAV
+  position?: number
+  buttons: HashMap<NavButton>
 }
 
 export const createSidebarNav = (): SidebarNavProps => ({
   type: SIDEBAR_NAV,
-  ids: [],
-  entities: {},
+  buttons: {},
 })
 
 export default function SidebarNav(props: SidebarNavProps) {
-  const {ids, entities} = props
   const isEditMode = useEditMode()
+  const {buttons} = props
 
-  const hasButtons = ids.length > 0
+  const hasButtons = Object.keys(buttons).length > 0
   if (!hasButtons) {
     return (
       <EditModeOnly>
-        <RemoveSidebarNavButton />
-        <StyledNewSidebarNavButton nav={props} />
+        <RemoveSidebarNavButton {...props} />
+        <StyledNewSidebarNavButton />
       </EditModeOnly>
     )
   }
+  const ids = orderedIdsByPosition(buttons)
 
-  const buttons = ids.map((id, index) => {
-    const button = entities[id]
+  const buttonComponents = ids.map((id, index) => {
+    const button = buttons[id]
     return (
       <VisibleOnMatch rules={button.rules} key={id}>
         <SidebarNavButton
@@ -57,18 +60,19 @@ export default function SidebarNav(props: SidebarNavProps) {
   })
 
   if (!isEditMode) {
-    return <>{buttons}</>
+    return <>{buttonComponents}</>
   }
 
   return (
     <>
-      <DroppleList {...props}>{buttons}</DroppleList>
+      <DroppleList {...props}>{buttonComponents}</DroppleList>
     </>
   )
 }
 
-function RemoveSidebarNavButton() {
+function RemoveSidebarNavButton(props: SidebarNavProps) {
   const {remove: removeItem} = useEditSidebarItem()
+  useRemoveIfEmpty(removeItem, props)
 
   return (
     <RemoveButton onClick={removeItem} size="large">
@@ -84,7 +88,7 @@ function DroppleList(
 
   return (
     <>
-      <RemoveSidebarNavButton />
+      <RemoveSidebarNavButton {...props} />
       <DragDropContext onDragEnd={handleDrag}>
         <Droppable droppableId="sidebar_nav_buttons">
           {(provided) => (
@@ -94,7 +98,7 @@ function DroppleList(
             </div>
           )}
         </Droppable>
-        <StyledNewSidebarNavButton nav={props} />
+        <StyledNewSidebarNavButton />
       </DragDropContext>
     </>
   )
@@ -109,13 +113,12 @@ function useHandleDrag(props: SidebarNavProps) {
     if (!destination) {
       return
     }
-
-    const moved = Array.from(props.ids)
-    const [removed] = moved.splice(source.index, 1)
-    moved.splice(destination.index, 0, removed)
+    const ids = orderedIdsByPosition(props.buttons)
+    const [removed] = ids.splice(source.index, 1)
+    ids.splice(destination.index, 0, removed)
 
     update({
-      ids: moved,
+      buttons: createPositions(ids),
     })
   }
 }

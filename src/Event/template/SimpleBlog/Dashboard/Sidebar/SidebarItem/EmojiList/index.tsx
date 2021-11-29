@@ -14,9 +14,12 @@ import {EmojiListConfig} from 'Event/template/SimpleBlog/Dashboard/Sidebar/Sideb
 import {RemoveButton} from 'organization/Event/DashboardConfig/ComponentConfig'
 import Section from 'Event/template/SimpleBlog/Dashboard/Sidebar/Section'
 import {useEditSidebarItem} from 'Event/template/SimpleBlog/Dashboard/Sidebar/SidebarItem'
+import {Ordered} from 'lib/list'
+import {useEditMode} from 'Event/Dashboard/editor/state/edit-mode'
+import {useRemoveIfEmpty} from 'Event/TemplateUpdateProvider'
 
 export const EMOJI_LIST = 'Emoji List'
-export interface EmojiListProps {
+export interface EmojiListProps extends Ordered {
   type: typeof EMOJI_LIST
   emojis: Emoji['name'][]
   /**
@@ -34,52 +37,77 @@ export const createEmojiList = (): EmojiListProps => ({
 })
 
 export default function EmojiList(props: EmojiListProps) {
-  const {flag: configVisible, toggle: toggleConfig} = useToggle()
   const {emojis, emojiWidth} = props
-  const {remove} = useEditSidebarItem()
+  const isEditMode = useEditMode()
 
   const isEmpty = emojis.length === 0
   if (isEmpty) {
     // Add button to create emoji list
     return (
       <EditModeOnly>
-        <Section>
-          <EmojiListConfig
-            isVisible={configVisible}
-            onClose={toggleConfig}
-            list={props}
-          />
-          <RemoveButton size="large" showing onClick={remove}>
-            Remove Emojis
-          </RemoveButton>
-          <StyledAddEmojiListButton onClick={toggleConfig} />
-        </Section>
+        <EmptyConfig {...props} />
       </EditModeOnly>
     )
   }
 
+  const content = (
+    <Box aria-label="emoji list">
+      {emojis.map((name, index) => (
+        <Container key={index} width={emojiWidth}>
+          <EmojiImage name={name} src={emojiWithName(name).image} />
+        </Container>
+      ))}
+    </Box>
+  )
+
+  if (!isEditMode) {
+    return <Section>{content}</Section>
+  }
+
+  return <ListWithConfig {...props}>{content}</ListWithConfig>
+}
+
+function EmptyConfig(props: EmojiListProps) {
+  const {flag: showingConfig, toggle: toggleConfig} = useToggle()
+
   return (
     <Section>
-      <EditModeOnly>
-        <EmojiListConfig
-          isVisible={configVisible}
-          onClose={toggleConfig}
-          list={props}
-        />
-        <RemoveButton size="large" onClick={remove}>
-          Remove Emojis
-        </RemoveButton>
-      </EditModeOnly>
-      <Editable onEdit={toggleConfig}>
-        <Box aria-label="emoji list">
-          {emojis.map((name, index) => (
-            <Container key={index} width={emojiWidth}>
-              <EmojiImage name={name} src={emojiWithName(name).image} />
-            </Container>
-          ))}
-        </Box>
-      </Editable>
+      <Config emojiList={props} showing={showingConfig} toggle={toggleConfig} />
+      <StyledAddEmojiListButton onClick={toggleConfig} />
     </Section>
+  )
+}
+
+function ListWithConfig(
+  props: EmojiListProps & {children: React.ReactElement},
+) {
+  const {flag: showingConfig, toggle: toggleConfig} = useToggle()
+
+  return (
+    <Section>
+      <Config emojiList={props} showing={showingConfig} toggle={toggleConfig} />
+      <Editable onEdit={toggleConfig}>{props.children}</Editable>
+    </Section>
+  )
+}
+
+function Config(props: {
+  emojiList: EmojiListProps
+  showing: boolean
+  toggle: () => void
+}) {
+  const {remove} = useEditSidebarItem()
+  const {showing, toggle, emojiList} = props
+
+  useRemoveIfEmpty(remove, emojiList)
+
+  return (
+    <>
+      <EmojiListConfig isVisible={showing} onClose={toggle} list={emojiList} />
+      <RemoveButton size="large" showing onClick={remove}>
+        Remove Emojis
+      </RemoveButton>
+    </>
   )
 }
 

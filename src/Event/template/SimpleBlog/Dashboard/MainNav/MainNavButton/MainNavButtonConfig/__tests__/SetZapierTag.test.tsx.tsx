@@ -2,7 +2,7 @@ import user from '@testing-library/user-event'
 import faker from 'faker'
 import {fakeSimpleBlog} from 'Event/template/SimpleBlog/__utils__/factory'
 import {fakeNavButtonWithSize} from 'Event/Dashboard/components/NavButton/__utils__/factory'
-import {createEntityList} from 'lib/list'
+import {createHashMap} from 'lib/list'
 import {clickEdit} from '__utils__/edit'
 import {fakeEvent} from 'Event/__utils__/factory'
 import {wait} from '@testing-library/react'
@@ -19,7 +19,7 @@ beforeEach(() => {
 
 it('should set a zapier tag', async () => {
   const button = fakeNavButtonWithSize()
-  const mainNav = createEntityList([button])
+  const mainNav = createHashMap([button])
   const event = fakeEvent({
     template: fakeSimpleBlog({
       mainNav,
@@ -50,7 +50,7 @@ it('should set a zapier tag', async () => {
   const [url, data] = mockPut.mock.calls[0]
   expect(url).toMatch(`/events/${event.slug}`)
 
-  const id = mainNav.ids[0]
-  const saved = data.template[`mainNav.entities.${id}.zapierTag`]
+  const id = Object.keys(mainNav)[0]
+  const saved = data.template[`mainNav.${id}.zapierTag`]
   expect(saved).toBe(tag)
 })

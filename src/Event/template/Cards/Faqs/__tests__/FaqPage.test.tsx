@@ -1,10 +1,9 @@
 import {fakeAttendee} from 'Event/auth/__utils__/factory'
 import user from '@testing-library/user-event'
-import {fakeNavButtonWithSize} from 'Event/Dashboard/components/NavButton/__utils__/factory'
 import {fakeCards} from 'Event/template/Cards/__utils__/factory'
 import {fakeEvent, fakeFaq} from 'Event/__utils__/factory'
 import {loginToEventSite} from 'Event/__utils__/url'
-import {createEntityList} from 'lib/list'
+import {createHashMap} from 'lib/list'
 import faker from 'faker'
 import axios from 'axios'
 import {fakeCardsNavButton} from 'Event/template/Cards/Dashboard/CardsNavButton/__utils__/factory'
@@ -28,7 +27,7 @@ it('should render faqs', async () => {
 
   const event = fakeEvent({
     template: fakeCards({
-      mainNav: createEntityList([button]),
+      mainNav: {buttons: createHashMap([button])},
     }),
   })
 

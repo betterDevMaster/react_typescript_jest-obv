@@ -4,7 +4,7 @@ import faker from 'faker'
 import {Translations} from 'Event/LanguageProvider/translations'
 import {fakeEvent} from 'Event/__utils__/factory'
 import {loginToEventSite} from 'Event/__utils__/url'
-import {createEntityList} from 'lib/list'
+import {createHashMap} from 'lib/list'
 import {fakeAttendee} from 'Event/auth/__utils__/factory'
 import {createLanguage, ENGLISH} from 'Event/LanguageProvider/language'
 import {languageTokenKey} from 'Event/LanguageProvider'
@@ -38,7 +38,7 @@ it('should update user language', async () => {
 
   const event = fakeEvent({
     template: fakePanels({
-      blogPosts: createEntityList([post]),
+      blogPosts: createHashMap([post]),
     }),
     localization: {
       translationsEnabled: true,

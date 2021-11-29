@@ -10,7 +10,8 @@ import user from '@testing-library/user-event'
 import {fakeEvent} from 'Event/__utils__/factory'
 import {goToDashboardConfig} from 'organization/Event/DashboardConfig/__utils__/go-dashboard-config'
 import axios from 'axios'
-import {createEntityList} from 'lib/list'
+import {createHashMap, orderedIdsByPosition} from 'lib/list'
+import {REMOVE} from 'Event/TemplateUpdateProvider'
 
 const mockPut = axios.put as jest.Mock
 
@@ -44,12 +45,12 @@ it('should add an agenda list', async () => {
   const [url, data] = mockPut.mock.calls[0]
   expect(url).toMatch(`/events/${event.slug}/template`)
 
-  const id = data.template['sidebarItems.ids'][0]
-  expect(data.template[`sidebarItems.entities.${id}.type`]).toBe('Agenda List')
+  const values = Object.values(data.template)
+  expect(values).toContain('Agenda List')
 })
 
 it('should remove an agenda list', async () => {
-  const sidebarItems = createEntityList([fakeAgendaList()])
+  const sidebarItems = createHashMap([fakeAgendaList()])
 
   const event = fakeEvent({
     template: fakeCards({
@@ -70,18 +71,19 @@ it('should remove an agenda list', async () => {
 
   const [url, data] = mockPut.mock.calls[0]
   expect(url).toMatch(`/events/${event.slug}/template`)
-  expect(data.template['sidebarItems.ids'].length).toBe(0)
+
+  const id = Object.keys(sidebarItems)[0]
+  expect(data.template[`sidebarItems.${id}`]).toBe(REMOVE)
 })
 
 it('should edit an agenda', async () => {
-  const list = Array.from(
-    {length: faker.random.number({min: 2, max: 4})},
-    fakeAgenda,
-  )
-  const items = createEntityList(list)
+  const numAgendas = faker.random.number({min: 2, max: 4})
+
+  const list = Array.from({length: numAgendas}, fakeAgenda)
+  const items = createHashMap(list)
 
   const title = faker.random.word()
-  const sidebarItems = createEntityList([fakeAgendaList({title, items})])
+  const sidebarItems = createHashMap([fakeAgendaList({title, items})])
 
   const dashboard = fakeCards({
     sidebarItems,
@@ -120,19 +122,19 @@ it('should edit an agenda', async () => {
   const [url, data] = mockPut.mock.calls[0]
   expect(url).toMatch(`/events/${event.slug}/template`)
 
-  const sidebarId = sidebarItems.ids[0]
-  const agendaId = items.ids[targetIndex]
+  const sidebarId = Object.keys(sidebarItems)[0]
+  const sortedIds = orderedIdsByPosition(items)
+  const agendaId = sortedIds[targetIndex]
+
   expect(
-    data.template[
-      `sidebarItems.entities.${sidebarId}.items.entities.${agendaId}.text`
-    ],
+    data.template[`sidebarItems.${sidebarId}.items.${agendaId}.text`],
   ).toBe(updatedText)
 })
 
 it('should add a new agenda', async () => {
   const title = faker.random.word()
-  const sidebarItems = createEntityList([
-    fakeAgendaList({title, items: createEntityList([])}),
+  const sidebarItems = createHashMap([
+    fakeAgendaList({title, items: createHashMap([])}),
   ])
 
   const dashboard = fakeCards({
@@ -161,20 +163,19 @@ it('should add a new agenda', async () => {
 
   const [url, data] = mockPut.mock.calls[0]
   expect(url).toMatch(`/events/${event.slug}/template`)
-  const sidebarId = sidebarItems.ids[0]
-  expect(
-    data.template[`sidebarItems.entities.${sidebarId}.items.ids`].length,
-  ).toBe(1)
+
+  const values = Object.values(data.template)
+  expect(values).toContain('Event') // default agenda event name
 })
 
 it('should remove an agenda', async () => {
   const numItems = faker.random.number({min: 2, max: 4})
 
   const list = Array.from({length: numItems}, fakeAgenda)
-  const items = createEntityList(list)
+  const items = createHashMap(list)
 
   const title = faker.random.word()
-  const sidebarItems = createEntityList([fakeAgendaList({title, items})])
+  const sidebarItems = createHashMap([fakeAgendaList({title, items})])
 
   const dashboard = fakeCards({
     sidebarItems,
@@ -213,10 +214,13 @@ it('should remove an agenda', async () => {
   const [url, data] = mockPut.mock.calls[0]
   expect(url).toMatch(`/events/${event.slug}/template`)
 
-  const sidebarId = sidebarItems.ids[0]
-  expect(
-    data.template[`sidebarItems.entities.${sidebarId}.items.ids`].length,
-  ).toBe(numItems - 1)
+  const sidebarId = Object.keys(sidebarItems)[0]
+  const sortedIds = orderedIdsByPosition(items)
+  const itemId = sortedIds[targetIndex]
+
+  expect(data.template[`sidebarItems.${sidebarId}.items.${itemId}`]).toBe(
+    REMOVE,
+  )
 })
 
 it('should update agendas list title', async () => {
@@ -224,10 +228,10 @@ it('should update agendas list title', async () => {
     {length: faker.random.number({min: 2, max: 4})},
     fakeAgenda,
   )
-  const items = createEntityList(list)
+  const items = createHashMap(list)
 
   const title = faker.random.word()
-  const sidebarItems = createEntityList([fakeAgendaList({title, items})])
+  const sidebarItems = createHashMap([fakeAgendaList({title, items})])
 
   const dashboard = fakeCards({
     sidebarItems,
@@ -253,9 +257,7 @@ it('should update agendas list title', async () => {
   const [url, data] = mockPut.mock.calls[0]
   expect(url).toMatch(`/events/${event.slug}/template`)
 
-  const sidebarId = sidebarItems.ids[0]
+  const sidebarId = Object.keys(sidebarItems)[0]
 
-  expect(data.template[`sidebarItems.entities.${sidebarId}.title`]).toBe(
-    updatedTitle,
-  )
+  expect(data.template[`sidebarItems.${sidebarId}.title`]).toBe(updatedTitle)
 })

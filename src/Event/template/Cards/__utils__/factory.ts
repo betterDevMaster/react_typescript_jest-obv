@@ -4,7 +4,7 @@ import {withAgendas} from 'Event/template/Cards/Dashboard/Sidebar/SidebarItem/Ag
 import {withTicketRibbons} from 'Event/template/Cards/Dashboard/Sidebar/SidebarItem/TicketRibbonList/__utils__/factory'
 import {withBlogPosts} from 'Event/Dashboard/components/BlogPost/__utils__/factory'
 import {fakeNavButtonWithSize} from 'Event/Dashboard/components/NavButton/__utils__/factory'
-import {createEntityList} from 'lib/list'
+import {createHashMap} from 'lib/list'
 import {createCards, Cards} from 'Event/template/Cards'
 import {colors} from 'lib/ui/theme'
 export const fakeCards = (overrides?: Partial<Cards>): Cards => {
@@ -32,7 +32,7 @@ export function withMainNav<T extends {mainNav: Cards['mainNav']}>(
   )
   return {
     ...attributes,
-    mainNav: createEntityList(buttons),
+    mainNav: createHashMap(buttons),
   }
 }
 

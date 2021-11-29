@@ -7,7 +7,7 @@ import {act} from 'react-dom/test-utils'
 import axios from 'axios'
 import {wait} from '@testing-library/react'
 import {fakeSimpleBlog} from 'Event/template/SimpleBlog/__utils__/factory'
-import {createEntityList} from 'lib/list'
+import {createHashMap} from 'lib/list'
 import {fakeNavButtonWithSize} from 'Event/Dashboard/components/NavButton/__utils__/factory'
 import {Attendee} from 'Event/attendee'
 
@@ -49,7 +49,7 @@ it('should render with attendee data', async () => {
     }),
     template: fakeSimpleBlog({
       welcomeText: 'welcome {{email}}',
-      mainNav: createEntityList(buttons),
+      mainNav: createHashMap(buttons),
     }),
   })
 
@@ -152,7 +152,7 @@ it('should replace multiple groups', async () => {
     }),
     template: fakeSimpleBlog({
       welcomeText: 'welcome {{email}}',
-      mainNav: createEntityList(buttons),
+      mainNav: createHashMap(buttons),
     }),
   })
 

@@ -1,4 +1,4 @@
-import {sortedByDate} from 'Event/Dashboard/components/BlogPost'
+import {sortedIdsByDate} from 'Event/Dashboard/components/BlogPost'
 import {Editable} from 'Event/Dashboard/editor/views/EditComponent'
 import EditModeOnly from 'Event/Dashboard/editor/views/EditModeOnly'
 import Published from 'Event/Dashboard/editor/views/Published'
@@ -18,7 +18,7 @@ export default function BlogPosts() {
   const [editing, setEditing] = useState<string | null>(null)
   const stopEditing = () => setEditing(null)
 
-  const sortedIds = sortedByDate(blogPosts)
+  const sortedIds = sortedIdsByDate(blogPosts)
 
   return (
     <>
@@ -29,7 +29,7 @@ export default function BlogPosts() {
         <StyledAddBlogPostButton />
       </EditModeOnly>
       {sortedIds.map((id) => {
-        const post = blogPosts.entities[id]
+        const post = blogPosts[id]
         return (
           <Editable onEdit={() => setEditing(id)} key={id}>
             <Published component={post}>

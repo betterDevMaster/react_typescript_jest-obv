@@ -1,7 +1,7 @@
 import React from 'react'
 import faker from 'faker'
 import {fakeBlogPost} from 'Event/Dashboard/components/BlogPost/__utils__/factory'
-import {createEntityList} from 'lib/list'
+import {createHashMap} from 'lib/list'
 import {render} from '__utils__/render'
 import {fakeEvent} from 'Event/__utils__/factory'
 import {
@@ -30,7 +30,7 @@ it('should show translated text content', async () => {
   const {findByText} = render(<TranslatedText>{`{{${key}}}`}</TranslatedText>, {
     event: fakeEvent({
       template: fakePanels({
-        blogPosts: createEntityList([post]),
+        blogPosts: createHashMap([post]),
       }),
       localization: {
         translations,
@@ -62,7 +62,7 @@ it('should fallback to default language', async () => {
 
   const event = fakeEvent({
     template: fakePanels({
-      blogPosts: createEntityList([post]),
+      blogPosts: createHashMap([post]),
     }),
     localization: {
       translations,
@@ -92,7 +92,7 @@ it('should show system default', async () => {
    */
   const event = fakeEvent({
     template: fakePanels({
-      blogPosts: createEntityList([post]),
+      blogPosts: createHashMap([post]),
     }),
     localization: {
       translationsEnabled: true,

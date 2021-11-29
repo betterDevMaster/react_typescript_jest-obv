@@ -1,7 +1,7 @@
 import faker from 'faker'
 import {fakeSimpleBlog} from 'Event/template/SimpleBlog/__utils__/factory'
 import {fakeNavButton} from 'Event/Dashboard/components/NavButton/__utils__/factory'
-import {createEntityList} from 'lib/list'
+import {createHashMap, orderedIdsByPosition} from 'lib/list'
 import {fireEvent} from '@testing-library/react'
 import {clickDuplicate, clickEdit} from '__utils__/edit'
 import {fakeEvent} from 'Event/__utils__/factory'
@@ -10,6 +10,7 @@ import NavButton from 'Event/Dashboard/components/NavButton'
 import {goToDashboardConfig} from 'organization/Event/DashboardConfig/__utils__/go-dashboard-config'
 import {createSidebarNav} from 'Event/template/SimpleBlog/Dashboard/Sidebar/SidebarItem/SidebarNav'
 import axios from 'axios'
+import {REMOVE} from 'Event/TemplateUpdateProvider'
 
 const mockPut = axios.put as jest.Mock
 
@@ -38,16 +39,15 @@ it('should add a sidebar nav', async () => {
 
   const [url, data] = mockPut.mock.calls[0]
   expect(url).toMatch(`/events/${event.slug}/template`)
-  const sidebarId = data.template['sidebarItems.ids'][0]
-  expect(data.template[`sidebarItems.entities.${sidebarId}.type`]).toBe(
-    'Sidebar Nav',
-  )
+  const values = Object.values(data.template)
+  expect(values).toContain('Sidebar Nav')
 })
 
 it('should remove a sidebar nav', async () => {
+  const sidebarItems = createHashMap([createSidebarNav()])
   const event = fakeEvent({
     template: fakeSimpleBlog({
-      sidebarItems: createEntityList([createSidebarNav()]),
+      sidebarItems,
     }),
   })
   const {queryByText, findByText} = await goToDashboardConfig({
@@ -64,7 +64,9 @@ it('should remove a sidebar nav', async () => {
 
   const [url, data] = mockPut.mock.calls[0]
   expect(url).toMatch(`/events/${event.slug}/template`)
-  expect(data.template['sidebarItems.ids'].length).toBe(0)
+
+  const id = Object.keys(sidebarItems)[0]
+  expect(data.template[`sidebarItems.${id}`]).toBe(REMOVE)
 })
 
 it('should add a new sidebar nav button', async () => {
@@ -77,11 +79,11 @@ it('should add a new sidebar nav button', async () => {
     fakeNavButton,
   )
 
-  const sidebarNavButtons = createEntityList(buttons)
-  const sidebarItems = createEntityList([
+  const sidebarNavButtons = createHashMap(buttons)
+  const sidebarItems = createHashMap([
     {
       ...createSidebarNav(),
-      ...sidebarNavButtons,
+      buttons: sidebarNavButtons,
     },
   ])
   const event = fakeEvent({
@@ -109,20 +111,18 @@ it('should add a new sidebar nav button', async () => {
 
   const [url, data] = mockPut.mock.calls[0]
   expect(url).toMatch(`/events/${event.slug}/template`)
-  const sidebarId = sidebarItems.ids[0]
-  expect(data.template[`sidebarItems.entities.${sidebarId}.ids`].length).toBe(
-    numButtons + 1,
-  )
+  const values = Object.values(data.template)
+  expect(values).toContain('Button') // default button text
 })
 
 it('should add a new button when there are none', async () => {
   const buttons: NavButton[] = []
 
-  const sidebarNavButtons = createEntityList(buttons)
-  const sidebarItems = createEntityList([
+  const sidebarNavButtons = createHashMap(buttons)
+  const sidebarItems = createHashMap([
     {
       ...createSidebarNav(),
-      ...sidebarNavButtons,
+      buttons: sidebarNavButtons,
     },
   ])
   const event = fakeEvent({
@@ -148,8 +148,9 @@ it('should add a new button when there are none', async () => {
 
   const [url, data] = mockPut.mock.calls[0]
   expect(url).toMatch(`/events/${event.slug}/template`)
-  const sidebarId = sidebarItems.ids[0]
-  expect(data.template[`sidebarItems.entities.${sidebarId}.ids`].length).toBe(1)
+
+  const values = Object.values(data.template)
+  expect(values).toContain('Button') // default button text
 })
 
 it('should duplicate the selected button', async () => {
@@ -160,11 +161,11 @@ it('should duplicate the selected button', async () => {
     fakeNavButton,
   )
 
-  const sidebarNavButtons = createEntityList(buttons)
-  const sidebarItems = createEntityList([
+  const sidebarNavButtons = createHashMap(buttons)
+  const sidebarItems = createHashMap([
     {
       ...createSidebarNav(),
-      ...sidebarNavButtons,
+      buttons: sidebarNavButtons,
     },
   ])
   const event = fakeEvent({
@@ -197,20 +198,8 @@ it('should duplicate the selected button', async () => {
   const [url, data] = mockPut.mock.calls[0]
   expect(url).toMatch(`/events/${event.slug}/template`)
 
-  const sidebarId = sidebarItems.ids[0]
-
-  expect(data.template[`sidebarItems.entities.${sidebarId}.ids`].length).toBe(
-    buttons.length + 1,
-  )
-
-  const buttonIds = data.template[`sidebarItems.entities.${sidebarId}.ids`]
-  const newButtonId = buttonIds[buttonIds.length - 1]
-  const newButtonText =
-    data.template[
-      `sidebarItems.entities.${sidebarId}.entities.${newButtonId}.text`
-    ]
-
-  expect(newButtonText).toBe(button.text)
+  const values = Object.values(data.template)
+  expect(values).toContain(button.text)
 })
 
 it('should edit the selected button', async () => {
@@ -221,11 +210,11 @@ it('should edit the selected button', async () => {
     fakeNavButton,
   )
 
-  const sidebarNavButtons = createEntityList(buttons)
-  const sidebarItems = createEntityList([
+  const sidebarNavButtons = createHashMap(buttons)
+  const sidebarItems = createHashMap([
     {
       ...createSidebarNav(),
-      ...sidebarNavButtons,
+      buttons: sidebarNavButtons,
     },
   ])
   const event = fakeEvent({
@@ -269,12 +258,11 @@ it('should edit the selected button', async () => {
   const [url, data] = mockPut.mock.calls[0]
   expect(url).toMatch(`/events/${event.slug}/template`)
 
-  const sidebarId = sidebarItems.ids[0]
-  const buttonId = sidebarNavButtons.ids[targetIndex]
+  const sidebarId = Object.keys(sidebarItems)[0]
+  const ids = orderedIdsByPosition(sidebarNavButtons)
+  const buttonId = ids[targetIndex]
   expect(
-    data.template[
-      `sidebarItems.entities.${sidebarId}.entities.${buttonId}.text`
-    ],
+    data.template[`sidebarItems.${sidebarId}.buttons.${buttonId}.text`],
   ).toBe(updatedValue)
 })
 
@@ -282,12 +270,12 @@ it('should remove the button', async () => {
   const numButtons = faker.random.number({min: 2, max: 4})
 
   const buttons = Array.from({length: numButtons}, fakeNavButton)
-  const sidebarNavButtons = createEntityList(buttons)
+  const sidebarNavButtons = createHashMap(buttons)
 
-  const sidebarItems = createEntityList([
+  const sidebarItems = createHashMap([
     {
       ...createSidebarNav(),
-      ...sidebarNavButtons,
+      buttons: sidebarNavButtons,
     },
   ])
   const event = fakeEvent({
@@ -306,7 +294,8 @@ it('should remove the button', async () => {
   const buttonEls = () => findAllByLabelText('sidebar nav button')
   expect((await buttonEls()).length).toBe(numButtons)
 
-  const target = faker.random.arrayElement(await buttonEls())
+  const targetIndex = faker.random.number({min: 0, max: buttons.length - 1})
+  const target = (await buttonEls())[targetIndex]
   expect(queryByText(target.textContent!)).toBeInTheDocument()
 
   clickEdit(target)
@@ -325,8 +314,9 @@ it('should remove the button', async () => {
   const [url, data] = mockPut.mock.calls[0]
   expect(url).toMatch(`/events/${event.slug}/template`)
 
-  const sidebarId = sidebarItems.ids[0]
-  expect(data.template[`sidebarItems.entities.${sidebarId}.ids`].length).toBe(
-    numButtons - 1,
-  )
+  const sidebarId = Object.keys(sidebarItems)[0]
+  const ids = orderedIdsByPosition(sidebarNavButtons)
+  const id = ids[targetIndex]
+
+  expect(data.template[`sidebarItems.${sidebarId}.buttons.${id}`]).toBe(REMOVE)
 })

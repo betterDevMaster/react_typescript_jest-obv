@@ -11,7 +11,6 @@ export default function NewSidebarNavButton(props: {
   nav: SidebarNavProps
 }) {
   const isEditMode = useEditMode()
-  const {nav} = props
   const {update} = useEditSidebarItem()
 
   if (!isEditMode) {
@@ -34,11 +33,8 @@ export default function NewSidebarNavButton(props: {
       zapierTag: null,
     }
 
-    const ids = [...nav.ids, id]
-
     update({
-      ids,
-      entities: {
+      buttons: {
         [id]: button,
       },
     })

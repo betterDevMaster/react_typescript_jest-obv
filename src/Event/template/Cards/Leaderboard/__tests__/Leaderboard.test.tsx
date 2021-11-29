@@ -7,12 +7,11 @@ import axios from 'axios'
 import {loginToEventSite} from 'Event/__utils__/url'
 import faker from 'faker'
 import {fakeCards} from 'Event/template/Cards/__utils__/factory'
-import {fakePoints} from 'Event/template/Cards/Dashboard/Sidebar/SidebarItem/PointsSummary/__utils__/factory'
 import {fakeAttendee} from 'Event/auth/__utils__/factory'
 import {fakeAction} from 'Event/ActionsProvider/__utils__/factory'
 import {wait} from '@testing-library/react'
 import {createPointsSummary} from 'Event/template/Cards/Dashboard/Sidebar/SidebarItem/PointsSummary'
-import {createEntityList} from 'lib/list'
+import {createHashMap} from 'lib/list'
 
 const mockPost = axios.post as jest.Mock
 const mockGet = axios.get as jest.Mock
@@ -24,7 +23,7 @@ beforeEach(() => {
 it('should render list of entries', async () => {
   const event = fakeEvent({
     template: fakeCards({
-      sidebarItems: createEntityList([createPointsSummary()]),
+      sidebarItems: createHashMap([createPointsSummary()]),
     }),
   })
   const {findAllByLabelText} = await loginToEventSite({
@@ -52,7 +51,7 @@ it('should receive points', async () => {
 
   const event = fakeEvent({
     template: fakeCards({
-      sidebarItems: createEntityList([createPointsSummary()]),
+      sidebarItems: createHashMap([createPointsSummary()]),
     }),
     platform_actions: createPlatformActions({visit_leaderboard: action}),
   })

@@ -1,4 +1,5 @@
 import NavButton from 'Event/Dashboard/components/NavButton'
+import {useCardsTemplate} from 'Event/template/Cards'
 import React from 'react'
 
 export type CardsNavButtonProps = NavButton & {
@@ -7,5 +8,6 @@ export type CardsNavButtonProps = NavButton & {
 
 export default function CardsNavButton(props: CardsNavButtonProps) {
   const {row: _, ...buttonProps} = props
-  return <NavButton {...buttonProps} />
+  const {mainNav} = useCardsTemplate()
+  return <NavButton {...buttonProps} height={mainNav.buttonHeight} />
 }

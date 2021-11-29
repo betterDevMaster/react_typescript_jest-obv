@@ -4,7 +4,7 @@ import {fakeNavButtonWithSize} from 'Event/Dashboard/components/NavButton/__util
 import {fakeSimpleBlog} from 'Event/template/SimpleBlog/__utils__/factory'
 import {fakeEvent, fakeImageEntry} from 'Event/__utils__/factory'
 import {loginToEventSite} from 'Event/__utils__/url'
-import {createEntityList} from 'lib/list'
+import {createHashMap} from 'lib/list'
 import user from '@testing-library/user-event'
 
 const mockGet = axios.get as jest.Mock
@@ -24,7 +24,7 @@ it('should render image entries', async () => {
     }),
     event: fakeEvent({
       template: fakeSimpleBlog({
-        mainNav: createEntityList([
+        mainNav: createHashMap([
           fakeNavButtonWithSize({
             page: 'image_waterfall',
             text: buttonText,

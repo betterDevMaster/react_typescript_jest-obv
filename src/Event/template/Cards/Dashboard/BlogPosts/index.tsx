@@ -7,7 +7,7 @@ import EditModeOnly from 'Event/Dashboard/editor/views/EditModeOnly'
 import AddBlogPostButton from 'Event/Dashboard/components/BlogPost/AddBlogPostButton'
 import {useCardsTemplate} from 'Event/template/Cards'
 import VisibleOnMatch from 'Event/attendee-rules/VisibleOnMatch'
-import {sortedByDate} from 'Event/Dashboard/components/BlogPost'
+import {sortedIdsByDate} from 'Event/Dashboard/components/BlogPost'
 import {useToggle} from 'lib/toggle'
 import Button from '@material-ui/core/Button'
 import PostStylesConfig from 'Event/template/Cards/Dashboard/BlogPosts/PostStylesConfig'
@@ -24,7 +24,7 @@ export default function BlogPosts() {
 
   const [editing, setEditing] = useState<string | null>(null)
 
-  const sortedIds = sortedByDate(posts)
+  const sortedIds = sortedIdsByDate(posts)
 
   return (
     <div>
@@ -51,7 +51,7 @@ export default function BlogPosts() {
         />
       </EditModeOnly>
       {sortedIds.map((id, index) => {
-        const post = posts.entities[id]
+        const post = posts[id]
 
         const isLast = index === sortedIds.length - 1
 

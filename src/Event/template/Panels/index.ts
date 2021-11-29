@@ -3,7 +3,7 @@ import {EmojiList} from 'Event/template/Panels/Dashboard/EmojiList'
 import {NavButtonWithSize} from 'Event/Dashboard/components/NavButton'
 import {ResourceList} from 'Event/template/Panels/Dashboard/Resources/ResourceList'
 import {BaseTemplate, BASE_DEFAULTS} from 'Event/template'
-import {EntityList} from 'lib/list'
+import {EntityList, HashMap} from 'lib/list'
 import {Column} from 'lib/ui/layout'
 import {useTemplate} from 'Event/TemplateProvider'
 import {BlogPost} from 'Event/Dashboard/components/BlogPost'
@@ -39,7 +39,7 @@ export type Panels = BaseTemplate & {
     height: number
   }
   backgroundPosition?: 'fixed' | 'bottom'
-  nav: EntityList<NavButtonWithSize>
+  nav: HashMap<NavButtonWithSize>
   ticketRibbons: TicketRibbon[]
   welcomeText: string
   homeMenuTitle?: string
@@ -62,7 +62,7 @@ export type Panels = BaseTemplate & {
     isDarkMode: boolean
   }
   points_unit: string
-  blogPosts: EntityList<BlogPost>
+  blogPosts: HashMap<BlogPost>
   resourceList: ResourceList
   menuIconColor: string
   isDarkMode?: boolean
@@ -198,7 +198,7 @@ export type Panels = BaseTemplate & {
     redirectUrl: string
     shouldRedirect: boolean
   }
-  countDownTimers?: EntityList<CountDownTimer>
+  countDownTimers?: HashMap<CountDownTimer>
   imageWaterfall?: {
     title?: string
     menuTitle?: string
@@ -229,10 +229,7 @@ export const createPanels = (): DeepRequired<Panels> => ({
   },
   points_unit: 'Points',
   backgroundPosition: 'fixed',
-  nav: {
-    entities: {},
-    ids: [],
-  },
+  nav: {},
   ticketRibbons: [],
   welcomeText: 'Welcome!',
   homeMenuTitle: 'Home',
@@ -257,10 +254,7 @@ export const createPanels = (): DeepRequired<Panels> => ({
     backgroundOpacity: 0,
     isDarkMode: false,
   },
-  blogPosts: {
-    entities: {},
-    ids: [],
-  },
+  blogPosts: {},
   resourceList: {
     title: 'Resources',
     resources: [],
@@ -410,10 +404,7 @@ export const createPanels = (): DeepRequired<Panels> => ({
     title: 'Event Offline',
     description: 'Please check back again, or contact support for access.',
   },
-  countDownTimers: {
-    entities: {},
-    ids: [],
-  },
+  countDownTimers: {},
   imageWaterfall: {
     title: 'Image Waterfall',
     menuTitle: 'Image Waterfall',

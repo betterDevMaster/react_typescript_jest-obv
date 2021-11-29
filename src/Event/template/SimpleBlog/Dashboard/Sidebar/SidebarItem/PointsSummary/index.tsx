@@ -5,14 +5,16 @@ import {useAttendeeVariables} from 'Event'
 import {useSimpleBlogTemplate} from 'Event/template/SimpleBlog'
 import {useToggle} from 'lib/toggle'
 import {PointsSummaryConfig} from 'Event/template/SimpleBlog/Dashboard/Sidebar/SidebarItem/PointsSummary/PointsSummaryConfig'
-import EditModeOnly from 'Event/Dashboard/editor/views/EditModeOnly'
 import Button from '@material-ui/core/Button'
 import {RemoveButton} from 'organization/Event/DashboardConfig/ComponentConfig'
 import Section from 'Event/template/SimpleBlog/Dashboard/Sidebar/Section'
 import {useEditSidebarItem} from 'Event/template/SimpleBlog/Dashboard/Sidebar/SidebarItem'
+import {Ordered} from 'lib/list'
+import {useEditMode} from 'Event/Dashboard/editor/state/edit-mode'
+import {useRemoveIfEmpty} from 'Event/TemplateUpdateProvider'
 
 export const POINTS_SUMMARY = 'Points Summary'
-export interface PointsSummaryProps {
+export interface PointsSummaryProps extends Ordered {
   type: typeof POINTS_SUMMARY
   description: string
   summary?: string
@@ -29,31 +31,10 @@ export default function PointsSummary(props: PointsSummaryProps) {
   const {sidebar} = template
   const {summary, description} = props
   const v = useAttendeeVariables()
-  const {flag: configVisible, toggle: toggleConfig} = useToggle()
-  const {remove: removeItem} = useEditSidebarItem()
+  const isEditMode = useEditMode()
 
-  return (
-    <Section>
-      <PointsSummaryConfig
-        isVisible={configVisible}
-        onClose={toggleConfig}
-        points={props}
-      />
-      <EditModeOnly>
-        <EditButton
-          onClick={toggleConfig}
-          variant="contained"
-          color="primary"
-          fullWidth
-          size="large"
-          aria-label="edit points summary"
-        >
-          Edit Points Summary
-        </EditButton>
-        <RemoveButton size="large" showing onClick={removeItem}>
-          Remove Points Summary
-        </RemoveButton>
-      </EditModeOnly>
+  const content = (
+    <>
       <PointsLogo />
       <Box color={sidebar.textColor}>
         <Summary aria-label="points summary" color={sidebar.textColor}>
@@ -61,6 +42,47 @@ export default function PointsSummary(props: PointsSummaryProps) {
         </Summary>
         <Description color={sidebar.textColor}>{v(description)}</Description>
       </Box>
+    </>
+  )
+
+  if (!isEditMode) {
+    return <Section>{content}</Section>
+  }
+
+  return <Configurable pointsSummary={props}>{content}</Configurable>
+}
+
+function Configurable(props: {
+  pointsSummary: PointsSummaryProps
+  children: React.ReactElement
+}) {
+  const {flag: configVisible, toggle: toggleConfig} = useToggle()
+  const {remove: removeItem} = useEditSidebarItem()
+  const {pointsSummary} = props
+
+  useRemoveIfEmpty(removeItem, pointsSummary)
+
+  return (
+    <Section>
+      <PointsSummaryConfig
+        isVisible={configVisible}
+        onClose={toggleConfig}
+        points={pointsSummary}
+      />
+      <EditButton
+        onClick={toggleConfig}
+        variant="contained"
+        color="primary"
+        fullWidth
+        size="large"
+        aria-label="edit points summary"
+      >
+        Edit Points Summary
+      </EditButton>
+      <RemoveButton size="large" showing onClick={removeItem}>
+        Remove Points Summary
+      </RemoveButton>
+      {props.children}
     </Section>
   )
 }

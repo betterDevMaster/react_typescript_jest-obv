@@ -7,7 +7,7 @@ import axios from 'axios'
 import {clickEdit} from '__utils__/edit'
 import {goToDashboardConfig} from 'organization/Event/DashboardConfig/__utils__/go-dashboard-config'
 import {createEmojiList} from 'Event/template/Cards/Dashboard/Sidebar/SidebarItem/EmojiList'
-import {createEntityList} from 'lib/list'
+import {createHashMap} from 'lib/list'
 
 const mockPost = axios.post as jest.Mock
 const mockDelete = axios.delete as jest.Mock
@@ -17,7 +17,7 @@ it('should upload an image', async () => {
 
   const event = fakeEvent({
     template: fakeCards({
-      sidebarItems: createEntityList([createEmojiList()]),
+      sidebarItems: createHashMap([createEmojiList()]),
     }),
   })
 
@@ -69,7 +69,7 @@ it('should remove the emoji file', async () => {
 
   const event = fakeEvent({
     template: fakeCards({
-      sidebarItems: createEntityList([
+      sidebarItems: createHashMap([
         {
           ...createEmojiList(),
           emojis: [customEmoji],
@@ -101,7 +101,7 @@ it('it should cancel an emoji upload', async () => {
 
   const event = fakeEvent({
     template: fakeCards({
-      sidebarItems: createEntityList([createEmojiList()]),
+      sidebarItems: createHashMap([createEmojiList()]),
     }),
   })
 

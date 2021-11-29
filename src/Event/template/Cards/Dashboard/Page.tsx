@@ -70,7 +70,7 @@ export default function CardsPage(props: {
               <CountDownTimers />
               <MainNav />
             </Top>
-            <ScrollDown contentRef={contentRef} />
+            <ScrollDownIndicator contentRef={contentRef} />
           </TopContainer>
         </ColorOverlay>
       </TopBox>
@@ -84,9 +84,10 @@ export default function CardsPage(props: {
   )
 }
 
-function ScrollDown(props: {contentRef: React.RefObject<HTMLDivElement>}) {
+function ScrollDownIndicator(props: {
+  contentRef: React.RefObject<HTMLDivElement>
+}) {
   const v = useAttendeeVariables()
-
   const {mainNav} = useCardsTemplate()
 
   const executeScroll = () => {

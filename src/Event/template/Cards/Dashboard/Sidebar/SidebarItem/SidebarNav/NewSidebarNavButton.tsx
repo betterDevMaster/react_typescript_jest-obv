@@ -3,15 +3,10 @@ import NavButton from 'Event/Dashboard/components/NavButton'
 import {useEditMode} from 'Event/Dashboard/editor/state/edit-mode'
 import React from 'react'
 import {v4 as uid} from 'uuid'
-import {SidebarNavProps} from 'Event/template/Cards/Dashboard/Sidebar/SidebarItem/SidebarNav'
 import {useEditSidebarItem} from 'Event/template/Cards/Dashboard/Sidebar/SidebarItem'
 
-export default function NewSidebarNavButton(props: {
-  className?: string
-  nav: SidebarNavProps
-}) {
+export default function NewSidebarNavButton(props: {className?: string}) {
   const isEditMode = useEditMode()
-  const {nav} = props
   const {update} = useEditSidebarItem()
 
   if (!isEditMode) {
@@ -33,11 +28,9 @@ export default function NewSidebarNavButton(props: {
       mailchimpTag: null,
       zapierTag: null,
     }
-    const ids = [...nav.ids, id]
 
     update({
-      ids,
-      entities: {
+      buttons: {
         [id]: button,
       },
     })

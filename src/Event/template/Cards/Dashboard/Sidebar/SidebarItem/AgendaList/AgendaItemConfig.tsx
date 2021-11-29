@@ -1,14 +1,10 @@
-import React, {useEffect, useState} from 'react'
+import React, {useEffect, useCallback} from 'react'
 import styled from 'styled-components'
 import DangerButton from 'lib/ui/Button/DangerButton'
 import TextField from '@material-ui/core/TextField'
 import Grid from '@material-ui/core/Grid'
-import {
-  Agenda,
-  AgendaListProps,
-} from 'Event/template/Cards/Dashboard/Sidebar/SidebarItem/AgendaList'
-import {onChangeStringHandler, onChangeCheckedHandler} from 'lib/dom'
-import {MaterialUiPickersDate} from '@material-ui/pickers/typings/date'
+import {Agenda} from 'Event/template/Cards/Dashboard/Sidebar/SidebarItem/AgendaList'
+import {onChangeCheckedHandler, onChangeDate} from 'lib/dom'
 import Switch from 'lib/ui/form/Switch'
 import Box from '@material-ui/core/Box'
 import ComponentConfig, {
@@ -16,93 +12,75 @@ import ComponentConfig, {
   SaveButton,
 } from 'organization/Event/DashboardConfig/ComponentConfig'
 import LocalizedDateTimePicker from 'lib/LocalizedDateTimePicker'
-import {REMOVE} from 'Event/TemplateUpdateProvider'
+import {REMOVE, useRemoveIfEmpty} from 'Event/TemplateUpdateProvider'
 import {useEditSidebarItem} from 'Event/template/Cards/Dashboard/Sidebar/SidebarItem'
 import {v4 as uuid} from 'uuid'
+import {Controller, useForm} from 'react-hook-form'
+import moment from 'moment'
 
 export function AgendaItemConfig(
   props: {
     agenda: Agenda
-    list: AgendaListProps
     id?: string
   } & ComponentConfigProps,
 ) {
-  const {isVisible: visible, onClose, agenda, list, id} = props
-  const [isVisible, setIsVisible] = useState(agenda.isVisible)
-  const [text, setText] = useState(agenda.text)
-  const [startDate, setStartDate] = useState(agenda.startDate)
-  const [endDate, setEndDate] = useState(agenda.endDate)
-  const [link, setLink] = useState(agenda.link)
-  const [hasEndDateTimeChange, setHasEndDateTimeChange] = useState(false)
+  const {isVisible: visible, onClose, agenda, id} = props
+
+  const {handleSubmit, register, control, watch, setValue} = useForm()
 
   const {update: updateItem} = useEditSidebarItem()
 
+  const startDate = watch('startDate')
+  const endDate = watch('endDate')
+
   useEffect(() => {
-    if (visible) {
-      // Prevent losing current changes
+    if (!startDate || !endDate) {
       return
     }
 
-    setIsVisible(agenda.isVisible)
-    setText(agenda.text)
-    setStartDate(agenda.startDate)
-    setEndDate(agenda.endDate)
-    setLink(agenda.link)
-    setHasEndDateTimeChange(false)
-  }, [agenda, visible])
+    const shouldAdjustEndDate = moment(startDate).isBefore(moment(endDate))
+    if (!shouldAdjustEndDate) {
+      return
+    }
+
+    setValue('endDate', startDate)
+  }, [startDate, endDate, setValue])
 
   const update = (id: string, updated: Agenda) => {
     updateItem({
       items: {
-        entities: {
-          [id]: updated,
-        },
+        [id]: updated,
       },
     })
   }
 
   const insert = (item: Agenda) => {
     const id = uuid()
-    const ids = [...list.items.ids, id]
 
     updateItem({
       items: {
-        ids,
-        entities: {
-          [id]: item,
-        },
+        [id]: item,
       },
     })
   }
 
-  const remove = () => {
+  const remove = useCallback(() => {
     if (!id) {
       throw new Error("Missing 'id' of agenda to remove.")
     }
 
-    const removed = list.items.ids.filter((i) => i !== id)
-
     updateItem({
       items: {
-        ids: removed,
-        entities: {
-          [id]: REMOVE,
-        },
+        [id]: REMOVE,
       },
     })
 
     onClose()
-  }
+  }, [id, onClose, updateItem])
 
-  const save = () => {
-    const data: Agenda = {
-      isVisible,
-      text,
-      startDate,
-      endDate,
-      link,
-    }
+  useRemoveIfEmpty(remove, agenda, {shouldSkip: !id})
 
+  const save = (data: Agenda) => {
     if (id === undefined) {
       insert(data)
       onClose()
@@ -113,90 +91,96 @@ export function AgendaItemConfig(
     onClose()
   }
 
-  const handleStartDate = (date: MaterialUiPickersDate) => {
-    if (!date) {
-      throw new Error('Date is required')
-    }
-    setStartDate(date.toISOString())
-
-    if (!hasEndDateTimeChange) {
-      setEndDate(date.toISOString())
-    }
-  }
-
-  const handleEndDate = (date: MaterialUiPickersDate) => {
-    if (!date) {
-      throw new Error('Date is required')
-    }
-    setEndDate(date.toISOString())
-    setHasEndDateTimeChange(true)
-  }
-
   return (
     <ComponentConfig isVisible={visible} onClose={onClose} title="Agenda">
-      <Box display="flex" justifyContent="flex-end">
-        <Switch
-          checked={isVisible}
-          onChange={onChangeCheckedHandler(setIsVisible)}
-          arial-label="config visible switch"
-          labelPlacement="start"
-          color="primary"
-          label={isVisible ? 'Enable' : 'Disable'}
+      <form onSubmit={handleSubmit(save)}>
+        <Box display="flex" justifyContent="flex-end">
+          <Controller
+            name="isVisible"
+            defaultValue={agenda.isVisible}
+            control={control}
+            render={({value, onChange}) => (
+              <Switch
+                checked={value}
+                onChange={onChangeCheckedHandler(onChange)}
+                arial-label="config visible switch"
+                labelPlacement="start"
+                color="primary"
+                label="Enabled"
+              />
+            )}
+          />
+        </Box>
+        <TextField
+          name="text"
+          defaultValue={agenda.text}
+          inputProps={{
+            'aria-label': 'agenda text',
+            ref: register,
+          }}
+          label="Event"
+          fullWidth
         />
-      </Box>
-      <TextField
-        value={text}
-        inputProps={{
-          'aria-label': 'agenda text',
-        }}
-        label="Event"
-        fullWidth
-        onChange={onChangeStringHandler(setText)}
-      />
-      <Grid container spacing={2}>
-        <Grid item xs={6}>
-          <LocalizedDateTimePicker
-            value={startDate}
-            onChange={handleStartDate}
-            fullWidth
-            label="Start"
-            inputProps={{
-              'aria-label': 'agenda start date',
-            }}
-          />
+        <Grid container spacing={2}>
+          <Grid item xs={6}>
+            <Controller
+              name="startDate"
+              defaultValue={agenda.startDate}
+              control={control}
+              render={({value, onChange}) => (
+                <LocalizedDateTimePicker
+                  value={value}
+                  onChange={onChangeDate(onChange)}
+                  fullWidth
+                  label="Start"
+                  inputProps={{
+                    'aria-label': 'agenda start date',
+                  }}
+                />
+              )}
+            />
+          </Grid>
+          <Grid item xs={6}>
+            <Controller
+              name="endDate"
+              defaultValue={agenda.endDate}
+              control={control}
+              render={({value, onChange}) => (
+                <LocalizedDateTimePicker
+                  clearable
+                  value={value}
+                  onChange={onChangeDate(onChange)}
+                  fullWidth
+                  label="End"
+                  inputProps={{
+                    'aria-label': 'agenda end date',
+                  }}
+                />
+              )}
+            />
+          </Grid>
         </Grid>
-        <Grid item xs={6}>
-          <LocalizedDateTimePicker
-            clearable
-            value={endDate}
-            onChange={handleEndDate}
-            fullWidth
-            label="End"
-            inputProps={{
-              'aria-label': 'agenda end date',
-            }}
-          />
-        </Grid>
-      </Grid>
-      <TextField
-        value={link || ''}
-        inputProps={{
-          'aria-label': 'agenda link',
-        }}
-        label="Link"
-        fullWidth
-        onChange={onChangeStringHandler(setLink)}
-      />
-      <SaveButton onClick={save} />
-      <RemoveAgendaButton
-        fullWidth
-        variant="outlined"
-        aria-label="remove agenda"
-        onClick={remove}
-        hidden={!id}
-      >
-        REMOVE AGENDA
-      </RemoveAgendaButton>
+        <TextField
+          name="link"
+          defaultValue={agenda.link}
+          inputProps={{
+            'aria-label': 'agenda link',
+            ref: register,
+          }}
+          label="Link"
+          fullWidth
+        />
+        <SaveButton />
+        <RemoveAgendaButton
+          fullWidth
+          variant="outlined"
+          aria-label="remove agenda"
+          onClick={remove}
+          hidden={!id}
+        >
+          REMOVE AGENDA
+        </RemoveAgendaButton>
+      </form>
     </ComponentConfig>
   )
 }

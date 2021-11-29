@@ -3,7 +3,7 @@ import {fakeNavButtonWithSize} from 'Event/Dashboard/components/NavButton/__util
 import {fakePanels} from 'Event/template/Panels/__utils__/factory'
 import {fakeEvent} from 'Event/__utils__/factory'
 import {loginToEventSite} from 'Event/__utils__/url'
-import {createEntityList} from 'lib/list'
+import {createHashMap} from 'lib/list'
 import {act} from 'react-dom/test-utils'
 import user from '@testing-library/user-event'
 
@@ -21,7 +21,7 @@ it('should paginate buttons', async () => {
 
   const event = fakeEvent({
     template: fakePanels({
-      nav: createEntityList(buttons),
+      nav: createHashMap(buttons),
     }),
   })
 

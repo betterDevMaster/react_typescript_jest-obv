@@ -18,9 +18,11 @@ import {useCardsTemplate} from 'Event/template/Cards'
 import {useToggle} from 'lib/toggle'
 import {ResourceItemConfig} from 'Event/template/Cards/Dashboard/Sidebar/SidebarItem/ResourceList/ResourceItemConfig'
 import {ResourceListProps} from 'Event/template/Cards/Dashboard/Sidebar/SidebarItem/ResourceList'
+import {Ordered} from 'lib/list'
 
 export type Resource = Publishable &
-  HasRules & {
+  HasRules &
+  Ordered & {
     name: string
     filePath: string
     icon: string | null

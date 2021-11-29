@@ -14,7 +14,8 @@ import {clickEdit} from '__utils__/edit'
 import {goToDashboardConfig} from 'organization/Event/DashboardConfig/__utils__/go-dashboard-config'
 import {createTicketRibbonList} from 'Event/template/SimpleBlog/Dashboard/Sidebar/SidebarItem/TicketRibbonList'
 import axios from 'axios'
-import {createEntityList} from 'lib/list'
+import {createHashMap, orderedIdsByPosition} from 'lib/list'
+import {REMOVE} from 'Event/TemplateUpdateProvider'
 
 const mockPut = axios.put as jest.Mock
 
@@ -44,14 +45,12 @@ it('should add a ticket ribbon list', async () => {
   const [url, data] = mockPut.mock.calls[0]
   expect(url).toMatch(`/events/${event.slug}/template`)
 
-  const id = data.template['sidebarItems.ids'][0]
-  expect(data.template[`sidebarItems.entities.${id}.type`]).toBe(
-    'Ticket Ribbon List',
-  )
+  const values = Object.values(data.template)
+  expect(values).toContain('Ticket Ribbon List')
 })
 
 it('should remove a ticket ribbon list', async () => {
-  const sidebarItems = createEntityList([createTicketRibbonList()])
+  const sidebarItems = createHashMap([createTicketRibbonList()])
   const event = fakeEvent({
     template: fakeSimpleBlog({
       sidebarItems,
@@ -71,7 +70,9 @@ it('should remove a ticket ribbon list', async () => {
 
   const [url, data] = mockPut.mock.calls[0]
   expect(url).toMatch(`/events/${event.slug}/template`)
-  expect(data.template['sidebarItems.ids'].length).toBe(0)
+
+  const id = Object.keys(sidebarItems)[0]
+  expect(data.template[`sidebarItems.${id}`]).toBe(REMOVE)
 })
 
 it('should edit an existing ticket ribbon', async () => {
@@ -79,9 +80,9 @@ it('should edit an existing ticket ribbon', async () => {
     {length: faker.random.number({min: 2, max: 5})},
     fakeTicketRibbon,
   )
-  const ribbons = createEntityList(ticketRibbons)
+  const ribbons = createHashMap(ticketRibbons)
 
-  const sidebarItems = createEntityList([
+  const sidebarItems = createHashMap([
     {
       ...createTicketRibbonList(),
       ribbons,
@@ -134,21 +135,19 @@ it('should edit an existing ticket ribbon', async () => {
   const [url, data] = mockPut.mock.calls[0]
   expect(url).toMatch(`/events/${event.slug}/template`)
 
-  const sidebarId = sidebarItems.ids[0]
-  const ribbonId = ribbons.ids[targetIndex]
+  const sidebarId = Object.keys(sidebarItems)[0]
+  const ribbonId = Object.keys(ribbons)[targetIndex]
 
   expect(
-    data.template[
-      `sidebarItems.entities.${sidebarId}.ribbons.entities.${ribbonId}.name`
-    ],
+    data.template[`sidebarItems.${sidebarId}.ribbons.${ribbonId}.name`],
   ).toBe(ribbon)
 })
 
 it('should add a new ticket ribbon', async () => {
-  const sidebarItems = createEntityList([
+  const sidebarItems = createHashMap([
     {
       ...createTicketRibbonList(),
-      ribbons: createEntityList([]),
+      ribbons: createHashMap([]),
     },
   ])
 
@@ -190,25 +189,17 @@ it('should add a new ticket ribbon', async () => {
   const [url, data] = mockPut.mock.calls[0]
   expect(url).toMatch(`/events/${withoutRibbons.slug}/template`)
 
-  const sidebarId = sidebarItems.ids[0]
-
-  const ribbonId =
-    data.template[`sidebarItems.entities.${sidebarId}.ribbons.ids`][0]
-
-  expect(
-    data.template[
-      `sidebarItems.entities.${sidebarId}.ribbons.entities.${ribbonId}.text`
-    ],
-  ).toBe(text)
+  const values = Object.values(data.template)
+  expect(values).toContain(text)
 })
 
 it('should remove a ticket ribbon', async () => {
   const numRibbons = faker.random.number({min: 2, max: 5})
   const ticketRibbons = Array.from({length: numRibbons}, fakeTicketRibbon)
 
-  const ribbons = createEntityList(ticketRibbons)
+  const ribbons = createHashMap(ticketRibbons)
 
-  const sidebarItems = createEntityList([
+  const sidebarItems = createHashMap([
     {
       ...createTicketRibbonList(),
       ribbons,
@@ -254,9 +245,11 @@ it('should remove a ticket ribbon', async () => {
   const [url, data] = mockPut.mock.calls[0]
   expect(url).toMatch(`/events/${event.slug}/template`)
 
-  const sidebarId = sidebarItems.ids[0]
+  const sidebarId = Object.keys(sidebarItems)[0]
+  const ribbonIds = orderedIdsByPosition(ribbons)
+  const ribbonId = ribbonIds[targetIndex]
 
-  expect(
-    data.template[`sidebarItems.entities.${sidebarId}.ribbons.ids`].length,
-  ).toBe(numRibbons - 1)
+  expect(data.template[`sidebarItems.${sidebarId}.ribbons.${ribbonId}`]).toBe(
+    REMOVE,
+  )
 })

@@ -27,7 +27,7 @@ export function withDefaults<T extends Record<string, any>>(
     ) {
       const hasChildProps = Object.keys(defaultValue).length > 0
       if (!hasChildProps) {
-        res[key] = template[key]
+        res[key] = template[key] || {}
         continue
       }
 

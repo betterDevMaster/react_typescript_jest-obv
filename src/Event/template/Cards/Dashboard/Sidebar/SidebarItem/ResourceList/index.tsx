@@ -24,16 +24,16 @@ import {uuid} from 'lib/uuid'
 import {RemoveButton} from 'organization/Event/DashboardConfig/ComponentConfig'
 import {useHasVisibleItems} from 'Event/attendee-rules/matcher'
 import Section from 'Event/template/Cards/Dashboard/Sidebar/Section'
-import {EntityList} from 'lib/list'
 import {useEditSidebarItem} from 'Event/template/Cards/Dashboard/Sidebar/SidebarItem'
+import {createPositions, HashMap, Ordered, orderedIdsByPosition} from 'lib/list'
 
 export const RESOURCE_LIST = 'Resource List'
-export interface ResourceListProps {
+export interface ResourceListProps extends Ordered {
   id: string
   type: typeof RESOURCE_LIST
   title: string
   description: string
-  resources: EntityList<Resource>
+  resources: HashMap<Resource>
 }
 
 export const createResourceList = (): ResourceListProps => ({
@@ -41,10 +41,7 @@ export const createResourceList = (): ResourceListProps => ({
   type: RESOURCE_LIST,
   title: 'Resources',
   description: '',
-  resources: {
-    ids: [],
-    entities: {},
-  },
+  resources: {},
 })
 
 export const RESOURCE_ICON = {
@@ -63,7 +60,7 @@ export function ResourceList(props: ResourceListProps) {
 
   const v = useAttendeeVariables()
 
-  const hasVisibleItems = useHasVisibleItems(Object.values(resources.entities))
+  const hasVisibleItems = useHasVisibleItems(Object.values(resources))
 
   if (!hasVisibleItems && !isEdit) {
     return null
@@ -137,11 +134,12 @@ function DroppableList(props: ResourceListProps) {
 
 function Resources(props: ResourceListProps) {
   const {sidebar} = useCardsTemplate()
+  const ids = orderedIdsByPosition(props.resources)
 
   return (
     <>
-      {props.resources.ids.map((id: string, index: number) => {
-        const resource = props.resources.entities[id]
+      {ids.map((id: string, index: number) => {
+        const resource = props.resources[id]
         return (
           <ResourceItem
             droppleid={`resource-item-${index}`}
@@ -180,14 +178,12 @@ function useHandleDrag(props: ResourceListProps) {
       return
     }
 
-    const moved = Array.from(props.resources.ids)
-    const [removed] = moved.splice(source.index, 1)
-    moved.splice(destination.index, 0, removed)
+    const ids = orderedIdsByPosition(props.resources)
+    const [removed] = ids.splice(source.index, 1)
+    ids.splice(destination.index, 0, removed)
 
     update({
-      resources: {
-        ids: moved,
-      },
+      resources: createPositions(ids),
     })
   }
 }

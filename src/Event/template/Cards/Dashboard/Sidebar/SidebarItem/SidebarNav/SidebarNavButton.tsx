@@ -36,14 +36,12 @@ export default React.memo(
     return (
       <>
         <SidebarNavButtonConfig
-          nav={props.nav}
           button={props}
           id={props.id}
           isVisible={configVisible}
           onClose={toggleConfig}
         />
         <SidebarNavButtonConfig
-          nav={props.nav}
           button={props}
           isVisible={configCopyVisible}
           onClose={toggleCopyConfig}

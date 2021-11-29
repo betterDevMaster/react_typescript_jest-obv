@@ -1,7 +1,7 @@
 import TextField from '@material-ui/core/TextField'
 import {onChangeCheckedHandler} from 'lib/dom'
 import styled from 'styled-components'
-import React, {useEffect, useState} from 'react'
+import React, {useEffect, useState, useCallback} from 'react'
 import DangerButton from 'lib/ui/Button/DangerButton'
 import ResourceUpload, {
   useDeleteFile,
@@ -23,7 +23,7 @@ import {Controller, useForm, UseFormMethods} from 'react-hook-form'
 import {ResourceListProps} from 'Event/template/Cards/Dashboard/Sidebar/SidebarItem/ResourceList'
 import {useEditSidebarItem} from 'Event/template/Cards/Dashboard/Sidebar/SidebarItem'
 import {v4 as uuid} from 'uuid'
-import {REMOVE} from 'Event/TemplateUpdateProvider'
+import {REMOVE, useRemoveIfEmpty} from 'Event/TemplateUpdateProvider'
 
 export function ResourceItemConfig(
   props: ComponentConfigProps & {
@@ -58,23 +58,17 @@ export function ResourceItemConfig(
   const update = (id: string, data: Resource) => {
     updateItem({
       resources: {
-        entities: {
-          [id]: data,
-        },
+        [id]: data,
       },
     })
   }
 
   const insert = (newResource: Resource) => {
     const id = uuid()
-    const added = [...list.resources.ids, id]
-
+    const position = Object.keys(list.resources).length + 1
     updateItem({
       resources: {
-        ids: added,
-        entities: {
-          [id]: newResource,
-        },
+        [id]: {...newResource, position},
       },
     })
   }
@@ -99,7 +93,7 @@ export function ResourceItemConfig(
     onClose()
   }
 
-  const remove = () => {
+  const remove = useCallback(() => {
     if (id === undefined) {
       throw new Error('Missing resource item index')
     }
@@ -113,18 +107,14 @@ export function ResourceItemConfig(
     }
 
     onClose()
-
-    const removed = list.resources.ids.filter((i) => i !== id)
-
     updateItem({
       resources: {
-        ids: removed,
-        entities: {
-          id: REMOVE,
-        },
+        [id]: REMOVE,
       },
     })
-  }
+  }, [id, updateItem, onClose, deleteFile, resource])
+
+  useRemoveIfEmpty(remove, props.resource, {shouldSkip: !id})
 
   return (
     <ComponentConfig title="Resource" onClose={onClose} isVisible={isVisible}>

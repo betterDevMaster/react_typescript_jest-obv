@@ -1,7 +1,7 @@
 import user from '@testing-library/user-event'
 import faker from 'faker'
 import {fakeNavButtonWithSize} from 'Event/Dashboard/components/NavButton/__utils__/factory'
-import {createEntityList} from 'lib/list'
+import {createHashMap, orderedIdsByPosition} from 'lib/list'
 import {clickEdit} from '__utils__/edit'
 import {fireEvent} from '@testing-library/react'
 import {fakeEvent} from 'Event/__utils__/factory'
@@ -28,7 +28,7 @@ it('should edit the selected button', async () => {
     fakeNavButtonWithSize,
   )
 
-  const navButtons = createEntityList(buttons)
+  const navButtons = createHashMap(buttons)
   const event = fakeEvent({
     template: fakePanels({
       nav: navButtons,
@@ -67,8 +67,10 @@ it('should edit the selected button', async () => {
 
   const [url, data] = mockPut.mock.calls[0]
   expect(url).toMatch(`/events/${event.slug}`)
-  const id = navButtons.ids[targetIndex]
-  expect(data.template[`nav.entities.${id}.text`]).toBe(updatedValue)
+
+  const ids = orderedIdsByPosition(navButtons)
+  const id = ids[targetIndex]
+  expect(data.template[`nav.${id}.text`]).toBe(updatedValue)
 })
 
 it('should set an area button', async () => {
@@ -79,7 +81,7 @@ it('should set an area button', async () => {
     fakeNavButtonWithSize,
   )
 
-  const mainNavButtons = createEntityList(buttons)
+  const mainNavButtons = createHashMap(buttons)
   const event = fakeEvent({
     template: fakePanels({
       nav: mainNavButtons,
@@ -120,15 +122,17 @@ it('should set an area button', async () => {
   })
 
   const [url, data] = mockPut.mock.calls[0]
-  expect(url).toMatch(`/events/${event.slug}`)
-  const id = mainNavButtons.ids[targetIndex]
-  expect(data.template[`nav.entities.${id}.isAreaButton`]).toBe(true)
-  expect(data.template[`nav.entities.${id}.areaId`]).toBe(target.key) // Set area ID
+  expect(url).toMatch(`/events/${event.slug}/template`)
+
+  const ids = orderedIdsByPosition(mainNavButtons)
+  const id = ids[targetIndex]
+  expect(data.template[`nav.${id}.isAreaButton`]).toBe(true)
+  expect(data.template[`nav.${id}.areaId`]).toBe(target.key) // Set area ID
 })
 
 it('should assign an action for points', async () => {
   const button = fakeNavButtonWithSize()
-  const mainNavButtons = createEntityList([button])
+  const mainNavButtons = createHashMap([button])
   const event = fakeEvent({
     template: fakePanels({
       nav: mainNavButtons,
@@ -167,15 +171,13 @@ it('should assign an action for points', async () => {
   const [url, data] = mockPut.mock.calls[0]
   expect(url).toMatch(`/events/${event.slug}`)
 
-  const savedButtonId = mainNavButtons.ids[0]
-  expect(data.template[`nav.entities.${savedButtonId}.actionId`]).toBe(
-    target.key,
-  ) // Did assign action id
+  const savedButtonId = Object.keys(mainNavButtons)[0]
+  expect(data.template[`nav.${savedButtonId}.actionId`]).toBe(target.key) // Did assign action id
 })
 
 it('should set an infusionsoft tag', async () => {
   const button = fakeNavButtonWithSize()
-  const mainNavButtons = createEntityList([button])
+  const mainNavButtons = createHashMap([button])
   const event = fakeEvent({
     template: fakePanels({
       nav: mainNavButtons,
@@ -207,10 +209,8 @@ it('should set an infusionsoft tag', async () => {
   const [url, data] = mockPut.mock.calls[0]
   expect(url).toMatch(`/events/${event.slug}`)
 
-  const savedButtonId = mainNavButtons.ids[0]
-  expect(
-    data.template[`nav.entities.${savedButtonId}.infusionsoftTag.id`],
-  ).toBe(id)
+  const savedButtonId = Object.keys(mainNavButtons)[0]
+  expect(data.template[`nav.${savedButtonId}.infusionsoftTag.id`]).toBe(id)
 })
 
 it('should not have a page select', async () => {
@@ -219,7 +219,7 @@ it('should not have a page select', async () => {
     page: undefined,
     link: externalLink,
   })
-  const navButtons = createEntityList([button])
+  const navButtons = createHashMap([button])
 
   const event = fakeEvent({
     template: fakePanels({

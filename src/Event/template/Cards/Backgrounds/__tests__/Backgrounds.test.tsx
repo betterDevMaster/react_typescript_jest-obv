@@ -6,7 +6,7 @@ import {fakeCards} from 'Event/template/Cards/__utils__/factory'
 import {wait} from '@testing-library/react'
 import {eventRoutes, EVENT_PAGES} from 'Event/Routes'
 import {fakeNavButtonWithSize} from 'Event/Dashboard/components/NavButton/__utils__/factory'
-import {createEntityList} from 'lib/list'
+import {createHashMap} from 'lib/list'
 import {fakeCardsNavButton} from 'Event/template/Cards/Dashboard/CardsNavButton/__utils__/factory'
 
 beforeAll(() => {
@@ -41,7 +41,7 @@ it('should render backgrounds', async () => {
     zoom_backgrounds_title: 'Zoom backgrounds',
     zoom_backgrounds_description: 'description',
     template: fakeCards({
-      mainNav: createEntityList([button]),
+      mainNav: {buttons: createHashMap([button])},
     }),
   })
 

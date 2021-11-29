@@ -4,7 +4,7 @@ import {fakeNavButtonWithSize} from 'Event/Dashboard/components/NavButton/__util
 import {fakeSimpleBlog} from 'Event/template/SimpleBlog/__utils__/factory'
 import {fakeEvent} from 'Event/__utils__/factory'
 import {loginToEventSite} from 'Event/__utils__/url'
-import {createEntityList} from 'lib/list'
+import {createHashMap} from 'lib/list'
 import user from '@testing-library/user-event'
 import {fireEvent, wait} from '@testing-library/dom'
 
@@ -23,7 +23,7 @@ it('should upload an image', async () => {
     }),
     event: fakeEvent({
       template: fakeSimpleBlog({
-        mainNav: createEntityList([
+        mainNav: createHashMap([
           fakeNavButtonWithSize({
             text: buttonText,
             isImageUpload: true,

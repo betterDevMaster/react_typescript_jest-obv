@@ -1,5 +1,5 @@
 import DangerButton from 'lib/ui/Button/DangerButton'
-import React, {useEffect, useState} from 'react'
+import React, {useEffect, useState, useCallback} from 'react'
 import Box from '@material-ui/core/Box'
 import RuleConfig, {useRuleConfig} from 'Event/attendee-rules/RuleConfig'
 import ConfigureRulesButton from 'Event/attendee-rules/ConfigureRulesButton'
@@ -20,12 +20,11 @@ import ComponentConfig, {
 } from 'organization/Event/DashboardConfig/ComponentConfig'
 import {Controller, useForm} from 'react-hook-form'
 import {v4 as uuid} from 'uuid'
-import {SidebarNavProps} from 'Event/template/Cards/Dashboard/Sidebar/SidebarItem/SidebarNav'
 import BackgroundPicker from 'lib/ui/form/BackgroundPicker'
 import InputLabel from '@material-ui/core/InputLabel'
 import Slider from '@material-ui/core/Slider'
 import {useEditSidebarItem} from 'Event/template/Cards/Dashboard/Sidebar/SidebarItem'
-import {REMOVE} from 'Event/TemplateUpdateProvider'
+import {REMOVE, useRemoveIfEmpty} from 'Event/TemplateUpdateProvider'
 
 const MIN_BORDER_WIDTH = 0
 const MAX_BORDER_WIDTH = 50
@@ -37,10 +36,9 @@ export function SidebarNavButtonConfig(
   props: ComponentConfigProps & {
     button: NavButton
     id?: string
-    nav: SidebarNavProps
   },
 ) {
-  const {button, id, isVisible, onClose, nav} = props
+  const {button, id, isVisible, onClose} = props
   const {visible: ruleConfigVisible, toggle: toggleRuleConfig} = useRuleConfig()
   const {update: updateItem} = useEditSidebarItem()
 
@@ -73,34 +71,32 @@ export function SidebarNavButtonConfig(
 
   const update = (id: string, updated: NavButton) => {
     updateItem({
-      entities: {
+      buttons: {
         [id]: updated,
       },
     })
   }
 
-  const removeButton = () => {
+  const removeButton = useCallback(() => {
     if (!id) {
       throw new Error('Missing id')
     }
 
-    const removed = nav.ids.filter((i) => i !== id)
-
     onClose()
     updateItem({
-      ids: removed,
-      entities: {
+      buttons: {
         [id]: REMOVE,
       },
     })
-  }
+  }, [id, updateItem, onClose])
+
+  useRemoveIfEmpty(removeButton, button, {shouldSkip: !id})
 
   const insert = (button: NavButton) => {
     const id = uuid()
 
     updateItem({
-      ids: [...nav.ids, id],
-      entities: {
+      buttons: {
         [id]: button,
       },
     })

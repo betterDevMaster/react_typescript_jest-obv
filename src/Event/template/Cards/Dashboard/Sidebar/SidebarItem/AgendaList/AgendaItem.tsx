@@ -44,7 +44,6 @@ export default function AgendaItem(props: {
     <>
       <EditModeOnly>
         <AgendaItemConfig
-          list={props.list}
           isVisible={configVisible}
           onClose={toggleConfig}
           agenda={agenda}

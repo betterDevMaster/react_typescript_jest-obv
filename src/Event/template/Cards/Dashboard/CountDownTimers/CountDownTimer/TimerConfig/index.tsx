@@ -1,4 +1,4 @@
-import React from 'react'
+import React, {useCallback} from 'react'
 import {v4 as uuid} from 'uuid'
 import {Controller, useForm} from 'react-hook-form'
 import Slider from '@material-ui/core/Slider'
@@ -7,7 +7,7 @@ import {handleChangeSlider, onChangeCheckedHandler} from 'lib/dom'
 import ColorPicker from 'lib/ui/ColorPicker'
 import Switch from 'lib/ui/form/Switch'
 import LocalizedDateTimePicker from 'lib/LocalizedDateTimePicker'
-import {useCardsTemplate, useCardsUpdate} from 'Event/template/Cards'
+import {useCardsUpdate} from 'Event/template/Cards'
 import ComponentConfig, {
   ComponentConfigProps,
   RemoveButton,
@@ -16,7 +16,7 @@ import ComponentConfig, {
 import {CountDownTimer} from 'Event/Dashboard/components/CountDownTimer'
 import InputLabel from '@material-ui/core/InputLabel'
 import FormControl from '@material-ui/core/FormControl'
-import {REMOVE} from 'Event/TemplateUpdateProvider'
+import {REMOVE, useRemoveIfEmpty} from 'Event/TemplateUpdateProvider'
 
 export default function TimerConfig(
   props: ComponentConfigProps & {
@@ -25,7 +25,6 @@ export default function TimerConfig(
   },
 ) {
   const {isVisible, onClose, id, countDownTimer} = props
-  const {countDownTimers} = useCardsTemplate()
 
   const {control, handleSubmit, register} = useForm()
 
@@ -34,9 +33,7 @@ export default function TimerConfig(
   const update = (id: string, updated: CountDownTimer) => {
     updateTemplate({
       countDownTimers: {
-        entities: {
-          [id]: updated,
-        },
+        [id]: updated,
       },
     })
   }
@@ -46,30 +43,24 @@ export default function TimerConfig(
 
     updateTemplate({
       countDownTimers: {
-        ids: [...countDownTimers.ids, id],
-        entities: {
-          [id]: countDownTimer,
-        },
+        [id]: countDownTimer,
       },
     })
   }
 
-  const removeCountDownTimer = () => {
+  const removeCountDownTimer = useCallback(() => {
     if (!id) {
       throw new Error('Missing count down timer id')
     }
 
-    const updatedIds = countDownTimers.ids.filter((i) => i !== id)
-
     updateTemplate({
       countDownTimers: {
-        entities: {
-          [id]: REMOVE,
-        },
-        ids: updatedIds,
+        [id]: REMOVE,
       },
     })
-  }
+  }, [updateTemplate, id])
+
+  useRemoveIfEmpty(removeCountDownTimer, countDownTimer, {shouldSkip: !id})
 
   const save = (formData: CountDownTimer) => {
     if (id) {
@@ -80,6 +71,10 @@ export default function TimerConfig(
     onClose()
     return
   }
+
+  useRemoveIfEmpty(removeCountDownTimer, countDownTimer, {
+    shouldSkip: !id,
+  })
 
   const showingRemove = Boolean(id)
 

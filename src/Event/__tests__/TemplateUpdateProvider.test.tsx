@@ -1,6 +1,6 @@
 import faker from 'faker'
 import {fakeNavButtonWithSize} from 'Event/Dashboard/components/NavButton/__utils__/factory'
-import {createEntityList} from 'lib/list'
+import {createHashMap} from 'lib/list'
 import {fakeEvent} from 'Event/__utils__/factory'
 import {goToDashboardConfig} from 'organization/Event/DashboardConfig/__utils__/go-dashboard-config'
 import {fakeSimpleBlog} from 'Event/template/SimpleBlog/__utils__/factory'
@@ -35,9 +35,9 @@ it('should edit the selected button', async () => {
   // Create the button we'll be testing updates for
 
   const button = fakeNavButtonWithSize()
-  const mainNav = createEntityList([button])
+  const mainNav = createHashMap([button])
 
-  const id = Object.keys(mainNav.entities)[0] // only have 1 button
+  const id = Object.keys(mainNav)[0] // only have 1 button
 
   const event = fakeEvent({
     template: fakeSimpleBlog({
@@ -52,7 +52,7 @@ it('should edit the selected button', async () => {
     templateUpdateHandler({
       updated_at: moment().toISOString(),
       template: {
-        [`mainNav.entities.${id}.text`]: updatedValue,
+        [`mainNav.${id}.text`]: updatedValue,
       },
     })
   })
@@ -66,7 +66,7 @@ it('should edit the selected button', async () => {
     templateUpdateHandler({
       updated_at: moment().subtract(1, 'minutes').toISOString(),
       template: {
-        [`mainNav.entities.${id}.text`]: 'DidNotChange',
+        [`mainNav.${id}.text`]: 'DidNotChange',
       },
     })
   })

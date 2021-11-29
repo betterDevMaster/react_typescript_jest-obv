@@ -1,9 +1,7 @@
 import {Publishable} from 'Event/Dashboard/editor/views/Published'
 import {v4 as uid} from 'uuid'
-import {useTemplate} from 'Event/TemplateProvider'
 import {HasRules} from 'Event/attendee-rules'
 import {getDiffDatetime, now} from 'lib/date-time'
-import {EntityList} from 'lib/list'
 import {REMOVE, useTemplateUpdate} from 'Event/TemplateUpdateProvider'
 
 export type BlogPost = Publishable &
@@ -33,29 +31,28 @@ export function shouldPublish(post: BlogPost) {
   return getDiffDatetime(post.publishAt, now()) < 0
 }
 
-export function sortedByDate(posts: EntityList<BlogPost>) {
-  return posts.ids.sort((a: string, b: string) => {
-    const postA = posts.entities[a]
-    const postB = posts.entities[b]
+export function sortedIdsByDate(posts: Record<string, BlogPost>) {
+  return Object.entries(posts)
+    .sort(([aId, aPost], [bId, bPost]) => {
+      const date = (post: BlogPost) => {
+        return post.publishAt || post.postedAt
+      }
 
-    const date = (post: BlogPost) => {
-      return post.publishAt || post.postedAt
-    }
+      const diff = getDiffDatetime(date(aPost), date(bPost))
 
-    const diff = getDiffDatetime(date(postA), date(postB))
+      // newer comes first
+      if (diff > 0) {
+        return -1
+      }
 
-    // newer comes first
-    if (diff > 0) {
-      return -1
-    }
+      // is older
+      if (diff < 0) {
+        return 1
+      }
 
-    // is older
-    if (diff < 0) {
       return 1
-    }
-
-    return 1
-  })
+    })
+    .map(([id]) => id)
 }
 
 export function useUpdatePost() {
@@ -64,9 +61,7 @@ export function useUpdatePost() {
   return (id: string, updated: BlogPost) => {
     updateTemplate({
       blogPosts: {
-        entities: {
-          [id]: updated,
-        },
+        [id]: updated,
       },
     })
   }
@@ -74,19 +69,13 @@ export function useUpdatePost() {
 
 export function useInsertPost() {
   const updateTemplate = useTemplateUpdate()
-  const {blogPosts} = useTemplate()
 
   return (post: BlogPost) => {
     const id = uid()
 
-    const ids = [id, ...blogPosts.ids]
-
     updateTemplate({
       blogPosts: {
-        entities: {
-          [id]: post,
-        },
-        ids,
+        [id]: post,
       },
     })
   }
@@ -94,17 +83,11 @@ export function useInsertPost() {
 
 export function useRemovePost() {
   const updateTemplate = useTemplateUpdate()
-  const {blogPosts} = useTemplate()
 
   return (id: string) => {
-    const updatedIds = blogPosts.ids.filter((i) => i !== id)
-
     updateTemplate({
       blogPosts: {
-        entities: {
-          [id]: REMOVE,
-        },
-        ids: updatedIds,
+        [id]: REMOVE,
       },
     })
   }

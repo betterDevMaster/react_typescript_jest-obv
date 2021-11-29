@@ -7,10 +7,7 @@ import {useEditMode} from 'Event/Dashboard/editor/state/edit-mode'
 import {AbsoluteLink} from 'lib/ui/link/AbsoluteLink'
 import {useWithAttendeeData} from 'Event/auth/attendee-data'
 import {useAttendeeVariables} from 'Event'
-import {
-  Agenda,
-  AgendaListProps,
-} from 'Event/template/SimpleBlog/Dashboard/Sidebar/SidebarItem/AgendaList'
+import {Agenda} from 'Event/template/SimpleBlog/Dashboard/Sidebar/SidebarItem/AgendaList'
 import {Draggable} from 'react-beautiful-dnd'
 import {DragHandle, DraggableOverlay} from 'lib/ui/drag-and-drop'
 import {useSimpleBlogTemplate} from 'Event/template/SimpleBlog'
@@ -20,11 +17,10 @@ import {useLocalization} from 'lib/LocalizationProvider'
 
 export default function AgendaItem(props: {
   agenda: Agenda
-  list: AgendaListProps
   id: string
   index: number
 }) {
-  const {agenda, id, list, index} = props
+  const {agenda, id, index} = props
   const isEditMode = useEditMode()
   const {flag: configVisible, toggle: toggleConfig} = useToggle()
 
@@ -42,7 +38,6 @@ export default function AgendaItem(props: {
   return (
     <>
       <AgendaItemConfig
-        list={list}
         isVisible={configVisible}
         onClose={toggleConfig}
         agenda={agenda}

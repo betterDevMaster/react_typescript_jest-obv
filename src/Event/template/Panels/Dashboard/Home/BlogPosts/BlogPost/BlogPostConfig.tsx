@@ -21,7 +21,7 @@ import ComponentConfig, {
 } from 'organization/Event/DashboardConfig/ComponentConfig'
 import {useTemplate} from 'Event/TemplateProvider'
 import LocalizedDateTimePicker from 'lib/LocalizedDateTimePicker'
-import {usePanelsTemplate, usePanelsUpdate} from 'Event/template/Panels'
+import {usePanelsUpdate} from 'Event/template/Panels'
 import {v4 as uid} from 'uuid'
 import {REMOVE} from 'Event/TemplateUpdateProvider'
 
@@ -35,7 +35,7 @@ export function EditPost(props: {id: string | null; onClose: () => void}) {
     return null
   }
 
-  const post = blogPosts.entities[id]
+  const post = blogPosts[id]
 
   return <BlogPostConfig id={id} isVisible post={post} onClose={onClose} />
 }
@@ -243,19 +243,15 @@ function useUpdatePost() {
 
 function useInsertPost() {
   const update = usePanelsUpdate()
-  const {blogPosts} = useTemplate()
 
   return (post: BlogPost) => {
     const id = uid()
-
-    const ids = [id, ...blogPosts.ids]
 
     update({
       blogPosts: {
         entities: {
           [id]: post,
         },
-        ids: ids,
       },
     })
   }
@@ -263,18 +259,13 @@ function useInsertPost() {
 
 function useRemovePost() {
   const update = usePanelsUpdate()
-  const {blogPosts} = useTemplate()
 
   return (id: string) => {
-    const {[id]: target, ...otherPosts} = blogPosts.entities
-    const updatedIds = blogPosts.ids.filter((i) => i !== id)
-
     update({
       blogPosts: {
         entities: {
           [id]: REMOVE,
         },
-        ids: updatedIds,
       },
     })
   }

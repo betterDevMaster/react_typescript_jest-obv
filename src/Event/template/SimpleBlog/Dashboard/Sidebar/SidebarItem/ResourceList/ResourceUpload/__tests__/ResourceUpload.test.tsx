@@ -7,7 +7,7 @@ import {clickEdit} from '__utils__/edit'
 import axios from 'axios'
 import {goToDashboardConfig} from 'organization/Event/DashboardConfig/__utils__/go-dashboard-config'
 import {createResourceList} from 'Event/template/SimpleBlog/Dashboard/Sidebar/SidebarItem/ResourceList'
-import {createEntityList} from 'lib/list'
+import {createHashMap} from 'lib/list'
 
 const mockAjaxPost = axios.post as jest.Mock
 const mockAjaxDelete = axios.delete as jest.Mock
@@ -27,8 +27,8 @@ beforeEach(() => {
 })
 
 it('should upload a file', async () => {
-  const resources = createEntityList([fakeResource({filePath: ''})])
-  const sidebarItems = createEntityList([
+  const resources = createHashMap([fakeResource({filePath: ''})])
+  const sidebarItems = createHashMap([
     {
       ...createResourceList(),
       resources,
@@ -89,11 +89,11 @@ it('should upload a file', async () => {
   expect(saveUrl).toMatch(`/events/${event.slug}/template`)
 
   // Saved returned file path
-  const sidebarId = sidebarItems.ids[0]
-  const resourceId = resources.ids[0]
+  const sidebarId = Object.keys(sidebarItems)[0]
+  const resourceId = Object.keys(resources)[0]
   expect(
     savedData.template[
-      `sidebarItems.entities.${sidebarId}.resources.entities.${resourceId}.filePath`
+      `sidebarItems.${sidebarId}.resources.${resourceId}.filePath`
     ],
   ).toBe(filePath)
 })
@@ -103,10 +103,10 @@ it('should delete an existing file', async () => {
   const withExistingFile = fakeResource({filePath: existingFile})
 
   const template = fakeSimpleBlog({
-    sidebarItems: createEntityList([
+    sidebarItems: createHashMap([
       {
         ...createResourceList(),
-        resources: createEntityList([withExistingFile]),
+        resources: createHashMap([withExistingFile]),
       },
     ]),
   })

@@ -30,7 +30,7 @@ import {
 } from 'Event/template/Cards/Dashboard/Sidebar/SidebarItem/TicketRibbonList'
 import Select from '@material-ui/core/Select'
 import {useForm} from 'react-hook-form'
-import {useCardsTemplate, useCardsUpdate} from 'Event/template/Cards'
+import {useCardsUpdate} from 'Event/template/Cards'
 import {createEmojiList} from 'Event/template/Cards/Dashboard/Sidebar/SidebarItem/EmojiList'
 import {v4 as uuid} from 'uuid'
 
@@ -42,7 +42,6 @@ export default function AddSidebarItemConfig(props: {
   const [type, setType] = useState<SidebarItem['type'] | null>(null)
   const {handleSubmit} = useForm()
   const update = useCardsUpdate()
-  const {sidebarItems} = useCardsTemplate()
 
   /**
    * Reset selecter on close
@@ -61,14 +60,9 @@ export default function AddSidebarItemConfig(props: {
     const id = uuid()
     const item = createItem(type)
 
-    const ids = [...sidebarItems.ids, id]
-
     update({
       sidebarItems: {
-        ids,
-        entities: {
-          [id]: item,
-        },
+        [id]: item,
       },
     })
 

@@ -1,13 +1,14 @@
 import faker from 'faker'
 import {fakeSimpleBlog} from 'Event/template/SimpleBlog/__utils__/factory'
 import {fakeNavButtonWithSize} from 'Event/Dashboard/components/NavButton/__utils__/factory'
-import {createEntityList} from 'lib/list'
+import {createHashMap, orderedIdsByPosition} from 'lib/list'
 import {clickEdit} from '__utils__/edit'
 import {fireEvent} from '@testing-library/react'
 import {fakeEvent} from 'Event/__utils__/factory'
 import {wait} from '@testing-library/react'
 import {goToDashboardConfig} from 'organization/Event/DashboardConfig/__utils__/go-dashboard-config'
 import axios from 'axios'
+import {REMOVE} from 'Event/TemplateUpdateProvider'
 
 const mockPut = axios.put as jest.Mock
 
@@ -23,7 +24,7 @@ it('should render main nav buttons', async () => {
     fakeNavButtonWithSize,
   )
 
-  const mainNavButtons = createEntityList(buttons)
+  const mainNavButtons = createHashMap(buttons)
   const {findAllByLabelText} = await goToDashboardConfig({
     event: fakeEvent({
       template: fakeSimpleBlog({
@@ -33,7 +34,7 @@ it('should render main nav buttons', async () => {
   })
 
   const buttonsEls = await findAllByLabelText('main nav button')
-  expect(buttonsEls.length).toBe(mainNavButtons.ids.length)
+  expect(buttonsEls.length).toBe(Object.keys(buttons).length)
 })
 
 it('should add a new main nav button', async () => {
@@ -46,7 +47,7 @@ it('should add a new main nav button', async () => {
     fakeNavButtonWithSize,
   )
 
-  const mainNavButtons = createEntityList(buttons)
+  const mainNavButtons = createHashMap(buttons)
   const event = fakeEvent({
     template: fakeSimpleBlog({
       mainNav: mainNavButtons,
@@ -73,16 +74,15 @@ it('should add a new main nav button', async () => {
     expect(mockPut).toHaveBeenCalledTimes(1)
   })
 
-  const [url, data] = mockPut.mock.calls[0]
-  expect(url).toMatch(`/events/${event.slug}`)
-  expect(data.template['mainNav.ids'].length).toBe(numButtons + 1)
+  const [url] = mockPut.mock.calls[0]
+  expect(url).toMatch(`/events/${event.slug}/template`)
 })
 
 it('should remove the button', async () => {
   const numButtons = faker.random.number({min: 2, max: 4})
 
   const buttons = Array.from({length: numButtons}, fakeNavButtonWithSize)
-  const mainNavButtons = createEntityList(buttons)
+  const mainNavButtons = createHashMap(buttons)
   const event = fakeEvent({
     template: fakeSimpleBlog({mainNav: mainNavButtons}),
   })
@@ -98,7 +98,8 @@ it('should remove the button', async () => {
   const buttonEls = () => findAllByLabelText('main nav button')
   expect((await buttonEls()).length).toBe(numButtons)
 
-  const target = faker.random.arrayElement(await buttonEls())
+  const targetIndex = faker.random.number({min: 0, max: numButtons - 1})
+  const target = (await buttonEls())[targetIndex]
   expect(queryByText(target.textContent!)).toBeInTheDocument()
 
   clickEdit(target)
@@ -115,6 +116,9 @@ it('should remove the button', async () => {
   })
 
   const [url, data] = mockPut.mock.calls[0]
-  expect(url).toMatch(`/events/${event.slug}`)
-  expect(data.template['mainNav.ids'].length).toBe(numButtons - 1)
+  expect(url).toMatch(`/events/${event.slug}/template`)
+
+  const ids = orderedIdsByPosition(mainNavButtons)
+  const id = ids[targetIndex]
+  expect(data.template[`mainNav.${id}`]).toBe(REMOVE)
 })

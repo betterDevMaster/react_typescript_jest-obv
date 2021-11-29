@@ -5,6 +5,7 @@ import Sizer from 'Event/template/Panels/Dashboard/MainNav/MainNavDesktop/Sizer'
 import PageArrows from 'Event/template/Panels/Dashboard/MainNav/MainNavDesktop/PageArrows'
 import CountDownTimers from 'Event/template/Panels/Dashboard/CountDownTimers'
 import {Container} from 'Event/template/Panels/Dashboard/MainNav/MainNavDesktop'
+import {orderedIdsByPosition} from 'lib/list'
 
 export default function BodyLive(props: {className?: string}) {
   /**
@@ -14,11 +15,10 @@ export default function BodyLive(props: {className?: string}) {
   const [cursor, setCursor] = useState(0)
   const [perPage, setPerPage] = useState(0)
   const template = usePanelsTemplate()
-  const {
-    nav: {ids, entities},
-  } = template
+  const {nav} = template
 
-  const numItems = ids.length
+  const ids = orderedIdsByPosition(nav)
+  const numItems = Object.keys(nav).length
 
   const resetCursor = useCallback(() => {
     setCursor(0)
@@ -64,7 +64,7 @@ export default function BodyLive(props: {className?: string}) {
             id={id}
             index={index}
             key={id}
-            button={entities[id]}
+            button={nav[id]}
             isHidden={!visibleIds.includes(id)}
           />
         ))}

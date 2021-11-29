@@ -48,8 +48,7 @@ export function EmojiListConfig(
   const availableEmojis = [...DEFAULT_EMOJIS, ...customEmojis]
 
   const save = () => {
-    const data: EmojiListProps = {
-      ...list,
+    const data = {
       emojiWidth,
       emojis,
     }

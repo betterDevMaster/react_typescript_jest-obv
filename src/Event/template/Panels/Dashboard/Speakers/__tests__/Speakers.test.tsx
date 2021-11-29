@@ -4,7 +4,7 @@ import {loginToEventSite} from 'Event/__utils__/url'
 import user from '@testing-library/user-event'
 import {fakeAttendee} from 'Event/auth/__utils__/factory'
 import {fakePanels} from 'Event/template/Panels/__utils__/factory'
-import {createEntityList} from 'lib/list'
+import {createHashMap} from 'lib/list'
 import {fakeNavButtonWithSize} from 'Event/Dashboard/components/NavButton/__utils__/factory'
 import {eventRoutes, EVENT_PAGES} from 'Event/Routes'
 
@@ -21,7 +21,7 @@ it('should render speakers', async () => {
 
   const event = fakeEvent({
     template: fakePanels({
-      nav: createEntityList([button]),
+      nav: createHashMap([button]),
     }),
     speakers,
   })

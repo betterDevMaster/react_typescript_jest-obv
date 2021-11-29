@@ -8,7 +8,7 @@ import {fakeSimpleBlog} from 'Event/template/SimpleBlog/__utils__/factory'
 import {clickEdit} from '__utils__/edit'
 import {createTicketRibbonList} from 'Event/template/SimpleBlog/Dashboard/Sidebar/SidebarItem/TicketRibbonList'
 import {fakeCustomRibbon} from 'organization/Event/DashboardConfig/TicketRibbonUpload/__utils__/factory'
-import {createEntityList} from 'lib/list'
+import {createHashMap} from 'lib/list'
 
 const mockPost = axios.post as jest.Mock
 const mockDelete = axios.delete as jest.Mock
@@ -29,10 +29,10 @@ afterAll(() => {
 it('should add a custom ticket ribbon', async () => {
   const customRibbon = fakeCustomRibbon()
 
-  const sidebarItems = createEntityList([
+  const sidebarItems = createHashMap([
     {
       ...createTicketRibbonList(),
-      ribbons: createEntityList([]),
+      ribbons: createHashMap([]),
     },
   ])
   const event = fakeEvent({
@@ -99,10 +99,10 @@ it('should remove a custom image on delete', async () => {
 
   const event = fakeEvent({
     template: fakeSimpleBlog({
-      sidebarItems: createEntityList([
+      sidebarItems: createHashMap([
         {
           ...createTicketRibbonList(),
-          ribbons: createEntityList([
+          ribbons: createHashMap([
             fakeTicketRibbon({
               customRibbon,
             }),
@@ -134,10 +134,10 @@ it('should remove a custom image on delete', async () => {
 it('should handle a failed custom delete', async () => {
   const event = fakeEvent({
     template: fakeSimpleBlog({
-      sidebarItems: createEntityList([
+      sidebarItems: createHashMap([
         {
           ...createTicketRibbonList(),
-          ribbons: createEntityList([
+          ribbons: createHashMap([
             fakeTicketRibbon({
               customRibbon: {
                 id: 10,

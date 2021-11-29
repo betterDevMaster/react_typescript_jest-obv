@@ -10,9 +10,10 @@ import Button from '@material-ui/core/Button'
 import {RemoveButton} from 'organization/Event/DashboardConfig/ComponentConfig'
 import Section from 'Event/template/Cards/Dashboard/Sidebar/Section'
 import {useEditSidebarItem} from 'Event/template/Cards/Dashboard/Sidebar/SidebarItem'
+import {Ordered} from 'lib/list'
 
 export const POINTS_SUMMARY = 'Points Summary'
-export interface PointsSummaryProps {
+export interface PointsSummaryProps extends Ordered {
   type: typeof POINTS_SUMMARY
   description: string
   summary?: string

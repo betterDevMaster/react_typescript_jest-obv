@@ -19,6 +19,7 @@ import {Icon, IconProps} from 'lib/fontawesome/Icon'
 import ImageEntryUpload from 'Event/Dashboard/components/NavButton/ImageEntryUpload'
 import {MailchimpTag, useAddTag as useAddMailchimpTag} from 'Event/mailchimp'
 import {ZapierTag, useAddTag as useAddZapierTag} from 'Event/zapier'
+import {Ordered} from 'lib/list'
 
 export const NAV_BUTTON = 'NAV_BUTTON'
 
@@ -26,7 +27,7 @@ export default interface NavButtonAreaConfig {
   areaId: string | null
 }
 
-export default interface NavButton extends HasRules, Publishable {
+export default interface NavButton extends HasRules, Publishable, Ordered {
   text: string
   link: string
   backgroundColor?: string
@@ -86,6 +87,14 @@ export default function NavButton(props: NavButton) {
     if (props.zapierTag) {
       addZapierTag(props.zapierTag)
     }
+  }
+
+  // Button may have been removed, but a property was set
+  // after the fact. This would show up as an empty
+  // button so let's just render null.
+  const wasRemoved = Object.keys(props).length === 1
+  if (wasRemoved) {
+    return null
   }
 
   if (isImageUpload) {

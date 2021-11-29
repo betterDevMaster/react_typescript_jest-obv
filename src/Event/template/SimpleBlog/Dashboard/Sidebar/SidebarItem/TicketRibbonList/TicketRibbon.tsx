@@ -26,8 +26,8 @@ import {Draggable} from 'react-beautiful-dnd'
 import {DragHandle, DraggableOverlay} from 'lib/ui/drag-and-drop'
 import {TicketRibbonConfig} from 'Event/template/SimpleBlog/Dashboard/Sidebar/SidebarItem/TicketRibbonList/TicketRibbonConfig'
 import {useToggle} from 'lib/toggle'
-import {TicketRibbonListProps} from 'Event/template/SimpleBlog/Dashboard/Sidebar/SidebarItem/TicketRibbonList'
 import {CustomTicketRibbon} from 'organization/Event/DashboardConfig/TicketRibbonUpload'
+import {Ordered} from 'lib/list'
 
 export const BLACK_RIBBON = 'Black'
 export const BLUE_RIBBON = 'Blue'
@@ -68,12 +68,13 @@ export type TicketRibbonName =
   | typeof YELLOW_RIBBON
   | typeof CUSTOM_RIBBON
 
-export type TicketRibbon = HasRules & {
-  name: TicketRibbonName
-  text: string
-  color: string
-  customRibbon?: CustomTicketRibbon | null
-}
+export type TicketRibbon = HasRules &
+  Ordered & {
+    name: TicketRibbonName
+    text: string
+    color: string
+    customRibbon?: CustomTicketRibbon | null
+  }
 
 export const TICKET_RIBBON_IMAGE: Record<string, string> = {
   [BLACK_RIBBON]: BLACK_RIBBON_IMAGE,
@@ -102,10 +103,9 @@ export default function TicketRibbon(props: {
   ticketRibbon: TicketRibbon
   id: string
   index: number
-  list: TicketRibbonListProps
 }) {
   const isEdit = useEditMode()
-  const {ticketRibbon, index, id, list} = props
+  const {ticketRibbon, index, id} = props
   const {flag: configVisible, toggle: toggleConfig} = useToggle()
 
   if (!isEdit) {
@@ -117,7 +117,6 @@ export default function TicketRibbon(props: {
       <TicketRibbonConfig
         isVisible={configVisible}
         ticketRibbon={ticketRibbon}
-        list={list}
         id={id}
         onClose={toggleConfig}
       />

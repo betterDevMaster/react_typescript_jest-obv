@@ -1,7 +1,6 @@
 import {
   Agenda,
   AgendaListProps,
-  AGENDA_LIST,
   createAgendaList,
 } from 'Event/template/Cards/Dashboard/Sidebar/SidebarItem/AgendaList'
 import faker from 'faker'

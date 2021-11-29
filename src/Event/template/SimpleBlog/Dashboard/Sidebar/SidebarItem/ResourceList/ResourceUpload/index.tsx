@@ -1,4 +1,4 @@
-import React, {useState} from 'react'
+import React, {useState, useCallback} from 'react'
 import {api} from 'lib/url'
 import CircularProgress from '@material-ui/core/CircularProgress'
 import withStyles from '@material-ui/core/styles/withStyles'
@@ -113,13 +113,18 @@ function LoadingOverlay(props: {visible: boolean}) {
 }
 
 export function useDeleteFile() {
-  const {event} = useEvent()
+  const {
+    event: {slug},
+  } = useEvent()
   const {client} = useOrganization()
 
-  return (file: string) => {
-    const url = api(`/events/${event.slug}/resources/${file}`)
-    return client.delete(url)
-  }
+  return useCallback(
+    (file: string) => {
+      const url = api(`/events/${slug}/resources/${file}`)
+      return client.delete(url)
+    },
+    [slug, client],
+  )
 }
 
 function Error(props: {children: string | null}) {

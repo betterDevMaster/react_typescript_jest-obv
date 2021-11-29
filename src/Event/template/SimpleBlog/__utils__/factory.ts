@@ -4,7 +4,7 @@ import {withAgendas} from 'Event/template/SimpleBlog/Dashboard/Sidebar/SidebarIt
 import {withTicketRibbons} from 'Event/template/SimpleBlog/Dashboard/Sidebar/SidebarItem/TicketRibbonList/__utils__/factory'
 import {withBlogPosts} from 'Event/Dashboard/components/BlogPost/__utils__/factory'
 import {fakeNavButtonWithSize} from 'Event/Dashboard/components/NavButton/__utils__/factory'
-import {createEntityList} from 'lib/list'
+import {createHashMap} from 'lib/list'
 import {createSimpleBlog, SimpleBlog} from 'Event/template/SimpleBlog'
 import {colors} from 'lib/ui/theme'
 
@@ -33,7 +33,7 @@ export function withMainNav<T extends {mainNav: SimpleBlog['mainNav']}>(
   )
   return {
     ...attributes,
-    mainNav: createEntityList(buttons),
+    mainNav: createHashMap(buttons),
   }
 }
 

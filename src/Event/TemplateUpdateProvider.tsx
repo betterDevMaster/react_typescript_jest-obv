@@ -3,6 +3,7 @@ import {flatten} from 'lib/object'
 import {DeepPartialSubstitute} from 'lib/type-utils'
 import React, {useState, useCallback, useEffect, useMemo} from 'react'
 import setAtPath from 'lodash/set'
+import unsetAtPath from 'lodash/unset'
 import {useOrganization} from 'organization/OrganizationProvider'
 import {useEvent} from 'Event/EventProvider'
 import {api} from 'lib/url'
@@ -104,6 +105,10 @@ export default function TemplateUpdateProvider(props: {
       const updated = clone(template)
 
       for (const [keyPath, val] of Object.entries(keyPaths)) {
+        if (val === REMOVE) {
+          unsetAtPath(updated, keyPath)
+          continue
+        }
         setAtPath(updated, keyPath, val)
       }
 
@@ -170,4 +175,29 @@ export function useTemplateUpdate<T extends Template>() {
   }
 
   return context as TemplateUpdateType<T>
+}
+
+// Hook that will automatically check if an item has been removed, but still
+// has some dangling property set. This can occur if the position was
+// set AFTER an item has been removed.
+export function useRemoveIfEmpty(
+  remove: () => void,
+  item: Record<string, any>,
+  options: {
+    shouldSkip?: boolean
+  } = {},
+) {
+  const {shouldSkip} = options
+  useEffect(() => {
+    if (shouldSkip) {
+      return
+    }
+
+    // Currently only expecting a single property ('position') that could be
+    // dangling since an inserted item should be persisted.
+    const wasRemoved = Object.keys(item).length === 1
+    if (wasRemoved) {
+      remove()
+    }
+  }, [item, remove, shouldSkip])
 }

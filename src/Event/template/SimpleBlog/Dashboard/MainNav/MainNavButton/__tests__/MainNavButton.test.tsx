@@ -2,7 +2,7 @@ import user from '@testing-library/user-event'
 import faker from 'faker'
 import {fakeSimpleBlog} from 'Event/template/SimpleBlog/__utils__/factory'
 import {fakeNavButtonWithSize} from 'Event/Dashboard/components/NavButton/__utils__/factory'
-import {createEntityList} from 'lib/list'
+import {createHashMap} from 'lib/list'
 import {fakeEvent} from 'Event/__utils__/factory'
 import {wait} from '@testing-library/react'
 import mockAxios from 'axios'
@@ -29,7 +29,7 @@ it('should receive points', async () => {
     isAreaButton: true,
   })
 
-  const mainNav = createEntityList([button])
+  const mainNav = createHashMap([button])
   const event = fakeEvent({template: fakeSimpleBlog({mainNav})})
 
   const {findByText} = await loginToEventSite({
@@ -64,7 +64,7 @@ it('should add an infusionsoft tag', async () => {
     infusionsoftTag: {id, name: 'Some tag'},
   })
 
-  const mainNav = createEntityList([button])
+  const mainNav = createHashMap([button])
   const event = fakeEvent({template: fakeSimpleBlog({mainNav})})
 
   const {findByText} = await loginToEventSite({
@@ -97,7 +97,7 @@ it('should add a zapier tag', async () => {
     zapierTag: tag,
   })
 
-  const mainNav = createEntityList([button])
+  const mainNav = createHashMap([button])
   const event = fakeEvent({template: fakeSimpleBlog({mainNav})})
 
   const {findByText} = await loginToEventSite({

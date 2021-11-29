@@ -1,7 +1,6 @@
 import faker from 'faker'
-import {fakePanels} from 'Event/template/Panels/__utils__/factory'
 import {fakeCountDownTimer} from 'Event/Dashboard/components/CountDownTimer/__utils__/factory'
-import {createEntityList} from 'lib/list'
+import {createHashMap, orderedIdsByPosition} from 'lib/list'
 import {clickEdit} from '__utils__/edit'
 import {fireEvent} from '@testing-library/react'
 import {fakeEvent} from 'Event/__utils__/factory'
@@ -9,6 +8,7 @@ import {wait} from '@testing-library/react'
 import {goToDashboardConfig} from 'organization/Event/DashboardConfig/__utils__/go-dashboard-config'
 import axios from 'axios'
 import {fakeSimpleBlog} from 'Event/template/SimpleBlog/__utils__/factory'
+import {REMOVE} from 'Event/TemplateUpdateProvider'
 
 const mockPut = axios.put as jest.Mock
 
@@ -24,17 +24,17 @@ it('should render count down timers', async () => {
     fakeCountDownTimer,
   )
 
-  const mainCountDownTimers = createEntityList(countdownTimers)
+  const mainCountDownTimers = createHashMap(countdownTimers)
   const {findAllByLabelText} = await goToDashboardConfig({
     event: fakeEvent({
-      template: fakePanels({
+      template: fakeSimpleBlog({
         countDownTimers: mainCountDownTimers,
       }),
     }),
   })
 
   const timersEls = await findAllByLabelText('count down timer')
-  expect(timersEls.length).toBe(mainCountDownTimers.ids.length)
+  expect(timersEls.length).toBe(Object.keys(mainCountDownTimers).length)
 })
 
 it('should add a new count down timer', async () => {
@@ -47,7 +47,7 @@ it('should add a new count down timer', async () => {
     fakeCountDownTimer,
   )
 
-  const mainCountDownTimers = createEntityList(coundDownTimers)
+  const mainCountDownTimers = createHashMap(coundDownTimers)
   const event = fakeEvent({
     template: fakeSimpleBlog({
       countDownTimers: mainCountDownTimers,
@@ -76,16 +76,16 @@ it('should add a new count down timer', async () => {
 
   const [url, data] = mockPut.mock.calls[0]
   expect(url).toMatch(`/events/${event.slug}`)
-  expect(data.template['countDownTimers.ids'].length).toBe(
-    numCountDownTimer + 1,
-  )
+
+  const values = Object.values(data.template)
+  expect(values).toContain('#000000') // default text color
 })
 
 it('should remove the timer', async () => {
   const numCountDownTimer = faker.random.number({min: 2, max: 4})
 
   const timers = Array.from({length: numCountDownTimer}, fakeCountDownTimer)
-  const mainTimers = createEntityList(timers)
+  const mainTimers = createHashMap(timers)
   const event = fakeEvent({
     template: fakeSimpleBlog({countDownTimers: mainTimers}),
   })
@@ -97,7 +97,8 @@ it('should remove the timer', async () => {
   const timerEls = () => findAllByLabelText('count down timer')
   expect((await timerEls()).length).toBe(numCountDownTimer)
 
-  const target = faker.random.arrayElement(await timerEls())
+  const targetIndex = faker.random.number({min: 0, max: numCountDownTimer - 1})
+  const target = (await timerEls())[targetIndex]
 
   clickEdit(target)
 
@@ -111,8 +112,9 @@ it('should remove the timer', async () => {
   })
 
   const [url, data] = mockPut.mock.calls[0]
-  expect(url).toMatch(`/events/${event.slug}`)
-  expect(data.template['countDownTimers.ids'].length).toBe(
-    numCountDownTimer - 1,
-  )
+  expect(url).toMatch(`/events/${event.slug}/template`)
+
+  const ids = orderedIdsByPosition(mainTimers)
+  const id = ids[targetIndex]
+  expect(data.template[`countDownTimers.${id}`]).toBe(REMOVE)
 })

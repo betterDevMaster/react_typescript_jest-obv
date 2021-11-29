@@ -1,6 +1,6 @@
+import {createHashMap} from 'lib/list'
 import {BlogPost} from 'Event/Dashboard/components/BlogPost'
 import faker from 'faker'
-import {createEntityList, EntityList} from 'lib/list'
 
 export const fakeBlogPost = (overrides?: Partial<BlogPost>): BlogPost => ({
   title: faker.lorem.lines(1),
@@ -20,7 +20,7 @@ export const fakeBlogPost = (overrides?: Partial<BlogPost>): BlogPost => ({
 
 export function withBlogPosts<
   T extends {
-    blogPosts: EntityList<BlogPost>
+    blogPosts: Record<string, BlogPost>
   }
 >(dashboard: T): T {
   const posts = Array.from(
@@ -30,6 +30,6 @@ export function withBlogPosts<
 
   return {
     ...dashboard,
-    blogPosts: createEntityList(posts),
+    blogPosts: createHashMap(posts),
   }
 }

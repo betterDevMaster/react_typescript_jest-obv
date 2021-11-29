@@ -8,7 +8,7 @@ import {
 } from 'lib/dom'
 import DangerButton from 'lib/ui/Button/DangerButton'
 import ColorPicker from 'lib/ui/ColorPicker'
-import React, {useEffect, useState} from 'react'
+import React, {useEffect, useState, useCallback} from 'react'
 import Box from '@material-ui/core/Box'
 import RuleConfig, {useRuleConfig} from 'Event/attendee-rules/RuleConfig'
 import ConfigureRulesButton from 'Event/attendee-rules/ConfigureRulesButton'
@@ -29,8 +29,8 @@ import MenuItem from '@material-ui/core/MenuItem'
 import FormControl from '@material-ui/core/FormControl'
 import Slider from '@material-ui/core/Slider'
 import {CardsNavButtonProps} from 'Event/template/Cards/Dashboard/CardsNavButton'
-import {useCardsTemplate, useCardsUpdate} from 'Event/template/Cards'
-import {REMOVE} from 'Event/TemplateUpdateProvider'
+import {useCardsUpdate} from 'Event/template/Cards'
+import {REMOVE, useRemoveIfEmpty} from 'Event/TemplateUpdateProvider'
 
 export type ButtonConfigProps<K extends NavButton> = {
   button: K
@@ -45,7 +45,6 @@ export function MainNavButtonConfig(
   },
 ) {
   const {isVisible, onClose, id, button} = props
-  const {mainNav: buttons} = useCardsTemplate()
 
   const {register, control, handleSubmit} = useForm()
 
@@ -80,7 +79,7 @@ export function MainNavButtonConfig(
   const update = (id: string, updated: CardsNavButtonProps) => {
     updateCards({
       mainNav: {
-        entities: {
+        buttons: {
           [id]: updated,
         },
       },
@@ -92,30 +91,29 @@ export function MainNavButtonConfig(
 
     updateCards({
       mainNav: {
-        ids: [...buttons.ids, id],
-        entities: {
+        buttons: {
           [id]: button,
         },
       },
     })
   }
 
-  const removeButton = () => {
+  const removeButton = useCallback(() => {
     if (!id) {
       throw new Error('Missing button id')
     }
-
-    const updatedIds = buttons.ids.filter((i) => i !== id)
-
     updateCards({
       mainNav: {
-        entities: {
+        buttons: {
           [id]: REMOVE,
         },
-        ids: updatedIds,
       },
     })
-  }
+  }, [id, updateCards])
+
+  useRemoveIfEmpty(removeButton, button, {
+    shouldSkip: !id,
+  })
 
   const save = (formData: any) => {
     const data: CardsNavButtonProps = {
@@ -263,7 +261,7 @@ export function MainNavButtonConfig(
           <InputLabel>Font Size</InputLabel>
           <Controller
             name="fontSize"
-            defaultValue={button.fontSize}
+            defaultValue={button.fontSize || ''}
             control={control}
             render={({value, onChange}) => (
               <Slider

@@ -1,6 +1,6 @@
 import {Sidebar} from 'Event/template/SimpleBlog/Dashboard/Sidebar/SidebarContainer'
 import {NavButtonWithSize} from 'Event/Dashboard/components/NavButton'
-import {EntityList} from 'lib/list'
+import {EntityList, HashMap} from 'lib/list'
 import {colors} from 'lib/ui/theme'
 import {Column} from 'lib/ui/layout'
 import {GridSize} from '@material-ui/core/Grid'
@@ -32,12 +32,12 @@ export type SimpleBlog = BaseTemplate & {
   name: typeof SIMPLE_BLOG
   isDarkMode?: boolean
   title: string
-  mainNav: EntityList<NavButtonWithSize>
+  mainNav: HashMap<NavButtonWithSize>
   welcomeText?: string
   heroImageSize?: number
   sidebar: Sidebar
-  sidebarItems: EntityList<SidebarItem>
-  blogPosts: EntityList<BlogPost>
+  sidebarItems: HashMap<SidebarItem>
+  blogPosts: HashMap<BlogPost>
   textColor?: string
   linkColor?: string
   linkUnderline?: boolean
@@ -178,7 +178,7 @@ export type SimpleBlog = BaseTemplate & {
     description?: string
     redirectUrl?: string
   }
-  countDownTimers?: EntityList<CountDownTimer>
+  countDownTimers?: HashMap<CountDownTimer>
   imageWaterfall?: {
     title?: string
     description?: string
@@ -209,10 +209,7 @@ export const createSimpleBlog = (): DeepRequired<SimpleBlog> => ({
   version: 1,
   name: SIMPLE_BLOG,
   title: '',
-  mainNav: {
-    entities: {},
-    ids: [],
-  },
+  mainNav: {},
   points_unit: 'Points',
   welcomeText: 'WELCOME TO YOUR DASHBOARD',
   sidebar: {
@@ -227,10 +224,7 @@ export const createSimpleBlog = (): DeepRequired<SimpleBlog> => ({
     separatorStyle: 'solid',
     separatorWidth: 1,
   },
-  sidebarItems: {
-    entities: {},
-    ids: [],
-  },
+  sidebarItems: {},
   techCheck: {
     buttonText: 'submit',
     buttonBackground: 'blue',
@@ -255,10 +249,7 @@ export const createSimpleBlog = (): DeepRequired<SimpleBlog> => ({
     buttonBorderColor: '#ffffff',
     buttonWidth: 12,
   },
-  blogPosts: {
-    entities: {},
-    ids: [],
-  },
+  blogPosts: {},
   backgroundPosition: 'fixed',
   heroImageSize: 50,
   isDarkMode: false,
@@ -388,10 +379,7 @@ export const createSimpleBlog = (): DeepRequired<SimpleBlog> => ({
     title: 'Event Offline',
     description: 'Please check back again, or contact support for access.',
   },
-  countDownTimers: {
-    entities: {},
-    ids: [],
-  },
+  countDownTimers: {},
   imageWaterfall: {
     title: 'Image Waterfall',
     description: 'Image Waterfall',

@@ -1,5 +1,5 @@
 import styled from 'styled-components'
-import React from 'react'
+import React, {useCallback} from 'react'
 import DangerButton from 'lib/ui/Button/DangerButton'
 import Box from '@material-ui/core/Box'
 import {
@@ -63,8 +63,11 @@ const ImageBox = styled.div`
 export function useDeleteCustomRibbon() {
   const {client} = useOrganization()
 
-  return (customRibbon: CustomTicketRibbon) => {
-    const url = api(`/ticket_ribbons/${customRibbon.id}`)
-    return client.delete(url)
-  }
+  return useCallback(
+    (customRibbon: CustomTicketRibbon) => {
+      const url = api(`/ticket_ribbons/${customRibbon.id}`)
+      return client.delete(url)
+    },
+    [client],
+  )
 }

@@ -7,7 +7,7 @@ import EditModeOnly from 'Event/Dashboard/editor/views/EditModeOnly'
 import AddBlogPostButton from 'Event/Dashboard/components/BlogPost/AddBlogPostButton'
 import {useSimpleBlogTemplate} from 'Event/template/SimpleBlog'
 import VisibleOnMatch from 'Event/attendee-rules/VisibleOnMatch'
-import {sortedByDate} from 'Event/Dashboard/components/BlogPost'
+import {sortedIdsByDate} from 'Event/Dashboard/components/BlogPost'
 import PostStylesConfig from 'Event/template/SimpleBlog/Dashboard/BlogPosts/PostStylesConfig'
 import {EditPost} from 'Event/Dashboard/components/BlogPost/BlogPostConfig'
 import PostFormStylesConfig from 'Event/template/SimpleBlog/Dashboard/BlogPosts/PostFormStylesConfig'
@@ -18,7 +18,7 @@ export default function BlogPosts() {
 
   const [editing, setEditing] = useState<string | null>(null)
 
-  const sortedIds = sortedByDate(posts)
+  const sortedIds = sortedIdsByDate(posts)
 
   return (
     <div>
@@ -29,7 +29,7 @@ export default function BlogPosts() {
         <StyledAddBlogPostButton />
       </EditModeOnly>
       {sortedIds.map((id, index) => {
-        const post = posts.entities[id]
+        const post = posts[id]
 
         const isLast = index === sortedIds.length - 1
 

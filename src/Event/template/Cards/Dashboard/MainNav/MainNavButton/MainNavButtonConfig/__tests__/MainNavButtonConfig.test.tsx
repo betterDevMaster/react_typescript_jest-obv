@@ -1,7 +1,6 @@
 import user from '@testing-library/user-event'
 import faker from 'faker'
 import {fakeCards} from 'Event/template/Cards/__utils__/factory'
-import {createEntityList} from 'lib/list'
 import {clickEdit} from '__utils__/edit'
 import {fireEvent} from '@testing-library/react'
 import {fakeEvent} from 'Event/__utils__/factory'
@@ -10,7 +9,10 @@ import {fakeArea} from 'organization/Event/AreaList/__utils__/factory'
 import mockAxios from 'axios'
 import {fakeAction} from 'Event/ActionsProvider/__utils__/factory'
 import {goToDashboardConfig} from 'organization/Event/DashboardConfig/__utils__/go-dashboard-config'
-import {fakeCardsNavButton} from 'Event/template/Cards/Dashboard/CardsNavButton/__utils__/factory'
+import {
+  fakeCardsNavButton,
+  fakeCardsNavButtons,
+} from 'Event/template/Cards/Dashboard/CardsNavButton/__utils__/factory'
 
 const mockPut = mockAxios.put as jest.Mock
 const mockGet = mockAxios.get as jest.Mock
@@ -36,16 +38,17 @@ it('should edit the selected button', async () => {
     fakeCardsNavButton,
   )
 
-  const mainNavButtons = createEntityList(buttons)
+  const {targetId, buttonsMap: mainNavButtons} = fakeCardsNavButtons(buttons)
   const event = fakeEvent({
     template: fakeCards({
-      mainNav: mainNavButtons,
+      mainNav: {
+        buttons: mainNavButtons,
+      },
     }),
   })
   const {findByLabelText, findByText} = await goToDashboardConfig({event})
 
-  const targetIndex = faker.random.number({min: 0, max: buttons.length - 1})
-  const button = buttons[targetIndex]
+  const button = mainNavButtons[targetId]
   const buttonEl = await findByText(button.text)
 
   clickEdit(buttonEl)
@@ -75,8 +78,7 @@ it('should edit the selected button', async () => {
 
   const [url, data] = mockPut.mock.calls[0]
   expect(url).toMatch(`/events/${event.slug}`)
-  const id = mainNavButtons.ids[targetIndex]
-  expect(data.template[`mainNav.entities.${id}.text`]).toBe(updatedValue)
+  expect(data.template[`mainNav.buttons.${targetId}.text`]).toBe(updatedValue)
 })
 
 it('should set an area button', async () => {
@@ -87,10 +89,14 @@ it('should set an area button', async () => {
     fakeCardsNavButton,
   )
 
-  const mainNavButtons = createEntityList(buttons)
+  const {targetId: targetKey, buttonsMap: mainNavButtons} = fakeCardsNavButtons(
+    buttons,
+  )
   const event = fakeEvent({
     template: fakeCards({
-      mainNav: mainNavButtons,
+      mainNav: {
+        buttons: mainNavButtons,
+      },
     }),
   })
 
@@ -104,8 +110,7 @@ it('should set an area button', async () => {
     event,
   })
 
-  const targetIndex = faker.random.number({min: 0, max: buttons.length - 1})
-  const button = buttons[targetIndex]
+  const button = mainNavButtons[targetKey]
   const buttonEl = await findByText(button.text)
 
   const target = faker.random.arrayElement(areas)
@@ -129,17 +134,16 @@ it('should set an area button', async () => {
 
   const [url, data] = mockPut.mock.calls[0]
   expect(url).toMatch(`/events/${event.slug}`)
-  const id = mainNavButtons.ids[targetIndex]
-  expect(data.template[`mainNav.entities.${id}.isAreaButton`]).toBe(true)
-  expect(data.template[`mainNav.entities.${id}.areaId`]).toBe(target.key) // Set area ID
+  expect(data.template[`mainNav.buttons.${targetKey}.isAreaButton`]).toBe(true)
+  expect(data.template[`mainNav.buttons.${targetKey}.areaId`]).toBe(target.key) // Set area ID
 })
 
 it('should assign an action for points', async () => {
   const button = fakeCardsNavButton()
-  const mainNav = createEntityList([button])
+  const {targetId, buttonsMap} = fakeCardsNavButtons([button])
   const event = fakeEvent({
     template: fakeCards({
-      mainNav: mainNav,
+      mainNav: {buttons: buttonsMap},
     }),
   })
 
@@ -175,16 +179,17 @@ it('should assign an action for points', async () => {
   const [url, data] = mockPut.mock.calls[0]
   expect(url).toMatch(`/events/${event.slug}`)
 
-  const id = mainNav.ids[0] // only one button
-  expect(data.template[`mainNav.entities.${id}.actionId`]).toBe(target.key) // Did assign action id
+  expect(data.template[`mainNav.buttons.${targetId}.actionId`]).toBe(target.key) // Did assign action id
 })
 
 it('should set an infusionsoft tag', async () => {
   const button = fakeCardsNavButton()
-  const mainNav = createEntityList([button])
+  const {targetId, buttonsMap: mainNav} = fakeCardsNavButtons([button])
   const event = fakeEvent({
     template: fakeCards({
-      mainNav: mainNav,
+      mainNav: {
+        buttons: mainNav,
+      },
     }),
     has_infusionsoft: true,
   })
@@ -213,8 +218,7 @@ it('should set an infusionsoft tag', async () => {
   const [url, data] = mockPut.mock.calls[0]
   expect(url).toMatch(`/events/${event.slug}`)
 
-  const buttonId = mainNav.ids[0]
-  expect(data.template[`mainNav.entities.${buttonId}.infusionsoftTag.id`]).toBe(
+  expect(data.template[`mainNav.buttons.${targetId}.infusionsoftTag.id`]).toBe(
     id,
   )
 })

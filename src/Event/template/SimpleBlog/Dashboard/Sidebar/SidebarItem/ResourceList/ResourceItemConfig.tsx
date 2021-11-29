@@ -1,7 +1,7 @@
 import TextField from '@material-ui/core/TextField'
 import {v4 as uuid} from 'uuid'
 import {onChangeCheckedHandler} from 'lib/dom'
-import React, {useEffect, useState} from 'react'
+import React, {useEffect, useState, useCallback} from 'react'
 import ResourceUpload, {
   useDeleteFile,
 } from 'Event/template/SimpleBlog/Dashboard/Sidebar/SidebarItem/ResourceList/ResourceUpload'
@@ -21,7 +21,7 @@ import ComponentConfig, {
 } from 'organization/Event/DashboardConfig/ComponentConfig'
 import {Controller, useForm, UseFormMethods} from 'react-hook-form'
 import {ResourceListProps} from 'Event/template/SimpleBlog/Dashboard/Sidebar/SidebarItem/ResourceList'
-import {REMOVE} from 'Event/TemplateUpdateProvider'
+import {REMOVE, useRemoveIfEmpty} from 'Event/TemplateUpdateProvider'
 import {useEditSidebarItem} from 'Event/template/SimpleBlog/Dashboard/Sidebar/SidebarItem'
 
 export function ResourceItemConfig(
@@ -32,7 +32,6 @@ export function ResourceItemConfig(
   },
 ) {
   const {resource, id, isVisible, onClose} = props
-  const {list} = props
 
   const deleteFile = useDeleteFile()
   const {visible: ruleConfigVisible, toggle: toggleRuleConfig} = useRuleConfig()
@@ -57,23 +56,17 @@ export function ResourceItemConfig(
   const update = (id: string, data: Resource) => {
     updateItem({
       resources: {
-        entities: {
-          [id]: data,
-        },
+        [id]: data,
       },
     })
   }
 
   const insert = (newResource: Resource) => {
     const id = uuid()
-    const added = [...list.resources.ids, id]
 
     updateItem({
       resources: {
-        ids: added,
-        entities: {
-          [id]: newResource,
-        },
+        [id]: newResource,
       },
     })
   }
@@ -98,7 +91,7 @@ export function ResourceItemConfig(
     onClose()
   }
 
-  const remove = () => {
+  const remove = useCallback(() => {
     if (!id) {
       throw new Error('Called remove outside of editing resource.')
     }
@@ -111,19 +104,16 @@ export function ResourceItemConfig(
       })
     }
 
-    const removed = list.resources.ids.filter((i) => i !== id)
-
     updateItem({
       resources: {
-        ids: removed,
-        entities: {
-          id: REMOVE,
-        },
+        [id]: REMOVE,
       },
     })
 
     onClose()
-  }
+  }, [deleteFile, id, onClose, resource, updateItem])
+
+  useRemoveIfEmpty(remove, props.resource, {shouldSkip: !id})
 
   return (
     <ComponentConfig title="Resource" onClose={onClose} isVisible={isVisible}>

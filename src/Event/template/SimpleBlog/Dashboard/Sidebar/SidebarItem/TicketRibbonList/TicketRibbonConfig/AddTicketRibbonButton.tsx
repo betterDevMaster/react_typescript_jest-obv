@@ -58,7 +58,6 @@ function NewTicketRibbonConfig(props: {
     <TicketRibbonConfig
       ticketRibbon={props.ticketRibbon}
       onClose={props.onClose}
-      list={props.list}
       isVisible
     />
   )

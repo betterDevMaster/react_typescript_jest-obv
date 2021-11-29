@@ -37,7 +37,10 @@ export function EditPost(props: {id: string | null; onClose: () => void}) {
     return null
   }
 
-  const post = blogPosts.entities[id]
+  const post = blogPosts[id]
+  if (!post) {
+    return null
+  }
 
   return <BlogPostConfig id={id} isVisible post={post} onClose={onClose} />
 }

@@ -8,7 +8,7 @@ import NavButton, {
 import {handleChangeSlider, onChangeCheckedHandler} from 'lib/dom'
 import DangerButton from 'lib/ui/Button/DangerButton'
 import ColorPicker from 'lib/ui/ColorPicker'
-import React, {useEffect, useState} from 'react'
+import React, {useEffect, useState, useCallback} from 'react'
 import Box from '@material-ui/core/Box'
 import RuleConfig, {useRuleConfig} from 'Event/attendee-rules/RuleConfig'
 import ConfigureRulesButton from 'Event/attendee-rules/ConfigureRulesButton'
@@ -17,7 +17,7 @@ import Switch from 'lib/ui/form/Switch'
 import InfusionsoftTagInput from 'organization/Event/DashboardConfig/InfusionsoftTagInput'
 import TargetConfig from 'Event/Dashboard/components/NavButton/NavButtonConfig/TargetConfig'
 import IconSelect from 'lib/fontawesome/IconSelect'
-import {usePanelsTemplate, usePanelsUpdate} from 'Event/template/Panels'
+import {usePanelsUpdate} from 'Event/template/Panels'
 import Dialog from 'lib/ui/Dialog'
 import DialogContent from '@material-ui/core/DialogContent'
 import DialogTitle from '@material-ui/core/DialogTitle'
@@ -31,7 +31,7 @@ import {v4 as uuid} from 'uuid'
 import BackgroundPicker from 'lib/ui/form/BackgroundPicker'
 import MailchimpTagInput from 'organization/Event/DashboardConfig/MailchimpTagInput'
 import ZapierTagInput from 'organization/Event/DashboardConfig/ZapierTagInput'
-import {REMOVE} from 'Event/TemplateUpdateProvider'
+import {REMOVE, useRemoveIfEmpty} from 'Event/TemplateUpdateProvider'
 
 export type ButtonConfigProps<K extends NavButton> = {
   button: K
@@ -45,8 +45,6 @@ export default function MainNavButtonConfig(
   },
 ) {
   const {button, id, isVisible, onClose} = props
-  const template = usePanelsTemplate()
-  const {nav: buttons} = template
   const updateTemplate = usePanelsUpdate()
 
   const [rules, setRules] = useState(button.rules)
@@ -80,45 +78,37 @@ export default function MainNavButtonConfig(
   const update = (id: string, updated: NavButtonWithSize) => {
     updateTemplate({
       nav: {
-        entities: {
-          [id]: updated,
-        },
+        [id]: updated,
       },
     })
   }
 
-  const removeButton = () => {
+  const removeButton = useCallback(() => {
     if (!id) {
       throw new Error('Missing button id')
     }
 
-    const updatedIds = buttons.ids.filter((i) => i !== id)
-
-    props.onClose()
+    onClose()
     updateTemplate({
       nav: {
-        entities: {
-          [id]: REMOVE,
-        },
-        ids: updatedIds,
+        [id]: REMOVE,
       },
     })
-  }
+  }, [id, onClose, updateTemplate])
+
+  useRemoveIfEmpty(removeButton, button, {shouldSkip: !id})
 
   const insert = (button: NavButtonWithSize) => {
     const id = uuid()
 
     updateTemplate({
       nav: {
-        ids: [...buttons.ids, id],
-        entities: {
-          [id]: button,
-        },
+        [id]: button,
       },
     })
   }
 
-  const save = (formData: any) => {
+  const save = (formData: NavButtonWithSize) => {
     const data: NavButtonWithSize = {
       ...formData,
       rules,

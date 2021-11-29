@@ -1,5 +1,5 @@
 import {fakeCountDownTimer} from 'Event/Dashboard/components/CountDownTimer/__utils__/factory'
-import {createEntityList} from 'lib/list'
+import {createHashMap} from 'lib/list'
 import {fakeEvent} from 'Event/__utils__/factory'
 import {fakeAttendee} from 'Event/auth/__utils__/factory'
 import moment from 'moment'
@@ -20,7 +20,7 @@ it('should show timer for attendee', async () => {
   const {findByLabelText} = await loginToPanelsSite({
     event: fakeEvent({
       template: fakePanels({
-        countDownTimers: createEntityList([timer]),
+        countDownTimers: createHashMap([timer]),
       }),
     }),
     attendee: fakeAttendee({
@@ -42,7 +42,7 @@ it('should hide timer if past', async () => {
   const {queryByLabelText} = await loginToPanelsSite({
     event: fakeEvent({
       template: fakePanels({
-        countDownTimers: createEntityList([timer]),
+        countDownTimers: createHashMap([timer]),
       }),
     }),
     attendee: fakeAttendee({

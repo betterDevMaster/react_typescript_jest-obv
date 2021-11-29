@@ -18,8 +18,10 @@ import {useToggle} from 'lib/toggle'
 import {ResourceItemConfig} from 'Event/template/SimpleBlog/Dashboard/Sidebar/SidebarItem/ResourceList/ResourceItemConfig'
 import {ResourceListProps} from 'Event/template/SimpleBlog/Dashboard/Sidebar/SidebarItem/ResourceList'
 import {useResourceUrl} from 'Event/Dashboard/components/resource'
+import {Ordered} from 'lib/list'
 
 export type Resource = Publishable &
+  Ordered &
   HasRules & {
     name: string
     filePath: string

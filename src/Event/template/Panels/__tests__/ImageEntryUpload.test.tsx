@@ -1,9 +1,8 @@
-import {fakeAttendee} from 'Event/auth/__utils__/factory'
 import axios from 'axios'
 import {fakeNavButtonWithSize} from 'Event/Dashboard/components/NavButton/__utils__/factory'
 import {fakeEvent} from 'Event/__utils__/factory'
 import {loginToEventSite} from 'Event/__utils__/url'
-import {createEntityList} from 'lib/list'
+import {createHashMap} from 'lib/list'
 import user from '@testing-library/user-event'
 import {fireEvent, wait} from '@testing-library/dom'
 import {fakePanels} from 'Event/template/Panels/__utils__/factory'
@@ -18,7 +17,7 @@ it('should upload an image', async () => {
   const {findAllByText, findByLabelText} = await loginToEventSite({
     event: fakeEvent({
       template: fakePanels({
-        nav: createEntityList([
+        nav: createHashMap([
           fakeNavButtonWithSize({
             text: buttonText,
             isImageUpload: true,

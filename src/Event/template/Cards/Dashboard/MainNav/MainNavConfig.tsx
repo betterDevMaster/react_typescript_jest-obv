@@ -1,14 +1,15 @@
 import ColorPicker from 'lib/ui/ColorPicker'
-import React, {useEffect, useState} from 'react'
-import {useCardsTemplate, useCardsUpdate} from 'Event/template/Cards'
+import React from 'react'
+import {Cards, useCardsTemplate, useCardsUpdate} from 'Event/template/Cards'
 import Slider from '@material-ui/core/Slider'
-import {handleChangeSlider, onChangeStringHandler} from 'lib/dom'
+import {handleChangeSlider} from 'lib/dom'
 import InputLabel from '@material-ui/core/InputLabel'
 import ComponentConfig, {
   ComponentConfigProps,
   SaveButton,
 } from 'organization/Event/DashboardConfig/ComponentConfig'
 import TextField from '@material-ui/core/TextField'
+import {Controller, useForm} from 'react-hook-form'
 
 const MIN_MAIN_NAV_WIDTH = 10
 const MAX_MAIN_NAV_WIDTH = 100
@@ -21,99 +22,96 @@ const MAX_MAIN_NAV_BORDER_RADIUS = 100
 
 export default function MainNavConfig(props: ComponentConfigProps) {
   const {isVisible, onClose} = props
-  const template = useCardsTemplate()
+  const {mainNav} = useCardsTemplate()
   const update = useCardsUpdate()
+  const {handleSubmit, register, control} = useForm()
 
-  const [mainNavWidth, setMainNavWidth] = useState(template.mainNav.width)
-  const [mainNavButtonHeight, setMainNavButtonHeight] = useState(
-    template.mainNav.buttonHeight,
-  )
-  const [mainNavBorderRadius, setMainNavBorderRadius] = useState(
-    template.mainNav.borderRadius,
-  )
-
-  const [scrollDownText, setScrollDownText] = useState(
-    template.mainNav.scrollDownText,
-  )
-
-  const [scrollDownArrowColor, setScrollDownArrowColor] = useState(
-    template.mainNav.scrollDownArrowColor,
-  )
-
-  useEffect(() => {
-    if (isVisible) {
-      return
-    }
-
-    setMainNavWidth(template.mainNav.width)
-    setMainNavButtonHeight(template.mainNav.buttonHeight)
-    setMainNavBorderRadius(template.mainNav.borderRadius)
-    setScrollDownArrowColor(template.mainNav.scrollDownArrowColor)
-    setScrollDownText(template.mainNav.scrollDownText)
-  }, [isVisible, template])
-
-  const save = () => {
+  const save = (data: Omit<Cards['mainNav'], 'buttons'>) => {
     update({
-      mainNav: {
-        width: mainNavWidth,
-        buttonHeight: mainNavButtonHeight,
-        borderRadius: mainNavBorderRadius,
-        scrollDownText,
-        scrollDownArrowColor,
-      },
+      mainNav: data,
     })
     onClose()
   }
 
   return (
     <ComponentConfig isVisible={isVisible} onClose={onClose} title="Cards">
-      <InputLabel>Main Nav Width</InputLabel>
-      <Slider
-        min={MIN_MAIN_NAV_WIDTH}
-        max={MAX_MAIN_NAV_WIDTH}
-        step={1}
-        onChange={handleChangeSlider(setMainNavWidth)}
-        valueLabelDisplay="auto"
-        value={mainNavWidth}
-        aria-label="main nav container width"
-      />
-      <InputLabel>Main Nav Button Height</InputLabel>
-      <Slider
-        min={MIN_MAIN_NAV_BUTTON_HEIGHT}
-        max={MAX_MAIN_NAV_BUTTON_HEIGHT}
-        step={1}
-        onChange={handleChangeSlider(setMainNavButtonHeight)}
-        valueLabelDisplay="auto"
-        value={mainNavButtonHeight}
-        aria-label="main nav button height"
-      />
-      <InputLabel>Main Nav Border Radius</InputLabel>
-      <Slider
-        min={MIN_MAIN_NAV_BORDER_RADIUS}
-        max={MAX_MAIN_NAV_BORDER_RADIUS}
-        step={1}
-        onChange={handleChangeSlider(setMainNavBorderRadius)}
-        valueLabelDisplay="auto"
-        value={mainNavBorderRadius}
-        aria-label="main nav container border radius"
-      />
-      <TextField
-        label="Scroll Down Text"
-        value={scrollDownText}
-        onChange={onChangeStringHandler(setScrollDownText)}
-        inputProps={{
-          'aria-label': 'scroll down text',
-        }}
-        fullWidth
-      />
-      <ColorPicker
-        label="Scroll Down Arrow Color"
-        color={scrollDownArrowColor}
-        onPick={setScrollDownArrowColor}
-        aria-label="scroll down arrow color"
-      />
-
-      <SaveButton onClick={save} />
+      <form onSubmit={handleSubmit(save)}>
+        <InputLabel>Main Nav Width</InputLabel>
+        <Controller
+          name="width"
+          defaultValue={mainNav.width}
+          control={control}
+          render={({value, onChange}) => (
+            <Slider
+              min={MIN_MAIN_NAV_WIDTH}
+              max={MAX_MAIN_NAV_WIDTH}
+              step={1}
+              onChange={handleChangeSlider(onChange)}
+              valueLabelDisplay="auto"
+              value={value}
+              aria-label="main nav container width"
+            />
+          )}
+        />
+        <InputLabel>Main Nav Button Height</InputLabel>
+        <Controller
+          name="buttonHeight"
+          defaultValue={mainNav.buttonHeight}
+          control={control}
+          render={({value, onChange}) => (
+            <Slider
+              min={MIN_MAIN_NAV_BUTTON_HEIGHT}
+              max={MAX_MAIN_NAV_BUTTON_HEIGHT}
+              step={1}
+              onChange={handleChangeSlider(onChange)}
+              valueLabelDisplay="auto"
+              value={value}
+              aria-label="main nav button height"
+            />
+          )}
+        />
+        <InputLabel>Main Nav Border Radius</InputLabel>
+        <Controller
+          name="borderRadius"
+          defaultValue={mainNav.borderRadius}
+          control={control}
+          render={({value, onChange}) => (
+            <Slider
+              min={MIN_MAIN_NAV_BORDER_RADIUS}
+              max={MAX_MAIN_NAV_BORDER_RADIUS}
+              step={1}
+              onChange={handleChangeSlider(onChange)}
+              valueLabelDisplay="auto"
+              value={value}
+              aria-label="main nav container border radius"
+            />
+          )}
+        />
+        <TextField
+          label="Scroll Down Text"
+          name="scrollDownText"
+          defaultValue={mainNav.scrollDownText}
+          inputProps={{
+            'aria-label': 'scroll down text',
+            ref: register,
+          }}
+          fullWidth
+        />
+        <Controller
+          name="scrollDownArrowColor"
+          defaultValue={mainNav.scrollDownArrowColor}
+          control={control}
+          render={({value, onChange}) => (
+            <ColorPicker
+              label="Scroll Down Arrow Color"
+              color={value}
+              onPick={onChange}
+              aria-label="scroll down arrow color"
+            />
+          )}
+        />
+        <SaveButton />
+      </form>
     </ComponentConfig>
   )
 }

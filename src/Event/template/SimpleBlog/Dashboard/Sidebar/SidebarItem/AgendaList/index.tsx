@@ -16,18 +16,19 @@ import {AgendaListConfig} from 'Event/template/SimpleBlog/Dashboard/Sidebar/Side
 import {FontStyle} from 'lib/ui/typography/FontStyleInput'
 import {RemoveButton} from 'organization/Event/DashboardConfig/ComponentConfig'
 import Section from 'Event/template/SimpleBlog/Dashboard/Sidebar/Section'
-import {EntityList} from 'lib/list'
+import {createPositions, HashMap, Ordered, orderedIdsByPosition} from 'lib/list'
 import {useEditSidebarItem} from 'Event/template/SimpleBlog/Dashboard/Sidebar/SidebarItem'
+import {useRemoveIfEmpty} from 'Event/TemplateUpdateProvider'
 
 export const AGENDA_LIST = 'Agenda List'
-export type AgendaListProps = {
+export type AgendaListProps = Ordered & {
   type: typeof AGENDA_LIST
   title: string
   description?: string
   footer?: string
   descriptionFontStyles?: FontStyle[]
   footerFontStyles?: FontStyle[]
-  items: EntityList<Agenda>
+  items: HashMap<Agenda>
 }
 
 export const createAgendaList = (): AgendaListProps => ({
@@ -35,20 +36,18 @@ export const createAgendaList = (): AgendaListProps => ({
   title: 'Agenda',
   description: '',
   footer: 'Agenda Time is in YOUR time zone, not ours',
-  items: {
-    ids: [],
-    entities: {},
-  },
+  items: {},
   footerFontStyles: [],
   descriptionFontStyles: [],
 })
 
-export type Agenda = Publishable & {
-  startDate: string
-  endDate: string | null
-  text: string
-  link: string | null
-}
+export type Agenda = Publishable &
+  Ordered & {
+    startDate: string
+    endDate: string | null
+    text: string
+    link: string | null
+  }
 
 export default function AgendaList(props: AgendaListProps) {
   const {
@@ -63,7 +62,7 @@ export default function AgendaList(props: AgendaListProps) {
   const {sidebar} = template
   const isEdit = useEditMode()
   const v = useAttendeeVariables()
-  const hasAgenda = items.ids.length > 0
+  const hasAgenda = Object.keys(items).length > 0
   const {flag: listConfigVisible, toggle: toggleListConfig} = useToggle()
 
   if (!hasAgenda && !isEdit) {
@@ -78,7 +77,7 @@ export default function AgendaList(props: AgendaListProps) {
           isVisible={listConfigVisible}
           onClose={toggleListConfig}
         />
-        <RemoveAgendaListButton />
+        <RemoveAgendaListButton {...props} />
       </EditModeOnly>
       <Editable onEdit={toggleListConfig}>
         <Heading aria-label="agendas">{v(title)}</Heading>
@@ -101,14 +100,15 @@ export default function AgendaList(props: AgendaListProps) {
         {v(footer || '')}
       </StyledText>
       <EditModeOnly>
-        <StyledAddAgendaEventButton list={props} />
+        <StyledAddAgendaEventButton />
       </EditModeOnly>
     </Section>
   )
 }
 
-function RemoveAgendaListButton() {
+function RemoveAgendaListButton(props: AgendaListProps) {
   const {remove: removeItem} = useEditSidebarItem()
+  useRemoveIfEmpty(removeItem, props)
 
   return (
     <RemoveButton size="large" showing onClick={removeItem}>
@@ -145,13 +145,12 @@ function DraggableList(props: AgendaListProps) {
 }
 
 function AgendaItemList(props: AgendaListProps) {
+  const ids = orderedIdsByPosition(props.items)
   return (
     <>
-      {props.items.ids.map((id, index) => {
-        const agenda = props.items.entities[id]
-        return (
-          <Agenda agenda={agenda} id={id} key={id} list={props} index={index} />
-        )
+      {ids.map((id, index) => {
+        const agenda = props.items[id]
+        return <Agenda agenda={agenda} id={id} key={id} index={index} />
       })}
     </>
   )
@@ -168,14 +167,12 @@ function useHandleDrag(props: AgendaListProps) {
       return
     }
 
-    const moved = Array.from(items.ids)
-    const [removed] = moved.splice(source.index, 1)
-    moved.splice(destination.index, 0, removed)
+    const ids = orderedIdsByPosition(items)
+    const [removed] = ids.splice(source.index, 1)
+    ids.splice(destination.index, 0, removed)
 
     update({
-      items: {
-        ids: moved,
-      },
+      items: createPositions(ids),
     })
   }
 }

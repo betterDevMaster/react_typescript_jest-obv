@@ -7,6 +7,7 @@ import useDebounce from 'lib/debounce'
 import {useOnResize} from 'lib/resize'
 import PageArrows from 'Event/template/Panels/Dashboard/MainNav/MainNavDesktop/PageArrows'
 import CountDownTimers from 'Event/template/Panels/Dashboard/CountDownTimers'
+import {orderedIdsByPosition} from 'lib/list'
 
 /**
  * Amount of time to wait until resizing is done before calculating
@@ -30,7 +31,7 @@ export default function Sizer(props: {
   onChange: (perPage: number) => void
 }) {
   const template = usePanelsTemplate()
-  const ids = template.nav.ids
+  const ids = orderedIdsByPosition(template.nav)
 
   const {onChange} = props
   const [perPage, setPerPage] = useState(1)
@@ -149,14 +150,13 @@ function Page(props: {
   const {number, numItems, isLast, isFirst} = props
 
   const template = usePanelsTemplate()
-  const entities = template.nav.entities
-  const ids = template.nav.ids
 
   /**
    * Only render the visible buttons for a given page.
    */
   const start = number * numItems - numItems
   const end = start + numItems
+  const ids = orderedIdsByPosition(template.nav)
   const visibleIds = ids.filter((_, index) => start <= index && index < end)
 
   return (
@@ -167,7 +167,7 @@ function Page(props: {
           id={id}
           index={index}
           key={id}
-          button={entities[id]}
+          button={template.nav[id]}
           disableEdit
         />
       ))}

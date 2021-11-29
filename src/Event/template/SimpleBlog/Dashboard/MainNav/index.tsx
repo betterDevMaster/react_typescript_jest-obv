@@ -14,15 +14,16 @@ import {
   useSimpleBlogTemplate,
   useSimpleBlogUpdate,
 } from 'Event/template/SimpleBlog'
+import {createPositions, orderedIdsByPosition} from 'lib/list'
 
 export default function MainNav(props: {className?: string}) {
   const template = useSimpleBlogTemplate()
   const {mainNav} = template
   const isEditMode = useEditMode()
-  const {ids, entities} = mainNav
 
+  const ids = orderedIdsByPosition(mainNav)
   const buttons = ids.map((id, index) => (
-    <MainNavButton id={id} index={index} key={id} button={entities[id]} />
+    <MainNavButton id={id} index={index} key={id} button={mainNav[id]} />
   ))
 
   if (isEditMode) {
@@ -82,14 +83,12 @@ function useHandleDrag() {
       return
     }
 
-    const moved = Array.from(buttons.ids)
-    const [removed] = moved.splice(source.index, 1)
-    moved.splice(destination.index, 0, removed)
+    const ids = orderedIdsByPosition(buttons)
+    const [removed] = ids.splice(source.index, 1)
+    ids.splice(destination.index, 0, removed)
 
     set({
-      mainNav: {
-        ids: moved,
-      },
+      mainNav: createPositions(ids),
     })
   }
 }

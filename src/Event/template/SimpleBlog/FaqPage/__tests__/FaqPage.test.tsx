@@ -4,7 +4,7 @@ import {fakeNavButtonWithSize} from 'Event/Dashboard/components/NavButton/__util
 import {fakeSimpleBlog} from 'Event/template/SimpleBlog/__utils__/factory'
 import {fakeEvent, fakeFaq} from 'Event/__utils__/factory'
 import {loginToEventSite} from 'Event/__utils__/url'
-import {createEntityList} from 'lib/list'
+import {createHashMap} from 'lib/list'
 import faker from 'faker'
 import axios from 'axios'
 
@@ -27,7 +27,7 @@ it('should render faqs', async () => {
 
   const event = fakeEvent({
     template: fakeSimpleBlog({
-      mainNav: createEntityList([button]),
+      mainNav: createHashMap([button]),
     }),
   })
 

@@ -9,7 +9,8 @@ import {wait} from '@testing-library/react'
 import axios from 'axios'
 import {goToDashboardConfig} from 'organization/Event/DashboardConfig/__utils__/go-dashboard-config'
 import {createResourceList} from 'Event/template/SimpleBlog/Dashboard/Sidebar/SidebarItem/ResourceList'
-import {createEntityList} from 'lib/list'
+import {createHashMap, orderedIdsByPosition} from 'lib/list'
+import {REMOVE} from 'Event/TemplateUpdateProvider'
 
 const mockPut = axios.put as jest.Mock
 const mockDelete = axios.delete as jest.Mock
@@ -53,16 +54,15 @@ it('should add a resource list', async () => {
   const [url, data] = mockPut.mock.calls[0]
   expect(url).toMatch(`/events/${event.slug}/template`)
 
-  const id = data.template['sidebarItems.ids'][0]
-  expect(data.template[`sidebarItems.entities.${id}.type`]).toBe(
-    'Resource List',
-  )
+  const values = Object.values(data.template)
+  expect(values).toContain('Resource List')
 })
 
 it('should remove a resource list', async () => {
+  const sidebarItems = createHashMap([createResourceList()])
   const event = fakeEvent({
     template: fakeSimpleBlog({
-      sidebarItems: createEntityList([createResourceList()]),
+      sidebarItems,
     }),
   })
   const {queryByText, findByText} = await goToDashboardConfig({
@@ -79,16 +79,18 @@ it('should remove a resource list', async () => {
 
   const [url, data] = mockPut.mock.calls[0]
   expect(url).toMatch(`/events/${event.slug}/template`)
-  expect(data.template['sidebarItems.ids'].length).toBe(0)
+
+  const sidebarId = Object.keys(sidebarItems)[0]
+  expect(data.template[`sidebarItems.${sidebarId}`]).toBe(REMOVE)
 })
 
 it('should add a new resource', async () => {
-  const sidebarItems = createEntityList([
+  const sidebarItems = createHashMap([
     {
       ...createResourceList(),
       title: faker.random.word(),
       description: '',
-      resources: createEntityList([]),
+      resources: createHashMap([]),
     },
   ])
   const dashboard = fakeSimpleBlog({
@@ -117,20 +119,18 @@ it('should add a new resource', async () => {
   const [url, data] = mockPut.mock.calls[0]
   expect(url).toMatch(`/events/${event.slug}/template`)
 
-  const id = sidebarItems.ids[0]
-  expect(
-    data.template[`sidebarItems.entities.${id}.resources.ids`].length,
-  ).toBe(1)
+  const values = Object.values(data.template)
+  expect(values).toContain('Resource')
 })
 
 it('should update resources description', async () => {
   const description = faker.random.words(5)
-  const sidebarItems = createEntityList([
+  const sidebarItems = createHashMap([
     {
       ...createResourceList(),
       title: faker.random.word(),
       description,
-      resources: createEntityList([]),
+      resources: createHashMap([]),
     },
   ])
 
@@ -174,19 +174,19 @@ it('should update resources description', async () => {
   const [url, data] = mockPut.mock.calls[0]
   expect(url).toMatch(`/events/${event.slug}/template`)
 
-  const id = sidebarItems.ids[0]
+  const id = Object.keys(sidebarItems)[0]
 
-  expect(data.template[`sidebarItems.entities.${id}.description`]).toBe(
+  expect(data.template[`sidebarItems.${id}.description`]).toBe(
     updatedDescription,
   )
-  expect(data.template[`sidebarItems.entities.${id}.title`]).toBe(updatedTitle)
+  expect(data.template[`sidebarItems.${id}.title`]).toBe(updatedTitle)
 })
 
 it('should update a resource', async () => {
   const name = faker.random.word()
 
-  const resources = createEntityList([fakeResource({name})])
-  const sidebarItems = createEntityList([
+  const resources = createHashMap([fakeResource({name})])
+  const sidebarItems = createHashMap([
     {
       ...createResourceList(),
       title: faker.random.word(),
@@ -224,24 +224,22 @@ it('should update a resource', async () => {
   const [url, data] = mockPut.mock.calls[0]
   expect(url).toMatch(`/events/${event.slug}/template`)
 
-  const itemId = sidebarItems.ids[0]
-  const resourceId = resources.ids[0]
+  const itemId = Object.keys(sidebarItems)[0]
+  const resourceId = Object.keys(resources)[0]
 
   expect(
-    data.template[
-      `sidebarItems.entities.${itemId}.resources.entities.${resourceId}.name`
-    ],
+    data.template[`sidebarItems.${itemId}.resources.${resourceId}.name`],
   ).toBe(updatedName)
 })
 
 it('should remove a resource', async () => {
   const numResources = faker.random.number({min: 2, max: 5})
 
-  const resources = createEntityList(
+  const resources = createHashMap(
     Array.from({length: numResources}, fakeResource),
   )
 
-  const sidebarItems = createEntityList([
+  const sidebarItems = createHashMap([
     {
       ...createResourceList(),
       title: faker.random.word(),
@@ -262,15 +260,17 @@ it('should remove a resource', async () => {
   } = await goToDashboardConfig({event})
 
   expect((await findAllByLabelText('event resource')).length).toBe(
-    resources.ids.length,
+    Object.keys(resources).length,
   )
 
   const targetIndex = faker.random.number({
     min: 0,
-    max: resources.ids.length - 1,
+    max: Object.keys(resources).length - 1,
   })
-  const targetId = resources.ids[targetIndex]
-  const target = resources.entities[targetId]
+
+  const sortedIds = orderedIdsByPosition(resources)
+  const targetId = sortedIds[targetIndex]
+  const target = resources[targetId]
   const targetName = target.name
 
   clickEdit((await findAllByLabelText('event resource'))[targetIndex])
@@ -295,10 +295,10 @@ it('should remove a resource', async () => {
   const [url, data] = mockPut.mock.calls[0]
   expect(url).toMatch(`/events/${event.slug}/template`)
 
-  const itemId = sidebarItems.ids[0]
-  expect(
-    data.template[`sidebarItems.entities.${itemId}.resources.ids`].length,
-  ).toBe(numResources - 1)
+  const itemId = Object.keys(sidebarItems)[0]
+  expect(data.template[`sidebarItems.${itemId}.resources.${targetId}`]).toBe(
+    REMOVE,
+  )
 
   expect(mockDelete).toHaveBeenCalledTimes(1)
   const [deleteUrl] = mockDelete.mock.calls[0]

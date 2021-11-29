@@ -1,6 +1,6 @@
 import {Sidebar} from 'Event/template/Cards/Dashboard/Sidebar/SidebarContainer'
 import {NavButtonWithSize} from 'Event/Dashboard/components/NavButton'
-import {EntityList} from 'lib/list'
+import {EntityList, HashMap} from 'lib/list'
 import {colors} from 'lib/ui/theme'
 import {Column} from 'lib/ui/layout'
 import {GridSize} from '@material-ui/core/Grid'
@@ -37,7 +37,8 @@ export type Cards = BaseTemplate &
     isDarkMode?: boolean
     title: string
     homeMenuTitle: string
-    mainNav: EntityList<CardsNavButtonProps> & {
+    mainNav: {
+      buttons: HashMap<CardsNavButtonProps>
       buttonHeight?: number
       width?: number
       borderRadius?: number
@@ -46,8 +47,8 @@ export type Cards = BaseTemplate &
     }
     hero: Hero
     sidebar: Sidebar
-    sidebarItems: EntityList<SidebarItem>
-    blogPosts: EntityList<BlogPost>
+    sidebarItems: HashMap<SidebarItem>
+    blogPosts: HashMap<BlogPost>
     textColor?: string
     linkColor?: string
     linkUnderline?: boolean
@@ -225,7 +226,7 @@ export type Cards = BaseTemplate &
       step3Label: string
       step3Icon: string
     }
-    countDownTimers?: EntityList<CountDownTimer>
+    countDownTimers?: HashMap<CountDownTimer>
     imageWaterfall?: {
       title?: string
       description?: string
@@ -279,8 +280,7 @@ export const createCards = (): DeepRequired<Cards> => ({
   title: '',
   homeMenuTitle: 'Main',
   mainNav: {
-    entities: {},
-    ids: [],
+    buttons: {},
     buttonHeight: 170,
     width: 80,
     borderRadius: 50,
@@ -317,10 +317,7 @@ export const createCards = (): DeepRequired<Cards> => ({
     headBackgroundBorder: 15,
     headTextColor: '#ffffff',
   },
-  sidebarItems: {
-    entities: {},
-    ids: [],
-  },
+  sidebarItems: {},
   techCheck: {
     buttonText: 'submit',
     buttonBackground: 'blue',
@@ -345,10 +342,7 @@ export const createCards = (): DeepRequired<Cards> => ({
     buttonWidth: 12,
     checkBoxColor: '#3c18c5',
   },
-  blogPosts: {
-    entities: {},
-    ids: [],
-  },
+  blogPosts: {},
   isDarkMode: false,
   textColor: '#000000',
   linkColor: '#000000',
@@ -522,10 +516,7 @@ export const createCards = (): DeepRequired<Cards> => ({
     step3Label: 'Step 3',
     step3Icon: 'far fa-desktop',
   },
-  countDownTimers: {
-    entities: {},
-    ids: [],
-  },
+  countDownTimers: {},
   imageWaterfall: {
     title: 'Image Waterfall',
     description: 'Image Waterfall',

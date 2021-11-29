@@ -2,7 +2,7 @@ import user from '@testing-library/user-event'
 import faker from 'faker'
 import {fakeCards} from 'Event/template/Cards/__utils__/factory'
 import {fakeBlogPost} from 'Event/Dashboard/components/BlogPost/__utils__/factory'
-import {createEntityList} from 'lib/list'
+import {createHashMap} from 'lib/list'
 import {clickEdit} from '__utils__/edit'
 import {fireEvent, wait} from '@testing-library/react'
 import {fakeEvent} from 'Event/__utils__/factory'
@@ -24,9 +24,7 @@ afterAll(() => {
 
 it('should edit a blog post', async () => {
   const numPosts = faker.random.number({min: 1, max: 5})
-  const blogPosts = createEntityList(
-    Array.from({length: numPosts}, fakeBlogPost),
-  )
+  const blogPosts = createHashMap(Array.from({length: numPosts}, fakeBlogPost))
 
   const event = fakeEvent({
     template: fakeCards({blogPosts}),
@@ -55,9 +53,7 @@ it('should edit a blog post', async () => {
 it('should add a new blog post', async () => {
   const numPosts = faker.random.number({min: 1, max: 3})
 
-  const blogPosts = createEntityList(
-    Array.from({length: numPosts}, fakeBlogPost),
-  )
+  const blogPosts = createHashMap(Array.from({length: numPosts}, fakeBlogPost))
 
   const event = fakeEvent({template: fakeCards({blogPosts})})
 
@@ -75,9 +71,7 @@ it('should add a new blog post', async () => {
 it('should remove a blog post', async () => {
   const numPosts = faker.random.number({min: 2, max: 3})
 
-  const blogPosts = createEntityList(
-    Array.from({length: numPosts}, fakeBlogPost),
-  )
+  const blogPosts = createHashMap(Array.from({length: numPosts}, fakeBlogPost))
 
   const event = fakeEvent({template: fakeCards({blogPosts})})
 
@@ -118,7 +112,7 @@ it('should show in order', async () => {
 
   const event = fakeEvent({
     template: fakeCards({
-      blogPosts: createEntityList([firstPost, secondPost, thirdPost]),
+      blogPosts: createHashMap([firstPost, secondPost, thirdPost]),
     }),
   })
 

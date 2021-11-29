@@ -15,6 +15,9 @@ import {useCardsTemplate, useCardsUpdate} from 'Event/template/Cards'
 import EditModeOnly from 'Event/Dashboard/editor/views/EditModeOnly'
 import {useToggle} from 'lib/toggle'
 import Grid from '@material-ui/core/Grid'
+import {createPositions, orderedIdsByPosition} from 'lib/list'
+import {HashMap} from 'lib/list'
+import {CardsNavButtonProps} from '../CardsNavButton'
 
 export default function MainNav() {
   const template = useCardsTemplate()
@@ -23,17 +26,7 @@ export default function MainNav() {
   const isEditMode = useEditMode()
 
   const {flag: visible, toggle: toggleConfig} = useToggle()
-  const {
-    ids,
-    entities,
-    width: mainNavWidth,
-    buttonHeight,
-    borderRadius: configBorderRadius,
-  } = mainNav
-
-  const oneRowButtons = ids.filter((id) => entities[id].row === 1)
-  const twoRowButtons = ids.filter((id) => entities[id].row === 2)
-  const rows = [oneRowButtons, twoRowButtons]
+  const {width: mainNavWidth, borderRadius: configBorderRadius} = mainNav
 
   /**
    * Border radius hides hover-edit buttons so we'll disable
@@ -41,34 +34,11 @@ export default function MainNav() {
    */
   const borderRadius = isEditMode ? 0 : configBorderRadius
 
-  /**
-   * It could have more 2 rows later, though cards template has only 2 rows.
-   */
-  const buttons = rows.map((row) => {
-    return row.map((id, index) => (
-      <MainNavButton
-        id={id}
-        index={index}
-        key={id}
-        button={entities[id]}
-        height={buttonHeight}
-      />
-    ))
-  })
-
   return (
     <>
       <NavButtonContainer width={mainNavWidth} borderRadius={borderRadius}>
-        <RowButtons
-          buttons={buttons[0]}
-          droppableId="row_1_main_nav_buttons"
-          rowId={1}
-        />
-        <RowButtons
-          buttons={buttons[1]}
-          droppableId="row_2_main_nav_buttons"
-          rowId={2}
-        />
+        <RowButtons row={1} />
+        <RowButtons row={2} />
       </NavButtonContainer>
       <EditModeOnly>
         <MainNavConfig isVisible={visible} onClose={toggleConfig} />
@@ -96,29 +66,43 @@ export default function MainNav() {
 
 export function RowButtons(props: {
   className?: string
-  buttons: JSX.Element[]
-  droppableId: string
-  rowId: number
+  row: CardsNavButtonProps['row']
 }) {
+  const {row} = props
+  const {mainNav} = useCardsTemplate()
+  const rowButtons = useRowButtons(row)
+  const ids = orderedIdsByPosition(rowButtons)
+
+  const buttons = ids.map((id, index) => (
+    <MainNavButton
+      id={id}
+      key={id}
+      index={index}
+      button={mainNav.buttons[id]}
+    />
+  ))
+
   const isEditMode = useEditMode()
   if (!isEditMode) {
-    return <Container className={props.className}>{props.buttons}</Container>
+    return <Container className={props.className}>{buttons}</Container>
   }
 
-  return <DraggableList {...props} />
+  return <DraggableList {...props}>{buttons}</DraggableList>
 }
 
 function DraggableList(props: {
   className?: string
-  buttons: JSX.Element[]
-  droppableId: string
-  rowId: number
+  children: JSX.Element[]
+  row: CardsNavButtonProps['row']
 }) {
-  const handleDrag = useHandleDrag(props.rowId)
+  const {row} = props
+  const handleDrag = useHandleDrag(row)
+
+  const droppableId = `main_nav_row_${row}`
 
   return (
     <DragDropContext onDragEnd={handleDrag}>
-      <Droppable droppableId={props.droppableId} direction="horizontal">
+      <Droppable droppableId={droppableId} direction="horizontal">
         {(provided) => (
           <Container
             className={props.className}
@@ -126,7 +110,7 @@ function DraggableList(props: {
             {...provided.droppableProps}
           >
             <>
-              {props.buttons}
+              {props.children}
               {provided.placeholder}
             </>
           </Container>
@@ -148,35 +132,37 @@ const Container = React.forwardRef<
   </Box>
 ))
 
-function useHandleDrag(rowIndex: number) {
-  const template = useCardsTemplate()
-  const {mainNav: buttons} = template
+function useHandleDrag(row: CardsNavButtonProps['row']) {
   const updateTemplate = useCardsUpdate()
-
-  const buttonsInRow = buttons.ids.filter(
-    (id) => buttons.entities[id].row === rowIndex,
-  )
-  const buttonsInAnother = buttons.ids.filter(
-    (id) => buttons.entities[id].row !== rowIndex,
-  )
+  const buttons = useRowButtons(row)
 
   return (result: DropResult) => {
     const {destination, source} = result
-
     if (!destination) {
       return
     }
+    const ids = orderedIdsByPosition(buttons)
 
-    const moved = Array.from(buttonsInRow)
-    const [removed] = moved.splice(source.index, 1)
-    moved.splice(destination.index, 0, removed)
+    const [removed] = ids.splice(source.index, 1)
+    ids.splice(destination.index, 0, removed)
 
     updateTemplate({
-      mainNav: {
-        ids: moved.concat(buttonsInAnother),
-      },
+      mainNav: createPositions(ids),
     })
   }
+}
+
+function useRowButtons(row: CardsNavButtonProps['row']) {
+  const {
+    mainNav: {buttons},
+  } = useCardsTemplate()
+
+  return Object.entries(buttons)
+    .filter(([id, button]) => button.row === row)
+    .reduce((acc, [id, button]) => {
+      acc[id] = button
+      return acc
+    }, {} as HashMap<CardsNavButtonProps>)
 }
 
 const NavButtonContainer = styled.div<{width: number; borderRadius: number}>`

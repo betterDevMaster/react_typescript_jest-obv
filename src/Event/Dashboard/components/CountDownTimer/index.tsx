@@ -4,8 +4,9 @@ import Typography from '@material-ui/core/Typography'
 import {now, date, duration, formatDate, inThreeDays} from 'lib/date-time'
 import {rgba} from 'lib/color'
 import {useInterval} from 'lib/interval'
+import {Ordered} from 'lib/list'
 
-export interface CountDownTimer {
+export interface CountDownTimer extends Ordered {
   enabled: boolean
   end: string
   backgroundColor: string

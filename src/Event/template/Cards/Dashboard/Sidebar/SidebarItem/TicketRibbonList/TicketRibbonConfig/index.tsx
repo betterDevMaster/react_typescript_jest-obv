@@ -2,7 +2,7 @@ import styled from 'styled-components'
 import TextField from '@material-ui/core/TextField'
 import ColorPicker from 'lib/ui/ColorPicker'
 import {TicketRibbon} from 'Event/template/Cards/Dashboard/Sidebar/SidebarItem/TicketRibbonList/TicketRibbon'
-import React, {useEffect, useState} from 'react'
+import React, {useEffect, useState, useCallback} from 'react'
 import {onChangeStringHandler} from 'lib/dom'
 import DangerButton from 'lib/ui/Button/DangerButton'
 import RuleConfig, {useRuleConfig} from 'Event/attendee-rules/RuleConfig'
@@ -13,12 +13,11 @@ import ComponentConfig, {
   SaveButton,
 } from 'organization/Event/DashboardConfig/ComponentConfig'
 import {Controller, useForm, UseFormMethods} from 'react-hook-form'
-import {TicketRibbonListProps} from 'Event/template/Cards/Dashboard/Sidebar/SidebarItem/TicketRibbonList'
 import TicketRibbonUpload from 'organization/Event/DashboardConfig/TicketRibbonUpload'
 import {useDeleteCustomRibbon} from 'organization/Event/DashboardConfig/TicketRibbonUpload/UploadedTicketRibbon'
 import {v4 as uuid} from 'uuid'
 import {useEditSidebarItem} from 'Event/template/Cards/Dashboard/Sidebar/SidebarItem'
-import {REMOVE} from 'Event/TemplateUpdateProvider'
+import {REMOVE, useRemoveIfEmpty} from 'Event/TemplateUpdateProvider'
 
 const MAX_NUM_CHARACTERS = 9
 
@@ -33,13 +32,11 @@ export interface TicketRibbonConfigProps {
 
 export function TicketRibbonConfig(
   props: ComponentConfigProps & {
-    list: TicketRibbonListProps
     ticketRibbon: TicketRibbon
     id?: string
   },
 ) {
-  const {id, isVisible, onClose, ticketRibbon, list} = props
-  const {ribbons: ticketRibbons} = list
+  const {id, isVisible, onClose, ticketRibbon} = props
   const {visible: ruleConfigVisible, toggle: toggleRuleConfig} = useRuleConfig()
   const [error, setError] = useState('')
   const [processing, setProcessing] = useState(false)
@@ -64,9 +61,7 @@ export function TicketRibbonConfig(
   const update = (id: string, updated: TicketRibbon) => {
     updateItem({
       ribbons: {
-        entities: {
-          [id]: updated,
-        },
+        [id]: updated,
       },
     })
   }
@@ -76,10 +71,7 @@ export function TicketRibbonConfig(
 
     updateItem({
       ribbons: {
-        ids: [...list.ribbons.ids, id],
-        entities: {
-          [id]: newRibbon,
-        },
+        [id]: newRibbon,
       },
     })
   }
@@ -111,35 +103,31 @@ export function TicketRibbonConfig(
     control,
   }
 
-  const remove = async () => {
+  const remove = useCallback(() => {
     if (!id) {
       throw new Error('Missing index for ticket ribbon')
     }
 
     if (ticketRibbon.customRibbon) {
-      try {
-        await deleteCustomRibbon(ticketRibbon.customRibbon)
-      } catch {
+      deleteCustomRibbon(ticketRibbon.customRibbon).catch(() => {
         /**
          * Ignore - if a model/image has already been removed
          * on server due to an aborted request, this will
          * fail. So we'll just ignore it, and proceed.
          */
-      }
+      })
     }
 
-    const removed = ticketRibbons.ids.filter((i) => i !== id)
     updateItem({
       ribbons: {
-        ids: removed,
-        entities: {
-          [id]: REMOVE,
-        },
+        [id]: REMOVE,
       },
     })
 
     onClose()
-  }
+  }, [updateItem, onClose, deleteCustomRibbon, id, ticketRibbon])
+
+  useRemoveIfEmpty(remove, ticketRibbon, {shouldSkip: !id})
 
   const onChangeText = (val: string) => {
     const exceedsCharacterLimit = val.length > MAX_NUM_CHARACTERS

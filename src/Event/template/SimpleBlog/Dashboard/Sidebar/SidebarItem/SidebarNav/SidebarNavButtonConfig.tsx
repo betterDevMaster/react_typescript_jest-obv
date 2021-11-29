@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react'
+import React, {useEffect, useState, useCallback} from 'react'
 import Box from '@material-ui/core/Box'
 import RuleConfig, {useRuleConfig} from 'Event/attendee-rules/RuleConfig'
 import ConfigureRulesButton from 'Event/attendee-rules/ConfigureRulesButton'
@@ -26,7 +26,7 @@ import MailchimpTagInput from 'organization/Event/DashboardConfig/MailchimpTagIn
 import InputLabel from '@material-ui/core/InputLabel'
 import Slider from '@material-ui/core/Slider'
 import ZapierTagInput from 'organization/Event/DashboardConfig/ZapierTagInput'
-import {REMOVE} from 'Event/TemplateUpdateProvider'
+import {REMOVE, useRemoveIfEmpty} from 'Event/TemplateUpdateProvider'
 import {useEditSidebarItem} from 'Event/template/SimpleBlog/Dashboard/Sidebar/SidebarItem'
 
 const MIN_BORDER_WIDTH = 0
@@ -42,7 +42,7 @@ export function SidebarNavButtonConfig(
     nav: SidebarNavProps
   },
 ) {
-  const {button, id, isVisible, onClose, nav} = props
+  const {button, id, isVisible, onClose} = props
   const {visible: ruleConfigVisible, toggle: toggleRuleConfig} = useRuleConfig()
 
   const [rules, setRules] = useState(button.rules)
@@ -74,35 +74,33 @@ export function SidebarNavButtonConfig(
 
   const update = (id: string, updated: NavButton) => {
     updateItem({
-      entities: {
+      buttons: {
         [id]: updated,
       },
     })
   }
 
-  const removeButton = () => {
+  const removeButton = useCallback(() => {
     if (!id) {
       throw new Error('Missing id')
     }
 
-    const removed = nav.ids.filter((i) => i !== id)
-
     onClose()
 
     updateItem({
-      ids: removed,
-      entities: {
+      buttons: {
         [id]: REMOVE,
       },
     })
-  }
+  }, [id, onClose, updateItem])
+
+  useRemoveIfEmpty(removeButton, button, {shouldSkip: !id})
 
   const insert = (button: NavButton) => {
     const id = uuid()
 
     updateItem({
-      ids: [...nav.ids, id],
-      entities: {
+      buttons: {
         [id]: button,
       },
     })

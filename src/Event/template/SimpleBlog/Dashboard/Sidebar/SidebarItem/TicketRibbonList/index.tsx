@@ -2,7 +2,6 @@ import AddTicketRibbonButton from 'Event/template/SimpleBlog/Dashboard/Sidebar/S
 import TicketRibbonItem, {
   TicketRibbon,
 } from 'Event/template/SimpleBlog/Dashboard/Sidebar/SidebarItem/TicketRibbonList/TicketRibbon'
-import EditModeOnly from 'Event/Dashboard/editor/views/EditModeOnly'
 import React from 'react'
 import styled from 'styled-components'
 import {useEditMode} from 'Event/Dashboard/editor/state/edit-mode'
@@ -11,56 +10,62 @@ import {RemoveButton} from 'organization/Event/DashboardConfig/ComponentConfig'
 import VisibleOnMatch from 'Event/attendee-rules/VisibleOnMatch'
 import Section from 'Event/template/SimpleBlog/Dashboard/Sidebar/Section'
 import {useHasVisibleItems} from 'Event/attendee-rules/matcher'
-import {EntityList} from 'lib/list'
+import {createPositions, HashMap, Ordered, orderedIdsByPosition} from 'lib/list'
 import {useEditSidebarItem} from 'Event/template/SimpleBlog/Dashboard/Sidebar/SidebarItem'
+import {useRemoveIfEmpty} from 'Event/TemplateUpdateProvider'
 
 export const TICKET_RIBBON_LIST = 'Ticket Ribbon List'
-export interface TicketRibbonListProps {
+export interface TicketRibbonListProps extends Ordered {
   type: typeof TICKET_RIBBON_LIST
-  ribbons: EntityList<TicketRibbon>
+  position?: number
+  ribbons: HashMap<TicketRibbon>
 }
 
 export const createTicketRibbonList = (): TicketRibbonListProps => ({
   type: TICKET_RIBBON_LIST,
-  ribbons: {
-    ids: [],
-    entities: {},
-  },
+  ribbons: {},
 })
 
 export default function TicketRibbons(props: TicketRibbonListProps) {
-  const {remove: removeItem} = useEditSidebarItem()
   const {ribbons} = props
   const isEditMode = useEditMode()
 
-  const hasVisibleItems = useHasVisibleItems(Object.values(ribbons.entities))
+  const hasVisibleItems = useHasVisibleItems(Object.values(ribbons))
   if (!hasVisibleItems && !isEditMode) {
     return null
   }
 
+  if (!isEditMode)
+    return (
+      <Section>
+        <div>
+          <TicketRibbonItemList {...props} />
+        </div>
+      </Section>
+    )
+
   return (
     <Section>
-      <EditModeOnly>
-        <RemoveButton onClick={removeItem} showing size="large">
-          Remove Ribbons
-        </RemoveButton>
-        <StyledAddTicketRibbonButton list={props} />
-      </EditModeOnly>
+      <RemoveRibbonsButton {...props} />
+      <StyledAddTicketRibbonButton list={props} />
       <DroppableList {...props} />
     </Section>
   )
 }
 
+function RemoveRibbonsButton(props: TicketRibbonListProps) {
+  const {remove: removeItem} = useEditSidebarItem()
+  useRemoveIfEmpty(removeItem, props)
+
+  return (
+    <RemoveButton onClick={removeItem} showing size="large">
+      Remove Ribbons
+    </RemoveButton>
+  )
+}
+
 function DroppableList(props: TicketRibbonListProps) {
   const handleDrag = useHandleDrag(props)
-  const isEdit = useEditMode()
-
-  if (!isEdit)
-    return (
-      <RibbonsContainer>
-        <TicketRibbonItemList {...props} />
-      </RibbonsContainer>
-    )
 
   return (
     <DragDropContext onDragEnd={handleDrag}>
@@ -79,16 +84,16 @@ function DroppableList(props: TicketRibbonListProps) {
 }
 
 function TicketRibbonItemList(props: TicketRibbonListProps) {
+  const ids = orderedIdsByPosition(props.ribbons)
   return (
     <>
-      {props.ribbons.ids.map((id, index) => {
-        const ticketRibbon = props.ribbons.entities[id]
+      {ids.map((id, index) => {
+        const ticketRibbon = props.ribbons[id]
         return (
           <VisibleOnMatch rules={ticketRibbon.rules} key={id}>
             <TicketRibbonItem
               ticketRibbon={ticketRibbon}
               index={index}
-              list={props}
               id={id}
             />
           </VisibleOnMatch>
@@ -108,19 +113,15 @@ function useHandleDrag(props: TicketRibbonListProps) {
       return
     }
 
-    const moved = Array.from(props.ribbons.ids)
-    const [removed] = moved.splice(source.index, 1)
-    moved.splice(destination.index, 0, removed)
+    const ids = orderedIdsByPosition(props.ribbons)
+    const [removed] = ids.splice(source.index, 1)
+    ids.splice(destination.index, 0, removed)
 
     update({
-      ribbons: {
-        ids: moved,
-      },
+      ribbons: createPositions(ids),
     })
   }
 }
-
-const RibbonsContainer = styled.div``
 
 const StyledAddTicketRibbonButton = styled(AddTicketRibbonButton)`
   margin-bottom: ${(props) => props.theme.spacing[6]}!important;

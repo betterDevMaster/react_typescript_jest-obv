@@ -22,25 +22,23 @@ import {ResourceListConfig} from 'Event/template/SimpleBlog/Dashboard/Sidebar/Si
 import {RemoveButton} from 'organization/Event/DashboardConfig/ComponentConfig'
 import Section from 'Event/template/SimpleBlog/Dashboard/Sidebar/Section'
 import {useHasVisibleItems} from 'Event/attendee-rules/matcher'
-import {EntityList} from 'lib/list'
+import {createPositions, HashMap, Ordered, orderedIdsByPosition} from 'lib/list'
 import {useEditSidebarItem} from 'Event/template/SimpleBlog/Dashboard/Sidebar/SidebarItem'
+import {useRemoveIfEmpty} from 'Event/TemplateUpdateProvider'
 
 export const RESOURCE_LIST = 'Resource List'
-export interface ResourceListProps {
+export interface ResourceListProps extends Ordered {
   type: typeof RESOURCE_LIST
   title: string
   description: string
-  resources: EntityList<Resource>
+  resources: HashMap<Resource>
 }
 
 export const createResourceList = (): ResourceListProps => ({
   type: RESOURCE_LIST,
   title: 'Resources',
   description: '',
-  resources: {
-    ids: [],
-    entities: {},
-  },
+  resources: {},
 })
 
 export const RESOURCE_ICON = {
@@ -54,10 +52,10 @@ export const RESOURCE_ICON = {
 export function ResourceList(props: ResourceListProps) {
   const isEditMode = useEditMode()
   const {resources} = props
-  const hasVisibleItems = useHasVisibleItems(Object.values(resources.entities))
+  const hasVisibleItems = useHasVisibleItems(Object.values(resources))
 
   if (isEditMode) {
-    return <EditMode {...props} />
+    return <EditableList {...props} />
   }
 
   if (!hasVisibleItems) {
@@ -76,10 +74,12 @@ export function ResourceList(props: ResourceListProps) {
   )
 }
 
-function EditMode(props: ResourceListProps) {
+function EditableList(props: ResourceListProps) {
   const handleDrag = useHandleDrag(props)
   const {remove: removeItem} = useEditSidebarItem()
   const {flag: configVisible, toggle: toggleConfig} = useToggle()
+
+  useRemoveIfEmpty(removeItem, props)
 
   return (
     <Section>
@@ -135,13 +135,16 @@ function Description(props: ResourceListProps) {
 }
 
 function Resources(props: ResourceListProps) {
+  const {resources} = props
   const template = useSimpleBlogTemplate()
   const {sidebar} = template
 
+  const ids = orderedIdsByPosition(resources)
+
   return (
     <>
-      {props.resources.ids.map((id: string, index: number) => {
-        const resource = props.resources.entities[id]
+      {ids.map((id: string, index: number) => {
+        const resource = resources[id]
 
         return (
           <ResourceItem
@@ -180,14 +183,12 @@ function useHandleDrag(props: ResourceListProps) {
       return
     }
 
-    const moved = Array.from(props.resources.ids)
-    const [removed] = moved.splice(source.index, 1)
-    moved.splice(destination.index, 0, removed)
+    const ids = orderedIdsByPosition(props.resources)
+    const [removed] = ids.splice(source.index, 1)
+    ids.splice(destination.index, 0, removed)
 
     update({
-      resources: {
-        ids: moved,
-      },
+      resources: createPositions(ids),
     })
   }
 }

@@ -16,7 +16,6 @@ type MainNavButtonProps = {
   id: string
   button: CardsNavButtonProps
   index: number
-  height: number
 }
 
 export default React.memo((props: MainNavButtonProps) => {
@@ -68,11 +67,10 @@ export default React.memo((props: MainNavButtonProps) => {
   )
 })
 
-function Button(props: {button: CardsNavButtonProps; height: number}) {
+function Button(props: {button: CardsNavButtonProps}) {
   return (
     <CardsNavButton
       {...props.button}
-      height={props.height}
       aria-label="main nav button"
       iconSize={65}
       iconStacked

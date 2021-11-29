@@ -10,6 +10,7 @@ import {useEditMode} from 'Event/Dashboard/editor/state/edit-mode'
 import {usePanelsTemplate, usePanelsUpdate} from 'Event/template/Panels'
 import NewMainNavButton from 'Event/template/Panels/Dashboard/MainNav/MainNavButton/NewMainNavButton'
 import MainNavButton from 'Event/template/Panels/Dashboard/MainNav/MainNavButton'
+import {createPositions, orderedIdsByPosition} from 'lib/list'
 
 export default function MainNavMobile(props: {className?: string}) {
   const template = usePanelsTemplate()
@@ -17,10 +18,9 @@ export default function MainNavMobile(props: {className?: string}) {
   const isEditMode = useEditMode()
   const handleDrag = useHandleDrag()
 
-  const {ids, entities} = nav
-
+  const ids = orderedIdsByPosition(nav)
   const buttons = ids.map((id, index) => (
-    <MainNavButton id={id} index={index} key={id} button={entities[id]} />
+    <MainNavButton id={id} index={index} key={id} button={nav[id]} />
   ))
 
   if (!isEditMode) {
@@ -62,7 +62,7 @@ const Container = React.forwardRef<
 
 function useHandleDrag() {
   const template = usePanelsTemplate()
-  const {nav: buttons} = template
+  const {nav} = template
   const updateTemplate = usePanelsUpdate()
 
   return (result: DropResult) => {
@@ -72,14 +72,12 @@ function useHandleDrag() {
       return
     }
 
-    const moved = Array.from(buttons.ids)
-    const [removed] = moved.splice(source.index, 1)
-    moved.splice(destination.index, 0, removed)
+    const ids = orderedIdsByPosition(nav)
+    const [removed] = ids.splice(source.index, 1)
+    ids.splice(destination.index, 0, removed)
 
     updateTemplate({
-      nav: {
-        ids: moved,
-      },
+      nav: createPositions(ids),
     })
   }
 }

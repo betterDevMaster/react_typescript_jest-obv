@@ -7,7 +7,8 @@ import {ObvioEvent} from 'Event'
 import axios from 'axios'
 import {goToDashboardConfig} from 'organization/Event/DashboardConfig/__utils__/go-dashboard-config'
 import {createPointsSummary} from 'Event/template/SimpleBlog/Dashboard/Sidebar/SidebarItem/PointsSummary'
-import {createEntityList} from 'lib/list'
+import {createHashMap} from 'lib/list'
+import {REMOVE} from 'Event/TemplateUpdateProvider'
 
 const mockAxiosPost = axios.post as jest.Mock
 const mockPut = axios.put as jest.Mock
@@ -37,22 +38,21 @@ it('should configure points', async () => {
 
   const [url, data] = mockPut.mock.calls[0]
   expect(url).toMatch(`/events/${event.slug}/template`)
-  const sidebarId = data.template['sidebarItems.ids'][0]
-  expect(data.template[`sidebarItems.entities.${sidebarId}.type`]).toBe(
-    'Points Summary',
-  )
+  const values = Object.values(data.template)
+  expect(values).toContain('Points Summary')
 })
 
 it('should remove points', async () => {
   const summary = 'your points'
+  const sidebarItems = createHashMap([
+    {
+      ...createPointsSummary(),
+      summary,
+    },
+  ])
   const event = fakeEvent({
     template: fakeSimpleBlog({
-      sidebarItems: createEntityList([
-        {
-          ...createPointsSummary(),
-          summary,
-        },
-      ]),
+      sidebarItems,
     }),
   })
 
@@ -75,7 +75,9 @@ it('should remove points', async () => {
 
   const [url, data] = mockPut.mock.calls[0]
   expect(url).toMatch(`/events/${event.slug}/template`)
-  expect(data.template['sidebarItems.ids'].length).toBe(0)
+
+  const id = Object.keys(sidebarItems)[0]
+  expect(data.template[`sidebarItems.${id}`]).toBe(REMOVE)
 })
 
 it('should upload a logo', async () => {
@@ -83,7 +85,7 @@ it('should upload a logo', async () => {
 
   const event = fakeEvent({
     template: fakeSimpleBlog({
-      sidebarItems: createEntityList([createPointsSummary()]),
+      sidebarItems: createHashMap([createPointsSummary()]),
     }),
   })
 
@@ -124,7 +126,7 @@ it('should remove the logo', async () => {
   }
   const event = fakeEvent({
     template: fakeSimpleBlog({
-      sidebarItems: createEntityList([createPointsSummary()]),
+      sidebarItems: createHashMap([createPointsSummary()]),
     }),
     points_summary_logo: logo,
   })

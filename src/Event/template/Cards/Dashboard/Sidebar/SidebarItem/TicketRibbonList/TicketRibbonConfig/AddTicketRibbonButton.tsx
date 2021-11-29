@@ -5,12 +5,8 @@ import {
 } from 'Event/template/Cards/Dashboard/Sidebar/SidebarItem/TicketRibbonList/TicketRibbon'
 import React, {useState} from 'react'
 import {TicketRibbonConfig} from 'Event/template/Cards/Dashboard/Sidebar/SidebarItem/TicketRibbonList/TicketRibbonConfig'
-import {TicketRibbonListProps} from 'Event/template/Cards/Dashboard/Sidebar/SidebarItem/TicketRibbonList'
 
-export default function AddTicketRibbonButton(props: {
-  className?: string
-  list: TicketRibbonListProps
-}) {
+export default function AddTicketRibbonButton(props: {className?: string}) {
   const [ticketRibbon, setTicketRibbon] = useState<TicketRibbon | null>(null)
 
   const add = () => {
@@ -28,7 +24,6 @@ export default function AddTicketRibbonButton(props: {
       <NewTicketRibbonConfig
         ticketRibbon={ticketRibbon}
         onClose={() => setTicketRibbon(null)}
-        list={props.list}
       />
       <Button
         aria-label="add ticket ribbon"
@@ -48,7 +43,6 @@ export default function AddTicketRibbonButton(props: {
 function NewTicketRibbonConfig(props: {
   ticketRibbon: TicketRibbon | null
   onClose: () => void
-  list: TicketRibbonListProps
 }) {
   if (!props.ticketRibbon) {
     return null
@@ -58,7 +52,6 @@ function NewTicketRibbonConfig(props: {
     <TicketRibbonConfig
       ticketRibbon={props.ticketRibbon}
       onClose={props.onClose}
-      list={props.list}
       isVisible
     />
   )

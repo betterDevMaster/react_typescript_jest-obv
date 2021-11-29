@@ -6,13 +6,14 @@ import NewMainNavButton from 'Event/template/Panels/Dashboard/MainNav/MainNavBut
 import MainNavButton from 'Event/template/Panels/Dashboard/MainNav/MainNavButton'
 import CountDownTimers from 'Event/template/Panels/Dashboard/CountDownTimers'
 import {Container} from 'Event/template/Panels/Dashboard/MainNav/MainNavDesktop'
+import {createPositions, orderedIdsByPosition} from 'lib/list'
 
 export default function BodyEditable(props: {className?: string}) {
   const handleDrag = useHandleDrag()
   const template = usePanelsTemplate()
-  const {
-    nav: {ids, entities},
-  } = template
+  const {nav} = template
+
+  const ids = orderedIdsByPosition(nav)
 
   return (
     <>
@@ -32,7 +33,7 @@ export default function BodyEditable(props: {className?: string}) {
                     id={id}
                     index={index}
                     key={id}
-                    button={entities[id]}
+                    button={nav[id]}
                   />
                 ))}
                 {provided.placeholder}
@@ -49,7 +50,7 @@ export default function BodyEditable(props: {className?: string}) {
 function useHandleDrag() {
   const template = usePanelsTemplate()
   const updateTemplate = usePanelsUpdate()
-  const {nav: buttons} = template
+  const {nav} = template
 
   return (result: DropResult) => {
     const {destination, source} = result
@@ -58,14 +59,12 @@ function useHandleDrag() {
       return
     }
 
-    const moved = Array.from(buttons.ids)
-    const [removed] = moved.splice(source.index, 1)
-    moved.splice(destination.index, 0, removed)
+    const ids = orderedIdsByPosition(nav)
+    const [removed] = ids.splice(source.index, 1)
+    ids.splice(destination.index, 0, removed)
 
     updateTemplate({
-      nav: {
-        ids: moved,
-      },
+      nav: createPositions(ids),
     })
   }
 }

@@ -1,7 +1,6 @@
 import user from '@testing-library/user-event'
 import faker from 'faker'
 import {fakeCards} from 'Event/template/Cards/__utils__/factory'
-import {createEntityList} from 'lib/list'
 import {fakeEvent} from 'Event/__utils__/factory'
 import {wait} from '@testing-library/react'
 import mockAxios from 'axios'
@@ -9,6 +8,7 @@ import {loginToEventSite} from 'Event/__utils__/url'
 import {fakeAction} from 'Event/ActionsProvider/__utils__/factory'
 import {fakeAttendee} from 'Event/auth/__utils__/factory'
 import {fakeCardsNavButton} from 'Event/template/Cards/Dashboard/CardsNavButton/__utils__/factory'
+import {fakeCardsNavButtons} from 'Event/template/Cards/Dashboard/CardsNavButton/__utils__/factory'
 
 const mockPost = mockAxios.post as jest.Mock
 
@@ -29,8 +29,10 @@ it('should receive points', async () => {
     isAreaButton: true,
   })
 
-  const buttons = createEntityList([button])
-  const event = fakeEvent({template: fakeCards({mainNav: buttons})})
+  const {buttonsMap: mainNavButtons} = fakeCardsNavButtons([button])
+  const event = fakeEvent({
+    template: fakeCards({mainNav: {buttons: mainNavButtons}}),
+  })
 
   const {findByText} = await loginToEventSite({
     actions: [action],
@@ -64,8 +66,10 @@ it('should add an infusionsoft tag', async () => {
     infusionsoftTag: {id, name: 'Some tag'},
   })
 
-  const buttons = createEntityList([button])
-  const event = fakeEvent({template: fakeCards({mainNav: buttons})})
+  const {buttonsMap: mainNavButtons} = fakeCardsNavButtons([button])
+  const event = fakeEvent({
+    template: fakeCards({mainNav: {buttons: mainNavButtons}}),
+  })
 
   const {findByText} = await loginToEventSite({
     actions: [action],

@@ -2,7 +2,7 @@ import AgendaList, {
   AGENDA_LIST,
   AgendaListProps,
 } from 'Event/template/Cards/Dashboard/Sidebar/SidebarItem/AgendaList'
-import React from 'react'
+import React, {useCallback} from 'react'
 import EmojiList, {
   EMOJI_LIST,
   EmojiListProps,
@@ -20,7 +20,7 @@ import SidebarNav, {
   SidebarNavProps,
   SIDEBAR_NAV,
 } from 'Event/template/Cards/Dashboard/Sidebar/SidebarItem/SidebarNav'
-import {useCardsTemplate, useCardsUpdate} from 'Event/template/Cards'
+import {useCardsUpdate} from 'Event/template/Cards'
 import TicketRibbons, {
   TicketRibbonListProps,
   TICKET_RIBBON_LIST,
@@ -29,7 +29,7 @@ import {Draggable} from 'react-beautiful-dnd'
 import {DraggableOverlay} from 'lib/ui/drag-and-drop'
 import DragHandleBar from 'Event/template/Cards/Dashboard/Sidebar/SidebarItem/DragHandleBar'
 import {useEditMode} from 'Event/Dashboard/editor/state/edit-mode'
-import {REMOVE} from 'Event/TemplateUpdateProvider'
+import {REMOVE, useRemoveIfEmpty} from 'Event/TemplateUpdateProvider'
 import {DeepPartialSubstitute} from 'lib/type-utils'
 
 export type SidebarItem =
@@ -74,34 +74,28 @@ export default function SidebarItem(
 }
 
 function Editable(props: SidebarItem & {id: string}) {
-  const {id} = props
+  const {id, ...itemProps} = props
   const updateTemplate = useCardsUpdate()
-  const {sidebarItems} = useCardsTemplate()
 
   const update = (
     updated: DeepPartialSubstitute<SidebarItem, typeof REMOVE>,
   ) => {
     updateTemplate({
       sidebarItems: {
-        entities: {
-          [id]: updated,
-        },
+        [id]: updated,
       },
     })
   }
 
-  const remove = () => {
-    const removed = sidebarItems.ids.filter((i) => i !== id)
-
+  const remove = useCallback(() => {
     updateTemplate({
       sidebarItems: {
-        ids: removed,
-        entities: {
-          [id]: REMOVE,
-        },
+        [id]: REMOVE,
       },
     })
-  }
+  }, [updateTemplate, id])
+
+  useRemoveIfEmpty(remove, itemProps, {shouldSkip: !id})
 
   return (
     <SidebarItemContext.Provider value={{update, remove}}>

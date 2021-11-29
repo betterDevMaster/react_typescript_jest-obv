@@ -31,10 +31,7 @@ import {
 } from 'Event/template/SimpleBlog/Dashboard/Sidebar/SidebarItem/TicketRibbonList'
 import Select from '@material-ui/core/Select'
 import {useForm} from 'react-hook-form'
-import {
-  useSimpleBlogTemplate,
-  useSimpleBlogUpdate,
-} from 'Event/template/SimpleBlog'
+import {useSimpleBlogUpdate} from 'Event/template/SimpleBlog'
 import {createEmojiList} from 'Event/template/SimpleBlog/Dashboard/Sidebar/SidebarItem/EmojiList'
 
 export default function AddSidebarItemConfig(props: {
@@ -45,8 +42,6 @@ export default function AddSidebarItemConfig(props: {
   const [type, setType] = useState<SidebarItem['type'] | null>(null)
   const {handleSubmit} = useForm()
   const update = useSimpleBlogUpdate()
-  const template = useSimpleBlogTemplate()
-  const {sidebarItems} = template
 
   /**
    * Reset selecter on close
@@ -65,14 +60,9 @@ export default function AddSidebarItemConfig(props: {
     const id = uuid()
     const item = createItem(type)
 
-    const ids = [...sidebarItems.ids, id]
-
     update({
       sidebarItems: {
-        ids,
-        entities: {
-          [id]: item,
-        },
+        [id]: item,
       },
     })
 

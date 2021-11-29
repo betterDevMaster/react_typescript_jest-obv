@@ -1,13 +1,10 @@
-import React, {useEffect, useState} from 'react'
+import React, {useEffect, useState, useCallback} from 'react'
 import {v4 as uuid} from 'uuid'
 import styled from 'styled-components'
 import DangerButton from 'lib/ui/Button/DangerButton'
 import TextField from '@material-ui/core/TextField'
 import Grid from '@material-ui/core/Grid'
-import {
-  Agenda,
-  AgendaListProps,
-} from 'Event/template/SimpleBlog/Dashboard/Sidebar/SidebarItem/AgendaList'
+import {Agenda} from 'Event/template/SimpleBlog/Dashboard/Sidebar/SidebarItem/AgendaList'
 import {onChangeStringHandler, onChangeCheckedHandler} from 'lib/dom'
 import {MaterialUiPickersDate} from '@material-ui/pickers/typings/date'
 import Switch from 'lib/ui/form/Switch'
@@ -17,17 +14,16 @@ import ComponentConfig, {
   SaveButton,
 } from 'organization/Event/DashboardConfig/ComponentConfig'
 import LocalizedDateTimePicker from 'lib/LocalizedDateTimePicker'
-import {REMOVE} from 'Event/TemplateUpdateProvider'
+import {REMOVE, useRemoveIfEmpty} from 'Event/TemplateUpdateProvider'
 import {useEditSidebarItem} from 'Event/template/SimpleBlog/Dashboard/Sidebar/SidebarItem'
 
 export function AgendaItemConfig(
   props: {
     agenda: Agenda
     id?: string
-    list: AgendaListProps
   } & ComponentConfigProps,
 ) {
-  const {isVisible: visible, onClose, agenda, id, list} = props
+  const {isVisible: visible, onClose, agenda, id} = props
   const [isVisible, setIsVisible] = useState(agenda.isVisible)
   const [text, setText] = useState(agenda.text)
   const [startDate, setStartDate] = useState(agenda.startDate)
@@ -53,23 +49,17 @@ export function AgendaItemConfig(
   const update = (id: string, updated: Agenda) => {
     updateItem({
       items: {
-        entities: {
-          [id]: updated,
-        },
+        [id]: updated,
       },
     })
   }
 
   const insert = (item: Agenda) => {
     const id = uuid()
-    const ids = [...list.items.ids, id]
 
     updateItem({
       items: {
-        ids,
-        entities: {
-          [id]: item,
-        },
+        [id]: item,
       },
     })
   }
@@ -93,24 +83,21 @@ export function AgendaItemConfig(
     onClose()
   }
 
-  const remove = () => {
+  const remove = useCallback(() => {
     if (!id) {
       throw new Error("Missing 'id' of agenda to remove.")
     }
 
-    const removed = list.items.ids.filter((i) => i !== id)
-
     updateItem({
       items: {
-        ids: removed,
-        entities: {
-          [id]: REMOVE,
-        },
+        [id]: REMOVE,
       },
     })
 
     onClose()
-  }
+  }, [updateItem, id, onClose])
+
+  useRemoveIfEmpty(remove, agenda)
 
   const handleStartDate = (date: MaterialUiPickersDate) => {
     if (!date) {
