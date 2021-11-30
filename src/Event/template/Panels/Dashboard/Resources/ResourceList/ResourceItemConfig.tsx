@@ -149,10 +149,7 @@ export default function ResourceItemConfig(
               fullWidth
             />
             <FormControl>
-              <ToggleButtonGroup
-                value={resource.isUrl ? 'true' : 'false'}
-                exclusive
-              >
+              <ToggleButtonGroup value={isUrl ? 'true' : 'false'} exclusive>
                 <ToggleButton value="false" onClick={() => setIsUrl(false)}>
                   File
                 </ToggleButton>
