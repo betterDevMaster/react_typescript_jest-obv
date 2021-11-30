@@ -9,7 +9,6 @@ import NavButton from 'Event/Dashboard/components/NavButton'
 import {createPositions, HashMap, orderedIdsByPosition} from 'lib/list'
 import {RemoveButton} from 'organization/Event/DashboardConfig/ComponentConfig'
 import VisibleOnMatch from 'Event/attendee-rules/VisibleOnMatch'
-import {useSimpleBlogUpdate} from 'Event/template/SimpleBlog'
 import {useEditSidebarItem} from 'Event/template/SimpleBlog/Dashboard/Sidebar/SidebarItem'
 import {useRemoveIfEmpty} from 'Event/TemplateUpdateProvider'
 
