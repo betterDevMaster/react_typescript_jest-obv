@@ -44,7 +44,7 @@ export default function LinkConfig(props: LinkConfigProps) {
           label="New Tab"
           control={
             <Checkbox
-              checked={props.newTab}
+              checked={props.newTab || false}
               onChange={onChangeCheckedHandler(props.setNewTab)}
             />
           }
