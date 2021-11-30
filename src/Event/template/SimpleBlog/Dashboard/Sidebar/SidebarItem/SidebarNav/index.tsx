@@ -110,7 +110,7 @@ function RemoveSidebarNavButton(props: SidebarNavProps) {
 }
 
 function useHandleDrag(props: SidebarNavProps) {
-  const update = useSimpleBlogUpdate()
+  const {update} = useEditSidebarItem()
 
   return (result: DropResult) => {
     const {destination, source} = result
@@ -124,7 +124,7 @@ function useHandleDrag(props: SidebarNavProps) {
     ids.splice(destination.index, 0, removed)
 
     update({
-      sidebarItems: createPositions(ids),
+      buttons: createPositions(ids),
     })
   }
 }
