@@ -61,6 +61,7 @@ export function SidebarNavButtonConfig(
 
     setRules(button.rules)
     setIsAreaButton(button.isAreaButton)
+    setIsImageUploadButton(button.isImageUpload)
     setAreaId(button.areaId)
     setLink(button.link)
     setPage(button.page)
@@ -111,6 +112,7 @@ export function SidebarNavButtonConfig(
       link,
       page,
       newTab,
+      isImageUpload: isImageUploadButton,
     }
 
     if (id) {
