@@ -16,6 +16,7 @@ import {
   MuiThemeOptions,
 } from 'lib/ui/theme'
 import PageLinks from 'Event/template/Cards/Dashboard/PageLinks'
+import {safeColor} from 'lib/color'
 
 export default function CardsPage(props: {
   user: User
@@ -54,7 +55,7 @@ export function useTheme(isDarkMode?: boolean) {
   const {accentColor} = useCardsTemplate()
 
   const options: MuiThemeOptions = {
-    secondaryColor: accentColor,
+    secondaryColor: safeColor(accentColor),
   }
 
   return isDarkMode ? createMuiDarkTheme(options) : createMuiLightTheme(options)

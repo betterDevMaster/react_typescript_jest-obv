@@ -2,7 +2,7 @@ import React from 'react'
 import styled from 'styled-components'
 import Grid from '@material-ui/core/Grid'
 import {useEvent} from 'Event/EventProvider'
-import {rgba} from 'lib/color'
+import {safeColor, rgba} from 'lib/color'
 import {ThemeProvider} from '@material-ui/core/styles'
 import {Panels, usePanelsTemplate} from 'Event/template/Panels'
 import Hidden from '@material-ui/core/Hidden'
@@ -100,8 +100,10 @@ function useLinkColor() {
 export function useTheme(isDarkMode?: boolean) {
   const template = usePanelsTemplate()
 
+  // Material-UI: Unsupported color names.
+  // Material-UI supports the following formats: #fff, #ffffff, rgb(), rgba(), hsl(), hsla()
   const options: MuiThemeOptions = {
-    secondaryColor: template.accentColor,
+    secondaryColor: safeColor(template.accentColor),
   }
 
   return isDarkMode ? createMuiDarkTheme(options) : createMuiLightTheme(options)

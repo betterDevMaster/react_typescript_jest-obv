@@ -1,11 +1,12 @@
 import styled from 'styled-components'
-import React, {useEffect, useRef, useState} from 'react'
+import React, {useRef, useState} from 'react'
 import {ColorChangeHandler, ChromePicker} from 'react-color'
 import ReactDOM from 'react-dom'
 import TextField, {TextFieldProps} from '@material-ui/core/TextField'
 import {onChangeStringHandler} from 'lib/dom'
 import makeStyles from '@material-ui/core/styles/makeStyles'
 import ColorProperties from 'color'
+import {isValidColor, safeColor} from 'lib/color'
 
 export default function ColorPicker(props: {
   label?: string
@@ -16,24 +17,22 @@ export default function ColorPicker(props: {
   InputProps?: TextFieldProps['InputProps']
 }) {
   const [showPicker, setShowPicker] = useState(false)
-  const value = props.color
-  const [color, setColor] = useState(value)
+  const color = safeColor(props.color)
   const anchorRef = useRef<HTMLDivElement | null>(null)
-
-  useEffect(() => {
-    if (!value || value === color) {
-      return
-    }
-
-    setColor(value)
-  }, [value, color])
+  const [error, setError] = useState('')
 
   const toggleShowPicker = () => {
     setShowPicker(!showPicker)
   }
 
   const updateColor = (newColor: string) => {
-    setColor(newColor)
+    setError('')
+
+    if (!isValidColor(newColor)) {
+      setError('Invalid Color')
+      return
+    }
+
     props.onPick(newColor)
   }
   const handleColorChange: ColorChangeHandler = ({hex: newColor}) => {
@@ -58,9 +57,7 @@ export default function ColorPicker(props: {
           ...(props.InputProps || {}),
         }}
         disabled={props.disabled}
-        // Value must be a string (not undefined), otherwise it'll
-        // switch to being an uncontrolled input
-        value={color || ''}
+        defaultValue={color}
         label={props.label}
         ref={anchorRef}
         onClick={toggleShowPicker}
@@ -69,6 +66,8 @@ export default function ColorPicker(props: {
         inputProps={{
           'aria-label': props['aria-label'],
         }}
+        error={!!error}
+        helperText={error}
       />
       <Picker
         visible={showPicker}

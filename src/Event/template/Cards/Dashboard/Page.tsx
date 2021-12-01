@@ -6,7 +6,7 @@ import Menu from 'Event/template/Cards/Menu'
 import {User} from 'auth/user'
 import Footer from 'Event/template/Cards/Dashboard/Footer'
 import {Cards, useCardsTemplate} from 'Event/template/Cards'
-import {rgba} from 'lib/color'
+import {rgba, safeColor} from 'lib/color'
 import LanguageSelectMenu from 'Event/LanguageSelector'
 import {muiDarkTheme, muiTheme} from 'lib/ui/theme'
 import {ThemeProvider} from '@material-ui/core/styles'
@@ -116,7 +116,7 @@ export function useTheme(isDarkMode?: boolean) {
   const template = useCardsTemplate()
 
   const options: MuiThemeOptions = {
-    secondaryColor: template.accentColor,
+    secondaryColor: safeColor(template.accentColor),
   }
 
   return isDarkMode ? createMuiDarkTheme(options) : createMuiLightTheme(options)

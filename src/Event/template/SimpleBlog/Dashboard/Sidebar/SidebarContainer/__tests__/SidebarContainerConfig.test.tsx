@@ -22,7 +22,7 @@ it('should render sidebar config', async () => {
 
   fireEvent.click(await findByLabelText('edit sidebar'))
 
-  const color = '000000'
+  const color = '#000000'
   user.type(await findByLabelText('background color'), color)
   user.click(await findByLabelText('save'))
 
