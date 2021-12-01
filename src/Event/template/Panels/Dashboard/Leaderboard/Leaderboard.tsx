@@ -26,7 +26,9 @@ export default function Leaderboard() {
         <LeaderboardConfig isVisible={configVisible} onClose={toggleConfig} />
       </EditModeOnly>
       <Editable onEdit={toggleConfig}>
-        <PageTitle>{v(leaderboard.title)}</PageTitle>
+        <PageTitle aria-label="config points tab page config">
+          {v(leaderboard.title)}
+        </PageTitle>
       </Editable>
       <Content>{v(leaderboard.description)}</Content>
       <Table>
