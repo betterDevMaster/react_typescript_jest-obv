@@ -3,7 +3,7 @@ import Page from 'organization/Event/Page'
 import Layout from 'organization/user/Layout'
 import Box from '@material-ui/core/Box'
 import Typography from '@material-ui/core/Typography'
-import LoginFieldIdInput from 'organization/Event/Services/Apps/Infusionsoft/Config/LoginFieldInput.tsx'
+import LoginFieldIdInput from 'organization/Event/Services/Apps/Infusionsoft/Config/LoginFieldInput'
 
 export default function Step1() {
   return (
