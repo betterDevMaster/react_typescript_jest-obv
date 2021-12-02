@@ -19,7 +19,7 @@ const Section = React.forwardRef<
       ref={ref}
       className={props.className}
       color={sidebar.separatorColor}
-      width={sidebar.separatorWidth}
+      width={sidebar.separatorThickness}
       borderStyle={sidebar.separatorStyle}
     >
       {props.children}

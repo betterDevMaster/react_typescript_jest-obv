@@ -63,6 +63,7 @@ export type NavButtonWithSize = NavButton & {
 }
 export const DEFAULT_BUTTON_HEIGHT = 64
 export const DEFAULT_FONT_SIZE = 29
+const DEFAULT_ICON_COLOR = '#ffffff'
 
 export default function NavButton(props: NavButton) {
   const {newTab, isAreaButton, isImageUpload} = props
@@ -180,6 +181,7 @@ export function Button(
 
   const fontSize = props.fontSize || DEFAULT_FONT_SIZE
   const iconSize = props.iconSize || props.fontSize || DEFAULT_FONT_SIZE
+  const iconColor = props.textColor || DEFAULT_ICON_COLOR
 
   return (
     <StyledButton
@@ -206,7 +208,7 @@ export function Button(
         <IconBox stacked={props.iconStacked}>
           <StyledIcon
             iconClass={props.icon}
-            color={props.textColor}
+            color={iconColor}
             iconSize={iconSize}
           />
         </IconBox>

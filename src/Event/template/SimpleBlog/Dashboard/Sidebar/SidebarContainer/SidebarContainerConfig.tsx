@@ -106,10 +106,10 @@ export function SidebarContainerConfig(props: ComponentConfigProps) {
           )}
         />
 
-        <InputLabel>Separator Width</InputLabel>
+        <InputLabel>Separator Thickness</InputLabel>
         <Controller
-          name="separatorWidth"
-          defaultValue={sidebar.separatorWidth}
+          name="separatorThickness"
+          defaultValue={sidebar.separatorThickness}
           control={control}
           render={({value, onChange}) => (
             <Slider

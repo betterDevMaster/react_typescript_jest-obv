@@ -312,7 +312,7 @@ export const createCards = (): DeepRequired<Cards> => ({
     isVisible: true,
     separatorColor: '#FFFFFF',
     separatorStyle: 'solid',
-    separatorWidth: 1,
+    separatorThickness: 1,
     headBackgroundColor: '#da2727',
     headBackgroundBorder: 15,
     headTextColor: '#ffffff',

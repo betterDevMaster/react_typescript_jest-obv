@@ -17,7 +17,7 @@ export type Sidebar = Publishable & {
   borderColor: string
   paddingTop?: number
   separatorColor?: string
-  separatorWidth?: number
+  separatorThickness?: number
   separatorStyle?: 'solid' | 'dashed' | 'dotted'
 }
 

@@ -228,7 +228,7 @@ export const createSimpleBlog = (): DeepRequired<SimpleBlog> => ({
     isVisible: true,
     separatorColor: '#FFFFFF',
     separatorStyle: 'solid',
-    separatorWidth: 1,
+    separatorThickness: 1,
   },
   sidebarItems: {},
   techCheck: {
