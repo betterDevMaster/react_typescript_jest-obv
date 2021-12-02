@@ -28,13 +28,15 @@ export default function BlogPosts() {
         <PostFormStylesConfig />
         <StyledAddBlogPostButton />
       </EditModeOnly>
-      {sortedIds.map((id) => {
+      {sortedIds.map((id, index) => {
         const post = blogPosts[id]
+        const isLast = index === sortedIds.length - 1
+
         return (
           <Editable onEdit={() => setEditing(id)} key={id}>
             <Published component={post}>
               <VisibleOnMatch rules={post.rules}>
-                <BlogPost post={post} />
+                <BlogPost post={post} isLast={isLast} />
               </VisibleOnMatch>
             </Published>
           </Editable>

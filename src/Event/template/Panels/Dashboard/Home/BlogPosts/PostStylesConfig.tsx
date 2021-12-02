@@ -62,6 +62,8 @@ export default function PostStylesConfig() {
     update({
       postStyles: updated,
     })
+
+    onClose()
   }
 
   return (

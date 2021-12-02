@@ -11,8 +11,8 @@ import PostForm from 'Event/template/Panels/Dashboard/Home/BlogPosts/BlogPost/Po
 import Content from 'lib/ui/form/TextEditor/Content'
 import {usePostStyles} from 'Event/template/Panels/Dashboard/Home/BlogPosts/PostStylesConfig'
 
-export default function BlogPost(props: {post: BlogPostData}) {
-  const {post} = props
+export default function BlogPost(props: {post: BlogPostData; isLast: boolean}) {
+  const {post, isLast} = props
   const isEdit = useEditMode()
   const v = useAttendeeVariables()
   const styles = usePostStyles()
@@ -20,12 +20,13 @@ export default function BlogPost(props: {post: BlogPostData}) {
   const date = post.publishAt || post.postedAt
   const formattedDate = localTime(date)
 
+  const bottomMargin = isLast ? 0 : styles.spacing
   if (!isEdit && !shouldPublish(post)) {
     return null
   }
 
   return (
-    <Post aria-label="blog post">
+    <Post aria-label="blog post" marginBottom={bottomMargin}>
       <Title
         color={styles.titleTextColor}
         fontSize={styles.titleFontSize}
@@ -55,8 +56,8 @@ function Date(props: {children: React.ReactNode; hidden?: boolean}) {
   return <DateText color={styles.dateTextColor}>{props.children}</DateText>
 }
 
-const Post = styled.div`
-  margin-bottom: 30px;
+const Post = styled.div<{marginBottom: number}>`
+  margin-bottom: ${(props) => props.marginBottom}px;
   overflow-x: hidden;
 
   img {
