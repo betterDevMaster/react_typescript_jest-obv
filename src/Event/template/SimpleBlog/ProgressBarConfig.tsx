@@ -4,7 +4,12 @@ import Box from '@material-ui/core/Box'
 import Grid from '@material-ui/core/Grid'
 import Slider from '@material-ui/core/Slider'
 import ColorPicker from 'lib/ui/ColorPicker'
-import {handleChangeSlider, onChangeCheckedHandler} from 'lib/dom'
+import TextField from '@material-ui/core/TextField'
+import {
+  handleChangeSlider,
+  onChangeCheckedHandler,
+  onChangeNumberHandler,
+} from 'lib/dom'
 import {
   SimpleBlog,
   useSimpleBlogTemplate,
@@ -21,15 +26,17 @@ export interface ProgressBar {
   textColor: string
 }
 
-const MIN_PROGRESS_BAR_THICKNESS = 5
-const MAX_PROGRESS_BAR_THICKNESS = 50
+const MIN_PROGRESS_BAR_THICKNESS = 30
+const MAX_PROGRESS_BAR_THICKNESS = 60
 const MIN_PROGRESS_BAR_BORDER_RADIUS = 0
-const MAX_PROGRESS_BAR_BORDER_RADIUS = 25
+const MAX_PROGRESS_BAR_BORDER_RADIUS = 30
 
 export default function ProgressBarConfig() {
   const {progressBar} = useSimpleBlogTemplate()
   const update = useSimpleBlogUpdate()
-  const {control, handleSubmit, watch, setValue} = useForm()
+  const {control, handleSubmit, watch, setValue, register} = useForm<
+    SimpleBlog['progressBar']
+  >()
 
   // Need to init 'requires_attendee_password' on load so the form knows
   // whether to show template config fields.
@@ -42,25 +49,29 @@ export default function ProgressBarConfig() {
     update({progressBar: data})
   }
 
+  const changes = watch()
+  const localProgressBar = {...progressBar, ...changes}
+
   return (
     <>
       <Box mb={1}>
         <Typography variant="h6">Progress Bar</Typography>
       </Box>
       <ProgressBarPreview
-        showing={progressBar.showing}
-        barColor={progressBar.barColor}
-        backgroundColor={progressBar.backgroundColor}
-        textColor={progressBar.textColor}
-        thickness={progressBar.thickness}
-        borderRadius={progressBar.borderRadius}
+        showing={localProgressBar.showing}
+        barColor={localProgressBar.barColor}
+        text={localProgressBar.step1Text}
+        backgroundColor={localProgressBar.backgroundColor}
+        textColor={localProgressBar.textColor}
+        thickness={localProgressBar.thickness}
+        borderRadius={localProgressBar.borderRadius}
       />
-      <Grid container spacing={2}>
-        <Grid item xs={12}>
-          <form onSubmit={handleSubmit(submit)}>
+      <form onSubmit={handleSubmit(submit)}>
+        <Grid container spacing={2}>
+          <Grid item xs={12}>
             <Controller
               name="showing"
-              defaultValue={progressBar.showing}
+              defaultValue={localProgressBar.showing}
               control={control}
               render={({value, onChange}) => (
                 <Switch
@@ -81,17 +92,26 @@ export default function ProgressBarConfig() {
             >
               Save
             </Button>
-          </form>
+          </Grid>
+          <Config
+            control={control}
+            showing={showingConfig}
+            register={register}
+            localProgressBar={localProgressBar}
+          />
         </Grid>
-        <Config control={control} showing={showingConfig} />
-      </Grid>
+      </form>
     </>
   )
 }
 
-function Config(props: {showing: boolean} & Pick<UseFormMethods, 'control'>) {
-  const {control, showing} = props
-  const {progressBar} = useSimpleBlogTemplate()
+function Config(
+  props: {
+    showing: boolean
+    localProgressBar: SimpleBlog['progressBar']
+  } & Pick<UseFormMethods, 'control' | 'register'>,
+) {
+  const {control, showing, localProgressBar, register} = props
 
   if (!showing) {
     return null
@@ -102,7 +122,7 @@ function Config(props: {showing: boolean} & Pick<UseFormMethods, 'control'>) {
       <Grid item xs={6}>
         <Controller
           name="barColor"
-          defaultValue={progressBar.barColor}
+          defaultValue={localProgressBar.barColor}
           control={control}
           render={({value, onChange}) => (
             <ColorPicker
@@ -115,7 +135,7 @@ function Config(props: {showing: boolean} & Pick<UseFormMethods, 'control'>) {
         />
         <Controller
           name="backgroundColor"
-          defaultValue={progressBar.backgroundColor}
+          defaultValue={localProgressBar.backgroundColor}
           control={control}
           render={({value, onChange}) => (
             <ColorPicker
@@ -129,7 +149,7 @@ function Config(props: {showing: boolean} & Pick<UseFormMethods, 'control'>) {
         <InputLabel>Thickness</InputLabel>
         <Controller
           name="thickness"
-          defaultValue={progressBar.thickness}
+          defaultValue={localProgressBar.thickness}
           control={control}
           render={({value, onChange}) => (
             <Slider
@@ -147,7 +167,7 @@ function Config(props: {showing: boolean} & Pick<UseFormMethods, 'control'>) {
       <Grid item xs={6}>
         <Controller
           name="textColor"
-          defaultValue={progressBar.textColor}
+          defaultValue={localProgressBar.textColor}
           control={control}
           render={({value, onChange}) => (
             <ColorPicker
@@ -158,11 +178,11 @@ function Config(props: {showing: boolean} & Pick<UseFormMethods, 'control'>) {
             />
           )}
         />
-        <InputLabel>Thickness</InputLabel>
+        <InputLabel>Border Radius</InputLabel>
 
         <Controller
           name="borderRadius"
-          defaultValue={progressBar.borderRadius}
+          defaultValue={localProgressBar.borderRadius}
           control={control}
           render={({value, onChange}) => (
             <Slider
@@ -176,6 +196,96 @@ function Config(props: {showing: boolean} & Pick<UseFormMethods, 'control'>) {
             />
           )}
         />
+      </Grid>
+      <Grid container spacing={3}>
+        <Grid item xs={6}>
+          <TextField
+            name="step1Text"
+            label="Step 1 Text"
+            fullWidth
+            inputProps={{
+              ref: register,
+            }}
+          />
+        </Grid>
+        <Grid item xs={6}>
+          <Controller
+            name="step1Percent"
+            defaultValue={localProgressBar.step1Percent}
+            control={control}
+            render={({value, onChange}) => (
+              <TextField
+                type="number"
+                InputProps={{inputProps: {min: 0, max: 100}}}
+                name="step1Percent"
+                label="Step 1 Percentage Completed"
+                fullWidth
+                value={value}
+                onChange={onChangeNumberHandler(onChange)}
+              />
+            )}
+          />
+        </Grid>
+      </Grid>
+      <Grid container spacing={3}>
+        <Grid item xs={6}>
+          <TextField
+            name="step2Text"
+            label="Step 2 Text"
+            fullWidth
+            inputProps={{
+              ref: register,
+            }}
+          />
+        </Grid>
+        <Grid item xs={6}>
+          <Controller
+            name="step2Percent"
+            defaultValue={localProgressBar.step1Percent}
+            control={control}
+            render={({value, onChange}) => (
+              <TextField
+                type="number"
+                InputProps={{inputProps: {min: 0, max: 100}}}
+                name="step2Percent"
+                label="Step 2 Percentage Completed"
+                fullWidth
+                value={value}
+                onChange={onChangeNumberHandler(onChange)}
+              />
+            )}
+          />
+        </Grid>
+      </Grid>
+      <Grid container spacing={3}>
+        <Grid item xs={6}>
+          <TextField
+            name="step3Text"
+            label="Step 3 Text"
+            fullWidth
+            inputProps={{
+              ref: register,
+            }}
+          />
+        </Grid>
+        <Grid item xs={6}>
+          <Controller
+            name="step3Percent"
+            defaultValue={localProgressBar.step1Percent}
+            control={control}
+            render={({value, onChange}) => (
+              <TextField
+                type="number"
+                InputProps={{inputProps: {min: 0, max: 100}}}
+                name="step3Percent"
+                label="Step 3 Percentage Completed"
+                fullWidth
+                value={value}
+                onChange={onChangeNumberHandler(onChange)}
+              />
+            )}
+          />
+        </Grid>
       </Grid>
     </>
   )

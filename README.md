@@ -8,7 +8,18 @@ docs.
 [![pipeline status](https://gitlab.com/obviobysage/event/web/badges/develop/pipeline.svg)](https://gitlab.com/obviobysage/event/web/-/commits/develop)
 [![coverage report](https://gitlab.com/obviobysage/event/web/badges/develop/coverage.svg)](https://gitlab.com/obviobysage/event/web/-/commits/develop)
 
-`npm run dev` to start server at `localhost:3000`
+`npm run dev` to start server at `localhost:3000`. 
+
+However for the development you need to work on http://app.obv.localhost:3000/.
+
+This subdomain doesn't work on the safari browser by default. so you need to add domain resolve record to the local hosts file.
+```
+sudo nano /etc/hosts
+```
+Then add this line 
+```
+127.0.0.1       app.obv.localhost
+```
 
 ## Staging
 

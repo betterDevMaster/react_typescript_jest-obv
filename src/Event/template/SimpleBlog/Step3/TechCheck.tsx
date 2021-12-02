@@ -29,8 +29,10 @@ export default function TechCheck(props: SimpleBlogTechCheckProps) {
       <Container maxWidth="md">
         <ProgressBar
           showing={template.progressBar.showing}
-          value={props.progress}
+          text={template.progressBar.step3Text}
+          value={template.progressBar.step3Percent}
           barColor={template.progressBar.barColor}
+          backgroundColor={template.progressBar.backgroundColor}
           textColor={template.progressBar.textColor}
           borderRadius={template.progressBar.borderRadius}
           thickness={template.progressBar.thickness}

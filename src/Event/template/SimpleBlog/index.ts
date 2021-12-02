@@ -61,7 +61,13 @@ export type SimpleBlog = BaseTemplate & {
     textColor: string
     thickness: number
     borderRadius: number
-    showing?: boolean
+    showing: boolean
+    step1Text: string
+    step1Percent: number
+    step2Text: string
+    step2Percent: number
+    step3Text: string
+    step3Percent: number
   }
   techCheck?: {
     buttonText?: string
@@ -278,6 +284,12 @@ export const createSimpleBlog = (): DeepRequired<SimpleBlog> => ({
     thickness: 15,
     borderRadius: 50,
     showing: true,
+    step1Text: 'Step 1',
+    step1Percent: 33,
+    step2Text: 'Step 2',
+    step2Percent: 66,
+    step3Text: 'Step 3',
+    step3Percent: 100,
   },
   menu: {
     backgroundColor: '#000000',

@@ -8,7 +8,7 @@ export const onChangeStringHandler = (setter: (v: string) => void) => (
 }
 
 export const onChangeNumberHandler = (setter: (val: number) => void) => (
-  e: ChangeEvent<HTMLInputElement>,
+  e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
 ): void => {
   setter(parseInt(e.currentTarget.value))
 }

@@ -28,8 +28,10 @@ export default function SetPasswordForm(props: SetPasswordFormProps) {
       <Container maxWidth="sm">
         <ProgressBar
           showing={template.progressBar.showing}
-          value={props.progress}
+          text={template.progressBar.step1Text}
+          value={template.progressBar.step1Percent}
           barColor={template.progressBar.barColor}
+          backgroundColor={template.progressBar.backgroundColor}
           textColor={template.progressBar.textColor}
           borderRadius={template.progressBar.borderRadius}
           thickness={template.progressBar.thickness}

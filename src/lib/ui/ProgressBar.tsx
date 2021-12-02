@@ -1,4 +1,5 @@
-import React from 'react'
+import React, {useState} from 'react'
+import {makeStyles, createStyles, Theme} from '@material-ui/core/styles'
 import LinearProgress, {
   LinearProgressProps,
 } from '@material-ui/core/LinearProgress'
@@ -8,16 +9,17 @@ import styled from 'styled-components'
 import Container from '@material-ui/core/Container'
 
 export interface ProgressBarStyleProps {
-  barColor?: string
-  backgroundColor?: string
-  textColor?: string
-  thickness?: number
-  borderRadius?: number
+  barColor: string
+  backgroundColor: string
+  textColor: string
+  thickness: number
+  borderRadius: number
 }
 
 export type ProgressBarProps = {
   value: number
   showing: boolean
+  text: string
 } & ProgressBarStyleProps
 
 export default function ProgressBar(
@@ -30,31 +32,61 @@ export default function ProgressBar(
   return (
     <Container maxWidth="sm">
       <Box display="flex" alignItems="center" mb={3}>
-        <BarContainer backgroundColor={props.backgroundColor}>
+        <BarContainer thickness={props.thickness}>
           <StyledLinearProgress variant="determinate" {...props} />
-        </BarContainer>
-        <Box minWidth={35}>
           <StyledTypography
             variant="body2"
             textColor={props.textColor}
-          >{`${Math.round(props.value)}%`}</StyledTypography>
-        </Box>
+            thickness={props.thickness}
+          >
+            {props.text}
+          </StyledTypography>
+        </BarContainer>
       </Box>
     </Container>
   )
 }
 
 const BarContainer = styled.div<{
-  backgroundColor: string | undefined
+  thickness: number | undefined
 }>`
-  width: 100% !important;
-  margin-right: ${(props) => props.theme.spacing[2]} !important;
+  width: 100%;
+  position: relative;
+  height: ${(props) => props.thickness}px;
 `
 
 const StyledLinearProgress = styled(
   (
     props: ProgressBarStyleProps & LinearProgressProps & {showing?: boolean},
   ) => {
+    // Add a delay to set the progress so that the bar animates on load
+    const [innerProgress, setInnerProgress] = useState<number | undefined>(0)
+    React.useEffect(() => {
+      const timeout = setTimeout(() => {
+        setInnerProgress(props.value)
+      }, 200)
+      return () => {
+        clearTimeout(timeout)
+      }
+    }, [props.value])
+
+    const useStylesLinerProgress = makeStyles((theme: Theme) =>
+      createStyles({
+        root: {
+          height: props.thickness,
+          borderRadius: props.borderRadius,
+          zIndex: 0,
+        },
+        colorPrimary: {
+          backgroundColor: props.backgroundColor,
+        },
+        bar: {
+          borderRadius: props.borderRadius,
+          backgroundColor: props.barColor,
+        },
+      }),
+    )
+    const classes = useStylesLinerProgress()
     const {
       barColor,
       backgroundColor,
@@ -63,23 +95,30 @@ const StyledLinearProgress = styled(
       textColor: _,
       ...otherProps
     } = props
-    return <LinearProgress {...otherProps} />
+    return (
+      <LinearProgress classes={classes} {...otherProps} value={innerProgress} />
+    )
   },
 )`
-  height: ${(props) => props.thickness}px !important;
-  border-radius: ${(props) => props.borderRadius}px !important;
-  background: ${(props) => props.backgroundColor}!important;
-
-  div {
-    background: ${(props) => props.barColor} !important;
-  }
+  position: absolute;
+  left: 0;
+  top: 0;
+  right: 0;
+  bottom: 0;
 `
 
 const StyledTypography = styled(
-  (props: ProgressBarStyleProps & TypographyProps) => {
-    const {textColor, ...otherProps} = props
+  (
+    props: Pick<ProgressBarStyleProps, 'textColor' | 'thickness'> &
+      TypographyProps,
+  ) => {
+    const {textColor, thickness, ...otherProps} = props
     return <Typography {...otherProps} />
   },
 )`
+  position: absolute;
+  left: 15px;
+  top: ${(props) => props.thickness / 7}px;
+  font-size: ${(props) => props.thickness / 2}px;
   color: ${(props) => props.textColor} !important;
 `

@@ -1,6 +1,5 @@
 import Container from '@material-ui/core/Container'
 import {User} from 'auth/user'
-import {useEvent} from 'Event/EventProvider'
 import {useWaiver} from 'Event/Step2/WaiverProvider'
 import SimpleBlogPage from 'Event/template/SimpleBlog/Page'
 import Waiver from 'Event/template/SimpleBlog/Step2/Waiver'
@@ -21,16 +20,16 @@ import {useSimpleBlogTemplate} from 'Event/template/SimpleBlog'
 export default function Step2(props: {user: User}) {
   const template = useSimpleBlogTemplate()
   const {progressBar} = template
-  const {hasTechCheck} = useEvent()
-  const progress = hasTechCheck ? 50 : 67
 
   return (
     <SimpleBlogPage user={props.user}>
       <Container maxWidth="md">
         <ProgressBar
           showing={progressBar.showing}
-          value={progress}
+          text={template.progressBar.step2Text}
+          value={template.progressBar.step2Percent}
           barColor={progressBar.barColor}
+          backgroundColor={template.progressBar.backgroundColor}
           textColor={progressBar.textColor}
           borderRadius={progressBar.borderRadius}
           thickness={progressBar.thickness}
