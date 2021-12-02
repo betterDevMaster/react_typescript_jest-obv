@@ -79,21 +79,45 @@ export const date = (target: string) => {
   }
 }
 
-export const duration = (start: string, end: string) => {
+export interface Duration {
+  days?: string
+  hours: string
+  minutes: string
+  seconds: string
+}
+
+/**
+ *
+ * @param start
+ * @param end
+ * @returns an object with days, hours, minutes and seconds
+ */
+export const duration = (start: string, end: string): Duration => {
   const duration = moment.duration(moment(end).diff(moment(start)))
 
   const days = Math.floor(duration.asDays())
-
-  const hours = duration.hours() + 24 * days
-  const hoursFormatted = hours < 10 ? `0${hours} : ` : ` ${hours} : `
-
+  const hours = duration.hours()
   const minutes = duration.minutes()
-  const minutesFormatted = minutes < 10 ? `0${minutes} : ` : ` ${minutes} : `
-
   const seconds = duration.seconds()
-  const secondsFormatted = seconds < 10 ? ` 0${seconds}` : ` ${seconds}`
 
-  return [hoursFormatted, minutesFormatted, secondsFormatted].join('')
+  const diffToString = (diff: number) => {
+    if (diff < 0) return '00'
+    if (diff < 10) return `0${diff}`
+    return `${diff}`
+  }
+
+  if (days < 1)
+    return {
+      hours: diffToString(hours),
+      minutes: diffToString(minutes),
+      seconds: diffToString(seconds),
+    }
+  return {
+    days: days < 10 ? `0${days}` : `${days}`,
+    hours: diffToString(hours),
+    minutes: diffToString(minutes),
+    seconds: diffToString(seconds),
+  }
 }
 
 export const inThreeDays = () => moment().add(3, 'days').toISOString()

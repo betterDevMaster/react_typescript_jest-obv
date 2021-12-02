@@ -25,7 +25,7 @@ export default React.memo((props: CountDownTimerProps) => {
     <CountDownTimer
       {...props.countDownTimer}
       aria-label="count down timer"
-      isEditMode={isEditMode}
+      id={props.id}
     />
   )
 

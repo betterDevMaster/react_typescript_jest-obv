@@ -1,4 +1,5 @@
 import {CountDownTimer} from 'Event/Dashboard/components/CountDownTimer'
+import {now, date} from 'lib/date-time'
 
 export const useHasCountDownTimers = (
   countDownTimers: Record<string, CountDownTimer>,
@@ -7,8 +8,10 @@ export const useHasCountDownTimers = (
     return null
   }
 
+  const current = now()
   for (const key in countDownTimers) {
-    if (countDownTimers[key].enabled === true) {
+    const isAfter = date(countDownTimers[key].end).isAfter(current)
+    if (countDownTimers[key].enabled === true && isAfter) {
       return true
     }
   }

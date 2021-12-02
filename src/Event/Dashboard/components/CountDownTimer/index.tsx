@@ -1,10 +1,11 @@
 import React, {useCallback, useState, useEffect} from 'react'
 import styled from 'styled-components'
 import Typography from '@material-ui/core/Typography'
-import {now, date, duration, formatDate, inThreeDays} from 'lib/date-time'
+import {now, date, duration, inThreeDays, Duration} from 'lib/date-time'
 import {rgba} from 'lib/color'
 import {useInterval} from 'lib/interval'
 import {Ordered} from 'lib/list'
+import {useEditMode} from 'Event/Dashboard/editor/state/edit-mode'
 
 export interface CountDownTimer extends Ordered {
   enabled: boolean
@@ -13,6 +14,11 @@ export interface CountDownTimer extends Ordered {
   textColor: string
   backgroundOpacity: number
   description: string
+  numberColor: string
+  numberBackgroundColor: string
+  numberBackgroundOpacity: number
+  numberBackgroundRadius: number
+  separator: string
 }
 
 export const createCountdown = (): CountDownTimer => ({
@@ -22,16 +28,27 @@ export const createCountdown = (): CountDownTimer => ({
   backgroundColor: '#FFFFFF',
   backgroundOpacity: 1,
   textColor: '#000000',
+  numberColor: '#000000',
+  numberBackgroundColor: '#FFFFFF',
+  numberBackgroundOpacity: 1,
+  numberBackgroundRadius: 0,
+  separator: ':',
 })
 
-export default function CountDownTimer(
-  props: CountDownTimer & {
-    isEditMode: boolean
-    onRender?: () => void
-  },
-) {
+type CountDownTimerProps = CountDownTimer & {
+  id: string
+  narrow?: boolean
+  onRender?: () => void
+}
+
+export default function CountDownTimer(props: CountDownTimerProps) {
   const [showing, setShowing] = useState(true)
-  const [timeLeft, setTimeLeft] = useState('')
+  const [timeLeft, setTimeLeft] = useState<Duration>({
+    hours: '00',
+    minutes: '00',
+    seconds: '00',
+  })
+  const isEditMode = useEditMode()
 
   const {
     textColor,
@@ -40,7 +57,7 @@ export default function CountDownTimer(
     end,
     enabled,
     description,
-    isEditMode,
+    narrow,
     onRender,
   } = props
 
@@ -69,16 +86,7 @@ export default function CountDownTimer(
       return false
     }
 
-    return !showing || !enabled || !value()
-  }
-
-  const value = () => {
-    if (isEditMode) {
-      const fullDateFormat = 'MMM Do YYYY HH:mm:ss'
-      return end ? formatDate(end, fullDateFormat) : ''
-    }
-
-    return timeLeft
+    return !showing || !enabled
   }
 
   const isHidden = checkHidden()
@@ -103,27 +111,122 @@ export default function CountDownTimer(
     <StyledCountDownTimer
       color={textColor}
       background={background}
+      narrow={narrow}
       aria-label="count down timer"
     >
-      {value()}
+      <Body {...props} showing={showing} timeLeft={timeLeft} />
       <Typography>{description}</Typography>
     </StyledCountDownTimer>
   )
 }
 
-const StyledCountDownTimer = styled((props) => {
-  return <div {...props} />
-})`
+function Body(
+  props: CountDownTimerProps & {
+    timeLeft: Duration
+    showing: boolean
+  },
+) {
+  const {
+    numberColor,
+    numberBackgroundColor,
+    numberBackgroundOpacity,
+    numberBackgroundRadius,
+    separator,
+    description,
+    id,
+    timeLeft,
+    narrow,
+  } = props
+
+  const numberBackground = numberBackgroundColor
+    ? rgba(numberBackgroundColor, numberBackgroundOpacity)
+    : '#FFFFFF'
+
+  const hasDescription = Boolean(description)
+
+  // Check whether a duration's index is the last unit. Useful to check if
+  // we need to render a separator.
+  const isLast = (index: number) => index === Object.keys(timeLeft).length - 1
+
+  return (
+    <Box bottomSpacing={hasDescription}>
+      {Object.keys(timeLeft).map((key, index) => (
+        <React.Fragment key={`${id}-${key}`}>
+          <StyledCountDownNumber
+            narrow={narrow}
+            color={numberColor}
+            background={numberBackground}
+            radius={numberBackgroundRadius}
+          >
+            {Object.values(timeLeft)[index]}
+          </StyledCountDownNumber>
+          <StyledCountDownSeparator showing={!isLast(index)} panel={narrow}>
+            {separator}
+          </StyledCountDownSeparator>
+        </React.Fragment>
+      ))}
+    </Box>
+  )
+}
+
+const Box = styled.div<{bottomSpacing: boolean}>`
+  display: flex;
+  justify-content: center;
+  margin-bottom: ${(props) =>
+    props.bottomSpacing ? props.theme.spacing[4] : 0};
+`
+
+const StyledCountDownTimer = styled.div<{
+  narrow?: boolean
+  color: string
+  background: string
+}>`
   text-align: center;
-  padding: ${(props) => props.theme.spacing[6]};
-  font-size: 60px;
+  padding: ${(props) =>
+    props.narrow ? props.theme.spacing[4] : props.theme.spacing[6]};
+  font-size: ${(props) => (props.narrow ? 24 : 36)}px;
   font-weight: bold;
   line-height: 1em;
   color: ${(props) => props.color};
   background-color: ${(props) => props.background};
-  opacity: ${(props) => props.opacity};
 
-  @media (min-width: ${(props) => props.theme.breakpoints.md}) {
+  @media (min-width: ${(props) => props.theme.breakpoints.lg}) {
     font-size: 36px;
+  }
+
+  @media (max-width: ${(props) => props.theme.breakpoints.md}) {
+    font-size: 36px;
+    padding: ${(props) => props.theme.spacing[4]};
+  }
+`
+
+const StyledCountDownNumber = styled.span<{
+  narrow?: boolean
+  color: string
+  background: string
+  radius: number
+}>`
+  color: ${(props) => props.color};
+  background-color: ${(props) => props.background};
+  padding: ${(props) =>
+    props.narrow ? props.theme.spacing[2] : props.theme.spacing[4]};
+  border-radius: ${(props) => props.radius * 100}%;
+  min-width: 64px;
+
+  @media (max-width: ${(props) => props.theme.breakpoints.md}) {
+    padding: ${(props) => props.theme.spacing[2]};
+  }
+`
+
+const StyledCountDownSeparator = styled.span<{
+  panel?: boolean
+  showing: boolean
+}>`
+  ${(props) => (props.showing ? '' : 'display: none;')}
+  padding: ${(props) =>
+    props.panel ? props.theme.spacing[2] : props.theme.spacing[4]};
+
+  @media (max-width: ${(props) => props.theme.breakpoints.md}) {
+    padding: ${(props) => props.theme.spacing[2]};
   }
 `

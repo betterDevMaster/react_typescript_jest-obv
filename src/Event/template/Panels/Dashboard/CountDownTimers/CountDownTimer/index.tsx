@@ -1,5 +1,6 @@
 import React from 'react'
 import Grid from '@material-ui/core/Grid'
+import styled from 'styled-components'
 import {Draggable, DraggableProvidedDraggableProps} from 'react-beautiful-dnd'
 import CountDownTimer, {
   CountDownTimer as CountDownTimerConfig,
@@ -25,7 +26,8 @@ export default React.memo((props: CountDownTimerProps) => {
     <CountDownTimer
       {...props.countDownTimer}
       aria-label="count down timer"
-      isEditMode={isEditMode}
+      id={props.id}
+      narrow
       onRender={props.onRender}
     />
   )
@@ -78,9 +80,15 @@ const CountDownTimerContainer = React.forwardRef<
 >((props, ref) => {
   return (
     <>
-      <Grid item xs={12} ref={ref} {...props.draggableProps}>
+      <StyledGrid item xs={12} ref={ref} {...props.draggableProps}>
         {props.children}
-      </Grid>
+      </StyledGrid>
     </>
   )
 })
+
+const StyledGrid = styled(Grid)`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+`

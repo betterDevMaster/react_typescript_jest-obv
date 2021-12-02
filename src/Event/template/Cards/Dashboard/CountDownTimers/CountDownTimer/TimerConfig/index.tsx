@@ -1,6 +1,7 @@
 import React, {useCallback} from 'react'
 import {v4 as uuid} from 'uuid'
 import {Controller, useForm} from 'react-hook-form'
+import styled from 'styled-components'
 import Slider from '@material-ui/core/Slider'
 import TextField from '@material-ui/core/TextField'
 import {handleChangeSlider, onChangeCheckedHandler} from 'lib/dom'
@@ -126,14 +127,14 @@ export default function TimerConfig(
             defaultValue={countDownTimer.backgroundColor}
             render={({value, onChange}) => (
               <ColorPicker
-                label="Background Color"
+                label="Timer Background Color"
                 color={value}
                 onPick={onChange}
               />
             )}
           />
         </FormControl>
-        <InputLabel>Background Opacity</InputLabel>
+        <InputLabel>Timer Background Opacity</InputLabel>
         <Controller
           name="backgroundOpacity"
           defaultValue={countDownTimer.backgroundOpacity}
@@ -149,24 +150,117 @@ export default function TimerConfig(
             />
           )}
         />
+        <Row>
+          <Column>
+            <FormControl fullWidth>
+              <Controller
+                name="numberColor"
+                control={control}
+                defaultValue={countDownTimer.numberColor}
+                render={({value, onChange}) => (
+                  <ColorPicker
+                    label="Number Color"
+                    color={value}
+                    onPick={onChange}
+                  />
+                )}
+              />
+            </FormControl>
+          </Column>
+          <Column>
+            <FormControl fullWidth>
+              <Controller
+                name="numberBackgroundColor"
+                control={control}
+                defaultValue={countDownTimer.numberBackgroundColor}
+                render={({value, onChange}) => (
+                  <ColorPicker
+                    label="Number Block Background Color"
+                    color={value}
+                    onPick={onChange}
+                  />
+                )}
+              />
+            </FormControl>
+          </Column>
+        </Row>
+        <Row>
+          <Column>
+            <InputLabel>Number Block Background Opacity</InputLabel>
+            <Controller
+              name="numberBackgroundOpacity"
+              defaultValue={countDownTimer.numberBackgroundOpacity}
+              control={control}
+              render={({value, onChange}) => (
+                <Slider
+                  min={0}
+                  max={1}
+                  step={0.1}
+                  onChange={handleChangeSlider(onChange)}
+                  valueLabelDisplay="auto"
+                  value={value}
+                />
+              )}
+            />
+          </Column>
+          <Column>
+            <InputLabel>Number Block Background Radius</InputLabel>
+            <Controller
+              name="numberBackgroundRadius"
+              defaultValue={countDownTimer.numberBackgroundRadius}
+              control={control}
+              render={({value, onChange}) => (
+                <Slider
+                  min={0}
+                  max={1}
+                  step={0.1}
+                  onChange={handleChangeSlider(onChange)}
+                  valueLabelDisplay="auto"
+                  value={value}
+                />
+              )}
+            />
+          </Column>
+        </Row>
         <Controller
           name="textColor"
           control={control}
           defaultValue={countDownTimer.textColor}
           render={({value, onChange}) => (
-            <ColorPicker label="Text Color" color={value} onPick={onChange} />
+            <ColorPicker
+              label="Description & Separator Text Color"
+              color={value}
+              onPick={onChange}
+            />
           )}
         />
-        <TextField
-          label="Description"
-          name="description"
-          defaultValue={countDownTimer.description}
-          inputProps={{
-            'aria-label': 'description input',
-            ref: register,
-          }}
-          fullWidth
-        />
+        <Row>
+          <Column>
+            <TextField
+              label="Description"
+              name="description"
+              defaultValue={countDownTimer.description}
+              inputProps={{
+                'aria-label': 'description input',
+                ref: register,
+              }}
+              fullWidth
+            />
+          </Column>
+          <Column>
+            <TextField
+              label="Separator"
+              name="separator"
+              defaultValue={countDownTimer.separator}
+              inputProps={{
+                'aria-label': 'separator input',
+                maxLength: 1,
+                ref: register,
+              }}
+              fullWidth
+            />
+          </Column>
+        </Row>
         <SaveButton type="submit" />
         <RemoveButton
           aria-label="remove countdown"
@@ -177,3 +271,13 @@ export default function TimerConfig(
     </ComponentConfig>
   )
 }
+
+const Row = styled.div`
+  display: flex;
+  margin: 0 -${(props) => props.theme.spacing[2]};
+`
+
+const Column = styled.div`
+  flex: 1;
+  padding: 0 ${(props) => props.theme.spacing[2]};
+`

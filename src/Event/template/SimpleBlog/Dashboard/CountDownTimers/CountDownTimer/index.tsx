@@ -9,6 +9,7 @@ import {Editable} from 'Event/Dashboard/editor/views/EditComponent'
 import {useEditMode} from 'Event/Dashboard/editor/state/edit-mode'
 import {DraggableOverlay, DragHandle} from 'lib/ui/drag-and-drop'
 import {useToggle} from 'lib/toggle'
+import {now, date} from 'lib/date-time'
 import TimerConfig from 'Event/template/SimpleBlog/Dashboard/CountDownTimers/CountDownTimer/TimerConfig'
 
 type CountDownTimerProps = {
@@ -18,23 +19,19 @@ type CountDownTimerProps = {
 }
 
 export default React.memo((props: CountDownTimerProps) => {
-  const isEditMode = useEditMode()
   const {flag: configVisible, toggle: toggleConfig} = useToggle()
+  const isEditMode = useEditMode()
 
-  const countDownTimer = (
+  const timer = (
     <CountDownTimer
       {...props.countDownTimer}
+      id={props.id}
       aria-label="count down timer"
-      isEditMode={isEditMode}
     />
   )
 
   if (!isEditMode) {
-    return (
-      <CountDownTimerContainer countDownTimer={props.countDownTimer}>
-        {countDownTimer}
-      </CountDownTimerContainer>
-    )
+    return <LiveTimer {...props}>{timer}</LiveTimer>
   }
 
   return (
@@ -56,7 +53,7 @@ export default React.memo((props: CountDownTimerProps) => {
               <Editable onEdit={toggleConfig}>
                 <>
                   <DragHandle handleProps={provided.dragHandleProps} />
-                  {countDownTimer}
+                  {timer}
                 </>
               </Editable>
             </DraggableOverlay>
@@ -66,6 +63,23 @@ export default React.memo((props: CountDownTimerProps) => {
     </>
   )
 })
+
+function LiveTimer(
+  props: CountDownTimerProps & {children: React.ReactElement},
+) {
+  const current = now()
+  const isAfter = date(props.countDownTimer.end).isAfter(current)
+
+  if (!isAfter) {
+    return null
+  }
+
+  return (
+    <CountDownTimerContainer countDownTimer={props.countDownTimer}>
+      {props.children}
+    </CountDownTimerContainer>
+  )
+}
 
 const CountDownTimerContainer = React.forwardRef<
   HTMLDivElement,

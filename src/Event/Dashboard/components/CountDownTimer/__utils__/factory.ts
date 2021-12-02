@@ -12,6 +12,11 @@ export const fakeCountDownTimer = (
     backgroundColor: '#ffffff',
     backgroundOpacity: 1,
     textColor: '#000000',
+    numberColor: '#000000',
+    numberBackgroundColor: '#FFFFFF',
+    numberBackgroundOpacity: 1,
+    numberBackgroundRadius: 0,
+    separator: ':',
     ...overrides,
   }
 }
