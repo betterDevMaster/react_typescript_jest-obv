@@ -1,6 +1,6 @@
 import styled from 'styled-components'
 import React from 'react'
-import {usePanelsTemplate} from 'Event/template/Panels'
+import {useHasMultipleTabs, usePanelsTemplate} from 'Event/template/Panels'
 import {User} from 'auth/user'
 import {useEventAuth} from 'Event/auth'
 import Button from 'lib/ui/Button'
@@ -29,6 +29,8 @@ export default function Menu(props: {
     faq: {menuTitle: faqsTitle, isVisible: showingFaqs},
   } = template
 
+  const hasMultipleTabs = useHasMultipleTabs()
+
   const linkProps = {
     onChangeTab,
     color,
@@ -38,7 +40,12 @@ export default function Menu(props: {
     <Box>
       <TopCenterBox>
         <Top>
-          <LinkText {...linkProps} index={0} showing label={homeTitle} />
+          <LinkText
+            {...linkProps}
+            index={0}
+            showing={hasMultipleTabs}
+            label={homeTitle}
+          />
           <LinkText
             {...linkProps}
             index={1}

@@ -29,6 +29,33 @@ export function usePanelsUpdate() {
   return useTemplateUpdate<Panels>()
 }
 
+/**
+ * Whether the template has other tabs/sections to navigate to. Useful
+ * to check for cases where we want to hide something when there is
+ * only one tab. ie. home button.
+ *
+ * @returns
+ */
+export function useHasMultipleTabs() {
+  const {
+    resourceList: {isVisible: showingResources},
+    leaderboard: {isVisible: showingPoints},
+    speakers: {isVisible: showingSpeakers},
+    sponsors: {isVisible: showingSponsors},
+    imageWaterfall: {isVisible: showingImageWaterfall},
+    faq: {isVisible: showingFaqs},
+  } = usePanelsTemplate()
+
+  return (
+    showingSpeakers ||
+    showingSponsors ||
+    showingResources ||
+    showingPoints ||
+    showingImageWaterfall ||
+    showingFaqs
+  )
+}
+
 export type Panels = BaseTemplate & {
   name: typeof PANELS
   accentColor: string

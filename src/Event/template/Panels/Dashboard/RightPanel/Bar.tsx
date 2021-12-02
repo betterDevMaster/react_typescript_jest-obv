@@ -1,6 +1,6 @@
 import {withStyles} from '@material-ui/core/styles'
 import styled from 'styled-components'
-import {usePanelsTemplate} from 'Event/template/Panels'
+import {useHasMultipleTabs, usePanelsTemplate} from 'Event/template/Panels'
 import React from 'react'
 import Tabs from '@material-ui/core/Tabs'
 import MuiTab, {TabProps} from '@material-ui/core/Tab'
@@ -26,6 +26,9 @@ export default function Nav(props: {
     },
     faq: {menuTitle: faqsMenuTitle, isVisible: showingFaqs},
   } = usePanelsTemplate()
+
+  const hasMultipleTabs = useHasMultipleTabs()
+
   const {currentTab, onChangeTab} = props
   const v = useAttendeeVariables()
 
@@ -59,7 +62,11 @@ export default function Nav(props: {
       centered
       aria-label={props['aria-label']}
     >
-      <Tab showing label={v(homeMenuTitle)} aria-label="panels tab home" />
+      <Tab
+        showing={hasMultipleTabs}
+        label={v(homeMenuTitle)}
+        aria-label="panels tab home"
+      />
       <Tab
         label={v(speakersMenuTitle)}
         aria-label="panels tab speakers"
