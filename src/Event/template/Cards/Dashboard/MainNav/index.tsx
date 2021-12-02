@@ -147,7 +147,9 @@ function useHandleDrag(row: CardsNavButtonProps['row']) {
     ids.splice(destination.index, 0, removed)
 
     updateTemplate({
-      mainNav: createPositions(ids),
+      mainNav: {
+        buttons: createPositions(ids),
+      },
     })
   }
 }
