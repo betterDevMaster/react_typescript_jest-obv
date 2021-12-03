@@ -127,10 +127,9 @@ it('should update a resource', async () => {
 })
 
 it('should remove a resource', async () => {
-  const resources = Array.from(
-    {length: faker.random.number({min: 2, max: 5})},
-    (index) => fakeResource({name: `${index}_resource`}),
-  )
+  const resources = new Array(faker.random.number({min: 2, max: 5}))
+    .fill(null)
+    .map((_, index) => fakeResource({name: `${index}_resource`}))
 
   const dashboard = fakePanels({
     resourceList: {
