@@ -175,6 +175,9 @@ const LogoLink = styled(RelativeLink)`
   position: absolute;
   height: 100%;
   padding: 20 px 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 `
 const Logo = styled.img`
   max-height: 100%;
