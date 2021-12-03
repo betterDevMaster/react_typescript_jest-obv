@@ -13,6 +13,7 @@ import {CardsConfig} from 'Event/template/Cards/CardsConfig'
 import Hero from 'Event/template/Cards/Dashboard/Hero'
 import {useRandomBackground} from 'Event/template/Cards/Login/Page'
 import EditModeOnly from 'Event/Dashboard/editor/views/EditModeOnly'
+import {useEditMode} from 'Event/Dashboard/editor/state/edit-mode'
 
 export default function Header(props: {
   toggleMenu: () => void
@@ -43,9 +44,9 @@ export default function Header(props: {
                 />
               </Side>
               <Middle>
-                <RelativeLink to={eventRoutes.root} disableStyles>
+                <LogoContainer to={eventRoutes.root} disableStyles>
                   <CollapsableLogo hideLogo={props.hideLogo} />
-                </RelativeLink>
+                </LogoContainer>
                 <Hero />
               </Middle>
               <Side />
@@ -134,9 +135,16 @@ const Middle = styled.div`
 `
 const Logo = styled.img<{width: number}>`
   margin-top: ${(props) => props.theme.spacing[7]};
+  margin-bottom: ${(props) => props.theme.spacing[7]};
   width: ${(props) => props.width}%;
   max-height: 100%;
   max-width: 100%;
+`
+
+const LogoContainer = styled(RelativeLink)`
+  display: flex;
+  justify-content: center;
+  align-items: center;
 `
 
 const LayoutContiner = styled(Container)`
