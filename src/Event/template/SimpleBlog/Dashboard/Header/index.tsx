@@ -37,9 +37,9 @@ export default function Header(props: {
               />
             </Side>
             <Middle>
-              <LogoContainer to={eventRoutes.root} disableStyles>
+              <RelativeLink to={eventRoutes.root} disableStyles>
                 <CollapsableLogo />
-              </LogoContainer>
+              </RelativeLink>
             </Middle>
             <Side />
           </Layout>
@@ -166,17 +166,9 @@ const ColorOverlay = styled.div<{
 const Middle = styled.div`
   flex: 1;
   text-align: center;
-  display: flex;
-  justify-content: center;
-  align-items: center;
 `
 const Logo = styled.img`
   max-height: 100%;
   max-width: 100%;
   padding: 20px 0;
-`
-const LogoContainer = styled(RelativeLink)`
-  display: flex;
-  justify-content: center;
-  align-items: center;
 `
