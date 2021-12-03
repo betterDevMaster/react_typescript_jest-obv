@@ -150,3 +150,10 @@ deploy_prod:
     - aws s3 sync build/ s3://obvio-event-web
     - aws cloudfront create-invalidation --distribution-id
       $PROD_CDN_DISTRIBUTION_ID --paths "/*"
+
+publish_storybook:
+  stage: test
+  rules:
+    - if: $CI_COMMIT_BRANCH == develop
+  script:
+    - npx chromatic --project-token=$CHROMATIC_PROJECT_TOKEN --exit-zero-on-changes
