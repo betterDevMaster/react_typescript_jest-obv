@@ -69,7 +69,6 @@ export function ResourceList(props: ResourceListProps) {
       <Container>
         <Resources {...props} />
       </Container>
-      <StyledAddResourceButton list={props} />
     </Section>
   )
 }
