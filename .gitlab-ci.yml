@@ -65,6 +65,14 @@ jest:
     - npm run test:coverage
   retry: 2
 
+publish_storybook:
+  stage: tests
+  only:
+    refs:
+      - develop
+  script:
+    - npx chromatic --project-token=$CHROMATIC_PROJECT_TOKEN --exit-zero-on-changes
+
 build_test:
   stage: build
   only:
@@ -151,9 +159,3 @@ deploy_prod:
     - aws cloudfront create-invalidation --distribution-id
       $PROD_CDN_DISTRIBUTION_ID --paths "/*"
 
-publish_storybook:
-  stage: test
-  rules:
-    - if: $CI_COMMIT_BRANCH == develop
-  script:
-    - npx chromatic --project-token=$CHROMATIC_PROJECT_TOKEN --exit-zero-on-changes
