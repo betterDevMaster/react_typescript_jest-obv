@@ -17,7 +17,7 @@ export default function Sidebar() {
 
   const ids = orderedIdsByPosition(sidebarItems)
   const items = ids.map((id, index) => {
-    return <SidebarItem id={id} key={id} {...sidebarItems[id]} index={index} />
+    return <SidebarItem key={id} {...sidebarItems[id]} index={index} id={id} />
   })
 
   if (!isEditMode) {

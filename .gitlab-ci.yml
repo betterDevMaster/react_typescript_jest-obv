@@ -11,6 +11,7 @@ variables:
   STAGING_CDN_DISTRIBUTION_ID: E1PN7CUQQZ69AV
   PROD_CDN_DISTRIBUTION_ID: EOHRS0Q0OCXKQ
   TEST_CDN_DISTRIBUTION_ID: EM6D9VOGZ87XQ
+  CHROMATIC_PROJECT_TOKEN: 23ddd4a789c0
 
 stages:
   - setup
@@ -64,6 +65,14 @@ jest:
   script:
     - npm run test:coverage
   retry: 2
+
+publish_storybook:
+  stage: tests
+  only:
+    refs:
+      - develop
+  script:
+    - npx chromatic --project-token=$CHROMATIC_PROJECT_TOKEN --exit-zero-on-changes
 
 build_test:
   stage: build
@@ -150,3 +159,4 @@ deploy_prod:
     - aws s3 sync build/ s3://obvio-event-web
     - aws cloudfront create-invalidation --distribution-id
       $PROD_CDN_DISTRIBUTION_ID --paths "/*"
+

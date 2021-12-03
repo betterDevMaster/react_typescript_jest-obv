@@ -21,6 +21,11 @@ Then add this line
 127.0.0.1       app.obv.localhost
 ```
 
+
+### Storybook
+
+Stories are automatically published to [Chromatic](https://chromatic.com) on `develop`. Click [here](https://www.chromatic.com/builds?appId=61a97cbf671694004a5ab164) to see the project.
+
 ## Staging
 
 [![pipeline status](https://gitlab.com/obviobysage/event/web/badges/staging/pipeline.svg)](https://gitlab.com/obviobysage/event/web/-/commits/staging)
