@@ -166,6 +166,9 @@ const ColorOverlay = styled.div<{
 const Middle = styled.div`
   flex: 1;
   text-align: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 `
 const Logo = styled.img`
   max-height: 100%;
