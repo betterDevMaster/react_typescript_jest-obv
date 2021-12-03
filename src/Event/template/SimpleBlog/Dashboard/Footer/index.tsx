@@ -8,6 +8,7 @@ import {useAttendeeVariables} from 'Event'
 import {useSimpleBlogTemplate} from 'Event/template/SimpleBlog'
 import {useToggle} from 'lib/toggle'
 import {FooterConfig} from 'Event/template/SimpleBlog/Dashboard/Footer/FooterConfig'
+import EditModeOnly from 'Event/Dashboard/editor/views/EditModeOnly'
 
 export default function Footer() {
   const template = useSimpleBlogTemplate()
@@ -29,7 +30,9 @@ export default function Footer() {
 
   return (
     <>
-      <FooterConfig isVisible={configVisible} onClose={toggleConfig} />
+      <EditModeOnly>
+        <FooterConfig isVisible={configVisible} onClose={toggleConfig} />
+      </EditModeOnly>
       <Editable onEdit={toggleConfig}>
         <Box
           background={footer.background}
