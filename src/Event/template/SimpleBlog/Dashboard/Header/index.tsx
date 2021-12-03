@@ -166,17 +166,16 @@ const ColorOverlay = styled.div<{
 const Middle = styled.div`
   flex: 1;
   text-align: center;
-  display: flex;
+  display: inherit;
   justify-content: center;
   align-items: center;
 `
 
 const LogoLink = styled(RelativeLink)`
-  position: absolute;
-  height: 100%;
-  padding: 20 px 0;
+  display: contents;
 `
 const Logo = styled.img`
   max-height: 100%;
   max-width: 100%;
+  padding: 20px 0;
 `
