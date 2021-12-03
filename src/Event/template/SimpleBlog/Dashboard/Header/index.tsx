@@ -37,9 +37,9 @@ export default function Header(props: {
               />
             </Side>
             <Middle>
-              <RelativeLink to={eventRoutes.root} disableStyles>
+              <LogoLink to={eventRoutes.root} disableStyles>
                 <CollapsableLogo />
-              </RelativeLink>
+              </LogoLink>
             </Middle>
             <Side />
           </Layout>
@@ -170,8 +170,13 @@ const Middle = styled.div`
   justify-content: center;
   align-items: center;
 `
+
+const LogoLink = styled(RelativeLink)`
+  position: absolute;
+  height: 100%;
+  padding: 20 px 0;
+`
 const Logo = styled.img`
   max-height: 100%;
   max-width: 100%;
-  padding: 20px 0;
 `
