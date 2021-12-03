@@ -4,8 +4,10 @@ import Typography from '@material-ui/core/Typography'
 import {now, date, duration, inThreeDays, Duration} from 'lib/date-time'
 import {rgba} from 'lib/color'
 import {useInterval} from 'lib/interval'
-import {Ordered} from 'lib/list'
+import {HashMap, Ordered} from 'lib/list'
 import {useEditMode} from 'Event/Dashboard/editor/state/edit-mode'
+import {withDefaults} from 'lib/object'
+import {DeepRequired} from 'lib/type-utils'
 
 export interface CountDownTimer extends Ordered {
   enabled: boolean
@@ -30,10 +32,22 @@ export const createCountdown = (): CountDownTimer => ({
   textColor: '#000000',
   numberColor: '#000000',
   numberBackgroundColor: '#FFFFFF',
-  numberBackgroundOpacity: 1,
+  numberBackgroundOpacity: 0,
   numberBackgroundRadius: 0,
   separator: ':',
 })
+
+const countDownTimerDefaults = createCountdown()
+
+export function setCountDownTimerDefaults(timers: HashMap<CountDownTimer>) {
+  return Object.entries(timers).reduce((acc, [id, timer]) => {
+    acc[id] = withDefaults(
+      countDownTimerDefaults,
+      timer,
+    ) as DeepRequired<CountDownTimer>
+    return acc
+  }, {} as DeepRequired<HashMap<CountDownTimer>>)
+}
 
 type CountDownTimerProps = CountDownTimer & {
   id: string
