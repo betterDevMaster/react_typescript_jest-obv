@@ -13,7 +13,6 @@ import {CardsConfig} from 'Event/template/Cards/CardsConfig'
 import Hero from 'Event/template/Cards/Dashboard/Hero'
 import {useRandomBackground} from 'Event/template/Cards/Login/Page'
 import EditModeOnly from 'Event/Dashboard/editor/views/EditModeOnly'
-import {useEditMode} from 'Event/Dashboard/editor/state/edit-mode'
 
 export default function Header(props: {
   toggleMenu: () => void
