@@ -65,10 +65,13 @@ it('should submit a tech check config', async () => {
   user.click(await findByLabelText('save tech check'))
 
   await wait(() => {
-    expect(mockPut).toHaveBeenCalledTimes(1)
+    expect(mockPut).toHaveBeenCalledTimes(2)
   })
 
-  const [_, data] = mockPut.mock.calls[0]
+  const [_, templateData] = mockPut.mock.calls[0]
+  const {template} = templateData
+
+  const [__, data] = mockPut.mock.calls[1]
   const {body: submitted, area_key} = data
 
   expect(submitted).toMatch(body) // CKEditor automatically converts to HTML
@@ -77,7 +80,7 @@ it('should submit a tech check config', async () => {
   /**
    * Saved template fields
    */
-  expect(data.template.techCheck.buttonTextColor).toBeTruthy() // has defaults
+  expect(template['techCheck.buttonTextColor']).toBeTruthy() // has defaults
 })
 
 it('it should set custom buttons', async () => {
@@ -139,26 +142,28 @@ it('it should set custom buttons', async () => {
   user.click(await findByLabelText('save tech check'))
 
   await wait(() => {
-    expect(mockPut).toHaveBeenCalledTimes(1)
+    expect(mockPut).toHaveBeenCalledTimes(2)
   })
 
   const [_, data] = mockPut.mock.calls[0]
   const {template} = data
 
-  expect(template.techCheck.hasCustomButtons).toBe(true)
+  expect(template['techCheck.hasCustomButtons']).toBe(true)
   // Removed the button
-  expect(template.techCheck.buttons.ids.length).toBe(2)
+  expect(template['techCheck.buttons.ids'].length).toBe(2)
+
+  const entityId0 = template['techCheck.buttons.ids'][0]
+  const entityId1 = template['techCheck.buttons.ids'][1]
 
   // Did set page
-  expect(
-    template.techCheck.buttons.entities[template.techCheck.buttons.ids[0]].page,
-  ).toBe('/tech_check')
+  expect(template[`techCheck.buttons.entities.${entityId0}.page`]).toBe(
+    '/tech_check',
+  )
 
   // Did set as TC Area button
-  expect(
-    template.techCheck.buttons.entities[template.techCheck.buttons.ids[1]]
-      .isAreaButton,
-  ).toBe(true)
+  expect(template[`techCheck.buttons.entities.${entityId1}.isAreaButton`]).toBe(
+    true,
+  )
 })
 
 it('it should set rules to skip', async () => {
@@ -202,7 +207,7 @@ it('it should set rules to skip', async () => {
   user.click(await findByLabelText('save tech check'))
 
   await wait(() => {
-    expect(mockPut).toHaveBeenCalledTimes(1)
+    expect(mockPut).toHaveBeenCalledTimes(2)
   })
 
   const [_, data] = mockPut.mock.calls[0]
