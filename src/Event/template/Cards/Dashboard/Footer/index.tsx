@@ -8,6 +8,7 @@ import {useAttendeeVariables} from 'Event'
 import {useCardsTemplate} from 'Event/template/Cards'
 import {useToggle} from 'lib/toggle'
 import {FooterConfig} from 'Event/template/Cards/Dashboard/Footer/FooterConfig'
+import EditModeOnly from 'Event/Dashboard/editor/views/EditModeOnly'
 
 export default function Footer() {
   const {footer} = useCardsTemplate()
@@ -28,7 +29,9 @@ export default function Footer() {
 
   return (
     <>
-      <FooterConfig isVisible={configVisible} onClose={toggleConfig} />
+      <EditModeOnly>
+        <FooterConfig isVisible={configVisible} onClose={toggleConfig} />
+      </EditModeOnly>
       <Editable onEdit={toggleConfig}>
         <Box
           background={footer.background}
