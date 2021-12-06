@@ -26,6 +26,7 @@ import {
   useSimpleBlogTemplate,
   useSimpleBlogUpdate,
 } from 'Event/template/SimpleBlog'
+import {Column} from 'lib/ui/layout'
 
 const imageUploadId = `sponsor-question-icon-upload`
 const MAX_FILE_SIZE_BYTES = 5000000 // 5MB
@@ -39,6 +40,7 @@ type SettingsFormData = {
   backToDashboardTextColor: string
   sponsorSpace: number
   sponsorSeperator: boolean
+  imageSize: Column
 }
 
 export default function PageSettingsDialog(props: {
@@ -65,6 +67,7 @@ export default function PageSettingsDialog(props: {
     backToDashboardTextColor,
     sponsorSpace,
     sponsorSeperator,
+    imageSize,
   }: SettingsFormData) => {
     const required = {
       sponsor_page_title,
@@ -181,15 +184,23 @@ export default function PageSettingsDialog(props: {
               />
             </Grid>
             <InputLabel>Sponsor Logo Size</InputLabel>
-            <Slider
-              min={1}
-              max={11}
-              step={1}
-              value={imageSize}
-              onChange={handleChangeSlider(setImageSize)}
-              valueLabelDisplay="auto"
-              aria-label="sponsor image size"
-              disabled={processing}
+
+            <Controller
+              name="imageSize"
+              defaultValue={sponsorsPageSettings.imageSize}
+              control={control}
+              render={({onChange, value}) => (
+                <Slider
+                  min={1}
+                  max={11}
+                  step={1}
+                  value={value}
+                  onChange={handleChangeSlider(onChange)}
+                  valueLabelDisplay="auto"
+                  aria-label="sponsor image size"
+                  disabled={processing}
+                />
+              )}
             />
             <InputLabel>Space Between Sponsors</InputLabel>
             <Controller
