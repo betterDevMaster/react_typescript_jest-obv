@@ -31,21 +31,27 @@ it('should purchase selected credits', async () => {
   const {findByText, findByLabelText, findAllByLabelText} = await signInToObvio(
     {
       beforeRender: () => {
+        // Need to mock requests BEFORE signing in, because the requests are sent immediately,
+        // so we'll do it here. We just happen to know that the first request is to fetch
+        // the user's organizations on organization list.
         mockGet.mockResolvedValueOnce({data: []}) // organizations
       },
       user: teamMember,
     },
   )
 
+  // Open user drop-down menu in app/tool bar
   user.click(await findByLabelText('account menu'))
 
-  // Need registered card to buy credits
+  // Mock - Need registered card to buy credits, so we'll mock it here BEFORE we access the page. This
+  // is a common pattern. Mock requests, do action, verify mocks were called.
   const paymentMethod = fakePaymentMethod()
   mockGet.mockResolvedValueOnce({data: paymentMethod})
 
+  // Action - Go to billing page
   user.click(await findByLabelText('billing settings'))
 
-  // returns price
+  // Mock - return the price that the slider will return
   const initialPrice = 20
   mockAjax.mockResolvedValueOnce({
     response: {
@@ -64,14 +70,16 @@ it('should purchase selected credits', async () => {
     },
   })
 
-  // Update slider to select credits
+  // Action - Update slider to select credits
   const purchaseAmount = 200
   await act(async () => {
     user.click(await findByText(`${purchaseAmount}`))
   })
 
+  // Verify - Check that the UI is returning our mocked price value
   expect(await findByText(`$${updatedPrice}.00`)).toBeInTheDocument()
 
+  // Mock - after purchase we'll return a user with the credits attached
   const withCredits: TeamMember = {
     ...teamMember,
     credits: purchaseAmount,
@@ -87,12 +95,15 @@ it('should purchase selected credits', async () => {
     },
   })
 
+  // Action - Perform purchase
   user.click(await findByLabelText('confirm purchase'))
 
+  // Verify - UI shows what we're expecing
   expect(
     await findByText(/credits successfully purchased/i),
   ).toBeInTheDocument()
 
+  // Verify - requests
   // Assert sent correct request with payment id. We can't actually
   // test the sent num credit value since Mui slider relies on
   // dom coordinates, which jest doesn't have.
@@ -100,9 +111,10 @@ it('should purchase selected credits', async () => {
   expect(url).toMatch('/purchase_credits')
   expect(data.payment_method_id).toBe(paymentMethod.id)
 
+  // Action - close dialog
   user.click(await findByText(/close/i))
 
-  // Showing the purchased credits
+  // Verify - Showing the purchased credits
   expect((await findAllByLabelText('credit balance'))[0].textContent).toBe(
     `${purchaseAmount}`,
   )
