@@ -81,7 +81,7 @@ function createEvent(
   organization: Organization,
   data: CreateEventData,
 ) {
-  const url = api(`/organizations/${organization.slug}/events`)
+  const url = api(`/organizations/${organization.id}/events`)
   return client.post<ObvioEvent>(url, data)
 }
 

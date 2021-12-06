@@ -2,7 +2,7 @@ import {signInToObvio} from 'obvio/__utils__/sign-in-to-obvio'
 import user from '@testing-library/user-event'
 import axios from 'axios'
 import {fakeTeamMember} from 'organization/Team/__utils__/factory'
-import {fakePaymentMethod} from 'obvio/Billing/__utils__/factory'
+import {fakePaymentMethod, fakePlan} from 'obvio/Billing/__utils__/factory'
 import {fakePaginate} from 'lib/__utils__/pagination-factory'
 import {
   fakeAdditionalRoomsTransaction,
@@ -15,7 +15,7 @@ it('should show transactions', async () => {
   const teamMember = fakeTeamMember({
     has_active_subscription: true,
     has_unpaid_transactions: false,
-    plan: 'enterprise',
+    plan: fakePlan({name: 'enterprise'}),
     is_subscribed: true,
     credits: 0, // start with 0 credits
   })

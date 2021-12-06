@@ -9,9 +9,9 @@ import SpeakerPageEditDialog from 'Event/template/SimpleBlog/SpeakerPage/Speaker
 import {Speaker} from 'Event/SpeakerPage'
 import {useSpeakers} from 'organization/Event/SpeakersProvider'
 import {useTemplate} from 'Event/TemplateProvider'
-import {useTeamMember} from 'organization/auth'
 import {SIMPLE_BLOG} from 'Event/template/SimpleBlog'
 import SimpleBlogSpeakerPage from 'Event/template/SimpleBlog/SpeakerPage'
+import {useObvioUser} from 'obvio/auth'
 
 export default function SpeakerPageConfig() {
   const {add, edit} = useSpeakers()
@@ -52,7 +52,7 @@ export default function SpeakerPageConfig() {
 function SpeakerPage() {
   const template = useTemplate()
 
-  const user = useTeamMember()
+  const user = useObvioUser()
   const {speakers} = useSpeakers()
 
   switch (template.name) {

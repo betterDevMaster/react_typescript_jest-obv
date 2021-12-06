@@ -68,7 +68,7 @@ function useAssign(teamMember: TeamMember) {
   const [processing, setProcessing] = useState(false)
 
   const url = api(
-    `/organizations/${organization.slug}/team_members/${teamMember.id}/role`,
+    `/organizations/${organization.id}/team_members/${teamMember.id}/role`,
   )
 
   const assign = (id: number) => {
@@ -97,7 +97,7 @@ function useUnassign(teamMember: TeamMember) {
   const [processing, setProcessing] = useState(false)
 
   const url = api(
-    `/organizations/${organization.slug}/team_members/${teamMember.id}/role`,
+    `/organizations/${organization.id}/team_members/${teamMember.id}/role`,
   )
 
   const unassign = () => {

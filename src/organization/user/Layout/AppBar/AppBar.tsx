@@ -11,7 +11,6 @@ import styled from 'styled-components'
 import {useHistory} from 'react-router-dom'
 import {RelativeLink} from 'lib/ui/link/RelativeLink'
 import {useOrganization} from 'organization/OrganizationProvider'
-import {useOrganizationAuth, useTeamMember} from 'organization/auth'
 import Button from '@material-ui/core/Button'
 import HasPermission from 'organization/HasPermission'
 import {UPDATE_TEAM} from 'organization/PermissionsProvider'
@@ -20,6 +19,7 @@ import Divider from '@material-ui/core/Divider'
 import {useIsOwner} from 'organization/OwnerProvider'
 import logo from 'assets/images/logo.png'
 import {obvioRoutes} from 'obvio/Routes'
+import {useObvioAuth, useObvioUser} from 'obvio/auth'
 
 export default function AppBar() {
   const useStyles = makeStyles((theme) => ({
@@ -37,11 +37,11 @@ export default function AppBar() {
   const classes = useStyles()
 
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null)
-  const {logout} = useOrganizationAuth()
+  const {logout} = useObvioAuth()
   const history = useHistory()
   const {routes, organization} = useOrganization()
   const isOwner = useIsOwner()
-  const user = useTeamMember()
+  const user = useObvioUser()
 
   const homeLinkTarget = isOwner ? routes.settings : routes.events.root
 

@@ -8,11 +8,11 @@ import AddSponsorButton from 'Event/template/SimpleBlog/SponsorPage/SponsorPageC
 import Button from '@material-ui/core/Button'
 import Box from '@material-ui/core/Box'
 import PageSettingsDialog from 'Event/template/SimpleBlog/SponsorPage/SponsorPageConfig/PageSettingsDialog'
-import {useTeamMember} from 'organization/auth'
 import {useTemplate} from 'Event/TemplateProvider'
 import SimpleBlogSponsorPage from 'Event/template/SimpleBlog/SponsorPage'
 import {SIMPLE_BLOG} from 'Event/template/SimpleBlog'
 import {useSponsors} from 'organization/Event/SponsorsProvider'
+import {useObvioUser} from 'obvio/auth'
 
 export default function SponsorPageConfig() {
   const {add, loading, edit} = useSponsors()
@@ -68,7 +68,7 @@ export default function SponsorPageConfig() {
 function SponsorPage() {
   const template = useTemplate()
 
-  const user = useTeamMember()
+  const user = useObvioUser()
   const {sponsors} = useSponsors()
 
   switch (template.name) {

@@ -96,7 +96,7 @@ function useFetchTeamMembers() {
   const {client, organization} = useOrganization()
 
   return useCallback(() => {
-    const url = api(`/organizations/${organization.slug}/team_members`)
+    const url = api(`/organizations/${organization.id}/team_members`)
     return client.get<TeamMember[]>(url)
   }, [organization, client])
 }
@@ -106,7 +106,7 @@ function useRemoveFromTeam() {
 
   return (target: TeamMember) => {
     const url = api(
-      `/organizations/${organization.slug}/team_members/${target.id}`,
+      `/organizations/${organization.id}/team_members/${target.id}`,
     )
 
     return client.delete<TeamMember>(url)

@@ -86,7 +86,7 @@ function useFetchRoles() {
   const {client, organization} = useOrganization()
 
   return useCallback(() => {
-    const url = api(`/organizations/${organization.slug}/roles`)
+    const url = api(`/organizations/${organization.id}/roles`)
     return client.get<Role[]>(url)
   }, [organization, client])
 }
@@ -96,7 +96,7 @@ export function useAddPermission() {
 
   return (role: Role, permission: Permission) => {
     const url = api(
-      `/organizations/${organization.slug}/roles/${role.id}/permissions`,
+      `/organizations/${organization.id}/roles/${role.id}/permissions`,
     )
 
     return client.put<Role>(url, {permission})
@@ -108,7 +108,7 @@ export function useRemovePermission() {
 
   return (role: Role, permission: Permission) => {
     const url = api(
-      `/organizations/${organization.slug}/roles/${role.id}/permissions/${permission}`,
+      `/organizations/${organization.id}/roles/${role.id}/permissions/${permission}`,
     )
 
     return client.delete<Role>(url)

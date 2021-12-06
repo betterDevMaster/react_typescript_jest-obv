@@ -25,7 +25,7 @@ it('should complete authorization', async () => {
 
   const event = fakeEvent()
 
-  const pathname = `/organization/${organization.slug}/events/${event.slug}/services/mailchimp`
+  const pathname = `/organization/${organization.id}/events/${event.slug}/services/mailchimp`
   const code = 'secretmailchimpcode'
 
   // useLocation is used to determin the current app...

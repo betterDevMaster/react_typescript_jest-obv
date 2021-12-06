@@ -19,8 +19,8 @@ it('should show team member only page', async () => {
   const token = faker.random.alphaNumeric(8)
   // is already logged in user
   window.localStorage.setItem(TEAM_MEMBER_TOKEN_KEY, token)
-  mockUseLocation.mockImplementationOnce(() => ({
-    pathname: `/organization/${organization.slug}`,
+  mockUseLocation.mockImplementation(() => ({
+    pathname: `/organization/${organization.id}`,
   }))
 
   // Is valid organization slug

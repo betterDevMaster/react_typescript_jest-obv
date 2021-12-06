@@ -22,11 +22,12 @@ export default function EventList() {
   useBreadcrumbs([{title: 'Events', url: routes.events.root}])
 
   const fetch = useCallback(() => {
-    const url = api(`/organizations/${organization.slug}/events`)
+    const url = api(`/organizations/${organization.id}/events`)
     return client.get<ObvioEvent[]>(url)
   }, [organization, client])
 
   const {data: events, loading} = useAsync(fetch)
+
   if (loading || !events) {
     return null
   }

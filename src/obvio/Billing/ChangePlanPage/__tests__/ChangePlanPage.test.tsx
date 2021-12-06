@@ -3,7 +3,7 @@ import user from '@testing-library/user-event'
 import axios from 'axios'
 import {signInToObvio} from 'obvio/__utils__/sign-in-to-obvio'
 import {useLocation} from 'react-router-dom'
-import {fakePaymentMethod} from 'obvio/Billing/__utils__/factory'
+import {fakePaymentMethod, fakePlan} from 'obvio/Billing/__utils__/factory'
 import {TeamMember} from 'auth/user'
 import {PlanName} from 'obvio/Billing/plans'
 
@@ -120,7 +120,7 @@ it('should upgrade a subscription', async () => {
   const teamMember = fakeTeamMember({
     has_active_subscription: true, // no subscription
     has_payment_method: true,
-    plan: 'professional', // current
+    plan: fakePlan({name: 'professional'}), // current
     is_subscribed: true,
   })
 
@@ -159,7 +159,7 @@ it('should upgrade a subscription', async () => {
   const upgradedUser: TeamMember = {
     ...teamMember,
     has_active_subscription: true,
-    plan: 'enterprise',
+    plan: fakePlan({name: 'enterprise'}),
   }
 
   mockPut.mockResolvedValueOnce({data: upgradedUser})

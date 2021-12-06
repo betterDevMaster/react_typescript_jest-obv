@@ -1,11 +1,11 @@
 import {TeamMember} from 'auth/user'
 import {useAsync} from 'lib/async'
 import {api} from 'lib/url'
-import {useOrganizationAuth} from 'organization/auth'
 import {useOrganization} from 'organization/OrganizationProvider'
 import TeamMemberOnly from 'organization/auth/TeamMemberOnly'
 import React, {useCallback} from 'react'
 import FullPageLoader from 'lib/ui/layout/FullPageLoader'
+import {useObvioAuth} from 'obvio/auth'
 
 type OwnerContextProps = TeamMember
 
@@ -15,14 +15,14 @@ const OwnerContext = React.createContext<OwnerContextProps | undefined>(
 
 export default function OwnerProvider(props: {children: React.ReactNode}) {
   const {
-    organization: {slug},
+    organization: {id},
     client,
   } = useOrganization()
 
   const fetch = useCallback(() => {
-    const url = api(`/organizations/${slug}/owner`)
+    const url = api(`/organizations/${id}/owner`)
     return client.get<TeamMember>(url)
-  }, [slug, client])
+  }, [id, client])
 
   const {data: owner, loading} = useAsync(fetch)
 
@@ -52,7 +52,7 @@ export function useOwner() {
 
 export function useIsOwner() {
   const owner = useOwner()
-  const {user} = useOrganizationAuth()
+  const {user} = useObvioAuth()
 
   if (!user || !owner) {
     return false

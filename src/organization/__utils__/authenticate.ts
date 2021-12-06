@@ -43,8 +43,8 @@ export function signInToOrganization(
 
   // is already logged in user
   window.localStorage.setItem(TEAM_MEMBER_TOKEN_KEY, token)
-  mockUseLocation.mockImplementationOnce(() => ({
-    pathname: `/organization/${organization.slug}`,
+  mockUseLocation.mockImplementation(() => ({
+    pathname: `/organization/${organization.id}`,
   }))
 
   // Is vaild organization slug

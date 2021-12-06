@@ -33,11 +33,11 @@ import {
 import Preview from 'organization/Event/WaiverConfig/Preview'
 import TemplateFields from 'Event/template/SimpleBlog/Step2/WaiverConfig/TemplateFields'
 import Step2 from 'Event/template/SimpleBlog/Step2'
-import {useTeamMember} from 'organization/auth'
 import {fieldError} from 'lib/form'
 import {ValidationError} from 'lib/api-client'
 import {Template} from 'Event/template'
 import {useSimpleBlogUpdate} from 'Event/template/SimpleBlog'
+import {useObvioUser} from 'obvio/auth'
 
 const imageUploadId = 'waived-logo-upload'
 
@@ -67,7 +67,7 @@ export default function WaiverConfig() {
   const setWaiver = useSetWaiver()
   const dispatch = useDispatch()
   const {event} = useEvent()
-  const user = useTeamMember()
+  const user = useObvioUser()
   const updateTemplate = useSimpleBlogUpdate()
 
   // Prevent updating unmounted component

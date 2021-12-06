@@ -2,7 +2,7 @@ import {signInToObvio} from 'obvio/__utils__/sign-in-to-obvio'
 import user from '@testing-library/user-event'
 import axios from 'axios'
 import {fakeTeamMember} from 'organization/Team/__utils__/factory'
-import {fakePaymentMethod} from 'obvio/Billing/__utils__/factory'
+import {fakePaymentMethod, fakePlan} from 'obvio/Billing/__utils__/factory'
 import {PlanName} from 'obvio/Billing/plans'
 import {ajax} from 'rxjs/ajax'
 import {act} from 'react-dom/test-utils'
@@ -23,7 +23,7 @@ it('should purchase selected credits', async () => {
 
   const teamMember = fakeTeamMember({
     has_active_subscription: true,
-    plan,
+    plan: fakePlan({name: plan}),
     credits: 0, // start with 0 credits
     is_founder: true,
   })
@@ -113,7 +113,7 @@ it('should require a payment method', async () => {
 
   const teamMember = fakeTeamMember({
     has_active_subscription: true,
-    plan,
+    plan: fakePlan({name: plan}),
     credits: 0, // start with 0 credits
     is_subscribed: true,
   })

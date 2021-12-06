@@ -147,7 +147,7 @@ export default function AddTeamMemberForm() {
 
 function useInviteTeamMember() {
   const {organization, client} = useOrganization()
-  const url = api(`/organizations/${organization.slug}/team_members`)
+  const url = api(`/organizations/${organization.id}/team_members`)
 
   return (data: InviteData) =>
     client.post<TeamMember | TeamInvitation>(url, {

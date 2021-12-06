@@ -25,7 +25,7 @@ it('should complete authorization', async () => {
 
   const event = fakeEvent()
 
-  const pathname = `/organization/${organization.slug}/events/${event.slug}/services/infusionsoft`
+  const pathname = `/organization/${organization.id}/events/${event.slug}/services/infusionsoft`
 
   // useLocation is used to determin the current app...
   mockUseLocation.mockImplementation(() => ({

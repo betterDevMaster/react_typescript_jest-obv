@@ -3,12 +3,7 @@ import Grid from '@material-ui/core/Grid'
 import InputLabel from '@material-ui/core/InputLabel'
 import Slider from '@material-ui/core/Slider'
 import {useEvent} from 'Event/EventProvider'
-import {
-  DEFAULTS as TEMPLATE_DEFAULTS,
-  Panels,
-  usePanelsTemplate,
-  usePanelsUpdate,
-} from 'Event/template/Panels'
+import {Panels, usePanelsTemplate, usePanelsUpdate} from 'Event/template/Panels'
 import {handleChangeSlider, onChangeCheckedHandler} from 'lib/dom'
 import ColorPicker from 'lib/ui/ColorPicker'
 import Switch from 'lib/ui/form/Switch'
@@ -19,8 +14,6 @@ import Layout from 'organization/user/Layout'
 import React from 'react'
 import {useForm, Controller} from 'react-hook-form'
 import Button from '@material-ui/core/Button'
-
-const DEFAULT = TEMPLATE_DEFAULTS.background
 
 export default function GlobalStylesConfig() {
   const update = usePanelsUpdate()
@@ -123,7 +116,7 @@ export default function GlobalStylesConfig() {
 
           <Controller
             name="background.opacity"
-            defaultValue={template.background?.opacity || DEFAULT.opacity}
+            defaultValue={template.background.opacity}
             control={control}
             render={({value, onChange}) => (
               <Slider
@@ -134,7 +127,7 @@ export default function GlobalStylesConfig() {
                 valueLabelDisplay="auto"
                 value={value}
                 valueLabelFormat={() => (
-                  <div>{template.background?.opacity || DEFAULT.opacity}</div>
+                  <div>{template.background.opacity}</div>
                 )}
                 aria-label="background color opacity"
               />

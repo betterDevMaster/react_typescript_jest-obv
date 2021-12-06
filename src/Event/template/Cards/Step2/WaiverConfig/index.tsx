@@ -32,10 +32,10 @@ import {
 import Preview from 'organization/Event/WaiverConfig/Preview'
 import TemplateFields from 'Event/template/Cards/Step2/WaiverConfig/TemplateFields'
 import Step2 from 'Event/template/Cards/Step2'
-import {useTeamMember} from 'organization/auth'
 import {fieldError} from 'lib/form'
 import {ValidationError} from 'lib/api-client'
 import {Cards, useCardsUpdate} from 'Event/template/Cards'
+import {useObvioUser} from 'obvio/auth'
 
 const imageUploadId = 'waived-logo-upload'
 
@@ -64,7 +64,7 @@ export default function WaiverConfig() {
   ] = useState<ValidationError<WaiverData> | null>(null)
   const setWaiver = useSetWaiver()
   const {event} = useEvent()
-  const user = useTeamMember()
+  const user = useObvioUser()
   const updateTemplate = useCardsUpdate()
 
   // Prevent updating unmounted component

@@ -73,7 +73,7 @@ export default function AddRoleForm() {
 
 function useSaveRole() {
   const {organization, client} = useOrganization()
-  const url = api(`/organizations/${organization.slug}/roles`)
+  const url = api(`/organizations/${organization.id}/roles`)
 
   return (data: AddRoleData) => client.post<Role>(url, {name: data.name})
 }

@@ -6,15 +6,10 @@ import Layout from 'organization/user/Layout'
 import {Organization} from 'organization'
 import React, {useState} from 'react'
 import {useForm} from 'react-hook-form'
-import {
-  useOrganization,
-  createRoutesFor,
-} from 'organization/OrganizationProvider'
+import {useOrganization} from 'organization/OrganizationProvider'
 import {fieldError} from 'lib/form'
-
 import Form from 'organization/Settings/Form'
-import {appRoot} from 'env'
-import {Redirect, useHistory} from 'react-router-dom'
+import {Redirect} from 'react-router-dom'
 import {useIsOwner} from 'organization/OwnerProvider'
 import Page from 'lib/ui/layout/Page'
 
@@ -29,7 +24,6 @@ export default function Settings() {
   const [submitting, setSubmitting] = useState(false)
   const {organization, routes: organizationRoutes, set} = useOrganization()
   const isOwner = useIsOwner()
-  const history = useHistory()
 
   useBreadcrumbs([{title: 'Settings', url: organizationRoutes.settings}])
 
@@ -39,21 +33,12 @@ export default function Settings() {
 
   const submit = (data: Data) => {
     setSubmitting(true)
-    sendRequest(data, organization.slug)
-      .then((updated) => {
-        set(updated)
-
-        const changedSlug = updated.slug !== organization.slug
-        if (!changedSlug) {
-          setSubmitting(false)
-          return
-        }
-
-        const newRoutes = createRoutesFor(updated)
-        history.push(newRoutes.settings)
-      })
+    sendRequest(data, organization.id)
+      .then(set)
       .catch((error) => {
         setServerError(error)
+      })
+      .finally(() => {
         setSubmitting(false)
       })
   }
@@ -63,21 +48,6 @@ export default function Settings() {
     response: serverError,
   })
 
-  const slugError = fieldError('slug', {
-    form: errors,
-    response: serverError,
-  })
-
-  const slugHelperText = () => {
-    if (slugError) {
-      return slugError
-    }
-    if (!slugError) {
-      return 'Your organization slug will be a part of your domain'
-    }
-    return `Your organization will be accessible at: ${appRoot}/organization/${organization.slug}`
-  }
-
   return (
     <Layout>
       <Page>
@@ -86,8 +56,6 @@ export default function Settings() {
           submitting={submitting}
           serverError={serverError}
           nameError={nameError}
-          slugError={slugError}
-          slugHelperText={slugHelperText}
           register={register}
         />
       </Page>
@@ -95,7 +63,7 @@ export default function Settings() {
   )
 }
 
-function sendRequest(data: Data, slug: string) {
-  const url = api(`/organizations/${slug}`)
+function sendRequest(data: Data, id: number) {
+  const url = api(`/organizations/${id}`)
   return teamMemberClient.put<Organization>(url, data)
 }

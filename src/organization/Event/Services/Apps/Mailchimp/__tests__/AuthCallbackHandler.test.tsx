@@ -75,7 +75,7 @@ it('should redirect to event auth page with code', async () => {
     }),
   )
 
-  const route = `/organization/${organization.slug}/events/${event.slug}/services/mailchimp`
+  const route = `/organization/${organization.id}/events/${event.slug}/services/mailchimp`
 
   window.localStorage.setItem('__mailchimp_auth_event__', route)
 

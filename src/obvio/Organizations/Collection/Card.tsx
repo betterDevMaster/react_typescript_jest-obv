@@ -1,13 +1,10 @@
 import styled from 'styled-components'
 import React from 'react'
 import grey from '@material-ui/core/colors/grey'
-import {AbsoluteLink} from 'lib/ui/link/AbsoluteLink'
-import withStyles from '@material-ui/core/styles/withStyles'
-import {spacing} from 'lib/ui/theme'
-import Typography from '@material-ui/core/Typography'
 import {Organization} from 'organization'
 import {createRoutesFor} from 'organization/OrganizationProvider'
 import logoImgVertical from 'assets/images/logo_vertical.png'
+import {RelativeLink} from 'lib/ui/link/RelativeLink'
 
 export default function Card(props: {organization: Organization}) {
   const routes = createRoutesFor(props.organization)
@@ -23,7 +20,6 @@ export default function Card(props: {organization: Organization}) {
       <Bottom>
         <BottomLeft>
           <span>{props.organization.name}</span>
-          <URL variant="caption">{url}</URL>
         </BottomLeft>
       </Bottom>
     </div>
@@ -46,7 +42,7 @@ const BottomLeft = styled.div`
   flex-direction: column;
 `
 
-const Link = styled(AbsoluteLink)`
+const Link = styled(RelativeLink)`
   padding: ${(props) => props.theme.spacing[5]};
   margin-bottom: ${(props) => props.theme.spacing[4]};
   display: block;
@@ -56,10 +52,3 @@ const Link = styled(AbsoluteLink)`
     background: ${grey[200]};
   }
 `
-
-const URL = withStyles({
-  root: {
-    display: 'block',
-    marginTop: spacing[1],
-  },
-})(Typography)

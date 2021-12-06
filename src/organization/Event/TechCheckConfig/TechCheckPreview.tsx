@@ -1,8 +1,8 @@
 import React from 'react'
 import styled from 'styled-components'
-import {useTeamMember} from 'organization/auth'
 import {now} from 'lib/date-time'
 import {TechCheckProps} from 'Event/Step3/TechCheck'
+import {useObvioUser} from 'obvio/auth'
 
 export function TechCheckPreview(props: {
   body: string
@@ -10,7 +10,7 @@ export function TechCheckPreview(props: {
   render: (previewProps: Omit<TechCheckProps, 'settings'>) => React.ReactElement
 }) {
   const {render} = props
-  const user = useTeamMember()
+  const user = useObvioUser()
 
   /**
    * Build event.tech_check dynamically for the

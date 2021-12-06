@@ -1,4 +1,5 @@
 import {AuthClientSettings, useAuthClient} from 'auth/auth-client'
+import {getToken} from 'auth/token'
 import {isTeamMember} from 'auth/user'
 import {useMemo} from 'react'
 
@@ -18,6 +19,22 @@ export const useObvioAuth = () => {
   )
 
   return useAuthClient(settings)
+}
+
+/**
+ * Get the currently authenticated team member's auth token.
+ *
+ * @returns
+ */
+export function useAuthToken() {
+  const token = getToken(TEAM_MEMBER_TOKEN_KEY)
+  if (!token) {
+    throw new Error(
+      'Missing auth token; was useToken called in an unauthenticated route?',
+    )
+  }
+
+  return token
 }
 
 export function useObvioUser() {

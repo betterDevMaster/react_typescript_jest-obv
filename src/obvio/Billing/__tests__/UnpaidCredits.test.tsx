@@ -2,7 +2,7 @@ import {signInToObvio} from 'obvio/__utils__/sign-in-to-obvio'
 import user from '@testing-library/user-event'
 import axios from 'axios'
 import {fakeTeamMember} from 'organization/Team/__utils__/factory'
-import {fakePaymentMethod} from 'obvio/Billing/__utils__/factory'
+import {fakePaymentMethod, fakePlan} from 'obvio/Billing/__utils__/factory'
 
 const mockGet = axios.get as jest.Mock
 
@@ -11,7 +11,7 @@ it('should show missing credits', async () => {
     has_active_subscription: true,
     is_subscribed: true,
     has_unpaid_transactions: true,
-    plan: 'enterprise',
+    plan: fakePlan({name: 'enterprise'}),
     credits: 0, // start with 0 credits
   })
 

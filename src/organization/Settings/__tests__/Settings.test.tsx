@@ -28,14 +28,12 @@ it('should update an organization', async () => {
   user.click(await findByText(organization.name))
 
   const newName = faker.company.companyName()
-  const newSlug = faker.internet.domainWord()
 
   mockPut.mockImplementationOnce(() =>
-    Promise.resolve({data: fakeOrganization({name: newName, slug: newSlug})}),
+    Promise.resolve({data: fakeOrganization({name: newName})}),
   )
 
   user.type(await findByLabelText('organization name'), newName)
-  user.type(await findByLabelText('domain slug'), newSlug)
   user.click(await findByLabelText('update'))
 
   // Updated organization
@@ -47,8 +45,7 @@ it('should update an organization', async () => {
 
   const [url, data] = mockPut.mock.calls[0]
 
-  expect(url).toMatch(`/organizations/${organization.slug}`)
-  expect(data.slug).toBe(newSlug)
+  expect(url).toMatch(`/organizations/${organization.id}`)
   expect(data.name).toBe(newName)
 })
 

@@ -1,6 +1,7 @@
 import {useObserve} from 'lib/rx'
 import {api} from 'lib/url'
 import {useObvioAuth, useObvioUser} from 'obvio/auth'
+import {useUserOrganizations} from 'obvio/Organizations/UserOrganizationsProvider'
 import {useEffect, useState} from 'react'
 import {ajax} from 'rxjs/ajax'
 import {debounceTime, map, switchMap, tap} from 'rxjs/operators'
@@ -16,7 +17,16 @@ export type PlanName =
   | typeof ENTERPRISE
   | typeof FOUNDER
 
-export interface Plan {
+// Plan model as defined in API
+export type Plan = {
+  name: PlanName
+  rooms_per_event: number
+  annual_credits: number
+  organization_limit: number
+}
+
+// Plan info used in the front-end only
+export interface PlanInfo {
   name: PlanName
   label: string
   description: string
@@ -36,7 +46,7 @@ export interface CreditPackage {
   price: number
 }
 
-export const BASIC_PLAN: Plan = {
+export const BASIC_PLAN: PlanInfo = {
   name: BASIC,
   label: 'Obvio',
   description: '1 Organization, 600 Annual Credits, 3 Rooms per Event',
@@ -99,7 +109,7 @@ export const BASIC_PLAN: Plan = {
   ],
 }
 
-export const PROFESSIONAL_PLAN: Plan = {
+export const PROFESSIONAL_PLAN: PlanInfo = {
   name: PROFESSIONAL,
   label: 'Obvio Pro',
   description: '3 Organizations, 1,200 Annual Credits, 10 Rooms per Event',
@@ -142,7 +152,7 @@ export const PROFESSIONAL_PLAN: Plan = {
   ],
 }
 
-export const ENTERPRISE_PLAN: Plan = {
+export const ENTERPRISE_PLAN: PlanInfo = {
   name: ENTERPRISE,
   label: 'Obvio Enterprise',
   description:
@@ -191,7 +201,7 @@ export const ENTERPRISE_PLAN: Plan = {
   ],
 }
 
-export const FOUNDER_PLAN: Plan = {
+export const FOUNDER_PLAN: PlanInfo = {
   name: FOUNDER,
   label: 'Obvio Founders',
   description:
@@ -349,4 +359,18 @@ export function usePriceForCredits(numCredits: number) {
     loading: loading,
     price: price,
   }
+}
+
+export function useCanCreateOrganization() {
+  const user = useObvioUser()
+  const {organizations} = useUserOrganizations()
+
+  if (!user.plan) {
+    return false
+  }
+
+  const numOwned = organizations.filter((o) => o.joined).length
+
+  // Can create if below plan limit
+  return numOwned < user.plan.organization_limit
 }

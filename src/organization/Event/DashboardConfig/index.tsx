@@ -1,17 +1,13 @@
-import {useOrganizationAuth} from 'organization/auth'
 import styled from 'styled-components'
 import Dashboard from 'Event/Dashboard'
 import React from 'react'
 import Layout from 'organization/user/Layout'
 import Page from 'organization/Event/Page'
 import {OrganizationActionsProvider} from 'Event/ActionsProvider'
+import {useObvioUser} from 'obvio/auth'
 
 export default function DashboardConfig() {
-  const {user} = useOrganizationAuth()
-
-  if (!user) {
-    throw new Error('Missing user')
-  }
+  const user = useObvioUser()
 
   return (
     <Layout>

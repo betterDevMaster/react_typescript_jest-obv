@@ -1,6 +1,6 @@
 import Slider from '@material-ui/core/Slider'
 import {handleChangeSlider} from 'lib/dom'
-import {Plan} from 'obvio/Billing/plans'
+import {PlanInfo} from 'obvio/Billing/plans'
 import React from 'react'
 
 /**
@@ -15,7 +15,7 @@ export const MIN_NUM_CREDITS = 10
 export default function CreditsSlider(props: {
   value: number
   onChange: (credits: number) => void
-  plan: Plan
+  plan: PlanInfo
 }) {
   const {plan} = props
 

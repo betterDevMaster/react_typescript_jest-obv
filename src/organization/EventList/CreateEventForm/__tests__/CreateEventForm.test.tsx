@@ -75,7 +75,7 @@ it('should add an event', async () => {
 
   const [url, data] = mockPost.mock.calls[0]
 
-  expect(url).toMatch(`/organizations/${organization.slug}/events`)
+  expect(url).toMatch(`/organizations/${organization.id}/events`)
   expect(data.name).toBe(name)
   expect(data.slug).toBe(slug)
   expect(data.start).toMatch(startDate)

@@ -9,14 +9,14 @@ import SpeakerPageEditDialog from 'Event/template/Cards/Speakers/SpeakerPageConf
 import {Speaker} from 'Event/SpeakerPage'
 import {useSpeakers} from 'organization/Event/SpeakersProvider'
 import SpeakerPage from 'Event/template/Cards/Speakers'
-import {useTeamMember} from 'organization/auth'
+import {useObvioUser} from 'obvio/auth'
 
 export default function SpeakerPageConfig() {
   const {add, edit} = useSpeakers()
   const [pageSettingsVisible, setPageSettingsVisible] = useState(false)
   const togglePageSettings = () => setPageSettingsVisible(!pageSettingsVisible)
   const {speakers} = useSpeakers()
-  const user = useTeamMember()
+  const user = useObvioUser()
 
   const handleAddedSpeaker = (newSpeaker: Speaker) => {
     add(newSpeaker)

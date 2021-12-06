@@ -8,7 +8,6 @@ import {onChangeCheckedHandler} from 'lib/dom'
 import {Cards, useCardsTemplate, useCardsUpdate} from 'Event/template/Cards'
 import {PreviewBox, SectionTitle} from 'organization/Event/Page'
 import {TemplateSetPasswordForm} from 'Event/Step1/SetPasswordForm'
-import {useTeamMember} from 'organization/auth'
 import {useEvent, useUpdate} from 'Event/EventProvider'
 import Switch from 'lib/ui/form/Switch'
 import BackgroundPicker from 'lib/ui/form/BackgroundPicker'
@@ -17,16 +16,18 @@ import Page from 'organization/Event/Page'
 import {ObvioEvent} from 'Event'
 import {Controller, useForm, UseFormMethods} from 'react-hook-form'
 import Button from '@material-ui/core/Button'
+import {useObvioUser} from 'obvio/auth'
 
 const MIN_BORDER_RADIUS = 0
 const MAX_BORDER_RADIUS = 60
 const FORM_ID = 'cards-create-password-config'
+
 export default function SetPasswordFormConfig() {
   const {event} = useEvent()
   const {requires_attendee_password} = event
   const updateEvent = useUpdate()
   const {control, handleSubmit, register, watch, setValue} = useForm()
-  const user = useTeamMember()
+  const user = useObvioUser()
   const updateTemplate = useCardsUpdate()
 
   const submit = (

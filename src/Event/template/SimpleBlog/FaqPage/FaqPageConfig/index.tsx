@@ -7,11 +7,11 @@ import AddFaqButton from 'Event/template/SimpleBlog/FaqPage/FaqPageConfig/AddFaq
 import Button from '@material-ui/core/Button'
 import Box from '@material-ui/core/Box'
 import PageSettingsDialog from 'Event/template/SimpleBlog/FaqPage/FaqPageConfig/PageSettingsDialog'
-import {useTeamMember} from 'organization/auth'
 import {useTemplate} from 'Event/TemplateProvider'
 import SimpleBlogFaqPage from 'Event/template/SimpleBlog/FaqPage'
 import {SIMPLE_BLOG} from 'Event/template/SimpleBlog'
 import {useFaqs} from 'organization/Event/FaqsProvider'
+import {useObvioUser} from 'obvio/auth'
 
 export default function FaqPageConfig() {
   const {add, loading, edit} = useFaqs()
@@ -60,7 +60,7 @@ export default function FaqPageConfig() {
 
 function FaqPage() {
   const template = useTemplate()
-  const user = useTeamMember()
+  const user = useObvioUser()
   const {faqs} = useFaqs()
 
   switch (template.name) {

@@ -2,11 +2,11 @@ import Button from '@material-ui/core/Button'
 import {withStyles} from '@material-ui/core/styles'
 import {RelativeLink} from 'lib/ui/link/RelativeLink'
 import {usePlan} from 'obvio/Billing/PlanProvider'
-import {Plan} from 'obvio/Billing/plans'
+import {PlanInfo} from 'obvio/Billing/plans'
 import {obvioRoutes} from 'obvio/Routes'
 import React from 'react'
 
-export default function ChoosePlanButton(props: {plan: Plan}) {
+export default function ChoosePlanButton(props: {plan: PlanInfo}) {
   const {plan} = props
 
   const {canSelect, isCurrent} = usePlan()

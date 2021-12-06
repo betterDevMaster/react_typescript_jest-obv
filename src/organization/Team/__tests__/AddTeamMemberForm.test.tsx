@@ -13,11 +13,9 @@ import {UPDATE_TEAM} from 'organization/PermissionsProvider'
 import {fakeRole} from 'organization/Team/Roles/__utils__/factory'
 import {fireEvent, wait} from '@testing-library/dom'
 import {goToTeams} from 'organization/Team/__utils__/go-to-teams-page'
-import {act} from 'react-dom/test-utils'
 
 const mockGet = axios.get as jest.Mock
 const mockPost = axios.post as jest.Mock
-const mockUseResponse = axios.interceptors.response.use as jest.Mock
 
 it('should add a new team member', async () => {
   const authUser = fakeTeamMember()
@@ -126,6 +124,6 @@ it('should add with a pre-assigned role', async () => {
    * Assert request contains selected role
    */
   const [url, data] = mockPost.mock.calls[0]
-  expect(url).toMatch(`/organizations/${organization.slug}/team_members`)
+  expect(url).toMatch(`/organizations/${organization.id}/team_members`)
   expect(data.role_id).toBe(targetRole.id)
 })

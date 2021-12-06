@@ -1,4 +1,4 @@
-import {Plan} from 'obvio/Billing/plans'
+import {PlanInfo} from 'obvio/Billing/plans'
 import styled from 'styled-components'
 import React from 'react'
 import {colors} from 'lib/ui/theme'
@@ -6,7 +6,7 @@ import {FontAwesomeIcon} from '@fortawesome/react-fontawesome'
 import {faCheckSquare, faTimesSquare} from '@fortawesome/pro-solid-svg-icons'
 import ChoosePlanButton from 'obvio/Billing/PlanCard/ChoosePlanButton'
 
-export default function PlanCard(props: {plan: Plan}) {
+export default function PlanCard(props: {plan: PlanInfo}) {
   const {plan} = props
 
   return (
@@ -28,7 +28,7 @@ export default function PlanCard(props: {plan: Plan}) {
   )
 }
 
-function Feature(props: {feature: Plan['features'][0]}) {
+function Feature(props: {feature: PlanInfo['features'][0]}) {
   const {feature} = props
   const iconColor = () => {
     if (!feature.isActive) {

@@ -1,23 +1,23 @@
 import {useObvioUser} from 'obvio/auth'
-import {getPlan, Plan, tier} from 'obvio/Billing/plans'
+import {getPlan, PlanInfo, tier} from 'obvio/Billing/plans'
 import React from 'react'
 
 interface PlanContextProps {
-  plan: Plan | null
-  isCurrent: (plan: Plan['name']) => boolean
-  canSelect: (plan: Plan['name']) => boolean
+  plan: PlanInfo | null
+  isCurrent: (plan: PlanInfo['name']) => boolean
+  canSelect: (plan: PlanInfo['name']) => boolean
 }
 
 const PlanContext = React.createContext<undefined | PlanContextProps>(undefined)
 
 export default function PlanProvider(props: {children: React.ReactElement}) {
   const user = useObvioUser()
-  const plan = user.plan ? getPlan(user.plan) : null
+  const plan = user.plan ? getPlan(user.plan.name) : null
 
-  const isCurrent = (target: Plan['name']) =>
+  const isCurrent = (target: PlanInfo['name']) =>
     plan ? plan.name === target : false
 
-  const canSelect = (target: Plan['name']) => {
+  const canSelect = (target: PlanInfo['name']) => {
     // Currently during TESTING where users are using test cards, we only
     // want to enable subscribing to users who have previously paid
     // for obv.io

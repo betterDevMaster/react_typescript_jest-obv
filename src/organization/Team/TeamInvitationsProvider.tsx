@@ -95,7 +95,7 @@ function useFetchInvites() {
   const {client, organization} = useOrganization()
 
   return useCallback(() => {
-    const url = api(`/organizations/${organization.slug}/team_invitations`)
+    const url = api(`/organizations/${organization.id}/team_invitations`)
     return client.get<TeamInvitation[]>(url)
   }, [organization, client])
 }

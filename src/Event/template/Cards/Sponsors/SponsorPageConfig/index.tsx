@@ -11,7 +11,7 @@ import PageSettingsDialog from 'Event/template/Cards/Sponsors/SponsorPageConfig/
 import CardsSponsorPage from 'Event/template/Cards/Sponsors'
 import {useSponsors} from 'organization/Event/SponsorsProvider'
 import {useSetIsEditMode} from 'Event/Dashboard/editor/views/ConfigBar'
-import {useTeamMember} from 'organization/auth'
+import {useObvioUser} from 'obvio/auth'
 
 export default function SponsorPageConfig() {
   const {loading} = useSponsors()
@@ -53,7 +53,7 @@ function SponsorsPageConfigContent() {
   }
   const [pageSettingsVisible, setPageSettingsVisible] = useState(false)
   const togglePageSettings = () => setPageSettingsVisible(!pageSettingsVisible)
-  const user = useTeamMember()
+  const user = useObvioUser()
 
   return (
     <>

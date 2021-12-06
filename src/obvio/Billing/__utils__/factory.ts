@@ -1,4 +1,13 @@
-import {PaymentIntent, PaymentMethod, SetupIntent} from '@stripe/stripe-js'
+import {PaymentMethod, SetupIntent} from '@stripe/stripe-js'
+import {Plan} from 'obvio/Billing/plans'
+
+export const fakePlan = (overrides?: Partial<Plan>): Plan => ({
+  name: 'founder',
+  rooms_per_event: 3,
+  organization_limit: 1,
+  annual_credits: 1000,
+  ...overrides,
+})
 
 export const fakeCard = (
   overrides?: Partial<PaymentMethod.Card>,

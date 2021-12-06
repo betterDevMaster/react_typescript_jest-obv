@@ -128,7 +128,7 @@ function useRemoveRole() {
   const {client, organization} = useOrganization()
 
   return (role: Role) => {
-    const url = api(`/organizations/${organization.slug}/roles/${role.id}`)
+    const url = api(`/organizations/${organization.id}/roles/${role.id}`)
     return client.delete<Role>(url)
   }
 }

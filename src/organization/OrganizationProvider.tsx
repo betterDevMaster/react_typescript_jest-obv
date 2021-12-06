@@ -5,8 +5,9 @@ import {teamMemberClient} from 'obvio/obvio-client'
 import React, {useCallback, useEffect, useMemo, useState} from 'react'
 import {Client} from 'lib/api-client'
 import {createPrivate as createEcho} from 'lib/echo'
-import {useAuthToken} from 'organization/auth'
-import {useLocation} from 'react-router-dom'
+import {Redirect, useLocation} from 'react-router-dom'
+import {obvioRoutes} from 'obvio/Routes'
+import {useAuthToken} from 'obvio/auth'
 
 export type OrganizationRoutes = ReturnType<typeof createRoutesFor>
 
@@ -24,12 +25,11 @@ export const OrganizationContext = React.createContext<
 export default function OrganizationProvider(props: {
   children: React.ReactNode
 }) {
-  const location = useLocation()
-  const slug = location.pathname.split('/')[2]
+  const id = useRouteOrganizationId()
 
   const find = useCallback(() => {
-    return findOrganization(slug)
-  }, [slug])
+    return findOrganization(id)
+  }, [id])
 
   const [organization, setOrganization] = useState<Organization | null>(null)
 
@@ -39,6 +39,11 @@ export default function OrganizationProvider(props: {
     setOrganization(fetched)
   }, [fetched])
 
+  // If invalid id let's just redirect back to organizations list
+  if (!id) {
+    return <Redirect to={obvioRoutes.organizations.root} />
+  }
+
   if (loading) {
     return null
   }
@@ -46,7 +51,7 @@ export default function OrganizationProvider(props: {
   if (!organization) {
     return (
       <div>
-        <h1>404 - Organization '{slug}' not found.</h1>
+        <h1>404 - Organization '{id}' not found.</h1>
       </div>
     )
   }
@@ -76,6 +81,19 @@ export function useOrganization() {
   }
 
   return context
+}
+
+function useRouteOrganizationId() {
+  const location = useLocation()
+  // Parse id out of URL. example location: '/organization/35',
+  // which would split to ['','organization','35'].
+  const id = location.pathname.split('/')[2]
+
+  try {
+    return parseInt(id)
+  } catch {
+    return null
+  }
 }
 
 export function useOrganizationEcho() {
@@ -159,11 +177,11 @@ export function createRoutesFor(organization: Organization) {
       },
     },
     // Namespace
-    `organization/${organization.slug}`,
+    `organization/${organization.id}`,
   )
 }
 
-function findOrganization(slug: string) {
-  const url = api(`/organizations/${slug}`)
+function findOrganization(id: number | null) {
+  const url = api(`/organizations/${id}`)
   return teamMemberClient.get<Organization>(url)
 }

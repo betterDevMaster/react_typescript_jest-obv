@@ -8,7 +8,6 @@ import {handleChangeSlider, onChangeCheckedHandler} from 'lib/dom'
 import {Panels, usePanelsTemplate, usePanelsUpdate} from 'Event/template/Panels'
 import {PreviewBox, SectionTitle} from 'organization/Event/Page'
 import {TemplateSetPasswordForm} from 'Event/Step1/SetPasswordForm'
-import {useTeamMember} from 'organization/auth'
 import {useEvent, useUpdate} from 'Event/EventProvider'
 import Switch from 'lib/ui/form/Switch'
 import BackgroundPicker from 'lib/ui/form/BackgroundPicker'
@@ -16,6 +15,7 @@ import Layout from 'organization/user/Layout'
 import Page from 'organization/Event/Page'
 import {useForm, Controller} from 'react-hook-form'
 import Button from '@material-ui/core/Button'
+import {useObvioUser} from 'obvio/auth'
 
 const MIN_BORDER_RADIUS = 0
 const MAX_BORDER_RADIUS = 60
@@ -55,7 +55,7 @@ export default function SetPasswordFormConfig() {
 export function Config() {
   const template = usePanelsTemplate()
   const update = usePanelsUpdate()
-  const user = useTeamMember()
+  const user = useObvioUser()
   const {event} = useEvent()
 
   const {handleSubmit, control, register} = useForm()
