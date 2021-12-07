@@ -53,7 +53,6 @@ export default function PageSettingsDialog(props: {
   const [processing, setProcessing] = useState(false)
   const template = useSimpleBlogTemplate()
   const updateTemplate = useSimpleBlogUpdate()
-  const [imageSize, setImageSize] = useState(template.sponsors.imageSize)
   const {client} = useOrganization()
   const [image, setImage] = useState<null | File>(null)
   const [shouldRemoveImage, setShouldRemoveImage] = useState(false)
