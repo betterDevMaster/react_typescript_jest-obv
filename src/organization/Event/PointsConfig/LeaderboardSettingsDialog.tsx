@@ -1,8 +1,4 @@
 import React from 'react'
-import Box from '@material-ui/core/Box'
-import DialogContent from '@material-ui/core/DialogContent'
-import DialogTitle from '@material-ui/core/DialogTitle'
-import Dialog from 'lib/ui/Dialog'
 import SimpleBlogLeaderboardConfig from 'Event/template/SimpleBlog/Leaderboard/LeaderboardConfig'
 import PanelsLeaderboardConfig from 'Event/template/Panels/Dashboard/Leaderboard/LeaderboardConfig'
 import CardsLeaderboardConfig from 'Event/template/Cards/Leaderboard/LeaderboardConfig'
@@ -23,14 +19,7 @@ export default function LeaderboardSettingsDialog(props: {
   switch (name) {
     case SIMPLE_BLOG:
       return (
-        <Dialog open={visible} onClose={onClose} fullWidth disableEnforceFocus>
-          <DialogTitle>Leaderboard Page</DialogTitle>
-          <DialogContent>
-            <Box pb={2}>
-              <SimpleBlogLeaderboardConfig onComplete={onClose} />
-            </Box>
-          </DialogContent>
-        </Dialog>
+        <SimpleBlogLeaderboardConfig isVisible={visible} onClose={onClose} />
       )
     case PANELS:
       return <PanelsLeaderboardConfig isVisible={visible} onClose={onClose} />

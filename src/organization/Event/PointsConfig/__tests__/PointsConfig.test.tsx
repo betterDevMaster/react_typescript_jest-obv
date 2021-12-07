@@ -70,7 +70,7 @@ it('should configure the leaderboard', async () => {
 
   expect(url).toMatch(`/events/${event.slug}`)
 
-  expect(data.template.leaderboard.title).toBe(title)
+  expect(data.template['leaderboard.title']).toBe(title)
 })
 
 it('should clear the leaderboard', async () => {
