@@ -1,5 +1,5 @@
 import {AUTO_REFRESH_EVENT_INTERVAL_SEC, useEvent} from 'Event/EventProvider'
-import {Client} from 'lib/api-client'
+import {Client} from 'lib/ui/api-client'
 import {useAsync} from 'lib/async'
 import {useInterval} from 'lib/interval'
 import FullPageLoader from 'lib/ui/layout/FullPageLoader'

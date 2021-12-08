@@ -1,4 +1,4 @@
-import {Client} from 'lib/api-client'
+import {Client} from 'lib/ui/api-client'
 import {useToggle} from 'lib/toggle'
 import {useCallback, useState} from 'react'
 

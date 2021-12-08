@@ -1,6 +1,6 @@
 import withStyles from '@material-ui/core/styles/withStyles'
 import Typography from '@material-ui/core/Typography'
-import {Client, ValidationError} from 'lib/api-client'
+import {Client, ValidationError} from 'lib/ui/api-client'
 import {spacing} from 'lib/ui/theme'
 import {api} from 'lib/url'
 import {useOrganization} from 'organization/OrganizationProvider'

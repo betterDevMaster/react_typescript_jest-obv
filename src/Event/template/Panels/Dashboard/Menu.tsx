@@ -3,7 +3,7 @@ import React from 'react'
 import {useHasMultipleTabs, usePanelsTemplate} from 'Event/template/Panels'
 import {User} from 'auth/user'
 import {useEventAuth} from 'Event/auth'
-import Button from 'lib/ui/Button'
+import CustomButton from 'lib/ui/Button/CustomButton'
 import {useEditMode} from 'Event/Dashboard/editor/state/edit-mode'
 import {useAttendeeVariables} from 'Event'
 
@@ -91,14 +91,14 @@ export default function Menu(props: {
           {props.user.email}
         </UserInfo>
         <LogoutBox>
-          <Button
+          <CustomButton
             variant="text"
             onClick={logout}
             aria-label="logout"
             textColor={color}
           >
             Logout
-          </Button>
+          </CustomButton>
         </LogoutBox>
       </Bottom>
     </Box>

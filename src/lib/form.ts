@@ -1,4 +1,4 @@
-import {ValidationError} from 'lib/api-client'
+import {ValidationError} from 'lib/ui/api-client'
 import {DeepMap, FieldError, useForm} from 'react-hook-form'
 import {get} from 'lodash'
 import {useState} from 'react'

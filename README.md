@@ -26,6 +26,8 @@ Then add this line
 
 Stories are automatically published to [Chromatic](https://chromatic.com) on `develop`. Click [here](https://www.chromatic.com/builds?appId=61a97cbf671694004a5ab164) to see the project.
 
+For local development, run `npm run storybook` to see storybook at `localhost:6006`.
+
 ## Staging
 
 [![pipeline status](https://gitlab.com/obviobysage/event/web/badges/staging/pipeline.svg)](https://gitlab.com/obviobysage/event/web/-/commits/staging)

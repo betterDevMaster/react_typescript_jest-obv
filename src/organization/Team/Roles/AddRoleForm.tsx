@@ -1,4 +1,4 @@
-import {ValidationError} from 'lib/api-client'
+import {ValidationError} from 'lib/ui/api-client'
 import styled from 'styled-components'
 import {api} from 'lib/url'
 import {useOrganization} from 'organization/OrganizationProvider'

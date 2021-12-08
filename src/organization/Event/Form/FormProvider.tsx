@@ -1,4 +1,4 @@
-import {ValidationError} from 'lib/api-client'
+import {ValidationError} from 'lib/ui/api-client'
 import {api} from 'lib/url'
 import {useEventRoutes} from 'organization/Event/EventRoutes'
 import {Form, useForms} from 'organization/Event/FormsProvider'

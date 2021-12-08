@@ -1,6 +1,6 @@
 import React from 'react'
 import {useEvent} from 'Event/EventProvider'
-import {ValidationError} from 'lib/api-client'
+import {ValidationError} from 'lib/ui/api-client'
 import {api} from 'lib/url'
 import {Area} from 'organization/Event/AreasProvider'
 import {useOrganization} from 'organization/OrganizationProvider'

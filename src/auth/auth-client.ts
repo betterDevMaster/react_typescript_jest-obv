@@ -1,7 +1,7 @@
 import {setLoading, setToken, setUser as setUserAction} from 'auth/actions'
 import {deleteToken, getToken, saveToken} from 'auth/token'
 import {User} from 'auth/user'
-import {client} from 'lib/api-client'
+import {client} from 'lib/ui/api-client'
 import {api} from 'lib/url'
 import {useOrganizationUrl} from 'organization/url'
 import {useCallback, useEffect} from 'react'

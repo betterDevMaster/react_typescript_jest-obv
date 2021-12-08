@@ -10,7 +10,7 @@ import TextField from '@material-ui/core/TextField'
 
 import {fieldError} from 'lib/form'
 import {useForm} from 'react-hook-form'
-import {ValidationError} from 'lib/api-client'
+import {ValidationError} from 'lib/ui/api-client'
 import Button from '@material-ui/core/Button'
 import {spacing} from 'lib/ui/theme'
 import {withStyles} from '@material-ui/core/styles'

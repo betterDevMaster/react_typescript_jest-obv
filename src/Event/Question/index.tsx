@@ -7,7 +7,7 @@ import Radio from 'Event/Question/Radio'
 import Select from 'Event/Question/Select'
 import ShortAnswerText from 'Event/Question/ShortAnswerText'
 import {Answer, findAnswer} from 'Event/SubmissionsProvider'
-import {ValidationError} from 'lib/api-client'
+import {ValidationError} from 'lib/ui/api-client'
 import {fieldError} from 'lib/form'
 import {
   CHECKBOX,

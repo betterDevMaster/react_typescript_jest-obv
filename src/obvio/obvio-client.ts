@@ -1,4 +1,4 @@
-import {Client, client, RequestOptions} from 'lib/api-client'
+import {Client, client, RequestOptions} from 'lib/ui/api-client'
 import {TEAM_MEMBER_TOKEN_KEY} from 'obvio/auth'
 
 export const teamMemberClient: Client = {

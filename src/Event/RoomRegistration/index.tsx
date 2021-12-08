@@ -6,7 +6,7 @@ import {eventRoutes} from 'Event/Routes'
 import {api, useQueryParams} from 'lib/url'
 import {Attendee} from 'Event/attendee'
 import {FETCH_JOIN_URL_INTERVAL_MS, useEvent} from 'Event/EventProvider'
-import {ValidationError} from 'lib/api-client'
+import {ValidationError} from 'lib/ui/api-client'
 
 export interface RoomRegistrationData {
   first_name: string

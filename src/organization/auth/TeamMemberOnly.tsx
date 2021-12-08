@@ -1,6 +1,6 @@
 import Box from '@material-ui/core/Box'
 import Typography from '@material-ui/core/Typography'
-import Button from 'lib/ui/Button'
+import CustomButton from 'lib/ui/Button/CustomButton'
 import {colors} from 'lib/ui/theme'
 import {useObvioAuth} from 'obvio/auth'
 import Page from 'organization/auth/Page'
@@ -24,9 +24,13 @@ export default function TeamMemberOnly() {
       <Typography align="center">
         Please ask to be invited to the organization, or if you think you're
         seeing this page by mistake, click{' '}
-        <Button variant="text" onClick={logout} textColor={colors.secondary}>
+        <CustomButton
+          variant="text"
+          onClick={logout}
+          textColor={colors.secondary}
+        >
           here
-        </Button>{' '}
+        </CustomButton>{' '}
         to logout, and try again.
       </Typography>
     </Page>

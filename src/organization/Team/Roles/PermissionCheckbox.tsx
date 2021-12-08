@@ -1,5 +1,5 @@
 import Checkbox from '@material-ui/core/Checkbox'
-import {ResponseError} from 'lib/api-client'
+import {ResponseError} from 'lib/ui/api-client'
 import {onChangeCheckedHandler} from 'lib/dom'
 import {
   Permission,

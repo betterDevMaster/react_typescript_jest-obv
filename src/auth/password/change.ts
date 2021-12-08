@@ -1,7 +1,7 @@
 import {useState} from 'react'
 import {fieldErrors} from 'lib/form'
 import {useForm} from 'react-hook-form'
-import {Client, ValidationError} from 'lib/api-client'
+import {Client, ValidationError} from 'lib/ui/api-client'
 
 export interface ChangePasswordData {
   password: string

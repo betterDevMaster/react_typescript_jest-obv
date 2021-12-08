@@ -3,7 +3,7 @@ import styled from 'styled-components'
 import Drawer from '@material-ui/core/Drawer'
 import {User} from 'auth/user'
 import {useEventAuth} from 'Event/auth'
-import Button from 'lib/ui/Button'
+import CustomButton from 'lib/ui/Button/CustomButton'
 import {eventRoutes} from 'Event/Routes'
 import {RelativeLink} from 'lib/ui/link/RelativeLink'
 import {useCardsTemplate} from 'Event/template/Cards'
@@ -142,14 +142,14 @@ function Links() {
         />
       </ListItem>
       <ListItem>
-        <Button
+        <CustomButton
           variant="text"
           onClick={logout}
           aria-label="logout"
           textColor={menuTextColor}
         >
           Logout
-        </Button>
+        </CustomButton>
       </ListItem>
     </List>
   )

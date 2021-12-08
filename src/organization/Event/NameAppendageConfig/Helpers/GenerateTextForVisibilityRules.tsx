@@ -1,6 +1,6 @@
 import React from 'react'
 import {Rule} from 'Event/attendee-rules'
-import Button from 'lib/ui/Button'
+import CustomButton from 'lib/ui/Button/CustomButton'
 
 export function GenerateTextForVisibilityRules(props: {
   rules: Rule[]
@@ -40,9 +40,9 @@ export function GenerateTextForVisibilityRules(props: {
     return (
       <>
         <span>{generatedText.substring(0, 110)} ... </span>
-        <Button variant="text" onClick={props.seeMoreCallback}>
+        <CustomButton variant="text" onClick={props.seeMoreCallback}>
           (See more)
-        </Button>
+        </CustomButton>
       </>
     )
   }

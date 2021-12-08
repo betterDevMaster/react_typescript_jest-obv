@@ -1,5 +1,5 @@
 import React from 'react'
-import Button from 'lib/ui/Button'
+import CustomButton from 'lib/ui/Button/CustomButton'
 import styled from 'styled-components'
 import ArrowBackIosIcon from '@material-ui/icons/ArrowBackIos'
 import {useTheme} from 'styled-components'
@@ -28,7 +28,7 @@ const BackIcon = styled(ArrowBackIosIcon)`
   margin-top: 2px;
 `
 
-const StyledButton = styled(Button)`
+const StyledButton = styled(CustomButton)`
   display: flex;
   align-items: center;
   margin-bottom: ${(props) => props.theme.spacing[2]}!important;

@@ -14,7 +14,7 @@ import Layout from 'organization/user/Layout'
 import React from 'react'
 import styled from 'styled-components'
 import Alert from '@material-ui/lab/Alert'
-import Button from 'lib/ui/Button'
+import CustomButton from 'lib/ui/Button/CustomButton'
 import {ClearRoomAssignments} from 'organization/Event/Area/ClearRoomAssignmentsButton'
 
 export default function Rules() {
@@ -84,6 +84,6 @@ const StyledAlert = styled(Alert)`
   margin-top: ${(props) => props.theme.spacing[4]};
 `
 
-const StyledButton = styled(Button)`
+const StyledButton = styled(CustomButton)`
   font-weight: bold;
 `

@@ -1,7 +1,7 @@
 import {useEvent} from 'Event/EventProvider'
 import {FAQ, useFetchFaqs} from 'Event/FaqPage'
 import {useOrganization} from 'organization/OrganizationProvider'
-import {Client} from 'lib/api-client'
+import {Client} from 'lib/ui/api-client'
 import React, {useEffect, useState} from 'react'
 
 interface FaqsContextProps {

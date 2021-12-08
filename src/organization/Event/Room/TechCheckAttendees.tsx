@@ -18,7 +18,7 @@ import {api} from 'lib/url'
 import {useRoom} from 'organization/Event/Room/RoomProvider'
 import {useInterval} from 'lib/interval'
 import {Room} from 'Event/room'
-import EditButton from 'lib/ui/Button'
+import EditButton from 'lib/ui/Button/CustomButton'
 import TechCheckAttendeeUpdateDialog from 'organization/Event/Room/TechCheckAttendeeUpdateDialog'
 import {colors} from 'lib/ui/theme'
 

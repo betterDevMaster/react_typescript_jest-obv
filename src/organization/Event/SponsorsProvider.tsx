@@ -1,6 +1,6 @@
 import {useEvent} from 'Event/EventProvider'
 import {Sponsor} from 'Event/SponsorPage'
-import {Client} from 'lib/api-client'
+import {Client} from 'lib/ui/api-client'
 import {useOrganization} from 'organization/OrganizationProvider'
 import React, {useEffect, useState, useCallback} from 'react'
 import {useAsync} from 'lib/async'

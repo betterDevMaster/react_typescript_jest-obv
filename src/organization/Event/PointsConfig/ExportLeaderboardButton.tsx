@@ -4,7 +4,7 @@ import {api} from 'lib/url'
 import {useOrganization} from 'organization/OrganizationProvider'
 import React, {useState} from 'react'
 import download from 'js-file-download'
-import {Downloadable} from 'lib/api-client'
+import {Downloadable} from 'lib/ui/api-client'
 
 export default function ExportLeaderboardButton(props: {
   onError: (error: string | null) => void

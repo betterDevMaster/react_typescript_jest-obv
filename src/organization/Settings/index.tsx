@@ -1,4 +1,4 @@
-import {ValidationError} from 'lib/api-client'
+import {ValidationError} from 'lib/ui/api-client'
 import {useBreadcrumbs} from 'lib/ui/BreadcrumbProvider'
 import {api} from 'lib/url'
 import {teamMemberClient} from 'obvio/obvio-client'

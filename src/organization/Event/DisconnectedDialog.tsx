@@ -2,7 +2,7 @@ import Box from '@material-ui/core/Box'
 import DialogContent from '@material-ui/core/DialogContent'
 import Typography from '@material-ui/core/Typography'
 import {useIsConnected} from 'Event/Dashboard/editor/state/edit-mode'
-import Button from 'lib/ui/Button'
+import CustomButton from 'lib/ui/Button/CustomButton'
 import Dialog from 'lib/ui/Dialog'
 import React from 'react'
 
@@ -26,9 +26,9 @@ export default function DisconnectedDialog() {
           </Box>
           It looks like we're having trouble connecting to the Obvio servers.
           Your last edit may not have saved. Click{' '}
-          <Button variant="text" onClick={refresh}>
+          <CustomButton variant="text" onClick={refresh}>
             HERE
-          </Button>{' '}
+          </CustomButton>{' '}
           reconnect to Obvio servers, and try again.
         </Box>
       </DialogContent>

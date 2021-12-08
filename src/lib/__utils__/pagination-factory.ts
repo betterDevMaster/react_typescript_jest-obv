@@ -1,4 +1,4 @@
-import {PaginatedCollection} from 'lib/api-client'
+import {PaginatedCollection} from 'lib/ui/api-client'
 import faker from 'faker'
 
 export const fakePaginate = <T>(

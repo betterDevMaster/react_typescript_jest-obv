@@ -1,4 +1,4 @@
-import {Client, client} from 'lib/api-client'
+import {Client, client} from 'lib/ui/api-client'
 import {useAsync} from 'lib/async'
 import {api, getDomain, isObvioApp, isObvioDomain} from 'lib/url'
 import {domainEventSlug, useParamEventSlug} from 'Event/url'

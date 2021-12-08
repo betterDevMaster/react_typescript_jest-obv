@@ -1,6 +1,6 @@
 import Question from 'Event/Question'
 import {Answer} from 'Event/SubmissionsProvider'
-import {ValidationError} from 'lib/api-client'
+import {ValidationError} from 'lib/ui/api-client'
 import {Form} from 'organization/Event/FormsProvider'
 import React from 'react'
 import {UseFormMethods} from 'react-hook-form'

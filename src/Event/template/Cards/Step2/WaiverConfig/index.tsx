@@ -33,7 +33,7 @@ import Preview from 'organization/Event/WaiverConfig/Preview'
 import TemplateFields from 'Event/template/Cards/Step2/WaiverConfig/TemplateFields'
 import Step2 from 'Event/template/Cards/Step2'
 import {fieldError} from 'lib/form'
-import {ValidationError} from 'lib/api-client'
+import {ValidationError} from 'lib/ui/api-client'
 import {Cards, useCardsUpdate} from 'Event/template/Cards'
 import {useObvioUser} from 'obvio/auth'
 

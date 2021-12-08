@@ -1,7 +1,7 @@
 import {fieldError} from 'lib/form'
 import {useState} from 'react'
 import {useForm, UseFormMethods} from 'react-hook-form'
-import {client, ValidationError} from 'lib/api-client'
+import {client, ValidationError} from 'lib/ui/api-client'
 
 export interface ForgotPasswordData {
   email: string

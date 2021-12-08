@@ -1,5 +1,5 @@
 import {Action} from 'Event/ActionsProvider'
-import Button from 'lib/ui/Button'
+import CustomButton from 'lib/ui/Button/CustomButton'
 import {colors} from 'lib/ui/theme'
 import React from 'react'
 
@@ -10,13 +10,13 @@ export default function Description(props: {
   const label = `edit ${props.action.description}`
 
   return (
-    <Button
+    <CustomButton
       variant="text"
       onClick={props.onClick}
       textColor={colors.secondary}
       aria-label={label}
     >
       {props.action.description}
-    </Button>
+    </CustomButton>
   )
 }

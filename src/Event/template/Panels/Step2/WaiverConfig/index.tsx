@@ -40,7 +40,7 @@ import TemplateFields, {
 import Preview from 'organization/Event/WaiverConfig/Preview'
 import Step2 from 'Event/template/Panels/Step2'
 import {fieldError} from 'lib/form'
-import {ValidationError} from 'lib/api-client'
+import {ValidationError} from 'lib/ui/api-client'
 
 const imageUploadId = 'waived-logo-upload'
 

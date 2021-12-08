@@ -16,7 +16,7 @@ import backgroundImg from 'assets/images/background_login.png'
 import logoImgVertical from 'assets/images/logo_vertical.png'
 import {useQueryParams} from 'lib/url'
 import {fieldError} from 'lib/form'
-import {ValidationError} from 'lib/api-client'
+import {ValidationError} from 'lib/ui/api-client'
 import ErrorAlert from 'lib/ui/alerts/ErrorAlert'
 
 export default function Registration() {

@@ -1,6 +1,6 @@
 import React from 'react'
 import styled from 'styled-components'
-import ButtonBase from 'lib/ui/Button'
+import ButtonBase from 'lib/ui/Button/CustomButton'
 import {Column} from 'lib/ui/layout'
 import {HasRules} from 'Event/attendee-rules'
 import {AbsoluteLink} from 'lib/ui/link/AbsoluteLink'
