@@ -16,7 +16,6 @@ export default function MainNavMobile(props: {className?: string}) {
   const template = usePanelsTemplate()
   const {nav} = template
   const isEditMode = useEditMode()
-  const handleDrag = useHandleDrag()
 
   const ids = orderedIdsByPosition(nav)
   const buttons = ids.map((id, index) => (
@@ -26,6 +25,12 @@ export default function MainNavMobile(props: {className?: string}) {
   if (!isEditMode) {
     return <Container className={props.className}>{buttons}</Container>
   }
+
+  return <Editable {...props}>{buttons}</Editable>
+}
+
+function Editable(props: {className?: string; children: React.ReactElement[]}) {
+  const handleDrag = useHandleDrag()
 
   return (
     <DragDropContext onDragEnd={handleDrag}>
@@ -37,7 +42,7 @@ export default function MainNavMobile(props: {className?: string}) {
             {...provided.droppableProps}
           >
             <>
-              {buttons}
+              {props.children}
               {provided.placeholder}
               <StyledNewMainNavButton />
             </>
