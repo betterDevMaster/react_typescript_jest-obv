@@ -174,7 +174,7 @@ const NavButtonContainer = styled.div<{width: number; borderRadius: number}>`
   border-radius: ${(props) => props.borderRadius}px;
   overflow: hidden;
   display: table;
-
+  position: sticky;
   @media (max-width: ${(props) => props.theme.breakpoints.sm}) {
     width: 90%;
   }
