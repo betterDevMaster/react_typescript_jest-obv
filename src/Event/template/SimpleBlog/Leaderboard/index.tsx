@@ -81,5 +81,5 @@ const StyledRelativeLink = styled((props) => {
 })`
   line-height: 1.5;
   margin-bottom: 20px;
-  color: ${(props) => props.color};
+  color: ${(props) => props.color} !important;
 `
