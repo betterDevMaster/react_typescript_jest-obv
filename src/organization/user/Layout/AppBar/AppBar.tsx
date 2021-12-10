@@ -58,6 +58,10 @@ export default function AppBar() {
     history.push(routes.login)
   }
 
+  const goToChangePassword = () => {
+    history.push(obvioRoutes.change_password)
+  }
+
   return (
     <MuiAppBar className={classes.root}>
       <Toolbar className={classes.toolbar}>
@@ -111,6 +115,8 @@ export default function AppBar() {
             </UserEmail>
             <Divider />
             <CreditsMenuItem />
+            <Divider />
+            <MenuItem onClick={goToChangePassword}>Change Password</MenuItem>
             <Divider />
             <MenuItem onClick={handleLogout}>Logout</MenuItem>
           </Menu>
