@@ -27,10 +27,10 @@ it('should configure set password form template', async () => {
   mockPut.mockResolvedValue(event)
 
   await wait(() => {
-    expect(mockPut).toHaveBeenCalledTimes(2)
+    expect(mockPut).toHaveBeenCalledTimes(1)
   })
 
-  const [url, data] = mockPut.mock.calls[1]
+  const [url, data] = mockPut.mock.calls[0]
   expect(url).toMatch(`/events/${event.slug}/template`)
 
   expect(data.template['setPasswordForm.description']).toBe(description)
@@ -60,13 +60,13 @@ it('should disable requiring a password', async () => {
 
   user.click(await findByLabelText('toggle requires attendee password'))
 
-  // Hiding config if does not require password
-  expect(queryByLabelText('confirm password label')).not.toBeInTheDocument()
-
-  user.click(await findByLabelText('save'))
+  await wait(() => {
+    // Hiding config if does not require password
+    expect(queryByLabelText('confirm password label')).not.toBeInTheDocument()
+  })
 
   await wait(() => {
-    expect(mockPut).toHaveBeenCalledTimes(2)
+    expect(mockPut).toHaveBeenCalledTimes(1)
   })
 
   const [url, data] = mockPut.mock.calls[0]

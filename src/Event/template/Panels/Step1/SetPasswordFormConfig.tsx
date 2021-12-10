@@ -16,6 +16,7 @@ import Page from 'organization/Event/Page'
 import {useForm, Controller} from 'react-hook-form'
 import Button from '@material-ui/core/Button'
 import {useObvioUser} from 'obvio/auth'
+import {useToggle} from 'lib/toggle'
 
 const MIN_BORDER_RADIUS = 0
 const MAX_BORDER_RADIUS = 60
@@ -23,11 +24,18 @@ const MAX_BORDER_RADIUS = 60
 export default function SetPasswordFormConfig() {
   const {event} = useEvent()
   const updateEvent = useUpdate()
+  const {flag: processing, toggle: toggleProcessing} = useToggle()
 
   const setRequiresPassword = (requires_attendee_password: boolean) => {
+    if (processing) {
+      return
+    }
+
+    toggleProcessing()
+
     updateEvent({
       requires_attendee_password,
-    })
+    }).finally(toggleProcessing)
   }
 
   return (
@@ -43,6 +51,7 @@ export default function SetPasswordFormConfig() {
               aria-label="toggle requires attendee password"
               label="Require password"
               color="primary"
+              disabled={processing}
             />
           </Grid>
           <Config />
@@ -71,8 +80,6 @@ export function Config() {
 
   return (
     <>
-      <SectionTitle>Set Password Form</SectionTitle>
-
       <form onSubmit={handleSubmit(submit)}>
         <Grid container spacing={3}>
           <Grid item xs={12} md={12}>
