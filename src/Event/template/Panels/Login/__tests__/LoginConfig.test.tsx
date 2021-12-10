@@ -22,7 +22,7 @@ it('should configure login template', async () => {
     userPermissions: [CONFIGURE_EVENTS],
   })
 
-  const textColor = faker.commerce.color()
+  const textColor = '#e7e7e7'
 
   user.type(await findByLabelText('submit button color'), textColor)
   user.click(await findByLabelText('save'))

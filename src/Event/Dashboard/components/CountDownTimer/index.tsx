@@ -39,7 +39,7 @@ export const createCountdown = (): CountDownTimer => ({
 
 const countDownTimerDefaults = createCountdown()
 
-export function setCountDownTimerDefaults(timers: HashMap<CountDownTimer>) {
+export function fillCountDownTimerDefaults(timers: HashMap<CountDownTimer>) {
   return Object.entries(timers).reduce((acc, [id, timer]) => {
     acc[id] = withDefaults(
       countDownTimerDefaults,

@@ -8,7 +8,8 @@ import {
 import {withDefaults} from 'lib/object'
 import {DeepRequired} from 'lib/type-utils'
 import React, {useMemo} from 'react'
-import {setCountDownTimerDefaults} from 'Event/Dashboard/components/CountDownTimer'
+import {fillCountDownTimerDefaults} from 'Event/Dashboard/components/CountDownTimer'
+import {fillBlogPostDefaults} from 'Event/Dashboard/components/BlogPosts'
 
 const TemplateContext = React.createContext<DeepRequired<Template> | undefined>(
   undefined,
@@ -28,7 +29,11 @@ export default function TemplateProvider(props: {
     const updated = withDefaults(defaults, template)
 
     // Fill out any defaults for countdown timers
-    updated.countDownTimers = setCountDownTimerDefaults(updated.countDownTimers)
+    updated.countDownTimers = fillCountDownTimerDefaults(
+      updated.countDownTimers,
+    )
+
+    updated.blogPosts = fillBlogPostDefaults(updated.blogPosts)
 
     return updated
   }, [template])

@@ -9,6 +9,7 @@ import {setObvioAppUrl} from 'organization/__utils__/authenticate'
 import {fakeTeamMember} from 'organization/Team/__utils__/factory'
 import {fakeEvent} from 'Event/__utils__/factory'
 import {useLocation} from 'react-router-dom'
+import {fakePlan} from 'obvio/Billing/__utils__/factory'
 
 const mockGet = mockAxios.get as jest.Mock
 const mockUseLocation = useLocation as jest.Mock
@@ -30,7 +31,12 @@ it('should show the user organizations', async () => {
     fakeOrganization,
   )
   mockGet.mockImplementationOnce(() =>
-    Promise.resolve({data: fakeTeamMember({has_active_subscription: true})}),
+    Promise.resolve({
+      data: fakeTeamMember({
+        has_active_subscription: true,
+        plan: fakePlan({name: 'founder'}),
+      }),
+    }),
   )
   mockGet.mockImplementationOnce(() =>
     Promise.resolve({

@@ -1,4 +1,4 @@
-import {fakeBlogPost} from 'Event/Dashboard/components/BlogPost/__utils__/factory'
+import {fakeBlogPost} from 'Event/Dashboard/components/BlogPosts/__utils__/factory'
 import user from '@testing-library/user-event'
 import faker from 'faker'
 import {Translations} from 'Event/LanguageProvider/translations'

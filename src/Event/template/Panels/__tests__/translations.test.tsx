@@ -1,6 +1,6 @@
 import React from 'react'
 import faker from 'faker'
-import {fakeBlogPost} from 'Event/Dashboard/components/BlogPost/__utils__/factory'
+import {fakeBlogPost} from 'Event/Dashboard/components/BlogPosts/__utils__/factory'
 import {createHashMap} from 'lib/list'
 import {render} from '__utils__/render'
 import {fakeEvent} from 'Event/__utils__/factory'
