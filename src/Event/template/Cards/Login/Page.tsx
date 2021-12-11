@@ -10,6 +10,7 @@ import Logo from 'Event/template/Cards/Login/Logo'
 import {rgba} from 'lib/color'
 import {useCardsTemplate} from 'Event/template/Cards'
 import Paper from '@material-ui/core/Paper'
+import PasswordField from 'lib/ui/TextField/PasswordField'
 
 export default function Page(props: {
   isPreview?: LoginProps['isPreview']
@@ -195,8 +196,10 @@ export function TextField(props: TextFieldProps) {
 
   const classes = useStyles()
 
+  const Field = props.type === 'password' ? PasswordField : MuiTextField
+
   return (
-    <MuiTextField
+    <Field
       {...props}
       variant="filled"
       InputProps={{

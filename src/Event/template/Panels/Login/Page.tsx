@@ -10,6 +10,7 @@ import {makeStyles} from '@material-ui/core/styles'
 import Logo from 'Event/template/Panels/Login/Logo'
 import {rgba} from 'lib/color'
 import {usePanelsTemplate} from 'Event/template/Panels'
+import PasswordField from 'lib/ui/TextField/PasswordField'
 
 export default function Page(props: {
   isPreview?: LoginProps['isPreview']
@@ -152,8 +153,10 @@ export function TextField(props: TextFieldProps) {
 
   const classes = useStyles()
 
+  const Field = props.type === 'password' ? PasswordField : MuiTextField
+
   return (
-    <MuiTextField
+    <Field
       {...props}
       variant="filled"
       InputProps={{

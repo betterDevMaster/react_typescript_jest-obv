@@ -11,6 +11,7 @@ import {spacing} from 'lib/ui/theme'
 import Logo from 'Event/template/SimpleBlog/Login/Logo'
 import {rgba} from 'lib/color'
 import {useSimpleBlogTemplate} from 'Event/template/SimpleBlog'
+import PasswordField from 'lib/ui/TextField/PasswordField'
 
 export default function Page(props: {
   isPreview?: LoginProps['isPreview']
@@ -155,8 +156,10 @@ export function TextField(props: TextFieldProps) {
 
   const classes = useStyles()
 
+  const Field = props.type === 'password' ? PasswordField : MuiTextField
+
   return (
-    <MuiTextField
+    <Field
       {...props}
       variant="filled"
       InputProps={{
