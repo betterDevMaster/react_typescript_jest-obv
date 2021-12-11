@@ -31,6 +31,8 @@ import Slider from '@material-ui/core/Slider'
 import {CardsNavButtonProps} from 'Event/template/Cards/Dashboard/CardsNavButton'
 import {useCardsUpdate} from 'Event/template/Cards'
 import {REMOVE, useRemoveIfEmpty} from 'Event/TemplateUpdateProvider'
+import MailchimpTagInput from 'organization/Event/DashboardConfig/MailchimpTagInput'
+import ZapierTagInput from 'organization/Event/DashboardConfig/ZapierTagInput'
 
 export type ButtonConfigProps<K extends NavButton> = {
   button: K
@@ -316,6 +318,22 @@ export function MainNavButtonConfig(
             defaultValue={button.infusionsoftTag}
             render={({value, onChange}) => (
               <InfusionsoftTagInput value={value} onChange={onChange} />
+            )}
+          />
+          <Controller
+            name="mailchimpTag"
+            control={control}
+            defaultValue={button.mailchimpTag || ''}
+            render={({value, onChange}) => (
+              <MailchimpTagInput value={value} onChange={onChange} />
+            )}
+          />
+          <Controller
+            name="zapierTag"
+            control={control}
+            defaultValue={button.zapierTag || ''}
+            render={({value, onChange}) => (
+              <ZapierTagInput value={value} onChange={onChange} />
             )}
           />
           <SaveButton type="submit" />
