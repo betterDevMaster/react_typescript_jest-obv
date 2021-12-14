@@ -8,7 +8,9 @@ import React from 'react'
  * at a single time. This is only a frontend
  * limit, and not a real limitation.
  */
-const MAX_NUM_CREDITS = 1000
+export const MAX_NUM_CREDITS = 100000
+
+const MAX_NUM_CREDITS_SLIDER = 1000
 
 export const MIN_NUM_CREDITS = 10
 
@@ -27,7 +29,7 @@ export default function CreditsSlider(props: {
   return (
     <Slider
       min={MIN_NUM_CREDITS}
-      max={MAX_NUM_CREDITS}
+      max={MAX_NUM_CREDITS_SLIDER}
       value={props.value}
       marks={marks}
       step={10}
