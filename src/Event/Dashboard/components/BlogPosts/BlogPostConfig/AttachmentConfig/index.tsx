@@ -48,14 +48,7 @@ export default function AttachmentConfig(props: AttachmentConfigProps) {
         defaultValue={post.buttons}
         control={control}
         render={({value, onChange}) => (
-          <ButtonsConfig
-            {...props}
-            buttons={value}
-            onChange={(data) => {
-              console.log(data)
-              onChange(data)
-            }}
-          />
+          <ButtonsConfig {...props} buttons={value} onChange={onChange} />
         )}
       />
     </>

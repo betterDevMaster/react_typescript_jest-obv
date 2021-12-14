@@ -1,5 +1,5 @@
 import {formatPrice} from 'lib/currency'
-import {Loader} from 'obvio/Billing/CreditCardManagement/CreditCardForm/Form'
+import {Loader} from 'obvio/Billing/CreditCardManagement/NewCardForm'
 import React from 'react'
 
 export default function ChargeAmount(props: {price: number | null}) {
@@ -8,12 +8,5 @@ export default function ChargeAmount(props: {price: number | null}) {
     return <Loader />
   }
 
-  return (
-    <p>
-      $
-      {formatPrice(price, {
-        numDecimals: 2,
-      })}
-    </p>
-  )
+  return <p>${formatPrice(price)}</p>
 }

@@ -13,7 +13,7 @@ import Box from '@material-ui/core/Box'
 import {usePaymentMethod} from 'obvio/Billing/PaymentMethodProvider'
 import ErrorAlert from 'lib/ui/alerts/ErrorAlert'
 import SubscribeStep from 'obvio/Billing/ChangePlanPage/SubscribeStep'
-import CreditCardForm from 'obvio/Billing/CreditCardManagement/CreditCardForm'
+import CreditCardForm from 'obvio/Billing/CreditCardManagement/NewCardForm'
 
 export default function ChangePlanPage() {
   const {plan} = useQueryParams()

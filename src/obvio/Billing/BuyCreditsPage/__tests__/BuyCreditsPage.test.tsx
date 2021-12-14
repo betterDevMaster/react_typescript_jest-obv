@@ -96,6 +96,7 @@ it('should purchase selected credits', async () => {
   })
 
   // Action - Perform purchase
+  user.click(await findByLabelText('buy credits'))
   user.click(await findByLabelText('confirm purchase'))
 
   // Verify - UI shows what we're expecing

@@ -2,9 +2,9 @@ import styled from 'styled-components'
 import React, {FormEvent, useEffect, useState} from 'react'
 import {Elements} from '@stripe/react-stripe-js'
 import {
-  ConfirmCardSetupData,
   loadStripe,
-  SetupIntent,
+  Stripe,
+  StripeCardElement,
   StripeElementsOptions,
 } from '@stripe/stripe-js'
 import {CardElement, useStripe, useElements} from '@stripe/react-stripe-js'
@@ -15,11 +15,6 @@ import TextField from '@material-ui/core/TextField'
 import {onChangeStringHandler} from 'lib/dom'
 import ErrorAlert from 'lib/ui/alerts/ErrorAlert'
 import {useToggle} from 'lib/toggle'
-import {useCallback} from 'react'
-import {useAsync} from 'lib/async'
-import {api} from 'lib/url'
-import {teamMemberClient} from 'obvio/obvio-client'
-import CircularProgress from '@material-ui/core/CircularProgress'
 
 const publicKey = process.env.REACT_APP_STRIPE_PK
 const stripe = loadStripe(publicKey || '')
@@ -33,10 +28,19 @@ const options: StripeElementsOptions = {
   ],
 }
 
-export type CreditCardFormProps = {
-  onSuccess: (paymentMethodId: string) => void
+export type CreditCardFormBaseProps = {
   submitLabel: string
   className?: string
+}
+
+export type CreditCardFormResult = {
+  cardElement: StripeCardElement
+  name: string
+  stripe: Stripe
+}
+
+export type CreditCardFormProps = CreditCardFormBaseProps & {
+  onSubmit: (result: CreditCardFormResult) => Promise<void>
 }
 
 export default function CreditCardForm(props: CreditCardFormProps) {
@@ -48,16 +52,14 @@ export default function CreditCardForm(props: CreditCardFormProps) {
 }
 
 function Content(props: CreditCardFormProps) {
+  const {onSubmit} = props
   const {flag: processing, toggle: toggleProcessing} = useToggle()
   const stripe = useStripe()
   const elements = useElements()
   const [name, setName] = useState('')
   const [error, setError] = useState<string | null>(null)
-  const {onSuccess} = props
 
   const cardElement = elements?.getElement(CardElement)
-
-  const {paymentIntent, loading} = usePaymentIntent()
 
   const handleSubmit = async (event: FormEvent) => {
     event.preventDefault()
@@ -68,7 +70,7 @@ function Content(props: CreditCardFormProps) {
 
     toggleProcessing()
 
-    if (!stripe || !elements || !paymentIntent?.client_secret) {
+    if (!stripe || !elements) {
       return
     }
 
@@ -76,37 +78,10 @@ function Content(props: CreditCardFormProps) {
       return
     }
 
-    const data: ConfirmCardSetupData = {
-      payment_method: {
-        card: cardElement,
-        billing_details: {
-          name,
-        },
-      },
-    }
-
-    // Use your card Element with other Stripe.js APIs
-    const {setupIntent, error} = await stripe.confirmCardSetup(
-      paymentIntent.client_secret,
-      data,
-    )
-
-    if (error) {
-      setError(error.message || 'Payment error')
+    onSubmit({cardElement, stripe, name}).catch((error) => {
+      setError(error)
       toggleProcessing()
-      return
-    }
-
-    if (!setupIntent?.payment_method) {
-      setError(
-        'Failed to add payment method, you will not be charged. Please contact support.',
-      )
-
-      toggleProcessing()
-      return
-    }
-
-    onSuccess(setupIntent?.payment_method)
+    })
   }
 
   useEffect(() => {
@@ -128,10 +103,6 @@ function Content(props: CreditCardFormProps) {
       disabled: !canSubmit,
     })
   }, [canSubmit, cardElement])
-
-  if (loading || !paymentIntent) {
-    return <Loader />
-  }
 
   return (
     <Box className={props.className}>
@@ -186,18 +157,6 @@ function Content(props: CreditCardFormProps) {
   )
 }
 
-export function Loader() {
-  return (
-    <CircularProgress
-      size={18}
-      thickness={6}
-      value={100}
-      variant="indeterminate"
-      color="primary"
-    />
-  )
-}
-
 const CardForm = styled.form`
   max-width: 400px;
 `
@@ -227,15 +186,3 @@ const CardInputBox = styled.div`
     }
   }
 `
-
-function usePaymentIntent() {
-  const request = useCallback(() => {
-    const url = api('/stripe/payment_intent')
-
-    return teamMemberClient.get<SetupIntent>(url)
-  }, [])
-
-  const {data: paymentIntent, ...res} = useAsync(request)
-
-  return {paymentIntent, ...res}
-}

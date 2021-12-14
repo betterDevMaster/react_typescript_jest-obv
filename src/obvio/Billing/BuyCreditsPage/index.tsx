@@ -12,9 +12,8 @@ import {RelativeLink} from 'lib/ui/link/RelativeLink'
 import {useToggle} from 'lib/toggle'
 import {usePaymentMethod} from 'obvio/Billing/PaymentMethodProvider'
 import Button from '@material-ui/core/Button'
-import {usePurchaseCredits} from 'obvio/Billing/purchase-credits'
 import styled from 'styled-components'
-import {Redirect} from 'react-router-dom'
+import {Redirect, useHistory} from 'react-router-dom'
 import NumCreditsSlider, {
   MIN_NUM_CREDITS,
 } from 'obvio/Billing/BuyCreditsPage/CreditsSlider'
@@ -22,20 +21,29 @@ import ChargeAmount from 'obvio/Billing/BuyCreditsPage/ChargeAmount'
 import {usePriceForCredits} from 'obvio/Billing/plans'
 import SuccessDialog from 'lib/ui/Dialog/SuccessDialog'
 import {usePlan} from 'obvio/Billing/PlanProvider'
+import ConfirmDialog from 'obvio/Billing/BuyCreditsPage/ConfirmDialog'
 
 export default function BuyCreditsPage() {
   const {
     flag: showingSuccessMessage,
     toggle: toggleSuccessMessage,
   } = useToggle()
-  const {flag: processing, toggle: toggleProcessing} = useToggle()
   const {paymentMethod} = usePaymentMethod()
-  const purchaseCredits = usePurchaseCredits()
   const [numCredits, setNumCredits] = useState(MIN_NUM_CREDITS)
-  const {price, loading: loadingPrice} = usePriceForCredits(numCredits)
+  const {price} = usePriceForCredits(numCredits)
   const {plan} = usePlan()
+  const history = useHistory()
 
-  const canPurchase = !processing && !loadingPrice && Boolean(price)
+  const {flag: showingConfirmDialog, toggle: toggleConfirmDialog} = useToggle()
+
+  const goBackToBillingRoot = () => {
+    history.push(obvioRoutes.billing.root)
+  }
+
+  const handleSuccess = () => {
+    toggleConfirmDialog()
+    toggleSuccessMessage()
+  }
 
   useBreadcrumbs([
     {
@@ -52,33 +60,22 @@ export default function BuyCreditsPage() {
     return <Redirect to={obvioRoutes.billing.root} />
   }
 
-  const purchase = () => {
-    if (processing) {
-      return
-    }
-
-    toggleProcessing()
-
-    if (!price) {
-      return
-    }
-
-    purchaseCredits(numCredits, paymentMethod)
-      .then(() => {
-        toggleSuccessMessage()
-        setNumCredits(MIN_NUM_CREDITS) // Reset num credits
-      })
-      .finally(toggleProcessing)
-  }
-
   return (
     <>
       <SuccessDialog
         showing={showingSuccessMessage}
-        onClose={toggleSuccessMessage}
+        onClose={goBackToBillingRoot}
       >
         Credits Successfully Purchased!
       </SuccessDialog>
+      <ConfirmDialog
+        showing={showingConfirmDialog}
+        onClose={toggleConfirmDialog}
+        numCredits={numCredits}
+        onSuccess={handleSuccess}
+        paymentMethod={paymentMethod}
+        price={price}
+      />
       <Layout>
         <Page>
           <Title>Buy Credits</Title>
@@ -89,7 +86,10 @@ export default function BuyCreditsPage() {
           </Section>
           <Section>
             <Subheading>Purchase</Subheading>
-            <NumCreditsLabel>{formatPrice(numCredits)}</NumCreditsLabel>
+            <NumCreditsLabel>
+              {/* Not actually a price, but we're using it to format for thousandth's. */}
+              {formatPrice(numCredits, {numDecimals: 0})}
+            </NumCreditsLabel>
             <NumCreditsSlider
               value={numCredits}
               onChange={setNumCredits}
@@ -103,16 +103,13 @@ export default function BuyCreditsPage() {
           <Divider />
           <Actions>
             <RelativeLink to={obvioRoutes.billing.root} disableStyles>
-              <Button color="primary" disabled={processing}>
-                Cancel
-              </Button>
+              <Button color="primary">Cancel</Button>
             </RelativeLink>
             <Button
               color="primary"
               variant="contained"
-              disabled={!canPurchase}
-              onClick={purchase}
-              aria-label="confirm purchase"
+              onClick={toggleConfirmDialog}
+              aria-label="buy credits"
             >
               Buy Credits
             </Button>
