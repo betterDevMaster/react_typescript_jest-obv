@@ -6,4 +6,8 @@ module.exports = {
     '@storybook/preset-create-react-app',
   ],
   framework: '@storybook/react',
+  previewHead: (head) => `
+    ${head}
+    <link rel="stylesheet"  href="/fontawesome/css/all.min.css" />
+  `,
 }
