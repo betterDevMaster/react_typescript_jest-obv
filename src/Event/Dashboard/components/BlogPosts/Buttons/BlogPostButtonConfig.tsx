@@ -42,11 +42,17 @@ export default function BlogPostButtonConfig(props: {
   const {button, postId, id, onClose, showing} = props
   const [rules, setRules] = useState(button.rules)
   const {visible: showingRuleConfig, toggle: toggleRuleConfig} = useRuleConfig()
-  const {register, handleSubmit, control, setValue} = useForm()
+  const {register, handleSubmit, control} = useForm()
   const update = useTemplateUpdate()
 
-  const setKey = <K extends keyof NavButton>(key: K) => (value: NavButton[K]) =>
-    setValue(key, value)
+  // Init target config values since target config is a pre-refactor
+  // component that expects local state for configs.
+  const [isAreaButton, setIsAreaButton] = useState(button.isAreaButton)
+  const [isImageUpload, setIsImageUpload] = useState(button.isImageUpload)
+  const [areaId, setAreaId] = useState(button.areaId)
+  const [link, setLink] = useState(button.link)
+  const [page, setPage] = useState(button.page)
+  const [newTab, setNewTab] = useState(button.newTab)
 
   const set = (id: string, button: NavButton) => {
     update({
@@ -83,6 +89,12 @@ export default function BlogPostButtonConfig(props: {
   const submit = (form: NavButton) => {
     const data: NavButton = {
       ...form,
+      isAreaButton,
+      isImageUpload,
+      areaId,
+      link,
+      page,
+      newTab,
       rules,
     }
 
@@ -141,18 +153,18 @@ export default function BlogPostButtonConfig(props: {
             />
             <TargetConfig
               disablePageSelect
-              isAreaButton={button.isAreaButton}
-              setIsAreaButton={setKey('isAreaButton')}
-              isImageUpload={button.isImageUpload}
-              setIsImageUploadButton={setKey('isImageUpload')}
-              areaId={button.areaId}
-              setAreaId={setKey('areaId')}
-              link={button.link}
-              setLink={setKey('link')}
-              page={button.page}
-              setPage={setKey('page')}
-              newTab={button.newTab}
-              setNewTab={setKey('newTab')}
+              isAreaButton={isAreaButton}
+              setIsAreaButton={setIsAreaButton}
+              isImageUpload={isImageUpload}
+              setIsImageUploadButton={setIsImageUpload}
+              areaId={areaId}
+              setAreaId={setAreaId}
+              link={link}
+              setLink={setLink}
+              page={page}
+              setPage={setPage}
+              newTab={newTab}
+              setNewTab={setNewTab}
             />
             <Grid container spacing={2}>
               <Grid item xs={6}>

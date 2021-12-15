@@ -75,7 +75,7 @@ it('should show translated url', async () => {
           title: faker.random.word(),
           description: '',
           resources: createHashMap([
-            fakeResource({isVisible: true, url: '{{foo}}'}),
+            fakeResource({isVisible: true, url: '{{foo}}', isUrl: true}),
           ]),
         },
       ]),

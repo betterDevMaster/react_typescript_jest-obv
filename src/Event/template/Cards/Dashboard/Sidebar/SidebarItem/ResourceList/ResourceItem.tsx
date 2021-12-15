@@ -3,7 +3,6 @@ import styled from 'styled-components'
 import {usePoints} from 'Event/PointsProvider'
 import {usePlatformActions} from 'Event/ActionsProvider/platform-actions'
 import {AbsoluteLink} from 'lib/ui/link/AbsoluteLink'
-import {storage} from 'lib/url'
 import {Publishable} from 'Event/Dashboard/editor/views/Published'
 import {HasRules} from 'Event/attendee-rules'
 import VisibleOnMatch from 'Event/attendee-rules/VisibleOnMatch'
@@ -19,6 +18,7 @@ import {useToggle} from 'lib/toggle'
 import {ResourceItemConfig} from 'Event/template/Cards/Dashboard/Sidebar/SidebarItem/ResourceList/ResourceItemConfig'
 import {ResourceListProps} from 'Event/template/Cards/Dashboard/Sidebar/SidebarItem/ResourceList'
 import {Ordered} from 'lib/list'
+import {useResourceUrl} from 'Event/Dashboard/components/resource'
 
 export type Resource = Publishable &
   HasRules &
@@ -93,7 +93,7 @@ export function ResourceItemLink(props: {
   const {downloadResource: DOWNLOADING_RESOURCE} = usePlatformActions()
   const {submit} = usePoints()
   const {sidebar} = useCardsTemplate()
-  const url = resourceUrl(props.resource)
+  const url = useResourceUrl(props.resource)
   const v = useAttendeeVariables()
 
   const awardPoints = () => {
@@ -136,14 +136,6 @@ const Box = styled.div`
   margin-bottom: ${(props) => props.theme.spacing[2]};
   width: 100%;
 `
-
-function resourceUrl(resource: Resource): string {
-  if (resource.url) {
-    return resource.url
-  }
-
-  return storage(`/event/resources/${resource.filePath}`)
-}
 
 const ResourceLink = styled(AbsoluteLink)<{color: string}>`
   align-items: center;

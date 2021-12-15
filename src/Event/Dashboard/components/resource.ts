@@ -8,11 +8,12 @@ import {storage} from 'lib/url'
  * @returns
  */
 export function useResourceUrl(resource: {
+  isUrl?: boolean
   url?: string
   filePath: string
 }): string {
   const v = useAttendeeVariables()
-  if (resource.url) {
+  if (resource.isUrl) {
     return v(resource.url)
   }
 

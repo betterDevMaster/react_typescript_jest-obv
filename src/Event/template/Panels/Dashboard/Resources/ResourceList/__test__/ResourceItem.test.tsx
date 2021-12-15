@@ -63,7 +63,9 @@ it('should show translated url', async () => {
     template: fakePanels({
       resourceList: {
         title: faker.random.word(),
-        resources: [fakeResource({isVisible: true, url: '{{foo}}'})],
+        resources: [
+          fakeResource({isVisible: true, url: '{{foo}}', isUrl: true}),
+        ],
       },
     }),
     localization: fakeLocalization({
