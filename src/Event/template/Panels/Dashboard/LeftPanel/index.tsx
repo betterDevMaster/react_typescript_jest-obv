@@ -61,7 +61,7 @@ export default function LeftPanel(props: {
           </Bar>
         </Editable>
         <Main>
-          <Logo />
+          <SizedLogo />
           {/*
               Menu slide-in-out animation. Need to set content to null to avoid
               the exiting content from having a height, and the divs
@@ -148,4 +148,12 @@ const MenuBox = styled.div<{
 
 const StyledMenuIconButton = styled(MenuIconButton)`
   margin-left: 24px;
+`
+
+/**
+ * Give logo a max-height so that it can scale down on
+ * narrow screen heights.
+ */
+const SizedLogo = styled(Logo)`
+  max-height: 40%;
 `

@@ -3,31 +3,37 @@ import {useEvent} from 'Event/EventProvider'
 import styled from 'styled-components'
 import Hidden from '@material-ui/core/Hidden'
 
-export default function Logo() {
+export default function Logo(props: {className?: string}) {
   return (
     <>
       <Hidden mdUp>
-        <MobileLogo />
+        <MobileLogo className={props.className} />
       </Hidden>
       <Hidden smDown>
-        <DesktopLogo />
+        <DesktopLogo className={props.className} />
       </Hidden>
     </>
   )
 }
 
-function MobileLogo() {
+function MobileLogo(props: {className?: string}) {
   const {event} = useEvent()
   const {mobile_logo} = event
 
   if (!mobile_logo) {
-    return <DesktopLogo />
+    return <DesktopLogo className={props.className} />
   }
 
-  return <LogoImage src={mobile_logo?.url} alt={event.name} />
+  return (
+    <LogoImage
+      src={mobile_logo?.url}
+      alt={event.name}
+      className={props.className}
+    />
+  )
 }
 
-function DesktopLogo() {
+function DesktopLogo(props: {className?: string}) {
   const {event} = useEvent()
   const {logo} = event
 
@@ -35,7 +41,9 @@ function DesktopLogo() {
     return null
   }
 
-  return <LogoImage src={logo?.url} alt={event.name} />
+  return (
+    <LogoImage src={logo?.url} alt={event.name} className={props.className} />
+  )
 }
 
 const LogoImage = styled.img`
