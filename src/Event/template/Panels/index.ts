@@ -97,12 +97,12 @@ export type Panels = BaseTemplate & {
     color?: string
     opacity?: number
   }
-  checkInTitle: string
   checkInRightPanel: {
     backgroundColor: string
     backgroundOpacity: number
     textColor: string
   }
+  checkInTitle: string
   checkInLeftPanel: {
     backgroundColor: string
     backgroundOpacity: number
@@ -110,6 +110,8 @@ export type Panels = BaseTemplate & {
     inactiveTextColor: string
   }
   stepLabelColor: string
+  stepIconColor: string
+  stepInactiveColor: string
   step1Label: string
   step1Icon?: string
   step2Label: string
@@ -298,12 +300,12 @@ export const createPanels = (): DeepRequired<Panels> => ({
     color: '#FFFFFF',
     opacity: 0,
   },
-  checkInTitle: 'Check In:',
   checkInRightPanel: {
     backgroundColor: '#07BAB5',
     backgroundOpacity: 1,
     textColor: '#000000',
   },
+  checkInTitle: '',
   checkInLeftPanel: {
     backgroundColor: '#FFFFFF',
     backgroundOpacity: 0,
@@ -311,6 +313,8 @@ export const createPanels = (): DeepRequired<Panels> => ({
     inactiveTextColor: '#C7C7C7',
   },
   stepLabelColor: '#07BAB5',
+  stepIconColor: '#07BAB5',
+  stepInactiveColor: '#C7C7C7',
   step1Label: 'Step 1',
   step1Icon: 'far fa-lock',
   step2Label: 'Step 2',
