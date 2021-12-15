@@ -41,7 +41,8 @@ import Preview from 'organization/Event/WaiverConfig/Preview'
 import Step2 from 'Event/template/Panels/Step2'
 import {fieldError} from 'lib/form'
 import {ValidationError} from 'lib/ui/api-client'
-
+import {SaveButton} from 'organization/Event/DashboardConfig/ComponentConfig'
+import TemplateProvider from 'Event/TemplateProvider'
 const imageUploadId = 'waived-logo-upload'
 
 type WaiverData = {
@@ -67,10 +68,19 @@ export default function WaiverConfig() {
     set: setTemplateProp,
     updateTemplate,
   } = useTemplateWaiverProps()
-  const body = watch('body')
   const agree_statement = watch('agree_statement')
   const signature_prompt = watch('signature_prompt')
   const title = watch('title')
+  const body = watch('body')
+  const isEnabled = watch('is_enabled')
+  const templateConfig = watch('template')
+  const template = usePanelsTemplate()
+
+  const updatedTemplate = {
+    ...template,
+    waiver: templateConfig,
+  }
+
   const setWaiver = useSetWaiver()
   const dispatch = useDispatch()
   const {event} = useEvent()
@@ -94,18 +104,9 @@ export default function WaiverConfig() {
 
   // Prevent updating unmounted component
   const mounted = useRef(true)
-  // Manual loading state required to trigger CKEditor load
-  // on browser 'back', or else the body would not be
-  // set.
-  const [loading, setLoading] = useState(true)
 
   useEffect(() => {
-    if (!mounted.current) {
-      return
-    }
-
-    if (!event.waiver) {
-      setLoading(false)
+    if (!mounted.current || !event.waiver) {
       return
     }
 
@@ -129,7 +130,6 @@ export default function WaiverConfig() {
         })
     }
 
-    setLoading(false)
     return () => {
       mounted.current = false
     }
@@ -184,7 +184,7 @@ export default function WaiverConfig() {
                   )}
                 />
               }
-              label="Enable"
+              label="Enabled"
             />
           </FormControl>
           <TextField
@@ -225,34 +225,27 @@ export default function WaiverConfig() {
             />
           </FormControl>
           <Editor>
-            <input
-              type="hidden"
-              name="body"
-              aria-label="waiver body"
-              ref={register({required: 'Body is required.'})}
-            />
-            <BodyLabel required error={!!errors.body}>
+            <BodyLabel required={isEnabled} error={!!errors.body}>
               Body
             </BodyLabel>
-            {loading ? null : (
-              <TextEditor
-                data={body}
-                onChange={(value) => setValue('body', value)}
-              />
-            )}
-
+            <Controller
+              name="body"
+              defaultValue={event.waiver?.body || ''}
+              control={control}
+              render={({onChange, value}) => (
+                <TextEditor data={value} onChange={onChange} />
+              )}
+            />
             <BodyError error={errors.body} />
           </Editor>
           <TextField
             name="agree_statement"
             label="Agree Statement"
             defaultValue={agree_statement || DEFAULT_AGREE_STATEMENT}
-            required
+            required={isEnabled}
             fullWidth
             inputProps={{
-              ref: register({
-                required: 'Agree Statement is required',
-              }),
+              ref: register,
               'aria-label': 'waiver agree statement',
             }}
             disabled={submitting}
@@ -266,6 +259,7 @@ export default function WaiverConfig() {
             label="Signature Prompt"
             defaultValue={signature_prompt || DEFAULT_SIGNATURE_PROMPT}
             fullWidth
+            required={isEnabled}
             inputProps={{
               ref: register,
               'aria-label': 'waiver signature prompt',
@@ -288,26 +282,20 @@ export default function WaiverConfig() {
             <Grid item xs={12} md={12}>
               <Grid item xs={12} md={12}>
                 <Preview
-                  body={watch('body')}
-                  title={watch('title')}
+                  body={body}
+                  title={title}
                   logo={logo?.name || ''}
-                  agreeStatement={watch('agree_statement')}
-                  signaturePrompt={watch('signature_prompt')}
+                  agreeStatement={agree_statement}
+                  signaturePrompt={signature_prompt}
                 >
-                  <Step2 />
+                  <TemplateProvider template={updatedTemplate}>
+                    <Step2 />
+                  </TemplateProvider>
                 </Preview>
               </Grid>
             </Grid>
           </Grid>
-          <Button
-            fullWidth
-            variant="contained"
-            color="primary"
-            type="submit"
-            aria-label="save waiver"
-          >
-            Save
-          </Button>
+          <SaveButton disabled={submitting} />
         </form>
       </Page>
     </Layout>
@@ -357,7 +345,7 @@ function useTemplateWaiverProps() {
 
   const set: WaiverTemplatePropSetter = (key) => (value) => {
     const updated = {
-      ...waiver,
+      ...waiverConfig,
       [key]: value,
     }
 

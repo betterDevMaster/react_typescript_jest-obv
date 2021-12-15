@@ -4,11 +4,9 @@ import {fakeEvent, fakeWaiver} from 'Event/__utils__/factory'
 import user from '@testing-library/user-event'
 import {fireEvent, wait} from '@testing-library/react'
 import {waiverLogoPath} from 'Event/Step2/WaiverProvider'
-import {
-  EventOverrides,
-  goToEventConfig,
-} from 'organization/Event/__utils__/event'
 import {CONFIGURE_EVENTS} from 'organization/PermissionsProvider'
+import {fakePanels} from 'Event/template/Panels/__utils__/factory'
+import {goToWaiverConfig} from 'Event/Step2/__utils__/go-to-waiver-config'
 
 const mockPost = axios.post as jest.Mock
 const mockPut = axios.put as jest.Mock
@@ -35,10 +33,24 @@ it('should show waiver config', async () => {
   )
   const mockedFetch = window.fetch as jest.Mock
 
-  const {findByLabelText, event} = await goToWaiverConfig({
+  const fakerWaiver = fakeWaiver({
+    body: '<p>waiver body</p>',
+    title: faker.random.words(3),
+    agree_statement: faker.lorem.paragraph(),
+    is_enabled: false,
+    form: null,
+  })
+
+  const event = fakeEvent({
+    waiver: fakerWaiver,
+    template: fakePanels(),
+  })
+
+  const {findByLabelText} = await goToWaiverConfig({
+    event: event,
     userPermissions: [CONFIGURE_EVENTS],
   })
-  expect(await findByLabelText('waiver body')).toBeInTheDocument()
+  expect(await findByLabelText('waiver title')).toBeInTheDocument()
 
   if (!event.waiver || !event.waiver.logo) {
     throw new Error(`Missing event waiver logo required for test`)
@@ -51,17 +63,21 @@ it('should show waiver config', async () => {
   expect(mockedFetch.mock.calls[0][0]).toBe(waiverLogoPath(event.waiver.logo))
 })
 
-it('should submit a waiver', async () => {
+it('should submit a disabled waiver without filling the required fields', async () => {
   window.URL.createObjectURL = jest.fn()
   const fakerWaiver = fakeWaiver({
-    body: '<p>fake body</p>',
+    body: '',
     title: faker.random.words(3),
-    agree_statement: faker.lorem.paragraph(),
+    agree_statement: '',
+    signature_prompt: '',
     is_enabled: false,
     logo: '',
     form: null,
   })
-  const event = fakeEvent({waiver: fakerWaiver})
+  const event = fakeEvent({
+    waiver: fakerWaiver,
+    template: fakePanels(),
+  })
   const {findByLabelText} = await goToWaiverConfig({
     event,
     userPermissions: [CONFIGURE_EVENTS],
@@ -69,15 +85,6 @@ it('should submit a waiver', async () => {
 
   const title = faker.random.words(3)
   user.type(await findByLabelText('waiver title'), title)
-
-  // Manually set body input because we can't type into CKEditor
-  const body = faker.lorem.paragraph()
-
-  const agreeStatement = faker.lorem.paragraph()
-  user.type(await findByLabelText('waiver agree statement'), agreeStatement)
-
-  const bodyEl = (await findByLabelText('waiver body')) as HTMLInputElement
-  bodyEl.value = body
 
   const image = new File([], 'logo.jpg')
   const imageInput = await findByLabelText('logo input')
@@ -90,7 +97,10 @@ it('should submit a waiver', async () => {
   const buttonText = 'foobar'
   user.type(await findByLabelText('waiver button text'), buttonText)
 
-  user.click(await findByLabelText('save waiver'))
+  mockPost.mockImplementationOnce(() =>
+    Promise.resolve({data: {waiver: fakerWaiver}}),
+  )
+  user.click(await findByLabelText('save'))
 
   await wait(() => {
     expect(mockPost).toHaveBeenCalledTimes(1)
@@ -100,7 +110,6 @@ it('should submit a waiver', async () => {
   const data = mockPost.mock.calls[0][1]
 
   expect(data.get('title')).toBe(title)
-  expect(data.get('body')).toBe(`<p>${body}</p>`) // CKEditor automatically converts to HTML
   expect(data.get('logo')).toBe(image)
 
   // Did save template data
@@ -108,10 +117,39 @@ it('should submit a waiver', async () => {
   expect(templateData.template['waiver.buttonText']).toBe(buttonText)
 })
 
-async function goToWaiverConfig(overrides: EventOverrides = {}) {
-  const context = await goToEventConfig(overrides)
+it('should not submit a enabled waiver without filling the required fields', async () => {
+  const fakerWaiver = fakeWaiver({
+    body: '',
+    title: faker.random.words(3),
+    agree_statement: '',
+    signature_prompt: '',
+    is_enabled: true,
+    logo: '',
+    form: null,
+  })
+  const event = fakeEvent({
+    waiver: fakerWaiver,
+    template: fakePanels(),
+  })
+  const {findByLabelText} = await goToWaiverConfig({
+    event,
+    userPermissions: [CONFIGURE_EVENTS],
+  })
 
-  user.click(await context.findByLabelText('configure waiver'))
+  const title = faker.random.words(3)
+  user.type(await findByLabelText('waiver title'), title)
 
-  return context
-}
+  const agreeStatement = faker.lorem.paragraph()
+  user.type(await findByLabelText('waiver agree statement'), agreeStatement)
+
+  // Set template data
+  const buttonText = 'foobar'
+  user.type(await findByLabelText('waiver button text'), buttonText)
+
+  user.click(await findByLabelText('save'))
+
+  await wait(() => {
+    expect(mockPost).toHaveBeenCalledTimes(1)
+    expect(mockPut).toHaveBeenCalledTimes(0)
+  })
+})

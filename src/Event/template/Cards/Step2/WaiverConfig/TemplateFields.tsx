@@ -32,11 +32,12 @@ export default function TemplateFields(
       <Grid container spacing={2}>
         <Grid item xs={12} md={6}>
           <TextField
+            name="template.buttonText"
             defaultValue={waiver.buttonText}
             label="Label"
             fullWidth
             inputProps={{
-              'aria-label': 'tech check submit button label',
+              'aria-label': 'waiver button text',
               ref: register,
             }}
             disabled={submitting}
@@ -163,7 +164,7 @@ export default function TemplateFields(
             control={control}
             render={({value, onChange}) => (
               <ColorPicker
-                label="Text Color"
+                label="Check Box Color"
                 color={value}
                 onPick={onChange}
                 aria-label="check box color"

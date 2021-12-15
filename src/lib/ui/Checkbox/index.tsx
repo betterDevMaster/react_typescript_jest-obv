@@ -44,13 +44,13 @@ const Label = styled.label`
   -ms-user-select: none;
   user-select: none;
   &::hover {
-    +span {
-      background-color: #CCC;
+    + span {
+      background-color: #ccc;
     }
   }
   input:checked {
-    +span {
-      background-color: #3490DC;
+    + span {
+      background-color: #3490dc;
       &::after {
         display: block;
       }
@@ -72,10 +72,10 @@ const Span = styled.span`
   left: 0;
   height: 18px;
   width: 18px;
-  border: 1px solid #3490DC;
+  border: 1px solid #3490dc;
   border-radius: 4px;
   &:after {
-    content: "";
+    content: '';
     position: absolute;
     display: none;
     left: 6px;

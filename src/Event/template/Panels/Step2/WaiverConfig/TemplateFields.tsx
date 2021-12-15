@@ -56,7 +56,7 @@ export default function TemplateFields(props: TemplateFieldProps) {
             label="Label"
             fullWidth
             inputProps={{
-              'aria-label': 'tech check submit button label',
+              'aria-label': 'waiver button text',
             }}
             disabled={submitting}
             onChange={onChangeStringHandler(set('buttonText'))}

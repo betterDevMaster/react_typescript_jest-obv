@@ -14,7 +14,7 @@ import Typography from '@material-ui/core/Typography'
 import {useCardsTemplate} from 'Event/template/Cards'
 import Content from 'lib/ui/form/TextEditor/Content'
 
-export default function Waiver() {
+export default function Waiver(props: {checkBoxColor?: string}) {
   const {
     agree,
     setAgree,
@@ -25,9 +25,9 @@ export default function Waiver() {
     body,
   } = useWaiver()
 
-  const {isDarkMode, waiver} = useCardsTemplate()
+  const {isDarkMode} = useCardsTemplate()
   const v = useAttendeeVariables()
-  const color = waiver.checkBoxColor
+  const color = props.checkBoxColor
 
   return (
     <>

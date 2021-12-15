@@ -18,18 +18,17 @@ import {useAttendeeVariables} from 'Event'
 import {useSimpleBlogTemplate} from 'Event/template/SimpleBlog'
 
 export default function Step2(props: {user: User}) {
-  const template = useSimpleBlogTemplate()
-  const {progressBar} = template
+  const {progressBar} = useSimpleBlogTemplate()
 
   return (
     <SimpleBlogPage user={props.user}>
       <Container maxWidth="md">
         <ProgressBar
           showing={progressBar.showing}
-          text={template.progressBar.step2Text}
-          value={template.progressBar.step2Percent}
+          text={progressBar.step2Text}
+          value={progressBar.step2Percent}
           barColor={progressBar.barColor}
-          backgroundColor={template.progressBar.backgroundColor}
+          backgroundColor={progressBar.backgroundColor}
           textColor={progressBar.textColor}
           borderRadius={progressBar.borderRadius}
           thickness={progressBar.thickness}
@@ -102,7 +101,7 @@ function WithForm(props: {form: Form}) {
       />
       <Waiver />
       <Box display="flex" justifyContent="center" m={1}>
-        <SubmitButton canSubmit={canSubmit} />
+        <SubmitButton canSubmit={canSubmit} {...props} />
       </Box>
     </>
   )
@@ -124,9 +123,7 @@ function WaiverOnly() {
   } = useWaiver()
 
   const canSubmit = !submitting && canSubmitWaiver
-
-  const template = useSimpleBlogTemplate()
-  const waiver = template.waiver
+  const {waiver} = useSimpleBlogTemplate()
 
   /**
    * Submitting dynamic user defined form, no way of
@@ -149,7 +146,7 @@ function WaiverOnly() {
     <>
       <Waiver />
       <Center>
-        <Grid item xs={waiver.buttonWidth}>
+        <Grid item xs={waiver?.buttonWidth}>
           <SubmitButton canSubmit={canSubmit} />
         </Grid>
       </Center>
@@ -164,8 +161,7 @@ function WaiverOnly() {
 }
 
 function SubmitButton(props: {canSubmit: boolean}) {
-  const template = useSimpleBlogTemplate()
-  const waiver = template.waiver
+  const {waiver} = useSimpleBlogTemplate()
   const v = useAttendeeVariables()
 
   const textColor = waiver?.buttonTextColor || '#FFFFFF'

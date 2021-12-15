@@ -12,9 +12,9 @@ import styled from 'styled-components'
 import MuiButton, {ButtonProps} from '@material-ui/core/Button'
 import {colors} from 'lib/ui/theme'
 import {useAttendeeVariables} from 'Event'
-import {useCardsTemplate} from 'Event/template/Cards'
 import CheckInPage from 'Event/template/Cards/check-in/Page'
 import StepIndicator from 'Event/template/Cards/check-in/StepIndicator'
+import {useCardsTemplate} from 'Event/template/Cards'
 
 export default function Step2(props: {user: User}) {
   return (
@@ -55,6 +55,8 @@ function WithForm(props: {form: Form}) {
   } = useWaiver()
   const {submit: submitAnswers, responseError, answers} = useSubmissions()
 
+  const {waiver} = useCardsTemplate()
+
   const canSubmit = !submitting && canSubmitWaiver
 
   /**
@@ -87,7 +89,7 @@ function WithForm(props: {form: Form}) {
         setValue={setValue}
         answers={answers}
       />
-      <Waiver />
+      <Waiver checkBoxColor={waiver.checkBoxColor} />
       <Box display="flex" justifyContent="center" m={1}>
         <SubmitButton canSubmit={canSubmit} />
       </Box>
@@ -111,6 +113,7 @@ function WaiverOnly() {
   } = useWaiver()
 
   const canSubmit = !submitting && canSubmitWaiver
+  const {waiver} = useCardsTemplate()
 
   /**
    * Submitting dynamic user defined form, no way of
@@ -131,7 +134,7 @@ function WaiverOnly() {
 
   const body = (
     <>
-      <Waiver />
+      <Waiver checkBoxColor={waiver.checkBoxColor} />
       <Box display="flex" justifyContent="center" m={1}>
         <SubmitButton canSubmit={canSubmit} />
       </Box>
