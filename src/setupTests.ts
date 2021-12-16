@@ -31,3 +31,25 @@ beforeEach(() => {
   Object.defineProperty(window, 'scrollTo', {value: jest.fn(), writable: true})
   jest.clearAllMocks()
 })
+
+export const hideConsoleErrors = () => {
+  beforeAll(() => {
+    jest.spyOn(console, 'error').mockImplementation(() => {})
+  })
+
+  afterAll(() => {
+    // @ts-ignore
+    console.error.mockRestore()
+  })
+}
+
+export const hideConsoleWarnings = () => {
+  beforeAll(() => {
+    jest.spyOn(console, 'warn').mockImplementation(() => {})
+  })
+
+  afterAll(() => {
+    // @ts-ignore
+    console.error.mockRestore()
+  })
+}

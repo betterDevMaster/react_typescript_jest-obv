@@ -9,10 +9,13 @@ import {ajax} from 'rxjs/ajax'
 import {act} from 'react-dom/test-utils'
 import {TeamMember} from 'auth/user'
 import SingleUseCreditCardForm from 'lib/stripe/SingleUseCreditCardForm'
+import {hideConsoleErrors} from 'setupTests'
 
 const mockGet = axios.get as jest.Mock
 const mockPost = axios.post as jest.Mock
 const mockAjax = ajax.get as jest.Mock
+
+hideConsoleErrors()
 
 beforeEach(() => {
   jest.clearAllMocks()

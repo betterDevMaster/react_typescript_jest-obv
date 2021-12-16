@@ -9,7 +9,7 @@ it('should have days if the period is longer than a day', () => {
     moment(start).add(10, 'days').toDate(),
   )
 
-  const period = duration(start.toDateString(), end.toDateString())
+  const period = duration(start.toISOString(), end.toISOString())
 
   expect(period.days).not.toBeUndefined()
 })
@@ -24,7 +24,7 @@ it('should not have days if the period is less than a day', () => {
 it('should all elements have more than 2 characters', () => {
   const start = faker.date.recent()
   const end = faker.date.recent()
-  const period = duration(start.toDateString(), end.toDateString())
+  const period = duration(start.toISOString(), end.toISOString())
 
   expect(period.hours.length).toBeGreaterThanOrEqual(2)
   expect(period.minutes.length).toBeGreaterThanOrEqual(2)
