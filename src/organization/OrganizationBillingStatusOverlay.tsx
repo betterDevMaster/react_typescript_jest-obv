@@ -11,10 +11,10 @@ import {useIsOwner, useOwner} from 'organization/OwnerProvider'
 import React from 'react'
 
 export function OrganizationBillingStatusOverlay() {
-  const owner = useOwner()
+  const {owner} = useOwner()
   const user = useObvioUser()
-
   const isOwner = useIsOwner()
+
   if (isOwner && !user.has_active_subscription) {
     return <SubscriptionRequiredOverlay />
   }

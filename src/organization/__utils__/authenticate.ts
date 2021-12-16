@@ -8,6 +8,8 @@ import {fakeTeamMember} from 'organization/Team/__utils__/factory'
 import {TEAM_MEMBER_TOKEN_KEY} from 'obvio/auth'
 import {Permission} from 'organization/PermissionsProvider'
 import {TeamMember} from 'auth/user'
+import {PaymentMethod} from '@stripe/stripe-js'
+import {fakePaymentMethod} from 'obvio/Billing/__utils__/factory'
 
 const mockUseLocation = useLocation as jest.Mock
 const mockGet = axios.get as jest.Mock
@@ -23,13 +25,16 @@ export function setObvioAppUrl() {
   })
 }
 
+export type SignInToOrganizationOptions = {
+  events?: ObvioEvent[]
+  authUser?: TeamMember
+  owner?: TeamMember
+  userPermissions?: Permission[]
+  paymentMethod?: PaymentMethod
+}
+
 export function signInToOrganization(
-  overrides: {
-    events?: ObvioEvent[]
-    authUser?: TeamMember
-    owner?: TeamMember
-    userPermissions?: Permission[]
-  } = {},
+  overrides: SignInToOrganizationOptions = {},
 ) {
   setObvioAppUrl()
 
@@ -37,6 +42,7 @@ export function signInToOrganization(
   const authUser = overrides.authUser || fakeTeamMember()
   const owner = overrides.owner || fakeTeamMember()
   const userPermissions = overrides.userPermissions || []
+  const paymentMethod = overrides.paymentMethod || fakePaymentMethod()
 
   const organization = fakeOrganization()
   const token = faker.random.alphaNumeric(8)
@@ -53,6 +59,8 @@ export function signInToOrganization(
   mockGet.mockImplementationOnce(() => Promise.resolve({data: authUser}))
   // Organization Owner
   mockGet.mockImplementationOnce(() => Promise.resolve({data: owner}))
+  // Payment method provider
+  mockGet.mockImplementationOnce(() => Promise.resolve({data: paymentMethod}))
   // User Permissions
   mockGet.mockImplementationOnce(() => Promise.resolve({data: userPermissions}))
   // All Permissions
@@ -70,5 +78,5 @@ export function signInToOrganization(
   // Fetch events
   mockGet.mockImplementationOnce(() => Promise.resolve({data: events}))
 
-  return {organization, authUser, owner, token}
+  return {organization, authUser, owner, token, paymentMethod}
 }

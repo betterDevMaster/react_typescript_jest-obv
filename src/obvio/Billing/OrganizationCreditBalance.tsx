@@ -1,18 +1,24 @@
 import React from 'react'
 import styled from 'styled-components'
 import StarIcon from '@material-ui/icons/Stars'
-import {useObvioUser} from 'obvio/auth'
+import {useOwner} from 'organization/OwnerProvider'
 
-export default function CreditBalance(props: {className?: string}) {
-  const user = useObvioUser()
+export default function OrganizationCreditBalance(props: {className?: string}) {
+  const {owner} = useOwner()
+
+  if (!owner) {
+    return null
+  }
 
   return (
     <div className={props.className}>
       <Top>
         <StyledStarIcon />
-        My Available Credits
+        Organization's Available Credits
       </Top>
-      <NumCredits aria-label="credit balance">{user.credits}</NumCredits>
+      <NumCredits aria-label="organization credit balance">
+        {owner.credits}
+      </NumCredits>
     </div>
   )
 }

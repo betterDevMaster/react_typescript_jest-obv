@@ -60,6 +60,8 @@ it('should complete authorization', async () => {
   mockGet.mockImplementationOnce(() =>
     Promise.resolve({data: fakeTeamMember()}),
   )
+  // Payment
+  mockGet.mockImplementationOnce(() => Promise.resolve({data: null}))
   // User Permissions
   mockGet.mockImplementationOnce(() =>
     Promise.resolve({data: [CONFIGURE_EVENTS]}),

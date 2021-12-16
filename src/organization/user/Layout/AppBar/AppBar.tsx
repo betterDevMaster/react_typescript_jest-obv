@@ -20,6 +20,11 @@ import {useIsOwner} from 'organization/OwnerProvider'
 import logo from 'assets/images/logo.png'
 import {obvioRoutes} from 'obvio/Routes'
 import {useObvioAuth, useObvioUser} from 'obvio/auth'
+import {
+  PURCHASE_CREDITS,
+  usePermissions,
+} from 'organization/PermissionsProvider'
+import OrganizationCreditsMenuItem from 'obvio/Billing/OrganizationCreditsMenuItem'
 
 export default function AppBar() {
   const useStyles = makeStyles((theme) => ({
@@ -40,10 +45,7 @@ export default function AppBar() {
   const {logout} = useObvioAuth()
   const history = useHistory()
   const {routes, organization} = useOrganization()
-  const isOwner = useIsOwner()
-  const user = useObvioUser()
-
-  const homeLinkTarget = isOwner ? routes.settings : routes.events.root
+  const homeLinkTarget = useHomeLink()
 
   const handleClose = () => {
     setAnchorEl(null)
@@ -58,10 +60,6 @@ export default function AppBar() {
     history.push(routes.login)
   }
 
-  const goToChangePassword = () => {
-    history.push(obvioRoutes.change_password)
-  }
-
   return (
     <MuiAppBar className={classes.root}>
       <Toolbar className={classes.toolbar}>
@@ -71,7 +69,7 @@ export default function AppBar() {
               <img src={logo} alt="Obv.io" />
             </RelativeLink>
           </Logo>
-          <HomeLink to={homeLinkTarget} disableStyles>
+          <HomeLink to={homeLinkTarget} aria-label="home link" disableStyles>
             {organization.name}
           </HomeLink>
         </div>
@@ -80,7 +78,7 @@ export default function AppBar() {
             <Button startIcon={<Event />}>Events</Button>
           </RelativeLink>
           <HasPermission permission={UPDATE_TEAM}>
-            <RelativeLink to={routes.team} disableStyles>
+            <RelativeLink to={routes.team} aria-label="team link" disableStyles>
               <Button startIcon={<People />}>Team</Button>
             </RelativeLink>
           </HasPermission>
@@ -108,22 +106,90 @@ export default function AppBar() {
             open={Boolean(anchorEl)}
             onClose={handleClose}
           >
-            <UserEmail>
-              <LoggedInAsLabel>Logged in as</LoggedInAsLabel>
-              <br />
-              {user.email}
-            </UserEmail>
-            <Divider />
-            <CreditsMenuItem />
-            <Divider />
-            <MenuItem onClick={goToChangePassword}>Change Password</MenuItem>
-            <Divider />
+            <UserMenuItem />
+            <UserCreditsMenuItem />
+            <OrgCreditsMenuItem />
+            <ChangePasswordMenuItem />
             <MenuItem onClick={handleLogout}>Logout</MenuItem>
           </Menu>
         </div>
       </Toolbar>
     </MuiAppBar>
   )
+}
+
+// Not actually using the forwarded ref, since this isn't
+// an actual MUI MenuItem, but we get a forward
+// ref error if we don't receive it.
+const UserMenuItem = React.forwardRef(() => {
+  const user = useObvioUser()
+
+  return (
+    <>
+      <UserEmail>
+        <LoggedInAsLabel>Logged in as</LoggedInAsLabel>
+        <br />
+        {user.email}
+      </UserEmail>
+      <Divider />
+    </>
+  )
+})
+
+function UserCreditsMenuItem() {
+  return (
+    <>
+      <CreditsMenuItem />
+      <Divider />
+    </>
+  )
+}
+
+function OrgCreditsMenuItem() {
+  // If we're logged-in as the owner, showing 2 menu items for the same
+  // credits is confusing so we'll hide the organization one.
+  const isOwner = useIsOwner()
+  if (isOwner) {
+    return null
+  }
+
+  return (
+    <>
+      <OrganizationCreditsMenuItem />
+      <Divider />
+    </>
+  )
+}
+
+function ChangePasswordMenuItem() {
+  const history = useHistory()
+
+  const goToChangePassword = () => {
+    history.push(obvioRoutes.change_password)
+  }
+
+  return (
+    <>
+      <MenuItem onClick={goToChangePassword}>Change Password</MenuItem>
+      <Divider />
+    </>
+  )
+}
+
+function useHomeLink() {
+  const {routes} = useOrganization()
+  const isOwner = useIsOwner()
+  const {can} = usePermissions()
+
+  if (isOwner) {
+    return routes.settings
+  }
+
+  if (can(PURCHASE_CREDITS)) {
+    return routes.settings
+  }
+
+  return routes.events.root
 }
 
 const Logo = styled.div`

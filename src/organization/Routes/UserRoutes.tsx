@@ -6,7 +6,11 @@ import {Redirect, Route, Switch} from 'react-router-dom'
 import {useOrganization} from 'organization/OrganizationProvider'
 import EventRoutes from 'organization/Event/EventRoutes'
 import Team from 'organization/Team'
-import {CREATE_EVENTS, UPDATE_TEAM} from 'organization/PermissionsProvider'
+import {
+  CREATE_EVENTS,
+  PURCHASE_CREDITS,
+  UPDATE_TEAM,
+} from 'organization/PermissionsProvider'
 import AuthorizedPage from 'organization/AuthorizedPage'
 import FormsProvider from 'organization/Event/FormsProvider'
 import OrganizationSetting from 'organization/Settings'
@@ -20,6 +24,7 @@ import DownloadQuestionSubmissions from 'organization/Event/Form/DownloadQuestio
 import DownloadRoomAttendees from 'organization/Event/Room/DownloadRoomAttendees'
 import DownloadAttendees from 'Event/DownloadAttendees'
 import DownloadWaivers from 'Event/DownloadWaivers'
+import BuyCreditsPage from 'organization/BuyCreditsPage'
 
 export default function UserRoutes() {
   const {routes} = useOrganization()
@@ -34,6 +39,12 @@ export default function UserRoutes() {
       <Redirect path={routes.login} to={routes.events.root} />
       <Route path={routes.settings}>
         <OrganizationSetting />
+      </Route>
+
+      <Route path={routes.buy_credits}>
+        <AuthorizedPage permission={PURCHASE_CREDITS}>
+          <BuyCreditsPage />
+        </AuthorizedPage>
       </Route>
       <Route path={routes.events.create}>
         <AuthorizedPage permission={CREATE_EVENTS}>

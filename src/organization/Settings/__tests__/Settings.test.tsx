@@ -9,6 +9,7 @@ import {fakeOrganization} from 'obvio/Organizations/__utils__/factory'
 import {wait} from '@testing-library/react'
 import {fakeTeamMember} from 'organization/Team/__utils__/factory'
 import {fakeEvent} from 'Event/__utils__/factory'
+import {PURCHASE_CREDITS} from 'organization/PermissionsProvider'
 
 const mockPut = axios.put as jest.Mock
 
@@ -25,13 +26,16 @@ it('should update an organization', async () => {
 
   const {findByText, findByLabelText} = render(<App />)
 
-  user.click(await findByText(organization.name))
+  user.click(await findByLabelText('home link'))
 
   const newName = faker.company.companyName()
 
-  mockPut.mockImplementationOnce(() =>
-    Promise.resolve({data: fakeOrganization({name: newName})}),
-  )
+  const withNewName = {
+    ...organization,
+    name: newName,
+  }
+
+  mockPut.mockImplementationOnce(() => Promise.resolve({data: withNewName}))
 
   user.type(await findByLabelText('organization name'), newName)
   user.click(await findByLabelText('update'))
@@ -54,6 +58,61 @@ it('should only show settings for owners', async () => {
   const {organization} = signInToOrganization({
     authUser: fakeTeamMember(),
     owner: fakeTeamMember(), // another User
+    events: [event],
+  })
+
+  const {findByText} = render(<App />)
+
+  user.click(await findByText(organization.name))
+  // Is showing events page instead of settings
+  expect(await findByText(event.name)).toBeInTheDocument()
+})
+
+it('should show organization credits for owner', async () => {
+  const authUser = fakeTeamMember()
+  signInToOrganization({
+    authUser,
+    owner: authUser,
+  })
+
+  const {findByText, findByLabelText} = render(<App />)
+
+  user.click(await findByLabelText('home link'))
+
+  expect(await findByText('Settings')).toBeInTheDocument()
+
+  expect(await findByText('Credits')).toBeInTheDocument()
+
+  expect(
+    await findByLabelText('organization credit balance'),
+  ).toBeInTheDocument()
+})
+
+it('should show organization credits for user with purchase credits permission', async () => {
+  signInToOrganization({
+    authUser: fakeTeamMember(),
+    owner: fakeTeamMember(),
+    userPermissions: [PURCHASE_CREDITS],
+  })
+
+  const {findByText, findByLabelText, findAllByLabelText} = render(<App />)
+
+  user.click(await findByLabelText('home link'))
+
+  expect(await findByText('Settings')).toBeInTheDocument()
+
+  expect(await findByText('Credits')).toBeInTheDocument()
+
+  expect(
+    (await findAllByLabelText('organization credit balance')).length,
+  ).toBeGreaterThan(0)
+})
+
+it('should not show settings for user without purchase credits permission', async () => {
+  const event = fakeEvent()
+  const {organization} = signInToOrganization({
+    authUser: fakeTeamMember(),
+    owner: fakeTeamMember(),
     events: [event],
   })
 

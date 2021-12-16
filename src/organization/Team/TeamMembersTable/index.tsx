@@ -19,6 +19,7 @@ import {useOrganization} from 'organization/OrganizationProvider'
 import {useState} from 'react'
 import ErrorAlert from 'lib/ui/alerts/ErrorAlert'
 import {useOwner} from 'organization/OwnerProvider'
+import {TeamMember} from 'auth/user'
 
 export default function TeamMemberList() {
   const {
@@ -38,7 +39,6 @@ export default function TeamMemberList() {
     error: resendError,
     clearError: clearResendError,
   } = useResendInvitation()
-  const owner = useOwner()
 
   const processing =
     processingTeamMember || processingInvites || processingResend
@@ -58,57 +58,101 @@ export default function TeamMemberList() {
         </TableHead>
         <TableBody>
           {/* owner */}
-          <TableRow>
-            <TableCell>{owner.email}</TableCell>
-            <TableCell>{owner.last_name}</TableCell>
-            <TableCell>{owner.first_name}</TableCell>
-            <TableCell>Owner</TableCell>
-            <TableCell>{/* No action for owner */}</TableCell>
-          </TableRow>
+          <OwnerRow />
           {/* invites */}
           {memberInvites.map((invite) => (
-            <TableRow key={invite.id} aria-label="team invitation">
-              <TableCell>{invite.email}</TableCell>
-              <TableCell>-</TableCell>
-              <TableCell>-</TableCell>
-              <TableCell>{invite.role?.name || '-'}</TableCell>
-              <TableCell>
-                <IconBox>
-                  <DeleteIconButton
-                    disabled={processing}
-                    onClick={() => removeInvite(invite)}
-                    aria-label="remove team invitation"
-                  />
-                  <StyledResendButton
-                    disabled={processing}
-                    aria-label="resend invitation"
-                    onClick={() => resendInvitation(invite)}
-                  />
-                </IconBox>
-              </TableCell>
-            </TableRow>
+            <InviteRow
+              invite={invite}
+              processing={processing}
+              key={invite.id}
+              onRemove={() => removeInvite(invite)}
+              onResend={() => resendInvitation(invite)}
+            />
           ))}
           {/* members */}
           {members.map((member) => (
-            <TableRow key={member.id} aria-label="team member">
-              <TableCell>{member.email}</TableCell>
-              <TableCell>{member.last_name}</TableCell>
-              <TableCell>{member.first_name}</TableCell>
-              <TableCell>
-                <Role teamMember={member} />
-              </TableCell>
-              <TableCell>
-                <DeleteIconButton
-                  disabled={processing}
-                  onClick={() => removeTeamMember(member)}
-                  aria-label="remove team member"
-                />
-              </TableCell>
-            </TableRow>
+            <MemberRow
+              member={member}
+              key={member.id}
+              onRemove={() => removeTeamMember(member)}
+              processing={processing}
+            />
           ))}
         </TableBody>
       </Table>
     </>
+  )
+}
+
+function OwnerRow() {
+  const {owner} = useOwner()
+
+  return (
+    <TableRow>
+      <TableCell>{owner.email}</TableCell>
+      <TableCell>{owner.last_name}</TableCell>
+      <TableCell>{owner.first_name}</TableCell>
+      <TableCell>Owner</TableCell>
+      <TableCell>{/* No action for owner */}</TableCell>
+    </TableRow>
+  )
+}
+
+function InviteRow(props: {
+  invite: TeamInvitation
+  processing: boolean
+  onResend: () => void
+  onRemove: () => void
+}) {
+  const {onRemove, invite, onResend, processing} = props
+
+  return (
+    <TableRow aria-label="team invitation">
+      <TableCell>{invite.email}</TableCell>
+      <TableCell>-</TableCell>
+      <TableCell>-</TableCell>
+      <TableCell>{invite.role?.name || '-'}</TableCell>
+      <TableCell>
+        <IconBox>
+          <DeleteIconButton
+            disabled={processing}
+            onClick={onRemove}
+            aria-label="remove team invitation"
+          />
+          <StyledResendButton
+            disabled={processing}
+            aria-label="resend invitation"
+            onClick={onResend}
+          />
+        </IconBox>
+      </TableCell>
+    </TableRow>
+  )
+}
+
+function MemberRow(props: {
+  member: TeamMember
+  onRemove: () => void
+  processing: boolean
+}) {
+  const {member, onRemove, processing} = props
+
+  return (
+    <TableRow aria-label="team member">
+      <TableCell>{member.email}</TableCell>
+      <TableCell>{member.last_name}</TableCell>
+      <TableCell>{member.first_name}</TableCell>
+      <TableCell>
+        <Role teamMember={member} />
+      </TableCell>
+      <TableCell>
+        <DeleteIconButton
+          disabled={processing}
+          onClick={onRemove}
+          aria-label="remove team member"
+        />
+      </TableCell>
+    </TableRow>
   )
 }
 

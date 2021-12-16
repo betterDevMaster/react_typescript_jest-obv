@@ -36,7 +36,7 @@ it('adds a new role', async () => {
   mockGet.mockImplementationOnce(() => Promise.resolve({data: roles}))
 
   // Go to team page
-  user.click(await findByText(/team/i))
+  user.click(await findByLabelText('team link'))
   user.click(await findByText(/roles/i))
 
   const name = faker.random.word()

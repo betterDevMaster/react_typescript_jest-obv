@@ -14,7 +14,7 @@ it('should render list of rooms', async () => {
   })
 
   await wait(() => {
-    expect(mockGet).toHaveBeenCalledTimes(9 + areas.length)
+    expect(mockGet).toHaveBeenCalledTimes(10 + areas.length)
   })
 
   const area = faker.random.arrayElement(areas)

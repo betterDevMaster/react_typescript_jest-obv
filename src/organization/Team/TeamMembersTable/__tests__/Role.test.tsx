@@ -6,6 +6,7 @@ import {fireEvent, wait} from '@testing-library/react'
 import {fakeRole} from 'organization/Team/Roles/__utils__/factory'
 import {TeamMember} from 'auth/user'
 import {goToTeams} from 'organization/Team/__utils__/go-to-teams-page'
+import {PURCHASE_CREDITS} from 'organization/PermissionsProvider'
 
 const mockPut = axios.put as jest.Mock
 const mockDelete = axios.delete as jest.Mock
@@ -92,4 +93,21 @@ it('should update a user role', async () => {
     ((await findAllByLabelText('pick role'))[targetIndex] as HTMLDivElement)
       .textContent,
   ).toBe('None')
+})
+
+it('should disable a protected role', async () => {
+  const roles = [fakeRole({permissions: [PURCHASE_CREDITS]})]
+
+  const {findByLabelText} = await goToTeams({
+    teamMembers: [fakeTeamMember()],
+    roles,
+  })
+
+  fireEvent.mouseDown(await findByLabelText('pick role'))
+
+  expect(
+    (await findByLabelText(`pick ${roles[0].name}`)).getAttribute(
+      'aria-disabled',
+    ),
+  ).toBe('true')
 })

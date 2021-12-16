@@ -29,7 +29,7 @@ export async function goToPanelsConfig(overrides: Overrides = {}) {
    * run into updating state without act errors.
    */
   await wait(() => {
-    expect(mockGet).toHaveBeenCalledTimes(12)
+    expect(mockGet).toHaveBeenCalledTimes(13)
   })
 
   return context

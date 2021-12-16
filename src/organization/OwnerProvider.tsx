@@ -1,19 +1,24 @@
 import {TeamMember} from 'auth/user'
-import {useAsync} from 'lib/async'
 import {api} from 'lib/url'
 import {useOrganization} from 'organization/OrganizationProvider'
 import TeamMemberOnly from 'organization/auth/TeamMemberOnly'
-import React, {useCallback} from 'react'
+import React, {useCallback, useEffect, useState} from 'react'
 import FullPageLoader from 'lib/ui/layout/FullPageLoader'
 import {useObvioAuth} from 'obvio/auth'
 
-type OwnerContextProps = TeamMember
+export interface OwnerContextProps {
+  owner: TeamMember
+  setOwner: (owner: TeamMember | null) => void
+}
 
 const OwnerContext = React.createContext<OwnerContextProps | undefined>(
   undefined,
 )
 
 export default function OwnerProvider(props: {children: React.ReactNode}) {
+  const [owner, setOwner] = useState<TeamMember | null>()
+  const [loading, setLoading] = useState(true)
+
   const {
     organization: {id},
     client,
@@ -24,7 +29,18 @@ export default function OwnerProvider(props: {children: React.ReactNode}) {
     return client.get<TeamMember>(url)
   }, [id, client])
 
-  const {data: owner, loading} = useAsync(fetch)
+  useEffect(() => {
+    fetch()
+      .then((owner) => {
+        setOwner(owner)
+      })
+      .catch(() => {
+        // ignore errors since we'll just assume they're unauthenticated
+      })
+      .finally(() => {
+        setLoading(false)
+      })
+  }, [fetch])
 
   if (loading) {
     return <FullPageLoader />
@@ -35,7 +51,7 @@ export default function OwnerProvider(props: {children: React.ReactNode}) {
   }
 
   return (
-    <OwnerContext.Provider value={owner}>
+    <OwnerContext.Provider value={{owner, setOwner}}>
       {props.children}
     </OwnerContext.Provider>
   )
@@ -51,7 +67,7 @@ export function useOwner() {
 }
 
 export function useIsOwner() {
-  const owner = useOwner()
+  const {owner} = useOwner()
   const {user} = useObvioAuth()
 
   if (!user || !owner) {

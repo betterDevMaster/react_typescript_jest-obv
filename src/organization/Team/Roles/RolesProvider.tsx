@@ -1,7 +1,11 @@
 import {useAsync} from 'lib/async'
 import {api} from 'lib/url'
 import {useOrganization} from 'organization/OrganizationProvider'
-import {Permission} from 'organization/PermissionsProvider'
+import {useIsOwner} from 'organization/OwnerProvider'
+import {
+  OWNER_ONLY_PERMISSIONS,
+  Permission,
+} from 'organization/PermissionsProvider'
 import React, {useCallback, useEffect, useState} from 'react'
 
 export interface Role {
@@ -112,5 +116,21 @@ export function useRemovePermission() {
     )
 
     return client.delete<Role>(url)
+  }
+}
+
+export function useCanAssign() {
+  const isOwner = useIsOwner()
+
+  return (role: Role) => {
+    if (isOwner) {
+      return true
+    }
+
+    // Can only select a role if it does NOT conain any protected permissions
+    return (
+      role.permissions.filter((p) => OWNER_ONLY_PERMISSIONS.includes(p))
+        .length === 0
+    )
   }
 }

@@ -3,6 +3,7 @@ import FullPageLoader from 'lib/ui/layout/FullPageLoader'
 import {api} from 'lib/url'
 import {useArea} from 'organization/Event/Area/AreaProvider'
 import {useOrganization} from 'organization/OrganizationProvider'
+import {useIsOwner} from 'organization/OwnerProvider'
 import React, {useCallback} from 'react'
 
 /**
@@ -17,6 +18,7 @@ export const START_ROOMS = 'rooms.start'
 export const CHECK_IN_ATTENDEES = 'attendees.check_in'
 export const UPDATE_ATTENDEES = 'attendees.update'
 export const VIEW_RECORDINGS = 'recordings.view'
+export const PURCHASE_CREDITS = 'purchase.credits'
 
 export type Permission =
   | typeof CREATE_EVENTS
@@ -26,6 +28,12 @@ export type Permission =
   | typeof CHECK_IN_ATTENDEES
   | typeof UPDATE_ATTENDEES
   | typeof VIEW_RECORDINGS
+  | typeof PURCHASE_CREDITS
+
+/**
+ * Permissions that only an owner may update.
+ */
+export const OWNER_ONLY_PERMISSIONS = [PURCHASE_CREDITS]
 
 interface PermissionsContextProps {
   user: Permission[]
@@ -107,6 +115,8 @@ export function label(permission: Permission) {
       return 'Update Attendees'
     case VIEW_RECORDINGS:
       return 'View Recordings'
+    case PURCHASE_CREDITS:
+      return 'Purchase Credits'
     default:
       throw new Error(
         `Unhandled permission: ${permission}; was it added to the Permission type?`,
@@ -138,4 +148,14 @@ export function useCanStartRooms() {
   }
 
   return area.is_tech_check
+}
+
+export function useCanUpdatePermission(permission: Permission) {
+  const isOwner = useIsOwner()
+
+  if (isOwner) {
+    return true
+  }
+
+  return !OWNER_ONLY_PERMISSIONS.includes(permission)
 }

@@ -34,12 +34,12 @@ it('should add a new team member', async () => {
 
   const {findByText, findByLabelText} = render(<App />)
 
-  expect(await findByText(/team/i)).toBeInTheDocument()
+  expect(await findByLabelText('team link')).toBeInTheDocument()
 
   mockGet.mockImplementationOnce(() => Promise.resolve({data: teamMembers})) // team members
   mockGet.mockImplementationOnce(() => Promise.resolve({data: []})) // roles
 
-  user.click(await findByText(/team/i))
+  user.click(await findByLabelText('team link'))
 
   const email = faker.internet.email()
   user.type(await findByLabelText('team member email'), email)

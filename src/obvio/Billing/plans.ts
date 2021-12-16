@@ -2,6 +2,7 @@ import {useObserve} from 'lib/rx'
 import {api} from 'lib/url'
 import {useObvioAuth, useObvioUser} from 'obvio/auth'
 import {useUserOrganizations} from 'obvio/Organizations/UserOrganizationsProvider'
+import {Organization} from 'organization'
 import {useEffect, useState} from 'react'
 import {ajax} from 'rxjs/ajax'
 import {debounceTime, map, switchMap, tap} from 'rxjs/operators'
@@ -315,7 +316,10 @@ export const tier = (plan: PlanName) => {
  * @param numCredits
  * @returns
  */
-export function usePriceForCredits(numCredits: number) {
+export function usePriceForCredits(
+  numCredits: number,
+  organization?: Organization,
+) {
   const [loading, setLoading] = useState(true)
   const [price, setPrice] = useState<number | null>(null)
   const {token} = useObvioAuth()
@@ -334,7 +338,7 @@ export function usePriceForCredits(numCredits: number) {
         }),
         debounceTime(1000),
         switchMap((numCredits: number) => {
-          const url = api(`/price_for_credits?num_credits=${numCredits}`)
+          const url = calculatePriceUrl(numCredits, organization)
 
           const request = ajax.get(url, {
             Authorization: `Bearer ${token}`,
@@ -353,12 +357,33 @@ export function usePriceForCredits(numCredits: number) {
       })
 
     onReady()
-  }, [value$, onReady, token])
+  }, [value$, onReady, token, organization])
 
   return {
     loading: loading,
     price: price,
   }
+}
+
+/**
+ * Get the URL for price calculations.
+ *
+ * @param numCredits
+ * @param organization
+ * @returns
+ */
+function calculatePriceUrl(numCredits: number, organization?: Organization) {
+  // If no organization is supplied, we assume it's the owner
+  // trying to calculate the price.
+  if (!organization) {
+    return api(`/price_for_credits?num_credits=${numCredits}`)
+  }
+
+  // If we have an organization we'll calculate the price using
+  // the team endpoint.
+  return api(
+    `/organizations/${organization.id}/price_for_credits?num_credits=${numCredits}`,
+  )
 }
 
 export function useCanCreateOrganization() {

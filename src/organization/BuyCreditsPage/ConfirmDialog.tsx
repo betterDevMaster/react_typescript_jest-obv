@@ -1,33 +1,41 @@
+import React, {useState} from 'react'
+import Dialog from 'lib/ui/Dialog'
 import MuiButton from '@material-ui/core/Button'
 import DialogActions from '@material-ui/core/DialogActions'
 import DialogContent from '@material-ui/core/DialogContent'
 import DialogContentText from '@material-ui/core/DialogContentText'
 import DialogTitle from '@material-ui/core/DialogTitle'
-import {formatPrice} from 'lib/currency'
 import {useToggle} from 'lib/toggle'
 import ErrorAlert from 'lib/ui/alerts/ErrorAlert'
-import {ConfirmationProps} from 'obvio/Billing/BuyCreditsPage/ConfirmDialog'
-import {Loader} from 'obvio/Billing/CreditCardManagement/NewCardForm'
-import {usePurchaseCredits} from 'obvio/Billing/purchase-credits'
-import React, {useState} from 'react'
-import CustomButton from 'lib/ui/Button/CustomButton'
 import {PaymentMethod} from '@stripe/stripe-js'
+import {Loader} from 'obvio/Billing/CreditCardManagement/NewCardForm'
+import {usePurchaseCredits} from 'organization/PaymentMethodProvider'
+import {confirmationText} from 'obvio/Billing/BuyCreditsPage/ConfirmDialog/SavedCardConfirmation'
 
-type SavedCardConfirmationProps = ConfirmationProps & {
-  onUseOtherCard: () => void
+export type ConfirmationProps = {
+  numCredits: number
+  onClose: () => void
+  paymentMethod: PaymentMethod
+  price: number | null
+  onSuccess: () => void
 }
 
-export function SavedCardConfirmation(props: SavedCardConfirmationProps) {
+export default function ConfirmDialog(
+  props: ConfirmationProps & {
+    showing: boolean
+    onClose: () => void
+  },
+) {
   return (
-    <>
+    <Dialog open={props.showing} onClose={props.onClose}>
       <DialogTitle>Are you sure?</DialogTitle>
       <Content {...props} />
-    </>
+    </Dialog>
   )
 }
 
-function Content(props: SavedCardConfirmationProps) {
-  const {onUseOtherCard, paymentMethod, price, onSuccess, numCredits} = props
+function Content(props: ConfirmationProps) {
+  const {price, numCredits, paymentMethod, onSuccess} = props
   const {card} = paymentMethod
   const purchaseCredits = usePurchaseCredits()
   const {flag: processing, toggle: toggleProcessing} = useToggle()
@@ -43,14 +51,14 @@ function Content(props: SavedCardConfirmationProps) {
     )
   }
 
-  const purchaseWithSavedCard = () => {
+  const purchase = () => {
     if (processing) {
       return
     }
 
     toggleProcessing()
 
-    purchaseCredits({numCredits, paymentMethodId: paymentMethod.id})
+    purchaseCredits(numCredits, paymentMethod)
       .then(onSuccess)
       .catch(toggleProcessing)
       .catch((e) => setError(e.message))
@@ -71,7 +79,7 @@ function Content(props: SavedCardConfirmationProps) {
         <MuiButton
           color="primary"
           variant="contained"
-          onClick={purchaseWithSavedCard}
+          onClick={purchase}
           autoFocus
           aria-label="confirm purchase"
           disabled={!canPurchase}
@@ -79,26 +87,6 @@ function Content(props: SavedCardConfirmationProps) {
           Buy Credits
         </MuiButton>
       </DialogActions>
-      <DialogActions>
-        <CustomButton
-          variant="text"
-          onClick={onUseOtherCard}
-          aria-label="use a different card"
-          disabled={processing}
-        >
-          Use a Different Card
-        </CustomButton>
-      </DialogActions>
     </>
   )
-}
-
-export function confirmationText(
-  numCredits: number,
-  price: number,
-  card?: PaymentMethod.Card,
-) {
-  return ` You're about to purchase ${numCredits} credits for $
-  ${formatPrice(price)} on the ${card?.brand} on file ending in{' '}
-  ${card?.last4}.`
 }

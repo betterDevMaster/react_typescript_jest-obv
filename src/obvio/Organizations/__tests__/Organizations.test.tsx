@@ -88,6 +88,9 @@ it('should automatically redirect to organization', async () => {
     }),
   )
 
+  // Payment
+  mockGet.mockImplementationOnce(() => Promise.resolve({data: null}))
+
   // User Permissions
   mockGet.mockImplementationOnce(() => Promise.resolve({data: []}))
 

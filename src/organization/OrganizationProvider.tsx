@@ -32,7 +32,6 @@ export default function OrganizationProvider(props: {
   }, [id])
 
   const [organization, setOrganization] = useState<Organization | null>(null)
-
   const {data: fetched, loading} = useAsync(find)
 
   useEffect(() => {
@@ -109,6 +108,7 @@ export function createRoutesFor(organization: Organization) {
       reset_password: '/reset_password',
       team: '/team',
       settings: '/settings',
+      buy_credits: '/buy_credits',
       form_submissions: {
         ':file': {},
       },

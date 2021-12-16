@@ -5,9 +5,10 @@ import {api} from 'lib/url'
 import {useOrganization} from 'organization/OrganizationProvider'
 import {UPDATE_TEAM, usePermissions} from 'organization/PermissionsProvider'
 import {TeamMember} from 'auth/user'
-import {useRoles} from 'organization/Team/Roles/RolesProvider'
+import {useCanAssign, useRoles} from 'organization/Team/Roles/RolesProvider'
 import {useTeam} from 'organization/Team/TeamProvider'
 import React, {useState} from 'react'
+import UnableAssignRoleDialog from './UnableAssignRoleDialog'
 
 export default function Role(props: {teamMember: TeamMember}) {
   const {can} = usePermissions()
@@ -22,8 +23,15 @@ function RoleSelect(props: {teamMember: TeamMember}) {
   const {teamMember} = props
   const {roles} = useRoles()
 
-  const {assign, processing: processingAssign} = useAssign(teamMember)
+  const {
+    assign,
+    processing: processingAssign,
+    assignError,
+    dismissAssignError,
+  } = useAssign(teamMember)
   const {unassign, processing: processingUnassign} = useUnassign(teamMember)
+
+  const canAssign = useCanAssign()
 
   const isProcessing = processingAssign || processingUnassign
 
@@ -36,29 +44,36 @@ function RoleSelect(props: {teamMember: TeamMember}) {
   }
 
   return (
-    <Select
-      disabled={isProcessing}
-      value={teamMember.role?.id || 0}
-      fullWidth
-      onChange={onUnknownChangeHandler(onPick)}
-      inputProps={{
-        'aria-label': 'pick role',
-      }}
-      variant="outlined"
-    >
-      <MenuItem value={0} aria-label="remove role">
-        None
-      </MenuItem>
-      {roles.map((role) => (
-        <MenuItem
-          key={role.id}
-          value={role.id}
-          aria-label={`pick ${role.name}`}
-        >
-          {role.name}
+    <>
+      <UnableAssignRoleDialog
+        message={assignError}
+        onClose={dismissAssignError}
+      />
+      <Select
+        disabled={isProcessing}
+        value={teamMember.role?.id || 0}
+        fullWidth
+        onChange={onUnknownChangeHandler(onPick)}
+        inputProps={{
+          'aria-label': 'pick role',
+        }}
+        variant="outlined"
+      >
+        <MenuItem value={0} aria-label="remove role">
+          None
         </MenuItem>
-      ))}
-    </Select>
+        {roles.map((role) => (
+          <MenuItem
+            key={role.id}
+            value={role.id}
+            aria-label={`pick ${role.name}`}
+            disabled={!canAssign(role)}
+          >
+            {role.name}
+          </MenuItem>
+        ))}
+      </Select>
+    </>
   )
 }
 
@@ -66,6 +81,7 @@ function useAssign(teamMember: TeamMember) {
   const {client, organization} = useOrganization()
   const team = useTeam()
   const [processing, setProcessing] = useState(false)
+  const [assignError, setAssignError] = useState()
 
   const url = api(
     `/organizations/${organization.id}/team_members/${teamMember.id}/role`,
@@ -83,12 +99,19 @@ function useAssign(teamMember: TeamMember) {
         role_id: id,
       })
       .then(team.update)
+      .catch((err) => {
+        setAssignError(err.message)
+      })
       .finally(() => {
         setProcessing(false)
       })
   }
 
-  return {assign, processing}
+  const dismissAssignError = () => {
+    setAssignError(undefined)
+  }
+
+  return {assign, processing, assignError, dismissAssignError}
 }
 
 function useUnassign(teamMember: TeamMember) {

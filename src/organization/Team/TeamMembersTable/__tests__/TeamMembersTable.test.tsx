@@ -32,12 +32,14 @@ it('should remove a team member', async () => {
     fakeTeamMember,
   )
 
-  const {findByText, findAllByLabelText, queryByText} = render(<App />)
+  const {findByText, findByLabelText, findAllByLabelText, queryByText} = render(
+    <App />,
+  )
 
-  expect(await findByText(/team/i)).toBeInTheDocument()
+  expect(await findByLabelText('team link')).toBeInTheDocument()
 
   mockGet.mockImplementationOnce(() => Promise.resolve({data: teamMembers})) // team members
-  user.click(await findByText(/team/i))
+  user.click(await findByLabelText('team link'))
 
   expect((await findAllByLabelText('team member')).length).toBe(
     teamMembers.length,

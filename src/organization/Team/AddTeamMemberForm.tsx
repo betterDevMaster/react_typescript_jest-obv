@@ -15,7 +15,7 @@ import {useTeam} from 'organization/Team/TeamProvider'
 import {onUnknownChangeHandler} from 'lib/dom'
 import MenuItem from '@material-ui/core/MenuItem'
 import Select from '@material-ui/core/Select'
-import {useRoles} from 'organization/Team/Roles/RolesProvider'
+import {useCanAssign, useRoles} from 'organization/Team/Roles/RolesProvider'
 import Grid from '@material-ui/core/Grid'
 import FormControl from '@material-ui/core/FormControl'
 import InputLabel from '@material-ui/core/InputLabel'
@@ -36,6 +36,7 @@ export default function AddTeamMemberForm() {
   >(null)
   const inviteTeamMember = useInviteTeamMember()
   const {roles} = useRoles()
+  const canAssignRole = useCanAssign()
 
   const submit = (data: InviteData) => {
     if (submitting) {
@@ -123,6 +124,7 @@ export default function AddTeamMemberForm() {
                       value={role.id}
                       aria-label={`pick ${role.name}`}
                       key={role.id}
+                      disabled={!canAssignRole(role)}
                     >
                       {role.name}
                     </MenuItem>

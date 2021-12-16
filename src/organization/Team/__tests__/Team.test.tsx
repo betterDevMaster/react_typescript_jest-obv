@@ -22,10 +22,10 @@ it('should show team members', async () => {
     fakeTeamMember,
   )
 
-  const {findByText, findAllByLabelText} = render(<App />)
+  const {findByLabelText, findAllByLabelText} = render(<App />)
 
   mockGet.mockImplementationOnce(() => Promise.resolve({data: teamMembers})) // team members
-  user.click(await findByText(/team/i))
+  user.click(await findByLabelText('team link'))
 
   expect((await findAllByLabelText('team member')).length).toBe(
     teamMembers.length,

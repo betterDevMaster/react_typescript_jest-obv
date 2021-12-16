@@ -8,6 +8,7 @@ import {OrganizationBillingStatusOverlay} from 'organization/OrganizationBilling
 import {useObvioAuth} from 'obvio/auth'
 import {Redirect} from 'react-router'
 import {obvioRoutes} from 'obvio/Routes'
+import {PaymentMethodProvider} from 'organization/PaymentMethodProvider'
 
 export default function OrganizationRoutes() {
   const {user, loading} = useObvioAuth()
@@ -24,12 +25,14 @@ export default function OrganizationRoutes() {
   if (user) {
     return (
       <OwnerProvider>
-        <OrganizationBillingStatusOverlay />
-        <PermissionsProvider>
-          <TextEditorProvider>
-            <UserRoutes />
-          </TextEditorProvider>
-        </PermissionsProvider>
+        <PaymentMethodProvider>
+          <OrganizationBillingStatusOverlay />
+          <PermissionsProvider>
+            <TextEditorProvider>
+              <UserRoutes />
+            </TextEditorProvider>
+          </PermissionsProvider>
+        </PaymentMethodProvider>
       </OwnerProvider>
     )
   }

@@ -4,6 +4,7 @@ import {onChangeCheckedHandler} from 'lib/dom'
 import {
   Permission,
   UPDATE_TEAM,
+  useCanUpdatePermission,
   usePermissions,
 } from 'organization/PermissionsProvider'
 import {
@@ -28,9 +29,13 @@ export default function PermissionCheckbox(props: {
 
   const add = useAddPermission()
   const remove = useRemovePermission()
+  const canUpdatePermission = useCanUpdatePermission(props.permission)
 
   const updatePermission = (isAdd: boolean) => {
     if (props.processing || !can(UPDATE_TEAM)) {
+      return
+    }
+    if (!canUpdatePermission) {
       return
     }
     const update = isAdd ? add : remove
@@ -46,6 +51,7 @@ export default function PermissionCheckbox(props: {
 
   return (
     <Checkbox
+      disabled={!canUpdatePermission}
       checked={hasPermission}
       onChange={onChangeCheckedHandler(updatePermission)}
       color="primary"
