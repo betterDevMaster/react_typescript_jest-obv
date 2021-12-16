@@ -40,6 +40,10 @@ export interface ObvioEvent {
   platform_actions: PlatformActions
   login_background: FileLocation | null
   login_logo: FileLocation | null
+  login_logo_background: FileLocation | null
+  login_content_background: FileLocation | null
+  sized_logo: FileLocation | null
+  left_panel_background: FileLocation | null
   favicon: FileLocation | null
   forms: Form[]
   has_infusionsoft: boolean

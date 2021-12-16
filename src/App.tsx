@@ -5,6 +5,7 @@ import {GlobalStyles} from 'lib/ui/theme/GlobalStyles'
 import Routes from 'Routes'
 import {useAnalytics} from 'analytics'
 import ScrollOnNav from 'lib/ScrollOnNav'
+import GlobalCss from 'lib/styles/GlobalCss'
 
 export default function App() {
   useAnalytics()
@@ -12,6 +13,7 @@ export default function App() {
   return (
     <>
       <GlobalStyles />
+      <GlobalCss />
       <Router>
         <Routes />
         <ScrollOnNav />

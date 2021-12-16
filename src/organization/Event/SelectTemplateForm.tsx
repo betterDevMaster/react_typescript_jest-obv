@@ -1,22 +1,26 @@
-import withStyles from '@material-ui/core/styles/withStyles'
-import Typography from '@material-ui/core/Typography'
-import TemplateSelect from 'Event/template/TemplateSelect'
-import {spacing} from 'lib/ui/theme'
 import React from 'react'
-import {Template} from 'Event/template'
-import Layout from 'organization/user/Layout'
-import Page from 'organization/Event/Page'
-import Button from '@material-ui/core/Button'
-import Box from '@material-ui/core/Box'
 import {Controller, useForm} from 'react-hook-form'
+
+import withStyles from '@material-ui/core/styles/withStyles'
+import {Box, Button, Typography} from '@material-ui/core'
+
+import {ObvioEvent} from 'Event'
+import {useEvent} from 'Event/EventProvider'
+import {Template} from 'Event/template'
+import TemplateSelect from 'Event/template/TemplateSelect'
+
 import {createSimpleBlog, SIMPLE_BLOG} from 'Event/template/SimpleBlog'
 import {createPanels, PANELS} from 'Event/template/Panels'
-import {CARDS, createCards} from 'Event/template/Cards'
-import {useEvent} from 'Event/EventProvider'
-import {api} from 'lib/url'
-import {useOrganization} from 'organization/OrganizationProvider'
-import {ObvioEvent} from 'Event'
+import {createCards, CARDS} from 'Event/template/Cards'
+import {createFiftyBlog, FIFTY_BLOG} from 'Event/template/FiftyBlog'
+
 import {useToggle} from 'lib/toggle'
+import {spacing} from 'lib/ui/theme'
+import {api} from 'lib/url'
+
+import Layout from 'organization/user/Layout'
+import Page from 'organization/Event/Page'
+import {useOrganization} from 'organization/OrganizationProvider'
 
 export default function SelectTemplateForm() {
   const {control, handleSubmit} = useForm()
@@ -82,6 +86,8 @@ function createTemplate(name: Template['name']) {
       return createPanels()
     case CARDS:
       return createCards()
+    case FIFTY_BLOG:
+      return createFiftyBlog()
     default:
       throw new Error(`New template not defined for: ${name}`)
   }

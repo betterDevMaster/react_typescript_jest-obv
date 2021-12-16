@@ -4,6 +4,7 @@ import {InputStyles} from 'Event/Question'
 import {DeepRequired} from 'lib/type-utils'
 import {Cards} from 'Event/template/Cards'
 import {Rule} from 'Event/attendee-rules'
+import {FiftyBlog} from './FiftyBlog'
 
 /**
  * Base properties shared by all templates
@@ -54,7 +55,7 @@ export type BaseTemplate = {
   skipTechCheckRules: Rule[]
 }
 
-export type Template = SimpleBlog | Panels | Cards
+export type Template = SimpleBlog | Panels | Cards | FiftyBlog
 
 export const BASE_DEFAULTS: DeepRequired<BaseTemplate> = {
   version: 1,

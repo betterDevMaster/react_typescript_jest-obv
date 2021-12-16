@@ -1,16 +1,21 @@
 import React from 'react'
-import Layout from 'organization/user/Layout'
+
 import {ObvioEvent} from 'Event'
-import Page from 'organization/Event/Page'
+import {OrganizationActionsProvider} from 'Event/ActionsProvider'
+import {useTemplate} from 'Event/TemplateProvider'
+
 import SimpleBlogConfig from 'Event/template/SimpleBlog/Step3/TechCheckConfig'
 import PanelsConfig from 'Event/template/Panels/Step3/TechCheckConfig'
 import CardsConfig from 'Event/template/Cards/Step3/TechCheckConfig'
+import FiftyBlogConfig from 'Event/template/FiftyBlog/Step3/TechCheckConfig'
 
-import {OrganizationActionsProvider} from 'Event/ActionsProvider'
-import {useTemplate} from 'Event/TemplateProvider'
 import {SIMPLE_BLOG} from 'Event/template/SimpleBlog'
 import {PANELS} from 'Event/template/Panels'
 import {CARDS} from 'Event/template/Cards'
+import {FIFTY_BLOG} from 'Event/template/FiftyBlog'
+
+import Page from 'organization/Event/Page'
+import Layout from 'organization/user/Layout'
 
 export interface TechCheckData {
   body: string
@@ -41,6 +46,8 @@ function TemplateTechCheckConfig() {
       return <PanelsConfig />
     case CARDS:
       return <CardsConfig />
+    case FIFTY_BLOG:
+      return <FiftyBlogConfig />
     default:
       throw new Error('Missing tech check config for template')
   }

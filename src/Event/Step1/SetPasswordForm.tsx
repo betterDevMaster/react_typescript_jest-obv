@@ -1,21 +1,28 @@
-import {useEvent} from 'Event/EventProvider'
 import React, {useState} from 'react'
-import {api} from 'lib/url'
-import {Attendee} from 'Event/attendee'
-import {ValidationError} from 'lib/ui/api-client'
-import {setUser} from 'auth/actions'
 import {useDispatch} from 'react-redux'
-import {useTemplate} from 'Event/TemplateProvider'
+
+import {User} from 'auth/user'
+
+import {Attendee} from 'Event/attendee'
 import {useAttendee} from 'Event/auth'
-import {SIMPLE_BLOG} from 'Event/template/SimpleBlog'
-import SimpleBlogSetPasswordForm from 'Event/template/SimpleBlog/Step1/SetPasswordForm'
-import PanelsSetPasswordForm from 'Event/template/Panels/Step1/SetPasswordForm'
 import {usePoints} from 'Event/PointsProvider'
 import {usePlatformActions} from 'Event/ActionsProvider/platform-actions'
-import {User} from 'auth/user'
+import {useEvent} from 'Event/EventProvider'
+import {setUser} from 'auth/actions'
+import {useTemplate} from 'Event/TemplateProvider'
+
+import SimpleBlogSetPasswordForm from 'Event/template/SimpleBlog/Step1/SetPasswordForm'
+import {SIMPLE_BLOG} from 'Event/template/SimpleBlog'
+import PanelsSetPasswordForm from 'Event/template/Panels/Step1/SetPasswordForm'
 import {PANELS} from 'Event/template/Panels'
-import {CARDS} from 'Event/template/Cards'
 import CardsSetPasswordForm from 'Event/template/Cards/Step1/SetPasswordForm'
+import {CARDS} from 'Event/template/Cards'
+import FiftyBlogSetPasswordForm from 'Event/template/FiftyBlog/Step1/SetPasswordForm'
+import {FIFTY_BLOG} from 'Event/template/FiftyBlog'
+
+import {ValidationError} from 'lib/ui/api-client'
+import {api} from 'lib/url'
+
 interface SetPasswordData {
   password: string
   password_confirmation: string
@@ -89,6 +96,8 @@ export function TemplateSetPasswordForm(props: SetPasswordFormProps) {
       return <PanelsSetPasswordForm {...props} />
     case CARDS:
       return <CardsSetPasswordForm {...props} />
+    case FIFTY_BLOG:
+      return <FiftyBlogSetPasswordForm {...props} />
     default:
       throw new Error(`Missing set password form for template.`)
   }

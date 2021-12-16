@@ -1,18 +1,22 @@
 import React, {useEffect} from 'react'
-import {useTemplate} from 'Event/TemplateProvider'
-import {useEvent} from 'Event/EventProvider'
+
+import {User} from 'auth/user'
+
+import {TechCheckConfig} from 'Event'
+import {usePlatformActions} from 'Event/ActionsProvider/platform-actions'
 import {useAttendee, useEventAuth} from 'Event/auth'
+import {useEvent} from 'Event/EventProvider'
+import {usePoints} from 'Event/PointsProvider'
+import {useTemplate} from 'Event/TemplateProvider'
+
 import {SIMPLE_BLOG} from 'Event/template/SimpleBlog'
 import {PANELS} from 'Event/template/Panels'
-import {TechCheckConfig} from 'Event'
+import {CARDS} from 'Event/template/Cards'
+import {FIFTY_BLOG} from 'Event/template/FiftyBlog'
 import SimpleBlogTechCheck from 'Event/template/SimpleBlog/Step3/TechCheck'
 import PanelsTechCheck from 'Event/template/Panels/Step3/TechCheck'
 import CardsTechCheck from 'Event/template/Cards/Step3/TechCheck'
-
-import {usePlatformActions} from 'Event/ActionsProvider/platform-actions'
-import {usePoints} from 'Event/PointsProvider'
-import {User} from 'auth/user'
-import {CARDS} from 'Event/template/Cards'
+import FiftyBlogTechCheck from 'Event/template/FiftyBlog/Step3/TechCheck'
 
 const TECH_CHECK_POLL_SECS = 10
 
@@ -81,6 +85,8 @@ export default function TechCheck() {
       return <PanelsTechCheck {...props} />
     case CARDS:
       return <CardsTechCheck {...props} />
+    case FIFTY_BLOG:
+      return <FiftyBlogTechCheck {...props} />
     default:
       throw new Error(`Missing tech check for template`)
   }

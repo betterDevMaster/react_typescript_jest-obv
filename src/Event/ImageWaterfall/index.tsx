@@ -12,6 +12,10 @@ import {SIMPLE_BLOG} from 'Event/template/SimpleBlog'
 import SimpleBlogImageWaterfall from 'Event/template/SimpleBlog/ImageWaterfall'
 import {CARDS} from 'Event/template/Cards'
 import CardsImageWaterfall from 'Event/template/Cards/ImageWaterfall'
+import {PANELS} from 'Event/template/Panels'
+import PanelsImageWaterfall from 'Event/template/Panels/Dashboard/ImageWaterfall'
+import {FIFTY_BLOG} from 'Event/template/FiftyBlog'
+import FiftyBlogImageWaterfall from 'Event/template/FiftyBlog/Dashboard/ImageWaterfall'
 
 export default function ImageWaterfall() {
   const {name} = useTemplate()
@@ -21,6 +25,10 @@ export default function ImageWaterfall() {
       return <SimpleBlogImageWaterfall />
     case CARDS:
       return <CardsImageWaterfall />
+    case PANELS:
+      return <PanelsImageWaterfall />
+    case FIFTY_BLOG:
+      return <FiftyBlogImageWaterfall />
     default:
       throw new Error(`ImageWaterfall not implemented for template: ${name}`)
   }

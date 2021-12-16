@@ -1,12 +1,16 @@
-import {RequestJoinUrlError} from 'Event/EventProvider'
 import React from 'react'
+
+import {RequestJoinUrlError} from 'Event/EventProvider'
 import {useTemplate} from 'Event/TemplateProvider'
+
 import {SIMPLE_BLOG} from 'Event/template/SimpleBlog'
 import {PANELS} from 'Event/template/Panels'
 import {CARDS} from 'Event/template/Cards'
+import {FIFTY_BLOG} from 'Event/template/FiftyBlog'
 import SimpleBlogOfflinePage from 'Event/template/SimpleBlog/OfflinePage'
 import PanelsOfflinePage from 'Event/template/Panels/OfflinePage'
 import CardsOfflinePage from 'Event/template/Cards/OfflinePage'
+import FiftyBlogOfflinePage from 'Event/template/FiftyBlog/OfflinePage'
 
 const FALLBACK_OFFLINE_TITLE = 'Area is currently offline'
 
@@ -35,5 +39,9 @@ function TemplateOfflinePage(props: OfflinePageProps) {
       return <PanelsOfflinePage {...props} />
     case CARDS:
       return <CardsOfflinePage {...props} />
+    case FIFTY_BLOG:
+      return <FiftyBlogOfflinePage {...props} />
+    default:
+      throw new Error(`Missing offline page for template: ${name}`)
   }
 }

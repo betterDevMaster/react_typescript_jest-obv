@@ -1,19 +1,26 @@
 import React, {useCallback} from 'react'
+
+import {useTrackEventPage} from 'analytics'
+
 import {useAttendee} from 'Event/auth'
 import {useTemplate} from 'Event/TemplateProvider'
-import {SIMPLE_BLOG} from 'Event/template/SimpleBlog'
-import SimpleBlogSpeakers from 'Event/template/SimpleBlog/SpeakerPage'
 import {useEvent} from 'Event/EventProvider'
+
 import {useAsync} from 'lib/async'
 import {api} from 'lib/url'
 import {Client} from 'lib/ui/api-client'
 import {FileLocation} from 'lib/http-client'
-import {useTrackEventPage} from 'analytics'
+
 import PagePoints, {SPEAKERS} from 'Event/PointsProvider/PagePoints'
+
+import {SIMPLE_BLOG} from 'Event/template/SimpleBlog'
+import SimpleBlogSpeakers from 'Event/template/SimpleBlog/SpeakerPage'
 import {PANELS} from 'Event/template/Panels'
 import PanelsSpeakers from 'Event/template/Panels/Dashboard/Speakers'
 import {CARDS} from 'Event/template/Cards'
 import CardsSpeakers from 'Event/template/Cards/Speakers'
+import {FIFTY_BLOG} from 'Event/template/FiftyBlog'
+import FiftyBlogSpeakers from 'Event/template/FiftyBlog/Dashboard/Speakers'
 
 export interface Speaker {
   id: number
@@ -48,6 +55,8 @@ function Speakers() {
       return <PanelsSpeakers speakers={speakers} />
     case CARDS:
       return <CardsSpeakers user={user} speakers={speakers} />
+    case FIFTY_BLOG:
+      return <FiftyBlogSpeakers speakers={speakers} />
     default:
       throw new Error(`Missing speaker page for template: ${name}`)
   }

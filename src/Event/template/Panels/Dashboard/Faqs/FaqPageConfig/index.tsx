@@ -1,7 +1,8 @@
-import styled from 'styled-components'
 import React, {useState} from 'react'
-import Layout from 'organization/user/Layout'
+import styled from 'styled-components'
+
 import {FAQ} from 'Event/FaqPage'
+import Layout from 'organization/user/Layout'
 import Page from 'organization/Event/Page'
 import AddFaqButton from 'Event/template/Panels/Dashboard/Faqs/FaqPageConfig/AddFaqButton'
 import Button from '@material-ui/core/Button'

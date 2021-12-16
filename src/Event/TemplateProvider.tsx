@@ -1,15 +1,23 @@
+import React, {useMemo} from 'react'
+
 import {Template} from 'Event/template'
+
 import {PANELS, DEFAULTS as PANELS_DEFAULTS} from 'Event/template/Panels'
 import {CARDS, DEFAULTS as CARDS_DEFAULTS} from 'Event/template/Cards'
 import {
   DEFAULTS as SIMPLE_BLOG_DEFAULTS,
   SIMPLE_BLOG,
 } from 'Event/template/SimpleBlog'
-import {withDefaults} from 'lib/object'
-import {DeepRequired} from 'lib/type-utils'
-import React, {useMemo} from 'react'
+import {
+  FIFTY_BLOG,
+  DEFAULTS as FIFTY_BLOG_DEFAULTS,
+} from 'Event/template/FiftyBlog'
+
 import {fillCountDownTimerDefaults} from 'Event/Dashboard/components/CountDownTimer'
 import {fillBlogPostDefaults} from 'Event/Dashboard/components/BlogPosts'
+
+import {withDefaults} from 'lib/object'
+import {DeepRequired} from 'lib/type-utils'
 
 const TemplateContext = React.createContext<DeepRequired<Template> | undefined>(
   undefined,
@@ -29,9 +37,11 @@ export default function TemplateProvider(props: {
     const updated = withDefaults(defaults, template)
 
     // Fill out any defaults for countdown timers
-    updated.countDownTimers = fillCountDownTimerDefaults(
-      updated.countDownTimers,
-    )
+    // if (updated.hasOwnProperty('countDownTimers')) {
+    //   updated.countDownTimers = fillCountDownTimerDefaults(
+    //     updated.countDownTimers,
+    //   )
+    // }
 
     updated.blogPosts = fillBlogPostDefaults(updated.blogPosts)
 
@@ -53,6 +63,12 @@ function defaultsFor(template: Template): DeepRequired<Template> {
       return PANELS_DEFAULTS
     case CARDS:
       return CARDS_DEFAULTS
+    case FIFTY_BLOG:
+      return FIFTY_BLOG_DEFAULTS
+    default:
+      throw new Error(
+        `Missing Template Provider for template: ${template.name}`,
+      )
   }
 }
 

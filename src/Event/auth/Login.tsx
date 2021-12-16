@@ -1,14 +1,19 @@
 import React, {useEffect, useRef, useState} from 'react'
 import {useForm, UseFormMethods} from 'react-hook-form'
+
 import {useEventAuth} from 'Event/auth'
-import {useQueryParams} from 'lib/url'
+import {useTemplate} from 'Event/TemplateProvider'
+
 import SimpleBlogLogin from 'Event/template/SimpleBlog/Login'
 import {SIMPLE_BLOG} from 'Event/template/SimpleBlog'
-import {useTemplate} from 'Event/TemplateProvider'
-import {PANELS} from 'Event/template/Panels'
 import PanelsLogin from 'Event/template/Panels/Login'
-import {CARDS} from 'Event/template/Cards'
+import {PANELS} from 'Event/template/Panels'
 import CardsLogin from 'Event/template/Cards/Login'
+import {CARDS} from 'Event/template/Cards'
+import FiftyBlogLogin from 'Event/template/FiftyBlog/Login'
+import {FIFTY_BLOG} from 'Event/template/FiftyBlog'
+
+import {useQueryParams} from 'lib/url'
 import FullPageLoader from 'lib/ui/layout/FullPageLoader'
 
 export interface LoginProps {
@@ -90,6 +95,8 @@ function TemplateLogin(props: LoginProps) {
       return <PanelsLogin {...props} />
     case CARDS:
       return <CardsLogin {...props} />
+    case FIFTY_BLOG:
+      return <FiftyBlogLogin {...props} />
     default:
       throw new Error(`Missing login for template`)
   }

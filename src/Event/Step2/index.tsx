@@ -1,18 +1,22 @@
-import {useAttendee} from 'Event/auth'
-import {eventRoutes} from 'Event/Routes'
 import React from 'react'
 import {Redirect} from 'react-router-dom'
+
+import {useTrackEventPage} from 'analytics'
+
+import {useAttendee} from 'Event/auth'
+import {eventRoutes} from 'Event/Routes'
 import {useTemplate} from 'Event/TemplateProvider'
-import {SIMPLE_BLOG} from 'Event/template/SimpleBlog'
+import {useEvent} from 'Event/EventProvider'
+import WaiverProvider from 'Event/Step2/WaiverProvider'
+
 import SimpleBlogStep2 from 'Event/template/SimpleBlog/Step2'
 import PanelsStep2 from 'Event/template/Panels/Step2'
 import CardsStep2 from 'Event/template/Cards/Step2'
-
-import {useEvent} from 'Event/EventProvider'
-import WaiverProvider from 'Event/Step2/WaiverProvider'
-import {useTrackEventPage} from 'analytics'
+import FiftyBlogStep2 from 'Event/template/FiftyBlog/Step2'
+import {SIMPLE_BLOG} from 'Event/template/SimpleBlog'
 import {PANELS} from 'Event/template/Panels'
 import {CARDS} from 'Event/template/Cards'
+import {FIFTY_BLOG} from 'Event/template/FiftyBlog'
 
 export default function Step2() {
   const attendee = useAttendee()
@@ -54,6 +58,8 @@ function TemplateStep2() {
       return <PanelsStep2 />
     case CARDS:
       return <CardsStep2 user={user} />
+    case FIFTY_BLOG:
+      return <FiftyBlogStep2 />
     default:
       throw new Error(`Missing step 2 for template.`)
   }

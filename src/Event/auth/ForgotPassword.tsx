@@ -1,15 +1,21 @@
 import React from 'react'
-import SimpleBlogForgotPassword from 'Event/template/SimpleBlog/Login/ForgotPassword'
-import {SIMPLE_BLOG} from 'Event/template/SimpleBlog'
+
+import {useForgotPassword} from 'auth/password'
+
 import {useEvent} from 'Event/EventProvider'
 import {eventRoutes} from 'Event/Routes'
-import {useForgotPassword} from 'auth/password'
-import {api} from 'lib/url'
 import {useTemplate} from 'Event/TemplateProvider'
-import {PANELS} from 'Event/template/Panels'
+
+import SimpleBlogForgotPassword from 'Event/template/SimpleBlog/Login/ForgotPassword'
+import {SIMPLE_BLOG} from 'Event/template/SimpleBlog'
 import PanelsForgotPassword from 'Event/template/Panels/Login/ForgotPassword'
-import {CARDS} from 'Event/template/Cards'
+import {PANELS} from 'Event/template/Panels'
 import CardsForgotPassword from 'Event/template/Cards/Login/ForgotPassword'
+import {CARDS} from 'Event/template/Cards'
+import FiftyBlogForgotPassword from 'Event/template/FiftyBlog/Login/ForgotPassword'
+import {FIFTY_BLOG} from 'Event/template/FiftyBlog'
+
+import {api} from 'lib/url'
 
 export default function ForgotPassword() {
   const {name} = useTemplate()
@@ -28,6 +34,8 @@ export default function ForgotPassword() {
       return <PanelsForgotPassword {...forgotPassword} />
     case CARDS:
       return <CardsForgotPassword {...forgotPassword} />
+    case FIFTY_BLOG:
+      return <FiftyBlogForgotPassword {...forgotPassword} />
     default:
       throw new Error(`Missing forgot password page for template: ${name}`)
   }
