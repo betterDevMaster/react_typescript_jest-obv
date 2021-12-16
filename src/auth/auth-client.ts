@@ -44,7 +44,7 @@ export interface ResetPasswordRequestData {
   password_confirmation: string
 }
 
-export const useAuthClient = (settings: AuthClientSettings) => {
+export const useAuthClient = <T = User>(settings: AuthClientSettings) => {
   const {endpoints, tokenKey} = settings
   const dispatch = useDispatch()
   /**
@@ -124,7 +124,7 @@ export const useAuthClient = (settings: AuthClientSettings) => {
   }, [dispatch, tokenKey, setUser])
 
   return {
-    user,
+    user: (user as unknown) as T | null,
     loading,
     logout,
     login,

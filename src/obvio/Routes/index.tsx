@@ -4,6 +4,7 @@ import {createRoutes} from 'lib/url'
 import GuestRoutes from 'obvio/Routes/GuestRoutes'
 import UserRoutes from 'obvio/Routes/UserRoutes'
 import FullPageLoader from 'lib/ui/layout/FullPageLoader'
+import WithLiveChatSupport from 'lib/WithLiveChatSupport'
 
 export const obvioRoutes = createRoutes({
   login: '/login',
@@ -33,8 +34,16 @@ export default function ObvioRoutes() {
   }
 
   if (user) {
-    return <UserRoutes />
+    return (
+      <WithLiveChatSupport user={user}>
+        <UserRoutes />
+      </WithLiveChatSupport>
+    )
   }
 
-  return <GuestRoutes />
+  return (
+    <WithLiveChatSupport>
+      <GuestRoutes />
+    </WithLiveChatSupport>
+  )
 }

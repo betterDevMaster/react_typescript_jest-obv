@@ -1,6 +1,6 @@
 import {AuthClientSettings, useAuthClient} from 'auth/auth-client'
 import {getToken} from 'auth/token'
-import {isTeamMember} from 'auth/user'
+import {isTeamMember, TeamMember} from 'auth/user'
 import {useMemo} from 'react'
 
 export const TEAM_MEMBER_TOKEN_KEY = '__obvio_team_member_token__'
@@ -18,7 +18,7 @@ export const useObvioAuth = () => {
     [],
   )
 
-  return useAuthClient(settings)
+  return useAuthClient<TeamMember>(settings)
 }
 
 /**
