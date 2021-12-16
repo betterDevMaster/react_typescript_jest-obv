@@ -10,10 +10,13 @@ import {fakeTeamMember} from 'organization/Team/__utils__/factory'
 import {PURCHASE_CREDITS} from 'organization/PermissionsProvider'
 import {fakePlan} from 'obvio/Billing/__utils__/factory'
 import {TeamMember} from 'auth/user'
+import {hideConsoleErrors} from 'setupTests'
 
 const mockPost = axios.post as jest.Mock
 const mockGet = axios.get as jest.Mock
 const mockAjax = ajax.get as jest.Mock
+
+hideConsoleErrors()
 
 beforeEach(() => {
   jest.clearAllMocks()
