@@ -1,4 +1,3 @@
-import Layout from 'obvio/user/Layout'
 import {useBreadcrumbs} from 'lib/ui/BreadcrumbProvider'
 import Page from 'lib/ui/layout/Page'
 import React, {useState} from 'react'
@@ -11,7 +10,7 @@ import {useToggle} from 'lib/toggle'
 import {usePaymentMethod, useGetPlan} from 'organization/PaymentMethodProvider'
 import Button from '@material-ui/core/Button'
 import styled from 'styled-components'
-import {Redirect} from 'react-router-dom'
+import {Redirect, useHistory} from 'react-router-dom'
 import NumCreditsSlider, {
   MIN_NUM_CREDITS,
   MAX_NUM_CREDITS,
@@ -23,6 +22,7 @@ import {usePriceForCredits} from 'obvio/Billing/plans'
 import ConfirmDialog from 'organization/BuyCreditsPage/ConfirmDialog'
 import TextField from '@material-ui/core/TextField'
 import {onChangeNumberHandler} from 'lib/dom'
+import Layout from 'organization/user/Layout'
 
 export default function BuyCreditsPage() {
   const {
@@ -36,6 +36,7 @@ export default function BuyCreditsPage() {
     numCredits,
     organization,
   )
+  const history = useHistory()
   const plan = useGetPlan()
 
   const {flag: showingConfirmDialog, toggle: toggleConfirmDialog} = useToggle()
@@ -44,6 +45,10 @@ export default function BuyCreditsPage() {
   const handleSuccess = () => {
     toggleConfirmDialog()
     toggleSuccessMessage()
+  }
+
+  const goToEvents = () => {
+    history.push(routes.events.root)
   }
 
   useBreadcrumbs([
@@ -63,10 +68,7 @@ export default function BuyCreditsPage() {
 
   return (
     <>
-      <SuccessDialog
-        showing={showingSuccessMessage}
-        onClose={toggleSuccessMessage}
-      >
+      <SuccessDialog showing={showingSuccessMessage} onClose={goToEvents}>
         Credits Successfully Purchased!
       </SuccessDialog>
       <ConfirmDialog

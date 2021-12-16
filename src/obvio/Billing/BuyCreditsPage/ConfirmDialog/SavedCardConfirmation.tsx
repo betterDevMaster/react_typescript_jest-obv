@@ -99,6 +99,5 @@ export function confirmationText(
   card?: PaymentMethod.Card,
 ) {
   return ` You're about to purchase ${numCredits} credits for $
-  ${formatPrice(price)} on the ${card?.brand} on file ending in{' '}
-  ${card?.last4}.`
+  ${formatPrice(price)} on the ${card?.brand} on file ending in ${card?.last4}.`
 }
