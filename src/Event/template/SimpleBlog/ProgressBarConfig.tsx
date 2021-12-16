@@ -5,11 +5,7 @@ import Grid from '@material-ui/core/Grid'
 import Slider from '@material-ui/core/Slider'
 import ColorPicker from 'lib/ui/ColorPicker'
 import TextField from '@material-ui/core/TextField'
-import {
-  handleChangeSlider,
-  onChangeCheckedHandler,
-  onChangeNumberHandler,
-} from 'lib/dom'
+import {handleChangeSlider, onChangeCheckedHandler} from 'lib/dom'
 import {
   SimpleBlog,
   useSimpleBlogTemplate,
