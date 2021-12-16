@@ -58,11 +58,10 @@ function UserVariables(props: {user?: TeamMember}) {
     <Helmet>
       <script>
         {`
-          const lc = window.LiveChatWidget;
-          if (lc) {
-            lc.call("set_customer_name", "${name}");
-            lc.call("set_customer_email", "${email}");
-            lc.call("update_session_variables", {
+          if (window.LiveChatWidget) {
+            window.LiveChatWidget.call("set_customer_name", "${name}");
+            window.LiveChatWidget.call("set_customer_email", "${email}");
+            window.LiveChatWidget.call("update_session_variables", {
               is_founder: "${isFounder}",
               is_owner: "${isSubscribed}",
               credits: "${numCredits}",
