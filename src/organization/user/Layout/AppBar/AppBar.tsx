@@ -86,6 +86,7 @@ export default function AppBar() {
             startIcon={<AccountCircle />}
             onClick={handleMenu}
             color="default"
+            aria-label="account menu"
           >
             Account
           </Button>

@@ -12,6 +12,7 @@ import {fakePlan} from 'obvio/Billing/__utils__/factory'
 import {TeamMember} from 'auth/user'
 
 const mockPost = axios.post as jest.Mock
+const mockGet = axios.get as jest.Mock
 const mockAjax = ajax.get as jest.Mock
 
 beforeEach(() => {
@@ -86,7 +87,11 @@ it('should purchase credits by team member with purchase permission', async () =
   expect(url).toMatch('/purchase_credits')
   expect(data.payment_method_id).toBe(paymentMethod.id)
 
+  mockGet.mockImplementationOnce(() => Promise.resolve({data: []})) // events
+
   user.click(await findByText(/close/i))
+
+  user.click(await findByLabelText('account menu'))
 
   expect(
     (await findAllByLabelText('organization credit balance'))[0].textContent,
