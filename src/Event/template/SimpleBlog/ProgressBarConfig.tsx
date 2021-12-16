@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react'
+import React, {useEffect, useState} from 'react'
 import Typography from '@material-ui/core/Typography'
 import Box from '@material-ui/core/Box'
 import Grid from '@material-ui/core/Grid'
@@ -18,8 +18,8 @@ import {
 import Switch from 'lib/ui/form/Switch'
 import ProgressBar, {ProgressBarProps} from 'lib/ui/ProgressBar'
 import {Controller, useForm, UseFormMethods} from 'react-hook-form'
-import Button from '@material-ui/core/Button'
 import InputLabel from '@material-ui/core/InputLabel'
+import {SaveButton} from 'organization/Event/DashboardConfig/ComponentConfig'
 
 export interface ProgressBar {
   background: string
@@ -84,14 +84,6 @@ export default function ProgressBarConfig() {
                 />
               )}
             />
-            <Button
-              variant="contained"
-              aria-label="save"
-              type="submit"
-              color="primary"
-            >
-              Save
-            </Button>
           </Grid>
           <Config
             control={control}
@@ -99,6 +91,7 @@ export default function ProgressBarConfig() {
             register={register}
             localProgressBar={localProgressBar}
           />
+          <SaveButton />
         </Grid>
       </form>
     </>
@@ -202,6 +195,7 @@ function Config(
           <TextField
             name="step1Text"
             label="Step 1 Text"
+            defaultValue={localProgressBar.step1Text}
             fullWidth
             inputProps={{
               ref: register,
@@ -209,21 +203,17 @@ function Config(
           />
         </Grid>
         <Grid item xs={6}>
-          <Controller
-            name="step1Percent"
+          <TextField
+            type="number"
             defaultValue={localProgressBar.step1Percent}
-            control={control}
-            render={({value, onChange}) => (
-              <TextField
-                type="number"
-                InputProps={{inputProps: {min: 0, max: 100}}}
-                name="step1Percent"
-                label="Step 1 Percentage Completed"
-                fullWidth
-                value={value}
-                onChange={onChangeNumberHandler(onChange)}
-              />
-            )}
+            name="step1Percent"
+            label="Step 1 Percentage Completed"
+            fullWidth
+            inputProps={{
+              min: 1,
+              max: 100,
+              ref: register,
+            }}
           />
         </Grid>
       </Grid>
@@ -232,6 +222,7 @@ function Config(
           <TextField
             name="step2Text"
             label="Step 2 Text"
+            defaultValue={localProgressBar.step2Text}
             fullWidth
             inputProps={{
               ref: register,
@@ -239,21 +230,17 @@ function Config(
           />
         </Grid>
         <Grid item xs={6}>
-          <Controller
+          <TextField
+            type="number"
+            defaultValue={localProgressBar.step2Percent}
             name="step2Percent"
-            defaultValue={localProgressBar.step1Percent}
-            control={control}
-            render={({value, onChange}) => (
-              <TextField
-                type="number"
-                InputProps={{inputProps: {min: 0, max: 100}}}
-                name="step2Percent"
-                label="Step 2 Percentage Completed"
-                fullWidth
-                value={value}
-                onChange={onChangeNumberHandler(onChange)}
-              />
-            )}
+            label="Step 2 Percentage Completed"
+            fullWidth
+            inputProps={{
+              min: 1,
+              max: 100,
+              ref: register,
+            }}
           />
         </Grid>
       </Grid>
@@ -263,27 +250,24 @@ function Config(
             name="step3Text"
             label="Step 3 Text"
             fullWidth
+            defaultValue={localProgressBar.step3Text}
             inputProps={{
               ref: register,
             }}
           />
         </Grid>
         <Grid item xs={6}>
-          <Controller
+          <TextField
+            type="number"
+            defaultValue={localProgressBar.step3Percent}
             name="step3Percent"
-            defaultValue={localProgressBar.step1Percent}
-            control={control}
-            render={({value, onChange}) => (
-              <TextField
-                type="number"
-                InputProps={{inputProps: {min: 0, max: 100}}}
-                name="step3Percent"
-                label="Step 3 Percentage Completed"
-                fullWidth
-                value={value}
-                onChange={onChangeNumberHandler(onChange)}
-              />
-            )}
+            label="Step 3 Percentage Completed"
+            fullWidth
+            inputProps={{
+              min: 1,
+              max: 100,
+              ref: register,
+            }}
           />
         </Grid>
       </Grid>
@@ -292,9 +276,9 @@ function Config(
 }
 
 export function ProgressBarPreview(props: Omit<ProgressBarProps, 'value'>) {
-  const [progress, setProgress] = React.useState(10)
+  const [progress, setProgress] = useState(10)
 
-  React.useEffect(() => {
+  useEffect(() => {
     const timer = setInterval(() => {
       setProgress((prevProgress) =>
         prevProgress >= 100 ? 10 : prevProgress + 10,
