@@ -2,11 +2,11 @@ import {LoginProps} from 'Event/auth/Login'
 import {useEvent} from 'Event/EventProvider'
 import styled from 'styled-components'
 import React from 'react'
-import Typography from '@material-ui/core/Typography'
+import {Typography, useMediaQuery} from '@material-ui/core'
+import {makeStyles, useTheme} from '@material-ui/core/styles'
 import MuiTextField, {TextFieldProps} from '@material-ui/core/TextField'
 import MuiButton, {ButtonProps} from '@material-ui/core/Button'
 import defaultBackground from 'assets/images/background_login.png'
-import {makeStyles} from '@material-ui/core/styles'
 import Logo from 'Event/template/FiftyBlog/Login/Logo'
 import {rgba} from 'lib/color'
 import {useFiftyBlogTemplate} from 'Event/template/FiftyBlog'
@@ -184,7 +184,7 @@ export const StyledButton = styled(
 `
 
 export const Container = styled.div`
-  width: auto;
+  width: 100%;
   display: flex;
   flex-direction: column;
   align-items: center;

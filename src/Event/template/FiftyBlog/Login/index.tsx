@@ -1,6 +1,9 @@
 import {LoginProps} from 'Event/auth/Login'
 import styled from 'styled-components'
 import React from 'react'
+import {Typography, useMediaQuery} from '@material-ui/core'
+import {makeStyles, useTheme} from '@material-ui/core/styles'
+
 import {eventRoutes} from 'Event/Routes'
 import Page, {
   Button,
@@ -9,6 +12,7 @@ import Page, {
   TextField,
 } from 'Event/template/FiftyBlog/Login/Page'
 import {RelativeLink} from 'lib/ui/link/RelativeLink'
+
 import {useFiftyBlogTemplate} from 'Event/template/FiftyBlog'
 import {useGuestVariables} from 'Event'
 
@@ -16,13 +20,15 @@ export default function Login(props: LoginProps) {
   const template = useFiftyBlogTemplate()
   const {login} = template
   const v = useGuestVariables()
+  const theme = useTheme()
+  const isMobileScreen = useMediaQuery(theme.breakpoints.down('xs'))
 
   const emailLabel = v(login.emailLabel)
   const passwordLabel = v(login.passwordLabel)
-  console.log('props -----', props)
+
   return (
     <Page isPreview={props.isPreview}>
-      <Container>
+      <Container isMobileScreen={isMobileScreen}>
         <Description aria-label="event login description">
           {v(login?.description.text)}
         </Description>
@@ -88,7 +94,9 @@ export default function Login(props: LoginProps) {
 export const StyledRelativeLink = styled(RelativeLink)<{color: string}>`
   color: ${(props) => props.color};
 `
-export const Container = styled.div`
-  padding: 4rem 7rem;
-  min-height: 600px;
+export const Container = styled.div<{
+  isMobileScreen: boolean
+}>`
+  padding: ${(props) => (props.isMobileScreen ? '2rem 3rem' : '4rem 7rem')};
+  min-height: ${(props) => (props.isMobileScreen ? '400px' : '600px')};
 `
