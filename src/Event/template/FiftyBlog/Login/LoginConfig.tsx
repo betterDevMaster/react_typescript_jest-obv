@@ -1,32 +1,27 @@
 import React from 'react'
-import {Controller, useForm} from 'react-hook-form'
-
-import {
-  Box,
-  Button,
-  Grid,
-  InputLabel,
-  Slider,
-  Switch,
-  TextField,
-} from '@material-ui/core'
-
-import {handleChangeSlider, onChangeCheckedHandler} from 'lib/dom'
+import Switch from '@material-ui/core/Switch'
+import Box from '@material-ui/core/Box'
+import Grid from '@material-ui/core/Grid'
+import TextField from '@material-ui/core/TextField'
+import Slider from '@material-ui/core/Slider'
 import ColorPicker from 'lib/ui/ColorPicker'
-import BackgroundPicker from 'lib/ui/form/BackgroundPicker'
-
+import {onChangeCheckedHandler} from 'lib/dom'
+import {handleChangeSlider} from 'lib/dom'
+import InputLabel from '@material-ui/core/InputLabel'
 import EventImageUpload from 'organization/Event/DashboardConfig/EventImageUpload'
-import {PreviewBox, SectionTitle} from 'organization/Event/Page'
-import Layout from 'organization/user/Layout'
-import Page from 'organization/Event/Page'
-
 import {useEvent} from 'Event/EventProvider'
 import {
   FiftyBlog,
   useFiftyBlogTemplate,
   useFiftyBlogUpdate,
 } from 'Event/template/FiftyBlog'
+import {PreviewBox, SectionTitle} from 'organization/Event/Page'
 import Login from 'Event/auth/Login'
+import BackgroundPicker from 'lib/ui/form/BackgroundPicker'
+import Layout from 'organization/user/Layout'
+import Page from 'organization/Event/Page'
+import {useForm, Controller} from 'react-hook-form'
+import Button from '@material-ui/core/Button'
 
 const MAX_LOGO_SIZE_PERCENT = 100
 const MIN_LOGO_SIZE_PERCENT = 20
@@ -118,187 +113,67 @@ export default function LoginFormConfig() {
                         />
                       </Box>
                     </Grid>
-                    <Grid item xs={12} md={6}>
-                      <EventImageUpload
-                        label="Logo Background"
-                        property="login_logo_background"
-                        current={event.login_logo_background}
-                      />
-                      <Box
-                        display="flex"
-                        flexDirection="column"
-                        flex="1"
-                        mb={2}
-                      >
-                        <InputLabel>Hide Logo Background</InputLabel>
-
-                        <Controller
-                          name="login.logoBackgroundHidden"
-                          defaultValue={login.logoBackgroundHidden}
-                          control={control}
-                          render={({value, onChange}) => (
-                            <Switch
-                              checked={value}
-                              onChange={onChangeCheckedHandler(onChange)}
-                              color="primary"
-                              inputProps={{
-                                'aria-label': 'toggle logo backgournd visible',
-                              }}
-                            />
-                          )}
-                        />
-                      </Box>
-                    </Grid>
-                    <Grid item xs={12} md={6}>
-                      <EventImageUpload
-                        label="Content Background"
-                        property="login_content_background"
-                        current={event.login_content_background}
-                      />
-                      <Box
-                        display="flex"
-                        flexDirection="column"
-                        flex="1"
-                        mb={2}
-                      >
-                        <InputLabel>Hide Content Background</InputLabel>
-
-                        <Controller
-                          name="login.logoContentBackgroundHidden"
-                          defaultValue={login.logoContentBackgroundHidden}
-                          control={control}
-                          render={({value, onChange}) => (
-                            <Switch
-                              checked={value}
-                              onChange={onChangeCheckedHandler(onChange)}
-                              color="primary"
-                              inputProps={{
-                                'aria-label':
-                                  'toggle content backgournd visible',
-                              }}
-                            />
-                          )}
-                        />
-                      </Box>
-                    </Grid>
                   </Grid>
-                  <Grid container spacing={3}>
-                    <Grid item xs={12} md={4}>
-                      <Box mb={1}>
-                        <InputLabel>Logo Size</InputLabel>
-                        <Controller
-                          name="login.logoSize"
-                          defaultValue={login.logoSize}
-                          control={control}
-                          render={({value, onChange}) => (
-                            <Slider
-                              valueLabelDisplay="auto"
-                              aria-label="logo weight"
-                              value={value}
-                              onChange={handleChangeSlider(onChange)}
-                              step={1}
-                              min={MIN_LOGO_SIZE_PERCENT}
-                              max={MAX_LOGO_SIZE_PERCENT}
-                            />
-                          )}
-                        />
-                      </Box>
-                    </Grid>
-                    <Grid item xs={12} md={4}>
-                      <Box mb={1}>
-                        <InputLabel>Background Opacity</InputLabel>
 
-                        <Controller
-                          name="login.backgroundOpacity"
-                          defaultValue={login.backgroundOpacity}
-                          control={control}
-                          render={({value, onChange}) => (
-                            <Slider
-                              valueLabelDisplay="auto"
-                              aria-label="logo background opacity"
-                              value={value || 0}
-                              valueLabelFormat={() => (
-                                <div>
-                                  {(login.backgroundOpacity || 0) * 100}
-                                </div>
-                              )}
-                              onChange={handleChangeSlider(onChange)}
-                              step={0.01}
-                              min={0}
-                              max={1}
-                            />
-                          )}
+                  <Box mb={1}>
+                    <InputLabel>Logo Size</InputLabel>
+                    <Controller
+                      name="login.logoSize"
+                      defaultValue={login.logoSize}
+                      control={control}
+                      render={({value, onChange}) => (
+                        <Slider
+                          valueLabelDisplay="auto"
+                          aria-label="logo weight"
+                          value={value}
+                          onChange={handleChangeSlider(onChange)}
+                          step={1}
+                          min={MIN_LOGO_SIZE_PERCENT}
+                          max={MAX_LOGO_SIZE_PERCENT}
                         />
-                      </Box>
-                    </Grid>
-                    <Grid item xs={12} md={4}>
-                      <Controller
-                        name="login.backgroundColor"
-                        defaultValue={login.backgroundColor}
-                        control={control}
-                        render={({value, onChange}) => (
-                          <ColorPicker
-                            label="Background Color"
-                            color={value || '#FFFFFF'}
-                            onPick={onChange}
-                            aria-label="login background color"
-                          />
-                        )}
-                      />
-                    </Grid>
-                  </Grid>
-                  <Box display="flex" flexDirection="row" flex="4">
-                    <Box mr={1} display="flex" flexDirection="column" flex="2">
-                      <TextField
-                        label="Welcome Label"
-                        name="login.welcome.text"
-                        defaultValue={login.welcome.text}
-                        fullWidth
-                        inputProps={{
-                          'aria-label': 'welcome label',
-                          ref: register,
-                        }}
-                      />
-                    </Box>
-                    <Box mr={1} display="flex" flexDirection="column" flex="1">
-                      <Controller
-                        name="login.welcome.color"
-                        defaultValue={login.welcome.color}
-                        control={control}
-                        render={({value, onChange}) => (
-                          <ColorPicker
-                            label="Welcome Text Color"
-                            color={value || '#000000'}
-                            onPick={onChange}
-                            aria-label="login welcome color"
-                          />
-                        )}
-                      />
-                    </Box>
-                    <Box ml={1} display="flex" flexDirection="column" flex="1">
-                      <InputLabel>Welcome Font Size</InputLabel>
-                      <Controller
-                        name="login.welcome.fontSize"
-                        defaultValue={login.welcome.fontSize}
-                        control={control}
-                        render={({value, onChange}) => (
-                          <Slider
-                            valueLabelDisplay="auto"
-                            aria-label="description font size"
-                            value={value ? value : 20}
-                            onChange={handleChangeSlider(onChange)}
-                            step={1}
-                            min={5}
-                            max={50}
-                          />
-                        )}
-                      />
-                    </Box>
+                      )}
+                    />
                   </Box>
+                  <Controller
+                    name="login.backgroundColor"
+                    defaultValue={login.backgroundColor}
+                    control={control}
+                    render={({value, onChange}) => (
+                      <ColorPicker
+                        label="Background Color"
+                        color={value || '#FFFFFF'}
+                        onPick={onChange}
+                        aria-label="login background color"
+                      />
+                    )}
+                  />
+                  <Box mb={1}>
+                    <InputLabel>Background Opacity</InputLabel>
 
+                    <Controller
+                      name="login.backgroundOpacity"
+                      defaultValue={login.backgroundOpacity}
+                      control={control}
+                      render={({value, onChange}) => (
+                        <Slider
+                          valueLabelDisplay="auto"
+                          aria-label="logo background opacity"
+                          value={value || 0}
+                          valueLabelFormat={() => (
+                            <div>{(login.backgroundOpacity || 0) * 100}</div>
+                          )}
+                          onChange={handleChangeSlider(onChange)}
+                          step={0.01}
+                          min={0}
+                          max={1}
+                        />
+                      )}
+                    />
+                  </Box>
                   <Box display="flex" flexDirection="row" flex="2">
                     <Box mr={1} display="flex" flexDirection="column" flex="1">
                       <TextField
+                        id="login-label-email"
                         label="Email Label"
                         name="login.emailLabel"
                         defaultValue={login.emailLabel}
@@ -310,6 +185,7 @@ export default function LoginFormConfig() {
                     </Box>
                     <Box ml={1} display="flex" flexDirection="column" flex="1">
                       <TextField
+                        id="login-label-password"
                         label="Password Label"
                         name="login.passwordLabel"
                         defaultValue={login.passwordLabel}
@@ -320,145 +196,159 @@ export default function LoginFormConfig() {
                       />
                     </Box>
                   </Box>
-                  <Box display="flex" flexDirection="row" flex="2">
-                    <Box mr={1} display="flex" flexDirection="column" flex="1">
-                      <TextField
-                        label="Submit Label"
-                        name="login.submitButton.label"
-                        defaultValue={login.submitButton.label}
-                        inputProps={{
-                          'aria-label': 'description text',
-                          ref: register,
-                        }}
-                      />
-                    </Box>
-                    <Box ml={1} display="flex" flexDirection="column" flex="1">
-                      <Controller
-                        name="login.submitButton.textColor"
-                        defaultValue={login.submitButton.textColor}
-                        control={control}
-                        render={({value, onChange}) => (
-                          <ColorPicker
-                            label="Submit Button Color"
-                            color={value}
-                            onPick={onChange}
-                            aria-label="submit button color"
-                          />
-                        )}
-                      />
-                    </Box>
-                  </Box>
-
-                  <Box display="flex" flexDirection="row" flex="3">
-                    <Box mr={1} display="flex" flexDirection="column" flex="1">
-                      <Controller
-                        name="login.submitButton.backgroundColor"
-                        defaultValue={login.submitButton.backgroundColor}
-                        control={control}
-                        render={({value, onChange}) => (
-                          <BackgroundPicker
-                            label="Submit Button Background"
-                            background={value}
-                            onChange={onChange}
-                          />
-                        )}
-                      />
-                    </Box>
-                    <Box ml={1} display="flex" flexDirection="column" flex="1">
-                      <Controller
-                        name="login.submitButton.hoverColor"
-                        defaultValue={login.submitButton.hoverColor}
-                        control={control}
-                        render={({value, onChange}) => (
-                          <BackgroundPicker
-                            label="Submit Button Hover Background"
-                            background={value}
-                            onChange={onChange}
-                          />
-                        )}
-                      />
-                    </Box>
-                  </Box>
-                  <Box display="flex" flexDirection="row" flex="2">
-                    <Box mr={1} display="flex" flexDirection="column" flex="1">
-                      <InputLabel>Input Border Radius</InputLabel>
-                      <Controller
-                        name="login.inputBorderRadius"
-                        defaultValue={login.inputBorderRadius}
-                        control={control}
-                        render={({value, onChange}) => (
-                          <Slider
-                            valueLabelDisplay="auto"
-                            aria-label="input border radius"
-                            value={value}
-                            onChange={handleChangeSlider(onChange)}
-                            step={1}
-                            min={0}
-                            max={60}
-                          />
-                        )}
-                      />
-                    </Box>
-                    <Box ml={1} display="flex" flexDirection="column" flex="1">
-                      <InputLabel>Submit Button Border Radius</InputLabel>
-                      <Controller
-                        name="login.submitButton.borderRadius"
-                        defaultValue={login.submitButton.borderRadius}
-                        control={control}
-                        render={({value, onChange}) => (
-                          <Slider
-                            valueLabelDisplay="auto"
-                            aria-label="button border radius"
-                            value={value}
-                            onChange={handleChangeSlider(onChange)}
-                            step={1}
-                            min={0}
-                            max={60}
-                          />
-                        )}
-                      />
-                    </Box>
-                  </Box>
-                  <Box display="flex" flexDirection="row" flex="4">
-                    <Box mr={1} display="flex" flexDirection="column" flex="2">
-                      <TextField
-                        label="Forgot Password Link Text"
-                        name="login.passwordReset.linkLabel"
-                        defaultValue={login.passwordReset.linkLabel}
-                        inputProps={{
-                          'aria-label': 'login forgot password text',
-                          ref: register,
-                        }}
-                      />
-                    </Box>
-                    <Box mr={1} display="flex" flexDirection="column" flex="1">
-                      <TextField
-                        label="Forgot Password Link Url"
-                        name="login.passwordReset.linkUrl"
-                        defaultValue={login.passwordReset.linkUrl}
-                        inputProps={{
-                          'aria-label': 'login forgot password button text',
-                          ref: register,
-                        }}
-                      />
-                    </Box>
-                    <Box ml={1} display="flex" flexDirection="column" flex="1">
-                      <Controller
-                        name="login.passwordReset.color"
-                        defaultValue={login.passwordReset.color}
-                        control={control}
-                        render={({value, onChange}) => (
-                          <ColorPicker
-                            label="Forgot Text Color"
-                            color={value || '#FFFFFF'}
-                            onPick={onChange}
-                            aria-label="login forgot password text color"
-                          />
-                        )}
-                      />
-                    </Box>
-                  </Box>
                   <TextField
+                    label="Submit Label"
+                    name="login.submitButton.label"
+                    defaultValue={login.submitButton.label}
+                    inputProps={{
+                      'aria-label': 'description text',
+                      ref: register,
+                    }}
+                  />
+
+                  <Controller
+                    name="login.submitButton.backgroundColor"
+                    defaultValue={login.submitButton.backgroundColor}
+                    control={control}
+                    render={({value, onChange}) => (
+                      <BackgroundPicker
+                        label="Submit Button Background"
+                        background={value}
+                        onChange={onChange}
+                      />
+                    )}
+                  />
+
+                  <Controller
+                    name="login.submitButton.hoverColor"
+                    defaultValue={login.submitButton.hoverColor}
+                    control={control}
+                    render={({value, onChange}) => (
+                      <BackgroundPicker
+                        label="Submit Button Hover Background"
+                        background={value}
+                        onChange={onChange}
+                      />
+                    )}
+                  />
+
+                  <Controller
+                    name="login.submitButton.textColor"
+                    defaultValue={login.submitButton.textColor}
+                    control={control}
+                    render={({value, onChange}) => (
+                      <ColorPicker
+                        label="Submit Button Color"
+                        color={value}
+                        onPick={onChange}
+                        aria-label="submit button color"
+                      />
+                    )}
+                  />
+
+                  <TextField
+                    id="description-text"
+                    label="Description Text"
+                    name="login.description.text"
+                    defaultValue={login.description.text}
+                    inputProps={{
+                      'aria-label': 'description text',
+                      ref: register,
+                    }}
+                  />
+
+                  <Controller
+                    name="login.description.color"
+                    defaultValue={login.description.color}
+                    control={control}
+                    render={({value, onChange}) => (
+                      <ColorPicker
+                        label="Description Text Color"
+                        color={value}
+                        onPick={onChange}
+                        aria-label="description text color"
+                      />
+                    )}
+                  />
+
+                  <InputLabel>Description Font Size</InputLabel>
+
+                  <Controller
+                    name="login.description.fontSize"
+                    defaultValue={login.description.fontSize}
+                    control={control}
+                    render={({value, onChange}) => (
+                      <Slider
+                        valueLabelDisplay="auto"
+                        aria-label="description font size"
+                        value={value ? value : 20}
+                        onChange={handleChangeSlider(onChange)}
+                        step={1}
+                        min={5}
+                        max={50}
+                      />
+                    )}
+                  />
+
+                  <InputLabel>Input Border Radius</InputLabel>
+
+                  <Controller
+                    name="login.inputBorderRadius"
+                    defaultValue={login.inputBorderRadius}
+                    control={control}
+                    render={({value, onChange}) => (
+                      <Slider
+                        valueLabelDisplay="auto"
+                        aria-label="input border radius"
+                        value={value}
+                        onChange={handleChangeSlider(onChange)}
+                        step={1}
+                        min={0}
+                        max={60}
+                      />
+                    )}
+                  />
+
+                  <InputLabel>Button Border Radius</InputLabel>
+                  <Controller
+                    name="login.submitButton.borderRadius"
+                    defaultValue={login.submitButton.borderRadius}
+                    control={control}
+                    render={({value, onChange}) => (
+                      <Slider
+                        valueLabelDisplay="auto"
+                        aria-label="button border radius"
+                        value={value}
+                        onChange={handleChangeSlider(onChange)}
+                        step={1}
+                        min={0}
+                        max={60}
+                      />
+                    )}
+                  />
+
+                  <TextField
+                    id="login-forgot-password-text"
+                    label="Forgot Password Text"
+                    name="login.passwordReset.linkLabel"
+                    defaultValue={login.passwordReset.linkLabel}
+                    inputProps={{
+                      'aria-label': 'login forgot password text',
+                      ref: register,
+                    }}
+                  />
+                  <TextField
+                    id="login-forgot-password-button-text"
+                    label="Forgot Password Button Text"
+                    name="login.passwordReset.buttonText"
+                    defaultValue={login.passwordReset.buttonText}
+                    inputProps={{
+                      'aria-label': 'login forgot password button text',
+                      ref: register,
+                    }}
+                  />
+                  <TextField
+                    id="login-forgot-password-description"
                     label="Forgot Password Description"
                     name="login.passwordReset.description"
                     defaultValue={login.passwordReset.description}
@@ -468,7 +358,8 @@ export default function LoginFormConfig() {
                     }}
                   />
                   <TextField
-                    label="Forgot Password Success Text"
+                    id="login-forgot-password-message"
+                    label="Forgot Password Description"
                     name="login.passwordReset.successMessage"
                     defaultValue={login.passwordReset.successMessage}
                     inputProps={{

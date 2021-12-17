@@ -63,7 +63,7 @@ export function Content(props: ForgotPasswordProps) {
           aria-label="submit reset password"
           type="submit"
         >
-          {v(login.passwordReset.linkUrl)}
+          {v(login.passwordReset.buttonText)}
         </Button>
       </form>
     </>

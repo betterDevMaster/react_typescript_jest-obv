@@ -35,7 +35,7 @@ it('should render image entries', async () => {
 
   mockGet.mockImplementationOnce(() => Promise.resolve({data: entries}))
 
-  // user.click(await findByLabelText('panels tab image water fall'))
+  user.click(await findByLabelText('panels tab image water fall'))
 
   expect((await findAllByLabelText('entry')).length).toBe(entries.length)
 

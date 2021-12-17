@@ -1,26 +1,20 @@
 import React, {useState} from 'react'
 import styled from 'styled-components'
-
 import Slide from '@material-ui/core/Slide'
-
 import {User} from 'auth/user'
-
+import {rgba} from 'lib/color'
+import {useToggle} from 'lib/toggle'
+import {MenuIconButton} from 'lib/ui/IconButton/MenuIconButton'
 import {Editable} from 'Event/Dashboard/editor/views/EditComponent'
 import EditModeOnly from 'Event/Dashboard/editor/views/EditModeOnly'
+import Logo from 'Event/Logo'
 import {useFiftyBlogTemplate} from 'Event/template/FiftyBlog'
 import EmojiList from 'Event/template/FiftyBlog/Dashboard/EmojiList'
-import SizedLogo from 'Event/template/FiftyBlog/Dashboard/SizedLogo'
 import LeftPanelConfig from 'Event/template/FiftyBlog/Dashboard/LeftPanel/LeftPanelConfig'
 import MainNavDesktop from 'Event/template/FiftyBlog/Dashboard/MainNav/MainNavDesktop'
 import Menu from 'Event/template/FiftyBlog/Dashboard/Menu'
 import {TOP_BAR_HEIGHT} from 'Event/template/FiftyBlog/Page'
-import {useEvent} from 'Event/EventProvider'
-
-import {rgba} from 'lib/color'
-import {useToggle} from 'lib/toggle'
-import {MenuIconButton} from 'lib/ui/IconButton/MenuIconButton'
-import defaultBackground from 'assets/images/background.png'
-import BackButton from 'lib/ui/Button/BackButton'
+import TicketRibbonList from 'Event/template/FiftyBlog/Dashboard/TicketRibbonList'
 
 export default function LeftPanel(props: {
   onChangeTab: (tab: number) => void
@@ -28,10 +22,7 @@ export default function LeftPanel(props: {
 }) {
   const [menuVisible, setMenuVisible] = useState(false)
   const toggleMenu = () => setMenuVisible(!menuVisible)
-  const {event} = useEvent()
-  const background = event.left_panel_background
-    ? event.left_panel_background.url
-    : defaultBackground
+
   const {flag: barConfigVisible, toggle: toggleBarConfig} = useToggle()
 
   const {leftPanel} = useFiftyBlogTemplate()
@@ -54,21 +45,22 @@ export default function LeftPanel(props: {
           leftPanel.backgroundColor,
           leftPanel.backgroundOpacity,
         )}
-        backgroundImage={background}
-        isBackgroundHidden={leftPanel.backgroundHidden}
       >
         <Editable onEdit={toggleBarConfig}>
-          <Bar aria-label="left panel">
+          <Bar
+            backgroundColor={leftPanel.barBackgroundColor}
+            aria-label="left panel"
+          >
             <StyledMenuIconButton
               active={menuVisible}
               iconColor={leftPanel.barTextColor}
               onClick={toggleMenu}
               aria-label="menu icon button"
             />
+            <TicketRibbonList />
           </Bar>
         </Editable>
         <Main>
-          <EmojiList />
           <SizedLogo />
           {/*
               Menu slide-in-out animation. Need to set content to null to avoid
@@ -87,6 +79,7 @@ export default function LeftPanel(props: {
               {menuVisible ? null : (
                 <>
                   <MainNavDesktop />
+                  <EmojiList />
                 </>
               )}
             </MainContent>
@@ -97,24 +90,23 @@ export default function LeftPanel(props: {
   )
 }
 
-const Bar = styled.div<{}>`
+const Bar = styled.div<{
+  backgroundColor: string
+}>`
   height: ${TOP_BAR_HEIGHT}px;
+  background: ${(props) => props.backgroundColor};
   border-top-left-radius: 10px;
-  border-top-right-radius: 0;
+  border-top-right-radius: 10px;
   display: flex;
   justify-content: space-between;
 `
 
 const Box = styled.div<{
   backgroundColor: string
-  backgroundImage: string
-  isBackgroundHidden: boolean
 }>`
-  margin: 24px 0 24px 24px;
-  ${(props) =>
-    props.isBackgroundHidden
-      ? `background: ${props.backgroundColor};`
-      : `background: url(${props.backgroundImage});`}
+  margin: 24px 12px 24px 24px;
+  border-radius: 10px;
+  background: ${(props) => props.backgroundColor};
   display: flex;
   flex-direction: column;
 `
@@ -140,8 +132,7 @@ const MainContent = styled.div<{
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  width: 60%;
-  margin: 0 auto;
+  width: 100%;
   /**
   Allow buttons to scroll if required
   */
@@ -157,4 +148,12 @@ const MenuBox = styled.div<{
 
 const StyledMenuIconButton = styled(MenuIconButton)`
   margin-left: 24px;
+`
+
+/**
+ * Give logo a max-height so that it can scale down on
+ * narrow screen heights.
+ */
+const SizedLogo = styled(Logo)`
+  max-height: 40%;
 `

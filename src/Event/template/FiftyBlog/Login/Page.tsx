@@ -7,6 +7,7 @@ import MuiTextField, {TextFieldProps} from '@material-ui/core/TextField'
 import MuiButton, {ButtonProps} from '@material-ui/core/Button'
 import defaultBackground from 'assets/images/background_login.png'
 import {makeStyles} from '@material-ui/core/styles'
+import Logo from 'Event/template/FiftyBlog/Login/Logo'
 import {rgba} from 'lib/color'
 import {useFiftyBlogTemplate} from 'Event/template/FiftyBlog'
 import PasswordField from 'lib/ui/TextField/PasswordField'
@@ -35,7 +36,10 @@ export default function Page(props: {
       isHidden={login.backgroundHidden}
     >
       <ColorOverlay color={backgroundRGBColor}>
-        <Container>{props.children}</Container>
+        <Container>
+          <Logo isHidden={login.logoHidden} />
+          {props.children}
+        </Container>
       </ColorOverlay>
     </Background>
   )
@@ -105,10 +109,16 @@ export const Background = styled.div<{
   isHidden?: boolean
 }>`
   ${(props) => (props.isHidden ? '' : `background: url(${props.background});`)}
+  display: flex;
+  background-size: cover;
+  background-position: center;
   position: ${(props) => (props.isPreview ? 'inherit' : 'absolute')};
-  background-size: 100% 100%;
+  width: 100%;
+  height: 100%;
   top: 0;
   left: 0;
+  justify-content: center;
+  align-items: center;
 `
 
 export const ColorOverlay = styled.div<{
@@ -175,6 +185,7 @@ export const StyledButton = styled(
 
 export const Container = styled.div`
   width: auto;
+  padding: ${(props) => props.theme.spacing[4]};
   display: flex;
   flex-direction: column;
   align-items: center;

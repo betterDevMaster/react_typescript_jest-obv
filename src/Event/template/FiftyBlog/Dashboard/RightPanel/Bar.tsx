@@ -1,19 +1,15 @@
-import React from 'react'
-import styled from 'styled-components'
-
-import Tabs from '@material-ui/core/Tabs'
-import MuiTab, {TabProps} from '@material-ui/core/Tab'
 import {withStyles} from '@material-ui/core/styles'
-
-import {useEditMode} from 'Event/Dashboard/editor/state/edit-mode'
-import {useAttendeeVariables} from 'Event'
+import styled from 'styled-components'
 import {
   useHasMultipleTabs,
   useFiftyBlogTemplate,
 } from 'Event/template/FiftyBlog'
+import React from 'react'
+import Tabs from '@material-ui/core/Tabs'
+import MuiTab, {TabProps} from '@material-ui/core/Tab'
 import {TOP_BAR_HEIGHT} from 'Event/template/FiftyBlog/Page'
-
-import {rgba} from 'lib/color'
+import {useAttendeeVariables} from 'Event'
+import {useEditMode} from 'Event/Dashboard/editor/state/edit-mode'
 
 export default function Nav(props: {
   currentTab: number
@@ -27,6 +23,11 @@ export default function Nav(props: {
     leaderboard: {menuTitle: pointsMenuTitle, isVisible: showingPoints},
     speakers: {menuTitle: speakersMenuTitle, isVisible: showingSpeakers},
     sponsors: {menuTitle: sponsorsMenuTitle, isVisible: showingSponsors},
+    imageWaterfall: {
+      menuTitle: imageWaterfallTitle,
+      isVisible: showingImageWaterfall,
+    },
+    faq: {menuTitle: faqsMenuTitle, isVisible: showingFaqs},
   } = useFiftyBlogTemplate()
 
   const hasMultipleTabs = useHasMultipleTabs()
@@ -37,24 +38,17 @@ export default function Nav(props: {
   const StyledTabs = withStyles({
     root: {
       minHeight: `${TOP_BAR_HEIGHT}px`,
-      backgroundColor: rgba(
-        rightPanel.backgroundColor,
-        rightPanel.backgroundOpacity,
-      ),
-      borderTopLeftRadius: '0',
+      backgroundColor: rightPanel.barBackgroundColor,
+      borderTopLeftRadius: '10px',
       borderTopRightRadius: '10px',
-    },
-    flexContainer: {
-      justifyContent: 'space-around',
-      alignItems: 'center',
-      borderBottom: '1px solid #C4C4C4',
     },
     indicator: {
       display: 'flex',
-      justifyContent: 'space-around',
+      justifyContent: 'center',
       backgroundColor: 'transparent',
+      bottom: '16px',
       '& > span': {
-        maxWidth: 50,
+        maxWidth: 30,
         width: '100%',
         backgroundColor: rightPanel.tabUnderlineColor,
         borderRadius: '10px',
@@ -68,6 +62,7 @@ export default function Nav(props: {
     <StyledTabs
       onChange={(_, tabIndex) => onChangeTab(tabIndex)}
       value={currentTab}
+      centered
       aria-label={props['aria-label']}
     >
       <Tab
@@ -94,6 +89,16 @@ export default function Nav(props: {
         label={v(pointsMenuTitle)}
         aria-label="panels tab points"
         showing={showingPoints}
+      />
+      <Tab
+        label={v(imageWaterfallTitle)}
+        aria-label="panels tab image water fall"
+        showing={showingImageWaterfall}
+      />
+      <Tab
+        label={v(faqsMenuTitle)}
+        aria-label="panels tab faqs"
+        showing={showingFaqs}
       />
     </StyledTabs>
   )

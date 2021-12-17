@@ -23,6 +23,7 @@ export default function FaqPageConfig() {
     case FIFTY_BLOG:
       return <FiftyFaqConfig />
     default:
-      throw new Error(`Missing Faq Page config for template: ${name}`)
+      break
   }
+  throw new Error(`Faq Page config has not been defined for template: ${name}`)
 }

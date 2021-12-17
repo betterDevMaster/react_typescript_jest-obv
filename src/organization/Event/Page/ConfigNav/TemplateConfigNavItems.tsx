@@ -26,6 +26,6 @@ export default function TemplateConfigNavItems() {
     case FIFTY_BLOG:
       return <FiftyBlogConfigNavItems />
     default:
-      throw new Error(`Missing Template Config Nav Items for template`)
+      return null
   }
 }

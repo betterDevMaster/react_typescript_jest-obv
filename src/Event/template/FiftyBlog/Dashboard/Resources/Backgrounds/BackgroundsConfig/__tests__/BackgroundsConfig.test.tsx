@@ -74,7 +74,7 @@ it('should configure backgrounds page settings', async () => {
   user.click(await findByLabelText('save'))
 
   await wait(() => {
-    expect(mockPut).toHaveBeenCalledTimes(1)
+    expect(mockPut).toHaveBeenCalledTimes(2)
   })
 
   const [pageSettingsUrl, pageSettingsData] = mockPut.mock.calls[1]

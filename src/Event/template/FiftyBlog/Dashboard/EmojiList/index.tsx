@@ -9,7 +9,7 @@ import {
 import EditModeOnly from 'Event/Dashboard/editor/views/EditModeOnly'
 import {Editable} from 'Event/Dashboard/editor/views/EditComponent'
 import AddEmojiButton from 'Event/Dashboard/components/EmojiList/AddEmojiButton'
-import {EmojiListConfig} from 'Event/template/FiftyBlog/Dashboard/EmojiList/EmojiListConfig'
+import {EmojiListConfig} from 'Event/template/FiftyBlog/Dashboard/EmojiList/EmojiListconfig'
 import {useFiftyBlogTemplate} from 'Event/template/FiftyBlog'
 
 export const EMOJI_LIST = 'Emoji List'

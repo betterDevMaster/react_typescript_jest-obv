@@ -3,6 +3,7 @@ import {useFiftyBlogTemplate} from 'Event/template/FiftyBlog'
 import MainNavButton from 'Event/template/FiftyBlog/Dashboard/MainNav/MainNavButton'
 import Sizer from 'Event/template/FiftyBlog/Dashboard/MainNav/MainNavDesktop/Sizer'
 import PageArrows from 'Event/template/FiftyBlog/Dashboard/MainNav/MainNavDesktop/PageArrows'
+import CountDownTimers from 'Event/template/FiftyBlog/Dashboard/CountDownTimers'
 import {Container} from 'Event/template/FiftyBlog/Dashboard/MainNav/MainNavDesktop'
 import {orderedIdsByPosition} from 'lib/list'
 
@@ -57,6 +58,7 @@ export default function BodyLive(props: {className?: string}) {
   return (
     <Container className={props.className}>
       <>
+        <CountDownTimers />
         {ids.map((id, index) => (
           <MainNavButton
             id={id}

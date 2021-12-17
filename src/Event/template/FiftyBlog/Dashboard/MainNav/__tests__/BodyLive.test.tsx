@@ -6,6 +6,9 @@ import {loginToEventSite} from 'Event/__utils__/url'
 import {createHashMap} from 'lib/list'
 import {act} from 'react-dom/test-utils'
 import user from '@testing-library/user-event'
+import {hideConsoleErrors} from 'setupTests'
+
+hideConsoleErrors()
 
 it('should paginate buttons', async () => {
   const buttons = Array.from(

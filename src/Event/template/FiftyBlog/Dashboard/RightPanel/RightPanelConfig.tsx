@@ -59,6 +59,21 @@ export default function RightPanelConfig(props: {
           </Box>
           <Box mb={2}>
             <Controller
+              name="barBackgroundColor"
+              defaultValue={rightPanel.barBackgroundColor}
+              control={control}
+              render={({value, onChange}) => (
+                <ColorPicker
+                  label="Bar Background Color"
+                  color={value}
+                  onPick={onChange}
+                  aria-label="bar background color"
+                />
+              )}
+            />
+          </Box>
+          <Box mb={2}>
+            <Controller
               name="barTextColor"
               defaultValue={rightPanel.barTextColor}
               control={control}

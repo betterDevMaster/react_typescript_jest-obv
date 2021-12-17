@@ -22,6 +22,8 @@ it('should hide home button', async () => {
   template.leaderboard.isVisible = false
   template.speakers.isVisible = false
   template.sponsors.isVisible = false
+  template.imageWaterfall.isVisible = false
+  template.faq.isVisible = false
 
   const event = fakeEvent({template, logo: null})
 
@@ -30,7 +32,5 @@ it('should hide home button', async () => {
   })
 
   // Home button should also be hidden
-  expect(await findByLabelText('panels tab home')).toHaveStyle(
-    'display: inline-flex;',
-  )
+  expect(await findByLabelText('panels tab home')).toHaveStyle('display: none;')
 })

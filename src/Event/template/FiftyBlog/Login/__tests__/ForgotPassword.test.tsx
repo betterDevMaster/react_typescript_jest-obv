@@ -38,15 +38,13 @@ it('should show event forgot password form', async () => {
     user.click(await findByLabelText('forgot password'))
   })
 
-  // user.type(await findByLabelText('event account email'), email)
+  user.type(await findByLabelText('event account email'), email)
   mockPost.mockImplementationOnce(() => Promise.resolve({data: 'ok'}))
-  // await act(async () => {
-  //   user.click(await findByLabelText('submit reset password'))
-  // })
+  await act(async () => {
+    user.click(await findByLabelText('submit reset password'))
+  })
 
-  // await wait(() => {
-  //   expect(mockPost).toHaveBeenCalledTimes(1)
-  // })
+  expect(mockPost).toHaveBeenCalledTimes(1)
 
   const url = mockPost.mock.calls[0][0]
 

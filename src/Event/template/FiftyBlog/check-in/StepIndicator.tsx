@@ -1,7 +1,8 @@
 import React from 'react'
 import styled from 'styled-components'
-import {DEFAULTS, useFiftyBlogTemplate} from 'Event/template/FiftyBlog'
+import {useFiftyBlogTemplate} from 'Event/template/FiftyBlog'
 import {useAttendeeVariables} from 'Event'
+import {useEvent} from 'Event/EventProvider'
 import {Icon} from 'lib/fontawesome/Icon'
 import {Step} from 'Event/template/FiftyBlog/check-in/CheckInConfig'
 
@@ -11,6 +12,7 @@ export default function StepIndicator(props: {
   horizontal?: boolean
 }) {
   const template = useFiftyBlogTemplate()
+  const {event, hasWaiver, hasTechCheck} = useEvent()
 
   return (
     <Box className={props.className}>
@@ -19,19 +21,29 @@ export default function StepIndicator(props: {
         <StepLabel step={props.step} />
       </LabelContainer>
       <IconContainer horizontal={props.horizontal}>
-        <StepIcon
-          icon={template.step1Icon || DEFAULTS.step1Icon}
-          isActive={props.step >= 1}
+        <StepBox
+          step={1}
+          currentStep={props.step}
+          horizontal={props.horizontal}
+          icon={template.step1Icon}
+          showing={event.requires_attendee_password}
+          isLast={!hasWaiver && !hasTechCheck}
         />
-        <Divider horizontal={props.horizontal} isActive={props.step > 1} />
-        <StepIcon
-          icon={template.step2Icon || DEFAULTS.step2Icon}
-          isActive={props.step >= 2}
+        <StepBox
+          step={2}
+          currentStep={props.step}
+          horizontal={props.horizontal}
+          icon={template.step2Icon}
+          showing={hasWaiver}
+          isLast={!hasTechCheck}
         />
-        <Divider horizontal={props.horizontal} isActive={props.step > 2} />
-        <StepIcon
-          icon={template.step3Icon || DEFAULTS.step3Icon}
-          isActive={props.step === 3}
+        <StepBox
+          step={3}
+          currentStep={props.step}
+          horizontal={props.horizontal}
+          icon={template.step3Icon}
+          showing={hasTechCheck}
+          isLast
         />
       </IconContainer>
     </Box>
@@ -63,29 +75,53 @@ function StepLabel(props: {step: Step}) {
 function StepIcon(props: {icon: string; isActive: boolean}) {
   const {isActive} = props
   const template = useFiftyBlogTemplate()
+  const color = isActive ? template.stepIconColor : template.stepInactiveColor
 
-  const color = () => {
-    if (!isActive) {
-      return template.checkInLeftPanel.inactiveTextColor
-    }
-
-    return template.checkInLeftPanel.textColor
-  }
-  return <StyledIcon iconClass={props.icon} color={color()} />
+  return <StyledIcon iconClass={props.icon} color={color} />
 }
 
-function Divider(props: {isActive: boolean; horizontal?: boolean}) {
-  const {isActive, horizontal} = props
+function Divider(props: {
+  isActive: boolean
+  horizontal?: boolean
+  showing: boolean
+}) {
+  const {isActive, showing, horizontal} = props
   const template = useFiftyBlogTemplate()
+  const color = isActive ? template.stepIconColor : template.stepInactiveColor
 
-  const color = () => {
-    if (!isActive) {
-      return template.checkInLeftPanel.inactiveTextColor
-    }
-
-    return template.checkInLeftPanel.textColor
+  if (!showing) {
+    return null
   }
-  return <DividerLine color={color()} horizontal={horizontal} />
+
+  return <DividerLine color={color} horizontal={horizontal} />
+}
+
+function StepBox(props: {
+  step: number
+  currentStep: number
+  horizontal?: boolean
+  icon: string
+  showing: boolean
+  isLast?: boolean
+}) {
+  const {showing, isLast} = props
+
+  if (!showing) {
+    return null
+  }
+
+  const isActive = props.currentStep >= props.step
+
+  return (
+    <>
+      <StepIcon icon={props.icon} isActive={isActive} />
+      <Divider
+        horizontal={props.horizontal}
+        isActive={isActive}
+        showing={!isLast}
+      />
+    </>
+  )
 }
 
 const Label = styled.h4<{

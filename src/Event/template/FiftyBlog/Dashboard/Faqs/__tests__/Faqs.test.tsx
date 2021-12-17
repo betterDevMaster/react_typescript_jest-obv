@@ -33,7 +33,7 @@ it('should render faqs', async () => {
     },
   })
 
-  // user.click(await findByLabelText('panels tab faqs'))
+  user.click(await findByLabelText('panels tab faqs'))
 
   // Showing all faqs
   expect((await findAllByLabelText('faq')).length).toBe(faqs.length)

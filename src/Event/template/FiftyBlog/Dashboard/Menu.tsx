@@ -25,6 +25,11 @@ export default function Menu(props: {
     sponsors: {menuTitle: sponsorsTitle, isVisible: showingSponsors},
     resourceList: {menuTitle: resourcesTitle, isVisible: showingResources},
     leaderboard: {menuTitle: pointsTitle, isVisible: showingPoints},
+    imageWaterfall: {
+      menuTitle: imageWaterfallTitle,
+      isVisible: showingImageWaterfall,
+    },
+    faq: {menuTitle: faqsTitle, isVisible: showingFaqs},
   } = template
 
   const hasMultipleTabs = useHasMultipleTabs()
@@ -67,6 +72,18 @@ export default function Menu(props: {
             index={4}
             showing={showingPoints}
             label={pointsTitle}
+          />
+          <LinkText
+            {...linkProps}
+            index={5}
+            showing={showingImageWaterfall}
+            label={imageWaterfallTitle}
+          />
+          <LinkText
+            {...linkProps}
+            index={6}
+            showing={showingFaqs}
+            label={faqsTitle}
           />
         </Top>
       </TopCenterBox>

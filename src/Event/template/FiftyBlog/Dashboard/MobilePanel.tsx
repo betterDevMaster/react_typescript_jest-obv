@@ -8,6 +8,7 @@ import MainNavMobile from 'Event/template/FiftyBlog/Dashboard/MainNav/MainNavMob
 import EmojiList from 'Event/template/FiftyBlog/Dashboard/EmojiList'
 import {rgba} from 'lib/color'
 import {User} from 'auth/user'
+import CountDownTimers from 'Event/template/FiftyBlog/Dashboard/CountDownTimers'
 
 export default function MobilePanel(props: {
   children: React.ReactElement
@@ -59,6 +60,7 @@ function Content(props: {
   return (
     <>
       <Top>
+        <CountDownTimers />
         <MainNavMobile />
         <EmojiList />
       </Top>

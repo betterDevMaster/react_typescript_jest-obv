@@ -41,11 +41,11 @@ it('should set sponsor page settings', async () => {
 
   fireEvent.click(await findByLabelText('configure sponsor page'))
 
-  // fireEvent.change(await findByLabelText('sponsor page title'), {
-  //   target: {
-  //     value: title,
-  //   },
-  // })
+  fireEvent.change(await findByLabelText('sponsor page title'), {
+    target: {
+      value: title,
+    },
+  })
 
   // Remove existing icon...
   fireEvent.click(await findByLabelText('remove sponsor question icon'))

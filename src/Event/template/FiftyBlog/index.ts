@@ -9,6 +9,8 @@ import {useTemplate} from 'Event/TemplateProvider'
 import {BlogPost} from 'Event/Dashboard/components/BlogPosts'
 import {colors} from 'lib/ui/theme'
 import {DeepRequired} from 'lib/type-utils'
+import {TicketRibbon} from 'Event/template/FiftyBlog/Dashboard/TicketRibbonList/TicketRibbon'
+import {CountDownTimer} from 'Event/Dashboard/components/CountDownTimer'
 import {useTemplateUpdate} from 'Event/TemplateUpdateProvider'
 
 export const FIFTY_BLOG = 'Fifty Fifty'
@@ -55,60 +57,64 @@ export function useHasMultipleTabs() {
 }
 
 export type FiftyBlog = BaseTemplate & {
-  name?: typeof FIFTY_BLOG
-  accentColor?: string
-  menu?: {
-    backgroundColor?: string
-    iconColor?: string
-    textColor?: string
-    height?: number
+  name: typeof FIFTY_BLOG
+  accentColor: string
+  menu: {
+    backgroundColor: string
+    iconColor: string
+    textColor: string
+    height: number
   }
   backgroundPosition?: 'fixed' | 'bottom'
-  nav?: HashMap<NavButtonWithSize>
-  welcomeText?: string
+  nav: HashMap<NavButtonWithSize>
+  ticketRibbons: TicketRibbon[]
+  welcomeText: string
   homeMenuTitle?: string
-  emojiList?: EmojiList
-  leftPanel?: {
-    backgroundHidden?: boolean
-    barTextColor?: string
+  emojiList: EmojiList
+  leftPanel: {
+    barBackgroundColor: string
+    barTextColor: string
     menuTextColor?: string
     arrowColor?: string
-    backgroundColor?: string
-    backgroundOpacity?: number
+    backgroundColor: string
+    backgroundOpacity: number
   }
-  rightPanel?: {
-    barTextColor?: string
-    tabUnderlineColor?: string
-    textColor?: string
-    backgroundColor?: string
-    backgroundOpacity?: number
-    isDarkMode?: boolean
+  rightPanel: {
+    barBackgroundColor: string
+    barTextColor: string
+    tabUnderlineColor: string
+    textColor: string
+    backgroundColor: string
+    backgroundOpacity: number
+    isDarkMode: boolean
   }
-  points_unit?: string
-  blogPosts?: HashMap<BlogPost>
-  resourceList?: ResourceList
-  menuIconColor?: string
+  points_unit: string
+  blogPosts: HashMap<BlogPost>
+  resourceList: ResourceList
+  menuIconColor: string
   isDarkMode?: boolean
   background?: {
     color?: string
     opacity?: number
   }
-  checkInTitle?: string
-  checkInRightPanel?: {
-    backgroundColor?: string
-    backgroundOpacity?: number
-    textColor?: string
+  checkInRightPanel: {
+    backgroundColor: string
+    backgroundOpacity: number
+    textColor: string
   }
-  checkInLeftPanel?: {
-    backgroundColor?: string
-    backgroundOpacity?: number
-    textColor?: string
-    inactiveTextColor?: string
+  checkInTitle: string
+  checkInLeftPanel: {
+    backgroundColor: string
+    backgroundOpacity: number
+    textColor: string
+    inactiveTextColor: string
   }
-  stepLabelColor?: string
-  step1Label?: string
+  stepLabelColor: string
+  stepIconColor: string
+  stepInactiveColor: string
+  step1Label: string
   step1Icon?: string
-  step2Label?: string
+  step2Label: string
   step2Icon?: string
   step3Label: string
   step3Icon?: string
@@ -116,9 +122,9 @@ export type FiftyBlog = BaseTemplate & {
   linkColor?: string
   linkUnderline?: boolean
   bodyHTMLEmbed?: string | null
-  leaderboard?: {
-    title?: string
-    description?: string
+  leaderboard: {
+    title: string
+    description: string
     menuTitle?: string
     isVisible?: boolean
   }
@@ -155,49 +161,36 @@ export type FiftyBlog = BaseTemplate & {
     buttonBorderColor?: string
     buttonWidth?: GridSize
   }
-  sizedLogo?: {
-    hidden?: boolean
-    size: number
-  }
   login?: {
-    submitButton?: {
-      backgroundColor?: string
-      textColor?: string
+    submitButton: {
+      backgroundColor: string
+      textColor: string
       hoverColor?: string
-      label?: string
+      label: string
       borderRadius?: number
     }
-    description?: {
-      text?: string
-      color?: string
-      fontSize?: number
+    description: {
+      text: string
+      color: string
+      fontSize: number
     }
-    welcome?: {
-      text?: string
-      color?: string
-      fontSize?: number
-    }
-    passwordReset?: {
-      linkLabel?: string
-      linkUrl?: string
-      description?: string
-      successMessage?: string
-      color?: string
+    passwordReset: {
+      linkLabel: string
+      buttonText: string
+      description: string
+      successMessage: string
     }
     backgroundColor?: string
     backgroundOpacity?: number
     logoSize?: number
     inputBorderRadius?: number
     logoHidden?: boolean
-    logoBackgroundHidden?: boolean
-    logoContentBackgroundHidden?: boolean
     backgroundHidden?: boolean
-    uiStyle?: string
     emailLabel?: string
     passwordLabel?: string
   }
-  setPasswordForm?: {
-    title?: string
+  setPasswordForm: {
+    title: string
     description?: string
     passwordLabel?: string
     confirmPasswordLabel?: string
@@ -229,11 +222,12 @@ export type FiftyBlog = BaseTemplate & {
     isVisible?: boolean
   }
   offlinePage?: {
-    title?: string
-    description?: string
-    redirectUrl?: string
-    shouldRedirect?: boolean
+    title: string
+    description: string
+    redirectUrl: string
+    shouldRedirect: boolean
   }
+  countDownTimers?: HashMap<CountDownTimer>
   imageWaterfall?: {
     title?: string
     menuTitle?: string
@@ -265,18 +259,15 @@ export const createFiftyBlog = (): DeepRequired<FiftyBlog> => ({
   points_unit: 'Points',
   backgroundPosition: 'fixed',
   nav: {},
+  ticketRibbons: [],
   welcomeText: 'Welcome!',
   homeMenuTitle: 'Home',
-  sizedLogo: {
-    hidden: false,
-    size: 20,
-  },
   emojiList: {
     emojis: [],
     emojiWidth: null,
   },
   leftPanel: {
-    backgroundHidden: false,
+    barBackgroundColor: '#07BAB5',
     barTextColor: '#ffffff',
     menuTextColor: '#000000',
     arrowColor: '#000000',
@@ -284,6 +275,7 @@ export const createFiftyBlog = (): DeepRequired<FiftyBlog> => ({
     backgroundOpacity: 0,
   },
   rightPanel: {
+    barBackgroundColor: '#07BAB5',
     barTextColor: '#ffffff',
     tabUnderlineColor: '#B8FFF7',
     textColor: '#000000',
@@ -308,12 +300,12 @@ export const createFiftyBlog = (): DeepRequired<FiftyBlog> => ({
     color: '#FFFFFF',
     opacity: 0,
   },
-  checkInTitle: 'Check In:',
   checkInRightPanel: {
     backgroundColor: '#07BAB5',
     backgroundOpacity: 1,
     textColor: '#000000',
   },
+  checkInTitle: '',
   checkInLeftPanel: {
     backgroundColor: '#FFFFFF',
     backgroundOpacity: 0,
@@ -321,6 +313,8 @@ export const createFiftyBlog = (): DeepRequired<FiftyBlog> => ({
     inactiveTextColor: '#C7C7C7',
   },
   stepLabelColor: '#07BAB5',
+  stepIconColor: '#07BAB5',
+  stepInactiveColor: '#C7C7C7',
   step1Label: 'Step 1',
   step1Icon: 'far fa-lock',
   step2Label: 'Step 2',
@@ -389,26 +383,17 @@ export const createFiftyBlog = (): DeepRequired<FiftyBlog> => ({
     },
     passwordReset: {
       linkLabel: 'Forgot Password?',
-      linkUrl: 'Send Set Password Link',
+      buttonText: 'Send Reset Password Link',
       description: 'Send password reset link.',
       successMessage:
         "Password reset link sent! Check your spam folder if you don't see it after a couple minutes.",
-      color: '#000000',
-    },
-    welcome: {
-      text: 'Welcome to the TRIBE Live Virtual Experience!rt',
-      color: '#000000',
-      fontSize: 18,
     },
     backgroundColor: '#FFFFFF',
     backgroundOpacity: 0,
     logoSize: 20,
     inputBorderRadius: 56,
     logoHidden: false,
-    logoBackgroundHidden: false,
-    logoContentBackgroundHidden: false,
     backgroundHidden: false,
-    uiStyle: 'Tablet',
     emailLabel: 'Email',
     passwordLabel: 'Password',
   },
@@ -450,6 +435,7 @@ export const createFiftyBlog = (): DeepRequired<FiftyBlog> => ({
     title: 'Event Offline',
     description: 'Please check back again, or contact support for access.',
   },
+  countDownTimers: {},
   imageWaterfall: {
     title: 'Image Waterfall',
     menuTitle: 'Image Waterfall',

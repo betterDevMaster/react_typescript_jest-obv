@@ -1,7 +1,6 @@
+import styled from 'styled-components'
 import React from 'react'
 import {DroppableProvidedProps} from 'react-beautiful-dnd'
-import styled from 'styled-components'
-
 import {useEditMode} from 'Event/Dashboard/editor/state/edit-mode'
 import BodyEditable from 'Event/template/FiftyBlog/Dashboard/MainNav/MainNavDesktop/BodyEditable'
 import BodyLive from 'Event/template/FiftyBlog/Dashboard/MainNav/MainNavDesktop/BodyLive'

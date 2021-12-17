@@ -1,34 +1,32 @@
 import React, {useState} from 'react'
 import styled from 'styled-components'
-
 import {User} from 'auth/user'
-
-import {isAttendee} from 'Event/auth'
-import {useEditMode} from 'Event/Dashboard/editor/state/edit-mode'
 import Page from 'Event/template/FiftyBlog/Page'
 import LeftPanel from 'Event/template/FiftyBlog/Dashboard/LeftPanel'
 import RightPanel from 'Event/template/FiftyBlog/Dashboard/RightPanel'
 import MobilePanel from 'Event/template/FiftyBlog/Dashboard/MobilePanel'
 import {useEvent} from 'Event/EventProvider'
 import SpeakerPage from 'Event/template/FiftyBlog/Dashboard/Speakers'
+import TabPanel from 'lib/ui/tabs/TabPanel'
 import Home from 'Event/template/FiftyBlog/Dashboard/Home'
 import Leaderboard from 'Event/template/FiftyBlog/Dashboard/Leaderboard/Leaderboard'
 import Resources from 'Event/template/FiftyBlog/Dashboard/Resources'
 import {useFiftyBlogTemplate} from 'Event/template/FiftyBlog'
 import SponsorPage from 'Event/template/FiftyBlog/Dashboard/Sponsors'
-
-import TabPanel from 'lib/ui/tabs/TabPanel'
-
+import ImageWaterfall from 'Event/template/FiftyBlog/Dashboard/ImageWaterfall'
 import {
   EventSponsorsProvider,
   OrganizationSponsorsProvider,
   useSponsors,
 } from 'organization/Event/SponsorsProvider'
+import FaqPage from 'Event/template/FiftyBlog/Dashboard/Faqs'
 import {
   useFaqs,
   OrganizationFaqsProvider,
   EventFaqsProvider,
 } from 'organization/Event/FaqsProvider'
+import {useEditMode} from 'Event/Dashboard/editor/state/edit-mode'
+import {isAttendee} from 'Event/auth'
 
 export default function FiftyBlogDashboard(props: {user: User}) {
   const {user} = props
@@ -89,6 +87,12 @@ function Content(props: {currentTab: number; isEdit: boolean}) {
       </ContentPanel>
       <ContentPanel index={4} currentIndex={currentTab}>
         <Leaderboard />
+      </ContentPanel>
+      <ContentPanel index={5} currentIndex={currentTab}>
+        <ImageWaterfall />
+      </ContentPanel>
+      <ContentPanel index={6} currentIndex={currentTab}>
+        <FaqPage isEditMode={isEdit} faqs={faqs} />
       </ContentPanel>
     </>
   )

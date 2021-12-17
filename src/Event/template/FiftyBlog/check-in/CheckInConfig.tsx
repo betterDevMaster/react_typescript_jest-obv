@@ -16,6 +16,7 @@ import {SectionTitle} from 'organization/Event/Page'
 import Page from 'organization/Event/Page'
 import Layout from 'organization/user/Layout'
 import React from 'react'
+import styled from 'styled-components'
 import Button from '@material-ui/core/Button'
 import {Control, Controller, FieldElement, useForm} from 'react-hook-form'
 
@@ -35,22 +36,12 @@ export default function CheckInConfig() {
     <Layout>
       <Page>
         <form onSubmit={handleSubmit(submit)}>
-          <SectionTitle>Check In</SectionTitle>
           <Box mb={2}>
-            <TextField
-              label="Title"
-              name="checkInTitle"
-              defaultValue={template.checkInTitle}
-              inputProps={{
-                'aria-label': 'check in title',
-                ref: register,
-              }}
-              fullWidth
-            />
+            <SectionTitle>Check In</SectionTitle>
           </Box>
-          <Box mb={2}>
-            <Grid container spacing={2}>
-              <Grid xs={12} md={6} item>
+          <Box mb={6}>
+            <Grid container spacing={6}>
+              <BorderedGrid xs={12} md={6} item>
                 <Box mb={1}>
                   <InputLabel>Left Panel</InputLabel>
                 </Box>
@@ -100,7 +91,19 @@ export default function CheckInConfig() {
                     />
                   )}
                 />
-              </Grid>
+                <Box>
+                  <TextField
+                    label="Check In Left Panel Title"
+                    name="checkInTitle"
+                    defaultValue={template.checkInTitle}
+                    inputProps={{
+                      'aria-label': 'check in left panel title',
+                      ref: register,
+                    }}
+                    fullWidth
+                  />
+                </Box>
+              </BorderedGrid>
               <Grid xs={12} md={6} item>
                 <Box mb={1}>
                   <InputLabel>Right Panel</InputLabel>
@@ -156,55 +159,82 @@ export default function CheckInConfig() {
               </Grid>
             </Grid>
           </Box>
-          <Box mb={2}>
-            <Controller
-              name="stepLabelColor"
-              defaultValue={template.stepLabelColor}
+          <Grid container spacing={2}>
+            <Grid item xs={12} md={4}>
+              <Controller
+                name="stepLabelColor"
+                defaultValue={template.stepLabelColor}
+                control={control}
+                render={({value, onChange}) => (
+                  <ColorPicker
+                    label="Step Label Color"
+                    color={value}
+                    onPick={onChange}
+                    aria-label="step label color"
+                  />
+                )}
+              />
+            </Grid>
+            <Grid item xs={12} md={4}>
+              <Controller
+                name="stepIconColor"
+                defaultValue={template.stepIconColor}
+                control={control}
+                render={({value, onChange}) => (
+                  <ColorPicker
+                    label="Step Icon Color"
+                    color={value}
+                    onPick={onChange}
+                    aria-label="step icon color"
+                  />
+                )}
+              />
+            </Grid>
+            <Grid item xs={12} md={4}>
+              <Controller
+                name="stepInactiveColor"
+                defaultValue={template.stepInactiveColor}
+                control={control}
+                render={({value, onChange}) => (
+                  <ColorPicker
+                    label="Step Inactive Color"
+                    color={value}
+                    onPick={onChange}
+                    aria-label="step inactive color"
+                  />
+                )}
+              />
+            </Grid>
+          </Grid>
+          <Grid container spacing={2}>
+            <StepConfig
+              inputLabel="Step 1"
+              label={template.step1Label}
+              icon={template.step1Icon || DEFAULTS.step1Icon}
+              labelFieldName="step1Label"
+              iconFieldName="step1Icon"
               control={control}
-              render={({value, onChange}) => (
-                <ColorPicker
-                  label="Step Label Color"
-                  color={value}
-                  onPick={onChange}
-                  aria-label="step label color"
-                />
-              )}
+              register={register}
             />
-
-            <ColorPicker
-              label="Step Label Color"
-              color={template.stepLabelColor}
-              onPick={(value) => update({stepLabelColor: value})}
-              aria-label="step label color"
+            <StepConfig
+              inputLabel="Step 2"
+              label={template.step2Label}
+              icon={template.step2Icon || DEFAULTS.step2Icon}
+              labelFieldName="step2Label"
+              iconFieldName="step2Icon"
+              control={control}
+              register={register}
             />
-          </Box>
-          <StepConfig
-            inputLabel="Step 1"
-            label={template.step1Label}
-            icon={template.step1Icon || DEFAULTS.step1Icon}
-            labelFieldName="step1Label"
-            iconFieldName="step1Icon"
-            control={control}
-            register={register}
-          />
-          <StepConfig
-            inputLabel="Step 2"
-            label={template.step2Label}
-            icon={template.step2Icon || DEFAULTS.step2Icon}
-            labelFieldName="step2Label"
-            iconFieldName="step2Icon"
-            control={control}
-            register={register}
-          />
-          <StepConfig
-            inputLabel="Step 3"
-            label={template.step3Label}
-            icon={template.step3Icon || DEFAULTS.step3Icon}
-            labelFieldName="step3Label"
-            iconFieldName="step3Icon"
-            control={control}
-            register={register}
-          />
+            <StepConfig
+              inputLabel="Step 3"
+              label={template.step3Label}
+              icon={template.step3Icon || DEFAULTS.step3Icon}
+              labelFieldName="step3Label"
+              iconFieldName="step3Icon"
+              control={control}
+              register={register}
+            />
+          </Grid>
           <Button
             variant="contained"
             aria-label="save"
@@ -230,9 +260,9 @@ function StepConfig(props: {
 }) {
   return (
     <>
-      <Box mb={2}>
+      <Grid item xs={12} md={4}>
         <Grid container spacing={2}>
-          <Grid xs={6} item>
+          <Grid xs={12} md={12} item>
             <TextField
               label={props.inputLabel}
               fullWidth
@@ -244,7 +274,7 @@ function StepConfig(props: {
               }}
             />
           </Grid>
-          <Grid xs={6} item>
+          <Grid xs={12} md={12} item>
             <Controller
               name={props.iconFieldName}
               defaultValue={props.icon}
@@ -255,7 +285,14 @@ function StepConfig(props: {
             />
           </Grid>
         </Grid>
-      </Box>
+      </Grid>
     </>
   )
 }
+
+const BorderedGrid = styled(Grid)`
+  border-right: 1px dashed;
+  @media (max-width: ${(props) => props.theme.breakpoints.md}) {
+    border-right: none;
+  }
+`

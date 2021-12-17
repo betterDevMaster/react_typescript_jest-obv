@@ -37,11 +37,9 @@ export default function TemplateProvider(props: {
     const updated = withDefaults(defaults, template)
 
     // Fill out any defaults for countdown timers
-    // if (updated.hasOwnProperty('countDownTimers')) {
-    //   updated.countDownTimers = fillCountDownTimerDefaults(
-    //     updated.countDownTimers,
-    //   )
-    // }
+    updated.countDownTimers = fillCountDownTimerDefaults(
+      updated.countDownTimers,
+    )
 
     updated.blogPosts = fillBlogPostDefaults(updated.blogPosts)
 
@@ -66,9 +64,7 @@ function defaultsFor(template: Template): DeepRequired<Template> {
     case FIFTY_BLOG:
       return FIFTY_BLOG_DEFAULTS
     default:
-      throw new Error(
-        `Missing Template Provider for template: ${template.name}`,
-      )
+      throw new Error(`Missing Template Provider for template`)
   }
 }
 

@@ -6,6 +6,7 @@ import $ from 'jquery'
 import useDebounce from 'lib/debounce'
 import {useOnResize} from 'lib/resize'
 import PageArrows from 'Event/template/FiftyBlog/Dashboard/MainNav/MainNavDesktop/PageArrows'
+import CountDownTimers from 'Event/template/FiftyBlog/Dashboard/CountDownTimers'
 import {orderedIdsByPosition} from 'lib/list'
 
 /**
@@ -160,6 +161,7 @@ function Page(props: {
 
   return (
     <div className="main-nav-shadow-page">
+      <CountDownTimers onRender={props.calculate} />
       {visibleIds.map((id, index) => (
         <MainNavButton
           id={id}
