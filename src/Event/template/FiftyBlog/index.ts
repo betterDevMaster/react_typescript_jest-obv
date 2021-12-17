@@ -185,6 +185,7 @@ export type FiftyBlog = BaseTemplate & {
     logoSize?: number
     inputBorderRadius?: number
     logoHidden?: boolean
+    logoBackgroundHidden?: boolean
     backgroundHidden?: boolean
     emailLabel?: string
     passwordLabel?: string
@@ -377,7 +378,7 @@ export const createFiftyBlog = (): DeepRequired<FiftyBlog> => ({
       hoverColor: '#FFFFFF',
     },
     description: {
-      text: '',
+      text: 'Welcome to the TRIBE Live Virtual Experience!',
       color: '#000000',
       fontSize: 18,
     },
@@ -394,6 +395,7 @@ export const createFiftyBlog = (): DeepRequired<FiftyBlog> => ({
     inputBorderRadius: 56,
     logoHidden: false,
     backgroundHidden: false,
+    logoBackgroundHidden: false,
     emailLabel: 'Email',
     passwordLabel: 'Password',
   },

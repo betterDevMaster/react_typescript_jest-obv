@@ -1,19 +1,27 @@
 import React from 'react'
-import defaultLogo from 'assets/images/logo_vertical.png'
-import {useEvent} from 'Event/EventProvider'
 import styled from 'styled-components'
+import {useEvent} from 'Event/EventProvider'
 import {useFiftyBlogTemplate} from 'Event/template/FiftyBlog'
+import defaultLogo from 'assets/images/logo.png'
+import defaultLoginBackground from 'assets/images/background.png'
 
-export default function Logo(props: {isHidden?: boolean}) {
+export default function Logo() {
   const {event} = useEvent()
-  const logo = event.login_logo ? event.login_logo.url : defaultLogo
   const template = useFiftyBlogTemplate()
   const {login} = template
-
   const size = login.logoSize
+  const logo = event.login_logo ? event.login_logo.url : defaultLogo
+  const background = event.login_logo_background
+    ? event.login_logo_background.url
+    : defaultLoginBackground
 
   return (
-    <Box isHidden={props.isHidden}>
+    <Box
+      background={background}
+      isBoxHidden={login.logoBackgroundHidden}
+      isLogoHidden={login.logoHidden}
+      aria-label="login logo background"
+    >
       <LogoImage
         src={logo}
         alt={event.name}
@@ -24,14 +32,20 @@ export default function Logo(props: {isHidden?: boolean}) {
   )
 }
 
-const Box = styled.div<{
-  isHidden?: boolean
+export const Box = styled.div<{
+  background: string
+  isBoxHidden?: boolean
+  isLogoHidden?: boolean
 }>`
-  display: ${(props) => (props.isHidden ? 'none' : 'block')};
-  margin-bottom: ${(props) => props.theme.spacing[6]};
+  ${(props) =>
+    props.isBoxHidden
+      ? 'background: transparent;'
+      : `background: url(${props.background});`}
+  display: ${(props) =>
+    props.isBoxHidden && props.isLogoHidden ? 'none' : 'block'};
   width: 100%;
   text-align: center;
-  padding: ${(props) => props.theme.spacing[4]};
+  padding: ${(props) => props.theme.spacing[16]};
 `
 
 export const LogoImage = styled.img<{size: number}>`

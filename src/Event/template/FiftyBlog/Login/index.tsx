@@ -19,12 +19,12 @@ export default function Login(props: LoginProps) {
 
   const emailLabel = v(login.emailLabel)
   const passwordLabel = v(login.passwordLabel)
-
+  console.log('props -----', props)
   return (
     <Page isPreview={props.isPreview}>
-      <>
+      <Container>
         <Description aria-label="event login description">
-          {v(login?.description.text || '')}
+          {v(login?.description.text)}
         </Description>
         <form onSubmit={props.onSubmit}>
           <TextField
@@ -50,6 +50,7 @@ export default function Login(props: LoginProps) {
             variant="outlined"
             name="password"
             disabled={props.submitting}
+            style={{margin: 0}}
             inputProps={{
               ref: props.register({
                 required: `${passwordLabel} is required`,
@@ -59,6 +60,15 @@ export default function Login(props: LoginProps) {
             error={!!props.errors.password}
             helperText={props.errors.password && props.errors.password.message}
           />
+          <div className="w-full mb-6 text-right">
+            <StyledRelativeLink
+              to={eventRoutes.forgotPassword}
+              aria-label="forgot password"
+              color={login.description.color}
+            >
+              {v(login.passwordReset.linkLabel)}
+            </StyledRelativeLink>
+          </div>
           <ErrorMessage>{props.error}</ErrorMessage>
           <Button
             variant="contained"
@@ -70,21 +80,15 @@ export default function Login(props: LoginProps) {
             {login.submitButton.label}
           </Button>
         </form>
-        {props.isPreview ? null : (
-          <StyledRelativeLink
-            to={eventRoutes.forgotPassword}
-            aria-label="forgot password"
-            color={login.description.color}
-          >
-            {v(login.passwordReset.linkLabel)}
-          </StyledRelativeLink>
-        )}
-      </>
+      </Container>
     </Page>
   )
 }
 
 export const StyledRelativeLink = styled(RelativeLink)<{color: string}>`
-  margin-top: ${(props) => props.theme.spacing[10]};
   color: ${(props) => props.color};
+`
+export const Container = styled.div`
+  padding: 4rem 7rem;
+  min-height: 600px;
 `

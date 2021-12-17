@@ -49,7 +49,7 @@ export default function LoginFormConfig() {
               <Box display="flex" flexDirection="row" flex="2">
                 <Box my={1} display="flex" flexDirection="column" flex="1">
                   <Grid container spacing={3}>
-                    <Grid item xs={12} md={6}>
+                    <Grid item xs={12} md={4}>
                       <EventImageUpload
                         label="Background"
                         property="login_background"
@@ -82,7 +82,7 @@ export default function LoginFormConfig() {
                         />
                       </Box>
                     </Grid>
-                    <Grid item xs={12} md={6}>
+                    <Grid item xs={12} md={4}>
                       <EventImageUpload
                         label="Logo"
                         property="login_logo"
@@ -107,6 +107,37 @@ export default function LoginFormConfig() {
                               color="primary"
                               inputProps={{
                                 'aria-label': 'toggle logo visible',
+                              }}
+                            />
+                          )}
+                        />
+                      </Box>
+                    </Grid>
+                    <Grid item xs={12} md={4}>
+                      <EventImageUpload
+                        label="Logo Background"
+                        property="login_logo_background"
+                        current={event.login_logo_background}
+                      />
+                      <Box
+                        display="flex"
+                        flexDirection="column"
+                        flex="1"
+                        mb={2}
+                      >
+                        <InputLabel>Hide LogoBackground</InputLabel>
+
+                        <Controller
+                          name="login.logoBackgroundHidden"
+                          defaultValue={login.logoBackgroundHidden}
+                          control={control}
+                          render={({value, onChange}) => (
+                            <Switch
+                              checked={value}
+                              onChange={onChangeCheckedHandler(onChange)}
+                              color="primary"
+                              inputProps={{
+                                'aria-label': 'toggle logo background visible',
                               }}
                             />
                           )}

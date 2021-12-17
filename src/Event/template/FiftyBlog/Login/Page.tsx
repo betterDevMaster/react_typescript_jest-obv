@@ -37,7 +37,7 @@ export default function Page(props: {
     >
       <ColorOverlay color={backgroundRGBColor}>
         <Container>
-          <Logo isHidden={login.logoHidden} />
+          <Logo />
           {props.children}
         </Container>
       </ColorOverlay>
@@ -110,7 +110,7 @@ export const Background = styled.div<{
 }>`
   ${(props) => (props.isHidden ? '' : `background: url(${props.background});`)}
   display: flex;
-  background-size: cover;
+  background-size: 100% 100%;
   background-position: center;
   position: ${(props) => (props.isPreview ? 'inherit' : 'absolute')};
   width: 100%;
@@ -185,7 +185,6 @@ export const StyledButton = styled(
 
 export const Container = styled.div`
   width: auto;
-  padding: ${(props) => props.theme.spacing[4]};
   display: flex;
   flex-direction: column;
   align-items: center;
