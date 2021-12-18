@@ -48,42 +48,49 @@ export default function Menu(props: {
             index={0}
             showing={hasMultipleTabs}
             label={homeTitle}
+            isdisplay="visible"
           />
           <LinkText
             {...linkProps}
             index={1}
             showing={showingSpeakers}
             label={speakerTitle}
+            isdisplay="visible"
           />
           <LinkText
             {...linkProps}
             index={2}
             showing={showingSponsors}
             label={sponsorsTitle}
+            isdisplay="visible"
           />
           <LinkText
             {...linkProps}
             index={3}
             showing={showingResources}
             label={resourcesTitle}
+            isdisplay="visible"
           />
           <LinkText
             {...linkProps}
             index={4}
             showing={showingPoints}
             label={pointsTitle}
+            isdisplay="visible"
           />
           <LinkText
             {...linkProps}
             index={5}
             showing={showingImageWaterfall}
             label={imageWaterfallTitle}
+            isdisplay="inVisible"
           />
           <LinkText
             {...linkProps}
             index={6}
             showing={showingFaqs}
             label={faqsTitle}
+            isdisplay="inVisible"
           />
         </Top>
       </TopCenterBox>
@@ -114,13 +121,14 @@ function LinkText(props: {
   showing: boolean
   color: string
   index: number
+  isdisplay: string
 }) {
-  const {label, color, index, showing} = props
+  const {label, color, index, showing, isdisplay} = props
 
   const isEditMode = useEditMode()
   const v = useAttendeeVariables()
 
-  if (!isEditMode && !showing) {
+  if ((!isEditMode && !showing) || isdisplay === 'inVisible') {
     return null
   }
 

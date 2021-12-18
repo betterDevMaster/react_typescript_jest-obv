@@ -33,6 +33,8 @@ export const fakeEvent = (overrides?: Partial<ObvioEvent>): ObvioEvent => ({
   login_background: null,
   login_logo: null,
   login_logo_background: null,
+  // left_panel_background: null,
+  sized_logo: null,
   favicon: null,
   dashboard_background: null,
   sidebar_background: null,

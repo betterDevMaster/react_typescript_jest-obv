@@ -1,18 +1,22 @@
 import React from 'react'
 import {Controller, useForm} from 'react-hook-form'
-import Box from '@material-ui/core/Box'
-import InputLabel from '@material-ui/core/InputLabel'
-import Slider from '@material-ui/core/Slider'
-import {handleChangeSlider} from 'lib/dom'
+
+import {Box, InputLabel, Slider, Switch} from '@material-ui/core'
+
+import {handleChangeSlider, onChangeCheckedHandler} from 'lib/dom'
 import ColorPicker from 'lib/ui/ColorPicker'
+
 import {
   FiftyBlog,
   useFiftyBlogTemplate,
   useFiftyBlogUpdate,
 } from 'Event/template/FiftyBlog'
+
+import {useEvent} from 'Event/EventProvider'
 import ComponentConfig, {
   SaveButton,
 } from 'organization/Event/DashboardConfig/ComponentConfig'
+import EventImageUpload from 'organization/Event/DashboardConfig/EventImageUpload'
 
 export default function LeftPanelConfig(props: {
   isVisible: boolean
@@ -24,6 +28,7 @@ export default function LeftPanelConfig(props: {
   const update = useFiftyBlogUpdate()
   const {leftPanel} = template
   const {control, handleSubmit} = useForm()
+  const {event} = useEvent()
 
   const submit = (data: FiftyBlog['leftPanel']) => {
     update({leftPanel: data})
@@ -39,22 +44,25 @@ export default function LeftPanelConfig(props: {
         title="Left Panel Bar"
       >
         <form onSubmit={handleSubmit(submit)}>
-          <Box mb={2}>
+          <Box display="flex" flexDirection="column" flex="1" mb={2}>
+            <InputLabel>Hide Background</InputLabel>
+
             <Controller
-              name="barBackgroundColor"
-              defaultValue={leftPanel.barBackgroundColor}
+              name="backgroundHidden"
+              defaultValue={leftPanel.backgroundHidden}
               control={control}
               render={({value, onChange}) => (
-                <ColorPicker
-                  label="Bar Background Color"
-                  color={value}
-                  onPick={onChange}
-                  aria-label="left panel bar background color"
+                <Switch
+                  checked={value}
+                  onChange={onChangeCheckedHandler(onChange)}
+                  color="primary"
+                  inputProps={{
+                    'aria-label': 'toggle logo backgournd visible',
+                  }}
                 />
               )}
             />
           </Box>
-
           <Box mb={2}>
             <Controller
               name="barTextColor"

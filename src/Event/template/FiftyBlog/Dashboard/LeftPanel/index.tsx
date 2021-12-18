@@ -9,12 +9,15 @@ import {Editable} from 'Event/Dashboard/editor/views/EditComponent'
 import EditModeOnly from 'Event/Dashboard/editor/views/EditModeOnly'
 import Logo from 'Event/Logo'
 import {useFiftyBlogTemplate} from 'Event/template/FiftyBlog'
+import {useEditMode} from 'Event/Dashboard/editor/state/edit-mode'
 import EmojiList from 'Event/template/FiftyBlog/Dashboard/EmojiList'
 import LeftPanelConfig from 'Event/template/FiftyBlog/Dashboard/LeftPanel/LeftPanelConfig'
 import MainNavDesktop from 'Event/template/FiftyBlog/Dashboard/MainNav/MainNavDesktop'
 import Menu from 'Event/template/FiftyBlog/Dashboard/Menu'
 import {TOP_BAR_HEIGHT} from 'Event/template/FiftyBlog/Page'
-import TicketRibbonList from 'Event/template/FiftyBlog/Dashboard/TicketRibbonList'
+import {useEvent} from 'Event/EventProvider'
+import defaultBackground from 'assets/images/background.png'
+import defaultLogo from 'assets/images/logo.png'
 
 export default function LeftPanel(props: {
   onChangeTab: (tab: number) => void
@@ -22,10 +25,22 @@ export default function LeftPanel(props: {
 }) {
   const [menuVisible, setMenuVisible] = useState(false)
   const toggleMenu = () => setMenuVisible(!menuVisible)
+  const {event} = useEvent()
+  const isEditMode = useEditMode()
 
   const {flag: barConfigVisible, toggle: toggleBarConfig} = useToggle()
 
-  const {leftPanel} = useFiftyBlogTemplate()
+  const {
+    leftPanel,
+    dashboardBackground,
+    dashboardLogo,
+    dashboardBackgroundProps,
+    dashboardLogoProps,
+  } = useFiftyBlogTemplate()
+  const background = dashboardBackground
+    ? dashboardBackground
+    : defaultBackground
+  const logo = dashboardLogo ? dashboardLogo : defaultLogo
 
   const handleChangeTab = (tab: number) => {
     props.onChangeTab(tab)
@@ -45,23 +60,28 @@ export default function LeftPanel(props: {
           leftPanel.backgroundColor,
           leftPanel.backgroundOpacity,
         )}
+        backgroundImage={background}
+        isBackgroundHidden={dashboardBackgroundProps.hidden}
       >
-        <Editable onEdit={toggleBarConfig}>
-          <Bar
-            backgroundColor={leftPanel.barBackgroundColor}
-            aria-label="left panel"
-          >
+        <Editable className="m-6" onEdit={toggleBarConfig}>
+          <Bar isMenuVisible={isEditMode} aria-label="left panel">
             <StyledMenuIconButton
               active={menuVisible}
               iconColor={leftPanel.barTextColor}
               onClick={toggleMenu}
               aria-label="menu icon button"
             />
-            <TicketRibbonList />
           </Bar>
         </Editable>
+        <Top>
+          <EmojiList />
+          <Logo
+            src={logo}
+            hidden={dashboardLogoProps.hidden}
+            size={dashboardLogoProps.size}
+          />
+        </Top>
         <Main>
-          <SizedLogo />
           {/*
               Menu slide-in-out animation. Need to set content to null to avoid
               the exiting content from having a height, and the divs
@@ -76,12 +96,7 @@ export default function LeftPanel(props: {
           </Slide>
           <Slide in={!menuVisible} direction="right" mountOnEnter unmountOnExit>
             <MainContent visible={!menuVisible}>
-              {menuVisible ? null : (
-                <>
-                  <MainNavDesktop />
-                  <EmojiList />
-                </>
-              )}
+              {menuVisible ? null : <MainNavDesktop />}
             </MainContent>
           </Slide>
         </Main>
@@ -91,32 +106,38 @@ export default function LeftPanel(props: {
 }
 
 const Bar = styled.div<{
-  backgroundColor: string
+  isMenuVisible: boolean
 }>`
-  height: ${TOP_BAR_HEIGHT}px;
-  background: ${(props) => props.backgroundColor};
-  border-top-left-radius: 10px;
-  border-top-right-radius: 10px;
+  margin: ${(props) => (!props.isMenuVisible ? '1.5rem' : 0)};
   display: flex;
   justify-content: space-between;
 `
 
 const Box = styled.div<{
   backgroundColor: string
+  backgroundImage: string
+  isBackgroundHidden: boolean
 }>`
-  margin: 24px 12px 24px 24px;
-  border-radius: 10px;
-  background: ${(props) => props.backgroundColor};
+  margin: 24px 0 24px 24px;
+  border-top-left-radius: 10px;
+  ${(props) =>
+    props.isBackgroundHidden
+      ? `background: ${props.backgroundColor};`
+      : `background: url(${props.backgroundImage});`}
   display: flex;
   flex-direction: column;
+`
+
+const Top = styled.div`
+  padding: 24px 24px 36px;
 `
 
 const Main = styled.div`
   display: flex;
   align-items: center;
   flex-direction: column;
-  padding: 24px 24px 36px;
   flex: 1;
+  padding: 2rem 7rem;
 
   /**
    * Hide overflow to make menu sliding in/out disappear at panel edge,
@@ -147,13 +168,8 @@ const MenuBox = styled.div<{
 `
 
 const StyledMenuIconButton = styled(MenuIconButton)`
-  margin-left: 24px;
-`
-
-/**
- * Give logo a max-height so that it can scale down on
- * narrow screen heights.
- */
-const SizedLogo = styled(Logo)`
-  max-height: 40%;
+  width: 30px;
+  height: 30px;
+  top: 0;
+  transform: none;
 `

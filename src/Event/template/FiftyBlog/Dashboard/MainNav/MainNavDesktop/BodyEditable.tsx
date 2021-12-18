@@ -7,7 +7,6 @@ import {
 } from 'Event/template/FiftyBlog'
 import NewMainNavButton from 'Event/template/FiftyBlog/Dashboard/MainNav/MainNavButton/NewMainNavButton'
 import MainNavButton from 'Event/template/FiftyBlog/Dashboard/MainNav/MainNavButton'
-import CountDownTimers from 'Event/template/FiftyBlog/Dashboard/CountDownTimers'
 import {Container} from 'Event/template/FiftyBlog/Dashboard/MainNav/MainNavDesktop'
 import {createPositions, orderedIdsByPosition} from 'lib/list'
 
@@ -29,7 +28,6 @@ export default function BodyEditable(props: {className?: string}) {
               canScroll
               className={props.className}
             >
-              <CountDownTimers />
               <>
                 {ids.map((id, index) => (
                   <MainNavButton

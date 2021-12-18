@@ -52,7 +52,7 @@ export default function RightPanel(props: {
 }
 
 const Box = styled.div`
-  margin: 24px 24px 24px 12px;
+  margin: 24px 24px 24px 0;
   display: flex;
   flex-direction: column;
 `

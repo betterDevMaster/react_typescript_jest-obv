@@ -39,13 +39,8 @@ export const Container = React.forwardRef<
 const Box = styled.div<{
   canScroll?: boolean
 }>`
-  flex: 1;
-  display: flex;
   overflow-y: ${(props) => (props.canScroll ? 'auto' : 'hidden')};
   overflow-x: hidden;
-
-  margin-bottom: ${(props) => props.theme.spacing[7]};
-  margin-top: ${(props) => props.theme.spacing[7]};
 `
 
 const Inner = styled.div`

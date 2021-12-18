@@ -42,10 +42,10 @@ export default function Page(props: {
         <ColorOverlay color={backgroundColor}>
           <Hidden smDown>
             <FullHeightGrid container>
-              <SidePanel item md={4} xs={12}>
+              <SidePanel item md={6} xs={12}>
                 {Left}
               </SidePanel>
-              <SidePanel item md={8} xs={12}>
+              <SidePanel item md={6} xs={12}>
                 {Right}
               </SidePanel>
             </FullHeightGrid>

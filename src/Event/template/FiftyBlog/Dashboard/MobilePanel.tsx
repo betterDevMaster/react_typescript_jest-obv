@@ -8,7 +8,8 @@ import MainNavMobile from 'Event/template/FiftyBlog/Dashboard/MainNav/MainNavMob
 import EmojiList from 'Event/template/FiftyBlog/Dashboard/EmojiList'
 import {rgba} from 'lib/color'
 import {User} from 'auth/user'
-import CountDownTimers from 'Event/template/FiftyBlog/Dashboard/CountDownTimers'
+import defaultBackground from 'assets/images/background.png'
+import defaultLogo from 'assets/images/logo.png'
 
 export default function MobilePanel(props: {
   children: React.ReactElement
@@ -18,6 +19,10 @@ export default function MobilePanel(props: {
   const [menuVisible, setMenuVisible] = useState(false)
   const toggleMenu = () => setMenuVisible(!menuVisible)
   const template = useFiftyBlogTemplate()
+  const background = template.dashboardBackground
+    ? template.dashboardBackground
+    : defaultBackground
+  const logo = template.dashboardLogo ? template.dashboardLogo : defaultLogo
 
   const handleChangeTab = (tab: number) => {
     props.onChangeTab(tab)
@@ -25,15 +30,29 @@ export default function MobilePanel(props: {
   }
 
   return (
-    <Box>
-      <StyledMenuIconButton
-        active={menuVisible}
-        iconColor={template.leftPanel.barTextColor}
-        onClick={toggleMenu}
-      />
-      <LogoBox>
-        <Logo />
-      </LogoBox>
+    <Box className="mr-1">
+      <Container
+        backgroundImage={background}
+        backgroundColor=""
+        isBackgroundHidden={false}
+      >
+        <StyledMenuIconButton
+          active={menuVisible}
+          iconColor={template.leftPanel.barTextColor}
+          onClick={toggleMenu}
+        />
+        <LogoBox>
+          <EmojiList />
+          <Logo
+            src={logo}
+            hidden={template.dashboardLogoProps.hidden}
+            size={template.dashboardLogoProps.size}
+          />
+        </LogoBox>
+        <Top>
+          <MainNavMobile />
+        </Top>
+      </Container>
       <Content
         menuVisible={menuVisible}
         onChangeTab={handleChangeTab}
@@ -59,11 +78,6 @@ function Content(props: {
 
   return (
     <>
-      <Top>
-        <CountDownTimers />
-        <MainNavMobile />
-        <EmojiList />
-      </Top>
       <Panel
         backgroundColor={rgba(
           template.rightPanel.backgroundColor,
@@ -83,6 +97,24 @@ const Box = styled.div`
   align-items: center;
   min-height: 100vh;
   overflow: auto;
+`
+
+const Container = styled.div<{
+  backgroundColor: string
+  backgroundImage: string
+  isBackgroundHidden: boolean
+}>`
+  padding: ${(props) => props.theme.spacing[6]}
+    ${(props) => props.theme.spacing[6]} ${(props) => props.theme.spacing[9]};
+  border-radius: 10px;
+  ${(props) =>
+    props.isBackgroundHidden
+      ? `background: ${props.backgroundColor};`
+      : `background: url(${props.backgroundImage});`}
+  display: flex;
+  align-items: center;
+  width: 100%;
+  flex-direction: column;
 `
 
 const LogoBox = styled.div`

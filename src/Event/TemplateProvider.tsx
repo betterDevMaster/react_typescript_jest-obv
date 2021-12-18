@@ -37,9 +37,11 @@ export default function TemplateProvider(props: {
     const updated = withDefaults(defaults, template)
 
     // Fill out any defaults for countdown timers
-    updated.countDownTimers = fillCountDownTimerDefaults(
-      updated.countDownTimers,
-    )
+    if ('countDownTimers' in updated) {
+      updated.countDownTimers = fillCountDownTimerDefaults(
+        updated.countDownTimers,
+      )
+    }
 
     updated.blogPosts = fillBlogPostDefaults(updated.blogPosts)
 

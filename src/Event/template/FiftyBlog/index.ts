@@ -9,8 +9,6 @@ import {useTemplate} from 'Event/TemplateProvider'
 import {BlogPost} from 'Event/Dashboard/components/BlogPosts'
 import {colors} from 'lib/ui/theme'
 import {DeepRequired} from 'lib/type-utils'
-import {TicketRibbon} from 'Event/template/FiftyBlog/Dashboard/TicketRibbonList/TicketRibbon'
-import {CountDownTimer} from 'Event/Dashboard/components/CountDownTimer'
 import {useTemplateUpdate} from 'Event/TemplateUpdateProvider'
 
 export const FIFTY_BLOG = 'Fifty Fifty'
@@ -56,195 +54,202 @@ export function useHasMultipleTabs() {
   )
 }
 
-export type FiftyBlog = BaseTemplate & {
-  name: typeof FIFTY_BLOG
-  accentColor: string
-  menu: {
-    backgroundColor: string
-    iconColor: string
-    textColor: string
-    height: number
-  }
-  backgroundPosition?: 'fixed' | 'bottom'
-  nav: HashMap<NavButtonWithSize>
-  ticketRibbons: TicketRibbon[]
-  welcomeText: string
-  homeMenuTitle?: string
-  emojiList: EmojiList
-  leftPanel: {
-    barBackgroundColor: string
-    barTextColor: string
-    menuTextColor?: string
-    arrowColor?: string
-    backgroundColor: string
-    backgroundOpacity: number
-  }
-  rightPanel: {
-    barBackgroundColor: string
-    barTextColor: string
-    tabUnderlineColor: string
-    textColor: string
-    backgroundColor: string
-    backgroundOpacity: number
-    isDarkMode: boolean
-  }
-  points_unit: string
-  blogPosts: HashMap<BlogPost>
-  resourceList: ResourceList
-  menuIconColor: string
-  isDarkMode?: boolean
-  background?: {
-    color?: string
-    opacity?: number
-  }
-  checkInRightPanel: {
-    backgroundColor: string
-    backgroundOpacity: number
-    textColor: string
-  }
-  checkInTitle: string
-  checkInLeftPanel: {
-    backgroundColor: string
-    backgroundOpacity: number
-    textColor: string
-    inactiveTextColor: string
-  }
-  stepLabelColor: string
-  stepIconColor: string
-  stepInactiveColor: string
-  step1Label: string
-  step1Icon?: string
-  step2Label: string
-  step2Icon?: string
-  step3Label: string
-  step3Icon?: string
-  textColor?: string
-  linkColor?: string
-  linkUnderline?: boolean
-  bodyHTMLEmbed?: string | null
-  leaderboard: {
-    title: string
-    description: string
-    menuTitle?: string
-    isVisible?: boolean
-  }
-  faq?: {
-    title?: string
-    description?: string
-    orderedIds?: number[]
-    menuTitle?: string
-    isVisible?: boolean
-  }
-  zoomBackgrounds?: {
-    borderColor?: string
-    borderRadius?: number
-    borderThickness?: number
-    orderedIds?: number[]
-  }
-  techCheck?: {
-    buttonText?: string
-    buttonBackground?: string
-    buttonTextColor?: string
-    buttonBorderRadius?: number
-    buttonBorderWidth?: number
-    buttonBorderColor?: string
-    buttonWidth?: GridSize
-    hasCustomButtons?: boolean
-    buttons?: EntityList<NavButtonWithSize>
-  }
-  waiver?: {
-    buttonText?: string
-    buttonBackground?: string
-    buttonTextColor?: string
-    buttonBorderRadius?: number
-    buttonBorderWidth?: number
-    buttonBorderColor?: string
-    buttonWidth?: GridSize
-  }
-  login?: {
-    submitButton: {
+export type FiftyBlog = BaseTemplate &
+  CustomBackgrounds & {
+    name: typeof FIFTY_BLOG
+    accentColor: string
+    menu: {
       backgroundColor: string
+      iconColor: string
       textColor: string
-      hoverColor?: string
-      label: string
-      borderRadius?: number
+      height: number
     }
-    description: {
-      text: string
-      color: string
-      fontSize: number
+    backgroundPosition?: 'fixed' | 'bottom'
+    nav: HashMap<NavButtonWithSize>
+    welcomeText: string
+    homeMenuTitle?: string
+    emojiList: EmojiList
+    leftPanel: {
+      backgroundHidden: boolean
+      barTextColor: string
+      menuTextColor?: string
+      arrowColor?: string
+      backgroundColor: string
+      backgroundOpacity: number
     }
-    passwordReset: {
-      linkLabel: string
-      buttonText: string
+    dashboardLogoProps?: {
+      hidden?: boolean
+      size: number
+    }
+    dashboardBackgroundProps?: {
+      hidden?: boolean
+      size: number
+    }
+    rightPanel: {
+      barBackgroundColor: string
+      barTextColor: string
+      tabUnderlineColor: string
+      textColor: string
+      backgroundColor: string
+      backgroundOpacity: number
+      isDarkMode: boolean
+    }
+    points_unit: string
+    blogPosts: HashMap<BlogPost>
+    resourceList: ResourceList
+    menuIconColor: string
+    isDarkMode?: boolean
+    background?: {
+      color?: string
+      opacity?: number
+    }
+    checkInRightPanel: {
+      backgroundColor: string
+      backgroundOpacity: number
+      textColor: string
+    }
+    checkInTitle: string
+    checkInLeftPanel: {
+      backgroundColor: string
+      backgroundOpacity: number
+      textColor: string
+      inactiveTextColor: string
+    }
+    stepLabelColor: string
+    stepIconColor: string
+    stepInactiveColor: string
+    step1Label: string
+    step1Icon?: string
+    step2Label: string
+    step2Icon?: string
+    step3Label: string
+    step3Icon?: string
+    textColor?: string
+    linkColor?: string
+    linkUnderline?: boolean
+    bodyHTMLEmbed?: string | null
+    leaderboard: {
+      title: string
       description: string
-      successMessage: string
+      menuTitle?: string
+      isVisible?: boolean
     }
-    backgroundColor?: string
-    backgroundOpacity?: number
-    logoSize?: number
-    inputBorderRadius?: number
-    logoHidden?: boolean
-    logoBackgroundHidden?: boolean
-    backgroundHidden?: boolean
-    emailLabel?: string
-    passwordLabel?: string
-  }
-  setPasswordForm: {
-    title: string
-    description?: string
-    passwordLabel?: string
-    confirmPasswordLabel?: string
-    button?: {
-      text?: string
-      textColor?: string
-      backgroundColor?: string
-      hoverBackgroundColor?: string
+    faq?: {
+      title?: string
+      description?: string
+      orderedIds?: number[]
+      menuTitle?: string
+      isVisible?: boolean
+    }
+    zoomBackgrounds?: {
+      borderColor?: string
       borderRadius?: number
+      borderThickness?: number
+      orderedIds?: number[]
+    }
+    techCheck?: {
+      buttonText?: string
+      buttonBackground?: string
+      buttonTextColor?: string
+      buttonBorderRadius?: number
+      buttonBorderWidth?: number
+      buttonBorderColor?: string
+      buttonWidth?: GridSize
+      hasCustomButtons?: boolean
+      buttons?: EntityList<NavButtonWithSize>
+    }
+    waiver?: {
+      buttonText?: string
+      buttonBackground?: string
+      buttonTextColor?: string
+      buttonBorderRadius?: number
+      buttonBorderWidth?: number
+      buttonBorderColor?: string
+      buttonWidth?: GridSize
+    }
+    login?: {
+      submitButton: {
+        backgroundColor: string
+        textColor: string
+        hoverColor?: string
+        label: string
+        borderRadius?: number
+      }
+      description: {
+        text: string
+        color: string
+        fontSize: number
+      }
+      passwordReset: {
+        linkLabel: string
+        buttonText: string
+        description: string
+        successMessage: string
+      }
+      backgroundColor?: string
+      backgroundOpacity?: number
+      logoSize?: number
+      inputBorderRadius?: number
+      logoHidden?: boolean
+      logoBackgroundHidden?: boolean
+      backgroundHidden?: boolean
+      emailLabel?: string
+      passwordLabel?: string
+    }
+    setPasswordForm: {
+      title: string
+      description?: string
+      passwordLabel?: string
+      confirmPasswordLabel?: string
+      button?: {
+        text?: string
+        textColor?: string
+        backgroundColor?: string
+        hoverBackgroundColor?: string
+        borderRadius?: number
+      }
+    }
+    sponsors?: {
+      title?: string
+      description?: string
+      orderedIds?: number[]
+      perRow?: number
+      menuTitle?: string
+      cardBackgroundColor?: string
+      cardBackgroundOpacity?: number
+      isVisible?: boolean
+    }
+    speakers?: {
+      title?: string
+      description?: string
+      speakerImageSize?: Column
+      speakersSpace?: GridSpacing
+      orderedIds?: number[]
+      menuTitle?: string
+      isVisible?: boolean
+    }
+    offlinePage?: {
+      title: string
+      description: string
+      redirectUrl: string
+      shouldRedirect: boolean
+    }
+    imageWaterfall?: {
+      title?: string
+      menuTitle?: string
+      description?: string
+      uploadFormTitle?: string
+      uploadFormDescription?: string
+      uploadButtonText?: string
+      uploadButtonFontSize?: number
+      uploadButtonBorderRadius?: number
+      uploadButtonTextColor?: string
+      uploadButtonBackgroundColor?: string
+      uploadButtonBorderColor?: string
+      actionId?: string | null
+      isVisible?: boolean
     }
   }
-  sponsors?: {
-    title?: string
-    description?: string
-    orderedIds?: number[]
-    perRow?: number
-    menuTitle?: string
-    cardBackgroundColor?: string
-    cardBackgroundOpacity?: number
-    isVisible?: boolean
-  }
-  speakers?: {
-    title?: string
-    description?: string
-    speakerImageSize?: Column
-    speakersSpace?: GridSpacing
-    orderedIds?: number[]
-    menuTitle?: string
-    isVisible?: boolean
-  }
-  offlinePage?: {
-    title: string
-    description: string
-    redirectUrl: string
-    shouldRedirect: boolean
-  }
-  countDownTimers?: HashMap<CountDownTimer>
-  imageWaterfall?: {
-    title?: string
-    menuTitle?: string
-    description?: string
-    uploadFormTitle?: string
-    uploadFormDescription?: string
-    uploadButtonText?: string
-    uploadButtonFontSize?: number
-    uploadButtonBorderRadius?: number
-    uploadButtonTextColor?: string
-    uploadButtonBackgroundColor?: string
-    uploadButtonBorderColor?: string
-    actionId?: string | null
-    isVisible?: boolean
-  }
-}
 
 export const createFiftyBlog = (): DeepRequired<FiftyBlog> => ({
   ...BASE_DEFAULTS,
@@ -260,7 +265,6 @@ export const createFiftyBlog = (): DeepRequired<FiftyBlog> => ({
   points_unit: 'Points',
   backgroundPosition: 'fixed',
   nav: {},
-  ticketRibbons: [],
   welcomeText: 'Welcome!',
   homeMenuTitle: 'Home',
   emojiList: {
@@ -268,12 +272,20 @@ export const createFiftyBlog = (): DeepRequired<FiftyBlog> => ({
     emojiWidth: null,
   },
   leftPanel: {
-    barBackgroundColor: '#07BAB5',
+    backgroundHidden: false,
     barTextColor: '#ffffff',
     menuTextColor: '#000000',
     arrowColor: '#000000',
     backgroundColor: '#FFFFFF',
     backgroundOpacity: 0,
+  },
+  dashboardLogoProps: {
+    hidden: false,
+    size: 20,
+  },
+  dashboardBackgroundProps: {
+    hidden: false,
+    size: 20,
   },
   rightPanel: {
     barBackgroundColor: '#07BAB5',
@@ -437,7 +449,6 @@ export const createFiftyBlog = (): DeepRequired<FiftyBlog> => ({
     title: 'Event Offline',
     description: 'Please check back again, or contact support for access.',
   },
-  countDownTimers: {},
   imageWaterfall: {
     title: 'Image Waterfall',
     menuTitle: 'Image Waterfall',
@@ -453,6 +464,19 @@ export const createFiftyBlog = (): DeepRequired<FiftyBlog> => ({
     actionId: null,
     isVisible: true,
   },
+  dashboardLogo: null,
+  dashboardBackground: null,
+  backgroundImage3: null,
+  backgroundImage4: null,
+  backgroundImage5: null,
 })
+
+export type CustomBackgrounds = {
+  dashboardLogo: string | null
+  dashboardBackground: string | null
+  backgroundImage3: string | null
+  backgroundImage4: string | null
+  backgroundImage5: string | null
+}
 
 export const DEFAULTS = createFiftyBlog()
