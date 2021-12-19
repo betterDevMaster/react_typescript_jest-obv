@@ -13,47 +13,49 @@ afterEach(() => {
   jest.clearAllMocks()
 })
 
-it('should render left panel', async () => {
+it('should render fiftyblog left panel', async () => {
   const {findByLabelText, queryByText} = await goToDashboardConfig({
     event: fakeEvent({template: fakeFiftyBlog(), logo: null}),
   })
 
-  expect(await findByLabelText('left panel')).toBeInTheDocument()
-  expect(queryByText('left panel menu Home button')).not.toBeInTheDocument()
+  expect(await findByLabelText('fiftyblog left panel')).toBeInTheDocument()
+  expect(
+    queryByText('fiftyblog left panel menu Home button'),
+  ).not.toBeInTheDocument()
 
   fireEvent.click(await findByLabelText('menu icon button'))
 
   expect(
-    await findByLabelText('left panel menu Home button'),
+    await findByLabelText('fiftyblog left panel menu Home button'),
   ).toBeInTheDocument()
   expect(
-    await findByLabelText('left panel menu Speakers button'),
+    await findByLabelText('fiftyblog left panel menu Speakers button'),
   ).toBeInTheDocument()
   expect(
-    await findByLabelText('left panel menu Resources button'),
+    await findByLabelText('fiftyblog left panel menu Resources button'),
   ).toBeInTheDocument()
   expect(
-    await findByLabelText('left panel menu Points button'),
+    await findByLabelText('fiftyblog left panel menu Points button'),
   ).toBeInTheDocument()
 })
 
-it('should render left panel', async () => {
+it('should render fiftyblog left panel', async () => {
   const event = fakeEvent({template: fakeFiftyBlog(), logo: null})
 
   const {findByLabelText} = await goToDashboardConfig({
     event,
   })
 
-  clickEdit(await findByLabelText('left panel'))
+  clickEdit(await findByLabelText('fiftyblog left panel'))
 
-  // const color = '#666666'
-  // user.type(await findByLabelText('left panel bar text color'), color)
+  const color = '#666666'
+  user.type(await findByLabelText('fiftyblog left panel bar text color'), color)
 
   user.click(await findByLabelText('save'))
 
   await wait(async () => {
     expect(mockPut).toHaveBeenCalledTimes(1)
-    // expect(await findByLabelText('left panel')).toHaveStyle(
+    // expect(await findByLabelText('fiftyblog left panel bar text color')).toHaveStyle(
     //   `background-color: ${rgba(color)}`,
     // )
   })

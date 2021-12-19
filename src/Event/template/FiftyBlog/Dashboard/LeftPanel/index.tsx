@@ -64,7 +64,7 @@ export default function LeftPanel(props: {
         isBackgroundHidden={dashboardBackgroundProps.hidden}
       >
         <Editable className="m-6" onEdit={toggleBarConfig}>
-          <Bar isMenuVisible={isEditMode} aria-label="left panel">
+          <Bar isMenuVisible={isEditMode} aria-label="fiftyblog left panel">
             <StyledMenuIconButton
               active={menuVisible}
               iconColor={leftPanel.barTextColor}

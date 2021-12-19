@@ -54,7 +54,7 @@ export default function CheckInConfig() {
                       label="Background Color"
                       color={value}
                       onPick={onChange}
-                      aria-label="check in left panel background color"
+                      aria-label="check in fiftyblog left panel background color"
                     />
                   )}
                 />
@@ -87,7 +87,7 @@ export default function CheckInConfig() {
                       label="Text Color"
                       color={value}
                       onPick={onChange}
-                      aria-label="check in left panel text color"
+                      aria-label="check in fiftyblog left panel text color"
                     />
                   )}
                 />
@@ -97,7 +97,7 @@ export default function CheckInConfig() {
                     name="checkInTitle"
                     defaultValue={template.checkInTitle}
                     inputProps={{
-                      'aria-label': 'check in left panel title',
+                      'aria-label': 'check in fiftyblog left panel title',
                       ref: register,
                     }}
                     fullWidth

@@ -80,7 +80,6 @@ function EventProvider(props: {
       // saved.template.name = "Panels"
       // saved.template.name = "Cards"
       saved.template.name = 'Fifty Fifty'
-      // console.log('template :::', saved.template.name)
     }
     set(saved)
   }, [saved, set])

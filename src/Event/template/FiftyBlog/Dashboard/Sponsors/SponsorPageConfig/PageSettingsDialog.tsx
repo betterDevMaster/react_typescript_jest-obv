@@ -332,7 +332,7 @@ function QuestionIconUploadButton(props: {
         onChange={handleFileSelect}
         value="" // Required to allow uploading multiple times
         hidden
-        aria-label="question icon input"
+        aria-label="fiftyblog question icon input"
       />
       <Error>{error}</Error>
     </>
@@ -357,7 +357,7 @@ function RemoveQuestionIconButton(props: {
   return (
     <DangerButton
       variant="outlined"
-      aria-label="remove sponsor question icon"
+      aria-label="fiftyblog remove sponsor question icon"
       onClick={props.onClick}
       disabled={props.disabled}
     >

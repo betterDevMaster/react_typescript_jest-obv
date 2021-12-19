@@ -37,7 +37,7 @@ export default function AddSponsorButton(props: {
       size="large"
       variant="contained"
       color="secondary"
-      aria-label="add sponsor"
+      aria-label="fiftyblog add sponsor"
       onClick={add}
       disabled={submitting}
     >

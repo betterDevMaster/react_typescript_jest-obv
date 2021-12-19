@@ -40,7 +40,7 @@ export default function TitleField() {
       focused={canSave}
       variant="outlined"
       fullWidth
-      inputProps={{'aria-label': 'sponsor page title'}}
+      inputProps={{'aria-label': 'fiftyblog sponsor page title'}}
       onChange={onChangeStringHandler(setTitle)}
       InputProps={{
         endAdornment: (
@@ -49,7 +49,7 @@ export default function TitleField() {
               onClick={save}
               disabled={!canSave}
               color="primary"
-              aria-label="save sponsor page title"
+              aria-label="save fiftyblog sponsor page title"
             >
               Save
             </Button>
