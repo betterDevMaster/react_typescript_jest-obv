@@ -69,10 +69,12 @@ function CollapsableBackground(props: {children: React.ReactElement}) {
     : event.header_background
     ? event.header_background.url
     : ''
+
   return (
     <Box
       backgroundImage={backgroundImage}
       disableShadow={header.disableShadow || header.isCollapsed}
+      isCollapsed={header.isCollapsed}
     >
       {props.children}
     </Box>
@@ -144,6 +146,7 @@ const Side = styled.div`
 const Box = styled.div<{
   backgroundImage: string | null
   disableShadow?: boolean
+  isCollapsed?: boolean
 }>`
   ${(props) =>
     props.backgroundImage
@@ -153,7 +156,8 @@ const Box = styled.div<{
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
-  margin-bottom: ${(props) => props.theme.spacing[8]};
+  margin-bottom: ${(props) =>
+    props.isCollapsed ? 'unset' : props.theme.spacing[8]};
   ${(props) => (props.disableShadow ? '' : `box-shadow: 20px 20px 50px #ddd;`)}
 `
 
