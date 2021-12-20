@@ -1,32 +1,36 @@
 import React, {useState} from 'react'
 import styled from 'styled-components'
+
 import {User} from 'auth/user'
-import Page from 'Event/template/FiftyBlog/Page'
-import LeftPanel from 'Event/template/FiftyBlog/Dashboard/LeftPanel'
-import RightPanel from 'Event/template/FiftyBlog/Dashboard/RightPanel'
-import MobilePanel from 'Event/template/FiftyBlog/Dashboard/MobilePanel'
+
+import {isAttendee} from 'Event/auth'
+import {useEditMode} from 'Event/Dashboard/editor/state/edit-mode'
 import {useEvent} from 'Event/EventProvider'
-import SpeakerPage from 'Event/template/FiftyBlog/Dashboard/Speakers'
-import TabPanel from 'lib/ui/tabs/TabPanel'
-import Home from 'Event/template/FiftyBlog/Dashboard/Home'
-import Leaderboard from 'Event/template/FiftyBlog/Dashboard/Leaderboard/Leaderboard'
-import Resources from 'Event/template/FiftyBlog/Dashboard/Resources'
 import {useFiftyBlogTemplate} from 'Event/template/FiftyBlog'
-import SponsorPage from 'Event/template/FiftyBlog/Dashboard/Sponsors'
-import ImageWaterfall from 'Event/template/FiftyBlog/Dashboard/ImageWaterfall'
-import {
-  EventSponsorsProvider,
-  OrganizationSponsorsProvider,
-  useSponsors,
-} from 'organization/Event/SponsorsProvider'
 import FaqPage from 'Event/template/FiftyBlog/Dashboard/Faqs'
+import Home from 'Event/template/FiftyBlog/Dashboard/Home'
+import ImageWaterfall from 'Event/template/FiftyBlog/Dashboard/ImageWaterfall'
+import Resources from 'Event/template/FiftyBlog/Dashboard/Resources'
+import Leaderboard from 'Event/template/FiftyBlog/Dashboard/Leaderboard/Leaderboard'
+import LeftPanel from 'Event/template/FiftyBlog/Dashboard/LeftPanel'
+import MobilePanel from 'Event/template/FiftyBlog/Dashboard/MobilePanel'
+import Page from 'Event/template/FiftyBlog/Page'
+import RightPanel from 'Event/template/FiftyBlog/Dashboard/RightPanel'
+import SpeakerPage from 'Event/template/FiftyBlog/Dashboard/Speakers'
+import SponsorPage from 'Event/template/FiftyBlog/Dashboard/Sponsors'
+
+import TabPanel from 'lib/ui/tabs/TabPanel'
+
 import {
   useFaqs,
   OrganizationFaqsProvider,
   EventFaqsProvider,
 } from 'organization/Event/FaqsProvider'
-import {useEditMode} from 'Event/Dashboard/editor/state/edit-mode'
-import {isAttendee} from 'Event/auth'
+import {
+  EventSponsorsProvider,
+  OrganizationSponsorsProvider,
+  useSponsors,
+} from 'organization/Event/SponsorsProvider'
 
 export default function FiftyBlogDashboard(props: {user: User}) {
   const {user} = props

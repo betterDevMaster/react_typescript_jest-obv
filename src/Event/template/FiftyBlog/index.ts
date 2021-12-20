@@ -273,7 +273,7 @@ export const createFiftyBlog = (): DeepRequired<FiftyBlog> => ({
   },
   leftPanel: {
     backgroundHidden: false,
-    barTextColor: '#ffffff',
+    barTextColor: '#00000',
     menuTextColor: '#000000',
     arrowColor: '#000000',
     backgroundColor: '#FFFFFF',
@@ -289,7 +289,7 @@ export const createFiftyBlog = (): DeepRequired<FiftyBlog> => ({
   },
   rightPanel: {
     barBackgroundColor: '#07BAB5',
-    barTextColor: '#ffffff',
+    barTextColor: '#00000',
     tabUnderlineColor: '#B8FFF7',
     textColor: '#000000',
     backgroundColor: '#FFFFFF',
@@ -383,11 +383,11 @@ export const createFiftyBlog = (): DeepRequired<FiftyBlog> => ({
   },
   login: {
     submitButton: {
-      backgroundColor: '#FFFFFF',
+      backgroundColor: '#3490DC',
       textColor: '#FFFFFF',
       label: 'Login',
       borderRadius: 56,
-      hoverColor: '#FFFFFF',
+      hoverColor: '#24649a',
     },
     description: {
       text: 'Welcome to the TRIBE Live Virtual Experience!',

@@ -2,22 +2,23 @@ import React, {useState} from 'react'
 import styled from 'styled-components'
 import Slide from '@material-ui/core/Slide'
 import {User} from 'auth/user'
-import {rgba} from 'lib/color'
-import {useToggle} from 'lib/toggle'
-import {MenuIconButton} from 'lib/ui/IconButton/MenuIconButton'
+
+import {useEditMode} from 'Event/Dashboard/editor/state/edit-mode'
 import {Editable} from 'Event/Dashboard/editor/views/EditComponent'
 import EditModeOnly from 'Event/Dashboard/editor/views/EditModeOnly'
 import Logo from 'Event/Logo'
 import {useFiftyBlogTemplate} from 'Event/template/FiftyBlog'
-import {useEditMode} from 'Event/Dashboard/editor/state/edit-mode'
 import EmojiList from 'Event/template/FiftyBlog/Dashboard/EmojiList'
 import LeftPanelConfig from 'Event/template/FiftyBlog/Dashboard/LeftPanel/LeftPanelConfig'
 import MainNavDesktop from 'Event/template/FiftyBlog/Dashboard/MainNav/MainNavDesktop'
 import Menu from 'Event/template/FiftyBlog/Dashboard/Menu'
-import {TOP_BAR_HEIGHT} from 'Event/template/FiftyBlog/Page'
-import {useEvent} from 'Event/EventProvider'
-import defaultBackground from 'assets/images/background.png'
+
+import {rgba} from 'lib/color'
+import {useToggle} from 'lib/toggle'
+import {MenuIconButton} from 'lib/ui/IconButton/MenuIconButton'
+
 import defaultLogo from 'assets/images/logo.png'
+import defaultBackground from 'assets/images/background.png'
 
 export default function LeftPanel(props: {
   onChangeTab: (tab: number) => void
@@ -25,7 +26,6 @@ export default function LeftPanel(props: {
 }) {
   const [menuVisible, setMenuVisible] = useState(false)
   const toggleMenu = () => setMenuVisible(!menuVisible)
-  const {event} = useEvent()
   const isEditMode = useEditMode()
 
   const {flag: barConfigVisible, toggle: toggleBarConfig} = useToggle()
@@ -51,6 +51,7 @@ export default function LeftPanel(props: {
     <>
       <EditModeOnly>
         <LeftPanelConfig
+          isMobile={true}
           isVisible={barConfigVisible}
           onClose={toggleBarConfig}
         />

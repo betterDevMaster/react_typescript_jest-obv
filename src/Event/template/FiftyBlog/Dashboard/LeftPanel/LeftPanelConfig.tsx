@@ -16,23 +16,21 @@ import {useEvent} from 'Event/EventProvider'
 import ComponentConfig, {
   SaveButton,
 } from 'organization/Event/DashboardConfig/ComponentConfig'
-import EventImageUpload from 'organization/Event/DashboardConfig/EventImageUpload'
 
 export default function LeftPanelConfig(props: {
   isVisible: boolean
+  isMobile: boolean
   onClose: () => void
 }) {
-  const {isVisible, onClose} = props
+  const {isVisible, isMobile, onClose} = props
 
   const template = useFiftyBlogTemplate()
   const update = useFiftyBlogUpdate()
-  const {leftPanel} = template
+  const {leftPanel, dashboardBackgroundProps} = template
   const {control, handleSubmit} = useForm()
-  const {event} = useEvent()
 
-  const submit = (data: FiftyBlog['leftPanel']) => {
-    update({leftPanel: data})
-
+  const submit = (data: FiftyBlog) => {
+    update(data)
     onClose()
   }
 
@@ -41,15 +39,15 @@ export default function LeftPanelConfig(props: {
       <ComponentConfig
         isVisible={isVisible}
         onClose={onClose}
-        title="Left Panel Bar"
+        title="Left Panel Config"
       >
         <form onSubmit={handleSubmit(submit)}>
           <Box display="flex" flexDirection="column" flex="1" mb={2}>
             <InputLabel>Hide Background</InputLabel>
 
             <Controller
-              name="backgroundHidden"
-              defaultValue={leftPanel.backgroundHidden}
+              name="dashboardBackgroundProps.hidden"
+              defaultValue={dashboardBackgroundProps.hidden}
               control={control}
               render={({value, onChange}) => (
                 <Switch
@@ -65,7 +63,7 @@ export default function LeftPanelConfig(props: {
           </Box>
           <Box mb={2}>
             <Controller
-              name="barTextColor"
+              name="leftPanel.barTextColor"
               defaultValue={leftPanel.barTextColor}
               control={control}
               render={({value, onChange}) => (
@@ -80,7 +78,7 @@ export default function LeftPanelConfig(props: {
           </Box>
           <Box mb={2}>
             <Controller
-              name="menuTextColor"
+              name="leftPanel.menuTextColor"
               defaultValue={leftPanel.menuTextColor}
               control={control}
               render={({value, onChange}) => (
@@ -95,7 +93,7 @@ export default function LeftPanelConfig(props: {
           </Box>
           <Box mb={2}>
             <Controller
-              name="arrowColor"
+              name="leftPanel.arrowColor"
               defaultValue={leftPanel.arrowColor}
               control={control}
               render={({value, onChange}) => (
@@ -110,7 +108,7 @@ export default function LeftPanelConfig(props: {
           </Box>
           <Box mb={2}>
             <Controller
-              name="backgroundColor"
+              name="leftPanel.backgroundColor"
               defaultValue={leftPanel.backgroundColor}
               control={control}
               render={({value, onChange}) => (
@@ -126,7 +124,7 @@ export default function LeftPanelConfig(props: {
           <Box mb={2}>
             <InputLabel>Background Opacity</InputLabel>
             <Controller
-              name="backgroundOpacity"
+              name="leftPanel.backgroundOpacity"
               defaultValue={leftPanel.backgroundOpacity}
               control={control}
               render={({value, onChange}) => (

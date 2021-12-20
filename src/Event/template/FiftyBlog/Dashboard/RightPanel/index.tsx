@@ -23,6 +23,7 @@ export default function RightPanel(props: {
     <>
       <EditModeOnly>
         <RightPanelConfig
+          isMobile={false}
           isVisible={barConfigVisible}
           onClose={toggleBarConfig}
         />

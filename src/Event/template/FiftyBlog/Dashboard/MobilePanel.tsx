@@ -1,15 +1,27 @@
-import Logo from 'Event/Logo'
-import styled from 'styled-components'
 import React, {useState} from 'react'
-import {useFiftyBlogTemplate} from 'Event/template/FiftyBlog'
-import {MenuIconButton} from 'lib/ui/IconButton/MenuIconButton'
-import Menu from 'Event/template/FiftyBlog/Dashboard/Menu'
-import MainNavMobile from 'Event/template/FiftyBlog/Dashboard/MainNav/MainNavMobile'
-import EmojiList from 'Event/template/FiftyBlog/Dashboard/EmojiList'
-import {rgba} from 'lib/color'
+import styled from 'styled-components'
+
 import {User} from 'auth/user'
+
+import Logo from 'Event/Logo'
+import {useFiftyBlogTemplate} from 'Event/template/FiftyBlog'
+import Menu from 'Event/template/FiftyBlog/Dashboard/Menu'
+import EmojiList from 'Event/template/FiftyBlog/Dashboard/EmojiList'
+import MainNavMobile from 'Event/template/FiftyBlog/Dashboard/MainNav/MainNavMobile'
+import LeftPanelConfig from 'Event/template/FiftyBlog/Dashboard/LeftPanel/LeftPanelConfig'
+import RightPanelConfig from 'Event/template/FiftyBlog/Dashboard/RightPanel/RightPanelConfig'
+
+import {rgba} from 'lib/color'
+import {MenuIconButton} from 'lib/ui/IconButton/MenuIconButton'
+import EditIconButton from 'lib/ui/IconButton/EditIconButton'
+
 import defaultBackground from 'assets/images/background.png'
 import defaultLogo from 'assets/images/logo.png'
+
+interface PanelEdit {
+  leftPanel: boolean
+  rightPanel: boolean
+}
 
 export default function MobilePanel(props: {
   children: React.ReactElement
@@ -23,6 +35,10 @@ export default function MobilePanel(props: {
     ? template.dashboardBackground
     : defaultBackground
   const logo = template.dashboardLogo ? template.dashboardLogo : defaultLogo
+  const [isEditing, setIsEditing] = useState<PanelEdit>({
+    leftPanel: false,
+    rightPanel: false,
+  })
 
   const handleChangeTab = (tab: number) => {
     props.onChangeTab(tab)
@@ -30,12 +46,23 @@ export default function MobilePanel(props: {
   }
 
   return (
-    <Box className="mr-1">
+    <Box>
       <Container
+        backgroundColor={rgba(
+          template.leftPanel.backgroundColor,
+          template.leftPanel.backgroundOpacity,
+        )}
         backgroundImage={background}
-        backgroundColor=""
-        isBackgroundHidden={false}
+        isBackgroundHidden={template.dashboardBackgroundProps.hidden}
       >
+        <LeftPanelIconButton
+          onClick={() => setIsEditing({...isEditing, leftPanel: true})}
+        />
+        <LeftPanelConfig
+          isMobile={true}
+          isVisible={isEditing.leftPanel}
+          onClose={() => setIsEditing({...isEditing, leftPanel: false})}
+        />
         <StyledMenuIconButton
           active={menuVisible}
           iconColor={template.leftPanel.barTextColor}
@@ -53,13 +80,23 @@ export default function MobilePanel(props: {
           <MainNavMobile />
         </Top>
       </Container>
-      <Content
-        menuVisible={menuVisible}
-        onChangeTab={handleChangeTab}
-        user={props.user}
-      >
-        {props.children}
-      </Content>
+      <div className="relative">
+        <RightPanelIconButton
+          onClick={() => setIsEditing({...isEditing, rightPanel: true})}
+        />
+        <RightPanelConfig
+          isMobile={true}
+          isVisible={isEditing.rightPanel}
+          onClose={() => setIsEditing({...isEditing, rightPanel: false})}
+        />
+        <Content
+          menuVisible={menuVisible}
+          onChangeTab={handleChangeTab}
+          user={props.user}
+        >
+          {props.children}
+        </Content>
+      </div>
     </Box>
   )
 }
@@ -147,6 +184,18 @@ const StyledMenuIconButton = styled(MenuIconButton)`
   position: absolute;
   top: 24px;
   left: 12px;
+`
+
+const LeftPanelIconButton = styled(EditIconButton)`
+  position: absolute;
+  top: 14px;
+  right: 12px;
+`
+
+const RightPanelIconButton = styled(EditIconButton)`
+  position: absolute;
+  top: 10px;
+  right: 12px;
 `
 
 const Top = styled.div`

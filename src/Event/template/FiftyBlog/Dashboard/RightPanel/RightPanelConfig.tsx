@@ -16,10 +16,11 @@ import ComponentConfig, {
 } from 'organization/Event/DashboardConfig/ComponentConfig'
 
 export default function RightPanelConfig(props: {
+  isMobile: boolean
   isVisible: boolean
   onClose: () => void
 }) {
-  const {isVisible, onClose} = props
+  const {isVisible, isMobile, onClose} = props
 
   const template = useFiftyBlogTemplate()
   const update = useFiftyBlogUpdate()
@@ -57,51 +58,55 @@ export default function RightPanelConfig(props: {
               )}
             />
           </Box>
-          <Box mb={2}>
-            <Controller
-              name="barBackgroundColor"
-              defaultValue={rightPanel.barBackgroundColor}
-              control={control}
-              render={({value, onChange}) => (
-                <ColorPicker
-                  label="Bar Background Color"
-                  color={value}
-                  onPick={onChange}
-                  aria-label="bar background color"
+          {!isMobile && (
+            <>
+              <Box mb={2}>
+                <Controller
+                  name="barBackgroundColor"
+                  defaultValue={rightPanel.barBackgroundColor}
+                  control={control}
+                  render={({value, onChange}) => (
+                    <ColorPicker
+                      label="Bar Background Color"
+                      color={value}
+                      onPick={onChange}
+                      aria-label="bar background color"
+                    />
+                  )}
                 />
-              )}
-            />
-          </Box>
-          <Box mb={2}>
-            <Controller
-              name="barTextColor"
-              defaultValue={rightPanel.barTextColor}
-              control={control}
-              render={({value, onChange}) => (
-                <ColorPicker
-                  label="Bar Text Color"
-                  color={value}
-                  onPick={onChange}
-                  aria-label="bar text color"
+              </Box>
+              <Box mb={2}>
+                <Controller
+                  name="barTextColor"
+                  defaultValue={rightPanel.barTextColor}
+                  control={control}
+                  render={({value, onChange}) => (
+                    <ColorPicker
+                      label="Bar Text Color"
+                      color={value}
+                      onPick={onChange}
+                      aria-label="bar text color"
+                    />
+                  )}
                 />
-              )}
-            />
-          </Box>
-          <Box mb={2}>
-            <Controller
-              name="tabUnderlineColor"
-              defaultValue={rightPanel.tabUnderlineColor}
-              control={control}
-              render={({value, onChange}) => (
-                <ColorPicker
-                  label="Tab Underline Color"
-                  color={value}
-                  onPick={onChange}
-                  aria-label="Tab underline color"
+              </Box>
+              <Box mb={2}>
+                <Controller
+                  name="tabUnderlineColor"
+                  defaultValue={rightPanel.tabUnderlineColor}
+                  control={control}
+                  render={({value, onChange}) => (
+                    <ColorPicker
+                      label="Tab Underline Color"
+                      color={value}
+                      onPick={onChange}
+                      aria-label="Tab underline color"
+                    />
+                  )}
                 />
-              )}
-            />
-          </Box>
+              </Box>
+            </>
+          )}
           <Box mb={2}>
             <Controller
               name="textColor"
