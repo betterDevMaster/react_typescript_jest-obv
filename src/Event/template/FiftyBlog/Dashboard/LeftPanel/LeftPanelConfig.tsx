@@ -73,7 +73,7 @@ export default function LeftPanelConfig(props: {
                   label="Bar Text Color"
                   color={value}
                   onPick={onChange}
-                  aria-label="fiftyblog left panel bar text color"
+                  aria-label="left panel bar text color"
                 />
               )}
             />
@@ -88,7 +88,7 @@ export default function LeftPanelConfig(props: {
                   label="Menu Text Color"
                   color={value}
                   onPick={onChange}
-                  aria-label="fiftyblog left panel menu text color"
+                  aria-label="left panel menu text color"
                 />
               )}
             />
@@ -118,7 +118,7 @@ export default function LeftPanelConfig(props: {
                   label="Panel Background Color"
                   color={value}
                   onPick={onChange}
-                  aria-label="fiftyblog left panel background color"
+                  aria-label="left panel background color"
                 />
               )}
             />

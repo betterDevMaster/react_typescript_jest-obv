@@ -64,7 +64,7 @@ function SponsorsPageConfigContent() {
           variant="outlined"
           color="primary"
           onClick={togglePageSettings}
-          aria-label="fiftyblog configure sponsor page"
+          aria-label="configure sponsor page"
         >
           Page Settings
         </Button>

@@ -75,12 +75,12 @@ function EventProvider(props: {
     if (!saved) {
       return
     }
-    if (saved.template) {
-      // saved.template.name = "Simple Blog"
-      // saved.template.name = "Panels"
-      // saved.template.name = "Cards"
-      saved.template.name = 'Fifty Fifty'
-    }
+    // if (saved.template) {
+    //   // saved.template.name = "Simple Blog"
+    //   // saved.template.name = "Panels"
+    //   // saved.template.name = "Cards"
+    //   saved.template.name = 'Fifty Fifty'
+    // }
     set(saved)
   }, [saved, set])
 

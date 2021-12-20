@@ -137,7 +137,7 @@ function LinkText(props: {
       key={label}
       onClick={() => props.onChangeTab(index)}
       style={{color}}
-      aria-label={`fiftyblog left panel menu ${label} button`}
+      aria-label={`left panel menu ${label} button`}
     >
       {v(label)}
     </TabText>

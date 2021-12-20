@@ -39,21 +39,19 @@ it('should set sponsor page settings', async () => {
 
   const title = faker.random.words(3)
 
-  fireEvent.click(await findByLabelText('fiftyblog configure sponsor page'))
+  fireEvent.click(await findByLabelText('configure sponsor page'))
 
-  fireEvent.change(await findByLabelText('fiftyblog sponsor page title'), {
+  fireEvent.change(await findByLabelText('sponsor page title'), {
     target: {
       value: title,
     },
   })
 
   // Remove existing icon...
-  fireEvent.click(
-    await findByLabelText('fiftyblog remove sponsor question icon'),
-  )
+  fireEvent.click(await findByLabelText('remove sponsor question icon'))
 
   const image = new File([], 'image.jpg')
-  const imageInput = await findByLabelText('fiftyblog question icon input')
+  const imageInput = await findByLabelText('question icon input')
   Object.defineProperty(imageInput, 'files', {
     value: [image],
   })
@@ -84,10 +82,8 @@ it('should set sponsor page settings', async () => {
   expect(postData.get('sponsor_page_title')).toBe(title)
   expect(postData.get('sponsor_question_icon')).toBe(image)
 
-  fireEvent.click(await findByLabelText('fiftyblog configure sponsor page'))
-  fireEvent.click(
-    await findByLabelText('fiftyblog remove sponsor question icon'),
-  )
+  fireEvent.click(await findByLabelText('configure sponsor page'))
+  fireEvent.click(await findByLabelText('remove sponsor question icon'))
 
   user.click(await findByLabelText('save'))
 
@@ -130,12 +126,12 @@ it('should add a sponsor', async () => {
 
   mockPost.mockImplementationOnce(() => Promise.resolve({data: newSponsor}))
 
-  user.click(await findByLabelText('fiftyblog add sponsor'))
+  user.click(await findByLabelText('add sponsor'))
   await wait(() => {
     expect(mockPost).toHaveBeenCalledTimes(1)
   })
 
-  user.click(await findByLabelText('fiftyblog close dialog'))
+  user.click(await findByLabelText('close dialog'))
 
   expect(await findByText(newSponsor.name)).toBeInTheDocument()
 })

@@ -23,7 +23,7 @@ it('should configure check in page settings', async () => {
   })
   const title = 'Check In Left Panel title'
 
-  user.type(await findByLabelText('check in fiftyblog left panel title'), title)
+  user.type(await findByLabelText('check in left panel title'), title)
   user.click(await findByLabelText('save'))
 
   await wait(() => {
