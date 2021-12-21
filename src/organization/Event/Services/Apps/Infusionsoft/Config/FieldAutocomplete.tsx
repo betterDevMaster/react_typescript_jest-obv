@@ -84,7 +84,6 @@ export default function FieldAutoComplete(props: {
   }, [value$, token, slug, onReady])
 
   const optionLabel = (field: Field | null) => {
-    console.log('FIELD: ', field)
     if (!field || !field.label) {
       return ''
     }
