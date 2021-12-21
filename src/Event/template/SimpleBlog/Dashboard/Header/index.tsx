@@ -96,6 +96,7 @@ function CollapsableLogo() {
 function Layout(props: {children: React.ReactElement | React.ReactElement[]}) {
   const template = useSimpleBlogTemplate()
   const {header} = template
+  const isEditMode = useEditMode()
 
   const height = header.isCollapsed ? 50 : header.height
   const mobileHeight = Math.round(height * 0.7)
@@ -104,6 +105,8 @@ function Layout(props: {children: React.ReactElement | React.ReactElement[]}) {
     <LayoutBox
       desktopHeight={height}
       mobileHeight={mobileHeight}
+      isCollapsed={header.isCollapsed}
+      isEditMode={isEditMode}
       arial-label="header layout"
     >
       {props.children}
@@ -130,9 +133,16 @@ function CollapsableColorOverlay(props: {children: React.ReactElement}) {
   )
 }
 
-const LayoutBox = styled.div<{desktopHeight: number; mobileHeight: number}>`
+const LayoutBox = styled.div<{
+  desktopHeight: number
+  mobileHeight: number
+  isCollapsed?: boolean
+  isEditMode?: boolean
+}>`
   height: ${(props) => props.mobileHeight}px;
   display: flex;
+  ${(props) =>
+    props.isCollapsed && !props.isEditMode ? 'position: absolute;' : ''}
 
   @media (min-width: ${(props) => props.theme.breakpoints.md}) {
     height: ${(props) => props.desktopHeight}px;
