@@ -60,7 +60,7 @@ export default function CreateOrganizationForm() {
       return errors.name.message
     }
 
-    if (serverError?.errors.name) {
+    if (serverError?.errors?.name) {
       return serverError.errors.name
     }
   }
