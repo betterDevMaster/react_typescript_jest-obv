@@ -318,7 +318,7 @@ export const createFiftyBlog = (): DeepRequired<FiftyBlog> => ({
     backgroundOpacity: 1,
     textColor: '#000000',
   },
-  checkInTitle: '',
+  checkInTitle: 'Check In:',
   checkInLeftPanel: {
     backgroundColor: '#FFFFFF',
     backgroundOpacity: 0,

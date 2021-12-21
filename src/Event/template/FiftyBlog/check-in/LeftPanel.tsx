@@ -5,10 +5,12 @@ import Logo from 'Event/Logo'
 import {Step} from 'Event/template/FiftyBlog/check-in/CheckInConfig'
 import {useFiftyBlogTemplate} from 'Event/template/FiftyBlog'
 import {rgba} from 'lib/color'
+import defaultLogo from 'assets/images/logo.png'
 
 export default function LeftPanel(props: {step: Step}) {
   const template = useFiftyBlogTemplate()
-  const {checkInLeftPanel} = template
+  const {checkInLeftPanel, dashboardLogo, dashboardLogoProps} = template
+  const logo = dashboardLogo ? dashboardLogo : defaultLogo
 
   return (
     <Box
@@ -20,7 +22,11 @@ export default function LeftPanel(props: {step: Step}) {
     >
       <div>
         <Menu />
-        <Logo />
+        <Logo
+          src={logo}
+          hidden={dashboardLogoProps.hidden}
+          size={dashboardLogoProps.size}
+        />
         <StepIndicator step={props.step} />
       </div>
     </Box>
