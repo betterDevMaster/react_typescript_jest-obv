@@ -32,7 +32,6 @@ function textColor(color?: string) {
 }
 
 const StyledIcon = styled.i<IconProps>`
-  padding: ${(props) => `${props.theme.spacing[2]} ${props.theme.spacing[8]}`};
   color: ${(props) => props.color};
   font-size: ${(props) => props.iconSize}px;
 `
