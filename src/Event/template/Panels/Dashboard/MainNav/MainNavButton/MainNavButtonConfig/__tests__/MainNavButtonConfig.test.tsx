@@ -12,9 +12,13 @@ import {fakeAction} from 'Event/ActionsProvider/__utils__/factory'
 import {goToDashboardConfig} from 'organization/Event/DashboardConfig/__utils__/go-dashboard-config'
 import {fakePanels} from 'Event/template/Panels/__utils__/factory'
 import axios from 'axios'
+import {ajax} from 'rxjs/ajax'
 
 const mockPut = axios.put as jest.Mock
 const mockGet = mockAxios.get as jest.Mock
+const mockRxGet = ajax.get as jest.Mock
+
+jest.mock('rxjs/ajax')
 
 beforeEach(() => {
   jest.clearAllMocks()
@@ -175,44 +179,6 @@ it('should assign an action for points', async () => {
   expect(data.template[`nav.${savedButtonId}.actionId`]).toBe(target.key) // Did assign action id
 })
 
-it('should set an infusionsoft tag', async () => {
-  const button = fakeNavButtonWithSize()
-  const mainNavButtons = createHashMap([button])
-  const event = fakeEvent({
-    template: fakePanels({
-      nav: mainNavButtons,
-    }),
-    has_infusionsoft: true,
-  })
-
-  const {findByLabelText, findByText} = await goToDashboardConfig({event})
-
-  const buttonEl = await findByText(button.text)
-
-  const name = faker.random.word()
-  mockGet.mockImplementationOnce(() => Promise.resolve({data: {name}}))
-
-  clickEdit(buttonEl)
-
-  const id = faker.random.number({min: 1000, max: 10000})
-
-  user.type(await findByLabelText('infusionsoft tag id'), String(id))
-  user.click(await findByLabelText('set tag id'))
-
-  user.click(await findByLabelText('save'))
-
-  // Saved
-  await wait(() => {
-    expect(mockPut).toHaveBeenCalledTimes(1)
-  })
-
-  const [url, data] = mockPut.mock.calls[0]
-  expect(url).toMatch(`/events/${event.slug}`)
-
-  const savedButtonId = Object.keys(mainNavButtons)[0]
-  expect(data.template[`nav.${savedButtonId}.infusionsoftTag.id`]).toBe(id)
-})
-
 it('should not have a page select', async () => {
   const externalLink = faker.internet.url()
   const button = fakeNavButtonWithSize({
@@ -240,4 +206,65 @@ it('should not have a page select', async () => {
   clickEdit(await buttonEl())
 
   expect(queryByLabelText('pick page')).not.toBeInTheDocument()
+})
+
+it('should set an infusionsoft tag', async () => {
+  const button = fakeNavButtonWithSize()
+  const mainNavButtons = createHashMap([button])
+  const event = fakeEvent({
+    template: fakePanels({
+      nav: mainNavButtons,
+    }),
+    has_infusionsoft: true,
+  })
+
+  const {findByLabelText, findByText} = await goToDashboardConfig({event})
+
+  const buttonEl = await findByText(button.text)
+
+  const name = faker.random.word()
+  mockGet.mockImplementationOnce(() => Promise.resolve({data: {name}}))
+
+  clickEdit(buttonEl)
+
+  const id = faker.random.number({min: 1000, max: 10000})
+
+  mockRxGet.mockImplementationOnce(() =>
+    Promise.resolve({
+      response: [
+        {
+          id: id,
+          name: name,
+        },
+      ],
+    }),
+  )
+
+  const autocomplete = await findByLabelText('tag id holder')
+  const typeInput = await findByLabelText('tag id')
+
+  await autocomplete.focus()
+  await fireEvent.change(typeInput, {target: {value: name}})
+
+  await wait(async () => {
+    expect(mockRxGet).toHaveBeenCalledTimes(1)
+  })
+
+  await fireEvent.keyDown(autocomplete, {key: 'ArrowDown'})
+  await fireEvent.keyDown(autocomplete, {key: 'Enter'})
+
+  await user.click(await findByLabelText('save tag id'))
+
+  user.click(await findByLabelText('save'))
+
+  // Saved
+  await wait(() => {
+    expect(mockPut).toHaveBeenCalledTimes(1)
+  })
+
+  const [url, data] = mockPut.mock.calls[0]
+  expect(url).toMatch(`/events/${event.slug}`)
+
+  const savedButtonId = Object.keys(mainNavButtons)[0]
+  expect(data.template[`nav.${savedButtonId}.infusionsoftTag.id`]).toBe(id)
 })

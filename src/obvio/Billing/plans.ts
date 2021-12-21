@@ -1,10 +1,9 @@
-import {useObserve} from 'lib/rx'
+import {ajax, useObserve} from 'lib/rx'
 import {api} from 'lib/url'
-import {useObvioAuth, useObvioUser} from 'obvio/auth'
+import {useAuthToken, useObvioUser} from 'obvio/auth'
 import {useUserOrganizations} from 'obvio/Organizations/UserOrganizationsProvider'
 import {Organization} from 'organization'
 import {useEffect, useState} from 'react'
-import {ajax} from 'rxjs/ajax'
 import {debounceTime, map, switchMap, tap} from 'rxjs/operators'
 
 export const BASIC = 'basic'
@@ -322,7 +321,7 @@ export function usePriceForCredits(
 ) {
   const [loading, setLoading] = useState(true)
   const [price, setPrice] = useState<number | null>(null)
-  const {token} = useObvioAuth()
+  const token = useAuthToken()
   const {value$, onReady} = useObserve(numCredits)
 
   useEffect(() => {
@@ -341,8 +340,7 @@ export function usePriceForCredits(
           const url = calculatePriceUrl(numCredits, organization)
 
           const request = ajax.get(url, {
-            Authorization: `Bearer ${token}`,
-            'Content-Type': 'application/json', // Avoid rxjs from serializing data into [object, object]
+            accessToken: token,
           })
 
           return request
@@ -392,6 +390,12 @@ export function useCanCreateOrganization() {
 
   if (!user.plan) {
     return false
+  }
+
+  // If user's plan has no limit, we will always allow them
+  // to create more.
+  if (!user.plan.organization_limit) {
+    return true
   }
 
   const numOwned = organizations.filter((o) => o.joined).length

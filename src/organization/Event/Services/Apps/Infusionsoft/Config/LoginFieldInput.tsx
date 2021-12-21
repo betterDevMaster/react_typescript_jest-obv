@@ -1,93 +1,61 @@
-import TextField from '@material-ui/core/TextField'
-import Button from '@material-ui/core/Button'
-import InputAdornment from '@material-ui/core/InputAdornment'
-import {useEvent} from 'Event/EventProvider'
-import {onChangeStringHandler, useIsMounted} from 'lib/dom'
-import {api} from 'lib/url'
-import {InfusionsoftIntegration} from 'organization/Event/Services/Apps/Infusionsoft'
-import {
-  useInfusionsoft,
-  useServices,
-} from 'organization/Event/Services/ServicesProvider'
-import {useOrganization} from 'organization/OrganizationProvider'
-import React, {useEffect, useState} from 'react'
+import Button, {ButtonProps} from '@material-ui/core/Button'
+import React from 'react'
+import Box from '@material-ui/core/Box'
+import styled from 'styled-components'
+import {useToggle} from 'lib/toggle'
+import NewLoginFieldInput from 'organization/Event/Services/Apps/Infusionsoft/Config/NewLoginFieldInput.tsx'
+import FieldAutoComplete, {
+  Field,
+} from 'organization/Event/Services/Apps/Infusionsoft/Config/FieldAutocomplete'
 
-export default function LoginFieldInput() {
-  const infusionsoft = useInfusionsoft()
-  const [field, setField] = useState('')
-  const {save, isProcessing, error} = useSave()
+export default function LoginFieldInput(props: {
+  value: Field | null
+  onChange: (field: Field | null) => void
+  errorText?: string | null
+}) {
+  const {value, onChange} = props
+  const {flag: showingNewFieldInput, toggle: toggleNewFieldInput} = useToggle()
 
-  useEffect(() => {
-    if (!infusionsoft.login_field_label) {
-      return
-    }
-
-    setField(infusionsoft.login_field_label)
-  }, [infusionsoft])
-
-  const hasChanges = field !== infusionsoft.login_field_label
-  const canSave = Boolean(field) && hasChanges && !isProcessing
+  const handleNewField = (field: Field) => {
+    onChange(field)
+    toggleNewFieldInput()
+  }
 
   return (
-    <TextField
-      value={field}
-      onChange={onChangeStringHandler(setField)}
-      variant="outlined"
-      label="Login Token Custom Field"
-      disabled={isProcessing}
-      fullWidth
-      inputProps={{
-        'aria-label': 'login field label',
-      }}
-      InputProps={{
-        endAdornment: (
-          <InputAdornment position="end">
-            <Button
-              onClick={save(field)}
-              disabled={!canSave}
-              color="primary"
-              aria-label="save login field label"
-            >
-              Save
-            </Button>
-          </InputAdornment>
-        ),
-      }}
-      error={!!error}
-      helperText={error}
-    />
+    <Box mb={4}>
+      <ExistingFieldSelect showing={!showingNewFieldInput}>
+        <FieldAutoComplete
+          value={value}
+          onChange={onChange}
+          label="Login Token Field"
+          errorText={props.errorText}
+        />
+      </ExistingFieldSelect>
+      <NewLoginFieldInput
+        showing={showingNewFieldInput}
+        onClose={toggleNewFieldInput}
+        onAdd={handleNewField}
+      />
+      <CreateFieldButton
+        showing={!showingNewFieldInput}
+        onClick={toggleNewFieldInput}
+        aria-label="create new field"
+        color="primary"
+        variant="outlined"
+      >
+        Create New Field
+      </CreateFieldButton>
+    </Box>
   )
 }
 
-function useSave() {
-  const {client} = useOrganization()
-  const {event} = useEvent()
-  const url = api(`/events/${event.slug}/integrations/infusionsoft/login_field`)
-  const {update: updateIntegration} = useServices()
-  const [isProcessing, setIsProcessing] = useState(false)
-  const isMounted = useIsMounted()
+const ExistingFieldSelect = styled.div<{showing: boolean}>`
+  display: ${(props) => (props.showing ? 'block' : 'none')};
+`
 
-  const [error, setError] = useState<string | null>(null)
-
-  const save = (label: string) => () => {
-    if (isProcessing) {
-      return
-    }
-    setIsProcessing(true)
-    setError(null)
-
-    client
-      .patch<InfusionsoftIntegration>(url, {
-        label,
-      })
-      .then(updateIntegration)
-      .catch((e) => setError(e.message))
-      .finally(() => {
-        if (isMounted.current) {
-          setIsProcessing(false)
-        }
-      })
-  }
-
-  return {save, isProcessing, error}
-}
+const CreateFieldButton = styled((props: {showing: boolean} & ButtonProps) => {
+  const {showing, ...otherProps} = props
+  return <Button {...otherProps} />
+})`
+  display: ${(props) => (props.showing ? 'inline-flex' : 'none')};
+`

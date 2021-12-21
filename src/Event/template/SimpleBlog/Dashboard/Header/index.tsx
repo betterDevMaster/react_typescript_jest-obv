@@ -69,10 +69,12 @@ function CollapsableBackground(props: {children: React.ReactElement}) {
     : event.header_background
     ? event.header_background.url
     : ''
+
   return (
     <Box
       backgroundImage={backgroundImage}
       disableShadow={header.disableShadow || header.isCollapsed}
+      isCollapsed={header.isCollapsed}
     >
       {props.children}
     </Box>
@@ -94,6 +96,7 @@ function CollapsableLogo() {
 function Layout(props: {children: React.ReactElement | React.ReactElement[]}) {
   const template = useSimpleBlogTemplate()
   const {header} = template
+  const isEditMode = useEditMode()
 
   const height = header.isCollapsed ? 50 : header.height
   const mobileHeight = Math.round(height * 0.7)
@@ -102,6 +105,8 @@ function Layout(props: {children: React.ReactElement | React.ReactElement[]}) {
     <LayoutBox
       desktopHeight={height}
       mobileHeight={mobileHeight}
+      isCollapsed={header.isCollapsed}
+      isEditMode={isEditMode}
       arial-label="header layout"
     >
       {props.children}
@@ -128,9 +133,16 @@ function CollapsableColorOverlay(props: {children: React.ReactElement}) {
   )
 }
 
-const LayoutBox = styled.div<{desktopHeight: number; mobileHeight: number}>`
+const LayoutBox = styled.div<{
+  desktopHeight: number
+  mobileHeight: number
+  isCollapsed?: boolean
+  isEditMode?: boolean
+}>`
   height: ${(props) => props.mobileHeight}px;
   display: flex;
+  ${(props) =>
+    props.isCollapsed && !props.isEditMode ? 'position: absolute;' : ''}
 
   @media (min-width: ${(props) => props.theme.breakpoints.md}) {
     height: ${(props) => props.desktopHeight}px;
@@ -144,6 +156,7 @@ const Side = styled.div`
 const Box = styled.div<{
   backgroundImage: string | null
   disableShadow?: boolean
+  isCollapsed?: boolean
 }>`
   ${(props) =>
     props.backgroundImage
@@ -153,7 +166,8 @@ const Box = styled.div<{
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
-  margin-bottom: ${(props) => props.theme.spacing[8]};
+  margin-bottom: ${(props) =>
+    props.isCollapsed ? 'unset' : props.theme.spacing[8]};
   ${(props) => (props.disableShadow ? '' : `box-shadow: 20px 20px 50px #ddd;`)}
 `
 

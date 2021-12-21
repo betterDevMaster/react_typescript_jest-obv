@@ -13,6 +13,7 @@ export default function Card(props: {
   service: Service
   link: string
   logo: string
+  label?: string
 }) {
   return (
     <div>
@@ -28,7 +29,9 @@ export default function Card(props: {
       </StyledLink>
       <Bottom>
         <BottomLeft>
-          <Typography variant="h6">{props.service}</Typography>
+          <Typography variant="h6">
+            {props.label ? props.label : props.service}
+          </Typography>
           <Status service={props.service} />
         </BottomLeft>
       </Bottom>
