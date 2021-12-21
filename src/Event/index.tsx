@@ -39,7 +39,6 @@ export interface ObvioEvent {
   points_summary_logo: FileLocation | null
   platform_actions: PlatformActions
   login_background: FileLocation | null
-  login_logo_background: FileLocation | null
   login_logo: FileLocation | null
   favicon: FileLocation | null
   forms: Form[]

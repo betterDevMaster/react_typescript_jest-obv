@@ -25,7 +25,6 @@ beforeEach(() => {
 it('render login page', async () => {
   const background = faker.internet.url()
   const logo = faker.internet.url()
-  const logoBackground = faker.internet.url()
   const descriptionText = faker.lorem.sentence()
   const event = fakeEvent({
     login_background: {
@@ -35,10 +34,6 @@ it('render login page', async () => {
     login_logo: {
       url: logo,
       name: 'logo',
-    },
-    login_logo_background: {
-      url: logoBackground,
-      name: 'logoBackground',
     },
     template: fakeFiftyBlog({
       login: fakeLogin({
@@ -63,10 +58,6 @@ it('render login page', async () => {
     `background: url(${background})`,
   )
   expect((await findByLabelText('login logo')).getAttribute('src')).toBe(logo)
-  expect(await findByLabelText('login logo background')).toHaveStyle(
-    `background: url(${logoBackground})`,
-  )
-
   expect(await findByText(descriptionText)).toBeInTheDocument()
 })
 

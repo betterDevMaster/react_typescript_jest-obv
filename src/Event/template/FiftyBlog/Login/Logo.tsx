@@ -1,7 +1,7 @@
 import React from 'react'
 import styled from 'styled-components'
-import {Typography, useMediaQuery} from '@material-ui/core'
-import {makeStyles, useTheme} from '@material-ui/core/styles'
+import {useMediaQuery} from '@material-ui/core'
+import {useTheme} from '@material-ui/core/styles'
 
 import {useEvent} from 'Event/EventProvider'
 import {useFiftyBlogTemplate} from 'Event/template/FiftyBlog'
@@ -11,29 +11,28 @@ import defaultLoginBackground from 'assets/images/background.png'
 export default function Logo() {
   const {event} = useEvent()
   const template = useFiftyBlogTemplate()
-  const {login} = template
-  const size = login.logoSize
-  const logo = event.login_logo ? event.login_logo.url : defaultLogo
+  const logo = template.loginLogo ? template.loginLogo : defaultLogo
   const theme = useTheme()
   const isMobileScreen = useMediaQuery(theme.breakpoints.down('xs'))
 
-  const background = event.login_logo_background
-    ? event.login_logo_background.url
+  const background = template.loginLogoBackground
+    ? template.loginLogoBackground
     : defaultLoginBackground
 
   return (
     <Box
       background={background}
-      isBoxHidden={login.logoBackgroundHidden}
-      isLogoHidden={login.logoHidden}
+      isBoxHidden={template.loginLogoBackgroundProps.hidden}
+      isLogoHidden={template.loginLogoProps.hidden}
       aria-label="login logo background"
       isMobileScreen={isMobileScreen}
     >
       <LogoImage
         src={logo}
         alt={event.name}
+        isLogoHidden={template.loginLogoProps.hidden}
         aria-label="login logo"
-        size={size}
+        size={template.loginLogoProps.size}
       />
     </Box>
   )
@@ -57,7 +56,9 @@ export const Box = styled.div<{
     props.isMobileScreen ? props.theme.spacing[8] : props.theme.spacing[16]};
 `
 
-export const LogoImage = styled.img<{size: number}>`
+export const LogoImage = styled.img<{size: number; isLogoHidden?: boolean}>`
+  display: ${(props) => (props.isLogoHidden ? 'none' : 'block')};
   max-width: 100%;
+  margin: auto;
   width: ${(props) => props.size}%;
 `

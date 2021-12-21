@@ -92,7 +92,7 @@ export default function GlobalStylesConfig() {
             <Grid item xs={4} md={2}>
               <Box mb={2}>
                 <BackgroundImageUploader
-                  label="Background 2"
+                  label="Dashboard Background"
                   property="dashboardBackground"
                   control={control}
                 />
@@ -114,16 +114,68 @@ export default function GlobalStylesConfig() {
                   )}
                 />
               </Box>
+            </Grid>
+            <Grid item xs={4} md={2}>
+              <Box mb={2}>
+                <BackgroundImageUploader
+                  label="Login Background"
+                  property="loginBackground"
+                  control={control}
+                />
+              </Box>
+              <Box mb={2}>
+                <Controller
+                  name="loginBackgroundProps.hidden"
+                  defaultValue={template.loginBackgroundProps.hidden}
+                  control={control}
+                  render={({value, onChange}) => (
+                    <Switch
+                      checked={value}
+                      onChange={onChangeCheckedHandler(onChange)}
+                      arial-label="set login background mode"
+                      labelPlacement="end"
+                      color="primary"
+                      label="Hide background"
+                    />
+                  )}
+                />
+              </Box>
+            </Grid>
+            <Grid item xs={4} md={2}>
+              <Box mb={2}>
+                <BackgroundImageUploader
+                  label="Login Logo"
+                  property="loginLogo"
+                  control={control}
+                />
+              </Box>
+              <Box mb={2}>
+                <Controller
+                  name="loginLogoProps.hidden"
+                  defaultValue={template.loginLogoProps.hidden}
+                  control={control}
+                  render={({value, onChange}) => (
+                    <Switch
+                      checked={value}
+                      onChange={onChangeCheckedHandler(onChange)}
+                      arial-label="set login logo mode"
+                      labelPlacement="end"
+                      color="primary"
+                      label="Hide Logo"
+                    />
+                  )}
+                />
+              </Box>
               <Box display="flex" flexDirection="column" flex="1" mb={2}>
                 <InputLabel>Image Size</InputLabel>
                 <Controller
-                  name="dashboardBackgroundProps.size"
-                  defaultValue={template.dashboardBackgroundProps.size}
+                  name="loginLogoProps.size"
+                  defaultValue={template.loginLogoProps.size}
                   control={control}
                   render={({value, onChange}) => (
                     <Slider
                       valueLabelDisplay="auto"
-                      aria-label="dashboard background weight"
+                      aria-label="login logo weight"
                       value={value}
                       onChange={handleChangeSlider(onChange)}
                       step={1}
@@ -137,27 +189,26 @@ export default function GlobalStylesConfig() {
             <Grid item xs={4} md={2}>
               <Box mb={2}>
                 <BackgroundImageUploader
-                  label="Background 3"
-                  property="backgroundImage3"
+                  label="Login Logo Background"
+                  property="loginLogoBackground"
                   control={control}
                 />
               </Box>
-            </Grid>
-            <Grid item xs={4} md={2}>
               <Box mb={2}>
-                <BackgroundImageUploader
-                  label="Background 4"
-                  property="backgroundImage4"
+                <Controller
+                  name="loginLogoBackgroundProps.hidden"
+                  defaultValue={template.loginLogoBackgroundProps.hidden}
                   control={control}
-                />
-              </Box>
-            </Grid>
-            <Grid item xs={4} md={2}>
-              <Box mb={2}>
-                <BackgroundImageUploader
-                  label="Background 5"
-                  property="backgroundImage5"
-                  control={control}
+                  render={({value, onChange}) => (
+                    <Switch
+                      checked={value}
+                      onChange={onChangeCheckedHandler(onChange)}
+                      arial-label="set login logo background mode"
+                      labelPlacement="end"
+                      color="primary"
+                      label="Hide background"
+                    />
+                  )}
                 />
               </Box>
             </Grid>

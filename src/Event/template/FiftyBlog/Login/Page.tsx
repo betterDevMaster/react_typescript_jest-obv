@@ -1,5 +1,4 @@
 import {LoginProps} from 'Event/auth/Login'
-import {useEvent} from 'Event/EventProvider'
 import styled from 'styled-components'
 import React from 'react'
 import {Typography, useMediaQuery} from '@material-ui/core'
@@ -16,13 +15,10 @@ export default function Page(props: {
   isPreview?: LoginProps['isPreview']
   children: React.ReactElement | React.ReactElement[]
 }) {
-  const {event} = useEvent()
   const template = useFiftyBlogTemplate()
-  const {login} = template
+  const {login, loginBackground, loginBackgroundProps} = template
 
-  const background = event.login_background
-    ? event.login_background.url
-    : defaultBackground
+  const background = loginBackground ? loginBackground : defaultBackground
 
   const backgroundRGBColor = rgba(
     login.backgroundColor,
@@ -33,7 +29,7 @@ export default function Page(props: {
       background={background}
       isPreview={props.isPreview}
       aria-label="login background"
-      isHidden={login.backgroundHidden}
+      isHidden={loginBackgroundProps.hidden}
     >
       <ColorOverlay color={backgroundRGBColor}>
         <Container>

@@ -85,6 +85,18 @@ export type FiftyBlog = BaseTemplate &
       hidden?: boolean
       size: number
     }
+    loginBackgroundProps?: {
+      hidden?: boolean
+      size: number
+    }
+    loginLogoProps?: {
+      hidden?: boolean
+      size: number
+    }
+    loginLogoBackgroundProps?: {
+      hidden?: boolean
+      size: number
+    }
     rightPanel: {
       barBackgroundColor: string
       barTextColor: string
@@ -190,9 +202,9 @@ export type FiftyBlog = BaseTemplate &
       backgroundOpacity?: number
       logoSize?: number
       inputBorderRadius?: number
-      logoHidden?: boolean
-      logoBackgroundHidden?: boolean
-      backgroundHidden?: boolean
+      // logoHidden?: boolean
+      // logoBackgroundHidden?: boolean
+      // backgroundHidden?: boolean
       emailLabel?: string
       passwordLabel?: string
     }
@@ -284,6 +296,18 @@ export const createFiftyBlog = (): DeepRequired<FiftyBlog> => ({
     size: 20,
   },
   dashboardBackgroundProps: {
+    hidden: false,
+    size: 20,
+  },
+  loginBackgroundProps: {
+    hidden: false,
+    size: 20,
+  },
+  loginLogoProps: {
+    hidden: false,
+    size: 20,
+  },
+  loginLogoBackgroundProps: {
     hidden: false,
     size: 20,
   },
@@ -405,9 +429,9 @@ export const createFiftyBlog = (): DeepRequired<FiftyBlog> => ({
     backgroundOpacity: 0,
     logoSize: 20,
     inputBorderRadius: 56,
-    logoHidden: false,
-    backgroundHidden: false,
-    logoBackgroundHidden: false,
+    // logoHidden: false,
+    // backgroundHidden: false,
+    // logoBackgroundHidden: false,
     emailLabel: 'Email',
     passwordLabel: 'Password',
   },
@@ -466,17 +490,17 @@ export const createFiftyBlog = (): DeepRequired<FiftyBlog> => ({
   },
   dashboardLogo: null,
   dashboardBackground: null,
-  backgroundImage3: null,
-  backgroundImage4: null,
-  backgroundImage5: null,
+  loginBackground: null,
+  loginLogo: null,
+  loginLogoBackground: null,
 })
 
 export type CustomBackgrounds = {
   dashboardLogo: string | null
   dashboardBackground: string | null
-  backgroundImage3: string | null
-  backgroundImage4: string | null
-  backgroundImage5: string | null
+  loginBackground: string | null
+  loginLogo: string | null
+  loginLogoBackground: string | null
 }
 
 export const DEFAULTS = createFiftyBlog()
