@@ -392,6 +392,12 @@ export function useCanCreateOrganization() {
     return false
   }
 
+  // If user's plan has no limit, we will always allow them
+  // to create more.
+  if (!user.plan.organization_limit) {
+    return true
+  }
+
   const numOwned = organizations.filter((o) => o.joined).length
 
   // Can create if below plan limit
