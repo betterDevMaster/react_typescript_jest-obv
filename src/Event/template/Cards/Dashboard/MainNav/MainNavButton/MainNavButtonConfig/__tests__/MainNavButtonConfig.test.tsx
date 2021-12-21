@@ -13,9 +13,13 @@ import {
   fakeCardsNavButton,
   fakeCardsNavButtons,
 } from 'Event/template/Cards/Dashboard/CardsNavButton/__utils__/factory'
+import {ajax} from 'rxjs/ajax'
 
 const mockPut = mockAxios.put as jest.Mock
 const mockGet = mockAxios.get as jest.Mock
+const mockRxGet = ajax.get as jest.Mock
+
+jest.mock('rxjs/ajax')
 
 beforeEach(() => {
   jest.clearAllMocks()
@@ -205,8 +209,31 @@ it('should set an infusionsoft tag', async () => {
 
   const id = faker.random.number({min: 1000, max: 10000})
 
-  user.type(await findByLabelText('infusionsoft tag id'), String(id))
-  user.click(await findByLabelText('set tag id'))
+  mockRxGet.mockImplementationOnce(() =>
+    Promise.resolve({
+      response: [
+        {
+          id: id,
+          name: name,
+        },
+      ],
+    }),
+  )
+
+  const autocomplete = await findByLabelText('tag id holder')
+  const typeInput = await findByLabelText('tag id')
+
+  await autocomplete.focus()
+  await fireEvent.change(typeInput, {target: {value: name}})
+
+  await wait(async () => {
+    expect(mockRxGet).toHaveBeenCalledTimes(1)
+  })
+
+  await fireEvent.keyDown(autocomplete, {key: 'ArrowDown'})
+  await fireEvent.keyDown(autocomplete, {key: 'Enter'})
+
+  await user.click(await findByLabelText('save tag id'))
 
   user.click(await findByLabelText('save'))
 

@@ -50,6 +50,6 @@ export const hideConsoleWarnings = () => {
 
   afterAll(() => {
     // @ts-ignore
-    console.error.mockRestore()
+    console.warn.mockRestore()
   })
 }

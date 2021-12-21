@@ -14,11 +14,11 @@ export default function LinkPage() {
   return (
     <Layout>
       <Page>
-        <Typography variant="h4">Infusionsoft</Typography>
+        <Typography variant="h4">Keap</Typography>
         <p>
-          Click the button below to link obv.io with Infusionsoft.
+          Click the button below to link obv.io with Keap.
           <br />
-          You will be redirected to Infusionsoft to complete authorization.
+          You will be redirected to Keap to complete authorization.
         </p>
         <Button
           color="primary"

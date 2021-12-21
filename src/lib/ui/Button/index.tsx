@@ -8,6 +8,7 @@ export type ButtonProps = {
   color: 'default' | 'primary' | 'danger' | 'info'
   autoFocus?: boolean
   onClick?: () => void
+  'aria-label'?: string
 }
 
 export default function Button(props: ButtonProps) {
@@ -17,6 +18,7 @@ export default function Button(props: ButtonProps) {
       color={textColor(props)}
       onClick={props.onClick}
       autoFocus={props.autoFocus}
+      aria-label={props['aria-label']}
     >
       {props.children}
     </StyledButton>

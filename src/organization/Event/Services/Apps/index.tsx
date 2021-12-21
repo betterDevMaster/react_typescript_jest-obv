@@ -21,6 +21,7 @@ export default function Apps() {
       <Card service={ZAPIER} link={routes.services.zapier} logo={zapierLogo} />
       <Card
         service={INFUSIONSOFT}
+        label={'Keap'}
         link={routes.services.infusionsoft}
         logo={infusionsoftLogo}
       />

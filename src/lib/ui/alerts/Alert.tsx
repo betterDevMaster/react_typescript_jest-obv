@@ -6,6 +6,7 @@ export type AlertProps = {
   children?: string | null
   onClose?: () => void
   className?: string
+  showing?: boolean
   severity: NonNullable<MuiAlertProps['severity']>
 }
 
@@ -13,6 +14,10 @@ export type AlertLevelProps = Omit<AlertProps, 'severity'>
 
 export default function Alert(props: AlertProps) {
   if (!props.children) {
+    return null
+  }
+
+  if (props.showing !== undefined && !props.showing) {
     return null
   }
 

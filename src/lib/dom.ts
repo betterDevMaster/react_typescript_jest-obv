@@ -37,6 +37,13 @@ export const handleChangeSlider = (handler: (newValue: any) => void) => (
   handler(value)
 }
 
+export const handleAutocomplete = <T>(handler: (value: T) => void) => (
+  event: React.ChangeEvent<{}>,
+  value: T,
+) => {
+  handler(value)
+}
+
 export const onChangeDate = (set: (val: string) => void) => (
   date: MaterialUiPickersDate,
 ) => {

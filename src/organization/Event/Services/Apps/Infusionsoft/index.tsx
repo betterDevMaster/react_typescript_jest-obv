@@ -12,8 +12,12 @@ import React from 'react'
 export type InfusionsoftIntegration = BaseIntegration & {
   service: typeof INFUSIONSOFT
   has_completed_setup: boolean
+  can_import_attendees: boolean
   login_field_name: string | null
   login_field_label: string | null
+  has_set_import_tag: boolean
+  tags: Tag[]
+  groups: InfusionsoftGroup[]
 }
 
 export interface Tag {
@@ -23,6 +27,12 @@ export interface Tag {
   type: TagType
 }
 
+export interface InfusionsoftGroup {
+  infusionsoft_field_name: string | null
+  infusionsoft_field_label: string | null
+  key: string | null
+}
+
 /**
  * Tag types as defined in API's InfusionsoftTagType class
  */
@@ -30,11 +40,13 @@ export interface Tag {
 export const ATTENDEE_CREATED = 'attendee_created'
 export const ATTENDEE_SIGNED_WAIVER = 'attendee_signed_waiver'
 export const ATTENDEE_CHECKED_IN = 'attendee_checked_in'
+export const IMPORT_TAG = 'import_tag'
 
 export type TagType =
   | typeof ATTENDEE_CREATED
   | typeof ATTENDEE_CHECKED_IN
   | typeof ATTENDEE_SIGNED_WAIVER
+  | typeof IMPORT_TAG
 
 export default function Infusionsoft() {
   const {isLinked} = useServices()

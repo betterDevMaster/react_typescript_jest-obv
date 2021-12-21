@@ -1,64 +1,71 @@
-import TextField from '@material-ui/core/TextField'
-import Button from '@material-ui/core/Button'
-import InputAdornment from '@material-ui/core/InputAdornment'
-import {onChangeStringHandler} from 'lib/dom'
 import {
   ATTENDEE_CREATED,
   ATTENDEE_CHECKED_IN,
   ATTENDEE_SIGNED_WAIVER,
+  IMPORT_TAG,
   Tag,
 } from 'organization/Event/Services/Apps/Infusionsoft'
 import React, {useEffect, useState} from 'react'
+import TagsAutocomplete from 'organization/Event/Services/Apps/Infusionsoft/Config/TagsAutocomplete'
+import {InfusionsoftTag} from 'Event/infusionsoft'
 
 export default function TagIdInput(props: {
   tag: Tag
-  onChange: (infusionsoftId: string) => void
+  onChange: (tag: Tag) => void
+  error?: string
 }) {
   const {tag} = props
-  const [infusionsoftId, setInfusionsoftId] = useState('')
+  const [
+    infusionsoftTag,
+    setInfusionsoftTag,
+  ] = useState<InfusionsoftTag | null>(null)
 
   useEffect(() => {
-    setInfusionsoftId(tag.infusionsoft_id ? String(tag.infusionsoft_id) : '')
+    if (!tag.infusionsoft_id || !tag.name) {
+      setInfusionsoftTag(null)
+      return
+    }
+
+    setInfusionsoftTag({
+      id: tag.infusionsoft_id,
+      name: tag.name,
+    })
   }, [tag])
 
-  const hasChanges = infusionsoftId !== String(tag.infusionsoft_id)
-  const canSave = Boolean(infusionsoftId) && hasChanges
+  const handleTagSelect = (selected: InfusionsoftTag | null) => {
+    if (!selected) {
+      const empty = {
+        ...tag,
+        name: null,
+        infusionsoft_id: null,
+      }
 
-  const save = () => {
-    props.onChange(String(infusionsoftId))
+      props.onChange(empty)
+      return
+    }
+
+    const updated = {
+      ...tag,
+      name: selected.name,
+      infusionsoft_id: selected.id,
+    }
+
+    props.onChange(updated)
   }
 
   return (
-    <TextField
-      value={infusionsoftId}
-      onChange={onChangeStringHandler(setInfusionsoftId)}
-      variant="outlined"
-      label={label(tag)}
-      fullWidth
-      inputProps={{
-        'aria-label': 'tag id',
-      }}
-      InputProps={{
-        endAdornment: (
-          <InputAdornment position="end">
-            <Button
-              onClick={save}
-              disabled={!canSave}
-              color="primary"
-              aria-label="save tag id"
-            >
-              Save
-            </Button>
-          </InputAdornment>
-        ),
-      }}
+    <TagsAutocomplete
+      errorText={props.error}
+      inputVariant={'outlined'}
+      inputLabel={label(tag)}
+      value={infusionsoftTag}
+      onChange={handleTagSelect}
     />
   )
 }
 
 function label(tag: Tag) {
   const isSet = Boolean(tag.name)
-
   return isSet ? `${typeLabel(tag)} - ${tag.name}` : `${typeLabel(tag)}`
 }
 
@@ -67,6 +74,7 @@ function typeLabel(tag: Tag) {
     [ATTENDEE_CREATED]: 'Attendee Created',
     [ATTENDEE_SIGNED_WAIVER]: 'Attendee Signed Waiver',
     [ATTENDEE_CHECKED_IN]: 'Attendee Checked In',
+    [IMPORT_TAG]: 'Import Tag',
   }
 
   const label = labels[tag.type]
