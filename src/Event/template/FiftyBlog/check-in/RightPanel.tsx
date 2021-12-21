@@ -1,14 +1,20 @@
-import {useFiftyBlogTemplate} from 'Event/template/FiftyBlog'
-import {rgba} from 'lib/color'
 import React from 'react'
 import styled from 'styled-components'
+import {Typography} from '@material-ui/core'
+
+import {useFiftyBlogTemplate} from 'Event/template/FiftyBlog'
+import StepIndicator from 'Event/template/FiftyBlog/check-in/StepIndicator'
+import {Step} from 'Event/template/FiftyBlog/check-in/CheckInConfig'
+
+import {rgba} from 'lib/color'
 
 export default function RightPanel(props: {
   children: React.ReactElement
   center?: boolean
+  step: Step
 }) {
   const template = useFiftyBlogTemplate()
-  const {checkInRightPanel} = template
+  const {checkInRightPanel, checkInTitle} = template
 
   return (
     <Box
@@ -19,6 +25,7 @@ export default function RightPanel(props: {
       textColor={checkInRightPanel.textColor}
       center={props.center}
     >
+      <StepIndicator step={props.step} />
       {props.children}
     </Box>
   )
@@ -29,15 +36,16 @@ const Box = styled.div<{
   textColor: string
   center?: boolean
 }>`
-  padding: 100px 35px;
-  margin: 24px;
-  border-radius: 10px;
+  padding: 35px;
+  border-top-right-radius: 10px;
+  border-bottom-right-radius: 10px;
   display: flex;
+  flex-direction: column;
   justify-content: center;
   align-items: ${(props) => (props.center ? 'center' : 'flex-start')};
   background: ${(props) => props.backgroundColor};
   overflow: auto;
-
+  position: relative;
   > * {
     color: ${(props) => props.textColor}!important;
   }

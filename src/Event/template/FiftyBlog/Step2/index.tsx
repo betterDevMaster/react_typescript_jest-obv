@@ -17,9 +17,9 @@ import MobilePanel from 'Event/template/FiftyBlog/check-in/MobilePanel'
 export default function Step2() {
   return (
     <Page
-      Left={<LeftPanel step={2} />}
+      Left={<LeftPanel />}
       Right={
-        <RightPanel>
+        <RightPanel step={2}>
           <Content />
         </RightPanel>
       }

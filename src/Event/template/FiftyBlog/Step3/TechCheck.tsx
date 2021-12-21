@@ -22,9 +22,9 @@ export type FiftyBlogTechCheckProps = TechCheckProps & {
 export default function TechCheck(props: FiftyBlogTechCheckProps) {
   return (
     <Page
-      Left={<LeftPanel step={3} />}
+      Left={<LeftPanel />}
       Right={
-        <RightPanel>
+        <RightPanel step={3}>
           <Content {...props} />
         </RightPanel>
       }

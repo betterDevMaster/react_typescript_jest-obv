@@ -20,71 +20,68 @@ export default function Content(props: SetPasswordFormProps) {
   const password = watch('password')
 
   return (
-    <>
-      <div>
-        <Title align="center" variant="h3">
-          {v(setPasswordForm.title)}
-        </Title>
-        <Description>{v(setPasswordForm?.description || '')}</Description>
-        <form onSubmit={handleSubmit(props.submit)}>
-          <TextField
-            label={v(setPasswordForm?.passwordLabel)}
-            type="password"
-            fullWidth
-            variant="outlined"
-            name="password"
-            inputProps={{
-              ref: register({
-                required: 'Password is required',
-                minLength: {
-                  value: 8,
-                  message: 'Password must be at least 8 characters',
-                },
-              }),
-              'aria-label': 'password input',
-            }}
-            error={!!errors.password}
-            helperText={errors.password && errors.password.message}
-            disabled={props.submitting}
-          />
-          <TextField
-            label={v(setPasswordForm.confirmPasswordLabel)}
-            type="password"
-            fullWidth
-            variant="outlined"
-            name="password_confirmation"
-            inputProps={{
-              ref: register({
-                required: 'Confirm Password is required',
-                validate: (value: any) =>
-                  value === password || 'Passwords are not a match',
-              }),
-              'aria-label': 'confirm password input',
-            }}
-            error={!!errors.password_confirmation}
-            helperText={
-              errors.password_confirmation &&
-              errors.password_confirmation.message
-            }
-            disabled={props.submitting}
-          />
-          <Error>{props.responseError && props.responseError.message}</Error>
+    <div>
+      <Title align="center" variant="h3">
+        {v(setPasswordForm.title)}
+      </Title>
+      <Description>{v(setPasswordForm?.description || '')}</Description>
+      <form onSubmit={handleSubmit(props.submit)}>
+        <TextField
+          label={v(setPasswordForm?.passwordLabel)}
+          type="password"
+          fullWidth
+          variant="outlined"
+          name="password"
+          inputProps={{
+            ref: register({
+              required: 'Password is required',
+              minLength: {
+                value: 8,
+                message: 'Password must be at least 8 characters',
+              },
+            }),
+            'aria-label': 'password input',
+          }}
+          error={!!errors.password}
+          helperText={errors.password && errors.password.message}
+          disabled={props.submitting}
+        />
+        <TextField
+          label={v(setPasswordForm.confirmPasswordLabel)}
+          type="password"
+          fullWidth
+          variant="outlined"
+          name="password_confirmation"
+          inputProps={{
+            ref: register({
+              required: 'Confirm Password is required',
+              validate: (value: any) =>
+                value === password || 'Passwords are not a match',
+            }),
+            'aria-label': 'confirm password input',
+          }}
+          error={!!errors.password_confirmation}
+          helperText={
+            errors.password_confirmation && errors.password_confirmation.message
+          }
+          disabled={props.submitting}
+        />
+        <Error>{props.responseError && props.responseError.message}</Error>
 
-          <StyledButton
-            variant="contained"
-            fullWidth
-            type="submit"
-            backgroundColor={setPasswordForm.button.backgroundColor}
-            hoverColor={setPasswordForm.button.hoverBackgroundColor}
-            color={setPasswordForm.button.textColor}
-            borderRadius={setPasswordForm.button.borderRadius}
-            aria-label="submit set password form"
-          >
-            {v(setPasswordForm.button.text)}
-          </StyledButton>
-        </form>
-      </div>
-    </>
+        <StyledButton
+          variant="contained"
+          fullWidth
+          type="submit"
+          backgroundColor={setPasswordForm.button.backgroundColor}
+          hoverColor={setPasswordForm.button.hoverBackgroundColor}
+          color={setPasswordForm.button.textColor}
+          borderRadius={setPasswordForm.button.borderRadius}
+          aria-label="submit set password form"
+        >
+          {v(setPasswordForm.button.text)}
+        </StyledButton>
+      </form>
+    </div>
   )
 }
 

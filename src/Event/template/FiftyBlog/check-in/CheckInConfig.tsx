@@ -1,24 +1,30 @@
-import Box from '@material-ui/core/Box'
-import Grid from '@material-ui/core/Grid'
-import InputLabel from '@material-ui/core/InputLabel'
-import Slider from '@material-ui/core/Slider'
-import TextField from '@material-ui/core/TextField'
+import React from 'react'
+import {Control, Controller, FieldElement, useForm} from 'react-hook-form'
+import styled from 'styled-components'
+
+import {
+  Box,
+  Button,
+  Grid,
+  InputLabel,
+  Slider,
+  TextField,
+} from '@material-ui/core'
+
 import {
   DEFAULTS,
   FiftyBlog,
   useFiftyBlogTemplate,
   useFiftyBlogUpdate,
 } from 'Event/template/FiftyBlog'
+
 import {handleChangeSlider} from 'lib/dom'
 import IconSelect from 'lib/fontawesome/IconSelect'
 import ColorPicker from 'lib/ui/ColorPicker'
+
 import {SectionTitle} from 'organization/Event/Page'
 import Page from 'organization/Event/Page'
 import Layout from 'organization/user/Layout'
-import React from 'react'
-import styled from 'styled-components'
-import Button from '@material-ui/core/Button'
-import {Control, Controller, FieldElement, useForm} from 'react-hook-form'
 
 export type Step = 1 | 2 | 3
 
@@ -91,18 +97,6 @@ export default function CheckInConfig() {
                     />
                   )}
                 />
-                <Box>
-                  <TextField
-                    label="Check In Left Panel Title"
-                    name="checkInTitle"
-                    defaultValue={template.checkInTitle}
-                    inputProps={{
-                      'aria-label': 'check in left panel title',
-                      ref: register,
-                    }}
-                    fullWidth
-                  />
-                </Box>
               </BorderedGrid>
               <Grid xs={12} md={6} item>
                 <Box mb={1}>
@@ -156,11 +150,70 @@ export default function CheckInConfig() {
                     />
                   )}
                 />
+
+                <Controller
+                  name="checkInRightPanel.progressActiveColor"
+                  defaultValue={template.checkInRightPanel.progressActiveColor}
+                  control={control}
+                  render={({value, onChange}) => (
+                    <ColorPicker
+                      label="Progress Active Color"
+                      color={value}
+                      onPick={onChange}
+                      aria-label="check in right panel progress active color"
+                    />
+                  )}
+                />
+
+                <Controller
+                  name="checkInRightPanel.progressInActiveColor"
+                  defaultValue={
+                    template.checkInRightPanel.progressInActiveColor
+                  }
+                  control={control}
+                  render={({value, onChange}) => (
+                    <ColorPicker
+                      label="Progress InActive Color"
+                      color={value}
+                      onPick={onChange}
+                      aria-label="check in right panel progress inactive color"
+                    />
+                  )}
+                />
               </Grid>
             </Grid>
           </Box>
           <Grid container spacing={2}>
-            <Grid item xs={12} md={4}>
+            <Grid item xs={12} md={6}>
+              <TextField
+                label="Check In Label Title"
+                name="checkInTitle"
+                defaultValue={template.checkInTitle}
+                inputProps={{
+                  'aria-label': 'check in label title',
+                  ref: register,
+                }}
+                fullWidth
+              />
+            </Grid>
+            <Grid item xs={12} md={6}>
+              <Controller
+                name="checkInColor"
+                defaultValue={template.checkInColor}
+                control={control}
+                render={({value, onChange}) => (
+                  <ColorPicker
+                    label="Checkin Label Color"
+                    color={value}
+                    onPick={onChange}
+                    aria-label="checkin label color"
+                  />
+                )}
+              />
+            </Grid>
+          </Grid>
+          <Grid container spacing={2}>
+            <Grid item xs={12} md={6}>
               <Controller
                 name="stepLabelColor"
                 defaultValue={template.stepLabelColor}
@@ -175,12 +228,12 @@ export default function CheckInConfig() {
                 )}
               />
             </Grid>
-            <Grid item xs={12} md={4}>
+            {/* <Grid item xs={12} md={4}>
               <Controller
                 name="stepIconColor"
                 defaultValue={template.stepIconColor}
                 control={control}
-                render={({value, onChange}) => (
+                render={({ value, onChange }) => (
                   <ColorPicker
                     label="Step Icon Color"
                     color={value}
@@ -189,8 +242,8 @@ export default function CheckInConfig() {
                   />
                 )}
               />
-            </Grid>
-            <Grid item xs={12} md={4}>
+            </Grid> */}
+            <Grid item xs={12} md={6}>
               <Controller
                 name="stepInactiveColor"
                 defaultValue={template.stepInactiveColor}
@@ -274,16 +327,16 @@ function StepConfig(props: {
               }}
             />
           </Grid>
-          <Grid xs={12} md={12} item>
+          {/* <Grid xs={12} md={12} item>
             <Controller
               name={props.iconFieldName}
               defaultValue={props.icon}
               control={props.control}
-              render={({value, onChange}) => (
+              render={({ value, onChange }) => (
                 <IconSelect value={value} onChange={onChange} />
               )}
             />
-          </Grid>
+          </Grid> */}
         </Grid>
       </Grid>
     </>

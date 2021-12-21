@@ -21,9 +21,9 @@ it('should configure check in page settings', async () => {
     event,
     userPermissions: [CONFIGURE_EVENTS],
   })
-  const title = 'Check In Left Panel title'
+  const title = 'Check In label title'
 
-  user.type(await findByLabelText('check in left panel title'), title)
+  user.type(await findByLabelText('check in label title'), title)
   user.click(await findByLabelText('save'))
 
   await wait(() => {

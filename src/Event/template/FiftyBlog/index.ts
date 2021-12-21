@@ -97,6 +97,14 @@ export type FiftyBlog = BaseTemplate &
       hidden?: boolean
       size: number
     }
+    stepLogoProps?: {
+      hidden?: boolean
+      size: number
+    }
+    stepBackgroundProps?: {
+      hidden?: boolean
+      size: number
+    }
     rightPanel: {
       barBackgroundColor: string
       barTextColor: string
@@ -119,8 +127,11 @@ export type FiftyBlog = BaseTemplate &
       backgroundColor: string
       backgroundOpacity: number
       textColor: string
+      progressActiveColor: string
+      progressInActiveColor: string
     }
     checkInTitle: string
+    checkInColor: string
     checkInLeftPanel: {
       backgroundColor: string
       backgroundOpacity: number
@@ -311,6 +322,14 @@ export const createFiftyBlog = (): DeepRequired<FiftyBlog> => ({
     hidden: false,
     size: 20,
   },
+  stepLogoProps: {
+    hidden: false,
+    size: 20,
+  },
+  stepBackgroundProps: {
+    hidden: false,
+    size: 20,
+  },
   rightPanel: {
     barBackgroundColor: '#07BAB5',
     barTextColor: '#00000',
@@ -341,8 +360,11 @@ export const createFiftyBlog = (): DeepRequired<FiftyBlog> => ({
     backgroundColor: '#07BAB5',
     backgroundOpacity: 1,
     textColor: '#000000',
+    progressActiveColor: '#131D34',
+    progressInActiveColor: '#EDF2F8',
   },
   checkInTitle: 'Check In:',
+  checkInColor: '#000000',
   checkInLeftPanel: {
     backgroundColor: '#FFFFFF',
     backgroundOpacity: 0,
@@ -493,6 +515,8 @@ export const createFiftyBlog = (): DeepRequired<FiftyBlog> => ({
   loginBackground: null,
   loginLogo: null,
   loginLogoBackground: null,
+  stepLogo: null,
+  stepBackground: null,
 })
 
 export type CustomBackgrounds = {
@@ -501,6 +525,8 @@ export type CustomBackgrounds = {
   loginBackground: string | null
   loginLogo: string | null
   loginLogoBackground: string | null
+  stepLogo: string | null
+  stepBackground: string | null
 }
 
 export const DEFAULTS = createFiftyBlog()

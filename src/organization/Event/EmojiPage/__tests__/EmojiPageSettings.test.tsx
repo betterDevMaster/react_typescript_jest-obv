@@ -104,7 +104,8 @@ it('should set emoji page background color', async () => {
 
   user.click(await findByLabelText('configure emoji page'))
 
-  const color = faker.commerce.color()
+  // const color = faker.commerce.color()
+  const color = '#000000'
   user.type(await findByLabelText('emoji page background color'), color)
   user.click(await findByLabelText('save'))
 

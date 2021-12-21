@@ -44,7 +44,7 @@ export default function GlobalStylesConfig() {
         <SectionTitle>Global Styles</SectionTitle>
         <form onSubmit={handleSubmit(save)}>
           <Grid container justify="center" spacing={2}>
-            <Grid item xs={4} md={2}>
+            <Grid item xs={4} md={3}>
               <Box mb={2}>
                 <BackgroundImageUploader
                   label="Dashboard Logo"
@@ -89,7 +89,7 @@ export default function GlobalStylesConfig() {
                 />
               </Box>
             </Grid>
-            <Grid item xs={4} md={2}>
+            <Grid item xs={4} md={3}>
               <Box mb={2}>
                 <BackgroundImageUploader
                   label="Dashboard Background"
@@ -115,7 +115,7 @@ export default function GlobalStylesConfig() {
                 />
               </Box>
             </Grid>
-            <Grid item xs={4} md={2}>
+            <Grid item xs={4} md={3}>
               <Box mb={2}>
                 <BackgroundImageUploader
                   label="Login Background"
@@ -141,7 +141,7 @@ export default function GlobalStylesConfig() {
                 />
               </Box>
             </Grid>
-            <Grid item xs={4} md={2}>
+            <Grid item xs={4} md={3}>
               <Box mb={2}>
                 <BackgroundImageUploader
                   label="Login Logo"
@@ -186,7 +186,7 @@ export default function GlobalStylesConfig() {
                 />
               </Box>
             </Grid>
-            <Grid item xs={4} md={2}>
+            <Grid item xs={4} md={3}>
               <Box mb={2}>
                 <BackgroundImageUploader
                   label="Login Logo Background"
@@ -204,6 +204,77 @@ export default function GlobalStylesConfig() {
                       checked={value}
                       onChange={onChangeCheckedHandler(onChange)}
                       arial-label="set login logo background mode"
+                      labelPlacement="end"
+                      color="primary"
+                      label="Hide background"
+                    />
+                  )}
+                />
+              </Box>
+            </Grid>
+            <Grid item xs={4} md={3}>
+              <Box mb={2}>
+                <BackgroundImageUploader
+                  label="Step Logo"
+                  property="stepLogo"
+                  control={control}
+                />
+              </Box>
+              <Box mb={2}>
+                <Controller
+                  name="stepLogoProps.hidden"
+                  defaultValue={template.stepLogoProps.hidden}
+                  control={control}
+                  render={({value, onChange}) => (
+                    <Switch
+                      checked={value}
+                      onChange={onChangeCheckedHandler(onChange)}
+                      arial-label="set step logo mode"
+                      labelPlacement="end"
+                      color="primary"
+                      label="Hide Logo"
+                    />
+                  )}
+                />
+              </Box>
+              <Box display="flex" flexDirection="column" flex="1" mb={2}>
+                <InputLabel>Image Size</InputLabel>
+                <Controller
+                  name="stepLogoProps.size"
+                  defaultValue={template.stepLogoProps.size}
+                  control={control}
+                  render={({value, onChange}) => (
+                    <Slider
+                      valueLabelDisplay="auto"
+                      aria-label="step logo weight"
+                      value={value}
+                      onChange={handleChangeSlider(onChange)}
+                      step={1}
+                      min={MIN_LOGO_SIZE_PERCENT}
+                      max={MAX_LOGO_SIZE_PERCENT}
+                    />
+                  )}
+                />
+              </Box>
+            </Grid>
+            <Grid item xs={4} md={3}>
+              <Box mb={2}>
+                <BackgroundImageUploader
+                  label="Step Background"
+                  property="stepBackground"
+                  control={control}
+                />
+              </Box>
+              <Box mb={2}>
+                <Controller
+                  name="stepBackgroundProps.hidden"
+                  defaultValue={template.stepBackgroundProps.hidden}
+                  control={control}
+                  render={({value, onChange}) => (
+                    <Switch
+                      checked={value}
+                      onChange={onChangeCheckedHandler(onChange)}
+                      arial-label="set step background mode"
                       labelPlacement="end"
                       color="primary"
                       label="Hide background"
