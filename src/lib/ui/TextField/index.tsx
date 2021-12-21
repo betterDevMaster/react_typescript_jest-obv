@@ -13,6 +13,7 @@ export type TextFieldProps = {
   'aria-label'?: string
   placeholder?: string
   value?: string
+  disabled?: boolean
   onChange?: (v: string) => void
 }
 
@@ -28,6 +29,7 @@ export default function TextField(props: TextFieldProps) {
       aria-label={props['aria-label']}
       fullWidth={props.fullWidth}
       value={props.value}
+      disabled={props.disabled}
       onChange={props.onChange && onChangeStringHandler(props.onChange)}
     />
   )
@@ -72,10 +74,10 @@ const StyledInput = styled.input<StyleProps>`
   padding: ${(props) => `${props.theme.spacing[3]} ${props.theme.spacing[3]}`};
   color: ${(props) => props.color};
   background-color: ${(props) => props.backgroundColor};
-  border-radius: ${(props) =>
-    `${props.rounded ? props.theme.spacing[6] : props.theme.spacing[1]}`};
+  border-radius: ${(props) => `${props.rounded ? '24px' : '3px'}`};
   border-width: ${(props) => `${props.bordered ? '1px' : 0}`};
-  border-color: ${(props) => props.theme.colors.border};
+  border-color: #dfdfdf;
+  border-style: solid;
   font-weight: 300;
   font-size: 14px;
   line-height: 17px;
