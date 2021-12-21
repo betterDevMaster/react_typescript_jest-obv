@@ -13,6 +13,7 @@ export const colors = {
   secondary: '#2066a7',
   success: '#20A746',
   border: '#a0a9b0',
+  info: '#51EA0A',
   error: red[500],
   text: {
     muted: '#606F7B',

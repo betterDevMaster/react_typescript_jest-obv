@@ -1,12 +1,11 @@
-import Button, {ButtonProps} from '@material-ui/core/Button'
 import DialogActions from '@material-ui/core/DialogActions'
 import DialogContent from '@material-ui/core/DialogContent'
 import DialogTitle from '@material-ui/core/DialogTitle'
 import Typography from '@material-ui/core/Typography'
 import {useToggle} from 'lib/toggle'
-import DangerButton from 'lib/ui/Button/DangerButton'
 import Dialog from 'lib/ui/Dialog'
 import React from 'react'
+import Button, {ButtonProps} from 'lib/ui/Button'
 
 const DEFAULT_TITLE = 'Are you sure?'
 const DEFAULT_CONFIRM_LABEL = 'Confirm'
@@ -23,6 +22,7 @@ export default function ConfirmDialog(props: {
   confirmLabel?: string
   variant?: ConfirmationDialogVariant
   skip?: boolean
+  buttonsDisplay?: 'horizontally' | 'vertically'
 }) {
   const {showing, onCancel} = props
   const {flag: isVisible, toggle: toggleVisible} = useToggle()
@@ -72,14 +72,20 @@ export default function ConfirmDialog(props: {
         <DialogContent>
           <Content>{props.description}</Content>
         </DialogContent>
-        <DialogActions>
+        <DialogActions disableSpacing>
           <CancelButton
             dialogVariant={variant}
+            variant="contained"
+            color="primary"
             onClick={handleCancel}
             autoFocus
-          />
+          >
+            Cancel
+          </CancelButton>
           <ConfirmButton
             dialogVariant={variant}
+            variant="contained"
+            color="primary"
             onClick={handleConfirm}
             aria-label="confirm"
           >
@@ -111,7 +117,7 @@ function ConfirmButton(
 ) {
   const {dialogVariant, ...buttonProps} = props
   if (dialogVariant === 'dangerous') {
-    return <DangerButton {...buttonProps} />
+    return <Button {...buttonProps} color="danger" />
   }
 
   return <Button {...buttonProps} color="primary" />
