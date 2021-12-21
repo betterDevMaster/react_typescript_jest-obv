@@ -11,13 +11,13 @@ import defaultLoginBackground from 'assets/images/background.png'
 export default function Logo() {
   const {event} = useEvent()
   const template = useFiftyBlogTemplate()
-  const logo = template.loginLogo ? template.loginLogo : defaultLogo
   const theme = useTheme()
   const isMobileScreen = useMediaQuery(theme.breakpoints.down('xs'))
 
   const background = template.loginLogoBackground
     ? template.loginLogoBackground
     : defaultLoginBackground
+  const logo = template.loginLogo ? template.loginLogo : defaultLogo
 
   return (
     <Box

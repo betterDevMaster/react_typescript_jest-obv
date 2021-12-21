@@ -26,15 +26,8 @@ it('render login page', async () => {
   const background = faker.internet.url()
   const logo = faker.internet.url()
   const descriptionText = faker.lorem.sentence()
+
   const event = fakeEvent({
-    login_background: {
-      url: background,
-      name: 'background',
-    },
-    login_logo: {
-      url: logo,
-      name: 'logo',
-    },
     template: fakeFiftyBlog({
       login: fakeLogin({
         description: {
@@ -43,6 +36,8 @@ it('render login page', async () => {
           fontSize: 18,
         },
       }),
+      loginLogo: logo,
+      loginBackground: background,
     }),
   })
 
@@ -53,7 +48,6 @@ it('render login page', async () => {
   await wait(() => {
     expect(mockGet).toBeCalledTimes(1)
   })
-
   expect(await findByLabelText('login background')).toHaveStyle(
     `background: url(${background})`,
   )
