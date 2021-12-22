@@ -36,43 +36,33 @@ export default function SimpleBlogLeaderboard(props: {user: Attendee}) {
       >
         {leaderboardPage.backToDashboardText}
       </StyledRelativeLink>
-      <Container>
-        <Table>
-          <TableHead>
-            <TableRow>
-              <TableCell>#</TableCell>
-              <TableCell align="left">Name</TableCell>
-              <TableCell align="right" size="small">
-                Points
+      <Table>
+        <TableHead>
+          <TableRow>
+            <TableCell>#</TableCell>
+            <TableCell align="left">Name</TableCell>
+            <TableCell align="right" size="small">
+              Points
+            </TableCell>
+          </TableRow>
+        </TableHead>
+        <TableBody>
+          {entries.map((entry, index) => (
+            <TableRow key={index} aria-label="entry">
+              <TableCell component="th" scope="row">
+                {index + 1}
               </TableCell>
+              <TableCell align="left">
+                {entry.attendee.first_name} {entry.attendee.last_name}
+              </TableCell>
+              <TableCell align="right">{entry.score}</TableCell>
             </TableRow>
-          </TableHead>
-          <TableBody>
-            {entries.map((entry, index) => (
-              <TableRow key={index} aria-label="entry">
-                <TableCell component="th" scope="row">
-                  {index + 1}
-                </TableCell>
-                <TableCell align="left">
-                  {entry.attendee.first_name} {entry.attendee.last_name}
-                </TableCell>
-                <TableCell align="right">{entry.score}</TableCell>
-              </TableRow>
-            ))}
-          </TableBody>
-        </Table>
-      </Container>
+          ))}
+        </TableBody>
+      </Table>
     </Page>
   )
 }
-
-const Container = styled.div`
-  margin-bottom: ${(props) => props.theme.spacing[8]};
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: center;
-`
 
 const StyledRelativeLink = styled((props) => {
   const {color, ...otherProps} = props
