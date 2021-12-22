@@ -18,11 +18,11 @@ export default function LeftPanel(props: {step: Step}) {
       )}
       textColor={checkInLeftPanel.textColor}
     >
-      <div>
+      <BoxInner>
         <Menu />
-        <Logo />
+        <StyledLogo />
         <StepIndicator step={props.step} />
-      </div>
+      </BoxInner>
     </Box>
   )
 }
@@ -46,4 +46,19 @@ const Box = styled.div<{
   > * {
     color: ${(props) => props.textColor}!important;
   }
+`
+
+const BoxInner = styled.div`
+  position: relative;
+  display: flex;
+  align-items: center;
+  width: 100%;
+  justify-content: center;
+`
+
+const StyledLogo = styled(Logo)`
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
 `

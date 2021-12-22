@@ -139,7 +139,7 @@ const Box = styled.div`
 `
 
 const LabelContainer = styled.div`
-  margin-bottom: 20px;
+  margin-bottom: 40px;
 `
 
 const IconContainer = styled.div<{
