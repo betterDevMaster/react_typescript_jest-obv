@@ -178,6 +178,35 @@ it('should assign an action for points', async () => {
   expect(data.template[`nav.${savedButtonId}.actionId`]).toBe(target.key) // Did assign action id
 })
 
+it('should not have a page select', async () => {
+  const externalLink = faker.internet.url()
+  const button = fakeNavButtonWithSize({
+    page: undefined,
+    link: externalLink,
+  })
+  const navButtons = createHashMap([button])
+
+  const event = fakeEvent({
+    template: fakeFiftyBlog({
+      nav: navButtons,
+    }),
+  })
+
+  const {findByText, queryByLabelText} = await goToDashboardConfig({event})
+
+  const buttonEl = async () => await findByText(button.text)
+
+  // Started with absolute link
+  const href = async () => {
+    return (await buttonEl()).parentElement?.getAttribute('href')
+  }
+  expect(await href()).toBe(externalLink)
+
+  clickEdit(await buttonEl())
+
+  expect(queryByLabelText('pick page')).not.toBeInTheDocument()
+})
+
 it('should set an infusionsoft tag', async () => {
   const button = fakeNavButtonWithSize()
   const mainNavButtons = createHashMap([button])
@@ -236,33 +265,4 @@ it('should set an infusionsoft tag', async () => {
 
   const savedButtonId = Object.keys(mainNavButtons)[0]
   expect(data.template[`nav.${savedButtonId}.infusionsoftTag.id`]).toBe(id)
-})
-
-it('should not have a page select', async () => {
-  const externalLink = faker.internet.url()
-  const button = fakeNavButtonWithSize({
-    page: undefined,
-    link: externalLink,
-  })
-  const navButtons = createHashMap([button])
-
-  const event = fakeEvent({
-    template: fakeFiftyBlog({
-      nav: navButtons,
-    }),
-  })
-
-  const {findByText, queryByLabelText} = await goToDashboardConfig({event})
-
-  const buttonEl = async () => await findByText(button.text)
-
-  // Started with absolute link
-  const href = async () => {
-    return (await buttonEl()).parentElement?.getAttribute('href')
-  }
-  expect(await href()).toBe(externalLink)
-
-  clickEdit(await buttonEl())
-
-  expect(queryByLabelText('pick page')).not.toBeInTheDocument()
 })
