@@ -208,6 +208,7 @@ export type SimpleBlogHeader = Header & {
   height: number
   isCollapsed?: boolean
   disableShadow?: boolean
+  logoHeight: number
 }
 
 export const createSimpleBlog = (): DeepRequired<SimpleBlog> => ({
@@ -268,6 +269,7 @@ export const createSimpleBlog = (): DeepRequired<SimpleBlog> => ({
     height: 150,
     isCollapsed: false,
     disableShadow: false,
+    logoHeight: 110,
   },
   footer: {
     background: '#00e0000',

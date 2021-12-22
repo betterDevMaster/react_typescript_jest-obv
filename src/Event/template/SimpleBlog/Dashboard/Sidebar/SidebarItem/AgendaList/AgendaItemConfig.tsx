@@ -145,6 +145,7 @@ export function AgendaItemConfig(
             onChange={handleStartDate}
             fullWidth
             label="Start"
+            minDate={new Date()}
             inputProps={{
               'aria-label': 'agenda start date',
             }}
@@ -157,6 +158,7 @@ export function AgendaItemConfig(
             onChange={handleEndDate}
             fullWidth
             label="End"
+            minDate={startDate}
             inputProps={{
               'aria-label': 'agenda end date',
             }}

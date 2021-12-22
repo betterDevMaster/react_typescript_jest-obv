@@ -85,6 +85,7 @@ export default function Form() {
   const [rules, setRules] = useState(template.skipTechCheckRules)
 
   const areaKey = watch('area_key')
+  const enabled = watch('is_enabled') || event.tech_check?.is_enabled
   const canSave = !submitting && Boolean(areaKey)
 
   const error = (key: keyof TechCheckData) =>
@@ -154,13 +155,15 @@ export default function Form() {
                 render={({onChange, value}) => (
                   <Switch
                     checked={!!value}
-                    onChange={(e) => onChange(e.target.checked)}
+                    onChange={(e) => {
+                      onChange(e.target.checked)
+                    }}
                     inputProps={{'aria-label': 'toggle enabled'}}
                   />
                 )}
               />
             }
-            label="Enable"
+            label={enabled ? 'Enabled' : 'Disabled'}
           />
         </FormControl>
         <Controller

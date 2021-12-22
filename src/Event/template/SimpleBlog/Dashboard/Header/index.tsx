@@ -90,7 +90,15 @@ function CollapsableLogo() {
   if (header.isCollapsed) {
     return null
   }
-  return <Logo src={logo} alt={title} aria-label="logo" />
+  return (
+    <Logo
+      src={logo}
+      alt={title}
+      height={header.logoHeight}
+      max={header.height}
+      aria-label="logo"
+    />
+  )
 }
 
 function Layout(props: {children: React.ReactElement | React.ReactElement[]}) {
@@ -188,8 +196,11 @@ const Middle = styled.div`
 const LogoLink = styled(RelativeLink)`
   display: contents;
 `
-const Logo = styled.img`
-  max-height: 100%;
+const Logo = styled.img<{
+  height: number
+  max: number
+}>`
+  height: ${(props) => props.height}px;
+  max-height: ${(props) => props.max - 40}px;
   max-width: 100%;
-  padding: 20px 0;
 `

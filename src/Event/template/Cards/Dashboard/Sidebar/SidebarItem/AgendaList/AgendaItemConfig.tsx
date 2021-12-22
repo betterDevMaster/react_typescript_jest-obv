@@ -38,7 +38,7 @@ export function AgendaItemConfig(
       return
     }
 
-    const shouldAdjustEndDate = moment(startDate).isBefore(moment(endDate))
+    const shouldAdjustEndDate = moment(endDate).isBefore(moment(startDate))
     if (!shouldAdjustEndDate) {
       return
     }
@@ -133,6 +133,7 @@ export function AgendaItemConfig(
                   onChange={onChangeDate(onChange)}
                   fullWidth
                   label="Start"
+                  minDate={new Date()}
                   inputProps={{
                     'aria-label': 'agenda start date',
                   }}
@@ -152,6 +153,7 @@ export function AgendaItemConfig(
                   onChange={onChangeDate(onChange)}
                   fullWidth
                   label="End"
+                  minDate={agenda.startDate}
                   inputProps={{
                     'aria-label': 'agenda end date',
                   }}
