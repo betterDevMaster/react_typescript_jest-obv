@@ -296,7 +296,7 @@ export const createFiftyBlog = (): DeepRequired<FiftyBlog> => ({
   },
   leftPanel: {
     backgroundHidden: false,
-    barTextColor: '#00000',
+    barTextColor: '#000000',
     menuTextColor: '#000000',
     arrowColor: '#000000',
     backgroundColor: '#FFFFFF',
@@ -332,7 +332,7 @@ export const createFiftyBlog = (): DeepRequired<FiftyBlog> => ({
   },
   rightPanel: {
     barBackgroundColor: '#07BAB5',
-    barTextColor: '#00000',
+    barTextColor: '#000000',
     tabUnderlineColor: '#B8FFF7',
     textColor: '#000000',
     backgroundColor: '#FFFFFF',

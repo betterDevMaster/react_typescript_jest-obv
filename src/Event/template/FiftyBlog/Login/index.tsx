@@ -66,7 +66,7 @@ export default function Login(props: LoginProps) {
             error={!!props.errors.password}
             helperText={props.errors.password && props.errors.password.message}
           />
-          <div className="w-full mb-6 text-right">
+          <ForgotContent>
             <StyledRelativeLink
               to={eventRoutes.forgotPassword}
               aria-label="forgot password"
@@ -74,7 +74,7 @@ export default function Login(props: LoginProps) {
             >
               {v(login.passwordReset.linkLabel)}
             </StyledRelativeLink>
-          </div>
+          </ForgotContent>
           <ErrorMessage>{props.error}</ErrorMessage>
           <Button
             variant="contained"
@@ -99,4 +99,9 @@ export const Container = styled.div<{
 }>`
   padding: ${(props) => (props.isMobileScreen ? '2rem 3rem' : '4rem 7rem')};
   min-height: ${(props) => (props.isMobileScreen ? '400px' : '600px')};
+`
+export const ForgotContent = styled.div`
+  width: 100%;
+  margin-bottom: 1.5rem;
+  text-align: right;
 `

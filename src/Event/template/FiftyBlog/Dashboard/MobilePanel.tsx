@@ -80,7 +80,7 @@ export default function MobilePanel(props: {
           <MainNavMobile />
         </Top>
       </Container>
-      <div className="relative">
+      <RelativeContainer>
         <RightPanelIconButton
           onClick={() => setIsEditing({...isEditing, rightPanel: true})}
         />
@@ -96,7 +96,7 @@ export default function MobilePanel(props: {
         >
           {props.children}
         </Content>
-      </div>
+      </RelativeContainer>
     </Box>
   )
 }
@@ -152,6 +152,10 @@ const Container = styled.div<{
   align-items: center;
   width: 100%;
   flex-direction: column;
+`
+
+const RelativeContainer = styled.div`
+  position: relative;
 `
 
 const LogoBox = styled.div`

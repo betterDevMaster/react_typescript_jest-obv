@@ -64,7 +64,7 @@ export default function LeftPanel(props: {
         backgroundImage={background}
         isBackgroundHidden={dashboardBackgroundProps.hidden}
       >
-        <Editable className="m-6" onEdit={toggleBarConfig}>
+        <Editable onEdit={toggleBarConfig}>
           <Bar isMenuVisible={isEditMode} aria-label="left panel">
             <StyledMenuIconButton
               active={menuVisible}
@@ -120,6 +120,7 @@ const Box = styled.div<{
   isBackgroundHidden: boolean
 }>`
   margin: 24px 0 24px 24px;
+  padding: 1.5rem;
   border-top-left-radius: 10px;
   ${(props) =>
     props.isBackgroundHidden
