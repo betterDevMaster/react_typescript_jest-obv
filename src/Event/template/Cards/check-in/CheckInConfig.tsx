@@ -1,4 +1,3 @@
-import Box from '@material-ui/core/Box'
 import Grid from '@material-ui/core/Grid'
 import TextField from '@material-ui/core/TextField'
 import {Cards, useCardsTemplate, useCardsUpdate} from 'Event/template/Cards'
@@ -27,20 +26,37 @@ export default function CheckInConfig() {
       <Page>
         <SectionTitle>Check In</SectionTitle>
         <form onSubmit={handleSubmit(save)}>
-          <Box mb={2}>
-            <TextField
-              label="Title"
-              name="title"
-              defaultValue={checkIn.title}
-              inputProps={{
-                'aria-label': 'check in title',
-                ref: register,
-              }}
-              fullWidth
-            />
-          </Box>
           <Grid container spacing={2}>
             <Grid item xs={12} md={6}>
+              <TextField
+                label="Check In Title"
+                name="title"
+                defaultValue={checkIn.title}
+                inputProps={{
+                  'aria-label': 'check in title',
+                  ref: register,
+                }}
+                fullWidth
+              />
+            </Grid>
+            <Grid item xs={12} md={6}>
+              <Controller
+                name="titleColor"
+                defaultValue={checkIn.titleColor}
+                control={control}
+                render={({value, onChange}) => (
+                  <ColorPicker
+                    label="Check In Title Color"
+                    color={value}
+                    onPick={onChange}
+                    aria-label="check in title color"
+                  />
+                )}
+              />
+            </Grid>
+          </Grid>
+          <Grid container spacing={2}>
+            <Grid item xs={12} md={4}>
               <Controller
                 name="stepLabelColor"
                 defaultValue={checkIn.stepLabelColor}
@@ -55,7 +71,22 @@ export default function CheckInConfig() {
                 )}
               />
             </Grid>
-            <Grid item xs={12} md={6}>
+            <Grid item xs={12} md={4}>
+              <Controller
+                name="stepIconColor"
+                defaultValue={checkIn.stepIconColor}
+                control={control}
+                render={({value, onChange}) => (
+                  <ColorPicker
+                    label="Step Icon Color"
+                    color={value}
+                    onPick={onChange}
+                    aria-label="step icon color"
+                  />
+                )}
+              />
+            </Grid>
+            <Grid item xs={12} md={4}>
               <Controller
                 name="inActiveColor"
                 defaultValue={checkIn.inActiveColor}

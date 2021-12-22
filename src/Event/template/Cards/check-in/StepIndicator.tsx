@@ -1,21 +1,39 @@
 import React from 'react'
 import styled from 'styled-components'
 import {useCardsTemplate} from 'Event/template/Cards'
+import {useEvent} from 'Event/EventProvider'
 import {useAttendeeVariables} from 'Event'
 import {Icon} from 'lib/fontawesome/Icon'
 import {Step} from 'Event/template/Cards/check-in/CheckInConfig'
 
 export default function StepIndicator(props: {step: Step; className?: string}) {
   const {checkIn} = useCardsTemplate()
+  const {event, hasWaiver, hasTechCheck} = useEvent()
 
   return (
     <Box className={props.className}>
       <IconContainer>
-        <StepIcon icon={checkIn.step1Icon} isActive={props.step >= 1} />
-        <Divider isActive={props.step > 1} />
-        <StepIcon icon={checkIn.step2Icon} isActive={props.step >= 2} />
-        <Divider isActive={props.step > 2} />
-        <StepIcon icon={checkIn.step3Icon} isActive={props.step === 3} />
+        <StepBox
+          step={1}
+          currentStep={props.step}
+          icon={checkIn.step1Icon}
+          showing={event.requires_attendee_password}
+          isLast={!hasWaiver && !hasTechCheck}
+        />
+        <StepBox
+          step={2}
+          currentStep={props.step}
+          icon={checkIn.step2Icon}
+          showing={hasWaiver}
+          isLast={!hasTechCheck}
+        />
+        <StepBox
+          step={3}
+          currentStep={props.step}
+          icon={checkIn.step3Icon}
+          showing={hasTechCheck}
+          isLast
+        />
       </IconContainer>
       <LabelContainer>
         <CheckInLabel />
@@ -27,11 +45,11 @@ export default function StepIndicator(props: {step: Step; className?: string}) {
 
 function CheckInLabel() {
   const {
-    checkIn: {title: checkInLabel},
+    checkIn: {title: checkInLabel, titleColor},
   } = useCardsTemplate()
 
   const v = useAttendeeVariables()
-  return <Label>{v(checkInLabel)}</Label>
+  return <Label color={titleColor}>{v(checkInLabel)}</Label>
 }
 
 function StepLabel(props: {step: Step}) {
@@ -52,29 +70,44 @@ function StepLabel(props: {step: Step}) {
 function StepIcon(props: {icon: string; isActive: boolean}) {
   const {isActive} = props
   const {checkIn} = useCardsTemplate()
+  const color = isActive ? checkIn.stepIconColor : checkIn.inActiveColor
 
-  const color = () => {
-    if (!isActive) {
-      return checkIn.inActiveColor
-    }
-
-    return checkIn.stepLabelColor
-  }
-  return <StyledIcon iconClass={props.icon} color={color()} />
+  return <StyledIcon iconClass={props.icon} color={color} />
 }
 
-function Divider(props: {isActive: boolean}) {
-  const {isActive} = props
+function Divider(props: {isActive: boolean; showing: boolean}) {
+  const {isActive, showing} = props
   const {checkIn} = useCardsTemplate()
+  const color = isActive ? checkIn.stepIconColor : checkIn.inActiveColor
 
-  const color = () => {
-    if (!isActive) {
-      return checkIn.inActiveColor
-    }
-
-    return checkIn.stepLabelColor
+  if (!showing) {
+    return null
   }
-  return <DividerLine color={color()} />
+
+  return <DividerLine color={color} />
+}
+
+function StepBox(props: {
+  step: number
+  currentStep: number
+  icon: string
+  showing: boolean
+  isLast?: boolean
+}) {
+  const {showing, isLast} = props
+
+  if (!showing) {
+    return null
+  }
+
+  const isActive = props.currentStep >= props.step
+
+  return (
+    <>
+      <StepIcon icon={props.icon} isActive={isActive} />
+      <Divider isActive={isActive} showing={!isLast} />
+    </>
+  )
 }
 
 const Label = styled.h4<{
