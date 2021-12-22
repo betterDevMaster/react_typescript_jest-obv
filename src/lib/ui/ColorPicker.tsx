@@ -58,6 +58,7 @@ export default function ColorPicker(props: {
         }}
         disabled={props.disabled}
         defaultValue={color}
+        value={color}
         label={props.label}
         ref={anchorRef}
         onClick={toggleShowPicker}
