@@ -1,4 +1,4 @@
-import {makeStyles, lighten} from '@material-ui/core/styles'
+import {makeStyles} from '@material-ui/core/styles'
 
 export const buttonStyles = makeStyles(({palette, ...theme}) => ({
   '@global': {

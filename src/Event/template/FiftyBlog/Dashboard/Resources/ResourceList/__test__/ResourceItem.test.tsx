@@ -10,7 +10,7 @@ import {wait} from '@testing-library/react'
 import {fakeAction} from 'Event/ActionsProvider/__utils__/factory'
 import axios from 'axios'
 import {loginToEventSite} from 'Event/__utils__/url'
-import {fakeAttendee} from 'Event/auth/__utils__/factory'
+// import {fakeAttendee} from 'Event/auth/__utils__/factory'
 import faker from 'faker'
 
 const mockPost = axios.post as jest.Mock

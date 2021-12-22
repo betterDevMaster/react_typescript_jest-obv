@@ -50,7 +50,6 @@ export default function MobilePanel(props: {
           mobile={true}
         />
       </LogoBox>
-      {/* <StyledStepIndicator horizontal step={props.step} /> */}
       <Panel
         backgroundColor={rgba(
           checkInRightPanel.backgroundColor,
@@ -104,10 +103,6 @@ const LogoBox = styled.div<{
 
 const MenuIcon = styled.div`
   cursor: pointer;
-`
-
-const StyledStepIndicator = styled(StepIndicator)`
-  margin-bottom: 80px;
 `
 
 const Panel = styled.div<{

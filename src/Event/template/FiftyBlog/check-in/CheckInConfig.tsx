@@ -19,7 +19,6 @@ import {
 } from 'Event/template/FiftyBlog'
 
 import {handleChangeSlider} from 'lib/dom'
-import IconSelect from 'lib/fontawesome/IconSelect'
 import ColorPicker from 'lib/ui/ColorPicker'
 
 import {SectionTitle} from 'organization/Event/Page'

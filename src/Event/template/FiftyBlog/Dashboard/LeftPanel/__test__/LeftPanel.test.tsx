@@ -3,7 +3,7 @@ import {clickEdit} from '__utils__/edit'
 import {fakeEvent} from 'Event/__utils__/factory'
 import {fireEvent, wait} from '@testing-library/react'
 import user from '@testing-library/user-event'
-import {rgba} from 'lib/color'
+// import {rgba} from 'lib/color'
 import {goToDashboardConfig} from 'organization/Event/DashboardConfig/__utils__/go-dashboard-config'
 import axios from 'axios'
 

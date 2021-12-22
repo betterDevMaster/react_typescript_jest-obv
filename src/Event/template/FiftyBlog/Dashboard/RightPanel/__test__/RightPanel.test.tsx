@@ -6,10 +6,10 @@ import user from '@testing-library/user-event'
 import {rgba} from 'lib/color'
 import {goToDashboardConfig} from 'organization/Event/DashboardConfig/__utils__/go-dashboard-config'
 import axios from 'axios'
-import {DeepRequired} from 'lib/type-utils'
-import {FiftyBlog} from 'Event/template/FiftyBlog'
-import {loginToEventSite} from 'Event/__utils__/url'
-import {fakeAttendee} from 'Event/auth/__utils__/factory'
+// import {DeepRequired} from 'lib/type-utils'
+// import {FiftyBlog} from 'Event/template/FiftyBlog'
+// import {loginToEventSite} from 'Event/__utils__/url'
+// import {fakeAttendee} from 'Event/auth/__utils__/factory'
 
 const mockPut = axios.put as jest.Mock
 

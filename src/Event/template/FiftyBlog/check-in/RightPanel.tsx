@@ -1,6 +1,5 @@
 import React from 'react'
 import styled from 'styled-components'
-import {Typography} from '@material-ui/core'
 
 import {useFiftyBlogTemplate} from 'Event/template/FiftyBlog'
 import StepIndicator from 'Event/template/FiftyBlog/check-in/StepIndicator'
@@ -14,7 +13,7 @@ export default function RightPanel(props: {
   step: Step
 }) {
   const template = useFiftyBlogTemplate()
-  const {checkInRightPanel, checkInTitle} = template
+  const {checkInRightPanel} = template
 
   return (
     <Box

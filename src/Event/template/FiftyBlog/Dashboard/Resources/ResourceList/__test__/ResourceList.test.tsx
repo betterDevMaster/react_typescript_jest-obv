@@ -5,7 +5,7 @@ import {fakeResource} from 'Event/template/FiftyBlog/Dashboard/Resources/Resourc
 import {fireEvent} from '@testing-library/dom'
 import {clickEdit} from '__utils__/edit'
 import {fakeEvent} from 'Event/__utils__/factory'
-import {mockRxJsAjax} from 'store/__utils__/MockStoreProvider'
+// import {mockRxJsAjax} from 'store/__utils__/MockStoreProvider'
 import {wait} from '@testing-library/react'
 import axios from 'axios'
 import {goToFiftyBlogConfig} from 'Event/template/FiftyBlog/__utils__/go-to-fifty-blog-config'

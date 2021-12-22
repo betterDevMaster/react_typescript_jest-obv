@@ -12,7 +12,6 @@ import {
   useFiftyBlogUpdate,
 } from 'Event/template/FiftyBlog'
 
-import {useEvent} from 'Event/EventProvider'
 import ComponentConfig, {
   SaveButton,
 } from 'organization/Event/DashboardConfig/ComponentConfig'
@@ -22,7 +21,7 @@ export default function LeftPanelConfig(props: {
   isMobile: boolean
   onClose: () => void
 }) {
-  const {isVisible, isMobile, onClose} = props
+  const {isVisible, onClose} = props
 
   const template = useFiftyBlogTemplate()
   const update = useFiftyBlogUpdate()

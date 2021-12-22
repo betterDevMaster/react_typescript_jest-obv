@@ -1,8 +1,8 @@
 import {LoginProps} from 'Event/auth/Login'
 import styled from 'styled-components'
 import React from 'react'
-import {Typography, useMediaQuery} from '@material-ui/core'
-import {makeStyles, useTheme} from '@material-ui/core/styles'
+import {useMediaQuery} from '@material-ui/core'
+import {useTheme} from '@material-ui/core/styles'
 
 import {eventRoutes} from 'Event/Routes'
 import Page, {

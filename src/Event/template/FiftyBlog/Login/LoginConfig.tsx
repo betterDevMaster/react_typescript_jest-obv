@@ -1,15 +1,11 @@
 import React from 'react'
-import Switch from '@material-ui/core/Switch'
 import Box from '@material-ui/core/Box'
 import Grid from '@material-ui/core/Grid'
 import TextField from '@material-ui/core/TextField'
 import Slider from '@material-ui/core/Slider'
 import ColorPicker from 'lib/ui/ColorPicker'
-import {onChangeCheckedHandler} from 'lib/dom'
 import {handleChangeSlider} from 'lib/dom'
 import InputLabel from '@material-ui/core/InputLabel'
-import EventImageUpload from 'organization/Event/DashboardConfig/EventImageUpload'
-import {useEvent} from 'Event/EventProvider'
 import {
   FiftyBlog,
   useFiftyBlogTemplate,
@@ -32,7 +28,6 @@ export default function LoginFormConfig() {
   const {handleSubmit, control, register} = useForm()
 
   const {login} = template
-  const {event} = useEvent()
 
   const submit = (data: FiftyBlog) => {
     update(data)

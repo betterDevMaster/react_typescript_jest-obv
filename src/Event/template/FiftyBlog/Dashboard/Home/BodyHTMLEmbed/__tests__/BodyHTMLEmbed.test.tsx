@@ -1,7 +1,7 @@
 import {fakeFiftyBlog} from 'Event/template/FiftyBlog/__utils__/factory'
 import {fakeEvent} from 'Event/__utils__/factory'
 import {wait} from '@testing-library/dom'
-import faker from 'faker'
+// import faker from 'faker'
 import {loginToEventSite} from 'Event/__utils__/url'
 import {fakeAttendee} from 'Event/auth/__utils__/factory'
 
