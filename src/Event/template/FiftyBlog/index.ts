@@ -1,17 +1,19 @@
 import {GridSize, GridSpacing} from '@material-ui/core/Grid'
-import {EmojiList} from 'Event/template/FiftyBlog/Dashboard/EmojiList'
-import {NavButtonWithSize} from 'Event/Dashboard/components/NavButton'
-import {ResourceList} from 'Event/template/FiftyBlog/Dashboard/Resources/ResourceList'
-import {BaseTemplate, BASE_DEFAULTS} from 'Event/template'
-import {EntityList, HashMap} from 'lib/list'
-import {Column} from 'lib/ui/layout'
-import {useTemplate} from 'Event/TemplateProvider'
+
 import {BlogPost} from 'Event/Dashboard/components/BlogPosts'
-import {colors} from 'lib/ui/theme'
-import {DeepRequired} from 'lib/type-utils'
+import {NavButtonWithSize} from 'Event/Dashboard/components/NavButton'
+import {BaseTemplate, BASE_DEFAULTS} from 'Event/template'
+import {EmojiList} from 'Event/template/FiftyBlog/Dashboard/EmojiList'
+import {ResourceList} from 'Event/template/FiftyBlog/Dashboard/Resources/ResourceList'
+import {useTemplate} from 'Event/TemplateProvider'
 import {useTemplateUpdate} from 'Event/TemplateUpdateProvider'
 
-export const FIFTY_BLOG = 'Fifty Fifty'
+import {EntityList, HashMap} from 'lib/list'
+import {Column} from 'lib/ui/layout'
+import {colors} from 'lib/ui/theme'
+import {DeepRequired} from 'lib/type-utils'
+
+export const FIFTY_BLOG = 'Nifty Fifty'
 
 export function useFiftyBlogTemplate() {
   const template = useTemplate()
@@ -272,7 +274,33 @@ export type FiftyBlog = BaseTemplate &
       actionId?: string | null
       isVisible?: boolean
     }
+    progressBar: {
+      barColor: string
+      backgroundColor: string
+      textColor: string
+      thickness: number
+      borderRadius: number
+      showing: boolean
+      checkInTitle: string
+      checkInColor: string
+      step1Text: string
+      step1Percent: number
+      step2Text: string
+      step2Percent: number
+      step3Text: string
+      step3Percent: number
+    }
   }
+
+export type CustomBackgrounds = {
+  dashboardLogo: string | null
+  dashboardBackground: string | null
+  loginBackground: string | null
+  loginLogo: string | null
+  loginLogoBackground: string | null
+  stepLogo: string | null
+  stepBackground: string | null
+}
 
 export const createFiftyBlog = (): DeepRequired<FiftyBlog> => ({
   ...BASE_DEFAULTS,
@@ -281,8 +309,8 @@ export const createFiftyBlog = (): DeepRequired<FiftyBlog> => ({
   accentColor: '#B8FFF7',
   menu: {
     backgroundColor: '#54CFD6',
-    iconColor: '#FFFFFF',
-    textColor: '#FFFFFF',
+    iconColor: '#000000',
+    textColor: '#000000',
     height: 65,
   },
   points_unit: 'Points',
@@ -510,6 +538,22 @@ export const createFiftyBlog = (): DeepRequired<FiftyBlog> => ({
     actionId: null,
     isVisible: true,
   },
+  progressBar: {
+    barColor: '#0969d6',
+    backgroundColor: '#b1d4f1',
+    textColor: '#000000',
+    thickness: 15,
+    borderRadius: 50,
+    showing: true,
+    checkInTitle: 'Check In:',
+    checkInColor: '#000000',
+    step1Text: 'Step 1',
+    step1Percent: 33,
+    step2Text: 'Step 2',
+    step2Percent: 66,
+    step3Text: 'Step 3',
+    step3Percent: 100,
+  },
   dashboardLogo: null,
   dashboardBackground: null,
   loginBackground: null,
@@ -518,15 +562,5 @@ export const createFiftyBlog = (): DeepRequired<FiftyBlog> => ({
   stepLogo: null,
   stepBackground: null,
 })
-
-export type CustomBackgrounds = {
-  dashboardLogo: string | null
-  dashboardBackground: string | null
-  loginBackground: string | null
-  loginLogo: string | null
-  loginLogoBackground: string | null
-  stepLogo: string | null
-  stepBackground: string | null
-}
 
 export const DEFAULTS = createFiftyBlog()

@@ -48,17 +48,38 @@ export const Box = styled.div<{
     props.isBoxHidden
       ? 'background: transparent;'
       : `background: url(${props.background});`}
+  background-position: center;
+  background-size: cover;
+  background-repeat: no-repeat;
   display: ${(props) =>
-    props.isBoxHidden && props.isLogoHidden ? 'none' : 'block'};
+    props.isBoxHidden && props.isLogoHidden ? 'none' : 'flex'};
+  margin: auto;
+  justify-content: center;
+  align-items: center;
+  padding: ${(props) => props.theme.spacing[4]};
+  height: 30vh;
   width: 100%;
-  text-align: center;
-  padding: ${(props) =>
-    props.isMobileScreen ? props.theme.spacing[8] : props.theme.spacing[16]};
+  @media (min-width: ${(props) => props.theme.breakpoints.sm}) {
+    width: 100%;
+    height: 30vh;
+  }
+  @media (min-width: ${(props) => props.theme.breakpoints.md}) {
+    width: 50%;
+    height: 100vh;
+  }
+  @media (min-width: ${(props) => props.theme.breakpoints.lg}) {
+    width: 50%;
+    height: 100vh;
+  }
+  @media (min-width: ${(props) => props.theme.breakpoints.xl}) {
+    width: 50%;
+    height: 100vh;
+  }
 `
 
 export const LogoImage = styled.img<{size: number; isLogoHidden?: boolean}>`
   display: ${(props) => (props.isLogoHidden ? 'none' : 'block')};
   max-width: 100%;
-  margin: auto;
+  margin: 0 auto;
   width: ${(props) => props.size}%;
 `

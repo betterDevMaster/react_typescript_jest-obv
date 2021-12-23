@@ -126,6 +126,9 @@ const Box = styled.div<{
     props.isBackgroundHidden
       ? `background: ${props.backgroundColor};`
       : `background: url(${props.backgroundImage});`}
+  background-repeat: no-repeat;
+  background-size: 100% 100%;
+  background-position: center;
   display: flex;
   flex-direction: column;
 `

@@ -1,4 +1,5 @@
 import React from 'react'
+import styled from 'styled-components'
 
 import Page, {
   Button,
@@ -6,9 +7,14 @@ import Page, {
   TextField,
   ErrorMessage,
 } from 'Event/template/FiftyBlog/Login/Page'
+
 import {ForgotPasswordProps} from 'auth/password'
-import {useFiftyBlogTemplate} from 'Event/template/FiftyBlog'
+
 import {useGuestVariables} from 'Event'
+import {eventRoutes} from 'Event/Routes'
+import {useFiftyBlogTemplate} from 'Event/template/FiftyBlog'
+
+import {RelativeLink} from 'lib/ui/link/RelativeLink'
 
 export default function ForgotPassword(props: ForgotPasswordProps) {
   return (
@@ -34,7 +40,7 @@ export function Content(props: ForgotPasswordProps) {
   }
 
   return (
-    <>
+    <Container>
       <Description aria-label="event login description">
         {v(login.passwordReset.description)}
       </Description>
@@ -65,7 +71,30 @@ export function Content(props: ForgotPasswordProps) {
         >
           {v(login.passwordReset.buttonText)}
         </Button>
+        <LoginContent>
+          <StyledRelativeLink
+            to={eventRoutes.login}
+            aria-label="login"
+            color={login.description.color}
+          >
+            {v(login.submitButton.label)}
+          </StyledRelativeLink>
+        </LoginContent>
       </form>
-    </>
+    </Container>
   )
 }
+
+const Container = styled.div`
+  padding: ${(props) => props.theme.spacing[10]};
+  margin: auto;
+  height: 70vh;
+`
+const StyledRelativeLink = styled(RelativeLink)<{color: string}>`
+  color: ${(props) => props.color};
+`
+const LoginContent = styled.div`
+  width: 100%;
+  padding: 0.5rem;
+  text-align: right;
+`

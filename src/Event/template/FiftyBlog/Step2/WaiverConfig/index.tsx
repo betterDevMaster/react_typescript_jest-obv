@@ -1,52 +1,60 @@
-import Button from '@material-ui/core/Button'
-import styled from 'styled-components'
-import InputLabel from '@material-ui/core/InputLabel'
-import withStyles from '@material-ui/core/styles/withStyles'
-import TextField from '@material-ui/core/TextField'
-import Typography from '@material-ui/core/Typography'
-import {spacing} from 'lib/ui/theme'
 import React, {useEffect, useRef, useState} from 'react'
 import {Controller, useForm} from 'react-hook-form'
-import FormHelperText from '@material-ui/core/FormHelperText'
-import {useEvent} from 'Event/EventProvider'
-import {api} from 'lib/url'
-import {useOrganization} from 'organization/OrganizationProvider'
+import {useDispatch} from 'react-redux'
+import styled from 'styled-components'
+
+import {
+  Box,
+  Button,
+  FormControl,
+  FormControlLabel,
+  FormHelperText,
+  Grid,
+  InputLabel,
+  Switch,
+  TextField,
+  Typography,
+} from '@material-ui/core'
+import {withStyles} from '@material-ui/core/styles'
+
+import {User} from 'auth/user'
+
 import {ObvioEvent} from 'Event'
+import {useEvent} from 'Event/EventProvider'
 import {setEvent} from 'Event/state/actions'
 import {
   FiftyBlog,
   useFiftyBlogTemplate,
   useFiftyBlogUpdate,
 } from 'Event/template/FiftyBlog'
-import {useDispatch} from 'react-redux'
 import {waiverLogoPath} from 'Event/Step2/WaiverProvider'
-import {fetchFile} from 'lib/http-client'
-import Layout from 'organization/user/Layout'
-import Page from 'organization/Event/Page'
-import TextEditor from 'lib/ui/form/TextEditor'
-import FormControl from '@material-ui/core/FormControl'
-import FormControlLabel from '@material-ui/core/FormControlLabel'
-import Switch from '@material-ui/core/Switch'
-import Grid from '@material-ui/core/Grid'
-
-import FormSelect from 'organization/Event/FormsProvider/FormSelect'
-import Box from '@material-ui/core/Box'
 import {
   DEFAULT_AGREE_STATEMENT,
   DEFAULT_SIGNATURE_PROMPT,
 } from 'Event/Step2/WaiverProvider'
-
 import TemplateFields, {
   DEFAULT_WAIVER_CONFIG_PROPS,
   FiftyBlogWaiverTemplateProps,
   WaiverTemplatePropSetter,
 } from 'Event/template/FiftyBlog/Step2/WaiverConfig/TemplateFields'
-import Preview from 'organization/Event/WaiverConfig/Preview'
+import TemplateProvider from 'Event/TemplateProvider'
 import Step2 from 'Event/template/FiftyBlog/Step2'
+
 import {fieldError} from 'lib/form'
 import {ValidationError} from 'lib/ui/api-client'
+import {fetchFile} from 'lib/http-client'
+import TextEditor from 'lib/ui/form/TextEditor'
+import {spacing} from 'lib/ui/theme'
+import {api} from 'lib/url'
+
 import {SaveButton} from 'organization/Event/DashboardConfig/ComponentConfig'
-import TemplateProvider from 'Event/TemplateProvider'
+import Preview from 'organization/Event/WaiverConfig/Preview'
+import FormSelect from 'organization/Event/FormsProvider/FormSelect'
+import Layout from 'organization/user/Layout'
+import Page from 'organization/Event/Page'
+import {useOrganization} from 'organization/OrganizationProvider'
+import {useObvioUser} from 'obvio/auth'
+
 const imageUploadId = 'waived-logo-upload'
 
 type WaiverData = {
@@ -67,6 +75,7 @@ export default function WaiverConfig() {
   } = useForm()
   const [submitting, setSubmitting] = useState(false)
   const [logo, setLogo] = useState<null | File>(null)
+  const user = useObvioUser()
   const {
     waiverConfig,
     set: setTemplateProp,
@@ -293,7 +302,7 @@ export default function WaiverConfig() {
                   signaturePrompt={signature_prompt}
                 >
                   <TemplateProvider template={updatedTemplate}>
-                    <Step2 />
+                    <Step2 user={user} />
                   </TemplateProvider>
                 </Preview>
               </Grid>

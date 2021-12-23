@@ -2,10 +2,10 @@ import React from 'react'
 import styled from 'styled-components'
 
 import {useFiftyBlogTemplate} from 'Event/template/FiftyBlog'
-import StepIndicator from 'Event/template/FiftyBlog/check-in/StepIndicator'
 import {Step} from 'Event/template/FiftyBlog/check-in/CheckInConfig'
 
 import {rgba} from 'lib/color'
+import ProgressBar from 'lib/ui/ProgressBar'
 
 export default function RightPanel(props: {
   children: React.ReactElement
@@ -24,7 +24,20 @@ export default function RightPanel(props: {
       textColor={checkInRightPanel.textColor}
       center={props.center}
     >
-      <StepIndicator step={props.step} />
+      <Container>
+        <ProgressBar
+          showing={template.progressBar.showing}
+          text={template.progressBar.step1Text}
+          value={template.progressBar.step1Percent}
+          barColor={template.progressBar.barColor}
+          backgroundColor={template.progressBar.backgroundColor}
+          textColor={template.progressBar.textColor}
+          borderRadius={template.progressBar.borderRadius}
+          thickness={template.progressBar.thickness}
+          checkInTitle={template.progressBar.checkInTitle}
+          checkInColor={template.progressBar.checkInColor}
+        />
+      </Container>
       {props.children}
     </Box>
   )
@@ -48,4 +61,11 @@ const Box = styled.div<{
   > * {
     color: ${(props) => props.textColor}!important;
   }
+`
+
+const Container = styled.div`
+  position: absolute;
+  top: 5%;
+  left: 0;
+  width: 100%;
 `

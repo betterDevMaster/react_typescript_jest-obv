@@ -1,23 +1,27 @@
-import React from 'react'
+import React, {useState} from 'react'
 import styled from 'styled-components'
-import {Icon} from '@material-ui/core'
+
+import {User} from 'auth/user'
 
 import Logo from 'Event/Logo'
 import {useFiftyBlogTemplate} from 'Event/template/FiftyBlog'
 import {Step} from 'Event/template/FiftyBlog/check-in/CheckInConfig'
-import StepIndicator from 'Event/template/FiftyBlog/check-in/StepIndicator'
+import Menu from 'Event/template/FiftyBlog/Menu'
 
 import {rgba} from 'lib/color'
+import ProgressBar from 'lib/ui/ProgressBar'
+import {MenuIconButton} from 'lib/ui/IconButton/MenuIconButton'
+
+import {useObvioUser} from 'obvio/auth'
 
 import defaultLogo from 'assets/images/logo.png'
-import defaultBackground from 'assets/images/background.png'
 
 export default function MobilePanel(props: {
   children: React.ReactElement
   step: Step
 }) {
   const template = useFiftyBlogTemplate()
-  const {checkInRightPanel} = template
+  const {checkInRightPanel, menu} = template
   const {
     stepLogo,
     stepBackground,
@@ -26,13 +30,13 @@ export default function MobilePanel(props: {
     stepBackgroundProps,
   } = template
   const logo = stepLogo ? stepLogo : defaultLogo
-  const background = stepBackground ? stepBackground : defaultBackground
+  const background = stepBackground ? stepBackground : ''
+  const [menuVisible, setMenuVisible] = useState(false)
+  const toggleMenu = () => setMenuVisible(!menuVisible)
+  const user = useObvioUser()
 
   return (
     <Box>
-      {/* <LogoBox>
-        <Logo />
-      </LogoBox> */}
       <LogoBox
         backgroundColor={rgba(
           checkInLeftPanel.backgroundColor,
@@ -42,7 +46,15 @@ export default function MobilePanel(props: {
         isBackgroundHidden={stepBackgroundProps.hidden}
         textColor={checkInLeftPanel.textColor}
       >
-        <Menu />
+        <IconContainer>
+          <MenuIconButton
+            active={menuVisible}
+            onClick={toggleMenu}
+            aria-label="show side menu"
+            iconColor={menu.iconColor}
+          />
+        </IconContainer>
+        <Menu visible={menuVisible} toggle={toggleMenu} user={user} />
         <Logo
           src={logo}
           hidden={stepLogoProps.hidden}
@@ -56,18 +68,23 @@ export default function MobilePanel(props: {
           checkInRightPanel.backgroundOpacity,
         )}
       >
-        <StepIndicator step={props.step} />
+        <Container>
+          <ProgressBar
+            showing={template.progressBar.showing}
+            text={template.progressBar.step1Text}
+            value={template.progressBar.step1Percent}
+            barColor={template.progressBar.barColor}
+            backgroundColor={template.progressBar.backgroundColor}
+            textColor={template.progressBar.textColor}
+            borderRadius={template.progressBar.borderRadius}
+            thickness={template.progressBar.thickness}
+            checkInTitle={template.progressBar.checkInTitle}
+            checkInColor={template.progressBar.checkInColor}
+          />
+        </Container>
         {props.children}
       </Panel>
     </Box>
-  )
-}
-
-function Menu() {
-  return (
-    <MenuIcon>
-      <Icon>menu</Icon>
-    </MenuIcon>
   )
 }
 
@@ -76,7 +93,18 @@ const Box = styled.div`
   flex-direction: column;
   align-items: center;
   min-height: 100vh;
-  overflow: auto;
+  overflow: hidden;
+`
+
+const Container = styled.div`
+  position: absolute;
+  top: 5%;
+  left: 0;
+  width: 100%;
+`
+
+const IconContainer = styled.div`
+  cursor: pointer;
 `
 
 const LogoBox = styled.div<{
@@ -88,10 +116,14 @@ const LogoBox = styled.div<{
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 24px;
   border-top-left-radius: 10px;
   border-top-right-radius: 10px;
   overflow: auto;
+  background-repeat: no-repeat;
+  background-size: 100% 100%;
+  background-position: center;
+  position: relative;
+
   ${(props) =>
     props.isBackgroundHidden
       ? `background: ${props.backgroundColor};`
@@ -101,23 +133,17 @@ const LogoBox = styled.div<{
   }
 `
 
-const MenuIcon = styled.div`
-  cursor: pointer;
-`
-
 const Panel = styled.div<{
   backgroundColor: string
 }>`
   flex: 1;
   border-bottom-left-radius: 10px;
   border-bottom-right-radius: 10px;
-  padding: 24px 24px 36px;
+  padding: 80px 24px 36px;
   display: flex;
   justify-content: center;
   align-items: center;
   background: ${(props) => props.backgroundColor};
   position: relative;
-  @media (min-width: ${(props) => props.theme.breakpoints.sm}) {
-    width: 100%;
-  }
+  width: 100%;
 `

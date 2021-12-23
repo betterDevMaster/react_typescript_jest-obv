@@ -43,7 +43,7 @@ export default function LoginFormConfig() {
             <form onSubmit={handleSubmit(submit)}>
               <Box display="flex" flexDirection="row" flex="2">
                 <Box my={1} display="flex" flexDirection="column" flex="1">
-                  <Box mb={1}>
+                  {/* <Box mb={1}>
                     <InputLabel>Logo Size</InputLabel>
                     <Controller
                       name="login.logoSize"
@@ -61,7 +61,7 @@ export default function LoginFormConfig() {
                         />
                       )}
                     />
-                  </Box>
+                  </Box> */}
                   <Controller
                     name="login.backgroundColor"
                     defaultValue={login.backgroundColor}

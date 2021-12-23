@@ -59,10 +59,8 @@ export default function Waiver() {
 
 const Body = styled.div`
   width: 100%;
-  max-height: 240px;
   overflow-y: auto;
   border-radius: 10px;
-  padding: 16px;
   margin-bottom: 16px;
   background: #ffffff;
   color: #000000;

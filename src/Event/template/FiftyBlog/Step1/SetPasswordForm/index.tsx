@@ -9,7 +9,7 @@ import RightPanel from 'Event/template/FiftyBlog/check-in/RightPanel'
 export default function SetPasswordForm(props: SetPasswordFormProps) {
   return (
     <Page
-      Left={<LeftPanel />}
+      Left={<LeftPanel user={props.user} />}
       Right={
         <RightPanel center step={1}>
           <Content {...props} />

@@ -1,14 +1,18 @@
-import {LoginProps} from 'Event/auth/Login'
-import styled from 'styled-components'
 import React from 'react'
-import {Typography} from '@material-ui/core'
+import styled from 'styled-components'
+
+import {Paper, Typography} from '@material-ui/core'
 import {makeStyles} from '@material-ui/core/styles'
 import MuiTextField, {TextFieldProps} from '@material-ui/core/TextField'
 import MuiButton, {ButtonProps} from '@material-ui/core/Button'
 import defaultBackground from 'assets/images/background_login.png'
-import Logo from 'Event/template/FiftyBlog/Login/Logo'
-import {rgba} from 'lib/color'
+
+import {LoginProps} from 'Event/auth/Login'
 import {useFiftyBlogTemplate} from 'Event/template/FiftyBlog'
+import Logo from 'Event/template/FiftyBlog/Login/Logo'
+
+import {rgba} from 'lib/color'
+
 import PasswordField from 'lib/ui/TextField/PasswordField'
 
 export default function Page(props: {
@@ -32,10 +36,8 @@ export default function Page(props: {
       isHidden={loginBackgroundProps.hidden}
     >
       <ColorOverlay color={backgroundRGBColor}>
-        <Container>
-          <Logo />
-          {props.children}
-        </Container>
+        <Logo />
+        <Container>{props.children}</Container>
       </ColorOverlay>
     </Background>
   )
@@ -110,21 +112,39 @@ export const Background = styled.div<{
   background-position: center;
   position: ${(props) => (props.isPreview ? 'inherit' : 'absolute')};
   width: 100%;
-  height: 100%;
   top: 0;
   left: 0;
   justify-content: center;
   align-items: center;
+  -webkit-transition: all 300ms ease-in 200ms;
+  -moz-transition: all 300ms ease-in 200ms;
+  -o-transition: all 300ms ease-in 200ms;
+  transition: all 300ms ease-in 200ms;
 `
 
 export const ColorOverlay = styled.div<{
   color: string
 }>`
-  background-color: ${(props) => props.color};
   width: 100%;
-  height: 100%;
-  display: flex;
   justify-content: center;
+  display: flex;
+  flex-direction: column;
+
+  @media (min-width: ${(props) => props.theme.breakpoints.sm}) {
+    flex-direction: column;
+  }
+
+  @media (min-width: ${(props) => props.theme.breakpoints.md}) {
+    flex-direction: row;
+  }
+
+  @media (min-width: ${(props) => props.theme.breakpoints.lg}) {
+    flex-direction: row;
+  }
+
+  @media (min-width: ${(props) => props.theme.breakpoints.xl}) {
+    flex-direction: row;
+  }
 `
 
 export function TextField(props: TextFieldProps) {
@@ -180,17 +200,64 @@ export const StyledButton = styled(
 `
 
 export const Container = styled.div`
-  width: 100%;
   display: flex;
   flex-direction: column;
   align-items: center;
-  margin: auto;
+
   @media (min-width: ${(props) => props.theme.breakpoints.sm}) {
-    width: 600px;
+    margin: auto;
+    width: 100%;
+    margin-bottom: 0;
+  }
+
+  @media (min-width: ${(props) => props.theme.breakpoints.md}) {
+    width: 50%;
+  }
+
+  @media (min-width: ${(props) => props.theme.breakpoints.lg}) {
+    width: 50%;
+  }
+
+  @media (min-width: ${(props) => props.theme.breakpoints.xl}) {
+    width: 50%;
   }
 `
 
 export const ErrorText = styled(Typography)`
   margin-bottom: ${(props) => props.theme.spacing[3]}!important;
   text-align: center;
+`
+
+export const StyledPaper = styled(Paper)`
+  padding: ${(props) => props.theme.spacing[10]};
+  display: flex;
+  vertical-align: middle;
+  background-color: inherit;
+  height: 70vh;
+  width: 100%;
+  box-shadow: none;
+
+  @media (min-width: ${(props) => props.theme.breakpoints.sm}) {
+    border-radius: 10px 10px 0 0;
+    height: 70vh;
+  }
+
+  @media (min-width: ${(props) => props.theme.breakpoints.md}) {
+    border-radius: 10px 10px 0 0;
+    height: 100vh;
+  }
+
+  @media (min-width: ${(props) => props.theme.breakpoints.lg}) {
+    border-radius: unset;
+    height: 100vh;
+  }
+
+  @media (min-width: ${(props) => props.theme.breakpoints.xl}) {
+    border-radius: 10px;
+    height: 100vh;
+  }
+`
+
+export const StyledFormContainer = styled.div`
+  margin: auto;
 `

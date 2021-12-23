@@ -1,20 +1,26 @@
 import React, {useEffect, useState} from 'react'
-import Typography from '@material-ui/core/Typography'
-import Box from '@material-ui/core/Box'
-import Grid from '@material-ui/core/Grid'
-import Slider from '@material-ui/core/Slider'
-import ColorPicker from 'lib/ui/ColorPicker'
-import TextField from '@material-ui/core/TextField'
-import {handleChangeSlider, onChangeCheckedHandler} from 'lib/dom'
+import {Controller, useForm, UseFormMethods} from 'react-hook-form'
+
 import {
-  SimpleBlog,
-  useSimpleBlogTemplate,
-  useSimpleBlogUpdate,
-} from 'Event/template/SimpleBlog'
+  Box,
+  Grid,
+  InputLabel,
+  Slider,
+  TextField,
+  Typography,
+} from '@material-ui/core'
+
+import {
+  FiftyBlog,
+  useFiftyBlogTemplate,
+  useFiftyBlogUpdate,
+} from 'Event/template/FiftyBlog'
+
+import ColorPicker from 'lib/ui/ColorPicker'
+import {handleChangeSlider, onChangeCheckedHandler} from 'lib/dom'
 import Switch from 'lib/ui/form/Switch'
 import ProgressBar, {ProgressBarProps} from 'lib/ui/ProgressBar'
-import {Controller, useForm, UseFormMethods} from 'react-hook-form'
-import InputLabel from '@material-ui/core/InputLabel'
+
 import {SaveButton} from 'organization/Event/DashboardConfig/ComponentConfig'
 
 export interface ProgressBar {
@@ -28,10 +34,10 @@ const MIN_PROGRESS_BAR_BORDER_RADIUS = 0
 const MAX_PROGRESS_BAR_BORDER_RADIUS = 30
 
 export default function ProgressBarConfig() {
-  const {progressBar} = useSimpleBlogTemplate()
-  const update = useSimpleBlogUpdate()
+  const {progressBar} = useFiftyBlogTemplate()
+  const update = useFiftyBlogUpdate()
   const {control, handleSubmit, watch, setValue, register} = useForm<
-    SimpleBlog['progressBar']
+    FiftyBlog['progressBar']
   >()
 
   // Need to init 'requires_attendee_password' on load so the form knows
@@ -41,7 +47,7 @@ export default function ProgressBarConfig() {
     setValue('showing', progressBar.showing)
   }, [progressBar, setValue])
 
-  const submit = (data: SimpleBlog['progressBar']) => {
+  const submit = (data: FiftyBlog['progressBar']) => {
     update({progressBar: data})
   }
 
@@ -57,12 +63,12 @@ export default function ProgressBarConfig() {
         showing={localProgressBar.showing}
         barColor={localProgressBar.barColor}
         text={localProgressBar.step1Text}
+        checkInTitle={localProgressBar.checkInTitle}
+        checkInColor={localProgressBar.checkInColor}
         backgroundColor={localProgressBar.backgroundColor}
         textColor={localProgressBar.textColor}
         thickness={localProgressBar.thickness}
         borderRadius={localProgressBar.borderRadius}
-        checkInTitle=""
-        checkInColor="#000000"
       />
       <form onSubmit={handleSubmit(submit)}>
         <Grid container spacing={2}>
@@ -99,7 +105,7 @@ export default function ProgressBarConfig() {
 function Config(
   props: {
     showing: boolean
-    localProgressBar: SimpleBlog['progressBar']
+    localProgressBar: FiftyBlog['progressBar']
   } & Pick<UseFormMethods, 'control' | 'register'>,
 ) {
   const {control, showing, localProgressBar, register} = props
@@ -162,7 +168,7 @@ function Config(
           control={control}
           render={({value, onChange}) => (
             <ColorPicker
-              label="Text Color"
+              label="Step Text Color"
               color={value}
               onPick={onChange}
               aria-label="text color"
@@ -187,6 +193,35 @@ function Config(
             />
           )}
         />
+      </Grid>
+      <Grid container spacing={2}>
+        <Grid item xs={12} md={6}>
+          <TextField
+            label="Check In Label Title"
+            name="checkInTitle"
+            defaultValue={localProgressBar.checkInTitle}
+            inputProps={{
+              'aria-label': 'check in label title',
+              ref: register,
+            }}
+            fullWidth
+          />
+        </Grid>
+        <Grid item xs={12} md={6}>
+          <Controller
+            name="checkInColor"
+            defaultValue={localProgressBar.checkInColor}
+            control={control}
+            render={({value, onChange}) => (
+              <ColorPicker
+                label="Checkin Label Color"
+                color={value}
+                onPick={onChange}
+                aria-label="checkin label color"
+              />
+            )}
+          />
+        </Grid>
       </Grid>
       <Grid container spacing={3}>
         <Grid item xs={6}>

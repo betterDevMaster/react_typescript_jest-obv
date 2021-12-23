@@ -32,6 +32,8 @@ export default function Step2(props: {user: User}) {
           textColor={progressBar.textColor}
           borderRadius={progressBar.borderRadius}
           thickness={progressBar.thickness}
+          checkInTitle=""
+          checkInColor="#000000"
         />
         <Content />
       </Container>

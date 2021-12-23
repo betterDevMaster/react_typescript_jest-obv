@@ -1,19 +1,21 @@
 import React from 'react'
 import Page from 'Event/template/FiftyBlog/Page'
 import styled from 'styled-components'
+
 import MuiButton, {ButtonProps} from '@material-ui/core/Button'
 import Grid from '@material-ui/core/Grid'
-import {useAttendeeVariables} from 'Event'
+
+import {TechCheckConfig, useAttendeeVariables} from 'Event'
 import {areaRoutes} from 'Event/Routes'
-import {TechCheckConfig} from 'Event'
-import {RelativeLink} from 'lib/ui/link/RelativeLink'
 import CustomButtons from 'Event/Step3/CustomButtons'
-import TextEditorContent from 'lib/ui/form/TextEditor/Content'
 import {TechCheckProps} from 'Event/Step3/TechCheck'
 import {DEFAULTS, FiftyBlog} from 'Event/template/FiftyBlog'
 import LeftPanel from 'Event/template/FiftyBlog/check-in/LeftPanel'
 import RightPanel from 'Event/template/FiftyBlog/check-in/RightPanel'
 import MobilePanel from 'Event/template/FiftyBlog/check-in/MobilePanel'
+
+import {RelativeLink} from 'lib/ui/link/RelativeLink'
+import TextEditorContent from 'lib/ui/form/TextEditor/Content'
 
 export type FiftyBlogTechCheckProps = TechCheckProps & {
   settings: FiftyBlog['techCheck']
@@ -22,7 +24,7 @@ export type FiftyBlogTechCheckProps = TechCheckProps & {
 export default function TechCheck(props: FiftyBlogTechCheckProps) {
   return (
     <Page
-      Left={<LeftPanel />}
+      Left={<LeftPanel user={props.user} />}
       Right={
         <RightPanel step={3}>
           <Content {...props} />

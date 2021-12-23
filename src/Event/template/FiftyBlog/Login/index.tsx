@@ -1,7 +1,7 @@
 import {LoginProps} from 'Event/auth/Login'
 import styled from 'styled-components'
 import React from 'react'
-import {useMediaQuery} from '@material-ui/core'
+// import { useMediaQuery } from '@material-ui/core'
 import {useTheme} from '@material-ui/core/styles'
 
 import {eventRoutes} from 'Event/Routes'
@@ -10,6 +10,8 @@ import Page, {
   Description,
   ErrorMessage,
   TextField,
+  StyledPaper,
+  StyledFormContainer,
 } from 'Event/template/FiftyBlog/Login/Page'
 import {RelativeLink} from 'lib/ui/link/RelativeLink'
 
@@ -21,72 +23,78 @@ export default function Login(props: LoginProps) {
   const {login} = template
   const v = useGuestVariables()
   const theme = useTheme()
-  const isMobileScreen = useMediaQuery(theme.breakpoints.down('xs'))
+  // const isMobileScreen = useMediaQuery(theme.breakpoints.down('xs'))
 
   const emailLabel = v(login.emailLabel)
   const passwordLabel = v(login.passwordLabel)
 
   return (
     <Page isPreview={props.isPreview}>
-      <Container isMobileScreen={isMobileScreen}>
-        <Description aria-label="event login description">
-          {v(login?.description.text)}
-        </Description>
-        <form onSubmit={props.onSubmit}>
-          <TextField
-            label={emailLabel}
-            type="email"
-            fullWidth
-            variant="outlined"
-            name="email"
-            disabled={props.submitting}
-            inputProps={{
-              ref: props.register({
-                required: `${emailLabel} is required`,
-              }),
-              'aria-label': 'email',
-            }}
-            error={!!props.errors.email}
-            helperText={props.errors.email && props.errors.email.message}
-          />
-          <TextField
-            label={passwordLabel}
-            type="password"
-            fullWidth
-            variant="outlined"
-            name="password"
-            disabled={props.submitting}
-            style={{margin: 0}}
-            inputProps={{
-              ref: props.register({
-                required: `${passwordLabel} is required`,
-              }),
-              'aria-label': 'password',
-            }}
-            error={!!props.errors.password}
-            helperText={props.errors.password && props.errors.password.message}
-          />
-          <ForgotContent>
-            <StyledRelativeLink
-              to={eventRoutes.forgotPassword}
-              aria-label="forgot password"
-              color={login.description.color}
+      {/* <Container isMobileScreen={isMobileScreen}> */}
+      <StyledPaper>
+        <StyledFormContainer>
+          <Description aria-label="event login description">
+            {v(login?.description.text)}
+          </Description>
+          <form onSubmit={props.onSubmit}>
+            <TextField
+              label={emailLabel}
+              type="email"
+              fullWidth
+              variant="outlined"
+              name="email"
+              disabled={props.submitting}
+              inputProps={{
+                ref: props.register({
+                  required: `${emailLabel} is required`,
+                }),
+                'aria-label': 'email',
+              }}
+              error={!!props.errors.email}
+              helperText={props.errors.email && props.errors.email.message}
+            />
+            <TextField
+              label={passwordLabel}
+              type="password"
+              fullWidth
+              variant="outlined"
+              name="password"
+              disabled={props.submitting}
+              style={{margin: 0}}
+              inputProps={{
+                ref: props.register({
+                  required: `${passwordLabel} is required`,
+                }),
+                'aria-label': 'password',
+              }}
+              error={!!props.errors.password}
+              helperText={
+                props.errors.password && props.errors.password.message
+              }
+            />
+            <ForgotContent>
+              <StyledRelativeLink
+                to={eventRoutes.forgotPassword}
+                aria-label="forgot password"
+                color={login.description.color}
+              >
+                {v(login.passwordReset.linkLabel)}
+              </StyledRelativeLink>
+            </ForgotContent>
+            <ErrorMessage>{props.error}</ErrorMessage>
+            <Button
+              variant="contained"
+              fullWidth
+              disabled={props.submitting}
+              aria-label="submit login"
+              type="submit"
             >
-              {v(login.passwordReset.linkLabel)}
-            </StyledRelativeLink>
-          </ForgotContent>
-          <ErrorMessage>{props.error}</ErrorMessage>
-          <Button
-            variant="contained"
-            fullWidth
-            disabled={props.submitting}
-            aria-label="submit login"
-            type="submit"
-          >
-            {login.submitButton.label}
-          </Button>
-        </form>
-      </Container>
+              {login.submitButton.label}
+            </Button>
+          </form>
+          {/* </Container> */}
+        </StyledFormContainer>
+      </StyledPaper>
     </Page>
   )
 }

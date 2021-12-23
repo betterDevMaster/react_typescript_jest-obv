@@ -59,7 +59,7 @@ function TemplateStep2() {
     case CARDS:
       return <CardsStep2 user={user} />
     case FIFTY_BLOG:
-      return <FiftyBlogStep2 />
+      return <FiftyBlogStep2 user={user} />
     default:
       throw new Error(`Missing step 2 for template.`)
   }

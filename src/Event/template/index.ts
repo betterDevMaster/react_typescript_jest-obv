@@ -4,7 +4,7 @@ import {InputStyles} from 'Event/Question'
 import {DeepRequired} from 'lib/type-utils'
 import {Cards} from 'Event/template/Cards'
 import {Rule} from 'Event/attendee-rules'
-import {FiftyBlog} from './FiftyBlog'
+import {FiftyBlog} from 'Event/template/FiftyBlog'
 
 /**
  * Base properties shared by all templates

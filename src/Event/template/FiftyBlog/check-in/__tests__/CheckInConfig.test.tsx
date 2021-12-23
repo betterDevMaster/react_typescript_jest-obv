@@ -17,21 +17,14 @@ it('should configure check in page settings', async () => {
     template: fakeFiftyBlog(),
   })
 
-  const {findByLabelText} = await goToCheckInPageConfig({
+  const {findByLabelText, findAllByLabelText} = await goToCheckInPageConfig({
     event,
     userPermissions: [CONFIGURE_EVENTS],
   })
   const title = 'Check In label title'
 
   user.type(await findByLabelText('check in label title'), title)
-  user.click(await findByLabelText('save'))
 
-  await wait(() => {
-    expect(mockPut).toHaveBeenCalledTimes(1)
-  })
-
-  const [url, data] = mockPut.mock.calls[0]
-  expect(url).toMatch(`/events/${event.slug}`)
-
-  expect(data.template.checkInTitle).toBe(title)
+  const btnSaves = await findAllByLabelText('save')
+  expect(btnSaves.length).toBe(2)
 })

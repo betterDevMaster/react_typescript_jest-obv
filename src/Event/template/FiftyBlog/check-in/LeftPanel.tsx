@@ -1,16 +1,17 @@
-import React from 'react'
+import React, {useState} from 'react'
 import styled from 'styled-components'
 
+import {User} from 'auth/user'
 import Logo from 'Event/Logo'
 import {useFiftyBlogTemplate} from 'Event/template/FiftyBlog'
 
 import {rgba} from 'lib/color'
+import {MenuIconButton} from 'lib/ui/IconButton/MenuIconButton'
+import Menu from 'Event/template/FiftyBlog/Menu'
 
 import defaultLogo from 'assets/images/logo.png'
-import defaultBackground from 'assets/images/background.png'
-import {Icon} from '@material-ui/core'
 
-export default function LeftPanel() {
+export default function LeftPanel(props: {user: User}) {
   const template = useFiftyBlogTemplate()
   const {
     stepLogo,
@@ -18,9 +19,12 @@ export default function LeftPanel() {
     checkInLeftPanel,
     stepLogoProps,
     stepBackgroundProps,
+    menu,
   } = template
   const logo = stepLogo ? stepLogo : defaultLogo
-  const background = stepBackground ? stepBackground : defaultBackground
+  const background = stepBackground ? stepBackground : ''
+  const [menuVisible, setMenuVisible] = useState(false)
+  const toggleMenu = () => setMenuVisible(!menuVisible)
 
   return (
     <Box
@@ -30,10 +34,17 @@ export default function LeftPanel() {
       )}
       backgroundImage={background}
       isBackgroundHidden={stepBackgroundProps.hidden}
-      textColor={checkInLeftPanel.textColor}
     >
       <div>
-        <Menu />
+        <IconContainer>
+          <MenuIconButton
+            active={menuVisible}
+            onClick={toggleMenu}
+            aria-label="show side menu"
+            iconColor={menu.iconColor}
+          />
+        </IconContainer>
+        <Menu visible={menuVisible} toggle={toggleMenu} user={props.user} />
         <Logo
           src={logo}
           hidden={stepLogoProps.hidden}
@@ -44,15 +55,7 @@ export default function LeftPanel() {
   )
 }
 
-function Menu() {
-  return (
-    <MenuIcon>
-      <Icon>menu</Icon>
-    </MenuIcon>
-  )
-}
-
-const MenuIcon = styled.div`
+const IconContainer = styled.div`
   position: absolute;
   top: 3%;
   left: 3%;
@@ -61,7 +64,6 @@ const MenuIcon = styled.div`
 
 const Box = styled.div<{
   backgroundColor: string
-  textColor: string
   backgroundImage: string
   isBackgroundHidden: boolean
 }>`
@@ -73,11 +75,18 @@ const Box = styled.div<{
     props.isBackgroundHidden
       ? `background: ${props.backgroundColor};`
       : `background: url(${props.backgroundImage});`}
+  background-repeat: no-repeat;
+  background-size: 100% 100%;
+  background-position: center;
   border-top-left-radius: 10px;
   border-bottom-left-radius: 10px;
   overflow: auto;
   position: relative;
-  > * {
-    color: ${(props) => props.textColor}!important;
-  }
+`
+
+const MenuBox = styled.div<{
+  visible: boolean
+}>`
+  flex: ${(props) => (props.visible ? 1 : 0)};
+  display: flex;
 `

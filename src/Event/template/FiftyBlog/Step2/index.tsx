@@ -1,23 +1,28 @@
+import React, {useState} from 'react'
+import {useForm} from 'react-hook-form'
+import styled from 'styled-components'
+
+import MuiButton, {ButtonProps} from '@material-ui/core/Button'
+
+import {User} from 'auth/user'
+
+import {useAttendeeVariables} from 'Event'
 import {useWaiver} from 'Event/Step2/WaiverProvider'
 import Page from 'Event/template/FiftyBlog/Page'
 import Waiver from 'Event/template/FiftyBlog/Step2/Waiver'
-import React, {useState} from 'react'
-import {useForm} from 'react-hook-form'
 import Step2Form from 'Event/template/FiftyBlog/Step2/Step2Form'
-import {Form} from 'organization/Event/FormsProvider'
 import {useSubmissions} from 'Event/SubmissionsProvider'
-import styled from 'styled-components'
-import MuiButton, {ButtonProps} from '@material-ui/core/Button'
-import {useAttendeeVariables} from 'Event'
 import {DEFAULTS, useFiftyBlogTemplate} from 'Event/template/FiftyBlog'
 import LeftPanel from 'Event/template/FiftyBlog/check-in/LeftPanel'
 import RightPanel from 'Event/template/FiftyBlog/check-in/RightPanel'
 import MobilePanel from 'Event/template/FiftyBlog/check-in/MobilePanel'
 
-export default function Step2() {
+import {Form} from 'organization/Event/FormsProvider'
+
+export default function Step2(props: {user: User}) {
   return (
     <Page
-      Left={<LeftPanel />}
+      Left={<LeftPanel user={props.user} />}
       Right={
         <RightPanel step={2}>
           <Content />
@@ -209,10 +214,4 @@ const Container = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  max-width: 400px;
-
-  @media (min-width: ${(props) => props.theme.breakpoints.md}) {
-    align-items: flex-start;
-    max-width: inherit;
-  }
 `
