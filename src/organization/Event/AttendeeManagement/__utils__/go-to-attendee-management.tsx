@@ -18,6 +18,7 @@ export async function goToAttendeeManagement(
   overrides: {
     attendees?: Attendee[]
     areas?: Area[]
+    mockInitialGet?: () => void
   } & EventOverrides = {},
 ) {
   const areas =
@@ -35,18 +36,21 @@ export async function goToAttendeeManagement(
   // areas
   mockGet.mockImplementationOnce(() => Promise.resolve({data: areas}))
 
-  const attendees =
-    overrides.attendees ||
-    Array.from({length: faker.random.number({min: 1, max: 5})}, fakeAttendee)
-  mockGet.mockImplementationOnce(() =>
-    Promise.resolve({data: fakePaginate({data: attendees})}),
-  )
+  // If we're overriding the initial load get request, we'll
+  // skip the mock
+  if (overrides.mockInitialGet) {
+    overrides.mockInitialGet()
+  } else {
+    const attendees =
+      overrides.attendees ||
+      Array.from({length: faker.random.number({min: 1, max: 5})}, fakeAttendee)
+
+    mockGet.mockImplementationOnce(() =>
+      Promise.resolve({data: fakePaginate({data: attendees})}),
+    )
+  }
 
   user.click(await renderResult.findByLabelText('attendee management'))
 
-  // Wait for attendees to load
-  for (const attendee of attendees) {
-    expect(await renderResult.findByText(attendee.email)).toBeInTheDocument()
-  }
   return {...data, ...renderResult}
 }

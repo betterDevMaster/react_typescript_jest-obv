@@ -22,15 +22,50 @@ beforeEach(() => {
 })
 
 it('should show list of attendees', async () => {
-  const attendees = Array.from(
-    {length: faker.random.number({min: 1, max: 5})},
-    fakeAttendee,
-  )
-  const {findByText} = await goToAttendeeManagement({attendees})
+  const pageOne = [fakeAttendee()]
 
-  for (const attendee of attendees) {
+  const {findByText, findByLabelText, event} = await goToAttendeeManagement({
+    mockInitialGet: () => {
+      mockGet.mockResolvedValueOnce({
+        data: fakePaginate({
+          data: pageOne,
+          total: 40,
+          per_page: 20,
+        }),
+      })
+    },
+  })
+
+  for (const attendee of pageOne) {
     expect(await findByText(attendee.email)).toBeInTheDocument()
   }
+
+  const pageTwo = [fakeAttendee(), fakeAttendee()]
+
+  mockGet.mockResolvedValueOnce({
+    data: fakePaginate({
+      data: pageTwo,
+      current_page: 2,
+      total: 40,
+      per_page: 20,
+      last_page: 2,
+    }),
+  })
+
+  user.click(await findByLabelText('go to next page'))
+
+  for (const attendee of pageTwo) {
+    expect(await findByText(attendee.email)).toBeInTheDocument()
+  }
+
+  await wait(() => {
+    expect(mockGet).toHaveBeenCalledTimes(12)
+  })
+
+  const [nextPageUrl] = mockGet.mock.calls[11]
+  expect(nextPageUrl).toMatch(
+    `events/${event.slug}/attendees?page=2&per_page=20`,
+  )
 })
 
 it('should complete tech check for an attendee', async () => {
