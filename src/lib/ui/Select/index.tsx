@@ -32,7 +32,7 @@ export default function Select(props: SelectBoxProps) {
   const {fullWidth, label, disabled, dark, children, value, onChange} = props
 
   return (
-    <FormControl fullWidth={fullWidth}>
+    <StyledFormControl fullWidth={fullWidth}>
       <StyledInputLabel dark={dark}>{label}</StyledInputLabel>
       <StyledSelect
         value={value || ''}
@@ -51,9 +51,13 @@ export default function Select(props: SelectBoxProps) {
       >
         {children}
       </StyledSelect>
-    </FormControl>
+    </StyledFormControl>
   )
 }
+
+const StyledFormControl = styled(FormControl)`
+  margin-bottom: 0 !important;
+`
 
 type StyleProps = {
   hasLabel?: boolean
