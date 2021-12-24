@@ -203,4 +203,5 @@ const Logo = styled.img<{
   height: ${(props) => props.height}px;
   max-height: ${(props) => props.max - 40}px;
   max-width: 100%;
+  object-fit: contain;
 `
