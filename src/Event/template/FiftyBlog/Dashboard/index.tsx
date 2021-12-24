@@ -52,7 +52,6 @@ export default function FiftyBlogDashboard(props: {user: User}) {
   const SpeakersProvider = isAttendee(user)
     ? EventSpeakersProvider
     : OrganizationSpeakersProvider
-  // console.log('isAttendee(user) ------', isAttendee(user))
 
   return (
     <SponsorsProvider>

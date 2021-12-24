@@ -134,6 +134,16 @@ export default function EditSpeakerForm(props: {
           </TextEditorContainer>
         )}
       ></Controller>
+      <Controller
+        name="description"
+        control={control}
+        defaultValue={speaker.description}
+        render={({value, onChange}) => (
+          <TextEditorContainer>
+            <TextEditor data={value} onChange={onChange} />
+          </TextEditorContainer>
+        )}
+      ></Controller>
       <ImageContainer>
         <ImageUpload file={image} disabled={submitting}>
           <Cropper width={300} height={300} canResize />

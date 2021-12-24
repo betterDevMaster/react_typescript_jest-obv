@@ -106,6 +106,7 @@ export function fakeTechCheck(
 export const fakeSpeaker = (overrides?: Partial<Speaker>): Speaker => ({
   id: faker.random.number({min: 1000, max: 10000}),
   name: `${faker.name.firstName()} ${faker.name.lastName()}`,
+  description: `<html><p>${faker.lorem.paragraphs(3)}</p></html>`,
   text: `<html><p>${faker.lorem.paragraphs(3)}</p></html>`,
   image: null,
   ...overrides,

@@ -62,12 +62,13 @@ function Content(props: SpeakerProps) {
       <Grid container spacing={2}>
         <Left item xs={imageSize}>
           <StyledImage speaker={speaker} />
-          <SpeakerName>{v(speaker.name)}</SpeakerName>
         </Left>
         <RightGrid item xs={contentSize}>
+          <SpeakerName>{v(speaker.name)}</SpeakerName>
           <StyledBody speaker={speaker} />
         </RightGrid>
       </Grid>
+      <StyledBody speaker={speaker} />
     </Box>
   )
 }
@@ -76,23 +77,17 @@ const Box = styled.div<{
   isFirst: boolean
 }>`
   display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: center;
+  flex-direction: column;
   position: relative;
   border-top: ${(props) => (props.isFirst ? 'none' : '1px solid #e5e5e5')};
   padding: ${(props) => (props.isFirst ? '0 0 30px' : '30px 0px')};
 `
 
 const StyledBody = styled(Body)`
-  margin-left: ${(props) => props.theme.spacing[5]};
+  margin-top: ${(props) => props.theme.spacing[1]};
 `
 
-const Left = styled(Grid)`
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-start;
-`
+const Left = styled(Grid)``
 
 const SpeakerName = styled.div`
   font-size: 18px;
@@ -104,10 +99,7 @@ const SpeakerName = styled.div`
   }
 `
 
-const RightGrid = styled(Grid)`
-  display: flex;
-  justify-content: space-between;
-`
+const RightGrid = styled(Grid)``
 
 const StyledImage = styled(Image)`
   margin-bottom: ${(props) => props.theme.spacing[4]};

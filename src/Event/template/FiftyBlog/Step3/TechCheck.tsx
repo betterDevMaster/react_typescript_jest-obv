@@ -102,7 +102,7 @@ function StartButton(props: {
     settings?.buttonBorderColor || DEFAULTS.techCheck.buttonBorderColor
 
   const joinLink = areaRoutes(props.techCheck.area_key || '').root
-  console.log('joinLink--------', joinLink)
+
   return (
     <RelativeLink to={joinLink} newTab disableStyles>
       <StyledButton
