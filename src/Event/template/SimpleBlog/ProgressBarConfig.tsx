@@ -61,8 +61,6 @@ export default function ProgressBarConfig() {
         textColor={localProgressBar.textColor}
         thickness={localProgressBar.thickness}
         borderRadius={localProgressBar.borderRadius}
-        checkInTitle=""
-        checkInColor="#000000"
       />
       <form onSubmit={handleSubmit(submit)}>
         <Grid container spacing={2}>

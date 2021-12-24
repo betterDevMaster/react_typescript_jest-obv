@@ -1,8 +1,6 @@
 import React, {useState} from 'react'
 import styled from 'styled-components'
 
-import {User} from 'auth/user'
-
 import Logo from 'Event/Logo'
 import {useFiftyBlogTemplate} from 'Event/template/FiftyBlog'
 import {Step} from 'Event/template/FiftyBlog/check-in/CheckInConfig'
@@ -28,13 +26,25 @@ export default function MobilePanel(props: {
     checkInLeftPanel,
     stepLogoProps,
     stepBackgroundProps,
+    progressBar,
   } = template
   const logo = stepLogo ? stepLogo : defaultLogo
   const background = stepBackground ? stepBackground : ''
   const [menuVisible, setMenuVisible] = useState(false)
   const toggleMenu = () => setMenuVisible(!menuVisible)
   const user = useObvioUser()
-
+  const text =
+    props.step === 1
+      ? progressBar.step1Text
+      : props.step === 2
+      ? progressBar.step2Text
+      : progressBar.step3Text
+  const percent =
+    props.step === 1
+      ? progressBar.step1Percent
+      : props.step === 2
+      ? progressBar.step2Percent
+      : progressBar.step3Percent
   return (
     <Box>
       <LogoBox
@@ -62,28 +72,26 @@ export default function MobilePanel(props: {
           mobile={true}
         />
       </LogoBox>
-      <Panel
+      <Paper
         backgroundColor={rgba(
           checkInRightPanel.backgroundColor,
           checkInRightPanel.backgroundOpacity,
         )}
       >
-        <Container>
-          <ProgressBar
-            showing={template.progressBar.showing}
-            text={template.progressBar.step1Text}
-            value={template.progressBar.step1Percent}
-            barColor={template.progressBar.barColor}
-            backgroundColor={template.progressBar.backgroundColor}
-            textColor={template.progressBar.textColor}
-            borderRadius={template.progressBar.borderRadius}
-            thickness={template.progressBar.thickness}
-            checkInTitle={template.progressBar.checkInTitle}
-            checkInColor={template.progressBar.checkInColor}
-          />
-        </Container>
-        {props.children}
-      </Panel>
+        <ProgressBar
+          showing={progressBar.showing}
+          text={text}
+          value={Number(percent)}
+          barColor={progressBar.barColor}
+          backgroundColor={progressBar.backgroundColor}
+          textColor={progressBar.textColor}
+          borderRadius={progressBar.borderRadius}
+          thickness={progressBar.thickness}
+          checktitle={progressBar.checkInTitle}
+          checkcolor={progressBar.checkInColor}
+        />
+        <Panel>{props.children}</Panel>
+      </Paper>
     </Box>
   )
 }
@@ -92,15 +100,20 @@ const Box = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  min-height: 100vh;
   overflow: hidden;
 `
 
-const Container = styled.div`
-  position: absolute;
-  top: 5%;
-  left: 0;
+const Paper = styled.div<{
+  backgroundColor: string
+}>`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background: ${(props) => props.backgroundColor};
+  border: 10px;
+  padding: 35px 0;
   width: 100%;
+  min-height: 100vh;
 `
 
 const IconContainer = styled.div`
@@ -133,17 +146,8 @@ const LogoBox = styled.div<{
   }
 `
 
-const Panel = styled.div<{
-  backgroundColor: string
-}>`
-  flex: 1;
-  border-bottom-left-radius: 10px;
-  border-bottom-right-radius: 10px;
-  padding: 80px 24px 36px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  background: ${(props) => props.backgroundColor};
-  position: relative;
+const Panel = styled.div`
+  overflow: auto;
+  padding: 20px;
   width: 100%;
 `

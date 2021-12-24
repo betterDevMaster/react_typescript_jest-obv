@@ -44,13 +44,13 @@ function Content(props: TechCheckProps) {
   const v = useAttendeeVariables()
 
   return (
-    <div>
+    <BodyContent>
       <Body>{v(techCheck.body)}</Body>
       <Buttons techCheck={techCheck} settings={props.settings} />
       <AdditionalContent>
         {v(techCheck.additional_content || '')}
       </AdditionalContent>
-    </div>
+    </BodyContent>
   )
 }
 
@@ -102,7 +102,7 @@ function StartButton(props: {
     settings?.buttonBorderColor || DEFAULTS.techCheck.buttonBorderColor
 
   const joinLink = areaRoutes(props.techCheck.area_key || '').root
-
+  console.log('joinLink--------', joinLink)
   return (
     <RelativeLink to={joinLink} newTab disableStyles>
       <StyledButton
@@ -128,8 +128,8 @@ const Body = styled(TextEditorContent)`
   max-height: 100%;
   overflow-y: auto;
   margin-bottom: 16px;
-  font-size: 16px;
-  line-height: 24px;
+  font-size: 12px;
+  line-height: 20px;
 
   @media (min-width: ${(props) => props.theme.breakpoints.md}) {
     font-size: 20px;
@@ -147,12 +147,14 @@ const AdditionalContent = styled(TextEditorContent)`
   line-height: 20px;
 
   @media (min-width: ${(props) => props.theme.breakpoints.md}) {
-    font-size: 16px;
+    font-size: 20px;
     line-height: 32px;
     margin-top: 32px;
   }
 `
-
+const BodyContent = styled.div`
+  overflow: auto;
+`
 const StyledButton = styled(
   ({
     textColor,

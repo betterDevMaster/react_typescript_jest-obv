@@ -1,23 +1,30 @@
 import React from 'react'
-import Box from '@material-ui/core/Box'
-import Grid from '@material-ui/core/Grid'
-import TextField from '@material-ui/core/TextField'
-import Slider from '@material-ui/core/Slider'
-import ColorPicker from 'lib/ui/ColorPicker'
-import {handleChangeSlider} from 'lib/dom'
-import InputLabel from '@material-ui/core/InputLabel'
+import {useForm, Controller} from 'react-hook-form'
+
+import {
+  Box,
+  Button,
+  Grid,
+  InputLabel,
+  Slider,
+  TextField,
+} from '@material-ui/core'
+
+import Login from 'Event/auth/Login'
 import {
   FiftyBlog,
   useFiftyBlogTemplate,
   useFiftyBlogUpdate,
 } from 'Event/template/FiftyBlog'
-import {PreviewBox, SectionTitle} from 'organization/Event/Page'
-import Login from 'Event/auth/Login'
+import BackgroundImageUploader from 'Event/template/FiftyBlog/GlobalStylesConfig/BackgroundImageUploader'
+
+import {handleChangeSlider, onChangeCheckedHandler} from 'lib/dom'
+import ColorPicker from 'lib/ui/ColorPicker'
 import BackgroundPicker from 'lib/ui/form/BackgroundPicker'
+import Switch from 'lib/ui/form/Switch'
+
+import Page, {PreviewBox, SectionTitle} from 'organization/Event/Page'
 import Layout from 'organization/user/Layout'
-import Page from 'organization/Event/Page'
-import {useForm, Controller} from 'react-hook-form'
-import Button from '@material-ui/core/Button'
 
 const MAX_LOGO_SIZE_PERCENT = 100
 const MIN_LOGO_SIZE_PERCENT = 20
@@ -43,7 +50,113 @@ export default function LoginFormConfig() {
             <form onSubmit={handleSubmit(submit)}>
               <Box display="flex" flexDirection="row" flex="2">
                 <Box my={1} display="flex" flexDirection="column" flex="1">
-                  {/* <Box mb={1}>
+                  <Grid container spacing={3}>
+                    <Grid item xs={12} md={4}>
+                      <Box mb={2}>
+                        <BackgroundImageUploader
+                          label="Background"
+                          property="loginBackground"
+                          control={control}
+                        />
+                      </Box>
+                      <Box mb={2}>
+                        <Controller
+                          name="loginBackgroundProps.hidden"
+                          defaultValue={template.loginBackgroundProps.hidden}
+                          control={control}
+                          render={({value, onChange}) => (
+                            <Switch
+                              checked={value}
+                              onChange={onChangeCheckedHandler(onChange)}
+                              arial-label="set login background mode"
+                              labelPlacement="end"
+                              color="primary"
+                              label="Hide background"
+                            />
+                          )}
+                        />
+                      </Box>
+                    </Grid>
+                    <Grid item xs={12} md={4}>
+                      <Box mb={2}>
+                        <BackgroundImageUploader
+                          label="Logo"
+                          property="loginLogo"
+                          control={control}
+                        />
+                      </Box>
+                      <Box mb={2}>
+                        <Controller
+                          name="loginLogoProps.hidden"
+                          defaultValue={template.loginLogoProps.hidden}
+                          control={control}
+                          render={({value, onChange}) => (
+                            <Switch
+                              checked={value}
+                              onChange={onChangeCheckedHandler(onChange)}
+                              arial-label="set login logo mode"
+                              labelPlacement="end"
+                              color="primary"
+                              label="Hide Logo"
+                            />
+                          )}
+                        />
+                      </Box>
+                      <Box
+                        display="flex"
+                        flexDirection="column"
+                        flex="1"
+                        mb={2}
+                      >
+                        <InputLabel>Logo Size</InputLabel>
+                        <Controller
+                          name="loginLogoProps.size"
+                          defaultValue={template.loginLogoProps.size}
+                          control={control}
+                          render={({value, onChange}) => (
+                            <Slider
+                              valueLabelDisplay="auto"
+                              aria-label="login logo weight"
+                              value={value}
+                              onChange={handleChangeSlider(onChange)}
+                              step={1}
+                              min={MIN_LOGO_SIZE_PERCENT}
+                              max={MAX_LOGO_SIZE_PERCENT}
+                            />
+                          )}
+                        />
+                      </Box>
+                    </Grid>
+                    <Grid item xs={12} md={4}>
+                      <Box mb={2}>
+                        <BackgroundImageUploader
+                          label="Logo Background"
+                          property="loginLogoBackground"
+                          control={control}
+                        />
+                      </Box>
+                      <Box mb={2}>
+                        <Controller
+                          name="loginLogoBackgroundProps.hidden"
+                          defaultValue={
+                            template.loginLogoBackgroundProps.hidden
+                          }
+                          control={control}
+                          render={({value, onChange}) => (
+                            <Switch
+                              checked={value}
+                              onChange={onChangeCheckedHandler(onChange)}
+                              arial-label="set login logo background mode"
+                              labelPlacement="end"
+                              color="primary"
+                              label="Hide Logo background"
+                            />
+                          )}
+                        />
+                      </Box>
+                    </Grid>
+                  </Grid>
+                  <Box mb={1}>
                     <InputLabel>Logo Size</InputLabel>
                     <Controller
                       name="login.logoSize"
@@ -61,7 +174,7 @@ export default function LoginFormConfig() {
                         />
                       )}
                     />
-                  </Box> */}
+                  </Box>
                   <Controller
                     name="login.backgroundColor"
                     defaultValue={login.backgroundColor}

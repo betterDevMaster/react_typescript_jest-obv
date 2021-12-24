@@ -74,7 +74,6 @@ function useUpdateArea(
   const {
     event: {slug},
   } = useEvent()
-
   const update = useCallback(
     <T extends keyof Area>(key: T) => {
       const url = api(`/events/${slug}/areas/${id}`)

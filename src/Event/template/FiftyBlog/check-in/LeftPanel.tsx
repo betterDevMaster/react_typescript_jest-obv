@@ -83,10 +83,3 @@ const Box = styled.div<{
   overflow: auto;
   position: relative;
 `
-
-const MenuBox = styled.div<{
-  visible: boolean
-}>`
-  flex: ${(props) => (props.visible ? 1 : 0)};
-  display: flex;
-`

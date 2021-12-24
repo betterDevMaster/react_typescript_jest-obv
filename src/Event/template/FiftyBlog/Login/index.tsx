@@ -1,8 +1,6 @@
 import {LoginProps} from 'Event/auth/Login'
 import styled from 'styled-components'
 import React from 'react'
-// import { useMediaQuery } from '@material-ui/core'
-import {useTheme} from '@material-ui/core/styles'
 
 import {eventRoutes} from 'Event/Routes'
 import Page, {
@@ -22,15 +20,12 @@ export default function Login(props: LoginProps) {
   const template = useFiftyBlogTemplate()
   const {login} = template
   const v = useGuestVariables()
-  const theme = useTheme()
-  // const isMobileScreen = useMediaQuery(theme.breakpoints.down('xs'))
 
   const emailLabel = v(login.emailLabel)
   const passwordLabel = v(login.passwordLabel)
 
   return (
     <Page isPreview={props.isPreview}>
-      {/* <Container isMobileScreen={isMobileScreen}> */}
       <StyledPaper>
         <StyledFormContainer>
           <Description aria-label="event login description">
@@ -92,7 +87,6 @@ export default function Login(props: LoginProps) {
               {login.submitButton.label}
             </Button>
           </form>
-          {/* </Container> */}
         </StyledFormContainer>
       </StyledPaper>
     </Page>

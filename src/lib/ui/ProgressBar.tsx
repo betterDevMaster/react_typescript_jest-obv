@@ -12,7 +12,7 @@ export interface ProgressBarStyleProps {
   barColor: string
   backgroundColor: string
   textColor: string
-  checkInColor: string
+  checkcolor?: string
   thickness: number
   borderRadius: number
 }
@@ -20,7 +20,7 @@ export interface ProgressBarStyleProps {
 export type ProgressBarProps = {
   value: number
   showing: boolean
-  checkInTitle: string
+  checktitle?: string
   text: string
 } & ProgressBarStyleProps
 
@@ -38,10 +38,10 @@ export default function ProgressBar(
           <StyledLinearProgress variant="determinate" {...props} />
           <StyledTypography
             variant="body2"
-            textColor={props.checkInColor}
+            textColor={props.checkcolor ? props.checkcolor : '#000000'}
             thickness={props.thickness}
           >
-            {props.checkInTitle}&nbsp;
+            {props.checktitle}&nbsp;
           </StyledTypography>
           <StyledTypography
             variant="body2"

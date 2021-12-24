@@ -17,8 +17,6 @@ import {
 } from '@material-ui/core'
 import {withStyles} from '@material-ui/core/styles'
 
-import {User} from 'auth/user'
-
 import {ObvioEvent} from 'Event'
 import {useEvent} from 'Event/EventProvider'
 import {setEvent} from 'Event/state/actions'
@@ -430,7 +428,6 @@ const Editor = styled.div`
   margin-bottom: ${(props) => props.theme.spacing[6]};
 
   .ck-editor__editable_inline {
-    min-height: 300px;
     max-height: 600px;
   }
 `

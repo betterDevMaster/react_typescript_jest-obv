@@ -63,8 +63,8 @@ export default function ProgressBarConfig() {
         showing={localProgressBar.showing}
         barColor={localProgressBar.barColor}
         text={localProgressBar.step1Text}
-        checkInTitle={localProgressBar.checkInTitle}
-        checkInColor={localProgressBar.checkInColor}
+        checktitle={localProgressBar.checkInTitle}
+        checkcolor={localProgressBar.checkInColor}
         backgroundColor={localProgressBar.backgroundColor}
         textColor={localProgressBar.textColor}
         thickness={localProgressBar.thickness}
@@ -194,8 +194,8 @@ function Config(
           )}
         />
       </Grid>
-      <Grid container spacing={2}>
-        <Grid item xs={12} md={6}>
+      <Grid container spacing={3}>
+        <Grid item xs={6}>
           <TextField
             label="Check In Label Title"
             name="checkInTitle"
@@ -207,7 +207,7 @@ function Config(
             fullWidth
           />
         </Grid>
-        <Grid item xs={12} md={6}>
+        <Grid item xs={6}>
           <Controller
             name="checkInColor"
             defaultValue={localProgressBar.checkInColor}

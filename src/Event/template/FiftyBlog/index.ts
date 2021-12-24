@@ -129,8 +129,6 @@ export type FiftyBlog = BaseTemplate &
       backgroundColor: string
       backgroundOpacity: number
       textColor: string
-      progressActiveColor: string
-      progressInActiveColor: string
     }
     checkInTitle: string
     checkInColor: string
@@ -388,8 +386,6 @@ export const createFiftyBlog = (): DeepRequired<FiftyBlog> => ({
     backgroundColor: '#07BAB5',
     backgroundOpacity: 1,
     textColor: '#000000',
-    progressActiveColor: '#131D34',
-    progressInActiveColor: '#EDF2F8',
   },
   checkInTitle: 'Check In:',
   checkInColor: '#000000',

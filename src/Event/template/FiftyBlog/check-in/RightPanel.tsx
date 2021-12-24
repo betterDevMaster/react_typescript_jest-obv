@@ -13,59 +13,66 @@ export default function RightPanel(props: {
   step: Step
 }) {
   const template = useFiftyBlogTemplate()
-  const {checkInRightPanel} = template
+  const {checkInRightPanel, progressBar} = template
+  const text =
+    props.step === 1
+      ? progressBar.step1Text
+      : props.step === 2
+      ? progressBar.step2Text
+      : progressBar.step3Text
+  const percent =
+    props.step === 1
+      ? progressBar.step1Percent
+      : props.step === 2
+      ? progressBar.step2Percent
+      : progressBar.step3Percent
 
   return (
-    <Box
+    <Paper
       backgroundColor={rgba(
         checkInRightPanel.backgroundColor,
         checkInRightPanel.backgroundOpacity,
       )}
-      textColor={checkInRightPanel.textColor}
-      center={props.center}
     >
-      <Container>
-        <ProgressBar
-          showing={template.progressBar.showing}
-          text={template.progressBar.step1Text}
-          value={template.progressBar.step1Percent}
-          barColor={template.progressBar.barColor}
-          backgroundColor={template.progressBar.backgroundColor}
-          textColor={template.progressBar.textColor}
-          borderRadius={template.progressBar.borderRadius}
-          thickness={template.progressBar.thickness}
-          checkInTitle={template.progressBar.checkInTitle}
-          checkInColor={template.progressBar.checkInColor}
-        />
-      </Container>
-      {props.children}
-    </Box>
+      <ProgressBar
+        showing={progressBar.showing}
+        text={text}
+        value={Number(percent)}
+        barColor={progressBar.barColor}
+        backgroundColor={progressBar.backgroundColor}
+        textColor={progressBar.textColor}
+        borderRadius={progressBar.borderRadius}
+        thickness={progressBar.thickness}
+        checktitle={progressBar.checkInTitle}
+        checkcolor={progressBar.checkInColor}
+      />
+      <Box textColor={checkInRightPanel.textColor} center={props.center}>
+        {props.children}
+      </Box>
+    </Paper>
   )
 }
 
-const Box = styled.div<{
+const Paper = styled.div<{
   backgroundColor: string
+}>`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background: ${(props) => props.backgroundColor};
+  border: 10px;
+  padding: 35px 0;
+  width: 100%;
+`
+
+const Box = styled.div<{
   textColor: string
   center?: boolean
 }>`
-  padding: 35px;
-  border-top-right-radius: 10px;
-  border-bottom-right-radius: 10px;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: ${(props) => (props.center ? 'center' : 'flex-start')};
-  background: ${(props) => props.backgroundColor};
   overflow: auto;
-  position: relative;
+  width: 100%;
+  padding: 40px;
   > * {
     color: ${(props) => props.textColor}!important;
   }
-`
-
-const Container = styled.div`
-  position: absolute;
-  top: 5%;
-  left: 0;
-  width: 100%;
 `

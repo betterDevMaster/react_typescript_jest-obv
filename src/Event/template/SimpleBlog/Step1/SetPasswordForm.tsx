@@ -35,8 +35,6 @@ export default function SetPasswordForm(props: SetPasswordFormProps) {
           textColor={template.progressBar.textColor}
           borderRadius={template.progressBar.borderRadius}
           thickness={template.progressBar.thickness}
-          checkInTitle=""
-          checkInColor="#000000"
         />
         <Typography align="center" variant="h6">
           {v(setPasswordForm.title)}

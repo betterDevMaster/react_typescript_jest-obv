@@ -1,22 +1,22 @@
-import Box from '@material-ui/core/Box'
+import React from 'react'
+import {Controller, useForm} from 'react-hook-form'
+
+import {Box, Grid, InputLabel, Slider} from '@material-ui/core'
+
 import {
   FiftyBlog,
   useFiftyBlogTemplate,
   useFiftyBlogUpdate,
 } from 'Event/template/FiftyBlog'
+import BackgroundImageUploader from 'Event/template/FiftyBlog/GlobalStylesConfig/BackgroundImageUploader'
+
 import ColorPicker from 'lib/ui/ColorPicker'
 import Switch from 'lib/ui/form/Switch'
-import {SectionTitle} from 'organization/Event/Page'
-import React from 'react'
-import Grid from '@material-ui/core/Grid'
-import InputLabel from '@material-ui/core/InputLabel'
-import Slider from '@material-ui/core/Slider'
 import {handleChangeSlider, onChangeCheckedHandler} from 'lib/dom'
-import BackgroundImageUploader from 'Event/template/FiftyBlog/GlobalStylesConfig/BackgroundImageUploader'
+
+import Page, {SectionTitle} from 'organization/Event/Page'
 import Layout from 'organization/user/Layout'
-import Page from 'organization/Event/Page'
 import {SaveButton} from 'organization/Event/DashboardConfig/ComponentConfig'
-import {Controller, useForm} from 'react-hook-form'
 
 type GlobalStylesFormData = Pick<
   FiftyBlog,
@@ -107,103 +107,6 @@ export default function GlobalStylesConfig() {
                       checked={value}
                       onChange={onChangeCheckedHandler(onChange)}
                       arial-label="set dashboard background mode"
-                      labelPlacement="end"
-                      color="primary"
-                      label="Hide background"
-                    />
-                  )}
-                />
-              </Box>
-            </Grid>
-            <Grid item xs={4} md={3}>
-              <Box mb={2}>
-                <BackgroundImageUploader
-                  label="Login Background"
-                  property="loginBackground"
-                  control={control}
-                />
-              </Box>
-              <Box mb={2}>
-                <Controller
-                  name="loginBackgroundProps.hidden"
-                  defaultValue={template.loginBackgroundProps.hidden}
-                  control={control}
-                  render={({value, onChange}) => (
-                    <Switch
-                      checked={value}
-                      onChange={onChangeCheckedHandler(onChange)}
-                      arial-label="set login background mode"
-                      labelPlacement="end"
-                      color="primary"
-                      label="Hide background"
-                    />
-                  )}
-                />
-              </Box>
-            </Grid>
-            <Grid item xs={4} md={3}>
-              <Box mb={2}>
-                <BackgroundImageUploader
-                  label="Login Logo"
-                  property="loginLogo"
-                  control={control}
-                />
-              </Box>
-              <Box mb={2}>
-                <Controller
-                  name="loginLogoProps.hidden"
-                  defaultValue={template.loginLogoProps.hidden}
-                  control={control}
-                  render={({value, onChange}) => (
-                    <Switch
-                      checked={value}
-                      onChange={onChangeCheckedHandler(onChange)}
-                      arial-label="set login logo mode"
-                      labelPlacement="end"
-                      color="primary"
-                      label="Hide Logo"
-                    />
-                  )}
-                />
-              </Box>
-              <Box display="flex" flexDirection="column" flex="1" mb={2}>
-                <InputLabel>Image Size</InputLabel>
-                <Controller
-                  name="loginLogoProps.size"
-                  defaultValue={template.loginLogoProps.size}
-                  control={control}
-                  render={({value, onChange}) => (
-                    <Slider
-                      valueLabelDisplay="auto"
-                      aria-label="login logo weight"
-                      value={value}
-                      onChange={handleChangeSlider(onChange)}
-                      step={1}
-                      min={MIN_LOGO_SIZE_PERCENT}
-                      max={MAX_LOGO_SIZE_PERCENT}
-                    />
-                  )}
-                />
-              </Box>
-            </Grid>
-            <Grid item xs={4} md={3}>
-              <Box mb={2}>
-                <BackgroundImageUploader
-                  label="Login Logo Background"
-                  property="loginLogoBackground"
-                  control={control}
-                />
-              </Box>
-              <Box mb={2}>
-                <Controller
-                  name="loginLogoBackgroundProps.hidden"
-                  defaultValue={template.loginLogoBackgroundProps.hidden}
-                  control={control}
-                  render={({value, onChange}) => (
-                    <Switch
-                      checked={value}
-                      onChange={onChangeCheckedHandler(onChange)}
-                      arial-label="set login logo background mode"
                       labelPlacement="end"
                       color="primary"
                       label="Hide background"

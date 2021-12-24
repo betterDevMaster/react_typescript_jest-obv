@@ -104,14 +104,13 @@ const Box = styled.div`
 `
 
 const CanvasBox = styled.div`
-  width: 300px;
-
   @media (min-width: ${(props) => props.theme.breakpoints.md}) {
     width: 500px;
   }
 `
 
 const Canvas = styled.canvas`
+  width: 100%;
   border-width: 2px;
   border-style: dashed;
   border-color: #706f70;

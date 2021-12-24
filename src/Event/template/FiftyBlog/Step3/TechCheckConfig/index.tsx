@@ -339,7 +339,6 @@ const Editor = styled.div`
   margin-bottom: ${(props) => props.theme.spacing[6]};
 
   .ck-editor__editable_inline {
-    min-height: 300px;
     max-height: 600px;
   }
 `

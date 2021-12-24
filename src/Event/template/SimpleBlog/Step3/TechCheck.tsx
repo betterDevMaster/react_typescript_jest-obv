@@ -36,8 +36,6 @@ export default function TechCheck(props: SimpleBlogTechCheckProps) {
           textColor={template.progressBar.textColor}
           borderRadius={template.progressBar.borderRadius}
           thickness={template.progressBar.thickness}
-          checkInTitle=""
-          checkInColor="#000000"
         />
         <Body>{v(techCheck.body)}</Body>
         <Buttons techCheck={techCheck} settings={props.settings} />

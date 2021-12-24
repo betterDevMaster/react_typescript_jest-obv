@@ -2,14 +2,7 @@ import React from 'react'
 import {Controller, useForm} from 'react-hook-form'
 import styled from 'styled-components'
 
-import {
-  Box,
-  Grid,
-  InputLabel,
-  Slider,
-  TextField,
-  Typography,
-} from '@material-ui/core'
+import {Box, Grid, InputLabel, Slider, Typography} from '@material-ui/core'
 
 import {
   FiftyBlog,
@@ -33,7 +26,7 @@ export default function CheckInConfig() {
   const update = useFiftyBlogUpdate()
   const template = useFiftyBlogTemplate()
 
-  const {handleSubmit, control, register} = useForm()
+  const {handleSubmit, control} = useForm()
 
   const submit = (data: FiftyBlog) => {
     update(data)
@@ -42,12 +35,12 @@ export default function CheckInConfig() {
   return (
     <Layout>
       <Page>
-        <form onSubmit={handleSubmit(submit)}>
-          <Box mb={2}>
-            <SectionTitle>Check In</SectionTitle>
-          </Box>
-          <Box mb={6}>
-            <ProgressBarConfig />
+        <Box mb={2}>
+          <SectionTitle>Check In</SectionTitle>
+        </Box>
+        <Box mb={6}>
+          <ProgressBarConfig />
+          <form onSubmit={handleSubmit(submit)}>
             <Box mt={4} mb={1}>
               <Typography variant="h6">General</Typography>
             </Box>
@@ -177,39 +170,11 @@ export default function CheckInConfig() {
                     />
                   )}
                 />
-                <Controller
-                  name="checkInRightPanel.progressActiveColor"
-                  defaultValue={template.checkInRightPanel.progressActiveColor}
-                  control={control}
-                  render={({value, onChange}) => (
-                    <ColorPicker
-                      label="Progress Active Color"
-                      color={value}
-                      onPick={onChange}
-                      aria-label="check in right panel progress active color"
-                    />
-                  )}
-                />
-                <Controller
-                  name="checkInRightPanel.progressInActiveColor"
-                  defaultValue={
-                    template.checkInRightPanel.progressInActiveColor
-                  }
-                  control={control}
-                  render={({value, onChange}) => (
-                    <ColorPicker
-                      label="Progress InActive Color"
-                      color={value}
-                      onPick={onChange}
-                      aria-label="check in right panel progress inactive color"
-                    />
-                  )}
-                />
               </Grid>
             </Grid>
-          </Box>
-          <SaveButton />
-        </form>
+          </form>
+        </Box>
+        <SaveButton />
       </Page>
     </Layout>
   )
