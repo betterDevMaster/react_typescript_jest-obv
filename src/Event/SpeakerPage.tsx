@@ -22,6 +22,8 @@ import CardsSpeakers from 'Event/template/Cards/Speakers'
 import {FIFTY_BLOG} from 'Event/template/FiftyBlog'
 import FiftyBlogSpeakers from 'Event/template/FiftyBlog/Dashboard/Speakers'
 
+import {EventSpeakersProvider} from 'organization/Event/SpeakersProvider'
+
 export interface Speaker {
   id: number
   image: FileLocation | null
@@ -32,7 +34,9 @@ export interface Speaker {
 export default function SpeakersPage() {
   return (
     <PagePoints page={SPEAKERS}>
-      <Speakers />
+      <EventSpeakersProvider>
+        <Speakers />
+      </EventSpeakersProvider>
     </PagePoints>
   )
 }
@@ -47,7 +51,6 @@ function Speakers() {
   })
 
   const speakers = event.speakers
-
   switch (name) {
     case SIMPLE_BLOG:
       return <SimpleBlogSpeakers user={user} speakers={speakers} />

@@ -5,7 +5,6 @@ import {User} from 'auth/user'
 
 import {isAttendee} from 'Event/auth'
 import {useEditMode} from 'Event/Dashboard/editor/state/edit-mode'
-import {useEvent} from 'Event/EventProvider'
 import {useFiftyBlogTemplate} from 'Event/template/FiftyBlog'
 import FaqPage from 'Event/template/FiftyBlog/Dashboard/Faqs'
 import Home from 'Event/template/FiftyBlog/Dashboard/Home'
@@ -31,6 +30,11 @@ import {
   OrganizationSponsorsProvider,
   useSponsors,
 } from 'organization/Event/SponsorsProvider'
+import {
+  EventSpeakersProvider,
+  OrganizationSpeakersProvider,
+  useSpeakers,
+} from 'organization/Event/SpeakersProvider'
 
 export default function FiftyBlogDashboard(props: {user: User}) {
   const {user} = props
@@ -45,31 +49,38 @@ export default function FiftyBlogDashboard(props: {user: User}) {
     ? EventFaqsProvider
     : OrganizationFaqsProvider
 
+  const SpeakersProvider = isAttendee(user)
+    ? EventSpeakersProvider
+    : OrganizationSpeakersProvider
+  // console.log('isAttendee(user) ------', isAttendee(user))
+
   return (
     <SponsorsProvider>
-      <FaqsProvider>
-        <Page
-          Left={<LeftPanel onChangeTab={setTabIndex} user={props.user} />}
-          Right={
-            <RightPanel currentTab={tabIndex} onChangeTab={setTabIndex}>
-              <Content currentTab={tabIndex} isEdit={isEdit} />
-            </RightPanel>
-          }
-          Mobile={
-            <MobilePanel onChangeTab={setTabIndex} user={props.user}>
-              <Content currentTab={tabIndex} isEdit={isEdit} />
-            </MobilePanel>
-          }
-        />
-      </FaqsProvider>
+      <SpeakersProvider>
+        <FaqsProvider>
+          <Page
+            Left={<LeftPanel onChangeTab={setTabIndex} user={props.user} />}
+            Right={
+              <RightPanel currentTab={tabIndex} onChangeTab={setTabIndex}>
+                <Content currentTab={tabIndex} isEdit={isEdit} />
+              </RightPanel>
+            }
+            Mobile={
+              <MobilePanel onChangeTab={setTabIndex} user={props.user}>
+                <Content currentTab={tabIndex} isEdit={isEdit} />
+              </MobilePanel>
+            }
+          />
+        </FaqsProvider>
+      </SpeakersProvider>
     </SponsorsProvider>
   )
 }
 
 function Content(props: {currentTab: number; isEdit: boolean}) {
   const {currentTab, isEdit} = props
-  const {event} = useEvent()
   const {sponsors, loading} = useSponsors()
+  const {speakers} = useSpeakers()
   const {faqs} = useFaqs()
 
   if (loading) {
@@ -81,7 +92,7 @@ function Content(props: {currentTab: number; isEdit: boolean}) {
         <Home />
       </ContentPanel>
       <ContentPanel index={1} currentIndex={currentTab}>
-        <SpeakerPage speakers={event.speakers} />
+        <SpeakerPage isEditMode={isEdit} speakers={speakers} />
       </ContentPanel>
       <ContentPanel index={2} currentIndex={currentTab}>
         <SponsorPage isEditMode={isEdit} sponsors={sponsors} />
