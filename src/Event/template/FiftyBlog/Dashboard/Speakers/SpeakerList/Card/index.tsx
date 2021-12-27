@@ -1,14 +1,17 @@
 import React from 'react'
+import {Draggable} from 'react-beautiful-dnd'
 import styled from 'styled-components'
 import Grid, {GridSize} from '@material-ui/core/Grid'
-import Image from 'Event/template/FiftyBlog/Dashboard/Speakers/SpeakerList/Card/Image'
-import Body from 'Event/template/FiftyBlog/Dashboard/Speakers/SpeakerList/Card/Body'
-import {Speaker} from 'Event/SpeakerPage'
-import {useSpeakers} from 'organization/Event/SpeakersProvider'
-import Clickable from 'lib/ui/Clickable'
-import {Draggable} from 'react-beautiful-dnd'
-import {useFiftyBlogTemplate} from 'Event/template/FiftyBlog'
+
 import {useAttendeeVariables} from 'Event'
+import Image from 'Event/template/FiftyBlog/Dashboard/Speakers/SpeakerList/Card/Image'
+import {Speaker} from 'Event/SpeakerPage'
+import {useFiftyBlogTemplate} from 'Event/template/FiftyBlog'
+
+import InnerContent from 'lib/ui/form/TextEditor/Content'
+import Clickable from 'lib/ui/Clickable'
+
+import {useSpeakers} from 'organization/Event/SpeakersProvider'
 
 type SpeakerProps = {
   index: number
@@ -49,10 +52,10 @@ function Editable(props: SpeakerProps) {
 
 function Content(props: SpeakerProps) {
   const {speaker} = props
-  const template = useFiftyBlogTemplate()
+  const {speakers} = useFiftyBlogTemplate()
   const v = useAttendeeVariables()
 
-  const imageSize = template.speakers.speakerImageSize
+  const imageSize = speakers.speakerImageSize
   const contentSize = (12 - imageSize) as GridSize
 
   const isFirst = props.index === 0
@@ -64,11 +67,26 @@ function Content(props: SpeakerProps) {
           <StyledImage speaker={speaker} />
         </Left>
         <RightGrid item xs={contentSize}>
-          <SpeakerName>{v(speaker.name)}</SpeakerName>
-          <StyledBody speaker={speaker} />
+          <SpeakerName
+            color={speakers.titleColor}
+            fontSize={speakers.titleFontSize}
+          >
+            {v(speaker.name)}
+          </SpeakerName>
+          <StyledBody
+            color={speakers.titleDescColor}
+            fontSize={speakers.titleDescFontSize}
+          >
+            <InnerContent>{v(speaker.text)}</InnerContent>
+          </StyledBody>
         </RightGrid>
       </Grid>
-      <StyledBody speaker={speaker} />
+      <StyledBody
+        color={speakers.descriptionColor}
+        fontSize={speakers.descriptionFontSize}
+      >
+        <InnerContent>{v(speaker.description)}</InnerContent>
+      </StyledBody>
     </Box>
   )
 }
@@ -83,16 +101,25 @@ const Box = styled.div<{
   padding: ${(props) => (props.isFirst ? '0 0 30px' : '30px 0px')};
 `
 
-const StyledBody = styled(Body)`
+const StyledBody = styled.div<{
+  color: string
+  fontSize: number
+}>`
   margin-top: ${(props) => props.theme.spacing[1]};
+  font-size: ${(props) => props.fontSize}px;
+  color: ${(props) => props.color};
 `
 
 const Left = styled(Grid)``
 
-const SpeakerName = styled.div`
-  font-size: 18px;
+const SpeakerName = styled.div<{
+  color: string
+  fontSize: number
+}>`
   line-height: 22px;
   font-weight: 700;
+  font-size: ${(props) => props.fontSize}px;
+  color: ${(props) => props.color};
   @media (max-width: ${(props) => props.theme.breakpoints.sm}) {
     font-size: 14px;
     line-height: 17px;

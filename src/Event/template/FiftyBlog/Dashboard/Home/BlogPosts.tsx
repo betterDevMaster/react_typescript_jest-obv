@@ -35,7 +35,7 @@ const StyledDate = styled(Date)`
   background: transparent;
 
   /* Separator line after date */
-  &:after {
+  /* &:after {
     content: ' ';
     background: #adadad;
     position: absolute;
@@ -43,5 +43,5 @@ const StyledDate = styled(Date)`
     height: 1px;
     top: 50%;
     margin-left: 20px;
-  }
+  } */
 `

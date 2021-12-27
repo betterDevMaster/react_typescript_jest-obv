@@ -29,7 +29,7 @@ export async function goToFiftyBlogConfig(overrides: Overrides = {}) {
    * run into updating state without act errors.
    */
   await wait(() => {
-    expect(mockGet).toHaveBeenCalledTimes(13)
+    expect(mockGet).toHaveBeenCalledTimes(14)
   })
 
   return context

@@ -142,7 +142,8 @@ const Main = styled.div`
   align-items: center;
   flex-direction: column;
   flex: 1;
-  padding: 2rem 7rem;
+  padding: ${(props) => props.theme.spacing[0]}
+    ${(props) => props.theme.spacing[6]} ${(props) => props.theme.spacing[9]};
 
   /**
    * Hide overflow to make menu sliding in/out disappear at panel edge,

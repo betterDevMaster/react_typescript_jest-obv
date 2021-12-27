@@ -54,8 +54,8 @@ export default function FiftyBlogDashboard(props: {user: User}) {
     : OrganizationSpeakersProvider
 
   return (
-    <SponsorsProvider>
-      <SpeakersProvider>
+    <SpeakersProvider>
+      <SponsorsProvider>
         <FaqsProvider>
           <Page
             Left={<LeftPanel onChangeTab={setTabIndex} user={props.user} />}
@@ -71,18 +71,18 @@ export default function FiftyBlogDashboard(props: {user: User}) {
             }
           />
         </FaqsProvider>
-      </SpeakersProvider>
-    </SponsorsProvider>
+      </SponsorsProvider>
+    </SpeakersProvider>
   )
 }
 
 function Content(props: {currentTab: number; isEdit: boolean}) {
   const {currentTab, isEdit} = props
   const {sponsors, loading} = useSponsors()
-  const {speakers} = useSpeakers()
+  const {speakers, speakerloading} = useSpeakers()
   const {faqs} = useFaqs()
 
-  if (loading) {
+  if (loading || speakerloading) {
     return <div>loading...</div>
   }
   return (

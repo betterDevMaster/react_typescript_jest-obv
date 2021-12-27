@@ -1,8 +1,11 @@
 import React from 'react'
-import DialogContent from '@material-ui/core/DialogContent'
-import DialogTitle from '@material-ui/core/DialogTitle'
+
+import {DialogContent, DialogTitle} from '@material-ui/core'
+
 import Form from 'Event/template/FiftyBlog/Dashboard/Sponsors/SponsorEditDialog/Form'
+
 import Dialog from 'lib/ui/Dialog'
+
 import {useSponsors} from 'organization/Event/SponsorsProvider'
 
 export default function SponsorEditDialog(props: {isEditMode?: boolean}) {

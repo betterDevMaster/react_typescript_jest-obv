@@ -5,7 +5,6 @@ import {User} from 'auth/user'
 
 import Logo from 'Event/Logo'
 import {useFiftyBlogTemplate} from 'Event/template/FiftyBlog'
-import Menu from 'Event/template/FiftyBlog/Dashboard/Menu'
 import EmojiList from 'Event/template/FiftyBlog/Dashboard/EmojiList'
 import MainNavMobile from 'Event/template/FiftyBlog/Dashboard/MainNav/MainNavMobile'
 import LeftPanelConfig from 'Event/template/FiftyBlog/Dashboard/LeftPanel/LeftPanelConfig'
@@ -68,62 +67,47 @@ export default function MobilePanel(props: {
           iconColor={template.leftPanel.barTextColor}
           onClick={toggleMenu}
         />
-        <LogoBox>
-          <EmojiList />
-          <Logo
-            src={logo}
-            hidden={template.dashboardLogoProps.hidden}
-            size={template.dashboardLogoProps.size}
-          />
-        </LogoBox>
-        <Top>
-          <MainNavMobile />
-        </Top>
-      </Container>
-      <RelativeContainer>
-        <RightPanelIconButton
-          onClick={() => setIsEditing({...isEditing, rightPanel: true})}
+        <EmojiList />
+        <Logo
+          src={logo}
+          hidden={template.dashboardLogoProps.hidden}
+          size={template.dashboardLogoProps.size}
         />
-        <RightPanelConfig
-          isMobile={true}
-          isVisible={isEditing.rightPanel}
-          onClose={() => setIsEditing({...isEditing, rightPanel: false})}
-        />
-        <Content
+        <MainNavMobile
           menuVisible={menuVisible}
           onChangeTab={handleChangeTab}
           user={props.user}
-        >
-          {props.children}
-        </Content>
-      </RelativeContainer>
+        />
+      </Container>
+      <Content>{props.children}</Content>
     </Box>
   )
 }
 
-function Content(props: {
-  menuVisible: boolean
-  children: React.ReactElement
-  onChangeTab: (tab: number) => void
-  user: User
-}) {
+function Content(props: {children: React.ReactElement}) {
   const template = useFiftyBlogTemplate()
-
-  if (props.menuVisible) {
-    return <Menu onChangeTab={props.onChangeTab} user={props.user} />
-  }
+  const [isEditing, setIsEditing] = useState<PanelEdit>({
+    leftPanel: false,
+    rightPanel: false,
+  })
 
   return (
-    <>
-      <Panel
-        backgroundColor={rgba(
-          template.rightPanel.backgroundColor,
-          template.rightPanel.backgroundOpacity,
-        )}
-      >
-        {props.children}
-      </Panel>
-    </>
+    <Panel
+      backgroundColor={rgba(
+        template.rightPanel.backgroundColor,
+        template.rightPanel.backgroundOpacity,
+      )}
+    >
+      <RightPanelIconButton
+        onClick={() => setIsEditing({...isEditing, rightPanel: true})}
+      />
+      <RightPanelConfig
+        isMobile={true}
+        isVisible={isEditing.rightPanel}
+        onClose={() => setIsEditing({...isEditing, rightPanel: false})}
+      />
+      {props.children}
+    </Panel>
   )
 }
 
@@ -132,7 +116,6 @@ const Box = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  min-height: 100vh;
   overflow: auto;
 `
 
@@ -143,7 +126,6 @@ const Container = styled.div<{
 }>`
   padding: ${(props) => props.theme.spacing[6]}
     ${(props) => props.theme.spacing[6]} ${(props) => props.theme.spacing[9]};
-  border-radius: 10px;
   ${(props) =>
     props.isBackgroundHidden
       ? `background: ${props.backgroundColor};`
@@ -157,23 +139,11 @@ const Container = styled.div<{
   flex-direction: column;
 `
 
-const RelativeContainer = styled.div`
-  position: relative;
-`
-
-const LogoBox = styled.div`
-  max-width: 260px;
-  max-height: 260px;
-  padding-top: ${(props) => props.theme.spacing[5]};
-`
-
 const Panel = styled.div<{
   backgroundColor: string
 }>`
   flex: 1;
   margin-top: ${(props) => props.theme.spacing[6]}px;
-  border-top-left-radius: 10px;
-  border-top-right-radius: 10px;
   padding: ${(props) => props.theme.spacing[6]}
     ${(props) => props.theme.spacing[6]} ${(props) => props.theme.spacing[9]};
   display: flex;
@@ -181,7 +151,7 @@ const Panel = styled.div<{
   align-items: flex-start;
   background: ${(props) => props.backgroundColor};
   width: 100%;
-
+  position: relative;
   @media (min-width: ${(props) => props.theme.breakpoints.sm}) {
     width: calc(100% - 40px);
   }
@@ -203,9 +173,4 @@ const RightPanelIconButton = styled(EditIconButton)`
   position: absolute;
   top: 10px;
   right: 12px;
-`
-
-const Top = styled.div`
-  width: 100%;
-  padding: 0 ${(props) => props.theme.spacing[10]};
 `

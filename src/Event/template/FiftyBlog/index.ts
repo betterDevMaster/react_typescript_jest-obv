@@ -250,6 +250,12 @@ export type FiftyBlog = BaseTemplate &
       orderedIds?: number[]
       menuTitle?: string
       isVisible?: boolean
+      descriptionFontSize?: number
+      descriptionColor?: string
+      titleDescFontSize?: number
+      titleDescColor?: string
+      titleFontSize?: number
+      titleColor?: string
     }
     offlinePage?: {
       title: string
@@ -512,6 +518,12 @@ export const createFiftyBlog = (): DeepRequired<FiftyBlog> => ({
     orderedIds: [],
     menuTitle: 'Speakers',
     isVisible: true,
+    descriptionFontSize: 17,
+    descriptionColor: '#000000',
+    titleDescFontSize: 17,
+    titleDescColor: '#000000',
+    titleFontSize: 21,
+    titleColor: '#000000',
   },
   offlinePage: {
     shouldRedirect: false,

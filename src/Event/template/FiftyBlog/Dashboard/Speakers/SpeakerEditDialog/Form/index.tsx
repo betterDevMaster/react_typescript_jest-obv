@@ -22,6 +22,7 @@ import Image from 'lib/ui/form/ImageUpload/Image'
 export interface UpdateSpeakerData {
   name: string
   text?: string
+  description?: string
 }
 
 export default function EditSpeakerForm(props: {

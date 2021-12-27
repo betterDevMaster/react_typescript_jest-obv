@@ -15,7 +15,7 @@ interface SpeakersContextProps {
   update: (speaker: Speaker) => void
   remove: (speaker: Speaker) => void
   edit: (speaker: Speaker | null) => void
-  loading: boolean
+  speakerloading: boolean
   editing: Speaker | null | undefined
 }
 
@@ -24,20 +24,20 @@ const SpeakersContext = React.createContext<undefined | SpeakersContextProps>(
 )
 
 export function OrganizationSpeakersProvider(props: {
-  children: React.ReactElement
+  children: React.ReactNode
 }) {
   const {client} = useOrganization()
   return <SpeakersProvider client={client} {...props} />
 }
 
-export function EventSpeakersProvider(props: {children: React.ReactElement}) {
+export function EventSpeakersProvider(props: {children: React.ReactNode}) {
   const {client} = useEvent()
   return <SpeakersProvider client={client} {...props} />
 }
 
 export default function SpeakersProvider(props: {
   client: Client
-  children: React.ReactElement
+  children: React.ReactNode
 }) {
   const {client} = props
 
@@ -87,7 +87,7 @@ export function useSpeakersList(request: () => Promise<Speaker[]>) {
     setSpeakers(removed)
   }
 
-  return {speakers, update, loading, editing, add, remove, edit}
+  return {speakers, update, speakerloading: loading, editing, add, remove, edit}
 }
 
 export function useSpeakers() {

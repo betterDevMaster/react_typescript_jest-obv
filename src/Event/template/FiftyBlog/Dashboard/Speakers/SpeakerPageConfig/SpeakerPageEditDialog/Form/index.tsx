@@ -1,34 +1,47 @@
 import React, {useState} from 'react'
-import styled from 'styled-components'
-import Grid from '@material-ui/core/Grid'
-import Button from '@material-ui/core/Button'
-import InputLabel from '@material-ui/core/InputLabel'
-import Slider from '@material-ui/core/Slider'
-import TextField from '@material-ui/core/TextField'
 import {Controller, useForm} from 'react-hook-form'
-import TextEditor, {TextEditorContainer} from 'lib/ui/form/TextEditor'
-import {handleChangeSlider, onChangeCheckedHandler} from 'lib/dom'
+import styled from 'styled-components'
+
+import {
+  Box,
+  Button,
+  FormControl,
+  Grid,
+  InputLabel,
+  Slider,
+  TextField,
+} from '@material-ui/core'
+
 import {
   FiftyBlog,
   useFiftyBlogTemplate,
   useFiftyBlogUpdate,
 } from 'Event/template/FiftyBlog'
+
+import {handleChangeSlider, onChangeCheckedHandler} from 'lib/dom'
 import Switch from 'lib/ui/form/Switch'
-import FormControl from '@material-ui/core/FormControl'
+import ColorPicker from 'lib/ui/ColorPicker'
+import TextEditor, {TextEditorContainer} from 'lib/ui/form/TextEditor'
 
 const MIN_SPACE_SIZE = 0
 const MAX_SPACE_SIZE = 10
 
-type UpdateFormData = {
-  title: string
-  description: string
-  backToDashboardText: string
-  backToDashboardTextColor: string
-  speakerImageSize: number
-  speakersSpace: number
-  menuTitle?: string
-  isVisible?: boolean
-}
+// type UpdateFormData = {
+//   title: string
+//   description: string
+//   backToDashboardText: string
+//   backToDashboardTextColor: string
+//   speakerImageSize: number
+//   speakersSpace: number
+//   menuTitle?: string
+//   isVisible?: boolean
+//   titleFontSize?: number
+//   titleColor?: string
+//   descriptionFontSize?: number
+//   descriptionColor?: string
+//   titleDescFontSize?: number
+//   titleDescColor?: string
+// }
 
 export default function SpeakerPageConfigForm(props: {onClose: () => void}) {
   const {register, handleSubmit, control} = useForm()
@@ -99,6 +112,96 @@ export default function SpeakerPageConfigForm(props: {onClose: () => void}) {
           </TextEditorContainer>
         )}
       />
+      <Box display="flex" flexDirection="row" flex="2">
+        <Box flex="1">
+          <Controller
+            name="titleColor"
+            defaultValue={speakerPageSettings.titleColor}
+            control={control}
+            render={({value, onChange}) => (
+              <ColorPicker
+                label="Title Color"
+                color={value}
+                onPick={onChange}
+                aria-label="title color"
+              />
+            )}
+          />
+        </Box>
+        <Box flex="1">
+          <TextField
+            name="titleFontSize"
+            defaultValue={speakerPageSettings.titleFontSize}
+            label="Title Font Size"
+            type="number"
+            fullWidth
+            inputProps={{
+              min: 0,
+              ref: register,
+            }}
+          />
+        </Box>
+      </Box>
+      <Box display="flex" flexDirection="row" flex="2">
+        <Box flex="1">
+          <Controller
+            name="titleDescColor"
+            defaultValue={speakerPageSettings.titleDescColor}
+            control={control}
+            render={({value, onChange}) => (
+              <ColorPicker
+                label="Title Description Color"
+                color={value}
+                onPick={onChange}
+                aria-label="title description color"
+              />
+            )}
+          />
+        </Box>
+        <Box flex="1">
+          <TextField
+            name="titleDescFontSize"
+            defaultValue={speakerPageSettings.titleDescFontSize}
+            label="Title Description Font Size"
+            type="number"
+            fullWidth
+            inputProps={{
+              min: 0,
+              ref: register,
+            }}
+          />
+        </Box>
+      </Box>
+      <Box display="flex" flexDirection="row" flex="2">
+        <Box flex="1">
+          <Controller
+            name="descriptionColor"
+            defaultValue={speakerPageSettings.descriptionColor}
+            control={control}
+            render={({value, onChange}) => (
+              <ColorPicker
+                label="Description Color"
+                color={value}
+                onPick={onChange}
+                aria-label="description color"
+              />
+            )}
+          />
+        </Box>
+        <Box flex="1">
+          <TextField
+            name="descriptionFontSize"
+            defaultValue={speakerPageSettings.descriptionFontSize}
+            label="Description Font Size"
+            type="number"
+            fullWidth
+            inputProps={{
+              min: 0,
+              ref: register,
+            }}
+          />
+        </Box>
+      </Box>
       <Grid item xs={12}>
         <InputLabel>Speaker Image Size</InputLabel>
         <Controller
