@@ -43,7 +43,6 @@ export default function Nav(props: {
         rightPanel.backgroundColor,
         rightPanel.backgroundOpacity,
       ),
-      borderTopRightRadius: '10px',
     },
     flexContainer: {
       justifyContent: 'space-around',

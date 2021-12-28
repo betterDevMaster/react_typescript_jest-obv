@@ -118,9 +118,7 @@ const Box = styled.div<{
   backgroundImage: string
   isBackgroundHidden: boolean
 }>`
-  margin: 24px 0 24px 24px;
   padding: 1.5rem;
-  border-top-left-radius: 10px;
   ${(props) =>
     props.isBackgroundHidden
       ? `background: ${props.backgroundColor};`

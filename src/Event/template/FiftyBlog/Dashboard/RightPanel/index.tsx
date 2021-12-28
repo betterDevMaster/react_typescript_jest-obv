@@ -52,7 +52,6 @@ export default function RightPanel(props: {
 }
 
 const Box = styled.div`
-  margin: 24px 24px 24px 0;
   display: flex;
   flex-direction: column;
 `
@@ -63,8 +62,6 @@ const Body = styled.div<{
 }>`
   flex: 1;
   background: ${(props) => props.backgroundColor};
-  border-bottom-left-radius: 10px;
-  border-bottom-right-radius: 10px;
   padding: 40px 70px !important;
   position: relative;
   overflow: auto;
