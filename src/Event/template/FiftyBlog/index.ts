@@ -15,6 +15,9 @@ import {DeepRequired} from 'lib/type-utils'
 
 export const FIFTY_BLOG = 'Nifty Fifty'
 
+export const MAX_LOGO_SIZE_PERCENT = 100
+export const MIN_LOGO_SIZE_PERCENT = 20
+
 export function useFiftyBlogTemplate() {
   const template = useTemplate()
 

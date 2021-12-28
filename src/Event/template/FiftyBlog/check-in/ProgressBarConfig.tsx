@@ -12,9 +12,12 @@ import {
 
 import {
   FiftyBlog,
+  MAX_LOGO_SIZE_PERCENT,
+  MIN_LOGO_SIZE_PERCENT,
   useFiftyBlogTemplate,
   useFiftyBlogUpdate,
 } from 'Event/template/FiftyBlog'
+import BackgroundImageUploader from 'Event/template/FiftyBlog/GlobalStylesConfig/BackgroundImageUploader'
 
 import ColorPicker from 'lib/ui/ColorPicker'
 import {handleChangeSlider, onChangeCheckedHandler} from 'lib/dom'
@@ -109,6 +112,7 @@ function Config(
   } & Pick<UseFormMethods, 'control' | 'register'>,
 ) {
   const {control, showing, localProgressBar, register} = props
+  const {stepLogoProps, stepBackgroundProps} = useFiftyBlogTemplate()
 
   if (!showing) {
     return null
@@ -221,6 +225,79 @@ function Config(
               />
             )}
           />
+        </Grid>
+      </Grid>
+      <Grid container spacing={3}>
+        <Grid item xs={12} md={6}>
+          <Box mb={2}>
+            <BackgroundImageUploader
+              label="Logo"
+              property="stepLogo"
+              control={control}
+            />
+          </Box>
+          <Box mb={2}>
+            <Controller
+              name="stepLogoProps.hidden"
+              defaultValue={stepLogoProps.hidden}
+              control={control}
+              render={({value, onChange}) => (
+                <Switch
+                  checked={value}
+                  onChange={onChangeCheckedHandler(onChange)}
+                  arial-label="set logo mode"
+                  labelPlacement="end"
+                  color="primary"
+                  label="Hide Logo"
+                />
+              )}
+            />
+          </Box>
+          <Box display="flex" flexDirection="column" flex="1" mb={2}>
+            <InputLabel>Image Size</InputLabel>
+            <Controller
+              name="stepLogoProps.size"
+              defaultValue={stepLogoProps.size}
+              control={control}
+              render={({value, onChange}) => (
+                <Slider
+                  valueLabelDisplay="auto"
+                  aria-label="logo weight"
+                  value={value}
+                  onChange={handleChangeSlider(onChange)}
+                  step={1}
+                  min={MIN_LOGO_SIZE_PERCENT}
+                  max={MAX_LOGO_SIZE_PERCENT}
+                />
+              )}
+            />
+          </Box>
+        </Grid>
+        <Grid item xs={12} md={6}>
+          <Box mb={2}>
+            <BackgroundImageUploader
+              label="Background"
+              property="stepBackground"
+              control={control}
+            />
+          </Box>
+          <Box mb={2}>
+            <Controller
+              name="stepBackgroundProps.hidden"
+              defaultValue={stepBackgroundProps.hidden}
+              control={control}
+              render={({value, onChange}) => (
+                <Switch
+                  checked={value}
+                  onChange={onChangeCheckedHandler(onChange)}
+                  arial-label="set background mode"
+                  labelPlacement="end"
+                  color="primary"
+                  label="Hide background"
+                />
+              )}
+            />
+          </Box>
         </Grid>
       </Grid>
       <Grid container spacing={3}>

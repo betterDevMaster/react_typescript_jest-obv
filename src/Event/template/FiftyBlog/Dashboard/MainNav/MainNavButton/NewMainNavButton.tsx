@@ -40,7 +40,7 @@ export default function NewMainNavButton(props: {className?: string}) {
         fullWidth
         size="large"
         variant="outlined"
-        color="secondary"
+        color="primary"
         aria-label="add main nav button"
         onClick={addButton}
         className={props.className}

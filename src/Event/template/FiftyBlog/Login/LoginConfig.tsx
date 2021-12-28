@@ -13,6 +13,8 @@ import {
 import Login from 'Event/auth/Login'
 import {
   FiftyBlog,
+  MAX_LOGO_SIZE_PERCENT,
+  MIN_LOGO_SIZE_PERCENT,
   useFiftyBlogTemplate,
   useFiftyBlogUpdate,
 } from 'Event/template/FiftyBlog'
@@ -25,9 +27,6 @@ import Switch from 'lib/ui/form/Switch'
 
 import Page, {PreviewBox, SectionTitle} from 'organization/Event/Page'
 import Layout from 'organization/user/Layout'
-
-const MAX_LOGO_SIZE_PERCENT = 100
-const MIN_LOGO_SIZE_PERCENT = 20
 
 export default function LoginFormConfig() {
   const template = useFiftyBlogTemplate()

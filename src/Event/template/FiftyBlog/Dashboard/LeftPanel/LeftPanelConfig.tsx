@@ -1,16 +1,20 @@
 import React from 'react'
 import {Controller, useForm} from 'react-hook-form'
 
-import {Box, InputLabel, Slider, Switch} from '@material-ui/core'
-
-import {handleChangeSlider, onChangeCheckedHandler} from 'lib/dom'
-import ColorPicker from 'lib/ui/ColorPicker'
+import {Box, Grid, InputLabel, Slider} from '@material-ui/core'
 
 import {
   FiftyBlog,
+  MAX_LOGO_SIZE_PERCENT,
+  MIN_LOGO_SIZE_PERCENT,
   useFiftyBlogTemplate,
   useFiftyBlogUpdate,
 } from 'Event/template/FiftyBlog'
+import BackgroundImageUploader from 'Event/template/FiftyBlog/GlobalStylesConfig/BackgroundImageUploader'
+
+import {handleChangeSlider, onChangeCheckedHandler} from 'lib/dom'
+import ColorPicker from 'lib/ui/ColorPicker'
+import Switch from 'lib/ui/form/Switch'
 
 import ComponentConfig, {
   SaveButton,
@@ -40,14 +44,87 @@ export default function LeftPanelConfig(props: {
         title="Left Panel Config"
       >
         <form onSubmit={handleSubmit(submit)}>
-          <Box display="flex" flexDirection="column" flex="1" mb={2}>
+          <Grid container justify="center" spacing={2}>
+            <Grid item xs={12} md={6}>
+              <Box mb={2}>
+                <BackgroundImageUploader
+                  label="Logo"
+                  property="dashboardLogo"
+                  control={control}
+                />
+              </Box>
+              <Box mb={2}>
+                <Controller
+                  name="dashboardLogoProps.hidden"
+                  defaultValue={template.dashboardLogoProps.hidden}
+                  control={control}
+                  render={({value, onChange}) => (
+                    <Switch
+                      checked={value}
+                      onChange={onChangeCheckedHandler(onChange)}
+                      arial-label="set logo mode"
+                      labelPlacement="end"
+                      color="primary"
+                      label="Hide Logo"
+                    />
+                  )}
+                />
+              </Box>
+              <Box display="flex" flexDirection="column" flex="1" mb={2}>
+                <InputLabel>Image Size</InputLabel>
+                <Controller
+                  name="dashboardLogoProps.size"
+                  defaultValue={template.dashboardLogoProps.size}
+                  control={control}
+                  render={({value, onChange}) => (
+                    <Slider
+                      valueLabelDisplay="auto"
+                      aria-label="logo weight"
+                      value={value}
+                      onChange={handleChangeSlider(onChange)}
+                      step={1}
+                      min={MIN_LOGO_SIZE_PERCENT}
+                      max={MAX_LOGO_SIZE_PERCENT}
+                    />
+                  )}
+                />
+              </Box>
+            </Grid>
+            <Grid item xs={12} md={6}>
+              <Box mb={2}>
+                <BackgroundImageUploader
+                  label="Background"
+                  property="dashboardBackground"
+                  control={control}
+                />
+              </Box>
+              <Box mb={2}>
+                <Controller
+                  name="dashboardBackgroundProps.hidden"
+                  defaultValue={template.dashboardBackgroundProps.hidden}
+                  control={control}
+                  render={({value, onChange}) => (
+                    <Switch
+                      checked={value}
+                      onChange={onChangeCheckedHandler(onChange)}
+                      arial-label="set background mode"
+                      labelPlacement="end"
+                      color="primary"
+                      label="Hide background"
+                    />
+                  )}
+                />
+              </Box>
+            </Grid>
+          </Grid>
+          {/* <Box display="flex" flexDirection="column" flex="1" mb={2}>
             <InputLabel>Hide Background</InputLabel>
 
             <Controller
               name="dashboardBackgroundProps.hidden"
               defaultValue={dashboardBackgroundProps.hidden}
               control={control}
-              render={({value, onChange}) => (
+              render={({ value, onChange }) => (
                 <Switch
                   checked={value}
                   onChange={onChangeCheckedHandler(onChange)}
@@ -58,7 +135,7 @@ export default function LeftPanelConfig(props: {
                 />
               )}
             />
-          </Box>
+          </Box> */}
           <Box mb={2}>
             <Controller
               name="leftPanel.barTextColor"

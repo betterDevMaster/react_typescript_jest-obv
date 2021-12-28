@@ -18,7 +18,6 @@ import {useToggle} from 'lib/toggle'
 import {MenuIconButton} from 'lib/ui/IconButton/MenuIconButton'
 
 import defaultLogo from 'assets/images/logo.png'
-import defaultBackground from 'assets/images/background.png'
 
 export default function LeftPanel(props: {
   onChangeTab: (tab: number) => void
@@ -37,9 +36,7 @@ export default function LeftPanel(props: {
     dashboardBackgroundProps,
     dashboardLogoProps,
   } = useFiftyBlogTemplate()
-  const background = dashboardBackground
-    ? dashboardBackground
-    : defaultBackground
+  const background = dashboardBackground ? dashboardBackground : ''
   const logo = dashboardLogo ? dashboardLogo : defaultLogo
 
   const handleChangeTab = (tab: number) => {
