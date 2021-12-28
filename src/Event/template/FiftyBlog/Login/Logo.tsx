@@ -1,7 +1,5 @@
 import React from 'react'
 import styled from 'styled-components'
-import {useMediaQuery} from '@material-ui/core'
-import {useTheme} from '@material-ui/core/styles'
 
 import {useEvent} from 'Event/EventProvider'
 import {useFiftyBlogTemplate} from 'Event/template/FiftyBlog'
@@ -11,8 +9,6 @@ import defaultLoginBackground from 'assets/images/background.png'
 export default function Logo() {
   const {event} = useEvent()
   const template = useFiftyBlogTemplate()
-  const theme = useTheme()
-  const isMobileScreen = useMediaQuery(theme.breakpoints.down('xs'))
 
   const background = template.loginLogoBackground
     ? template.loginLogoBackground
@@ -25,7 +21,6 @@ export default function Logo() {
       isBoxHidden={template.loginLogoBackgroundProps.hidden}
       isLogoHidden={template.loginLogoProps.hidden}
       aria-label="login logo background"
-      isMobileScreen={isMobileScreen}
     >
       <LogoImage
         src={logo}
@@ -42,7 +37,6 @@ export const Box = styled.div<{
   background: string
   isBoxHidden?: boolean
   isLogoHidden?: boolean
-  isMobileScreen: boolean
 }>`
   ${(props) =>
     props.isBoxHidden

@@ -32,6 +32,7 @@ export default function NewMainNavButton(props: {className?: string}) {
 
     setButton(button)
   }
+
   return (
     <>
       <NewButtonConfig button={button} onClose={() => setButton(null)} />
@@ -39,7 +40,7 @@ export default function NewMainNavButton(props: {className?: string}) {
         fullWidth
         size="large"
         variant="outlined"
-        color="primary"
+        color="secondary"
         aria-label="add main nav button"
         onClick={addButton}
         className={props.className}
@@ -69,4 +70,5 @@ function NewButtonConfig(props: {
 
 const StyledButton = styled(Button)`
   margin-top: ${(props) => props.theme.spacing[2]}!important;
+  min-height: 40px;
 `

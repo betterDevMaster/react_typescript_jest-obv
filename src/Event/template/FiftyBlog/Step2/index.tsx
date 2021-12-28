@@ -29,7 +29,7 @@ export default function Step2(props: {user: User}) {
         </RightPanel>
       }
       Mobile={
-        <MobilePanel step={2}>
+        <MobilePanel step={2} user={props.user}>
           <Content />
         </MobilePanel>
       }

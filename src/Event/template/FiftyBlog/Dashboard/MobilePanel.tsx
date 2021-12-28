@@ -3,6 +3,7 @@ import styled from 'styled-components'
 
 import {User} from 'auth/user'
 
+import EditModeOnly from 'Event/Dashboard/editor/views/EditModeOnly'
 import Logo from 'Event/Logo'
 import {useFiftyBlogTemplate} from 'Event/template/FiftyBlog'
 import EmojiList from 'Event/template/FiftyBlog/Dashboard/EmojiList'
@@ -30,6 +31,7 @@ export default function MobilePanel(props: {
   const [menuVisible, setMenuVisible] = useState(false)
   const toggleMenu = () => setMenuVisible(!menuVisible)
   const template = useFiftyBlogTemplate()
+
   const background = template.dashboardBackground
     ? template.dashboardBackground
     : defaultBackground
@@ -54,14 +56,15 @@ export default function MobilePanel(props: {
         backgroundImage={background}
         isBackgroundHidden={template.dashboardBackgroundProps.hidden}
       >
-        <LeftPanelIconButton
-          onClick={() => setIsEditing({...isEditing, leftPanel: true})}
-        />
-        <LeftPanelConfig
-          isMobile={true}
-          isVisible={isEditing.leftPanel}
-          onClose={() => setIsEditing({...isEditing, leftPanel: false})}
-        />
+        <EditModeOnly>
+          <LeftPanelIconButton
+            onClick={() => setIsEditing({...isEditing, leftPanel: true})}
+          />
+          <LeftPanelConfig
+            isVisible={isEditing.leftPanel}
+            onClose={() => setIsEditing({...isEditing, leftPanel: false})}
+          />
+        </EditModeOnly>
         <StyledMenuIconButton
           active={menuVisible}
           iconColor={template.leftPanel.barTextColor}
@@ -98,14 +101,15 @@ function Content(props: {children: React.ReactElement}) {
         template.rightPanel.backgroundOpacity,
       )}
     >
-      <RightPanelIconButton
-        onClick={() => setIsEditing({...isEditing, rightPanel: true})}
-      />
-      <RightPanelConfig
-        isMobile={true}
-        isVisible={isEditing.rightPanel}
-        onClose={() => setIsEditing({...isEditing, rightPanel: false})}
-      />
+      <EditModeOnly>
+        <RightPanelIconButton
+          onClick={() => setIsEditing({...isEditing, rightPanel: true})}
+        />
+        <RightPanelConfig
+          isVisible={isEditing.rightPanel}
+          onClose={() => setIsEditing({...isEditing, rightPanel: false})}
+        />
+      </EditModeOnly>
       {props.children}
     </Panel>
   )
@@ -113,9 +117,6 @@ function Content(props: {children: React.ReactElement}) {
 
 const Box = styled.div`
   position: relative;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
   overflow: auto;
 `
 
@@ -124,11 +125,11 @@ const Container = styled.div<{
   backgroundImage: string
   isBackgroundHidden: boolean
 }>`
-  padding: ${(props) => props.theme.spacing[6]}
-    ${(props) => props.theme.spacing[6]} ${(props) => props.theme.spacing[9]};
+  padding: ${(props) => props.theme.spacing[12]}
+    ${(props) => props.theme.spacing[6]} ${(props) => props.theme.spacing[5]};
   ${(props) =>
     props.isBackgroundHidden
-      ? `background: ${props.backgroundColor};`
+      ? `background-color: ${props.backgroundColor};`
       : `background: url(${props.backgroundImage});`}
   background-repeat: no-repeat;
   background-size: 100% 100%;
@@ -149,7 +150,7 @@ const Panel = styled.div<{
   display: flex;
   justify-content: center;
   align-items: flex-start;
-  background: ${(props) => props.backgroundColor};
+  background-color: ${(props) => props.backgroundColor};
   width: 100%;
   position: relative;
   @media (min-width: ${(props) => props.theme.breakpoints.sm}) {

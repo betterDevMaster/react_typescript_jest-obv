@@ -16,7 +16,7 @@ export default function SetPasswordForm(props: SetPasswordFormProps) {
         </RightPanel>
       }
       Mobile={
-        <MobilePanel step={1}>
+        <MobilePanel step={1} user={props.user}>
           <Content {...props} />
         </MobilePanel>
       }

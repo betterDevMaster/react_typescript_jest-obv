@@ -51,7 +51,6 @@ export default function LeftPanel(props: {
     <>
       <EditModeOnly>
         <LeftPanelConfig
-          isMobile={true}
           isVisible={barConfigVisible}
           onClose={toggleBarConfig}
         />

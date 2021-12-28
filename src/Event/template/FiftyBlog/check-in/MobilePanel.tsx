@@ -1,6 +1,8 @@
 import React, {useState} from 'react'
 import styled from 'styled-components'
 
+import {User} from 'auth/user'
+
 import Logo from 'Event/Logo'
 import {useFiftyBlogTemplate} from 'Event/template/FiftyBlog'
 import {Step} from 'Event/template/FiftyBlog/check-in/CheckInConfig'
@@ -10,12 +12,11 @@ import {rgba} from 'lib/color'
 import ProgressBar from 'lib/ui/ProgressBar'
 import {MenuIconButton} from 'lib/ui/IconButton/MenuIconButton'
 
-import {useObvioUser} from 'obvio/auth'
-
 import defaultLogo from 'assets/images/logo.png'
 
 export default function MobilePanel(props: {
   children: React.ReactElement
+  user: User
   step: Step
 }) {
   const template = useFiftyBlogTemplate()
@@ -32,7 +33,6 @@ export default function MobilePanel(props: {
   const background = stepBackground ? stepBackground : ''
   const [menuVisible, setMenuVisible] = useState(false)
   const toggleMenu = () => setMenuVisible(!menuVisible)
-  const user = useObvioUser()
   const text =
     props.step === 1
       ? progressBar.step1Text
@@ -64,7 +64,7 @@ export default function MobilePanel(props: {
             iconColor={menu.iconColor}
           />
         </IconContainer>
-        <Menu visible={menuVisible} toggle={toggleMenu} user={user} />
+        <Menu visible={menuVisible} toggle={toggleMenu} user={props.user} />
         <Logo
           src={logo}
           hidden={stepLogoProps.hidden}

@@ -45,17 +45,17 @@ export const GlobalStyles = createGlobalStyle`
   }
 
   *::-webkit-scrollbar-track {
-      background: #ffffff;
+      background: #dfdfdf;
       border-left: 1px solid #c8c9cd8f;
-      border-radius: 0;
+      border-radius: 5px;
   }
 
   *::-webkit-scrollbar-track:hover {
-      background: #ffffff;
+      background: #c3c0c0;
   }
 
   *::-webkit-scrollbar-track:active {
-      background: #ffffff;
+      background: #c3c0c0;
   }
 
   *::-webkit-scrollbar-corner {

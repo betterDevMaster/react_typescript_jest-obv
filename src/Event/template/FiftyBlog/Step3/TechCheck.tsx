@@ -31,7 +31,7 @@ export default function TechCheck(props: FiftyBlogTechCheckProps) {
         </RightPanel>
       }
       Mobile={
-        <MobilePanel step={3}>
+        <MobilePanel step={3} user={props.user}>
           <Content {...props} />
         </MobilePanel>
       }

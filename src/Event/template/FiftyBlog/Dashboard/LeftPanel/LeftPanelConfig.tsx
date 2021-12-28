@@ -18,7 +18,6 @@ import ComponentConfig, {
 
 export default function LeftPanelConfig(props: {
   isVisible: boolean
-  isMobile: boolean
   onClose: () => void
 }) {
   const {isVisible, onClose} = props

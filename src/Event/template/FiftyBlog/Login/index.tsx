@@ -96,11 +96,10 @@ export default function Login(props: LoginProps) {
 export const StyledRelativeLink = styled(RelativeLink)<{color: string}>`
   color: ${(props) => props.color};
 `
-export const Container = styled.div<{
-  isMobileScreen: boolean
-}>`
-  padding: ${(props) => (props.isMobileScreen ? '2rem 3rem' : '4rem 7rem')};
-  min-height: ${(props) => (props.isMobileScreen ? '400px' : '600px')};
+export const Container = styled.div`
+  padding: ${(props) => props.theme.spacing[4]}
+    ${(props) => props.theme.spacing[6]};
+  min-height: '500px';
 `
 export const ForgotContent = styled.div`
   width: 100%;

@@ -102,11 +102,10 @@ function useHandleDrag() {
 }
 
 const Box = styled.div`
-  margin-bottom: ${(props) => props.theme.spacing[7]};
-  margin-top: ${(props) => props.theme.spacing[7]};
-  display: flex;
-  flex-direction: column;
-  overflow: auto;
+  margin-bottom: ${(props) => props.theme.spacing[7]} !important;
+  margin-top: ${(props) => props.theme.spacing[7]} !important;
+  margin: 0 auto;
+  width: 90%;
 `
 
 const StyledNewMainNavButton = styled(NewMainNavButton)`
