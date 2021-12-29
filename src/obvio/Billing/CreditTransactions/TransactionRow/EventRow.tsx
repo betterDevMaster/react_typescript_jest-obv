@@ -68,8 +68,6 @@ function Details(props: {
   const dayLabel = days > 1 ? 'Days' : 'Day'
 
   const attendeeLabel = totals.num_attendees > 1 ? 'Attendees' : 'Attendee'
-  const additionalRoomsLabel =
-    totals.num_additional_rooms > 1 ? 'Additional Rooms' : 'Additional Room'
 
   return (
     <>
@@ -80,22 +78,38 @@ function Details(props: {
         </TableCell>
         <TableCell>({totals.cost_attendees})</TableCell>
       </DetailRow>
-      <DetailRow>
-        <TableCell>{/* Date Column */}</TableCell>
-        <TableCell>
-          {totals.num_additional_rooms} {additionalRoomsLabel}
-        </TableCell>
-        <TableCell>({totals.cost_additional_rooms})</TableCell>
-      </DetailRow>
+      <AdditionalRoomRow totals={totals} />
       <DetailRow>
         <TableCell>{/* Date Column */}</TableCell>
         <TableCell>
           {formattedDate(transaction.event_start)} -{' '}
-          {formattedDate(transaction.event_end)} ({days} {dayLabel} )
+          {formattedDate(transaction.event_end)} ({days} {dayLabel})
         </TableCell>
         <TableCell>{/* Credit Column */}</TableCell>
       </DetailRow>
     </>
+  )
+}
+
+function AdditionalRoomRow(props: {totals: EventCreditTransactionTotals}) {
+  const {totals} = props
+
+  // Only show row if additional rooms were added
+  if (!totals.num_additional_rooms) {
+    return null
+  }
+
+  const additionalRoomsLabel =
+    totals.num_additional_rooms > 1 ? 'Additional Rooms' : 'Additional Room'
+
+  return (
+    <DetailRow>
+      <TableCell>{/* Date Column */}</TableCell>
+      <TableCell>
+        {totals.num_additional_rooms} {additionalRoomsLabel}
+      </TableCell>
+      <TableCell>({totals.cost_additional_rooms})</TableCell>
+    </DetailRow>
   )
 }
 
