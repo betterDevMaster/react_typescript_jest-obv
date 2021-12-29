@@ -17,8 +17,8 @@ import PanelsSetPasswordForm from 'Event/template/Panels/Step1/SetPasswordForm'
 import {PANELS} from 'Event/template/Panels'
 import CardsSetPasswordForm from 'Event/template/Cards/Step1/SetPasswordForm'
 import {CARDS} from 'Event/template/Cards'
-import FiftyBlogSetPasswordForm from 'Event/template/FiftyBlog/Step1/SetPasswordForm'
-import {FIFTY_BLOG} from 'Event/template/FiftyBlog'
+import NiftyFiftySetPasswordForm from 'Event/template/NiftyFifty/Step1/SetPasswordForm'
+import {NIFTY_FIFTY} from 'Event/template/NiftyFifty'
 
 import {ValidationError} from 'lib/ui/api-client'
 import {api} from 'lib/url'
@@ -96,8 +96,8 @@ export function TemplateSetPasswordForm(props: SetPasswordFormProps) {
       return <PanelsSetPasswordForm {...props} />
     case CARDS:
       return <CardsSetPasswordForm {...props} />
-    case FIFTY_BLOG:
-      return <FiftyBlogSetPasswordForm {...props} />
+    case NIFTY_FIFTY:
+      return <NiftyFiftySetPasswordForm {...props} />
     default:
       throw new Error(`Missing set password form for template.`)
   }

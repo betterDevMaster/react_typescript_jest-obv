@@ -5,12 +5,12 @@ import {useEvent} from 'Event/EventProvider'
 import {CARDS} from 'Event/template/Cards'
 import {PANELS} from 'Event/template/Panels'
 import {SIMPLE_BLOG} from 'Event/template/SimpleBlog'
-import {FIFTY_BLOG} from 'Event/template/FiftyBlog'
+import {NIFTY_FIFTY} from 'Event/template/NiftyFifty'
 
 import SimpleBlogConfigNavItems from 'Event/template/SimpleBlog/ConfigNavItems'
 import PanelsConfigNavItems from 'Event/template/Panels/ConfigNavItems'
 import CardsConfigNavItems from 'Event/template/Cards/ConfigNavItems'
-import FiftyBlogConfigNavItems from 'Event/template/FiftyBlog/ConfigNavItems'
+import NiftyFiftyConfigNavItems from 'Event/template/NiftyFifty/ConfigNavItems'
 
 export default function TemplateConfigNavItems() {
   const {event} = useEvent()
@@ -23,8 +23,8 @@ export default function TemplateConfigNavItems() {
       return <PanelsConfigNavItems />
     case CARDS:
       return <CardsConfigNavItems />
-    case FIFTY_BLOG:
-      return <FiftyBlogConfigNavItems />
+    case NIFTY_FIFTY:
+      return <NiftyFiftyConfigNavItems />
     default:
       return null
   }

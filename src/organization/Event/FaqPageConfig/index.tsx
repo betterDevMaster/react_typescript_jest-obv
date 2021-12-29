@@ -8,8 +8,8 @@ import {PANELS} from 'Event/template/Panels'
 import PanelsFaqConfig from 'Event/template/Panels/Dashboard/Faqs/FaqPageConfig'
 import {CARDS} from 'Event/template/Cards'
 import CardsFaqConfig from 'Event/template/Cards/Faqs/FaqPageConfig'
-import {FIFTY_BLOG} from 'Event/template/FiftyBlog'
-import FiftyFaqConfig from 'Event/template/FiftyBlog/Dashboard/Faqs/FaqPageConfig'
+import {NIFTY_FIFTY} from 'Event/template/NiftyFifty'
+import FiftyFaqConfig from 'Event/template/NiftyFifty/Dashboard/Faqs/FaqPageConfig'
 
 export default function FaqPageConfig() {
   const {name} = useTemplate()
@@ -20,7 +20,7 @@ export default function FaqPageConfig() {
       return <PanelsFaqConfig />
     case CARDS:
       return <CardsFaqConfig />
-    case FIFTY_BLOG:
+    case NIFTY_FIFTY:
       return <FiftyFaqConfig />
     default:
       break

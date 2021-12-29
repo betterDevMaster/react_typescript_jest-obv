@@ -10,8 +10,8 @@ import {PANELS} from 'Event/template/Panels'
 import PanelsSponsorPage from 'Event/template/Panels/Dashboard/Sponsors'
 import {CARDS} from 'Event/template/Cards'
 import CardsSponsorPage from 'Event/template/Cards/Sponsors'
-import {FIFTY_BLOG} from './template/FiftyBlog'
-import FiftyBlogSponsorPage from 'Event/template/FiftyBlog/Dashboard/Sponsors'
+import {NIFTY_FIFTY} from './template/NiftyFifty'
+import NiftyFiftySponsorPage from 'Event/template/NiftyFifty/Dashboard/Sponsors'
 
 import {FileLocation} from 'lib/http-client'
 import {EntityList} from 'lib/list'
@@ -67,8 +67,8 @@ function Sponsors() {
       return <PanelsSponsorPage sponsors={sponsors} />
     case CARDS:
       return <CardsSponsorPage user={user} sponsors={sponsors} />
-    case FIFTY_BLOG:
-      return <FiftyBlogSponsorPage sponsors={sponsors} />
+    case NIFTY_FIFTY:
+      return <NiftyFiftySponsorPage sponsors={sponsors} />
     default:
       throw new Error(`Missing sponsor page for template: ${name}`)
   }

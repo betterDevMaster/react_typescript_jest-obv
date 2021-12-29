@@ -2,7 +2,7 @@ import {Template} from 'Event/template'
 import {fakeCards} from 'Event/template/Cards/__utils__/factory'
 import {fakePanels} from 'Event/template/Panels/__utils__/factory'
 import {fakeSimpleBlog} from 'Event/template/SimpleBlog/__utils__/factory'
-import {fakeFiftyBlog} from '../FiftyBlog/__utils__/factory'
+import {fakeNiftyFifty} from '../NiftyFifty/__utils__/factory'
 
 // Props that exist in all templates. Pick props out here
 // to be tested in functions that take a generic
@@ -25,7 +25,7 @@ export const testTemplates = (
     ['SimpleBlog', fakeSimpleBlog],
     ['Panels', fakePanels],
     ['Cards', fakeCards],
-    ['FiftyBlog', fakeFiftyBlog],
+    ['NiftyFifty', fakeNiftyFifty],
   ])(`%s: ${title}`, async (_, fakeTemplate) => {
     await testFn(fakeTemplate)
   })

@@ -11,11 +11,11 @@ import {useTemplate} from 'Event/TemplateProvider'
 import SimpleBlogDashboard from 'Event/template/SimpleBlog/Dashboard'
 import PanelsDashboard from 'Event/template/Panels/Dashboard'
 import CardsDashboard from 'Event/template/Cards/Dashboard'
-import FiftyBlogDashboard from 'Event/template/FiftyBlog/Dashboard'
+import NiftyFiftyDashboard from 'Event/template/NiftyFifty/Dashboard'
 import {SIMPLE_BLOG} from 'Event/template/SimpleBlog'
 import {PANELS} from 'Event/template/Panels'
 import {CARDS} from 'Event/template/Cards'
-import {FIFTY_BLOG} from 'Event/template/FiftyBlog'
+import {NIFTY_FIFTY} from 'Event/template/NiftyFifty'
 
 export type DashboardProps = {
   isEditMode?: boolean
@@ -64,8 +64,8 @@ function TemplateDashboard(props: {user: User}) {
       return <PanelsDashboard user={props.user} />
     case CARDS:
       return <CardsDashboard user={props.user} />
-    case FIFTY_BLOG:
-      return <FiftyBlogDashboard user={props.user} />
+    case NIFTY_FIFTY:
+      return <NiftyFiftyDashboard user={props.user} />
     default:
       throw new Error(`Missing dashboard for template: ${name}`)
   }

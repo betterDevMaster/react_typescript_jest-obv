@@ -6,12 +6,12 @@ import TemplateProvider, {useTemplate} from 'Event/TemplateProvider'
 import {SIMPLE_BLOG} from 'Event/template/SimpleBlog'
 import {PANELS} from 'Event/template/Panels'
 import {CARDS} from 'Event/template/Cards'
-import {FIFTY_BLOG} from 'Event/template/FiftyBlog'
+import {NIFTY_FIFTY} from 'Event/template/NiftyFifty'
 
 import SimpleBlogBackgroundsConfig from 'Event/template/SimpleBlog/Backgrounds/BackgroundsConfig'
 import PanelsBackgroundsConfig from 'Event/template/Panels/Dashboard/Resources/Backgrounds/BackgroundsConfig'
 import CardsBackgroundsConfig from 'Event/template/Cards/Backgrounds/BackgroundsConfig'
-import FiftyBlogBackgroundsConfig from 'Event/template/FiftyBlog/Dashboard/Resources/Backgrounds/BackgroundsConfig'
+import NiftyFiftyBackgroundsConfig from 'Event/template/NiftyFifty/Dashboard/Resources/Backgrounds/BackgroundsConfig'
 
 import Layout from 'organization/user/Layout'
 import Page from 'organization/Event/Page'
@@ -45,8 +45,8 @@ function TemplateConfig() {
       return <PanelsBackgroundsConfig />
     case CARDS:
       return <CardsBackgroundsConfig />
-    case FIFTY_BLOG:
-      return <FiftyBlogBackgroundsConfig />
+    case NIFTY_FIFTY:
+      return <NiftyFiftyBackgroundsConfig />
     default:
       throw new Error(`Missing backgrounds config for template: ${name}`)
   }

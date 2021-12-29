@@ -6,11 +6,11 @@ import {useTemplate} from 'Event/TemplateProvider'
 import {SIMPLE_BLOG} from 'Event/template/SimpleBlog'
 import {PANELS} from 'Event/template/Panels'
 import {CARDS} from 'Event/template/Cards'
-import {FIFTY_BLOG} from 'Event/template/FiftyBlog'
+import {NIFTY_FIFTY} from 'Event/template/NiftyFifty'
 import SimpleBlogOfflinePage from 'Event/template/SimpleBlog/OfflinePage'
 import PanelsOfflinePage from 'Event/template/Panels/OfflinePage'
 import CardsOfflinePage from 'Event/template/Cards/OfflinePage'
-import FiftyBlogOfflinePage from 'Event/template/FiftyBlog/OfflinePage'
+import NiftyFiftyOfflinePage from 'Event/template/NiftyFifty/OfflinePage'
 
 const FALLBACK_OFFLINE_TITLE = 'Area is currently offline'
 
@@ -39,8 +39,8 @@ function TemplateOfflinePage(props: OfflinePageProps) {
       return <PanelsOfflinePage {...props} />
     case CARDS:
       return <CardsOfflinePage {...props} />
-    case FIFTY_BLOG:
-      return <FiftyBlogOfflinePage {...props} />
+    case NIFTY_FIFTY:
+      return <NiftyFiftyOfflinePage {...props} />
     default:
       throw new Error(`Missing offline page for template: ${name}`)
   }

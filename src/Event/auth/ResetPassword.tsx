@@ -7,13 +7,13 @@ import {useTemplate} from 'Event/TemplateProvider'
 
 import SimpleBlogResetPassword from 'Event/template/SimpleBlog/Login/ResetPassword'
 import PanelsResetPassword from 'Event/template/Panels/Login/ResetPassword'
-import FiftyBlogResetPassword from 'Event/template/FiftyBlog/Login/ResetPassword'
+import NiftyFiftyResetPassword from 'Event/template/NiftyFifty/Login/ResetPassword'
 import CardsResetPassword from 'Event/template/Cards/Login/ResetPassword'
 import {SIMPLE_BLOG} from 'Event/template/SimpleBlog'
 import {useResetPassword} from 'auth/password'
 import {CARDS} from 'Event/template/Cards'
 import {PANELS} from 'Event/template/Panels'
-import {FIFTY_BLOG} from 'Event/template/FiftyBlog'
+import {NIFTY_FIFTY} from 'Event/template/NiftyFifty'
 
 import {api} from 'lib/url'
 
@@ -37,8 +37,10 @@ export default function ResetPassword() {
       return <PanelsResetPassword goBacktoLogin={goBacktoLogin} {...reset} />
     case CARDS:
       return <CardsResetPassword goBacktoLogin={goBacktoLogin} {...reset} />
-    case FIFTY_BLOG:
-      return <FiftyBlogResetPassword goBacktoLogin={goBacktoLogin} {...reset} />
+    case NIFTY_FIFTY:
+      return (
+        <NiftyFiftyResetPassword goBacktoLogin={goBacktoLogin} {...reset} />
+      )
     default:
       throw new Error(`Missing reset password page for template: ${name}`)
   }

@@ -9,9 +9,9 @@ import {
   SIMPLE_BLOG,
 } from 'Event/template/SimpleBlog'
 import {
-  FIFTY_BLOG,
-  DEFAULTS as FIFTY_BLOG_DEFAULTS,
-} from 'Event/template/FiftyBlog'
+  NIFTY_FIFTY,
+  DEFAULTS as NIFTY_FIFTY_DEFAULTS,
+} from 'Event/template/NiftyFifty'
 
 import {fillCountDownTimerDefaults} from 'Event/Dashboard/components/CountDownTimer'
 import {fillBlogPostDefaults} from 'Event/Dashboard/components/BlogPosts'
@@ -63,8 +63,8 @@ function defaultsFor(template: Template): DeepRequired<Template> {
       return PANELS_DEFAULTS
     case CARDS:
       return CARDS_DEFAULTS
-    case FIFTY_BLOG:
-      return FIFTY_BLOG_DEFAULTS
+    case NIFTY_FIFTY:
+      return NIFTY_FIFTY_DEFAULTS
     default:
       throw new Error(`Missing Template Provider for template`)
   }

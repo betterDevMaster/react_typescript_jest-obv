@@ -19,8 +19,8 @@ import {PANELS} from 'Event/template/Panels'
 import PanelsSpeakers from 'Event/template/Panels/Dashboard/Speakers'
 import {CARDS} from 'Event/template/Cards'
 import CardsSpeakers from 'Event/template/Cards/Speakers'
-import {FIFTY_BLOG} from 'Event/template/FiftyBlog'
-import FiftyBlogSpeakers from 'Event/template/FiftyBlog/Dashboard/Speakers'
+import {NIFTY_FIFTY} from 'Event/template/NiftyFifty'
+import NiftyFiftySpeakers from 'Event/template/NiftyFifty/Dashboard/Speakers'
 
 import {EventSpeakersProvider} from 'organization/Event/SpeakersProvider'
 
@@ -59,8 +59,8 @@ function Speakers() {
       return <PanelsSpeakers speakers={speakers} />
     case CARDS:
       return <CardsSpeakers user={user} speakers={speakers} />
-    case FIFTY_BLOG:
-      return <FiftyBlogSpeakers speakers={speakers} />
+    case NIFTY_FIFTY:
+      return <NiftyFiftySpeakers speakers={speakers} />
     default:
       throw new Error(`Missing speaker page for template: ${name}`)
   }

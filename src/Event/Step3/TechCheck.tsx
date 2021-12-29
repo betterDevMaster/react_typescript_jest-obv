@@ -12,11 +12,11 @@ import {useTemplate} from 'Event/TemplateProvider'
 import {SIMPLE_BLOG} from 'Event/template/SimpleBlog'
 import {PANELS} from 'Event/template/Panels'
 import {CARDS} from 'Event/template/Cards'
-import {FIFTY_BLOG} from 'Event/template/FiftyBlog'
+import {NIFTY_FIFTY} from 'Event/template/NiftyFifty'
 import SimpleBlogTechCheck from 'Event/template/SimpleBlog/Step3/TechCheck'
 import PanelsTechCheck from 'Event/template/Panels/Step3/TechCheck'
 import CardsTechCheck from 'Event/template/Cards/Step3/TechCheck'
-import FiftyBlogTechCheck from 'Event/template/FiftyBlog/Step3/TechCheck'
+import NiftyFiftyTechCheck from 'Event/template/NiftyFifty/Step3/TechCheck'
 
 const TECH_CHECK_POLL_SECS = 10
 
@@ -85,8 +85,8 @@ export default function TechCheck() {
       return <PanelsTechCheck {...props} />
     case CARDS:
       return <CardsTechCheck {...props} />
-    case FIFTY_BLOG:
-      return <FiftyBlogTechCheck {...props} />
+    case NIFTY_FIFTY:
+      return <NiftyFiftyTechCheck {...props} />
     default:
       throw new Error(`Missing tech check for template`)
   }

@@ -1,0 +1,84 @@
+import React, {useState, useCallback, useEffect} from 'react'
+import {useNiftyFiftyTemplate} from 'Event/template/NiftyFifty'
+import MainNavButton from 'Event/template/NiftyFifty/Dashboard/MainNav/MainNavButton'
+import Sizer from 'Event/template/NiftyFifty/Dashboard/MainNav/MainNavDesktop/Sizer'
+import PageArrows from 'Event/template/NiftyFifty/Dashboard/MainNav/MainNavDesktop/PageArrows'
+import {Container} from 'Event/template/NiftyFifty/Dashboard/MainNav/MainNavDesktop'
+import {orderedIdsByPosition} from 'lib/list'
+
+export default function BodyLive(props: {className?: string}) {
+  /**
+   * Cursor is the index of the first item on the page. If we're on the
+   * first page this would be 0.
+   */
+  const [cursor, setCursor] = useState(0)
+  const [perPage, setPerPage] = useState(0)
+  const template = useNiftyFiftyTemplate()
+  const {nav} = template
+
+  const ids = orderedIdsByPosition(nav)
+  const numItems = Object.keys(nav).length
+
+  const resetCursor = useCallback(() => {
+    setCursor(0)
+  }, [setCursor])
+
+  /**
+   * Whenever num items on a page changes we always go back to first
+   * page to prevent the cursor from being stuck at old counts
+   * ie. on cursor 3 when only single page.
+   */
+  useEffect(resetCursor, [perPage])
+
+  const lastPage = perPage ? cursor + perPage : ids.length
+
+  const visibleIds = ids.filter((_, index) => {
+    return cursor <= index && index < lastPage
+  })
+
+  const hasNextPage = () => {
+    if (!perPage) {
+      return false
+    }
+
+    const lastIndex = cursor + perPage
+    return lastIndex < numItems
+  }
+  const hasPrevPage = cursor > 0
+
+  const goNextPage = () => {
+    setCursor(cursor + perPage)
+  }
+
+  const goPrevPage = () => {
+    setCursor(cursor - perPage)
+  }
+
+  return (
+    <Container className={props.className}>
+      <>
+        {ids.map((id, index) => (
+          <MainNavButton
+            id={id}
+            index={index}
+            key={id}
+            button={nav[id]}
+            isHidden={!visibleIds.includes(id)}
+          />
+        ))}
+        <Sizer
+          className={props.className}
+          start={cursor}
+          perPage={perPage}
+          onChange={setPerPage}
+        />
+        <PageArrows
+          hasNext={hasNextPage()}
+          onNext={goNextPage}
+          hasPrev={hasPrevPage}
+          onPrev={goPrevPage}
+        />
+      </>
+    </Container>
+  )
+}

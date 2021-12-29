@@ -12,11 +12,11 @@ import WaiverProvider from 'Event/Step2/WaiverProvider'
 import SimpleBlogStep2 from 'Event/template/SimpleBlog/Step2'
 import PanelsStep2 from 'Event/template/Panels/Step2'
 import CardsStep2 from 'Event/template/Cards/Step2'
-import FiftyBlogStep2 from 'Event/template/FiftyBlog/Step2'
+import NiftyFiftyStep2 from 'Event/template/NiftyFifty/Step2'
 import {SIMPLE_BLOG} from 'Event/template/SimpleBlog'
 import {PANELS} from 'Event/template/Panels'
 import {CARDS} from 'Event/template/Cards'
-import {FIFTY_BLOG} from 'Event/template/FiftyBlog'
+import {NIFTY_FIFTY} from 'Event/template/NiftyFifty'
 
 export default function Step2() {
   const attendee = useAttendee()
@@ -58,8 +58,8 @@ function TemplateStep2() {
       return <PanelsStep2 />
     case CARDS:
       return <CardsStep2 user={user} />
-    case FIFTY_BLOG:
-      return <FiftyBlogStep2 user={user} />
+    case NIFTY_FIFTY:
+      return <NiftyFiftyStep2 user={user} />
     default:
       throw new Error(`Missing step 2 for template.`)
   }

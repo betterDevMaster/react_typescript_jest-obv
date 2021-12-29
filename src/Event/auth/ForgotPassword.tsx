@@ -12,8 +12,8 @@ import PanelsForgotPassword from 'Event/template/Panels/Login/ForgotPassword'
 import {PANELS} from 'Event/template/Panels'
 import CardsForgotPassword from 'Event/template/Cards/Login/ForgotPassword'
 import {CARDS} from 'Event/template/Cards'
-import FiftyBlogForgotPassword from 'Event/template/FiftyBlog/Login/ForgotPassword'
-import {FIFTY_BLOG} from 'Event/template/FiftyBlog'
+import NiftyFiftyForgotPassword from 'Event/template/NiftyFifty/Login/ForgotPassword'
+import {NIFTY_FIFTY} from 'Event/template/NiftyFifty'
 
 import {api} from 'lib/url'
 
@@ -34,8 +34,8 @@ export default function ForgotPassword() {
       return <PanelsForgotPassword {...forgotPassword} />
     case CARDS:
       return <CardsForgotPassword {...forgotPassword} />
-    case FIFTY_BLOG:
-      return <FiftyBlogForgotPassword {...forgotPassword} />
+    case NIFTY_FIFTY:
+      return <NiftyFiftyForgotPassword {...forgotPassword} />
     default:
       throw new Error(`Missing forgot password page for template: ${name}`)
   }

@@ -12,7 +12,7 @@ import TemplateSelect from 'Event/template/TemplateSelect'
 import {createSimpleBlog, SIMPLE_BLOG} from 'Event/template/SimpleBlog'
 import {createPanels, PANELS} from 'Event/template/Panels'
 import {createCards, CARDS} from 'Event/template/Cards'
-import {createFiftyBlog, FIFTY_BLOG} from 'Event/template/FiftyBlog'
+import {createNiftyFifty, NIFTY_FIFTY} from 'Event/template/NiftyFifty'
 
 import {useToggle} from 'lib/toggle'
 import {spacing} from 'lib/ui/theme'
@@ -86,8 +86,8 @@ function createTemplate(name: Template['name']) {
       return createPanels()
     case CARDS:
       return createCards()
-    case FIFTY_BLOG:
-      return createFiftyBlog()
+    case NIFTY_FIFTY:
+      return createNiftyFifty()
     default:
       throw new Error(`New template not defined for: ${name}`)
   }

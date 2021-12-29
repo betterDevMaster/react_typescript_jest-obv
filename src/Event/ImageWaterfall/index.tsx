@@ -14,8 +14,8 @@ import {CARDS} from 'Event/template/Cards'
 import CardsImageWaterfall from 'Event/template/Cards/ImageWaterfall'
 import {PANELS} from 'Event/template/Panels'
 import PanelsImageWaterfall from 'Event/template/Panels/Dashboard/ImageWaterfall'
-import {FIFTY_BLOG} from 'Event/template/FiftyBlog'
-import FiftyBlogImageWaterfall from 'Event/template/FiftyBlog/Dashboard/ImageWaterfall'
+import {NIFTY_FIFTY} from 'Event/template/NiftyFifty'
+import NiftyFiftyImageWaterfall from 'Event/template/NiftyFifty/Dashboard/ImageWaterfall'
 
 export default function ImageWaterfall() {
   const {name} = useTemplate()
@@ -27,8 +27,8 @@ export default function ImageWaterfall() {
       return <CardsImageWaterfall />
     case PANELS:
       return <PanelsImageWaterfall />
-    case FIFTY_BLOG:
-      return <FiftyBlogImageWaterfall />
+    case NIFTY_FIFTY:
+      return <NiftyFiftyImageWaterfall />
     default:
       throw new Error(`ImageWaterfall not implemented for template: ${name}`)
   }

@@ -8,8 +8,8 @@ import {CARDS} from 'Event/template/Cards'
 import CardsImageWaterfallConfig from 'Event/template/Cards/ImageWaterfall/ImageWaterfallConfig'
 import {PANELS} from 'Event/template/Panels'
 import PanelsImageWaterfallConfig from 'Event/template/Panels/Dashboard/ImageWaterfall/ImageWaterfallConfig'
-import {FIFTY_BLOG} from 'Event/template/FiftyBlog'
-import FiftyBlogImageWaterfallConfig from 'Event/template/FiftyBlog/Dashboard/ImageWaterfall/ImageWaterfallConfig'
+import {NIFTY_FIFTY} from 'Event/template/NiftyFifty'
+import NiftyFiftyImageWaterfallConfig from 'Event/template/NiftyFifty/Dashboard/ImageWaterfall/ImageWaterfallConfig'
 
 import ComponentConfig from 'organization/Event/DashboardConfig/ComponentConfig'
 
@@ -42,8 +42,8 @@ function TemplateConfig(props: ImageWaterfallConfigProps) {
       return <CardsImageWaterfallConfig {...props} />
     case PANELS:
       return <PanelsImageWaterfallConfig {...props} />
-    case FIFTY_BLOG:
-      return <FiftyBlogImageWaterfallConfig {...props} />
+    case NIFTY_FIFTY:
+      return <NiftyFiftyImageWaterfallConfig {...props} />
     default:
       throw new Error(
         `ImageWaterfallConfig not implemented for template ${name}.`,

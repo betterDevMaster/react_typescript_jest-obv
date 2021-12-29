@@ -9,8 +9,8 @@ import {PANELS} from 'Event/template/Panels'
 import PanelsRoomRegistrationForm from 'Event/template/Panels/RoomRegistrationForm'
 import {CARDS} from 'Event/template/Cards'
 import CardsRoomRegistrationForm from 'Event/template/Cards/RoomRegistrationForm'
-import {FIFTY_BLOG} from 'Event/template/FiftyBlog'
-import FiftyBlogRoomRegistrationForm from 'Event/template/FiftyBlog/RoomRegistrationForm'
+import {NIFTY_FIFTY} from 'Event/template/NiftyFifty'
+import NiftyFiftyRoomRegistrationForm from 'Event/template/NiftyFifty/RoomRegistrationForm'
 
 import {ValidationError} from 'lib/ui/api-client'
 
@@ -32,8 +32,8 @@ export default function TemplateRoomRegistrationForm(
       return <PanelsRoomRegistrationForm {...props} />
     case CARDS:
       return <CardsRoomRegistrationForm {...props} />
-    case FIFTY_BLOG:
-      return <FiftyBlogRoomRegistrationForm {...props} />
+    case NIFTY_FIFTY:
+      return <NiftyFiftyRoomRegistrationForm {...props} />
     default:
       throw new Error(`Missing room registration form for template: ${name}`)
   }
