@@ -101,16 +101,16 @@ function withPad(
 const Box = styled.div`
   display: inline-block;
   position: relative;
+  width: 100%;
 `
 
 const CanvasBox = styled.div`
-  @media (min-width: ${(props) => props.theme.breakpoints.md}) {
+  /** @media (min-width: ${(props) => props.theme.breakpoints.md}) {
     width: 500px;
-  }
+  } **/
 `
 
 const Canvas = styled.canvas`
-  width: 100%;
   border-width: 2px;
   border-style: dashed;
   border-color: #706f70;

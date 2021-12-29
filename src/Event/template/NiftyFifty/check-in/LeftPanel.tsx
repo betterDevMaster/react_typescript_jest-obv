@@ -25,7 +25,7 @@ export default function LeftPanel(props: {user: User}) {
   const background = stepBackground ? stepBackground : null
   // const [menuVisible, setMenuVisible] = useState(false)
   // const toggleMenu = () => setMenuVisible(!menuVisible)
-  console.log(background, stepBackgroundProps)
+
   return (
     <Box
       backgroundColor={rgba(
@@ -78,8 +78,7 @@ const Box = styled.div<{
   background-repeat: no-repeat;
   background-size: 100% 100%;
   background-position: center;
-  border-top-left-radius: 10px;
-  border-bottom-left-radius: 10px;
   overflow: auto;
   position: relative;
+  width: 100%;
 `

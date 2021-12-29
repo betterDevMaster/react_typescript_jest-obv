@@ -130,7 +130,7 @@ const LogoBox = styled.div<{
   align-items: center;
   position: relative;
   min-height: 20vh;
-
+  width: 100%;
   background-size: 100% 100% !important;
   background-position: center;
   background-repeat: no-repeat !important;
