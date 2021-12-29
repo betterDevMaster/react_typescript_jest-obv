@@ -253,6 +253,8 @@ export type NiftyFifty = BaseTemplate &
       speakerImageSize?: Column
       speakersSpace?: GridSpacing
       orderedIds?: number[]
+      backgroundColor?: string
+      backgroundOpacity?: number
       menuTitle?: string
       isVisible?: boolean
       descriptionFontSize?: number
@@ -524,6 +526,8 @@ export const createNiftyFifty = (): DeepRequired<NiftyFifty> => ({
     speakerImageSize: 2,
     speakersSpace: 0,
     orderedIds: [],
+    backgroundColor: '#FFFFFF',
+    backgroundOpacity: 100,
     menuTitle: 'Speakers',
     isVisible: true,
     descriptionFontSize: 17,

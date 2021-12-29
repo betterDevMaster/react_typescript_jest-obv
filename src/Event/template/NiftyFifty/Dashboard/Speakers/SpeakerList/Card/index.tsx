@@ -8,6 +8,7 @@ import Image from 'Event/template/NiftyFifty/Dashboard/Speakers/SpeakerList/Card
 import {Speaker} from 'Event/SpeakerPage'
 import {useNiftyFiftyTemplate} from 'Event/template/NiftyFifty'
 
+import {rgba} from 'lib/color'
 import InnerContent from 'lib/ui/form/TextEditor/Content'
 import Clickable from 'lib/ui/Clickable'
 
@@ -57,7 +58,11 @@ function Content(props: SpeakerProps) {
   const isFirst = props.index === 0
 
   return (
-    <Box aria-label="speaker" isFirst={isFirst}>
+    <Box
+      aria-label="speaker"
+      isFirst={isFirst}
+      backgroundColor={rgba(speaker.backgroundColor, speaker.backgroundOpacity)}
+    >
       <Left item xs={imageSize}>
         <StyledImage speaker={speaker} />
       </Left>
@@ -79,10 +84,12 @@ function Content(props: SpeakerProps) {
 
 const Box = styled.div<{
   isFirst: boolean
+  backgroundColor: string
 }>`
   position: relative;
   border-top: ${(props) => (props.isFirst ? 'none' : '1px solid #e5e5e5')};
   padding: ${(props) => (props.isFirst ? '0 0 30px' : '30px 0px')};
+  background: ${(props) => props.backgroundColor};
 `
 
 const StyledBody = styled.div<{

@@ -108,6 +108,8 @@ export const fakeSpeaker = (overrides?: Partial<Speaker>): Speaker => ({
   name: `${faker.name.firstName()} ${faker.name.lastName()}`,
   description: `<html><p>${faker.lorem.paragraphs(3)}</p></html>`,
   text: `<html><p>${faker.lorem.paragraphs(3)}</p></html>`,
+  backgroundColor: faker.internet.color(),
+  backgroundOpacity: faker.random.number({min: 0, max: 1}),
   image: null,
   ...overrides,
 })

@@ -113,6 +113,47 @@ export default function SpeakerPageConfigForm(props: {onClose: () => void}) {
         )}
       />
       <Box display="flex" flexDirection="row" flex="2">
+        <Box flex="1" mr={2}>
+          <Controller
+            name="backgroundColor"
+            defaultValue={speakerPageSettings.backgroundColor}
+            control={control}
+            render={({value, onChange}) => (
+              <ColorPicker
+                label="Background Color"
+                color={value || '#FFFFFF'}
+                onPick={onChange}
+                aria-label="background color"
+              />
+            )}
+          />
+        </Box>
+        <Box flex="1">
+          <InputLabel>Background Opacity</InputLabel>
+          <Controller
+            name="backgroundOpacity"
+            defaultValue={speakerPageSettings.backgroundOpacity}
+            control={control}
+            render={({value, onChange}) => (
+              <Slider
+                valueLabelDisplay="auto"
+                aria-label="background opacity"
+                value={value || 0}
+                valueLabelFormat={() => (
+                  <div>
+                    {(speakerPageSettings.backgroundOpacity || 0) * 100}
+                  </div>
+                )}
+                onChange={handleChangeSlider(onChange)}
+                step={0.01}
+                min={0}
+                max={1}
+              />
+            )}
+          />
+        </Box>
+      </Box>
+      <Box display="flex" flexDirection="row" flex="2">
         <Box flex="1">
           <Controller
             name="titleColor"
@@ -150,7 +191,7 @@ export default function SpeakerPageConfigForm(props: {onClose: () => void}) {
             control={control}
             render={({value, onChange}) => (
               <ColorPicker
-                label="Title Description Color"
+                label="Content Color"
                 color={value}
                 onPick={onChange}
                 aria-label="title description color"
@@ -162,7 +203,7 @@ export default function SpeakerPageConfigForm(props: {onClose: () => void}) {
           <TextField
             name="titleDescFontSize"
             defaultValue={speakerPageSettings.titleDescFontSize}
-            label="Title Description Font Size"
+            label="Content Font Size"
             type="number"
             fullWidth
             inputProps={{
@@ -172,7 +213,7 @@ export default function SpeakerPageConfigForm(props: {onClose: () => void}) {
           />
         </Box>
       </Box>
-      <Box display="flex" flexDirection="row" flex="2">
+      {/* <Box display="flex" flexDirection="row" flex="2">
         <Box flex="1">
           <Controller
             name="descriptionColor"
@@ -201,7 +242,7 @@ export default function SpeakerPageConfigForm(props: {onClose: () => void}) {
             }}
           />
         </Box>
-      </Box>
+      </Box> */}
       <Grid item xs={12}>
         <InputLabel>Speaker Image Size</InputLabel>
         <Controller

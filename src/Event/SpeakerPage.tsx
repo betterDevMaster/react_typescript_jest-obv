@@ -26,10 +26,12 @@ import {EventSpeakersProvider} from 'organization/Event/SpeakersProvider'
 
 export interface Speaker {
   id: number
-  image: FileLocation | null
   name: string
   description: string
   text: string
+  backgroundColor: string
+  backgroundOpacity: number
+  image: FileLocation | null
 }
 
 export default function SpeakersPage() {
