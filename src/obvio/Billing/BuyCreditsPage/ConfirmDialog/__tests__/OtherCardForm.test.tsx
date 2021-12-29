@@ -10,6 +10,7 @@ import {act} from 'react-dom/test-utils'
 import {TeamMember} from 'auth/user'
 import SingleUseCreditCardForm from 'lib/stripe/SingleUseCreditCardForm'
 import {hideConsoleErrors} from 'setupTests'
+import {goToBillingSettings} from 'obvio/Billing/__utils__/go-to-billing-settings'
 
 const mockGet = axios.get as jest.Mock
 const mockPost = axios.post as jest.Mock
@@ -58,25 +59,10 @@ it('should purchase selected credits', async () => {
     },
   )
 
-  const {findByText, findByLabelText} = await signInToObvio({
-    beforeRender: () => {
-      // Need to mock requests BEFORE signing in, because the requests are sent immediately,
-      // so we'll do it here. We just happen to know that the first request is to fetch
-      // the user's organizations on organization list.
-      mockGet.mockResolvedValueOnce({data: []}) // organizations
-    },
-    user: teamMember,
+  const {findByText, findByLabelText} = await goToBillingSettings({
+    authUser: teamMember,
+    paymentMethod,
   })
-
-  // Open user drop-down menu in app/tool bar
-  user.click(await findByLabelText('account menu'))
-
-  // Mock - Need registered card to buy credits, so we'll mock it here BEFORE we access the page. This
-  // is a common pattern. Mock requests, do action, verify mocks were called.
-  mockGet.mockResolvedValueOnce({data: paymentMethod})
-
-  // Action - Go to billing page
-  user.click(await findByLabelText('billing settings'))
 
   // Mock - return the price that the slider will return
   const initialPrice = 20

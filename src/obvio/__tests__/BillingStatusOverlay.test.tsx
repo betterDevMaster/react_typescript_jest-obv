@@ -20,7 +20,7 @@ it('should show unpaid transactions overlay', async () => {
     beforeRender: () => {
       mockGet.mockResolvedValueOnce({data: []}) // organizations
     },
-    user: teamMember,
+    authUser: teamMember,
   })
 
   expect(await findByText(/unpaid credit transactions/i)).toBeInTheDocument()

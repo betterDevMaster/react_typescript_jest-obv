@@ -1,33 +1,12 @@
 import {signInToObvio} from 'obvio/__utils__/sign-in-to-obvio'
 import user from '@testing-library/user-event'
 import axios from 'axios'
-import {fakeTeamMember} from 'organization/Team/__utils__/factory'
-import {fakePaymentMethod, fakePlan} from 'obvio/Billing/__utils__/factory'
+import {goToBillingSettings} from 'obvio/Billing/__utils__/go-to-billing-settings'
 
-const mockGet = axios.get as jest.Mock
 const mockDelete = axios.delete as jest.Mock
 
 it('should remove a credit card', async () => {
-  const teamMember = fakeTeamMember({
-    has_active_subscription: true,
-    plan: fakePlan({name: 'enterprise'}),
-    is_subscribed: true,
-    credits: 0, // start with 0 credits
-  })
-
-  const {findByText, findByLabelText} = await signInToObvio({
-    beforeRender: () => {
-      mockGet.mockResolvedValueOnce({data: []}) // organizations
-    },
-    user: teamMember,
-  })
-
-  user.click(await findByLabelText('account menu'))
-
-  // No payment method was returned
-  mockGet.mockResolvedValueOnce({data: fakePaymentMethod()})
-
-  user.click(await findByLabelText('billing settings'))
+  const {findByText} = await goToBillingSettings()
 
   mockDelete.mockResolvedValueOnce({data: 'deleted card'})
 

@@ -6,6 +6,7 @@ import {useLocation} from 'react-router-dom'
 import {fakePaymentMethod, fakePlan} from 'obvio/Billing/__utils__/factory'
 import {TeamMember} from 'auth/user'
 import {PlanName} from 'obvio/Billing/plans'
+import {goToBillingSettings} from 'obvio/Billing/__utils__/go-to-billing-settings'
 
 const mockGet = axios.get as jest.Mock
 const mockPut = axios.put as jest.Mock
@@ -25,23 +26,20 @@ it('should show add card button', async () => {
 
   const plan: PlanName = 'basic'
 
-  const {findByText, findAllByText, findByLabelText} = await signInToObvio({
+  const {
+    findByText,
+    findAllByText,
+    findByLabelText,
+  } = await goToBillingSettings({
     beforeRender: () => {
       mockUseLocation.mockImplementation(() => ({
         pathname: '/',
         search: `?plan=${plan}`,
       }))
-
-      mockGet.mockResolvedValueOnce({data: []}) // organizations
     },
-    user: teamMember,
+    authUser: teamMember,
+    paymentMethod: null,
   })
-
-  // Has no paymetn method
-  mockGet.mockResolvedValueOnce({data: null})
-
-  user.click(await findByLabelText('account menu'))
-  user.click(await findByLabelText('billing settings'))
 
   // select first (basic) plan
 
@@ -67,25 +65,16 @@ it('should create a subscription', async () => {
     findAllByText,
     findByLabelText,
     queryByText,
-  } = await signInToObvio({
+  } = await goToBillingSettings({
     beforeRender: () => {
       mockUseLocation.mockImplementation(() => ({
         pathname: '/',
         search: `?plan=${plan}`,
       }))
-
-      mockGet.mockResolvedValueOnce({data: []}) // organizations
     },
-    user: teamMember,
+    authUser: teamMember,
+    paymentMethod,
   })
-
-  // Mock payment method (ie. user already has a card) because we're not able
-  // to cleanly mock stripe's elements API, nor do we want to in case they
-  // change it. So we'll just assume Stripe works / leave for E2E tests.
-  mockGet.mockResolvedValueOnce({data: paymentMethod})
-
-  user.click(await findByLabelText('account menu'))
-  user.click(await findByLabelText('billing settings'))
 
   // select first (basic) plan
 
@@ -126,25 +115,19 @@ it('should upgrade a subscription', async () => {
 
   const newPlan: PlanName = 'enterprise'
 
-  const {findByText, findByLabelText, findAllByText} = await signInToObvio({
+  // Need payment method to upgrade
+  const paymentMethod = fakePaymentMethod()
+
+  const {findByText, findAllByText} = await goToBillingSettings({
     beforeRender: () => {
       mockUseLocation.mockImplementation(() => ({
         pathname: '/',
         search: `?plan=${newPlan}`,
       }))
-
-      mockGet.mockResolvedValueOnce({data: []}) // organizations
     },
-    user: teamMember,
+    authUser: teamMember,
+    paymentMethod,
   })
-
-  user.click(await findByLabelText('account menu'))
-
-  // Need payment method to upgrade
-  const paymentMethod = fakePaymentMethod()
-  mockGet.mockResolvedValueOnce({data: paymentMethod})
-
-  user.click(await findByLabelText('billing settings'))
 
   // Shows current plan
   expect(await findByText(/current/i)).toBeInTheDocument()
@@ -189,22 +172,16 @@ it('should show founder plan', async () => {
 
   const plan: PlanName = 'basic'
 
-  const {findByText, findByLabelText} = await signInToObvio({
+  const {findByText} = await goToBillingSettings({
     beforeRender: () => {
       mockUseLocation.mockImplementation(() => ({
         pathname: '/',
         search: `?plan=${plan}`,
       }))
-
-      mockGet.mockResolvedValueOnce({data: []}) // organizations
     },
-    user: teamMember,
+    authUser: teamMember,
+    paymentMethod: null,
   })
-
-  mockGet.mockResolvedValueOnce({data: null})
-
-  user.click(await findByLabelText('account menu'))
-  user.click(await findByLabelText('billing settings'))
 
   // Can see founder plan
   expect(await findByText(/founder/i)).toBeInTheDocument()

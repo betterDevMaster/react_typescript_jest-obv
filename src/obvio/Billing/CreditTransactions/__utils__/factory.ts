@@ -1,36 +1,25 @@
 import {
-  AdditionalRoomsTransaction,
-  AttendeesTransaction,
+  EventCreditTransaction,
+  PurchaseCreditTransaction,
 } from 'obvio/Billing/CreditTransactions'
 import faker from 'faker'
 
-export const fakeAttendeesTransaction = (
-  overrides?: Partial<AttendeesTransaction>,
-): AttendeesTransaction => ({
+export const fakeEventCreditTransaction = (
+  overrides?: Partial<EventCreditTransaction>,
+): EventCreditTransaction => ({
+  transaction_type: 'event',
   id: faker.random.number({min: 1000, max: 10000}),
   event_name: faker.company.companyName(),
   event_slug: faker.internet.domainWord(),
-  paid: true,
-  amount: faker.random.number({min: 1, max: 100}),
-  type_id: 1,
-  details: {
-    num_attendees: faker.random.number({min: 1, max: 100}),
-    duration_days: faker.random.number({min: 1, max: 10}),
-  },
+  total: faker.random.number({min: 1, max: 100}),
   ...overrides,
 })
 
-export const fakeAdditionalRoomsTransaction = (
-  overrides?: Partial<AdditionalRoomsTransaction>,
-): AdditionalRoomsTransaction => ({
+export const fakePurchaseCreditTransaction = (
+  overrides?: Partial<PurchaseCreditTransaction>,
+): PurchaseCreditTransaction => ({
+  transaction_type: 'purchase',
   id: faker.random.number({min: 1000, max: 10000}),
-  event_name: faker.company.companyName(),
-  event_slug: faker.internet.domainWord(),
-  paid: true,
-  amount: faker.random.number({min: 1, max: 100}),
-  type_id: 2,
-  details: {
-    num_rooms: faker.random.number({min: 1, max: 10}),
-  },
+  total: faker.random.number({min: 1, max: 100}),
   ...overrides,
 })

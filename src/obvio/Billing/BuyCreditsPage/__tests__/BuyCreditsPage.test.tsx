@@ -8,6 +8,7 @@ import {ajax} from 'rxjs/ajax'
 import {act} from 'react-dom/test-utils'
 import {TeamMember} from 'auth/user'
 import {hideConsoleErrors} from 'setupTests'
+import {goToBillingSettings} from 'obvio/Billing/__utils__/go-to-billing-settings'
 
 const mockGet = axios.get as jest.Mock
 const mockPost = axios.post as jest.Mock
@@ -31,28 +32,16 @@ it('should purchase selected credits', async () => {
     is_founder: true,
   })
 
-  const {findByText, findByLabelText, findAllByLabelText} = await signInToObvio(
-    {
-      beforeRender: () => {
-        // Need to mock requests BEFORE signing in, because the requests are sent immediately,
-        // so we'll do it here. We just happen to know that the first request is to fetch
-        // the user's organizations on organization list.
-        mockGet.mockResolvedValueOnce({data: []}) // organizations
-      },
-      user: teamMember,
-    },
-  )
-
-  // Open user drop-down menu in app/tool bar
-  user.click(await findByLabelText('account menu'))
-
-  // Mock - Need registered card to buy credits, so we'll mock it here BEFORE we access the page. This
-  // is a common pattern. Mock requests, do action, verify mocks were called.
   const paymentMethod = fakePaymentMethod()
-  mockGet.mockResolvedValueOnce({data: paymentMethod})
 
-  // Action - Go to billing page
-  user.click(await findByLabelText('billing settings'))
+  const {
+    findByText,
+    findByLabelText,
+    findAllByLabelText,
+  } = await goToBillingSettings({
+    authUser: teamMember,
+    paymentMethod,
+  })
 
   // Mock - return the price that the slider will return
   const initialPrice = 20
@@ -134,19 +123,10 @@ it('should require a payment method', async () => {
     is_subscribed: true,
   })
 
-  const {findByText, findByLabelText} = await signInToObvio({
-    beforeRender: () => {
-      mockGet.mockResolvedValueOnce({data: []}) // organizations
-    },
-    user: teamMember,
+  const {findByText} = await goToBillingSettings({
+    paymentMethod: null,
+    authUser: teamMember,
   })
-
-  user.click(await findByLabelText('account menu'))
-
-  // No payment method was returned
-  mockGet.mockResolvedValueOnce({data: null})
-
-  user.click(await findByLabelText('billing settings'))
 
   // Was redirected back to billing root
   expect(await findByText('Billing & Subscription')).toBeInTheDocument()
@@ -160,18 +140,9 @@ it('should require a plan', async () => {
     is_subscribed: true,
   })
 
-  const {findByText, findByLabelText} = await signInToObvio({
-    beforeRender: () => {
-      mockGet.mockResolvedValueOnce({data: []}) // organizations
-    },
-    user: teamMember,
+  const {findByText} = await goToBillingSettings({
+    authUser: teamMember,
   })
-
-  user.click(await findByLabelText('account menu'))
-
-  mockGet.mockResolvedValueOnce({data: fakePaymentMethod()})
-
-  user.click(await findByLabelText('billing settings'))
 
   // Was redirected back to billing root
   expect(await findByText('Billing & Subscription')).toBeInTheDocument()
