@@ -23,8 +23,8 @@ it('should configure global styles settings', async () => {
     userPermissions: [CONFIGURE_EVENTS],
   })
 
-  const color = faker.internet.color()
-  user.type(await findByLabelText('dashboard background color'), color)
+  const color = '#000000'
+  user.type(await findByLabelText('text color'), color)
   user.click(await findByLabelText('save'))
 
   await wait(() => {
@@ -34,5 +34,5 @@ it('should configure global styles settings', async () => {
   const [url, data] = mockPut.mock.calls[0]
   expect(url).toMatch(`/events/${event.slug}`)
 
-  expect(data.template['background.color']).toBe(color)
+  expect(data.template['linkColor']).toBe(color)
 })

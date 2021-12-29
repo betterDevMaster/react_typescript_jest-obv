@@ -21,10 +21,10 @@ it('should configure check in page settings', async () => {
     event,
     userPermissions: [CONFIGURE_EVENTS],
   })
-  const title = 'Check In label title'
+  const color = '#666666'
 
-  user.type(await findByLabelText('check in label title'), title)
+  user.type(await findByLabelText('check in right panel text color'), color)
 
   const btnSaves = await findAllByLabelText('save')
-  expect(btnSaves.length).toBe(2)
+  expect(btnSaves.length).toBe(1)
 })

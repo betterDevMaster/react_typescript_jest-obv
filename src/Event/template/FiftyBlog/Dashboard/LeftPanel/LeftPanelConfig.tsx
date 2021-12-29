@@ -26,9 +26,12 @@ export default function LeftPanelConfig(props: {
 }) {
   const {isVisible, onClose} = props
 
-  const template = useFiftyBlogTemplate()
   const update = useFiftyBlogUpdate()
-  const {leftPanel, dashboardBackgroundProps} = template
+  const {
+    dashboardBackgroundProps,
+    dashboardLogoProps,
+    leftPanel,
+  } = useFiftyBlogTemplate()
   const {control, handleSubmit} = useForm()
 
   const submit = (data: FiftyBlog) => {
@@ -56,7 +59,7 @@ export default function LeftPanelConfig(props: {
               <Box mb={2}>
                 <Controller
                   name="dashboardLogoProps.hidden"
-                  defaultValue={template.dashboardLogoProps.hidden}
+                  defaultValue={dashboardLogoProps.hidden}
                   control={control}
                   render={({value, onChange}) => (
                     <Switch
@@ -74,7 +77,7 @@ export default function LeftPanelConfig(props: {
                 <InputLabel>Image Size</InputLabel>
                 <Controller
                   name="dashboardLogoProps.size"
-                  defaultValue={template.dashboardLogoProps.size}
+                  defaultValue={dashboardLogoProps.size}
                   control={control}
                   render={({value, onChange}) => (
                     <Slider
@@ -101,7 +104,7 @@ export default function LeftPanelConfig(props: {
               <Box mb={2}>
                 <Controller
                   name="dashboardBackgroundProps.hidden"
-                  defaultValue={template.dashboardBackgroundProps.hidden}
+                  defaultValue={dashboardBackgroundProps.hidden}
                   control={control}
                   render={({value, onChange}) => (
                     <Switch
@@ -117,25 +120,6 @@ export default function LeftPanelConfig(props: {
               </Box>
             </Grid>
           </Grid>
-          {/* <Box display="flex" flexDirection="column" flex="1" mb={2}>
-            <InputLabel>Hide Background</InputLabel>
-
-            <Controller
-              name="dashboardBackgroundProps.hidden"
-              defaultValue={dashboardBackgroundProps.hidden}
-              control={control}
-              render={({ value, onChange }) => (
-                <Switch
-                  checked={value}
-                  onChange={onChangeCheckedHandler(onChange)}
-                  color="primary"
-                  inputProps={{
-                    'aria-label': 'toggle logo backgournd visible',
-                  }}
-                />
-              )}
-            />
-          </Box> */}
           <Box mb={2}>
             <Controller
               name="leftPanel.barTextColor"
@@ -143,7 +127,7 @@ export default function LeftPanelConfig(props: {
               control={control}
               render={({value, onChange}) => (
                 <ColorPicker
-                  label="Bar Text Color"
+                  label="Menu Color"
                   color={value}
                   onPick={onChange}
                   aria-label="left panel bar text color"
@@ -188,7 +172,7 @@ export default function LeftPanelConfig(props: {
               control={control}
               render={({value, onChange}) => (
                 <ColorPicker
-                  label="Panel Background Color"
+                  label="Background Color"
                   color={value}
                   onPick={onChange}
                   aria-label="left panel background color"

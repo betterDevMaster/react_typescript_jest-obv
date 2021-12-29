@@ -33,6 +33,7 @@ export default function TextEditor(props: {
   disabled?: boolean
   customToolBars?: string[]
   customLinks?: string[]
+  placeholder?: string
 }) {
   const updateValue = (_: any, editor: any) => {
     props.onChange(editor.getData())
@@ -55,7 +56,7 @@ export default function TextEditor(props: {
           links: {
             rexlink: props.customLinks || [],
           },
-
+          placeholder: props.placeholder,
           /**
            * Required for media embed to render in HTML
            */

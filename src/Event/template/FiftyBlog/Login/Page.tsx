@@ -5,7 +5,6 @@ import {Paper, Typography} from '@material-ui/core'
 import {makeStyles} from '@material-ui/core/styles'
 import MuiTextField, {TextFieldProps} from '@material-ui/core/TextField'
 import MuiButton, {ButtonProps} from '@material-ui/core/Button'
-import defaultBackground from 'assets/images/background_login.png'
 
 import {LoginProps} from 'Event/auth/Login'
 import {useFiftyBlogTemplate} from 'Event/template/FiftyBlog'
@@ -21,24 +20,18 @@ export default function Page(props: {
 }) {
   const template = useFiftyBlogTemplate()
   const {login, loginBackground, loginBackgroundProps} = template
+  const background = loginBackground ? loginBackground : null
 
-  const background = loginBackground ? loginBackground : defaultBackground
-
-  const backgroundRGBColor = rgba(
-    login.backgroundColor,
-    login.backgroundOpacity,
-  )
   return (
     <Background
       background={background}
+      backgroundColor={rgba(login.backgroundColor, login.backgroundOpacity)}
       isPreview={props.isPreview}
       aria-label="login background"
-      isHidden={loginBackgroundProps.hidden}
+      isHidden={!background && loginBackgroundProps.hidden ? true : false}
     >
-      <ColorOverlay color={backgroundRGBColor}>
-        <Logo />
-        <Container>{props.children}</Container>
-      </ColorOverlay>
+      <Logo />
+      <Container>{props.children}</Container>
     </Background>
   )
 }
@@ -102,30 +95,25 @@ export const DescriptionText = styled.div<{
 `
 
 export const Background = styled.div<{
-  background: string
+  background: any
+  backgroundColor: string
   isPreview?: boolean
   isHidden?: boolean
 }>`
-  ${(props) => (props.isHidden ? '' : `background: url(${props.background});`)}
-  display: flex;
-  background-size: 100% 100%;
+  background-size: 100% 100% !important;
   background-position: center;
+  background-repeat: no-repeat !important;
+  background: ${(props) =>
+    !props.isHidden && props.background
+      ? `url(${props.background})`
+      : props.backgroundColor};
   position: ${(props) => (props.isPreview ? 'inherit' : 'absolute')};
   width: 100%;
   top: 0;
   left: 0;
   justify-content: center;
   align-items: center;
-  -webkit-transition: all 300ms ease-in 200ms;
-  -moz-transition: all 300ms ease-in 200ms;
-  -o-transition: all 300ms ease-in 200ms;
   transition: all 300ms ease-in 200ms;
-`
-
-export const ColorOverlay = styled.div<{
-  color: string
-}>`
-  width: 100%;
   justify-content: center;
   display: flex;
   flex-direction: column;
@@ -233,13 +221,13 @@ export const StyledPaper = styled(Paper)`
   display: flex;
   vertical-align: middle;
   background-color: inherit;
-  height: 70vh;
+  height: 80vh;
   width: 100%;
   box-shadow: none;
 
   @media (min-width: ${(props) => props.theme.breakpoints.sm}) {
     border-radius: 10px 10px 0 0;
-    height: 70vh;
+    height: 80vh;
   }
 
   @media (min-width: ${(props) => props.theme.breakpoints.md}) {

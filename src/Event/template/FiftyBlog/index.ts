@@ -212,6 +212,8 @@ export type FiftyBlog = BaseTemplate &
         description: string
         successMessage: string
       }
+      logoBackgroundColor?: string
+      logoBackgroundOpacity?: number
       backgroundColor?: string
       backgroundOpacity?: number
       logoSize?: number
@@ -296,6 +298,7 @@ export type FiftyBlog = BaseTemplate &
       step2Percent: number
       step3Text: string
       step3Percent: number
+      progressBar: any
     }
   }
 
@@ -480,6 +483,8 @@ export const createFiftyBlog = (): DeepRequired<FiftyBlog> => ({
       successMessage:
         "Password reset link sent! Check your spam folder if you don't see it after a couple minutes.",
     },
+    logoBackgroundColor: '#FFFFFF',
+    logoBackgroundOpacity: 0,
     backgroundColor: '#FFFFFF',
     backgroundOpacity: 0,
     logoSize: 20,
@@ -553,7 +558,7 @@ export const createFiftyBlog = (): DeepRequired<FiftyBlog> => ({
     barColor: '#0969d6',
     backgroundColor: '#b1d4f1',
     textColor: '#000000',
-    thickness: 15,
+    thickness: 30,
     borderRadius: 50,
     showing: true,
     checkInTitle: 'Check In:',
@@ -564,6 +569,7 @@ export const createFiftyBlog = (): DeepRequired<FiftyBlog> => ({
     step2Percent: 66,
     step3Text: 'Step 3',
     step3Percent: 100,
+    progressBar: {},
   },
   dashboardLogo: null,
   dashboardBackground: null,

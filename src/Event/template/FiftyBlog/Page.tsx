@@ -173,7 +173,7 @@ export const PageTitle = styled.h2`
   font-weight: 700;
   text-transform: uppercase;
   text-align: left;
-  margin: 0 0 30px;
+  margin: 0 0 10px;
 
   @media (max-width: ${(props) => props.theme.breakpoints.sm}) {
     font-size: 24px;
@@ -187,7 +187,7 @@ export const PageDescription = styled.h2`
   line-height: 1.2;
   font-weight: 500;
   text-align: left;
-  margin: 0 0 30px;
+  margin: 0 0 10px;
 
   @media (max-width: ${(props) => props.theme.breakpoints.sm}) {
     font-size: 14px;

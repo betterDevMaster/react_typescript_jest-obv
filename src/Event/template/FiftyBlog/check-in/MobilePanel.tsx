@@ -1,4 +1,4 @@
-import React, {useState} from 'react'
+import React from 'react'
 import styled from 'styled-components'
 
 import {User} from 'auth/user'
@@ -6,11 +6,11 @@ import {User} from 'auth/user'
 import Logo from 'Event/Logo'
 import {useFiftyBlogTemplate} from 'Event/template/FiftyBlog'
 import {Step} from 'Event/template/FiftyBlog/check-in/CheckInConfig'
-import Menu from 'Event/template/FiftyBlog/Menu'
+// import Menu from 'Event/template/FiftyBlog/Menu'
 
 import {rgba} from 'lib/color'
 import ProgressBar from 'lib/ui/ProgressBar'
-import {MenuIconButton} from 'lib/ui/IconButton/MenuIconButton'
+// import {MenuIconButton} from 'lib/ui/IconButton/MenuIconButton'
 
 import defaultLogo from 'assets/images/logo.png'
 
@@ -20,7 +20,7 @@ export default function MobilePanel(props: {
   step: Step
 }) {
   const template = useFiftyBlogTemplate()
-  const {checkInRightPanel, menu} = template
+  const {checkInRightPanel} = template
   const {
     stepLogo,
     stepBackground,
@@ -30,9 +30,9 @@ export default function MobilePanel(props: {
     progressBar,
   } = template
   const logo = stepLogo ? stepLogo : defaultLogo
-  const background = stepBackground ? stepBackground : ''
-  const [menuVisible, setMenuVisible] = useState(false)
-  const toggleMenu = () => setMenuVisible(!menuVisible)
+  const background = stepBackground ? stepBackground : null
+  // const [menuVisible, setMenuVisible] = useState(false)
+  // const toggleMenu = () => setMenuVisible(!menuVisible)
   const text =
     props.step === 1
       ? progressBar.step1Text
@@ -52,11 +52,11 @@ export default function MobilePanel(props: {
           checkInLeftPanel.backgroundColor,
           checkInLeftPanel.backgroundOpacity,
         )}
-        backgroundImage={background}
+        background={background}
         isBackgroundHidden={stepBackgroundProps.hidden}
         textColor={checkInLeftPanel.textColor}
       >
-        <IconContainer>
+        {/* <IconContainer>
           <MenuIconButton
             active={menuVisible}
             onClick={toggleMenu}
@@ -64,12 +64,11 @@ export default function MobilePanel(props: {
             iconColor={menu.iconColor}
           />
         </IconContainer>
-        <Menu visible={menuVisible} toggle={toggleMenu} user={props.user} />
+        <Menu visible={menuVisible} toggle={toggleMenu} user={props.user} /> */}
         <Logo
           src={logo}
           hidden={stepLogoProps.hidden}
           size={stepLogoProps.size}
-          mobile={true}
         />
       </LogoBox>
       <Paper
@@ -87,8 +86,8 @@ export default function MobilePanel(props: {
           textColor={progressBar.textColor}
           borderRadius={progressBar.borderRadius}
           thickness={progressBar.thickness}
-          checktitle={progressBar.checkInTitle}
-          checkcolor={progressBar.checkInColor}
+          // checktitle={progressBar.checkInTitle}
+          // checkcolor={progressBar.checkInColor}
         />
         <Panel>{props.children}</Panel>
       </Paper>
@@ -113,34 +112,32 @@ const Paper = styled.div<{
   border: 10px;
   padding: 35px 0;
   width: 100%;
-  min-height: 100vh;
+  min-height: 80vh;
 `
 
-const IconContainer = styled.div`
-  cursor: pointer;
-`
+// const IconContainer = styled.div`
+//   cursor: pointer;
+// `
 
 const LogoBox = styled.div<{
   backgroundColor: string
   textColor: string
-  backgroundImage: string
+  background: any
   isBackgroundHidden: boolean
 }>`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  border-top-left-radius: 10px;
-  border-top-right-radius: 10px;
-  overflow: auto;
-  background-repeat: no-repeat;
-  background-size: 100% 100%;
-  background-position: center;
   position: relative;
+  min-height: 20vh;
 
-  ${(props) =>
-    props.isBackgroundHidden
-      ? `background: ${props.backgroundColor};`
-      : `background: url(${props.backgroundImage});`}
+  background-size: 100% 100% !important;
+  background-position: center;
+  background-repeat: no-repeat !important;
+  background: ${(props) =>
+    !props.isBackgroundHidden && props.background
+      ? `url(${props.background})`
+      : props.backgroundColor};
   > * {
     color: ${(props) => props.textColor}!important;
   }

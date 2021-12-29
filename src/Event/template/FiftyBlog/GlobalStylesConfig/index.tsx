@@ -1,7 +1,7 @@
 import React from 'react'
 import {Controller, useForm} from 'react-hook-form'
 
-import {Box, InputLabel, Slider} from '@material-ui/core'
+import {Box} from '@material-ui/core'
 
 import {
   FiftyBlog,
@@ -11,7 +11,7 @@ import {
 
 import ColorPicker from 'lib/ui/ColorPicker'
 import Switch from 'lib/ui/form/Switch'
-import {handleChangeSlider, onChangeCheckedHandler} from 'lib/dom'
+import {onChangeCheckedHandler} from 'lib/dom'
 
 import Page, {SectionTitle} from 'organization/Event/Page'
 import Layout from 'organization/user/Layout'
@@ -56,7 +56,7 @@ export default function GlobalStylesConfig() {
               )}
             />
           </Box> */}
-          <Box mb={2}>
+          {/* <Box mb={2}>
             <Controller
               name="background.color"
               defaultValue={template.background.color}
@@ -88,7 +88,7 @@ export default function GlobalStylesConfig() {
                 aria-label="background color opacity"
               />
             )}
-          />
+          /> */}
 
           <Box mb={2}>
             <Controller

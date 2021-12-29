@@ -36,7 +36,7 @@ export default function LeftPanel(props: {
     dashboardBackgroundProps,
     dashboardLogoProps,
   } = useFiftyBlogTemplate()
-  const background = dashboardBackground ? dashboardBackground : ''
+  const background = dashboardBackground ? dashboardBackground : null
   const logo = dashboardLogo ? dashboardLogo : defaultLogo
 
   const handleChangeTab = (tab: number) => {
@@ -112,17 +112,17 @@ const Bar = styled.div<{
 
 const Box = styled.div<{
   backgroundColor: string
-  backgroundImage: string
+  backgroundImage: any
   isBackgroundHidden: boolean
 }>`
   padding: 1.5rem;
-  ${(props) =>
-    props.isBackgroundHidden
-      ? `background: ${props.backgroundColor};`
-      : `background: url(${props.backgroundImage});`}
-  background-repeat: no-repeat;
-  background-size: 100% 100%;
+  background-size: 100% 100% !important;
   background-position: center;
+  background-repeat: no-repeat !important;
+  background: ${(props) =>
+    !props.isBackgroundHidden && props.backgroundImage
+      ? `url(${props.backgroundImage})`
+      : props.backgroundColor};
   display: flex;
   flex-direction: column;
 `

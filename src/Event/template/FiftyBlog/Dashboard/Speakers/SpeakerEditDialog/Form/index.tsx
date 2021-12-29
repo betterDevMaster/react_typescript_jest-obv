@@ -131,20 +131,24 @@ export default function EditSpeakerForm(props: {
         defaultValue={speaker.text}
         render={({value, onChange}) => (
           <TextEditorContainer>
-            <TextEditor data={value} onChange={onChange} />
+            <TextEditor
+              data={value}
+              onChange={onChange}
+              placeholder="Your title context here."
+            />
           </TextEditorContainer>
         )}
       ></Controller>
-      <Controller
+      {/* <Controller
         name="description"
         control={control}
         defaultValue={speaker.description}
-        render={({value, onChange}) => (
+        render={({ value, onChange }) => (
           <TextEditorContainer>
-            <TextEditor data={value} onChange={onChange} />
+            <TextEditor data={value} onChange={onChange} placeholder='Your description here.' />
           </TextEditorContainer>
         )}
-      ></Controller>
+      ></Controller> */}
       <ImageContainer>
         <ImageUpload file={image} disabled={submitting}>
           <Cropper width={300} height={300} canResize />

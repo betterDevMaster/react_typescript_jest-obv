@@ -8,7 +8,6 @@ export default function Logo(props: {
   src?: string
   hidden?: boolean
   size?: number
-  mobile?: boolean
 }) {
   return (
     <>
@@ -18,7 +17,6 @@ export default function Logo(props: {
           src={props.src}
           hidden={props.hidden}
           size={props.size}
-          mobile={props.mobile}
         />
       </Hidden>
       <Hidden smDown>
@@ -38,7 +36,6 @@ function MobileLogo(props: {
   src?: string
   hidden?: boolean
   size?: any
-  mobile?: boolean
 }) {
   const {event} = useEvent()
   const {mobile_logo} = event
@@ -53,7 +50,6 @@ function MobileLogo(props: {
       className={props.className}
       isLogoHidden={props.hidden}
       size={props.size}
-      mobile={props.mobile}
     />
   )
 }
@@ -84,11 +80,10 @@ function DesktopLogo(props: {
 
 const LogoImage = styled.img<{
   isLogoHidden?: boolean
-  mobile?: boolean
   size: number
 }>`
   display: ${(props) => (props.isLogoHidden ? 'none' : 'block')};
   width: ${(props) => props.size}%;
   cursor: pointer;
-  ${(props) => !props.mobile && `margin: 0 auto;`}
+  margin: 0 auto;
 `

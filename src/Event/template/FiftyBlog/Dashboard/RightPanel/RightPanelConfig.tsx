@@ -5,7 +5,6 @@ import InputLabel from '@material-ui/core/InputLabel'
 import Slider from '@material-ui/core/Slider'
 import {handleChangeSlider} from 'lib/dom'
 import ColorPicker from 'lib/ui/ColorPicker'
-import Switch from 'lib/ui/form/Switch'
 import {
   FiftyBlog,
   useFiftyBlogTemplate,
@@ -40,7 +39,7 @@ export default function RightPanelConfig(props: {
         title="Right Panel Config"
       >
         <form onSubmit={handleSubmit(submit)}>
-          <Box mb={2}>
+          {/* <Box mb={2}>
             <Controller
               name="isDarkMode"
               defaultValue={rightPanel.isDarkMode}
@@ -71,7 +70,7 @@ export default function RightPanelConfig(props: {
                 />
               )}
             />
-          </Box>
+          </Box> */}
           <Box mb={2}>
             <Controller
               name="barTextColor"
@@ -79,7 +78,7 @@ export default function RightPanelConfig(props: {
               control={control}
               render={({value, onChange}) => (
                 <ColorPicker
-                  label="Bar Text Color"
+                  label="Navigation Text Color"
                   color={value}
                   onPick={onChange}
                   aria-label="bar text color"
@@ -124,7 +123,7 @@ export default function RightPanelConfig(props: {
               control={control}
               render={({value, onChange}) => (
                 <ColorPicker
-                  label="Panel Background Color"
+                  label="Background Color"
                   color={value}
                   onPick={onChange}
                   aria-label="panel background color"

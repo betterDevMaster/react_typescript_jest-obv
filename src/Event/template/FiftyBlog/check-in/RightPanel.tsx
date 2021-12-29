@@ -43,8 +43,8 @@ export default function RightPanel(props: {
         textColor={progressBar.textColor}
         borderRadius={progressBar.borderRadius}
         thickness={progressBar.thickness}
-        checktitle={progressBar.checkInTitle}
-        checkcolor={progressBar.checkInColor}
+        // checktitle={progressBar.checkInTitle}
+        // checkcolor={progressBar.checkInColor}
       />
       <Box textColor={checkInRightPanel.textColor} center={props.center}>
         {props.children}

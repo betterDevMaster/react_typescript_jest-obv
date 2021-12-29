@@ -15,7 +15,6 @@ import {rgba} from 'lib/color'
 import {MenuIconButton} from 'lib/ui/IconButton/MenuIconButton'
 import EditIconButton from 'lib/ui/IconButton/EditIconButton'
 
-import defaultBackground from 'assets/images/background.png'
 import defaultLogo from 'assets/images/logo.png'
 
 interface PanelEdit {
@@ -30,12 +29,16 @@ export default function MobilePanel(props: {
 }) {
   const [menuVisible, setMenuVisible] = useState(false)
   const toggleMenu = () => setMenuVisible(!menuVisible)
-  const template = useFiftyBlogTemplate()
+  const {
+    dashboardBackground,
+    dashboardBackgroundProps,
+    dashboardLogo,
+    dashboardLogoProps,
+    leftPanel,
+  } = useFiftyBlogTemplate()
 
-  const background = template.dashboardBackground
-    ? template.dashboardBackground
-    : defaultBackground
-  const logo = template.dashboardLogo ? template.dashboardLogo : defaultLogo
+  const background = dashboardBackground ? dashboardBackground : null
+  const logo = dashboardLogo ? dashboardLogo : defaultLogo
   const [isEditing, setIsEditing] = useState<PanelEdit>({
     leftPanel: false,
     rightPanel: false,
@@ -50,11 +53,11 @@ export default function MobilePanel(props: {
     <Box>
       <Container
         backgroundColor={rgba(
-          template.leftPanel.backgroundColor,
-          template.leftPanel.backgroundOpacity,
+          leftPanel.backgroundColor,
+          leftPanel.backgroundOpacity,
         )}
         backgroundImage={background}
-        isBackgroundHidden={template.dashboardBackgroundProps.hidden}
+        isBackgroundHidden={dashboardBackgroundProps.hidden}
       >
         <EditModeOnly>
           <LeftPanelIconButton
@@ -67,14 +70,14 @@ export default function MobilePanel(props: {
         </EditModeOnly>
         <StyledMenuIconButton
           active={menuVisible}
-          iconColor={template.leftPanel.barTextColor}
+          iconColor={leftPanel.barTextColor}
           onClick={toggleMenu}
         />
         <EmojiList />
         <Logo
           src={logo}
-          hidden={template.dashboardLogoProps.hidden}
-          size={template.dashboardLogoProps.size}
+          hidden={dashboardLogoProps.hidden}
+          size={dashboardLogoProps.size}
         />
         <MainNavMobile
           menuVisible={menuVisible}
@@ -88,7 +91,7 @@ export default function MobilePanel(props: {
 }
 
 function Content(props: {children: React.ReactElement}) {
-  const template = useFiftyBlogTemplate()
+  const {rightPanel} = useFiftyBlogTemplate()
   const [isEditing, setIsEditing] = useState<PanelEdit>({
     leftPanel: false,
     rightPanel: false,
@@ -97,8 +100,8 @@ function Content(props: {children: React.ReactElement}) {
   return (
     <Panel
       backgroundColor={rgba(
-        template.rightPanel.backgroundColor,
-        template.rightPanel.backgroundOpacity,
+        rightPanel.backgroundColor,
+        rightPanel.backgroundOpacity,
       )}
     >
       <EditModeOnly>
@@ -122,18 +125,18 @@ const Box = styled.div`
 
 const Container = styled.div<{
   backgroundColor: string
-  backgroundImage: string
+  backgroundImage: any
   isBackgroundHidden: boolean
 }>`
   padding: ${(props) => props.theme.spacing[12]}
     ${(props) => props.theme.spacing[6]} ${(props) => props.theme.spacing[5]};
-  ${(props) =>
-    props.isBackgroundHidden
-      ? `background-color: ${props.backgroundColor};`
-      : `background: url(${props.backgroundImage});`}
-  background-repeat: no-repeat;
-  background-size: 100% 100%;
+  background-size: 100% 100% !important;
   background-position: center;
+  background-repeat: no-repeat !important;
+  background: ${(props) =>
+    !props.isBackgroundHidden && props.backgroundImage
+      ? `url(${props.backgroundImage})`
+      : props.backgroundColor};
   display: flex;
   align-items: center;
   width: 100%;

@@ -155,7 +155,7 @@ export default function LoginFormConfig() {
                       </Box>
                     </Grid>
                   </Grid>
-                  <Box mb={1}>
+                  {/* <Box mb={1}>
                     <InputLabel>Logo Size</InputLabel>
                     <Controller
                       name="login.logoSize"
@@ -173,42 +173,88 @@ export default function LoginFormConfig() {
                         />
                       )}
                     />
-                  </Box>
-                  <Controller
-                    name="login.backgroundColor"
-                    defaultValue={login.backgroundColor}
-                    control={control}
-                    render={({value, onChange}) => (
-                      <ColorPicker
-                        label="Background Color"
-                        color={value || '#FFFFFF'}
-                        onPick={onChange}
-                        aria-label="login background color"
+                  </Box> */}
+                  <Box display="flex" flexDirection="row" flex="2">
+                    <Box flex="1" mr={2}>
+                      <Controller
+                        name="login.logoBackgroundColor"
+                        defaultValue={login.logoBackgroundColor}
+                        control={control}
+                        render={({value, onChange}) => (
+                          <ColorPicker
+                            label="Logo Background Color"
+                            color={value || '#FFFFFF'}
+                            onPick={onChange}
+                            aria-label="login logo background color"
+                          />
+                        )}
                       />
-                    )}
-                  />
-                  <Box mb={1}>
-                    <InputLabel>Background Opacity</InputLabel>
+                    </Box>
+                    <Box flex="1">
+                      <InputLabel>Logo Background Opacity</InputLabel>
 
-                    <Controller
-                      name="login.backgroundOpacity"
-                      defaultValue={login.backgroundOpacity}
-                      control={control}
-                      render={({value, onChange}) => (
-                        <Slider
-                          valueLabelDisplay="auto"
-                          aria-label="logo background opacity"
-                          value={value || 0}
-                          valueLabelFormat={() => (
-                            <div>{(login.backgroundOpacity || 0) * 100}</div>
-                          )}
-                          onChange={handleChangeSlider(onChange)}
-                          step={0.01}
-                          min={0}
-                          max={1}
-                        />
-                      )}
-                    />
+                      <Controller
+                        name="login.logoBackgroundOpacity"
+                        defaultValue={login.logoBackgroundOpacity}
+                        control={control}
+                        render={({value, onChange}) => (
+                          <Slider
+                            valueLabelDisplay="auto"
+                            aria-label="logo background opacity"
+                            value={value || 0}
+                            valueLabelFormat={() => (
+                              <div>
+                                {(login.logoBackgroundOpacity || 0) * 100}
+                              </div>
+                            )}
+                            onChange={handleChangeSlider(onChange)}
+                            step={0.01}
+                            min={0}
+                            max={1}
+                          />
+                        )}
+                      />
+                    </Box>
+                  </Box>
+                  <Box display="flex" flexDirection="row" flex="2">
+                    <Box flex="1" mr={2}>
+                      <Controller
+                        name="login.backgroundColor"
+                        defaultValue={login.backgroundColor}
+                        control={control}
+                        render={({value, onChange}) => (
+                          <ColorPicker
+                            label="Background Color"
+                            color={value || '#FFFFFF'}
+                            onPick={onChange}
+                            aria-label="login background color"
+                          />
+                        )}
+                      />
+                    </Box>
+                    <Box flex="1">
+                      <InputLabel>Background Opacity</InputLabel>
+
+                      <Controller
+                        name="login.backgroundOpacity"
+                        defaultValue={login.backgroundOpacity}
+                        control={control}
+                        render={({value, onChange}) => (
+                          <Slider
+                            valueLabelDisplay="auto"
+                            aria-label="login background opacity"
+                            value={value || 0}
+                            valueLabelFormat={() => (
+                              <div>{(login.backgroundOpacity || 0) * 100}</div>
+                            )}
+                            onChange={handleChangeSlider(onChange)}
+                            step={0.01}
+                            min={0}
+                            max={1}
+                          />
+                        )}
+                      />
+                    </Box>
                   </Box>
                   <Box display="flex" flexDirection="row" flex="2">
                     <Box mr={1} display="flex" flexDirection="column" flex="1">

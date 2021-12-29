@@ -1,5 +1,6 @@
 import React, {useEffect, useState} from 'react'
 import {Controller, useForm, UseFormMethods} from 'react-hook-form'
+import styled from 'styled-components'
 
 import {
   Box,
@@ -50,16 +51,53 @@ export default function ProgressBarConfig() {
     setValue('showing', progressBar.showing)
   }, [progressBar, setValue])
 
-  const submit = (data: FiftyBlog['progressBar']) => {
-    update({progressBar: data})
+  const submit = (data: FiftyBlog) => {
+    update(data)
+  }
+
+  const oriProgress = {
+    barColor: '#0969d6',
+    backgroundColor: '#b1d4f1',
+    textColor: '#000000',
+    thickness: 30,
+    borderRadius: 50,
+    checkInTitle: 'Check In:',
+    checkInColor: '#000000',
+    step1Text: 'Step 1',
+    step1Percent: 33,
+    step2Text: 'Step 2',
+    step2Percent: 66,
+    step3Text: 'Step 3',
+    step3Percent: 100,
   }
 
   const changes = watch()
-  const localProgressBar = {...progressBar, ...changes}
+  let localProgressBar = {...progressBar, ...changes}
+
+  // Real time watch for original progress bar and left / right panel
+  if (
+    Object.keys(changes).includes('progressBar') &&
+    Object.keys(changes).length !== 0
+  ) {
+    oriProgress.barColor = changes.progressBar.barColor
+    oriProgress.backgroundColor = changes.progressBar.backgroundColor
+    oriProgress.textColor = changes.progressBar.textColor
+    oriProgress.thickness = changes.progressBar.thickness
+    oriProgress.borderRadius = changes.progressBar.borderRadius
+    oriProgress.checkInTitle = changes.progressBar.checkInTitle
+    oriProgress.checkInColor = changes.progressBar.checkInColor
+    oriProgress.step1Text = changes.progressBar.step1Text
+    oriProgress.step1Percent = changes.progressBar.step1Percent
+    oriProgress.step2Text = changes.progressBar.step2Text
+    oriProgress.step2Percent = changes.progressBar.step2Percent
+    oriProgress.step3Text = changes.progressBar.step3Text
+    oriProgress.step3Percent = changes.progressBar.step3Percent
+    localProgressBar = {...localProgressBar, ...oriProgress}
+  }
 
   return (
     <>
-      <Box mb={1}>
+      <Box>
         <Typography variant="h6">Progress Bar</Typography>
       </Box>
       <ProgressBarPreview
@@ -98,7 +136,7 @@ export default function ProgressBarConfig() {
             register={register}
             localProgressBar={localProgressBar}
           />
-          <SaveButton />
+          <ButtonContainer />
         </Grid>
       </form>
     </>
@@ -112,7 +150,12 @@ function Config(
   } & Pick<UseFormMethods, 'control' | 'register'>,
 ) {
   const {control, showing, localProgressBar, register} = props
-  const {stepLogoProps, stepBackgroundProps} = useFiftyBlogTemplate()
+  const {
+    checkInLeftPanel,
+    checkInRightPanel,
+    stepLogoProps,
+    stepBackgroundProps,
+  } = useFiftyBlogTemplate()
 
   if (!showing) {
     return null
@@ -122,7 +165,7 @@ function Config(
     <>
       <Grid item xs={6}>
         <Controller
-          name="barColor"
+          name="progressBar.barColor"
           defaultValue={localProgressBar.barColor}
           control={control}
           render={({value, onChange}) => (
@@ -135,7 +178,7 @@ function Config(
           )}
         />
         <Controller
-          name="backgroundColor"
+          name="progressBar.backgroundColor"
           defaultValue={localProgressBar.backgroundColor}
           control={control}
           render={({value, onChange}) => (
@@ -149,7 +192,7 @@ function Config(
         />
         <InputLabel>Thickness</InputLabel>
         <Controller
-          name="thickness"
+          name="progressBar.thickness"
           defaultValue={localProgressBar.thickness}
           control={control}
           render={({value, onChange}) => (
@@ -167,7 +210,7 @@ function Config(
       </Grid>
       <Grid item xs={6}>
         <Controller
-          name="textColor"
+          name="progressBar.textColor"
           defaultValue={localProgressBar.textColor}
           control={control}
           render={({value, onChange}) => (
@@ -182,7 +225,7 @@ function Config(
         <InputLabel>Border Radius</InputLabel>
 
         <Controller
-          name="borderRadius"
+          name="progressBar.borderRadius"
           defaultValue={localProgressBar.borderRadius}
           control={control}
           render={({value, onChange}) => (
@@ -198,11 +241,11 @@ function Config(
           )}
         />
       </Grid>
-      <Grid container spacing={3}>
+      {/* <Grid container spacing={3}>
         <Grid item xs={6}>
           <TextField
             label="Check In Label Title"
-            name="checkInTitle"
+            name="progressBar.checkInTitle"
             defaultValue={localProgressBar.checkInTitle}
             inputProps={{
               'aria-label': 'check in label title',
@@ -213,10 +256,10 @@ function Config(
         </Grid>
         <Grid item xs={6}>
           <Controller
-            name="checkInColor"
+            name="progressBar.checkInColor"
             defaultValue={localProgressBar.checkInColor}
             control={control}
-            render={({value, onChange}) => (
+            render={({ value, onChange }) => (
               <ColorPicker
                 label="Checkin Label Color"
                 color={value}
@@ -226,84 +269,11 @@ function Config(
             )}
           />
         </Grid>
-      </Grid>
-      <Grid container spacing={3}>
-        <Grid item xs={12} md={6}>
-          <Box mb={2}>
-            <BackgroundImageUploader
-              label="Logo"
-              property="stepLogo"
-              control={control}
-            />
-          </Box>
-          <Box mb={2}>
-            <Controller
-              name="stepLogoProps.hidden"
-              defaultValue={stepLogoProps.hidden}
-              control={control}
-              render={({value, onChange}) => (
-                <Switch
-                  checked={value}
-                  onChange={onChangeCheckedHandler(onChange)}
-                  arial-label="set logo mode"
-                  labelPlacement="end"
-                  color="primary"
-                  label="Hide Logo"
-                />
-              )}
-            />
-          </Box>
-          <Box display="flex" flexDirection="column" flex="1" mb={2}>
-            <InputLabel>Image Size</InputLabel>
-            <Controller
-              name="stepLogoProps.size"
-              defaultValue={stepLogoProps.size}
-              control={control}
-              render={({value, onChange}) => (
-                <Slider
-                  valueLabelDisplay="auto"
-                  aria-label="logo weight"
-                  value={value}
-                  onChange={handleChangeSlider(onChange)}
-                  step={1}
-                  min={MIN_LOGO_SIZE_PERCENT}
-                  max={MAX_LOGO_SIZE_PERCENT}
-                />
-              )}
-            />
-          </Box>
-        </Grid>
-        <Grid item xs={12} md={6}>
-          <Box mb={2}>
-            <BackgroundImageUploader
-              label="Background"
-              property="stepBackground"
-              control={control}
-            />
-          </Box>
-          <Box mb={2}>
-            <Controller
-              name="stepBackgroundProps.hidden"
-              defaultValue={stepBackgroundProps.hidden}
-              control={control}
-              render={({value, onChange}) => (
-                <Switch
-                  checked={value}
-                  onChange={onChangeCheckedHandler(onChange)}
-                  arial-label="set background mode"
-                  labelPlacement="end"
-                  color="primary"
-                  label="Hide background"
-                />
-              )}
-            />
-          </Box>
-        </Grid>
-      </Grid>
+      </Grid> */}
       <Grid container spacing={3}>
         <Grid item xs={6}>
           <TextField
-            name="step1Text"
+            name="progressBar.step1Text"
             label="Step 1 Text"
             defaultValue={localProgressBar.step1Text}
             fullWidth
@@ -316,7 +286,7 @@ function Config(
           <TextField
             type="number"
             defaultValue={localProgressBar.step1Percent}
-            name="step1Percent"
+            name="progressBar.step1Percent"
             label="Step 1 Percentage Completed"
             fullWidth
             inputProps={{
@@ -330,7 +300,7 @@ function Config(
       <Grid container spacing={3}>
         <Grid item xs={6}>
           <TextField
-            name="step2Text"
+            name="progressBar.step2Text"
             label="Step 2 Text"
             defaultValue={localProgressBar.step2Text}
             fullWidth
@@ -343,7 +313,7 @@ function Config(
           <TextField
             type="number"
             defaultValue={localProgressBar.step2Percent}
-            name="step2Percent"
+            name="progressBar.step2Percent"
             label="Step 2 Percentage Completed"
             fullWidth
             inputProps={{
@@ -357,7 +327,7 @@ function Config(
       <Grid container spacing={3}>
         <Grid item xs={6}>
           <TextField
-            name="step3Text"
+            name="progressBar.step3Text"
             label="Step 3 Text"
             fullWidth
             defaultValue={localProgressBar.step3Text}
@@ -370,7 +340,7 @@ function Config(
           <TextField
             type="number"
             defaultValue={localProgressBar.step3Percent}
-            name="step3Percent"
+            name="progressBar.step3Percent"
             label="Step 3 Percentage Completed"
             fullWidth
             inputProps={{
@@ -378,6 +348,205 @@ function Config(
               max: 100,
               ref: register,
             }}
+          />
+        </Grid>
+        <BorderedGrid xs={12} md={6} item>
+          <Box mb={1}>
+            <InputLabel>Left Panel</InputLabel>
+          </Box>
+          <Grid container spacing={3}>
+            <Grid item xs={12} md={6}>
+              <Box mb={2}>
+                <BackgroundImageUploader
+                  label="Logo"
+                  property="stepLogo"
+                  control={control}
+                />
+              </Box>
+              <Box mb={2}>
+                <Controller
+                  name="stepLogoProps.hidden"
+                  defaultValue={stepLogoProps.hidden}
+                  control={control}
+                  render={({value, onChange}) => (
+                    <Switch
+                      checked={value}
+                      onChange={onChangeCheckedHandler(onChange)}
+                      arial-label="set logo mode"
+                      labelPlacement="end"
+                      color="primary"
+                      label="Hide Logo"
+                    />
+                  )}
+                />
+              </Box>
+              <Box display="flex" flexDirection="column" flex="1" mb={2}>
+                <InputLabel>Image Size</InputLabel>
+                <Controller
+                  name="stepLogoProps.size"
+                  defaultValue={stepLogoProps.size}
+                  control={control}
+                  render={({value, onChange}) => (
+                    <Slider
+                      valueLabelDisplay="auto"
+                      aria-label="logo weight"
+                      value={value}
+                      onChange={handleChangeSlider(onChange)}
+                      step={1}
+                      min={MIN_LOGO_SIZE_PERCENT}
+                      max={MAX_LOGO_SIZE_PERCENT}
+                    />
+                  )}
+                />
+              </Box>
+            </Grid>
+            <Grid item xs={12} md={6}>
+              <Box mb={2}>
+                <BackgroundImageUploader
+                  label="Background"
+                  property="stepBackground"
+                  control={control}
+                />
+              </Box>
+              <Box mb={2}>
+                <Controller
+                  name="stepBackgroundProps.hidden"
+                  defaultValue={stepBackgroundProps.hidden}
+                  control={control}
+                  render={({value, onChange}) => (
+                    <Switch
+                      checked={value}
+                      onChange={onChangeCheckedHandler(onChange)}
+                      arial-label="set background mode"
+                      labelPlacement="end"
+                      color="primary"
+                      label="Hide background"
+                    />
+                  )}
+                />
+              </Box>
+            </Grid>
+          </Grid>
+          <Controller
+            name="checkInLeftPanel.backgroundColor"
+            defaultValue={checkInLeftPanel.backgroundColor}
+            control={control}
+            render={({value, onChange}) => (
+              <ColorPicker
+                label="Background Color"
+                color={value}
+                onPick={onChange}
+                aria-label="check in left panel background color"
+              />
+            )}
+          />
+          <Box>
+            <InputLabel>Background Opacity</InputLabel>
+            <Controller
+              name="checkInLeftPanel.backgroundOpacity"
+              defaultValue={checkInLeftPanel.backgroundOpacity}
+              control={control}
+              render={({value, onChange}) => (
+                <Slider
+                  key={`checkInLeftPanel-backgroundOpacity-${value}`}
+                  min={0}
+                  max={1}
+                  step={0.1}
+                  onChange={handleChangeSlider(onChange)}
+                  valueLabelDisplay="auto"
+                  defaultValue={value}
+                />
+              )}
+            />
+          </Box>
+          {/* <Controller
+                  name="menu.iconColor"
+                  defaultValue={menu.iconColor}
+                  control={control}
+                  render={({ value, onChange }) => (
+                    <ColorPicker
+                      label="Menu Icon Color"
+                      color={value}
+                      onPick={onChange}
+                      aria-label="check in menu icon color"
+                    />
+                  )}
+                />
+                <Controller
+                  name="menu.backgroundColor"
+                  defaultValue={menu.backgroundColor}
+                  control={control}
+                  render={({ value, onChange }) => (
+                    <ColorPicker
+                      label="Menu Background Color"
+                      color={value}
+                      onPick={onChange}
+                      aria-label="check in menu background color"
+                    />
+                  )}
+                />
+                <Controller
+                  name="menu.textColor"
+                  defaultValue={menu.textColor}
+                  control={control}
+                  render={({ value, onChange }) => (
+                    <ColorPicker
+                      label="Menu Text Color"
+                      color={value}
+                      onPick={onChange}
+                      aria-label="check in menu text color"
+                    />
+                  )}
+                /> */}
+        </BorderedGrid>
+        <Grid xs={12} md={6} item>
+          <Box mb={1}>
+            <InputLabel>Right Panel</InputLabel>
+          </Box>
+          <Controller
+            name="checkInRightPanel.backgroundColor"
+            defaultValue={checkInRightPanel.backgroundColor}
+            control={control}
+            render={({value, onChange}) => (
+              <ColorPicker
+                label="Background Color"
+                color={value}
+                onPick={onChange}
+                aria-label="check in right panel background color"
+              />
+            )}
+          />
+          <Box mb={2}>
+            <InputLabel>Background Opacity</InputLabel>
+            <Controller
+              name="checkInRightPanel.backgroundOpacity"
+              defaultValue={checkInRightPanel.backgroundOpacity}
+              control={control}
+              render={({value, onChange}) => (
+                <Slider
+                  key={`checkInRightPanel-backgroundOpacity-${value}`}
+                  min={0}
+                  max={1}
+                  step={0.1}
+                  onChange={handleChangeSlider(onChange)}
+                  valueLabelDisplay="auto"
+                  defaultValue={value}
+                />
+              )}
+            />
+          </Box>
+          <Controller
+            name="checkInRightPanel.textColor"
+            defaultValue={checkInRightPanel.textColor}
+            control={control}
+            render={({value, onChange}) => (
+              <ColorPicker
+                label="Text Color"
+                color={value}
+                onPick={onChange}
+                aria-label="check in right panel text color"
+              />
+            )}
           />
         </Grid>
       </Grid>
@@ -401,3 +570,14 @@ export function ProgressBarPreview(props: Omit<ProgressBarProps, 'value'>) {
 
   return <ProgressBar {...props} value={progress} />
 }
+
+const BorderedGrid = styled(Grid)`
+  border-right: 1px dashed;
+  @media (max-width: ${(props) => props.theme.breakpoints.md}) {
+    border-right: none;
+  }
+`
+
+const ButtonContainer = styled(SaveButton)`
+  margin-top: ${(props) => props.theme.spacing[10]} !important;
+`
