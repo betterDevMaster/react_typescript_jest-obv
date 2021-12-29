@@ -64,23 +64,19 @@ export const Box = styled.div<{
   justify-content: center;
   align-items: center;
   padding: ${(props) => props.theme.spacing[4]};
-  height: 20vh;
   width: 100%;
-  @media (min-width: ${(props) => props.theme.breakpoints.sm}) {
-    width: 100%;
-    height: 20vh;
-  }
+  height: 50%;
   @media (min-width: ${(props) => props.theme.breakpoints.md}) {
     width: 50%;
-    height: 100vh;
+    height: 100%;
   }
   @media (min-width: ${(props) => props.theme.breakpoints.lg}) {
     width: 50%;
-    height: 100vh;
+    height: 100%;
   }
   @media (min-width: ${(props) => props.theme.breakpoints.xl}) {
     width: 50%;
-    height: 100vh;
+    height: 100%;
   }
 `
 

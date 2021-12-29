@@ -108,11 +108,11 @@ export const Background = styled.div<{
       ? `url(${props.background})`
       : props.backgroundColor};
   position: ${(props) => (props.isPreview ? 'inherit' : 'absolute')};
-  width: 100%;
   top: 0;
   left: 0;
-  justify-content: center;
-  align-items: center;
+  width: 100%;
+  height: 100vh;
+  overflow: hidden;
   transition: all 300ms ease-in 200ms;
   justify-content: center;
   display: flex;
@@ -191,7 +191,7 @@ export const Container = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-
+  height: 100%;
   @media (min-width: ${(props) => props.theme.breakpoints.sm}) {
     margin: auto;
     width: 100%;
@@ -221,28 +221,27 @@ export const StyledPaper = styled(Paper)`
   display: flex;
   vertical-align: middle;
   background-color: inherit;
-  height: 80vh;
   width: 100%;
+  height: 100%;
   box-shadow: none;
 
   @media (min-width: ${(props) => props.theme.breakpoints.sm}) {
     border-radius: 10px 10px 0 0;
-    height: 80vh;
   }
 
   @media (min-width: ${(props) => props.theme.breakpoints.md}) {
     border-radius: 10px 10px 0 0;
-    height: 100vh;
+    height: 100%;
   }
 
   @media (min-width: ${(props) => props.theme.breakpoints.lg}) {
     border-radius: unset;
-    height: 100vh;
+    height: 100%;
   }
 
   @media (min-width: ${(props) => props.theme.breakpoints.xl}) {
     border-radius: 10px;
-    height: 100vh;
+    height: 100%;
   }
 `
 

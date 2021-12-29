@@ -55,7 +55,6 @@ export default function Login(props: LoginProps) {
               variant="outlined"
               name="password"
               disabled={props.submitting}
-              style={{margin: 0}}
               inputProps={{
                 ref: props.register({
                   required: `${passwordLabel} is required`,
@@ -67,15 +66,6 @@ export default function Login(props: LoginProps) {
                 props.errors.password && props.errors.password.message
               }
             />
-            <ForgotContent>
-              <StyledRelativeLink
-                to={eventRoutes.forgotPassword}
-                aria-label="forgot password"
-                color={login.description.color}
-              >
-                {v(login.passwordReset.linkLabel)}
-              </StyledRelativeLink>
-            </ForgotContent>
             <ErrorMessage>{props.error}</ErrorMessage>
             <Button
               variant="contained"
@@ -86,6 +76,15 @@ export default function Login(props: LoginProps) {
             >
               {login.submitButton.label}
             </Button>
+            <ForgotContent>
+              <StyledRelativeLink
+                to={eventRoutes.forgotPassword}
+                aria-label="forgot password"
+                color={login.description.color}
+              >
+                {v(login.passwordReset.linkLabel)}
+              </StyledRelativeLink>
+            </ForgotContent>
           </form>
         </StyledFormContainer>
       </StyledPaper>
@@ -99,10 +98,9 @@ export const StyledRelativeLink = styled(RelativeLink)<{color: string}>`
 export const Container = styled.div`
   padding: ${(props) => props.theme.spacing[4]}
     ${(props) => props.theme.spacing[6]};
-  min-height: '500px';
 `
 export const ForgotContent = styled.div`
   width: 100%;
-  margin-bottom: 1.5rem;
+  padding: ${(props) => props.theme.spacing[4]};
   text-align: right;
 `
