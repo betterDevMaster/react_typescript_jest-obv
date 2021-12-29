@@ -22,6 +22,7 @@ import PaginationActions from 'lib/ui/table/PaginationActions'
 import TransactionRow from 'obvio/Billing/CreditTransactions/TransactionRow'
 
 type CreditTransactionBase = {
+  last_transaction: string
   id: number
   total: number
 }
@@ -30,6 +31,8 @@ export type EventCreditTransaction = CreditTransactionBase & {
   transaction_type: 'event'
   event_name: string
   event_slug: string
+  event_start: string
+  event_end: string
 }
 
 export type PurchaseCreditTransaction = CreditTransactionBase & {
@@ -102,7 +105,9 @@ function Content() {
       <Table stickyHeader>
         <TableHead>
           <TableRow>
+            <TableCell>Date</TableCell>
             <TableCell>Details</TableCell>
+            <TableCell>Credits</TableCell>
           </TableRow>
         </TableHead>
         <TableBody>

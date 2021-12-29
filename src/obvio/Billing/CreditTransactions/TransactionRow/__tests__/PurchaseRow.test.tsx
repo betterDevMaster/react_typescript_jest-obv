@@ -20,12 +20,12 @@ it('should show purchase transaction info', async () => {
 
   user.click(await findByText(/view transactions/i))
 
-  const email = 'someuser@obv.io'
   const info: PurchaseCreditTransactionInfo = {
     amount: 200,
     details: {
+      price: 1000,
       actor: {
-        email,
+        email: 'someuser@obv.io',
         first_name: 'John',
         last_name: 'Smith',
       },
@@ -37,5 +37,6 @@ it('should show purchase transaction info', async () => {
 
   user.click(await findByLabelText('view purchase details'))
 
-  expect(await findByText(new RegExp(email, 'i'))).toBeInTheDocument()
+  // Shows price
+  expect(await findByText(new RegExp(`1,000.00`, 'i'))).toBeInTheDocument()
 })

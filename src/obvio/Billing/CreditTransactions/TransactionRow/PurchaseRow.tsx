@@ -1,20 +1,22 @@
 import TableCell from '@material-ui/core/TableCell'
-import TableRow from '@material-ui/core/TableRow'
 import {PurchaseCreditTransaction} from 'obvio/Billing/CreditTransactions'
 import React, {useCallback, useEffect, useState} from 'react'
 import {api} from 'lib/url'
 import {useToggle} from 'lib/toggle'
 import {teamMemberClient} from 'obvio/obvio-client'
 import {
-  ClickableCell,
+  ClickableRow,
   creditLabel,
   DetailRow,
+  LastTransactionDateCell,
   LoadingDetailsRow,
 } from 'obvio/Billing/CreditTransactions/TransactionRow'
+import {formatPrice} from 'lib/currency'
 
 export type PurchaseCreditTransactionInfo = {
   amount: number
   details: {
+    price: number
     actor: {
       email: string
       first_name: string
@@ -31,14 +33,15 @@ export default function PurchaseRow(props: {
 
   return (
     <>
-      <TableRow hover>
-        <ClickableCell
-          onClick={toggleExpand}
-          aria-label="view purchase details"
-        >
-          Purchased {transaction.total} {creditLabel(transaction.total)}
-        </ClickableCell>
-      </TableRow>
+      <ClickableRow
+        hover
+        onClick={toggleExpand}
+        aria-label="view purchase details"
+      >
+        <LastTransactionDateCell transaction={transaction} />
+        <TableCell>Credit Purchase</TableCell>
+        <TableCell>{transaction.total}</TableCell>
+      </ClickableRow>
       <Details showing={expanded} transaction={transaction} />
     </>
   )
@@ -73,10 +76,13 @@ function Details(props: {
 
   return (
     <DetailRow>
+      <TableCell>{/* Date Column */}</TableCell>
       <TableCell>
-        By {info.details.actor.first_name} {info.details.actor.last_name} (
-        {info.details.actor.email})
+        {transaction.total} {creditLabel(transaction.total)} purchased for $
+        {formatPrice(info.details.price)} by {info.details.actor.first_name}{' '}
+        {info.details.actor.last_name}
       </TableCell>
+      <TableCell>{/* Credits Column */}</TableCell>
     </DetailRow>
   )
 }

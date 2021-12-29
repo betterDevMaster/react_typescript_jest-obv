@@ -1,12 +1,13 @@
 import TableCell from '@material-ui/core/TableCell'
-import TableRow from '@material-ui/core/TableRow'
+import {getNumDays} from 'lib/date-time'
 import {useToggle} from 'lib/toggle'
 import {api} from 'lib/url'
 import {EventCreditTransaction} from 'obvio/Billing/CreditTransactions'
 import {
-  ClickableCell,
-  creditLabel,
+  ClickableRow,
   DetailRow,
+  formattedDate,
+  LastTransactionDateCell,
   LoadingDetailsRow,
 } from 'obvio/Billing/CreditTransactions/TransactionRow'
 import {teamMemberClient} from 'obvio/obvio-client'
@@ -25,12 +26,11 @@ export default function EventRow(props: {transaction: EventCreditTransaction}) {
 
   return (
     <>
-      <TableRow hover>
-        <ClickableCell onClick={toggleExpand} aria-label="view event totals">
-          Deducted total of {transaction.total} {creditLabel(transaction.total)}{' '}
-          for {transaction.event_name} ({transaction.event_slug})
-        </ClickableCell>
-      </TableRow>
+      <ClickableRow hover aria-label="view event totals" onClick={toggleExpand}>
+        <LastTransactionDateCell transaction={transaction} />
+        <TableCell>{transaction.event_name}</TableCell>
+        <TableCell>({transaction.total})</TableCell>
+      </ClickableRow>
       <Details transaction={transaction} showing={expanded} />
     </>
   )
@@ -64,18 +64,38 @@ function Details(props: {
     return <LoadingDetailsRow />
   }
 
+  const days = getNumDays(transaction.event_start, transaction.event_end)
+  const dayLabel = days > 1 ? 'Days' : 'Day'
+
   const attendeeLabel = totals.num_attendees > 1 ? 'Attendees' : 'Attendee'
   const additionalRoomsLabel =
-    totals.num_additional_rooms > 1 ? 'Additional Roooms' : 'Additional Room'
+    totals.num_additional_rooms > 1 ? 'Additional Rooms' : 'Additional Room'
 
   return (
-    <DetailRow>
-      <TableCell>
-        {totals.num_attendees} {attendeeLabel} ({totals.cost_attendees}{' '}
-        {creditLabel(totals.cost_attendees)}), and {totals.num_additional_rooms}{' '}
-        {additionalRoomsLabel} ({totals.cost_additional_rooms} credits)
-      </TableCell>
-    </DetailRow>
+    <>
+      <DetailRow>
+        <TableCell>{/* Date Column */}</TableCell>
+        <TableCell>
+          {totals.num_attendees} {attendeeLabel}
+        </TableCell>
+        <TableCell>({totals.cost_attendees})</TableCell>
+      </DetailRow>
+      <DetailRow>
+        <TableCell>{/* Date Column */}</TableCell>
+        <TableCell>
+          {totals.num_additional_rooms} {additionalRoomsLabel}
+        </TableCell>
+        <TableCell>({totals.cost_additional_rooms})</TableCell>
+      </DetailRow>
+      <DetailRow>
+        <TableCell>{/* Date Column */}</TableCell>
+        <TableCell>
+          {formattedDate(transaction.event_start)} -{' '}
+          {formattedDate(transaction.event_end)} ({days} {dayLabel} )
+        </TableCell>
+        <TableCell>{/* Credit Column */}</TableCell>
+      </DetailRow>
+    </>
   )
 }
 

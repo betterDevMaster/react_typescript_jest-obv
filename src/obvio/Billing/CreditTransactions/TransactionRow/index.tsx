@@ -6,6 +6,7 @@ import React from 'react'
 import TableRow from '@material-ui/core/TableRow'
 import TableCell from '@material-ui/core/TableCell'
 import CircularProgress from '@material-ui/core/CircularProgress'
+import {localTime} from 'lib/date-time'
 
 export default function TransactionRow(props: {
   transaction: CreditTransaction
@@ -19,15 +20,7 @@ export default function TransactionRow(props: {
   return <PurchaseRow transaction={transaction} />
 }
 
-export const DetailRow = styled(TableRow)`
-  td {
-    padding-left: ${(props) => props.theme.spacing[10]};
-  }
-`
-
-export const ClickableCell = styled(TableCell)`
-  cursor: pointer;
-`
+export const DetailRow = styled(TableRow)``
 
 export function LoadingDetailsRow() {
   return (
@@ -41,6 +34,8 @@ export function LoadingDetailsRow() {
           color="primary"
         />
       </TableCell>
+      <TableCell>{/*Detail Column*/}</TableCell>
+      <TableCell>{/*Credits Column*/}</TableCell>
     </DetailRow>
   )
 }
@@ -48,3 +43,24 @@ export function LoadingDetailsRow() {
 export function creditLabel(numCredits: number) {
   return numCredits > 1 ? 'credits' : 'credit'
 }
+
+export function LastTransactionDateCell(props: {
+  transaction: CreditTransaction
+}) {
+  return (
+    <DateCell>{formattedDate(props.transaction.last_transaction)}</DateCell>
+  )
+}
+
+export function formattedDate(date: string) {
+  return localTime(date, 'MMMM D, YYYY')
+}
+
+const DateCell = styled(TableCell)`
+  width: 0%;
+  white-space: nowrap;
+`
+
+export const ClickableRow = styled(TableRow)`
+  cursor: pointer;
+`

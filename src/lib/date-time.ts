@@ -30,8 +30,8 @@ import 'moment/locale/zh-tw'
 import 'moment/locale/is' // Iceland
 import 'moment/locale/fi' // Finland
 
-export const localTime = (date: string) =>
-  moment(date).tz(moment.tz.guess()).format('MMMM Do h:mma z')
+export const localTime = (date: string, format = 'MMMM Do h:mma z') =>
+  moment(date).tz(moment.tz.guess()).format(format)
 
 export const now = () => {
   return new Date().toISOString()
@@ -77,6 +77,25 @@ export const date = (target: string) => {
       return moment(target).isAfter(moment(value))
     },
   }
+}
+
+/**
+ * Get the number of days from the start to the end. The end date
+ * counts as a day.
+ *
+ * @param start
+ * @param end
+ * @returns
+ */
+export const getNumDays = (start: string, end: string) => {
+  var date1 = moment(start).set('hours', 0).set('minutes', 0).set('seconds', 0)
+  var date2 = moment(end)
+    .set('hours', 0)
+    .set('minutes', 0)
+    .set('seconds', 0)
+    .add(1, 'day')
+  var diff = date2.diff(date1, 'd')
+  return diff
 }
 
 export interface Duration {

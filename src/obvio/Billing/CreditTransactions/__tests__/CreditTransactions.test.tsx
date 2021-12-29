@@ -12,12 +12,8 @@ const mockGet = axios.get as jest.Mock
 it('should show transactions', async () => {
   const {findByText, findByLabelText} = await goToBillingSettings()
 
-  const eventTotal = 950
-  const pageOne = [
-    fakeEventCreditTransaction({
-      total: eventTotal,
-    }),
-  ]
+  const eventTransaction = fakeEventCreditTransaction()
+  const pageOne = [eventTransaction]
 
   mockGet.mockResolvedValueOnce({
     data: fakePaginate({
@@ -30,7 +26,7 @@ it('should show transactions', async () => {
   user.click(await findByText(/view transactions/i))
 
   expect(
-    await findByText(new RegExp(`deducted total of ${eventTotal}`, 'i')),
+    await findByText(new RegExp(`${eventTransaction.event_name}`, 'i')),
   ).toBeInTheDocument()
 
   // Go next page
@@ -53,6 +49,6 @@ it('should show transactions', async () => {
   user.click(await findByLabelText('go to next page'))
 
   expect(
-    await findByText(new RegExp(`purchased ${purchaseTotal}`, 'i')),
+    await findByText(new RegExp(`credit purchase`, 'i')),
   ).toBeInTheDocument()
 })
