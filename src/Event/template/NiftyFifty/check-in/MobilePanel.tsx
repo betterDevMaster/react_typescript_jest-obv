@@ -6,11 +6,9 @@ import {User} from 'auth/user'
 import Logo from 'Event/Logo'
 import {useNiftyFiftyTemplate} from 'Event/template/NiftyFifty'
 import {Step} from 'Event/template/NiftyFifty/check-in/CheckInConfig'
-// import Menu from 'Event/template/NiftyFifty/Menu'
 
 import {rgba} from 'lib/color'
 import ProgressBar from 'lib/ui/ProgressBar'
-// import {MenuIconButton} from 'lib/ui/IconButton/MenuIconButton'
 
 import defaultLogo from 'assets/images/logo.png'
 
@@ -31,8 +29,6 @@ export default function MobilePanel(props: {
   } = template
   const logo = stepLogo ? stepLogo : defaultLogo
   const background = stepBackground ? stepBackground : null
-  // const [menuVisible, setMenuVisible] = useState(false)
-  // const toggleMenu = () => setMenuVisible(!menuVisible)
   const text =
     props.step === 1
       ? progressBar.step1Text
@@ -47,30 +43,28 @@ export default function MobilePanel(props: {
       : progressBar.step3Percent
   return (
     <Box>
-      <LogoBox
+      <Content
         backgroundColor={rgba(
           checkInLeftPanel.backgroundColor,
           checkInLeftPanel.backgroundOpacity,
         )}
         background={background}
         isBackgroundHidden={stepBackgroundProps.hidden}
-        textColor={checkInLeftPanel.textColor}
       >
-        {/* <IconContainer>
-          <MenuIconButton
-            active={menuVisible}
-            onClick={toggleMenu}
-            aria-label="show side menu"
-            iconColor={menu.iconColor}
+        <LogoBox
+          backgroundColor={rgba(
+            checkInLeftPanel.backgroundColor,
+            checkInLeftPanel.backgroundOpacity,
+          )}
+          textColor={checkInLeftPanel.textColor}
+        >
+          <Logo
+            src={logo}
+            hidden={stepLogoProps.hidden}
+            size={stepLogoProps.size}
           />
-        </IconContainer>
-        <Menu visible={menuVisible} toggle={toggleMenu} user={props.user} /> */}
-        <Logo
-          src={logo}
-          hidden={stepLogoProps.hidden}
-          size={stepLogoProps.size}
-        />
-      </LogoBox>
+        </LogoBox>
+      </Content>
       <Paper
         backgroundColor={rgba(
           checkInRightPanel.backgroundColor,
@@ -86,8 +80,6 @@ export default function MobilePanel(props: {
           textColor={progressBar.textColor}
           borderRadius={progressBar.borderRadius}
           thickness={progressBar.thickness}
-          // checktitle={progressBar.checkInTitle}
-          // checkcolor={progressBar.checkInColor}
         />
         <Panel>{props.children}</Panel>
       </Paper>
@@ -115,20 +107,11 @@ const Paper = styled.div<{
   min-height: 80vh;
 `
 
-// const IconContainer = styled.div`
-//   cursor: pointer;
-// `
-
-const LogoBox = styled.div<{
+const Content = styled.div<{
   backgroundColor: string
-  textColor: string
   background: any
   isBackgroundHidden: boolean
 }>`
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  position: relative;
   min-height: 20vh;
   width: 100%;
   background-size: 100% 100% !important;
@@ -138,6 +121,22 @@ const LogoBox = styled.div<{
     !props.isBackgroundHidden && props.background
       ? `url(${props.background})`
       : props.backgroundColor};
+`
+
+const LogoBox = styled.div<{
+  backgroundColor: string
+  textColor: string
+}>`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  position: relative;
+  height: 100%;
+  width: 100%;
+  background-size: 100% 100% !important;
+  background-position: center;
+  background-repeat: no-repeat !important;
+  background: ${(props) => props.backgroundColor};
   > * {
     color: ${(props) => props.textColor}!important;
   }

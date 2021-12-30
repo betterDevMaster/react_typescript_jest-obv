@@ -6,8 +6,6 @@ import Logo from 'Event/Logo'
 import {useNiftyFiftyTemplate} from 'Event/template/NiftyFifty'
 
 import {rgba} from 'lib/color'
-// import {MenuIconButton} from 'lib/ui/IconButton/MenuIconButton'
-// import Menu from 'Event/template/NiftyFifty/Menu'
 
 import defaultLogo from 'assets/images/logo.png'
 
@@ -19,15 +17,12 @@ export default function LeftPanel(props: {user: User}) {
     checkInLeftPanel,
     stepLogoProps,
     stepBackgroundProps,
-    // menu,
   } = template
   const logo = stepLogo ? stepLogo : defaultLogo
   const background = stepBackground ? stepBackground : null
-  // const [menuVisible, setMenuVisible] = useState(false)
-  // const toggleMenu = () => setMenuVisible(!menuVisible)
 
   return (
-    <Box
+    <Paper
       backgroundColor={rgba(
         checkInLeftPanel.backgroundColor,
         checkInLeftPanel.backgroundOpacity,
@@ -35,42 +30,29 @@ export default function LeftPanel(props: {user: User}) {
       background={background}
       isBackgroundHidden={stepBackgroundProps.hidden}
     >
-      <div>
-        {/* <IconContainer>
-          <MenuIconButton
-            active={menuVisible}
-            onClick={toggleMenu}
-            aria-label="show side menu"
-            iconColor={menu.iconColor}
+      <Box
+        backgroundColor={rgba(
+          checkInLeftPanel.backgroundColor,
+          checkInLeftPanel.backgroundOpacity,
+        )}
+      >
+        <div>
+          <Logo
+            src={logo}
+            hidden={stepLogoProps.hidden}
+            size={stepLogoProps.size}
           />
-        </IconContainer>
-        <Menu visible={menuVisible} toggle={toggleMenu} user={props.user} /> */}
-        <Logo
-          src={logo}
-          hidden={stepLogoProps.hidden}
-          size={stepLogoProps.size}
-        />
-      </div>
-    </Box>
+        </div>
+      </Box>
+    </Paper>
   )
 }
 
-// const IconContainer = styled.div`
-//   position: absolute;
-//   top: 3%;
-//   left: 3%;
-//   cursor: pointer;
-// `
-
-const Box = styled.div<{
+const Paper = styled.div<{
   backgroundColor: string
   background: any
   isBackgroundHidden: boolean
 }>`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  padding: 40px;
   background: ${(props) =>
     !props.isBackgroundHidden && props.background
       ? `url(${props.background})`
@@ -78,7 +60,22 @@ const Box = styled.div<{
   background-repeat: no-repeat;
   background-size: 100% 100%;
   background-position: center;
+  width: 100%;
+`
+
+const Box = styled.div<{
+  backgroundColor: string
+}>`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 40px;
+  background: ${(props) => props.backgroundColor};
+  background-repeat: no-repeat;
+  background-size: 100% 100%;
+  background-position: center;
   overflow: auto;
   position: relative;
   width: 100%;
+  height: 100%;
 `

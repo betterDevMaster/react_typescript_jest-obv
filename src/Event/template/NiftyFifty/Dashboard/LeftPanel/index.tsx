@@ -52,7 +52,7 @@ export default function LeftPanel(props: {
           onClose={toggleBarConfig}
         />
       </EditModeOnly>
-      <Box
+      <Paper
         backgroundColor={rgba(
           leftPanel.backgroundColor,
           leftPanel.backgroundOpacity,
@@ -60,44 +60,56 @@ export default function LeftPanel(props: {
         backgroundImage={background}
         isBackgroundHidden={dashboardBackgroundProps.hidden}
       >
-        <Editable onEdit={toggleBarConfig}>
-          <Bar isMenuVisible={isEditMode} aria-label="left panel">
-            <StyledMenuIconButton
-              active={menuVisible}
-              iconColor={leftPanel.barTextColor}
-              onClick={toggleMenu}
-              aria-label="menu icon button"
+        <Box
+          backgroundColor={rgba(
+            leftPanel.backgroundColor,
+            leftPanel.backgroundOpacity,
+          )}
+        >
+          <Editable onEdit={toggleBarConfig}>
+            <Bar isMenuVisible={isEditMode} aria-label="left panel">
+              <StyledMenuIconButton
+                active={menuVisible}
+                iconColor={leftPanel.barTextColor}
+                onClick={toggleMenu}
+                aria-label="menu icon button"
+              />
+            </Bar>
+          </Editable>
+          <Top>
+            <EmojiList />
+            <Logo
+              src={logo}
+              hidden={dashboardLogoProps.hidden}
+              size={dashboardLogoProps.size}
             />
-          </Bar>
-        </Editable>
-        <Top>
-          <EmojiList />
-          <Logo
-            src={logo}
-            hidden={dashboardLogoProps.hidden}
-            size={dashboardLogoProps.size}
-          />
-        </Top>
-        <Main>
-          {/*
+          </Top>
+          <Main>
+            {/*
               Menu slide-in-out animation. Need to set content to null to avoid
               the exiting content from having a height, and the divs
               stacking while animating.
           */}
-          <Slide in={menuVisible} direction="left" mountOnEnter unmountOnExit>
-            <MenuBox visible={menuVisible}>
-              {menuVisible ? (
-                <Menu onChangeTab={handleChangeTab} user={props.user} />
-              ) : null}
-            </MenuBox>
-          </Slide>
-          <Slide in={!menuVisible} direction="right" mountOnEnter unmountOnExit>
-            <MainContent visible={!menuVisible}>
-              {menuVisible ? null : <MainNavDesktop />}
-            </MainContent>
-          </Slide>
-        </Main>
-      </Box>
+            <Slide in={menuVisible} direction="left" mountOnEnter unmountOnExit>
+              <MenuBox visible={menuVisible}>
+                {menuVisible ? (
+                  <Menu onChangeTab={handleChangeTab} user={props.user} />
+                ) : null}
+              </MenuBox>
+            </Slide>
+            <Slide
+              in={!menuVisible}
+              direction="right"
+              mountOnEnter
+              unmountOnExit
+            >
+              <MainContent visible={!menuVisible}>
+                {menuVisible ? null : <MainNavDesktop />}
+              </MainContent>
+            </Slide>
+          </Main>
+        </Box>
+      </Paper>
     </>
   )
 }
@@ -110,12 +122,11 @@ const Bar = styled.div<{
   justify-content: space-between;
 `
 
-const Box = styled.div<{
+const Paper = styled.div<{
   backgroundColor: string
   backgroundImage: any
   isBackgroundHidden: boolean
 }>`
-  padding: 1.5rem;
   background-size: 100% 100% !important;
   background-position: center;
   background-repeat: no-repeat !important;
@@ -123,6 +134,18 @@ const Box = styled.div<{
     !props.isBackgroundHidden && props.backgroundImage
       ? `url(${props.backgroundImage})`
       : props.backgroundColor};
+`
+
+const Box = styled.div<{
+  backgroundColor: string
+}>`
+  padding: 1.5rem;
+  background-size: 100% 100% !important;
+  background-position: center;
+  background-repeat: no-repeat !important;
+  background: ${(props) => props.backgroundColor};
+  width: 100%;
+  height: 100%;
   display: flex;
   flex-direction: column;
 `
