@@ -1,14 +1,17 @@
 import styled from 'styled-components'
 import React from 'react'
+
+import {User} from 'auth/user'
+
+import {useAttendeeVariables} from 'Event'
+import {useEventAuth} from 'Event/auth'
 import {
   useHasMultipleTabs,
   useNiftyFiftyTemplate,
 } from 'Event/template/NiftyFifty'
-import {User} from 'auth/user'
-import {useEventAuth} from 'Event/auth'
-import CustomButton from 'lib/ui/Button/CustomButton'
 import {useEditMode} from 'Event/Dashboard/editor/state/edit-mode'
-import {useAttendeeVariables} from 'Event'
+
+import CustomButton from 'lib/ui/Button/CustomButton'
 
 export default function Menu(props: {
   onChangeTab: (tab: number) => void
@@ -17,6 +20,7 @@ export default function Menu(props: {
   const {onChangeTab} = props
   const template = useNiftyFiftyTemplate()
   const color = template.leftPanel.menuTextColor || '#000000'
+
   const {logout} = useEventAuth()
 
   const {

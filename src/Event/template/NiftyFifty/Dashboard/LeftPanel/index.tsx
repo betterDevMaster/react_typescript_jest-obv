@@ -53,12 +53,17 @@ export default function LeftPanel(props: {
         />
       </EditModeOnly>
       <Paper
+        menuBackgroundColor={rgba(
+          leftPanel.barBackgroundColor,
+          leftPanel.barBackgroundOpacity,
+        )}
         backgroundColor={rgba(
           leftPanel.backgroundColor,
           leftPanel.backgroundOpacity,
         )}
         backgroundImage={background}
         isBackgroundHidden={dashboardBackgroundProps.hidden}
+        isMenuVisible={menuVisible}
       >
         <Box
           backgroundColor={rgba(
@@ -126,12 +131,16 @@ const Paper = styled.div<{
   backgroundColor: string
   backgroundImage: any
   isBackgroundHidden: boolean
+  menuBackgroundColor: string
+  isMenuVisible: boolean
 }>`
   background-size: 100% 100% !important;
   background-position: center;
   background-repeat: no-repeat !important;
   background: ${(props) =>
-    !props.isBackgroundHidden && props.backgroundImage
+    props.isMenuVisible
+      ? props.menuBackgroundColor
+      : !props.isBackgroundHidden && props.backgroundImage
       ? `url(${props.backgroundImage})`
       : props.backgroundColor};
 `

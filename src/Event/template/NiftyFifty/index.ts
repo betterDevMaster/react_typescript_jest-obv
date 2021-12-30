@@ -77,6 +77,8 @@ export type NiftyFifty = BaseTemplate &
     leftPanel: {
       backgroundHidden: boolean
       barTextColor: string
+      barBackgroundColor: string
+      barBackgroundOpacity: number
       menuTextColor?: string
       arrowColor?: string
       backgroundColor: string
@@ -338,6 +340,8 @@ export const createNiftyFifty = (): DeepRequired<NiftyFifty> => ({
   leftPanel: {
     backgroundHidden: false,
     barTextColor: '#000000',
+    barBackgroundColor: '#FFFFFF',
+    barBackgroundOpacity: 0,
     menuTextColor: '#000000',
     arrowColor: '#000000',
     backgroundColor: '#FFFFFF',

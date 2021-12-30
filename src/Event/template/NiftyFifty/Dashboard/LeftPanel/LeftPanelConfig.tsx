@@ -120,35 +120,72 @@ export default function LeftPanelConfig(props: {
               </Box>
             </Grid>
           </Grid>
-          <Box mb={2}>
-            <Controller
-              name="leftPanel.barTextColor"
-              defaultValue={leftPanel.barTextColor}
-              control={control}
-              render={({value, onChange}) => (
-                <ColorPicker
-                  label="Menu Color"
-                  color={value}
-                  onPick={onChange}
-                  aria-label="left panel bar text color"
-                />
-              )}
-            />
+          <Box display="flex" flexDirection="row" flex="2" mb={2}>
+            <Box flex="1" mr={2}>
+              <Controller
+                name="leftPanel.barTextColor"
+                defaultValue={leftPanel.barTextColor}
+                control={control}
+                render={({value, onChange}) => (
+                  <ColorPicker
+                    label="Menu Color"
+                    color={value}
+                    onPick={onChange}
+                    aria-label="left panel bar text color"
+                  />
+                )}
+              />
+            </Box>
+            <Box flex="1">
+              <Controller
+                name="leftPanel.menuTextColor"
+                defaultValue={leftPanel.menuTextColor}
+                control={control}
+                render={({value, onChange}) => (
+                  <ColorPicker
+                    label="Menu Text Color"
+                    color={value}
+                    onPick={onChange}
+                    aria-label="left panel menu text color"
+                  />
+                )}
+              />
+            </Box>
           </Box>
-          <Box mb={2}>
-            <Controller
-              name="leftPanel.menuTextColor"
-              defaultValue={leftPanel.menuTextColor}
-              control={control}
-              render={({value, onChange}) => (
-                <ColorPicker
-                  label="Menu Text Color"
-                  color={value}
-                  onPick={onChange}
-                  aria-label="left panel menu text color"
-                />
-              )}
-            />
+          <Box display="flex" flexDirection="row" flex="2" mb={2}>
+            <Box flex="1" mr={2}>
+              <Controller
+                name="leftPanel.barBackgroundColor"
+                defaultValue={leftPanel.barBackgroundColor}
+                control={control}
+                render={({value, onChange}) => (
+                  <ColorPicker
+                    label="Menu Background Color"
+                    color={value}
+                    onPick={onChange}
+                    aria-label="left panel bar background color"
+                  />
+                )}
+              />
+            </Box>
+            <Box flex="1">
+              <InputLabel>Menu Background Opacity</InputLabel>
+              <Controller
+                name="leftPanel.barBackgroundOpacity"
+                defaultValue={leftPanel.barBackgroundOpacity}
+                control={control}
+                render={({value, onChange}) => (
+                  <Slider
+                    min={0}
+                    max={1}
+                    step={0.1}
+                    onChange={handleChangeSlider(onChange)}
+                    valueLabelDisplay="auto"
+                    value={value}
+                  />
+                )}
+              />
+            </Box>
           </Box>
           <Box mb={2}>
             <Controller
