@@ -178,6 +178,23 @@ export default function PageSettingsDialog(props: {
               )}
             />
 
+            <InputLabel>Speaker Image Size</InputLabel>
+            <Controller
+              name="imageSize"
+              defaultValue={template.sponsors.imageSize}
+              control={control}
+              render={({onChange, value}) => (
+                <Slider
+                  min={1}
+                  max={11}
+                  step={1}
+                  onChange={handleChangeSlider(onChange)}
+                  valueLabelDisplay="auto"
+                  value={value}
+                />
+              )}
+            />
+
             <InputLabel>Sponsors Per Row</InputLabel>
             <Controller
               name="perRow"

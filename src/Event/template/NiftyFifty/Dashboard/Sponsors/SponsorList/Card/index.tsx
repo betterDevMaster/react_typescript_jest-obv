@@ -1,16 +1,22 @@
 import React, {useState} from 'react'
+import {Draggable} from 'react-beautiful-dnd'
 import styled from 'styled-components'
+
+import Grid from '@material-ui/core/Grid'
+
+import {useAttendeeVariables} from 'Event'
 import {Sponsor} from 'Event/SponsorPage'
 import Image from 'Event/template/NiftyFifty/Dashboard/Sponsors/SponsorList/Card/Image'
-import Body from 'Event/template/NiftyFifty/Dashboard/Sponsors/SponsorList/Card/Body'
-import {Draggable} from 'react-beautiful-dnd'
 import SponsorForm from 'Event/template/NiftyFifty/Dashboard/Sponsors/SponsorList/Card/SponsorForm'
 import NavButton from 'Event/Dashboard/components/NavButton'
-import {rgba} from 'lib/color'
 import QuestionIcon from 'Event/template/NiftyFifty/Dashboard/Sponsors/SponsorList/Card/QuestionIcon'
-import {useSponsors} from 'organization/Event/SponsorsProvider'
 import {Editable} from 'Event/Dashboard/editor/views/EditComponent'
 import {useNiftyFiftyTemplate} from 'Event/template/NiftyFifty'
+
+import {rgba} from 'lib/color'
+import TextContent from 'lib/ui/form/TextEditor/Content'
+
+import {useSponsors} from 'organization/Event/SponsorsProvider'
 
 export const SPONSOR_QUESTION_ICON_PLACEHOLDER = 'http://placehold.jp/50x50.png'
 
@@ -55,9 +61,10 @@ function Content(props: SponsorProps) {
   const [formVisible, setFormVisible] = useState(false)
   const toggleForm = () => setFormVisible(!formVisible)
   const {edit} = useSponsors()
+  const v = useAttendeeVariables()
 
   const {
-    sponsors: {cardBackgroundColor, cardBackgroundOpacity},
+    sponsors: {cardBackgroundColor, cardBackgroundOpacity, imageSize},
   } = useNiftyFiftyTemplate()
 
   const backgroundColor = rgba(cardBackgroundColor, cardBackgroundOpacity / 100)
@@ -72,8 +79,11 @@ function Content(props: SponsorProps) {
       />
       <StyledEditable onEdit={() => edit(sponsor)} aria-label="edit sponsor">
         <StyledGrid>
-          <StyledImage sponsor={sponsor} isEditMode={props.isEditMode} />
-          <Body sponsor={sponsor} />
+          <Left item xs={imageSize}>
+            <StyledImage sponsor={sponsor} isEditMode={props.isEditMode} />
+          </Left>
+          {/* <Body sponsor={sponsor} /> */}
+          <TextContent>{v(sponsor.description)}</TextContent>
           <Buttons sponsor={props.sponsor} />
           <StyledQuestionIcon sponsor={sponsor} onClick={toggleForm} />
         </StyledGrid>
@@ -107,11 +117,6 @@ const StyledEditable = styled(Editable)`
 `
 
 const StyledGrid = styled.div`
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
   position: relative;
   padding: 10% 4%;
   height: 100%;
@@ -137,12 +142,16 @@ const Box = styled((props) => {
   }
 `
 
+const Left = styled(Grid)``
+
 const StyledImage = styled(Image)`
-  width: 100%;
+  float: left;
+  margin: ${(props) =>
+    `${props.theme.spacing[5]} ${props.theme.spacing[4]} ${props.theme.spacing[4]} 0`};
 `
 
 const ButtonsContainer = styled.div`
-  margin-top: 8px;
+  margin: auto;
   width: ${BUTTONS_WIDTH_PERCENT}%;
 `
 

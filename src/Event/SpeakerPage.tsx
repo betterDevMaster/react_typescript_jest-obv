@@ -29,8 +29,8 @@ export interface Speaker {
   name: string
   description: string
   text: string
-  backgroundColor: string
-  backgroundOpacity: number
+  backgroundColor?: string
+  backgroundOpacity?: number
   image: FileLocation | null
 }
 

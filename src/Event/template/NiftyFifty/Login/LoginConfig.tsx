@@ -53,32 +53,6 @@ export default function LoginFormConfig() {
                     <Grid item xs={12} md={4}>
                       <Box mb={2}>
                         <BackgroundImageUploader
-                          label="Background"
-                          property="loginBackground"
-                          control={control}
-                        />
-                      </Box>
-                      <Box mb={2}>
-                        <Controller
-                          name="loginBackgroundProps.hidden"
-                          defaultValue={template.loginBackgroundProps.hidden}
-                          control={control}
-                          render={({value, onChange}) => (
-                            <Switch
-                              checked={value}
-                              onChange={onChangeCheckedHandler(onChange)}
-                              arial-label="set login background mode"
-                              labelPlacement="end"
-                              color="primary"
-                              label="Hide background"
-                            />
-                          )}
-                        />
-                      </Box>
-                    </Grid>
-                    <Grid item xs={12} md={4}>
-                      <Box mb={2}>
-                        <BackgroundImageUploader
                           label="Logo"
                           property="loginLogo"
                           control={control}
@@ -129,7 +103,7 @@ export default function LoginFormConfig() {
                     <Grid item xs={12} md={4}>
                       <Box mb={2}>
                         <BackgroundImageUploader
-                          label="Logo Background"
+                          label="Left Panel Background"
                           property="loginLogoBackground"
                           control={control}
                         />
@@ -149,6 +123,32 @@ export default function LoginFormConfig() {
                               labelPlacement="end"
                               color="primary"
                               label="Hide Logo background"
+                            />
+                          )}
+                        />
+                      </Box>
+                    </Grid>
+                    <Grid item xs={12} md={4}>
+                      <Box mb={2}>
+                        <BackgroundImageUploader
+                          label="Right Panel Background"
+                          property="loginBackground"
+                          control={control}
+                        />
+                      </Box>
+                      <Box mb={2}>
+                        <Controller
+                          name="loginBackgroundProps.hidden"
+                          defaultValue={template.loginBackgroundProps.hidden}
+                          control={control}
+                          render={({value, onChange}) => (
+                            <Switch
+                              checked={value}
+                              onChange={onChangeCheckedHandler(onChange)}
+                              arial-label="set login background mode"
+                              labelPlacement="end"
+                              color="primary"
+                              label="Hide background"
                             />
                           )}
                         />

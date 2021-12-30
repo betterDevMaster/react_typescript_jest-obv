@@ -6,7 +6,7 @@ import {useNiftyFiftyTemplate} from 'Event/template/NiftyFifty'
 
 import {rgba} from 'lib/color'
 
-import defaultLogo from 'assets/images/logo.png'
+import defaultLogo from 'assets/images/logo_vertical.png'
 
 export default function Logo() {
   const {event} = useEvent()
@@ -28,9 +28,7 @@ export default function Logo() {
         login.logoBackgroundOpacity,
       )}
       background={background}
-      isBoxHidden={
-        !background && loginLogoBackgroundProps.hidden ? true : false
-      }
+      isBoxHidden={loginLogoBackgroundProps.hidden}
       isLogoHidden={!loginLogo && loginLogoProps.hidden ? true : false}
       aria-label="login logo background"
     >
@@ -55,7 +53,7 @@ export const Box = styled.div<{
   background-position: center;
   background-repeat: no-repeat !important;
   background: ${(props) =>
-    !props.isBoxHidden && props.background
+    !props.isBoxHidden || props.background
       ? `url(${props.background})`
       : props.backgroundColor};
   display: ${(props) =>

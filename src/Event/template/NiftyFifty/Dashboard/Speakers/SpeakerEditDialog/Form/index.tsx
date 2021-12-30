@@ -1,16 +1,15 @@
 import React, {useState} from 'react'
-import styled from 'styled-components'
-import DangerButton from 'lib/ui/Button/DangerButton'
 import {Controller, useForm} from 'react-hook-form'
-import TextField from '@material-ui/core/TextField'
-import Button from '@material-ui/core/Button'
-import {useOrganization} from 'organization/OrganizationProvider'
+import styled from 'styled-components'
+
+import {Box, Button, InputLabel, Slider, TextField} from '@material-ui/core'
+
+import DangerButton from 'lib/ui/Button/DangerButton'
 import {api} from 'lib/url'
 import {fieldError} from 'lib/form'
 import {ValidationError} from 'lib/ui/api-client'
 import TextEditor, {TextEditorContainer} from 'lib/ui/form/TextEditor'
 import {Speaker} from 'Event/SpeakerPage'
-import {useSpeakers} from 'organization/Event/SpeakersProvider'
 import {useFileSelect} from 'lib/ui/form/file'
 import Cropper from 'lib/ui/form/ImageUpload/Cropper'
 import Label from 'lib/ui/form/ImageUpload/Label'
@@ -18,6 +17,11 @@ import ImageUpload from 'lib/ui/form/ImageUpload'
 import RemoveImageButton from 'lib/ui/form/ImageUpload/RemoveButton'
 import UploadButton from 'lib/ui/form/ImageUpload/UploadButton'
 import Image from 'lib/ui/form/ImageUpload/Image'
+import ColorPicker from 'lib/ui/ColorPicker'
+import {handleChangeSlider} from 'lib/dom'
+
+import {useSpeakers} from 'organization/Event/SpeakersProvider'
+import {useOrganization} from 'organization/OrganizationProvider'
 
 export interface UpdateSpeakerData {
   name: string
@@ -162,6 +166,45 @@ export default function EditSpeakerForm(props: {
           <RemoveImageButton aria-label="remove speaker image" />
         </ImageUpload>
       </ImageContainer>
+      <Box display="flex" flexDirection="row" flex="2">
+        <Box flex="1" mr={2}>
+          <Controller
+            name="backgroundColor"
+            defaultValue={speaker.backgroundColor}
+            control={control}
+            render={({value, onChange}) => (
+              <ColorPicker
+                label="Background Color"
+                color={value || '#FFFFFF'}
+                onPick={onChange}
+                aria-label="background color"
+              />
+            )}
+          />
+        </Box>
+        <Box flex="1">
+          <InputLabel>Background Opacity</InputLabel>
+          <Controller
+            name="backgroundOpacity"
+            defaultValue={speaker.backgroundOpacity}
+            control={control}
+            render={({value, onChange}) => (
+              <Slider
+                valueLabelDisplay="auto"
+                aria-label="background opacity"
+                value={value || 0}
+                valueLabelFormat={() => (
+                  <div>{(speaker.backgroundOpacity || 0) * 100}</div>
+                )}
+                onChange={handleChangeSlider(onChange)}
+                step={0.01}
+                min={0}
+                max={1}
+              />
+            )}
+          />
+        </Box>
+      </Box>
       <SaveButton
         fullWidth
         variant="contained"

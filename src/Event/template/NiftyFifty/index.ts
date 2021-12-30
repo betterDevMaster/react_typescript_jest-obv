@@ -241,6 +241,7 @@ export type NiftyFifty = BaseTemplate &
       title?: string
       description?: string
       orderedIds?: number[]
+      imageSize?: Column
       perRow?: number
       menuTitle?: string
       cardBackgroundColor?: string
@@ -514,6 +515,7 @@ export const createNiftyFifty = (): DeepRequired<NiftyFifty> => ({
     title: 'Sponsors',
     description: '',
     orderedIds: [],
+    imageSize: 6,
     perRow: 2,
     menuTitle: 'Sponsors',
     cardBackgroundColor: '#565656',

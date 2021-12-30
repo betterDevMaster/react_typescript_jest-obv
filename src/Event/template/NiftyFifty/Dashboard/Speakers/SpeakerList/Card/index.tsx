@@ -61,7 +61,10 @@ function Content(props: SpeakerProps) {
     <Box
       aria-label="speaker"
       isFirst={isFirst}
-      backgroundColor={rgba(speaker.backgroundColor, speaker.backgroundOpacity)}
+      backgroundColor={rgba(
+        speaker.backgroundColor || '#FFFFFF',
+        speaker.backgroundOpacity || 0,
+      )}
     >
       <Left item xs={imageSize}>
         <StyledImage speaker={speaker} />
@@ -88,7 +91,7 @@ const Box = styled.div<{
 }>`
   position: relative;
   border-top: ${(props) => (props.isFirst ? 'none' : '1px solid #e5e5e5')};
-  padding: ${(props) => (props.isFirst ? '0 0 30px' : '30px 0px')};
+  padding: ${(props) => props.theme.spacing[4]};
   background: ${(props) => props.backgroundColor};
 `
 

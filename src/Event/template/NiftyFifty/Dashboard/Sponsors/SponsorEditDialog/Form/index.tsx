@@ -23,6 +23,13 @@ import NavButton from 'Event/Dashboard/components/NavButton'
 import Typography from '@material-ui/core/Typography'
 import {withStyles} from '@material-ui/core/styles'
 import {spacing} from 'lib/ui/theme'
+import Cropper from 'lib/ui/form/ImageUpload/Cropper'
+import Label from 'lib/ui/form/ImageUpload/Label'
+import ImageUpload from 'lib/ui/form/ImageUpload'
+import RemoveImageButton from 'lib/ui/form/ImageUpload/RemoveButton'
+import UploadButton from 'lib/ui/form/ImageUpload/UploadButton'
+import Image from 'lib/ui/form/ImageUpload/Image'
+import {useFileSelect} from 'lib/ui/form/file'
 
 export default function EditSponsorForm(props: {
   sponsor: Sponsor
@@ -46,6 +53,23 @@ export default function EditSponsorForm(props: {
   const {client} = useOrganization()
   const [serverError, setServerError] = useState<ValidationError<any>>(null)
   const {update, remove} = useSponsors()
+  const image = useFileSelect(sponsor?.image)
+
+  const imgData = () => {
+    if (image.selected) {
+      let formData = new FormData()
+      formData.set('image', image.selected)
+      return formData
+    }
+
+    if (image.wasRemoved) {
+      return {
+        image: null,
+      }
+    }
+
+    return {}
+  }
 
   const submit = (data: Sponsor) => {
     setSubmitting(true)
@@ -62,6 +86,17 @@ export default function EditSponsorForm(props: {
 
     client
       .put<Sponsor>(url, sponsorData)
+      .then((sponsor) => {
+        update(sponsor)
+        props.onDone()
+      })
+      .catch((e) => {
+        setServerError(e)
+        setSubmitting(false)
+      })
+
+    client
+      .put<Sponsor>(url, imgData())
       .then((sponsor) => {
         update(sponsor)
         props.onDone()
@@ -111,6 +146,19 @@ export default function EditSponsorForm(props: {
             )}
           />
         </Box>
+        <ImageContainer>
+          <ImageUpload file={image} disabled={submitting}>
+            <Cropper width={300} height={100} canResize />
+            <Label>Logo</Label>
+            <Image alt="favicon" width={100} />
+            <UploadButton
+              inputProps={{
+                'aria-label': 'sponsor image input',
+              }}
+            />
+            <RemoveImageButton aria-label="remove sponsor image" />
+          </ImageUpload>
+        </ImageContainer>
         <Controller
           name="form_id"
           control={control}
@@ -189,4 +237,8 @@ const SaveButton = styled(Button)`
 
 const RemoveButton = styled(DangerButton)`
   margin-bottom: ${(props) => props.theme.spacing[4]}!important;
+`
+
+const ImageContainer = styled.div`
+  margin-bottom: ${(props) => props.theme.spacing[6]}!important;
 `

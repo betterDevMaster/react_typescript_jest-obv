@@ -23,15 +23,15 @@ export default function Page(props: {
   const background = loginBackground ? loginBackground : null
 
   return (
-    <Background
-      background={background}
-      backgroundColor={rgba(login.backgroundColor, login.backgroundOpacity)}
-      isPreview={props.isPreview}
-      aria-label="login background"
-      isHidden={!background && loginBackgroundProps.hidden ? true : false}
-    >
+    <Background isPreview={props.isPreview} aria-label="login background">
       <Logo />
-      <Container>{props.children}</Container>
+      <Container
+        background={background}
+        backgroundColor={rgba(login.backgroundColor, login.backgroundOpacity)}
+        isHidden={loginBackgroundProps.hidden}
+      >
+        {props.children}
+      </Container>
     </Background>
   )
 }
@@ -95,18 +95,8 @@ export const DescriptionText = styled.div<{
 `
 
 export const Background = styled.div<{
-  background: any
-  backgroundColor: string
   isPreview?: boolean
-  isHidden?: boolean
 }>`
-  background-size: 100% 100% !important;
-  background-position: center;
-  background-repeat: no-repeat !important;
-  background: ${(props) =>
-    !props.isHidden && props.background
-      ? `url(${props.background})`
-      : props.backgroundColor};
   position: ${(props) => (props.isPreview ? 'inherit' : 'absolute')};
   top: 0;
   left: 0;
@@ -187,11 +177,22 @@ export const StyledButton = styled(
   }
 `
 
-export const Container = styled.div`
+export const Container = styled.div<{
+  background: any
+  backgroundColor: string
+  isHidden?: boolean
+}>`
   display: flex;
   flex-direction: column;
   align-items: center;
   height: 100%;
+  background-size: 100% 100% !important;
+  background-position: center;
+  background-repeat: no-repeat !important;
+  background: ${(props) =>
+    !props.isHidden || props.background
+      ? `url(${props.background})`
+      : props.backgroundColor};
   @media (min-width: ${(props) => props.theme.breakpoints.sm}) {
     margin: auto;
     width: 100%;
