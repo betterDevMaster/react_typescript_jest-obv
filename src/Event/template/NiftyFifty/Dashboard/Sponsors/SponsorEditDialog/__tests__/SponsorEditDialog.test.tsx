@@ -57,7 +57,7 @@ it('should configure sponsor fields', async () => {
   user.click(await findByLabelText('save sponsor'))
 
   await wait(() => {
-    expect(mockPut).toHaveBeenCalledTimes(1)
+    expect(mockPut).toHaveBeenCalledTimes(2)
   })
 
   const [url, data] = mockPut.mock.calls[0]

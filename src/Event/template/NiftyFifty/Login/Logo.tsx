@@ -29,7 +29,6 @@ export default function Logo() {
       )}
       background={background}
       isBoxHidden={loginLogoBackgroundProps.hidden}
-      isLogoHidden={!loginLogo && loginLogoProps.hidden ? true : false}
       aria-label="login logo background"
     >
       <LogoImage
@@ -47,17 +46,15 @@ export const Box = styled.div<{
   background: any
   backgroundColor: string
   isBoxHidden?: boolean
-  isLogoHidden?: boolean
 }>`
   background-size: 100% 100% !important;
   background-position: center;
   background-repeat: no-repeat !important;
   background: ${(props) =>
-    !props.isBoxHidden || props.background
+    !props.isBoxHidden && props.background
       ? `url(${props.background})`
       : props.backgroundColor};
-  display: ${(props) =>
-    props.isBoxHidden && props.isLogoHidden ? 'none' : 'flex'};
+  display: 'flex';
   margin: auto;
   justify-content: center;
   align-items: center;

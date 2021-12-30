@@ -190,7 +190,7 @@ export const Container = styled.div<{
   background-position: center;
   background-repeat: no-repeat !important;
   background: ${(props) =>
-    !props.isHidden || props.background
+    !props.isHidden && props.background
       ? `url(${props.background})`
       : props.backgroundColor};
   @media (min-width: ${(props) => props.theme.breakpoints.sm}) {
