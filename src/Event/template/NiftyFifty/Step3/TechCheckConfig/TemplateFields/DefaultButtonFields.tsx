@@ -9,7 +9,7 @@ import {TemplateFieldProps} from 'Event/template/NiftyFifty/Step3/TechCheckConfi
 import BackgroundPicker from 'lib/ui/form/BackgroundPicker'
 
 const MIN_BUTTON_BORDER_RADIUS = 0
-const MAX_BUTTON_BORDER_RADIUS = 100
+const MAX_BUTTON_BORDER_RADIUS = 20
 
 const MIN_BUTTON_BORDER_WIDTH = 0
 const MAX_BUTTON_BORDER_WIDTH = 20

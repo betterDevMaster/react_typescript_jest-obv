@@ -1,14 +1,19 @@
-import styled from 'styled-components'
 import React from 'react'
-import Typography from '@material-ui/core/Typography/'
-import TextField from '@material-ui/core/TextField'
 import {useForm} from 'react-hook-form'
-import withStyles from '@material-ui/core/styles/withStyles'
-import {spacing} from 'lib/ui/theme'
-import {SetPasswordFormProps} from 'Event/Step1/SetPasswordForm'
+import styled from 'styled-components'
+
+import {Grid, Typography} from '@material-ui/core'
+import MuiTextField, {TextFieldProps} from '@material-ui/core/TextField'
 import MuiButton from '@material-ui/core/Button'
+import {makeStyles, withStyles} from '@material-ui/core/styles'
+
+import {SetPasswordFormProps} from 'Event/Step1/SetPasswordForm'
 import {useAttendeeVariables} from 'Event'
-import {useNiftyFiftyTemplate} from 'Event/template/NiftyFifty'
+import {DEFAULTS, useNiftyFiftyTemplate} from 'Event/template/NiftyFifty'
+
+import {spacing} from 'lib/ui/theme'
+import TextEditorContent from 'lib/ui/form/TextEditor/Content'
+import PasswordField from 'lib/ui/TextField/PasswordField'
 
 export default function Content(props: SetPasswordFormProps) {
   const {register, handleSubmit, errors, watch} = useForm()
@@ -67,19 +72,32 @@ export default function Content(props: SetPasswordFormProps) {
           disabled={props.submitting}
         />
         <Error>{props.responseError && props.responseError.message}</Error>
-
-        <StyledButton
-          variant="contained"
-          fullWidth
-          type="submit"
-          backgroundColor={setPasswordForm.button.backgroundColor}
-          hoverColor={setPasswordForm.button.hoverBackgroundColor}
-          color={setPasswordForm.button.textColor}
-          borderRadius={setPasswordForm.button.borderRadius}
-          aria-label="submit set password form"
-        >
-          {v(setPasswordForm.button.text)}
-        </StyledButton>
+        <Grid container justify="center">
+          <Grid
+            item
+            xs={12}
+            md={
+              setPasswordForm?.button.width ||
+              DEFAULTS.setPasswordForm.button.width
+            }
+          >
+            <StyledButton
+              variant="contained"
+              fullWidth
+              type="submit"
+              backgroundColor={setPasswordForm.button.backgroundColor}
+              hoverColor={setPasswordForm.button.hoverBackgroundColor}
+              color={setPasswordForm.button.textColor}
+              borderRadius={setPasswordForm.button.borderRadius}
+              width={setPasswordForm.button.width}
+              borderColor={setPasswordForm.button.borderColor}
+              borderWidth={setPasswordForm.button.borderWidth}
+              aria-label="submit set password form"
+            >
+              {v(setPasswordForm.button.text)}
+            </StyledButton>
+          </Grid>
+        </Grid>
       </form>
     </div>
   )
@@ -90,7 +108,44 @@ function Description(props: {children?: string}) {
     return null
   }
 
-  return <DescriptionText align="center">{props.children}</DescriptionText>
+  return <DescriptionText>{props.children}</DescriptionText>
+}
+
+function TextField(props: TextFieldProps) {
+  const template = useNiftyFiftyTemplate()
+  const {setPasswordForm} = template
+
+  const useStyles = makeStyles({
+    root: {
+      backgroundColor: `${setPasswordForm.inputBackgroundColor} !important;`,
+      borderRadius: `${setPasswordForm.inputBorderRadius}px !important;`,
+      '& .MuiFilledInput-input': {
+        borderRadius: `${setPasswordForm.inputBorderRadius}px !important;`,
+      },
+      '&::before': {
+        content: 'unset',
+      },
+      '&::after': {
+        content: 'unset',
+      },
+    },
+  })
+
+  const classes = useStyles()
+
+  const Field = props.type === 'password' ? PasswordField : MuiTextField
+
+  return (
+    <Field
+      {...props}
+      variant="filled"
+      InputProps={{
+        classes: {
+          root: classes.root,
+        },
+      }}
+    />
+  )
 }
 
 function Error(props: {children: string | null}) {
@@ -108,15 +163,21 @@ const ErrorText = withStyles({
 })(Typography)
 
 export const StyledButton = styled(
-  ({color, backgroundColor, borderRadius, hoverColor, ...otherProps}) => (
-    <MuiButton {...otherProps} />
-  ),
+  ({
+    color,
+    backgroundColor,
+    borderRadius,
+    hoverColor,
+    borderColor,
+    borderWidth,
+    ...otherProps
+  }) => <MuiButton {...otherProps} />,
 )`
   border-radius: ${(props) => props.borderRadius}px !important;
-  height: 50px;
   color: ${(props) => props.color} !important;
   background: ${(props) => props.backgroundColor} !important;
-
+  border: ${(props) => props.borderWidth}px solid
+    ${(props) => props.borderColor} !important;
   &:hover {
     background: ${(props) => props.hoverColor} !important;
   }
@@ -136,7 +197,7 @@ const Title = styled(Typography)`
   }
 `
 
-const DescriptionText = styled(Typography)`
+const DescriptionText = styled(TextEditorContent)`
   font-size: 14px !important;
   line-height: 17px !important;
   margin-bottom: 45px !important;

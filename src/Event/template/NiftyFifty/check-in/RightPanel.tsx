@@ -76,8 +76,6 @@ const Box = styled.div<{
   width: 100%;
   height: 90%;
   overflow: auto;
-  display: flex;
-  justify-content: center;
 
   > * {
     color: ${(props) => props.textColor}!important;

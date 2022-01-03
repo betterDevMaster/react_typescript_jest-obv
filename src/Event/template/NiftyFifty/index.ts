@@ -231,12 +231,17 @@ export type NiftyFifty = BaseTemplate &
       description?: string
       passwordLabel?: string
       confirmPasswordLabel?: string
+      inputBorderRadius?: number
+      inputBackgroundColor?: string
       button?: {
         text?: string
         textColor?: string
         backgroundColor?: string
         hoverBackgroundColor?: string
         borderRadius?: number
+        borderColor?: string
+        borderWidth?: number
+        width?: GridSize
       }
     }
     sponsors?: {
@@ -515,12 +520,17 @@ export const createNiftyFifty = (): DeepRequired<NiftyFifty> => ({
     description: "First, you'll need to create a password below:",
     passwordLabel: 'Enter your password',
     confirmPasswordLabel: 'Re-Enter Your Password',
+    inputBorderRadius: 10,
+    inputBackgroundColor: '#f2f5f9',
     button: {
       text: 'Next Step',
       textColor: '#FFFFFF',
       backgroundColor: '#000000',
       hoverBackgroundColor: '#000000',
       borderRadius: 4,
+      borderColor: '#FFFFFF',
+      borderWidth: 0,
+      width: 12,
     },
   },
   sponsors: {

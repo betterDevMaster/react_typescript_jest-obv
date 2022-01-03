@@ -1,10 +1,10 @@
-import React from 'react'
-import Grid from '@material-ui/core/Grid'
-import TextField from '@material-ui/core/TextField'
-import Slider from '@material-ui/core/Slider'
-import InputLabel from '@material-ui/core/InputLabel'
-import ColorPicker from 'lib/ui/ColorPicker'
-import {handleChangeSlider, onChangeCheckedHandler} from 'lib/dom'
+import React, {useState, useEffect} from 'react'
+import {useForm, Controller} from 'react-hook-form'
+import styled from 'styled-components'
+
+import {Button, Grid, InputLabel, Slider, TextField} from '@material-ui/core'
+import withStyles from '@material-ui/core/styles/withStyles'
+
 import {
   NiftyFifty,
   useNiftyFiftyTemplate,
@@ -13,17 +13,23 @@ import {
 import {PreviewBox, SectionTitle} from 'organization/Event/Page'
 import {TemplateSetPasswordForm} from 'Event/Step1/SetPasswordForm'
 import {useEvent, useUpdate} from 'Event/EventProvider'
+
 import Switch from 'lib/ui/form/Switch'
 import BackgroundPicker from 'lib/ui/form/BackgroundPicker'
+import ColorPicker from 'lib/ui/ColorPicker'
+import {handleChangeSlider, onChangeCheckedHandler} from 'lib/dom'
+import TextEditor from 'lib/ui/form/TextEditor'
+import {useToggle} from 'lib/toggle'
+import {spacing} from 'lib/ui/theme'
+
 import Layout from 'organization/user/Layout'
 import Page from 'organization/Event/Page'
-import {useForm, Controller} from 'react-hook-form'
-import Button from '@material-ui/core/Button'
 import {useObvioUser} from 'obvio/auth'
-import {useToggle} from 'lib/toggle'
 
-const MIN_BORDER_RADIUS = 0
-const MAX_BORDER_RADIUS = 60
+const MIN_BUTTON_BORDER_RADIUS = 0
+const MAX_BUTTON_BORDER_RADIUS = 20
+const MIN_BUTTON_BORDER_WIDTH = 0
+const MAX_BUTTON_BORDER_WIDTH = 20
 
 export default function SetPasswordFormConfig() {
   const {event} = useEvent()
@@ -71,12 +77,20 @@ export function Config() {
   const user = useObvioUser()
   const {event} = useEvent()
 
-  const {handleSubmit, control, register} = useForm()
+  const {register, handleSubmit, setValue, control} = useForm()
+
   const {setPasswordForm} = template
+  const [loading, setLoading] = useState(true)
 
   const submit = (data: NiftyFifty) => {
     update(data)
   }
+
+  useEffect(() => {
+    setValue('setPasswordForm.description', setPasswordForm.description)
+
+    setLoading(false)
+  }, [setPasswordForm, setValue])
 
   if (!event.requires_attendee_password) {
     return null
@@ -101,16 +115,23 @@ export function Config() {
                 />
               </Grid>
               <Grid item xs={12}>
-                <TextField
-                  label="Description"
-                  fullWidth
-                  name="setPasswordForm.description"
-                  defaultValue={setPasswordForm.description}
-                  inputProps={{
-                    'aria-label': 'set password form description',
-                    ref: register,
-                  }}
-                />
+                <Editor>
+                  <input
+                    type="hidden"
+                    name="setPasswordForm.description"
+                    aria-label="set password form description"
+                    ref={register({required: 'Description is required.'})}
+                  />
+                  <BodyLabel>Description</BodyLabel>
+                  {loading ? null : (
+                    <TextEditor
+                      data={setPasswordForm.description}
+                      onChange={(val) =>
+                        setValue('setPasswordForm.description', val)
+                      }
+                    />
+                  )}
+                </Editor>
               </Grid>
               <Grid item xs={12}>
                 <TextField
@@ -136,8 +157,41 @@ export function Config() {
                   }}
                 />
               </Grid>
-            </Grid>
+              <Grid item xs={12} md={6}>
+                <InputLabel>Input Border Radius</InputLabel>
 
+                <Controller
+                  name="setPasswordForm.inputBorderRadius"
+                  defaultValue={setPasswordForm.inputBorderRadius}
+                  control={control}
+                  render={({value, onChange}) => (
+                    <Slider
+                      valueLabelDisplay="auto"
+                      aria-label="input border radius"
+                      value={value}
+                      onChange={handleChangeSlider(onChange)}
+                      step={1}
+                      min={0}
+                      max={20}
+                    />
+                  )}
+                />
+              </Grid>
+              <Grid item xs={12} md={6}>
+                <Controller
+                  name="setPasswordForm.inputBackgroundColor"
+                  defaultValue={setPasswordForm.inputBackgroundColor}
+                  control={control}
+                  render={({value, onChange}) => (
+                    <BackgroundPicker
+                      label="Input Background Color"
+                      background={value}
+                      onChange={onChange}
+                    />
+                  )}
+                />
+              </Grid>
+            </Grid>
             <Grid container spacing={2}>
               <Grid item xs={12} md={6}>
                 <TextField
@@ -195,7 +249,7 @@ export function Config() {
                 />
               </Grid>
               <Grid item xs={12} md={6}>
-                <InputLabel>Border Radius</InputLabel>
+                <InputLabel>Button Border Radius</InputLabel>
 
                 <Controller
                   name="setPasswordForm.button.borderRadius"
@@ -208,8 +262,64 @@ export function Config() {
                       value={value}
                       onChange={handleChangeSlider(onChange)}
                       step={1}
-                      min={MIN_BORDER_RADIUS}
-                      max={MAX_BORDER_RADIUS}
+                      min={MIN_BUTTON_BORDER_RADIUS}
+                      max={MAX_BUTTON_BORDER_RADIUS}
+                    />
+                  )}
+                />
+              </Grid>
+
+              <Grid item xs={12} md={6}>
+                <Controller
+                  name="setPasswordForm.button.borderColor"
+                  defaultValue={setPasswordForm.button.borderColor}
+                  control={control}
+                  render={({value, onChange}) => (
+                    <ColorPicker
+                      label="Button Border Color"
+                      color={value}
+                      onPick={onChange}
+                      aria-label="button border color"
+                    />
+                  )}
+                />
+              </Grid>
+              <Grid item xs={12} md={6}>
+                <InputLabel>Button Border Width</InputLabel>
+
+                <Controller
+                  name="setPasswordForm.button.borderWidth"
+                  defaultValue={setPasswordForm.button.borderWidth}
+                  control={control}
+                  render={({value, onChange}) => (
+                    <Slider
+                      valueLabelDisplay="auto"
+                      aria-label="button border width"
+                      value={value}
+                      onChange={handleChangeSlider(onChange)}
+                      step={1}
+                      min={MIN_BUTTON_BORDER_WIDTH}
+                      max={MAX_BUTTON_BORDER_WIDTH}
+                    />
+                  )}
+                />
+              </Grid>
+              <Grid item xs={12} md={6}>
+                <InputLabel>Button Size</InputLabel>
+
+                <Controller
+                  name="setPasswordForm.button.width"
+                  defaultValue={setPasswordForm.button.width}
+                  control={control}
+                  render={({value, onChange}) => (
+                    <Slider
+                      valueLabelDisplay="auto"
+                      aria-label="button width"
+                      value={value}
+                      onChange={handleChangeSlider(onChange)}
+                      step={1}
+                      min={1}
+                      max={12}
                     />
                   )}
                 />
@@ -244,3 +354,18 @@ export function Config() {
     </>
   )
 }
+
+const Editor = styled.div`
+  margin-top: ${(props) => props.theme.spacing[4]};
+  margin-bottom: ${(props) => props.theme.spacing[6]};
+
+  .ck-editor__editable_inline {
+    max-height: 600px;
+  }
+`
+
+const BodyLabel = withStyles({
+  root: {
+    marginBottom: spacing[3],
+  },
+})(InputLabel)

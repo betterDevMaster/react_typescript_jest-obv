@@ -106,7 +106,6 @@ export default function Form() {
 
   const submit = (data: Omit<TechCheckData, 'template'>) => {
     setSubmitting(true)
-
     updateTemplate({
       techCheck,
       skipTechCheckRules: rules,

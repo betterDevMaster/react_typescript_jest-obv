@@ -52,16 +52,6 @@ export default function LeaderboardConfig(props: ComponentConfigProps) {
   }) => {
     const {points_unit, ...leaderboardData} = data
 
-    const updated = {
-      rewardAlert: {
-        text: rewardText,
-        backgroundColor: rewardBackgroundColor,
-        textColor: rewardTextColor,
-      },
-      points_unit,
-      leaderboard: leaderboardData,
-    }
-
     updateTemplate({
       leaderboard: leaderboardData,
       points_unit: points_unit,
