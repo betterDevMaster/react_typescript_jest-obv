@@ -100,17 +100,19 @@ export default function ProgressBarConfig() {
       <Box>
         <Typography variant="h6">Progress Bar</Typography>
       </Box>
-      <ProgressBarPreview
-        showing={localProgressBar.showing}
-        barColor={localProgressBar.barColor}
-        text={localProgressBar.step1Text}
-        checktitle={localProgressBar.checkInTitle}
-        checkcolor={localProgressBar.checkInColor}
-        backgroundColor={localProgressBar.backgroundColor}
-        textColor={localProgressBar.textColor}
-        thickness={localProgressBar.thickness}
-        borderRadius={localProgressBar.borderRadius}
-      />
+      <ProgressContent>
+        <ProgressBarPreview
+          showing={localProgressBar.showing}
+          barColor={localProgressBar.barColor}
+          text={localProgressBar.step1Text}
+          checktitle={localProgressBar.checkInTitle}
+          checkcolor={localProgressBar.checkInColor}
+          backgroundColor={localProgressBar.backgroundColor}
+          textColor={localProgressBar.textColor}
+          thickness={localProgressBar.thickness}
+          borderRadius={localProgressBar.borderRadius}
+        />
+      </ProgressContent>
       <form onSubmit={handleSubmit(submit)}>
         <Grid container spacing={2}>
           <Grid item xs={12}>
@@ -241,35 +243,6 @@ function Config(
           )}
         />
       </Grid>
-      {/* <Grid container spacing={3}>
-        <Grid item xs={6}>
-          <TextField
-            label="Check In Label Title"
-            name="progressBar.checkInTitle"
-            defaultValue={localProgressBar.checkInTitle}
-            inputProps={{
-              'aria-label': 'check in label title',
-              ref: register,
-            }}
-            fullWidth
-          />
-        </Grid>
-        <Grid item xs={6}>
-          <Controller
-            name="progressBar.checkInColor"
-            defaultValue={localProgressBar.checkInColor}
-            control={control}
-            render={({ value, onChange }) => (
-              <ColorPicker
-                label="Checkin Label Color"
-                color={value}
-                onPick={onChange}
-                aria-label="checkin label color"
-              />
-            )}
-          />
-        </Grid>
-      </Grid> */}
       <Grid container spacing={3}>
         <Grid item xs={6}>
           <TextField
@@ -459,45 +432,6 @@ function Config(
               )}
             />
           </Box>
-          {/* <Controller
-                  name="menu.iconColor"
-                  defaultValue={menu.iconColor}
-                  control={control}
-                  render={({ value, onChange }) => (
-                    <ColorPicker
-                      label="Menu Icon Color"
-                      color={value}
-                      onPick={onChange}
-                      aria-label="check in menu icon color"
-                    />
-                  )}
-                />
-                <Controller
-                  name="menu.backgroundColor"
-                  defaultValue={menu.backgroundColor}
-                  control={control}
-                  render={({ value, onChange }) => (
-                    <ColorPicker
-                      label="Menu Background Color"
-                      color={value}
-                      onPick={onChange}
-                      aria-label="check in menu background color"
-                    />
-                  )}
-                />
-                <Controller
-                  name="menu.textColor"
-                  defaultValue={menu.textColor}
-                  control={control}
-                  render={({ value, onChange }) => (
-                    <ColorPicker
-                      label="Menu Text Color"
-                      color={value}
-                      onPick={onChange}
-                      aria-label="check in menu text color"
-                    />
-                  )}
-                /> */}
         </BorderedGrid>
         <Grid xs={12} md={6} item>
           <Box mb={1}>
@@ -576,6 +510,11 @@ const BorderedGrid = styled(Grid)`
   @media (max-width: ${(props) => props.theme.breakpoints.md}) {
     border-right: none;
   }
+`
+
+const ProgressContent = styled.div`
+  width: 100%;
+  padding: ${(props) => props.theme.spacing[3]} 0;
 `
 
 const ButtonContainer = styled(SaveButton)`

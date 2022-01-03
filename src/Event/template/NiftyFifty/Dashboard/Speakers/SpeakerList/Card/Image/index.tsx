@@ -1,8 +1,6 @@
-import styled from 'styled-components'
 import React from 'react'
+import styled from 'styled-components'
 import {Speaker} from 'Event/SpeakerPage'
-
-export const SPEAKER_PLACEHOLDER = 'http://placehold.jp/300x300.png'
 
 type ImageProps = {
   speaker: Speaker
@@ -12,24 +10,15 @@ type ImageProps = {
 
 export default function Image(props: ImageProps) {
   const {speaker} = props
-  const alt = speaker.name
+  const src = speaker.image?.url
 
-  if (!speaker.image) {
-    // Placeholder
-    return (
-      <ImageBox className={props.className}>
-        <img
-          src={SPEAKER_PLACEHOLDER}
-          alt={alt}
-          aria-label="speaker placeholder image"
-        />
-      </ImageBox>
-    )
+  if (!speaker.image && !props.isEditMode) {
+    return null
   }
 
   return (
     <ImageBox className={props.className}>
-      <img src={speaker.image.url} alt={alt} aria-label="speaker image" />
+      <ImageEl src={src} aria-label="speaker image" />
     </ImageBox>
   )
 }
@@ -39,4 +28,8 @@ const ImageBox = styled.div`
     width: 100%;
     border-radius: 10px;
   }
+`
+
+const ImageEl = styled.img`
+  cursor: grab;
 `

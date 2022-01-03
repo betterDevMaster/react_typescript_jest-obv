@@ -34,18 +34,20 @@ export default function RightPanel(props: {
         checkInRightPanel.backgroundOpacity,
       )}
     >
-      <ProgressBar
-        showing={progressBar.showing}
-        text={text}
-        value={Number(percent)}
-        barColor={progressBar.barColor}
-        backgroundColor={progressBar.backgroundColor}
-        textColor={progressBar.textColor}
-        borderRadius={progressBar.borderRadius}
-        thickness={progressBar.thickness}
-        // checktitle={progressBar.checkInTitle}
-        // checkcolor={progressBar.checkInColor}
-      />
+      <Content>
+        <ProgressBar
+          showing={progressBar.showing}
+          text={text}
+          value={Number(percent)}
+          barColor={progressBar.barColor}
+          backgroundColor={progressBar.backgroundColor}
+          textColor={progressBar.textColor}
+          borderRadius={progressBar.borderRadius}
+          thickness={progressBar.thickness}
+          // checktitle={progressBar.checkInTitle}
+          // checkcolor={progressBar.checkInColor}
+        />
+      </Content>
       <Box textColor={checkInRightPanel.textColor} center={props.center}>
         {props.children}
       </Box>
@@ -56,22 +58,27 @@ export default function RightPanel(props: {
 const Paper = styled.div<{
   backgroundColor: string
 }>`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
   background: ${(props) => props.backgroundColor};
-  border: 10px;
-  padding: 35px 0;
   width: 100%;
+  height: 100%;
+  padding: ${(props) => props.theme.spacing[10]};
+`
+
+const Content = styled.div`
+  width: 100%;
+  padding: ${(props) => props.theme.spacing[3]} 0;
 `
 
 const Box = styled.div<{
   textColor: string
   center?: boolean
 }>`
-  overflow: auto;
   width: 100%;
-  padding: 40px;
+  height: 90%;
+  overflow: auto;
+  display: flex;
+  justify-content: center;
+
   > * {
     color: ${(props) => props.textColor}!important;
   }

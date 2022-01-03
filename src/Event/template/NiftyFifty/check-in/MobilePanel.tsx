@@ -71,16 +71,18 @@ export default function MobilePanel(props: {
           checkInRightPanel.backgroundOpacity,
         )}
       >
-        <ProgressBar
-          showing={progressBar.showing}
-          text={text}
-          value={Number(percent)}
-          barColor={progressBar.barColor}
-          backgroundColor={progressBar.backgroundColor}
-          textColor={progressBar.textColor}
-          borderRadius={progressBar.borderRadius}
-          thickness={progressBar.thickness}
-        />
+        <ProgressContent>
+          <ProgressBar
+            showing={progressBar.showing}
+            text={text}
+            value={Number(percent)}
+            barColor={progressBar.barColor}
+            backgroundColor={progressBar.backgroundColor}
+            textColor={progressBar.textColor}
+            borderRadius={progressBar.borderRadius}
+            thickness={progressBar.thickness}
+          />
+        </ProgressContent>
         <Panel>{props.children}</Panel>
       </Paper>
     </Box>
@@ -97,14 +99,16 @@ const Box = styled.div`
 const Paper = styled.div<{
   backgroundColor: string
 }>`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
   background: ${(props) => props.backgroundColor};
   border: 10px;
-  padding: 35px 0;
+  padding: ${(props) => props.theme.spacing[4]};
   width: 100%;
   min-height: 80vh;
+`
+
+const ProgressContent = styled.div`
+  width: 100%;
+  padding: ${(props) => props.theme.spacing[2]} 0;
 `
 
 const Content = styled.div<{
@@ -144,6 +148,8 @@ const LogoBox = styled.div<{
 
 const Panel = styled.div`
   overflow: auto;
-  padding: 20px;
   width: 100%;
+  height: 90%;
+  display: flex;
+  justify-content: center;
 `

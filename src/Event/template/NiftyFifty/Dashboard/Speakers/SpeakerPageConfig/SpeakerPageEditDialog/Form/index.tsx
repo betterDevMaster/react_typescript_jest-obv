@@ -26,23 +26,6 @@ import TextEditor, {TextEditorContainer} from 'lib/ui/form/TextEditor'
 const MIN_SPACE_SIZE = 0
 const MAX_SPACE_SIZE = 10
 
-// type UpdateFormData = {
-//   title: string
-//   description: string
-//   backToDashboardText: string
-//   backToDashboardTextColor: string
-//   speakerImageSize: number
-//   speakersSpace: number
-//   menuTitle?: string
-//   isVisible?: boolean
-//   titleFontSize?: number
-//   titleColor?: string
-//   descriptionFontSize?: number
-//   descriptionColor?: string
-//   titleDescFontSize?: number
-//   titleDescColor?: string
-// }
-
 export default function SpeakerPageConfigForm(props: {onClose: () => void}) {
   const {register, handleSubmit, control} = useForm()
   const [submitting, setSubmitting] = useState(false)
@@ -115,6 +98,66 @@ export default function SpeakerPageConfigForm(props: {onClose: () => void}) {
       <Box display="flex" flexDirection="row" flex="2">
         <Box flex="1">
           <Controller
+            name="welcomeTitleColor"
+            defaultValue={speakerPageSettings.welcomeTitleColor}
+            control={control}
+            render={({value, onChange}) => (
+              <ColorPicker
+                label="Welcome Title Color"
+                color={value}
+                onPick={onChange}
+                aria-label="welcome title color"
+              />
+            )}
+          />
+        </Box>
+        <Box flex="1">
+          <TextField
+            name="welcomeTitleFontSize"
+            defaultValue={speakerPageSettings.welcomeTitleFontSize}
+            label="Welcome Title Font Size"
+            type="number"
+            fullWidth
+            inputProps={{
+              min: 0,
+              ref: register,
+            }}
+          />
+        </Box>
+      </Box>
+      <Box display="flex" flexDirection="row" flex="2">
+        <Box flex="1">
+          <Controller
+            name="welcomeDescriptionColor"
+            defaultValue={speakerPageSettings.welcomeDescriptionColor}
+            control={control}
+            render={({value, onChange}) => (
+              <ColorPicker
+                label="Welcome Description Color"
+                color={value}
+                onPick={onChange}
+                aria-label="welcome description color"
+              />
+            )}
+          />
+        </Box>
+        <Box flex="1">
+          <TextField
+            name="welcomeDescriptionFontSize"
+            defaultValue={speakerPageSettings.welcomeDescriptionFontSize}
+            label="Welcome Description Font Size"
+            type="number"
+            fullWidth
+            inputProps={{
+              min: 0,
+              ref: register,
+            }}
+          />
+        </Box>
+      </Box>
+      <Box display="flex" flexDirection="row" flex="2">
+        <Box flex="1">
+          <Controller
             name="titleColor"
             defaultValue={speakerPageSettings.titleColor}
             control={control}
@@ -172,36 +215,6 @@ export default function SpeakerPageConfigForm(props: {onClose: () => void}) {
           />
         </Box>
       </Box>
-      {/* <Box display="flex" flexDirection="row" flex="2">
-        <Box flex="1">
-          <Controller
-            name="descriptionColor"
-            defaultValue={speakerPageSettings.descriptionColor}
-            control={control}
-            render={({value, onChange}) => (
-              <ColorPicker
-                label="Description Color"
-                color={value}
-                onPick={onChange}
-                aria-label="description color"
-              />
-            )}
-          />
-        </Box>
-        <Box flex="1">
-          <TextField
-            name="descriptionFontSize"
-            defaultValue={speakerPageSettings.descriptionFontSize}
-            label="Description Font Size"
-            type="number"
-            fullWidth
-            inputProps={{
-              min: 0,
-              ref: register,
-            }}
-          />
-        </Box>
-      </Box> */}
       <Grid item xs={12}>
         <InputLabel>Speaker Image Size</InputLabel>
         <Controller

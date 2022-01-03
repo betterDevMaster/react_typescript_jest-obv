@@ -242,6 +242,10 @@ export type NiftyFifty = BaseTemplate &
     sponsors?: {
       title?: string
       description?: string
+      welcomeTitleFontSize?: number
+      welcomeTitleColor?: string
+      welcomeDescriptionFontSize?: number
+      welcomeDescriptionColor?: string
       orderedIds?: number[]
       imageSize?: Column
       perRow?: number
@@ -253,6 +257,10 @@ export type NiftyFifty = BaseTemplate &
     speakers?: {
       title?: string
       description?: string
+      welcomeTitleFontSize?: number
+      welcomeTitleColor?: string
+      welcomeDescriptionFontSize?: number
+      welcomeDescriptionColor?: string
       speakerImageSize?: Column
       speakersSpace?: GridSpacing
       orderedIds?: number[]
@@ -518,6 +526,10 @@ export const createNiftyFifty = (): DeepRequired<NiftyFifty> => ({
   sponsors: {
     title: 'Sponsors',
     description: '',
+    welcomeTitleFontSize: 22,
+    welcomeTitleColor: '#000000',
+    welcomeDescriptionFontSize: 17,
+    welcomeDescriptionColor: '#000000',
     orderedIds: [],
     imageSize: 6,
     perRow: 2,
@@ -529,6 +541,10 @@ export const createNiftyFifty = (): DeepRequired<NiftyFifty> => ({
   speakers: {
     title: 'Our Speakers',
     description: '',
+    welcomeTitleFontSize: 22,
+    welcomeTitleColor: '#000000',
+    welcomeDescriptionFontSize: 17,
+    welcomeDescriptionColor: '#000000',
     speakerImageSize: 2,
     speakersSpace: 0,
     orderedIds: [],

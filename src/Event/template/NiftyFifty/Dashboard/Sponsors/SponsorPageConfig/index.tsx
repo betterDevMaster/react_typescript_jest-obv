@@ -8,7 +8,7 @@ import AddSponsorButton from 'Event/template/NiftyFifty/Dashboard/Sponsors/Spons
 import Button from '@material-ui/core/Button'
 import Box from '@material-ui/core/Box'
 import PageSettingsDialog from 'Event/template/NiftyFifty/Dashboard/Sponsors/SponsorPageConfig/PageSettingsDialog'
-import NiftyFiftySponsorPage from 'Event/template/NiftyFifty/Dashboard/Sponsors'
+import SponsorPage from 'Event/template/NiftyFifty/Dashboard/Sponsors'
 import {useSponsors} from 'organization/Event/SponsorsProvider'
 import {useSetIsEditMode} from 'Event/Dashboard/editor/views/ConfigBar'
 
@@ -70,7 +70,7 @@ function SponsorsPageConfigContent() {
         </Button>
       </Box>
       <StyledAddSponsorButton onAdd={handleAddedSponsor} />
-      <NiftyFiftySponsorPage isEditMode sponsors={sponsors} />
+      <SponsorPage isEditMode sponsors={sponsors} />
     </>
   )
 }

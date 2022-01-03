@@ -25,11 +25,19 @@ export default function SpeakerPage(props: {
         <SpeakerPageEditDialog visible={configVisible} onClose={toggleConfig} />
       </EditModeOnly>
       <Editable onEdit={toggleConfig}>
-        <PageTitle aria-label="speakers title">
+        <PageTitle
+          color={speakerPageSettings.welcomeTitleColor}
+          size={speakerPageSettings.welcomeTitleFontSize}
+          aria-label="speakers title"
+        >
           {v(speakerPageSettings.title)}
         </PageTitle>
       </Editable>
-      <PageDescription>
+      <PageDescription
+        aria-label="speakers description"
+        color={speakerPageSettings.welcomeDescriptionColor}
+        size={speakerPageSettings.welcomeDescriptionFontSize}
+      >
         <Content>{v(speakerPageSettings.description)}</Content>
       </PageDescription>
       <SpeakerEditDialog isEditMode={props.isEditMode} />

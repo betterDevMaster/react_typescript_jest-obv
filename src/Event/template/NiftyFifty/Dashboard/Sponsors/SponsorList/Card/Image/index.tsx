@@ -2,8 +2,6 @@ import {Sponsor} from 'Event/SponsorPage'
 import styled from 'styled-components'
 import React from 'react'
 
-const SPONSOR_PLACEHOLDER = 'http://placehold.jp/300x100.png'
-
 type ImageProps = {
   sponsor: Sponsor
   isEditMode?: boolean
@@ -12,17 +10,15 @@ type ImageProps = {
 
 export default function Image(props: ImageProps) {
   const {sponsor} = props
-  const alt = sponsor.name
+  const src = sponsor.image?.url
 
-  if (!sponsor.image && !props.isEditMode) {
+  if (!sponsor.image || !props.isEditMode) {
     return null
   }
 
-  const src = sponsor.image?.url || SPONSOR_PLACEHOLDER
-
   return (
     <ImageBox className={props.className}>
-      <ImageEl src={src} alt={alt} aria-label="sponsor image" />
+      <ImageEl src={src} aria-label="sponsor image" />
     </ImageBox>
   )
 }
@@ -35,5 +31,5 @@ const ImageBox = styled.div`
 `
 
 const ImageEl = styled.img`
-  cursor: 'grab';
+  cursor: grab;
 `

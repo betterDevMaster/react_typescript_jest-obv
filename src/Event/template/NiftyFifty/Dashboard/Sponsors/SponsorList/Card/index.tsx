@@ -82,7 +82,6 @@ function Content(props: SponsorProps) {
           <Left item xs={imageSize}>
             <StyledImage sponsor={sponsor} isEditMode={props.isEditMode} />
           </Left>
-          {/* <Body sponsor={sponsor} /> */}
           <TextContent>{v(sponsor.description)}</TextContent>
           <Buttons sponsor={props.sponsor} />
           <StyledQuestionIcon sponsor={sponsor} onClick={toggleForm} />
@@ -118,7 +117,7 @@ const StyledEditable = styled(Editable)`
 
 const StyledGrid = styled.div`
   position: relative;
-  padding: 10% 4%;
+  padding: ${(props) => props.theme.spacing[4]};
   height: 100%;
 `
 

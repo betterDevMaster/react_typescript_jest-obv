@@ -11,7 +11,7 @@ import {useNiftyFiftyTemplate} from 'Event/template/NiftyFifty'
 import PageSettingsDialog from 'Event/template/NiftyFifty/Dashboard/Sponsors/SponsorPageConfig/PageSettingsDialog'
 import Content from 'lib/ui/form/TextEditor/Content'
 
-export default function NiftyFiftySponsorPage(props: {
+export default function SponsorPage(props: {
   isEditMode?: boolean
   sponsors: Sponsor[]
 }) {
@@ -26,11 +26,19 @@ export default function NiftyFiftySponsorPage(props: {
         <PageSettingsDialog visible={configVisible} onClose={toggleConfig} />
       </EditModeOnly>
       <Editable onEdit={toggleConfig}>
-        <PageTitle aria-label="sponsors title">
+        <PageTitle
+          aria-label="sponsors title"
+          color={sponsorsPageSettings.welcomeTitleColor}
+          size={sponsorsPageSettings.welcomeTitleFontSize}
+        >
           {v(sponsorsPageSettings.title)}
         </PageTitle>
       </Editable>
-      <PageDescription aria-label="sponsors description">
+      <PageDescription
+        aria-label="sponsors description"
+        color={sponsorsPageSettings.welcomeDescriptionColor}
+        size={sponsorsPageSettings.welcomeDescriptionFontSize}
+      >
         <Content>{v(sponsorsPageSettings.description)}</Content>
       </PageDescription>
       <SponsorEditDialog isEditMode={props.isEditMode} />

@@ -33,7 +33,7 @@ export default function Waiver() {
           __html: v(body),
         }}
       />
-      <Box mb={2}>
+      <Box mb={2} p={2}>
         <FormControl required component="fieldset">
           <FormControlLabel
             control={
@@ -59,9 +59,9 @@ export default function Waiver() {
 
 const Body = styled.div`
   width: 100%;
-  overflow-y: auto;
   border-radius: 10px;
-  margin-bottom: 16px;
+  margin-bottom: ${(props) => props.theme.spacing[4]};
+  padding: ${(props) => props.theme.spacing[2]};
   background: #ffffff;
   color: #000000;
 `
@@ -79,5 +79,6 @@ const StyledSignature = styled(Signature)`
   canvas {
     border: none;
     border-radius: 10px;
+    width: 100%;
   }
 `

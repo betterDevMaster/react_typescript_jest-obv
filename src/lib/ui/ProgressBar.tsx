@@ -32,27 +32,25 @@ export default function ProgressBar(
   }
 
   return (
-    <Container maxWidth="sm">
-      <Box display="flex" alignItems="center" mb={3}>
-        <BarContainer thickness={props.thickness}>
-          <StyledLinearProgress variant="determinate" {...props} />
-          <StyledTypography
-            variant="body2"
-            textColor={props.checkcolor ? props.checkcolor : '#000000'}
-            thickness={props.thickness}
-          >
-            {props.checktitle}&nbsp;
-          </StyledTypography>
-          <StyledTypography
-            variant="body2"
-            textColor={props.textColor}
-            thickness={props.thickness}
-          >
-            {props.text}
-          </StyledTypography>
-        </BarContainer>
-      </Box>
-    </Container>
+    <Box display="flex" alignItems="center">
+      <BarContainer thickness={props.thickness}>
+        <StyledLinearProgress variant="determinate" {...props} />
+        <StyledTypography
+          variant="body2"
+          textColor={props.checkcolor ? props.checkcolor : '#000000'}
+          thickness={props.thickness}
+        >
+          {props.checktitle}&nbsp;
+        </StyledTypography>
+        <StyledTypography
+          variant="body2"
+          textColor={props.textColor}
+          thickness={props.thickness}
+        >
+          {props.text}
+        </StyledTypography>
+      </BarContainer>
+    </Box>
   )
 }
 

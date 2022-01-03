@@ -123,6 +123,6 @@ const SpeakerName = styled.div<{
 
 const StyledImage = styled(Image)`
   float: left;
-  margin-bottom: ${(props) => props.theme.spacing[4]};
-  margin-right: ${(props) => props.theme.spacing[4]};
+  margin: ${(props) =>
+    `${props.theme.spacing[5]} ${props.theme.spacing[4]} ${props.theme.spacing[4]} 0`};
 `
