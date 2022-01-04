@@ -1,8 +1,10 @@
-import {OfflinePageProps} from 'Event/JoinArea/OfflinePage'
 import React from 'react'
+import styled from 'styled-components'
+
+import {useGuestVariables} from 'Event'
+import {OfflinePageProps} from 'Event/JoinArea/OfflinePage'
 import Page, {DescriptionText} from 'Event/template/NiftyFifty/Login/Page'
 import {useNiftyFiftyTemplate} from 'Event/template/NiftyFifty'
-import {useGuestVariables} from 'Event'
 
 export default function OfflinePage(props: OfflinePageProps) {
   const {title, description, isPreview} = props
@@ -10,12 +12,12 @@ export default function OfflinePage(props: OfflinePageProps) {
 
   return (
     <Page isPreview={isPreview || false}>
-      <>
-        <Text fontSize={24}>{v(title)}</Text>
-        <Text>
-          <div dangerouslySetInnerHTML={{__html: v(description)}} />
-        </Text>
-      </>
+      {/* <Box> */}
+      <Text fontSize={24}>{v(title)}</Text>
+      <Text>
+        <div dangerouslySetInnerHTML={{__html: v(description)}} />
+      </Text>
+      {/* </Box> */}
     </Page>
   )
 }
@@ -44,3 +46,9 @@ function Text(props: {
     </DescriptionText>
   )
 }
+
+const Box = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+`

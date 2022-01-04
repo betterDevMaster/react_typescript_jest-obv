@@ -221,6 +221,7 @@ export const Container = styled.div<{
   display: flex;
   flex-direction: column;
   align-items: center;
+  justify-content: center;
   background-size: 100% 100% !important;
   background-position: center;
   background-repeat: no-repeat !important;

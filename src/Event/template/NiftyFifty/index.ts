@@ -178,6 +178,7 @@ export type NiftyFifty = BaseTemplate &
     techCheck?: {
       buttonText?: string
       buttonBackground?: string
+      buttonHoverBackground?: string
       buttonTextColor?: string
       buttonBorderRadius?: number
       buttonBorderWidth?: number
@@ -464,6 +465,7 @@ export const createNiftyFifty = (): DeepRequired<NiftyFifty> => ({
   techCheck: {
     buttonText: 'Start Tech Check',
     buttonBackground: colors.primary,
+    buttonHoverBackground: colors.secondary,
     buttonTextColor: '#FFFFFF',
     buttonBorderRadius: 0,
     buttonBorderWidth: 0,

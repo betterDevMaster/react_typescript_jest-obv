@@ -11,7 +11,6 @@ export interface ProgressBarStyleProps {
   barColor: string
   backgroundColor: string
   textColor: string
-  checkcolor?: string
   thickness: number
   borderRadius: number
 }
@@ -19,7 +18,6 @@ export interface ProgressBarStyleProps {
 export type ProgressBarProps = {
   value: number
   showing: boolean
-  checktitle?: string
   text: string
 } & ProgressBarStyleProps
 
@@ -34,13 +32,6 @@ export default function ProgressBar(
     <Box display="flex" alignItems="center">
       <BarContainer thickness={props.thickness}>
         <StyledLinearProgress variant="determinate" {...props} />
-        <StyledTypography
-          variant="body2"
-          textColor={props.checkcolor ? props.checkcolor : '#000000'}
-          thickness={props.thickness}
-        >
-          {props.checktitle}&nbsp;
-        </StyledTypography>
         <StyledTypography
           variant="body2"
           textColor={props.textColor}
@@ -59,9 +50,6 @@ const BarContainer = styled.div<{
   width: 100%;
   position: relative;
   height: ${(props) => props.thickness}px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
 `
 
 const StyledLinearProgress = styled(
@@ -128,4 +116,7 @@ const StyledTypography = styled(
   z-index: 1;
   font-size: ${(props) => props.thickness / 2}px;
   color: ${(props) => props.textColor} !important;
+  position: absolute;
+  left: 5%;
+  top: 15%;
 `

@@ -98,6 +98,8 @@ function StartButton(props: {
   const textColor = settings?.buttonTextColor || '#FFFFFF'
   const backgroundColor =
     settings?.buttonBackground || DEFAULTS.techCheck.buttonBackground
+  const buttonHoverBackground =
+    settings?.buttonHoverBackground || DEFAULTS.techCheck.buttonHoverBackground
   const borderColor =
     settings?.buttonBorderColor || DEFAULTS.techCheck.buttonBorderColor
 
@@ -108,6 +110,7 @@ function StartButton(props: {
       <StyledButton
         textColor={textColor}
         backgroundColor={backgroundColor}
+        buttonHoverBackground={buttonHoverBackground}
         borderColor={borderColor}
         borderRadius={
           settings?.buttonBorderRadius || DEFAULTS.techCheck.buttonBorderRadius
@@ -159,6 +162,7 @@ const StyledButton = styled(
   ({
     textColor,
     backgroundColor,
+    buttonHoverBackground,
     borderRadius,
     borderColor,
     borderWidth,
@@ -166,14 +170,18 @@ const StyledButton = styled(
   }: ButtonProps & {
     textColor: string
     backgroundColor: string
+    buttonHoverBackground: string
     borderRadius: number
     borderColor: string
     borderWidth: number
   }) => <MuiButton {...otherProps} />,
 )`
-  color: ${(props) => props.textColor}!important;
+  color: ${(props) => props.textColor};
   border: ${(props) => props.borderWidth}px solid
-    ${(props) => props.borderColor} !important;
-  background: ${(props) => props.backgroundColor} !important;
-  border-radius: ${(props) => props.borderRadius}px !important;
+    ${(props) => props.borderColor};
+  background: ${(props) => props.backgroundColor};
+  border-radius: ${(props) => props.borderRadius}px;
+  &:hover {
+    background: ${(props) => props.buttonHoverBackground};
+  }
 `

@@ -33,6 +33,7 @@ import {NiftyFifty} from 'Event/template/NiftyFifty'
 import TechCheck from 'Event/template/NiftyFifty/Step3/TechCheck'
 import LocalizedDateTimePicker from 'lib/LocalizedDateTimePicker'
 import SkipTechCheckRulesConfig from 'Event/template/SimpleBlog/Step3/TechCheckConfig/SkipTechCheckRulesConfig'
+import {SaveButton} from 'organization/Event/DashboardConfig/ComponentConfig'
 
 /**
  * Default props to use for techCheck. These will be set when an
@@ -106,16 +107,14 @@ export default function Form() {
 
   const submit = (data: Omit<TechCheckData, 'template'>) => {
     setSubmitting(true)
-
+    updateTemplate({
+      techCheck,
+      skipTechCheckRules: rules,
+    })
     setTechCheck(data)
       .then((event) => {
-        dispatch(setEvent(event))
-      })
-      .then((event) => {
-        updateTemplate({
-          techCheck,
-          skipTechCheckRules: rules,
-        })
+        setResponseError(null)
+        // dispatch(setEvent(event))
       })
       .catch((e) => {
         setResponseError(e)
@@ -245,16 +244,6 @@ export default function Form() {
                 submitting={submitting}
               />
             </Grid>
-            <Button
-              fullWidth
-              variant="contained"
-              color="primary"
-              type="submit"
-              aria-label="save tech check"
-              disabled={!canSave}
-            >
-              Save
-            </Button>
             <Grid item xs={12} md={12}>
               <PreviewBodyLabel>Preview</PreviewBodyLabel>
               <TechCheckPreview
@@ -268,6 +257,16 @@ export default function Form() {
           </Grid>
         </Box>
         <Error>{responseError?.message}</Error>
+        <Button
+          fullWidth
+          variant="contained"
+          color="primary"
+          type="submit"
+          aria-label="save tech check"
+          disabled={!canSave}
+        >
+          Save
+        </Button>
       </form>
     </SkipTechCheckRulesConfig>
   )

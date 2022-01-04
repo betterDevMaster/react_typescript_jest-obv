@@ -37,6 +37,7 @@ import TemplateFields, {
 } from 'Event/template/NiftyFifty/Step2/WaiverConfig/TemplateFields'
 import TemplateProvider from 'Event/TemplateProvider'
 import Step2 from 'Event/template/NiftyFifty/Step2'
+import PostFormStylesConfig from 'Event/Step2/PostFormStylesConfig'
 
 import {fieldError} from 'lib/form'
 import {ValidationError} from 'lib/ui/api-client'
@@ -73,6 +74,7 @@ export default function WaiverConfig() {
   } = useForm()
   const [submitting, setSubmitting] = useState(false)
   const [logo, setLogo] = useState<null | File>(null)
+  const [showFormStyleButton, setShowFormStyleButton] = useState(false)
   const user = useObvioUser()
   const {
     waiverConfig,
@@ -83,6 +85,7 @@ export default function WaiverConfig() {
   const signature_prompt = watch('signature_prompt')
   const title = watch('title')
   const body = watch('body')
+  const form_id = watch('form_id')
   const isEnabled = watch('is_enabled')
   const templateConfig = watch('template')
   const template = useNiftyFiftyTemplate()
@@ -115,6 +118,11 @@ export default function WaiverConfig() {
 
   // Prevent updating unmounted component
   const mounted = useRef(true)
+
+  useEffect(() => {
+    if (form_id) setShowFormStyleButton(true)
+    else setShowFormStyleButton(false)
+  }, [form_id])
 
   useEffect(() => {
     if (!mounted.current || !event.waiver) {
@@ -235,6 +243,7 @@ export default function WaiverConfig() {
               )}
             />
           </FormControl>
+          {showFormStyleButton && <PostFormStylesConfig />}
           <Editor>
             <BodyLabel required={isEnabled} error={!!errors.body}>
               Body
@@ -290,9 +299,9 @@ export default function WaiverConfig() {
                 submitting={submitting}
               />
             </Grid>
-            <SaveButton disabled={submitting} />
             <Grid item xs={12} md={12}>
               <Grid item xs={12} md={12}>
+                <PreviewBodyLabel>Preview</PreviewBodyLabel>
                 <Preview
                   body={body}
                   title={title}
@@ -305,6 +314,7 @@ export default function WaiverConfig() {
               </Grid>
             </Grid>
           </Grid>
+          <SaveButton disabled={submitting} />
         </form>
       </Page>
     </Layout>
@@ -452,4 +462,7 @@ const ImagePreview = styled.div`
     width: 100%;
     max-height: 100%;
   }
+`
+const PreviewBodyLabel = styled(BodyLabel)`
+  margin-top: ${(props) => props.theme.spacing[4]};
 `

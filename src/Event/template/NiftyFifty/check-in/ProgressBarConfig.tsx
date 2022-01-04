@@ -105,8 +105,6 @@ export default function ProgressBarConfig() {
           showing={localProgressBar.showing}
           barColor={localProgressBar.barColor}
           text={localProgressBar.step1Text}
-          checktitle={localProgressBar.checkInTitle}
-          checkcolor={localProgressBar.checkInColor}
           backgroundColor={localProgressBar.backgroundColor}
           textColor={localProgressBar.textColor}
           thickness={localProgressBar.thickness}

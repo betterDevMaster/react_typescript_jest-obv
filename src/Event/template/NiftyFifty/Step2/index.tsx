@@ -155,7 +155,6 @@ function WaiverOnly() {
 
 function SubmitButton(props: {canSubmit: boolean}) {
   const {waiver} = useNiftyFiftyTemplate()
-
   const v = useAttendeeVariables()
 
   const textColor = waiver?.buttonTextColor || DEFAULTS.waiver.buttonTextColor
