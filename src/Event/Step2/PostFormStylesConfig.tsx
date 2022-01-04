@@ -1,22 +1,19 @@
-import TextField from '@material-ui/core/TextField'
-import {onUnknownChangeHandler} from 'lib/dom'
-import ColorPicker from 'lib/ui/ColorPicker'
-import Select from '@material-ui/core/Select'
-import InputLabel from '@material-ui/core/InputLabel'
-import MenuItem from '@material-ui/core/MenuItem'
-import Box from '@material-ui/core/Box'
 import React from 'react'
-import Button from '@material-ui/core/Button'
+import {Controller, useForm} from 'react-hook-form'
 import styled from 'styled-components'
+
+import {Button, TextField} from '@material-ui/core'
+
+import {Template} from 'Event/template'
+import {useTemplate} from 'Event/TemplateProvider'
+import {useTemplateUpdate} from 'Event/TemplateUpdateProvider'
+
+import ColorPicker from 'lib/ui/ColorPicker'
+import {useToggle} from 'lib/toggle'
+
 import ComponentConfig, {
   SaveButton,
 } from 'organization/Event/DashboardConfig/ComponentConfig'
-
-import {useToggle} from 'lib/toggle'
-import {Controller, useForm} from 'react-hook-form'
-import {useTemplate} from 'Event/TemplateProvider'
-import {useTemplateUpdate} from 'Event/TemplateUpdateProvider'
-import {Template} from 'Event/template'
 
 export default function PostFormStylesConfig() {
   const {flag: showingConfig, toggle: toggleConfig} = useToggle()
@@ -34,7 +31,7 @@ export default function PostFormStylesConfig() {
   }
 
   return (
-    <>
+    <Box>
       <StyledEditPostFormStylesButton onClick={toggleConfig} />
       <ComponentConfig
         isVisible={showingConfig}
@@ -43,8 +40,8 @@ export default function PostFormStylesConfig() {
       >
         <form onSubmit={handleSubmit(submit)}>
           <Controller
-            name="inputStyles.labelColor"
-            defaultValue={postFormStyles.inputStyles.labelColor}
+            name="inputWaiverStyles.labelColor"
+            defaultValue={postFormStyles.inputWaiverStyles.labelColor}
             control={control}
             render={({value, onChange}) => (
               <ColorPicker
@@ -56,8 +53,8 @@ export default function PostFormStylesConfig() {
             )}
           />
           <Controller
-            name="inputStyles.borderColor"
-            defaultValue={postFormStyles.inputStyles.borderColor}
+            name="inputWaiverStyles.borderColor"
+            defaultValue={postFormStyles.inputWaiverStyles.borderColor}
             control={control}
             render={({value, onChange}) => (
               <ColorPicker
@@ -69,8 +66,8 @@ export default function PostFormStylesConfig() {
             )}
           />
           <Controller
-            name="inputStyles.backgroundColor"
-            defaultValue={postFormStyles.inputStyles.backgroundColor}
+            name="inputWaiverStyles.backgroundColor"
+            defaultValue={postFormStyles.inputWaiverStyles.backgroundColor}
             control={control}
             render={({value, onChange}) => (
               <ColorPicker
@@ -82,8 +79,8 @@ export default function PostFormStylesConfig() {
             )}
           />
           <TextField
-            name="inputStyles.backgroundOpacity"
-            defaultValue={postFormStyles.inputStyles.backgroundOpacity}
+            name="inputWaiverStyles.backgroundOpacity"
+            defaultValue={postFormStyles.inputWaiverStyles.backgroundOpacity}
             label="Input Background Color Opacity"
             type="number"
             fullWidth
@@ -94,8 +91,8 @@ export default function PostFormStylesConfig() {
             }}
           />
           <Controller
-            name="inputStyles.textColor"
-            defaultValue={postFormStyles.inputStyles.textColor}
+            name="inputWaiverStyles.textColor"
+            defaultValue={postFormStyles.inputWaiverStyles.textColor}
             control={control}
             render={({value, onChange}) => (
               <ColorPicker
@@ -107,8 +104,8 @@ export default function PostFormStylesConfig() {
             )}
           />
           <Controller
-            name="inputStyles.helperTextColor"
-            defaultValue={postFormStyles.inputStyles.helperTextColor}
+            name="inputWaiverStyles.helperTextColor"
+            defaultValue={postFormStyles.inputWaiverStyles.helperTextColor}
             control={control}
             render={({value, onChange}) => (
               <ColorPicker
@@ -119,10 +116,37 @@ export default function PostFormStylesConfig() {
               />
             )}
           />
+          <Controller
+            name="inputWaiverStyles.rdchkSelectedColor"
+            defaultValue={postFormStyles.inputWaiverStyles.rdchkSelectedColor}
+            control={control}
+            render={({value, onChange}) => (
+              <ColorPicker
+                label="Radio/Checkbox Selected Color"
+                color={value}
+                onPick={onChange}
+                aria-label="helper text color"
+              />
+            )}
+          />
+          <Controller
+            name="inputWaiverStyles.rdchkUnSelectedColor"
+            defaultValue={postFormStyles.inputWaiverStyles.rdchkUnSelectedColor}
+            control={control}
+            render={({value, onChange}) => (
+              <ColorPicker
+                label="Radio/Checkbox Un-Selected Color"
+                color={value}
+                onPick={onChange}
+                aria-label="helper text color"
+              />
+            )}
+          />
+
           <SaveButton />
         </form>
       </ComponentConfig>
-    </>
+    </Box>
   )
 }
 
@@ -145,6 +169,11 @@ function EditPostFormStylesButton(props: {
   )
 }
 
-const StyledEditPostFormStylesButton = styled(EditPostFormStylesButton)`
-  margin-bottom: ${(props) => props.theme.spacing[3]}!important;
+const Box = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  width: 100%;
 `
+const StyledEditPostFormStylesButton = styled(EditPostFormStylesButton)``

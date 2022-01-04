@@ -24,7 +24,6 @@ export default function Radio(props: FieldProps) {
   const otherInputVisible =
     Boolean(value) &&
     !props.question.options.map(({value}) => value).includes(value)
-
   return (
     <FormControl
       error={props.hasError}
@@ -51,7 +50,12 @@ export default function Radio(props: FieldProps) {
           <StyledFormControlLabel
             key={index}
             value={option.value}
-            control={<RadioInput />}
+            control={
+              <StyledRadio
+                selectedColor={props.inputStyles?.rdchkSelectedColor}
+                unSelectedColor={props.inputStyles?.rdchkUnSelectedColor}
+              />
+            }
             label={option.value}
             color={props.inputStyles?.textColor}
           />
@@ -84,7 +88,13 @@ function OtherOption(
     <>
       <StyledFormControlLabel
         value={OTHER}
-        control={<RadioInput checked={props.hasOtherValue} />}
+        control={
+          <StyledRadio
+            selectedColor={props.inputStyles?.rdchkSelectedColor}
+            unSelectedColor={props.inputStyles?.rdchkUnSelectedColor}
+            checked={props.hasOtherValue}
+          />
+        }
         label="Other"
         color={props.inputStyles?.textColor}
       />
@@ -140,8 +150,16 @@ const StyledFormLabel = styled((props) => {
 `
 const StyledFormControlLabel = styled((props) => {
   const {color, ...otherProps} = props
-
   return <FormControlLabel {...otherProps} />
 })`
   color: ${(props) => (props.color ? `${props.color} !important;` : '')};
+`
+const StyledRadio = styled(RadioInput)<{
+  selectedColor?: string
+  unSelectedColor?: string
+}>`
+  color: ${(props) => props.unSelectedColor};
+  &.Mui-checked {
+    color: ${(props) => props.selectedColor};
+  }
 `

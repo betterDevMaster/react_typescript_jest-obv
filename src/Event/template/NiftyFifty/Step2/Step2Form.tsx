@@ -13,6 +13,8 @@ export default function Step2Form(props: {
   responseError: ValidationError<any>
   setValue: UseFormMethods['setValue']
   answers: Answer[]
+  disabled: boolean
+  inputWaiverStyles: any
 }) {
   const {
     form,
@@ -22,6 +24,8 @@ export default function Step2Form(props: {
     responseError,
     setValue,
     answers,
+    disabled,
+    inputWaiverStyles,
   } = props
 
   return (
@@ -37,6 +41,8 @@ export default function Step2Form(props: {
           register={register}
           responseError={responseError}
           setValue={setValue}
+          disabled={disabled}
+          inputStyles={inputWaiverStyles}
         />
       ))}
     </>

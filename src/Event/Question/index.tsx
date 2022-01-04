@@ -32,6 +32,19 @@ export interface InputStyles {
   backgroundOpacity?: number
   textColor?: string
   helperTextColor?: string
+  rdchkSelectedColor?: string
+  rdchkUnSelectedColor?: string
+}
+
+export interface InputWaiverStyles {
+  labelColor?: string
+  borderColor?: string
+  backgroundColor?: string
+  backgroundOpacity?: number
+  textColor?: string
+  helperTextColor?: string
+  rdchkSelectedColor?: string
+  rdchkUnSelectedColor?: string
 }
 
 export interface QuestionProps {

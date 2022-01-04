@@ -35,7 +35,6 @@ import TemplateFields, {
   NiftyFiftyWaiverTemplateProps,
   WaiverTemplatePropSetter,
 } from 'Event/template/NiftyFifty/Step2/WaiverConfig/TemplateFields'
-import TemplateProvider from 'Event/TemplateProvider'
 import Step2 from 'Event/template/NiftyFifty/Step2'
 import PostFormStylesConfig from 'Event/Step2/PostFormStylesConfig'
 
@@ -232,18 +231,26 @@ export default function WaiverConfig() {
             />
             <UploadedLogo logo={logo} remove={removeLogo} />
           </Box>
-          <FormControl fullWidth>
-            <InputLabel>Form</InputLabel>
-            <Controller
-              name="form_id"
-              control={control}
-              defaultValue={event.waiver?.form?.id || ''}
-              render={({onChange, value}) => (
-                <FormSelect onChange={onChange} value={value} />
-              )}
-            />
-          </FormControl>
-          {showFormStyleButton && <PostFormStylesConfig />}
+          <Grid container spacing={3}>
+            <Grid item xs={12} md={!showFormStyleButton ? 12 : 8}>
+              <FormControl fullWidth>
+                <InputLabel>Form</InputLabel>
+                <Controller
+                  name="form_id"
+                  control={control}
+                  defaultValue={event.waiver?.form?.id || ''}
+                  render={({onChange, value}) => (
+                    <FormSelect onChange={onChange} value={value} />
+                  )}
+                />
+              </FormControl>
+            </Grid>
+            {showFormStyleButton && (
+              <Grid item xs={12} md={4}>
+                <PostFormStylesConfig />
+              </Grid>
+            )}
+          </Grid>
           <Editor>
             <BodyLabel required={isEnabled} error={!!errors.body}>
               Body

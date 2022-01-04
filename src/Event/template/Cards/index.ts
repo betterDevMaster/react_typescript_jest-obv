@@ -9,7 +9,6 @@ import {BaseTemplate, BASE_DEFAULTS, Header} from 'Event/template'
 import {BlogPost} from 'Event/Dashboard/components/BlogPosts'
 import {DeepRequired} from 'lib/type-utils'
 import {SidebarItem} from 'Event/template/Cards/Dashboard/Sidebar/SidebarItem'
-import {InputStyles} from 'Event/Question'
 import {CountDownTimer} from 'Event/Dashboard/components/CountDownTimer'
 import {Hero} from 'Event/template/Cards/Dashboard/Hero/HeroConfig'
 import {CardsNavButtonProps} from 'Event/template/Cards/Dashboard/CardsNavButton'
@@ -61,16 +60,6 @@ export type Cards = BaseTemplate &
       dividerColor: string
       textColor: string
     }
-    postStyles?: {
-      titleTextColor?: string
-      titleCapitalize?: boolean
-      titleFontSize?: number
-      dateTextColor?: string
-      contentFontSize?: number
-      contentTextColor?: string
-      spacing?: number
-    }
-    postFormStyles?: QuestionFormStyle
     header: CardsHeader
     dashboardBackground?: {
       color: string
@@ -259,19 +248,6 @@ export type CardsHeader = Header & {
   logoSize: number
 }
 
-export type QuestionFormStyle = {
-  width?: number
-  position?: string
-  buttonSize?: number
-  buttonRadius?: number
-  buttonColor?: string
-  buttonBackgroundColor?: string
-  buttonHoverBackgroundColor?: string
-  buttonPosition?: string
-  buttonFontSize?: number
-  inputStyles?: InputStyles
-}
-
 export const createCards = (): DeepRequired<Cards> => ({
   ...BASE_DEFAULTS,
   version: 1,
@@ -439,34 +415,6 @@ export const createCards = (): DeepRequired<Cards> => ({
     menuTitle: 'Backgrounds',
     isVisible: false,
     orderedIds: [],
-  },
-  postStyles: {
-    titleTextColor: '#000000',
-    titleFontSize: 30,
-    titleCapitalize: true,
-    dateTextColor: '#adadad',
-    contentTextColor: '#000000',
-    contentFontSize: 17,
-    spacing: 32,
-  },
-  postFormStyles: {
-    width: 100,
-    position: 'center',
-    buttonSize: 100,
-    buttonRadius: 0,
-    buttonColor: 'pink',
-    buttonBackgroundColor: 'blue',
-    buttonHoverBackgroundColor: 'blue',
-    buttonPosition: 'center',
-    buttonFontSize: 27,
-    inputStyles: {
-      labelColor: '#7d7a7a',
-      borderColor: '#7d7a7a',
-      backgroundColor: '#7d7a7a',
-      backgroundOpacity: 0,
-      textColor: '#7d7a7a',
-      helperTextColor: '#7d7a7a',
-    },
   },
   dashboardBackground: {
     color: '#FFFFFF',

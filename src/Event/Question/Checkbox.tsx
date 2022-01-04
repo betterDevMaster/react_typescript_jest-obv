@@ -105,9 +105,11 @@ function Inputs(
         <StyledFormControlLabel
           key={index}
           control={
-            <CheckboxInput
+            <StyledCheckbox
               checked={isChecked(option)}
               onChange={onChangeCheckedHandler(setChecked(option))}
+              selectedColor={props.inputStyles?.rdchkSelectedColor}
+              unSelectedColor={props.inputStyles?.rdchkUnSelectedColor}
             />
           }
           label={option.value}
@@ -131,4 +133,13 @@ const StyledFormControlLabel = styled((props) => {
   return <FormControlLabel {...otherProps} />
 })`
   color: ${(props) => (props.color ? `${props.color} !important;` : '')};
+`
+const StyledCheckbox = styled(CheckboxInput)<{
+  selectedColor?: string
+  unSelectedColor?: string
+}>`
+  color: ${(props) => props.unSelectedColor};
+  &.Mui-checked {
+    color: ${(props) => props.selectedColor};
+  }
 `

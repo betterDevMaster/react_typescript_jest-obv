@@ -1,6 +1,7 @@
 import {Panels} from 'Event/template/Panels'
 import {SimpleBlog} from 'Event/template/SimpleBlog'
 import {InputStyles} from 'Event/Question'
+import {InputWaiverStyles} from 'Event/Question'
 import {DeepRequired} from 'lib/type-utils'
 import {Cards} from 'Event/template/Cards'
 import {Rule} from 'Event/attendee-rules'
@@ -50,6 +51,7 @@ export type BaseTemplate = {
     buttonPosition?: string
     buttonFontSize?: number
     inputStyles?: InputStyles
+    inputWaiverStyles?: InputWaiverStyles
   }
 
   skipTechCheckRules: Rule[]
@@ -99,6 +101,18 @@ export const BASE_DEFAULTS: DeepRequired<BaseTemplate> = {
       backgroundOpacity: 0,
       textColor: '#7d7a7a',
       helperTextColor: '#7d7a7a',
+      rdchkSelectedColor: '#7d7a7a',
+      rdchkUnSelectedColor: '#7d7a7a',
+    },
+    inputWaiverStyles: {
+      labelColor: '#7d7a7a',
+      borderColor: '#7d7a7a',
+      backgroundColor: '#7d7a7a',
+      backgroundOpacity: 0,
+      textColor: '#7d7a7a',
+      helperTextColor: '#7d7a7a',
+      rdchkSelectedColor: '#7d7a7a',
+      rdchkUnSelectedColor: '#7d7a7a',
     },
   },
   skipTechCheckRules: [],
