@@ -290,6 +290,7 @@ export default function WaiverConfig() {
                 submitting={submitting}
               />
             </Grid>
+            <SaveButton disabled={submitting} />
             <Grid item xs={12} md={12}>
               <Grid item xs={12} md={12}>
                 <Preview
@@ -299,14 +300,11 @@ export default function WaiverConfig() {
                   agreeStatement={agree_statement}
                   signaturePrompt={signature_prompt}
                 >
-                  <TemplateProvider template={updatedTemplate}>
-                    <Step2 user={user} />
-                  </TemplateProvider>
+                  <Step2 user={user} />
                 </Preview>
               </Grid>
             </Grid>
           </Grid>
-          <SaveButton disabled={submitting} />
         </form>
       </Page>
     </Layout>

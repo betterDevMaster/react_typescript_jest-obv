@@ -106,14 +106,16 @@ export default function Form() {
 
   const submit = (data: Omit<TechCheckData, 'template'>) => {
     setSubmitting(true)
-    updateTemplate({
-      techCheck,
-      skipTechCheckRules: rules,
-    })
 
     setTechCheck(data)
       .then((event) => {
         dispatch(setEvent(event))
+      })
+      .then((event) => {
+        updateTemplate({
+          techCheck,
+          skipTechCheckRules: rules,
+        })
       })
       .catch((e) => {
         setResponseError(e)
@@ -243,6 +245,16 @@ export default function Form() {
                 submitting={submitting}
               />
             </Grid>
+            <Button
+              fullWidth
+              variant="contained"
+              color="primary"
+              type="submit"
+              aria-label="save tech check"
+              disabled={!canSave}
+            >
+              Save
+            </Button>
             <Grid item xs={12} md={12}>
               <PreviewBodyLabel>Preview</PreviewBodyLabel>
               <TechCheckPreview
@@ -256,16 +268,6 @@ export default function Form() {
           </Grid>
         </Box>
         <Error>{responseError?.message}</Error>
-        <Button
-          fullWidth
-          variant="contained"
-          color="primary"
-          type="submit"
-          aria-label="save tech check"
-          disabled={!canSave}
-        >
-          Save
-        </Button>
       </form>
     </SkipTechCheckRulesConfig>
   )

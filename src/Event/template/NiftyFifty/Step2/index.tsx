@@ -3,6 +3,7 @@ import {useForm} from 'react-hook-form'
 import styled from 'styled-components'
 
 import MuiButton, {ButtonProps} from '@material-ui/core/Button'
+import Grid from '@material-ui/core/Grid'
 
 import {User} from 'auth/user'
 
@@ -13,6 +14,7 @@ import Waiver from 'Event/template/NiftyFifty/Step2/Waiver'
 import Step2Form from 'Event/template/NiftyFifty/Step2/Step2Form'
 import {useSubmissions} from 'Event/SubmissionsProvider'
 import {DEFAULTS, useNiftyFiftyTemplate} from 'Event/template/NiftyFifty'
+
 import LeftPanel from 'Event/template/NiftyFifty/check-in/LeftPanel'
 import RightPanel from 'Event/template/NiftyFifty/check-in/RightPanel'
 import MobilePanel from 'Event/template/NiftyFifty/check-in/MobilePanel'
@@ -153,32 +155,44 @@ function WaiverOnly() {
 
 function SubmitButton(props: {canSubmit: boolean}) {
   const {waiver} = useNiftyFiftyTemplate()
+
   const v = useAttendeeVariables()
 
   const textColor = waiver?.buttonTextColor || DEFAULTS.waiver.buttonTextColor
   const backgroundColor =
     waiver?.buttonBackground || DEFAULTS.waiver.buttonBackground
+  const backgroundHoverColor =
+    waiver?.buttonHoverBackground || DEFAULTS.waiver.buttonHoverBackground
   const borderColor =
     waiver?.buttonBorderColor || DEFAULTS.waiver.buttonBorderColor
+  const borderRadius =
+    waiver?.buttonBorderRadius || DEFAULTS.waiver.buttonBorderRadius
+  const borderWidth =
+    waiver?.buttonBorderWidth || DEFAULTS.waiver.buttonBorderWidth
 
   return (
-    <StyledButton
-      textColor={textColor}
-      backgroundColor={backgroundColor}
-      borderColor={borderColor}
-      borderRadius={
-        waiver?.buttonBorderRadius || DEFAULTS.waiver.buttonBorderRadius
-      }
-      borderWidth={
-        waiver?.buttonBorderWidth || DEFAULTS.waiver.buttonBorderWidth
-      }
-      aria-label="submit"
-      fullWidth
-      disabled={!props.canSubmit}
-      type="submit"
-    >
-      {v(waiver?.buttonText || DEFAULTS.waiver.buttonText)}
-    </StyledButton>
+    <Grid container justify="center">
+      <Grid
+        item
+        xs={12}
+        md={waiver?.buttonWidth || DEFAULTS.waiver.buttonWidth}
+      >
+        <StyledButton
+          textColor={textColor}
+          backgroundColor={backgroundColor}
+          backgroundHoverColor={backgroundHoverColor}
+          borderColor={borderColor}
+          borderRadius={borderRadius}
+          borderWidth={borderWidth}
+          aria-label="submit"
+          fullWidth
+          disabled={!props.canSubmit}
+          type="submit"
+        >
+          {v(waiver?.buttonText || DEFAULTS.waiver.buttonText)}
+        </StyledButton>
+      </Grid>
+    </Grid>
   )
 }
 
@@ -186,6 +200,7 @@ const StyledButton = styled(
   ({
     textColor,
     backgroundColor,
+    backgroundHoverColor,
     borderRadius,
     borderColor,
     borderWidth,
@@ -193,18 +208,21 @@ const StyledButton = styled(
   }: ButtonProps & {
     textColor: string
     backgroundColor: string
+    backgroundHoverColor: string
     borderRadius: number
     borderColor: string
     borderWidth: number
   }) => <MuiButton {...otherProps} />,
 )`
-  color: ${(props) => props.textColor}!important;
+  color: ${(props) => props.textColor};
   border: ${(props) => props.borderWidth}px solid
-    ${(props) => props.borderColor} !important;
-  background: ${(props) => props.backgroundColor} !important;
-  border-radius: ${(props) => props.borderRadius}px !important;
-  margin-top: 16px !important;
-
+    ${(props) => props.borderColor};
+  background: ${(props) => props.backgroundColor};
+  border-radius: ${(props) => props.borderRadius}px;
+  margin-top: 16px;
+  &:hover {
+    background: ${(props) => props.backgroundHoverColor};
+  }
   &:disabled {
     opacity: 0.6;
   }

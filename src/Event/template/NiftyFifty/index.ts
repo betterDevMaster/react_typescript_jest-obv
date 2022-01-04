@@ -189,6 +189,7 @@ export type NiftyFifty = BaseTemplate &
     waiver?: {
       buttonText?: string
       buttonBackground?: string
+      buttonHoverBackground?: string
       buttonTextColor?: string
       buttonBorderRadius?: number
       buttonBorderWidth?: number
@@ -477,6 +478,7 @@ export const createNiftyFifty = (): DeepRequired<NiftyFifty> => ({
   waiver: {
     buttonText: 'Submit',
     buttonBackground: colors.primary,
+    buttonHoverBackground: colors.secondary,
     buttonTextColor: '#FFFFFF',
     buttonBorderRadius: 0,
     buttonBorderWidth: 0,

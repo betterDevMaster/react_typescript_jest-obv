@@ -25,6 +25,7 @@ import {spacing} from 'lib/ui/theme'
 import Layout from 'organization/user/Layout'
 import Page from 'organization/Event/Page'
 import {useObvioUser} from 'obvio/auth'
+import {SaveButton} from 'organization/Event/DashboardConfig/ComponentConfig'
 
 const MIN_BUTTON_BORDER_RADIUS = 0
 const MAX_BUTTON_BORDER_RADIUS = 20
@@ -324,16 +325,7 @@ export function Config() {
                   )}
                 />
               </Grid>
-              <Grid item xs={12} md={12}>
-                <Button
-                  variant="contained"
-                  aria-label="save"
-                  type="submit"
-                  color="primary"
-                >
-                  Save
-                </Button>
-              </Grid>
+              <SaveButton />
             </Grid>
           </Grid>
         </Grid>

@@ -62,15 +62,6 @@ export default function TemplateFields(props: TemplateFieldProps) {
             onChange={onChangeStringHandler(set('buttonText'))}
           />
         </Grid>
-
-        <Grid item xs={12} md={6}>
-          <BackgroundPicker
-            label="Background"
-            background={waiver.buttonBackground}
-            onChange={set('buttonBackground')}
-            disabled={submitting}
-          />
-        </Grid>
         <Grid item xs={12} md={6}>
           <ColorPicker
             label="Text Color"
@@ -80,7 +71,22 @@ export default function TemplateFields(props: TemplateFieldProps) {
             disabled={submitting}
           />
         </Grid>
-
+        <Grid item xs={12} md={6}>
+          <BackgroundPicker
+            label="Background"
+            background={waiver.buttonBackground}
+            onChange={set('buttonBackground')}
+            disabled={submitting}
+          />
+        </Grid>
+        <Grid item xs={12} md={6}>
+          <BackgroundPicker
+            label="Hover Background"
+            background={waiver.buttonHoverBackground}
+            onChange={set('buttonHoverBackground')}
+            disabled={submitting}
+          />
+        </Grid>
         <Grid item xs={12} md={6}>
           <ColorPicker
             label="Border Color"
