@@ -148,7 +148,6 @@ export default function WaiverConfig() {
 
   const submit = (data: WaiverData) => {
     setSubmitting(true)
-    console.log('updatedTemplate ==========', data)
 
     setWaiver(data, logo)
       .then((event) => {

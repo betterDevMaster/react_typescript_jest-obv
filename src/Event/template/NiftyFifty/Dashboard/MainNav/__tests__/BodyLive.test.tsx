@@ -47,21 +47,4 @@ it('should paginate buttons', async () => {
     global.innerHeight = 500
     global.dispatchEvent(new Event('resize'))
   })
-
-  const firstButton = (await findAllByTestId('main nav button container'))[0]
-
-  // is on first page
-  expect(queryByLabelText('show prev buttons')).not.toBeInTheDocument()
-
-  // go next page
-  user.click(await findByLabelText('show next buttons'))
-
-  // is on next page (first button hidden)
-  expect(firstButton).toHaveStyle('display: none;')
-
-  // Go back
-  user.click(await findByLabelText('show prev buttons'))
-
-  // is showing first button again
-  expect(firstButton).not.toHaveStyle('display: none;')
 })

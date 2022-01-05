@@ -32,7 +32,7 @@ export default function Navbar(props: {onChangeTab: (tab: number) => void}) {
   return (
     <Paper position="static" textcolor={rightPanel.textColor}>
       <CssBaseline />
-      <Toolbar>
+      <Box>
         <Typography variant="h4" className={classes.logo}>
           {title}
         </Typography>
@@ -42,7 +42,7 @@ export default function Navbar(props: {onChangeTab: (tab: number) => void}) {
             onChangeTitle={(t) => setTitle(t)}
           />
         )}
-      </Toolbar>
+      </Box>
     </Paper>
   )
 }
@@ -53,4 +53,8 @@ const Paper = styled(AppBar)<{
   background-color: transparent;
   box-shadow: none;
   color: ${(props) => props.textcolor};
+`
+const Box = styled(Toolbar)`
+  border-bottom: 1px solid #a39c9c;
+  padding: 0 ${(props) => props.theme.spacing[4]};
 `

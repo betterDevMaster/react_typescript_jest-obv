@@ -3,7 +3,7 @@ import styled from 'styled-components'
 
 import {Drawer, IconButton, makeStyles} from '@material-ui/core'
 
-import MenuIcon from '@material-ui/icons/Menu'
+import KeyboardArrowDownIcon from '@material-ui/icons/KeyboardArrowDown'
 import {
   useHasMultipleTabs,
   useNiftyFiftyTemplate,
@@ -117,7 +117,7 @@ export default function DrawerComponent(props: {
         onClick={() => setOpenDrawer(!openDrawer)}
         className={classes.icon}
       >
-        <MenuIcon />
+        <KeyboardArrowDownIcon />
       </IconButton>
     </>
   )
