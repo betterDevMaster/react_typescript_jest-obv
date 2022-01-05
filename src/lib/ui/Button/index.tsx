@@ -3,6 +3,7 @@ import React from 'react'
 import styled from 'styled-components'
 
 export type ButtonProps = {
+  className?: string
   children: JSX.Element | string | JSX.Element[]
   variant: 'text' | 'contained' | 'outlined'
   color: 'default' | 'primary' | 'danger' | 'info'
@@ -14,6 +15,7 @@ export type ButtonProps = {
 export default function Button(props: ButtonProps) {
   return (
     <StyledButton
+      className={props.className}
       backgroundColor={backgroundColor(props)}
       color={textColor(props)}
       onClick={props.onClick}

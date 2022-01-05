@@ -21,7 +21,7 @@ interface CounterButtonsProps {
   decreaseButtonColor?: 'primary' | 'secondary' | 'default'
   increaseButtonColor?: 'primary' | 'secondary' | 'default'
   fullWidth?: boolean
-  onChange: (val: number) => {}
+  onChange: (val: number) => void
 }
 export default function CounterButtons(props: CounterButtonsProps) {
   const [current, setCurrent] = useState(props.current || DEFAULT_CURRENT)
@@ -48,7 +48,7 @@ export default function CounterButtons(props: CounterButtonsProps) {
   const useStyles = makeStyles({
     root: {
       border: props.hasBorder ? '1px solid #DFDFDF' : '',
-      padding: spacing[1],
+      padding: spacing[2],
       '& > .Mui-disabled': {
         backgroundColor: 'transparent',
         color: getColor(props),
