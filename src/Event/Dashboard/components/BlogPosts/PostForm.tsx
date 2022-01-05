@@ -64,7 +64,13 @@ function Content(props: {form: Form; post: BlogPost}) {
   }
 
   if (alreadySubmitted) {
-    return <SubmittedMessage resubmit={resubmit} form={form} />
+    return (
+      <SubmittedMessage
+        resubmit={resubmit}
+        form={form}
+        formStyles={formStyles}
+      />
+    )
   }
 
   const body = (
@@ -122,7 +128,11 @@ function Content(props: {form: Form; post: BlogPost}) {
   )
 }
 
-function SubmittedMessage(props: {resubmit: () => void; form: Form}) {
+function SubmittedMessage(props: {
+  resubmit: () => void
+  form: Form
+  formStyles: any
+}) {
   const v = useAttendeeVariables()
 
   if (!props.form.can_resubmit) {
@@ -133,10 +143,20 @@ function SubmittedMessage(props: {resubmit: () => void; form: Form}) {
 
   return (
     <div>
-      <p>{v(props.form.submitted_message || DEFAULT_SUBMITTED_MESSAGE)}</p>
-      <Button variant="text" onClick={props.resubmit}>
+      <StyledLetter color={props.formStyles.submitMessageColor}>
+        {v(props.form.submitted_message || DEFAULT_SUBMITTED_MESSAGE)}
+      </StyledLetter>
+      <StyledFormButton
+        variant="outlined"
+        color={props.formStyles.buttonColor}
+        backgroundColor={props.formStyles.buttonBackgroundColor}
+        backgroundHoverColor={props.formStyles.buttonHoverBackgroundColor}
+        raidus={props.formStyles.buttonRadius}
+        width={props.formStyles.buttonSize}
+        onClick={props.resubmit}
+      >
         {v(props.form.resubmit_button_label || DEFAULT_RESUBMIT_LABEL)}
-      </Button>
+      </StyledFormButton>
     </div>
   )
 }
@@ -145,6 +165,12 @@ const StyledForm = styled.form<{
   width: number
 }>`
   width: ${(props) => props.width}%;
+`
+
+const StyledLetter = styled.p<{
+  color: string
+}>`
+  color: ${(props) => props.color};
 `
 
 const StyledFormButton = styled((props) => {

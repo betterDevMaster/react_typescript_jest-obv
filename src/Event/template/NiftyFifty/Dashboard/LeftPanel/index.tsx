@@ -12,6 +12,7 @@ import EmojiList from 'Event/template/NiftyFifty/Dashboard/EmojiList'
 import LeftPanelConfig from 'Event/template/NiftyFifty/Dashboard/LeftPanel/LeftPanelConfig'
 import MainNavDesktop from 'Event/template/NiftyFifty/Dashboard/MainNav/MainNavDesktop'
 import Menu from 'Event/template/NiftyFifty/Dashboard/Menu'
+import CountDownTimers from 'Event/template/NiftyFifty/Dashboard/CountDownTimers'
 
 import {rgba} from 'lib/color'
 import {useToggle} from 'lib/toggle'
@@ -110,6 +111,7 @@ export default function LeftPanel(props: {
             >
               <MainContent visible={!menuVisible}>
                 {menuVisible ? null : <MainNavDesktop />}
+                <CountDownTimers />
               </MainContent>
             </Slide>
           </Main>
@@ -122,7 +124,6 @@ export default function LeftPanel(props: {
 const Bar = styled.div<{
   isMenuVisible: boolean
 }>`
-  margin: ${(props) => (!props.isMenuVisible ? '1.5rem' : 0)};
   display: flex;
   justify-content: space-between;
 `
@@ -148,7 +149,7 @@ const Paper = styled.div<{
 const Box = styled.div<{
   backgroundColor: string
 }>`
-  padding: 1.5rem;
+  padding: ${(props) => props.theme.spacing[6]};
   background-size: 100% 100% !important;
   background-position: center;
   background-repeat: no-repeat !important;
@@ -160,7 +161,7 @@ const Box = styled.div<{
 `
 
 const Top = styled.div`
-  padding: 24px 24px 36px;
+  padding: ${(props) => props.theme.spacing[6]};
 `
 
 const Main = styled.div`
@@ -169,7 +170,7 @@ const Main = styled.div`
   flex-direction: column;
   flex: 1;
   padding: ${(props) => props.theme.spacing[0]}
-    ${(props) => props.theme.spacing[6]} ${(props) => props.theme.spacing[9]};
+    ${(props) => props.theme.spacing[6]};
 
   /**
    * Hide overflow to make menu sliding in/out disappear at panel edge,

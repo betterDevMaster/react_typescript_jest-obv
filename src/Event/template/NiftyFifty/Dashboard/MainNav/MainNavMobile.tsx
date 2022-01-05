@@ -1,4 +1,3 @@
-import styled from 'styled-components'
 import React from 'react'
 import {
   DragDropContext,
@@ -6,16 +5,21 @@ import {
   DroppableProvidedProps,
   DropResult,
 } from 'react-beautiful-dnd'
-import {useEditMode} from 'Event/Dashboard/editor/state/edit-mode'
+import styled from 'styled-components'
+
 import {User} from 'auth/user'
+
 import {
   useNiftyFiftyTemplate,
   useNiftyFiftyUpdate,
 } from 'Event/template/NiftyFifty'
+import {useEditMode} from 'Event/Dashboard/editor/state/edit-mode'
 import NewMainNavButton from 'Event/template/NiftyFifty/Dashboard/MainNav/MainNavButton/NewMainNavButton'
 import MainNavButton from 'Event/template/NiftyFifty/Dashboard/MainNav/MainNavButton'
-import {createPositions, orderedIdsByPosition} from 'lib/list'
 import Menu from 'Event/template/NiftyFifty/Dashboard/Menu'
+import CountDownTimers from 'Event/template/NiftyFifty/Dashboard/CountDownTimers'
+
+import {createPositions, orderedIdsByPosition} from 'lib/list'
 
 export default function MainNavMobile(props: {
   className?: string
@@ -37,10 +41,19 @@ export default function MainNavMobile(props: {
   ))
 
   if (!isEditMode) {
-    return <Container className={props.className}>{buttons}</Container>
+    return <Content className={props.className}>{buttons}</Content>
   }
 
   return <Editable {...props}>{buttons}</Editable>
+}
+
+function Content(props: {className?: string; children: React.ReactElement[]}) {
+  return (
+    <Container className={props.className}>
+      <>{props.children}</>
+      <CountDownTimers />
+    </Container>
+  )
 }
 
 function Editable(props: {className?: string; children: React.ReactElement[]}) {
@@ -60,6 +73,7 @@ function Editable(props: {className?: string; children: React.ReactElement[]}) {
               {provided.placeholder}
               <StyledNewMainNavButton />
             </>
+            <CountDownTimers />
           </Container>
         )}
       </Droppable>

@@ -81,7 +81,6 @@ export type NiftyFifty = BaseTemplate &
       barBackgroundColor: string
       barBackgroundOpacity: number
       menuTextColor?: string
-      arrowColor?: string
       backgroundColor: string
       backgroundOpacity: number
     }
@@ -360,7 +359,6 @@ export const createNiftyFifty = (): DeepRequired<NiftyFifty> => ({
     barBackgroundColor: '#FFFFFF',
     barBackgroundOpacity: 0,
     menuTextColor: '#000000',
-    arrowColor: '#000000',
     backgroundColor: '#FFFFFF',
     backgroundOpacity: 0,
   },

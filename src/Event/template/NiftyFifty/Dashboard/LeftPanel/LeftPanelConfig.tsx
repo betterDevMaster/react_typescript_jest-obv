@@ -189,21 +189,6 @@ export default function LeftPanelConfig(props: {
           </Box>
           <Box mb={2}>
             <Controller
-              name="leftPanel.arrowColor"
-              defaultValue={leftPanel.arrowColor}
-              control={control}
-              render={({value, onChange}) => (
-                <ColorPicker
-                  label="Page Arrow Color"
-                  color={value}
-                  onPick={onChange}
-                  aria-label="page arrow color"
-                />
-              )}
-            />
-          </Box>
-          <Box mb={2}>
-            <Controller
               name="leftPanel.backgroundColor"
               defaultValue={leftPanel.backgroundColor}
               control={control}

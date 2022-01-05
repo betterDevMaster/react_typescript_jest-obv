@@ -129,9 +129,10 @@ function useHandleDrag() {
 }
 
 const Box = styled.div`
-  margin-bottom: ${(props) => props.theme.spacing[7]};
   margin-top: ${(props) => props.theme.spacing[7]};
   width: 100%;
+  padding: ${(props) => props.theme.spacing[0]}
+    ${(props) => props.theme.spacing[6]};
 `
 
 const StyledNewCountDownTimer = styled(NewCountDownTimerButton)`

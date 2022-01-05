@@ -175,6 +175,19 @@ export default function PostFormStylesConfig() {
             }}
           />
           <Controller
+            name="submitMessageColor"
+            defaultValue={postFormStyles.submitMessageColor}
+            control={control}
+            render={({value, onChange}) => (
+              <ColorPicker
+                label="Submit Message Text Color"
+                color={value}
+                onPick={onChange}
+                aria-label="submit message color"
+              />
+            )}
+          />
+          <Controller
             name="buttonColor"
             defaultValue={postFormStyles.buttonColor}
             control={control}
