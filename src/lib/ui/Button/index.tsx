@@ -6,7 +6,7 @@ export type ButtonProps = {
   className?: string
   children: JSX.Element | string | JSX.Element[]
   variant: 'text' | 'contained' | 'outlined'
-  color: 'default' | 'primary' | 'danger' | 'info'
+  color: 'default' | 'primary' | 'danger' | 'info' | 'success'
   autoFocus?: boolean
   onClick?: () => void
   'aria-label'?: string
@@ -62,6 +62,10 @@ function backgroundColor(props: ButtonProps) {
 
   if (props.color === 'primary') {
     return colors.primary
+  }
+
+  if (props.color === 'success') {
+    return colors.success
   }
 
   return '#e7e7e7'
