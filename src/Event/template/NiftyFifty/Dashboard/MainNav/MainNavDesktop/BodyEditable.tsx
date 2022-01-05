@@ -1,5 +1,6 @@
 import React from 'react'
 import {DragDropContext, Droppable, DropResult} from 'react-beautiful-dnd'
+
 import {useEditMode} from 'Event/Dashboard/editor/state/edit-mode'
 import {
   useNiftyFiftyTemplate,
@@ -8,6 +9,8 @@ import {
 import NewMainNavButton from 'Event/template/NiftyFifty/Dashboard/MainNav/MainNavButton/NewMainNavButton'
 import MainNavButton from 'Event/template/NiftyFifty/Dashboard/MainNav/MainNavButton'
 import {Container} from 'Event/template/NiftyFifty/Dashboard/MainNav/MainNavDesktop'
+import CountDownTimers from 'Event/template/NiftyFifty/Dashboard/CountDownTimers'
+
 import {createPositions, orderedIdsByPosition} from 'lib/list'
 
 export default function BodyEditable(props: {className?: string}) {
@@ -40,6 +43,7 @@ export default function BodyEditable(props: {className?: string}) {
                 {provided.placeholder}
                 <NewButton />
               </>
+              <CountDownTimers />
             </Container>
           )}
         </Droppable>

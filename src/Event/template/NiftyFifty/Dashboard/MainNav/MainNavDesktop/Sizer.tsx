@@ -1,11 +1,14 @@
 import React, {useEffect, useState, useCallback} from 'react'
 import styled from 'styled-components'
+
 import {useNiftyFiftyTemplate} from 'Event/template/NiftyFifty'
 import MainNavButton from 'Event/template/NiftyFifty/Dashboard/MainNav/MainNavButton'
 import $ from 'jquery'
+import PageArrows from 'Event/template/NiftyFifty/Dashboard/MainNav/MainNavDesktop/PageArrows'
+import CountDownTimers from 'Event/template/NiftyFifty/Dashboard/CountDownTimers'
+
 import useDebounce from 'lib/debounce'
 import {useOnResize} from 'lib/resize'
-import PageArrows from 'Event/template/NiftyFifty/Dashboard/MainNav/MainNavDesktop/PageArrows'
 import {orderedIdsByPosition} from 'lib/list'
 
 /**
@@ -176,6 +179,7 @@ function Page(props: {
         onPrev={() => {}}
         disableLabel
       />
+      <CountDownTimers onRender={props.calculate} />
     </div>
   )
 }

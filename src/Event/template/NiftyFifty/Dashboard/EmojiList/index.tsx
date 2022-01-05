@@ -78,7 +78,7 @@ const EmojiImage = (props: EmojiImageProps) => {
 
 const Box = styled.div`
   padding: 0;
-  margin-bottom: ${(props) => props.theme.spacing[2]};
+  margin-bottom: ${(props) => props.theme.spacing[10]};
   display: flex;
   justify-content: center;
 `
@@ -106,5 +106,5 @@ const Image = styled.img`
 `
 
 const StyledAddEmojiListButton = styled(AddEmojiButton)`
-  margin-bottom: ${(props) => props.theme.spacing[6]}!important;
+  margin-bottom: ${(props) => props.theme.spacing[10]}!important;
 `

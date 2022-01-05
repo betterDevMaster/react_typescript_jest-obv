@@ -196,21 +196,20 @@ const StyledCountDownTimer = styled.div<{
   background: string
 }>`
   text-align: center;
-  padding: ${(props) =>
-    props.narrow ? props.theme.spacing[4] : props.theme.spacing[6]};
-  font-size: ${(props) => (props.narrow ? 24 : 36)}px;
+  padding: ${(props) => props.theme.spacing[4]};
+  font-size: 24px;
   font-weight: bold;
   line-height: 1em;
   color: ${(props) => props.color};
   background-color: ${(props) => props.background};
 
   @media (min-width: ${(props) => props.theme.breakpoints.lg}) {
-    font-size: 36px;
+    font-size: 24px;
   }
 
   @media (max-width: ${(props) => props.theme.breakpoints.md}) {
-    font-size: 36px;
-    padding: ${(props) => props.theme.spacing[4]};
+    font-size: 24px;
+    padding: ${(props) => props.theme.spacing[2]};
   }
 `
 
@@ -222,8 +221,7 @@ const StyledCountDownNumber = styled.span<{
 }>`
   color: ${(props) => props.color};
   background-color: ${(props) => props.background};
-  padding: ${(props) =>
-    props.narrow ? props.theme.spacing[2] : props.theme.spacing[4]};
+  padding: ${(props) => props.theme.spacing[4]};
   border-radius: ${(props) => props.radius * 100}%;
   min-width: 64px;
 
@@ -237,8 +235,7 @@ const StyledCountDownSeparator = styled.span<{
   showing: boolean
 }>`
   ${(props) => (props.showing ? '' : 'display: none;')}
-  padding: ${(props) =>
-    props.panel ? props.theme.spacing[2] : props.theme.spacing[4]};
+  padding: ${(props) => props.theme.spacing[4]};
 
   @media (max-width: ${(props) => props.theme.breakpoints.md}) {
     padding: ${(props) => props.theme.spacing[2]};

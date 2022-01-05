@@ -1,9 +1,12 @@
 import React, {useState, useCallback, useEffect} from 'react'
+
 import {useNiftyFiftyTemplate} from 'Event/template/NiftyFifty'
 import MainNavButton from 'Event/template/NiftyFifty/Dashboard/MainNav/MainNavButton'
 import Sizer from 'Event/template/NiftyFifty/Dashboard/MainNav/MainNavDesktop/Sizer'
 import PageArrows from 'Event/template/NiftyFifty/Dashboard/MainNav/MainNavDesktop/PageArrows'
 import {Container} from 'Event/template/NiftyFifty/Dashboard/MainNav/MainNavDesktop'
+import CountDownTimers from 'Event/template/NiftyFifty/Dashboard/CountDownTimers'
+
 import {orderedIdsByPosition} from 'lib/list'
 
 export default function BodyLive(props: {className?: string}) {
@@ -78,6 +81,7 @@ export default function BodyLive(props: {className?: string}) {
           hasPrev={hasPrevPage}
           onPrev={goPrevPage}
         />
+        <CountDownTimers />
       </>
     </Container>
   )

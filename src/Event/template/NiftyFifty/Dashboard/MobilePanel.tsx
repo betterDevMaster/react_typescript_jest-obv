@@ -10,6 +10,7 @@ import EmojiList from 'Event/template/NiftyFifty/Dashboard/EmojiList'
 import MainNavMobile from 'Event/template/NiftyFifty/Dashboard/MainNav/MainNavMobile'
 import LeftPanelConfig from 'Event/template/NiftyFifty/Dashboard/LeftPanel/LeftPanelConfig'
 import RightPanelConfig from 'Event/template/NiftyFifty/Dashboard/RightPanel/RightPanelConfig'
+import CountDownTimers from 'Event/template/NiftyFifty/Dashboard/CountDownTimers'
 
 import {rgba} from 'lib/color'
 import {MenuIconButton} from 'lib/ui/IconButton/MenuIconButton'
@@ -84,6 +85,7 @@ export default function MobilePanel(props: {
           onChangeTab={handleChangeTab}
           user={props.user}
         />
+        <CountDownTimers />
       </Container>
       <Content>{props.children}</Content>
     </Box>
