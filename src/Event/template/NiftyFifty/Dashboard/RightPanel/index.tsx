@@ -54,6 +54,8 @@ export default function RightPanel(props: {
 const Box = styled.div`
   display: flex;
   flex-direction: column;
+  width: 100%;
+  overflow: auto;
 `
 
 const Body = styled.div<{

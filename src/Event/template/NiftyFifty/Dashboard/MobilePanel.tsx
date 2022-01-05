@@ -10,6 +10,7 @@ import EmojiList from 'Event/template/NiftyFifty/Dashboard/EmojiList'
 import MainNavMobile from 'Event/template/NiftyFifty/Dashboard/MainNav/MainNavMobile'
 import LeftPanelConfig from 'Event/template/NiftyFifty/Dashboard/LeftPanel/LeftPanelConfig'
 import RightPanelConfig from 'Event/template/NiftyFifty/Dashboard/RightPanel/RightPanelConfig'
+import Navbar from 'Event/template/NiftyFifty/Dashboard/MainNav/MobileNav/MobilePanelNavbar'
 
 import {rgba} from 'lib/color'
 import {MenuIconButton} from 'lib/ui/IconButton/MenuIconButton'
@@ -104,6 +105,7 @@ function Content(props: {children: React.ReactElement}) {
         rightPanel.backgroundOpacity,
       )}
     >
+      <Navbar />
       <EditModeOnly>
         <RightPanelIconButton
           onClick={() => setIsEditing({...isEditing, rightPanel: true})}
@@ -113,7 +115,7 @@ function Content(props: {children: React.ReactElement}) {
           onClose={() => setIsEditing({...isEditing, rightPanel: false})}
         />
       </EditModeOnly>
-      {props.children}
+      <SecondContent>{props.children}</SecondContent>
     </Panel>
   )
 }
@@ -146,35 +148,29 @@ const Container = styled.div<{
 const Panel = styled.div<{
   backgroundColor: string
 }>`
-  flex: 1;
-  margin-top: ${(props) => props.theme.spacing[6]}px;
-  padding: ${(props) => props.theme.spacing[6]}
-    ${(props) => props.theme.spacing[6]} ${(props) => props.theme.spacing[9]};
-  display: flex;
-  justify-content: center;
-  align-items: flex-start;
   background-color: ${(props) => props.backgroundColor};
-  width: 100%;
   position: relative;
-  @media (min-width: ${(props) => props.theme.breakpoints.sm}) {
-    width: calc(100% - 40px);
-  }
+  width: 100%;
+`
+
+const SecondContent = styled.div`
+  padding: ${(props) => props.theme.spacing[6]};
 `
 
 const StyledMenuIconButton = styled(MenuIconButton)`
   position: absolute;
   top: 24px;
-  left: 12px;
+  left: 4%;
 `
 
 const LeftPanelIconButton = styled(EditIconButton)`
   position: absolute;
   top: 14px;
-  right: 12px;
+  right: 4%;
 `
 
 const RightPanelIconButton = styled(EditIconButton)`
   position: absolute;
-  top: 10px;
-  right: 12px;
+  top: 60px;
+  right: 4%;
 `
