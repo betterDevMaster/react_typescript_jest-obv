@@ -1,5 +1,4 @@
 import React from 'react'
-import styled from 'styled-components'
 
 import {useGuestVariables} from 'Event'
 import {OfflinePageProps} from 'Event/JoinArea/OfflinePage'
@@ -46,9 +45,3 @@ function Text(props: {
     </DescriptionText>
   )
 }
-
-const Box = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: center;
-`

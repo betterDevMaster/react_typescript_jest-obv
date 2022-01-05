@@ -4,23 +4,20 @@ import styled from 'styled-components'
 
 import {Button, TextField} from '@material-ui/core'
 
-import {Template} from 'Event/template'
 import {useTemplate} from 'Event/TemplateProvider'
 import {useTemplateUpdate} from 'Event/TemplateUpdateProvider'
 
 import ColorPicker from 'lib/ui/ColorPicker'
 import {useToggle} from 'lib/toggle'
 
-import ComponentConfig, {
-  SaveButton,
-} from 'organization/Event/DashboardConfig/ComponentConfig'
+import ComponentConfig from 'organization/Event/DashboardConfig/ComponentConfig'
 
 export default function PostFormStylesConfig() {
   const {flag: showingConfig, toggle: toggleConfig} = useToggle()
 
   const {postFormStyles} = useTemplate()
   const update = useTemplateUpdate()
-  const {register, control, handleSubmit, getValues} = useForm()
+  const {register, control, getValues} = useForm()
 
   const handlePostFormSubmit = () => {
     const data = getValues()

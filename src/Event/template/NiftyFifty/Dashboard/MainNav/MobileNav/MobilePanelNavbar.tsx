@@ -1,5 +1,4 @@
-import React from 'react'
-import {Link} from 'react-router-dom'
+import React, {useState} from 'react'
 import styled from 'styled-components'
 import {useNiftyFiftyTemplate} from 'Event/template/NiftyFifty'
 
@@ -14,43 +13,35 @@ import {
 } from '@material-ui/core'
 
 import DrawerComponent from 'Event/template/NiftyFifty/Dashboard/MainNav/MobileNav/Drawer'
-import {props} from 'ramda'
 
 const useStyles = makeStyles((theme) => ({
-  navlinks: {
-    marginLeft: theme.spacing(5),
-    display: 'flex',
-  },
   logo: {
     flexGrow: 1,
     cursor: 'pointer',
-  },
-  link: {
-    textDecoration: 'none',
-    color: 'white',
-    fontSize: '20px',
-    marginLeft: theme.spacing(20),
-    '&:hover': {
-      color: 'yellow',
-      borderBottom: '1px solid white',
-    },
+    fontWeight: 900,
   },
 }))
 
-export default function Navbar() {
+export default function Navbar(props: {onChangeTab: (tab: number) => void}) {
   const classes = useStyles()
   const theme = useTheme()
   const isMobile = useMediaQuery(theme.breakpoints.down('md'))
   const {rightPanel} = useNiftyFiftyTemplate()
+  const [title, setTitle] = useState('Home')
 
   return (
     <Paper position="static" textcolor={rightPanel.textColor}>
       <CssBaseline />
       <Toolbar>
         <Typography variant="h4" className={classes.logo}>
-          Navbar
+          {title}
         </Typography>
-        {isMobile && <DrawerComponent />}
+        {isMobile && (
+          <DrawerComponent
+            onChangeTab={props.onChangeTab}
+            onChangeTitle={(t) => setTitle(t)}
+          />
+        )}
       </Toolbar>
     </Paper>
   )

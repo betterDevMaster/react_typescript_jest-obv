@@ -17,7 +17,6 @@ type MainNavButtonProps = {
   id: string
   button: NavButtonWithSize
   index: number
-  isHidden?: boolean
   disableEdit?: boolean
 }
 
@@ -29,11 +28,7 @@ export default React.memo((props: MainNavButtonProps) => {
   const button = <NavButton {...props.button} aria-label="main nav button" />
 
   if (!isEditMode || props.disableEdit) {
-    return (
-      <Container button={props.button} isHidden={props.isHidden}>
-        {button}
-      </Container>
-    )
+    return <Container button={props.button}>{button}</Container>
   }
 
   return (
@@ -55,7 +50,6 @@ export default React.memo((props: MainNavButtonProps) => {
             button={props.button}
             ref={provided.innerRef}
             draggableProps={provided.draggableProps}
-            isHidden={props.isHidden}
           >
             <DraggableOverlay>
               <Editable onEdit={toggleConfig} onCopy={toggleCopyConfig}>
@@ -78,7 +72,6 @@ const Container = React.forwardRef<
     children: React.ReactElement
     button: NavButtonWithSize
     draggableProps?: DraggableProvidedDraggableProps
-    isHidden?: boolean
   }
 >((props, ref) => {
   const {button} = props
@@ -91,7 +84,6 @@ const Container = React.forwardRef<
       <Published component={props.button}>
         <Box
           ref={ref}
-          isHidden={props.isHidden}
           {...props.draggableProps}
           data-testid="main nav button container"
           width={widthPercent}
@@ -104,10 +96,8 @@ const Container = React.forwardRef<
 })
 
 const Box = styled.div<{
-  isHidden?: boolean
   width: number
 }>`
-  ${(props) => (props.isHidden ? 'display: none;' : '')}
   width: ${(props) => props.width}%;
   margin-bottom: ${(props) => props.theme.spacing[2]};
   margin-left: auto;

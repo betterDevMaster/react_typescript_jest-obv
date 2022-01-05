@@ -86,12 +86,15 @@ export default function MobilePanel(props: {
           user={props.user}
         />
       </Container>
-      <Content>{props.children}</Content>
+      <Content onChangeTab={props.onChangeTab}>{props.children}</Content>
     </Box>
   )
 }
 
-function Content(props: {children: React.ReactElement}) {
+function Content(props: {
+  children: React.ReactElement
+  onChangeTab: (tab: number) => void
+}) {
   const {rightPanel} = useNiftyFiftyTemplate()
   const [isEditing, setIsEditing] = useState<PanelEdit>({
     leftPanel: false,
@@ -105,7 +108,7 @@ function Content(props: {children: React.ReactElement}) {
         rightPanel.backgroundOpacity,
       )}
     >
-      <Navbar />
+      <Navbar onChangeTab={props.onChangeTab} />
       <EditModeOnly>
         <RightPanelIconButton
           onClick={() => setIsEditing({...isEditing, rightPanel: true})}

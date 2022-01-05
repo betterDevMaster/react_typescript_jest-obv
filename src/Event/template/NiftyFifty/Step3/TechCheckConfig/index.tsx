@@ -11,8 +11,6 @@ import {useEvent} from 'Event/EventProvider'
 import {useOrganization} from 'organization/OrganizationProvider'
 import {api} from 'lib/url'
 import {ObvioEvent} from 'Event'
-import {useDispatch} from 'react-redux'
-import {setEvent} from 'Event/state/actions'
 import FormControl from '@material-ui/core/FormControl'
 import FormControlLabel from '@material-ui/core/FormControlLabel'
 import Grid from '@material-ui/core/Grid'
@@ -33,7 +31,6 @@ import {NiftyFifty} from 'Event/template/NiftyFifty'
 import TechCheck from 'Event/template/NiftyFifty/Step3/TechCheck'
 import LocalizedDateTimePicker from 'lib/LocalizedDateTimePicker'
 import SkipTechCheckRulesConfig from 'Event/template/SimpleBlog/Step3/TechCheckConfig/SkipTechCheckRulesConfig'
-import {SaveButton} from 'organization/Event/DashboardConfig/ComponentConfig'
 
 /**
  * Default props to use for techCheck. These will be set when an
@@ -83,7 +80,6 @@ export default function Form() {
   >(null)
   const [submitting, setSubmitting] = useState(false)
   const setTechCheck = useSetTechCheck()
-  const dispatch = useDispatch()
   const mounted = useRef(true)
   const template = useNiftyFiftyTemplate()
   const updateTemplate = useNiftyFiftyUpdate()
@@ -114,7 +110,6 @@ export default function Form() {
     setTechCheck(data)
       .then((event) => {
         setResponseError(null)
-        // dispatch(setEvent(event))
       })
       .catch((e) => {
         setResponseError(e)
