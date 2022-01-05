@@ -52,8 +52,8 @@ export default function Radio(props: FieldProps) {
             value={option.value}
             control={
               <StyledRadio
-                selectedColor={props.inputStyles?.rdchkSelectedColor}
-                unSelectedColor={props.inputStyles?.rdchkUnSelectedColor}
+                selectedcolor={props.inputStyles?.rdchkSelectedColor}
+                unselectedcolor={props.inputStyles?.rdchkUnSelectedColor}
               />
             }
             label={option.value}
@@ -90,8 +90,8 @@ function OtherOption(
         value={OTHER}
         control={
           <StyledRadio
-            selectedColor={props.inputStyles?.rdchkSelectedColor}
-            unSelectedColor={props.inputStyles?.rdchkUnSelectedColor}
+            selectedcolor={props.inputStyles?.rdchkSelectedColor}
+            unselectedcolor={props.inputStyles?.rdchkUnSelectedColor}
             checked={props.hasOtherValue}
           />
         }
@@ -155,11 +155,11 @@ const StyledFormControlLabel = styled((props) => {
   color: ${(props) => (props.color ? `${props.color} !important;` : '')};
 `
 const StyledRadio = styled(RadioInput)<{
-  selectedColor?: string
-  unSelectedColor?: string
+  selectedcolor?: string
+  unselectedcolor?: string
 }>`
-  color: ${(props) => props.unSelectedColor};
+  color: ${(props) => props.unselectedcolor};
   &.Mui-checked {
-    color: ${(props) => props.selectedColor};
+    color: ${(props) => props.selectedcolor};
   }
 `

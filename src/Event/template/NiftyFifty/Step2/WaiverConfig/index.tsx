@@ -86,13 +86,6 @@ export default function WaiverConfig() {
   const body = watch('body')
   const form_id = watch('form_id')
   const isEnabled = watch('is_enabled')
-  const templateConfig = watch('template')
-  const template = useNiftyFiftyTemplate()
-
-  const updatedTemplate = {
-    ...template,
-    waiver: templateConfig,
-  }
 
   const setWaiver = useSetWaiver()
   const dispatch = useDispatch()
@@ -155,6 +148,7 @@ export default function WaiverConfig() {
 
   const submit = (data: WaiverData) => {
     setSubmitting(true)
+    console.log('updatedTemplate ==========', data)
 
     setWaiver(data, logo)
       .then((event) => {

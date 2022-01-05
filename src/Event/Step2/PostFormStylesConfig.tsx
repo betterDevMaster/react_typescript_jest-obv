@@ -20,9 +20,10 @@ export default function PostFormStylesConfig() {
 
   const {postFormStyles} = useTemplate()
   const update = useTemplateUpdate()
-  const {register, control, handleSubmit} = useForm()
+  const {register, control, handleSubmit, getValues} = useForm()
 
-  const submit = (data: Template['postFormStyles']) => {
+  const handlePostFormSubmit = () => {
+    const data = getValues()
     update({
       postFormStyles: data,
     })
@@ -38,113 +39,118 @@ export default function PostFormStylesConfig() {
         onClose={toggleConfig}
         title="Post Form Styles"
       >
-        <form onSubmit={handleSubmit(submit)}>
-          <Controller
-            name="inputWaiverStyles.labelColor"
-            defaultValue={postFormStyles.inputWaiverStyles.labelColor}
-            control={control}
-            render={({value, onChange}) => (
-              <ColorPicker
-                label="Label Text Color"
-                color={value}
-                onPick={onChange}
-                aria-label="label text color"
-              />
-            )}
-          />
-          <Controller
-            name="inputWaiverStyles.borderColor"
-            defaultValue={postFormStyles.inputWaiverStyles.borderColor}
-            control={control}
-            render={({value, onChange}) => (
-              <ColorPicker
-                label="Input Border Color"
-                color={value}
-                onPick={onChange}
-                aria-label="input box border color"
-              />
-            )}
-          />
-          <Controller
-            name="inputWaiverStyles.backgroundColor"
-            defaultValue={postFormStyles.inputWaiverStyles.backgroundColor}
-            control={control}
-            render={({value, onChange}) => (
-              <ColorPicker
-                label="Input Background Color"
-                color={value}
-                onPick={onChange}
-                aria-label="input box background color"
-              />
-            )}
-          />
-          <TextField
-            name="inputWaiverStyles.backgroundOpacity"
-            defaultValue={postFormStyles.inputWaiverStyles.backgroundOpacity}
-            label="Input Background Color Opacity"
-            type="number"
-            fullWidth
-            inputProps={{
-              min: 1,
-              max: 100,
-              ref: register,
-            }}
-          />
-          <Controller
-            name="inputWaiverStyles.textColor"
-            defaultValue={postFormStyles.inputWaiverStyles.textColor}
-            control={control}
-            render={({value, onChange}) => (
-              <ColorPicker
-                label="Input Text Color"
-                color={value}
-                onPick={onChange}
-                aria-label="input box text color"
-              />
-            )}
-          />
-          <Controller
-            name="inputWaiverStyles.helperTextColor"
-            defaultValue={postFormStyles.inputWaiverStyles.helperTextColor}
-            control={control}
-            render={({value, onChange}) => (
-              <ColorPicker
-                label="Helper Text Color"
-                color={value}
-                onPick={onChange}
-                aria-label="helper text color"
-              />
-            )}
-          />
-          <Controller
-            name="inputWaiverStyles.rdchkSelectedColor"
-            defaultValue={postFormStyles.inputWaiverStyles.rdchkSelectedColor}
-            control={control}
-            render={({value, onChange}) => (
-              <ColorPicker
-                label="Radio/Checkbox Selected Color"
-                color={value}
-                onPick={onChange}
-                aria-label="helper text color"
-              />
-            )}
-          />
-          <Controller
-            name="inputWaiverStyles.rdchkUnSelectedColor"
-            defaultValue={postFormStyles.inputWaiverStyles.rdchkUnSelectedColor}
-            control={control}
-            render={({value, onChange}) => (
-              <ColorPicker
-                label="Radio/Checkbox Un-Selected Color"
-                color={value}
-                onPick={onChange}
-                aria-label="helper text color"
-              />
-            )}
-          />
-
-          <SaveButton />
-        </form>
+        <Controller
+          name="inputWaiverStyles.labelColor"
+          defaultValue={postFormStyles.inputWaiverStyles.labelColor}
+          control={control}
+          render={({value, onChange}) => (
+            <ColorPicker
+              label="Label Text Color"
+              color={value}
+              onPick={onChange}
+              aria-label="label text color"
+            />
+          )}
+        />
+        <Controller
+          name="inputWaiverStyles.borderColor"
+          defaultValue={postFormStyles.inputWaiverStyles.borderColor}
+          control={control}
+          render={({value, onChange}) => (
+            <ColorPicker
+              label="Input Border Color"
+              color={value}
+              onPick={onChange}
+              aria-label="input box border color"
+            />
+          )}
+        />
+        <Controller
+          name="inputWaiverStyles.backgroundColor"
+          defaultValue={postFormStyles.inputWaiverStyles.backgroundColor}
+          control={control}
+          render={({value, onChange}) => (
+            <ColorPicker
+              label="Input Background Color"
+              color={value}
+              onPick={onChange}
+              aria-label="input box background color"
+            />
+          )}
+        />
+        <TextField
+          name="inputWaiverStyles.backgroundOpacity"
+          defaultValue={postFormStyles.inputWaiverStyles.backgroundOpacity}
+          label="Input Background Color Opacity"
+          type="number"
+          fullWidth
+          inputProps={{
+            min: 1,
+            max: 100,
+            ref: register,
+          }}
+        />
+        <Controller
+          name="inputWaiverStyles.textColor"
+          defaultValue={postFormStyles.inputWaiverStyles.textColor}
+          control={control}
+          render={({value, onChange}) => (
+            <ColorPicker
+              label="Input Text Color"
+              color={value}
+              onPick={onChange}
+              aria-label="input box text color"
+            />
+          )}
+        />
+        <Controller
+          name="inputWaiverStyles.helperTextColor"
+          defaultValue={postFormStyles.inputWaiverStyles.helperTextColor}
+          control={control}
+          render={({value, onChange}) => (
+            <ColorPicker
+              label="Helper Text Color"
+              color={value}
+              onPick={onChange}
+              aria-label="helper text color"
+            />
+          )}
+        />
+        <Controller
+          name="inputWaiverStyles.rdchkSelectedColor"
+          defaultValue={postFormStyles.inputWaiverStyles.rdchkSelectedColor}
+          control={control}
+          render={({value, onChange}) => (
+            <ColorPicker
+              label="Radio/Checkbox Selected Color"
+              color={value}
+              onPick={onChange}
+              aria-label="helper text color"
+            />
+          )}
+        />
+        <Controller
+          name="inputWaiverStyles.rdchkUnSelectedColor"
+          defaultValue={postFormStyles.inputWaiverStyles.rdchkUnSelectedColor}
+          control={control}
+          render={({value, onChange}) => (
+            <ColorPicker
+              label="Radio/Checkbox Un-Selected Color"
+              color={value}
+              onPick={onChange}
+              aria-label="helper text color"
+            />
+          )}
+        />
+        <StyledSaveButton
+          onClick={handlePostFormSubmit}
+          variant="contained"
+          color="primary"
+          fullWidth
+          aria-label="save"
+        >
+          Save
+        </StyledSaveButton>
       </ComponentConfig>
     </Box>
   )
@@ -177,3 +183,7 @@ const Box = styled.div`
   width: 100%;
 `
 const StyledEditPostFormStylesButton = styled(EditPostFormStylesButton)``
+const StyledSaveButton = styled(Button)`
+  margin-top: ${(props) => props.theme.spacing[4]}!important;
+  margin-bottom: ${(props) => props.theme.spacing[2]}!important;
+`
