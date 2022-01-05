@@ -19,6 +19,7 @@ export const colors = {
     muted: '#606F7B',
   },
   accent: '#a72020',
+  gray: '#f1f1f1',
 }
 
 export const spacing = Array(60)
