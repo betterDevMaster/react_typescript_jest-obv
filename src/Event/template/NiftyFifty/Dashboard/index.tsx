@@ -1,6 +1,8 @@
 import React, {useState} from 'react'
 import styled from 'styled-components'
 
+import {useTheme, useMediaQuery} from '@material-ui/core'
+
 import {User} from 'auth/user'
 
 import {isAttendee} from 'Event/auth'
@@ -85,12 +87,14 @@ function Content(props: {currentTab: number; isEdit: boolean}) {
   const {sponsors, loading} = useSponsors()
   const {speakers, speakerloading} = useSpeakers()
   const {faqs} = useFaqs()
+  const theme = useTheme()
+  const isXSMobile = useMediaQuery(theme.breakpoints.down('xs'))
 
   if (loading || speakerloading) {
     return <div>loading...</div>
   }
   return (
-    <Panel>
+    <Panel isXSMobile={isXSMobile}>
       <ContentPanel index={0} currentIndex={currentTab}>
         <Home />
       </ContentPanel>
@@ -137,9 +141,13 @@ function ContentPanel(props: {
   )
 }
 
-const Panel = styled.div`
-  padding: ${(props) => props.theme.spacing[10]}
-    ${(props) => props.theme.spacing[17]};
+const Panel = styled.div<{
+  isXSMobile: boolean
+}>`
+  padding: ${(props) =>
+      props.isXSMobile ? props.theme.spacing[5] : props.theme.spacing[10]}
+    ${(props) =>
+      props.isXSMobile ? props.theme.spacing[8] : props.theme.spacing[17]};
 `
 
 const StyledTabPanel = styled(TabPanel)<{

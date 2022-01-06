@@ -164,7 +164,6 @@ const Main = styled.div`
   display: flex;
   align-items: center;
   flex-direction: column;
-  flex: 1;
   padding: ${(props) => props.theme.spacing[0]}
     ${(props) => props.theme.spacing[6]};
 `

@@ -150,7 +150,6 @@ const Container = styled.div<{
   align-items: center;
   flex-direction: column;
   width: 100%;
-  min-height: 40%;
 `
 
 const Panel = styled.div<{
