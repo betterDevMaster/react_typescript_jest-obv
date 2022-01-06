@@ -50,20 +50,13 @@ export default function MobilePanel(props: {
         )}
         background={background}
         isBackgroundHidden={stepBackgroundProps.hidden}
+        textColor={checkInLeftPanel.textColor}
       >
-        <LogoBox
-          backgroundColor={rgba(
-            checkInLeftPanel.backgroundColor,
-            checkInLeftPanel.backgroundOpacity,
-          )}
-          textColor={checkInLeftPanel.textColor}
-        >
-          <Logo
-            src={logo}
-            hidden={stepLogoProps.hidden}
-            size={stepLogoProps.size}
-          />
-        </LogoBox>
+        <Logo
+          src={logo}
+          hidden={stepLogoProps.hidden}
+          size={stepLogoProps.size}
+        />
       </Content>
       <Paper
         backgroundColor={rgba(
@@ -103,7 +96,8 @@ const Paper = styled.div<{
   border: 10px;
   padding: ${(props) => props.theme.spacing[4]};
   width: 100%;
-  min-height: 80vh;
+  height: 100%;
+  overflow: auto;
 `
 
 const ProgressContent = styled.div`
@@ -115,8 +109,8 @@ const Content = styled.div<{
   backgroundColor: string
   background: any
   isBackgroundHidden: boolean
+  textColor: string
 }>`
-  min-height: 20vh;
   width: 100%;
   background-size: 100% 100% !important;
   background-position: center;
@@ -125,29 +119,12 @@ const Content = styled.div<{
     !props.isBackgroundHidden && props.background
       ? `url(${props.background})`
       : props.backgroundColor};
-`
-
-const LogoBox = styled.div<{
-  backgroundColor: string
-  textColor: string
-}>`
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  position: relative;
-  height: 100%;
-  width: 100%;
-  background-size: 100% 100% !important;
-  background-position: center;
-  background-repeat: no-repeat !important;
-  background: ${(props) => props.backgroundColor};
+  padding: ${(props) => props.theme.spacing[5]};
   > * {
     color: ${(props) => props.textColor}!important;
   }
 `
 
 const Panel = styled.div`
-  overflow: auto;
   width: 100%;
-  height: 90%;
 `

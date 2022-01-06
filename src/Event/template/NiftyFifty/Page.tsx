@@ -45,14 +45,14 @@ export default function Page(props: {
       >
         <ColorOverlay color={backgroundColor}>
           <Hidden smDown>
-            <FullHeightGrid container>
-              <SidePanel item md={6} xs={12}>
+            <Grid container>
+              <Grid item md={6} xs={12}>
                 {Left}
-              </SidePanel>
-              <SidePanel item md={6} xs={12}>
+              </Grid>
+              <Grid item md={6} xs={12}>
                 {Right}
-              </SidePanel>
-            </FullHeightGrid>
+              </Grid>
+            </Grid>
           </Hidden>
           <Hidden mdUp>{Mobile}</Hidden>
           <LanguageSelector />
@@ -123,9 +123,6 @@ const Box = styled.div<{
   ${(props) => props.background};
   font-size: 17px;
   color: ${(props) => props.color};
-  min-height: 100vh;
-  background-size: cover;
-
   a {
     color: ${(props) => props.linkColor};
     text-decoration: none;
@@ -139,8 +136,10 @@ const Box = styled.div<{
   p {
     margin-top: 0;
   }
-
+  width: 100%;
   /* Background */
+  background-size: cover;
+  background-repeat: no-repeat;
   ${(props) =>
     props.backgroundPosition === 'bottom' &&
     `
@@ -152,7 +151,6 @@ const Box = styled.div<{
       background-position: bottom;
       background-attachment: fixed;
     `}
-  background-repeat: no-repeat;
   @media (max-width: ${(props) => props.theme.breakpoints.lg}) {
     background-repeat: repeat-y;
   }
@@ -162,13 +160,9 @@ const ColorOverlay = styled.div<{
   color: string
 }>`
   background-color: ${(props) => props.color};
-  height: 100vh;
-
+  height: 100%;
+  min-height: 100vh;
   display: flex;
-
-  > * {
-    flex: 1;
-  }
 `
 
 export const PageTitle = styled.h2<{
@@ -207,18 +201,5 @@ export const PageDescription = styled.h2<{
     font-size: 14px;
     line-height: 1;
     font-weight: 500;
-  }
-`
-
-const FullHeightGrid = styled(Grid)`
-  height: 100vh;
-`
-
-const SidePanel = styled(FullHeightGrid)`
-  display: flex;
-  overflow: visible;
-
-  > * {
-    flex: 1;
   }
 `

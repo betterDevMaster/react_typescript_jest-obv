@@ -33,7 +33,7 @@ export default function Waiver() {
           __html: v(body),
         }}
       />
-      <Box mb={2} p={2}>
+      <Box m={2}>
         <FormControl required component="fieldset">
           <FormControlLabel
             control={
@@ -51,7 +51,7 @@ export default function Waiver() {
           />
         </FormControl>
       </Box>
-      <Typography>{v(signaturePrompt)}</Typography>
+      <StyledTypography>{v(signaturePrompt)}</StyledTypography>
       <StyledSignature value={signature} onUpdate={setSignature} />
     </>
   )
@@ -73,6 +73,10 @@ const StyledCheckBox = styled((props) => {
   isDarkMode?: boolean
 }>`
   color: ${(props) => props.color} !important;
+`
+
+const StyledTypography = styled(Typography)`
+  margin-bottom: ${(props) => props.theme.spacing[4]};
 `
 
 const StyledSignature = styled(Signature)`

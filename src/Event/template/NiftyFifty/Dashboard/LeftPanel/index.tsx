@@ -46,78 +46,71 @@ export default function LeftPanel(props: {
   }
 
   return (
-    <>
+    <Paper
+      menuBackgroundColor={rgba(
+        leftPanel.barBackgroundColor,
+        leftPanel.barBackgroundOpacity,
+      )}
+      backgroundColor={rgba(
+        leftPanel.backgroundColor,
+        leftPanel.backgroundOpacity,
+      )}
+      backgroundImage={background}
+      isBackgroundHidden={dashboardBackgroundProps.hidden}
+      isMenuVisible={menuVisible}
+    >
       <EditModeOnly>
         <LeftPanelConfig
           isVisible={barConfigVisible}
           onClose={toggleBarConfig}
         />
       </EditModeOnly>
-      <Paper
-        menuBackgroundColor={rgba(
-          leftPanel.barBackgroundColor,
-          leftPanel.barBackgroundOpacity,
-        )}
+      <Box
         backgroundColor={rgba(
           leftPanel.backgroundColor,
           leftPanel.backgroundOpacity,
         )}
-        backgroundImage={background}
-        isBackgroundHidden={dashboardBackgroundProps.hidden}
-        isMenuVisible={menuVisible}
       >
-        <Box
-          backgroundColor={rgba(
-            leftPanel.backgroundColor,
-            leftPanel.backgroundOpacity,
-          )}
-        >
-          <Editable onEdit={toggleBarConfig}>
-            <Bar isMenuVisible={isEditMode} aria-label="left panel">
-              <StyledMenuIconButton
-                active={menuVisible}
-                iconColor={leftPanel.barTextColor}
-                onClick={toggleMenu}
-                aria-label="menu icon button"
-              />
-            </Bar>
-          </Editable>
-          <Top>
-            <EmojiList />
-            <Logo
-              src={logo}
-              hidden={dashboardLogoProps.hidden}
-              size={dashboardLogoProps.size}
+        <Editable onEdit={toggleBarConfig}>
+          <Bar isMenuVisible={isEditMode} aria-label="left panel">
+            <StyledMenuIconButton
+              active={menuVisible}
+              iconColor={leftPanel.barTextColor}
+              onClick={toggleMenu}
+              aria-label="menu icon button"
             />
-          </Top>
-          <Main>
-            {/*
+          </Bar>
+        </Editable>
+        <Top>
+          <EmojiList />
+          <Logo
+            src={logo}
+            hidden={dashboardLogoProps.hidden}
+            size={dashboardLogoProps.size}
+          />
+        </Top>
+        <Main>
+          {/*
               Menu slide-in-out animation. Need to set content to null to avoid
               the exiting content from having a height, and the divs
               stacking while animating.
           */}
-            <Slide in={menuVisible} direction="left" mountOnEnter unmountOnExit>
-              <MenuBox visible={menuVisible}>
-                {menuVisible ? (
-                  <Menu onChangeTab={handleChangeTab} user={props.user} />
-                ) : null}
-              </MenuBox>
-            </Slide>
-            <Slide
-              in={!menuVisible}
-              direction="right"
-              mountOnEnter
-              unmountOnExit
-            >
-              <MainContent visible={!menuVisible}>
-                {menuVisible ? null : <MainNavDesktop />}
-                <CountDownTimers />
-              </MainContent>
-            </Slide>
-          </Main>
-        </Box>
-      </Paper>
-    </>
+          <Slide in={menuVisible} direction="left" mountOnEnter unmountOnExit>
+            <MenuBox visible={menuVisible}>
+              {menuVisible ? (
+                <Menu onChangeTab={handleChangeTab} user={props.user} />
+              ) : null}
+            </MenuBox>
+          </Slide>
+          <Slide in={!menuVisible} direction="right" mountOnEnter unmountOnExit>
+            <MainContent visible={!menuVisible}>
+              {menuVisible ? null : <MainNavDesktop />}
+              <CountDownTimers />
+            </MainContent>
+          </Slide>
+        </Main>
+      </Box>
+    </Paper>
   )
 }
 
@@ -144,6 +137,8 @@ const Paper = styled.div<{
       : !props.isBackgroundHidden && props.backgroundImage
       ? `url(${props.backgroundImage})`
       : props.backgroundColor};
+  width: 100%;
+  height: 100%;
 `
 
 const Box = styled.div<{
@@ -158,6 +153,7 @@ const Box = styled.div<{
   height: 100%;
   display: flex;
   flex-direction: column;
+  overflow: auto;
 `
 
 const Top = styled.div`
@@ -171,12 +167,6 @@ const Main = styled.div`
   flex: 1;
   padding: ${(props) => props.theme.spacing[0]}
     ${(props) => props.theme.spacing[6]};
-
-  /**
-   * Hide overflow to make menu sliding in/out disappear at panel edge,
-   * as well as avoid any jumpiness from the transition.
-   */
-  overflow: hidden;
 `
 
 const MainContent = styled.div<{
@@ -187,10 +177,6 @@ const MainContent = styled.div<{
   flex-direction: column;
   justify-content: space-between;
   width: 100%;
-  /**
-  Allow buttons to scroll if required
-  */
-  overflow-y: hidden;
 `
 
 const MenuBox = styled.div<{

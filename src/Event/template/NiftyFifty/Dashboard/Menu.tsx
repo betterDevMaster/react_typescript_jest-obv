@@ -45,69 +45,62 @@ export default function Menu(props: {
 
   return (
     <Box>
-      <TopCenterBox>
-        <Top>
-          <LinkText
-            {...linkProps}
-            index={0}
-            showing={hasMultipleTabs}
-            label={homeTitle}
-          />
-          <LinkText
-            {...linkProps}
-            index={1}
-            showing={showingSpeakers}
-            label={speakerTitle}
-          />
-          <LinkText
-            {...linkProps}
-            index={2}
-            showing={showingSponsors}
-            label={sponsorsTitle}
-          />
-          <LinkText
-            {...linkProps}
-            index={3}
-            showing={showingResources}
-            label={resourcesTitle}
-          />
-          <LinkText
-            {...linkProps}
-            index={4}
-            showing={showingPoints}
-            label={pointsTitle}
-          />
-          <LinkText
-            {...linkProps}
-            index={5}
-            showing={showingImageWaterfall}
-            label={imageWaterfallTitle}
-          />
-          <LinkText
-            {...linkProps}
-            index={6}
-            showing={showingFaqs}
-            label={faqsTitle}
-          />
-        </Top>
-      </TopCenterBox>
-
-      <Bottom>
-        <UserInfo color={color}>
-          You're logged in as <br />
-          {props.user.email}
-        </UserInfo>
-        <LogoutBox>
-          <CustomButton
-            variant="text"
-            onClick={logout}
-            aria-label="logout"
-            textColor={color}
-          >
-            Logout
-          </CustomButton>
-        </LogoutBox>
-      </Bottom>
+      <LinkText
+        {...linkProps}
+        index={0}
+        showing={hasMultipleTabs}
+        label={homeTitle}
+      />
+      <LinkText
+        {...linkProps}
+        index={1}
+        showing={showingSpeakers}
+        label={speakerTitle}
+      />
+      <LinkText
+        {...linkProps}
+        index={2}
+        showing={showingSponsors}
+        label={sponsorsTitle}
+      />
+      <LinkText
+        {...linkProps}
+        index={3}
+        showing={showingResources}
+        label={resourcesTitle}
+      />
+      <LinkText
+        {...linkProps}
+        index={4}
+        showing={showingPoints}
+        label={pointsTitle}
+      />
+      <LinkText
+        {...linkProps}
+        index={5}
+        showing={showingImageWaterfall}
+        label={imageWaterfallTitle}
+      />
+      <LinkText
+        {...linkProps}
+        index={6}
+        showing={showingFaqs}
+        label={faqsTitle}
+      />
+      <UserInfo color={color}>
+        You're logged in as <br />
+        {props.user.email}
+      </UserInfo>
+      <LogoutBox>
+        <CustomButton
+          variant="text"
+          onClick={logout}
+          aria-label="logout"
+          textColor={color}
+        >
+          Logout
+        </CustomButton>
+      </LogoutBox>
     </Box>
   )
 }
@@ -150,33 +143,20 @@ const TabText = styled.span`
 
 const Box = styled.div`
   display: flex;
-  align-items: center;
   flex-direction: column;
-  justify-content: space-between;
-
-  flex: 1;
-  padding: 24px 24px 72px;
-`
-
-const Bottom = styled.div``
-
-const Top = styled.div`
-  display: flex;
   align-items: center;
-  flex-direction: column;
+  padding: ${(props) => props.theme.spacing[6]}
+    ${(props) => props.theme.spacing[6]} ${(props) => props.theme.spacing[10]};
 `
 
-const TopCenterBox = styled.div`
-  flex: 1;
-  display: flex;
-  align-items: center;
-`
-const UserInfo = styled.p<{color: string}>`
+const UserInfo = styled.div<{color: string}>`
+  margin-top: ${(props) => props.theme.spacing[4]};
   text-align: center;
   color: ${(props) => props.color} !important;
 `
 
 const LogoutBox = styled.div`
-  margin-top: 16px;
+  margin-top: ${(props) => props.theme.spacing[4]};
+  margin-bottom: ${(props) => props.theme.spacing[8]};
   text-align: center;
 `

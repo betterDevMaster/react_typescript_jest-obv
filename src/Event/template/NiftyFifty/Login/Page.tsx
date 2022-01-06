@@ -31,11 +31,7 @@ export default function Page(props: {
         isHidden={loginBackgroundProps.hidden}
         aria-label="login background"
       >
-        <Container
-          backgroundColor={rgba(login.backgroundColor, login.backgroundOpacity)}
-        >
-          {props.children}
-        </Container>
+        {props.children}
       </Box>
     </Background>
   )
@@ -97,6 +93,7 @@ export const DescriptionText = styled.div<{
   font-weight: 500;
   margin-bottom: ${(props) => props.theme.spacing[8]};
   text-align: center;
+  white-space: pre-wrap;
 `
 
 export const Background = styled.div<{
@@ -106,11 +103,10 @@ export const Background = styled.div<{
   top: 0;
   left: 0;
   width: 100%;
-  height: 100vh;
-  overflow: hidden;
+  height: 100%;
   transition: all 300ms ease-in 200ms;
-  justify-content: center;
   display: flex;
+  justify-content: center;
   flex-direction: column;
 
   @media (min-width: ${(props) => props.theme.breakpoints.sm}) {
@@ -173,7 +169,6 @@ export const StyledButton = styled(
   ),
 )`
   border-radius: ${(props) => props.borderRadius} !important;
-  height: 50px;
   color: ${(props) => props.color} !important;
   background: ${(props) => props.backgroundColor} !important;
 
@@ -187,7 +182,6 @@ export const Box = styled.div<{
   backgroundColor: string
   isHidden?: boolean
 }>`
-  height: 100%;
   background-size: 100% 100% !important;
   background-position: center;
   background-repeat: no-repeat !important;
@@ -195,6 +189,13 @@ export const Box = styled.div<{
     !props.isHidden && props.background
       ? `url(${props.background})`
       : props.backgroundColor};
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  width: 100%;
+  height: 100%;
+  padding: ${(props) => props.theme.spacing[5]};
 
   @media (min-width: ${(props) => props.theme.breakpoints.sm}) {
     margin: auto;
@@ -218,16 +219,13 @@ export const Box = styled.div<{
 export const Container = styled.div<{
   backgroundColor: string
 }>`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
   background-size: 100% 100% !important;
   background-position: center;
   background-repeat: no-repeat !important;
   background: ${(props) => props.backgroundColor};
   width: 100%;
   height: 100%;
+  padding: ${(props) => props.theme.spacing[6]};
 `
 
 export const ErrorText = styled(Typography)`
@@ -238,30 +236,11 @@ export const ErrorText = styled(Typography)`
 export const StyledPaper = styled(Paper)`
   padding: ${(props) => props.theme.spacing[10]};
   display: flex;
-  vertical-align: middle;
-  background-color: inherit;
+  align-items: center;
+  justify-content: center;
   width: 100%;
-  height: 100%;
   box-shadow: none;
-
-  @media (min-width: ${(props) => props.theme.breakpoints.sm}) {
-    border-radius: 10px 10px 0 0;
-  }
-
-  @media (min-width: ${(props) => props.theme.breakpoints.md}) {
-    border-radius: 10px 10px 0 0;
-    height: 100%;
-  }
-
-  @media (min-width: ${(props) => props.theme.breakpoints.lg}) {
-    border-radius: unset;
-    height: 100%;
-  }
-
-  @media (min-width: ${(props) => props.theme.breakpoints.xl}) {
-    border-radius: 10px;
-    height: 100%;
-  }
+  background-color: inherit;
 `
 
 export const StyledFormContainer = styled.div`

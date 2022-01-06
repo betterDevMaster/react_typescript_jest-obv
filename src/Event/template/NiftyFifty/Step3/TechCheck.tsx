@@ -157,6 +157,7 @@ const AdditionalContent = styled(TextEditorContent)`
 `
 const BodyContent = styled.div`
   overflow: auto;
+  margin-top: ${(props) => props.theme.spacing[5]};
 `
 const StyledButton = styled(
   ({

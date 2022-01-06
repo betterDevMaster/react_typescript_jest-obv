@@ -3,7 +3,7 @@ import styled from 'styled-components'
 
 import {Drawer, IconButton, makeStyles} from '@material-ui/core'
 
-import KeyboardArrowDownIcon from '@material-ui/icons/KeyboardArrowDown'
+import MenuIcon from '@material-ui/icons/Menu'
 import {
   useHasMultipleTabs,
   useNiftyFiftyTemplate,
@@ -113,12 +113,13 @@ export default function DrawerComponent(props: {
           />
         </Box>
       </Drawer>
-      <IconButton
+      <CusIconButton
         onClick={() => setOpenDrawer(!openDrawer)}
         className={classes.icon}
+        textcolor={template.leftPanel.menuTextColor}
       >
-        <KeyboardArrowDownIcon />
-      </IconButton>
+        <MenuIcon />
+      </CusIconButton>
     </>
   )
 }
@@ -176,4 +177,9 @@ const Box = styled.div<{
   height: 100%;
   background: ${(props) => props.backgroundColor};
   color: rgb(255, 255, 255);
+`
+const CusIconButton = styled(IconButton)<{
+  textcolor: string
+}>`
+  color: ${(props) => props.textcolor};
 `

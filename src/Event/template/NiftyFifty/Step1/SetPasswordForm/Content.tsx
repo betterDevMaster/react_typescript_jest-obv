@@ -25,7 +25,7 @@ export default function Content(props: SetPasswordFormProps) {
   const password = watch('password')
 
   return (
-    <div>
+    <Paper>
       <Title align="center" variant="h3">
         {v(setPasswordForm.title)}
       </Title>
@@ -99,7 +99,7 @@ export default function Content(props: SetPasswordFormProps) {
           </Grid>
         </Grid>
       </form>
-    </div>
+    </Paper>
   )
 }
 
@@ -181,6 +181,9 @@ export const StyledButton = styled(
   &:hover {
     background: ${(props) => props.hoverColor} !important;
   }
+`
+const Paper = styled.div`
+  margin-top: ${(props) => props.theme.spacing[5]};
 `
 
 const Title = styled(Typography)`

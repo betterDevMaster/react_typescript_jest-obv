@@ -144,8 +144,9 @@ const Container = styled.div<{
       : props.backgroundColor};
   display: flex;
   align-items: center;
-  width: 100%;
   flex-direction: column;
+  width: 100%;
+  min-height: 40%;
 `
 
 const Panel = styled.div<{
@@ -154,6 +155,7 @@ const Panel = styled.div<{
   background-color: ${(props) => props.backgroundColor};
   position: relative;
   width: 100%;
+  min-height: 60%;
 `
 
 const SecondContent = styled.div`

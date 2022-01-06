@@ -53,7 +53,7 @@ export default function SetPasswordFormConfig() {
     <Layout>
       <Page>
         <SectionTitle>Set Password Form</SectionTitle>
-        <Grid container spacing={3}>
+        <Grid container>
           <Grid item xs={12}>
             <Switch
               onChange={onChangeCheckedHandler(setRequiresPassword)}
@@ -99,10 +99,10 @@ export function Config() {
 
   return (
     <>
-      <form onSubmit={handleSubmit(submit)}>
-        <Grid container spacing={3}>
+      <StyledForm onSubmit={handleSubmit(submit)}>
+        <Grid container>
           <Grid item xs={12} md={12}>
-            <Grid container spacing={2}>
+            <Grid container>
               <Grid item xs={12}>
                 <TextField
                   label="Title"
@@ -193,7 +193,7 @@ export function Config() {
                 />
               </Grid>
             </Grid>
-            <Grid container spacing={2}>
+            <Grid container>
               <Grid item xs={12} md={6}>
                 <TextField
                   label="Button Label"
@@ -329,9 +329,10 @@ export function Config() {
             </Grid>
           </Grid>
         </Grid>
-      </form>
-      <Grid container spacing={3} style={{marginTop: '15px'}}>
+      </StyledForm>
+      <Grid container style={{marginTop: '15px'}}>
         <Grid item xs={12} md={12}>
+          <PreviewBodyLabel>Preview</PreviewBodyLabel>
           <PreviewBox>
             <TemplateSetPasswordForm
               submit={() => {}}
@@ -361,3 +362,9 @@ const BodyLabel = withStyles({
     marginBottom: spacing[3],
   },
 })(InputLabel)
+const StyledForm = styled.form`
+  width: 100%;
+`
+const PreviewBodyLabel = styled(BodyLabel)`
+  margin-top: ${(props) => props.theme.spacing[4]};
+`
