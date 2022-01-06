@@ -31,7 +31,11 @@ export default function Page(props: {
         isHidden={loginBackgroundProps.hidden}
         aria-label="login background"
       >
-        {props.children}
+        <Container
+          backgroundColor={rgba(login.backgroundColor, login.backgroundOpacity)}
+        >
+          {props.children}
+        </Container>
       </Box>
     </Background>
   )
@@ -189,14 +193,7 @@ export const Box = styled.div<{
     !props.isHidden && props.background
       ? `url(${props.background})`
       : props.backgroundColor};
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-direction: column;
   width: 100%;
-  height: 100%;
-  padding: ${(props) => props.theme.spacing[5]};
-
   @media (min-width: ${(props) => props.theme.breakpoints.sm}) {
     margin: auto;
     width: 100%;
@@ -225,6 +222,10 @@ export const Container = styled.div<{
   background: ${(props) => props.backgroundColor};
   width: 100%;
   height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
   padding: ${(props) => props.theme.spacing[6]};
 `
 

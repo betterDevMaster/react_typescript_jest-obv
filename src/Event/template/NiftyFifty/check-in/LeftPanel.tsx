@@ -30,11 +30,18 @@ export default function LeftPanel(props: {user: User}) {
       background={background}
       isBackgroundHidden={stepBackgroundProps.hidden}
     >
-      <Logo
-        src={logo}
-        hidden={stepLogoProps.hidden}
-        size={stepLogoProps.size}
-      />
+      <Box
+        backgroundColor={rgba(
+          checkInLeftPanel.backgroundColor,
+          checkInLeftPanel.backgroundOpacity,
+        )}
+      >
+        <Logo
+          src={logo}
+          hidden={stepLogoProps.hidden}
+          size={stepLogoProps.size}
+        />
+      </Box>
     </Paper>
   )
 }
@@ -44,9 +51,6 @@ const Paper = styled.div<{
   background: any
   isBackgroundHidden: boolean
 }>`
-  display: flex;
-  justify-content: center;
-  align-items: center;
   background: ${(props) =>
     !props.isBackgroundHidden && props.background
       ? `url(${props.background})`
@@ -56,7 +60,21 @@ const Paper = styled.div<{
   background-position: center;
   width: 100%;
   height: 100%;
+`
+
+const Box = styled.div<{
+  backgroundColor: string
+}>`
+  background-size: 100% 100% !important;
+  background-position: center;
+  background-repeat: no-repeat !important;
+  background: ${(props) => props.backgroundColor};
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  width: 100%;
+  height: 100%;
   overflow: auto;
   padding: ${(props) => props.theme.spacing[5]};
-  position: relative;
 `

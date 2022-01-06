@@ -52,11 +52,18 @@ export default function MobilePanel(props: {
         isBackgroundHidden={stepBackgroundProps.hidden}
         textColor={checkInLeftPanel.textColor}
       >
-        <Logo
-          src={logo}
-          hidden={stepLogoProps.hidden}
-          size={stepLogoProps.size}
-        />
+        <LogoContent
+          backgroundColor={rgba(
+            checkInLeftPanel.backgroundColor,
+            checkInLeftPanel.backgroundOpacity,
+          )}
+        >
+          <Logo
+            src={logo}
+            hidden={stepLogoProps.hidden}
+            size={stepLogoProps.size}
+          />
+        </LogoContent>
       </Content>
       <Paper
         backgroundColor={rgba(
@@ -119,10 +126,20 @@ const Content = styled.div<{
     !props.isBackgroundHidden && props.background
       ? `url(${props.background})`
       : props.backgroundColor};
-  padding: ${(props) => props.theme.spacing[5]};
   > * {
     color: ${(props) => props.textColor}!important;
   }
+`
+
+const LogoContent = styled.div<{
+  backgroundColor: string
+}>`
+  width: 100%;
+  background-size: 100% 100% !important;
+  background-position: center;
+  background-repeat: no-repeat !important;
+  background: ${(props) => props.backgroundColor};
+  padding: ${(props) => props.theme.spacing[5]};
 `
 
 const Panel = styled.div`
