@@ -25,6 +25,7 @@ interface PanelEdit {
 
 export default function MobilePanel(props: {
   children: React.ReactElement
+  currentTab: number
   onChangeTab: (tab: number) => void
   user: User
 }) {
@@ -86,13 +87,16 @@ export default function MobilePanel(props: {
           user={props.user}
         />
       </Container>
-      <Content onChangeTab={props.onChangeTab}>{props.children}</Content>
+      <Content currentTab={props.currentTab} onChangeTab={props.onChangeTab}>
+        {props.children}
+      </Content>
     </Box>
   )
 }
 
 function Content(props: {
   children: React.ReactElement
+  currentTab: number
   onChangeTab: (tab: number) => void
 }) {
   const {rightPanel} = useNiftyFiftyTemplate()
@@ -108,7 +112,7 @@ function Content(props: {
         rightPanel.backgroundOpacity,
       )}
     >
-      <Navbar onChangeTab={props.onChangeTab} />
+      <Navbar currentTab={props.currentTab} onChangeTab={props.onChangeTab} />
       <EditModeOnly>
         <RightPanelIconButton
           onClick={() => setIsEditing({...isEditing, rightPanel: true})}
@@ -118,7 +122,7 @@ function Content(props: {
           onClose={() => setIsEditing({...isEditing, rightPanel: false})}
         />
       </EditModeOnly>
-      <SecondContent>{props.children}</SecondContent>
+      {props.children}
     </Panel>
   )
 }
@@ -156,10 +160,6 @@ const Panel = styled.div<{
   position: relative;
   width: 100%;
   min-height: 60%;
-`
-
-const SecondContent = styled.div`
-  padding: ${(props) => props.theme.spacing[6]};
 `
 
 const StyledMenuIconButton = styled(MenuIconButton)`

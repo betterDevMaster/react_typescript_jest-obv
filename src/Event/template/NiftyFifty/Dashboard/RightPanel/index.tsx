@@ -28,7 +28,13 @@ export default function RightPanel(props: {
         />
       </EditModeOnly>
       <ThemeProvider theme={theme}>
-        <Box>
+        <Box
+          backgroundColor={rgba(
+            rightPanel.backgroundColor,
+            rightPanel.backgroundOpacity,
+          )}
+          textColor={rightPanel.textColor}
+        >
           <Editable onEdit={toggleBarConfig}>
             <Bar
               currentTab={props.currentTab}
@@ -36,39 +42,23 @@ export default function RightPanel(props: {
               aria-label="panels right panel bar"
             />
           </Editable>
-          <Body
-            backgroundColor={rgba(
-              rightPanel.backgroundColor,
-              rightPanel.backgroundOpacity,
-            )}
-            textColor={rightPanel.textColor}
-          >
-            {props.children}
-          </Body>
+          {props.children}
         </Box>
       </ThemeProvider>
     </>
   )
 }
 
-const Box = styled.div`
+const Box = styled.div<{
+  backgroundColor: string
+  textColor: string
+}>`
   display: flex;
   flex-direction: column;
   width: 100%;
   height: 100%;
   overflow: auto;
-`
-
-const Body = styled.div<{
-  backgroundColor: string
-  textColor: string
-}>`
-  flex: 1;
   background: ${(props) => props.backgroundColor};
-  padding: 40px 70px !important;
-  position: relative;
-  overflow: auto;
-
   > * {
     color: ${(props) => props.textColor}!important;
   }

@@ -65,7 +65,11 @@ export default function NiftyFiftyDashboard(props: {user: User}) {
               </RightPanel>
             }
             Mobile={
-              <MobilePanel onChangeTab={setTabIndex} user={props.user}>
+              <MobilePanel
+                currentTab={tabIndex}
+                onChangeTab={setTabIndex}
+                user={props.user}
+              >
                 <Content currentTab={tabIndex} isEdit={isEdit} />
               </MobilePanel>
             }
@@ -86,7 +90,7 @@ function Content(props: {currentTab: number; isEdit: boolean}) {
     return <div>loading...</div>
   }
   return (
-    <>
+    <Panel>
       <ContentPanel index={0} currentIndex={currentTab}>
         <Home />
       </ContentPanel>
@@ -108,7 +112,7 @@ function Content(props: {currentTab: number; isEdit: boolean}) {
       <ContentPanel index={6} currentIndex={currentTab}>
         <FaqPage isEditMode={isEdit} faqs={faqs} />
       </ContentPanel>
-    </>
+    </Panel>
   )
 }
 
@@ -132,6 +136,11 @@ function ContentPanel(props: {
     </StyledTabPanel>
   )
 }
+
+const Panel = styled.div`
+  padding: ${(props) => props.theme.spacing[10]}
+    ${(props) => props.theme.spacing[17]};
+`
 
 const StyledTabPanel = styled(TabPanel)<{
   textColor: string

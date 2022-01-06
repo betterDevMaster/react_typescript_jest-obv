@@ -1,16 +1,16 @@
-import {withStyles} from '@material-ui/core/styles'
+import React from 'react'
 import styled from 'styled-components'
 import {
   useHasMultipleTabs,
   useNiftyFiftyTemplate,
 } from 'Event/template/NiftyFifty'
-import React from 'react'
-import Tabs from '@material-ui/core/Tabs'
+
+import {Tabs, useMediaQuery, useTheme, withStyles} from '@material-ui/core'
 import MuiTab, {TabProps} from '@material-ui/core/Tab'
-import {TOP_BAR_HEIGHT} from 'Event/template/NiftyFifty/Page'
+
 import {useAttendeeVariables} from 'Event'
+import {TOP_BAR_HEIGHT} from 'Event/template/NiftyFifty/Page'
 import {useEditMode} from 'Event/Dashboard/editor/state/edit-mode'
-import {rgba} from 'lib/color'
 
 export default function Nav(props: {
   currentTab: number
@@ -35,32 +35,40 @@ export default function Nav(props: {
   const {currentTab, onChangeTab} = props
   const v = useAttendeeVariables()
 
+  const theme = useTheme()
+  const isSMMobile = useMediaQuery(theme.breakpoints.down('sm'))
+
   const StyledTabs = withStyles({
     root: {
       minHeight: `${TOP_BAR_HEIGHT}px`,
-      backgroundColor: rgba(
-        rightPanel.backgroundColor,
-        rightPanel.backgroundOpacity,
-      ),
+      borderBottom: '1px solid #C4C4C4',
+      width: '100%',
     },
     flexContainer: {
       justifyContent: 'space-around',
-      alignItems: 'center',
-      borderBottom: '1px solid #C4C4C4',
+      width: '100%',
+      // justifyContent: isSMMobile ? 'space-around' : 'unset',
     },
     indicator: {
       display: 'flex',
+      // display: isSMMobile ? 'none' : 'flex',
       justifyContent: 'center',
       backgroundColor: 'transparent',
+      borderRadius: '10px',
       '& > span': {
-        maxWidth: 50,
+        maxWidth: isSMMobile ? 60 : 40,
         width: '100%',
         backgroundColor: rightPanel.tabUnderlineColor,
         borderRadius: '10px',
       },
     },
   })((props) => (
-    <Tabs {...props} TabIndicatorProps={{children: <span />}} />
+    <Tabs
+      {...props}
+      variant="scrollable"
+      scrollButtons="auto"
+      TabIndicatorProps={{children: <span />}}
+    />
   )) as typeof Tabs
 
   return (
