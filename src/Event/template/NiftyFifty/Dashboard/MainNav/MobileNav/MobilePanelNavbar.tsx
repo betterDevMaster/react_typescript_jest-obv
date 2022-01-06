@@ -35,7 +35,7 @@ export default function Navbar(props: {
 }) {
   const theme = useTheme()
   const isXSMobile = useMediaQuery(theme.breakpoints.down('xs'))
-
+  const {currentTab, onChangeTab} = props
   const template = useNiftyFiftyTemplate()
   const {rightPanel} = template
   const {
@@ -56,7 +56,7 @@ export default function Navbar(props: {
   const ddnSt = dropdownStyles()
 
   const handleChange = (event: any) => {
-    props.onChangeTab(event.target.value)
+    onChangeTab(event.target.value)
   }
 
   return (
@@ -66,7 +66,7 @@ export default function Navbar(props: {
         {isXSMobile ? (
           <StyledSelect
             className={ddnSt.underline}
-            value={props.currentTab}
+            value={currentTab}
             onChange={handleChange}
             disableUnderline
             IconComponent={() => <KeyboardArrowDownIcon />}
@@ -95,8 +95,8 @@ export default function Navbar(props: {
           </StyledSelect>
         ) : (
           <Bar
-            currentTab={0}
-            onChangeTab={props.onChangeTab}
+            currentTab={currentTab}
+            onChangeTab={onChangeTab}
             aria-label="panels right panel bar"
           />
         )}
@@ -113,8 +113,8 @@ const Paper = styled(AppBar)<{
   color: ${(props) => props.textcolor};
 `
 const Box = styled(Toolbar)`
+  width: 100%;
   padding: 0;
-  border-bottom: 1px solid #c4c4c4;
 `
 const StyledSelect = styled(Select)`
   width: 100%;

@@ -42,6 +42,7 @@ export default function RightPanel(props: {
               aria-label="panels right panel bar"
             />
           </Editable>
+
           {props.children}
         </Box>
       </ThemeProvider>

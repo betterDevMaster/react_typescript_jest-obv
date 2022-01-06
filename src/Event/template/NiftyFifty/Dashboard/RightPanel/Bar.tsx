@@ -5,7 +5,7 @@ import {
   useNiftyFiftyTemplate,
 } from 'Event/template/NiftyFifty'
 
-import {Tabs, useMediaQuery, useTheme, withStyles} from '@material-ui/core'
+import {makeStyles, Tabs} from '@material-ui/core'
 import MuiTab, {TabProps} from '@material-ui/core/Tab'
 
 import {useAttendeeVariables} from 'Event'
@@ -35,47 +35,43 @@ export default function Nav(props: {
   const {currentTab, onChangeTab} = props
   const v = useAttendeeVariables()
 
-  const theme = useTheme()
-  const isSMMobile = useMediaQuery(theme.breakpoints.down('sm'))
-
-  const StyledTabs = withStyles({
+  const useTabStyles = makeStyles({
     root: {
-      minHeight: `${TOP_BAR_HEIGHT}px`,
+      justifyContent: 'center',
       borderBottom: '1px solid #C4C4C4',
       width: '100%',
     },
-    flexContainer: {
-      justifyContent: 'space-around',
-      width: '100%',
-      // justifyContent: isSMMobile ? 'space-around' : 'unset',
+    scroller: {
+      flexGrow: 0,
     },
     indicator: {
       display: 'flex',
-      // display: isSMMobile ? 'none' : 'flex',
       justifyContent: 'center',
       backgroundColor: 'transparent',
       borderRadius: '10px',
       '& > span': {
-        maxWidth: isSMMobile ? 60 : 40,
+        maxWidth: 50,
         width: '100%',
         backgroundColor: rightPanel.tabUnderlineColor,
         borderRadius: '10px',
       },
     },
-  })((props) => (
-    <Tabs
-      {...props}
-      variant="scrollable"
-      scrollButtons="auto"
-      TabIndicatorProps={{children: <span />}}
-    />
-  )) as typeof Tabs
+  })
+  const classes = useTabStyles()
 
   return (
-    <StyledTabs
+    <Tabs
+      classes={{
+        root: classes.root,
+        scroller: classes.scroller,
+        indicator: classes.indicator,
+      }}
       onChange={(_, tabIndex) => onChangeTab(tabIndex)}
       value={currentTab}
       aria-label={props['aria-label']}
+      variant="scrollable"
+      scrollButtons="auto"
+      TabIndicatorProps={{children: <span />}}
     >
       <Tab
         showing={hasMultipleTabs}
@@ -112,7 +108,7 @@ export default function Nav(props: {
         aria-label="panels tab faqs"
         showing={showingFaqs}
       />
-    </StyledTabs>
+    </Tabs>
   )
 }
 
