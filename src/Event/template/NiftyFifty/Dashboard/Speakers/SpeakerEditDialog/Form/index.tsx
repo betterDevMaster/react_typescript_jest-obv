@@ -156,41 +156,6 @@ export default function EditSpeakerForm(props: {
           <RemoveImageButton aria-label="remove speaker image" />
         </ImageUpload>
       </ImageContainer>
-      <Box display="flex" flexDirection="row" flex="2">
-        <Box flex="1" mr={2}>
-          <Controller
-            name="backgroundColor"
-            defaultValue={speaker.backgroundColor}
-            control={control}
-            render={({value, onChange}) => (
-              <ColorPicker
-                label="Background Color"
-                color={value || '#FFFFFF'}
-                onPick={onChange}
-                aria-label="background color"
-              />
-            )}
-          />
-        </Box>
-        <Box flex="1">
-          <InputLabel>Background Opacity</InputLabel>
-          <Controller
-            name="backgroundOpacity"
-            defaultValue={speaker.backgroundOpacity}
-            control={control}
-            render={({value, onChange}) => (
-              <Slider
-                min={0}
-                max={1}
-                step={0.1}
-                onChange={handleChangeSlider(onChange)}
-                valueLabelDisplay="auto"
-                value={value}
-              />
-            )}
-          />
-        </Box>
-      </Box>
       <SaveButton
         fullWidth
         variant="contained"

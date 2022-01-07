@@ -233,24 +233,6 @@ export default function SpeakerPageConfigForm(props: {onClose: () => void}) {
           )}
         />
       </Grid>
-      <Grid item xs={12}>
-        <InputLabel>Space Between Speakers</InputLabel>
-        <Controller
-          name="speakersSpace"
-          defaultValue={speakerPageSettings.speakersSpace}
-          control={control}
-          render={({onChange, value}) => (
-            <Slider
-              min={MIN_SPACE_SIZE}
-              max={MAX_SPACE_SIZE}
-              step={1}
-              onChange={handleChangeSlider(onChange)}
-              valueLabelDisplay="auto"
-              value={value}
-            />
-          )}
-        />
-      </Grid>
       <SaveButton
         fullWidth
         variant="contained"

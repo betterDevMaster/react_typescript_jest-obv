@@ -64,10 +64,7 @@ function Content(props: SpeakerProps) {
     <Box
       aria-label="speaker"
       isFirst={isFirst}
-      backgroundColor={rgba(
-        speaker.backgroundColor || '#FFFFFF',
-        speaker.backgroundOpacity || 0,
-      )}
+      backgroundColor={rgba('#FFFFFF', 0)}
       isXSMobile={isXSMobile}
     >
       <Left item xs={imageSize}>
@@ -95,7 +92,6 @@ const Box = styled.div<{
   backgroundColor: string
 }>`
   position: relative;
-  border-top: ${(props) => (props.isFirst ? 'none' : '1px solid #e5e5e5')};
   padding: ${(props) =>
     props.isXSMobile ? props.theme.spacing[4] : props.theme.spacing[6]} 
     ${(props) =>

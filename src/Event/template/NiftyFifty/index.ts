@@ -269,7 +269,6 @@ export type NiftyFifty = BaseTemplate &
       welcomeDescriptionFontSize?: number
       welcomeDescriptionColor?: string
       speakerImageSize?: Column
-      speakersSpace?: GridSpacing
       orderedIds?: number[]
       backgroundColor?: string
       backgroundOpacity?: number
@@ -560,7 +559,6 @@ export const createNiftyFifty = (): DeepRequired<NiftyFifty> => ({
     welcomeDescriptionFontSize: 17,
     welcomeDescriptionColor: '#000000',
     speakerImageSize: 2,
-    speakersSpace: 0,
     orderedIds: [],
     backgroundColor: '#FFFFFF',
     backgroundOpacity: 100,

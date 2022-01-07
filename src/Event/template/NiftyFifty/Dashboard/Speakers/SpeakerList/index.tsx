@@ -5,16 +5,12 @@ import React from 'react'
 import {useTemplate} from 'Event/TemplateProvider'
 import Typography from '@material-ui/core/Typography'
 import {DragDropContext, Droppable, DropResult} from 'react-beautiful-dnd'
-import {
-  useNiftyFiftyTemplate,
-  useNiftyFiftyUpdate,
-} from 'Event/template/NiftyFifty'
+import {useNiftyFiftyUpdate} from 'Event/template/NiftyFifty'
 
 export default function SpeakerList(props: {
   speakers: Speaker[]
   isEditMode?: boolean
 }) {
-  const template = useNiftyFiftyTemplate()
   const sortedSpeakers = useSortedSpeakers(props.speakers)
 
   const isEmpty = props.speakers.length === 0
@@ -29,11 +25,7 @@ export default function SpeakerList(props: {
   ))
 
   if (!props.isEditMode) {
-    return (
-      <Grid container spacing={template.speakers.speakersSpace}>
-        {cards}
-      </Grid>
-    )
+    return <Grid container>{cards}</Grid>
   }
 
   return <DraggableList speakers={sortedSpeakers}>{cards}</DraggableList>
@@ -44,18 +36,12 @@ function DraggableList(props: {
   speakers: Speaker[]
 }) {
   const handleDrag = useHandleDrag()
-  const {speakers} = useNiftyFiftyTemplate()
 
   return (
     <DragDropContext onDragEnd={handleDrag(props.speakers)}>
       <Droppable droppableId="drag-and-drop-speaker">
         {(provided) => (
-          <Grid
-            container
-            spacing={speakers.speakersSpace}
-            ref={provided.innerRef}
-            {...provided.droppableProps}
-          >
+          <Grid container ref={provided.innerRef} {...provided.droppableProps}>
             <>
               {props.children}
               {provided.placeholder}
