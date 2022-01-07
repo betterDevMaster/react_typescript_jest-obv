@@ -119,13 +119,13 @@ const Content = styled.div<{
   textColor: string
 }>`
   width: 100%;
-  background-size: 100% 100% !important;
-  background-position: center;
-  background-repeat: no-repeat !important;
   background: ${(props) =>
     !props.isBackgroundHidden && props.background
       ? `url(${props.background})`
       : props.backgroundColor};
+  background-size: cover !important;
+  background-position: center;
+  background-repeat: no-repeat !important;
   > * {
     color: ${(props) => props.textColor}!important;
   }
@@ -134,12 +134,12 @@ const Content = styled.div<{
 const LogoContent = styled.div<{
   backgroundColor: string
 }>`
-  width: 100%;
-  background-size: 100% 100% !important;
+  background: ${(props) => props.backgroundColor};
+  background-size: cover !important;
   background-position: center;
   background-repeat: no-repeat !important;
-  background: ${(props) => props.backgroundColor};
   padding: ${(props) => props.theme.spacing[5]};
+  width: 100%;
 `
 
 const Panel = styled.div`

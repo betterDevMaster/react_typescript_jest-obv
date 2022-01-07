@@ -137,18 +137,18 @@ const Container = styled.div<{
   backgroundImage: any
   isBackgroundHidden: boolean
 }>`
-  padding: ${(props) => props.theme.spacing[12]}
-    ${(props) => props.theme.spacing[6]} ${(props) => props.theme.spacing[5]};
-  background-size: 100% 100% !important;
-  background-position: center;
-  background-repeat: no-repeat !important;
   background: ${(props) =>
     !props.isBackgroundHidden && props.backgroundImage
       ? `url(${props.backgroundImage})`
       : props.backgroundColor};
+  background-size: cover !important;
+  background-position: center;
+  background-repeat: no-repeat !important;
   display: flex;
   align-items: center;
   flex-direction: column;
+  padding: ${(props) => props.theme.spacing[12]}
+    ${(props) => props.theme.spacing[6]} ${(props) => props.theme.spacing[5]};
   width: 100%;
 `
 

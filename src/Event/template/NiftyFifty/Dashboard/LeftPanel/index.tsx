@@ -128,15 +128,15 @@ const Paper = styled.div<{
   menuBackgroundColor: string
   isMenuVisible: boolean
 }>`
-  background-size: 100% 100% !important;
-  background-position: center;
-  background-repeat: no-repeat !important;
   background: ${(props) =>
     props.isMenuVisible
       ? props.menuBackgroundColor
       : !props.isBackgroundHidden && props.backgroundImage
       ? `url(${props.backgroundImage})`
       : props.backgroundColor};
+  background-size: cover !important;
+  background-position: center;
+  background-repeat: no-repeat !important;
   width: 100%;
   height: 100%;
 `
@@ -144,16 +144,16 @@ const Paper = styled.div<{
 const Box = styled.div<{
   backgroundColor: string
 }>`
-  padding: ${(props) => props.theme.spacing[6]};
-  background-size: 100% 100% !important;
+  background: ${(props) => props.backgroundColor};
+  background-size: cover !important;
   background-position: center;
   background-repeat: no-repeat !important;
-  background: ${(props) => props.backgroundColor};
   width: 100%;
   height: 100%;
   display: flex;
   flex-direction: column;
   overflow: auto;
+  padding: ${(props) => props.theme.spacing[6]};
 `
 
 const Top = styled.div`

@@ -56,7 +56,7 @@ const Paper = styled.div<{
       ? `url(${props.background})`
       : props.backgroundColor};
   background-repeat: no-repeat;
-  background-size: 100% 100%;
+  background-size: cover;
   background-position: center;
   width: 100%;
   height: 100%;
@@ -65,10 +65,10 @@ const Paper = styled.div<{
 const Box = styled.div<{
   backgroundColor: string
 }>`
-  background-size: 100% 100% !important;
+  background: ${(props) => props.backgroundColor};
+  background-size: cover !important;
   background-position: center;
   background-repeat: no-repeat !important;
-  background: ${(props) => props.backgroundColor};
   display: flex;
   justify-content: center;
   align-items: center;
