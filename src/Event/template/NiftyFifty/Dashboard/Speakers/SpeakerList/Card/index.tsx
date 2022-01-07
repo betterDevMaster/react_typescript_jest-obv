@@ -1,7 +1,8 @@
 import React from 'react'
 import {Draggable} from 'react-beautiful-dnd'
 import styled from 'styled-components'
-import Grid from '@material-ui/core/Grid'
+
+import {Grid, useTheme, useMediaQuery} from '@material-ui/core'
 
 import {useAttendeeVariables} from 'Event'
 import Image from 'Event/template/NiftyFifty/Dashboard/Speakers/SpeakerList/Card/Image'
@@ -53,6 +54,8 @@ function Content(props: SpeakerProps) {
   const {speaker} = props
   const {speakers} = useNiftyFiftyTemplate()
   const v = useAttendeeVariables()
+  const theme = useTheme()
+  const isXSMobile = useMediaQuery(theme.breakpoints.down('xs'))
 
   const imageSize = speakers.speakerImageSize
   const isFirst = props.index === 0
@@ -65,6 +68,7 @@ function Content(props: SpeakerProps) {
         speaker.backgroundColor || '#FFFFFF',
         speaker.backgroundOpacity || 0,
       )}
+      isXSMobile={isXSMobile}
     >
       <Left item xs={imageSize}>
         <StyledImage speaker={speaker} />
@@ -87,11 +91,15 @@ function Content(props: SpeakerProps) {
 
 const Box = styled.div<{
   isFirst: boolean
+  isXSMobile: boolean
   backgroundColor: string
 }>`
   position: relative;
   border-top: ${(props) => (props.isFirst ? 'none' : '1px solid #e5e5e5')};
-  padding: ${(props) => props.theme.spacing[4]};
+  padding: ${(props) =>
+    props.isXSMobile ? props.theme.spacing[4] : props.theme.spacing[6]} 
+    ${(props) =>
+      props.isXSMobile ? props.theme.spacing[8] : props.theme.spacing[12]};};
   background: ${(props) => props.backgroundColor};
 `
 

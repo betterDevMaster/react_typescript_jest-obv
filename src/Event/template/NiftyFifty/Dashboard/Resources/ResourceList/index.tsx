@@ -6,7 +6,9 @@ import {
   DroppableProvidedProps,
   DropResult,
 } from 'react-beautiful-dnd'
-import Grid from '@material-ui/core/Grid'
+
+import {Grid, useTheme, useMediaQuery} from '@material-ui/core'
+
 import {useAttendeeVariables} from 'Event'
 import {HasRules} from 'Event/attendee-rules'
 import {useEditMode} from 'Event/Dashboard/editor/state/edit-mode'
@@ -48,6 +50,8 @@ export default function ResourceList() {
   const template = useNiftyFiftyTemplate()
   const [configVisible, setConfigVisible] = useState(false)
   const toggleListConfig = () => setConfigVisible(!configVisible)
+  const theme = useTheme()
+  const isXSMobile = useMediaQuery(theme.breakpoints.down('xs'))
 
   const {resourceList: list} = template
   const v = useAttendeeVariables()
@@ -58,7 +62,7 @@ export default function ResourceList() {
   }
 
   return (
-    <div>
+    <Paper isXSMobile={isXSMobile}>
       <EditModeOnly>
         <ResourceListConfig
           isVisible={configVisible}
@@ -72,7 +76,7 @@ export default function ResourceList() {
       <EditModeOnly>
         <StyledAddResourceButton />
       </EditModeOnly>
-    </div>
+    </Paper>
   )
 }
 
@@ -162,6 +166,14 @@ function useHandleDrag() {
     })
   }
 }
+
+const Paper = styled.div<{
+  isXSMobile: boolean
+}>`
+  padding: 0
+    ${(props) =>
+      props.isXSMobile ? props.theme.spacing[8] : props.theme.spacing[12]};
+`
 
 const Box = styled.div`
   margin-bottom: 30px;

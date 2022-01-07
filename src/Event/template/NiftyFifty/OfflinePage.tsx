@@ -11,12 +11,10 @@ export default function OfflinePage(props: OfflinePageProps) {
 
   return (
     <Page isPreview={isPreview || false}>
-      {/* <Box> */}
       <Text fontSize={24}>{v(title)}</Text>
       <Text>
         <div dangerouslySetInnerHTML={{__html: v(description)}} />
       </Text>
-      {/* </Box> */}
     </Page>
   )
 }

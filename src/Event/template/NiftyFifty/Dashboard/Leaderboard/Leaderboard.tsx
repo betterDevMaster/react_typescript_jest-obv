@@ -1,27 +1,37 @@
-import Table from '@material-ui/core/Table'
-import TableBody from '@material-ui/core/TableBody'
-import TableCell from '@material-ui/core/TableCell'
-import TableHead from '@material-ui/core/TableHead'
-import TableRow from '@material-ui/core/TableRow'
+import React from 'react'
+import styled from 'styled-components'
+
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableRow,
+  useTheme,
+  useMediaQuery,
+} from '@material-ui/core'
+
 import {useAttendeeVariables} from 'Event'
 import {useEntries} from 'Event/Leaderboard'
 import {useNiftyFiftyTemplate} from 'Event/template/NiftyFifty'
 import {PageTitle} from 'Event/template/NiftyFifty/Page'
-import Content from 'lib/ui/form/TextEditor/Content'
-import React from 'react'
-import {useToggle} from 'lib/toggle'
 import {Editable} from 'Event/Dashboard/editor/views/EditComponent'
 import EditModeOnly from 'Event/Dashboard/editor/views/EditModeOnly'
 import LeaderboardConfig from 'Event/template/NiftyFifty/Dashboard/Leaderboard/LeaderboardConfig'
+
+import {useToggle} from 'lib/toggle'
+import Content from 'lib/ui/form/TextEditor/Content'
 
 export default function Leaderboard() {
   const v = useAttendeeVariables()
   const {leaderboard} = useNiftyFiftyTemplate()
   const {entries} = useEntries()
   const {flag: configVisible, toggle: toggleConfig} = useToggle()
+  const theme = useTheme()
+  const isXSMobile = useMediaQuery(theme.breakpoints.down('xs'))
 
   return (
-    <>
+    <Paper isXSMobile={isXSMobile}>
       <EditModeOnly>
         <LeaderboardConfig isVisible={configVisible} onClose={toggleConfig} />
       </EditModeOnly>
@@ -55,6 +65,14 @@ export default function Leaderboard() {
           ))}
         </TableBody>
       </Table>
-    </>
+    </Paper>
   )
 }
+
+const Paper = styled.div<{
+  isXSMobile: boolean
+}>`
+  padding: 0
+    ${(props) =>
+      props.isXSMobile ? props.theme.spacing[8] : props.theme.spacing[12]};
+`

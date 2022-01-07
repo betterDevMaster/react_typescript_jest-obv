@@ -180,16 +180,12 @@ export default function EditSpeakerForm(props: {
             control={control}
             render={({value, onChange}) => (
               <Slider
-                valueLabelDisplay="auto"
-                aria-label="background opacity"
-                value={value || 0}
-                valueLabelFormat={() => (
-                  <div>{(speaker.backgroundOpacity || 0) * 100}</div>
-                )}
-                onChange={handleChangeSlider(onChange)}
-                step={0.01}
                 min={0}
                 max={1}
+                step={0.1}
+                onChange={handleChangeSlider(onChange)}
+                valueLabelDisplay="auto"
+                value={value}
               />
             )}
           />

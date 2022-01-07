@@ -145,9 +145,8 @@ const Panel = styled.div<{
   isXSMobile: boolean
 }>`
   padding: ${(props) =>
-      props.isXSMobile ? props.theme.spacing[5] : props.theme.spacing[10]}
-    ${(props) =>
-      props.isXSMobile ? props.theme.spacing[8] : props.theme.spacing[17]};
+      props.isXSMobile ? props.theme.spacing[4] : props.theme.spacing[6]}
+    0;
 `
 
 const StyledTabPanel = styled(TabPanel)<{
