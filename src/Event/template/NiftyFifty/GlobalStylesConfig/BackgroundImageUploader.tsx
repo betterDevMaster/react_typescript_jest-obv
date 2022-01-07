@@ -26,8 +26,8 @@ export default function BackgroundImageUploader(props: {
           onChange={onChange}
           value={value}
           canResize
-          width={1920}
-          height={1200}
+          width={1200}
+          height={1920}
         />
       )}
     />
