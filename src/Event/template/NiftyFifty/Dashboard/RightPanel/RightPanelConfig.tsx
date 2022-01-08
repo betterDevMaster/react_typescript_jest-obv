@@ -39,38 +39,6 @@ export default function RightPanelConfig(props: {
         title="Right Panel Config"
       >
         <form onSubmit={handleSubmit(submit)}>
-          {/* <Box mb={2}>
-            <Controller
-              name="isDarkMode"
-              defaultValue={rightPanel.isDarkMode}
-              control={control}
-              render={({value, onChange}) => (
-                <Switch
-                  checked={value}
-                  onChange={onChange}
-                  arial-label="set dark mode"
-                  labelPlacement="end"
-                  color="primary"
-                  label="Dark Mode"
-                />
-              )}
-            />
-          </Box>
-          <Box mb={2}>
-            <Controller
-              name="barBackgroundColor"
-              defaultValue={rightPanel.barBackgroundColor}
-              control={control}
-              render={({value, onChange}) => (
-                <ColorPicker
-                  label="Bar Background Color"
-                  color={value}
-                  onPick={onChange}
-                  aria-label="bar background color"
-                />
-              )}
-            />
-          </Box> */}
           <Box mb={2}>
             <Controller
               name="barTextColor"

@@ -1,7 +1,7 @@
 import React from 'react'
 import {Controller, useForm} from 'react-hook-form'
 
-import {Box} from '@material-ui/core'
+import {Box, TextField} from '@material-ui/core'
 
 import {
   NiftyFifty,
@@ -17,34 +17,27 @@ import Page, {SectionTitle} from 'organization/Event/Page'
 import Layout from 'organization/user/Layout'
 import {SaveButton} from 'organization/Event/DashboardConfig/ComponentConfig'
 
-type GlobalStylesFormData = Pick<
-  NiftyFifty,
-  'textColor' | 'isDarkMode' | 'linkColor' | 'linkUnderline'
-> &
-  NiftyFifty['background']
-
 export default function GlobalStylesConfig() {
   const template = useNiftyFiftyTemplate()
-  const updateBackground = useNiftyFiftyUpdate()
+  const update = useNiftyFiftyUpdate()
 
-  const {handleSubmit, control} = useForm()
+  const {register, handleSubmit, control} = useForm()
 
-  const save = (data: GlobalStylesFormData) => {
-    updateBackground({
-      ...data,
-    })
+  const save = (data: NiftyFifty) => {
+    update(data)
   }
+
   return (
     <Layout>
       <Page>
         <SectionTitle>Global Styles</SectionTitle>
         <form onSubmit={handleSubmit(save)}>
-          {/* <Box mb={2}>
+          <Box mb={2}>
             <Controller
               name="isDarkMode"
               defaultValue={template.isDarkMode}
               control={control}
-              render={({ value, onChange }) => (
+              render={({value, onChange}) => (
                 <Switch
                   checked={value}
                   onChange={onChangeCheckedHandler(onChange)}
@@ -55,41 +48,37 @@ export default function GlobalStylesConfig() {
                 />
               )}
             />
-          </Box> */}
-          {/* <Box mb={2}>
-            <Controller
-              name="background.color"
-              defaultValue={template.background.color}
-              control={control}
-              render={({value, onChange}) => (
-                <ColorPicker
-                  label="Background Color"
-                  color={value}
-                  onPick={onChange}
-                  aria-label="dashboard background color"
-                />
-              )}
-            />
           </Box>
-          <InputLabel>Background Color Opacity</InputLabel>
-          <Controller
-            name="background.opacity"
-            defaultValue={template.background.opacity}
-            control={control}
-            render={({value, onChange}) => (
-              <Slider
-                min={0}
-                max={1}
-                step={0.1}
-                onChange={handleChangeSlider(onChange)}
-                valueLabelDisplay="auto"
-                value={value}
-                valueLabelFormat={() => <div>{value}</div>}
-                aria-label="background color opacity"
+          <Box display="flex" flexDirection="row" flex="2">
+            <Box flex="1">
+              <Controller
+                name="pageTitleColor"
+                defaultValue={template.pageTitleColor}
+                control={control}
+                render={({value, onChange}) => (
+                  <ColorPicker
+                    label="Page Title Color"
+                    color={value}
+                    onPick={onChange}
+                    aria-label="page title color"
+                  />
+                )}
               />
-            )}
-          /> */}
-
+            </Box>
+            <Box flex="1">
+              <TextField
+                name="pageTitleFontSize"
+                defaultValue={template.pageTitleFontSize}
+                label="Page Title Font Size"
+                type="number"
+                fullWidth
+                inputProps={{
+                  min: 0,
+                  ref: register,
+                }}
+              />
+            </Box>
+          </Box>
           <Box mb={2}>
             <Controller
               name="textColor"

@@ -75,6 +75,15 @@ export type NiftyFifty = BaseTemplate &
     welcomeText: string
     homeMenuTitle?: string
     emojiList: EmojiList
+    // Global __
+    isDarkMode?: boolean
+    pageTitleFontSize?: number
+    pageTitleColor?: string
+    textColor?: string
+    linkColor?: string
+    linkUnderline?: boolean
+    // Global __
+
     leftPanel: {
       backgroundHidden: boolean
       barTextColor: string
@@ -125,7 +134,6 @@ export type NiftyFifty = BaseTemplate &
     blogPosts: HashMap<BlogPost>
     resourceList: ResourceList
     menuIconColor: string
-    isDarkMode?: boolean
     background?: {
       color?: string
       opacity?: number
@@ -143,18 +151,6 @@ export type NiftyFifty = BaseTemplate &
       textColor: string
       inactiveTextColor: string
     }
-    stepLabelColor: string
-    stepIconColor: string
-    stepInactiveColor: string
-    step1Label: string
-    step1Icon?: string
-    step2Label: string
-    step2Icon?: string
-    step3Label: string
-    step3Icon?: string
-    textColor?: string
-    linkColor?: string
-    linkUnderline?: boolean
     bodyHTMLEmbed?: string | null
     leaderboard: {
       title: string
@@ -249,10 +245,6 @@ export type NiftyFifty = BaseTemplate &
     sponsors?: {
       title?: string
       description?: string
-      welcomeTitleFontSize?: number
-      welcomeTitleColor?: string
-      welcomeDescriptionFontSize?: number
-      welcomeDescriptionColor?: string
       orderedIds?: number[]
       imageSize?: Column
       perRow?: number
@@ -264,22 +256,13 @@ export type NiftyFifty = BaseTemplate &
     speakers?: {
       title?: string
       description?: string
-      welcomeTitleFontSize?: number
-      welcomeTitleColor?: string
-      welcomeDescriptionFontSize?: number
-      welcomeDescriptionColor?: string
       speakerImageSize?: Column
+      speakersSpace?: GridSpacing
       orderedIds?: number[]
       backgroundColor?: string
       backgroundOpacity?: number
       menuTitle?: string
       isVisible?: boolean
-      descriptionFontSize?: number
-      descriptionColor?: string
-      titleDescFontSize?: number
-      titleDescColor?: string
-      titleFontSize?: number
-      titleColor?: string
     }
     offlinePage?: {
       title: string
@@ -352,6 +335,12 @@ export const createNiftyFifty = (): DeepRequired<NiftyFifty> => ({
     emojis: [],
     emojiWidth: null,
   },
+  isDarkMode: false,
+  pageTitleColor: '#000000',
+  pageTitleFontSize: 22,
+  textColor: '#000000',
+  linkColor: '#000000',
+  linkUnderline: true,
   leftPanel: {
     backgroundHidden: false,
     barTextColor: '#000000',
@@ -410,7 +399,6 @@ export const createNiftyFifty = (): DeepRequired<NiftyFifty> => ({
     linkColor: 'blue',
   },
   menuIconColor: '#000000',
-  isDarkMode: false,
   background: {
     color: '#FFFFFF',
     opacity: 0,
@@ -428,18 +416,7 @@ export const createNiftyFifty = (): DeepRequired<NiftyFifty> => ({
     textColor: '#000000',
     inactiveTextColor: '#C7C7C7',
   },
-  stepLabelColor: '#07BAB5',
-  stepIconColor: '#07BAB5',
-  stepInactiveColor: '#C7C7C7',
-  step1Label: 'Step 1',
-  step1Icon: 'far fa-lock',
-  step2Label: 'Step 2',
-  step2Icon: 'far fa-clipboard',
-  step3Label: 'Step 3',
-  step3Icon: 'far fa-desktop',
-  textColor: '#000000',
-  linkColor: '#000000',
-  linkUnderline: true,
+
   bodyHTMLEmbed: null,
   leaderboard: {
     title: 'Leaderboard',
@@ -539,10 +516,6 @@ export const createNiftyFifty = (): DeepRequired<NiftyFifty> => ({
   sponsors: {
     title: 'Sponsors',
     description: '',
-    welcomeTitleFontSize: 22,
-    welcomeTitleColor: '#000000',
-    welcomeDescriptionFontSize: 17,
-    welcomeDescriptionColor: '#000000',
     orderedIds: [],
     imageSize: 6,
     perRow: 2,
@@ -554,22 +527,13 @@ export const createNiftyFifty = (): DeepRequired<NiftyFifty> => ({
   speakers: {
     title: 'Our Speakers',
     description: '',
-    welcomeTitleFontSize: 22,
-    welcomeTitleColor: '#000000',
-    welcomeDescriptionFontSize: 17,
-    welcomeDescriptionColor: '#000000',
     speakerImageSize: 2,
+    speakersSpace: 0,
     orderedIds: [],
     backgroundColor: '#FFFFFF',
     backgroundOpacity: 100,
     menuTitle: 'Speakers',
     isVisible: true,
-    descriptionFontSize: 17,
-    descriptionColor: '#000000',
-    titleDescFontSize: 17,
-    titleDescColor: '#000000',
-    titleFontSize: 21,
-    titleColor: '#000000',
   },
   offlinePage: {
     shouldRedirect: false,

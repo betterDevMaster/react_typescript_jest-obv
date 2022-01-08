@@ -95,126 +95,6 @@ export default function SpeakerPageConfigForm(props: {onClose: () => void}) {
           </TextEditorContainer>
         )}
       />
-      <Box display="flex" flexDirection="row" flex="2">
-        <Box flex="1">
-          <Controller
-            name="welcomeTitleColor"
-            defaultValue={speakerPageSettings.welcomeTitleColor}
-            control={control}
-            render={({value, onChange}) => (
-              <ColorPicker
-                label="Welcome Title Color"
-                color={value}
-                onPick={onChange}
-                aria-label="welcome title color"
-              />
-            )}
-          />
-        </Box>
-        <Box flex="1">
-          <TextField
-            name="welcomeTitleFontSize"
-            defaultValue={speakerPageSettings.welcomeTitleFontSize}
-            label="Welcome Title Font Size"
-            type="number"
-            fullWidth
-            inputProps={{
-              min: 0,
-              ref: register,
-            }}
-          />
-        </Box>
-      </Box>
-      <Box display="flex" flexDirection="row" flex="2">
-        <Box flex="1">
-          <Controller
-            name="welcomeDescriptionColor"
-            defaultValue={speakerPageSettings.welcomeDescriptionColor}
-            control={control}
-            render={({value, onChange}) => (
-              <ColorPicker
-                label="Welcome Description Color"
-                color={value}
-                onPick={onChange}
-                aria-label="welcome description color"
-              />
-            )}
-          />
-        </Box>
-        <Box flex="1">
-          <TextField
-            name="welcomeDescriptionFontSize"
-            defaultValue={speakerPageSettings.welcomeDescriptionFontSize}
-            label="Welcome Description Font Size"
-            type="number"
-            fullWidth
-            inputProps={{
-              min: 0,
-              ref: register,
-            }}
-          />
-        </Box>
-      </Box>
-      <Box display="flex" flexDirection="row" flex="2">
-        <Box flex="1">
-          <Controller
-            name="titleColor"
-            defaultValue={speakerPageSettings.titleColor}
-            control={control}
-            render={({value, onChange}) => (
-              <ColorPicker
-                label="Title Color"
-                color={value}
-                onPick={onChange}
-                aria-label="title color"
-              />
-            )}
-          />
-        </Box>
-        <Box flex="1">
-          <TextField
-            name="titleFontSize"
-            defaultValue={speakerPageSettings.titleFontSize}
-            label="Title Font Size"
-            type="number"
-            fullWidth
-            inputProps={{
-              min: 0,
-              ref: register,
-            }}
-          />
-        </Box>
-      </Box>
-      <Box display="flex" flexDirection="row" flex="2">
-        <Box flex="1">
-          <Controller
-            name="titleDescColor"
-            defaultValue={speakerPageSettings.titleDescColor}
-            control={control}
-            render={({value, onChange}) => (
-              <ColorPicker
-                label="Content Color"
-                color={value}
-                onPick={onChange}
-                aria-label="title description color"
-              />
-            )}
-          />
-        </Box>
-        <Box flex="1">
-          <TextField
-            name="titleDescFontSize"
-            defaultValue={speakerPageSettings.titleDescFontSize}
-            label="Content Font Size"
-            type="number"
-            fullWidth
-            inputProps={{
-              min: 0,
-              ref: register,
-            }}
-          />
-        </Box>
-      </Box>
       <Grid item xs={12}>
         <InputLabel>Speaker Image Size</InputLabel>
         <Controller
@@ -225,6 +105,24 @@ export default function SpeakerPageConfigForm(props: {onClose: () => void}) {
             <Slider
               min={1}
               max={11}
+              step={1}
+              onChange={handleChangeSlider(onChange)}
+              valueLabelDisplay="auto"
+              value={value}
+            />
+          )}
+        />
+      </Grid>
+      <Grid item xs={12}>
+        <InputLabel>Space Between Speakers</InputLabel>
+        <Controller
+          name="speakersSpace"
+          defaultValue={speakerPageSettings.speakersSpace}
+          control={control}
+          render={({onChange, value}) => (
+            <Slider
+              min={MIN_SPACE_SIZE}
+              max={MAX_SPACE_SIZE}
               step={1}
               onChange={handleChangeSlider(onChange)}
               valueLabelDisplay="auto"

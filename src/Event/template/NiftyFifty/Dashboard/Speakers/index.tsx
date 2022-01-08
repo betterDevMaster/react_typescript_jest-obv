@@ -20,7 +20,7 @@ export default function SpeakerPage(props: {
   isEditMode?: boolean
   speakers: Speaker[]
 }) {
-  const {speakers: speakerPageSettings} = useNiftyFiftyTemplate()
+  const template = useNiftyFiftyTemplate()
   const v = useAttendeeVariables()
   const {flag: configVisible, toggle: toggleConfig} = useToggle()
   const theme = useTheme()
@@ -37,19 +37,18 @@ export default function SpeakerPage(props: {
         </EditModeOnly>
         <Editable onEdit={toggleConfig}>
           <PageTitle
-            color={speakerPageSettings.welcomeTitleColor}
-            size={speakerPageSettings.welcomeTitleFontSize}
+            color={template.pageTitleColor}
+            size={template.pageTitleFontSize}
             aria-label="speakers title"
           >
-            {v(speakerPageSettings.title)}
+            {v(template.speakers.title)}
           </PageTitle>
         </Editable>
         <PageDescription
           aria-label="speakers description"
-          color={speakerPageSettings.welcomeDescriptionColor}
-          size={speakerPageSettings.welcomeDescriptionFontSize}
+          color={template.textColor}
         >
-          <Content>{v(speakerPageSettings.description)}</Content>
+          <Content>{v(template.speakers.description)}</Content>
         </PageDescription>
         <SpeakerEditDialog isEditMode={props.isEditMode} />
       </Paper>

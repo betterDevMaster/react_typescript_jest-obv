@@ -194,66 +194,6 @@ export default function PageSettingsDialog(props: {
                 />
               )}
             />
-            <Box display="flex" flexDirection="row" flex="2">
-              <Box flex="1">
-                <Controller
-                  name="welcomeTitleColor"
-                  defaultValue={template.sponsors.welcomeTitleColor}
-                  control={control}
-                  render={({value, onChange}) => (
-                    <ColorPicker
-                      label="Welcome Title Color"
-                      color={value}
-                      onPick={onChange}
-                      aria-label="welcome title color"
-                    />
-                  )}
-                />
-              </Box>
-              <Box flex="1">
-                <TextField
-                  name="welcomeTitleFontSize"
-                  defaultValue={template.sponsors.welcomeTitleFontSize}
-                  label="Welcome Title Font Size"
-                  type="number"
-                  fullWidth
-                  inputProps={{
-                    min: 0,
-                    ref: register,
-                  }}
-                />
-              </Box>
-            </Box>
-            <Box display="flex" flexDirection="row" flex="2">
-              <Box flex="1">
-                <Controller
-                  name="welcomeDescriptionColor"
-                  defaultValue={template.sponsors.welcomeDescriptionColor}
-                  control={control}
-                  render={({value, onChange}) => (
-                    <ColorPicker
-                      label="Welcome Description Color"
-                      color={value}
-                      onPick={onChange}
-                      aria-label="welcome description color"
-                    />
-                  )}
-                />
-              </Box>
-              <Box flex="1">
-                <TextField
-                  name="welcomeDescriptionFontSize"
-                  defaultValue={template.sponsors.welcomeDescriptionFontSize}
-                  label="Welcome Description Font Size"
-                  type="number"
-                  fullWidth
-                  inputProps={{
-                    min: 0,
-                    ref: register,
-                  }}
-                />
-              </Box>
-            </Box>
             <InputLabel>Sponsors Per Row</InputLabel>
             <Controller
               name="perRow"
@@ -343,7 +283,7 @@ function QuestionIcon(props: {selected: File | null; isVisible: boolean}) {
   }
 
   if (Boolean(selected)) {
-    const src = URL.createObjectURL(selected)
+    const src = URL.createObjectURL(selected!)
     return (
       <QuestionIconBox>
         <img src={src} alt="Selected sponsor question icon" />

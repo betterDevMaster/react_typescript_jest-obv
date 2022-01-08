@@ -52,12 +52,12 @@ function Editable(props: SpeakerProps) {
 
 function Content(props: SpeakerProps) {
   const {speaker} = props
-  const {speakers} = useNiftyFiftyTemplate()
+  const template = useNiftyFiftyTemplate()
   const v = useAttendeeVariables()
   const theme = useTheme()
   const isXSMobile = useMediaQuery(theme.breakpoints.down('xs'))
 
-  const imageSize = speakers.speakerImageSize
+  const imageSize = template.speakers.speakerImageSize
   const isFirst = props.index === 0
 
   return (
@@ -70,16 +70,8 @@ function Content(props: SpeakerProps) {
       <Left item xs={imageSize}>
         <StyledImage speaker={speaker} />
       </Left>
-      <SpeakerName
-        color={speakers.titleColor}
-        fontSize={speakers.titleFontSize}
-      >
-        {v(speaker.name)}
-      </SpeakerName>
-      <StyledBody
-        color={speakers.titleDescColor}
-        fontSize={speakers.titleDescFontSize}
-      >
+      <SpeakerName color={template.textColor}>{v(speaker.name)}</SpeakerName>
+      <StyledBody color={template.textColor}>
         <InnerContent>{v(speaker.text)}</InnerContent>
       </StyledBody>
     </Box>
@@ -101,10 +93,8 @@ const Box = styled.div<{
 
 const StyledBody = styled.div<{
   color: string
-  fontSize: number
 }>`
   margin-top: ${(props) => props.theme.spacing[1]};
-  font-size: ${(props) => props.fontSize}px;
   color: ${(props) => props.color};
   white-space: pre-wrap;
 `
@@ -113,11 +103,10 @@ const Left = styled(Grid)``
 
 const SpeakerName = styled.div<{
   color: string
-  fontSize: number
 }>`
   line-height: 22px;
   font-weight: 700;
-  font-size: ${(props) => props.fontSize}px;
+  font-size: 18px;
   color: ${(props) => props.color};
   @media (max-width: ${(props) => props.theme.breakpoints.sm}) {
     font-size: 14px;

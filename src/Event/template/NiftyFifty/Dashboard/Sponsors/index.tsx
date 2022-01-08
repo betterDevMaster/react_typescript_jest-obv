@@ -20,7 +20,7 @@ export default function SponsorPage(props: {
   isEditMode?: boolean
   sponsors: Sponsor[]
 }) {
-  const {sponsors: sponsorsPageSettings} = useNiftyFiftyTemplate()
+  const template = useNiftyFiftyTemplate()
   const {sponsors} = props
   const v = useAttendeeVariables()
   const {flag: configVisible, toggle: toggleConfig} = useToggle()
@@ -35,18 +35,17 @@ export default function SponsorPage(props: {
       <Editable onEdit={toggleConfig}>
         <PageTitle
           aria-label="sponsors title"
-          color={sponsorsPageSettings.welcomeTitleColor}
-          size={sponsorsPageSettings.welcomeTitleFontSize}
+          color={template.pageTitleColor}
+          size={template.pageTitleFontSize}
         >
-          {v(sponsorsPageSettings.title)}
+          {v(template.sponsors.title)}
         </PageTitle>
       </Editable>
       <PageDescription
         aria-label="sponsors description"
-        color={sponsorsPageSettings.welcomeDescriptionColor}
-        size={sponsorsPageSettings.welcomeDescriptionFontSize}
+        color={template.textColor}
       >
-        <Content>{v(sponsorsPageSettings.description)}</Content>
+        <Content>{v(template.sponsors.description)}</Content>
       </PageDescription>
       <SponsorEditDialog isEditMode={props.isEditMode} />
       <SponsorList sponsors={sponsors} isEditMode={props.isEditMode} />

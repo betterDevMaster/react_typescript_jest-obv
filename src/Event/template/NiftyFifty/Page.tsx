@@ -187,7 +187,6 @@ export const PageTitle = styled.h2<{
 
 export const PageDescription = styled.h2<{
   color?: string
-  size?: number
 }>`
   font-size: 18px;
   line-height: 1.2;
@@ -195,7 +194,6 @@ export const PageDescription = styled.h2<{
   text-align: left;
   margin: 0 0 10px;
   color: ${(props) => props.color};
-  font-size: ${(props) => props.size};
 
   @media (max-width: ${(props) => props.theme.breakpoints.sm}) {
     font-size: 14px;
