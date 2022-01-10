@@ -1,27 +1,29 @@
+import React, {useState} from 'react'
 import styled from 'styled-components'
-import React from 'react'
-import {Sponsor} from 'Event/SponsorPage'
-import {api} from 'lib/url'
-import {useOrganization} from 'organization/OrganizationProvider'
-import {useState} from 'react'
 import {Controller, useForm} from 'react-hook-form'
-import TextEditor from 'lib/ui/form/TextEditor'
-import Button from '@material-ui/core/Button'
-import DangerButton from 'lib/ui/Button/DangerButton'
-import {ValidationError} from 'lib/ui/api-client'
-import {fieldError} from 'lib/form'
-import Box from '@material-ui/core/Box'
-import {useSponsors} from 'organization/Event/SponsorsProvider'
-import FormSelect from 'organization/Event/FormsProvider/FormSelect'
-import InputLabel from '@material-ui/core/InputLabel'
-import FormControl from '@material-ui/core/FormControl'
+
+import {
+  Box,
+  Button,
+  FormControl,
+  InputLabel,
+  TextField,
+  Typography,
+} from '@material-ui/core'
+import {withStyles} from '@material-ui/core/styles'
+
+import {Sponsor} from 'Event/SponsorPage'
 import Buttons, {
   useButtons,
 } from 'Event/template/NiftyFifty/Dashboard/Sponsors/SponsorEditDialog/Form/Buttons'
 import ButtonConfig from 'Event/template/NiftyFifty/Dashboard/Sponsors/SponsorEditDialog/Form/ButtonConfig'
 import NavButton from 'Event/Dashboard/components/NavButton'
-import Typography from '@material-ui/core/Typography'
-import {withStyles} from '@material-ui/core/styles'
+
+import {api} from 'lib/url'
+import TextEditor from 'lib/ui/form/TextEditor'
+import DangerButton from 'lib/ui/Button/DangerButton'
+import {ValidationError} from 'lib/ui/api-client'
+import {fieldError} from 'lib/form'
 import {spacing} from 'lib/ui/theme'
 import Cropper from 'lib/ui/form/ImageUpload/Cropper'
 import Label from 'lib/ui/form/ImageUpload/Label'
@@ -30,6 +32,19 @@ import RemoveImageButton from 'lib/ui/form/ImageUpload/RemoveButton'
 import UploadButton from 'lib/ui/form/ImageUpload/UploadButton'
 import Image from 'lib/ui/form/ImageUpload/Image'
 import {useFileSelect} from 'lib/ui/form/file'
+import {EntityList} from 'lib/list'
+
+import {useOrganization} from 'organization/OrganizationProvider'
+import {useSponsors} from 'organization/Event/SponsorsProvider'
+import FormSelect from 'organization/Event/FormsProvider/FormSelect'
+
+export interface UpdateSponsorData {
+  name: string
+  description?: string
+  settings: null | {
+    buttons?: EntityList<NavButton>
+  }
+}
 
 export default function EditSponsorForm(props: {
   sponsor: Sponsor
@@ -47,7 +62,7 @@ export default function EditSponsorForm(props: {
     remove: removeButton,
   } = useButtons(props.sponsor)
 
-  const {handleSubmit, control, errors} = useForm()
+  const {register, handleSubmit, control, errors} = useForm()
   const [submitting, setSubmitting] = useState(false)
   const {sponsor} = props
   const {client} = useOrganization()
@@ -55,48 +70,54 @@ export default function EditSponsorForm(props: {
   const {update, remove} = useSponsors()
   const image = useFileSelect(sponsor?.image)
 
-  const imgData = () => {
+  const createFormData = (image: File, form: UpdateSponsorData) => {
+    const formData = new FormData()
+    for (let [key, value] of Object.entries(form)) {
+      if (value === null || value === undefined) {
+        continue
+      }
+
+      formData.set(key, String(value))
+    }
+
+    formData.set('image', image)
+
+    return formData
+  }
+
+  const data = (form: UpdateSponsorData) => {
     if (image.selected) {
-      let formData = new FormData()
-      formData.set('image', image.selected)
-      return formData
+      return createFormData(image.selected, form)
     }
 
     if (image.wasRemoved) {
       return {
+        ...form,
         image: null,
       }
     }
 
-    return {}
+    return form
   }
 
-  const submit = (data: Sponsor) => {
-    setSubmitting(true)
-
-    const sponsorData: Sponsor = {
-      ...data,
-      settings: {
-        ...(data.settings || {}),
-        buttons,
-      },
+  const submit = (form: Sponsor) => {
+    if (!sponsor) {
+      throw new Error(
+        'Missing sponsor; was the sponsor set as editing correctly?',
+      )
     }
 
+    setSubmitting(true)
+
     const url = api(`/sponsors/${sponsor.id}`)
+    let formData = data(form)
+    formData = {
+      ...formData,
+      settings: {buttons},
+    }
 
     client
-      .put<Sponsor>(url, sponsorData)
-      .then((sponsor) => {
-        update(sponsor)
-        props.onDone()
-      })
-      .catch((e) => {
-        setServerError(e)
-        setSubmitting(false)
-      })
-
-    client
-      .put<Sponsor>(url, imgData())
+      .put<Sponsor>(url, formData)
       .then((sponsor) => {
         update(sponsor)
         props.onDone()
@@ -126,6 +147,7 @@ export default function EditSponsorForm(props: {
     form: errors,
     response: serverError,
   })
+  const nameError = fieldError('name', {form: errors, response: serverError})
 
   return (
     <>
@@ -136,6 +158,19 @@ export default function EditSponsorForm(props: {
         onRemove={removeButton}
       />
       <form onSubmit={handleSubmit(submit)} hidden={Boolean(editingButton)}>
+        <TextField
+          name="name"
+          label="Sponsor Name"
+          required
+          fullWidth
+          defaultValue={sponsor.name}
+          inputProps={{
+            ref: register({required: 'Sponsor Name is required.'}),
+            'aria-label': 'sponsor name',
+          }}
+          error={Boolean(nameError)}
+          helperText={nameError}
+        />
         <Box mb={3}>
           <Controller
             name="description"
@@ -179,7 +214,7 @@ export default function EditSponsorForm(props: {
             duplicate={duplicateButton}
           />
         </Box>
-        <Error>{descriptionError}</Error>
+        <ErrorContext>{descriptionError}</ErrorContext>
         <SaveButton
           fullWidth
           variant="contained"
@@ -217,7 +252,7 @@ function ButtonEditFields(props: {
   return <ButtonConfig {...props} button={props.button} />
 }
 
-function Error(props: {children?: string | null}) {
+function ErrorContext(props: {children?: string | null}) {
   if (!props.children) {
     return null
   }

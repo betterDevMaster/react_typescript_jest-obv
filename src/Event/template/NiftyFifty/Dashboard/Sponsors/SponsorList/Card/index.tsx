@@ -10,12 +10,12 @@ import Image from 'Event/template/NiftyFifty/Dashboard/Sponsors/SponsorList/Card
 import SponsorForm from 'Event/template/NiftyFifty/Dashboard/Sponsors/SponsorList/Card/SponsorForm'
 import NavButton from 'Event/Dashboard/components/NavButton'
 import QuestionIcon from 'Event/template/NiftyFifty/Dashboard/Sponsors/SponsorList/Card/QuestionIcon'
-import {Editable} from 'Event/Dashboard/editor/views/EditComponent'
 import {useNiftyFiftyTemplate} from 'Event/template/NiftyFifty'
 
 import {rgba} from 'lib/color'
-import TextContent from 'lib/ui/form/TextEditor/Content'
+import InnerContent from 'lib/ui/form/TextEditor/Content'
 import ClearContent from 'lib/ui/layout/ClearContent'
+import Clickable from 'lib/ui/Clickable'
 
 import {useSponsors} from 'organization/Event/SponsorsProvider'
 
@@ -50,10 +50,20 @@ export default function Card(props: SponsorProps) {
           {...provided.draggableProps}
           {...provided.dragHandleProps}
         >
-          <Content {...props} />
+          <Editable {...props} />
         </div>
       )}
     </Draggable>
+  )
+}
+
+function Editable(props: SponsorProps) {
+  const {edit} = useSponsors()
+
+  return (
+    <Clickable onClick={() => edit(props.sponsor)}>
+      <Content {...props} />
+    </Clickable>
   )
 }
 
@@ -61,7 +71,6 @@ function Content(props: SponsorProps) {
   const {sponsor} = props
   const [formVisible, setFormVisible] = useState(false)
   const toggleForm = () => setFormVisible(!formVisible)
-  const {edit} = useSponsors()
   const v = useAttendeeVariables()
   const theme = useTheme()
   const isXSMobile = useMediaQuery(theme.breakpoints.down('xs'))
@@ -90,19 +99,18 @@ function Content(props: SponsorProps) {
         isEditMode={props.isEditMode}
         onClose={toggleForm}
       />
-      <StyledEditable onEdit={() => edit(sponsor)} aria-label="edit sponsor">
-        <StyledGrid>
-          <Left item xs={template.sponsors.imageSize}>
-            <StyledImage sponsor={sponsor} isEditMode={props.isEditMode} />
-          </Left>
-          <TextContent color={template.textColor}>
-            {v(sponsor.description)}
-          </TextContent>
-          <Buttons sponsor={props.sponsor} />
-          <StyledQuestionIcon sponsor={sponsor} onClick={toggleForm} />
-          <ClearContent />
-        </StyledGrid>
-      </StyledEditable>
+      <Grid item xs={template.sponsors.imageSize}>
+        <StyledImage sponsor={sponsor} />
+      </Grid>
+      <HeadContent>
+        <SponsorName color={template.textColor}>{v(sponsor.name)}</SponsorName>
+        <QuestionIcon sponsor={sponsor} onClick={toggleForm} />
+      </HeadContent>
+      <InnerContent color={template.textColor}>
+        {v(sponsor.description)}
+      </InnerContent>
+      <Buttons sponsor={props.sponsor} />
+      <ClearContent />
     </Box>
   )
 }
@@ -125,13 +133,6 @@ function Buttons(props: {sponsor: Sponsor}) {
   )
 }
 
-const StyledEditable = styled(Editable)``
-
-const StyledGrid = styled.div`
-  position: relative;
-  height: 100%;
-`
-
 const Box = styled((props) => {
   const {backgroundColor, isXSMobile, ...otherProps} = props
   return <div {...otherProps} />
@@ -147,7 +148,24 @@ const Box = styled((props) => {
   position: relative;
 `
 
-const Left = styled(Grid)``
+const HeadContent = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+`
+
+const SponsorName = styled.div<{
+  color: string
+}>`
+  line-height: 22px;
+  font-weight: 700;
+  font-size: 18px;
+  color: ${(props) => props.color};
+  @media (max-width: ${(props) => props.theme.breakpoints.sm}) {
+    font-size: 14px;
+    line-height: 17px;
+  }
+`
 
 const StyledImage = styled(Image)`
   float: left;
@@ -166,10 +184,4 @@ const ButtonBox = styled.div`
   &:not(:last-child) {
     margin-bottom: 8px;
   }
-`
-
-const StyledQuestionIcon = styled(QuestionIcon)`
-  position: absolute;
-  right: 16px;
-  bottom: 8px;
 `

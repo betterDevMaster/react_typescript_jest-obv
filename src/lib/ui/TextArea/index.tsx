@@ -12,7 +12,6 @@ const toolbar = [
   'heading',
   '|',
   'mediaEmbed',
-  'htmlEmbed',
   '|',
   'fontFamily',
   'fontSize',

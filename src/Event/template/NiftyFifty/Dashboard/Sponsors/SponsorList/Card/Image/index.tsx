@@ -12,7 +12,7 @@ export default function Image(props: ImageProps) {
   const {sponsor} = props
   const src = sponsor.image?.url
 
-  if (!sponsor.image || !props.isEditMode) {
+  if (!sponsor.image && !props.isEditMode) {
     return null
   }
 

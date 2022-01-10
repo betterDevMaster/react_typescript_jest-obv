@@ -75,9 +75,9 @@ function Content(props: SpeakerProps) {
       backgroundColor={backgroundColor}
       isXSMobile={isXSMobile}
     >
-      <Left item xs={template.speakers.speakerImageSize}>
+      <Grid item xs={template.speakers.speakerImageSize}>
         <StyledImage speaker={speaker} />
-      </Left>
+      </Grid>
       <SpeakerName color={template.textColor}>{v(speaker.name)}</SpeakerName>
       <StyledBody color={template.textColor}>
         <InnerContent>{v(speaker.text)}</InnerContent>
@@ -106,8 +106,6 @@ const StyledBody = styled.div<{
   color: ${(props) => props.color};
   white-space: pre-wrap;
 `
-
-const Left = styled(Grid)``
 
 const SpeakerName = styled.div<{
   color: string

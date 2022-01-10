@@ -2,7 +2,7 @@ import React, {useState} from 'react'
 import {Controller, useForm} from 'react-hook-form'
 import styled from 'styled-components'
 
-import {Box, Button, InputLabel, Slider, TextField} from '@material-ui/core'
+import {Button, TextField} from '@material-ui/core'
 
 import DangerButton from 'lib/ui/Button/DangerButton'
 import {api} from 'lib/url'
@@ -17,8 +17,6 @@ import ImageUpload from 'lib/ui/form/ImageUpload'
 import RemoveImageButton from 'lib/ui/form/ImageUpload/RemoveButton'
 import UploadButton from 'lib/ui/form/ImageUpload/UploadButton'
 import Image from 'lib/ui/form/ImageUpload/Image'
-import ColorPicker from 'lib/ui/ColorPicker'
-import {handleChangeSlider} from 'lib/dom'
 
 import {useSpeakers} from 'organization/Event/SpeakersProvider'
 import {useOrganization} from 'organization/OrganizationProvider'
@@ -56,6 +54,7 @@ export default function EditSpeakerForm(props: {
   }
 
   const data = (form: UpdateSpeakerData) => {
+    console.log('image ---', image, form)
     if (image.selected) {
       return createFormData(image.selected, form)
     }
