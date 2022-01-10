@@ -2,7 +2,7 @@ import React, {useState} from 'react'
 import {Draggable} from 'react-beautiful-dnd'
 import styled from 'styled-components'
 
-import Grid from '@material-ui/core/Grid'
+import {Grid, useTheme, useMediaQuery} from '@material-ui/core'
 
 import {useAttendeeVariables} from 'Event'
 import {Sponsor} from 'Event/SponsorPage'
@@ -15,6 +15,7 @@ import {useNiftyFiftyTemplate} from 'Event/template/NiftyFifty'
 
 import {rgba} from 'lib/color'
 import TextContent from 'lib/ui/form/TextEditor/Content'
+import ClearContent from 'lib/ui/layout/ClearContent'
 
 import {useSponsors} from 'organization/Event/SponsorsProvider'
 
@@ -62,16 +63,27 @@ function Content(props: SponsorProps) {
   const toggleForm = () => setFormVisible(!formVisible)
   const {edit} = useSponsors()
   const v = useAttendeeVariables()
-
+  const theme = useTheme()
+  const isXSMobile = useMediaQuery(theme.breakpoints.down('xs'))
   const template = useNiftyFiftyTemplate()
 
-  const backgroundColor = rgba(
-    template.sponsors.cardBackgroundColor,
-    template.sponsors.cardBackgroundOpacity / 100,
-  )
+  const backgroundColor =
+    props.index % 2 === 0
+      ? rgba(
+          template.sponsors.evenBackgroundColor,
+          template.sponsors.evenBackgroundOpacity,
+        )
+      : rgba(
+          template.sponsors.oddBackgroundColor,
+          template.sponsors.oddBackgroundOpacity,
+        )
 
   return (
-    <Box aria-label="sponsor" backgroundColor={backgroundColor}>
+    <Box
+      aria-label="sponsor"
+      backgroundColor={backgroundColor}
+      isXSMobile={isXSMobile}
+    >
       <SponsorForm
         sponsor={sponsor}
         visible={formVisible}
@@ -88,6 +100,7 @@ function Content(props: SponsorProps) {
           </TextContent>
           <Buttons sponsor={props.sponsor} />
           <StyledQuestionIcon sponsor={sponsor} onClick={toggleForm} />
+          <ClearContent />
         </StyledGrid>
       </StyledEditable>
     </Box>
@@ -112,36 +125,26 @@ function Buttons(props: {sponsor: Sponsor}) {
   )
 }
 
-const StyledEditable = styled(Editable)`
-  height: 100%;
-  display: flex;
-  flex-direction: column;
-`
+const StyledEditable = styled(Editable)``
 
 const StyledGrid = styled.div`
   position: relative;
-  padding: ${(props) => props.theme.spacing[4]};
   height: 100%;
 `
 
 const Box = styled((props) => {
-  const {backgroundColor, ...otherProps} = props
+  const {backgroundColor, isXSMobile, ...otherProps} = props
   return <div {...otherProps} />
-})<{backgroundColor: string}>`
-  height: 100%;
+})<{
+  isXSMobile: boolean
+  backgroundColor: string
+}>`
   background: ${(props) => props.backgroundColor};
-  box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.25);
-  border-radius: 10px;
-
-  display: flex;
-  width: 100%;
-  height: 100%;
-  align-items: center;
-  justify-content: center;
-
-  > div {
-    flex: 1;
-  }
+  padding: ${(props) =>
+    props.isXSMobile ? props.theme.spacing[4] : props.theme.spacing[6]} 
+    ${(props) =>
+      props.isXSMobile ? props.theme.spacing[8] : props.theme.spacing[12]}};
+  position: relative;
 `
 
 const Left = styled(Grid)``

@@ -96,7 +96,7 @@ export default function SpeakerPageConfigForm(props: {onClose: () => void}) {
         )}
       />
       <Grid item xs={12}>
-        <InputLabel>Speaker Image Size</InputLabel>
+        <InputLabel>Image Size</InputLabel>
         <Controller
           name="speakerImageSize"
           defaultValue={speakerPageSettings.speakerImageSize}

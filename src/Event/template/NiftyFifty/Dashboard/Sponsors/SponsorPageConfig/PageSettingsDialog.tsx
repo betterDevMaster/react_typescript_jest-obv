@@ -1,39 +1,46 @@
 import React, {useState} from 'react'
-import styled from 'styled-components'
-import DialogContent from '@material-ui/core/DialogContent'
-import DialogTitle from '@material-ui/core/DialogTitle'
-import Dialog from 'lib/ui/Dialog'
-import Box from '@material-ui/core/Box'
 import {Controller, useForm} from 'react-hook-form'
-import {useEvent} from 'Event/EventProvider'
+import styled from 'styled-components'
+
+import {
+  Box,
+  Button,
+  DialogContent,
+  DialogTitle,
+  FormControl,
+  Grid,
+  InputLabel,
+  Slider,
+  TextField,
+  Typography,
+} from '@material-ui/core'
+import {withStyles} from '@material-ui/core/styles'
+
 import {ObvioEvent} from 'Event'
-import Button from '@material-ui/core/Button'
-import {handleChangeSlider, onChangeCheckedHandler} from 'lib/dom'
-import InputLabel from '@material-ui/core/InputLabel'
-import Slider from '@material-ui/core/Slider'
-import Typography from '@material-ui/core/Typography'
-import {useOrganization} from 'organization/OrganizationProvider'
-import {api} from 'lib/url'
-import TextField from '@material-ui/core/TextField'
-import {fieldError} from 'lib/form'
-import {ValidationError} from 'lib/ui/api-client'
-import withStyles from '@material-ui/core/styles/withStyles'
-import {spacing} from 'lib/ui/theme'
-import DangerButton from 'lib/ui/Button/DangerButton'
-import ColorPicker from 'lib/ui/ColorPicker'
-import TextEditor, {TextEditorContainer} from 'lib/ui/form/TextEditor'
-import Switch from 'lib/ui/form/Switch'
-import FormControl from '@material-ui/core/FormControl'
+import {useEvent} from 'Event/EventProvider'
 import {
   NiftyFifty,
   useNiftyFiftyTemplate,
   useNiftyFiftyUpdate,
 } from 'Event/template/NiftyFifty'
 
-const MIN_PER_ROW = 1
-const MAX_PER_ROW = 3
+import {api} from 'lib/url'
+import {fieldError} from 'lib/form'
+import {ValidationError} from 'lib/ui/api-client'
+import {handleChangeSlider, onChangeCheckedHandler} from 'lib/dom'
+import {spacing} from 'lib/ui/theme'
+import DangerButton from 'lib/ui/Button/DangerButton'
+import ColorPicker from 'lib/ui/ColorPicker'
+import TextEditor, {TextEditorContainer} from 'lib/ui/form/TextEditor'
+import Switch from 'lib/ui/form/Switch'
+import Dialog from 'lib/ui/Dialog'
+
+import {useOrganization} from 'organization/OrganizationProvider'
+
 const MAX_FILE_SIZE_BYTES = 5000000 // 5MB
 const imageUploadId = `sponsor-question-icon-upload`
+const MIN_SPACE_SIZE = 0
+const MAX_SPACE_SIZE = 10
 
 export default function PageSettingsDialog(props: {
   onClose: () => void
@@ -194,53 +201,94 @@ export default function PageSettingsDialog(props: {
                 />
               )}
             />
-            <InputLabel>Sponsors Per Row</InputLabel>
-            <Controller
-              name="perRow"
-              defaultValue={template.sponsors.perRow}
-              control={control}
-              render={({onChange, value}) => (
-                <Slider
-                  min={MIN_PER_ROW}
-                  max={MAX_PER_ROW}
-                  step={1}
-                  onChange={handleChangeSlider(onChange)}
-                  valueLabelDisplay="auto"
-                  value={value}
+            <Grid container>
+              <Grid item xs={12} md={6}>
+                <Controller
+                  name="evenBackgroundColor"
+                  defaultValue={template.sponsors.evenBackgroundColor}
+                  control={control}
+                  render={({value, onChange}) => (
+                    <ColorPicker
+                      label="Even Background Color"
+                      color={value || '#FFFFFF'}
+                      onPick={onChange}
+                      aria-label="evenbackground color"
+                    />
+                  )}
                 />
-              )}
-            />
-
-            <Controller
-              name="cardBackgroundColor"
-              defaultValue={template.sponsors.cardBackgroundColor}
-              control={control}
-              render={({onChange, value}) => (
-                <ColorPicker
-                  label="Container Background Color"
-                  color={value}
-                  onPick={onChange}
-                  aria-label="container background color"
+              </Grid>
+              <Grid item xs={12} md={6}>
+                <InputLabel>Even Background Opacity</InputLabel>
+                <Controller
+                  name="evenBackgroundOpacity"
+                  defaultValue={template.sponsors.evenBackgroundOpacity}
+                  control={control}
+                  render={({value, onChange}) => (
+                    <Slider
+                      min={0}
+                      max={1}
+                      step={0.1}
+                      onChange={handleChangeSlider(onChange)}
+                      valueLabelDisplay="auto"
+                      value={value}
+                    />
+                  )}
                 />
-              )}
-            />
-
-            <InputLabel>Container Background Opacity</InputLabel>
-            <Controller
-              name="cardBackgroundOpacity"
-              defaultValue={template.sponsors.cardBackgroundOpacity}
-              control={control}
-              render={({onChange, value}) => (
-                <Slider
-                  min={0}
-                  max={100}
-                  step={1}
-                  onChange={handleChangeSlider(onChange)}
-                  valueLabelDisplay="auto"
-                  value={value}
+              </Grid>
+            </Grid>
+            <Grid container>
+              <Grid item xs={12} md={6}>
+                <Controller
+                  name="oddBackgroundColor"
+                  defaultValue={template.sponsors.oddBackgroundColor}
+                  control={control}
+                  render={({value, onChange}) => (
+                    <ColorPicker
+                      label="Odd Background Color"
+                      color={value || '#FFFFFF'}
+                      onPick={onChange}
+                      aria-label="oddbackground color"
+                    />
+                  )}
                 />
-              )}
-            />
+              </Grid>
+              <Grid item xs={12} md={6}>
+                <InputLabel>Odd Background Opacity</InputLabel>
+                <Controller
+                  name="oddBackgroundOpacity"
+                  defaultValue={template.sponsors.oddBackgroundOpacity}
+                  control={control}
+                  render={({value, onChange}) => (
+                    <Slider
+                      min={0}
+                      max={1}
+                      step={0.1}
+                      onChange={handleChangeSlider(onChange)}
+                      valueLabelDisplay="auto"
+                      value={value}
+                    />
+                  )}
+                />
+              </Grid>
+            </Grid>
+            <Grid item xs={12}>
+              <InputLabel>Space Between Sponsors</InputLabel>
+              <Controller
+                name="sponsorsSpace"
+                defaultValue={template.sponsors.sponsorsSpace}
+                control={control}
+                render={({onChange, value}) => (
+                  <Slider
+                    min={MIN_SPACE_SIZE}
+                    max={MAX_SPACE_SIZE}
+                    step={1}
+                    onChange={handleChangeSlider(onChange)}
+                    valueLabelDisplay="auto"
+                    value={value}
+                  />
+                )}
+              />
+            </Grid>
             <Box mb={2}>
               <Label>Question Icon</Label>
               <QuestionIcon selected={image} isVisible={!shouldRemoveImage} />

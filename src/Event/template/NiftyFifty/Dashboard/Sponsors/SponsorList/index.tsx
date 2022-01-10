@@ -1,10 +1,11 @@
-import Typography from '@material-ui/core/Typography'
-import styled from 'styled-components'
+import React from 'react'
+import {DragDropContext, Droppable, DropResult} from 'react-beautiful-dnd'
+
+import {Grid, Typography} from '@material-ui/core'
+
 import {Sponsor} from 'Event/SponsorPage'
 import Card from 'Event/template/NiftyFifty/Dashboard/Sponsors/SponsorList/Card'
-import React from 'react'
 import {useTemplate} from 'Event/TemplateProvider'
-import {DragDropContext, Droppable, DropResult} from 'react-beautiful-dnd'
 import {
   useNiftyFiftyTemplate,
   useNiftyFiftyUpdate,
@@ -15,33 +16,31 @@ export default function SponsorList(props: {
   sponsors: Sponsor[]
   isEditMode?: boolean
 }) {
-  const {
-    sponsors: {perRow},
-  } = useNiftyFiftyTemplate()
-
   const sortedSponsors = useSortedSponsors(props.sponsors)
+  const {sponsors} = useNiftyFiftyTemplate()
 
   const isEmpty = props.sponsors.length === 0
   if (isEmpty) {
     return <Typography align="center">No sponsor have been added</Typography>
   }
 
-  const sponsors = sortedSponsors.map((sponsor, index) => (
-    <Card
-      key={sponsor.id}
-      index={index}
-      sponsor={sponsor}
-      isEditMode={props.isEditMode}
-    />
+  const cards = sortedSponsors.map((sponsor, index) => (
+    <Grid item xs={12} key={sponsor.id}>
+      <Card index={index} sponsor={sponsor} isEditMode={props.isEditMode} />
+    </Grid>
   ))
 
   if (!props.isEditMode) {
-    return <Box perRow={perRow}>{sponsors}</Box>
+    return (
+      <Grid container spacing={sponsors.sponsorsSpace}>
+        {cards}
+      </Grid>
+    )
   }
 
   return (
     <DraggableList sponsors={sortedSponsors} className={props.className}>
-      {sponsors}
+      {cards}
     </DraggableList>
   )
 }
@@ -51,26 +50,25 @@ function DraggableList(props: {
   children: React.ReactElement[]
   className?: string
 }) {
-  const {
-    sponsors: {perRow},
-  } = useNiftyFiftyTemplate()
   const handleDrag = useHandleDrag()
+  const {sponsors} = useNiftyFiftyTemplate()
 
   return (
     <DragDropContext onDragEnd={handleDrag(props.sponsors)}>
-      <Droppable droppableId="drag-and-drop-sponsors" direction="horizontal">
+      <Droppable droppableId="drag-and-drop-sponsors">
         {(provided) => (
-          <Box
+          <Grid
+            container
+            spacing={sponsors.sponsorsSpace}
             ref={provided.innerRef}
             {...provided.droppableProps}
             className={props.className}
-            perRow={perRow}
           >
             <>
               {props.children}
               {provided.placeholder}
             </>
-          </Box>
+          </Grid>
         )}
       </Droppable>
     </DragDropContext>
@@ -131,15 +129,3 @@ function useHandleDrag() {
     })
   }
 }
-
-const Box = styled.div<{perRow: number}>`
-  display: grid;
-  grid-auto-rows: 1fr;
-  grid-template-columns: 1fr;
-
-  grid-gap: 16px;
-
-  @media (min-width: ${(props) => props.theme.breakpoints.md}) {
-    grid-template-columns: repeat(${(props) => props.perRow}, 1fr);
-  }
-`

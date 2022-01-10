@@ -247,11 +247,13 @@ export type NiftyFifty = BaseTemplate &
       description?: string
       orderedIds?: number[]
       imageSize?: Column
-      perRow?: number
+      sponsorsSpace?: GridSpacing
       menuTitle?: string
-      cardBackgroundColor?: string
-      cardBackgroundOpacity?: number
       isVisible?: boolean
+      evenBackgroundColor?: string
+      evenBackgroundOpacity?: number
+      oddBackgroundColor?: string
+      oddBackgroundOpacity?: number
     }
     speakers?: {
       title?: string
@@ -522,10 +524,12 @@ export const createNiftyFifty = (): DeepRequired<NiftyFifty> => ({
     description: '',
     orderedIds: [],
     imageSize: 6,
-    perRow: 2,
+    sponsorsSpace: 0,
     menuTitle: 'Sponsors',
-    cardBackgroundColor: '#565656',
-    cardBackgroundOpacity: 100,
+    evenBackgroundColor: '#FFFFFF',
+    evenBackgroundOpacity: 0,
+    oddBackgroundColor: '#FFFFFF',
+    oddBackgroundOpacity: 0,
     isVisible: true,
   },
   speakers: {

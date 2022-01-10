@@ -28,28 +28,30 @@ export default function SponsorPage(props: {
   const isXSMobile = useMediaQuery(theme.breakpoints.down('xs'))
 
   return (
-    <Paper isXSMobile={isXSMobile}>
-      <EditModeOnly>
-        <PageSettingsDialog visible={configVisible} onClose={toggleConfig} />
-      </EditModeOnly>
-      <Editable onEdit={toggleConfig}>
-        <PageTitle
-          aria-label="sponsors title"
-          color={template.pageTitleColor}
-          size={template.pageTitleFontSize}
+    <>
+      <Paper isXSMobile={isXSMobile}>
+        <EditModeOnly>
+          <PageSettingsDialog visible={configVisible} onClose={toggleConfig} />
+        </EditModeOnly>
+        <Editable onEdit={toggleConfig}>
+          <PageTitle
+            aria-label="sponsors title"
+            color={template.pageTitleColor}
+            size={template.pageTitleFontSize}
+          >
+            {v(template.sponsors.title)}
+          </PageTitle>
+        </Editable>
+        <PageDescription
+          aria-label="sponsors description"
+          color={template.textColor}
         >
-          {v(template.sponsors.title)}
-        </PageTitle>
-      </Editable>
-      <PageDescription
-        aria-label="sponsors description"
-        color={template.textColor}
-      >
-        <Content>{v(template.sponsors.description)}</Content>
-      </PageDescription>
-      <SponsorEditDialog isEditMode={props.isEditMode} />
+          <Content>{v(template.sponsors.description)}</Content>
+        </PageDescription>
+        <SponsorEditDialog isEditMode={props.isEditMode} />
+      </Paper>
       <SponsorList sponsors={sponsors} isEditMode={props.isEditMode} />
-    </Paper>
+    </>
   )
 }
 

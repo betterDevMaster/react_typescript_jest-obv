@@ -11,9 +11,6 @@ import {
 import Card from 'Event/template/NiftyFifty/Dashboard/Speakers/SpeakerList/Card'
 import {useTemplate} from 'Event/TemplateProvider'
 
-import {rgba} from 'lib/color'
-import styled from 'styled-components'
-
 export default function SpeakerList(props: {
   speakers: Speaker[]
   isEditMode?: boolean

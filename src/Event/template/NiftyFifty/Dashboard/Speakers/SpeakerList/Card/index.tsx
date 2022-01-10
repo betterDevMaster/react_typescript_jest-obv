@@ -12,6 +12,7 @@ import {useNiftyFiftyTemplate} from 'Event/template/NiftyFifty'
 import {rgba} from 'lib/color'
 import InnerContent from 'lib/ui/form/TextEditor/Content'
 import Clickable from 'lib/ui/Clickable'
+import ClearContent from 'lib/ui/layout/ClearContent'
 
 import {useSpeakers} from 'organization/Event/SpeakersProvider'
 
@@ -57,8 +58,6 @@ function Content(props: SpeakerProps) {
   const theme = useTheme()
   const isXSMobile = useMediaQuery(theme.breakpoints.down('xs'))
 
-  const imageSize = template.speakers.speakerImageSize
-
   const backgroundColor =
     props.index % 2 === 0
       ? rgba(
@@ -76,13 +75,14 @@ function Content(props: SpeakerProps) {
       backgroundColor={backgroundColor}
       isXSMobile={isXSMobile}
     >
-      <Left item xs={imageSize}>
+      <Left item xs={template.speakers.speakerImageSize}>
         <StyledImage speaker={speaker} />
       </Left>
       <SpeakerName color={template.textColor}>{v(speaker.name)}</SpeakerName>
       <StyledBody color={template.textColor}>
         <InnerContent>{v(speaker.text)}</InnerContent>
       </StyledBody>
+      <ClearContent />
     </Box>
   )
 }
@@ -91,12 +91,12 @@ const Box = styled.div<{
   isXSMobile: boolean
   backgroundColor: string
 }>`
-  position: relative;
+  background: ${(props) => props.backgroundColor};
   padding: ${(props) =>
     props.isXSMobile ? props.theme.spacing[4] : props.theme.spacing[6]} 
     ${(props) =>
-      props.isXSMobile ? props.theme.spacing[8] : props.theme.spacing[12]};};
-  background: ${(props) => props.backgroundColor};
+      props.isXSMobile ? props.theme.spacing[8] : props.theme.spacing[12]}};
+  position: relative;
 `
 
 const StyledBody = styled.div<{
