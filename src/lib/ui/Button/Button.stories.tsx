@@ -1,11 +1,9 @@
 import React from 'react'
 import {ComponentStory, ComponentMeta} from '@storybook/react'
 import Button from 'lib/ui/Button'
-import Icon from 'lib/ui/Button'
-import ThemeProvider from 'lib/ui/theme/ThemeProvider'
 import {IconTemplate} from 'lib/ui/Icon/Icon.stories'
+import Icon from 'lib/ui/Icon'
 
-// More on default export: https://storybook.js.org/docs/react/writing-stories/introduction#default-export
 export default {
   title: 'Components/Button',
   component: Button,
@@ -18,29 +16,31 @@ export default {
   },
 } as ComponentMeta<typeof Button>
 
-// More on component templates: https://storybook.js.org/docs/react/writing-stories/introduction#using-args
-const Template: ComponentStory<typeof Button> = (args) => (
-  <Button {...args}>
-    <>
-      <IconTemplate
-        {...PrimaryIcon.args}
-        iconSize={PrimaryIcon.args?.iconSize || 24}
-        color={args.color}
-      />
-      Button
-    </>
-  </Button>
+const Base: ComponentStory<typeof Button> = (args) => (
+  <Button {...args}>Button</Button>
 )
 
-export const Primary = Template.bind({})
-Primary.args = {
+export const BaseButton = Base.bind({})
+BaseButton.args = {
   variant: 'contained',
   color: 'primary',
 }
 
-const PrimaryIcon = IconTemplate.bind({})
-PrimaryIcon.args = {
-  color: 'danger',
-  className: 'fab fa-facebook',
-  iconSize: 20,
+const ButtonWithIcon: ComponentStory<typeof Button> = (args) => (
+  <Button {...args}>
+    <Icon {...AddIcon.args} />
+    Upload
+  </Button>
+)
+
+export const UploadButton = ButtonWithIcon.bind({})
+UploadButton.args = {
+  variant: 'contained',
+  color: 'primary',
+}
+
+const AddIcon = IconTemplate.bind({})
+
+AddIcon.args = {
+  className: 'far fa-arrow-circle-up',
 }

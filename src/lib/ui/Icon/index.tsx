@@ -5,8 +5,8 @@ import styled from 'styled-components'
 export type IconProps = {
   className?: string
   color?: string
-  iconSize: number
-  onClick?: () => {}
+  iconSize?: number
+  onClick?: () => void
 }
 
 export default function Icon(props: IconProps) {
@@ -15,6 +15,7 @@ export default function Icon(props: IconProps) {
       className={props.className}
       iconSize={props.iconSize}
       color={textColor(props.color)}
+      onClick={props.onClick}
     />
   )
 }
@@ -28,10 +29,12 @@ function textColor(color?: string) {
     return colors.primary
   }
 
-  return color ? color : '#000000'
+  return color ? color : 'unset'
 }
 
 const StyledIcon = styled.i<IconProps>`
   color: ${(props) => props.color};
   font-size: ${(props) => props.iconSize}px;
+  padding-left: ${(props) => props.theme.spacing[2]};
+  padding-right: ${(props) => props.theme.spacing[2]};
 `

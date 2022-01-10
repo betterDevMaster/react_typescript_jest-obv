@@ -2,28 +2,23 @@ import React, {useState} from 'react'
 import Button from '@material-ui/core/Button'
 import ButtonGroup from '@material-ui/core/ButtonGroup'
 import {makeStyles} from '@material-ui/styles'
-import {spacing} from 'lib/ui/theme'
 import {colors} from 'lib/ui/theme'
 
 const DEFAULT_MIN = 0
 const DEFAULT_MAX = 100
 const DEFAULT_CURRENT = 0
 
-interface CounterButtonsProps {
+interface CounterProps {
   min?: number
   max?: number
   current?: number
   orientation?: 'vertical' | 'horizontal'
   size?: 'small' | 'medium' | 'large'
-  variant?: 'text' | 'outlined' | 'contained'
   hasBorder?: boolean
   displayColor?: 'primary' | 'danger' | 'default'
-  decreaseButtonColor?: 'primary' | 'secondary' | 'default'
-  increaseButtonColor?: 'primary' | 'secondary' | 'default'
-  fullWidth?: boolean
-  onChange: (val: number) => void
+  onChange?: (val: number) => void
 }
-export default function CounterButtons(props: CounterButtonsProps) {
+export default function Counter(props: CounterProps) {
   const [current, setCurrent] = useState(props.current || DEFAULT_CURRENT)
 
   const handleIncrement = () => {
@@ -33,7 +28,9 @@ export default function CounterButtons(props: CounterButtonsProps) {
     }
 
     setCurrent(val)
-    props.onChange(val)
+    if (props.onChange) {
+      props.onChange(val)
+    }
   }
 
   const handleDecrement = () => {
@@ -42,13 +39,14 @@ export default function CounterButtons(props: CounterButtonsProps) {
       return
     }
     setCurrent(val)
-    props.onChange(val)
+    if (props.onChange) {
+      props.onChange(val)
+    }
   }
 
   const useStyles = makeStyles({
     root: {
       border: props.hasBorder ? '1px solid #DFDFDF' : '',
-      padding: spacing[2],
       '& > .Mui-disabled': {
         backgroundColor: 'transparent',
         color: getColor(props),
@@ -62,25 +60,21 @@ export default function CounterButtons(props: CounterButtonsProps) {
     <ButtonGroup
       size={props.size}
       aria-label="small outlined button group"
-      variant={props.variant}
+      variant="contained"
       color="primary"
       orientation={props.orientation}
       className={classes.root}
     >
-      <Button onClick={handleDecrement} color={props.decreaseButtonColor}>
-        -
-      </Button>
+      <Button onClick={handleDecrement}>-</Button>
       <Button disabled fullWidth>
         {current}
       </Button>
-      <Button onClick={handleIncrement} color={props.increaseButtonColor}>
-        +
-      </Button>
+      <Button onClick={handleIncrement}>+</Button>
     </ButtonGroup>
   )
 }
 
-function getColor(props: CounterButtonsProps) {
+function getColor(props: CounterProps) {
   if (props.displayColor === 'danger') {
     return colors.error
   }

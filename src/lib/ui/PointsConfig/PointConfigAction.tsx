@@ -7,7 +7,7 @@ import AccordionDetails from 'lib/ui/Accordion/AccordionDetails'
 import AccordionSummary from 'lib/ui/Accordion/AccordionSummary'
 import Select from 'lib/ui/Select'
 import Option from 'lib/ui/Select/Option'
-import CounterButtons from 'lib/ui/CounterButtons'
+import CounterButtons from 'lib/ui/Counter'
 import {Label} from 'lib/ui/typography'
 import useActions from './data'
 
@@ -48,25 +48,18 @@ export default function PointConfigAction(props: PointConfigActionProps) {
           <ConfigLabel>Points earned</ConfigLabel>
           <CounterButtons
             current={pointsEarned}
-            variant="contained"
             hasBorder
             onChange={(v) => {}}
           />
         </ConfigBox>
         <ConfigBox>
           <ConfigLabel>Max per day</ConfigLabel>
-          <CounterButtons
-            current={maxPerDay}
-            variant="contained"
-            hasBorder
-            onChange={(v) => {}}
-          />
+          <CounterButtons current={maxPerDay} hasBorder onChange={(v) => {}} />
         </ConfigBox>
         <ConfigBox>
           <ConfigLabel>Max per event</ConfigLabel>
           <CounterButtons
             current={maxPerEvent}
-            variant="contained"
             hasBorder
             onChange={(v) => {}}
           />
@@ -75,7 +68,6 @@ export default function PointConfigAction(props: PointConfigActionProps) {
           <ConfigLabel>Min interval (Minutes)</ConfigLabel>
           <CounterButtons
             current={minInterval}
-            variant="contained"
             hasBorder
             onChange={(v) => {}}
           />

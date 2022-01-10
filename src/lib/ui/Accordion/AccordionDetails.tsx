@@ -13,7 +13,8 @@ type AccordionDetailsProps = {
 export default function AccordionDetails(props: AccordionDetailsProps) {
   const useStyles = makeStyles({
     root: {
-      padding: spacing[2],
+      display: 'block',
+      padding: 'unset',
     },
   })
 

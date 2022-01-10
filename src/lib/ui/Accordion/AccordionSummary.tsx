@@ -11,7 +11,7 @@ type AccordionSummaryProps = {
 export default function AccordionSummary(props: AccordionSummaryProps) {
   const useStyles = makeStyles({
     root: {
-      backgroundColor: 'rgba(0, 0, 0, .03)',
+      backgroundColor: '#ffffff',
       borderBottom: '1px solid rgba(0, 0, 0, .125)',
       marginBottom: -1,
       minHeight: 56,
@@ -19,12 +19,6 @@ export default function AccordionSummary(props: AccordionSummaryProps) {
         minHeight: 56,
       },
     },
-    content: {
-      '&$expanded': {
-        margin: '12px 0',
-      },
-    },
-    expanded: {},
   })
 
   const classes = useStyles()

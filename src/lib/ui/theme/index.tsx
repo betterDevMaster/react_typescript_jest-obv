@@ -15,6 +15,7 @@ export const colors = {
   border: '#a0a9b0',
   info: '#51EA0A',
   error: red[500],
+  warning: '#ffc107',
   text: {
     muted: '#606F7B',
   },

@@ -1,73 +1,35 @@
-import React from 'react'
-import {makeStyles} from '@material-ui/core/styles'
+import React, {useState, useEffect} from 'react'
+
 import Drawer from '@material-ui/core/Drawer'
 import List from '@material-ui/core/List'
-import IconButton from '@material-ui/core/IconButton'
-import ListItem from '@material-ui/core/ListItem'
-import MenuIcon from '@material-ui/icons/Menu'
-import ChevronLeftIcon from '@material-ui/icons/ChevronLeft'
-import Divider from '@material-ui/core/Divider'
-import ListItemText from '@material-ui/core/ListItemText'
-import Icon from 'lib/ui/Icon'
-import {spacing, muiTheme} from 'lib/ui/theme'
-import {Grid} from '@material-ui/core'
+import Toolbar from '@material-ui/core/Toolbar'
+import Hidden from '@material-ui/core/Hidden'
 
-const useStyles = makeStyles({
-  root: {
-    display: 'flex',
-  },
-  toolbar: {
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'flex-end',
-    padding: '0px 4px',
-  },
-  drawer: {
-    width: 240,
-    flexShrink: 0,
-    whiteSpace: 'nowrap',
-  },
-  drawerOpen: {
-    width: 240,
-    transition: 'width 225ms cubic-bezier(0.4, 0, 0.6, 1) 0ms',
-    [muiTheme.breakpoints.down('sm')]: {
-      width: '100%',
-    },
-    '& .MuiDrawer-paper': {
-      width: 240,
-      [muiTheme.breakpoints.down('sm')]: {
-        width: '100%',
-      },
-    },
-  },
-  drawerClose: {
-    transition: 'width 195ms cubic-bezier(0.4, 0, 0.6, 1) 0ms',
-    overflowX: 'hidden',
-    width: '57px',
-    '& .MuiDrawer-paper': {
-      width: '57px',
-      overflowX: 'hidden',
-    },
-  },
-  listItemText: {
-    marginLeft: spacing[12],
-  },
-})
+import SidebarLink from 'lib/ui/Sidebar/SidebarLink'
+import Icon from 'lib/ui/Icon'
+import styled from 'styled-components'
+import Button from 'lib/ui/Button'
 
 export type SidebarItem = {
-  name: string
+  label: string
   iconName: string
-  path?: string
+  link?: string
+  children?: SidebarItem[]
 }
 
 type SidebarProps = {
   isCollapsed: boolean
-  children?: JSX.Element | JSX.Element[] | string | null
+  location?: string
+  children?: JSX.Element | JSX.Element[] | string
   onClick: (itemName: string) => void
 }
 export default function Sidebar(props: SidebarProps) {
-  const classes = useStyles()
-  const [isCollapsed, setIsCollapsed] = React.useState(props.isCollapsed)
+  const [isCollapsed, setIsCollapsed] = useState(props.isCollapsed)
+  const [location, setLocation] = useState(props.location || '')
+
+  useEffect(() => {
+    setIsCollapsed(props.isCollapsed)
+  }, [props.isCollapsed])
 
   const sidebarItems = useSidebarLists()
 
@@ -75,37 +37,45 @@ export default function Sidebar(props: SidebarProps) {
     setIsCollapsed(!isCollapsed)
   }
 
+  const onClickSidebarItem = (itemName: string) => {
+    if (props.onClick) {
+      props.onClick(itemName)
+      setLocation(itemName)
+    }
+  }
+
   return (
-    <Grid className={classes.root}>
-      <Drawer
-        variant="permanent"
-        className={isCollapsed ? classes.drawerOpen : classes.drawerClose}
-      >
-        <Grid className={classes.toolbar}>
-          <MenuIconButton
-            isCollapsed={isCollapsed}
-            handleDrawerIcon={handleDrawerIcon}
-          />
-        </Grid>
-        <Divider />
+    <Container>
+      <StyledDrawer variant="permanent" isCollapsed={isCollapsed}>
+        <Toolbar />
         <List>
           {sidebarItems.map((item, index) => (
-            <ListItem
-              button
+            <SidebarLink
               key={index}
-              onClick={() => props.onClick(item.name)}
-            >
-              <Icon className={item.iconName} iconSize={24} />
-              <ListItemText
-                primary={item.name}
-                className={classes.listItemText}
-              />
-            </ListItem>
+              icon={<StyledIcon className={item.iconName} iconSize={28} />}
+              link={item.link}
+              children={item.children}
+              onClick={onClickSidebarItem}
+              isSidebarOpened={isCollapsed}
+              label={item.label}
+              location={location}
+            />
           ))}
         </List>
-      </Drawer>
-      <Grid>{props.children}</Grid>
-    </Grid>
+        <Hidden smDown>
+          <SidebarAction isCollapsed={isCollapsed}>
+            <MenuIconButton
+              isCollapsed={isCollapsed}
+              handleDrawerIcon={handleDrawerIcon}
+            />
+          </SidebarAction>
+        </Hidden>
+      </StyledDrawer>
+      <div>
+        <Toolbar />
+        <div>{props.children}</div>
+      </div>
+    </Container>
   )
 }
 
@@ -113,25 +83,85 @@ function MenuIconButton(props: {
   isCollapsed: boolean
   handleDrawerIcon: () => void
 }) {
-  if (props.isCollapsed) {
+  if (!props.isCollapsed) {
     return (
-      <IconButton onClick={props.handleDrawerIcon}>
-        <ChevronLeftIcon />
-      </IconButton>
+      <Button
+        onClick={props.handleDrawerIcon}
+        fullWidth
+        aria-label="close drawer"
+        variant="text"
+        color="default"
+        disableBorderRadius
+        disablePadding
+      >
+        <StyledIcon className="fas fa-expand-alt" />
+      </Button>
     )
   }
   return (
-    <IconButton
-      color="inherit"
+    <Button
       aria-label="open drawer"
       onClick={props.handleDrawerIcon}
-      edge="start"
+      fullWidth
+      variant="contained"
+      color="light"
+      disableBorderRadius
     >
-      <MenuIcon />
-    </IconButton>
+      <Icon className="fas fa-compress-alt" />
+      Collapse
+    </Button>
   )
 }
 
+const StyledIcon = styled(Icon)`
+  color: #ffffff;
+`
+const StyledDrawer = styled(Drawer)<{isCollapsed: boolean}>`
+  flex-shrink: 0;
+  white-space: nowrap;
+
+  .MuiDrawer-paper {
+    top: 0;
+    width: ${(props) => (props.isCollapsed ? 260 : 72)}px;
+    color: #ffffff;
+    overflow-x: hidden;
+    background-color: #131d34;
+    display: block;
+    z-index: auto;
+    @media (max-width: ${(props) => props.theme.breakpoints.sm}) {
+      width: ${(props) => (props.isCollapsed ? '0%' : '100%')};
+    }
+  }
+
+  ${(props) =>
+    props.isCollapsed
+      ? `
+    width: 260px;
+    transition: width 225ms cubic-bezier(0.4, 0, 0.6, 1) 0ms;
+  `
+      : `
+    transition: width 195ms cubic-bezier(0.4, 0, 0.6, 1) 0ms;
+    overflow-x: hidden;
+    width: 72px;
+  `}
+`
+
+const SidebarAction = styled.div<{isCollapsed: boolean}>`
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  bottom: 0px;
+  width: ${(props) => (!props.isCollapsed ? '72px' : '261px')};
+  position: fixed;
+  border-top: 1px solid;
+  background-color: #131d34;
+  padding: ${(props) =>
+    props.isCollapsed ? 'unset' : `${props.theme.spacing[2]} 0px`};
+`
+
+const Container = styled.div`
+  display: flex;
+`
 /**
  * Will define sidebar items according to user's permission
  *
@@ -140,49 +170,55 @@ function MenuIconButton(props: {
 function useSidebarLists() {
   const items: SidebarItem[] = [
     {
-      name: 'Event',
-      iconName: 'fas fa-calendar-alt',
-      path: '',
+      label: 'Event',
+      iconName: 'fal fa-calendar-alt',
+      children: [
+        {
+          label: 'Setting',
+          iconName: '',
+          link: '/Setting',
+        },
+      ],
     },
     {
-      name: 'Check In',
-      iconName: 'fas fa-tasks',
-      path: '',
+      label: 'Check In',
+      iconName: 'fal fa-tasks',
+      link: '',
     },
     {
-      name: 'Design',
-      iconName: 'fas fa-crop',
-      path: '',
+      label: 'Design',
+      iconName: 'fal fa-crop',
+      link: '',
     },
     {
-      name: 'Features',
-      iconName: 'fas fa-user',
-      path: '',
+      label: 'Features',
+      iconName: 'fal fa-megaphone',
+      link: '',
     },
     {
-      name: 'Attendees',
-      iconName: 'fas fa-users',
-      path: '',
+      label: 'Attendees',
+      iconName: 'fal fa-users',
+      link: '',
     },
     {
-      name: 'Areas',
-      iconName: 'fad fa-person-booth',
-      path: '',
+      label: 'Areas',
+      iconName: 'fal fa-person-booth',
+      link: '',
     },
     {
-      name: 'Reporting',
-      iconName: 'fas fa-chart-line',
-      path: '',
+      label: 'Reporting',
+      iconName: 'fal fa-chart-line',
+      link: '',
     },
     {
-      name: 'Production',
-      iconName: 'fas fa-cogs',
-      path: '',
+      label: 'Production',
+      iconName: 'fal fa-cogs',
+      link: '',
     },
     {
-      name: 'Admin',
-      iconName: 'fas fa-user',
-      path: '',
+      label: 'Admin',
+      iconName: 'fal fa-user',
+      link: '',
     },
   ]
 
