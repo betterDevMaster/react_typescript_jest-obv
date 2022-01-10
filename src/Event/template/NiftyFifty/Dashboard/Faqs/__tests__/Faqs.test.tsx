@@ -30,7 +30,7 @@ it('should render faqs', async () => {
       mockGet.mockImplementationOnce(() => Promise.resolve({data: faqs}))
     },
   })
-  // user.click(await findByLabelText('panels tab faqs'))
-  // // Showing all faqs
-  // expect((await findAllByLabelText('faq')).length).toBe(faqs.length)
+  user.click(await findByLabelText('panels tab faqs'))
+  // Showing all faqs
+  expect((await findAllByLabelText('faq')).length).toBe(faqs.length)
 })

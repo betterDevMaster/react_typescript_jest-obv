@@ -61,7 +61,7 @@ function Editable(props: SponsorProps) {
   const {edit} = useSponsors()
 
   return (
-    <Clickable onClick={() => edit(props.sponsor)}>
+    <Clickable onClick={() => edit(props.sponsor)} aria-label="edit sponsor">
       <Content {...props} />
     </Clickable>
   )
@@ -100,7 +100,10 @@ function Content(props: SponsorProps) {
         onClose={toggleForm}
       />
       <Grid item xs={template.sponsors.imageSize}>
-        <StyledImage sponsor={sponsor} />
+        <StyledImageContent>
+          <Image sponsor={sponsor} />
+          <Buttons sponsor={props.sponsor} />
+        </StyledImageContent>
       </Grid>
       <HeadContent>
         <SponsorName color={template.textColor}>{v(sponsor.name)}</SponsorName>
@@ -109,7 +112,6 @@ function Content(props: SponsorProps) {
       <InnerContent color={template.textColor}>
         {v(sponsor.description)}
       </InnerContent>
-      <Buttons sponsor={props.sponsor} />
       <ClearContent />
     </Box>
   )
@@ -167,7 +169,7 @@ const SponsorName = styled.div<{
   }
 `
 
-const StyledImage = styled(Image)`
+const StyledImageContent = styled.div`
   float: left;
   margin: ${(props) =>
     `${props.theme.spacing[5]} ${props.theme.spacing[4]} ${props.theme.spacing[4]} 0`};
