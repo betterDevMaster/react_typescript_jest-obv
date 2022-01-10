@@ -113,6 +113,76 @@ export default function SpeakerPageConfigForm(props: {onClose: () => void}) {
           )}
         />
       </Grid>
+      <Grid container>
+        <Grid item xs={12} md={6}>
+          <Controller
+            name="evenBackgroundColor"
+            defaultValue={speakerPageSettings.evenBackgroundColor}
+            control={control}
+            render={({value, onChange}) => (
+              <ColorPicker
+                label="Even Background Color"
+                color={value || '#FFFFFF'}
+                onPick={onChange}
+                aria-label="evenbackground color"
+              />
+            )}
+          />
+        </Grid>
+        <Grid item xs={12} md={6}>
+          <InputLabel>Even Background Opacity</InputLabel>
+          <Controller
+            name="evenBackgroundOpacity"
+            defaultValue={speakerPageSettings.evenBackgroundOpacity}
+            control={control}
+            render={({value, onChange}) => (
+              <Slider
+                min={0}
+                max={1}
+                step={0.1}
+                onChange={handleChangeSlider(onChange)}
+                valueLabelDisplay="auto"
+                value={value}
+              />
+            )}
+          />
+        </Grid>
+      </Grid>
+      <Grid container>
+        <Grid item xs={12} md={6}>
+          <Controller
+            name="oddBackgroundColor"
+            defaultValue={speakerPageSettings.oddBackgroundColor}
+            control={control}
+            render={({value, onChange}) => (
+              <ColorPicker
+                label="Odd Background Color"
+                color={value || '#FFFFFF'}
+                onPick={onChange}
+                aria-label="oddbackground color"
+              />
+            )}
+          />
+        </Grid>
+        <Grid item xs={12} md={6}>
+          <InputLabel>Odd Background Opacity</InputLabel>
+          <Controller
+            name="oddBackgroundOpacity"
+            defaultValue={speakerPageSettings.oddBackgroundOpacity}
+            control={control}
+            render={({value, onChange}) => (
+              <Slider
+                min={0}
+                max={1}
+                step={0.1}
+                onChange={handleChangeSlider(onChange)}
+                valueLabelDisplay="auto"
+                value={value}
+              />
+            )}
+          />
+        </Grid>
+      </Grid>
       <Grid item xs={12}>
         <InputLabel>Space Between Speakers</InputLabel>
         <Controller

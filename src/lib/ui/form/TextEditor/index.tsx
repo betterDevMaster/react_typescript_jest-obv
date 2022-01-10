@@ -1,7 +1,7 @@
 import React from 'react'
 import styled, {createGlobalStyle} from 'styled-components'
 import CKEditor from '@ckeditor/ckeditor5-react'
-import ClassicEditor from '@obvio/ckeditor'
+import DecoupledcEditor from '@ckeditor/ckeditor5-build-decoupled-document'
 import {useTextEditor} from 'lib/ui/form/TextEditor/TextEditorProvider'
 
 /**
@@ -14,6 +14,12 @@ const toolbar = [
   '|',
   'mediaEmbed',
   'htmlEmbed',
+  '|',
+  'fontFamily',
+  'fontSize',
+  'fontColor',
+  'fontBackgroundColor',
+  '|',
   'bold',
   'italic',
   'blockQuote',
@@ -44,12 +50,20 @@ export default function TextEditor(props: {
   return (
     <div className={props.className}>
       <CKEditor
+        editor={DecoupledcEditor}
         disabled={props.disabled}
-        editor={ClassicEditor}
+        // editor={ClassicEditor}
         // In case DB returns 'null' for a text field, we don't
         // want to crash the app so let's just set is as a
         // blank string as a precaution.
         data={props.data || ''}
+        onInit={(editor: any) => {
+          const eElement = editor.ui.getEditableElement().parentElement
+          eElement.insertBefore(
+            editor.ui.view.toolbar.element,
+            eElement.firstChild,
+          )
+        }}
         onChange={updateValue}
         config={{
           toolbar: props.customToolBars || toolbar,
@@ -60,7 +74,6 @@ export default function TextEditor(props: {
           /**
            * Required for media embed to render in HTML
            */
-
           mediaEmbed: {
             previewsInData: true,
           },
@@ -91,7 +104,6 @@ export default function TextEditor(props: {
  */
 
 export const TextEditorContainer = styled.div`
-  overflow-x: hidden;
   margin-bottom: ${(props) => props.theme.spacing[5]};
 
   /** 

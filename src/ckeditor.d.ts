@@ -1,3 +1,3 @@
 declare module '@ckeditor/ckeditor5-react'
 declare module '@ckeditor/ckeditor5-build-classic'
-declare module '@obvio/ckeditor'
+declare module '@ckeditor/ckeditor5-build-decoupled-document'

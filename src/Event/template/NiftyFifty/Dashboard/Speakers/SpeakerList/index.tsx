@@ -1,31 +1,45 @@
-import {Speaker} from 'Event/SpeakerPage'
-import Card from 'Event/template/NiftyFifty/Dashboard/Speakers/SpeakerList/Card'
-import Grid from '@material-ui/core/Grid'
 import React from 'react'
-import {useTemplate} from 'Event/TemplateProvider'
-import Typography from '@material-ui/core/Typography'
 import {DragDropContext, Droppable, DropResult} from 'react-beautiful-dnd'
-import {useNiftyFiftyUpdate} from 'Event/template/NiftyFifty'
+
+import {Grid, Typography} from '@material-ui/core'
+
+import {Speaker} from 'Event/SpeakerPage'
+import {
+  useNiftyFiftyTemplate,
+  useNiftyFiftyUpdate,
+} from 'Event/template/NiftyFifty'
+import Card from 'Event/template/NiftyFifty/Dashboard/Speakers/SpeakerList/Card'
+import {useTemplate} from 'Event/TemplateProvider'
+
+import {rgba} from 'lib/color'
+import styled from 'styled-components'
 
 export default function SpeakerList(props: {
   speakers: Speaker[]
   isEditMode?: boolean
 }) {
   const sortedSpeakers = useSortedSpeakers(props.speakers)
+  const {speakers} = useNiftyFiftyTemplate()
 
   const isEmpty = props.speakers.length === 0
   if (isEmpty) {
     return <Typography align="center">No speakers have been added</Typography>
   }
 
-  const cards = sortedSpeakers.map((speaker: Speaker, index: number) => (
-    <Grid item xs={12} key={speaker.id}>
-      <Card speaker={speaker} isEditMode={props.isEditMode} index={index} />
-    </Grid>
-  ))
+  const cards = sortedSpeakers.map((speaker: Speaker, index: number) => {
+    return (
+      <Grid item xs={12} key={speaker.id}>
+        <Card speaker={speaker} isEditMode={props.isEditMode} index={index} />
+      </Grid>
+    )
+  })
 
   if (!props.isEditMode) {
-    return <Grid container>{cards}</Grid>
+    return (
+      <Grid container spacing={speakers.speakersSpace}>
+        {cards}
+      </Grid>
+    )
   }
 
   return <DraggableList speakers={sortedSpeakers}>{cards}</DraggableList>
@@ -36,12 +50,18 @@ function DraggableList(props: {
   speakers: Speaker[]
 }) {
   const handleDrag = useHandleDrag()
+  const {speakers} = useNiftyFiftyTemplate()
 
   return (
     <DragDropContext onDragEnd={handleDrag(props.speakers)}>
       <Droppable droppableId="drag-and-drop-speaker">
         {(provided) => (
-          <Grid container ref={provided.innerRef} {...provided.droppableProps}>
+          <Grid
+            container
+            spacing={speakers.speakersSpace}
+            ref={provided.innerRef}
+            {...provided.droppableProps}
+          >
             <>
               {props.children}
               {provided.placeholder}

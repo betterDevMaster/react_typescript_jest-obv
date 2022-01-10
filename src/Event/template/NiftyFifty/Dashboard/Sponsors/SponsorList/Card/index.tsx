@@ -63,11 +63,12 @@ function Content(props: SponsorProps) {
   const {edit} = useSponsors()
   const v = useAttendeeVariables()
 
-  const {
-    sponsors: {cardBackgroundColor, cardBackgroundOpacity, imageSize},
-  } = useNiftyFiftyTemplate()
+  const template = useNiftyFiftyTemplate()
 
-  const backgroundColor = rgba(cardBackgroundColor, cardBackgroundOpacity / 100)
+  const backgroundColor = rgba(
+    template.sponsors.cardBackgroundColor,
+    template.sponsors.cardBackgroundOpacity / 100,
+  )
 
   return (
     <Box aria-label="sponsor" backgroundColor={backgroundColor}>
@@ -79,10 +80,12 @@ function Content(props: SponsorProps) {
       />
       <StyledEditable onEdit={() => edit(sponsor)} aria-label="edit sponsor">
         <StyledGrid>
-          <Left item xs={imageSize}>
+          <Left item xs={template.sponsors.imageSize}>
             <StyledImage sponsor={sponsor} isEditMode={props.isEditMode} />
           </Left>
-          <TextContent>{v(sponsor.description)}</TextContent>
+          <TextContent color={template.textColor}>
+            {v(sponsor.description)}
+          </TextContent>
           <Buttons sponsor={props.sponsor} />
           <StyledQuestionIcon sponsor={sponsor} onClick={toggleForm} />
         </StyledGrid>

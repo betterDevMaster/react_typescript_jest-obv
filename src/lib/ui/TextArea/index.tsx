@@ -1,7 +1,7 @@
 import React from 'react'
 import styled, {createGlobalStyle} from 'styled-components'
 import CKEditor from '@ckeditor/ckeditor5-react'
-import ClassicEditor from '@obvio/ckeditor'
+import DecoupledcEditor from '@ckeditor/ckeditor5-build-decoupled-document'
 
 /**
  * Toolbar items to display
@@ -13,6 +13,12 @@ const toolbar = [
   '|',
   'mediaEmbed',
   'htmlEmbed',
+  '|',
+  'fontFamily',
+  'fontSize',
+  'fontColor',
+  'fontBackgroundColor',
+  '|',
   'bold',
   'italic',
   'blockQuote',
@@ -43,8 +49,15 @@ export default function TextArea(props: {
     <div className={props.className}>
       <CKEditor
         disabled={props.disabled}
-        editor={ClassicEditor}
+        editor={DecoupledcEditor}
         data={props.data || ''}
+        onInit={(editor: any) => {
+          const eElement = editor.ui.getEditableElement().parentElement
+          eElement.insertBefore(
+            editor.ui.view.toolbar.element,
+            eElement.firstChild,
+          )
+        }}
         onChange={updateValue}
         config={{
           toolbar: props.customToolBars || toolbar,

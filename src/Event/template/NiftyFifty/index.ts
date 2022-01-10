@@ -263,6 +263,10 @@ export type NiftyFifty = BaseTemplate &
       backgroundOpacity?: number
       menuTitle?: string
       isVisible?: boolean
+      evenBackgroundColor?: string
+      evenBackgroundOpacity?: number
+      oddBackgroundColor?: string
+      oddBackgroundOpacity?: number
     }
     offlinePage?: {
       title: string
@@ -531,9 +535,13 @@ export const createNiftyFifty = (): DeepRequired<NiftyFifty> => ({
     speakersSpace: 0,
     orderedIds: [],
     backgroundColor: '#FFFFFF',
-    backgroundOpacity: 100,
+    backgroundOpacity: 0,
     menuTitle: 'Speakers',
     isVisible: true,
+    evenBackgroundColor: '#FFFFFF',
+    evenBackgroundOpacity: 0,
+    oddBackgroundColor: '#FFFFFF',
+    oddBackgroundOpacity: 0,
   },
   offlinePage: {
     shouldRedirect: false,

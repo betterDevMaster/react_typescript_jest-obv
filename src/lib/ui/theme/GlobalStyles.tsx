@@ -61,4 +61,8 @@ export const GlobalStyles = createGlobalStyle`
   *::-webkit-scrollbar-corner {
       background: transparent;
   }
+
+  .ck.ck-editor__editable_inline {
+    border: 1px solid var(--ck-color-base-border);
+  }
 `

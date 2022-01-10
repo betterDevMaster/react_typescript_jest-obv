@@ -58,13 +58,22 @@ function Content(props: SpeakerProps) {
   const isXSMobile = useMediaQuery(theme.breakpoints.down('xs'))
 
   const imageSize = template.speakers.speakerImageSize
-  const isFirst = props.index === 0
+
+  const backgroundColor =
+    props.index % 2 === 0
+      ? rgba(
+          template.speakers.evenBackgroundColor,
+          template.speakers.evenBackgroundOpacity,
+        )
+      : rgba(
+          template.speakers.oddBackgroundColor,
+          template.speakers.oddBackgroundOpacity,
+        )
 
   return (
     <Box
       aria-label="speaker"
-      isFirst={isFirst}
-      backgroundColor={rgba('#FFFFFF', 0)}
+      backgroundColor={backgroundColor}
       isXSMobile={isXSMobile}
     >
       <Left item xs={imageSize}>
@@ -79,7 +88,6 @@ function Content(props: SpeakerProps) {
 }
 
 const Box = styled.div<{
-  isFirst: boolean
   isXSMobile: boolean
   backgroundColor: string
 }>`

@@ -1,6 +1,10 @@
 import React from 'react'
 
-export default function Content(props: {className?: string; children: string}) {
+export default function Content(props: {
+  className?: string
+  color?: string
+  children: string
+}) {
   return (
     <div
       /**
@@ -10,6 +14,7 @@ export default function Content(props: {className?: string; children: string}) {
        * Reference: https://ckeditor.com/docs/ckeditor5/latest/builds/guides/integration/content-styles.html
        */
       className={`ck-content ${props.className}`}
+      style={{color: props.color}}
       dangerouslySetInnerHTML={{
         __html: props.children,
       }}
