@@ -19,6 +19,14 @@ const Description = styled(Typography)<Props>`
   color: ${(props) => (props.white ? '#FFFFFF' : '#939393')};
 `
 
+const Header = styled(Typography)<Props>`
+  font-style: normal !important;
+  font-weight: 500 !important;
+  font-size: 24px !important;
+  line-height: 28px !important;
+  color: ${(props) => (props.white ? '#FFFFFF' : '#000000')};
+`
+
 const SubHead = styled(Typography)<Props>`
   font-weight: 500 !important;
   font-size: 18px !important;
@@ -27,10 +35,19 @@ const SubHead = styled(Typography)<Props>`
 `
 
 const Label = styled(Typography)<Props>`
+  font-style: normal !important;
   font-weight: normal !important;
   font-size: 14px !important;
   line-height: 17px !important;
   color: ${(props) => (props.white ? '#FFFFFF' : '#000000')};
 `
 
-export {Title, Description, SubHead, Label}
+const Text = styled(Typography)<Props>`
+  font-style: normal !important;
+  font-weight: 300 !important;
+  font-size: 12px !important;
+  line-height: 14px !important;
+  color: ${(props) => (props.white ? '#FFFFFF' : '#000000')};
+`
+
+export {Title, Description, Header, SubHead, Label, Text}
