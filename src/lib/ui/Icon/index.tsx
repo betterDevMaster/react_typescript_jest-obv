@@ -29,7 +29,7 @@ function textColor(color?: string) {
     return colors.primary
   }
 
-  return color ? color : 'unset'
+  return color ? color : '#ffffff'
 }
 
 const StyledIcon = styled.i<IconProps>`
