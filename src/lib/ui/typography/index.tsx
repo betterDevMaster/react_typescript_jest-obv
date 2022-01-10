@@ -10,6 +10,10 @@ const Title = styled(Typography)<Props>`
   font-size: 36px !important;
   line-height: 43px !important;
   color: ${(props) => (props.white ? '#FFFFFF' : '#000000')};
+  @media (max-width: ${(props) => props.theme.breakpoints.sm}) {
+    font-size: 30px !important;
+    line-height: 36px !important;
+  }
 `
 
 const Description = styled(Typography)<Props>`
@@ -42,6 +46,13 @@ const Label = styled(Typography)<Props>`
   color: ${(props) => (props.white ? '#FFFFFF' : '#000000')};
 `
 
+const Tiny = styled(Typography)<Props>`
+  font-weight: 300 !important;
+  font-size: 12px !important;
+  line-height: 14px !important;
+  color: ${(props) => (props.white ? '#FFFFFF' : props.theme.colors.blue)};
+`
+
 const Text = styled(Typography)<Props>`
   font-style: normal !important;
   font-weight: 300 !important;
@@ -50,4 +61,4 @@ const Text = styled(Typography)<Props>`
   color: ${(props) => (props.white ? '#FFFFFF' : '#000000')};
 `
 
-export {Title, Description, Header, SubHead, Label, Text}
+export {Title, Description, Header, SubHead, Label, Text, Tiny}

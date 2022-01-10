@@ -21,6 +21,10 @@ export const colors = {
   },
   accent: '#a72020',
   gray: '#f1f1f1',
+  gray100: '#a7a7a7',
+  gray200: '#838383',
+  gray300: '#dfdfdf',
+  blue: '#2794d2',
 }
 
 export const spacing = Array(60)
