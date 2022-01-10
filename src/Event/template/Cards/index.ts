@@ -461,6 +461,8 @@ export const createCards = (): DeepRequired<Cards> => ({
     buttonHoverBackgroundColor: 'blue',
     buttonPosition: 'center',
     buttonFontSize: 27,
+    buttonBorderWidth: 0,
+    buttonBorderColor: 'black',
     inputStyles: {
       labelColor: '#7d7a7a',
       borderColor: '#7d7a7a',

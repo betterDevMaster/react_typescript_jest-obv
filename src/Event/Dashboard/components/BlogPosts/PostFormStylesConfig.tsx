@@ -177,7 +177,7 @@ export default function PostFormStylesConfig() {
             type="number"
             fullWidth
             inputProps={{
-              min: 1,
+              min: 0,
               max: 50,
               ref: register,
             }}
@@ -232,6 +232,31 @@ export default function PostFormStylesConfig() {
               max: 50,
               ref: register,
             }}
+          />
+          <TextField
+            name="buttonBorderWidth"
+            defaultValue={postFormStyles.buttonBorderWidth}
+            label="Submit Button Border Width"
+            type="number"
+            fullWidth
+            inputProps={{
+              min: 0,
+              max: 50,
+              ref: register,
+            }}
+          />
+          <Controller
+            name="buttonBorderColor"
+            defaultValue={postFormStyles.buttonBorderColor}
+            control={control}
+            render={({value, onChange}) => (
+              <ColorPicker
+                label="Submit Button Border Color"
+                color={value}
+                onPick={onChange}
+                aria-label="submit button border color"
+              />
+            )}
           />
           <Box mb={2}>
             <InputLabel>Submit Button Position</InputLabel>
