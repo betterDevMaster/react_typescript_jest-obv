@@ -1,33 +1,15 @@
 import styled from 'styled-components'
 import React from 'react'
-import DangerButton from 'lib/ui/Button/DangerButton'
-import {useToggle} from 'lib/toggle'
-import {teamMemberClient} from 'obvio/obvio-client'
-import {api} from 'lib/url'
 import {usePaymentMethod} from 'obvio/Billing/PaymentMethodProvider'
 
 export default function ExistingCard(props: {className?: string}) {
-  const {setPaymentMethod, paymentMethod} = usePaymentMethod()
-  const {flag: processing, toggle: toggleProcessing} = useToggle()
-  const removeCard = useRemoveCard()
+  const {paymentMethod} = usePaymentMethod()
 
   if (!paymentMethod) {
-    throw new Error('Missing payment method')
+    return null
   }
 
   const {card} = paymentMethod
-
-  const handleRemove = () => {
-    if (processing) {
-      return
-    }
-
-    toggleProcessing()
-
-    removeCard()
-      .then(() => setPaymentMethod(null))
-      .catch(toggleProcessing)
-  }
 
   return (
     <div className={props.className}>
@@ -38,26 +20,10 @@ export default function ExistingCard(props: {className?: string}) {
           Expiry: {card?.exp_month}/{card?.exp_year}
         </Expiry>
       </Card>
-      <div>
-        <DangerButton
-          variant="outlined"
-          disabled={processing}
-          onClick={handleRemove}
-        >
-          Remove Card
-        </DangerButton>
-      </div>
     </div>
   )
 }
 
-function useRemoveCard() {
-  return () => {
-    const url = api('/stripe/payment_method')
-
-    return teamMemberClient.delete(url)
-  }
-}
 const Card = styled.div`
   border: 1px solid ${(props) => props.theme.colors.border};
   border-radius: 16px;

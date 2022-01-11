@@ -59,6 +59,10 @@ export function useBilling() {
   return context
 }
 
-function isCreditsError(error: {type: string}): error is CreditsError {
+function isCreditsError(error?: {type: string}): error is CreditsError {
+  if (!error) {
+    return false
+  }
+
   return error.type === 'insufficient_credits'
 }

@@ -26,11 +26,7 @@ it('should show add card button', async () => {
 
   const plan: PlanName = 'basic'
 
-  const {
-    findByText,
-    findAllByText,
-    findByLabelText,
-  } = await goToBillingSettings({
+  const {findByText, findAllByText} = await goToBillingSettings({
     beforeRender: () => {
       mockUseLocation.mockImplementation(() => ({
         pathname: '/',
@@ -60,12 +56,7 @@ it('should create a subscription', async () => {
 
   const plan: PlanName = 'basic'
 
-  const {
-    findByText,
-    findAllByText,
-    findByLabelText,
-    queryByText,
-  } = await goToBillingSettings({
+  const {findByText, findAllByText, queryByText} = await goToBillingSettings({
     beforeRender: () => {
       mockUseLocation.mockImplementation(() => ({
         pathname: '/',
