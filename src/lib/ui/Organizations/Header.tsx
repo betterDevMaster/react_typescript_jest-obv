@@ -85,9 +85,6 @@ const SortButtonInner = styled(ButtonInner)`
 `
 
 const NewButtonInner = styled(ButtonInner)`
-  i {
-    margin-right: ${(props) => props.theme.spacing[3]} !important;
-  }
   @media (max-width: ${(props) => props.theme.breakpoints.sm}) {
     font-weight: 500;
     font-size: 15px;
@@ -98,6 +95,7 @@ const NewButtonInner = styled(ButtonInner)`
 const StyledButton = styled(Button)`
   padding: ${(props) =>
     `${props.theme.spacing[3]} ${props.theme.spacing[4]}`} !important;
+  border-width: 0;
   @media (max-width: ${(props) => props.theme.breakpoints.sm}) {
     width: 100%;
     padding: ${(props) => props.theme.spacing[4]} !important;

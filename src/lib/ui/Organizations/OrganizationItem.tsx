@@ -5,6 +5,10 @@ import {Label} from 'lib/ui/typography'
 import IconButton from 'lib/ui/IconButton'
 import Icon from 'lib/ui/Icon'
 import {Organization, ViewType} from '.'
+import Menu from 'lib/ui/Menu'
+import MenuOption from 'lib/ui/MenuOption'
+import MenuDivider from 'lib/ui/MenuDivider'
+import ArchieveIcon from 'assets/images/ui/icons/archieve.svg'
 
 export type OrganizationItemProps = {
   viewType: ViewType
@@ -14,6 +18,37 @@ export type OrganizationItemProps = {
 
 export default function OrganizationItem(props: OrganizationItemProps) {
   const {viewType, organization, onClick} = props
+  const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null)
+
+  const handleClose = () => {
+    setAnchorEl(null)
+  }
+
+  const handleMenu = (event: React.MouseEvent<HTMLElement>) => {
+    setAnchorEl(event.currentTarget)
+  }
+
+  const ItemMenu = () => {
+    return (
+      <Menu
+        anchorEl={anchorEl}
+        anchorOrigin={{
+          vertical: 'top',
+          horizontal: 'right',
+        }}
+        transformOrigin={{
+          vertical: 'top',
+          horizontal: 'right',
+        }}
+        open={Boolean(anchorEl)}
+        onClose={handleClose}
+      >
+        <MenuOption icon={ArchieveIcon} name="Archive" />
+        <MenuDivider />
+        <MenuOption name="Deactiveate" color="accent" />
+      </Menu>
+    )
+  }
 
   if (viewType === ViewType.LIST) {
     return (
@@ -25,10 +60,11 @@ export default function OrganizationItem(props: OrganizationItemProps) {
           <Label>{organization.name}</Label>
         </LeftInner>
         <RightInner>
-          <IconButton>
-            <Icon className="fas fa-ellipsis-h" iconSize={18} />
+          <IconButton onClick={handleMenu}>
+            <Icon className="fas fa-ellipsis-h" color="black" iconSize={18} />
           </IconButton>
         </RightInner>
+        <ItemMenu />
       </ListContainer>
     )
   }
@@ -40,10 +76,11 @@ export default function OrganizationItem(props: OrganizationItemProps) {
       </GridAvatar>
       <GridContent>
         <Label>{organization.name}</Label>
-        <IconButton>
-          <Icon className="fas fa-ellipsis-h" iconSize={18} />
+        <IconButton onClick={handleMenu}>
+          <Icon className="fas fa-ellipsis-h" iconSize={18} color="black" />
         </IconButton>
       </GridContent>
+      <ItemMenu />
     </GridContainer>
   )
 }

@@ -13,7 +13,7 @@ type ButtonStyles =
   | 'dark'
   | 'default'
 
-const DEFAULT_FONT_SIZE = 20
+const DEFAULT_FONT_SIZE = 14
 
 export type ButtonProps = {
   children: React.ReactNode | React.ReactNode[] | string
@@ -25,6 +25,7 @@ export type ButtonProps = {
   disabled?: boolean
   width?: number
   fontSize?: number
+  borderWidth?: number
   disableBorderRadius?: boolean
   disablePadding?: boolean
   onClick?: () => void
@@ -44,6 +45,7 @@ export default function Button(props: ButtonProps) {
       disabled={props.disabled}
       fullWidth={props.fullWidth}
       width={props.width ? `${props.width}%` : 'unset'}
+      borderWidth={props.borderWidth ? props.borderWidth : 0}
       fontSize={props.fontSize || DEFAULT_FONT_SIZE}
       disableBorderRadius={Boolean(props.disableBorderRadius)}
       disablePadding={props.disablePadding}
@@ -141,6 +143,7 @@ type StyleProps = {
   color: string
   backgroundColor: string
   borderColor: string
+  borderWidth: number
   fullWidth?: boolean
   width: string
   fontSize: number
@@ -161,6 +164,7 @@ const StyledButton = styled.button<StyleProps>`
   width: ${(props) => (props.fullWidth ? '100%' : props.width)};
   border-radius: ${(props) => (props.disableBorderRadius ? '0px' : '4px')};
   border-style: solid;
+  border-width: ${(props) => props.borderWidth}px;
   border-color: ${(props) => props.borderColor};
   font-size: ${(props) => props.fontSize}px;
   &:hover {

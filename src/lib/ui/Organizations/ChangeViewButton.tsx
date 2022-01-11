@@ -1,7 +1,7 @@
 import React from 'react'
 import styled from 'styled-components'
-import ListViewIcon from 'assets/images/ui/organizations/list.svg'
-import GridViewIcon from 'assets/images/ui/organizations/grid.svg'
+import ListViewIcon from 'assets/images/ui/icons/list.svg'
+import GridViewIcon from 'assets/images/ui/icons/grid.svg'
 import {ViewType} from '.'
 
 export type ChangeViewButtonProps = {

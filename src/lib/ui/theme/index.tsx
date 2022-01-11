@@ -24,7 +24,9 @@ export const colors = {
   gray100: '#a7a7a7',
   gray200: '#838383',
   gray300: '#dfdfdf',
+  gray400: '#4f4f4f',
   blue: '#2794d2',
+  disabled: '#c4c4c4',
 }
 
 export const spacing = Array(60)

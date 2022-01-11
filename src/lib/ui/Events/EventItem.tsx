@@ -4,8 +4,14 @@ import Box from '@material-ui/core/Box'
 import {Label, Description, Tiny} from 'lib/ui/typography'
 import IconButton from 'lib/ui/IconButton'
 import Icon from 'lib/ui/Icon'
-import LiveIcon from 'assets/images/ui/events/live.svg'
+import LiveIcon from 'assets/images/ui/icons/live.svg'
 import {Event, ViewType} from '.'
+import Menu from 'lib/ui/Menu'
+import MenuOption from 'lib/ui/MenuOption'
+import MenuDivider from 'lib/ui/MenuDivider'
+import DuplicateIcon from 'assets/images/ui/icons/duplicate.svg'
+import ArchieveIcon from 'assets/images/ui/icons/archieve.svg'
+import DeleteIcon from 'assets/images/ui/icons/trash.svg'
 
 export type EventItemProps = {
   viewType: ViewType
@@ -15,6 +21,15 @@ export type EventItemProps = {
 
 export default function EventItem(props: EventItemProps) {
   const {viewType, event, onClick} = props
+  const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null)
+
+  const handleClose = () => {
+    setAnchorEl(null)
+  }
+
+  const handleMenu = (event: React.MouseEvent<HTMLElement>) => {
+    setAnchorEl(event.currentTarget)
+  }
 
   const LiveBox = (props: {live: boolean}) => {
     if (props.live) {
@@ -26,6 +41,32 @@ export default function EventItem(props: EventItemProps) {
       )
     }
     return <FlexBox></FlexBox>
+  }
+
+  const ItemMenu = () => {
+    return (
+      <Menu
+        anchorEl={anchorEl}
+        anchorOrigin={{
+          vertical: 'top',
+          horizontal: 'right',
+        }}
+        transformOrigin={{
+          vertical: 'top',
+          horizontal: 'right',
+        }}
+        open={Boolean(anchorEl)}
+        onClose={handleClose}
+      >
+        <MenuOption name="Move event from organization" />
+        <MenuDivider />
+        <MenuOption icon={DuplicateIcon} name="Duplicate event" />
+        <MenuDivider />
+        <MenuOption icon={ArchieveIcon} name="Archive event" />
+        <MenuDivider />
+        <MenuOption icon={DeleteIcon} name="Delete event" />
+      </Menu>
+    )
   }
 
   if (viewType === ViewType.LIST) {
@@ -43,10 +84,11 @@ export default function EventItem(props: EventItemProps) {
         <RightInner>
           <MDEventURLBox>{event.url}</MDEventURLBox>
           <LiveBox live={event.live} />
-          <IconButton>
-            <Icon className="fas fa-ellipsis-h" iconSize={18} />
+          <IconButton onClick={handleMenu}>
+            <Icon className="fas fa-ellipsis-h" color="black" iconSize={18} />
           </IconButton>
         </RightInner>
+        <ItemMenu />
       </ListContainer>
     )
   }
@@ -58,12 +100,13 @@ export default function EventItem(props: EventItemProps) {
       </GridAvatar>
       <GridContent>
         <LiveBox live={event.live} />
-        <IconButton>
-          <Icon className="fas fa-ellipsis-h" iconSize={18} />
+        <IconButton onClick={handleMenu}>
+          <Icon className="fas fa-ellipsis-h" iconSize={18} color="black" />
         </IconButton>
       </GridContent>
       <StyledLabel>{event.name}</StyledLabel>
       <Description>{event.url}</Description>
+      <ItemMenu />
     </GridContainer>
   )
 }
