@@ -48,18 +48,17 @@ export default function MainNavMobile(props: {
 }
 
 function Content(props: {className?: string; children: React.ReactElement[]}) {
-  return (
+  return props.children.length > 0 ? (
     <Container className={props.className}>
       <>{props.children}</>
       <CountDownTimers />
     </Container>
-  )
+  ) : null
 }
 
 function Editable(props: {className?: string; children: React.ReactElement[]}) {
   const handleDrag = useHandleDrag()
-
-  return (
+  return props.children.length > 0 ? (
     <DragDropContext onDragEnd={handleDrag}>
       <Droppable droppableId="main_nav_buttons_mobile">
         {(provided) => (
@@ -78,7 +77,7 @@ function Editable(props: {className?: string; children: React.ReactElement[]}) {
         )}
       </Droppable>
     </DragDropContext>
-  )
+  ) : null
 }
 
 const Container = React.forwardRef<
@@ -116,9 +115,7 @@ function useHandleDrag() {
 }
 
 const Box = styled.div`
-  margin-bottom: ${(props) => props.theme.spacing[7]} !important;
-  margin-top: ${(props) => props.theme.spacing[7]} !important;
-  margin: 0 auto;
+  margin: ${(props) => props.theme.spacing[7]} auto;
   width: 90%;
 `
 
