@@ -93,7 +93,7 @@ const Box = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  overflow: hidden;
+  width: 100%;
 `
 
 const Paper = styled.div<{
@@ -104,7 +104,6 @@ const Paper = styled.div<{
   padding: ${(props) => props.theme.spacing[4]};
   width: 100%;
   height: 100%;
-  overflow: auto;
 `
 
 const ProgressContent = styled.div`

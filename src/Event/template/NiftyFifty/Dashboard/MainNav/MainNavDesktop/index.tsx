@@ -41,8 +41,6 @@ const Box = styled.div<{
 }>`
   flex: 1;
   display: flex;
-  overflow-y: auto;
-  overflow-x: hidden;
 `
 
 const Inner = styled.div`

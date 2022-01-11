@@ -58,7 +58,6 @@ const Box = styled.div<{
   flex-direction: column;
   width: 100%;
   height: 100%;
-  overflow: auto;
   background: ${(props) => props.backgroundColor};
   > * {
     color: ${(props) => props.textColor}!important;

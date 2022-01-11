@@ -75,6 +75,5 @@ const Box = styled.div<{
   position: relative;
   width: 100%;
   height: 100%;
-  overflow: auto;
   padding: ${(props) => props.theme.spacing[5]};
 `

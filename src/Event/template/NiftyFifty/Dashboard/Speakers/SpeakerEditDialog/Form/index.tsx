@@ -42,7 +42,7 @@ export default function EditSpeakerForm(props: {
   const createFormData = (image: File, form: UpdateSpeakerData) => {
     const formData = new FormData()
     for (const [key, value] of Object.entries(form)) {
-      if (!value) formData.set(key, String(value))
+      if (value) formData.set(key, String(value))
     }
 
     formData.set('image', image)

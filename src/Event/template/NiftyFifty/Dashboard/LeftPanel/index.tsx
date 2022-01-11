@@ -152,7 +152,6 @@ const Box = styled.div<{
   height: 100%;
   display: flex;
   flex-direction: column;
-  overflow: auto;
   padding: ${(props) => props.theme.spacing[6]};
 `
 

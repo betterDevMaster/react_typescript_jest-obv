@@ -129,7 +129,6 @@ function StartButton(props: {
 
 const Body = styled(TextEditorContent)`
   max-height: 100%;
-  overflow-y: auto;
   margin-bottom: 16px;
   font-size: 12px;
   line-height: 20px;
@@ -156,7 +155,6 @@ const AdditionalContent = styled(TextEditorContent)`
   }
 `
 const BodyContent = styled.div`
-  overflow: auto;
   margin-top: ${(props) => props.theme.spacing[5]};
 `
 const StyledButton = styled(
