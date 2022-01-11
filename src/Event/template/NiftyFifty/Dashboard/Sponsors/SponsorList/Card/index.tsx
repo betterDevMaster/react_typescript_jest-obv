@@ -100,10 +100,12 @@ function Content(props: SponsorProps) {
         onClose={toggleForm}
       />
       <Grid item xs={template.sponsors.imageSize}>
-        <StyledImageContent>
-          <Image sponsor={sponsor} />
-          <Buttons sponsor={props.sponsor} />
-        </StyledImageContent>
+        {sponsor.image && (
+          <StyledImageContent>
+            <Image sponsor={sponsor} />
+            <Buttons sponsor={props.sponsor} />
+          </StyledImageContent>
+        )}
       </Grid>
       <HeadContent>
         <SponsorName color={template.textColor}>{v(sponsor.name)}</SponsorName>
@@ -112,6 +114,7 @@ function Content(props: SponsorProps) {
       <InnerContent color={template.textColor}>
         {v(sponsor.description)}
       </InnerContent>
+      {!sponsor.image && <Buttons sponsor={props.sponsor} />}
       <ClearContent />
     </Box>
   )

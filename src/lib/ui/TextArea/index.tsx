@@ -60,6 +60,9 @@ export default function TextArea(props: {
         onChange={updateValue}
         config={{
           toolbar: props.customToolBars || toolbar,
+          fontSize: {
+            options: [9, 11, 13, 'default', 17, 19, 21],
+          },
           links: {
             rexlink: props.customLinks || [],
           },

@@ -42,10 +42,7 @@ export default function EditSpeakerForm(props: {
   const createFormData = (image: File, form: UpdateSpeakerData) => {
     const formData = new FormData()
     for (const [key, value] of Object.entries(form)) {
-      if (value === null || value === undefined) {
-        continue
-      }
-      formData.set(key, String(value))
+      if (!value) formData.set(key, String(value))
     }
 
     formData.set('image', image)
@@ -54,7 +51,6 @@ export default function EditSpeakerForm(props: {
   }
 
   const data = (form: UpdateSpeakerData) => {
-    console.log('image ---', image, form)
     if (image.selected) {
       return createFormData(image.selected, form)
     }

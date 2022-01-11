@@ -70,54 +70,43 @@ export default function EditSponsorForm(props: {
   const {update, remove} = useSponsors()
   const image = useFileSelect(sponsor?.image)
 
-  const createFormData = (image: File, form: UpdateSponsorData) => {
-    const formData = new FormData()
-    for (let [key, value] of Object.entries(form)) {
-      if (value === null || value === undefined) {
-        continue
-      }
-
-      formData.set(key, String(value))
-    }
-
-    formData.set('image', image)
-
-    return formData
-  }
-
-  const data = (form: UpdateSponsorData) => {
+  const imgData = () => {
     if (image.selected) {
-      return createFormData(image.selected, form)
+      let formData = new FormData()
+      formData.set('image', image.selected)
+      return formData
     }
-
     if (image.wasRemoved) {
       return {
-        ...form,
         image: null,
       }
     }
 
-    return form
+    return {}
   }
 
-  const submit = (form: Sponsor) => {
-    if (!sponsor) {
-      throw new Error(
-        'Missing sponsor; was the sponsor set as editing correctly?',
-      )
+  const submit = async (data: Sponsor) => {
+    const hasUpdate = Boolean(image.selected) || image.wasRemoved
+    const url = api(`/sponsors/${sponsor.id}`)
+    if (hasUpdate) {
+      await client.put<Sponsor>(url, imgData()).catch((e) => {
+        setServerError(e)
+        setSubmitting(false)
+      })
     }
 
     setSubmitting(true)
 
-    const url = api(`/sponsors/${sponsor.id}`)
-    let formData = data(form)
-    formData = {
-      ...formData,
-      settings: {buttons},
+    const sponsorData: Sponsor = {
+      ...data,
+      settings: {
+        ...(data.settings || {}),
+        buttons,
+      },
     }
 
-    client
-      .put<Sponsor>(url, formData)
+    await client
+      .put<Sponsor>(url, sponsorData)
       .then((sponsor) => {
         update(sponsor)
         props.onDone()
