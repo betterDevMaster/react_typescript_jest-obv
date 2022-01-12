@@ -24,6 +24,7 @@ import {handleChangeSlider, onChangeCheckedHandler} from 'lib/dom'
 import ColorPicker from 'lib/ui/ColorPicker'
 import BackgroundPicker from 'lib/ui/form/BackgroundPicker'
 import Switch from 'lib/ui/form/Switch'
+import {numberFormat} from 'lib/numberFormat'
 
 import Page, {PreviewBox, SectionTitle} from 'organization/Event/Page'
 import Layout from 'organization/user/Layout'
@@ -155,25 +156,6 @@ export default function LoginFormConfig() {
                       </Box>
                     </Grid>
                   </Grid>
-                  {/* <Box mb={1}>
-                    <InputLabel>Logo Size</InputLabel>
-                    <Controller
-                      name="login.logoSize"
-                      defaultValue={login.logoSize}
-                      control={control}
-                      render={({value, onChange}) => (
-                        <Slider
-                          valueLabelDisplay="auto"
-                          aria-label="logo weight"
-                          value={value}
-                          onChange={handleChangeSlider(onChange)}
-                          step={1}
-                          min={MIN_LOGO_SIZE_PERCENT}
-                          max={MAX_LOGO_SIZE_PERCENT}
-                        />
-                      )}
-                    />
-                  </Box> */}
                   <Box display="flex" flexDirection="row" flex="2">
                     <Box flex="1" mr={2}>
                       <Controller
@@ -192,7 +174,6 @@ export default function LoginFormConfig() {
                     </Box>
                     <Box flex="1">
                       <InputLabel>Logo Background Opacity</InputLabel>
-
                       <Controller
                         name="login.logoBackgroundOpacity"
                         defaultValue={login.logoBackgroundOpacity}
@@ -201,12 +182,8 @@ export default function LoginFormConfig() {
                           <Slider
                             valueLabelDisplay="auto"
                             aria-label="logo background opacity"
-                            value={value || 0}
-                            valueLabelFormat={() => (
-                              <div>
-                                {(login.logoBackgroundOpacity || 0) * 100}
-                              </div>
-                            )}
+                            value={value}
+                            valueLabelFormat={(num) => numberFormat(num, 100)}
                             onChange={handleChangeSlider(onChange)}
                             step={0.01}
                             min={0}
@@ -243,10 +220,8 @@ export default function LoginFormConfig() {
                           <Slider
                             valueLabelDisplay="auto"
                             aria-label="login background opacity"
-                            value={value || 0}
-                            valueLabelFormat={() => (
-                              <div>{(login.backgroundOpacity || 0) * 100}</div>
-                            )}
+                            value={value}
+                            valueLabelFormat={(num) => numberFormat(num, 100)}
                             onChange={handleChangeSlider(onChange)}
                             step={0.01}
                             min={0}

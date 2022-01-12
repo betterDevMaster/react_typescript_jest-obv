@@ -21,6 +21,7 @@ import {handleChangeSlider, onChangeCheckedHandler} from 'lib/dom'
 import Switch from 'lib/ui/form/Switch'
 import ColorPicker from 'lib/ui/ColorPicker'
 import TextEditor, {TextEditorContainer} from 'lib/ui/form/TextEditor'
+import {numberFormat} from 'lib/numberFormat'
 
 const MIN_SPACE_SIZE = 0
 const MAX_SPACE_SIZE = 10
@@ -139,6 +140,7 @@ export default function SpeakerPageConfigForm(props: {onClose: () => void}) {
                 min={0}
                 max={1}
                 step={0.1}
+                valueLabelFormat={(num) => numberFormat(num, 10)}
                 onChange={handleChangeSlider(onChange)}
                 valueLabelDisplay="auto"
                 value={value}
@@ -174,6 +176,7 @@ export default function SpeakerPageConfigForm(props: {onClose: () => void}) {
                 min={0}
                 max={1}
                 step={0.1}
+                valueLabelFormat={(num) => numberFormat(num, 10)}
                 onChange={handleChangeSlider(onChange)}
                 valueLabelDisplay="auto"
                 value={value}

@@ -5,19 +5,22 @@ import styled from 'styled-components'
 import Slider from '@material-ui/core/Slider'
 import InputLabel from '@material-ui/core/InputLabel'
 import TextField from '@material-ui/core/TextField'
+import {CountDownTimer} from 'Event/Dashboard/components/CountDownTimer'
+import {useNiftyFiftyUpdate} from 'Event/template/NiftyFifty'
+import FormControl from '@material-ui/core/FormControl'
+import {REMOVE, useRemoveIfEmpty} from 'Event/TemplateUpdateProvider'
+
 import {handleChangeSlider, onChangeCheckedHandler} from 'lib/dom'
 import ColorPicker from 'lib/ui/ColorPicker'
 import Switch from 'lib/ui/form/Switch'
 import LocalizedDateTimePicker from 'lib/LocalizedDateTimePicker'
+import {numberFormat} from 'lib/numberFormat'
+
 import ComponentConfig, {
   ComponentConfigProps,
   RemoveButton,
   SaveButton,
 } from 'organization/Event/DashboardConfig/ComponentConfig'
-import {CountDownTimer} from 'Event/Dashboard/components/CountDownTimer'
-import {useNiftyFiftyUpdate} from 'Event/template/NiftyFifty'
-import FormControl from '@material-ui/core/FormControl'
-import {REMOVE, useRemoveIfEmpty} from 'Event/TemplateUpdateProvider'
 
 export default function TimerConfig(
   props: ComponentConfigProps & {
@@ -146,6 +149,7 @@ export default function TimerConfig(
               min={0}
               max={1}
               step={0.1}
+              valueLabelFormat={(num) => numberFormat(num, 10)}
               onChange={handleChangeSlider(onChange)}
               valueLabelDisplay="auto"
               value={value}
@@ -198,6 +202,7 @@ export default function TimerConfig(
                   min={0}
                   max={1}
                   step={0.1}
+                  valueLabelFormat={(num) => numberFormat(num, 10)}
                   onChange={handleChangeSlider(onChange)}
                   valueLabelDisplay="auto"
                   value={value}
@@ -216,6 +221,7 @@ export default function TimerConfig(
                   min={0}
                   max={1}
                   step={0.1}
+                  valueLabelFormat={(num) => numberFormat(num, 10)}
                   onChange={handleChangeSlider(onChange)}
                   valueLabelDisplay="auto"
                   value={value}

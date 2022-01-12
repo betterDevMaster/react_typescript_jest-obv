@@ -24,6 +24,7 @@ import ColorPicker from 'lib/ui/ColorPicker'
 import {handleChangeSlider, onChangeCheckedHandler} from 'lib/dom'
 import Switch from 'lib/ui/form/Switch'
 import ProgressBar, {ProgressBarProps} from 'lib/ui/ProgressBar'
+import {numberFormat} from 'lib/numberFormat'
 
 import {SaveButton} from 'organization/Event/DashboardConfig/ComponentConfig'
 
@@ -423,6 +424,7 @@ function Config(
                   min={0}
                   max={1}
                   step={0.1}
+                  valueLabelFormat={(num) => numberFormat(num, 10)}
                   onChange={handleChangeSlider(onChange)}
                   valueLabelDisplay="auto"
                   defaultValue={value}
@@ -460,6 +462,7 @@ function Config(
                   min={0}
                   max={1}
                   step={0.1}
+                  valueLabelFormat={(num) => numberFormat(num, 10)}
                   onChange={handleChangeSlider(onChange)}
                   valueLabelDisplay="auto"
                   defaultValue={value}

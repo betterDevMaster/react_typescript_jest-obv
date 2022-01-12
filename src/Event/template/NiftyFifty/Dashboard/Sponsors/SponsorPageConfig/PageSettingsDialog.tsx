@@ -34,6 +34,7 @@ import ColorPicker from 'lib/ui/ColorPicker'
 import TextEditor, {TextEditorContainer} from 'lib/ui/form/TextEditor'
 import Switch from 'lib/ui/form/Switch'
 import Dialog from 'lib/ui/Dialog'
+import {numberFormat} from 'lib/numberFormat'
 
 import {useOrganization} from 'organization/OrganizationProvider'
 
@@ -228,6 +229,7 @@ export default function PageSettingsDialog(props: {
                       min={0}
                       max={1}
                       step={0.1}
+                      valueLabelFormat={(num) => numberFormat(num, 10)}
                       onChange={handleChangeSlider(onChange)}
                       valueLabelDisplay="auto"
                       value={value}
@@ -263,6 +265,7 @@ export default function PageSettingsDialog(props: {
                       min={0}
                       max={1}
                       step={0.1}
+                      valueLabelFormat={(num) => numberFormat(num, 10)}
                       onChange={handleChangeSlider(onChange)}
                       valueLabelDisplay="auto"
                       value={value}

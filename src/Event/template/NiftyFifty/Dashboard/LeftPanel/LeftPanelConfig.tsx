@@ -15,6 +15,7 @@ import BackgroundImageUploader from 'Event/template/NiftyFifty/GlobalStylesConfi
 import {handleChangeSlider, onChangeCheckedHandler} from 'lib/dom'
 import ColorPicker from 'lib/ui/ColorPicker'
 import Switch from 'lib/ui/form/Switch'
+import {numberFormat} from 'lib/numberFormat'
 
 import ComponentConfig, {
   SaveButton,
@@ -179,6 +180,7 @@ export default function LeftPanelConfig(props: {
                     min={0}
                     max={1}
                     step={0.1}
+                    valueLabelFormat={(num) => numberFormat(num, 10)}
                     onChange={handleChangeSlider(onChange)}
                     valueLabelDisplay="auto"
                     value={value}
@@ -213,6 +215,7 @@ export default function LeftPanelConfig(props: {
                   min={0}
                   max={1}
                   step={0.1}
+                  valueLabelFormat={(num) => numberFormat(num, 10)}
                   onChange={handleChangeSlider(onChange)}
                   valueLabelDisplay="auto"
                   value={value}
