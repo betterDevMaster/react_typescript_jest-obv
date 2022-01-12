@@ -188,13 +188,11 @@ export const Box = styled.div<{
 }>`
   background: ${(props) =>
     !props.isHidden && props.background
-      ? `url(${props.background})`
+      ? `url(${props.background}) no-repeat center fixed`
       : props.backgroundColor};
-  background-size: cover !important;
-  background-position: center;
-  background-attachment: fixed;
-  background-repeat: no-repeat !important;
+  background-size: cover;
   width: 100%;
+  height: 100%;
   @media (min-width: ${(props) => props.theme.breakpoints.sm}) {
     margin: auto;
     width: 100%;
@@ -218,9 +216,6 @@ export const Container = styled.div<{
   backgroundColor: string
 }>`
   background: ${(props) => props.backgroundColor};
-  background-size: cover !important;
-  background-position: center;
-  background-repeat: no-repeat !important;
   width: 100%;
   height: 100%;
   display: flex;

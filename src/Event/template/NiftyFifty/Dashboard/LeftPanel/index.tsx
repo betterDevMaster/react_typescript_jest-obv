@@ -132,12 +132,9 @@ const Paper = styled.div<{
     props.isMenuVisible
       ? props.menuBackgroundColor
       : !props.isBackgroundHidden && props.backgroundImage
-      ? `url(${props.backgroundImage})`
+      ? `url(${props.backgroundImage}) no-repeat center fixed`
       : props.backgroundColor};
-  background-size: cover !important;
-  background-position: center;
-  background-attachment: fixed;
-  background-repeat: no-repeat !important;
+  background-size: cover;
   width: 100%;
   height: 100%;
 `
@@ -146,9 +143,7 @@ const Box = styled.div<{
   backgroundColor: string
 }>`
   background: ${(props) => props.backgroundColor};
-  background-size: cover !important;
-  background-position: center;
-  background-repeat: no-repeat !important;
+  background-size: cover;
   width: 100%;
   height: 100%;
   display: flex;

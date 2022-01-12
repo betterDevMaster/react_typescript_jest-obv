@@ -18,6 +18,7 @@ export default function Checkbox(props: FieldProps) {
   return (
     <FormControl
       component="fieldset"
+      fullWidth
       required={props.question.is_required}
       error={props.hasError}
       disabled={props.disabled}

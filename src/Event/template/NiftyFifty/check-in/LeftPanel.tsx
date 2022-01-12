@@ -53,12 +53,9 @@ const Paper = styled.div<{
 }>`
   background: ${(props) =>
     !props.isBackgroundHidden && props.background
-      ? `url(${props.background})`
+      ? `url(${props.background}) no-repeat center fixed`
       : props.backgroundColor};
-  background-repeat: no-repeat;
   background-size: cover;
-  background-position: center;
-  background-attachment: fixed;
   width: 100%;
   height: 100%;
 `
@@ -67,9 +64,7 @@ const Box = styled.div<{
   backgroundColor: string
 }>`
   background: ${(props) => props.backgroundColor};
-  background-size: cover !important;
-  background-position: center;
-  background-repeat: no-repeat !important;
+  background-size: cover;
   display: flex;
   justify-content: center;
   align-items: center;

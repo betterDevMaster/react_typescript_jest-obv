@@ -120,12 +120,9 @@ const Content = styled.div<{
   width: 100%;
   background: ${(props) =>
     !props.isBackgroundHidden && props.background
-      ? `url(${props.background})`
+      ? `url(${props.background}) no-repeat center fixed`
       : props.backgroundColor};
-  background-size: cover !important;
-  background-position: center;
-  background-attachment: fixed;
-  background-repeat: no-repeat !important;
+  background-size: cover;
   > * {
     color: ${(props) => props.textColor}!important;
   }
@@ -135,9 +132,6 @@ const LogoContent = styled.div<{
   backgroundColor: string
 }>`
   background: ${(props) => props.backgroundColor};
-  background-size: cover !important;
-  background-position: center;
-  background-repeat: no-repeat !important;
   padding: ${(props) => props.theme.spacing[5]};
   width: 100%;
 `

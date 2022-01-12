@@ -56,12 +56,9 @@ const Paper = styled.div<{
 }>`
   background: ${(props) =>
     !props.isBoxHidden && props.background
-      ? `url(${props.background})`
+      ? `url(${props.background}) no-repeat center fixed`
       : props.backgroundColor};
-  background-size: cover !important;
-  background-position: center;
-  background-attachment: fixed;
-  background-repeat: no-repeat !important;
+  background-size: cover;
   width: 100%;
   @media (min-width: ${(props) => props.theme.breakpoints.md}) {
     width: 50%;
@@ -78,9 +75,6 @@ export const Box = styled.div<{
   backgroundColor: string
 }>`
   background: ${(props) => props.backgroundColor};
-  background-size: cover !important;
-  background-position: center;
-  background-repeat: no-repeat !important;
   display: flex;
   justify-content: center;
   align-items: center;

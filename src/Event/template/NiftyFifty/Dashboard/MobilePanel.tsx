@@ -139,12 +139,9 @@ const Container = styled.div<{
 }>`
   background: ${(props) =>
     !props.isBackgroundHidden && props.backgroundImage
-      ? `url(${props.backgroundImage})`
+      ? `url(${props.backgroundImage}) no-repeat center fixed`
       : props.backgroundColor};
-  background-size: cover !important;
-  background-position: center;
-  background-attachment: fixed;
-  background-repeat: no-repeat !important;
+  background-size: cover;
   display: flex;
   align-items: center;
   justify-content: center;

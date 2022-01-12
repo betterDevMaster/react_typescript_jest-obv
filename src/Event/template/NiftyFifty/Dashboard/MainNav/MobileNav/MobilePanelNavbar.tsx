@@ -61,46 +61,48 @@ export default function Navbar(props: {
 
   return (
     <Paper position="static" textcolor={rightPanel.textColor}>
-      <CssBaseline />
-      <Box>
-        {isXSMobile ? (
-          <StyledSelect
-            className={ddnSt.underline}
-            value={currentTab}
-            onChange={handleChange}
-            disableUnderline
-            IconComponent={() => <KeyboardArrowDownIcon />}
-          >
-            {(isEditMode || hasMultipleTabs) && (
-              <MenuItem value={0}>{homeTitle}</MenuItem>
-            )}
-            {(isEditMode || showingSpeakers) && (
-              <MenuItem value={1}>{speakerTitle}</MenuItem>
-            )}
-            {(isEditMode || showingSponsors) && (
-              <MenuItem value={2}>{sponsorsTitle}</MenuItem>
-            )}
-            {(isEditMode || showingResources) && (
-              <MenuItem value={3}>{resourcesTitle}</MenuItem>
-            )}
-            {(isEditMode || showingPoints) && (
-              <MenuItem value={4}>{pointsTitle}</MenuItem>
-            )}
-            {(isEditMode || showingImageWaterfall) && (
-              <MenuItem value={5}>{imageWaterfallTitle}</MenuItem>
-            )}
-            {(isEditMode || showingFaqs) && (
-              <MenuItem value={6}>{faqsTitle}</MenuItem>
-            )}
-          </StyledSelect>
-        ) : (
-          <Bar
-            currentTab={currentTab}
-            onChangeTab={onChangeTab}
-            aria-label="panels right panel bar"
-          />
-        )}
-      </Box>
+      <Content>
+        <CssBaseline />
+        <Box>
+          {isXSMobile ? (
+            <StyledSelect
+              className={ddnSt.underline}
+              value={currentTab}
+              onChange={handleChange}
+              disableUnderline
+              IconComponent={() => <KeyboardArrowDownIcon />}
+            >
+              {(isEditMode || hasMultipleTabs) && (
+                <MenuItem value={0}>{homeTitle}</MenuItem>
+              )}
+              {(isEditMode || showingSpeakers) && (
+                <MenuItem value={1}>{speakerTitle}</MenuItem>
+              )}
+              {(isEditMode || showingSponsors) && (
+                <MenuItem value={2}>{sponsorsTitle}</MenuItem>
+              )}
+              {(isEditMode || showingResources) && (
+                <MenuItem value={3}>{resourcesTitle}</MenuItem>
+              )}
+              {(isEditMode || showingPoints) && (
+                <MenuItem value={4}>{pointsTitle}</MenuItem>
+              )}
+              {(isEditMode || showingImageWaterfall) && (
+                <MenuItem value={5}>{imageWaterfallTitle}</MenuItem>
+              )}
+              {(isEditMode || showingFaqs) && (
+                <MenuItem value={6}>{faqsTitle}</MenuItem>
+              )}
+            </StyledSelect>
+          ) : (
+            <Bar
+              currentTab={currentTab}
+              onChangeTab={onChangeTab}
+              aria-label="panels right panel bar"
+            />
+          )}
+        </Box>
+      </Content>
     </Paper>
   )
 }
@@ -112,13 +114,17 @@ const Paper = styled(AppBar)<{
   box-shadow: none;
   color: ${(props) => props.textcolor};
 `
+const Content = styled.div`
+  width: 90%;
+  margin: auto;
+  border-bottom: 1px solid #131d34;
+`
 const Box = styled(Toolbar)`
   width: 100%;
   padding: 0;
 `
 const StyledSelect = styled(Select)`
   width: 100%;
-  padding: 0 ${(props) => props.theme.spacing[4]};
   font-size: 1.5rem;
   div:focus {
     background-color: transparent;
