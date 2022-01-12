@@ -136,6 +136,7 @@ const Paper = styled.div<{
       : props.backgroundColor};
   background-size: cover !important;
   background-position: center;
+  background-attachment: fixed;
   background-repeat: no-repeat !important;
   width: 100%;
   height: 100%;

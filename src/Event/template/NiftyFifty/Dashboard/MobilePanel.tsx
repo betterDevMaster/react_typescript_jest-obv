@@ -143,6 +143,7 @@ const Container = styled.div<{
       : props.backgroundColor};
   background-size: cover !important;
   background-position: center;
+  background-attachment: fixed;
   background-repeat: no-repeat !important;
   display: flex;
   align-items: center;

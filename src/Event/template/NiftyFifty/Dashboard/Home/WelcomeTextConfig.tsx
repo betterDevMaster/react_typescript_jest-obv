@@ -1,16 +1,16 @@
-import DialogContent from '@material-ui/core/DialogContent'
-import DialogTitle from '@material-ui/core/DialogTitle'
-import TextField from '@material-ui/core/TextField'
+import React from 'react'
+import {useForm} from 'react-hook-form'
+import styled from 'styled-components'
+
+import {Button, DialogContent, DialogTitle, TextField} from '@material-ui/core'
+
 import {
   useNiftyFiftyUpdate,
   useNiftyFiftyTemplate,
   NiftyFifty,
 } from 'Event/template/NiftyFifty'
+
 import Dialog from 'lib/ui/Dialog'
-import React from 'react'
-import {useForm} from 'react-hook-form'
-import Button from '@material-ui/core/Button'
-import styled from 'styled-components'
 
 export default function WelcomeTextConfig(props: {
   isVisible: boolean
@@ -18,7 +18,7 @@ export default function WelcomeTextConfig(props: {
 }) {
   const update = useNiftyFiftyUpdate()
   const template = useNiftyFiftyTemplate()
-  const {handleSubmit, register} = useForm()
+  const {handleSubmit, register, errors} = useForm()
   const {onClose} = props
 
   const {welcomeText, homeMenuTitle} = template
@@ -34,10 +34,11 @@ export default function WelcomeTextConfig(props: {
         <DialogContent>
           <TextField
             fullWidth
-            placeholder="Text"
+            label="Welcome Text"
+            required
             inputProps={{
               'aria-label': 'welcome text',
-              ref: register,
+              ref: register({required: 'Welcome Text is required.'}),
             }}
             defaultValue={welcomeText}
             name="welcomeText"
@@ -46,8 +47,10 @@ export default function WelcomeTextConfig(props: {
             fullWidth
             inputProps={{
               'aria-label': 'home menu title',
-              ref: register,
+              ref: register({required: 'Title is required.'}),
             }}
+            label="Title"
+            required
             defaultValue={homeMenuTitle}
             name="homeMenuTitle"
           />

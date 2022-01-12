@@ -124,6 +124,7 @@ const Content = styled.div<{
       : props.backgroundColor};
   background-size: cover !important;
   background-position: center;
+  background-attachment: fixed;
   background-repeat: no-repeat !important;
   > * {
     color: ${(props) => props.textColor}!important;
