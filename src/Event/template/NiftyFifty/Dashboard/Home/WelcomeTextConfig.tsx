@@ -18,7 +18,7 @@ export default function WelcomeTextConfig(props: {
 }) {
   const update = useNiftyFiftyUpdate()
   const template = useNiftyFiftyTemplate()
-  const {handleSubmit, register, errors} = useForm()
+  const {handleSubmit, register} = useForm()
   const {onClose} = props
 
   const {welcomeText, homeMenuTitle} = template
