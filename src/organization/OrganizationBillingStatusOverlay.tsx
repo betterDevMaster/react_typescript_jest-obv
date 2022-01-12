@@ -2,6 +2,7 @@ import Button from '@material-ui/core/Button'
 import {RelativeLink} from 'lib/ui/link/RelativeLink'
 import {useObvioUser} from 'obvio/auth'
 import {
+  CreditCardRequiredOverlay,
   HasUnpaidTransactionsOverlay,
   Overlay,
   SubscriptionRequiredOverlay,
@@ -19,6 +20,10 @@ export function OrganizationBillingStatusOverlay() {
     return <SubscriptionRequiredOverlay />
   }
 
+  if (isOwner && user.has_active_subscription && !user.has_payment_method) {
+    return <CreditCardRequiredOverlay />
+  }
+
   if (user.has_unpaid_transactions) {
     return <HasUnpaidTransactionsOverlay />
   }
@@ -29,6 +34,10 @@ export function OrganizationBillingStatusOverlay() {
 
   if (owner.has_unpaid_transactions) {
     return <OnwerHasUnpaidTransactionsOverlay />
+  }
+
+  if (!owner.has_payment_method) {
+    return <OwnerCreditCardRequiredOverlay />
   }
 
   return null
@@ -50,6 +59,17 @@ function OnwerHasUnpaidTransactionsOverlay() {
     <Overlay
       title="Unpaid Credit Transactions"
       description="The owner of this event needs to add more credits."
+    >
+      <BackToOrganizationsButton />
+    </Overlay>
+  )
+}
+
+function OwnerCreditCardRequiredOverlay() {
+  return (
+    <Overlay
+      title="Credit Card Required"
+      description="The owner of this event needs to add a credit card to their account."
     >
       <BackToOrganizationsButton />
     </Overlay>
