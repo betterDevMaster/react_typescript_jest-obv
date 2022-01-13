@@ -10,6 +10,7 @@ import {useAttendeeVariables} from 'Event'
 import Typography from '@material-ui/core/Typography'
 import {useNiftyFiftyTemplate} from 'Event/template/NiftyFifty'
 import Box from '@material-ui/core/Box'
+import Content from 'lib/ui/form/TextEditor/Content'
 
 export default function Waiver() {
   const {
@@ -28,11 +29,7 @@ export default function Waiver() {
 
   return (
     <>
-      <Body
-        dangerouslySetInnerHTML={{
-          __html: v(body),
-        }}
-      />
+      <Body>{v(body)}</Body>
       <Box m={2}>
         <FormControl required component="fieldset">
           <FormControlLabel
@@ -57,7 +54,7 @@ export default function Waiver() {
   )
 }
 
-const Body = styled.div`
+const Body = styled(Content)`
   width: 100%;
   border-radius: 10px;
   margin-bottom: ${(props) => props.theme.spacing[4]};
@@ -83,6 +80,5 @@ const StyledSignature = styled(Signature)`
   canvas {
     border: none;
     border-radius: 10px;
-    width: 100%;
   }
 `
