@@ -1,16 +1,17 @@
 import React from 'react'
 import styled from 'styled-components'
+
 import Drawer from '@material-ui/core/Drawer'
+
 import {User} from 'auth/user'
+
 import {useEventAuth} from 'Event/auth'
-import CustomButton from 'lib/ui/Button/CustomButton'
 import {eventRoutes} from 'Event/Routes'
-import {RelativeLink} from 'lib/ui/link/RelativeLink'
 import {useNiftyFiftyTemplate} from 'Event/template/NiftyFifty'
 
-export const DEFAULT_MENU_TEXT_COLOR = '#FFFFFF'
-export const DEFAULT_MENU_ICON_COLOR = '#000000'
-export const DEFAULT_MENU_BACKGROUND_COLOR = '#000000'
+import {rgba} from 'lib/color'
+import CustomButton from 'lib/ui/Button/CustomButton'
+import {RelativeLink} from 'lib/ui/link/RelativeLink'
 
 export default function Menu(props: {
   visible: boolean
@@ -20,11 +21,9 @@ export default function Menu(props: {
   const template = useNiftyFiftyTemplate()
   const {menu} = template
 
-  const background = menu?.backgroundColor || DEFAULT_MENU_BACKGROUND_COLOR
-
   return (
     <Drawer anchor="left" open={props.visible} onClose={props.toggle}>
-      <Box background={background}>
+      <Box background={rgba(menu.backgroundColor, menu.backgroundOpacity)}>
         <UserInfo email={props.user.email} />
         <Links />
       </Box>
@@ -36,9 +35,8 @@ function UserInfo(props: {email: string}) {
   const template = useNiftyFiftyTemplate()
   const {menu} = template
 
-  const menuTextColor = menu?.textColor || DEFAULT_MENU_TEXT_COLOR
   return (
-    <UserInfoText color={menuTextColor}>
+    <UserInfoText color={menu.textColor}>
       You're logged in as <br />
       {props.email}
     </UserInfoText>
@@ -50,8 +48,6 @@ function Links() {
   const template = useNiftyFiftyTemplate()
   const {menu} = template
 
-  const menuTextColor = menu?.textColor || DEFAULT_MENU_TEXT_COLOR
-
   return (
     <List>
       <ListItem>
@@ -59,7 +55,7 @@ function Links() {
           to={eventRoutes.root}
           aria-label="dashboard"
           disableStyles
-          color={menuTextColor}
+          color={menu.textColor}
         >
           Dashboard
         </StyledRelativeLink>
@@ -69,7 +65,7 @@ function Links() {
           to={eventRoutes.changePassword}
           aria-label="change password"
           disableStyles
-          color={menuTextColor}
+          color={menu.textColor}
         >
           Change password
         </StyledRelativeLink>
@@ -79,7 +75,7 @@ function Links() {
           variant="text"
           onClick={logout}
           aria-label="logout"
-          textColor={menuTextColor}
+          textColor={menu.textColor}
         >
           Logout
         </CustomButton>

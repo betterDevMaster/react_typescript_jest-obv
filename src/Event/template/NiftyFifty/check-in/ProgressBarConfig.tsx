@@ -154,6 +154,7 @@ function Config(
   const {
     checkInLeftPanel,
     checkInRightPanel,
+    menu,
     stepLogoProps,
     stepBackgroundProps,
   } = useNiftyFiftyTemplate()
@@ -480,6 +481,68 @@ function Config(
                 color={value}
                 onPick={onChange}
                 aria-label="check in right panel text color"
+              />
+            )}
+          />
+          <Box mt={4} mb={1}>
+            <InputLabel>Menu Panel</InputLabel>
+          </Box>
+          <Controller
+            name="menu.menuColor"
+            defaultValue={menu.menuColor}
+            control={control}
+            render={({value, onChange}) => (
+              <ColorPicker
+                label="Menu Color"
+                color={value}
+                onPick={onChange}
+                aria-label="check in menu panel menu color"
+              />
+            )}
+          />
+          <Controller
+            name="menu.backgroundColor"
+            defaultValue={menu.backgroundColor}
+            control={control}
+            render={({value, onChange}) => (
+              <ColorPicker
+                label="Background Color"
+                color={value}
+                onPick={onChange}
+                aria-label="check in menu panel background color"
+              />
+            )}
+          />
+          <Box mb={2}>
+            <InputLabel>Background Opacity</InputLabel>
+            <Controller
+              name="menu.backgroundOpacity"
+              defaultValue={menu.backgroundOpacity}
+              control={control}
+              render={({value, onChange}) => (
+                <Slider
+                  key={`menu-backgroundOpacity-${value}`}
+                  min={0}
+                  max={1}
+                  step={0.1}
+                  valueLabelFormat={(num) => numberFormat(num, 10)}
+                  onChange={handleChangeSlider(onChange)}
+                  valueLabelDisplay="auto"
+                  defaultValue={value}
+                />
+              )}
+            />
+          </Box>
+          <Controller
+            name="menu.textColor"
+            defaultValue={menu.textColor}
+            control={control}
+            render={({value, onChange}) => (
+              <ColorPicker
+                label="Text Color"
+                color={value}
+                onPick={onChange}
+                aria-label="check in menu panel text color"
               />
             )}
           />

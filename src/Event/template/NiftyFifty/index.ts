@@ -66,9 +66,10 @@ export type NiftyFifty = BaseTemplate &
     accentColor: string
     menu: {
       backgroundColor: string
+      backgroundOpacity: number
       iconColor: string
       textColor: string
-      height: number
+      menuColor: string
     }
     backgroundPosition?: 'fixed' | 'bottom'
     nav: HashMap<NavButtonWithSize>
@@ -328,9 +329,10 @@ export const createNiftyFifty = (): DeepRequired<NiftyFifty> => ({
   accentColor: '#B8FFF7',
   menu: {
     backgroundColor: '#54CFD6',
+    backgroundOpacity: 0,
     iconColor: '#000000',
     textColor: '#000000',
-    height: 65,
+    menuColor: '#000000',
   },
   points_unit: 'Points',
   backgroundPosition: 'fixed',
