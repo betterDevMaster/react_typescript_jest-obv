@@ -49,7 +49,7 @@ it('render login page', async () => {
     expect(mockGet).toBeCalledTimes(1)
   })
   expect(await findByLabelText('login background')).toHaveStyle(
-    `background: url(${background})`,
+    `background: url(${background}) no-repeat center fixed`,
   )
   expect((await findByLabelText('login logo')).getAttribute('src')).toBe(logo)
   expect(await findByText(descriptionText)).toBeInTheDocument()
