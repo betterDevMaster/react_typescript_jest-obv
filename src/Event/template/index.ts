@@ -51,6 +51,8 @@ export type BaseTemplate = {
     buttonPosition?: string
     buttonFontSize?: number
     submitMessageColor?: string
+    buttonBorderWidth?: number
+    buttonBorderColor?: string
     inputStyles?: InputStyles
     inputWaiverStyles?: InputWaiverStyles
   }
@@ -96,6 +98,8 @@ export const BASE_DEFAULTS: DeepRequired<BaseTemplate> = {
     buttonPosition: 'center',
     buttonFontSize: 27,
     submitMessageColor: 'pink',
+    buttonBorderWidth: 0,
+    buttonBorderColor: 'black',
     inputStyles: {
       labelColor: '#7d7a7a',
       borderColor: '#7d7a7a',

@@ -22,8 +22,9 @@ import ComponentConfig, {
 } from 'organization/Event/DashboardConfig/ComponentConfig'
 import {DeepPartial} from 'lib/type-utils'
 
-const MIN_HEADER_HEIGHT = 30
+const MIN_HEADER_HEIGHT = 50
 const MAX_HEADER_HEIGHT = 200
+const MIN_LOGO_HEIGHT = 30
 
 export function SimpleBlogConfig(props: ComponentConfigProps) {
   const {isVisible, onClose} = props
@@ -45,6 +46,7 @@ export function SimpleBlogConfig(props: ComponentConfigProps) {
     template.header.backgroundOpacity,
   )
   const [headerHeight, setHeaderHeight] = useState(template.header.height)
+  const [logoHeight, setLogoHeight] = useState(template.header.logoHeight)
   const [dashboardBackgroundColor, setDashboardBackgroundColor] = useState(
     template.dashboardBackground?.color,
   )
@@ -71,6 +73,7 @@ export function SimpleBlogConfig(props: ComponentConfigProps) {
     setHeaderBackgroundColor(template.header.backgroundColor)
     setHeaderBackgroundOpacity(template.header.backgroundOpacity)
     setHeaderHeight(template.header.height)
+    setLogoHeight(template.header.logoHeight)
     setDashboardBackgroundColor(template.dashboardBackground?.color)
     setDashboardBackgroundOpacity(template.dashboardBackground?.opacity)
     setBackgroundPosition(template.backgroundPosition)
@@ -88,6 +91,7 @@ export function SimpleBlogConfig(props: ComponentConfigProps) {
         backgroundColor: headerBackgroundColor,
         backgroundOpacity: headerBackgroundOpacity,
         height: headerHeight,
+        logoHeight: logoHeight,
       },
       dashboardBackground: {
         color: dashboardBackgroundColor || '',
@@ -124,6 +128,16 @@ export function SimpleBlogConfig(props: ComponentConfigProps) {
       <Box mb={2}>
         <EventImageUpload label="Logo" property="logo" current={event.logo} />
       </Box>
+      <InputLabel>Logo Height</InputLabel>
+      <Slider
+        min={MIN_LOGO_HEIGHT}
+        max={headerHeight}
+        step={1}
+        onChange={handleChangeSlider(setLogoHeight)}
+        valueLabelDisplay="auto"
+        value={logoHeight}
+        aria-label="logo height"
+      />
       <Box mb={2}>
         <Grid container>
           <Grid item xs={12} md={6}>

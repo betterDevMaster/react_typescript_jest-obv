@@ -27,7 +27,7 @@ export default function Accordion(props: AccordionProps) {
 
   const useStyles = makeStyles({
     root: {
-      border: '5px solid rgba(0, 0, 0, .125)',
+      border: '1px solid #DFDFDF',
       boxShadow: 'none',
       '&:not(:last-child)': {
         borderBottom: 0,
@@ -35,13 +35,10 @@ export default function Accordion(props: AccordionProps) {
       '&:before': {
         display: 'none',
       },
-      '&$expanded': {
+      '&.Mui-expanded': {
         margin: 'auto',
       },
     },
-    expanded: {},
-    disabled: {},
-    rounded: {},
   })
   const classes = useStyles()
   return (

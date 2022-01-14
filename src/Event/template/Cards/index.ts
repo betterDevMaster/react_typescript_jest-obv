@@ -206,7 +206,9 @@ export type Cards = BaseTemplate &
     }
     checkIn: {
       title: string
+      titleColor: string
       stepLabelColor: string
+      stepIconColor: string
       inActiveColor: string
       step1Label: string
       step1Icon: string
@@ -455,7 +457,9 @@ export const createCards = (): DeepRequired<Cards> => ({
   },
   checkIn: {
     title: 'Check In:',
+    titleColor: '#000000',
     stepLabelColor: '#07BAB5',
+    stepIconColor: '#07BAB5',
     inActiveColor: '#C7C7C7',
     step1Label: 'Step 1',
     step1Icon: 'far fa-lock',

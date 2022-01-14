@@ -7,6 +7,7 @@ import TableBody from '@material-ui/core/TableBody'
 import TableCell from '@material-ui/core/TableCell'
 import TableHead from '@material-ui/core/TableHead'
 import TableRow from '@material-ui/core/TableRow'
+import TableFooter from '@material-ui/core/TableFooter'
 import Button from '@material-ui/core/Button'
 import {formatDate} from 'lib/date-time'
 import {useAttendees} from 'organization/Event/AttendeesProvider'
@@ -21,6 +22,8 @@ import CircularProgress from '@material-ui/core/CircularProgress'
 import Typography from '@material-ui/core/Typography'
 import EmojiEventsIcon from '@material-ui/icons/EmojiEvents'
 import {useEvent} from 'Event/EventProvider'
+import TablePagination from '@material-ui/core/TablePagination'
+import PaginationActions from 'lib/ui/table/PaginationActions'
 
 export default function AttendeesTable(props: {
   onSelectEdit: (attendee: Attendee) => () => void
@@ -29,6 +32,11 @@ export default function AttendeesTable(props: {
 }) {
   const {
     attendees,
+    page,
+    perPage,
+    total,
+    setPage,
+    setPerPage,
     groups,
     toggleTechCheckComplete: toggleCheckIn,
     loading: loadingAttendees,
@@ -39,6 +47,15 @@ export default function AttendeesTable(props: {
   const hasAttendees = attendees.length > 0
 
   const loading = loadingAttendees
+
+  const handlePageChange = (event: any, page: number) => {
+    setPage(page + 1)
+  }
+
+  const handlePerPageChange = (event: any) => {
+    setPage(1)
+    setPerPage(parseInt(event.target.value))
+  }
 
   if (loading) {
     return (
@@ -131,6 +148,24 @@ export default function AttendeesTable(props: {
               </TableRow>
             ))}
           </TableBody>
+          <TableFooter>
+            <TableRow>
+              <TablePagination
+                colSpan={4}
+                count={total}
+                rowsPerPageOptions={[20, 50, 100]} //  Hide selector
+                rowsPerPage={perPage}
+                page={page - 1} // MUI is 0 index based
+                SelectProps={{
+                  inputProps: {'aria-label': 'select rows per page'},
+                  native: true,
+                }}
+                onChangePage={handlePageChange}
+                onChangeRowsPerPage={handlePerPageChange}
+                ActionsComponent={PaginationActions}
+              />
+            </TableRow>
+          </TableFooter>
         </Table>
       </TableBox>
     </>

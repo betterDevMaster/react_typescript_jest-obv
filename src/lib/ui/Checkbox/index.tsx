@@ -1,5 +1,6 @@
 import React from 'react'
 import styled from 'styled-components'
+import {Label as Typography} from 'lib/ui/typography'
 import {onChangeCheckedHandler} from 'lib/dom'
 
 export type CheckboxProps = {
@@ -30,15 +31,11 @@ export default function Checkbox(props: CheckboxProps) {
   )
 }
 
-const Label = styled.label`
+const Label = styled(Typography)`
   display: block;
   position: relative;
   padding-left: 32px;
   cursor: pointer;
-  font-size: 14px;
-  font-weight: normal;
-  line-height: 20px;
-  color: #000000;
   -webkit-user-select: none;
   -moz-user-select: none;
   -ms-user-select: none;

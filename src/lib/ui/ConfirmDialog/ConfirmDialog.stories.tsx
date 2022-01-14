@@ -26,6 +26,7 @@ export const ConfirmDialogWithPassword = Template.bind({})
 
 ConfirmDialogWithPassword.args = {
   title: 'Delete Event Confirmation',
-  description: <PrimaryTextField {...TextFieldStories.args} />,
+  description:
+    'This Event will permanently be deleted. There is no way of restoring an Event once deleted. Please confirm deletion by entering your accounts password below.',
   showing: true,
 }

@@ -18,14 +18,6 @@ export default function PlanProvider(props: {children: React.ReactElement}) {
     plan ? plan.name === target : false
 
   const canSelect = (target: PlanInfo['name']) => {
-    // Currently during TESTING where users are using test cards, we only
-    // want to enable subscribing to users who have previously paid
-    // for obv.io
-    const hasPaid = user.is_founder || user.is_subscribed
-    if (!hasPaid) {
-      return false
-    }
-
     const currentTier = plan ? tier(plan.name) : 0
     const targetTier = tier(target)
 

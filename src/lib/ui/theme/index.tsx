@@ -16,10 +16,18 @@ export const colors = {
   border: '#a0a9b0',
   info: '#51EA0A',
   error: red[500],
+  warning: '#ffc107',
   text: {
     muted: '#606F7B',
   },
   accent: '#a72020',
+  gray: '#f1f1f1',
+  gray100: '#a7a7a7',
+  gray200: '#838383',
+  gray300: '#dfdfdf',
+  gray400: '#4f4f4f',
+  blue: '#2794d2',
+  disabled: '#c4c4c4',
 }
 
 export const spacing = Array(60)

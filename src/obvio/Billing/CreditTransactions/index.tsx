@@ -1,5 +1,4 @@
 import Layout from 'obvio/user/Layout'
-import styled from 'styled-components'
 import Title from 'lib/ui/typography/Title'
 import Divider from 'lib/ui/layout/Divider'
 import {useBreadcrumbs} from 'lib/ui/BreadcrumbProvider'
@@ -20,35 +19,29 @@ import {PaginatedCollection} from 'lib/ui/api-client'
 import {useAsync} from 'lib/async'
 import TablePagination from '@material-ui/core/TablePagination'
 import PaginationActions from 'lib/ui/table/PaginationActions'
-import PaidIcon from 'obvio/Billing/CreditTransactions/PaidIcon'
-import TransactionDetails from 'obvio/Billing/CreditTransactions/TransactionDetails'
+import TransactionRow from 'obvio/Billing/CreditTransactions/TransactionRow'
 
 type CreditTransactionBase = {
+  last_transaction: string
   id: number
+  total: number
+}
+
+export type EventCreditTransaction = CreditTransactionBase & {
+  transaction_type: 'event'
   event_name: string
   event_slug: string
-  paid: boolean
-  amount: number
+  event_start: string
+  event_end: string
 }
 
-export type AttendeesTransaction = CreditTransactionBase & {
-  type_id: 1
-  details: {
-    num_attendees: number
-    duration_days: number
-  }
-}
-
-export type AdditionalRoomsTransaction = CreditTransactionBase & {
-  type_id: 2
-  details: {
-    num_rooms: number
-  }
+export type PurchaseCreditTransaction = CreditTransactionBase & {
+  transaction_type: 'purchase'
 }
 
 export type CreditTransaction =
-  | AttendeesTransaction
-  | AdditionalRoomsTransaction
+  | EventCreditTransaction
+  | PurchaseCreditTransaction
 
 export default function CreditTransactions() {
   useBreadcrumbs([
@@ -104,7 +97,7 @@ function Content() {
   const hasTransactions = transactions.length > 0
 
   if (!hasTransactions) {
-    return <p>No credits have been deducted.</p>
+    return <p>No credits transactions have been recorded.</p>
   }
 
   return (
@@ -112,24 +105,14 @@ function Content() {
       <Table stickyHeader>
         <TableHead>
           <TableRow>
-            <MinWidthCell>{/* Paid Status */}</MinWidthCell>
-            <TableCell>Event</TableCell>
-            <CenteredCell>Amount</CenteredCell>
+            <TableCell>Date</TableCell>
             <TableCell>Details</TableCell>
+            <TableCell>Credits</TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
           {transactions.map((transaction) => (
-            <TableRow key={transaction.id}>
-              <CenteredCell>
-                <PaidIcon paid={transaction.paid} />
-              </CenteredCell>
-              <TableCell>{transaction.event_name}</TableCell>
-              <CenteredCell>{transaction.amount}</CenteredCell>
-              <TableCell>
-                <TransactionDetails transaction={transaction} />
-              </TableCell>
-            </TableRow>
+            <TransactionRow transaction={transaction} key={transaction.id} />
           ))}
         </TableBody>
         <TableFooter>
@@ -180,11 +163,3 @@ function listUrl(page: string) {
 
   return `${baseUrl}?${query}`
 }
-
-const MinWidthCell = styled(TableCell)`
-  width: 0;
-`
-
-const CenteredCell = styled(TableCell)`
-  text-align: center;
-`

@@ -7,12 +7,17 @@ import {RelativeLink} from 'lib/ui/link/RelativeLink'
 import {useObvioUser} from 'obvio/auth'
 import {obvioRoutes} from 'obvio/Routes'
 import React from 'react'
+import {getPlan} from 'obvio/Billing/plans'
 
 export default function BillingStatusOverlay() {
   const user = useObvioUser()
 
   if (user.has_unpaid_transactions) {
     return <HasUnpaidTransactionsOverlay />
+  }
+
+  if (user.has_active_subscription && !user.has_payment_method) {
+    return <CreditCardRequiredOverlay />
   }
 
   return null
@@ -25,6 +30,25 @@ export function SubscriptionRequiredOverlay() {
       description="Click the button below to re-activate your subscription."
     >
       <GoToBillingButton />
+    </Overlay>
+  )
+}
+
+export function CreditCardRequiredOverlay() {
+  const user = useObvioUser()
+
+  if (!user.plan) {
+    return null
+  }
+
+  const planInfo = getPlan(user.plan.name)
+
+  return (
+    <Overlay
+      title="Credit Card Required"
+      description={`You are currently signed up for the ${planInfo.label} plan. A credit card is required to continue using Obvio. You will not be charged until your subscription renews.`}
+    >
+      <GoToBillingButton>Add Credit Card</GoToBillingButton>
     </Overlay>
   )
 }
@@ -59,11 +83,12 @@ export function Overlay(props: {
   )
 }
 
-function GoToBillingButton() {
+function GoToBillingButton(props: {children?: string}) {
+  const label = props.children || 'Go To Billing'
   return (
     <RelativeLink to={obvioRoutes.billing.root} disableStyles>
       <Button variant="contained" color="primary">
-        Go To Billing
+        {label}
       </Button>
     </RelativeLink>
   )

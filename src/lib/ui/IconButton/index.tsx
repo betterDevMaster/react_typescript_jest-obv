@@ -3,7 +3,7 @@ import React from 'react'
 import styled from 'styled-components'
 
 export default function IconButton(props: {
-  onClick?: () => void
+  onClick?: (event: React.MouseEvent<HTMLElement>) => void
   children: React.ReactElement
   dataTestId?: string
   className?: string

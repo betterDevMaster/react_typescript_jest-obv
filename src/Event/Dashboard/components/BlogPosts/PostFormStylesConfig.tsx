@@ -5,12 +5,14 @@ import Select from '@material-ui/core/Select'
 import InputLabel from '@material-ui/core/InputLabel'
 import MenuItem from '@material-ui/core/MenuItem'
 import Box from '@material-ui/core/Box'
+import Slider from '@material-ui/core/Slider'
 import React from 'react'
 import Button from '@material-ui/core/Button'
 import styled from 'styled-components'
 import ComponentConfig, {
   SaveButton,
 } from 'organization/Event/DashboardConfig/ComponentConfig'
+import {handleChangeSlider} from 'lib/dom'
 
 import {useToggle} from 'lib/toggle'
 import {Controller, useForm} from 'react-hook-form'
@@ -112,18 +114,24 @@ export default function PostFormStylesConfig() {
               />
             )}
           />
-          <TextField
-            name="inputStyles.backgroundOpacity"
-            defaultValue={postFormStyles.inputStyles.backgroundOpacity}
-            label="Input Background Color Opacity"
-            type="number"
-            fullWidth
-            inputProps={{
-              min: 1,
-              max: 100,
-              ref: register,
-            }}
-          />
+          <Box>
+            <InputLabel>Input Background Color Opacity</InputLabel>
+            <Controller
+              name="inputStyles.backgroundOpacity"
+              defaultValue={postFormStyles.inputStyles.backgroundOpacity}
+              control={control}
+              render={({value, onChange}) => (
+                <Slider
+                  min={1}
+                  max={100}
+                  step={1}
+                  onChange={handleChangeSlider(onChange)}
+                  valueLabelDisplay="auto"
+                  defaultValue={value}
+                />
+              )}
+            />
+          </Box>
           <Controller
             name="inputStyles.textColor"
             defaultValue={postFormStyles.inputStyles.textColor}
@@ -169,7 +177,7 @@ export default function PostFormStylesConfig() {
             type="number"
             fullWidth
             inputProps={{
-              min: 1,
+              min: 0,
               max: 50,
               ref: register,
             }}
@@ -237,6 +245,31 @@ export default function PostFormStylesConfig() {
               max: 50,
               ref: register,
             }}
+          />
+          <TextField
+            name="buttonBorderWidth"
+            defaultValue={postFormStyles.buttonBorderWidth}
+            label="Submit Button Border Width"
+            type="number"
+            fullWidth
+            inputProps={{
+              min: 0,
+              max: 50,
+              ref: register,
+            }}
+          />
+          <Controller
+            name="buttonBorderColor"
+            defaultValue={postFormStyles.buttonBorderColor}
+            control={control}
+            render={({value, onChange}) => (
+              <ColorPicker
+                label="Submit Button Border Color"
+                color={value}
+                onPick={onChange}
+                aria-label="submit button border color"
+              />
+            )}
           />
           <Box mb={2}>
             <InputLabel>Submit Button Position</InputLabel>

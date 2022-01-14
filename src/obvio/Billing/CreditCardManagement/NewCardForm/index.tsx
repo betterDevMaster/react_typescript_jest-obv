@@ -1,4 +1,4 @@
-import Button from '@material-ui/core/Button'
+import Button, {ButtonProps} from '@material-ui/core/Button'
 import CircularProgress from '@material-ui/core/CircularProgress'
 import {PaymentMethod} from '@stripe/stripe-js'
 import ErrorAlert from 'lib/ui/alerts/ErrorAlert'
@@ -14,33 +14,43 @@ type NewCardFormProps = {
 
 export default function NewCardForm(props: NewCardFormProps) {
   const [showingForm, setShowingForm] = useState(false)
+  const {paymentMethod} = usePaymentMethod()
+
+  const label = paymentMethod ? 'Change Card' : 'Add Card'
+  const buttonVariant: ButtonProps['variant'] = paymentMethod
+    ? 'outlined'
+    : 'contained'
 
   if (!showingForm) {
     return (
       <Button
-        variant="contained"
+        variant={buttonVariant}
         onClick={() => setShowingForm(true)}
         color="primary"
       >
-        Add Card
+        {label}
       </Button>
     )
   }
 
-  return <Content {...props} />
+  return <Content {...props} onComplete={() => setShowingForm(false)} />
 }
 
-function Content(props: NewCardFormProps) {
+function Content(props: NewCardFormProps & {onComplete: () => void}) {
   const {setPaymentMethod} = usePaymentMethod()
   const [error, setError] = useState<string | null>(null)
   const clearError = () => setError(null)
   const savePaymentMethod = useSavePaymentMethod()
+  const {onComplete} = props
 
   const handlePaymentMethod = (paymentMethodId: string) => {
     clearError()
 
     savePaymentMethod(paymentMethodId)
-      .then(setPaymentMethod)
+      .then((paymentMethod) => {
+        setPaymentMethod(paymentMethod)
+        onComplete()
+      })
       .catch((e) => setError(e.message))
   }
 

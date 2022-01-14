@@ -101,6 +101,8 @@ function Content(props: {form: Form; post: BlogPost}) {
             backgroundHoverColor={formStyles.buttonHoverBackgroundColor}
             raidus={formStyles.buttonRadius}
             width={formStyles.buttonSize}
+            borderWidth={formStyles.buttonBorderWidth}
+            borderColor={formStyles.buttonBorderColor}
           >
             {v(form.submit_label || DEFAULT_SUBMIT_LABEL)}
           </StyledFormButton>
@@ -181,6 +183,8 @@ const StyledFormButton = styled((props) => {
     raidus,
     fontSize,
     width,
+    borderWidth,
+    borderColor,
     ...otherProps
   } = props
   return <Button {...otherProps} />
@@ -191,6 +195,8 @@ const StyledFormButton = styled((props) => {
   radius: string
   fontSize: number
   width: number
+  borderWidth: number
+  borderColor: string
 }>`
   color: ${(props) => props.color} !important;
   cursor: pointer;
@@ -198,6 +204,8 @@ const StyledFormButton = styled((props) => {
   border-radius: ${(props) => props.raidus}px !important;
   background-color: ${(props) => props.backgroundColor} !important;
   width: ${(props) => props.width}% !important;
+  border-width: ${(props) => props.borderWidth}px !important;
+  border-color: ${(props) => props.borderColor} !important;
   &:hover {
     background-color: ${(props) => props.backgroundHoverColor} !important;
   }

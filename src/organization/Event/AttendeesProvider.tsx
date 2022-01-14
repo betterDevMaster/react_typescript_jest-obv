@@ -18,7 +18,12 @@ export interface AttendeesContextProps {
   remove: (attendee: Attendee) => void
   loading: boolean
   groups: string[]
+  page: number
+  perPage: number
+  total: number
   search: (term: string) => void
+  setPage: (index: number) => void
+  setPerPage: (count: number) => void
   toggleTechCheckComplete: (attendee: Attendee) => () => void
   error: string | null
   clearError: () => void
@@ -43,8 +48,15 @@ export default function AttendeesProvider(props: {
 }) {
   const [attendees, setAttendees] = useState<Attendee[]>([])
   const [search, setSearch] = useState('')
+  const [page, setPage] = useState(1)
+  const [perPage, setPerPage] = useState(20)
+  const [total, setTotal] = useState(0)
   const debouncedSearch = useDebounce(search, SEARCH_DEBOUNCE_MS)
-  const {data: results, loading} = useFetchAttendees(debouncedSearch)
+  const {data: results, loading} = useFetchAttendees(
+    debouncedSearch,
+    page,
+    perPage,
+  )
   const [groups, setGroups] = useState<string[]>([])
   const [error, setError] = useState<string | null>(null)
   const MarkTechCheckComplete = useMarkTechCheckComplete()
@@ -79,6 +91,9 @@ export default function AttendeesProvider(props: {
     }
 
     setAttendees(results.data)
+    setPage(results.current_page)
+    setPerPage(results.per_page)
+    setTotal(results.total)
   }, [results])
 
   const addGroups = useCallback(
@@ -152,7 +167,12 @@ export default function AttendeesProvider(props: {
         insert,
         remove,
         loading,
+        page,
+        perPage,
+        total,
         search: setSearch,
+        setPage,
+        setPerPage,
         groups,
         toggleTechCheckComplete,
         error,
@@ -175,11 +195,11 @@ export function useAttendees() {
   return context
 }
 
-function useFetchAttendees(search: string) {
+function useFetchAttendees(search: string, page: number, perPage: number) {
   const {client} = useOrganization()
   const {event} = useEvent()
 
-  const url = fetchUrl(event, search)
+  const url = fetchUrl(event, search, page, perPage)
 
   const request = useCallback(
     () => client.get<PaginatedCollection<Attendee>>(url),
@@ -188,13 +208,20 @@ function useFetchAttendees(search: string) {
   return useAsync(request)
 }
 
-function fetchUrl(event: ObvioEvent, search: string) {
-  const baseUrl = api(`/events/${event.slug}/attendees`)
+function fetchUrl(
+  event: ObvioEvent,
+  search: string,
+  page: number,
+  perPage: number,
+) {
+  const baseUrl = api(
+    `/events/${event.slug}/attendees?page=${page}&per_page=${perPage}`,
+  )
   if (!search) {
     return baseUrl
   }
 
-  return `${baseUrl}?search=${search}`
+  return `${baseUrl}&search=${search}`
 }
 
 export function useMarkTechCheckComplete() {

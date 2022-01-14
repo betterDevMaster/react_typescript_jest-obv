@@ -16,6 +16,7 @@ export default function PasswordField(props: Omit<TextFieldProps, 'type'>) {
     <TextField
       {...props}
       type={type}
+      size="small"
       InputProps={{
         ...(props.InputProps || {}),
         endAdornment: (

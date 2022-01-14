@@ -49,7 +49,7 @@ export default function SetPasswordFormConfig() {
               labelPlacement="end"
               checked={event.requires_attendee_password}
               aria-label="toggle requires attendee password"
-              label="Require password"
+              label={event.requires_attendee_password ? 'Enabled' : 'Disabled'}
               color="primary"
               disabled={processing}
             />

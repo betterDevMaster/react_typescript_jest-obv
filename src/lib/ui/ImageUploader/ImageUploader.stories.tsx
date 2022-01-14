@@ -1,7 +1,6 @@
 import React from 'react'
 import {ComponentStory, ComponentMeta} from '@storybook/react'
 import ImageUploader from 'lib/ui/ImageUploader'
-import ThemeProvider from 'lib/ui/theme/ThemeProvider'
 
 export default {
   title: 'Components/ImageUploader',
@@ -10,14 +9,12 @@ export default {
 
 // Can add icon story here.
 const Template: ComponentStory<typeof ImageUploader> = (args) => (
-  <ThemeProvider>
-    <ImageUploader {...args} />
-  </ThemeProvider>
+  <ImageUploader {...args} />
 )
 
 export const Primary = Template.bind({})
 Primary.args = {
-  label: 'Please select image',
+  label: 'Upload a PNG or JPG under _mbs*',
   width: 100,
   height: 100,
   processing: false,

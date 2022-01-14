@@ -1,14 +1,13 @@
 import React from 'react'
-import styled from 'styled-components'
-import UploadButton from 'lib/ui/form/ImageUpload/UploadButton'
+import UploadButton from 'lib/ui/ImageUploader/ImageUpload/UploadButton'
 import {useFileSelect} from 'lib/ui/form/file'
-import Box from '@material-ui/core/Box'
-import ImageUpload from 'lib/ui/form/ImageUpload'
-import InputLabel from '@material-ui/core/InputLabel'
-import RemoveImageButton from 'lib/ui/form/ImageUpload/RemoveButton'
-import Cropper from 'lib/ui/form/ImageUpload/Cropper'
-import Image from 'lib/ui/form/ImageUpload/Image'
+import Box from 'lib/ui/Box'
+import ImageUpload from 'lib/ui/ImageUploader/ImageUpload'
+import RemoveIconButton from 'lib/ui/ImageUploader/ImageUpload/RemoveIconButton'
+import Cropper from 'lib/ui/ImageUploader/ImageUpload/Cropper'
+import Image from 'lib/ui/ImageUploader/ImageUpload/Image'
 import {FileLocation} from 'lib/http-client'
+import {Label} from 'lib/ui/typography'
 
 export type ImageUploaderProps = {
   label?: string
@@ -27,7 +26,6 @@ export default function ImageUploader(props: ImageUploaderProps) {
 
   return (
     <Box mb={3}>
-      <Label label={props.label} />
       <ImageUpload
         file={file}
         disabled={props.processing}
@@ -47,19 +45,9 @@ export default function ImageUploader(props: ImageUploaderProps) {
         >
           Image
         </UploadButton>
-        <RemoveImageButton aria-label="remove image" size="small" />
+        <RemoveIconButton aria-label="remove image" size="small" />
+        <Label>{props.label}</Label>
       </ImageUpload>
     </Box>
   )
 }
-
-function Label(props: {label?: string}) {
-  if (!props.label) {
-    return null
-  }
-  return <StyledInputLabel>{props.label}</StyledInputLabel>
-}
-
-const StyledInputLabel = styled(InputLabel)`
-  margin-bottom: ${(props) => props.theme.spacing[2]};
-`

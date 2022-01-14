@@ -96,7 +96,7 @@ it('should configure a header color settings', async () => {
 
   clickEdit(await findByLabelText('header'))
 
-  const color = faker.commerce.color()
+  const color = '#e8e8e8'
   user.type(await findByLabelText('header background color'), color)
 
   user.click(await findByLabelText('save'))

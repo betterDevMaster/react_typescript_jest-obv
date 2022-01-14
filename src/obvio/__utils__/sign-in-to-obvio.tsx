@@ -6,13 +6,13 @@ import {render} from '__utils__/render'
 import App from 'App'
 import React from 'react'
 
-export async function signInToObvio(
-  options: {
-    user?: TeamMember
-    beforeRender?: () => void
-  } = {},
-) {
-  const user = options.user || fakeTeamMember()
+export type SignInToObvioOptions = {
+  authUser?: TeamMember
+  beforeRender?: () => void
+}
+
+export async function signInToObvio(options: SignInToObvioOptions = {}) {
+  const user = options.authUser || fakeTeamMember()
 
   setObvioAppUrl()
   authenticate(user)

@@ -206,7 +206,7 @@ export const FOUNDER_PLAN: PlanInfo = {
   label: 'Obvio Founders',
   description:
     'Unlimited Organizations, 1,000 Annual Credits, 3 Rooms per Event',
-  price: 1500,
+  price: 997,
   creditPackages: [
     {
       amount: 100,

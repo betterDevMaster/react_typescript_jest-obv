@@ -24,7 +24,7 @@ export default function PaginationActions(props: {
     event: React.MouseEvent<HTMLButtonElement>,
   ) => props.onChangePage(event, page)
 
-  const goFirstPage = goToPage(1)
+  const goFirstPage = goToPage(0)
   const goPrevPage = goToPage(page - 1)
   const goNextPage = goToPage(page + 1)
   const goLastPage = goToPage(lastPage)

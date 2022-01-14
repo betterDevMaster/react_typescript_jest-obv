@@ -1,6 +1,6 @@
 import React from 'react'
 import ThemeProvider from 'lib/ui/theme/ThemeProvider'
-
+import {BrowserRouter as Router} from 'react-router-dom'
 export const parameters = {
   actions: {argTypesRegex: '^on[A-Z].*'},
   controls: {
@@ -14,8 +14,10 @@ export const parameters = {
 //Here define global decorators( some providers)
 export const decorators = [
   (Story) => (
-    <ThemeProvider>
-      <Story />
-    </ThemeProvider>
+    <Router>
+      <ThemeProvider>
+        <Story />
+      </ThemeProvider>
+    </Router>
   ),
 ]

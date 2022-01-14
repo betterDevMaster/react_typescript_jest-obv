@@ -3,6 +3,7 @@ import styled from 'styled-components'
 import {onChangeStringHandler} from 'lib/dom'
 
 export type TextFieldProps = {
+  className?: string
   variant?: 'filled' | 'outlined'
   fullWidth?: boolean
   dark?: boolean
@@ -20,6 +21,7 @@ export type TextFieldProps = {
 export default function TextField(props: TextFieldProps) {
   return (
     <StyledInput
+      className={props.className}
       backgroundColor={backgroundColor(props)}
       color={textColor(props)}
       rounded={props.rounded}

@@ -4,6 +4,7 @@ import {makeStyles} from '@material-ui/core/styles'
 import {spacing} from 'lib/ui/theme'
 
 type AccordionDetailsProps = {
+  className?: string
   children: JSX.Element | string | JSX.Element[]
   expandedIcon?: JSX.Element
   ['aria-label']?: string
@@ -12,7 +13,8 @@ type AccordionDetailsProps = {
 export default function AccordionDetails(props: AccordionDetailsProps) {
   const useStyles = makeStyles({
     root: {
-      padding: spacing[2],
+      display: 'block',
+      padding: 'unset',
     },
   })
 
@@ -20,7 +22,8 @@ export default function AccordionDetails(props: AccordionDetailsProps) {
 
   return (
     <MuiAccordionDetails
-      className={classes.root}
+      classes={{root: classes.root}}
+      className={props.className}
       aria-label={props['aria-label']}
     >
       {props.children}
