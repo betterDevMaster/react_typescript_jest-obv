@@ -105,6 +105,7 @@ const StyledBody = styled.div<{
   margin-top: ${(props) => props.theme.spacing[1]};
   color: ${(props) => props.color};
   white-space: pre-wrap;
+  list-style-position: inside;
 `
 
 const SpeakerName = styled.div<{
@@ -123,5 +124,6 @@ const SpeakerName = styled.div<{
 const StyledImage = styled(Image)`
   float: left;
   margin: ${(props) =>
-    `${props.theme.spacing[5]} ${props.theme.spacing[4]} ${props.theme.spacing[4]} 0`};
+    `0 ${props.theme.spacing[4]} ${props.theme.spacing[4]} 0`};
+  width: 100%;
 `
