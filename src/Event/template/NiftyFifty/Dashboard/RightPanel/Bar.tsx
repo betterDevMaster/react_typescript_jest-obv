@@ -50,8 +50,8 @@ export default function Nav(props: {
       backgroundColor: 'transparent',
       borderRadius: '10px',
       '& > span': {
-        maxWidth: 50,
         width: '100%',
+        maxWidth: rightPanel.indicatorWidth + '%',
         backgroundColor: rightPanel.tabUnderlineColor,
         borderRadius: '10px',
       },

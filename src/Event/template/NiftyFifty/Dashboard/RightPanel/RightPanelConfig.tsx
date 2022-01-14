@@ -1,7 +1,7 @@
 import React from 'react'
 import {Controller, useForm} from 'react-hook-form'
 
-import {Box, InputLabel, Slider} from '@material-ui/core'
+import {Box, InputLabel, Slider, TextField} from '@material-ui/core'
 
 import {
   NiftyFifty,
@@ -26,7 +26,7 @@ export default function RightPanelConfig(props: {
   const template = useNiftyFiftyTemplate()
   const update = useNiftyFiftyUpdate()
   const {rightPanel} = template
-  const {control, handleSubmit} = useForm()
+  const {control, handleSubmit, register} = useForm()
 
   const submit = (data: NiftyFifty['rightPanel']) => {
     update({rightPanel: data})
@@ -119,6 +119,20 @@ export default function RightPanelConfig(props: {
                   value={value}
                 />
               )}
+            />
+          </Box>
+          <Box mb={2}>
+            <TextField
+              type="number"
+              defaultValue={rightPanel.indicatorWidth}
+              name="indicatorWidth"
+              label="Indicator Width(%)"
+              fullWidth
+              inputProps={{
+                min: 1,
+                max: 100,
+                ref: register,
+              }}
             />
           </Box>
           <SaveButton />

@@ -130,6 +130,7 @@ export type NiftyFifty = BaseTemplate &
       backgroundColor: string
       backgroundOpacity: number
       isDarkMode: boolean
+      indicatorWidth: number
     }
     points_unit: string
     blogPosts: HashMap<BlogPost>
@@ -394,6 +395,7 @@ export const createNiftyFifty = (): DeepRequired<NiftyFifty> => ({
     backgroundColor: '#FFFFFF',
     backgroundOpacity: 0,
     isDarkMode: false,
+    indicatorWidth: 50,
   },
   blogPosts: {},
   resourceList: {
