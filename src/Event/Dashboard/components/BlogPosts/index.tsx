@@ -35,6 +35,8 @@ export type BlogPost = Publishable &
     attachment?: BlogPostAttachment
     buttonsPosition?: 'flex-right' | 'center' | 'flex-end'
     buttonsWidth?: number
+    backgroundColor?: string
+    backgroundOpacity?: number
   }
 
 export type BlogPostProps = {

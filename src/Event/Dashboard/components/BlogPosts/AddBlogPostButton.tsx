@@ -20,6 +20,8 @@ export const newPost = (): DeepRequired<BlogPost> => ({
   buttonsPosition: 'center',
   attachment: 'form',
   buttonsWidth: 100,
+  backgroundColor: '#FFFFFF',
+  backgroundOpacity: 0,
 })
 
 export const blogPostDefaults = newPost()

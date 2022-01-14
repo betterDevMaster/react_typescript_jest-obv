@@ -144,8 +144,10 @@ function ContentPanel(props: {
 const Panel = styled.div<{
   isXSMobile: boolean
 }>`
-  padding-top: ${(props) =>
-    props.isXSMobile ? props.theme.spacing[4] : props.theme.spacing[6]};
+  padding: ${(props) =>
+      props.isXSMobile ? props.theme.spacing[4] : props.theme.spacing[6]}
+    0;
+  overflow: auto;
 `
 
 const StyledTabPanel = styled(TabPanel)<{

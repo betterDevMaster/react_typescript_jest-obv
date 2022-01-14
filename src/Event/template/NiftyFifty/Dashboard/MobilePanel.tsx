@@ -130,6 +130,8 @@ function Content(props: {
 const Box = styled.div`
   position: relative;
   width: 100%;
+  display: flex;
+  flex-direction: column;
 `
 
 const Container = styled.div<{
@@ -149,7 +151,6 @@ const Container = styled.div<{
   padding: ${(props) => props.theme.spacing[12]}
     ${(props) => props.theme.spacing[6]} ${(props) => props.theme.spacing[5]};
   width: 100%;
-  min-height: 25%;
 `
 
 const Panel = styled.div<{
@@ -158,7 +159,7 @@ const Panel = styled.div<{
   background-color: ${(props) => props.backgroundColor};
   position: relative;
   width: 100%;
-  min-height: 75%;
+  flex: 1 1 0%;
 `
 
 const StyledMenuIconButton = styled(MenuIconButton)`

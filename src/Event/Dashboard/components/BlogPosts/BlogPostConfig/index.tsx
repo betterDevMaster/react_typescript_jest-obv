@@ -1,29 +1,34 @@
-import styled from 'styled-components'
 import React, {useState} from 'react'
-import DangerButton from 'lib/ui/Button/DangerButton'
-import {onChangeCheckedHandler} from 'lib/dom'
-import TextField from '@material-ui/core/TextField'
-import Switch from 'lib/ui/form/Switch'
+import {Controller, useForm} from 'react-hook-form'
+import styled from 'styled-components'
+
+import {Box, InputLabel, Slider, TextField} from '@material-ui/core'
 import {MaterialUiPickersDate} from '@material-ui/pickers/typings/date'
-import TextEditor, {TextEditorContainer} from 'lib/ui/form/TextEditor'
+
 import RuleConfig, {useRuleConfig} from 'Event/attendee-rules/RuleConfig'
 import ConfigureRulesButton from 'Event/attendee-rules/ConfigureRulesButton'
-import Box from '@material-ui/core/Box'
 import {
   BlogPost,
   useInsertPost,
   useRemovePost,
   useUpdatePost,
 } from 'Event/Dashboard/components/BlogPosts'
+import {useTemplate} from 'Event/TemplateProvider'
+import AttachmentConfig from 'Event/Dashboard/components/BlogPosts/BlogPostConfig/AttachmentConfig'
+
+import Switch from 'lib/ui/form/Switch'
+import DangerButton from 'lib/ui/Button/DangerButton'
+import TextEditor, {TextEditorContainer} from 'lib/ui/form/TextEditor'
+import {DeepRequired} from 'lib/type-utils'
+import LocalizedDateTimePicker from 'lib/LocalizedDateTimePicker'
+import ColorPicker from 'lib/ui/ColorPicker'
+import {numberFormat} from 'lib/numberFormat'
+import {handleChangeSlider, onChangeCheckedHandler} from 'lib/dom'
+
 import ComponentConfig, {
   ComponentConfigProps,
   SaveButton,
 } from 'organization/Event/DashboardConfig/ComponentConfig'
-import {useTemplate} from 'Event/TemplateProvider'
-import LocalizedDateTimePicker from 'lib/LocalizedDateTimePicker'
-import AttachmentConfig from 'Event/Dashboard/components/BlogPosts/BlogPostConfig/AttachmentConfig'
-import {Controller, useForm} from 'react-hook-form'
-import {DeepRequired} from 'lib/type-utils'
 
 export const DEFAULT_MODAL_BUTTON_TEXT = 'Submit'
 
@@ -136,6 +141,43 @@ export default function BlogPostConfig(
                   />
                 )}
               />
+              <Box display="flex" flexDirection="row" flex="2">
+                <Box flex="1" mr={2}>
+                  <Controller
+                    name="backgroundColor"
+                    defaultValue={post.backgroundColor}
+                    control={control}
+                    render={({value, onChange}) => (
+                      <ColorPicker
+                        label="Background Color"
+                        color={value || '#FFFFFF'}
+                        onPick={onChange}
+                        aria-label="blog post background color"
+                      />
+                    )}
+                  />
+                </Box>
+                <Box flex="1">
+                  <InputLabel>Background Opacity</InputLabel>
+                  <Controller
+                    name="backgroundOpacity"
+                    defaultValue={post.backgroundOpacity}
+                    control={control}
+                    render={({value, onChange}) => (
+                      <Slider
+                        valueLabelDisplay="auto"
+                        aria-label="blog post background opacity"
+                        value={value}
+                        valueLabelFormat={(num) => numberFormat(num, 100)}
+                        onChange={handleChangeSlider(onChange)}
+                        step={0.01}
+                        min={0}
+                        max={1}
+                      />
+                    )}
+                  />
+                </Box>
+              </Box>
               <TextField
                 name="title"
                 defaultValue={post.title}

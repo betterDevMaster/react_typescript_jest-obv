@@ -20,6 +20,7 @@ export default function Container(props: {
 
 const Post = styled.div<{marginBottom: number}>`
   margin-bottom: ${(props) => props.marginBottom}px;
+  padding-top: ${(props) => props.theme.spacing[3]};
 
   img {
     max-width: 100%;

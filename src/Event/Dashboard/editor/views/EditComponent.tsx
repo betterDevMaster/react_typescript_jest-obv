@@ -109,7 +109,6 @@ const StyledCopyIconButton = styled(CopyIconButton)`
 
 const Box = styled.div`
   position: relative;
-  min-height: 30px;
 
   &:hover > ${StyledEditIconButton} {
     display: inline-flex;

@@ -137,6 +137,7 @@ const Paper = styled.div<{
   background-size: cover;
   width: 100%;
   height: 100%;
+  max-height: 100vh;
 `
 
 const Box = styled.div<{
@@ -159,8 +160,8 @@ const Main = styled.div`
   display: flex;
   align-items: center;
   flex-direction: column;
-  padding: ${(props) => props.theme.spacing[0]}
-    ${(props) => props.theme.spacing[6]};
+  padding: 0 ${(props) => props.theme.spacing[6]};
+  overflow: auto;
 `
 
 const MainContent = styled.div<{

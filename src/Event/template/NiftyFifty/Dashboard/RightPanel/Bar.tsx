@@ -37,6 +37,7 @@ export default function Nav(props: {
 
   const useTabStyles = makeStyles({
     root: {
+      minHeight: `${TOP_BAR_HEIGHT}px`,
       justifyContent: 'center',
       borderBottom: '1px solid #C4C4C4',
       width: '100%',
