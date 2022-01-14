@@ -267,7 +267,9 @@ const StyledButton = styled.button<StyleProps>`
   min-height: ${(props) => props.minHeight} !important;
   ${(props) =>
     props.fontSize ? `font-size: ${props.fontSize}!important;` : ''}
-
+  display: flex;
+  align-items: center;
+  justify-content: center;
   &:hover {
     opacity: ${(props) => props.hoverOpacity};
     background: ${(props) => props.hoverBackgroundColor};

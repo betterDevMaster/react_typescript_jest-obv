@@ -200,14 +200,14 @@ export default function MainNavButtonConfig(
                 <ActionSelect value={value} onChange={onChange} />
               )}
             />
-            <Typography gutterBottom>Size</Typography>
+            <Typography gutterBottom>Grid Size</Typography>
             <Controller
               name="size"
               defaultValue={button.size || 0}
               control={control}
               render={({value, onChange}) => (
                 <Slider
-                  min={1}
+                  min={4}
                   max={12}
                   onChange={handleChangeSlider(onChange)}
                   valueLabelDisplay="auto"
@@ -215,7 +215,7 @@ export default function MainNavButtonConfig(
                 />
               )}
             />
-            <Typography gutterBottom>Height</Typography>
+            <Typography gutterBottom>MinHeight</Typography>
             <Controller
               name="height"
               defaultValue={button.height || DEFAULT_BUTTON_HEIGHT}
