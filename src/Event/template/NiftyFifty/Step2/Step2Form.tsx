@@ -1,4 +1,4 @@
-import Question from 'Event/Question'
+import Question, {InputStyles} from 'Event/Question'
 import {Answer} from 'Event/SubmissionsProvider'
 import {ValidationError} from 'lib/ui/api-client'
 import {Form} from 'organization/Event/FormsProvider'
@@ -14,7 +14,7 @@ export default function Step2Form(props: {
   setValue: UseFormMethods['setValue']
   answers: Answer[]
   disabled: boolean
-  inputWaiverStyles: any
+  formStyles: InputStyles
 }) {
   const {
     form,
@@ -25,7 +25,7 @@ export default function Step2Form(props: {
     setValue,
     answers,
     disabled,
-    inputWaiverStyles,
+    formStyles,
   } = props
 
   return (
@@ -42,7 +42,7 @@ export default function Step2Form(props: {
           responseError={responseError}
           setValue={setValue}
           disabled={disabled}
-          inputStyles={inputWaiverStyles}
+          inputStyles={formStyles}
         />
       ))}
     </>

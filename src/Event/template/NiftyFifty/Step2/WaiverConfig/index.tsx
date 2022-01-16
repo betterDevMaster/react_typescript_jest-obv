@@ -36,7 +36,7 @@ import TemplateFields, {
   WaiverTemplatePropSetter,
 } from 'Event/template/NiftyFifty/Step2/WaiverConfig/TemplateFields'
 import Step2 from 'Event/template/NiftyFifty/Step2'
-import PostFormStylesConfig from 'Event/Step2/PostFormStylesConfig'
+import WaiverFormStylesConfig from 'Event/template/NiftyFifty/Step2/WaiverConfig/FormStylesConfig'
 
 import {fieldError} from 'lib/form'
 import {ValidationError} from 'lib/ui/api-client'
@@ -240,7 +240,7 @@ export default function WaiverConfig() {
             </Grid>
             {showFormStyleButton && (
               <Grid item xs={12} md={4}>
-                <PostFormStylesConfig />
+                <WaiverFormStylesConfig />
               </Grid>
             )}
           </Grid>

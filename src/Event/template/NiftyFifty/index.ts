@@ -13,6 +13,7 @@ import {EntityList, HashMap} from 'lib/list'
 import {Column} from 'lib/ui/layout'
 import {colors} from 'lib/ui/theme'
 import {DeepRequired} from 'lib/type-utils'
+import {InputStyles} from 'Event/Question'
 
 export const NIFTY_FIFTY = 'Nifty Fifty'
 
@@ -194,6 +195,7 @@ export type NiftyFifty = BaseTemplate &
       buttonBorderWidth?: number
       buttonBorderColor?: string
       buttonWidth?: GridSize
+      formStyles?: InputStyles
     }
     login?: {
       submitButton: {
@@ -472,6 +474,16 @@ export const createNiftyFifty = (): DeepRequired<NiftyFifty> => ({
     buttonBorderWidth: 0,
     buttonBorderColor: colors.primary,
     buttonWidth: 12,
+    formStyles: {
+      labelColor: '#7d7a7a',
+      borderColor: '#7d7a7a',
+      backgroundColor: '#7d7a7a',
+      backgroundOpacity: 0,
+      textColor: '#7d7a7a',
+      helperTextColor: '#7d7a7a',
+      rdchkSelectedColor: '#7d7a7a',
+      rdchkUnSelectedColor: '#7d7a7a',
+    },
   },
   login: {
     submitButton: {

@@ -18,7 +18,6 @@ import {DEFAULTS, useNiftyFiftyTemplate} from 'Event/template/NiftyFifty'
 import LeftPanel from 'Event/template/NiftyFifty/check-in/LeftPanel'
 import RightPanel from 'Event/template/NiftyFifty/check-in/RightPanel'
 import MobilePanel from 'Event/template/NiftyFifty/check-in/MobilePanel'
-import {useTemplate} from 'Event/TemplateProvider'
 
 import {Form} from 'organization/Event/FormsProvider'
 
@@ -67,7 +66,9 @@ function WithForm(props: {form: Form}) {
     isPreview,
   } = useWaiver()
   const {submit: submitAnswers, responseError, answers} = useSubmissions()
-  const {postFormStyles: formStyles} = useTemplate()
+  const {
+    waiver: {formStyles},
+  } = useNiftyFiftyTemplate()
 
   const canSubmit = !submitting && canSubmitWaiver
 
@@ -101,7 +102,7 @@ function WithForm(props: {form: Form}) {
         setValue={setValue}
         answers={answers}
         disabled={submitting}
-        inputWaiverStyles={formStyles.inputWaiverStyles}
+        formStyles={formStyles}
       />
       <Waiver />
       <SubmitButton canSubmit={canSubmit} />
