@@ -33,7 +33,7 @@ export default function FormStylesConfig() {
 
   return (
     <Box>
-      <StyledEditFormStyleButton onClick={toggleConfig} />
+      <EditFormStyleButton onClick={toggleConfig} />
       <ComponentConfig
         isVisible={showingConfig}
         onClose={toggleConfig}
@@ -179,7 +179,7 @@ const Box = styled.div`
   height: 100%;
   width: 100%;
 `
-const StyledEditFormStyleButton = styled(EditFormStyleButton)``
+
 const StyledSaveButton = styled(Button)`
   margin-top: ${(props) => props.theme.spacing[4]}!important;
   margin-bottom: ${(props) => props.theme.spacing[2]}!important;
