@@ -46,6 +46,20 @@ const Label = styled(Typography)<Props>`
   color: ${(props) => (props.white ? '#FFFFFF' : '#000000')};
 `
 
+const MenuItemLabel = styled(Typography)<Props>`
+  font-weight: normal !important;
+  font-size: 12px !important;
+  line-height: 14px !important;
+  color: #4f4f4f;
+`
+
+const TableHeader = styled(Typography)<Props>`
+  font-weight: normal !important;
+  font-size: 16px !important;
+  line-height: 19px !important;
+  color: #000000;
+`
+
 const Tiny = styled(Typography)<Props>`
   font-weight: 300 !important;
   font-size: 12px !important;
@@ -61,4 +75,14 @@ const Text = styled(Typography)<Props>`
   color: ${(props) => (props.white ? '#FFFFFF' : '#000000')};
 `
 
-export {Title, Description, Header, SubHead, Label, Text, Tiny}
+export {
+  Title,
+  Description,
+  Header,
+  SubHead,
+  Label,
+  Text,
+  Tiny,
+  MenuItemLabel,
+  TableHeader,
+}
