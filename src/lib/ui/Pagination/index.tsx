@@ -20,24 +20,22 @@ export default function Pagination(props: PaginationProps) {
   })
 
   return (
-    <nav>
-      <StyledUl>
-        {items.map(({page, type}, index) => {
-          return (
-            <li key={index}>
-              <Item
-                type={type}
-                numPages={count}
-                page={page}
-                currentPage={currentPage}
-                disabled={disabled}
-                onChange={onChange}
-              />
-            </li>
-          )
-        })}
-      </StyledUl>
-    </nav>
+    <StyledUl>
+      {items.map(({page, type}, index) => {
+        return (
+          <li key={index}>
+            <Item
+              type={type}
+              numPages={count}
+              page={page}
+              currentPage={currentPage}
+              disabled={disabled}
+              onChange={onChange}
+            />
+          </li>
+        )
+      })}
+    </StyledUl>
   )
 }
 

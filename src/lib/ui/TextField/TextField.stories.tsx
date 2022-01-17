@@ -1,7 +1,6 @@
 import React from 'react'
 import {ComponentStory, ComponentMeta} from '@storybook/react'
 import TextField from 'lib/ui/TextField'
-import ThemeProvider from 'lib/ui/theme/ThemeProvider'
 
 export default {
   title: 'Components/TextField',
@@ -19,9 +18,7 @@ export default {
 } as ComponentMeta<typeof TextField>
 
 const Template: ComponentStory<typeof TextField> = (args) => (
-  <ThemeProvider>
-    <TextField {...args} />
-  </ThemeProvider>
+  <TextField {...args} />
 )
 
 export const Primary = Template.bind({})

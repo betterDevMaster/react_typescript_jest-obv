@@ -45,7 +45,7 @@ export default function Button(props: ButtonProps) {
       disabled={props.disabled}
       fullWidth={props.fullWidth}
       width={props.width ? `${props.width}%` : 'unset'}
-      borderWidth={props.borderWidth ? props.borderWidth : 0}
+      borderWidth={getBorderWidth(props)}
       fontSize={props.fontSize || DEFAULT_FONT_SIZE}
       disableBorderRadius={Boolean(props.disableBorderRadius)}
       disablePadding={props.disablePadding}
@@ -96,6 +96,9 @@ function borderColor(props: ButtonProps) {
   if (props.variant === 'text') {
     return 'transparent'
   }
+  if (props.variant === 'contained') {
+    return textColor(props)
+  }
   return getColor(props)
 }
 
@@ -139,6 +142,13 @@ function hasBorder(props: ButtonProps) {
   return true
 }
 
+function getBorderWidth(props: ButtonProps) {
+  if (hasBorder(props) === false) {
+    return 0
+  }
+  return props.borderWidth || 1
+}
+
 type StyleProps = {
   color: string
   backgroundColor: string
@@ -158,14 +168,11 @@ const StyledButton = styled.button<StyleProps>`
       ? 'unset'
       : `${props.theme.spacing[2]} ${props.theme.spacing[8]}`};
   color: ${(props) => props.color};
-  border: ${(props) => (props.hasBorder ? `1px solid ${props.color}` : 'none')};
+  border: ${(props) => `${props.borderWidth}px solid ${props.borderColor}`};
   border-radius: 3px;
   background-color: ${(props) => props.backgroundColor};
   width: ${(props) => (props.fullWidth ? '100%' : props.width)};
   border-radius: ${(props) => (props.disableBorderRadius ? '0px' : '4px')};
-  border-style: solid;
-  border-width: ${(props) => props.borderWidth}px;
-  border-color: ${(props) => props.borderColor};
   font-size: ${(props) => props.fontSize}px;
   &:hover {
     cursor: pointer;
