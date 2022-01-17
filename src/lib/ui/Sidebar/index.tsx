@@ -9,6 +9,7 @@ import SidebarLink from 'lib/ui/Sidebar/SidebarLink'
 import Icon from 'lib/ui/Icon'
 import styled from 'styled-components'
 import Button from 'lib/ui/Button'
+import PopoverMenuItems from 'lib/ui/Sidebar/PopoverMenuItems'
 
 export type SidebarItem = {
   label: string
@@ -22,10 +23,14 @@ type SidebarProps = {
   location?: string
   children?: JSX.Element | JSX.Element[] | string
   onClick: (itemName: string) => void
+  showPopver: boolean
 }
 export default function Sidebar(props: SidebarProps) {
   const [isCollapsed, setIsCollapsed] = useState(props.isCollapsed)
   const [location, setLocation] = useState(props.location || '')
+
+  const [popoverEl, setPopoverEl] = useState<HTMLElement | null>(null)
+  const [mouseHoverIndex, setMouseHoverIndex] = useState(-1)
 
   useEffect(() => {
     setIsCollapsed(props.isCollapsed)
@@ -44,22 +49,39 @@ export default function Sidebar(props: SidebarProps) {
     }
   }
 
+  const handleMouseOver = (index: number) => (
+    event: React.MouseEvent<HTMLElement, MouseEvent>,
+  ) => {
+    setPopoverEl(event.currentTarget)
+    setMouseHoverIndex(index)
+  }
+
+  const handleMouseLeave = () => {
+    setPopoverEl(null)
+    setMouseHoverIndex(-1)
+  }
+
   return (
     <Container>
       <StyledDrawer variant="permanent" isCollapsed={isCollapsed}>
         <Toolbar />
         <List>
           {sidebarItems.map((item, index) => (
-            <SidebarLink
+            <div
+              onMouseEnter={handleMouseOver(index)}
+              onMouseLeave={() => handleMouseLeave()}
               key={index}
-              icon={<StyledIcon className={item.iconName} iconSize={28} />}
-              link={item.link}
-              children={item.children}
-              onClick={onClickSidebarItem}
-              isSidebarOpened={isCollapsed}
-              label={item.label}
-              location={location}
-            />
+            >
+              <SidebarLink
+                icon={<StyledIcon className={item.iconName} iconSize={28} />}
+                link={item.link}
+                children={item.children}
+                onClick={onClickSidebarItem}
+                isSidebarOpened={isCollapsed}
+                label={item.label}
+                location={location}
+              />
+            </div>
           ))}
         </List>
         <Hidden smDown>
@@ -75,6 +97,11 @@ export default function Sidebar(props: SidebarProps) {
         <Toolbar />
         <div>{props.children}</div>
       </div>
+      <PopoverMenuItems
+        anchorEl={popoverEl}
+        mouseHoverIndex={mouseHoverIndex}
+        show={props.showPopver}
+      />
     </Container>
   )
 }
@@ -83,7 +110,7 @@ function MenuIconButton(props: {
   isCollapsed: boolean
   handleDrawerIcon: () => void
 }) {
-  if (!props.isCollapsed) {
+  if (props.isCollapsed) {
     return (
       <Button
         onClick={props.handleDrawerIcon}
@@ -107,7 +134,7 @@ function MenuIconButton(props: {
       color="light"
       disableBorderRadius
     >
-      <Icon className="fas fa-compress-alt" />
+      <Icon className="fas fa-compress-alt" color="#000000" />
       Collapse
     </Button>
   )
@@ -116,13 +143,14 @@ function MenuIconButton(props: {
 const StyledIcon = styled(Icon)`
   color: #ffffff;
 `
+
 const StyledDrawer = styled(Drawer)<{isCollapsed: boolean}>`
   flex-shrink: 0;
   white-space: nowrap;
 
   .MuiDrawer-paper {
     top: 0;
-    width: ${(props) => (props.isCollapsed ? 260 : 72)}px;
+    width: ${(props) => (props.isCollapsed ? 72 : 260)}px;
     color: #ffffff;
     overflow-x: hidden;
     background-color: #131d34;
@@ -136,13 +164,13 @@ const StyledDrawer = styled(Drawer)<{isCollapsed: boolean}>`
   ${(props) =>
     props.isCollapsed
       ? `
-    width: 260px;
+    width: 72px;
     transition: width 225ms cubic-bezier(0.4, 0, 0.6, 1) 0ms;
   `
       : `
     transition: width 195ms cubic-bezier(0.4, 0, 0.6, 1) 0ms;
     overflow-x: hidden;
-    width: 72px;
+    width: 260px;
   `}
 `
 
@@ -151,12 +179,12 @@ const SidebarAction = styled.div<{isCollapsed: boolean}>`
   align-items: center;
   justify-content: flex-end;
   bottom: 0px;
-  width: ${(props) => (!props.isCollapsed ? '72px' : '261px')};
+  width: ${(props) => (props.isCollapsed ? '72px' : '261px')};
   position: fixed;
   border-top: 1px solid;
   background-color: #131d34;
   padding: ${(props) =>
-    props.isCollapsed ? 'unset' : `${props.theme.spacing[2]} 0px`};
+    !props.isCollapsed ? 'unset' : `${props.theme.spacing[2]} 0px`};
 `
 
 const Container = styled.div`
@@ -167,7 +195,7 @@ const Container = styled.div`
  *
  * Currently it shows all items, but will update this later.
  */
-function useSidebarLists() {
+export function useSidebarLists() {
   const items: SidebarItem[] = [
     {
       label: 'Event',
