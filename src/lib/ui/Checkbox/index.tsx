@@ -4,6 +4,7 @@ import {Label as Typography} from 'lib/ui/typography'
 import {onChangeCheckedHandler} from 'lib/dom'
 
 export type CheckboxProps = {
+  className?: string
   label: string
   value?: any
   checked?: boolean
@@ -16,7 +17,7 @@ export default function Checkbox(props: CheckboxProps) {
   const {label, value, checked, disabled, onChange} = props
 
   return (
-    <Label>
+    <Label className={props.className}>
       {label}
       <Input
         type="checkbox"

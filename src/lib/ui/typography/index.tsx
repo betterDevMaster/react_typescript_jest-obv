@@ -55,7 +55,7 @@ const Tiny = styled(Typography)<Props>`
 
 const Text = styled(Typography)<Props>`
   font-style: normal !important;
-  font-weight: 300 !important;
+  font-weight: normal !important;
   font-size: 12px !important;
   line-height: 14px !important;
   color: ${(props) => (props.white ? '#FFFFFF' : '#000000')};

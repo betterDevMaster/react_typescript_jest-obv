@@ -11,6 +11,7 @@ type ButtonStyles =
   | 'secondary'
   | 'light'
   | 'dark'
+  | 'accent'
   | 'default'
 
 const DEFAULT_FONT_SIZE = 14
@@ -106,19 +107,18 @@ function getColor(props: ButtonProps) {
   if (props.color === 'danger') {
     return colors.error
   }
-
   if (props.color === 'primary') {
     return colors.primary
   }
-
   if (props.color === 'success') {
     return colors.success
   }
-
   if (props.color === 'info') {
     return colors.info
   }
-
+  if (props.color === 'accent') {
+    return colors.accent
+  }
   if (props.color === 'warning') {
     return colors.warning
   }
