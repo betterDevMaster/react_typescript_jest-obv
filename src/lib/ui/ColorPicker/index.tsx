@@ -1,12 +1,12 @@
 import styled from 'styled-components'
-import React, {useRef, useState} from 'react'
+import React, {useEffect, useRef, useState} from 'react'
 import {ColorChangeHandler, ChromePicker} from 'react-color'
 import ReactDOM from 'react-dom'
 import TextField, {TextFieldProps} from '@material-ui/core/TextField'
 import {onChangeStringHandler} from 'lib/dom'
 import makeStyles from '@material-ui/core/styles/makeStyles'
 import ColorProperties from 'color'
-import {isValidColor, safeColor} from 'lib/color'
+import {isValidColor} from 'lib/color'
 
 export default function ColorPicker(props: {
   label?: string
@@ -17,30 +17,44 @@ export default function ColorPicker(props: {
   InputProps?: TextFieldProps['InputProps']
 }) {
   const [showPicker, setShowPicker] = useState(false)
-  const color = safeColor(props.color)
   const anchorRef = useRef<HTMLDivElement | null>(null)
   const [error, setError] = useState('')
+  const {onPick} = props
+
+  const {color} = props
+
+  const [value, setValue] = useState(color)
 
   const toggleShowPicker = () => {
     setShowPicker(!showPicker)
   }
 
-  const updateColor = (newColor: string) => {
+  useEffect(() => {
     setError('')
 
-    if (!isValidColor(newColor)) {
+    if (value === color) {
+      // no change
+      return
+    }
+
+    if (!value) {
+      return
+    }
+
+    if (!isValidColor(value)) {
       setError('Invalid Color')
       return
     }
 
-    props.onPick(newColor)
-  }
+    onPick(value)
+  }, [value, onPick, color])
+
   const handleColorChange: ColorChangeHandler = ({hex: newColor}) => {
-    updateColor(newColor)
+    setValue(newColor)
   }
 
   // Prevent white text from being invisible
-  const fontColor = !color || isWhite(color) ? '#e8e8e8' : color
+  const fontColor = !value || isWhite(value) ? '#e8e8e8' : value
 
   const useStyles = makeStyles({
     input: {
@@ -57,12 +71,12 @@ export default function ColorPicker(props: {
           ...(props.InputProps || {}),
         }}
         disabled={props.disabled}
-        value={color}
+        value={value}
         label={props.label}
         ref={anchorRef}
         onClick={toggleShowPicker}
         fullWidth
-        onChange={onChangeStringHandler(updateColor)}
+        onChange={onChangeStringHandler(setValue)}
         inputProps={{
           'aria-label': props['aria-label'],
         }}
@@ -71,7 +85,7 @@ export default function ColorPicker(props: {
       />
       <Picker
         visible={showPicker}
-        color={color}
+        color={value}
         onChangeColor={handleColorChange}
         toggle={toggleShowPicker}
         anchor={anchorRef.current}
