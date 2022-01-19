@@ -82,9 +82,13 @@ export default function PageSettingsDialog(props: {
 
     const eventData = imageData()
 
+    updateTemplate({
+      sponsors: form,
+    })
+
     if (!eventData) {
-      updateTemplate(form)
       setProcessing(false)
+      props.onClose()
       return
     }
 
@@ -92,13 +96,11 @@ export default function PageSettingsDialog(props: {
       .put<ObvioEvent>(url, eventData)
       .then((event) => {
         updateEvent(event)
-      })
-      .then(() => {
-        updateTemplate(form)
+        setProcessing(false)
         props.onClose()
       })
-      .catch(setServerError)
-      .finally(() => {
+      .catch((error) => {
+        setServerError(error)
         setProcessing(false)
       })
   }
@@ -271,7 +273,7 @@ function QuestionIcon(props: {selected: File | null; isVisible: boolean}) {
     return null
   }
 
-  if (Boolean(selected)) {
+  if (selected) {
     const src = URL.createObjectURL(selected)
     return (
       <QuestionIconBox>

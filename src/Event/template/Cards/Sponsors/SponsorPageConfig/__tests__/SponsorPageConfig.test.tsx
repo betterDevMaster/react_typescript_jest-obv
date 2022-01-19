@@ -95,7 +95,7 @@ it('should set sponsor page settings', async () => {
     expect(mockPut).toHaveBeenCalledTimes(3)
   })
 
-  const [_, putData] = mockPut.mock.calls[1]
+  const [_, putData] = mockPut.mock.calls[2]
 
   // Sent request to remove image
   expect(putData.sponsor_question_icon).toBe(null)
