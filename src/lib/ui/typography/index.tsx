@@ -75,6 +75,13 @@ const Text = styled(Typography)<Props>`
   color: ${(props) => (props.white ? '#FFFFFF' : '#000000')};
 `
 
+const ErrorMessage = styled(Typography)<Props>`
+  font-weight: normal !important;
+  font-size: 12px !important;
+  line-height: 16px !important;
+  color: #f44336;
+`
+
 export {
   Title,
   Description,
@@ -85,4 +92,5 @@ export {
   Tiny,
   MenuItemLabel,
   TableHeader,
+  ErrorMessage,
 }

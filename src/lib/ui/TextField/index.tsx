@@ -1,6 +1,7 @@
 import React from 'react'
 import styled from 'styled-components'
 import {onChangeStringHandler} from 'lib/dom'
+import {ErrorMessage} from 'lib/ui/typography'
 
 export type TextFieldProps = {
   className?: string
@@ -9,31 +10,34 @@ export type TextFieldProps = {
   dark?: boolean
   rounded?: boolean
   color?: 'default' | 'white'
-  label?: string
-  type?: 'text' | 'password'
   'aria-label'?: string
   placeholder?: string
   value?: string
   disabled?: boolean
+  error?: string
   onChange?: (v: string) => void
 }
 
 export default function TextField(props: TextFieldProps) {
   return (
-    <StyledInput
-      className={props.className}
-      backgroundColor={backgroundColor(props)}
-      color={textColor(props)}
-      rounded={props.rounded}
-      bordered={props.variant === 'outlined'}
-      type={props.type || 'text'}
-      placeholder={props.placeholder}
-      aria-label={props['aria-label']}
-      fullWidth={props.fullWidth}
-      value={props.value}
-      disabled={props.disabled}
-      onChange={props.onChange && onChangeStringHandler(props.onChange)}
-    />
+    <>
+      <StyledInput
+        className={props.className}
+        backgroundColor={backgroundColor(props)}
+        color={textColor(props)}
+        rounded={props.rounded}
+        bordered={props.variant === 'outlined'}
+        type="text"
+        placeholder={props.placeholder}
+        aria-label={props['aria-label']}
+        fullWidth={props.fullWidth}
+        value={props.value}
+        disabled={props.disabled}
+        error={Boolean(props.error)}
+        onChange={props.onChange && onChangeStringHandler(props.onChange)}
+      />
+      {props.error && <ErrorMessage>{props.error}</ErrorMessage>}
+    </>
   )
 }
 
@@ -67,6 +71,7 @@ type StyleProps = {
   fullWidth?: boolean
   rounded?: boolean
   bordered?: boolean
+  error?: boolean
 }
 
 const StyledInput = styled.input<StyleProps>`
@@ -77,10 +82,14 @@ const StyledInput = styled.input<StyleProps>`
   color: ${(props) => props.color};
   background-color: ${(props) => props.backgroundColor};
   border-radius: ${(props) => `${props.rounded ? '24px' : '3px'}`};
-  border-width: ${(props) => `${props.bordered ? '1px' : 0}`};
-  border-color: #dfdfdf;
+  border-width: ${(props) => `${props.bordered || props.error ? '1px' : 0}`};
+  border-color: ${(props) => `${props.error ? '#FF0000' : '#dfdfdf'}`};
   border-style: solid;
   font-weight: 300;
   font-size: 14px;
   line-height: 17px;
+  &:focus {
+    outline: none !important;
+    border-color: ${(props) => `${props.error ? '#FF0000' : '#1976D2'}`};
+  }
 `
