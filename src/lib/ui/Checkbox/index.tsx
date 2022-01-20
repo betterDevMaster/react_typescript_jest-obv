@@ -76,8 +76,8 @@ const Span = styled.span`
     content: '';
     position: absolute;
     display: none;
-    left: 6px;
-    top: 3px;
+    left: 5px;
+    top: 1px;
     width: 4px;
     height: 8px;
     border: solid white;
