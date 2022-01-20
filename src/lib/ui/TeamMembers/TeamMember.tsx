@@ -5,8 +5,14 @@ import IconButton from 'lib/ui/IconButton'
 import Icon from 'lib/ui/Icon'
 import {Label} from 'lib/ui/typography'
 
+export type PermissionProps = {
+  configure_event: boolean
+  handle_tech_check: boolean
+}
+
 export type TeamMemberProps = {
   name: string
+  permissions?: PermissionProps
 }
 
 export default function TeamMember(props: {

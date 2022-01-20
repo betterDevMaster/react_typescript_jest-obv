@@ -5,7 +5,7 @@ import {onChangeCheckedHandler} from 'lib/dom'
 
 export type CheckboxProps = {
   className?: string
-  label: string
+  label?: string
   value?: any
   checked?: boolean
   disabled?: boolean
