@@ -2,14 +2,13 @@ import React from 'react'
 import styled from 'styled-components'
 import Box from '@material-ui/core/Box'
 import Grid from '@material-ui/core/Grid'
-import Subheading from 'lib/ui/typography/Subheading'
-import {Description} from 'lib/ui/typography'
+import {Header, Description, Label} from 'lib/ui/typography'
 import PasswordField from 'lib/ui/TextField/PasswordField'
 
 export default function ChangePassword() {
   return (
     <Container>
-      <Subheading>Change Password</Subheading>
+      <StyledHeader>Change Password</StyledHeader>
       <Grid container spacing={4}>
         <Grid item xs={12} md={4}>
           <FieldLabel>Current Password:</FieldLabel>
@@ -35,8 +34,11 @@ const Container = styled(Box)`
     `${props.theme.spacing[5]} ${props.theme.spacing[6]}`} !important;
 `
 
-const FieldLabel = styled(Description)`
-  color: #000000 !important;
+const StyledHeader = styled(Header)`
+  margin-bottom: ${(props) => props.theme.spacing[5]} !important;
+`
+
+const FieldLabel = styled(Label)`
   margin-bottom: ${(props) => props.theme.spacing[2]} !important;
 `
 

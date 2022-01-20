@@ -1,6 +1,5 @@
 import React from 'react'
 import {ComponentStory, ComponentMeta} from '@storybook/react'
-import ThemeProvider from 'lib/ui/theme/ThemeProvider'
 import OrganizationSettings from 'lib/ui/OrganizationSettings'
 
 export default {
@@ -10,9 +9,7 @@ export default {
 } as ComponentMeta<typeof OrganizationSettings>
 
 const Template: ComponentStory<typeof OrganizationSettings> = (args) => (
-  <ThemeProvider>
-    <OrganizationSettings {...args} />
-  </ThemeProvider>
+  <OrganizationSettings {...args} />
 )
 
 export const Primary = Template.bind({})
