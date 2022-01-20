@@ -25,8 +25,8 @@ export default function PointConfigAction(props: PointConfigActionProps) {
   const {actions} = useActions()
 
   return (
-    <Accordion id={id} expanded={false}>
-      <AccordionSummary>
+    <Accordion id={id}>
+      <AccordionSummary expandedIconName="chevron">
         <ActionName>{action}</ActionName>
       </AccordionSummary>
       <StyledAccordionDetails>

@@ -1,27 +1,24 @@
-import React, {useState} from 'react'
+import React from 'react'
 import MuiAccordion from '@material-ui/core/Accordion'
 import {makeStyles} from '@material-ui/styles'
 
 export type AccordionProps = {
   children: JSX.Element | JSX.Element[]
-  expandIcon?: JSX.Element
   disabled?: boolean
-  expanded: boolean
+  expanded?: boolean
   isSquare?: boolean
+  panelId?: string
   id: string
-  onChange?: (panel: string) => {}
+  onChange?: (panel?: string) => {}
 }
 
 export default function Accordion(props: AccordionProps) {
-  const [expanded, setExpanded] = useState(props.expanded)
-
-  const handleChange = (panel: string) => (
+  const handleChange = (panelId?: string) => (
     event: React.ChangeEvent<{}>,
     newExpanded: boolean,
   ) => {
-    setExpanded(newExpanded)
     if (props.onChange) {
-      props.onChange(panel)
+      props.onChange(panelId)
     }
   }
 
@@ -45,9 +42,9 @@ export default function Accordion(props: AccordionProps) {
     <MuiAccordion
       className={classes.root}
       square={props.isSquare}
-      expanded={expanded}
+      expanded={props.expanded}
       disabled={props.disabled}
-      onChange={handleChange(props.id)}
+      onChange={handleChange(props.panelId)}
     >
       {props.children}
     </MuiAccordion>

@@ -124,3 +124,13 @@ export const createMuiLightTheme = (options: MuiThemeOptions) =>
     },
     muiBaseTheme,
   )
+
+export const getColor = (value?: keyof typeof colors): string => {
+  if (!value) {
+    return 'unset'
+  }
+  if (value === 'text') {
+    return colors['text'].muted
+  }
+  return colors[value]
+}

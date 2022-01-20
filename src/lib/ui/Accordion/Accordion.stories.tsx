@@ -1,4 +1,4 @@
-import React from 'react'
+import React, {useState, useEffect} from 'react'
 import {ComponentStory, ComponentMeta} from '@storybook/react'
 import Accordion from 'lib/ui/Accordion'
 import AccordionDetails from 'lib/ui/Accordion/AccordionDetails'
@@ -6,6 +6,7 @@ import AccordionSummary from 'lib/ui/Accordion/AccordionSummary'
 import {SubHead, Label} from 'lib/ui/typography'
 import Counter from 'lib/ui/Counter'
 import Box, {TopBottomBorderBox} from 'lib/ui/Box'
+import Heading3 from 'lib/ui/typography/Heading3'
 
 export default {
   title: 'Components/Accordion',
@@ -14,26 +15,23 @@ export default {
 
 const AccordionTemplate: ComponentStory<typeof Accordion> = (args) => (
   <Accordion {...args}>
-    <AccordionSummary>
+    <AccordionSummary expandedIconName="chevron">
       <SubHead>Accordion 1</SubHead>
     </AccordionSummary>
     <AccordionDetails>
-      Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse
-      malesuada lacus ex, sit amet blandit leo lobortis eget.
+      <Box fullWidth m={2}>
+        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse
+        malesuada lacus ex, sit amet blandit leo lobortis eget.
+      </Box>
     </AccordionDetails>
   </Accordion>
 )
 
 export const Primary = AccordionTemplate.bind({})
 
-Primary.args = {
-  expanded: false,
-  id: 'accordion-1',
-}
-
 export const PointItem: ComponentStory<typeof Accordion> = (args) => (
   <Accordion {...args}>
-    <AccordionSummary>
+    <AccordionSummary expandedIconName="menu">
       <SubHead>Creating Your Password</SubHead>
     </AccordionSummary>
     <AccordionDetails>
@@ -56,3 +54,29 @@ export const PointItem: ComponentStory<typeof Accordion> = (args) => (
     </AccordionDetails>
   </Accordion>
 )
+export const FaqItem: ComponentStory<typeof Accordion> = (args) => {
+  const [expanded, setExpanded] = useState(args.expanded || false)
+
+  useEffect(() => {
+    setExpanded(args.expanded || false)
+  }, [args.expanded])
+
+  return (
+    <Accordion {...args} expanded={expanded}>
+      <AccordionSummary
+        expandedIconName="plus"
+        expanded={expanded}
+        activeColor="primary"
+      >
+        <Heading3>Creating Your Password</Heading3>
+      </AccordionSummary>
+      <AccordionDetails>
+        <Box fullWidth m={2}>
+          FAQ ANSWER dolor sit amet, consectetur adipiscing elit, sed do eiusmod
+          tempor incididunt ut laboreadipiscing elit, sed do eiusmod tempor
+          incididunt ut labore
+        </Box>
+      </AccordionDetails>
+    </Accordion>
+  )
+}

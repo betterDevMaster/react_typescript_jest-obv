@@ -1,7 +1,14 @@
 import React from 'react'
 import styled from 'styled-components'
 
-export default function Image({selected, current, alt, width, isVisible}) {
+export default function Image({
+  selected,
+  current,
+  alt,
+  width,
+  isVisible,
+  children,
+}) {
   if (!isVisible) {
     return null
   }
@@ -12,6 +19,7 @@ export default function Image({selected, current, alt, width, isVisible}) {
       <Size width={width}>
         <Preview>
           <ImageEl src={src} alt={alt} />
+          {children}
         </Preview>
       </Size>
     )
@@ -25,6 +33,7 @@ export default function Image({selected, current, alt, width, isVisible}) {
     <Size width={width}>
       <Preview>
         <ImageEl src={current.url} alt={current.name} />
+        {children}
       </Preview>
     </Size>
   )
@@ -39,8 +48,7 @@ function Size({width, children}) {
 }
 
 const ImageEl = styled.img`
-  max-width: 100%;
-  max-height: 100%;
+  width: 100px;
 `
 
 const Box = styled.div`
@@ -53,4 +61,7 @@ const Preview = styled.div`
   padding: ${(props) => props.theme.spacing[4]}
     ${(props) => props.theme.spacing[11]};
   display: inline-flex;
+  justify-content: flex-end;
+  margin-left: ${(props) => props.theme.spacing[6]};
+  margin-right: ${(props) => props.theme.spacing[6]};
 `

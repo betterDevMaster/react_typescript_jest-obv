@@ -20,6 +20,22 @@ export default function Icon(props: IconProps) {
   )
 }
 
+export function ChevronIcon(props: IconProps) {
+  return <Icon {...props} className="fas fa-chevron-down" />
+}
+
+export function MenuIcon(props: IconProps) {
+  return <Icon {...props} className="fas fa-ellipsis-h" />
+}
+
+export function PlusIcon(props: IconProps) {
+  return <Icon {...props} className="fas fa-plus" />
+}
+
+export function MinusIcon(props: IconProps) {
+  return <Icon {...props} className="fas fa-minus" />
+}
+
 function textColor(color?: string) {
   if (color === 'danger') {
     return colors.error
@@ -28,13 +44,14 @@ function textColor(color?: string) {
   if (color === 'primary') {
     return colors.primary
   }
+  if (color === 'light') {
+    return '#ffffff'
+  }
 
-  return color ? color : '#ffffff'
+  return color ? color : 'unset'
 }
 
 const StyledIcon = styled.i<IconProps>`
   color: ${(props) => props.color};
   font-size: ${(props) => props.iconSize}px;
-  padding-left: ${(props) => props.theme.spacing[2]};
-  padding-right: ${(props) => props.theme.spacing[2]};
 `

@@ -45,7 +45,7 @@ export default function ConfigPanel(props: ConfigPanelProps) {
       <StyledDrawer anchor="right" open={open}>
         <CloseButtonContainer>
           <IconButton onClick={handleCloseConfig}>
-            <Icon className="far fa-times" iconSize={24} />
+            <Icon className="far fa-times" iconSize={24} color="light" />
           </IconButton>
         </CloseButtonContainer>
         <Box p={3}>
@@ -133,17 +133,17 @@ const CloseButtonContainer = styled(Box)`
   border-top-left-radius: 50%;
   border-bottom-left-radius: 50%;
   background-color: #222222;
-  width: ${(props) => props.theme.spacing[12]};
-  height: ${(props) => props.theme.spacing[12]};
+  width: 32px;
+  height: 40px;
   display: flex;
   align-items: center;
   justify-content: flex-start;
-
+  padding-left: ${(props) => props.theme.spacing[2]};
+  padding-right: ${(props) => props.theme.spacing[2]};
   @media (max-width: ${(props) => props.theme.breakpoints.sm}) {
     position: absolute;
     width: 100%;
     justify-content: flex-end;
-    margin: unset;
     background-color: transparent;
   }
 

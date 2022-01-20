@@ -15,6 +15,7 @@ import {Area} from 'organization/Event/AreasProvider'
 import {RoomAssignment} from 'organization/Event/AttendeeManagement/AssignmentsDialog/RoomSelect'
 import styled from 'styled-components'
 import {Hidden} from '@material-ui/core'
+import Heading3 from 'lib/ui/typography/Heading3'
 
 /**
  * attendees: an array of attendees
@@ -82,17 +83,17 @@ export default function Attendees(props: AttendeesProps) {
       <Grid item xs={smGridSize} md={mdGridSize}>
         <NameBox>
           <AccordionSummary>
-            <SubHead>Name</SubHead>
+            <Heading3>Name</Heading3>
           </AccordionSummary>
         </NameBox>
       </Grid>
       <Grid item xs={smGridSize} md={mdGridSize}>
         {props.attendees.map((attendee, index) => (
-          <Accordion key={index} id={`${attendee.id}`} expanded={false}>
-            <AccordionSummary>
-              <SubHead>
+          <Accordion key={index} id={`${attendee.id}`}>
+            <AccordionSummary expandedIconName="menu">
+              <Heading3>
                 {attendee.first_name} {attendee.last_name}
-              </SubHead>
+              </Heading3>
             </AccordionSummary>
             <AccordionDetails>
               <AttendeeDetail

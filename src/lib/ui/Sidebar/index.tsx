@@ -133,8 +133,8 @@ function MenuIconButton(props: {
       variant="contained"
       color="light"
       disableBorderRadius
+      startIcon={<Icon className="fas fa-compress-alt" color="#000000" />}
     >
-      <Icon className="fas fa-compress-alt" color="#000000" />
       Collapse
     </Button>
   )

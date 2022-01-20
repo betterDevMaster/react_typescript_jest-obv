@@ -1,6 +1,7 @@
 import {colors} from 'lib/ui/theme'
 import React from 'react'
 import styled from 'styled-components'
+import Box from 'lib/ui/Box'
 
 type ButtonStyles =
   | 'primary'
@@ -29,6 +30,8 @@ export type ButtonProps = {
   borderWidth?: number
   disableBorderRadius?: boolean
   disablePadding?: boolean
+  startIcon?: React.ReactNode
+  endIcon?: React.ReactNode
   onClick?: () => void
   'aria-label'?: string
 }
@@ -52,7 +55,9 @@ export default function Button(props: ButtonProps) {
       disablePadding={props.disablePadding}
       hasBorder={hasBorder(props)}
     >
+      <IconBox isStartIcon={true}>{props.startIcon}</IconBox>
       {props.children}
+      <IconBox isStartIcon={false}>{props.endIcon}</IconBox>
     </StyledButton>
   )
 }
@@ -163,6 +168,7 @@ type StyleProps = {
 }
 
 const StyledButton = styled.button<StyleProps>`
+  display: inline-flex;
   padding: ${(props) =>
     props.disablePadding
       ? 'unset'
@@ -174,6 +180,7 @@ const StyledButton = styled.button<StyleProps>`
   width: ${(props) => (props.fullWidth ? '100%' : props.width)};
   border-radius: ${(props) => (props.disableBorderRadius ? '0px' : '4px')};
   font-size: ${(props) => props.fontSize}px;
+  justify-content: center;
   &:hover {
     cursor: pointer;
     filter: brightness(0.95);
@@ -186,3 +193,13 @@ const StyledButton = styled.button<StyleProps>`
     cursor: default;
   }
 `
+
+function IconBox(props: {children?: React.ReactNode; isStartIcon: boolean}) {
+  if (!props.children) {
+    return null
+  }
+  if (!props.isStartIcon) {
+    return <Box pl={1}>{props.children}</Box>
+  }
+  return <Box pr={1}>{props.children}</Box>
+}
