@@ -27,13 +27,19 @@ export default function Permissions(props: {teamMembers: TeamMemberProps[]}) {
       {props.teamMembers.map((teamMember: TeamMemberProps, index: number) => {
         const {name, permissions} = teamMember
 
-        return <Item key={index} teamMember={teamMember} />
+        return (
+          <Item
+            key={index}
+            teamMember={teamMember}
+            last={index === props.teamMembers.length - 1}
+          />
+        )
       })}
     </Table>
   )
 }
 
-const Item = (props: {teamMember: TeamMemberProps}) => {
+const Item = (props: {teamMember: TeamMemberProps; last?: boolean}) => {
   const {name, permissions} = props.teamMember
 
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null)
@@ -75,7 +81,7 @@ const Item = (props: {teamMember: TeamMemberProps}) => {
   }
 
   return (
-    <Tr>
+    <Tr last={props.last}>
       <Td first>
         <Label>{name}</Label>
       </Td>
@@ -100,12 +106,16 @@ const Table = styled.div`
   min-width: 500px;
   display: flex;
   flex-direction: column;
-  gap: 1px;
-`
-
-const Tr = styled.div`
   border: 1px solid #dfdfdf;
   border-radius: 3px;
+`
+
+type TrProps = {
+  last?: boolean
+}
+
+const Tr = styled.div<TrProps>`
+  border-bottom: ${(props) => (props.last ? 'none' : '1px solid #dfdfdf')};
   display: flex;
   flex-direction: row;
   padding: 16px 12px;
