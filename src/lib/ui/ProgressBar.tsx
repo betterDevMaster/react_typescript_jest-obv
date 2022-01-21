@@ -1,5 +1,5 @@
 import React, {useState} from 'react'
-import {makeStyles, createStyles, Theme} from '@material-ui/core/styles'
+import {makeStyles, createStyles} from '@material-ui/core/styles'
 import LinearProgress, {
   LinearProgressProps,
 } from '@material-ui/core/LinearProgress'
@@ -70,7 +70,7 @@ const StyledLinearProgress = styled(
       }
     }, [props.value])
 
-    const useStylesLinerProgress = makeStyles((theme: Theme) =>
+    const useStylesLinerProgress = makeStyles(() =>
       createStyles({
         root: {
           height: props.thickness,
@@ -88,11 +88,11 @@ const StyledLinearProgress = styled(
     )
     const classes = useStylesLinerProgress()
     const {
-      barColor,
-      backgroundColor,
-      borderRadius,
-      showing,
-      textColor: _,
+      barColor: _1,
+      backgroundColor: _2,
+      borderRadius: _3,
+      showing: _4,
+      textColor: _5,
       ...otherProps
     } = props
     return (
@@ -112,7 +112,7 @@ const StyledTypography = styled(
     props: Pick<ProgressBarStyleProps, 'textColor' | 'thickness'> &
       TypographyProps,
   ) => {
-    const {textColor, thickness, ...otherProps} = props
+    const {textColor: _1, thickness: _2, ...otherProps} = props
     return <Typography {...otherProps} />
   },
 )`

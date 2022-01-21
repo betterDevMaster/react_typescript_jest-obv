@@ -45,7 +45,7 @@ it('should remove a language', async () => {
   fireEvent.mouseDown(await findByLabelText('language select'))
   user.click(await findByText(target))
 
-  const {[target]: removedTranslation, ...otherTranslations} = translations
+  const {[target]: _, ...otherTranslations} = translations
 
   const removed = {
     ...event,

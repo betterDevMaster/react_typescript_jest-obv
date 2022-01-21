@@ -7,7 +7,7 @@ import {useEditMode} from 'Event/Dashboard/editor/state/edit-mode'
 import {AbsoluteLink} from 'lib/ui/link/AbsoluteLink'
 import {useWithAttendeeData} from 'Event/auth/attendee-data'
 import {useAttendeeVariables} from 'Event'
-import {Agenda} from 'Event/template/SimpleBlog/Dashboard/Sidebar/SidebarItem/AgendaList'
+import {AgendaSettings} from 'Event/template/SimpleBlog/Dashboard/Sidebar/SidebarItem/AgendaList'
 import {Draggable} from 'react-beautiful-dnd'
 import {DragHandle, DraggableOverlay} from 'lib/ui/drag-and-drop'
 import {useSimpleBlogTemplate} from 'Event/template/SimpleBlog'
@@ -16,7 +16,7 @@ import {AgendaItemConfig} from 'Event/template/SimpleBlog/Dashboard/Sidebar/Side
 import {useLocalization} from 'lib/LocalizationProvider'
 
 export default function AgendaItem(props: {
-  agenda: Agenda
+  agenda: AgendaSettings
   id: string
   index: number
 }) {
@@ -70,7 +70,7 @@ const Box = styled.div`
   margin-bottom: ${(props) => props.theme.spacing[3]};
 `
 
-function Times(props: {agenda: Agenda}) {
+function Times(props: {agenda: AgendaSettings}) {
   const start = moment(props.agenda.startDate)
   const getMonth = (date: moment.Moment) => date.format('MMMM')
   const getDay = (date: moment.Moment) => date.format('Do')
@@ -133,7 +133,7 @@ function Times(props: {agenda: Agenda}) {
   )
 }
 
-function Event(props: {agenda: Agenda}) {
+function Event(props: {agenda: AgendaSettings}) {
   const template = useSimpleBlogTemplate()
   const {sidebar} = template
   const withAttendeeData = useWithAttendeeData()

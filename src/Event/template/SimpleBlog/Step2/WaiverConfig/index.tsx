@@ -147,7 +147,7 @@ export default function WaiverConfig() {
         setResponseError(null)
         dispatch(setEvent(event))
       })
-      .then((event) => {
+      .then(() => {
         updateTemplate({
           waiver: template,
         })

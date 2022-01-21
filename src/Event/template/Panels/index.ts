@@ -1,7 +1,7 @@
 import {GridSize, GridSpacing} from '@material-ui/core/Grid'
 import {EmojiList} from 'Event/template/Panels/Dashboard/EmojiList'
 import {NavButtonWithSize} from 'Event/Dashboard/components/NavButton'
-import {ResourceList} from 'Event/template/Panels/Dashboard/Resources/ResourceList'
+import {ResourceListSettings} from 'Event/template/Panels/Dashboard/Resources/ResourceList'
 import {BaseTemplate, BASE_DEFAULTS} from 'Event/template'
 import {EntityList, HashMap} from 'lib/list'
 import {Column} from 'lib/ui/layout'
@@ -9,8 +9,8 @@ import {useTemplate} from 'Event/TemplateProvider'
 import {BlogPost} from 'Event/Dashboard/components/BlogPosts'
 import {colors} from 'lib/ui/theme'
 import {DeepRequired} from 'lib/type-utils'
-import {TicketRibbon} from 'Event/template/Panels/Dashboard/TicketRibbonList/TicketRibbon'
-import {CountDownTimer} from 'Event/Dashboard/components/CountDownTimer'
+import {TicketRibbon} from 'Event/template/Panels/Dashboard/TicketRibbonList/Ribbon'
+import {CountDownTimerSettings} from 'Event/Dashboard/components/CountDownTimer'
 import {useTemplateUpdate} from 'Event/TemplateUpdateProvider'
 
 export const PANELS = 'Panels'
@@ -90,7 +90,7 @@ export type Panels = BaseTemplate & {
   }
   points_unit: string
   blogPosts: HashMap<BlogPost>
-  resourceList: ResourceList
+  resourceList: ResourceListSettings
   menuIconColor: string
   isDarkMode?: boolean
   background?: {
@@ -227,7 +227,7 @@ export type Panels = BaseTemplate & {
     redirectUrl: string
     shouldRedirect: boolean
   }
-  countDownTimers?: HashMap<CountDownTimer>
+  countDownTimers?: HashMap<CountDownTimerSettings>
   imageWaterfall?: {
     title?: string
     menuTitle?: string

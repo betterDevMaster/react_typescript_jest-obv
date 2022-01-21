@@ -142,7 +142,7 @@ export default function WaiverConfig() {
         setResponseError(null)
         setEvent(event)
       })
-      .then((event) => {
+      .then(() => {
         updateTemplate({
           waiver: template,
         })

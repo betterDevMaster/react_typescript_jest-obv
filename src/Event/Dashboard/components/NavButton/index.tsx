@@ -23,11 +23,11 @@ import {Ordered} from 'lib/list'
 
 export const NAV_BUTTON = 'NAV_BUTTON'
 
-export default interface NavButtonAreaConfig {
+export interface NavButtonAreaConfig {
   areaId: string | null
 }
 
-export default interface NavButton extends HasRules, Publishable, Ordered {
+export interface NavButtonProps extends HasRules, Publishable, Ordered {
   text: string
   link: string
   backgroundColor?: string
@@ -57,7 +57,7 @@ export default interface NavButton extends HasRules, Publishable, Ordered {
   zapierTag: ZapierTag | null
 }
 
-export type NavButtonWithSize = NavButton & {
+export type NavButtonWithSize = NavButtonProps & {
   size: Column
   newLine?: boolean
 }
@@ -65,7 +65,7 @@ export const DEFAULT_BUTTON_HEIGHT = 64
 export const DEFAULT_FONT_SIZE = 29
 const DEFAULT_ICON_COLOR = '#ffffff'
 
-export default function NavButton(props: NavButton) {
+export default function NavButton(props: NavButtonProps) {
   const {newTab, isAreaButton, isImageUpload} = props
   const submitAction = useSubmitAction(props.actionId)
   const addInfusionsoftTag = useAddInfusionsoftTag()
@@ -135,7 +135,7 @@ export default function NavButton(props: NavButton) {
   )
 }
 
-function useSubmitAction(actionKey: NavButton['actionId']) {
+function useSubmitAction(actionKey: NavButtonProps['actionId']) {
   const actionsList = useActions()
   const {submit} = usePoints()
 
@@ -154,7 +154,7 @@ function useSubmitAction(actionKey: NavButton['actionId']) {
 }
 
 function JoinAreaButton(
-  props: NavButton & {
+  props: NavButtonProps & {
     areaId: string
     onJoin: () => void
   },
@@ -174,7 +174,7 @@ export function Button(
     disabled?: boolean
     onClick?: () => void
     isPending?: boolean
-  } & NavButton,
+  } & NavButtonProps,
 ) {
   const opacity = props.isPending ? 0.8 : 1
   const v = useAttendeeVariables()
@@ -246,7 +246,7 @@ const StyledIcon = styled(
       iconSize?: number
     },
   ) => {
-    const {iconSize, ...otherProps} = props
+    const {iconSize: _, ...otherProps} = props
     return <Icon {...otherProps} />
   },
 )`

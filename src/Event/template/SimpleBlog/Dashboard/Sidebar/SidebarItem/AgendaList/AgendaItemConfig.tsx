@@ -4,7 +4,7 @@ import styled from 'styled-components'
 import DangerButton from 'lib/ui/Button/DangerButton'
 import TextField from '@material-ui/core/TextField'
 import Grid from '@material-ui/core/Grid'
-import {Agenda} from 'Event/template/SimpleBlog/Dashboard/Sidebar/SidebarItem/AgendaList'
+import {AgendaSettings} from 'Event/template/SimpleBlog/Dashboard/Sidebar/SidebarItem/AgendaList'
 import {onChangeStringHandler, onChangeCheckedHandler} from 'lib/dom'
 import {MaterialUiPickersDate} from '@material-ui/pickers/typings/date'
 import Switch from 'lib/ui/form/Switch'
@@ -19,7 +19,7 @@ import {useEditSidebarItem} from 'Event/template/SimpleBlog/Dashboard/Sidebar/Si
 
 export function AgendaItemConfig(
   props: {
-    agenda: Agenda
+    agenda: AgendaSettings
     id?: string
   } & ComponentConfigProps,
 ) {
@@ -46,7 +46,7 @@ export function AgendaItemConfig(
     setHasEndDateTimeChange(false)
   }, [agenda, visible])
 
-  const update = (id: string, updated: Agenda) => {
+  const update = (id: string, updated: AgendaSettings) => {
     updateItem({
       items: {
         [id]: updated,
@@ -54,7 +54,7 @@ export function AgendaItemConfig(
     })
   }
 
-  const insert = (item: Agenda) => {
+  const insert = (item: AgendaSettings) => {
     const id = uuid()
 
     updateItem({
@@ -65,7 +65,7 @@ export function AgendaItemConfig(
   }
 
   const save = () => {
-    const data: Agenda = {
+    const data: AgendaSettings = {
       isVisible,
       text,
       startDate,

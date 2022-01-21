@@ -14,7 +14,7 @@ export const ACCEPTED_FILE_TYPES = ['image/*', '.pdf', '.xlsx']
 export const MAX_FILE_SIZE_BYTES = 150000000 // bytes
 export const MAX_NUM_FILES = 1
 
-interface ResourceUpload {
+interface ResourceUploadData {
   file: string
 }
 
@@ -42,7 +42,7 @@ export default function ResourceUpload(props: {
     const url = api(`/events/${event.slug}/resources`)
 
     client
-      .post<ResourceUpload>(url, formData, {
+      .post<ResourceUploadData>(url, formData, {
         headers: {
           'content-type': 'multipart/form-data',
         },

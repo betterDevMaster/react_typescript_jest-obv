@@ -56,7 +56,7 @@ import TemplateConfigRoutes from 'organization/Event/TemplateConfigRoutes'
 import TemplateUpdateProvider from 'Event/TemplateUpdateProvider'
 import DisconnectedDialog from 'organization/Event/DisconnectedDialog'
 
-export type EventRoutes = ReturnType<typeof useEventRoutes>
+export type EventRoutePaths = ReturnType<typeof useEventRoutes>
 
 export function useEventRoutes(event?: ObvioEvent) {
   const {routes: organizationRoutes} = useOrganization()

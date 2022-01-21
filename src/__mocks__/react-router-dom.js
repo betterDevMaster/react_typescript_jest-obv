@@ -5,5 +5,5 @@ module.exports = {
     search: '',
     pathname: '',
   })),
-  useParams: jest.fn(() => router.useParams()), // Still use actual implementation if we're not mocking
+  useParams: jest.fn(router.useParams), // Still use actual implementation if we're not mocking
 }

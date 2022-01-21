@@ -59,7 +59,7 @@ export default function ActionSelect<T extends string | number>(props: {
 }
 
 const StyledFormControl = styled((props) => {
-  const {disableMargin, ...otherProps} = props
+  const {disableMargin: _, ...otherProps} = props
 
   return <FormControl {...otherProps} />
 })`

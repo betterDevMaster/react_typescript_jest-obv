@@ -3,7 +3,7 @@ import Grid from '@material-ui/core/Grid'
 import styled from 'styled-components'
 import {Draggable, DraggableProvidedDraggableProps} from 'react-beautiful-dnd'
 import CountDownTimer, {
-  CountDownTimer as CountDownTimerConfig,
+  CountDownTimerSettings as CountDownTimerConfig,
 } from 'Event/Dashboard/components/CountDownTimer'
 import {Editable} from 'Event/Dashboard/editor/views/EditComponent'
 import {useEditMode} from 'Event/Dashboard/editor/state/edit-mode'

@@ -23,7 +23,7 @@ export default function LanguageSelect(props: {
     return `${language.name} (Default)`
   }
 
-  const sortedByDefault = [...languages].sort((a, b) => {
+  const sortedByDefault = [...languages].sort((a, _) => {
     if (a.name === defaultLanguage) {
       return -1
     }

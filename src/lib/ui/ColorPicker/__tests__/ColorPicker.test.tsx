@@ -1,4 +1,4 @@
-import {findByText, fireEvent, render} from '@testing-library/react'
+import {fireEvent, render} from '@testing-library/react'
 import ColorPicker from 'lib/ui/ColorPicker'
 import React from 'react'
 

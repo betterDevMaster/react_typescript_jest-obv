@@ -55,7 +55,7 @@ export default function PointsProvider(props: {children: React.ReactElement}) {
           showReceived(action, unit)
           add(action.points)
         })
-        .catch((e) => {
+        .catch(() => {
           /**
            *  Ignore errors as these could be for valid reasons:
            * - Reached limits

@@ -1,15 +1,15 @@
 import {v4 as uuid} from 'uuid'
 import React from 'react'
 import Button from '@material-ui/core/Button'
-import NavButton from 'Event/Dashboard/components/NavButton'
 import {useTemplateUpdate} from 'Event/TemplateUpdateProvider'
+import {NavButtonProps} from 'Event/Dashboard/components/NavButton'
 
 export default function AddBlogPostButtonButton(props: {postId: string}) {
   const {postId} = props
   const update = useTemplateUpdate()
 
   const add = () => {
-    const newButton: NavButton = {
+    const newButton: NavButtonProps = {
       text: 'Button',
       link: '',
       rules: [],

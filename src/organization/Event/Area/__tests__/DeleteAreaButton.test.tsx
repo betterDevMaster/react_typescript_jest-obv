@@ -1,9 +1,6 @@
 import axios from 'axios'
 import user from '@testing-library/user-event'
-import {
-  goToArea,
-  goToAreas,
-} from 'organization/Event/AreaList/__utils__/go-to-areas'
+import {goToAreas} from 'organization/Event/AreaList/__utils__/go-to-areas'
 import {CONFIGURE_EVENTS} from 'organization/PermissionsProvider'
 import {wait} from '@testing-library/react'
 import {fakeArea} from 'organization/Event/AreaList/__utils__/factory'

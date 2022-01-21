@@ -41,6 +41,7 @@ export default function EventSocketProvider(props: {
     event: {slug},
   } = useEvent()
   const echo = useOrganizationEcho()
+
   const refreshEvent = useRefreshEvent()
 
   const {client} = useOrganization()

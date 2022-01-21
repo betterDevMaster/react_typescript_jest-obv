@@ -5,20 +5,21 @@ import {BaseRule, Rule} from 'lib/ui/RulesConfig'
 import RuleComponent from 'lib/ui/RulesConfig/RuleList/SingleRule'
 
 export const NESTED_RULE = 'Nested Rule'
-export type NestedRule = BaseRule & {
+export type NestedRuleConfig = BaseRule & {
   source: typeof NESTED_RULE
   rules: Rule[]
 }
 
 export default function NestedRule(props: {
-  rule: NestedRule
+  rule: NestedRuleConfig
   nestedDeep: number
 }) {
-  const [rules, setRules] = useState(props.rule.rules)
+  const {rule} = props
+  const [rules, setRules] = useState(rule.rules)
 
   useEffect(() => {
-    setRules(rules)
-  }, [props.rule])
+    setRules(rule.rules)
+  }, [rule])
 
   return (
     <>

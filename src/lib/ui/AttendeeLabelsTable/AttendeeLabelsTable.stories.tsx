@@ -1,7 +1,6 @@
 import React from 'react'
 import {ComponentStory, ComponentMeta} from '@storybook/react'
 import AttendeeLabelsTable from 'lib/ui/AttendeeLabelsTable'
-import ThemeProvider from 'lib/ui/theme/ThemeProvider'
 
 export default {
   title: 'Components/AttendeeLabelsTable',

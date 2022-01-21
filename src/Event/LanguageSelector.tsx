@@ -77,7 +77,7 @@ const BottomLeft = styled.div`
 `
 
 const StyledButton = styled((props) => {
-  const {isDarkMode, ...otherProps} = props
+  const {isDarkMode: _, ...otherProps} = props
   return <Button {...otherProps} />
 })<{
   isDarkMode?: boolean

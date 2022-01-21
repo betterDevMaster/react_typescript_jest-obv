@@ -6,7 +6,6 @@ import {PANELS} from 'Event/template/Panels'
 import PanelsSponsorPage from 'Event/template/Panels/Dashboard/Sponsors'
 import {FileLocation} from 'lib/http-client'
 import {EntityList} from 'lib/list'
-import NavButton from 'Event/Dashboard/components/NavButton'
 import {useTrackEventPage} from 'analytics'
 import {Form} from 'organization/Event/FormsProvider'
 import {useTemplate} from 'Event/TemplateProvider'
@@ -15,6 +14,7 @@ import {useSponsors} from 'organization/Event/SponsorsProvider'
 import {EventSponsorsProvider} from 'organization/Event/SponsorsProvider'
 import {CARDS} from 'Event/template/Cards'
 import CardsSponsorPage from 'Event/template/Cards/Sponsors'
+import {NavButtonProps} from 'Event/Dashboard/components/NavButton'
 
 export interface Sponsor {
   id: number
@@ -23,11 +23,11 @@ export interface Sponsor {
   description: string
   form: Form | null
   settings: null | {
-    buttons?: EntityList<NavButton>
+    buttons?: EntityList<NavButtonProps>
   }
 }
 
-export default function SponsorPage(props: {isEditMode?: boolean}) {
+export default function SponsorPage() {
   return (
     <PagePoints page={SPONSORS}>
       <EventSponsorsProvider>

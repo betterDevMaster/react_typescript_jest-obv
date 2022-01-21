@@ -29,7 +29,7 @@ export default function Controls(props: ControlsProps) {
         <StyledPagination
           count={props.count}
           page={props.page}
-          onChange={(value) => {}}
+          onChange={() => {}}
         />
       </Content>
     </Container>

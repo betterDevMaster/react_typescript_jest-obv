@@ -16,7 +16,7 @@ afterAll(() => {
   console.error.mockRestore()
 })
 
-it('should save exported leaderboard', async (done) => {
+it('should save exported leaderboard', async () => {
   const csv = faker.random.alphaNumeric(20)
 
   window.URL.createObjectURL = jest.fn()
@@ -34,12 +34,17 @@ it('should save exported leaderboard', async (done) => {
 
   const blob = (window.URL.createObjectURL as jest.Mock).mock.calls[0][0]
 
+  let result: any
+
   // Test that we are downloading returned file contents
   const reader = new FileReader()
   reader.addEventListener('loadend', () => {
-    expect(reader.result).toBe(csv)
-    done()
     // reader.result contains the contents of blob as a typed array
+    result = reader.result
   })
   reader.readAsText(blob)
+
+  await wait(() => {
+    expect(result).toBe(csv)
+  })
 })

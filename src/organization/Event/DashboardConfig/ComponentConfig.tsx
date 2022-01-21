@@ -80,7 +80,7 @@ export const RemoveButton = (props: RemoveButtonProps) => {
 }
 
 const StyledRemoveButton = styled((props: RemoveButtonProps) => {
-  const {showing, ...otherProps} = props
+  const {showing: _, ...otherProps} = props
   return <DangerButton {...otherProps} />
 })`
   ${(props) => (props.showing ? '' : 'display: none;')}

@@ -183,7 +183,12 @@ const LinkText = styled.span<{color: string}>`
 `
 
 const StyledCard = styled((props) => {
-  const {backgroundColor, borderRadius, color, ...otherProps} = props
+  const {
+    backgroundColor: _1,
+    borderRadius: _2,
+    color: _3,
+    ...otherProps
+  } = props
   return <Card {...otherProps} />
 })`
   background-color: ${(props) => props.backgroundColor} !important;

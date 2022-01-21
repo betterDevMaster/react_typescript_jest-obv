@@ -9,7 +9,7 @@ import {useEditMode} from 'Event/Dashboard/editor/state/edit-mode'
 import {withDefaults} from 'lib/object'
 import {DeepRequired} from 'lib/type-utils'
 
-export interface CountDownTimer extends Ordered {
+export interface CountDownTimerSettings extends Ordered {
   enabled: boolean
   end: string
   backgroundColor: string
@@ -23,7 +23,7 @@ export interface CountDownTimer extends Ordered {
   separator: string
 }
 
-export const createCountdown = (): CountDownTimer => ({
+export const createCountdown = (): CountDownTimerSettings => ({
   enabled: true,
   description: '',
   end: inThreeDays(),
@@ -39,17 +39,19 @@ export const createCountdown = (): CountDownTimer => ({
 
 const countDownTimerDefaults = createCountdown()
 
-export function fillCountDownTimerDefaults(timers: HashMap<CountDownTimer>) {
+export function fillCountDownTimerDefaults(
+  timers: HashMap<CountDownTimerSettings>,
+) {
   return Object.entries(timers).reduce((acc, [id, timer]) => {
     acc[id] = withDefaults(
       countDownTimerDefaults,
       timer,
-    ) as DeepRequired<CountDownTimer>
+    ) as DeepRequired<CountDownTimerSettings>
     return acc
-  }, {} as DeepRequired<HashMap<CountDownTimer>>)
+  }, {} as DeepRequired<HashMap<CountDownTimerSettings>>)
 }
 
-type CountDownTimerProps = CountDownTimer & {
+type CountDownTimerProps = CountDownTimerSettings & {
   id: string
   narrow?: boolean
   onRender?: () => void

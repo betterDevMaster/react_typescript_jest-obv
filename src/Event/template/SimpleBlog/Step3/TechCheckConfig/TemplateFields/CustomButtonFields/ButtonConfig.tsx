@@ -2,15 +2,9 @@ import React, {useEffect, useState} from 'react'
 import Box from '@material-ui/core/Box'
 import DangerButton from 'lib/ui/Button/DangerButton'
 import TextField from '@material-ui/core/TextField'
-import {
-  onChangeCheckedHandler,
-  onChangeNumberHandler,
-  onChangeStringHandler,
-} from 'lib/dom'
 import InfusionsoftTagInput from 'organization/Event/DashboardConfig/InfusionsoftTagInput'
 import ColorPicker from 'lib/ui/ColorPicker'
 import {handleChangeSlider} from 'lib/dom'
-import InputLabel from '@material-ui/core/InputLabel'
 import Slider from '@material-ui/core/Slider'
 import {NavButtonWithSize} from 'Event/Dashboard/components/NavButton'
 import {TemplateFieldProps} from 'Event/template/SimpleBlog/Step3/TechCheckConfig/TemplateFields'
@@ -43,13 +37,12 @@ export default function ButtonConfig(
     button: NavButtonWithSize
   },
 ) {
-  const {id, set, buttons, button, onClose, isVisible} = props
+  const {button, onClose, isVisible} = props
 
-  const {register, control, handleSubmit} = useForm()
+  const {register, control} = useForm()
 
   const [isAreaButton, setIsAreaButton] = useState(button.isAreaButton)
   const [isImageUpload, setisImageUpload] = useState(button.isImageUpload)
-  const [areaId, setAreaId] = useState(button.areaId)
   const [link, setLink] = useState(button.link)
   const [page, setPage] = useState(button.page)
   const [newTab, setNewTab] = useState(button.newTab)
@@ -61,7 +54,6 @@ export default function ButtonConfig(
 
     setIsAreaButton(button.isAreaButton)
     setisImageUpload(button.isImageUpload)
-    setAreaId(button.areaId)
     setLink(button.link)
     setPage(button.page)
     setNewTab(button.newTab)

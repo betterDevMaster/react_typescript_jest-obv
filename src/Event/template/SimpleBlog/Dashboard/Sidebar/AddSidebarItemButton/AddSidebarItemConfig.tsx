@@ -3,7 +3,7 @@ import {v4 as uuid} from 'uuid'
 import InputLabel from '@material-ui/core/InputLabel'
 import MenuItem from '@material-ui/core/MenuItem'
 import {EMOJI_LIST} from 'Event/template/Panels/Dashboard/EmojiList'
-import {SidebarItem} from 'Event/template/SimpleBlog/Dashboard/Sidebar/SidebarItem'
+import {SidebarItemProps} from 'Event/template/SimpleBlog/Dashboard/Sidebar/SidebarItem'
 import {
   AGENDA_LIST,
   createAgendaList,
@@ -39,7 +39,7 @@ export default function AddSidebarItemConfig(props: {
   onClose: () => void
 }) {
   const {showing, onClose} = props
-  const [type, setType] = useState<SidebarItem['type'] | null>(null)
+  const [type, setType] = useState<SidebarItemProps['type'] | null>(null)
   const {handleSubmit} = useForm()
   const update = useSimpleBlogUpdate()
 
@@ -101,7 +101,7 @@ export default function AddSidebarItemConfig(props: {
   )
 }
 
-function createItem(type: SidebarItem['type']): SidebarItem {
+function createItem(type: SidebarItemProps['type']): SidebarItemProps {
   switch (type) {
     case AGENDA_LIST:
       return createAgendaList()

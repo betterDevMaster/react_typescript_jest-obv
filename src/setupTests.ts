@@ -4,12 +4,16 @@
 // learn more: https://github.com/testing-library/jest-dom
 import '@testing-library/jest-dom/extend-expect'
 import {setWindowMatchMedia} from '__utils__/media-query'
-import 'jest-canvas-mock'
 import resizeObserver from 'resize-observer-polyfill'
 
 // Always mock echo (sockets in test)
 jest.mock('lib/echo')
 jest.mock('organization/Event/EventSocketNotification')
+
+// Increase timeout to avoid tests failing when running with coverage
+// Have to move to global scope in jest v27.0 due to bug
+// Issue: https://github.com/facebook/jest/issues/11543
+jest.setTimeout(50000)
 
 /**
  * Mock resize observer
@@ -20,8 +24,6 @@ window.ResizeObserver = resizeObserver
 beforeAll(() => {
   // Required to render <Hidden/> components in tests
   setWindowMatchMedia()
-  // Increase timeout to avoid tests failing when running with coverage
-  jest.setTimeout(50000)
 })
 
 beforeEach(() => {

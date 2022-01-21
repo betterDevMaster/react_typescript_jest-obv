@@ -76,10 +76,7 @@ export default function ConfirmDialog(props: {
         <StyledDialogContent>
           <Content>{props.description}</Content>
         </StyledDialogContent>
-        <StyledDialogAction
-          disableSpacing
-          isVertically={props.buttonsDisplay === 'vertically'}
-        >
+        <StyledDialogAction disableSpacing>
           <Box
             display={props.buttonsDisplay === 'vertically' ? 'block' : 'flex'}
           >
@@ -148,7 +145,7 @@ function Content(props: {children: string | React.ReactElement}) {
   return <Typography>{props.children}</Typography>
 }
 
-const StyledDialogAction = styled(DialogActions)<{isVertically: boolean}>`
+const StyledDialogAction = styled(DialogActions)`
   justify-content: center !important;
   background-color: #f1f1f1;
 `

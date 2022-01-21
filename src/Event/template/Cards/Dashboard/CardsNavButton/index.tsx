@@ -1,8 +1,8 @@
-import NavButton from 'Event/Dashboard/components/NavButton'
+import NavButton, {NavButtonProps} from 'Event/Dashboard/components/NavButton'
 import {useCardsTemplate} from 'Event/template/Cards'
 import React from 'react'
 
-export type CardsNavButtonProps = NavButton & {
+export type CardsNavButtonProps = NavButtonProps & {
   row: 1 | 2
 }
 

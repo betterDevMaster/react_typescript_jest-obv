@@ -6,17 +6,17 @@ import EditModeOnly from 'Event/Dashboard/editor/views/EditModeOnly'
 import VisibleOnMatch from 'Event/attendee-rules/VisibleOnMatch'
 import {DragDropContext, Droppable, DropResult} from 'react-beautiful-dnd'
 import {useEditMode} from 'Event/Dashboard/editor/state/edit-mode'
-import NavButton from 'Event/Dashboard/components/NavButton'
 import {HashMap, orderedIdsByPosition, createPositions} from 'lib/list'
 import {RemoveButton} from 'organization/Event/DashboardConfig/ComponentConfig'
 import {useEditSidebarItem} from 'Event/template/Cards/Dashboard/Sidebar/SidebarItem'
 import {useRemoveIfEmpty} from 'Event/TemplateUpdateProvider'
+import {NavButtonProps} from 'Event/Dashboard/components/NavButton'
 
 export const SIDEBAR_NAV = 'Sidebar Nav'
 export type SidebarNavProps = {
   type: typeof SIDEBAR_NAV
   position?: number
-  buttons: HashMap<NavButton>
+  buttons: HashMap<NavButtonProps>
 }
 
 export const createSidebarNav = (): SidebarNavProps => ({

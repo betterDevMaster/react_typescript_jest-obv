@@ -1,7 +1,7 @@
 import {
   RIBBONS,
   TicketRibbon,
-} from 'Event/template/SimpleBlog/Dashboard/Sidebar/SidebarItem/TicketRibbonList/TicketRibbon'
+} from 'Event/template/SimpleBlog/Dashboard/Sidebar/SidebarItem/TicketRibbonList/Ribbon'
 import faker from 'faker'
 
 export const fakeTicketRibbon = (

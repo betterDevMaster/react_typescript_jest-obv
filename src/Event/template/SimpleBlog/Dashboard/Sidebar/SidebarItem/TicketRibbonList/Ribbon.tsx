@@ -99,7 +99,7 @@ export const TICKET_RIBBON_IMAGE: Record<string, string> = {
 export const RIBBONS = Object.keys(TICKET_RIBBON_IMAGE) as TicketRibbonName[]
 export const IMAGES = Object.values(TICKET_RIBBON_IMAGE)
 
-export default function TicketRibbon(props: {
+export default function Ribbon(props: {
   ticketRibbon: TicketRibbon
   id: string
   index: number

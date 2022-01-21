@@ -110,7 +110,7 @@ export default function NewLoginFieldInput(props: {
         options={customFieldTabOptions}
         onChange={onCustomFieldTabChange}
         onOpen={loadCustomFieldTabs}
-        getOptionLabel={(option) => option.name}
+        getOptionLabel={(option) => (option ? option.name : '')}
         noOptionsText={'No results.'}
         closeIcon=""
         getOptionSelected={(option, value) => option.id === value.id}

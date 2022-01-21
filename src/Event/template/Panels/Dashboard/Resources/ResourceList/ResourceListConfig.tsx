@@ -8,7 +8,7 @@ import {handleChangeSlider, onChangeCheckedHandler} from 'lib/dom'
 import ColorPicker from 'lib/ui/ColorPicker'
 import Switch from 'lib/ui/form/Switch'
 import {usePanelsTemplate, usePanelsUpdate} from 'Event/template/Panels'
-import {ResourceList} from 'Event/template/Panels/Dashboard/Resources/ResourceList'
+import {ResourceListSettings} from 'Event/template/Panels/Dashboard/Resources/ResourceList'
 import ComponentConfig, {
   SaveButton,
 } from 'organization/Event/DashboardConfig/ComponentConfig'
@@ -24,7 +24,7 @@ export default function ResourceListConfig(props: {
 
   const submit = (
     data: Pick<
-      ResourceList,
+      ResourceListSettings,
       | 'isVisible'
       | 'title'
       | 'menuTitle'

@@ -214,8 +214,8 @@ export default function LeaderboardConfig(props: ComponentConfigProps) {
 
 const StyledSnackerBar = styled(
   ({
-    color,
-    backgroundColor,
+    color: _1,
+    backgroundColor: _2,
     ...otherProps
   }: {
     color: string

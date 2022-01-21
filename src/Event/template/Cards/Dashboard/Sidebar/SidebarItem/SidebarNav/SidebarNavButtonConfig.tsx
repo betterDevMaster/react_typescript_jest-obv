@@ -10,7 +10,8 @@ import Grid from '@material-ui/core/Grid'
 import InfusionsoftTagInput from 'organization/Event/DashboardConfig/InfusionsoftTagInput'
 import ColorPicker from 'lib/ui/ColorPicker'
 import TargetConfig from 'Event/Dashboard/components/NavButton/NavButtonConfig/TargetConfig'
-import NavButton, {
+import {
+  NavButtonProps,
   DEFAULT_FONT_SIZE,
 } from 'Event/Dashboard/components/NavButton'
 import ActionSelect from 'Event/ActionsProvider/ActionSelect'
@@ -34,7 +35,7 @@ const MAX_BORDER_RADIUS = 50
 
 export function SidebarNavButtonConfig(
   props: ComponentConfigProps & {
-    button: NavButton
+    button: NavButtonProps
     id?: string
   },
 ) {
@@ -70,7 +71,7 @@ export function SidebarNavButtonConfig(
 
   const {register, control, handleSubmit} = useForm()
 
-  const update = (id: string, updated: NavButton) => {
+  const update = (id: string, updated: NavButtonProps) => {
     updateItem({
       buttons: {
         [id]: updated,
@@ -93,7 +94,7 @@ export function SidebarNavButtonConfig(
 
   useRemoveIfEmpty(removeButton, button, {shouldSkip: !id})
 
-  const insert = (button: NavButton) => {
+  const insert = (button: NavButtonProps) => {
     const id = uuid()
 
     updateItem({
@@ -104,7 +105,7 @@ export function SidebarNavButtonConfig(
   }
 
   const save = (formData: any) => {
-    const button: NavButton = {
+    const button: NavButtonProps = {
       ...formData,
       rules,
       isAreaButton,

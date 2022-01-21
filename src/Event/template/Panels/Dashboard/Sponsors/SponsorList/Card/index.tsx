@@ -118,7 +118,7 @@ const StyledGrid = styled.div`
 `
 
 const Box = styled((props) => {
-  const {backgroundColor, ...otherProps} = props
+  const {backgroundColor: _, ...otherProps} = props
   return <div {...otherProps} />
 })<{backgroundColor: string}>`
   height: 100%;

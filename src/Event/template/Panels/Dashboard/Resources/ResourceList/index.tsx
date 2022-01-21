@@ -19,7 +19,7 @@ import ResourceItem from 'Event/template/Panels/Dashboard/Resources/ResourceList
 import AddResourceButton from 'Event/template/Panels/Dashboard/Resources/ResourceList/AddResourceButton'
 import ResourceListConfig from 'Event/template/Panels/Dashboard/Resources/ResourceList/ResourceListConfig'
 
-export interface ResourceList {
+export interface ResourceListSettings {
   title: string
   resources: Resource[]
   cardBackgroundColor?: string

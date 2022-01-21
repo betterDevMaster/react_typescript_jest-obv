@@ -130,7 +130,7 @@ function WaiverOnly() {
    * knowing the data type, so we'll have to
    * use 'any' data here.
    */
-  const submit = (data: any) => {
+  const submit = () => {
     if (submitting) {
       return
     }
@@ -189,12 +189,12 @@ function SubmitButton(props: {canSubmit: boolean}) {
 
 const StyledButton = styled(
   ({
-    textColor,
-    backgroundColor,
-    backgroundHoverColor,
-    borderRadius,
-    borderColor,
-    borderWidth,
+    textColor: _1,
+    backgroundColor: _2,
+    backgroundHoverColor: _3,
+    borderRadius: _4,
+    borderColor: _5,
+    borderWidth: _6,
     ...otherProps
   }: ButtonProps & {
     textColor: string

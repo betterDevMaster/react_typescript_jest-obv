@@ -119,7 +119,7 @@ export default function NameAppendageListTable(props: {
                   <TableCell align="center">{/* Actions */}</TableCell>
                   <TableCell align="center">{/* Actions */}</TableCell>
                 </TableRow>
-                {nameAppendages.map((value, index) => (
+                {props.nameAppendages.map((value, index) => (
                   <SortableItem
                     key={`item-${value.id}`}
                     index={index}

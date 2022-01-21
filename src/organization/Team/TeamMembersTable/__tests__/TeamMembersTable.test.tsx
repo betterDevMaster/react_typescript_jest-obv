@@ -32,9 +32,7 @@ it('should remove a team member', async () => {
     fakeTeamMember,
   )
 
-  const {findByText, findByLabelText, findAllByLabelText, queryByText} = render(
-    <App />,
-  )
+  const {findByLabelText, findAllByLabelText, queryByText} = render(<App />)
 
   expect(await findByLabelText('team link')).toBeInTheDocument()
 

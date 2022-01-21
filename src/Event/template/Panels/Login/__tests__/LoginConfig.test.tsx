@@ -1,7 +1,6 @@
 import {fakeEvent} from 'Event/__utils__/factory'
 import {goToLoginPageConfig} from 'organization/Event/Page/__utils__/go-to-login-page-config'
 import user from '@testing-library/user-event'
-import faker from 'faker'
 import {wait} from '@testing-library/react'
 import {CONFIGURE_EVENTS} from 'organization/PermissionsProvider'
 import {fakePanels} from 'Event/template/Panels/__utils__/factory'

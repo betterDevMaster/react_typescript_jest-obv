@@ -1,7 +1,7 @@
 import AddTicketRibbonButton from 'Event/template/SimpleBlog/Dashboard/Sidebar/SidebarItem/TicketRibbonList/TicketRibbonConfig/AddTicketRibbonButton'
 import TicketRibbonItem, {
   TicketRibbon,
-} from 'Event/template/SimpleBlog/Dashboard/Sidebar/SidebarItem/TicketRibbonList/TicketRibbon'
+} from 'Event/template/SimpleBlog/Dashboard/Sidebar/SidebarItem/TicketRibbonList/Ribbon'
 import React from 'react'
 import styled from 'styled-components'
 import {useEditMode} from 'Event/Dashboard/editor/state/edit-mode'

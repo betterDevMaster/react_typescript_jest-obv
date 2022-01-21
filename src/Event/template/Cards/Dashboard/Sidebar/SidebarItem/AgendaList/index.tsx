@@ -7,7 +7,7 @@ import EditModeOnly from 'Event/Dashboard/editor/views/EditModeOnly'
 import AddAgendaButton from 'Event/template/Cards/Dashboard/Sidebar/SidebarItem/AgendaList/AddAgendaButton'
 import {useEditMode} from 'Event/Dashboard/editor/state/edit-mode'
 import {useAttendeeVariables} from 'Event'
-import Agenda from 'Event/template/Cards/Dashboard/Sidebar/SidebarItem/AgendaList/AgendaItem'
+import AgendaItem from 'Event/template/Cards/Dashboard/Sidebar/SidebarItem/AgendaList/AgendaItem'
 import {DragDropContext, Droppable, DropResult} from 'react-beautiful-dnd'
 import StyledText from 'lib/ui/typography/StyledText'
 import {useCardsTemplate} from 'Event/template/Cards'
@@ -153,7 +153,7 @@ function AgendaItemList(props: AgendaListProps) {
   return (
     <>
       {ids.map((id, index: number) => (
-        <Agenda
+        <AgendaItem
           id={id}
           key={id}
           agenda={items[id]}

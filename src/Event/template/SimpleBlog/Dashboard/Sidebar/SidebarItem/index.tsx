@@ -32,7 +32,7 @@ import {useEditMode} from 'Event/Dashboard/editor/state/edit-mode'
 import {REMOVE} from 'Event/TemplateUpdateProvider'
 import {DeepPartialSubstitute} from 'lib/type-utils'
 
-export type SidebarItem =
+export type SidebarItemProps =
   | AgendaListProps
   | ResourceListProps
   | EmojiListProps
@@ -41,7 +41,7 @@ export type SidebarItem =
   | SidebarNavProps
 
 type SidebarItemContextProps = {
-  update: (data: DeepPartialSubstitute<SidebarItem, typeof REMOVE>) => void
+  update: (data: DeepPartialSubstitute<SidebarItemProps, typeof REMOVE>) => void
   remove: () => void
 }
 
@@ -50,7 +50,7 @@ const SidebarItemContext = React.createContext<
 >(undefined)
 
 export default function SidebarItem(
-  props: SidebarItem & {id: string; index: number},
+  props: SidebarItemProps & {id: string; index: number},
 ) {
   const isEditMode = useEditMode()
   if (!isEditMode) {
@@ -73,12 +73,12 @@ export default function SidebarItem(
   )
 }
 
-function Editable(props: SidebarItem & {id: string}) {
+function Editable(props: SidebarItemProps & {id: string}) {
   const {id} = props
   const updateTemplate = useSimpleBlogUpdate()
 
   const update = useCallback(
-    (updated: DeepPartialSubstitute<SidebarItem, typeof REMOVE>) => {
+    (updated: DeepPartialSubstitute<SidebarItemProps, typeof REMOVE>) => {
       updateTemplate({
         sidebarItems: {
           [id]: updated,
@@ -103,7 +103,7 @@ function Editable(props: SidebarItem & {id: string}) {
   )
 }
 
-function Item(props: SidebarItem) {
+function Item(props: SidebarItemProps) {
   switch (props.type) {
     case AGENDA_LIST:
       return <AgendaList {...props} />

@@ -18,7 +18,7 @@ export interface Asset {
  * @param file
  * @returns
  */
-export function useUploadAsset<T>(
+export function useUploadAsset(
   onUpload: (asset: Asset) => void,
   onRemove: () => void,
   file: FileSelect,

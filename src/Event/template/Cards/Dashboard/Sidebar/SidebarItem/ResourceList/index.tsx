@@ -74,7 +74,7 @@ export function ResourceList(props: ResourceListProps) {
           onClose={toggleConfig}
           list={props}
         />
-        <RemoveResourcesButton {...props} />
+        <RemoveResourcesButton />
       </EditModeOnly>
       <Editable onEdit={toggleConfig}>
         <Heading aria-label="resources">{v(title)}</Heading>
@@ -90,7 +90,7 @@ export function ResourceList(props: ResourceListProps) {
   )
 }
 
-function RemoveResourcesButton(props: ResourceListProps) {
+function RemoveResourcesButton() {
   const {remove: removeItem} = useEditSidebarItem()
 
   return (

@@ -21,7 +21,6 @@ export default function SidebarLink(props: SidebarLinkProps) {
   const {
     icon,
     children,
-    link,
     nested,
     onClick,
     label,
@@ -31,7 +30,7 @@ export default function SidebarLink(props: SidebarLinkProps) {
 
   const [isOpen, setIsOpen] = useState(false)
 
-  const toggleCollapse = (e: any) => {
+  const toggleCollapse = () => {
     setIsOpen(!isOpen)
   }
 

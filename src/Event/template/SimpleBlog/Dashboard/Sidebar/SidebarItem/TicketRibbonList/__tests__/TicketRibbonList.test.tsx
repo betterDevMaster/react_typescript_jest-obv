@@ -4,7 +4,7 @@ import {inputElementFor} from '__utils__/render'
 import {
   BLACK_RIBBON,
   RIBBONS,
-} from 'Event/template/SimpleBlog/Dashboard/Sidebar/SidebarItem/TicketRibbonList/TicketRibbon'
+} from 'Event/template/SimpleBlog/Dashboard/Sidebar/SidebarItem/TicketRibbonList/Ribbon'
 import {fireEvent} from '@testing-library/dom'
 import {fakeEvent} from 'Event/__utils__/factory'
 import {fakeTicketRibbon} from 'Event/template/SimpleBlog/Dashboard/Sidebar/SidebarItem/TicketRibbonList/__utils__/factory'

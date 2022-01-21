@@ -145,7 +145,7 @@ function useRemoveLanguage() {
         return translations
       }
 
-      const {[language]: removed, ...otherTranslations} = translations
+      const {[language]: _, ...otherTranslations} = translations
       return otherTranslations
     }
 

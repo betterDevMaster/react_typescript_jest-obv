@@ -45,7 +45,7 @@ export default function AddForm() {
           <Select
             label="Pick an action for points"
             fullWidth
-            onChange={(v) => {}}
+            onChange={() => {}}
           >
             <Option value={0}>None</Option>
           </Select>

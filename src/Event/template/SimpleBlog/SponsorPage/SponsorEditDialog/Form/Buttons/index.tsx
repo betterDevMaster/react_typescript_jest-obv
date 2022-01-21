@@ -5,15 +5,15 @@ import {createEntityList} from 'lib/list'
 import {useEffect, useState} from 'react'
 import Box from '@material-ui/core/Box'
 import InputLabel from '@material-ui/core/InputLabel'
-import NavButton from 'Event/Dashboard/components/NavButton'
+import NavButton, {NavButtonProps} from 'Event/Dashboard/components/NavButton'
 import {v4 as uid} from 'uuid'
 import {EditComponentOverlay} from 'Event/Dashboard/editor/views/EditComponent'
 import AddButton from 'Event/template/SimpleBlog/SponsorPage/SponsorEditDialog/Form/Buttons/AddButton'
 
-type Buttons = NonNullable<NonNullable<Sponsor['settings']>['buttons']>
+type SponsorButtons = NonNullable<NonNullable<Sponsor['settings']>['buttons']>
 
 export default function Buttons(props: {
-  buttons: Buttons
+  buttons: SponsorButtons
   edit: ReturnType<typeof useButtons>['edit']
   onAdd: ReturnType<typeof useButtons>['add']
   duplicate: ReturnType<typeof useButtons>['duplicate']
@@ -42,7 +42,7 @@ export default function Buttons(props: {
 }
 
 function ButtonList(props: {
-  buttons: Buttons
+  buttons: SponsorButtons
   edit: ReturnType<typeof useButtons>['edit']
   duplicate: ReturnType<typeof useButtons>['duplicate']
 }) {
@@ -71,7 +71,7 @@ function ButtonList(props: {
 }
 
 export function useButtons(sponsor: Sponsor) {
-  const [buttons, setButtons] = useState<Buttons>(createEntityList([]))
+  const [buttons, setButtons] = useState<SponsorButtons>(createEntityList([]))
   const [loading, setLoading] = useState(true)
   const [editingId, setEditingId] = useState<string | null>(null)
 
@@ -84,7 +84,7 @@ export function useButtons(sponsor: Sponsor) {
     setLoading(false)
   }, [sponsor])
 
-  const add = (button: NavButton) => {
+  const add = (button: NavButtonProps) => {
     const id = uid()
     const ids = [...buttons.ids, id]
     const entities = {
@@ -111,14 +111,14 @@ export function useButtons(sponsor: Sponsor) {
       return
     }
 
-    const {[editingId]: target, ...otherEntities} = buttons.entities
+    const {[editingId]: _, ...otherEntities} = buttons.entities
     const otherIds = buttons.ids.filter((i) => i !== editingId)
 
     setButtons({ids: otherIds, entities: otherEntities})
     stopEdit()
   }
 
-  const update = (button: NavButton) => {
+  const update = (button: NavButtonProps) => {
     if (!editingId) {
       throw new Error(
         `'editingId' not set; was update called outside of ButtonConfig?`,

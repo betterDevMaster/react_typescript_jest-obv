@@ -33,7 +33,7 @@ export default function PointConfigAction(props: PointConfigActionProps) {
         <ConfigFlexBox>
           <Left>
             <StyledLabel>Platform Action</StyledLabel>
-            <Select fullWidth onChange={(v) => {}}>
+            <Select fullWidth onChange={() => {}}>
               {actions.map((action) => (
                 <Option>{action.action}</Option>
               ))}
@@ -49,28 +49,20 @@ export default function PointConfigAction(props: PointConfigActionProps) {
           <CounterButtons
             current={pointsEarned}
             hasBorder
-            onChange={(v) => {}}
+            onChange={() => {}}
           />
         </ConfigBox>
         <ConfigBox>
           <ConfigLabel>Max per day</ConfigLabel>
-          <CounterButtons current={maxPerDay} hasBorder onChange={(v) => {}} />
+          <CounterButtons current={maxPerDay} hasBorder onChange={() => {}} />
         </ConfigBox>
         <ConfigBox>
           <ConfigLabel>Max per event</ConfigLabel>
-          <CounterButtons
-            current={maxPerEvent}
-            hasBorder
-            onChange={(v) => {}}
-          />
+          <CounterButtons current={maxPerEvent} hasBorder onChange={() => {}} />
         </ConfigBox>
         <ConfigBox>
           <ConfigLabel>Min interval (Minutes)</ConfigLabel>
-          <CounterButtons
-            current={minInterval}
-            hasBorder
-            onChange={(v) => {}}
-          />
+          <CounterButtons current={minInterval} hasBorder onChange={() => {}} />
         </ConfigBox>
       </StyledAccordionDetails>
     </Accordion>

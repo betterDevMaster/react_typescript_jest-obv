@@ -1,14 +1,12 @@
 import {fakeTeamMember} from 'organization/Team/__utils__/factory'
 import user from '@testing-library/user-event'
 import axios from 'axios'
-import {signInToObvio} from 'obvio/__utils__/sign-in-to-obvio'
 import {useLocation} from 'react-router-dom'
 import {fakePaymentMethod, fakePlan} from 'obvio/Billing/__utils__/factory'
 import {TeamMember} from 'auth/user'
 import {PlanName} from 'obvio/Billing/plans'
 import {goToBillingSettings} from 'obvio/Billing/__utils__/go-to-billing-settings'
 
-const mockGet = axios.get as jest.Mock
 const mockPut = axios.put as jest.Mock
 const mockUseLocation = useLocation as jest.Mock
 

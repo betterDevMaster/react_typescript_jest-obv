@@ -14,7 +14,7 @@ import logo from 'assets/images/logo.png'
 import {RelativeLink} from 'lib/ui/link/RelativeLink'
 
 export default function AppBarV4() {
-  const useStyles = makeStyles((theme) => ({
+  const useStyles = makeStyles(() => ({
     root: {
       backgroundColor: '#ffffff',
     },

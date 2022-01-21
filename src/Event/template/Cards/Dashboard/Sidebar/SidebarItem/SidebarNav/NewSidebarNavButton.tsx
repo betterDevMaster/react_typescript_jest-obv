@@ -1,9 +1,9 @@
 import Button from '@material-ui/core/Button'
-import NavButton from 'Event/Dashboard/components/NavButton'
 import {useEditMode} from 'Event/Dashboard/editor/state/edit-mode'
 import React from 'react'
 import {v4 as uid} from 'uuid'
 import {useEditSidebarItem} from 'Event/template/Cards/Dashboard/Sidebar/SidebarItem'
+import {NavButtonProps} from 'Event/Dashboard/components/NavButton'
 
 export default function NewSidebarNavButton(props: {className?: string}) {
   const isEditMode = useEditMode()
@@ -15,7 +15,7 @@ export default function NewSidebarNavButton(props: {className?: string}) {
 
   const addButton = () => {
     const id = uid()
-    const button: NavButton = {
+    const button: NavButtonProps = {
       text: 'Button',
       link: '',
       rules: [],

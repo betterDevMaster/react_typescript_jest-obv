@@ -140,7 +140,7 @@ export default function Area() {
             </div>
           </Box>
           <NameField />
-          <DeleteAreaButton onError={setError} clearError={clearError} />
+          <DeleteAreaButton />
           <HasPermission permission={CONFIGURE_EVENTS}>
             <>
               <Box>

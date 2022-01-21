@@ -24,4 +24,4 @@ export const createChannel = () => {
   return channel
 }
 
-export const createPrivate = jest.fn(() => createChannel())
+export const createPrivate = jest.fn(createChannel)

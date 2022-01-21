@@ -86,7 +86,7 @@ export default function Select(props: FieldProps) {
 }
 
 const StyledInputLabel = styled((props) => {
-  const {color, ...otherProps} = props
+  const {color: _, ...otherProps} = props
 
   return <InputLabel {...otherProps} />
 })`

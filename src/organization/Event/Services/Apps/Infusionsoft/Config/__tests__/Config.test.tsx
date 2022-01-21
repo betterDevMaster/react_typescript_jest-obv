@@ -11,10 +11,8 @@ import user from '@testing-library/user-event'
 import axios from 'axios'
 import {hideConsoleWarnings} from 'setupTests'
 import {ajax} from 'rxjs/ajax'
-import {of} from 'rxjs'
 
 const mockPut = axios.put as jest.Mock
-const mockPost = axios.post as jest.Mock
 const mockRxGet = ajax.get as jest.Mock
 
 jest.mock('rxjs/ajax')

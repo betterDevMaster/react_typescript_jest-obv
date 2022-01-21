@@ -29,7 +29,7 @@ it('should set sponsor page settings', async () => {
       name: 'existingicon.png',
     },
   })
-  const {findByText, findByLabelText} = await goToSponsorConfig({
+  const {findByLabelText} = await goToSponsorConfig({
     event,
     userPermissions: [CONFIGURE_EVENTS],
     sponsors,

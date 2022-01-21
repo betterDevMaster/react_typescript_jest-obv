@@ -71,7 +71,7 @@ export default function CreateEvent(props: CreateEventProps) {
         height={imageHeight}
         processing={imageProcessing}
         autoUpload={imageAutoUpload}
-        onChange={(file) => {}}
+        onChange={() => {}}
       />
       <ImageUploader
         label="Favicon"
@@ -80,7 +80,7 @@ export default function CreateEvent(props: CreateEventProps) {
         height={iconHeight}
         processing={iconProcessing}
         autoUpload={iconAutoUpload}
-        onChange={(file) => {}}
+        onChange={() => {}}
       />
     </Box>
   )

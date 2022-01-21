@@ -1,10 +1,10 @@
 import faker from 'faker'
-import {CountDownTimer} from 'Event/Dashboard/components/CountDownTimer'
+import {CountDownTimerSettings} from 'Event/Dashboard/components/CountDownTimer'
 import {now} from 'lib/date-time'
 
 export const fakeCountDownTimer = (
-  overrides?: Partial<CountDownTimer>,
-): CountDownTimer => {
+  overrides?: Partial<CountDownTimerSettings>,
+): CountDownTimerSettings => {
   return {
     enabled: true,
     description: faker.random.words(3),

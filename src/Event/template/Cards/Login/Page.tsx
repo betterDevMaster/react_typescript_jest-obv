@@ -212,9 +212,13 @@ export function TextField(props: TextFieldProps) {
 }
 
 export const StyledButton = styled(
-  ({color, backgroundColor, borderRadius, hoverColor, ...otherProps}) => (
-    <MuiButton {...otherProps} />
-  ),
+  ({
+    color: _1,
+    backgroundColor: _2,
+    borderRadius: _3,
+    hoverColor: _4,
+    ...otherProps
+  }) => <MuiButton {...otherProps} />,
 )`
   border-radius: ${(props) => props.borderRadius} !important;
   height: 50px;

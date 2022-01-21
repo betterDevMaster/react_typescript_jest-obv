@@ -5,9 +5,7 @@ import axios from 'axios'
 import {fakeTicketRibbon} from 'Event/template/Panels/Dashboard/TicketRibbonList/__utils__/factory'
 import {fakeEvent} from 'Event/__utils__/factory'
 import {fakePanels} from 'Event/template/Panels/__utils__/factory'
-import {clickEdit} from '__utils__/edit'
 import {fakeCustomRibbon} from 'organization/Event/DashboardConfig/TicketRibbonUpload/__utils__/factory'
-import {mockRxJsAjax} from 'store/__utils__/MockStoreProvider'
 
 const mockPost = axios.post as jest.Mock
 const mockDelete = axios.delete as jest.Mock
@@ -25,11 +23,7 @@ it('should add a custom ticket ribbon', async () => {
     }),
   })
 
-  const {
-    findByLabelText,
-    findAllByLabelText,
-    findByText,
-  } = await goToDashboardConfig({
+  const {findByLabelText, findAllByLabelText} = await goToDashboardConfig({
     event,
   })
   window.URL.createObjectURL = jest.fn(() => 'blob://croppedimage')

@@ -15,17 +15,6 @@ import FormControl from '@material-ui/core/FormControl'
 const MIN_SPACE_SIZE = 0
 const MAX_SPACE_SIZE = 10
 
-type UpdateFormData = {
-  title: string
-  description: string
-  backToDashboardText: string
-  backToDashboardTextColor: string
-  speakerImageSize: number
-  speakersSpace: number
-  menuTitle?: string
-  isVisible?: boolean
-}
-
 export default function SpeakerPageConfigForm(props: {onClose: () => void}) {
   const {register, handleSubmit, control} = useForm()
   const [submitting, setSubmitting] = useState(false)

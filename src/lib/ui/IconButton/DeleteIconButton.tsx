@@ -44,7 +44,7 @@ const Box = styled.div`
 `
 
 const StyledSettingsIcon = styled((props: {color: string}) => {
-  const {color, ...otherProps} = props
+  const {color: _, ...otherProps} = props
 
   return <CloseIcon {...otherProps} />
 })`

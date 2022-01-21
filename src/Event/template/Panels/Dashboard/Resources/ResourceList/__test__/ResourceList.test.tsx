@@ -5,7 +5,6 @@ import {fakeResource} from 'Event/template/Panels/Dashboard/Resources/ResourceLi
 import {fireEvent} from '@testing-library/dom'
 import {clickEdit} from '__utils__/edit'
 import {fakeEvent} from 'Event/__utils__/factory'
-import {mockRxJsAjax} from 'store/__utils__/MockStoreProvider'
 import {wait} from '@testing-library/react'
 import axios from 'axios'
 import {goToPanelsConfig} from 'Event/template/Panels/__utils__/go-to-panels-config'

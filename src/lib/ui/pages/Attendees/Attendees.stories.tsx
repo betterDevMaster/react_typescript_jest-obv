@@ -21,8 +21,8 @@ export const Primary = Template.bind({})
 const areas = Array.from({length: 10}, fakeArea)
 const attendees = Array.from({length: 10}, fakeAttendee)
 
-const roomAssignments: RoomAssignment[][] = attendees.map((a, i) => {
-  const attendeeAreas = areas.map((area, index) => {
+const roomAssignments: RoomAssignment[][] = attendees.map((a) => {
+  const attendeeAreas = areas.map((area) => {
     return fakeRoomAssignment({
       area_id: area.id,
       attendee_id: a.id,

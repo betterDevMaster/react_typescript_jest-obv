@@ -20,7 +20,7 @@ export default function UploadDropzone(props: {
     maxSize: MAX_FILE_SIZE_BYTES,
     maxFiles: MAX_NUM_FILES,
   })
-  const {ref, ...rootProps} = getRootProps()
+  const {ref: _, ...rootProps} = getRootProps()
 
   return (
     <PaperDropzone {...rootProps}>

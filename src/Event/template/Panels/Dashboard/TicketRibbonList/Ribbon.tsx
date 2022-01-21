@@ -23,7 +23,7 @@ export type TicketRibbon = HasRules & {
 
 export const LETTER_WIDTH = 32
 
-export default function TicketRibbon(props: {
+export default function Ribbon(props: {
   ticketRibbon: DeepRequired<TicketRibbon>
   index: number
   className?: string

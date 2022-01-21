@@ -5,7 +5,7 @@ import {v4 as uid} from 'uuid'
 import {HasRules} from 'Event/attendee-rules'
 import {getDiffDatetime, now} from 'lib/date-time'
 import {REMOVE, useTemplateUpdate} from 'Event/TemplateUpdateProvider'
-import NavButton from 'Event/Dashboard/components/NavButton'
+import {NavButtonProps} from 'Event/Dashboard/components/NavButton'
 import {HashMap} from 'lib/list'
 import {withDefaults} from 'lib/object'
 import {DeepRequired} from 'lib/type-utils'
@@ -31,7 +31,7 @@ export type BlogPost = Publishable &
     isModalForm?: boolean
     modalButtonText?: string
     hideDate?: boolean
-    buttons: HashMap<NavButton>
+    buttons: HashMap<NavButtonProps>
     attachment?: BlogPostAttachment
     buttonsPosition?: 'flex-right' | 'center' | 'flex-end'
     buttonsWidth?: number
@@ -126,7 +126,7 @@ export function shouldPublish(post: BlogPost) {
 
 export function sortedIdsByDate(posts: Record<string, BlogPost>) {
   return Object.entries(posts)
-    .sort(([aId, aPost], [bId, bPost]) => {
+    .sort(([_aId, aPost], [_bId, bPost]) => {
       const date = (post: BlogPost) => {
         return post.publishAt || post.postedAt
       }

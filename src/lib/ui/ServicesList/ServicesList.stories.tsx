@@ -9,7 +9,7 @@ export default {
   argTypes: {},
 } as ComponentMeta<typeof ServicesList>
 
-const Template: ComponentStory<typeof ServicesList> = (args) => (
+const Template: ComponentStory<typeof ServicesList> = () => (
   <ThemeProvider>
     <ServicesList />
   </ThemeProvider>

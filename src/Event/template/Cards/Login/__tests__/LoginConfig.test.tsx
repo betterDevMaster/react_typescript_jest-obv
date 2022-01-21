@@ -1,6 +1,5 @@
 import {fakeEvent} from 'Event/__utils__/factory'
 import user from '@testing-library/user-event'
-import faker from 'faker'
 import {wait} from '@testing-library/react'
 import {CONFIGURE_EVENTS} from 'organization/PermissionsProvider'
 import {fakeCards} from 'Event/template/Cards/__utils__/factory'

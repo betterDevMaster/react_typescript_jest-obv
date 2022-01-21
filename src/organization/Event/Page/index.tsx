@@ -10,7 +10,7 @@ import {
   OrganizationRoutes,
   useOrganization,
 } from 'organization/OrganizationProvider'
-import {EventRoutes, useEventRoutes} from 'organization/Event/EventRoutes'
+import {EventRoutePaths, useEventRoutes} from 'organization/Event/EventRoutes'
 import {useEvent} from 'Event/EventProvider'
 import {ObvioEvent} from 'Event'
 import Typography from '@material-ui/core/Typography'
@@ -44,7 +44,7 @@ export default function EventPage(props: {
 
 export function rootEventBreadcrumbs(
   organizationRoutes: OrganizationRoutes,
-  eventRoutes: EventRoutes,
+  eventRoutes: EventRoutePaths,
   event: ObvioEvent,
 ) {
   return [

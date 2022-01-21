@@ -8,7 +8,6 @@ import Grid from '@material-ui/core/Grid'
 import InfusionsoftTagInput from 'organization/Event/DashboardConfig/InfusionsoftTagInput'
 import ColorPicker from 'lib/ui/ColorPicker'
 import TargetConfig from 'Event/Dashboard/components/NavButton/NavButtonConfig/TargetConfig'
-import NavButton from 'Event/Dashboard/components/NavButton'
 import ActionSelect from 'Event/ActionsProvider/ActionSelect'
 import BackgroundPicker from 'lib/ui/form/BackgroundPicker'
 import MailchimpTagInput from 'organization/Event/DashboardConfig/MailchimpTagInput'
@@ -23,6 +22,7 @@ import {
   useTemplateUpdate,
 } from 'Event/TemplateUpdateProvider'
 import {v4 as uuid} from 'uuid'
+import {NavButtonProps} from 'Event/Dashboard/components/NavButton'
 
 const MIN_BORDER_WIDTH = 0
 const MAX_BORDER_WIDTH = 50
@@ -37,7 +37,7 @@ export default function BlogPostButtonConfig(props: {
   onClose: () => void
   postId: string
   id?: string
-  button: NavButton
+  button: NavButtonProps
 }) {
   const {button, postId, id, onClose, showing} = props
   const [rules, setRules] = useState(button.rules)
@@ -54,7 +54,7 @@ export default function BlogPostButtonConfig(props: {
   const [page, setPage] = useState(button.page)
   const [newTab, setNewTab] = useState(button.newTab)
 
-  const set = (id: string, button: NavButton) => {
+  const set = (id: string, button: NavButtonProps) => {
     update({
       blogPosts: {
         [postId]: {
@@ -86,8 +86,8 @@ export default function BlogPostButtonConfig(props: {
     shouldSkip: !id,
   })
 
-  const submit = (form: NavButton) => {
-    const data: NavButton = {
+  const submit = (form: NavButtonProps) => {
+    const data: NavButtonProps = {
       ...form,
       isAreaButton,
       isImageUpload,

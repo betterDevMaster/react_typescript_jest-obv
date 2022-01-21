@@ -10,4 +10,7 @@ module.exports = {
     ${head}
     <link rel="stylesheet"  href="/fontawesome/css/all.min.css" />
   `,
+  core: {
+    builder: 'webpack5',
+  },
 }

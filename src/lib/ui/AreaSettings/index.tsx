@@ -1,5 +1,4 @@
 import React from 'react'
-import styled from 'styled-components'
 import Box from '@material-ui/core/Box'
 import Header from './Header'
 import Options from './Options'

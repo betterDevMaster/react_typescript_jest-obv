@@ -2,7 +2,8 @@ import Slider from '@material-ui/core/Slider'
 import {v4 as uuid} from 'uuid'
 import TextField from '@material-ui/core/TextField'
 import Typography from '@material-ui/core/Typography'
-import NavButton, {
+import {
+  NavButtonProps,
   NavButtonWithSize,
   DEFAULT_BUTTON_HEIGHT,
   DEFAULT_FONT_SIZE,
@@ -35,7 +36,7 @@ import {
 } from 'Event/template/SimpleBlog'
 import {REMOVE, useRemoveIfEmpty} from 'Event/TemplateUpdateProvider'
 
-export type ButtonConfigProps<K extends NavButton> = {
+export type ButtonConfigProps<K extends NavButtonProps> = {
   button: K
   update: <T extends keyof K>(key: T) => (value: K[T]) => void
   disablePageSelect?: boolean

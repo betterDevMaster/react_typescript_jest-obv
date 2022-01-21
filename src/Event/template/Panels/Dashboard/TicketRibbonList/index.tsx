@@ -9,9 +9,9 @@ import 'Event/template/Panels/Dashboard/LeftPanel'
 import AddTicketRibbonButton, {
   DEFAULT_TICKET_RIBBON,
 } from 'Event/template/Panels/Dashboard/TicketRibbonList/AddTicketRibbonButton'
-import TicketRibbon, {
+import Ribbon, {
   LETTER_WIDTH,
-} from 'Event/template/Panels/Dashboard/TicketRibbonList/TicketRibbon'
+} from 'Event/template/Panels/Dashboard/TicketRibbonList/Ribbon'
 
 export default function TicketRibbonList() {
   return (
@@ -105,7 +105,7 @@ const StyledAddTicketRibbonButton = styled(AddTicketRibbonButton)`
   justify-content: center;
 `
 
-const StyledTicketRibbon = styled(TicketRibbon)`
+const StyledTicketRibbon = styled(Ribbon)`
   margin-left: 10px;
 `
 

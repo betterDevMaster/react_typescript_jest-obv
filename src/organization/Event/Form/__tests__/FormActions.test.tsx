@@ -6,10 +6,8 @@ import {goToFormsConfig} from 'organization/Event/FormsConfig/__utils__/go-to-fo
 import {fakeForm} from 'organization/Event/FormsProvider/__utils__/factory'
 import {CONFIGURE_EVENTS} from 'organization/PermissionsProvider'
 import {wait} from '@testing-library/dom'
-import {goToForm} from 'organization/Event/Form/__utils__/go-to-form'
 
 const mockDelete = axios.delete as jest.Mock
-const mockGet = axios.get as jest.Mock
 
 beforeEach(() => {
   jest.clearAllMocks()

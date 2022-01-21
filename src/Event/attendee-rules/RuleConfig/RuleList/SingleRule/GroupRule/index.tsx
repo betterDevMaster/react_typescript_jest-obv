@@ -11,7 +11,7 @@ export type GroupRule = BaseRule & {
   target: string
 }
 
-export default function GroupRule(props: {rule: GroupRule}) {
+export default function GroupRuleLabel(props: {rule: GroupRule}) {
   return (
     <div>
       {props.rule.key} {props.rule.type} {props.rule.target}

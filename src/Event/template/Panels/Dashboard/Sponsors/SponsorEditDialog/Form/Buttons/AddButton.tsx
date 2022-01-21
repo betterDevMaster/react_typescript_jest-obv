@@ -1,15 +1,15 @@
 import styled from 'styled-components'
 import React from 'react'
 import Button from '@material-ui/core/Button'
-import NavButton from 'Event/Dashboard/components/NavButton'
 import {DEFAULT_BUTTON_WIDTH_PERCENT} from 'Event/template/Panels/Dashboard/Sponsors/SponsorEditDialog/Form/ButtonConfig'
+import {NavButtonProps} from 'Event/Dashboard/components/NavButton'
 
 export default function AddButton(props: {
   className?: string
-  onAdd: (button: NavButton) => void
+  onAdd: (button: NavButtonProps) => void
 }) {
   const add = () => {
-    const button: NavButton = {
+    const button: NavButtonProps = {
       text: 'Button',
       link: '',
       rules: [],

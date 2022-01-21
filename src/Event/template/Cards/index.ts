@@ -8,9 +8,9 @@ import {useTemplate} from 'Event/TemplateProvider'
 import {BaseTemplate, BASE_DEFAULTS, Header} from 'Event/template'
 import {BlogPost} from 'Event/Dashboard/components/BlogPosts'
 import {DeepRequired} from 'lib/type-utils'
-import {SidebarItem} from 'Event/template/Cards/Dashboard/Sidebar/SidebarItem'
+import {SidebarItemProps} from 'Event/template/Cards/Dashboard/Sidebar/SidebarItem'
 import {InputStyles} from 'Event/Question'
-import {CountDownTimer} from 'Event/Dashboard/components/CountDownTimer'
+import {CountDownTimerSettings} from 'Event/Dashboard/components/CountDownTimer'
 import {Hero} from 'Event/template/Cards/Dashboard/Hero/HeroConfig'
 import {CardsNavButtonProps} from 'Event/template/Cards/Dashboard/CardsNavButton'
 import {useTemplateUpdate} from 'Event/TemplateUpdateProvider'
@@ -47,7 +47,7 @@ export type Cards = BaseTemplate &
     }
     hero: Hero
     sidebar: Sidebar
-    sidebarItems: HashMap<SidebarItem>
+    sidebarItems: HashMap<SidebarItemProps>
     blogPosts: HashMap<BlogPost>
     textColor?: string
     linkColor?: string
@@ -228,7 +228,7 @@ export type Cards = BaseTemplate &
       step3Label: string
       step3Icon: string
     }
-    countDownTimers?: HashMap<CountDownTimer>
+    countDownTimers?: HashMap<CountDownTimerSettings>
     imageWaterfall?: {
       title?: string
       description?: string

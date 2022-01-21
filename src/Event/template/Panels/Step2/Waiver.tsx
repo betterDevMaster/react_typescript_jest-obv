@@ -69,7 +69,7 @@ const Body = styled.div`
 `
 
 const StyledCheckBox = styled((props) => {
-  const {color, isDarkMode, ...otherProps} = props
+  const {color: _1, isDarkMode: _2, ...otherProps} = props
   return <Checkbox {...otherProps} />
 })<{
   isDarkMode?: boolean

@@ -57,13 +57,14 @@ export default function Signature(props: {
     }
   }, [createCanvas])
 
-  const clear = useCallback(
-    withPad(pad, (pad) => {
-      pad.clear()
-      onUpdate(null)
-    }),
-    [pad],
-  )
+  const clear = useCallback(() => {
+    if (!pad) {
+      throw new Error(`Pad has not been set`)
+    }
+
+    pad.clear()
+    onUpdate(null)
+  }, [pad, onUpdate])
 
   return (
     <Box className={props.className}>
@@ -84,18 +85,6 @@ function ClearSignatureButton(props: {show: boolean; clear: () => void}) {
       <ClearIcon htmlColor={grey[500]} />
     </ClearButton>
   )
-}
-
-function withPad(
-  pad: SignaturePad | null,
-  handle: (pad: SignaturePad) => void,
-) {
-  return () => {
-    if (!pad) {
-      throw new Error(`Pad has not been set`)
-    }
-    return handle(pad)
-  }
 }
 
 const Box = styled.div`

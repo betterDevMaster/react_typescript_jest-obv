@@ -5,13 +5,13 @@ export const TAGS = 'Tags'
 export const INCLUDE = 'include'
 export const DOES_NOT_INCLUDE = 'does not include'
 
-export type TagsRule = BaseRule & {
+export type TagsRuleConfig = BaseRule & {
   source: typeof TAGS
   type: typeof INCLUDE | typeof DOES_NOT_INCLUDE
   target: string
 }
 
-export default function TagsRule(props: {rule: TagsRule}) {
+export default function TagsRule(props: {rule: TagsRuleConfig}) {
   return (
     <div>
       tags {props.rule.type} {props.rule.target}
@@ -20,9 +20,9 @@ export default function TagsRule(props: {rule: TagsRule}) {
 }
 
 export const createTagsRule = (
-  type: TagsRule['type'],
+  type: TagsRuleConfig['type'],
   target: string,
-): TagsRule => ({
+): TagsRuleConfig => ({
   condition: AND,
   source: TAGS,
   type,

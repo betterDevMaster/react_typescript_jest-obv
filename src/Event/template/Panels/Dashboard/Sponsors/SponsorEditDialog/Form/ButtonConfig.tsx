@@ -18,11 +18,11 @@ import {handleChangeSlider} from 'lib/dom'
 import InputLabel from '@material-ui/core/InputLabel'
 import Slider from '@material-ui/core/Slider'
 import TargetConfig from 'Event/Dashboard/components/NavButton/NavButtonConfig/TargetConfig'
-import NavButton from 'Event/Dashboard/components/NavButton'
 import ActionSelect from 'Event/ActionsProvider/ActionSelect'
 import BackgroundPicker from 'lib/ui/form/BackgroundPicker'
 import MailchimpTagInput from 'organization/Event/DashboardConfig/MailchimpTagInput'
 import ZapierTagInput from 'organization/Event/DashboardConfig/ZapierTagInput'
+import {NavButtonProps} from 'Event/Dashboard/components/NavButton'
 
 const MIN_BORDER_WIDTH = 0
 const MAX_BORDER_WIDTH = 50
@@ -34,9 +34,9 @@ export const DEFAULT_BUTTON_WIDTH_PERCENT = 100
 
 export default function ButtonConfig(props: {
   onClose: () => void
-  onChange: (button: NavButton) => void
+  onChange: (button: NavButtonProps) => void
   onRemove: () => void
-  button: NavButton
+  button: NavButtonProps
 }) {
   const {button, onChange, onClose} = props
 
@@ -87,7 +87,7 @@ export default function ButtonConfig(props: {
   }, [button])
 
   const save = () => {
-    const data: NavButton = {
+    const data: NavButtonProps = {
       backgroundColor,
       isVisible: buttonIsVisible,
       text,

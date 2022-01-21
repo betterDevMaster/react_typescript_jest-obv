@@ -8,8 +8,8 @@ import {useTemplate} from 'Event/TemplateProvider'
 import {BaseTemplate, BASE_DEFAULTS, Header} from 'Event/template'
 import {BlogPost} from 'Event/Dashboard/components/BlogPosts'
 import {DeepRequired} from 'lib/type-utils'
-import {SidebarItem} from 'Event/template/SimpleBlog/Dashboard/Sidebar/SidebarItem'
-import {CountDownTimer} from 'Event/Dashboard/components/CountDownTimer'
+import {SidebarItemProps} from 'Event/template/SimpleBlog/Dashboard/Sidebar/SidebarItem'
+import {CountDownTimerSettings} from 'Event/Dashboard/components/CountDownTimer'
 import {useTemplateUpdate} from 'Event/TemplateUpdateProvider'
 
 export const SIMPLE_BLOG = 'Simple Blog'
@@ -36,7 +36,7 @@ export type SimpleBlog = BaseTemplate & {
   welcomeText?: string
   heroImageSize?: number
   sidebar: Sidebar
-  sidebarItems: HashMap<SidebarItem>
+  sidebarItems: HashMap<SidebarItemProps>
   blogPosts: HashMap<BlogPost>
   textColor?: string
   linkColor?: string
@@ -184,7 +184,7 @@ export type SimpleBlog = BaseTemplate & {
     description?: string
     redirectUrl?: string
   }
-  countDownTimers?: HashMap<CountDownTimer>
+  countDownTimers?: HashMap<CountDownTimerSettings>
   imageWaterfall?: {
     title?: string
     description?: string

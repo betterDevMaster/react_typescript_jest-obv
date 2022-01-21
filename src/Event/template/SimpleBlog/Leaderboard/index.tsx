@@ -65,7 +65,7 @@ export default function SimpleBlogLeaderboard(props: {user: Attendee}) {
 }
 
 const StyledRelativeLink = styled((props) => {
-  const {color, ...otherProps} = props
+  const {color: _1, ...otherProps} = props
 
   return <RelativeLink {...otherProps} />
 })`

@@ -1,14 +1,14 @@
 import {Rule} from 'Event/attendee-rules'
 import styled from 'styled-components'
-import GroupRule, {
+import GroupRuleLabel, {
   GROUP,
 } from 'Event/attendee-rules/RuleConfig/RuleList/SingleRule/GroupRule'
 import React from 'react'
 import grey from '@material-ui/core/colors/grey'
 import ConditionSelector from 'Event/attendee-rules/RuleConfig/RuleList/SingleRule/ConditionSelector'
 import {TAGS} from 'Event/attendee-rules/RuleConfig/RuleList/SingleRule/TagsRule'
-import NestedRule from 'Event/attendee-rules/RuleConfig/RuleList/SingleRule/NestedRule'
-import TagsRule from 'Event/attendee-rules/RuleConfig/RuleList/SingleRule/TagsRule'
+import NestedRuleLabel from 'Event/attendee-rules/RuleConfig/RuleList/SingleRule/NestedRule'
+import TagsRuleLabel from 'Event/attendee-rules/RuleConfig/RuleList/SingleRule/TagsRule'
 import {NESTED_RULE} from 'Event/attendee-rules/RuleConfig/RuleList/SingleRule/NestedRule'
 
 export default function SingleRule(props: {
@@ -42,11 +42,11 @@ export default function SingleRule(props: {
 function RuleValue(props: {rule: Rule}) {
   switch (props.rule.source) {
     case TAGS:
-      return <TagsRule rule={props.rule} />
+      return <TagsRuleLabel rule={props.rule} />
     case GROUP:
-      return <GroupRule rule={props.rule} />
+      return <GroupRuleLabel rule={props.rule} />
     case NESTED_RULE:
-      return <NestedRule rule={props.rule} />
+      return <NestedRuleLabel rule={props.rule} />
   }
 }
 

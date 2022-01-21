@@ -83,7 +83,7 @@ export default function TagsInput(props: {
   return (
     <Downshift inputValue={input}>
       {({getInputProps}) => {
-        const {onBlur, onChange, onFocus, ...inputProps} = getInputProps({
+        const {onBlur, onChange: _, onFocus, ...inputProps} = getInputProps({
           onKeyDown: handleKeyDown,
         })
 

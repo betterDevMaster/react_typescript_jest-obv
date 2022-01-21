@@ -1,4 +1,4 @@
-import {duration, getDiffDatetime, getNumDays} from 'lib/date-time'
+import {duration, getNumDays} from 'lib/date-time'
 import faker from 'faker'
 import moment from 'moment'
 

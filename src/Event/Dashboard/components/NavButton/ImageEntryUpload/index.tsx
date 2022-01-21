@@ -1,9 +1,9 @@
 import React, {useState} from 'react'
 import {useEditMode} from 'Event/Dashboard/editor/state/edit-mode'
 import UploadDialog from 'Event/Dashboard/components/NavButton/ImageEntryUpload/UploadDialog'
-import NavButton, {Button} from 'Event/Dashboard/components/NavButton'
+import {NavButtonProps, Button} from 'Event/Dashboard/components/NavButton'
 
-export default function ImageEntryUpload(props: NavButton) {
+export default function ImageEntryUpload(props: NavButtonProps) {
   const [visibleUploadForm, setVisibleUploadForm] = useState(false)
   const isEditMode = useEditMode()
 

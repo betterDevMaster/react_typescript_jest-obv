@@ -3,7 +3,7 @@ import axios from 'axios'
 import user from '@testing-library/user-event'
 import {fakeAttendee} from 'Event/auth/__utils__/factory'
 import {fakePanels} from 'Event/template/Panels/__utils__/factory'
-import {fakeEvent, fakeEntry, fakeFaq} from 'Event/__utils__/factory'
+import {fakeEvent, fakeEntry} from 'Event/__utils__/factory'
 import {loginToEventSite} from 'Event/__utils__/url'
 const mockGet = axios.get as jest.Mock
 

@@ -45,7 +45,3 @@ const StyledButton = styled.button<ButtonStyleProps>`
   line-height: 17px;
   cursor: pointer;
 `
-
-type NextPrevButtonProps = {
-  disabled: boolean
-}

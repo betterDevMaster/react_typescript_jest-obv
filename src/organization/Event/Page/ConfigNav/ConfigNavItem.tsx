@@ -52,7 +52,7 @@ function useIsSubpath() {
 }
 
 const ConfigLink = styled((props) => {
-  const {active, ...otherProps} = props
+  const {active: _, ...otherProps} = props
   return <RelativeLink {...otherProps} />
 })<{active: boolean}>`
   margin-right: ${(props) => props.theme.spacing[5]};

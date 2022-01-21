@@ -28,7 +28,7 @@ export type AgendaListProps = Ordered & {
   footer?: string
   descriptionFontStyles?: FontStyle[]
   footerFontStyles?: FontStyle[]
-  items: HashMap<Agenda>
+  items: HashMap<AgendaSettings>
 }
 
 export const createAgendaList = (): AgendaListProps => ({
@@ -41,7 +41,7 @@ export const createAgendaList = (): AgendaListProps => ({
   descriptionFontStyles: [],
 })
 
-export type Agenda = Publishable &
+export type AgendaSettings = Publishable &
   Ordered & {
     startDate: string
     endDate: string | null

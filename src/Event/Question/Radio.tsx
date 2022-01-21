@@ -132,14 +132,14 @@ function OtherInput(
 }
 
 const StyledFormLabel = styled((props) => {
-  const {color, ...otherProps} = props
+  const {color: _, ...otherProps} = props
 
   return <FormLabel {...otherProps} />
 })`
   color: ${(props) => (props.color ? `${props.color} !important;` : '')};
 `
 const StyledFormControlLabel = styled((props) => {
-  const {color, ...otherProps} = props
+  const {color: _, ...otherProps} = props
 
   return <FormControlLabel {...otherProps} />
 })`

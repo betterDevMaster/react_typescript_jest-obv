@@ -1,9 +1,6 @@
 import React from 'react'
 import {ComponentStory, ComponentMeta} from '@storybook/react'
 import ConfirmDialog from 'lib/ui/ConfirmDialog'
-import TextFieldStories, {
-  Primary as PrimaryTextField,
-} from 'lib/ui/TextField/TextField.stories'
 
 export default {
   title: 'Components/ConfirmDialog',
