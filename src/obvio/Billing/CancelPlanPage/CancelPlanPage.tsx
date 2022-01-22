@@ -36,9 +36,14 @@ export default function CancelPlanPage() {
 function Content(props: {plan: PlanInfo}) {
   const {plan} = props
   const subscription = useGetSubscription()
-  const renewsAt = formatDate(
-    subscription?.renews_at || subscription?.ends_at || '',
-  )
+
+  const endDate =
+    subscription?.renews_at ||
+    subscription?.ends_at ||
+    subscription?.trial_ends_at ||
+    ''
+
+  const formattedEndDate = formatDate(endDate)
 
   const [error, setError] = useState<string | null>(null)
 
@@ -54,8 +59,8 @@ function Content(props: {plan: PlanInfo}) {
               </Typography>
               <Typography>
                 You will <strong>NOT</strong> be billed on the renewal date of{' '}
-                <strong>{renewsAt}</strong>. You will continue to be able to use
-                Obvio until the maturation of your plan.
+                <strong>{formattedEndDate}</strong>. You will continue to be
+                able to use Obvio until the maturation of your plan.
               </Typography>
             </Box>
             <CancelStep onError={setError} {...props} />

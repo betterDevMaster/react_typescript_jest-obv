@@ -1,3 +1,4 @@
+import {TrieSearch} from 'trie-search'
 import {PaymentMethod, SetupIntent} from '@stripe/stripe-js'
 import {Plan, PROFESSIONAL_PLAN} from 'obvio/Billing/plans'
 import {Subscription} from 'obvio/Billing/subscribe'
@@ -10,6 +11,7 @@ export const fakeSubscription = (
   plan: fakePlan({name: PROFESSIONAL_PLAN.name}),
   renew_plan: null,
   renews_at: '2030-12-17 00:00:00',
+  trial_ends_at: null,
   stripe_status: 'active',
   ...overrides,
 })

@@ -1,7 +1,11 @@
 import {useObvioUser} from 'obvio/auth'
 import React from 'react'
 import {getPlan, PlanInfo, tier} from 'obvio/Billing/plans'
-import {Subscription, SUBSCRIPTION_TYPE_ACTIVE} from 'obvio/Billing/subscribe'
+import {
+  isActive,
+  Subscription,
+  SUBSCRIPTION_TYPE_ACTIVE,
+} from 'obvio/Billing/subscribe'
 
 interface PlanContextProps {
   plan: PlanInfo | null
@@ -24,11 +28,7 @@ export default function PlanProvider(props: {children: React.ReactElement}) {
     plan ? plan.name === target.name : false
 
   const isDowngradingTo = (target: PlanInfo, subscription?: Subscription) => {
-    return (
-      target.name === subscription?.renew_plan &&
-      subscription?.stripe_status === SUBSCRIPTION_TYPE_ACTIVE &&
-      subscription?.stripe_status !== null
-    )
+    return target.name === subscription?.renew_plan && isActive(subscription)
   }
 
   const canSelect = (target: PlanInfo) => {
@@ -50,11 +50,7 @@ export default function PlanProvider(props: {children: React.ReactElement}) {
   }
 
   const canCancel = (target: PlanInfo, subscription?: Subscription) => {
-    return (
-      isCurrent(target) &&
-      subscription?.stripe_status === SUBSCRIPTION_TYPE_ACTIVE &&
-      !subscription?.ends_at
-    )
+    return isCurrent(target) && isActive(subscription) && !subscription?.ends_at
   }
 
   const canResume = (target: PlanInfo, subscription?: Subscription) => {

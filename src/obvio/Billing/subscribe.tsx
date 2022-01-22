@@ -6,15 +6,17 @@ import {Plan, PlanName, PlanInfo} from 'obvio/Billing/plans'
 import {teamMemberClient} from 'obvio/obvio-client'
 
 export const SUBSCRIPTION_TYPE_ACTIVE = 'active'
+export const SUBSCRIPTION_TYPE_TRIALING = 'trialing'
 export const SUBSCRIPTION_TYPE_CANCELLED = 'canceled'
 
 export interface Subscription {
-  ends_at: string | null
   id: number
   plan: Plan
   renew_plan: PlanName | null
   renews_at: string | null
   stripe_status: string
+  ends_at: string | null
+  trial_ends_at: string | null
 }
 
 export function useSubscribe() {
@@ -53,25 +55,29 @@ export function useResume() {
   }
 }
 
-export const useGetSubscription = (
-  planName?: string,
-  type: string = SUBSCRIPTION_TYPE_ACTIVE,
-) => {
+export const useGetSubscription = (planName?: string) => {
   const user = useObvioUser()
-  let target = null
 
-  if (!planName) {
-    return (user.subscriptions || []).find((subscription) => {
-      return subscription.stripe_status === type
-    })
+  if (!user.subscriptions) {
+    return
   }
 
-  target = (user.subscriptions || []).find((subscription) => {
-    return (
-      subscription.plan?.name === planName &&
-      subscription.stripe_status === type
+  if (planName) {
+    return user.subscriptions.find(
+      (s) => s.plan?.name === planName && isActive(s),
     )
-  })
+  }
 
-  return target
+  return user.subscriptions.find(isActive)
+}
+
+export const isActive = (subscription?: Subscription) => {
+  if (!subscription) {
+    return false
+  }
+
+  return (
+    subscription.stripe_status === SUBSCRIPTION_TYPE_ACTIVE ||
+    subscription.stripe_status === SUBSCRIPTION_TYPE_TRIALING
+  )
 }
