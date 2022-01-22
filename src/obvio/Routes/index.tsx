@@ -19,6 +19,8 @@ export const obvioRoutes = createRoutes({
   billing: {
     buy_credits: '/buy_credits',
     change_plan: '/change_plan',
+    cancel_plan: '/cancel_plan',
+    resume_plan: '/resume_plan',
     credit_transactions: '/credit_transactions',
   },
   mailchimp: {

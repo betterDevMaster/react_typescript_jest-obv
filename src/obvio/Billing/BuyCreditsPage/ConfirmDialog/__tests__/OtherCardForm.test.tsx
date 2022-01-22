@@ -32,7 +32,6 @@ it('should purchase selected credits', async () => {
     has_active_subscription: true,
     plan: fakePlan({name: plan}),
     credits: 0, // start with 0 credits
-    is_founder: true,
   })
 
   const paymentMethod = fakePaymentMethod()

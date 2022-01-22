@@ -79,7 +79,7 @@ function Content(props: CreditCardFormProps) {
     }
 
     onSubmit({cardElement, stripe, name}).catch((error) => {
-      setError(error)
+      setError(error.message)
       toggleProcessing()
     })
   }

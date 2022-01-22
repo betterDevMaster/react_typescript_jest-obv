@@ -1,5 +1,5 @@
 import {ajax, useObserve} from 'lib/rx'
-import {api} from 'lib/url'
+import {api, useQueryParams} from 'lib/url'
 import {useAuthToken, useObvioUser} from 'obvio/auth'
 import {useUserOrganizations} from 'obvio/Organizations/UserOrganizationsProvider'
 import {Organization} from 'organization'
@@ -8,14 +8,18 @@ import {debounceTime, map, switchMap, tap} from 'rxjs/operators'
 
 export const BASIC = 'basic'
 export const PROFESSIONAL = 'professional'
+export const PROFESSIONAL_EVENT_DISCOUNT = 'professional_event_discount'
 export const ENTERPRISE = 'enterprise'
 export const FOUNDER = 'founder'
+export const LEAP = 'leap'
 
 export type PlanName =
   | typeof PROFESSIONAL
+  | typeof PROFESSIONAL_EVENT_DISCOUNT
   | typeof BASIC
   | typeof ENTERPRISE
   | typeof FOUNDER
+  | typeof LEAP
 
 // Plan model as defined in API
 export type Plan = {
@@ -114,6 +118,56 @@ export const PROFESSIONAL_PLAN: PlanInfo = {
   label: 'Obvio Pro',
   description: '3 Organizations, 1,200 Annual Credits, 10 Rooms per Event',
   price: 1997,
+  creditPackages: [
+    {
+      amount: 100,
+      price: 10,
+    },
+    {
+      amount: 200,
+      price: 18,
+    },
+    {
+      amount: 500,
+      price: 40,
+    },
+  ],
+  features: [
+    {
+      details: 'Includes All Obvio Features, Plus',
+      isGood: true,
+      isActive: true,
+    },
+    {
+      details: '1,200 Total Attendee Credits',
+      isGood: true,
+      isActive: true,
+    },
+    {
+      details: '10 Rooms per Event **',
+      isGood: true,
+      isActive: true,
+    },
+    {
+      details: 'Includes 3 Organizations',
+      isGood: true,
+      isActive: true,
+    },
+  ],
+}
+
+export const PROFESSIONAL_EVENT_DISCOUNT_PLAN: PlanInfo = {
+  ...PROFESSIONAL_PLAN,
+  price: 997,
+  name: PROFESSIONAL_EVENT_DISCOUNT,
+  label: 'Obvio Pro (Event Discount)',
+}
+
+export const LEAP_PLAN: PlanInfo = {
+  name: LEAP,
+  label: 'Obvio LEAP',
+  description: '3 Organizations, 1,200 Annual Credits, 10 Rooms per Event',
+  price: 0,
   creditPackages: [
     {
       amount: 100,
@@ -256,15 +310,19 @@ export const FOUNDER_PLAN: PlanInfo = {
  */
 export const PLANS = [
   BASIC_PLAN,
-  PROFESSIONAL_PLAN,
-  ENTERPRISE_PLAN,
   FOUNDER_PLAN,
+  PROFESSIONAL_EVENT_DISCOUNT_PLAN,
+  PROFESSIONAL_PLAN,
+  LEAP_PLAN,
+  ENTERPRISE_PLAN,
 ]
 
 export const isPlan = (name?: string): name is PlanName => {
   switch (name) {
     case BASIC:
     case PROFESSIONAL:
+    case PROFESSIONAL_EVENT_DISCOUNT:
+    case LEAP:
     case ENTERPRISE:
     case FOUNDER:
       return true
@@ -276,12 +334,38 @@ export const isPlan = (name?: string): name is PlanName => {
 export function useAvailablePlans() {
   const user = useObvioUser()
 
-  if (user.is_founder) {
-    return PLANS
-  }
+  // Iterate the array of PLANS to determine if they are "visible" to the current
+  // user, based on business logic.
+  return PLANS.filter((plan) => {
+    // If the current plan is the FOUNDER_PLAN, we only want to show it to users
+    // who are marked as founders, so the truthiness of the flag will determine
+    // if it's visible.
+    if (plan === FOUNDER_PLAN) {
+      return user?.plan?.name === FOUNDER
+    }
 
-  // Normal users can NOT subscribe to 'founder' plan
-  return PLANS.filter((p) => p !== FOUNDER_PLAN)
+    // For the LEAP_PLAN, because it's an integration plan, it should ONLY be
+    // visible to users who have been subscribed to it (via the integration). No
+    // one else should be able to see it or subscribe to it. So if the user's
+    // current plan is LEAP_PLAN, we can show it.
+    if (plan === LEAP_PLAN) {
+      return user?.plan?.name === LEAP
+    }
+
+    // Only want to show the Professional (Event Discount) plan if they're currently
+    // subscribed to it.
+    if (plan === PROFESSIONAL_EVENT_DISCOUNT_PLAN) {
+      return user?.plan?.name === PROFESSIONAL_EVENT_DISCOUNT
+    }
+
+    // Only want to show the Professional plan as long as the current plan is
+    // NOT the Event Discount version of it.
+    if (plan === PROFESSIONAL_PLAN) {
+      return user?.plan?.name !== PROFESSIONAL_EVENT_DISCOUNT
+    }
+
+    return true
+  })
 }
 
 export const getPlan = (plan: PlanName) => {
@@ -291,6 +375,18 @@ export const getPlan = (plan: PlanName) => {
   }
 
   return target
+}
+
+export const useGetPlanFromQueryParams = () => {
+  const {plan} = useQueryParams()
+
+  if (!plan) {
+    return null
+  }
+
+  const planName = plan as PlanName
+
+  return getPlan(planName) as PlanInfo
 }
 
 /**

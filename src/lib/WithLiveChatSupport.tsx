@@ -6,6 +6,16 @@ export default function WithLiveChatSupport(props: {
   children: React.ReactElement | React.ReactElement[]
   user?: TeamMember
 }) {
+  // Supoprt chat is not always without error in the development environment, so
+  // here is the ability to turn it off via .env. The environment has to be
+  // development and the flag to turn off must be set to 'false'.
+  if (
+    process.env.NODE_ENV === 'development' &&
+    process.env.REACT_APP_SUPPORT_CHAT === 'false'
+  ) {
+    return <>{props.children}</>
+  }
+
   return (
     <>
       <Helmet>
@@ -49,8 +59,6 @@ function UserVariables(props: {user?: TeamMember}) {
 
   const name = `${user.first_name} ${user.last_name}`
   const email = user.email
-  const isFounder = user.is_founder ? 'YES' : 'NO'
-  const isSubscribed = user.is_subscribed ? 'YES' : 'NO'
   const numCredits = user.credits
   const plan = user.plan?.name || 'NO PLAN / SUBSCRIPTION'
 
@@ -62,8 +70,6 @@ function UserVariables(props: {user?: TeamMember}) {
             window.LiveChatWidget.call("set_customer_name", "${name}");
             window.LiveChatWidget.call("set_customer_email", "${email}");
             window.LiveChatWidget.call("update_session_variables", {
-              is_founder: "${isFounder}",
-              is_owner: "${isSubscribed}",
               credits: "${numCredits}",
               plan: "${plan}"
             });

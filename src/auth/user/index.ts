@@ -1,4 +1,5 @@
 import {Plan} from 'obvio/Billing/plans'
+import {Subscription} from 'obvio/Billing/subscribe'
 import {Role} from 'organization/Team/Roles/RolesProvider'
 
 export interface User {
@@ -17,8 +18,7 @@ export type TeamMember = User & {
   has_payment_method: boolean
   feature_flags: string[] | null
   has_unpaid_transactions: boolean
-  is_founder: boolean
-  is_subscribed: boolean
+  subscriptions?: Subscription[]
 }
 
 export function isTeamMember(user: User | null): user is TeamMember {

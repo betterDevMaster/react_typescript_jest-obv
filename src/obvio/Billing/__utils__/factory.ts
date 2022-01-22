@@ -1,5 +1,18 @@
 import {PaymentMethod, SetupIntent} from '@stripe/stripe-js'
-import {Plan} from 'obvio/Billing/plans'
+import {Plan, PROFESSIONAL_PLAN} from 'obvio/Billing/plans'
+import {Subscription} from 'obvio/Billing/subscribe'
+
+export const fakeSubscription = (
+  overrides?: Partial<Subscription>,
+): Subscription => ({
+  ends_at: null,
+  id: 1,
+  plan: fakePlan({name: PROFESSIONAL_PLAN.name}),
+  renew_plan: null,
+  renews_at: '2030-12-17 00:00:00',
+  stripe_status: 'active',
+  ...overrides,
+})
 
 export const fakePlan = (overrides?: Partial<Plan>): Plan => ({
   name: 'founder',

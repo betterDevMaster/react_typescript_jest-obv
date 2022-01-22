@@ -22,7 +22,6 @@ export async function goToBillingSettings(
       has_active_subscription: true,
       has_unpaid_transactions: false,
       plan: fakePlan({name: 'enterprise'}),
-      is_subscribed: true,
       credits: 0, // start with 0 credits
     })
 
