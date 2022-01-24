@@ -51,7 +51,7 @@ function Content(props: {plan: PlanInfo}) {
             <ErrorAlert>{error}</ErrorAlert>
             <Box mb={4}>
               <Typography>
-                You are resuming the <strong>{plan.name}</strong> plan.
+                You are resuming the <strong>{plan.label}</strong> plan.
               </Typography>
               <Typography>
                 You will be billed on the renewal date of{' '}

@@ -67,7 +67,7 @@ function Content(props: {plan: PlanInfo; downgrade: boolean}) {
             <ErrorAlert>{error}</ErrorAlert>
             <Box mb={4}>
               <Typography>
-                You are {actionText} to the <strong>{plan.name}</strong> plan.
+                You are {actionText} to the <strong>{plan.label}</strong> plan.
               </Typography>
               <Typography>
                 You will be billed {billedOn()} for <strong>${price}</strong>,
