@@ -65,7 +65,7 @@
     "uuid": "^8.3.0"
   },
   "scripts": {
-    "dev": "GENERATE_SOURCEMAP=false react-scripts start",
+    "dev": "cross-env GENERATE_SOURCEMAP=false react-scripts start",
     "build": "react-scripts --max_old_space_size=8192 build",
     "test": "cross-env CI=true react-scripts test",
     "test:watch": "react-scripts test",
