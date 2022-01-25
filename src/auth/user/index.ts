@@ -19,6 +19,7 @@ export type TeamMember = User & {
   feature_flags: string[] | null
   has_unpaid_transactions: boolean
   subscriptions?: Subscription[]
+  is_admin: boolean
 }
 
 export function isTeamMember(user: User | null): user is TeamMember {
