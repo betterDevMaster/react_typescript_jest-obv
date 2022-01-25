@@ -4,8 +4,8 @@ import {createHashMap} from 'lib/list'
 import {fakeEvent} from 'Event/__utils__/factory'
 import {goToDashboardConfig} from 'organization/Event/DashboardConfig/__utils__/go-dashboard-config'
 import {fakeSimpleBlog} from 'Event/template/SimpleBlog/__utils__/factory'
-import {createPrivate} from 'lib/echo'
-import {createChannel} from 'lib/__mocks__/echo'
+import {createPrivate} from 'lib/sockets/echo'
+import {createChannel} from 'lib/sockets/__mocks__/echo'
 import moment from 'moment'
 import {act} from '@testing-library/react'
 
@@ -21,7 +21,7 @@ it('should edit the selected button', async () => {
   // the socket manually.
   const channel = createChannel()
 
-  let templateUpdateHandler: any
+  let templateUpdateHandler: any = null
   channel.listen = (event: string, handler: (...args: any[]) => void) => {
     if (event === '.template.updated') {
       templateUpdateHandler = handler
@@ -30,7 +30,7 @@ it('should edit the selected button', async () => {
     return channel
   }
 
-  mockCreateEcho.mockImplementationOnce(() => channel)
+  mockCreateEcho.mockImplementation(() => channel)
 
   // Create the button we'll be testing updates for
 

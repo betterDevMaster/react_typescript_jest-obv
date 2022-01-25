@@ -7,7 +7,7 @@ import {setWindowMatchMedia} from '__utils__/media-query'
 import resizeObserver from 'resize-observer-polyfill'
 
 // Always mock echo (sockets in test)
-jest.mock('lib/echo')
+jest.mock('lib/sockets/echo')
 jest.mock('organization/Event/EventSocketNotification')
 
 // Increase timeout to avoid tests failing when running with coverage

@@ -7,8 +7,6 @@ import SaveCreditCardForm from 'lib/stripe/SaveCreditCardForm'
 import {usePaymentMethod} from 'obvio/Billing/PaymentMethodProvider'
 import {teamMemberClient} from 'obvio/obvio-client'
 import React, {useState} from 'react'
-import {useObvioAuth, useObvioUser} from 'obvio/auth'
-import {TeamMember} from 'auth/user'
 
 type NewCardFormProps = {
   className?: string
@@ -44,8 +42,6 @@ function Content(props: NewCardFormProps & {onComplete: () => void}) {
   const clearError = () => setError(null)
   const savePaymentMethod = useSavePaymentMethod()
   const {onComplete} = props
-  const {setUser} = useObvioAuth()
-  const user = useObvioUser()
 
   const handlePaymentMethod = (paymentMethodId: string) => {
     clearError()
@@ -53,15 +49,6 @@ function Content(props: NewCardFormProps & {onComplete: () => void}) {
     savePaymentMethod(paymentMethodId)
       .then((paymentMethod) => {
         setPaymentMethod(paymentMethod)
-
-        // Fix issue where 'please add card' pop-up would still show
-        // after adding a card. This works, but is a stop-gap
-        // until we receive live updates for user updates.
-        const withCard: TeamMember = {
-          ...user,
-          has_payment_method: true,
-        }
-        setUser(withCard)
         onComplete()
       })
       .catch((e) => setError(e.message))

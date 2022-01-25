@@ -2,12 +2,10 @@ import {useAsync} from 'lib/async'
 import {api, createRoutes} from 'lib/url'
 import {Organization} from 'organization'
 import {teamMemberClient} from 'obvio/obvio-client'
-import React, {useCallback, useEffect, useMemo, useState} from 'react'
+import React, {useCallback, useEffect, useState} from 'react'
 import {Client} from 'lib/ui/api-client'
 import {Redirect, useLocation} from 'react-router-dom'
 import {obvioRoutes} from 'obvio/Routes'
-import {useAuthToken} from 'obvio/auth'
-import {createPrivate as createEcho} from 'lib/echo'
 
 export type OrganizationRoutes = ReturnType<typeof createRoutesFor>
 
@@ -93,11 +91,6 @@ function useRouteOrganizationId() {
   } catch {
     return null
   }
-}
-
-export function useOrganizationEcho() {
-  const token = useAuthToken()
-  return useMemo(() => createEcho(token), [token])
 }
 
 export function createRoutesFor(organization: Organization) {
