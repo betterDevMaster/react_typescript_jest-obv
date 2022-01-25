@@ -36,7 +36,7 @@
     "normalize.css": "^8.0.1",
     "notistack": "^1.0.3",
     "postcss": "^8.4.5",
-    "pusher-js": "^7.0.3",
+    "pusher-js": "^7.0.4",
     "ramda": "^0.27.1",
     "react": "^16.13.1",
     "react-beautiful-dnd": "^13.1.0",
@@ -65,7 +65,7 @@
     "uuid": "^8.3.0"
   },
   "scripts": {
-    "dev": "cross-env GENERATE_SOURCEMAP=false react-scripts start",
+    "dev": "react-scripts start",
     "build": "react-scripts --max_old_space_size=8192 build",
     "test": "cross-env CI=true react-scripts test",
     "test:watch": "react-scripts test",
