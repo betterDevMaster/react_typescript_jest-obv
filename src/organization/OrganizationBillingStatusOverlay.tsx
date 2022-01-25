@@ -41,7 +41,7 @@ export function OrganizationBillingStatusOverlay() {
     return <OnwerHasUnpaidTransactionsOverlay />
   }
 
-  if (!owner.has_payment_method) {
+  if (!owner.has_payment_method && !owner.is_admin) {
     return <OwnerCreditCardRequiredOverlay />
   }
 
