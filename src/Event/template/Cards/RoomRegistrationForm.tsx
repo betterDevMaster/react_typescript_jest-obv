@@ -5,12 +5,14 @@ import Page, {
   TextField,
   StyledPaper,
   StyledFormContainer,
+  Description,
 } from 'Event/template/Cards/Login/Page'
 import {useForm} from 'react-hook-form'
 import {useEventAuth} from 'Event/auth'
 import {RoomRegistrationFormProps} from 'Event/RoomRegistration/Form'
 import {fieldErrors} from 'lib/form'
 import ErrorAlert from 'lib/ui/alerts/ErrorAlert'
+import {useEvent} from 'Event/EventProvider'
 
 export default function CardsRoomRegistrationForm(
   props: RoomRegistrationFormProps,
@@ -28,6 +30,7 @@ export default function CardsRoomRegistrationForm(
     <Page>
       <StyledPaper>
         <StyledFormContainer>
+          <BreakthroughEventStaticText />
           <StyledErrorAlert>{responseError?.message}</StyledErrorAlert>
           <form onSubmit={handleSubmit(submit)}>
             <TextField
@@ -87,6 +90,25 @@ export default function CardsRoomRegistrationForm(
         </StyledFormContainer>
       </StyledPaper>
     </Page>
+  )
+}
+
+/**
+ * EVENT TEMP CODE
+ *
+ * Would like to add a static text description.
+ *
+ * @returns
+ */
+function BreakthroughEventStaticText() {
+  const {event} = useEvent()
+
+  if (event.slug !== 'breakthrough') {
+    return null
+  }
+
+  return (
+    <Description>Breakthrough 2022 will start at 2pm ET/11am PT</Description>
   )
 }
 
