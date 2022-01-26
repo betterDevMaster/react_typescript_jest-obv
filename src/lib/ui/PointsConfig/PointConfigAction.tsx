@@ -30,7 +30,7 @@ export default function PointConfigAction(props: PointConfigActionProps) {
         <ActionName>{action}</ActionName>
       </AccordionSummary>
       <StyledAccordionDetails>
-        <ConfigFlexBox>
+        <ConfigFlexBox flexDirection="row">
           <Left>
             <StyledLabel>Platform Action</StyledLabel>
             <Select fullWidth onChange={() => {}}>
@@ -82,6 +82,8 @@ const StyledAccordionDetails = styled(AccordionDetails)`
 `
 
 const ConfigBox = styled(Box)`
+  display: flex;
+  flex-direction: column;
   padding: ${(props) => `${props.theme.spacing[5]} ${props.theme.spacing[4]}`};
   border-bottom: 1px solid #dfdfdf;
 `
