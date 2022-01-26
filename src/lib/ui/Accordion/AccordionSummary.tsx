@@ -1,7 +1,7 @@
 import React, {useMemo} from 'react'
 import MuiAccordionSummary from '@material-ui/core/AccordionSummary'
 import KeyboardArrowDownIcon from '@material-ui/icons/KeyboardArrowDown'
-import {MenuIcon, PlusIcon, MinusIcon} from 'lib/ui/Icon'
+import {MenuIcon, PlusIcon, MinusIcon, ChevronIcon} from 'lib/ui/Icon'
 import styled from 'styled-components'
 import {colors, getColor} from 'lib/ui/theme'
 
@@ -48,16 +48,11 @@ function ExpandedIcon(props: AccordionSummaryProps & {color: string}) {
 }
 
 const Summary = styled((props) => {
-  const {expanded, color, ...otherProps} = props
+  const {expanded: _1, color: _2, ...otherProps} = props
   return <MuiAccordionSummary {...otherProps} />
 })`
   background-color: ${(props) => (!props.expanded ? '#ffffff' : '#F1F1F1')};
   color: ${(props) => props.color};
   border-bottom: 1px solid rgba(0, 0, 0, 0.125);
   min-height: 56px !important;
-`
-
-const DownIcon = styled(KeyboardArrowDownIcon)`
-  margin: 0 12px;
-  color: #333333;
 `
