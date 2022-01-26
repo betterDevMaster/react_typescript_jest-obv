@@ -1,6 +1,10 @@
-### What was this MR fix?
+### What does this fix?
 
-### What does this MR do? Asana Task / Slack / Info
+### What was expected, what is it currently doing? 
+
+### Where was the bug reported? Asana / Slack / Support
+
+_Please provide links._
 
 ### Checklist
 
