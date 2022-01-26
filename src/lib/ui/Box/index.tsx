@@ -7,7 +7,7 @@ type BoxProps = MuiBoxProps & {
 }
 
 export default function Box(props: BoxProps) {
-  const {fullWidth, ...otherProps} = props
+  const {fullWidth: _, ...otherProps} = props
   return <MuiBox {...otherProps} />
 }
 
