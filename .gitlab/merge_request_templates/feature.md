@@ -1,4 +1,8 @@
-## What does this MR do? Asana Task / Slack / Info
+## What does this MR do?
+
+## Is there a task requirement? Asana / Slack
+
+_Please provide links._
 
 ## Checklist
 
