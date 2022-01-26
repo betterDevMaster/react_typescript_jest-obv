@@ -46,23 +46,19 @@ export default function PointConfigAction(props: PointConfigActionProps) {
         </ConfigFlexBox>
         <ConfigBox>
           <ConfigLabel>Points earned</ConfigLabel>
-          <CounterButtons
-            current={pointsEarned}
-            hasBorder
-            onChange={() => {}}
-          />
+          <CounterButtons current={pointsEarned} onChange={(v) => {}} />
         </ConfigBox>
         <ConfigBox>
           <ConfigLabel>Max per day</ConfigLabel>
-          <CounterButtons current={maxPerDay} hasBorder onChange={() => {}} />
+          <CounterButtons current={maxPerDay} onChange={(v) => {}} />
         </ConfigBox>
         <ConfigBox>
           <ConfigLabel>Max per event</ConfigLabel>
-          <CounterButtons current={maxPerEvent} hasBorder onChange={() => {}} />
+          <CounterButtons current={maxPerEvent} onChange={(v) => {}} />
         </ConfigBox>
         <ConfigBox>
           <ConfigLabel>Min interval (Minutes)</ConfigLabel>
-          <CounterButtons current={minInterval} hasBorder onChange={() => {}} />
+          <CounterButtons current={minInterval} onChange={(v) => {}} />
         </ConfigBox>
       </StyledAccordionDetails>
     </Accordion>

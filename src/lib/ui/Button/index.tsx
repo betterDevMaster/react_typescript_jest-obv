@@ -13,6 +13,7 @@ type ButtonStyles =
   | 'light'
   | 'dark'
   | 'accent'
+  | 'grey'
   | 'default'
 
 const DEFAULT_FONT_SIZE = 14
@@ -136,7 +137,9 @@ function getColor(props: ButtonProps) {
   if (props.color === 'dark') {
     return '#000000'
   }
-
+  if (props.color === 'grey') {
+    return colors.grey500
+  }
   return '#e7e7e7'
 }
 
@@ -181,6 +184,7 @@ const StyledButton = styled.button<StyleProps>`
   border-radius: ${(props) => (props.disableBorderRadius ? '0px' : '4px')};
   font-size: ${(props) => props.fontSize}px;
   justify-content: center;
+  line-height: 24px;
   &:hover {
     cursor: pointer;
     filter: brightness(0.95);

@@ -31,21 +31,17 @@ export default function AccordionSummary(props: AccordionSummaryProps) {
 }
 
 function ExpandedIcon(props: AccordionSummaryProps & {color: string}) {
-  const color = useMemo(() => {
-    return props.expanded ? getColor(props.activeColor) : 'unset'
-  }, [props.expanded, props.activeColor])
-
   if (props.expandedIconName === 'menu') {
-    return <MenuIcon color={color} />
+    return <MenuIcon color={props.color} />
   }
   if (props.expandedIconName === 'chevron') {
-    return <DownIcon />
+    return <ChevronIcon color={props.color} />
   }
   if (props.expandedIconName === 'plus' && !props.expanded) {
-    return <PlusIcon color={color} />
+    return <PlusIcon color={props.color} />
   }
   if (props.expandedIconName === 'plus' && props.expanded) {
-    return <MinusIcon color={color} />
+    return <MinusIcon color={props.color} />
   }
 
   return null

@@ -5,11 +5,11 @@ import DialogActions from '@material-ui/core/DialogActions'
 import DialogContent from '@material-ui/core/DialogContent'
 import DialogTitle from '@material-ui/core/DialogTitle'
 import Typography from '@material-ui/core/Typography'
+import Dialog from '@material-ui/core/Dialog'
 
 import Button, {ButtonProps} from 'lib/ui/Button'
 import Box from 'lib/ui/Box'
 import {useToggle} from 'lib/toggle'
-import Dialog from 'lib/ui/Dialog'
 
 const DEFAULT_TITLE = 'Are you sure?'
 const DEFAULT_CONFIRM_LABEL = 'Confirm'
@@ -97,7 +97,6 @@ export default function ConfirmDialog(props: {
                 variant="contained"
                 color="primary"
                 onClick={handleCancel}
-                autoFocus
               >
                 Cancel
               </CancelButton>
@@ -115,7 +114,7 @@ function CancelButton(
 ) {
   const {dialogVariant, ...buttonProps} = props
   const color: ButtonProps['color'] =
-    dialogVariant === 'dangerous' ? 'primary' : 'default'
+    dialogVariant === 'dangerous' ? 'primary' : 'grey'
 
   return (
     <Button {...buttonProps} color={color} fullWidth>
