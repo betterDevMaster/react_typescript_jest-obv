@@ -14,6 +14,8 @@ export const Title = styled.h1<TypographyProps>`
   font-size: 36px;
   line-height: 43px;
   color: ${(props) => (props.color ? props.color : '#000000')};
+  margin-block-start: 0;
+  margin-block-end: 0;
 `
 
 export const Header = styled.h2<TypographyProps>`
@@ -21,6 +23,8 @@ export const Header = styled.h2<TypographyProps>`
   font-size: 24px;
   line-height: 28px;
   color: ${(props) => (props.color ? props.color : '#000000')};
+  margin-block-start: 0;
+  margin-block-end: 0;
 `
 
 export const SubHead = styled.h3<TypographyProps>`
@@ -28,6 +32,8 @@ export const SubHead = styled.h3<TypographyProps>`
   font-size: 18px;
   line-height: 21px;
   color: ${(props) => (props.color ? props.color : '#000000')};
+  margin-block-start: 0;
+  margin-block-end: 0;
 `
 
 export const TableHeader = styled.h4<TypographyProps>`
@@ -35,6 +41,8 @@ export const TableHeader = styled.h4<TypographyProps>`
   font-size: 16px;
   line-height: 19px;
   color: ${(props) => (props.color ? props.color : '#000000')};
+  margin-block-start: 0;
+  margin-block-end: 0;
 `
 
 export const Label = styled.span<TypographyProps>`
@@ -62,6 +70,8 @@ export const Description = styled.p<TypographyProps>`
   font-size: 14px;
   line-height: 17px;
   color: ${(props) => (props.color ? props.color : '#939393')};
+  margin-block-start: 0;
+  margin-block-end: 0;
 `
 
 export const Text = styled.p<TypographyProps>`
@@ -69,6 +79,8 @@ export const Text = styled.p<TypographyProps>`
   font-size: 12px;
   line-height: 14px;
   color: ${(props) => (props.color ? props.color : '#000000')};
+  margin-block-start: 0;
+  margin-block-end: 0;
 `
 
 export const Typography = styled.p<TypographyProps>`
@@ -77,6 +89,8 @@ export const Typography = styled.p<TypographyProps>`
   line-height: ${(props) =>
     props.lineHeight ? `${props.lineHeight}px` : 'unset'};
   color: ${(props) => props.color || 'unset'};
+  margin-block-start: 0;
+  margin-block-end: 0;
 `
 export const ErrorMessage = styled(Typography)<TypographyProps>`
   font-weight: normal !important;

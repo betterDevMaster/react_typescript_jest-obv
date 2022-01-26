@@ -4,12 +4,15 @@ import styled from 'styled-components'
 import Drawer from '@material-ui/core/Drawer'
 import Tabs from '@material-ui/core/Tabs'
 import Tab from '@material-ui/core/Tab'
-import Typography from '@material-ui/core/Typography'
 import {Hidden} from '@material-ui/core'
 
 import IconButton from 'lib/ui/IconButton'
 import Box from 'lib/ui/Box'
 import Icon from 'lib/ui/Icon'
+import {Typography} from 'lib/ui/typography'
+import CloseDrawerIcon from './icons/CloseDrawer'
+import StylingIcon from './icons/Styling'
+import RulesIcon from './icons/Rules'
 
 const STYLING = 'STYLING'
 const SETTINGS = 'SETTINGS'
@@ -45,12 +48,19 @@ export default function ConfigPanel(props: ConfigPanelProps) {
       <StyledDrawer anchor="right" open={open}>
         <CloseButtonContainer>
           <IconButton onClick={handleCloseConfig}>
-            <Icon className="far fa-times" iconSize={24} color="light" />
+            <CloseDrawerIcon />
           </IconButton>
         </CloseButtonContainer>
-        <Box p={3}>
-          <Typography variant="h5">{props.title}</Typography>
-        </Box>
+        <Container>
+          <Typography
+            fontSize={24}
+            lineHeight={28}
+            fontWeight="normal"
+            color="#DFDFDF"
+          >
+            {props.title}
+          </Typography>
+        </Container>
         <StyledTabs
           value={value}
           onChange={(_, value) => setValue(value)}
@@ -64,12 +74,12 @@ export default function ConfigPanel(props: ConfigPanelProps) {
           />
           <StyledTab
             value={STYLING}
-            label={<Label tabLabel={STYLING} iconName="fas fa-code" />}
+            label={<Label tabLabel={STYLING} icon={<StylingIcon />} />}
             disabled={!Boolean(props.styling)}
           />
           <StyledTab
             value={RULES}
-            label={<Label tabLabel={RULES} iconName="fas fa-pencil-ruler" />}
+            label={<Label tabLabel={RULES} icon={<RulesIcon />} />}
             disabled={!Boolean(props.rules)}
           />
         </StyledTabs>
@@ -102,43 +112,68 @@ function TabPanel(props: {
       aria-labelledby={`wrapped-tab-${index}`}
       {...other}
     >
-      {value === index && <Box p={3}>{children}</Box>}
+      {value === index && <Container>{children}</Container>}
     </div>
   )
 }
 
-function Label(props: {iconName: string; tabLabel: string}) {
-  const {iconName, tabLabel} = props
+function Label(props: {
+  iconName?: string
+  tabLabel: string
+  icon?: React.ReactElement
+}) {
+  const {iconName, tabLabel, icon} = props
 
   return (
     <FlexBox>
-      <StyledIcon className={iconName} iconSize={24} />
-      <Hidden smDown>
-        <Typography>{tabLabel}</Typography>
+      <IconContainer>
+        {iconName ? <StyledIcon className={iconName} iconSize={24} /> : icon}
+      </IconContainer>
+      <Hidden xsDown>
+        <Typography
+          fontSize={16}
+          lineHeight={19}
+          fontWeight="normal"
+          color="#FFFFFF"
+        >
+          {tabLabel}
+        </Typography>
       </Hidden>
     </FlexBox>
   )
 }
 
+const Container = styled(Box)`
+  padding: 24px 20px;
+`
+
 const FlexBox = styled(Box)`
   display: flex;
+  align-items: center;
 `
-const StyledIcon = styled(Icon)`
-  padding: ${(props) => `0px ${props.theme.spacing[2]}`};
-`
-const CloseButtonContainer = styled(Box)`
-  position: fixed;
-  margin-left: -${(props) => props.theme.spacing[6]};
-  margin-top: ${(props) => props.theme.spacing[3]};
-  border-top-left-radius: 50%;
-  border-bottom-left-radius: 50%;
-  background-color: #222222;
-  width: 32px;
-  height: 40px;
+
+const IconContainer = styled(Box)`
   display: flex;
   align-items: center;
-  justify-content: flex-start;
-  padding-left: ${(props) => props.theme.spacing[2]};
+  justify-content: center;
+  padding-right: 10px;
+  @media (max-width: ${(props) => props.theme.breakpoints.sm}) {
+    padding-right: 0;
+  }
+`
+
+const StyledIcon = styled(Icon)`
+  font-size: 20px;
+`
+
+const CloseButtonContainer = styled(Box)`
+  position: fixed;
+  margin-left: -${(props) => props.theme.spacing[4]};
+  margin-top: ${(props) => props.theme.spacing[3]};
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding-left: 0;
   padding-right: ${(props) => props.theme.spacing[2]};
   @media (max-width: ${(props) => props.theme.breakpoints.sm}) {
     position: absolute;
@@ -167,12 +202,19 @@ const StyledDrawer = styled(Drawer)`
   }
 `
 
-const StyledTabs = styled(Tabs)``
+const StyledTabs = styled(Tabs)`
+  .MuiTabs-indicator {
+    background-color: unset;
+  }
+`
 
 const StyledTab = styled(Tab)`
   &.MuiTab-root {
-    margin: 0px 5px;
+    margin: 0px 1px;
     background-color: #353535;
+    @media (max-width: ${(props) => props.theme.breakpoints.sm}) {
+      width: 33%;
+    }
   }
   &.Mui-selected {
     background-color: ${(props) => props.theme.colors.primary};

@@ -19,7 +19,7 @@ export const Template: ComponentStory<typeof ConfigPanel> = (args) => (
 export const DefaultConfigPanel = Template.bind({})
 
 DefaultConfigPanel.args = {
-  title: 'Main Nav Config',
+  title: 'Main Nav Button',
   settings: <div>Main Nav Setting Page Here</div>,
   rules: <div>Main Nav Rules Page Here</div>,
   styling: <div>Main Nav Styling Page Here</div>,
