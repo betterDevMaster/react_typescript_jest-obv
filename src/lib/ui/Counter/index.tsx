@@ -46,10 +46,23 @@ export default function Counter(props: CounterProps) {
 
   const useStyles = makeStyles({
     root: {
+      width: 'fit-content',
+      padding: '7px 7px',
       border: props.hasBorder ? '1px solid #DFDFDF' : '',
+      boxShadow: 'none',
       '& > .Mui-disabled': {
         backgroundColor: 'transparent',
         color: getColor(props),
+      },
+      '& button': {
+        width: 24,
+        height: 24,
+        borderRight: 'none !important',
+        borderTopRightRadius: '3px !important',
+        borderBottomRightRadius: '3px !important',
+        borderTopLeftRadius: '3px !important',
+        borderBottomLeftRadius: '3px !important',
+        minWidth: 'unset',
       },
     },
   })
