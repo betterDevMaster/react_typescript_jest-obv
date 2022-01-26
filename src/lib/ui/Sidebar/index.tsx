@@ -84,7 +84,7 @@ export default function Sidebar(props: SidebarProps) {
             </div>
           ))}
         </List>
-        <Hidden smDown>
+        <Hidden xsDown>
           <SidebarAction isCollapsed={isCollapsed}>
             <MenuIconButton
               isCollapsed={isCollapsed}

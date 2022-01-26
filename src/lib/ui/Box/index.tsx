@@ -7,7 +7,8 @@ type BoxProps = MuiBoxProps & {
 }
 
 export default function Box(props: BoxProps) {
-  return <MuiBox {...props} />
+  const {fullWidth, ...otherProps} = props
+  return <MuiBox {...otherProps} />
 }
 
 export const TopBottomBorderBox = styled(Box)`

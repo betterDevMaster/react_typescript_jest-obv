@@ -1,7 +1,6 @@
 import React from 'react'
 
 import Popover from '@material-ui/core/Popover'
-import {Text} from 'lib/ui/typography'
 
 import styled from 'styled-components'
 import {useSidebarLists} from 'lib/ui/Sidebar'
@@ -26,22 +25,24 @@ export default function PopoverMenuItems(props: {
       open={Boolean(props.anchorEl)}
       anchorEl={props.anchorEl}
       anchorOrigin={{
-        vertical: 'bottom',
+        vertical: 'center',
         horizontal: 'right',
       }}
       transformOrigin={{
-        vertical: 'top',
-        horizontal: 'right',
+        vertical: 'center',
+        horizontal: 'left',
       }}
       disableRestoreFocus
     >
-      <Box p={1}>
-        <Text>{sidebarItems[props.mouseHoverIndex].label}</Text>
-      </Box>
+      <Box p={1}>{sidebarItems[props.mouseHoverIndex].label}</Box>
     </StyledPopover>
   )
 }
 
 const StyledPopover = styled(Popover)`
   pointer-events: none;
+  .MuiPaper-root {
+    background: #e7e7e7;
+    margin-left: ${(props) => props.theme.spacing[2]};
+  }
 `
