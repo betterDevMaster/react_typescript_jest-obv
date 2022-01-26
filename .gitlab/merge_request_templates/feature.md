@@ -1,10 +1,10 @@
-## What does this MR do?
+### What does this MR do?
 
-## Is there a task requirement? Asana / Slack
+### Is there a task requirement? Asana / Slack
 
 _Please provide links._
 
-## Checklist
+### Checklist
 
 - [ ] Written tests for new functionality / bugs.
 - [ ] All tests pass.

@@ -1,12 +1,8 @@
-## What does this fix?
+### What was this MR fix?
 
-## What was expected, what is it currently doing? 
+### What does this MR do? Asana Task / Slack / Info
 
-## Where was the bug reported? Asana / Slack / Support
-
-_Please provide links._
-
-## Checklist
+### Checklist
 
 - [ ] Written tests for new functionality / bugs.
 - [ ] All tests pass.
