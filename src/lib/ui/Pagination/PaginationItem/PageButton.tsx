@@ -37,8 +37,8 @@ const StyledButton = styled.button<ButtonStyleProps>`
   margin-right: 6.5px;
   border: none;
   border-radius: 3px;
-  background-color: ${(props) => `${props.isActive ? '#3490DC' : '#C4C4C4'}`};
-  opacity: ${(props) => `${props.isActive ? 1 : 0.25}`};
+  background: ${(props) =>
+    `${props.isActive ? '#3490DC' : 'rgba(196, 196, 196, 0.25)'}`};
   color: ${(props) => `${props.isActive ? '#FFFFFF' : '#000000'}`};
   font-weight: normal;
   font-size: 14px;
