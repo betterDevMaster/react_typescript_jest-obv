@@ -88,14 +88,12 @@ export const date = (target: string) => {
  * @returns
  */
 export const getNumDays = (start: string, end: string) => {
-  var date1 = moment(start).set('hours', 0).set('minutes', 0).set('seconds', 0)
+  var date1 = moment(start)
   var date2 = moment(end)
-    .set('hours', 0)
-    .set('minutes', 0)
-    .set('seconds', 0)
-    .add(1, 'day')
-  var diff = date2.diff(date1, 'd')
-  return diff
+
+  const secondsInDay = 86400
+  var diff = date2.diff(date1, 's')
+  return Math.ceil(diff / secondsInDay)
 }
 
 export interface Duration {
