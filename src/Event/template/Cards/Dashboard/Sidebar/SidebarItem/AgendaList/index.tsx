@@ -14,26 +14,25 @@ import {useCardsTemplate} from 'Event/template/Cards'
 import {useToggle} from 'lib/toggle'
 import {AgendaListConfig} from 'Event/template/Cards/Dashboard/Sidebar/SidebarItem/AgendaList/AgendaListConfig'
 import {FontStyle} from 'lib/ui/typography/FontStyleInput'
-import {uuid} from 'lib/uuid'
 import {RemoveButton} from 'organization/Event/DashboardConfig/ComponentConfig'
 import Section from 'Event/template/Cards/Dashboard/Sidebar/Section'
 import {createPositions, HashMap, Ordered, orderedIdsByPosition} from 'lib/list'
 import {useEditSidebarItem} from 'Event/template/Cards/Dashboard/Sidebar/SidebarItem'
+import {HasRules} from 'Event/attendee-rules'
 
 export const AGENDA_LIST = 'Agenda List'
-export type AgendaListProps = Ordered & {
-  id: string
-  type: typeof AGENDA_LIST
-  title: string
-  description?: string
-  footer?: string
-  descriptionFontStyles?: FontStyle[]
-  footerFontStyles?: FontStyle[]
-  items: HashMap<Agenda>
-}
+export type AgendaListProps = Ordered &
+  HasRules & {
+    type: typeof AGENDA_LIST
+    title: string
+    description?: string
+    footer?: string
+    descriptionFontStyles?: FontStyle[]
+    footerFontStyles?: FontStyle[]
+    items: HashMap<Agenda>
+  }
 
 export const createAgendaList = (): AgendaListProps => ({
-  id: uuid(),
   type: AGENDA_LIST,
   title: 'Agenda',
   description: '',

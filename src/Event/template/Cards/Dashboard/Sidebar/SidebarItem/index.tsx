@@ -1,3 +1,4 @@
+import styled from 'styled-components'
 import AgendaList, {
   AGENDA_LIST,
   AgendaListProps,
@@ -31,6 +32,7 @@ import DragHandleBar from 'Event/template/Cards/Dashboard/Sidebar/SidebarItem/Dr
 import {useEditMode} from 'Event/Dashboard/editor/state/edit-mode'
 import {REMOVE, useRemoveIfEmpty} from 'Event/TemplateUpdateProvider'
 import {DeepPartialSubstitute} from 'lib/type-utils'
+import ItemRulesConfig from 'Event/template/Cards/Dashboard/Sidebar/SidebarItem/ItemRulesConfig'
 
 export type SidebarItemProps =
   | AgendaListProps
@@ -63,7 +65,11 @@ export default function SidebarItem(
         <div ref={provided.innerRef} {...provided.draggableProps}>
           <DraggableOverlay>
             <>
-              <DragHandleBar handleProps={provided.dragHandleProps} />
+              <ItemConfigSection>
+                <DragHandleBar handleProps={provided.dragHandleProps} />
+                <ItemRulesConfig id={props.id} rules={props.rules} />
+              </ItemConfigSection>
+
               <Editable {...props} />
             </>
           </DraggableOverlay>
@@ -131,3 +137,8 @@ export function useEditSidebarItem() {
 
   return context
 }
+
+const ItemConfigSection = styled.div`
+  position: relative;
+  padding: ${(props) => props.theme.spacing[2]};
+`

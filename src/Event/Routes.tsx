@@ -21,12 +21,14 @@ import ResetPassword from 'Event/auth/ResetPassword'
 import SponsorPage from 'Event/SponsorPage'
 import FaqPage from 'Event/FaqPage'
 import SubmissionsProvider from 'Event/SubmissionsProvider'
-import EventLanguageProvider from 'Event/LanguageProvider'
+import EventLanguageProvider, {useLanguage} from 'Event/LanguageProvider'
 import JoinArea from 'Event/JoinArea/JoinArea'
 import FullPageLoader from 'lib/ui/layout/FullPageLoader'
 import DownloadReport from 'Event/DownloadReport'
 import SelfCheckIn from 'Event/SelfCheckIn'
-import AttendeeProfileProvider from 'Event/attendee-rules/AttendeeProfileProvider'
+import AttendeeProfileProvider, {
+  useAttendeeProfile,
+} from 'Event/attendee-rules/AttendeeProfileProvider'
 import {useTrackEventPage, useTrackOnLoad} from 'analytics'
 import ChangePassword from 'Event/auth/ChangePassword'
 import RoomRegistration from 'Event/RoomRegistration'
@@ -121,12 +123,11 @@ export default function Routes() {
 }
 
 function Authenticated() {
-  const attendee = useAttendee()
-
   useTrackOnLoad({
     category: 'Attendee',
     action: 'Logged In',
   })
+  const attendee = useAttendee()
 
   return (
     <EventActionsProvider>
@@ -138,15 +139,40 @@ function Authenticated() {
               tags={attendee.tags}
             >
               <EventLanguageProvider>
-                <HTMLHead>
-                  <UserRoutes />
-                </HTMLHead>
+                <DynamicAttendeeProfileProvider>
+                  <HTMLHead>
+                    <UserRoutes />
+                  </HTMLHead>
+                </DynamicAttendeeProfileProvider>
               </EventLanguageProvider>
             </AttendeeProfileProvider>
           </SubmissionsProvider>
         </PointsProvider>
       </AutoRefreshActions>
     </EventActionsProvider>
+  )
+}
+
+/**
+ * Provides dynamic groups/keys to the AttendeeProvider.
+ *
+ * @param props
+ * @returns
+ */
+function DynamicAttendeeProfileProvider(props: {children: JSX.Element}) {
+  const {current, defaultLanguage} = useLanguage()
+  const {groups, tags} = useAttendeeProfile()
+
+  const withDynamicGroups = {
+    ...groups,
+    // Append selected language as a group to allow rules
+    // to apply
+    __language__: current || defaultLanguage,
+  }
+  return (
+    <AttendeeProfileProvider groups={withDynamicGroups} tags={tags}>
+      {props.children}
+    </AttendeeProfileProvider>
   )
 }
 

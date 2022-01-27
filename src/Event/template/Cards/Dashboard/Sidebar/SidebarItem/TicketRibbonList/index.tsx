@@ -14,9 +14,10 @@ import Section from 'Event/template/Cards/Dashboard/Sidebar/Section'
 import {useEditSidebarItem} from 'Event/template/Cards/Dashboard/Sidebar/SidebarItem'
 import {HashMap, orderedIdsByPosition, createPositions, Ordered} from 'lib/list'
 import {useRemoveIfEmpty} from 'Event/TemplateUpdateProvider'
+import {HasRules} from 'Event/attendee-rules'
 
 export const TICKET_RIBBON_LIST = 'Ticket Ribbon List'
-export interface TicketRibbonListProps extends Ordered {
+export interface TicketRibbonListProps extends Ordered, HasRules {
   type: typeof TICKET_RIBBON_LIST
   ribbons: HashMap<TicketRibbonProps>
   position?: number

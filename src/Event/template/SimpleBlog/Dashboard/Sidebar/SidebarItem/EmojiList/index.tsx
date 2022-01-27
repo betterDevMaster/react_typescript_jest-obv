@@ -17,9 +17,10 @@ import {useEditSidebarItem} from 'Event/template/SimpleBlog/Dashboard/Sidebar/Si
 import {Ordered} from 'lib/list'
 import {useEditMode} from 'Event/Dashboard/editor/state/edit-mode'
 import {useRemoveIfEmpty} from 'Event/TemplateUpdateProvider'
+import {HasRules} from 'Event/attendee-rules'
 
 export const EMOJI_LIST = 'Emoji List'
-export interface EmojiListProps extends Ordered {
+export interface EmojiListProps extends Ordered, HasRules {
   type: typeof EMOJI_LIST
   emojis: Emoji['name'][]
   /**

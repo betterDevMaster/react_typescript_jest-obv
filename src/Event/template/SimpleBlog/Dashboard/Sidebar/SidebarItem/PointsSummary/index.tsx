@@ -12,9 +12,10 @@ import {useEditSidebarItem} from 'Event/template/SimpleBlog/Dashboard/Sidebar/Si
 import {Ordered} from 'lib/list'
 import {useEditMode} from 'Event/Dashboard/editor/state/edit-mode'
 import {useRemoveIfEmpty} from 'Event/TemplateUpdateProvider'
+import {HasRules} from 'Event/attendee-rules'
 
 export const POINTS_SUMMARY = 'Points Summary'
-export interface PointsSummaryProps extends Ordered {
+export interface PointsSummaryProps extends Ordered, HasRules {
   type: typeof POINTS_SUMMARY
   description: string
   summary?: string
