@@ -6,7 +6,6 @@ import AddSidebarItemButton from 'Event/template/Cards/Dashboard/Sidebar/AddSide
 import {DragDropContext, Droppable, DropResult} from 'react-beautiful-dnd'
 import {useEditMode} from 'Event/Dashboard/editor/state/edit-mode'
 import {createPositions, orderedIdsByPosition} from 'lib/list'
-import VisibleOnMatch from 'Event/attendee-rules/VisibleOnMatch'
 
 export default function Sidebar() {
   const {sidebarItems} = useCardsTemplate()
@@ -17,11 +16,7 @@ export default function Sidebar() {
   const items = ids.map((id, index) => {
     const props = sidebarItems[id]
 
-    return (
-      <VisibleOnMatch rules={props.rules} key={id}>
-        <SidebarItem {...props} index={index} id={id} />
-      </VisibleOnMatch>
-    )
+    return <SidebarItem {...props} index={index} id={id} />
   })
 
   if (isEditMode) {

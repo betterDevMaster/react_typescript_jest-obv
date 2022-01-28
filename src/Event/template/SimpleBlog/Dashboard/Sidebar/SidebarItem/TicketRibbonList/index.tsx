@@ -13,10 +13,9 @@ import {useHasVisibleItems} from 'Event/attendee-rules/matcher'
 import {createPositions, HashMap, Ordered, orderedIdsByPosition} from 'lib/list'
 import {useEditSidebarItem} from 'Event/template/SimpleBlog/Dashboard/Sidebar/SidebarItem'
 import {useRemoveIfEmpty} from 'Event/TemplateUpdateProvider'
-import {HasRules} from 'Event/attendee-rules'
 
 export const TICKET_RIBBON_LIST = 'Ticket Ribbon List'
-export interface TicketRibbonListProps extends Ordered, HasRules {
+export interface TicketRibbonListProps extends Ordered {
   type: typeof TICKET_RIBBON_LIST
   position?: number
   ribbons: HashMap<TicketRibbon>

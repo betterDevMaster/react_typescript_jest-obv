@@ -1,4 +1,3 @@
-import styled from 'styled-components'
 import AgendaList, {
   AGENDA_LIST,
   AgendaListProps,
@@ -32,7 +31,7 @@ import DragHandleBar from 'Event/template/Cards/Dashboard/Sidebar/SidebarItem/Dr
 import {useEditMode} from 'Event/Dashboard/editor/state/edit-mode'
 import {REMOVE, useRemoveIfEmpty} from 'Event/TemplateUpdateProvider'
 import {DeepPartialSubstitute} from 'lib/type-utils'
-import ItemRulesConfig from 'Event/template/Cards/Dashboard/Sidebar/SidebarItem/ItemRulesConfig'
+import VisibleOnMatch from 'Event/attendee-rules/VisibleOnMatch'
 
 export type SidebarItemProps =
   | AgendaListProps
@@ -65,11 +64,7 @@ export default function SidebarItem(
         <div ref={provided.innerRef} {...provided.draggableProps}>
           <DraggableOverlay>
             <>
-              <ItemConfigSection>
-                <DragHandleBar handleProps={provided.dragHandleProps} />
-                <ItemRulesConfig id={props.id} rules={props.rules} />
-              </ItemConfigSection>
-
+              <DragHandleBar handleProps={provided.dragHandleProps} />
               <Editable {...props} />
             </>
           </DraggableOverlay>
@@ -113,13 +108,25 @@ function Editable(props: SidebarItemProps & {id: string}) {
 function Item(props: SidebarItemProps) {
   switch (props.type) {
     case AGENDA_LIST:
-      return <AgendaList {...props} />
+      return (
+        <VisibleOnMatch rules={props.rules}>
+          <AgendaList {...props} />
+        </VisibleOnMatch>
+      )
     case RESOURCE_LIST:
-      return <ResourceList {...props} />
+      return (
+        <VisibleOnMatch rules={props.rules}>
+          <ResourceList {...props} />
+        </VisibleOnMatch>
+      )
     case EMOJI_LIST:
       return <EmojiList {...props} />
     case POINTS_SUMMARY:
-      return <PointsSummary {...props} />
+      return (
+        <VisibleOnMatch rules={props.rules}>
+          <PointsSummary {...props} />
+        </VisibleOnMatch>
+      )
     case TICKET_RIBBON_LIST:
       return <TicketRibbons {...props} />
     case SIDEBAR_NAV:
@@ -137,8 +144,3 @@ export function useEditSidebarItem() {
 
   return context
 }
-
-const ItemConfigSection = styled.div`
-  position: relative;
-  padding: ${(props) => props.theme.spacing[2]};
-`

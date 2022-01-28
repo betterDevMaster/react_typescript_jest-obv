@@ -15,10 +15,9 @@ import Section from 'Event/template/Cards/Dashboard/Sidebar/Section'
 import {useEditMode} from 'Event/Dashboard/editor/state/edit-mode'
 import {useEditSidebarItem} from 'Event/template/Cards/Dashboard/Sidebar/SidebarItem'
 import {Ordered} from 'lib/list'
-import {HasRules} from 'Event/attendee-rules'
 
 export const EMOJI_LIST = 'Emoji List'
-export interface EmojiListProps extends Ordered, HasRules {
+export interface EmojiListProps extends Ordered {
   type: typeof EMOJI_LIST
   emojis: Emoji['name'][]
   /**

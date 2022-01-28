@@ -114,7 +114,9 @@ function CloseRules(props: {onClick?: () => void}) {
   if (!props.onClick) {
     return null
   }
-  return <StyledBackButton onClick={props.onClick} />
+  return (
+    <StyledBackButton onClick={props.onClick} aria-label="close rules config" />
+  )
 }
 
 function Rules(props: {

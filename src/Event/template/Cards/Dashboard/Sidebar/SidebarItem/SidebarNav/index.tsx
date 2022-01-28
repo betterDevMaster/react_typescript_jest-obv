@@ -11,14 +11,12 @@ import {RemoveButton} from 'organization/Event/DashboardConfig/ComponentConfig'
 import {useEditSidebarItem} from 'Event/template/Cards/Dashboard/Sidebar/SidebarItem'
 import {useRemoveIfEmpty} from 'Event/TemplateUpdateProvider'
 import {NavButtonProps} from 'Event/Dashboard/components/NavButton'
-import {HasRules} from 'Event/attendee-rules'
 
 export const SIDEBAR_NAV = 'Sidebar Nav'
-export type SidebarNavProps = HasRules &
-  Ordered & {
-    type: typeof SIDEBAR_NAV
-    buttons: HashMap<NavButtonProps>
-  }
+export type SidebarNavProps = Ordered & {
+  type: typeof SIDEBAR_NAV
+  buttons: HashMap<NavButtonProps>
+}
 
 export const createSidebarNav = (): SidebarNavProps => ({
   type: SIDEBAR_NAV,
