@@ -8,6 +8,7 @@ import {Publishable} from 'Event/Dashboard/editor/views/Published'
 import Published from 'Event/Dashboard/editor/views/Published'
 import {useToggle} from 'lib/toggle'
 import {SidebarContainerConfig} from 'Event/template/Cards/Dashboard/Sidebar/SidebarContainer/SidebarContainerConfig'
+import {SectionBox} from 'Event/template/Cards/Dashboard/Sidebar/Section'
 
 export type Sidebar = Publishable & {
   background: string
@@ -41,16 +42,18 @@ export default function SidebarContainer(props: {children: React.ReactNode}) {
         <Box {...sidebar}>
           <TopLayer>
             <EditModeOnly>
-              <EditSidebarButton
-                onClick={toggleConfig}
-                fullWidth
-                size="large"
-                variant="contained"
-                color="secondary"
-                aria-label="edit sidebar"
-              >
-                Edit Sidebar
-              </EditSidebarButton>
+              <SectionBox disablePaddingY>
+                <Button
+                  onClick={toggleConfig}
+                  fullWidth
+                  size="large"
+                  variant="contained"
+                  color="secondary"
+                  aria-label="edit sidebar"
+                >
+                  Edit Sidebar
+                </Button>
+              </SectionBox>
             </EditModeOnly>
             {props.children}
           </TopLayer>
@@ -64,7 +67,7 @@ export default function SidebarContainer(props: {children: React.ReactNode}) {
 const Box = styled.div<Cards['sidebar']>`
   background: ${(props) => props.background};
   position: relative;
-  padding: ${(props) => `${props.theme.spacing[12]} ${props.theme.spacing[8]}`};
+  padding: ${(props) => `${props.theme.spacing[12]} 0`};
   ${(props) =>
     props.paddingTop !== undefined ? `padding-top: ${props.paddingTop}px;` : ``}
   border-radius: ${(props) => props.borderRadius}px;
@@ -78,8 +81,4 @@ const Box = styled.div<Cards['sidebar']>`
 const TopLayer = styled.div`
   position: relative;
   z-index: 2;
-`
-
-const EditSidebarButton = styled(Button)`
-  margin-bottom: ${(props) => props.theme.spacing[6]}!important;
 `

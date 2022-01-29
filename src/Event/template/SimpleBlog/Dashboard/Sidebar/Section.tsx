@@ -2,11 +2,12 @@ import {useSimpleBlogTemplate} from 'Event/template/SimpleBlog'
 import React from 'react'
 import styled from 'styled-components'
 
-const Section = React.forwardRef<
+export default React.forwardRef<
   HTMLDivElement,
   {
     children: React.ReactNode
     className?: string
+    disablePaddingX?: boolean
   }
 >((props, ref) => {
   const {sidebar} = useSimpleBlogTemplate()
@@ -15,29 +16,42 @@ const Section = React.forwardRef<
    * If empty is true, padding should be ignored.
    */
   return (
-    <Box
+    <Section
       ref={ref}
       className={props.className}
       color={sidebar.separatorColor}
       width={sidebar.separatorThickness}
       borderStyle={sidebar.separatorStyle}
+      disablePaddingX={props.disablePaddingX}
     >
       {props.children}
-    </Box>
+    </Section>
   )
 })
 
-export default Section
+export const SectionBox = styled.div<{
+  disablePaddingX?: boolean
+  disablePaddingY?: boolean
+  disablePaddingBottom?: boolean
+}>`
+  padding-top: ${(props) =>
+    props.disablePaddingY ? 0 : props.theme.spacing[8]};
+  padding-right: ${(props) =>
+    props.disablePaddingX ? 0 : props.theme.spacing[8]};
+  padding-bottom: ${(props) =>
+    props.disablePaddingY ? 0 : props.theme.spacing[8]};
+  padding-left: ${(props) =>
+    props.disablePaddingX ? 0 : props.theme.spacing[8]};
+`
 
-const Box = styled.div<{
+const Section = styled(SectionBox)<{
   color: string
   width: number
   borderStyle: string
+  disablePaddingX?: boolean
 }>`
   border-top: ${(props) =>
     `${props.color} ${props.width}px ${props.borderStyle}`};
-
-  padding: ${(props) => props.theme.spacing[8]} 0;
 
   &:first-child {
     border-top: none;

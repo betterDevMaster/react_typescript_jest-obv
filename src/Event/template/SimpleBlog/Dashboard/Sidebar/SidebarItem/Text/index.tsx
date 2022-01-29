@@ -10,7 +10,9 @@ import Content from 'lib/ui/form/TextEditor/Content'
 import {useSimpleBlogTemplate} from 'Event/template/SimpleBlog'
 import {useEditSidebarItem} from 'Event/template/SimpleBlog/Dashboard/Sidebar/SidebarItem'
 import {TextConfig} from 'Event/template/SimpleBlog/Dashboard/Sidebar/SidebarItem/Text/TextConfig'
-import Section from 'Event/template/SimpleBlog/Dashboard/Sidebar/Section'
+import Section, {
+  SectionBox,
+} from 'Event/template/SimpleBlog/Dashboard/Sidebar/Section'
 
 export const TEXT = 'Text'
 
@@ -33,7 +35,9 @@ export default function Text(props: TextProps) {
   const {flag: configVisible, toggle: toggleConfig} = useToggle()
 
   return (
-    <Section>
+    // Disable side padding to allow text to go all all the
+    // way to border.
+    <Section disablePaddingX>
       <Body aria-label="text" color={sidebar.textColor} padding={padding}>
         {v(body)}
       </Body>
@@ -43,17 +47,19 @@ export default function Text(props: TextProps) {
           onClose={toggleConfig}
           text={props}
         />
-        <EditButton
-          onClick={toggleConfig}
-          variant="contained"
-          color="primary"
-          fullWidth
-          size="large"
-          aria-label="edit text"
-        >
-          Edit Text
-        </EditButton>
-        <RemoveTextButton />
+        <SectionBox disablePaddingY>
+          <EditButton
+            onClick={toggleConfig}
+            variant="contained"
+            color="primary"
+            fullWidth
+            size="large"
+            aria-label="edit text"
+          >
+            Edit Text
+          </EditButton>
+          <RemoveTextButton />
+        </SectionBox>
       </EditModeOnly>
     </Section>
   )

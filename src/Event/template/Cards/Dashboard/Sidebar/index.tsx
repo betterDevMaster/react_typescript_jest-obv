@@ -6,6 +6,7 @@ import AddSidebarItemButton from 'Event/template/Cards/Dashboard/Sidebar/AddSide
 import {DragDropContext, Droppable, DropResult} from 'react-beautiful-dnd'
 import {useEditMode} from 'Event/Dashboard/editor/state/edit-mode'
 import {createPositions, orderedIdsByPosition} from 'lib/list'
+import {SectionBox} from 'Event/template/Cards/Dashboard/Sidebar/Section'
 
 export default function Sidebar() {
   const {sidebarItems} = useCardsTemplate()
@@ -41,7 +42,9 @@ function DraggableList(props: {children: React.ReactElement[]}) {
           )}
         </Droppable>
       </DragDropContext>
-      <AddSidebarItemButton />
+      <SectionBox disablePaddingY>
+        <AddSidebarItemButton />
+      </SectionBox>
     </SidebarContainer>
   )
 }

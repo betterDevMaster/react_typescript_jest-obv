@@ -5,7 +5,9 @@ import {useAttendeeVariables} from 'Event'
 import {useCardsTemplate} from 'Event/template/Cards'
 import {TextConfig} from 'Event/template/Cards/Dashboard/Sidebar/SidebarItem/Text/TextConfig'
 import EditModeOnly from 'Event/Dashboard/editor/views/EditModeOnly'
-import Section from 'Event/template/Cards/Dashboard/Sidebar/Section'
+import Section, {
+  SectionBox,
+} from 'Event/template/Cards/Dashboard/Sidebar/Section'
 import {useEditSidebarItem} from 'Event/template/Cards/Dashboard/Sidebar/SidebarItem'
 import {useToggle} from 'lib/toggle'
 import {Ordered} from 'lib/list'
@@ -33,27 +35,31 @@ export default function Text(props: TextProps) {
   const {flag: configVisible, toggle: toggleConfig} = useToggle()
 
   return (
-    <Section>
+    // Disable side padding to allow text to go all all the
+    // way to border.
+    <Section disablePaddingX>
       <Body aria-label="text" color={sidebar.textColor} padding={padding}>
         {v(body)}
       </Body>
       <EditModeOnly>
-        <TextConfig
-          isVisible={configVisible}
-          onClose={toggleConfig}
-          text={props}
-        />
-        <EditButton
-          onClick={toggleConfig}
-          variant="contained"
-          color="primary"
-          fullWidth
-          size="large"
-          aria-label="edit text"
-        >
-          Edit Text
-        </EditButton>
-        <RemoveTextButton />
+        <SectionBox disablePaddingY>
+          <TextConfig
+            isVisible={configVisible}
+            onClose={toggleConfig}
+            text={props}
+          />
+          <EditButton
+            onClick={toggleConfig}
+            variant="contained"
+            color="primary"
+            fullWidth
+            size="large"
+            aria-label="edit text"
+          >
+            Edit Text
+          </EditButton>
+          <RemoveTextButton />
+        </SectionBox>
       </EditModeOnly>
     </Section>
   )
