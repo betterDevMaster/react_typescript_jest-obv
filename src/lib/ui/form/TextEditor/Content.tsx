@@ -1,6 +1,10 @@
 import React from 'react'
 
-export default function Content(props: {className?: string; children: string}) {
+export default function Content(props: {
+  className?: string
+  children: string
+  'aria-label'?: string
+}) {
   return (
     <div
       /**
@@ -13,6 +17,7 @@ export default function Content(props: {className?: string; children: string}) {
       dangerouslySetInnerHTML={{
         __html: props.children,
       }}
+      aria-label={props['aria-label']}
     />
   )
 }

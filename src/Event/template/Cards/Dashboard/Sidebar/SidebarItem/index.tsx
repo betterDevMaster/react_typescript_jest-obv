@@ -25,6 +25,10 @@ import TicketRibbons, {
   TicketRibbonListProps,
   TICKET_RIBBON_LIST,
 } from 'Event/template/Cards/Dashboard/Sidebar/SidebarItem/TicketRibbonList'
+import Text, {
+  TextProps,
+  TEXT,
+} from 'Event/template/Cards/Dashboard/Sidebar/SidebarItem/Text'
 import {Draggable} from 'react-beautiful-dnd'
 import {DraggableOverlay} from 'lib/ui/drag-and-drop'
 import DragHandleBar from 'Event/template/Cards/Dashboard/Sidebar/SidebarItem/DragHandleBar'
@@ -40,6 +44,7 @@ export type SidebarItemProps =
   | PointsSummaryProps
   | TicketRibbonListProps
   | SidebarNavProps
+  | TextProps
 
 type SidebarItemContextProps = {
   update: (data: DeepPartialSubstitute<SidebarItemProps, typeof REMOVE>) => void
@@ -131,6 +136,8 @@ function Item(props: SidebarItemProps) {
       return <TicketRibbons {...props} />
     case SIDEBAR_NAV:
       return <SidebarNav {...props} />
+    case TEXT:
+      return <Text {...props} />
   }
 }
 

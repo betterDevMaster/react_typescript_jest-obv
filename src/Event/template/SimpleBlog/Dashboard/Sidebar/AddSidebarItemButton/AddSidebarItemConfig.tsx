@@ -29,6 +29,10 @@ import {
   createTicketRibbonList,
   TICKET_RIBBON_LIST,
 } from 'Event/template/SimpleBlog/Dashboard/Sidebar/SidebarItem/TicketRibbonList'
+import {
+  createText,
+  TEXT,
+} from 'Event/template/SimpleBlog/Dashboard/Sidebar/SidebarItem/Text'
 import Select from '@material-ui/core/Select'
 import {useForm} from 'react-hook-form'
 import {useSimpleBlogUpdate} from 'Event/template/SimpleBlog'
@@ -91,6 +95,7 @@ export default function AddSidebarItemConfig(props: {
             <MenuItem value={POINTS_SUMMARY}>Points Summary</MenuItem>
             <MenuItem value={SIDEBAR_NAV}>Sidebar Buttons</MenuItem>
             <MenuItem value={TICKET_RIBBON_LIST}>Ticket Ribbons</MenuItem>
+            <MenuItem value={TEXT}>Text</MenuItem>
           </Select>
         </FormControl>
         <SaveButton type="submit" disabled={!type} aria-label="add item">
@@ -115,5 +120,7 @@ function createItem(type: SidebarItemProps['type']): SidebarItemProps {
       return createSidebarNav()
     case TICKET_RIBBON_LIST:
       return createTicketRibbonList()
+    case TEXT:
+      return createText()
   }
 }

@@ -16,7 +16,7 @@ export default function Sidebar() {
   const items = ids.map((id, index) => {
     const props = sidebarItems[id]
 
-    return <SidebarItem {...props} index={index} id={id} />
+    return <SidebarItem key={id} {...props} index={index} id={id} />
   })
 
   if (isEditMode) {

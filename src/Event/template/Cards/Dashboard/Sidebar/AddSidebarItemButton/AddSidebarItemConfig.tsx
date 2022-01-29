@@ -19,6 +19,10 @@ import {
   createPointsSummary,
   POINTS_SUMMARY,
 } from 'Event/template/Cards/Dashboard/Sidebar/SidebarItem/PointsSummary'
+import {
+  createText,
+  TEXT,
+} from 'Event/template/Cards/Dashboard/Sidebar/SidebarItem/Text'
 import {onUnknownChangeHandler} from 'lib/dom'
 import ComponentConfig, {
   SaveButton,
@@ -91,6 +95,7 @@ export default function AddSidebarItemConfig(props: {
             <MenuItem value={POINTS_SUMMARY}>Points Summary</MenuItem>
             <MenuItem value={SIDEBAR_NAV}>Sidebar Buttons</MenuItem>
             <MenuItem value={TICKET_RIBBON_LIST}>Ticket Ribbons</MenuItem>
+            <MenuItem value={TEXT}>Text</MenuItem>
           </Select>
         </FormControl>
         <SaveButton type="submit" disabled={!type} aria-label="add item">
@@ -115,5 +120,7 @@ function createItem(type: SidebarItemProps['type']): SidebarItemProps {
       return createSidebarNav()
     case TICKET_RIBBON_LIST:
       return createTicketRibbonList()
+    case TEXT:
+      return createText()
   }
 }
