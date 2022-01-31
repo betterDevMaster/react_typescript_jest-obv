@@ -17,7 +17,6 @@ import {useEvent} from 'Event/EventProvider'
 import {onUnknownChangeHandler} from 'lib/dom'
 import {useValidatedForm} from 'lib/form'
 import ErrorAlert from 'lib/ui/alerts/ErrorAlert'
-import {RelativeLink} from 'lib/ui/link/RelativeLink'
 import {useEventRoutes} from 'organization/Event/EventRoutes'
 import {
   AccessToken,
