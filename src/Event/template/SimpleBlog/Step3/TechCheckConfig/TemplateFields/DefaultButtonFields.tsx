@@ -56,7 +56,7 @@ export default function DefaultButtonFields(props: TemplateFieldProps) {
             label="Border Color"
             color={techCheck.buttonBorderColor}
             onPick={set('buttonBorderColor')}
-            aria-label="submit button text color"
+            aria-label="submit button border color"
             disabled={submitting}
           />
         </Grid>

@@ -7,6 +7,7 @@ import {CONFIGURE_EVENTS} from 'organization/PermissionsProvider'
 import {now} from 'lib/date-time'
 import {goToTechCheckConfig} from 'organization/Event/TechCheckConfig/__utils__/go-to-tech-check-config'
 import {fakePanels} from 'Event/template/Panels/__utils__/factory'
+import {createPanels} from 'Event/template/Panels'
 
 const mockPut = axios.put as jest.Mock
 
@@ -216,4 +217,55 @@ it('it should set rules to skip', async () => {
   expect(template.skipTechCheckRules.length).toBe(1)
 
   expect(template.skipTechCheckRules[0].target).toBe(tag)
+})
+
+it('it should show the updated preview once clicking save tech check template', async () => {
+  const event = fakeEvent({
+    tech_check: null,
+    template: fakePanels({
+      techCheck: {
+        ...createPanels().techCheck,
+        buttonText: 'Existing Button', // this should not be shown
+      },
+      skipTechCheckRules: [],
+    }),
+  })
+
+  const {findByLabelText, areas, findByText} = await goToTechCheckConfig({
+    event,
+    userPermissions: [CONFIGURE_EVENTS],
+  })
+
+  const area = faker.random.arrayElement(areas)
+
+  fireEvent.mouseDown(await findByLabelText('pick area'))
+  user.click(await findByLabelText(`pick ${area.name}`))
+
+  fireEvent.change(await findByLabelText('tech check start'), {
+    target: {
+      value: now(),
+    },
+  })
+
+  // Manually set body input because we can't type into CKEditor
+  const body = faker.lorem.paragraph()
+  const bodyEl = (await findByLabelText('tech check body')) as HTMLInputElement
+  bodyEl.value = body
+
+  const newText = 'Updated Button'
+
+  user.type(await findByLabelText('tech check submit button text'), newText)
+
+  user.click(await findByLabelText('save tech check'))
+
+  await wait(() => {
+    expect(mockPut).toHaveBeenCalledTimes(2)
+  })
+
+  const [_, data] = mockPut.mock.calls[0]
+  const {template} = data
+
+  expect(template['techCheck.buttonText']).toBe(newText) // has the text updated
+
+  expect(await findByText(newText)).toBeInTheDocument()
 })

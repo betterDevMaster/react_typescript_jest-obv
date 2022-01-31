@@ -5,7 +5,10 @@ import user from '@testing-library/user-event'
 import {fireEvent, wait} from '@testing-library/react'
 import {CONFIGURE_EVENTS} from 'organization/PermissionsProvider'
 import {now} from 'lib/date-time'
-import {fakeSimpleBlog} from 'Event/template/SimpleBlog/__utils__/factory'
+import {
+  fakeSimpleBlog,
+  fakeTemplateTechCheck,
+} from 'Event/template/SimpleBlog/__utils__/factory'
 import {goToTechCheckConfig} from 'organization/Event/TechCheckConfig/__utils__/go-to-tech-check-config'
 
 const mockPut = axios.put as jest.Mock
@@ -211,4 +214,62 @@ it('it should set rules to skip', async () => {
   expect(template.skipTechCheckRules.length).toBe(1)
 
   expect(template.skipTechCheckRules[0].target).toBe(tag)
+})
+
+// Assert bug fixed where saving tech check config would
+// revert the preview
+it('it should still show the updated preview', async () => {
+  const event = fakeEvent({
+    tech_check: null,
+    template: fakeSimpleBlog({
+      techCheck: fakeTemplateTechCheck({
+        buttonTextColor: '#aaaaaa', // Has a different button to start
+      }),
+      skipTechCheckRules: [],
+    }),
+  })
+
+  const {findByLabelText, areas} = await goToTechCheckConfig({
+    event,
+    userPermissions: [CONFIGURE_EVENTS],
+  })
+
+  const area = faker.random.arrayElement(areas)
+
+  fireEvent.mouseDown(await findByLabelText('pick area'))
+  user.click(await findByLabelText(`pick ${area.name}`))
+
+  fireEvent.change(await findByLabelText('tech check start'), {
+    target: {
+      value: now(),
+    },
+  })
+
+  // Manually set body input because we can't type into CKEditor
+  const body = faker.lorem.paragraph()
+  const bodyEl = (await findByLabelText('tech check body')) as HTMLInputElement
+  bodyEl.value = body
+
+  const newColor = '#e7e7e7'
+  user.type(await findByLabelText('button text color'), newColor)
+
+  mockPut.mockResolvedValueOnce({data: event}) // template save
+  mockPut.mockResolvedValueOnce({data: {...event}}) // event save, spread to  fake a new object
+
+  user.click(await findByLabelText('save tech check'))
+
+  await wait(() => {
+    expect(mockPut).toHaveBeenCalledTimes(2)
+  })
+
+  const [_, data] = mockPut.mock.calls[0]
+  const {template} = data
+
+  expect(template['techCheck.buttonTextColor']).toBe(newColor) // has the style updated
+
+  // Once clicking the save button, preview window must keep the updated template.
+  const startButton = await findByLabelText('start tech check')
+
+  // Preview is still showing updated color
+  expect(startButton).toHaveStyle(`color: ${newColor}`)
 })

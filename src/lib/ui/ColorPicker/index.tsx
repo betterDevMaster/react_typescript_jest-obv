@@ -7,6 +7,7 @@ import {onChangeStringHandler} from 'lib/dom'
 import makeStyles from '@material-ui/core/styles/makeStyles'
 import ColorProperties from 'color'
 import {isValidColor} from 'lib/color'
+import {usePrevious} from 'lib/state'
 
 export default function ColorPicker(props: {
   label?: string
@@ -24,6 +25,8 @@ export default function ColorPicker(props: {
   const {color} = props
 
   const [value, setValue] = useState(color)
+
+  const prevValue = usePrevious(value)
 
   const toggleShowPicker = () => {
     setShowPicker(!showPicker)
@@ -46,8 +49,18 @@ export default function ColorPicker(props: {
       return
     }
 
+    if (prevValue === value) {
+      // Was an update from parent
+      return
+    }
+
     onPick(value)
-  }, [value, onPick, color])
+  }, [value, onPick, color, prevValue])
+
+  // If parent color changes,
+  useEffect(() => {
+    setValue(color)
+  }, [color])
 
   const handleColorChange: ColorChangeHandler = ({hex: newColor}) => {
     setValue(newColor)

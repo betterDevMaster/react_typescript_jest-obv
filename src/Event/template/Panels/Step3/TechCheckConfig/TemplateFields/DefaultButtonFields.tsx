@@ -26,7 +26,7 @@ export default function DefaultButtonFields(props: TemplateFieldProps) {
             label="Label"
             fullWidth
             inputProps={{
-              'aria-label': 'tech check submit button label',
+              'aria-label': 'tech check submit button text',
             }}
             disabled={submitting}
             onChange={onChangeStringHandler(set('buttonText'))}

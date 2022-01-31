@@ -277,15 +277,15 @@ function useTemplateTechCheckProps() {
   const [techCheck, setTechCheck] = useState<SimpleBlogTechCheckTemplateProps>(
     DEFAULT_TECH_CHECK_PROPS,
   )
-  const {event} = useEvent()
+  const template = useSimpleBlogTemplate()
 
   useEffect(() => {
-    if (!event?.template?.techCheck) {
+    if (!template.techCheck) {
       return
     }
 
-    setTechCheck(event.template.techCheck)
-  }, [event])
+    setTechCheck(template.techCheck)
+  }, [template.techCheck])
 
   const set: TechCheckTemplatePropSetter = (key) => (value) => {
     const updated = {
