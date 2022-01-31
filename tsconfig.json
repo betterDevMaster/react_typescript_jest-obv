@@ -15,10 +15,7 @@
     "isolatedModules": true,
     "noEmit": true,
     "jsx": "react",
-    "downlevelIteration": true,
-    "paths": {
-      "react-router": ["node_modules/@types/react-router"]
-    }
+    "downlevelIteration": true
   },
   "include": ["src"]
 }

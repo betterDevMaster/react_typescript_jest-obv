@@ -86,6 +86,9 @@ function ConfigureEventPages() {
         <ConfigNavItem to={routes.image_entries} aria-label="image entries">
           Image Entries
         </ConfigNavItem>
+        <ConfigNavItem to={routes.webhooks} aria-label="webhooks">
+          Webhooks
+        </ConfigNavItem>
         <TemplateConfigNavItems />
       </>
     </HasPermission>

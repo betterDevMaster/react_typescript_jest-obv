@@ -48,6 +48,8 @@ import DuplicateEventForm from 'organization/EventList/DuplicateEventForm'
 import RoomsProvider from 'organization/Event/Area/RoomsProvider'
 import ImageEntries from 'organization/Event/ImageEntries'
 import ImageEntriesProvider from 'organization/Event/ImageEntriesProvider'
+import Webhooks from 'organization/Event/Webhooks'
+import WebhooksProvider from 'organization/Event/WebhooksProvider'
 import EmojiPageSettings from 'organization/Event/EmojiPage/EmojiPageSettings'
 import {OrganizationActionsProvider} from 'Event/ActionsProvider'
 import Mailchimp from 'organization/Event/Services/Apps/Mailchimp'
@@ -229,6 +231,15 @@ export default function EventRoutes() {
                         <ImageEntries />
                       </ImageEntriesProvider>
                     </OrganizationActionsProvider>
+                  </AuthorizedPage>
+                </Route>
+                <Route path={routes.events[':event'].webhooks}>
+                  <AuthorizedPage permission={CONFIGURE_EVENTS}>
+                    <AccessTokensProvider>
+                      <WebhooksProvider>
+                        <Webhooks />
+                      </WebhooksProvider>
+                    </AccessTokensProvider>
                   </AuthorizedPage>
                 </Route>
                 <TemplateConfigRoutes />

@@ -63,6 +63,9 @@ export interface ObvioEvent {
   has_mailchimp: boolean
   has_zapier: boolean
   is_live: boolean
+  webhook_url: string | null
+  webhook_access_token_id: number | null
+  has_webhook_crc_salt: boolean
 }
 
 export interface WaiverConfig {

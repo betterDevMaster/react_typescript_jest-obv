@@ -166,6 +166,7 @@ export function createRoutesFor(organization: Organization) {
           password_create: '/password_create',
           global_styles: '/global_styles',
           check_in: '/check_in',
+          webhooks: '/webhooks',
         },
       },
     },

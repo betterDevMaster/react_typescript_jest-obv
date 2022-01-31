@@ -67,7 +67,7 @@
   "scripts": {
     "dev": "react-scripts start",
     "build": "react-scripts --max_old_space_size=8192 build",
-    "test": "cross-env CI=true react-scripts test",
+    "test": "cross-env CI=true react-scripts test --colors",
     "test:watch": "react-scripts test",
     "test:coverage": "npm run test -- --coverage",
     "test:related": "npm run test -- --passWithNoTests --findRelatedTests",

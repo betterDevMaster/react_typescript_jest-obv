@@ -53,6 +53,9 @@ export const fakeEvent = (overrides?: Partial<ObvioEvent>): ObvioEvent => ({
   has_mailchimp: false,
   has_zapier: false,
   is_live: false,
+  webhook_url: null,
+  webhook_access_token_id: null,
+  has_webhook_crc_salt: false,
   ...overrides,
 })
 
