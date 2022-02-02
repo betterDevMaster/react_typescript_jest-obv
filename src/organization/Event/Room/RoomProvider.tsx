@@ -12,7 +12,9 @@ type RoomContextProps = {
   room: Room
   update: UpdateRoom
   deleteRoom: () => Promise<void>
+  endMeeting: () => Promise<void>
   setOnline: (online: boolean) => void
+  setPaused: (online: boolean) => void
   toggleRegistration: (hasRegistration: boolean) => void
   processing: boolean
 }
@@ -28,7 +30,9 @@ export function StaticRoomProvider(props: {
 
   const update = useUpdateRoom(room.id, setProcessing)
   const setOnline = useSetOnline(room.id, setProcessing)
+  const setPaused = useSetPaused(room.id, setProcessing)
   const remove = useRemove(room.id, setProcessing)
+  const endMeeting = useEndMeeting(room.id, setProcessing)
   const toggleRegistration = useToggleRegistration(room.id, setProcessing)
 
   return (
@@ -38,6 +42,8 @@ export function StaticRoomProvider(props: {
         update,
         processing,
         setOnline,
+        setPaused,
+        endMeeting,
         deleteRoom: remove,
         toggleRegistration,
       }}
@@ -54,6 +60,8 @@ export function RouteRoomProvider(props: {children: React.ReactElement}) {
   const [processing, setProcessing] = useState(false)
   const update = useUpdateRoom(id, setProcessing)
   const setOnline = useSetOnline(id, setProcessing)
+  const setPaused = useSetPaused(id, setProcessing)
+  const endMeeting = useEndMeeting(id, setProcessing)
   const remove = useRemove(id, setProcessing)
   const setPublic = useToggleRegistration(id, setProcessing)
   const areaRoutes = useAreaRoutes()
@@ -70,6 +78,8 @@ export function RouteRoomProvider(props: {children: React.ReactElement}) {
         update,
         processing,
         setOnline,
+        setPaused,
+        endMeeting,
         deleteRoom: remove,
         toggleRegistration: setPublic,
       }}
@@ -149,6 +159,47 @@ function useSetOnline(
     },
     [id, client, update, setProcessing],
   )
+}
+
+function useSetPaused(
+  id: number,
+  setProcessing: (processing: boolean) => void,
+) {
+  const {client} = useOrganization()
+  const {update} = useRooms()
+
+  return useCallback(
+    (pause: boolean) => {
+      const endpoint = pause ? `/rooms/${id}/pause` : `/rooms/${id}/unpause`
+      const url = api(endpoint)
+
+      setProcessing(true)
+      client
+        .patch<Room>(url)
+        .then(update)
+        .finally(() => {
+          setProcessing(false)
+        })
+    },
+    [id, client, update, setProcessing],
+  )
+}
+
+function useEndMeeting(
+  id: number,
+  setProcessing: (processing: boolean) => void,
+) {
+  const {client} = useOrganization()
+
+  return useCallback(() => {
+    const endpoint = `/rooms/${id}/end`
+    const url = api(endpoint)
+
+    setProcessing(true)
+    return client.patch<void>(url).finally(() => {
+      setProcessing(false)
+    })
+  }, [id, client, setProcessing])
 }
 
 function useRemove(id: number, setProcessing: (processing: boolean) => void) {

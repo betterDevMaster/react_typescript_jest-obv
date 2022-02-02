@@ -9,6 +9,9 @@ import OnlineSwitch from 'organization/Event/Room/OnlineSwitch'
 import {StaticRoomProvider, useRoom} from 'organization/Event/Room/RoomProvider'
 import {RelativeLink} from 'lib/ui/link/RelativeLink'
 import {useRoomRoutes} from 'organization/Event/Room/RoomRoutes'
+import {IfCanStartRooms} from 'organization/PermissionsProvider'
+import StartButton from 'organization/Event/Room/StartButton'
+import {startLabel} from 'organization/Event/Room'
 
 export interface RoomMetrics {
   room_id: number
@@ -39,6 +42,9 @@ export default function RoomList(props: {
           <TableCell>Internal Description</TableCell>
           <TableCell>Num Attendees</TableCell>
           <TableCell>Open</TableCell>
+          <IfCanStartRooms>
+            <TableCell>Start/Join</TableCell>
+          </IfCanStartRooms>
         </TableRow>
       </TableHead>
       <TableBody>
@@ -53,6 +59,13 @@ export default function RoomList(props: {
               <TableCell>
                 <OnlineSwitch />
               </TableCell>
+              <IfCanStartRooms>
+                <TableCell>
+                  <StartButton>
+                    {startLabel(numAttendees(room.id, metrics))}
+                  </StartButton>
+                </TableCell>
+              </IfCanStartRooms>
             </TableRow>
           </StaticRoomProvider>
         ))}
@@ -71,7 +84,7 @@ function numAttendees(roomId: number, metrics: RoomMetrics[] | null) {
     return null
   }
 
-  return target.num_attendees
+  return parseInt(target.num_attendees)
 }
 
 function RoomLink() {

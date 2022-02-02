@@ -46,10 +46,11 @@ export type RequestOptions = {
 export type Client = typeof client
 
 export const client = {
-  get: <T>(url: string, options?: RequestOptions) =>
-    handleAxiosResult<T>(
+  get: <T>(url: string, options?: RequestOptions) => {
+    return handleAxiosResult<T>(
       axios.get(createUrl(url, options), createOptions(options)),
-    ),
+    )
+  },
   post: <T>(url: string, data: {} | FormData = {}, options?: RequestOptions) =>
     handleAxiosResult<T>(axios.post(url, data, createOptions(options))),
   put: <T>(url: string, data: {} | FormData = {}, options?: RequestOptions) => {

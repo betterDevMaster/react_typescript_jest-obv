@@ -10,6 +10,7 @@ export const fakeRoom = (overrides?: Partial<Room>): Room => ({
   number: faker.random.number({min: 1000, max: 10000}),
   description: null,
   is_online: true,
+  is_paused: false,
   has_registration: false,
   registration_url: null,
   max_num_attendees: 500,

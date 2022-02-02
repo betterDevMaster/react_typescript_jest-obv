@@ -26,6 +26,15 @@ it('should render list of rooms', async () => {
   )
   // Rooms
   mockGet.mockImplementationOnce(() => Promise.resolve({data: rooms}))
+
+  // start url
+  const url = faker.internet.url()
+  for (const room of rooms) {
+    if (room.is_online) {
+      mockGet.mockImplementationOnce(() => Promise.resolve({data: {url}}))
+    }
+  }
+
   // metrics
   mockGet.mockImplementationOnce(() => Promise.resolve({data: []}))
 
