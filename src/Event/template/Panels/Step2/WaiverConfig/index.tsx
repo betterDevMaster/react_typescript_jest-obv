@@ -40,6 +40,7 @@ import {ValidationError} from 'lib/ui/api-client'
 import {SaveButton} from 'organization/Event/DashboardConfig/ComponentConfig'
 import TemplateProvider from 'Event/TemplateProvider'
 import {Template} from 'Event/template'
+import AdditionalWaiversButton from 'organization/Event/WaiverConfig/AdditionalWaiversButton'
 const imageUploadId = 'waived-logo-upload'
 
 type WaiverData = {
@@ -164,6 +165,7 @@ export default function WaiverConfig() {
   return (
     <Layout>
       <Page>
+        <AdditionalWaiversButton />
         <form onSubmit={handleSubmit(submit)}>
           <FormControl fullWidth disabled={submitting}>
             <FormControlLabel

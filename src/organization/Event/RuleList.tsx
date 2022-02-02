@@ -1,4 +1,3 @@
-import {Rule} from 'organization/Event/Area/Rules/RulesProvider'
 import {Rule as AttendeeRule} from 'Event/attendee-rules/index'
 import React from 'react'
 import {
@@ -15,19 +14,17 @@ import {
 } from 'Event/attendee-rules/RuleConfig/RuleList/SingleRule/NestedRule'
 import {List} from 'organization/Event/Area/Rules/RulesTable'
 
-export default function Conditions(props: {rule: Rule}) {
-  const {
-    rule: {conditions},
-  } = props
+export default function RuleList(props: {rules: AttendeeRule[]}) {
+  const {rules} = props
 
-  const hasConditions = conditions.length > 0
-  if (!hasConditions) {
+  const hasRules = rules.length > 0
+  if (!hasRules) {
     return <em>None</em>
   }
 
   return (
     <List>
-      {conditions.map((condition, index) => (
+      {rules.map((condition, index) => (
         <li key={index}>
           <Operation isFirst={index === 0} rule={condition} />
           <Label condition={condition} />

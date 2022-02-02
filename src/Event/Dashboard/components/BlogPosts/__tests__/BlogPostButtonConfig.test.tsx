@@ -1,4 +1,4 @@
-import {testTemplates} from 'Event/template/__utils__/tester'
+import {allTemplates} from 'Event/template/__utils__/tester'
 import {fakeBlogPost} from 'Event/Dashboard/components/BlogPosts/__utils__/factory'
 import user from '@testing-library/user-event'
 import {createHashMap} from 'lib/list'
@@ -12,7 +12,7 @@ import {REMOVE} from 'Event/TemplateUpdateProvider'
 
 const mockPut = axios.put as jest.Mock
 
-testTemplates('should add a blog post button', async (fakeTemplate) => {
+allTemplates('should add a blog post button', async (fakeTemplate) => {
   const post = fakeBlogPost({
     attachment: 'buttons',
   })
@@ -45,7 +45,7 @@ testTemplates('should add a blog post button', async (fakeTemplate) => {
   expect(values.includes('Button')).toBe(true) // Default button text
 })
 
-testTemplates('should edit a post button', async (fakeTemplate) => {
+allTemplates('should edit a post button', async (fakeTemplate) => {
   const button = fakeNavButton()
   const buttons = createHashMap([button])
 
@@ -97,7 +97,7 @@ testTemplates('should edit a post button', async (fakeTemplate) => {
   expect(values.includes(newText)).toBe(true)
 })
 
-testTemplates('should remove a blog post button', async (fakeTemplate) => {
+allTemplates('should remove a blog post button', async (fakeTemplate) => {
   // start with 3 buttons
   const buttons = createHashMap([
     fakeNavButton(),

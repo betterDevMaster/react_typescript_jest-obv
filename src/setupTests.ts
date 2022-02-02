@@ -6,6 +6,11 @@ import '@testing-library/jest-dom/extend-expect'
 import {setWindowMatchMedia} from '__utils__/media-query'
 import resizeObserver from 'resize-observer-polyfill'
 
+// Always mock TextEditor, as CKEditor doesn't run
+// in jest (JSDOM).
+// Issue: https://github.com/ckeditor/ckeditor5-react/issues/225
+jest.mock('lib/ui/form/TextEditor')
+
 // Always mock echo (sockets in test)
 jest.mock('lib/sockets/echo')
 jest.mock('organization/Event/EventSocketNotification')

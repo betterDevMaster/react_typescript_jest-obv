@@ -17,6 +17,7 @@ import {useRemoveVariables} from 'lib/template'
 import {Speaker} from 'Event/SpeakerPage'
 import {Background} from 'organization/Event/Backgrounds/BackgroundsProvider'
 import {CustomTicketRibbon} from 'organization/Event/DashboardConfig/TicketRibbonUpload'
+import {Rule} from 'Event/attendee-rules'
 
 // Can't use 'Event' because that's already a native DOM type
 // for browser events and we'd lose TS safety/import assist.
@@ -66,6 +67,7 @@ export interface ObvioEvent {
   webhook_url: string | null
   webhook_access_token_id: number | null
   has_webhook_crc_salt: boolean
+  has_additional_waivers: boolean
 }
 
 export interface WaiverConfig {
@@ -76,6 +78,8 @@ export interface WaiverConfig {
   form: Form | null
   agree_statement: string | null
   signature_prompt: string | null
+  priority: number | null // Only additional waivers have a priority
+  rules: Rule[] | null
 }
 
 export interface TechCheckConfig {

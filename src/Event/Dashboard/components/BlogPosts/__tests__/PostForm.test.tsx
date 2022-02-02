@@ -14,7 +14,7 @@ import {
 import {RADIO} from 'organization/Event/QuestionsProvider'
 import axios from 'axios'
 import {fakeNavButton} from 'Event/Dashboard/components/NavButton/__utils__/factory'
-import {testTemplates} from 'Event/template/__utils__/tester'
+import {allTemplates} from 'Event/template/__utils__/tester'
 
 const mockPost = axios.post as jest.Mock
 
@@ -31,7 +31,7 @@ afterAll(() => {
   console.error.mockRestore()
 })
 
-testTemplates('should submit a post with a form', async (fakeTemplate) => {
+allTemplates('should submit a post with a form', async (fakeTemplate) => {
   const action = fakeAction()
 
   const option = fakeOption({

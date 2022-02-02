@@ -5,6 +5,7 @@ import TeamMemberOnly from 'organization/auth/TeamMemberOnly'
 import React, {useCallback, useEffect, useState} from 'react'
 import FullPageLoader from 'lib/ui/layout/FullPageLoader'
 import {useObvioAuth} from 'obvio/auth'
+import {PlanName} from 'obvio/Billing/plans'
 
 export interface OwnerContextProps {
   owner: TeamMember
@@ -75,4 +76,28 @@ export function useIsOwner() {
   }
 
   return user.email === owner.email
+}
+
+/**
+ * Will only render if the owner in the current context
+ * has the target plan.
+ *
+ * @param props
+ * @returns
+ */
+export function IfOwnerHasPlan(props: {
+  plan: PlanName
+  children: JSX.Element | JSX.Element[]
+}) {
+  const {owner} = useOwner()
+  if (!owner.plan) {
+    return null
+  }
+
+  const isCorrectPlan = owner.plan.name === props.plan
+  if (!isCorrectPlan) {
+    return null
+  }
+
+  return <>{props.children}</>
 }

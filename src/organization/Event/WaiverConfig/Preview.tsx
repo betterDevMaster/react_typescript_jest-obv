@@ -19,6 +19,8 @@ export default function WaiverPreview(props: {
     is_enabled: false,
     logo: props.logo,
     form: null,
+    priority: null,
+    rules: [],
   }
 
   return (

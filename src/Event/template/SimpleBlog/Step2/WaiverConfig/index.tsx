@@ -43,6 +43,7 @@ import {
 import {useObvioUser} from 'obvio/auth'
 import {SaveButton} from 'organization/Event/DashboardConfig/ComponentConfig'
 import TemplateProvider from 'Event/TemplateProvider'
+import AdditionalWaiversButton from 'organization/Event/WaiverConfig/AdditionalWaiversButton'
 
 const imageUploadId = 'waived-logo-upload'
 
@@ -172,6 +173,7 @@ export default function WaiverConfig() {
   return (
     <Layout>
       <Page>
+        <AdditionalWaiversButton />
         <form onSubmit={handleSubmit(submit)}>
           <FormControl fullWidth disabled={submitting}>
             <FormControlLabel

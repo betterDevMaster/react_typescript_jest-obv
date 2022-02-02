@@ -6,6 +6,7 @@ import React from 'react'
 
 export default function FormSelect(props: {
   onChange: (id: number | null) => void
+  disabled?: boolean
   value?: number | null
 }) {
   const {forms} = useForms()
@@ -23,6 +24,7 @@ export default function FormSelect(props: {
       inputProps={{
         'aria-label': 'select form',
       }}
+      disabled={props.disabled}
     >
       <MenuItem value={0}>None</MenuItem>
       {forms.map((form) => (

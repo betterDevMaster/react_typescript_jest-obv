@@ -3,9 +3,8 @@ import styled from 'styled-components'
 import TableBody from '@material-ui/core/TableBody'
 import TableCell from '@material-ui/core/TableCell'
 import TableHead from '@material-ui/core/TableHead'
-import TableRow from '@material-ui/core/TableRow'
+import TableRow, {TableRowProps} from '@material-ui/core/TableRow'
 import {useRules} from 'organization/Event/Area/Rules/RulesProvider'
-import Conditions from 'organization/Event/Area/Rules/RulesTable/Conditions'
 import ConditionsConfig from 'organization/Event/Area/Rules/RulesTable/ConditionsConfig'
 import Rooms from 'organization/Event/Area/Rules/RulesTable/Rooms'
 import React from 'react'
@@ -17,6 +16,7 @@ import {
   Droppable,
   DropResult,
 } from 'react-beautiful-dnd'
+import RuleList from 'organization/Event/RuleList'
 
 export default function RulesTable() {
   const list = useRules()
@@ -47,17 +47,18 @@ export default function RulesTable() {
                   index={index}
                   key={rule.id}
                 >
-                  {(provided) => (
+                  {(provided, snapshot) => (
                     <StyledTableRow
                       aria-label="rule"
                       {...provided.draggableProps}
                       {...provided.dragHandleProps}
                       ref={provided.innerRef}
+                      isDragging={snapshot.isDragging}
                     >
                       <PriorityCell>{index + 1}</PriorityCell>
                       <ConditionsCell>
                         <ConditionsConfig rule={rule}>
-                          <Conditions rule={rule} />
+                          <RuleList rules={rule.conditions} />
                         </ConditionsConfig>
                       </ConditionsCell>
                       <RoomsCell>
@@ -108,16 +109,27 @@ const StyledTable = styled(Table)`
   table-layout: fixed;
 `
 
-const StyledTableRow = styled(TableRow)`
-  background: #ffffff;
-`
-
 /**
  * Cells must have explicity widths, otherwise they will
- * shrink when being 'dragged'.
+ * shrink when being 'dragged'. Also need to set row
+ * display to 'table' while dragging.
  *
  * Reference: https://github.com/atlassian/react-beautiful-dnd/blob/master/docs/patterns/tables.md
  */
+
+const StyledTableRow = styled(
+  React.forwardRef<
+    HTMLTableRowElement,
+    {
+      isDragging?: boolean
+    } & TableRowProps
+  >(({isDragging: _, ...otherProps}, ref) => (
+    <TableRow {...otherProps} ref={ref} />
+  )),
+)`
+  background: #ffffff;
+  display: ${(props) => (props.isDragging ? 'table' : 'table-row')};
+`
 
 const PriorityCell = styled(TableCell)`
   width: 20%;

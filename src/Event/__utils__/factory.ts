@@ -56,6 +56,7 @@ export const fakeEvent = (overrides?: Partial<ObvioEvent>): ObvioEvent => ({
   webhook_url: null,
   webhook_access_token_id: null,
   has_webhook_crc_salt: false,
+  has_additional_waivers: false,
   ...overrides,
 })
 
@@ -76,7 +77,7 @@ export function createPlatformActions(
 
 export function fakeWaiver(
   overrides?: Partial<ObvioEvent['waiver']>,
-): ObvioEvent['waiver'] {
+): NonNullable<ObvioEvent['waiver']> {
   return {
     logo: faker.random.alphaNumeric(10) + '.png',
     title: faker.company.companyName(),
@@ -87,6 +88,8 @@ export function fakeWaiver(
     form: null,
     agree_statement: faker.lorem.paragraphs(),
     signature_prompt: faker.lorem.paragraphs(),
+    priority: null,
+    rules: [],
     ...overrides,
   }
 }

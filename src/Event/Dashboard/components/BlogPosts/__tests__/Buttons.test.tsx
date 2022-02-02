@@ -1,4 +1,4 @@
-import {testTemplates} from 'Event/template/__utils__/tester'
+import {allTemplates} from 'Event/template/__utils__/tester'
 import faker from 'faker'
 import {fakeBlogPost} from 'Event/Dashboard/components/BlogPosts/__utils__/factory'
 import {createHashMap} from 'lib/list'
@@ -14,7 +14,7 @@ import {
 import {RADIO} from 'organization/Event/QuestionsProvider'
 import {fakeNavButton} from 'Event/Dashboard/components/NavButton/__utils__/factory'
 
-testTemplates('should render buttons', async (fakeTemplate) => {
+allTemplates('should render buttons', async (fakeTemplate) => {
   const action = fakeAction()
 
   const option = fakeOption({

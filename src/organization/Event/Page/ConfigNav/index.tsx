@@ -32,7 +32,7 @@ function ConfigureEventPages() {
   return (
     <HasPermission permission={CONFIGURE_EVENTS}>
       <>
-        <ConfigNavItem to={routes.waiver} aria-label="configure waiver">
+        <ConfigNavItem to={routes.waiver.root} aria-label="configure waiver">
           Waiver
         </ConfigNavItem>
         <ConfigNavItem to={routes.forms.root} aria-label="configure forms">

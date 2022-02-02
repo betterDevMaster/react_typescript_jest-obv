@@ -195,7 +195,10 @@ it('should add a new ticket ribbon', async () => {
 
 it('should remove a ticket ribbon', async () => {
   const numRibbons = faker.random.number({min: 2, max: 5})
-  const ticketRibbons = Array.from({length: numRibbons}, fakeTicketRibbon)
+
+  const ticketRibbons = new Array(numRibbons)
+    .fill(null)
+    .map((_, index) => fakeTicketRibbon({text: `ribbon_${index}`}))
 
   const ribbons = createHashMap(ticketRibbons)
 

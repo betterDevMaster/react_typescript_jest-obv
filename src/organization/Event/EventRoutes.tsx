@@ -57,6 +57,9 @@ import AccessTokensProvider from 'organization/Event/Services/AccessTokens/Acces
 import TemplateConfigRoutes from 'organization/Event/TemplateConfigRoutes'
 import TemplateUpdateProvider from 'Event/TemplateUpdateProvider'
 import DisconnectedDialog from 'organization/Event/DisconnectedDialog'
+import AdditionalWaivers from 'organization/Event/WaiverConfig/AdditionalWaivers'
+import PlanRestrictedPage from 'organization/PlanRestrictedPage'
+import {ENTERPRISE} from 'obvio/Billing/plans'
 
 export type EventRoutePaths = ReturnType<typeof useEventRoutes>
 
@@ -104,7 +107,14 @@ export default function EventRoutes() {
                     </AreasProvider>
                   </AuthorizedPage>
                 </Route>
-                <Route path={routes.events[':event'].waiver}>
+                <Route path={routes.events[':event'].waiver.additional_waivers}>
+                  <PlanRestrictedPage plan={ENTERPRISE}>
+                    <AuthorizedPage permission={CONFIGURE_EVENTS}>
+                      <AdditionalWaivers />
+                    </AuthorizedPage>
+                  </PlanRestrictedPage>
+                </Route>
+                <Route path={routes.events[':event'].waiver.root}>
                   <AuthorizedPage permission={CONFIGURE_EVENTS}>
                     <WaiverConfig />
                   </AuthorizedPage>

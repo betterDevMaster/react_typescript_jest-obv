@@ -1,6 +1,6 @@
 import user from '@testing-library/user-event'
 import faker from 'faker'
-import {testTemplates} from 'Event/template/__utils__/tester'
+import {allTemplates} from 'Event/template/__utils__/tester'
 import {fakeEvent} from 'Event/__utils__/factory'
 import {createHashMap} from 'lib/list'
 import {fireEvent, wait} from '@testing-library/react'
@@ -22,7 +22,7 @@ afterAll(() => {
   console.error.mockRestore()
 })
 
-testTemplates('it should edit a blog post', async (fakeTemplate) => {
+allTemplates('it should edit a blog post', async (fakeTemplate) => {
   const numPosts = faker.random.number({min: 1, max: 5})
   const blogPosts = createHashMap(Array.from({length: numPosts}, fakeBlogPost))
 
@@ -50,7 +50,7 @@ testTemplates('it should edit a blog post', async (fakeTemplate) => {
   expect(await findByText(updatedTitle)).toBeInTheDocument()
 })
 
-testTemplates('it should add a new blog post', async (fakeTemplate) => {
+allTemplates('it should add a new blog post', async (fakeTemplate) => {
   const numPosts = faker.random.number({min: 1, max: 3})
 
   const blogPosts = createHashMap(Array.from({length: numPosts}, fakeBlogPost))
@@ -70,7 +70,7 @@ testTemplates('it should add a new blog post', async (fakeTemplate) => {
   })
 })
 
-testTemplates('it should remove a blog post', async (fakeTemplate) => {
+allTemplates('it should remove a blog post', async (fakeTemplate) => {
   const numPosts = faker.random.number({min: 2, max: 3})
 
   const blogPosts = createHashMap(Array.from({length: numPosts}, fakeBlogPost))
@@ -89,7 +89,7 @@ testTemplates('it should remove a blog post', async (fakeTemplate) => {
   expect((await findAllByLabelText('blog post')).length).toBe(numPosts - 1)
 })
 
-testTemplates('it should show posts in order', async (fakeTemplate) => {
+allTemplates('it should show posts in order', async (fakeTemplate) => {
   /**
    * Old but recently published
    */
