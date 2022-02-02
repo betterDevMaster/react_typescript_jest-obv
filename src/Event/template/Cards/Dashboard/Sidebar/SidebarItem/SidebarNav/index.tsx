@@ -59,13 +59,13 @@ export default function SidebarNav(props: SidebarNavProps) {
   })
 
   if (!isEditMode) {
-    return <>{buttonComponents}</>
+    return <Box>{buttonComponents}</Box>
   }
 
   return (
-    <>
+    <Box>
       <DroppleList {...props}>{buttonComponents}</DroppleList>
-    </>
+    </Box>
   )
 }
 
@@ -125,4 +125,10 @@ function useHandleDrag(props: SidebarNavProps) {
 const StyledNewSidebarNavButton = styled(NewSidebarNavButton)`
   margin-top: ${(props) => props.theme.spacing[6]} !important;
   margin-bottom: ${(props) => props.theme.spacing[5]}!important;
+`
+
+const Box = styled.div`
+  margin-bottom: 30px;
+  width: 100%;
+  padding: 0 ${(props) => props.theme.spacing[8]};
 `
