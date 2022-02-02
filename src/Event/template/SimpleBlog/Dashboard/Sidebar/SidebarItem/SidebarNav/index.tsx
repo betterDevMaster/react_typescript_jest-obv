@@ -11,7 +11,6 @@ import VisibleOnMatch from 'Event/attendee-rules/VisibleOnMatch'
 import {useEditSidebarItem} from 'Event/template/SimpleBlog/Dashboard/Sidebar/SidebarItem'
 import {useRemoveIfEmpty} from 'Event/TemplateUpdateProvider'
 import {NavButtonProps} from 'Event/Dashboard/components/NavButton'
-import Grid from '@material-ui/core/Grid'
 
 export const SIDEBAR_NAV = 'Sidebar Nav'
 export type SidebarNavProps = Ordered & {
