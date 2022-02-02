@@ -7,6 +7,11 @@ import {
   fakeWebhookTestResponseData,
 } from 'organization/Event/Webhooks/__utils__/factory'
 import {goToWebhooks} from 'organization/Event/Webhooks/__utils__/go-to-webhooks'
+import {goToEventConfig} from 'organization/Event/__utils__/event'
+import {fakeTeamMember} from 'organization/Team/__utils__/factory'
+import {fakePlan} from 'obvio/Billing/__utils__/factory'
+import {CONFIGURE_EVENTS} from 'organization/PermissionsProvider'
+import {Permission} from 'organization/PermissionsProvider'
 
 const mockDelete = axios.delete as jest.Mock
 const mockPost = axios.post as jest.Mock
@@ -19,6 +24,26 @@ Object.assign(navigator, {
   clipboard: {
     writeText: () => Promise.resolve(),
   },
+})
+
+it('should not render webhooks menu link', async () => {
+  const authUser = fakeTeamMember({
+    has_active_subscription: true,
+    has_unpaid_transactions: false,
+    plan: fakePlan({name: 'professional'}),
+    credits: 0, // start with 0 credits
+  })
+
+  const userPermissions = [CONFIGURE_EVENTS as Permission]
+
+  const {queryByText} = await goToEventConfig({
+    userPermissions,
+    authUser,
+  })
+
+  await act(async () => {
+    expect(queryByText('Webhooks')).not.toBeInTheDocument()
+  })
 })
 
 it('should list webhooks', async () => {

@@ -57,9 +57,10 @@ import AccessTokensProvider from 'organization/Event/Services/AccessTokens/Acces
 import TemplateConfigRoutes from 'organization/Event/TemplateConfigRoutes'
 import TemplateUpdateProvider from 'Event/TemplateUpdateProvider'
 import DisconnectedDialog from 'organization/Event/DisconnectedDialog'
+import {ENTERPRISE} from 'obvio/Billing/plans'
+import IfPlan from 'organization/auth/IfPlan'
 import AdditionalWaivers from 'organization/Event/WaiverConfig/AdditionalWaivers'
 import PlanRestrictedPage from 'organization/PlanRestrictedPage'
-import {ENTERPRISE} from 'obvio/Billing/plans'
 
 export type EventRoutePaths = ReturnType<typeof useEventRoutes>
 
@@ -74,6 +75,7 @@ export function useEventRoutes(event?: ObvioEvent) {
 export default function EventRoutes() {
   const {routes} = useOrganization()
   const {event} = useEvent()
+  const {root: eventRoot} = useEventRoutes()
 
   if (!event.template) {
     return <SelectTemplateForm />
@@ -244,13 +246,15 @@ export default function EventRoutes() {
                   </AuthorizedPage>
                 </Route>
                 <Route path={routes.events[':event'].webhooks}>
-                  <AuthorizedPage permission={CONFIGURE_EVENTS}>
-                    <AccessTokensProvider>
-                      <WebhooksProvider>
-                        <Webhooks />
-                      </WebhooksProvider>
-                    </AccessTokensProvider>
-                  </AuthorizedPage>
+                  <IfPlan plan={ENTERPRISE} redirect={eventRoot}>
+                    <AuthorizedPage permission={CONFIGURE_EVENTS}>
+                      <AccessTokensProvider>
+                        <WebhooksProvider>
+                          <Webhooks />
+                        </WebhooksProvider>
+                      </AccessTokensProvider>
+                    </AuthorizedPage>
+                  </IfPlan>
                 </Route>
                 <TemplateConfigRoutes />
                 <Redirect to={routes.events[':event'].root} />

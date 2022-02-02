@@ -18,8 +18,11 @@ export interface EventOverrides extends SignInToOrganizationOptions {
   userPermissions?: Permission[]
 }
 
-export function goToEvent(overrides: EventOverrides = {}) {
+export function goToEvent(
+  overrides: SignInToOrganizationOptions & EventOverrides = {},
+) {
   const event = overrides.event || fakeEvent()
+  // const authUser = overrides.authUser || null
 
   const userPermissions = overrides.userPermissions
 
@@ -35,7 +38,9 @@ export function goToEvent(overrides: EventOverrides = {}) {
   return {event, userPermissions, ...orgData}
 }
 
-export async function goToEventConfig(overrides: EventOverrides = {}) {
+export async function goToEventConfig(
+  overrides: SignInToOrganizationOptions & EventOverrides = {},
+) {
   const data = goToEvent({...overrides})
 
   const renderResult = render(<App />)

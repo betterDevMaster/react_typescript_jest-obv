@@ -12,7 +12,7 @@ export interface OwnerContextProps {
   setOwner: (owner: TeamMember | null) => void
 }
 
-const OwnerContext = React.createContext<OwnerContextProps | undefined>(
+export const OwnerContext = React.createContext<OwnerContextProps | undefined>(
   undefined,
 )
 

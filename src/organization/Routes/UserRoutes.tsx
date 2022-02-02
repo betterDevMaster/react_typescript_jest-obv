@@ -25,6 +25,7 @@ import DownloadRoomAttendees from 'organization/Event/Room/DownloadRoomAttendees
 import DownloadAttendees from 'Event/DownloadAttendees'
 import DownloadWaivers from 'Event/DownloadWaivers'
 import BuyCreditsPage from 'organization/BuyCreditsPage'
+import PlanProvider from 'obvio/Billing/PlanProvider'
 
 export default function UserRoutes() {
   const {routes} = useOrganization()
@@ -81,13 +82,15 @@ export default function UserRoutes() {
         <RouteEventProvider>
           <FormsProvider>
             <OrganizationLanguageProvider>
-              <StaticSubmissionsProvider>
-                <AttendeeProfileProvider groups={{}} tags={[]}>
-                  <EventSocketProvider>
-                    <EventRoutes />
-                  </EventSocketProvider>
-                </AttendeeProfileProvider>
-              </StaticSubmissionsProvider>
+              <PlanProvider>
+                <StaticSubmissionsProvider>
+                  <AttendeeProfileProvider groups={{}} tags={[]}>
+                    <EventSocketProvider>
+                      <EventRoutes />
+                    </EventSocketProvider>
+                  </AttendeeProfileProvider>
+                </StaticSubmissionsProvider>
+              </PlanProvider>
             </OrganizationLanguageProvider>
           </FormsProvider>
         </RouteEventProvider>

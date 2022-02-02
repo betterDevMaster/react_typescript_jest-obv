@@ -11,6 +11,7 @@ import {fakeEvent} from 'Event/__utils__/factory'
 import {ObvioEvent} from 'Event'
 import {Organization} from 'organization'
 import StaticOrganizationProvider from 'organization/__utils__/StaticOrganizationProvider'
+import StaticOwnerProvider from 'organization/__utils__/StaticOwnerProvider'
 import {Attendee} from 'Event/attendee'
 import {Action} from 'Event/ActionsProvider'
 import StaticActionsProvider from 'Event/ActionsProvider/__utils__/StaticActionsProvider'
@@ -21,10 +22,12 @@ import TemplateProvider from 'Event/TemplateProvider'
 import {EventContext, useEvent} from 'Event/EventProvider'
 import FormsProvider from 'organization/Event/FormsProvider'
 import EventLanguageProvider from 'Event/LanguageProvider'
+import {TeamMember} from 'auth/user'
 
 type Options = Omit<RtlRenderOptions, 'queries'> & {
   event?: ObvioEvent
   organization?: Organization
+  owner?: TeamMember
   attendee?: Attendee
   actions?: Action[]
   score?: Score
@@ -43,15 +46,17 @@ export const render = (
       <Providers storeProvider={MockStoreProvider}>
         <WithRouter withRouter={options?.withRouter}>
           <WithOrganization organization={options?.organization}>
-            <WithEvent event={options?.event}>
-              <WithActions actions={options?.actions}>
-                <WithPoints score={options?.score}>
-                  <AttendeeProfileProvider tags={tags} groups={groups}>
-                    <WithLanguage>{target}</WithLanguage>
-                  </AttendeeProfileProvider>
-                </WithPoints>
-              </WithActions>
-            </WithEvent>
+            <WithOwner owner={options?.owner}>
+              <WithEvent event={options?.event}>
+                <WithActions actions={options?.actions}>
+                  <WithPoints score={options?.score}>
+                    <AttendeeProfileProvider tags={tags} groups={groups}>
+                      <WithLanguage>{target}</WithLanguage>
+                    </AttendeeProfileProvider>
+                  </WithPoints>
+                </WithActions>
+              </WithEvent>
+            </WithOwner>
           </WithOrganization>
         </WithRouter>
       </Providers>
@@ -126,6 +131,18 @@ function WithOrganization(props: {
     <StaticOrganizationProvider organization={props.organization}>
       {props.children}
     </StaticOrganizationProvider>
+  )
+}
+
+function WithOwner(props: {owner?: TeamMember; children: React.ReactElement}) {
+  if (!props.owner) {
+    return props.children
+  }
+
+  return (
+    <StaticOwnerProvider owner={props.owner}>
+      {props.children}
+    </StaticOwnerProvider>
   )
 }
 
