@@ -168,28 +168,30 @@ export default function WaiverConfig() {
   return (
     <Layout>
       <Page>
-        <AdditionalWaiversButton />
         <form onSubmit={handleSubmit(submit)}>
-          <FormControl fullWidth disabled={submitting}>
-            <FormControlLabel
-              control={
-                <Controller
-                  type="checkbox"
-                  name="is_enabled"
-                  defaultValue={event.waiver ? event.waiver.is_enabled : true}
-                  control={control}
-                  render={({onChange, value}) => (
-                    <Switch
-                      checked={!!value}
-                      onChange={(e) => onChange(e.target.checked)}
-                      inputProps={{'aria-label': 'toggle enabled'}}
-                    />
-                  )}
-                />
-              }
-              label="Enabled"
-            />
-          </FormControl>
+          <Box display="flex" justifyContent="space-between">
+            <FormControl fullWidth disabled={submitting}>
+              <FormControlLabel
+                control={
+                  <Controller
+                    type="checkbox"
+                    name="is_enabled"
+                    defaultValue={event.waiver ? event.waiver.is_enabled : true}
+                    control={control}
+                    render={({onChange, value}) => (
+                      <Switch
+                        checked={!!value}
+                        onChange={(e) => onChange(e.target.checked)}
+                        inputProps={{'aria-label': 'toggle enabled'}}
+                      />
+                    )}
+                  />
+                }
+                label="Enabled"
+              />
+            </FormControl>
+            <AdditionalWaiversButton />
+          </Box>
           <TextField
             name="title"
             label="Waiver File Title (optional)"

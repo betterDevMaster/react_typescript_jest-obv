@@ -14,7 +14,7 @@ export default function AdditionalWaiversButton() {
 
   return (
     <IfOwnerHasPlan plan={ENTERPRISE}>
-      <Box display="flex" justifyContent="flex-end" mb={2}>
+      <Box display="inline-flex" justifyContent="flex-end" mb={2}>
         <RelativeLink
           disableStyles
           to={routes.waiver.additional_waivers}
