@@ -7,6 +7,7 @@ import CustomButton from 'lib/ui/Button/CustomButton'
 import {eventRoutes} from 'Event/Routes'
 import {RelativeLink} from 'lib/ui/link/RelativeLink'
 import {useSimpleBlogTemplate} from 'Event/template/SimpleBlog'
+import {useEvent} from 'Event/EventProvider'
 
 export const DEFAULT_MENU_TEXT_COLOR = '#FFFFFF'
 export const DEFAULT_MENU_ICON_COLOR = '#000000'
@@ -63,16 +64,7 @@ function Links() {
           Dashboard
         </StyledRelativeLink>
       </ListItem>
-      <ListItem>
-        <StyledRelativeLink
-          to={eventRoutes.changePassword}
-          aria-label="change password"
-          disableStyles
-          color={menuTextColor}
-        >
-          Change password
-        </StyledRelativeLink>
-      </ListItem>
+      <ChangePasswordListItem color={menuTextColor} />
       <ListItem>
         <CustomButton
           variant="text"
@@ -84,6 +76,27 @@ function Links() {
         </CustomButton>
       </ListItem>
     </List>
+  )
+}
+
+function ChangePasswordListItem(props: {color: string}) {
+  const {event} = useEvent()
+
+  if (!event.requires_attendee_password) {
+    return null
+  }
+
+  return (
+    <ListItem>
+      <StyledRelativeLink
+        to={eventRoutes.changePassword}
+        aria-label="change password"
+        disableStyles
+        color={props.color}
+      >
+        Change Password
+      </StyledRelativeLink>
+    </ListItem>
   )
 }
 

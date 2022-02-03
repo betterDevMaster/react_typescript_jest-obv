@@ -8,6 +8,7 @@ import {eventRoutes} from 'Event/Routes'
 import {RelativeLink} from 'lib/ui/link/RelativeLink'
 import {useCardsTemplate} from 'Event/template/Cards'
 import {useAttendeeVariables} from 'Event'
+import {useEvent} from 'Event/EventProvider'
 
 export const DEFAULT_MENU_TEXT_COLOR = '#FFFFFF'
 export const DEFAULT_MENU_ICON_COLOR = '#000000'
@@ -132,15 +133,7 @@ function Links() {
           text={v(imageWaterfallTitle)}
         />
       </ListItem>
-      <ListItem>
-        <Item
-          to={eventRoutes.changePassword}
-          aria-label="change password"
-          color={menuTextColor}
-          showing={true}
-          text="Change Password"
-        />
-      </ListItem>
+      <ChangePasswordListItem color={menuTextColor} />
       <ListItem>
         <CustomButton
           variant="text"
@@ -175,6 +168,26 @@ function Item(props: {
     >
       {props.text}
     </StyledRelativeLink>
+  )
+}
+
+function ChangePasswordListItem(props: {color: string}) {
+  const {event} = useEvent()
+
+  if (!event.requires_attendee_password) {
+    return null
+  }
+
+  return (
+    <ListItem>
+      <Item
+        to={eventRoutes.changePassword}
+        aria-label="change password"
+        color={props.color}
+        showing={true}
+        text="Change Password"
+      />
+    </ListItem>
   )
 }
 
