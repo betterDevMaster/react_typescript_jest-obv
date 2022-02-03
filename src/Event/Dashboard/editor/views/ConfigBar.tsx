@@ -69,7 +69,7 @@ const Box = styled.div`
 `
 
 const ProgressSpinner = styled((props) => {
-  const {active, ...otherProps} = props
+  const {active: _, ...otherProps} = props
   return <CircularProgress {...otherProps} />
 })<{active: boolean}>`
   color: ${(props) => (props.active ? yellow[700] : green[400])} !important;

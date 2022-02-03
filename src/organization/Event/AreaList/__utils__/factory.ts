@@ -3,12 +3,14 @@ import faker from 'faker'
 import {Room} from 'Event/room'
 import {RoomMetrics} from 'organization/Event/Area/RoomList'
 import {now} from 'lib/date-time'
+import {RoomAssignment} from 'organization/Event/AttendeeManagement/AssignmentsDialog/RoomSelect'
 
 export const fakeRoom = (overrides?: Partial<Room>): Room => ({
   id: faker.random.number({min: 1000, max: 10000}),
   number: faker.random.number({min: 1000, max: 10000}),
   description: null,
   is_online: true,
+  is_paused: false,
   has_registration: false,
   registration_url: null,
   max_num_attendees: 500,
@@ -36,5 +38,14 @@ export const fakeRoomMetrics = (
   room_id: faker.random.number({min: 1000, max: 10000}),
   num_attendees: String(faker.random.number({min: 1000, max: 10000})),
   last_joined_timestamp: now(),
+  ...overrides,
+})
+
+export const fakeRoomAssignment = (
+  overrides?: Partial<RoomAssignment>,
+): RoomAssignment => ({
+  room_id: faker.random.number({min: 1000, max: 10000}),
+  area_id: faker.random.number({min: 1000, max: 10000}),
+  attendee_id: faker.random.number({min: 1000, max: 10000}),
   ...overrides,
 })

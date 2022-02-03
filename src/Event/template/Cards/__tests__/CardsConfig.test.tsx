@@ -1,5 +1,4 @@
 import user from '@testing-library/user-event'
-import faker from 'faker'
 import {fakeCards} from 'Event/template/Cards/__utils__/factory'
 import {clickEdit} from '__utils__/edit'
 import {fakeEvent} from 'Event/__utils__/factory'

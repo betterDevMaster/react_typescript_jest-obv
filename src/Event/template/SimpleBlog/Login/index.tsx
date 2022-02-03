@@ -6,8 +6,8 @@ import Page, {
   Button,
   Description,
   ErrorMessage,
-  TextField,
 } from 'Event/template/SimpleBlog/Login/Page'
+import {TextField} from 'Event/template/SimpleBlog/Login/Page'
 import {RelativeLink} from 'lib/ui/link/RelativeLink'
 import {useGuestVariables} from 'Event'
 import {useSimpleBlogTemplate} from 'Event/template/SimpleBlog'

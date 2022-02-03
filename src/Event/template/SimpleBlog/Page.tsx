@@ -9,7 +9,7 @@ import {useEvent} from 'Event/EventProvider'
 import {SimpleBlog, useSimpleBlogTemplate} from 'Event/template/SimpleBlog'
 import {rgba} from 'lib/color'
 import LanguageSelectMenu from 'Event/LanguageSelector'
-import {muiDarkTheme, muiTheme} from 'lib/ui/theme'
+import {muiTheme} from 'lib/ui/theme'
 import {ThemeProvider} from '@material-ui/core/styles'
 import {withStyles} from '@material-ui/core/styles'
 import {RelativeLink} from 'lib/ui/link/RelativeLink'
@@ -21,11 +21,7 @@ export default function SimpleBlogPage(props: {
   const [menuVisible, setMenuVisible] = useState(false)
   const toggleMenu = () => setMenuVisible(!menuVisible)
   const template = useSimpleBlogTemplate()
-  const {
-    backgroundPosition,
-    dashboardBackground: dashboard,
-    isDarkMode,
-  } = template
+  const {backgroundPosition, dashboardBackground: dashboard} = template
   const {event} = useEvent()
   const dashboardBackground = event.dashboard_background
     ? `url(${event.dashboard_background.url})`
@@ -35,14 +31,12 @@ export default function SimpleBlogPage(props: {
     ? rgba(dashboard.color || '#FFFFFF', dashboard.opacity || 0)
     : '#FFFFFF'
 
-  const theme = isDarkMode ? muiDarkTheme : muiTheme
-
   const color = template.textColor
   const linkUnderline = template.linkUnderline
   const linkColor = template.linkColor
 
   return (
-    <ThemeProvider theme={theme}>
+    <ThemeProvider theme={muiTheme}>
       <Box
         background={dashboardBackground}
         position={backgroundPosition}

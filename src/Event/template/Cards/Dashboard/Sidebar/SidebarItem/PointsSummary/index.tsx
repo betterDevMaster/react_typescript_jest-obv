@@ -11,9 +11,10 @@ import {RemoveButton} from 'organization/Event/DashboardConfig/ComponentConfig'
 import Section from 'Event/template/Cards/Dashboard/Sidebar/Section'
 import {useEditSidebarItem} from 'Event/template/Cards/Dashboard/Sidebar/SidebarItem'
 import {Ordered} from 'lib/list'
+import {HasRules} from 'Event/attendee-rules'
 
 export const POINTS_SUMMARY = 'Points Summary'
-export interface PointsSummaryProps extends Ordered {
+export interface PointsSummaryProps extends Ordered, HasRules {
   type: typeof POINTS_SUMMARY
   description: string
   summary?: string

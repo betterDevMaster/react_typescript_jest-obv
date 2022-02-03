@@ -5,7 +5,7 @@ import {usePanelsTemplate} from 'Event/template/Panels'
 import {MenuIconButton} from 'lib/ui/IconButton/MenuIconButton'
 import Menu from 'Event/template/Panels/Dashboard/Menu'
 import MainNavMobile from 'Event/template/Panels/Dashboard/MainNav/MainNavMobile'
-import EmojiList from 'Event/template/Panels/Dashboard/EmojiList'
+import Emojis from 'Event/template/Panels/Dashboard/EmojiList'
 import {rgba} from 'lib/color'
 import {User} from 'auth/user'
 import CountDownTimers from 'Event/template/Panels/Dashboard/CountDownTimers'
@@ -62,7 +62,7 @@ function Content(props: {
       <Top>
         <CountDownTimers />
         <MainNavMobile />
-        <EmojiList />
+        <Emojis />
       </Top>
       <Panel
         backgroundColor={rgba(

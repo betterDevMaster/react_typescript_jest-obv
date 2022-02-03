@@ -1,4 +1,5 @@
-import NavButton, {
+import {
+  NavButtonProps,
   NavButtonWithSize,
 } from 'Event/Dashboard/components/NavButton'
 import faker from 'faker'
@@ -6,8 +7,10 @@ import {pipe} from 'ramda'
 import {Column} from 'lib/ui/layout'
 import {sometimes} from '__utils__/attributes'
 
-export const fakeNavButton = (overrides?: Partial<NavButton>): NavButton => {
-  const defaultAttributes: NavButton = {
+export const fakeNavButton = (
+  overrides?: Partial<NavButtonProps>,
+): NavButtonProps => {
+  const defaultAttributes: NavButtonProps = {
     text: `${faker.random.words(3)}`,
     link: faker.internet.url(),
     newTab: false,
@@ -22,11 +25,11 @@ export const fakeNavButton = (overrides?: Partial<NavButton>): NavButton => {
     zapierTag: null,
   }
 
-  const makeAttributes: (nb: NavButton) => NavButton = pipe(
-    sometimes<NavButton>(withHoverBackground),
-    sometimes<NavButton>(withBorderRadius),
-    sometimes<NavButton>(withBorder),
-    sometimes<NavButton>(withHoverBorderColor),
+  const makeAttributes: (nb: NavButtonProps) => NavButtonProps = pipe(
+    sometimes<NavButtonProps>(withHoverBackground),
+    sometimes<NavButtonProps>(withBorderRadius),
+    sometimes<NavButtonProps>(withBorder),
+    sometimes<NavButtonProps>(withHoverBorderColor),
   )
 
   return {
@@ -45,21 +48,21 @@ export const fakeNavButtonWithSize = (
   ...overrides,
 })
 
-function withHoverBackground(button: NavButton): NavButton {
+function withHoverBackground(button: NavButtonProps): NavButtonProps {
   return {
     ...button,
     hoverBackgroundColor: faker.internet.color(),
   }
 }
 
-function withBorderRadius(button: NavButton): NavButton {
+function withBorderRadius(button: NavButtonProps): NavButtonProps {
   return {
     ...button,
     borderRadius: faker.random.number({min: 0, max: 10}),
   }
 }
 
-function withBorder(button: NavButton): NavButton {
+function withBorder(button: NavButtonProps): NavButtonProps {
   return {
     ...button,
     borderWidth: faker.random.number({min: 1, max: 5}),
@@ -67,7 +70,7 @@ function withBorder(button: NavButton): NavButton {
   }
 }
 
-function withHoverBorderColor(button: NavButton): NavButton {
+function withHoverBorderColor(button: NavButtonProps): NavButtonProps {
   return {
     ...button,
     hoverBorderColor: faker.internet.color(),

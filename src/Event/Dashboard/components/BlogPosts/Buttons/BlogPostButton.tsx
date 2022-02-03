@@ -1,4 +1,4 @@
-import NavButton from 'Event/Dashboard/components/NavButton'
+import NavButton, {NavButtonProps} from 'Event/Dashboard/components/NavButton'
 import styled from 'styled-components'
 import {useEditMode} from 'Event/Dashboard/editor/state/edit-mode'
 import {useToggle} from 'lib/toggle'
@@ -9,7 +9,12 @@ import {Editable} from 'Event/Dashboard/editor/views/EditComponent'
 import BlogPostButtonConfig from 'Event/Dashboard/components/BlogPosts/Buttons/BlogPostButtonConfig'
 
 export default React.memo(
-  (props: {id: string; button: NavButton; index: number; postId: string}) => {
+  (props: {
+    id: string
+    button: NavButtonProps
+    index: number
+    postId: string
+  }) => {
     const {id, button: buttonProps, index, postId} = props
     const isEditMode = useEditMode()
     const {flag: configVisible, toggle: toggleConfig} = useToggle()

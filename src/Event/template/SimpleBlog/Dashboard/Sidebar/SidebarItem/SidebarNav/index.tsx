@@ -5,18 +5,18 @@ import NewSidebarNavButton from 'Event/template/SimpleBlog/Dashboard/Sidebar/Sid
 import EditModeOnly from 'Event/Dashboard/editor/views/EditModeOnly'
 import {DragDropContext, Droppable, DropResult} from 'react-beautiful-dnd'
 import {useEditMode} from 'Event/Dashboard/editor/state/edit-mode'
-import NavButton from 'Event/Dashboard/components/NavButton'
-import {createPositions, HashMap, orderedIdsByPosition} from 'lib/list'
+import {createPositions, HashMap, Ordered, orderedIdsByPosition} from 'lib/list'
 import {RemoveButton} from 'organization/Event/DashboardConfig/ComponentConfig'
 import VisibleOnMatch from 'Event/attendee-rules/VisibleOnMatch'
 import {useEditSidebarItem} from 'Event/template/SimpleBlog/Dashboard/Sidebar/SidebarItem'
 import {useRemoveIfEmpty} from 'Event/TemplateUpdateProvider'
+import {NavButtonProps} from 'Event/Dashboard/components/NavButton'
+import Section from 'Event/template/SimpleBlog/Dashboard/Sidebar/Section'
 
 export const SIDEBAR_NAV = 'Sidebar Nav'
-export type SidebarNavProps = {
+export type SidebarNavProps = Ordered & {
   type: typeof SIDEBAR_NAV
-  position?: number
-  buttons: HashMap<NavButton>
+  buttons: HashMap<NavButtonProps>
 }
 
 export const createSidebarNav = (): SidebarNavProps => ({
@@ -25,6 +25,14 @@ export const createSidebarNav = (): SidebarNavProps => ({
 })
 
 export default function SidebarNav(props: SidebarNavProps) {
+  return (
+    <Section>
+      <Content {...props} />
+    </Section>
+  )
+}
+
+function Content(props: SidebarNavProps) {
   const isEditMode = useEditMode()
   const {buttons} = props
 

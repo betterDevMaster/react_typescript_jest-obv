@@ -14,14 +14,14 @@ import ComponentConfig, {
   RemoveButton,
   SaveButton,
 } from 'organization/Event/DashboardConfig/ComponentConfig'
-import {CountDownTimer} from 'Event/Dashboard/components/CountDownTimer'
+import {CountDownTimerSettings} from 'Event/Dashboard/components/CountDownTimer'
 import InputLabel from '@material-ui/core/InputLabel'
 import FormControl from '@material-ui/core/FormControl'
 import {REMOVE, useRemoveIfEmpty} from 'Event/TemplateUpdateProvider'
 
 export default function TimerConfig(
   props: ComponentConfigProps & {
-    countDownTimer: CountDownTimer
+    countDownTimer: CountDownTimerSettings
     id?: string
   },
 ) {
@@ -31,7 +31,7 @@ export default function TimerConfig(
 
   const updateTemplate = useCardsUpdate()
 
-  const update = (id: string, updated: CountDownTimer) => {
+  const update = (id: string, updated: CountDownTimerSettings) => {
     updateTemplate({
       countDownTimers: {
         [id]: updated,
@@ -39,7 +39,7 @@ export default function TimerConfig(
     })
   }
 
-  const insert = (countDownTimer: CountDownTimer) => {
+  const insert = (countDownTimer: CountDownTimerSettings) => {
     const id = uuid()
 
     updateTemplate({
@@ -63,7 +63,7 @@ export default function TimerConfig(
 
   useRemoveIfEmpty(removeCountDownTimer, countDownTimer, {shouldSkip: !id})
 
-  const save = (formData: CountDownTimer) => {
+  const save = (formData: CountDownTimerSettings) => {
     if (id) {
       update(id, formData)
     } else {

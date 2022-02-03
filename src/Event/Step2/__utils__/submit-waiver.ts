@@ -17,7 +17,7 @@ export async function submitWaiver({
 
   const signature = 'data:image/png;base64'
   //@ts-ignore
-  canvas.toDataURL.mockReturnValueOnce(signature) // mocked via jest-canvas-mock
+  canvas.toDataURL = jest.fn(() => signature)
 
   const down = new MouseEvent('mousedown', {
     button: 1,

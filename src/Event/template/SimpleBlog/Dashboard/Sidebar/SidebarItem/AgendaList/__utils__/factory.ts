@@ -1,13 +1,13 @@
 import {
-  Agenda,
+  AgendaSettings,
   AgendaListProps,
-  AGENDA_LIST,
   createAgendaList,
 } from 'Event/template/SimpleBlog/Dashboard/Sidebar/SidebarItem/AgendaList'
 import faker from 'faker'
-import {uuid} from 'lib/uuid'
 
-export const fakeAgenda = (overrides?: Partial<Agenda>): Agenda => ({
+export const fakeAgenda = (
+  overrides?: Partial<AgendaSettings>,
+): AgendaSettings => ({
   startDate: faker.date.past().toISOString(),
   endDate: faker.random.boolean() ? faker.date.future().toISOString() : null,
   text: faker.random.words(3),

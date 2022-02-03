@@ -4,7 +4,7 @@ import {inputElementFor} from '__utils__/render'
 import {
   BLACK_RIBBON,
   RIBBONS,
-} from 'Event/template/SimpleBlog/Dashboard/Sidebar/SidebarItem/TicketRibbonList/TicketRibbon'
+} from 'Event/template/SimpleBlog/Dashboard/Sidebar/SidebarItem/TicketRibbonList/Ribbon'
 import {fireEvent} from '@testing-library/dom'
 import {fakeEvent} from 'Event/__utils__/factory'
 import {fakeTicketRibbon} from 'Event/template/SimpleBlog/Dashboard/Sidebar/SidebarItem/TicketRibbonList/__utils__/factory'
@@ -195,7 +195,10 @@ it('should add a new ticket ribbon', async () => {
 
 it('should remove a ticket ribbon', async () => {
   const numRibbons = faker.random.number({min: 2, max: 5})
-  const ticketRibbons = Array.from({length: numRibbons}, fakeTicketRibbon)
+
+  const ticketRibbons = new Array(numRibbons)
+    .fill(null)
+    .map((_, index) => fakeTicketRibbon({text: `ribbon_${index}`}))
 
   const ribbons = createHashMap(ticketRibbons)
 

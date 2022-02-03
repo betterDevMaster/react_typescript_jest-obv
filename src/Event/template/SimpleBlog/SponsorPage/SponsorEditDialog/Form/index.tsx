@@ -20,7 +20,7 @@ import {useSponsors} from 'organization/Event/SponsorsProvider'
 import FormSelect from 'organization/Event/FormsProvider/FormSelect'
 import InputLabel from '@material-ui/core/InputLabel'
 import FormControl from '@material-ui/core/FormControl'
-import NavButton from 'Event/Dashboard/components/NavButton'
+import {NavButtonProps} from 'Event/Dashboard/components/NavButton'
 
 export default function EditSponsorForm(props: {
   sponsor: Sponsor
@@ -161,9 +161,9 @@ export default function EditSponsorForm(props: {
 }
 
 function ButtonEditFields(props: {
-  button: NavButton | null
+  button: NavButtonProps | null
   onClose: () => void
-  onChange: (button: NavButton) => void
+  onChange: (button: NavButtonProps) => void
   onRemove: () => void
 }) {
   if (!props.button) {

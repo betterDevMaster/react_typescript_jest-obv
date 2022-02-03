@@ -1,7 +1,8 @@
 import Slider from '@material-ui/core/Slider'
 import TextField from '@material-ui/core/TextField'
 import Typography from '@material-ui/core/Typography'
-import NavButton, {
+import {
+  NavButtonProps,
   DEFAULT_BUTTON_HEIGHT,
   NavButtonWithSize,
 } from 'Event/Dashboard/components/NavButton'
@@ -33,7 +34,7 @@ import MailchimpTagInput from 'organization/Event/DashboardConfig/MailchimpTagIn
 import ZapierTagInput from 'organization/Event/DashboardConfig/ZapierTagInput'
 import {REMOVE, useRemoveIfEmpty} from 'Event/TemplateUpdateProvider'
 
-export type ButtonConfigProps<K extends NavButton> = {
+export type ButtonConfigProps<K extends NavButtonProps> = {
   button: K
   update: <T extends keyof K>(key: T) => (value: K[T]) => void
 }

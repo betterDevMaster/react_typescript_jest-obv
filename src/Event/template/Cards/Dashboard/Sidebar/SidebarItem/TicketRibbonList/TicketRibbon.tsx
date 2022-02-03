@@ -69,7 +69,7 @@ export type TicketRibbonName =
   | typeof YELLOW_RIBBON
   | typeof CUSTOM_RIBBON
 
-export type TicketRibbon = HasRules &
+export type TicketRibbonProps = HasRules &
   Ordered & {
     name: TicketRibbonName
     text: string
@@ -101,7 +101,7 @@ export const RIBBONS = Object.keys(TICKET_RIBBON_IMAGE) as TicketRibbonName[]
 export const IMAGES = Object.values(TICKET_RIBBON_IMAGE)
 
 export default function TicketRibbon(props: {
-  ticketRibbon: TicketRibbon
+  ticketRibbon: TicketRibbonProps
   index: number
   list: TicketRibbonListProps
   id: string
@@ -140,7 +140,10 @@ export default function TicketRibbon(props: {
   )
 }
 
-function TicketRibbonItem(props: {ticketRibbon: TicketRibbon; index: number}) {
+function TicketRibbonItem(props: {
+  ticketRibbon: TicketRibbonProps
+  index: number
+}) {
   const {ticketRibbon} = props
   const image =
     ticketRibbon.customRibbon?.image.url ||

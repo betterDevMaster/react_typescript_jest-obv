@@ -16,7 +16,7 @@ import {Controller, useForm} from 'react-hook-form'
 
 type GlobalStylesFormData = Pick<
   Cards,
-  'textColor' | 'isDarkMode' | 'linkColor' | 'linkUnderline'
+  'textColor' | 'linkColor' | 'linkUnderline'
 > &
   Cards['background']
 
@@ -83,23 +83,6 @@ export default function GlobalStylesConfig() {
               </Box>
             </Grid>
           </Grid>
-          <Box mb={2}>
-            <Controller
-              name="isDarkMode"
-              defaultValue={template.isDarkMode}
-              control={control}
-              render={({value, onChange}) => (
-                <Switch
-                  checked={value}
-                  onChange={onChangeCheckedHandler(onChange)}
-                  arial-label="set dark mode"
-                  labelPlacement="end"
-                  color="primary"
-                  label="Dark Mode"
-                />
-              )}
-            />
-          </Box>
           <Box mb={2}>
             <Controller
               name="background.color"

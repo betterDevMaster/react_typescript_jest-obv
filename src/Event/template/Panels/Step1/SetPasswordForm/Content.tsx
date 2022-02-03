@@ -1,7 +1,6 @@
 import styled from 'styled-components'
 import React from 'react'
 import Typography from '@material-ui/core/Typography/'
-import TextField from '@material-ui/core/TextField'
 import {useForm} from 'react-hook-form'
 import withStyles from '@material-ui/core/styles/withStyles'
 import {spacing} from 'lib/ui/theme'
@@ -9,6 +8,7 @@ import {SetPasswordFormProps} from 'Event/Step1/SetPasswordForm'
 import MuiButton from '@material-ui/core/Button'
 import {useAttendeeVariables} from 'Event'
 import {usePanelsTemplate} from 'Event/template/Panels'
+import TextField from 'Event/ui/TextField'
 
 export default function Content(props: SetPasswordFormProps) {
   const {register, handleSubmit, errors, watch} = useForm()
@@ -31,8 +31,10 @@ export default function Content(props: SetPasswordFormProps) {
             label={v(setPasswordForm?.passwordLabel)}
             type="password"
             fullWidth
-            variant="outlined"
+            variant="filled"
+            InputProps={{disableUnderline: true}}
             name="password"
+            borderRadius={setPasswordForm.inputBorderRadius}
             inputProps={{
               ref: register({
                 required: 'Password is required',
@@ -51,7 +53,9 @@ export default function Content(props: SetPasswordFormProps) {
             label={v(setPasswordForm.confirmPasswordLabel)}
             type="password"
             fullWidth
-            variant="outlined"
+            variant="filled"
+            InputProps={{disableUnderline: true}}
+            borderRadius={setPasswordForm.inputBorderRadius}
             name="password_confirmation"
             inputProps={{
               ref: register({
@@ -111,9 +115,13 @@ const ErrorText = withStyles({
 })(Typography)
 
 export const StyledButton = styled(
-  ({color, backgroundColor, borderRadius, hoverColor, ...otherProps}) => (
-    <MuiButton {...otherProps} />
-  ),
+  ({
+    color: _1,
+    backgroundColor: _2,
+    borderRadius: _3,
+    hoverColor: _4,
+    ...otherProps
+  }) => <MuiButton {...otherProps} />,
 )`
   border-radius: ${(props) => props.borderRadius}px !important;
   height: 50px;

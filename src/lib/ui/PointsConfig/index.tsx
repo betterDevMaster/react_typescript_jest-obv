@@ -15,7 +15,7 @@ export default function PointsConfig() {
     <Box>
       <Header />
       <Grid container>
-        <Grid item sm={12} md={8}>
+        <Grid item xs={12} md={8}>
           <Controls count={count} page={current} />
           <ConfigContainer>
             <ConfigHeader>Name</ConfigHeader>

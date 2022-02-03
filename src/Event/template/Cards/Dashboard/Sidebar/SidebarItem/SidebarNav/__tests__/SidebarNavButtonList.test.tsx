@@ -6,11 +6,11 @@ import {fireEvent} from '@testing-library/react'
 import {clickEdit} from '__utils__/edit'
 import {fakeEvent} from 'Event/__utils__/factory'
 import {wait} from '@testing-library/react'
-import NavButton from 'Event/Dashboard/components/NavButton'
 import {goToDashboardConfig} from 'organization/Event/DashboardConfig/__utils__/go-dashboard-config'
 import {createSidebarNav} from 'Event/template/Cards/Dashboard/Sidebar/SidebarItem/SidebarNav'
 import axios from 'axios'
 import {REMOVE} from 'Event/TemplateUpdateProvider'
+import {NavButtonProps} from 'Event/Dashboard/components/NavButton'
 
 const mockPut = axios.put as jest.Mock
 
@@ -117,7 +117,7 @@ it('should add a new sidebar nav button', async () => {
 })
 
 it('should add a new button when there are none', async () => {
-  const buttons: NavButton[] = []
+  const buttons: NavButtonProps[] = []
 
   const sidebarNavButtons = createHashMap(buttons)
   const sidebarItems = createHashMap([

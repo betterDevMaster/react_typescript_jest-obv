@@ -9,7 +9,7 @@ export default {
   argTypes: {},
 } as ComponentMeta<typeof AddForm>
 
-const Template: ComponentStory<typeof AddForm> = (args) => (
+const Template: ComponentStory<typeof AddForm> = () => (
   <ThemeProvider>
     <AddForm />
   </ThemeProvider>

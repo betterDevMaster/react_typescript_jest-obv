@@ -1,10 +1,14 @@
 import {PlanInfo} from 'obvio/Billing/plans'
-import styled from 'styled-components'
 import React from 'react'
-import {colors} from 'lib/ui/theme'
+import styled from 'styled-components'
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome'
 import {faCheckSquare, faTimesSquare} from '@fortawesome/pro-solid-svg-icons'
-import ChoosePlanButton from 'obvio/Billing/PlanCard/ChoosePlanButton'
+import Button from '@material-ui/core/Button'
+import {formatDate} from 'lib/date-time'
+import {colors} from 'lib/ui/theme'
+import PlanActionButton from 'obvio/Billing/PlanCard/PlanActionButton'
+import {usePlan} from 'obvio/Billing/PlanProvider'
+import {useGetSubscription} from 'obvio/Billing/subscribe'
 
 export default function PlanCard(props: {plan: PlanInfo}) {
   const {plan} = props
@@ -23,8 +27,53 @@ export default function PlanCard(props: {plan: PlanInfo}) {
           ))}
         </FeatureSection>
       </div>
-      <ChoosePlanButton plan={plan} />
+      <ButtonContainer>
+        <CurrentPlanIndicator plan={plan} />
+        <PlanActionButton plan={plan} />
+      </ButtonContainer>
     </Box>
+  )
+}
+
+const CurrentPlanIndicator = (props: {plan: PlanInfo}) => {
+  const {plan} = props
+  const subscription = useGetSubscription()
+  const {isCurrent, isDowngradingTo} = usePlan()
+
+  const renewDate = formatDate(subscription?.renews_at || '')
+  const endDate = formatDate(subscription?.ends_at || '')
+  const isDowngrade = isDowngradingTo(plan, subscription)
+
+  if (isDowngrade) {
+    return <TextButton>Renewing On: {renewDate}</TextButton>
+  }
+
+  if (!isCurrent(plan)) {
+    return null
+  }
+
+  const dateText = () => {
+    // If the renew_plan is this plan's name, we want to show the user that this
+    // is the plan that is renewing on a date.
+    if (subscription?.renew_plan === plan.name) {
+      return <div>Renewing On: {renewDate}</div>
+    }
+
+    // If there is an ends_at date and we DON'T have a renew_plan value, this
+    // subscription is being cancelled and we want to show WHEN it's ending.
+    if (subscription?.ends_at && !subscription?.renew_plan) {
+      return <div>Ending On: {endDate}</div>
+    }
+
+    // No extra information text to show to the user.
+    return null
+  }
+
+  return (
+    <TextButton>
+      <div aria-label={`current plan ${plan.name}`}>Your Current Plan</div>
+      {dateText()}
+    </TextButton>
   )
 }
 
@@ -47,6 +96,12 @@ function Feature(props: {feature: PlanInfo['features'][0]}) {
     </FeatureBox>
   )
 }
+
+const ButtonContainer = styled.div`
+  align-items: flex-end;
+  display: flex;
+  flex-wrap: wrap;
+`
 
 const Box = styled.div`
   border: 1px solid ${(props) => props.theme.colors.border};
@@ -103,4 +158,25 @@ const FeatureDetails = styled.span`
 
 const FeatureSection = styled.div`
   margin-bottom: ${(props) => props.theme.spacing[10]};
+`
+
+const TextButton = styled((props) => {
+  return (
+    <Button
+      disableRipple
+      disableFocusRipple
+      fullWidth
+      variant="text"
+      {...props}
+    />
+  )
+})`
+  background-color: transparent !important;
+  cursor: default;
+  &:hover {
+    background-color: transparent !important;
+  }
+  .MuiButton-label {
+    flex-wrap: wrap;
+  }
 `

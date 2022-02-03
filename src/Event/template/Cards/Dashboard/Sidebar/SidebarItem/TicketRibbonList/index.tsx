@@ -1,6 +1,6 @@
 import AddTicketRibbonButton from 'Event/template/Cards/Dashboard/Sidebar/SidebarItem/TicketRibbonList/TicketRibbonConfig/AddTicketRibbonButton'
 import TicketRibbonItem, {
-  TicketRibbon,
+  TicketRibbonProps,
 } from 'Event/template/Cards/Dashboard/Sidebar/SidebarItem/TicketRibbonList/TicketRibbon'
 import EditModeOnly from 'Event/Dashboard/editor/views/EditModeOnly'
 import React from 'react'
@@ -18,7 +18,7 @@ import {useRemoveIfEmpty} from 'Event/TemplateUpdateProvider'
 export const TICKET_RIBBON_LIST = 'Ticket Ribbon List'
 export interface TicketRibbonListProps extends Ordered {
   type: typeof TICKET_RIBBON_LIST
-  ribbons: HashMap<TicketRibbon>
+  ribbons: HashMap<TicketRibbonProps>
   position?: number
 }
 

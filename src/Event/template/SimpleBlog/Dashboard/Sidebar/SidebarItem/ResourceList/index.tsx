@@ -25,9 +25,10 @@ import {useHasVisibleItems} from 'Event/attendee-rules/matcher'
 import {createPositions, HashMap, Ordered, orderedIdsByPosition} from 'lib/list'
 import {useEditSidebarItem} from 'Event/template/SimpleBlog/Dashboard/Sidebar/SidebarItem'
 import {useRemoveIfEmpty} from 'Event/TemplateUpdateProvider'
+import {HasRules} from 'Event/attendee-rules'
 
 export const RESOURCE_LIST = 'Resource List'
-export interface ResourceListProps extends Ordered {
+export interface ResourceListProps extends Ordered, HasRules {
   type: typeof RESOURCE_LIST
   title: string
   description: string

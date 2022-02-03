@@ -67,23 +67,6 @@ export default function GlobalStylesConfig() {
         <form onSubmit={handleSubmit(submit)}>
           <Box mb={2}>
             <Controller
-              name="isDarkMode"
-              defaultValue={template.isDarkMode}
-              control={control}
-              render={({value, onChange}) => (
-                <Switch
-                  checked={value}
-                  onChange={onChangeCheckedHandler(onChange)}
-                  arial-label="set dark mode"
-                  labelPlacement="end"
-                  color="primary"
-                  label="Dark Mode"
-                />
-              )}
-            />
-          </Box>
-          <Box mb={2}>
-            <Controller
               name="accentColor"
               defaultValue={template.accentColor}
               control={control}

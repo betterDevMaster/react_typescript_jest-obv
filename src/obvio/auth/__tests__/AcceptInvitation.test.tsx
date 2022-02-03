@@ -7,7 +7,6 @@ import axios from 'axios'
 import {fakeTeamMember} from 'organization/Team/__utils__/factory'
 import {wait} from '@testing-library/dom'
 import {useLocation} from 'react-router-dom'
-import {fakeUser} from 'auth/user/__utils__/factory'
 
 const mockPost = axios.post as jest.Mock
 const mockGet = axios.get as jest.Mock

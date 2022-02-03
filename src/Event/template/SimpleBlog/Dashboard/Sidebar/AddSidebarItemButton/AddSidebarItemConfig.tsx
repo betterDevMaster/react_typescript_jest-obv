@@ -3,7 +3,7 @@ import {v4 as uuid} from 'uuid'
 import InputLabel from '@material-ui/core/InputLabel'
 import MenuItem from '@material-ui/core/MenuItem'
 import {EMOJI_LIST} from 'Event/template/Panels/Dashboard/EmojiList'
-import {SidebarItem} from 'Event/template/SimpleBlog/Dashboard/Sidebar/SidebarItem'
+import {SidebarItemProps} from 'Event/template/SimpleBlog/Dashboard/Sidebar/SidebarItem'
 import {
   AGENDA_LIST,
   createAgendaList,
@@ -29,6 +29,10 @@ import {
   createTicketRibbonList,
   TICKET_RIBBON_LIST,
 } from 'Event/template/SimpleBlog/Dashboard/Sidebar/SidebarItem/TicketRibbonList'
+import {
+  createText,
+  TEXT,
+} from 'Event/template/SimpleBlog/Dashboard/Sidebar/SidebarItem/Text'
 import Select from '@material-ui/core/Select'
 import {useForm} from 'react-hook-form'
 import {useSimpleBlogUpdate} from 'Event/template/SimpleBlog'
@@ -39,7 +43,7 @@ export default function AddSidebarItemConfig(props: {
   onClose: () => void
 }) {
   const {showing, onClose} = props
-  const [type, setType] = useState<SidebarItem['type'] | null>(null)
+  const [type, setType] = useState<SidebarItemProps['type'] | null>(null)
   const {handleSubmit} = useForm()
   const update = useSimpleBlogUpdate()
 
@@ -91,6 +95,7 @@ export default function AddSidebarItemConfig(props: {
             <MenuItem value={POINTS_SUMMARY}>Points Summary</MenuItem>
             <MenuItem value={SIDEBAR_NAV}>Sidebar Buttons</MenuItem>
             <MenuItem value={TICKET_RIBBON_LIST}>Ticket Ribbons</MenuItem>
+            <MenuItem value={TEXT}>Text</MenuItem>
           </Select>
         </FormControl>
         <SaveButton type="submit" disabled={!type} aria-label="add item">
@@ -101,7 +106,7 @@ export default function AddSidebarItemConfig(props: {
   )
 }
 
-function createItem(type: SidebarItem['type']): SidebarItem {
+function createItem(type: SidebarItemProps['type']): SidebarItemProps {
   switch (type) {
     case AGENDA_LIST:
       return createAgendaList()
@@ -115,5 +120,7 @@ function createItem(type: SidebarItem['type']): SidebarItem {
       return createSidebarNav()
     case TICKET_RIBBON_LIST:
       return createTicketRibbonList()
+    case TEXT:
+      return createText()
   }
 }

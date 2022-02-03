@@ -20,7 +20,12 @@ export function OrganizationBillingStatusOverlay() {
     return <SubscriptionRequiredOverlay />
   }
 
-  if (isOwner && user.has_active_subscription && !user.has_payment_method) {
+  if (
+    isOwner &&
+    user.has_active_subscription &&
+    !user.has_payment_method &&
+    !user.is_admin
+  ) {
     return <CreditCardRequiredOverlay />
   }
 
@@ -36,7 +41,7 @@ export function OrganizationBillingStatusOverlay() {
     return <OnwerHasUnpaidTransactionsOverlay />
   }
 
-  if (!owner.has_payment_method) {
+  if (!owner.has_payment_method && !owner.is_admin) {
     return <OwnerCreditCardRequiredOverlay />
   }
 

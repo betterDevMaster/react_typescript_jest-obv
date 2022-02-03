@@ -1,5 +1,5 @@
 import {MaterialUiPickersDate} from '@material-ui/pickers/typings/date'
-import {ChangeEvent, useEffect, useRef} from 'react'
+import {ChangeEvent, useCallback, useEffect, useRef} from 'react'
 
 export const onChangeStringHandler = (setter: (v: string) => void) => (
   e: ChangeEvent<HTMLInputElement>,
@@ -81,13 +81,16 @@ export function useIsMounted() {
  * @returns
  */
 export function useIfMounted() {
-  const isMounted = useIsMounted()
+  const {current: isMounted} = useIsMounted()
 
-  return (func: (...args: any[]) => any) => () => {
-    if (!isMounted.current) {
-      return
-    }
+  return useCallback(
+    (func: (...args: any[]) => any) => (...args: any[]) => {
+      if (!isMounted) {
+        return
+      }
 
-    func()
-  }
+      func(...args)
+    },
+    [isMounted],
+  )
 }

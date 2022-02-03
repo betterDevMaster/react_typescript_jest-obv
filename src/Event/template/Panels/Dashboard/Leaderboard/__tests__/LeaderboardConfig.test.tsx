@@ -6,6 +6,8 @@ import axios from 'axios'
 import {goToDashboardConfig} from 'organization/Event/DashboardConfig/__utils__/go-dashboard-config'
 import {clickEdit} from '__utils__/edit'
 
+jest.mock('lib/ui/form/TextEditor')
+
 const mockPut = axios.put as jest.Mock
 
 beforeEach(() => {

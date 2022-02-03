@@ -25,23 +25,29 @@ import TicketRibbons, {
   TicketRibbonListProps,
   TICKET_RIBBON_LIST,
 } from 'Event/template/SimpleBlog/Dashboard/Sidebar/SidebarItem/TicketRibbonList'
+import Text, {
+  TextProps,
+  TEXT,
+} from 'Event/template/SimpleBlog/Dashboard/Sidebar/SidebarItem/Text'
 import {Draggable} from 'react-beautiful-dnd'
 import {DraggableOverlay} from 'lib/ui/drag-and-drop'
-import DragHandleBar from 'Event/template/SimpleBlog/Dashboard/Sidebar/SidebarItem/DragHandleBar'
 import {useEditMode} from 'Event/Dashboard/editor/state/edit-mode'
 import {REMOVE} from 'Event/TemplateUpdateProvider'
 import {DeepPartialSubstitute} from 'lib/type-utils'
+import DragHandleBar from 'Event/template/SimpleBlog/Dashboard/Sidebar/SidebarItem/DragHandleBar'
+import VisibleOnMatch from 'Event/attendee-rules/VisibleOnMatch'
 
-export type SidebarItem =
+export type SidebarItemProps =
   | AgendaListProps
   | ResourceListProps
   | EmojiListProps
   | PointsSummaryProps
   | TicketRibbonListProps
   | SidebarNavProps
+  | TextProps
 
 type SidebarItemContextProps = {
-  update: (data: DeepPartialSubstitute<SidebarItem, typeof REMOVE>) => void
+  update: (data: DeepPartialSubstitute<SidebarItemProps, typeof REMOVE>) => void
   remove: () => void
 }
 
@@ -50,7 +56,7 @@ const SidebarItemContext = React.createContext<
 >(undefined)
 
 export default function SidebarItem(
-  props: SidebarItem & {id: string; index: number},
+  props: SidebarItemProps & {id: string; index: number},
 ) {
   const isEditMode = useEditMode()
   if (!isEditMode) {
@@ -73,12 +79,12 @@ export default function SidebarItem(
   )
 }
 
-function Editable(props: SidebarItem & {id: string}) {
+function Editable(props: SidebarItemProps & {id: string}) {
   const {id} = props
   const updateTemplate = useSimpleBlogUpdate()
 
   const update = useCallback(
-    (updated: DeepPartialSubstitute<SidebarItem, typeof REMOVE>) => {
+    (updated: DeepPartialSubstitute<SidebarItemProps, typeof REMOVE>) => {
       updateTemplate({
         sidebarItems: {
           [id]: updated,
@@ -103,20 +109,34 @@ function Editable(props: SidebarItem & {id: string}) {
   )
 }
 
-function Item(props: SidebarItem) {
+function Item(props: SidebarItemProps) {
   switch (props.type) {
     case AGENDA_LIST:
-      return <AgendaList {...props} />
+      return (
+        <VisibleOnMatch rules={props.rules}>
+          <AgendaList {...props} />
+        </VisibleOnMatch>
+      )
     case RESOURCE_LIST:
-      return <ResourceList {...props} />
+      return (
+        <VisibleOnMatch rules={props.rules}>
+          <ResourceList {...props} />
+        </VisibleOnMatch>
+      )
     case EMOJI_LIST:
       return <EmojiList {...props} />
     case POINTS_SUMMARY:
-      return <PointsSummary {...props} />
+      return (
+        <VisibleOnMatch rules={props.rules}>
+          <PointsSummary {...props} />
+        </VisibleOnMatch>
+      )
     case TICKET_RIBBON_LIST:
       return <TicketRibbons {...props} />
     case SIDEBAR_NAV:
       return <SidebarNav {...props} />
+    case TEXT:
+      return <Text {...props} />
   }
 }
 

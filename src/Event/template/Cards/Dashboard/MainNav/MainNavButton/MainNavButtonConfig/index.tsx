@@ -1,6 +1,5 @@
 import {v4 as uuid} from 'uuid'
 import TextField from '@material-ui/core/TextField'
-import NavButton from 'Event/Dashboard/components/NavButton'
 import {
   onChangeCheckedHandler,
   onUnknownChangeHandler,
@@ -33,8 +32,9 @@ import {useCardsUpdate} from 'Event/template/Cards'
 import {REMOVE, useRemoveIfEmpty} from 'Event/TemplateUpdateProvider'
 import MailchimpTagInput from 'organization/Event/DashboardConfig/MailchimpTagInput'
 import ZapierTagInput from 'organization/Event/DashboardConfig/ZapierTagInput'
+import {NavButtonProps} from 'Event/Dashboard/components/NavButton'
 
-export type ButtonConfigProps<K extends NavButton> = {
+export type ButtonConfigProps<K extends NavButtonProps> = {
   button: K
   update: <T extends keyof K>(key: T) => (value: K[T]) => void
   disablePageSelect?: boolean

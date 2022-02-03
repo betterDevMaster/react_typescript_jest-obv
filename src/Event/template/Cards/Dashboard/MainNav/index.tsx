@@ -160,7 +160,7 @@ function useRowButtons(row: CardsNavButtonProps['row']) {
   } = useCardsTemplate()
 
   return Object.entries(buttons)
-    .filter(([id, button]) => button.row === row)
+    .filter(([_id, button]) => button.row === row)
     .reduce((acc, [id, button]) => {
       acc[id] = button
       return acc

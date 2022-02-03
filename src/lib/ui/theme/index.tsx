@@ -26,8 +26,12 @@ export const colors = {
   gray200: '#838383',
   gray300: '#dfdfdf',
   gray400: '#4f4f4f',
+  grey500: '#C4C4C4',
   blue: '#2794d2',
   disabled: '#c4c4c4',
+  input: {
+    background: '#f2f5f9',
+  },
 }
 
 export const spacing = Array(60)
@@ -74,18 +78,6 @@ export const muiTheme = createMuiTheme(
         '"Segoe UI Emoji"',
         '"Segoe UI Symbol"',
       ].join(','),
-    },
-  },
-  muiBaseTheme,
-)
-
-export const muiDarkTheme = createMuiTheme(
-  {
-    palette: {
-      type: 'dark',
-      primary: {
-        main: '#FFFFFF',
-      },
     },
   },
   muiBaseTheme,

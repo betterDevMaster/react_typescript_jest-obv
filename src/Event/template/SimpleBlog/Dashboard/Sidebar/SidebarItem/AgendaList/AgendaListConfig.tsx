@@ -15,6 +15,10 @@ import {
 } from 'organization/Event/DashboardConfig/ComponentConfig'
 import {AgendaListProps} from 'Event/template/SimpleBlog/Dashboard/Sidebar/SidebarItem/AgendaList'
 import {useEditSidebarItem} from 'Event/template/SimpleBlog/Dashboard/Sidebar/SidebarItem'
+import {useToggle} from 'lib/toggle'
+import RuleConfig from 'Event/attendee-rules/RuleConfig'
+import {Rule} from 'Event/attendee-rules'
+import ConfigureRulesButton from 'Event/attendee-rules/ConfigureRulesButton'
 
 export function AgendaListConfig(
   props: ComponentConfigProps & {
@@ -31,6 +35,8 @@ export function AgendaListConfig(
   const [footer, setFooter] = useState(list.footer)
   const [footerFontStyles, setFooterFontStyle] = useState(list.footerFontStyles)
   const {update: updateItem} = useEditSidebarItem()
+  const {flag: showingRules, toggle: toggleRules} = useToggle()
+  const [rules, setRules] = useState<Rule[]>(list.rules || [])
 
   const save = () => {
     const updated: AgendaListProps = {
@@ -40,6 +46,7 @@ export function AgendaListConfig(
       descriptionFontStyles,
       footer,
       footerFontStyles,
+      rules,
     }
 
     updateItem(updated)
@@ -63,56 +70,66 @@ export function AgendaListConfig(
     <Dialog open={visible} onClose={onClose} fullWidth>
       <DialogTitle>Agendas</DialogTitle>
       <DialogContent>
-        <TextField
-          value={title}
-          inputProps={{
-            'aria-label': 'update agendas title',
-          }}
-          label="Title"
-          fullWidth
-          onChange={onChangeStringHandler(setTitle)}
-        />
-        <FormControl fullWidth>
-          <InputLabel htmlFor="agenda-adornment-description">
-            Description
-          </InputLabel>
-          <Input
-            id="agenda-adornment-description"
-            type="text"
-            value={description || ''}
-            onChange={onChangeStringHandler(setDescription)}
-            aria-label="update agendas description"
-            fullWidth
-            endAdornment={
-              <InputAdornment position="end">
-                <FontStyleInput
-                  onChange={setDescriptionFontStyles}
-                  value={descriptionFontStyles || []}
-                />
-              </InputAdornment>
-            }
-          />
-        </FormControl>
-        <FormControl fullWidth>
-          <InputLabel htmlFor="agenda-adornment-footer">Footer</InputLabel>
-          <Input
-            id="agenda-adornment-footer"
-            type="text"
-            value={footer || ''}
-            onChange={onChangeStringHandler(setFooter)}
-            aria-label="update agendas footer"
-            fullWidth
-            endAdornment={
-              <InputAdornment position="end">
-                <FontStyleInput
-                  onChange={setFooterFontStyle}
-                  value={footerFontStyles || []}
-                />
-              </InputAdornment>
-            }
-          />
-        </FormControl>
-        <SaveButton onClick={save} />
+        <RuleConfig
+          visible={showingRules}
+          close={toggleRules}
+          rules={rules}
+          onChange={setRules}
+        >
+          <>
+            <ConfigureRulesButton onClick={toggleRules} />
+            <TextField
+              value={title}
+              inputProps={{
+                'aria-label': 'update agendas title',
+              }}
+              label="Title"
+              fullWidth
+              onChange={onChangeStringHandler(setTitle)}
+            />
+            <FormControl fullWidth>
+              <InputLabel htmlFor="agenda-adornment-description">
+                Description
+              </InputLabel>
+              <Input
+                id="agenda-adornment-description"
+                type="text"
+                value={description || ''}
+                onChange={onChangeStringHandler(setDescription)}
+                aria-label="update agendas description"
+                fullWidth
+                endAdornment={
+                  <InputAdornment position="end">
+                    <FontStyleInput
+                      onChange={setDescriptionFontStyles}
+                      value={descriptionFontStyles || []}
+                    />
+                  </InputAdornment>
+                }
+              />
+            </FormControl>
+            <FormControl fullWidth>
+              <InputLabel htmlFor="agenda-adornment-footer">Footer</InputLabel>
+              <Input
+                id="agenda-adornment-footer"
+                type="text"
+                value={footer || ''}
+                onChange={onChangeStringHandler(setFooter)}
+                aria-label="update agendas footer"
+                fullWidth
+                endAdornment={
+                  <InputAdornment position="end">
+                    <FontStyleInput
+                      onChange={setFooterFontStyle}
+                      value={footerFontStyles || []}
+                    />
+                  </InputAdornment>
+                }
+              />
+            </FormControl>
+            <SaveButton onClick={save} />
+          </>
+        </RuleConfig>
       </DialogContent>
     </Dialog>
   )

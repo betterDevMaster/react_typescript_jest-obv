@@ -10,6 +10,9 @@ docs.
 
 `npm run dev` to start server at `localhost:3000`. 
 
+
+> Currently setting `GENERATE_SOURCEMAP=false` in `npm run dev` to hide pusher js missing sourcemap error. See issue here: https://github.com/pusher/pusher-js/issues/535
+
 However for the development you need to work on http://app.obv.localhost:3000/.
 
 This subdomain doesn't work on the safari browser by default. so you need to add domain resolve record to the local hosts file.
@@ -20,6 +23,12 @@ Then add this line
 ```
 127.0.0.1       app.obv.localhost
 ```
+
+## Build
+
+Run `npm run build` to verify build works. This is automatically run in CI, but as a smoke test, you may run this locally to make sure your feature branch will deploy as expected.
+
+> We're also setting max node GC size to 8GB via `--max_old_space_size=8192` to fix OOM error when building.
 
 
 ### Storybook

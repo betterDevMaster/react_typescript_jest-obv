@@ -6,30 +6,22 @@ import CustomButton from 'lib/ui/Button/CustomButton'
 import {Label} from 'lib/ui/typography'
 import Select from 'lib/ui/Select'
 import Option from 'lib/ui/Select/Option'
-
-type Room = {
-  label: string
-  value: number | string
-}
-
-type Area = {
-  id: number
-  label: string
-  room?: Room
-}
+import {Room} from 'Event/room'
+import {Area} from 'organization/Event/AreasProvider'
+import {Attendee} from 'Event/attendee'
+import {RoomAssignment} from 'organization/Event/AttendeeManagement/AssignmentsDialog/RoomSelect'
 
 type AttendeeProps = {
-  id: number
-  name: string
-  email: string
+  attendee: Attendee
   currentPoints: number
   areas: Area[]
-  rooms: Room[]
+  roomAssignments: RoomAssignment[]
   onChangeRoom: (attendeeId: number, areaId: number, roomId: number) => void
 }
 
-export default function Attendee(props: AttendeeProps) {
-  const {id, email, currentPoints, areas, rooms, onChangeRoom} = props
+export default function AttendeeDetail(props: AttendeeProps) {
+  const {attendee, currentPoints, areas, onChangeRoom, roomAssignments} = props
+  const {id, email} = attendee
 
   return (
     <Container container>
@@ -38,13 +30,13 @@ export default function Attendee(props: AttendeeProps) {
           <Button fullWidth>Check-in</Button>
         </Box>
       </Item>
-      <Item item xs={12} sm={6}>
+      <Item item xs={12} sm={12}>
         <Box display="flex" flexDirection="column" gridGap="10px">
           <Label>Email</Label>
           <BlueLabel>{email}</BlueLabel>
         </Box>
       </Item>
-      <Item item xs={12} sm={6} hideInSmallScreen>
+      <Item item xs={12} sm={12} hideInSmallScreen>
         <Box display="flex" justifyContent="flex-end">
           <Button>Check-in</Button>
         </Box>
@@ -71,25 +63,29 @@ export default function Attendee(props: AttendeeProps) {
         </Row>
         <ListContainer>
           {areas.map((area: Area, index: number) => {
-            const {label, room} = area
+            const {name, rooms} = area
             const noBorder = index === areas.length - 1
+            const roomAssignedArea = roomAssignments.filter(
+              (roomAssignment) => roomAssignment.area_id === area.id,
+            )
+            const assignedRoomId = roomAssignedArea?.[0]?.room_id || 0
 
             return (
               <Row key={index} noBorder={noBorder}>
                 <RowItem>
-                  <Label>{label}</Label>
+                  <Label>{name}</Label>
                 </RowItem>
                 <RowItem last>
                   <Select
-                    value={room?.value || 0}
+                    value={assignedRoomId}
                     onChange={(value: string) =>
                       onChangeRoom(id, area.id, parseInt(value))
                     }
                   >
                     {rooms.map((room: Room, index: number) => {
                       return (
-                        <Option key={index} value={room.value}>
-                          {room.label}
+                        <Option key={index} value={room.id}>
+                          {room.number}
                         </Option>
                       )
                     })}

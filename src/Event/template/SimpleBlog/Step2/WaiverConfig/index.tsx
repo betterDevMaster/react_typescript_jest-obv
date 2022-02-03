@@ -43,6 +43,8 @@ import {
 import {useObvioUser} from 'obvio/auth'
 import {SaveButton} from 'organization/Event/DashboardConfig/ComponentConfig'
 import TemplateProvider from 'Event/TemplateProvider'
+import AdditionalWaiversButton from 'organization/Event/WaiverConfig/AdditionalWaiversButton'
+import {IfOwnerHasPlan} from 'organization/OwnerProvider'
 
 const imageUploadId = 'waived-logo-upload'
 
@@ -147,7 +149,7 @@ export default function WaiverConfig() {
         setResponseError(null)
         dispatch(setEvent(event))
       })
-      .then((event) => {
+      .then(() => {
         updateTemplate({
           waiver: template,
         })
@@ -173,26 +175,29 @@ export default function WaiverConfig() {
     <Layout>
       <Page>
         <form onSubmit={handleSubmit(submit)}>
-          <FormControl fullWidth disabled={submitting}>
-            <FormControlLabel
-              control={
-                <Controller
-                  type="checkbox"
-                  name="is_enabled"
-                  defaultValue={event.waiver ? event.waiver.is_enabled : true}
-                  control={control}
-                  render={({onChange, value}) => (
-                    <Switch
-                      checked={!!value}
-                      onChange={(e) => onChange(e.target.checked)}
-                      inputProps={{'aria-label': 'toggle enabled'}}
-                    />
-                  )}
-                />
-              }
-              label={watch('is_enabled') ? 'Enabled' : 'Disabled'}
-            />
-          </FormControl>
+          <Box display="flex" justifyContent="space-between">
+            <FormControl disabled={submitting}>
+              <FormControlLabel
+                control={
+                  <Controller
+                    type="checkbox"
+                    name="is_enabled"
+                    defaultValue={event.waiver ? event.waiver.is_enabled : true}
+                    control={control}
+                    render={({onChange, value}) => (
+                      <Switch
+                        checked={!!value}
+                        onChange={(e) => onChange(e.target.checked)}
+                        inputProps={{'aria-label': 'toggle enabled'}}
+                      />
+                    )}
+                  />
+                }
+                label={watch('is_enabled') ? 'Enabled' : 'Disabled'}
+              />
+            </FormControl>
+            <AdditionalWaiversButton />
+          </Box>
           <TextField
             name="title"
             label="Waiver File Title (optional)"

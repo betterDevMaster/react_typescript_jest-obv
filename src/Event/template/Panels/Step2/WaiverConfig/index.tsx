@@ -13,7 +13,7 @@ import {api} from 'lib/url'
 import {useOrganization} from 'organization/OrganizationProvider'
 import {ObvioEvent} from 'Event'
 import {setEvent} from 'Event/state/actions'
-import {Panels, usePanelsTemplate, usePanelsUpdate} from 'Event/template/Panels'
+import {usePanelsTemplate, usePanelsUpdate} from 'Event/template/Panels'
 import {useDispatch} from 'react-redux'
 import {waiverLogoPath} from 'Event/Step2/WaiverProvider'
 import {fetchFile} from 'lib/http-client'
@@ -32,17 +32,15 @@ import {
   DEFAULT_SIGNATURE_PROMPT,
 } from 'Event/Step2/WaiverProvider'
 
-import TemplateFields, {
-  DEFAULT_WAIVER_CONFIG_PROPS,
-  PanelsWaiverTemplateProps,
-  WaiverTemplatePropSetter,
-} from 'Event/template/Panels/Step2/WaiverConfig/TemplateFields'
+import TemplateFields from 'Event/template/Panels/Step2/WaiverConfig/TemplateFields'
 import Preview from 'organization/Event/WaiverConfig/Preview'
 import Step2 from 'Event/template/Panels/Step2'
 import {fieldError} from 'lib/form'
 import {ValidationError} from 'lib/ui/api-client'
 import {SaveButton} from 'organization/Event/DashboardConfig/ComponentConfig'
 import TemplateProvider from 'Event/TemplateProvider'
+import {Template} from 'Event/template'
+import AdditionalWaiversButton from 'organization/Event/WaiverConfig/AdditionalWaiversButton'
 const imageUploadId = 'waived-logo-upload'
 
 type WaiverData = {
@@ -63,17 +61,24 @@ export default function WaiverConfig() {
   } = useForm()
   const [submitting, setSubmitting] = useState(false)
   const [logo, setLogo] = useState<null | File>(null)
-  const {
-    waiverConfig,
-    set: setTemplateProp,
-    updateTemplate,
-  } = useTemplateWaiverProps()
+
+  const [
+    responseError,
+    setResponseError,
+  ] = useState<ValidationError<WaiverData> | null>(null)
+
   const agree_statement = watch('agree_statement')
   const signature_prompt = watch('signature_prompt')
+  const templateConfig = watch('template')
+
+  const setWaiver = useSetWaiver()
+  const dispatch = useDispatch()
+  const {event} = useEvent()
+
   const title = watch('title')
   const body = watch('body')
   const isEnabled = watch('is_enabled')
-  const templateConfig = watch('template')
+  const updateTemplate = usePanelsUpdate()
   const template = usePanelsTemplate()
 
   const updatedTemplate = {
@@ -81,13 +86,8 @@ export default function WaiverConfig() {
     waiver: templateConfig,
   }
 
-  const setWaiver = useSetWaiver()
-  const dispatch = useDispatch()
-  const {event} = useEvent()
-  const [
-    responseError,
-    setResponseError,
-  ] = useState<ValidationError<WaiverData> | null>(null)
+  // Prevent updating unmounted component
+  const mounted = useRef(true)
 
   const error = (key: keyof WaiverData) =>
     fieldError(key, {
@@ -101,9 +101,6 @@ export default function WaiverConfig() {
     signature_prompt: error('signature_prompt'),
     agree_statement: error('agree_statement'),
   }
-
-  // Prevent updating unmounted component
-  const mounted = useRef(true)
 
   useEffect(() => {
     if (!mounted.current || !event.waiver) {
@@ -135,16 +132,18 @@ export default function WaiverConfig() {
     }
   }, [event, setValue])
 
-  const submit = (data: WaiverData) => {
+  const submit = (data: WaiverData & {template: Template['waiver']}) => {
     setSubmitting(true)
 
-    setWaiver(data, logo)
+    const {template, ...waiverConfig} = data
+
+    setWaiver(waiverConfig, logo)
       .then((event) => {
         setResponseError(null)
         dispatch(setEvent(event))
       })
-      .then((event) => {
-        updateTemplate({waiver: waiverConfig})
+      .then(() => {
+        updateTemplate({waiver: template})
       })
       .catch((e) => {
         setResponseError(e)
@@ -167,26 +166,29 @@ export default function WaiverConfig() {
     <Layout>
       <Page>
         <form onSubmit={handleSubmit(submit)}>
-          <FormControl fullWidth disabled={submitting}>
-            <FormControlLabel
-              control={
-                <Controller
-                  type="checkbox"
-                  name="is_enabled"
-                  defaultValue={event.waiver ? event.waiver.is_enabled : true}
-                  control={control}
-                  render={({onChange, value}) => (
-                    <Switch
-                      checked={!!value}
-                      onChange={(e) => onChange(e.target.checked)}
-                      inputProps={{'aria-label': 'toggle enabled'}}
-                    />
-                  )}
-                />
-              }
-              label="Enabled"
-            />
-          </FormControl>
+          <Box display="flex" justifyContent="space-between">
+            <FormControl fullWidth disabled={submitting}>
+              <FormControlLabel
+                control={
+                  <Controller
+                    type="checkbox"
+                    name="is_enabled"
+                    defaultValue={event.waiver ? event.waiver.is_enabled : true}
+                    control={control}
+                    render={({onChange, value}) => (
+                      <Switch
+                        checked={!!value}
+                        onChange={(e) => onChange(e.target.checked)}
+                        inputProps={{'aria-label': 'toggle enabled'}}
+                      />
+                    )}
+                  />
+                }
+                label="Enabled"
+              />
+            </FormControl>
+            <AdditionalWaiversButton />
+          </Box>
           <TextField
             name="title"
             label="Waiver File Title (optional)"
@@ -274,8 +276,8 @@ export default function WaiverConfig() {
           <Grid container spacing={3}>
             <Grid item xs={12} md={12}>
               <TemplateFields
-                waiver={waiverConfig}
-                set={setTemplateProp}
+                control={control}
+                register={register}
                 submitting={submitting}
               />
             </Grid>
@@ -324,35 +326,6 @@ function BodyError(props: {error?: string}) {
   }
 
   return <FormHelperText error>{props.error}</FormHelperText>
-}
-
-function useTemplateWaiverProps() {
-  const updateTemplate = usePanelsUpdate()
-
-  const [waiverConfig, setWaiverConfig] = useState<PanelsWaiverTemplateProps>(
-    DEFAULT_WAIVER_CONFIG_PROPS,
-  )
-
-  const {waiver} = usePanelsTemplate()
-
-  useEffect(() => {
-    if (!waiver) {
-      return
-    }
-    const fetchedTechCheck = waiver as Panels['waiver']
-    setWaiverConfig(fetchedTechCheck || DEFAULT_WAIVER_CONFIG_PROPS)
-  }, [waiver])
-
-  const set: WaiverTemplatePropSetter = (key) => (value) => {
-    const updated = {
-      ...waiverConfig,
-      [key]: value,
-    }
-
-    setWaiverConfig(updated)
-  }
-
-  return {waiverConfig, set, updateTemplate}
 }
 
 function useSetWaiver() {

@@ -10,21 +10,27 @@ import React, {useEffect, useState} from 'react'
 
 const TEST_MODE_HELP_ARTICLE_URL = 'https://help.obv.io/test-mode/'
 
-export default function StartButton(props: {processing: boolean}) {
-  const {room} = useRoom()
+export default function StartButton(props: {
+  processing?: boolean
+  children?: string
+}) {
+  const {
+    room: {id, is_online: isOnline},
+  } = useRoom()
+  const {children = 'Start'} = props
   const [url, setUrl] = useState<string | null>(null)
   const {client} = useOrganization()
   const isMounted = useIsMounted()
-  const canStart = useCanStart(props.processing, url)
+  const canStart = useCanStart(url, props.processing)
   const {event} = useEvent()
 
   useEffect(() => {
-    if (!room.is_online) {
+    if (!isOnline) {
       return
     }
 
     setUrl(null)
-    const startUrl = api(`/rooms/${room.id}/start_url`)
+    const startUrl = api(`/rooms/${id}/start_url`)
 
     client.get<{url: string}>(startUrl).then(({url}) => {
       if (!isMounted.current) {
@@ -33,7 +39,7 @@ export default function StartButton(props: {processing: boolean}) {
 
       setUrl(url)
     })
-  }, [client, room, isMounted])
+  }, [client, id, isMounted, isOnline])
 
   const launchRoom = () => {
     if (!url) {
@@ -73,7 +79,7 @@ export default function StartButton(props: {processing: boolean}) {
           disabled={!canStart}
           onClick={confirm}
         >
-          Start
+          {children}
         </Button>
       )}
     </ConfirmDialog>
@@ -87,7 +93,7 @@ export default function StartButton(props: {processing: boolean}) {
  * @param url
  * @returns
  */
-function useCanStart(processing: boolean, url: string | null) {
+function useCanStart(url: string | null, processing?: boolean) {
   const {room} = useRoom()
 
   if (processing) {

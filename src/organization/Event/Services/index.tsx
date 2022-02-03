@@ -1,6 +1,6 @@
-import React from 'react'
+import React, {useEffect} from 'react'
 import styled from 'styled-components'
-
+import {useQueryParams} from 'lib/url'
 import Tabs from '@material-ui/core/Tabs'
 import Tab from '@material-ui/core/Tab'
 import AccessTokens, {
@@ -12,7 +12,16 @@ import Page from 'organization/Event/Page'
 import TabPanel from 'lib/ui/tabs/TabPanel'
 
 export default function Services() {
+  const {activeTab} = useQueryParams()
   const [tab, setTab] = React.useState(0)
+
+  // If we've got ?activeTab=accessTokens in the URI, we want to flip to the
+  // access tokens tab, it's been targeted on purpose.
+  useEffect(() => {
+    if ((activeTab || '') === 'accessTokens') {
+      setTab(1)
+    }
+  }, [activeTab])
 
   const handleChange = (_: React.ChangeEvent<{}>, tab: number) => {
     setTab(tab)

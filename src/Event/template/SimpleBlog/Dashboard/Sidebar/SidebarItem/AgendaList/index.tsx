@@ -19,17 +19,19 @@ import Section from 'Event/template/SimpleBlog/Dashboard/Sidebar/Section'
 import {createPositions, HashMap, Ordered, orderedIdsByPosition} from 'lib/list'
 import {useEditSidebarItem} from 'Event/template/SimpleBlog/Dashboard/Sidebar/SidebarItem'
 import {useRemoveIfEmpty} from 'Event/TemplateUpdateProvider'
+import {HasRules} from 'Event/attendee-rules'
 
 export const AGENDA_LIST = 'Agenda List'
-export type AgendaListProps = Ordered & {
-  type: typeof AGENDA_LIST
-  title: string
-  description?: string
-  footer?: string
-  descriptionFontStyles?: FontStyle[]
-  footerFontStyles?: FontStyle[]
-  items: HashMap<Agenda>
-}
+export type AgendaListProps = Ordered &
+  HasRules & {
+    type: typeof AGENDA_LIST
+    title: string
+    description?: string
+    footer?: string
+    descriptionFontStyles?: FontStyle[]
+    footerFontStyles?: FontStyle[]
+    items: HashMap<AgendaSettings>
+  }
 
 export const createAgendaList = (): AgendaListProps => ({
   type: AGENDA_LIST,
@@ -41,7 +43,7 @@ export const createAgendaList = (): AgendaListProps => ({
   descriptionFontStyles: [],
 })
 
-export type Agenda = Publishable &
+export type AgendaSettings = Publishable &
   Ordered & {
     startDate: string
     endDate: string | null

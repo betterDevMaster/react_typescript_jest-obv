@@ -1,4 +1,4 @@
-import React, {useCallback, useEffect, useState} from 'react'
+import React, {useCallback, useEffect, useMemo, useState} from 'react'
 import Button from '@material-ui/core/Button'
 import {onChangeStringHandler} from 'lib/dom'
 import DialogTitle from '@material-ui/core/DialogTitle'
@@ -62,7 +62,10 @@ function AddLanguageDialog(props: {
   const {languages} = useLanguage()
   const [error, setError] = useState<string | null>(null)
 
-  const current = event.localization?.languages || [createLanguage(ENGLISH)]
+  const current = useMemo(
+    () => event.localization?.languages || [createLanguage(ENGLISH)],
+    [event],
+  )
 
   useEffect(() => {
     setLanguage('')

@@ -11,7 +11,6 @@ it('should show missing credits', async () => {
       has_active_subscription: true,
       has_unpaid_transactions: true, // has unpaid credits
       plan: fakePlan({name: 'enterprise'}),
-      is_subscribed: true,
       credits: 0,
     }),
   })

@@ -4,7 +4,7 @@ import TeamMembers from 'lib/ui/TeamMembers'
 import ThemeProvider from 'lib/ui/theme/ThemeProvider'
 
 export default {
-  title: 'Components/TeamMembers',
+  title: 'Components/TeamMembers/TeamMembers',
   component: TeamMembers,
   argTypes: {},
 } as ComponentMeta<typeof TeamMembers>

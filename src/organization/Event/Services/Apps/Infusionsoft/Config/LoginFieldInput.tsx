@@ -54,7 +54,7 @@ const ExistingFieldSelect = styled.div<{showing: boolean}>`
 `
 
 const CreateFieldButton = styled((props: {showing: boolean} & ButtonProps) => {
-  const {showing, ...otherProps} = props
+  const {showing: _, ...otherProps} = props
   return <Button {...otherProps} />
 })`
   display: ${(props) => (props.showing ? 'inline-flex' : 'none')};

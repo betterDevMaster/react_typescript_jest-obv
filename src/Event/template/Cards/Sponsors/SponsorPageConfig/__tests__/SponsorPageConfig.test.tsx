@@ -29,7 +29,7 @@ it('should set sponsor page settings', async () => {
       name: 'existingicon.png',
     },
   })
-  const {findByText, findByLabelText} = await goToSponsorConfig({
+  const {findByLabelText} = await goToSponsorConfig({
     event,
     userPermissions: [CONFIGURE_EVENTS],
     sponsors,
@@ -92,10 +92,10 @@ it('should set sponsor page settings', async () => {
   mockPut.mockImplementationOnce(() => Promise.resolve({data: withoutIcon}))
 
   await wait(() => {
-    expect(mockPut).toHaveBeenCalledTimes(1)
+    expect(mockPut).toHaveBeenCalledTimes(3)
   })
 
-  const [_, putData] = mockPut.mock.calls[0]
+  const [_, putData] = mockPut.mock.calls[2]
 
   // Sent request to remove image
   expect(putData.sponsor_question_icon).toBe(null)

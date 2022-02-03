@@ -19,7 +19,7 @@ export default function ConfirmDialog(
     onClose: () => void
   },
 ) {
-  const {showing, ...confirmationProps} = props
+  const {showing: _, ...confirmationProps} = props
 
   return (
     <Dialog open={props.showing} onClose={props.onClose}>

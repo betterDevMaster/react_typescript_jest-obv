@@ -1,6 +1,6 @@
 import IconButton from 'lib/ui/IconButton'
 import AddOutlinedIcon from '@material-ui/icons/AddOutlined'
-import {TicketRibbon} from 'Event/template/Panels/Dashboard/TicketRibbonList/TicketRibbon'
+import {TicketRibbon} from 'Event/template/Panels/Dashboard/TicketRibbonList/Ribbon'
 import React, {useState} from 'react'
 import TicketRibbonConfig from 'Event/template/Panels/Dashboard/TicketRibbonList/TicketRibbonConfig'
 import styled from 'styled-components'

@@ -44,7 +44,7 @@ it('should upload a welcome image', async () => {
     expect(mockPut).toHaveBeenCalledTimes(1)
   })
 
-  const [url, data] = mockPut.mock.calls[0]
+  const [url] = mockPut.mock.calls[0]
 
   expect(url).toMatch(`/events/${event.slug}`)
 })

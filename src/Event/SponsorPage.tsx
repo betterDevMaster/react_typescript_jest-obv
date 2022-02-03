@@ -12,11 +12,11 @@ import {CARDS} from 'Event/template/Cards'
 import CardsSponsorPage from 'Event/template/Cards/Sponsors'
 import {NIFTY_FIFTY} from './template/NiftyFifty'
 import NiftyFiftySponsorPage from 'Event/template/NiftyFifty/Dashboard/Sponsors'
+import {NavButtonProps} from 'Event/Dashboard/components/NavButton'
 
 import {FileLocation} from 'lib/http-client'
 import {EntityList} from 'lib/list'
 
-import NavButton from 'Event/Dashboard/components/NavButton'
 import {useTemplate} from 'Event/TemplateProvider'
 import PagePoints, {SPONSORS} from 'Event/PointsProvider/PagePoints'
 
@@ -31,11 +31,11 @@ export interface Sponsor {
   description: string
   form: Form | null
   settings: null | {
-    buttons?: EntityList<NavButton>
+    buttons?: EntityList<NavButtonProps>
   }
 }
 
-export default function SponsorPage(props: {isEditMode?: boolean}) {
+export default function SponsorPage() {
   return (
     <PagePoints page={SPONSORS}>
       <EventSponsorsProvider>

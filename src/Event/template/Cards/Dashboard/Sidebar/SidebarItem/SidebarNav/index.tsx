@@ -6,17 +6,17 @@ import EditModeOnly from 'Event/Dashboard/editor/views/EditModeOnly'
 import VisibleOnMatch from 'Event/attendee-rules/VisibleOnMatch'
 import {DragDropContext, Droppable, DropResult} from 'react-beautiful-dnd'
 import {useEditMode} from 'Event/Dashboard/editor/state/edit-mode'
-import NavButton from 'Event/Dashboard/components/NavButton'
-import {HashMap, orderedIdsByPosition, createPositions} from 'lib/list'
+import {HashMap, orderedIdsByPosition, createPositions, Ordered} from 'lib/list'
 import {RemoveButton} from 'organization/Event/DashboardConfig/ComponentConfig'
 import {useEditSidebarItem} from 'Event/template/Cards/Dashboard/Sidebar/SidebarItem'
 import {useRemoveIfEmpty} from 'Event/TemplateUpdateProvider'
+import {NavButtonProps} from 'Event/Dashboard/components/NavButton'
+import Section from 'Event/template/Cards/Dashboard/Sidebar/Section'
 
 export const SIDEBAR_NAV = 'Sidebar Nav'
-export type SidebarNavProps = {
+export type SidebarNavProps = Ordered & {
   type: typeof SIDEBAR_NAV
-  position?: number
-  buttons: HashMap<NavButton>
+  buttons: HashMap<NavButtonProps>
 }
 
 export const createSidebarNav = (): SidebarNavProps => ({
@@ -25,6 +25,14 @@ export const createSidebarNav = (): SidebarNavProps => ({
 })
 
 export default function SidebarNav(props: SidebarNavProps) {
+  return (
+    <Section>
+      <Content {...props} />
+    </Section>
+  )
+}
+
+function Content(props: SidebarNavProps) {
   const isEditMode = useEditMode()
   const {buttons} = props
 
@@ -63,11 +71,7 @@ export default function SidebarNav(props: SidebarNavProps) {
     return <>{buttonComponents}</>
   }
 
-  return (
-    <>
-      <DroppleList {...props}>{buttonComponents}</DroppleList>
-    </>
-  )
+  return <DroppleList {...props}>{buttonComponents}</DroppleList>
 }
 
 function RemoveSidebarNavButton(props: SidebarNavProps) {

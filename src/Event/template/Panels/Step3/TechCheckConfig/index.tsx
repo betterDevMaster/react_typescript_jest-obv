@@ -274,14 +274,15 @@ function useTemplateTechCheckProps() {
   const [techCheck, setTechCheck] = useState<PanelsTechCheckTemplateProps>(
     DEFAULT_TECH_CHECK_PROPS,
   )
-  const {event} = useEvent()
+  const template = usePanelsTemplate()
+
   useEffect(() => {
-    if (!event?.template?.techCheck) {
+    if (!template.techCheck) {
       return
     }
-    const fetchedTechCheck = event?.template?.techCheck as Panels['techCheck']
-    setTechCheck(fetchedTechCheck || DEFAULT_TECH_CHECK_PROPS)
-  }, [event])
+
+    setTechCheck(template.techCheck)
+  }, [template.techCheck])
 
   const set: TechCheckTemplatePropSetter = (key) => (value) => {
     const updated = {

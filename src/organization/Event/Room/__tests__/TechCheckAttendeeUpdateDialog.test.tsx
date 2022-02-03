@@ -3,7 +3,7 @@ import axios from 'axios'
 import {fakeArea, fakeRoom} from 'organization/Event/AreaList/__utils__/factory'
 import {wait} from '@testing-library/react'
 import {fakeAttendee} from 'Event/auth/__utils__/factory'
-import {CHECK_IN_ATTENDEES} from 'organization/PermissionsProvider'
+import {CHECK_IN_ATTENDEES, START_ROOMS} from 'organization/PermissionsProvider'
 import {goToArea} from 'organization/Event/AreaList/__utils__/go-to-areas'
 
 const mockGet = axios.get as jest.Mock
@@ -18,7 +18,7 @@ it('should check in an attendee', async () => {
   const room = fakeRoom()
 
   const {findByLabelText, findByText} = await goToArea({
-    userPermissions: [CHECK_IN_ATTENDEES],
+    userPermissions: [CHECK_IN_ATTENDEES, START_ROOMS],
     area,
     rooms: [room],
   })

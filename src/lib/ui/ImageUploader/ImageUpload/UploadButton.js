@@ -5,6 +5,7 @@ import React, {useRef, useState} from 'react'
 import styled from 'styled-components'
 import Typography from '@material-ui/core/Typography'
 import {MAX_FILE_SIZE_BYTES} from 'lib/ui/ImageUploader/ImageUpload'
+import {Description} from 'lib/ui/typography'
 
 export default function UploadButton(props) {
   const [error, setError] = useState(null)
@@ -26,20 +27,16 @@ export default function UploadButton(props) {
     props.onSelect(file)
   }
 
-  if (!props.isVisible) {
-    return null
-  }
-
   return (
-    <>
+    <ButtonContainer>
       <Button
         variant="contained"
         color="primary"
         aria-label="select image to upload"
         disabled={props.disabled}
         size={props.size}
+        startIcon={<Icon className="far fa-arrow-circle-up" />}
       >
-        <Icon className="far fa-arrow-circle-up" />
         <UploadButtonLabel htmlFor={id.current}>
           {text || 'Upload'}
         </UploadButtonLabel>
@@ -53,8 +50,12 @@ export default function UploadButton(props) {
         hidden
         aria-label={props.inputProps?.['aria-label']}
       />
+      <DescriptionContainer>
+        <Description>{props.label}</Description>
+      </DescriptionContainer>
+
       <Error>{error}</Error>
-    </>
+    </ButtonContainer>
   )
 }
 
@@ -68,4 +69,16 @@ function Error(props) {
 
 const UploadButtonLabel = styled.label`
   cursor: pointer;
+`
+
+const ButtonContainer = styled.div`
+  max-height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: flex-start;
+`
+
+const DescriptionContainer = styled.div`
+  margin-top: ${(props) => props.theme.spacing[2]};
 `

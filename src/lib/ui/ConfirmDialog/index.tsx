@@ -5,11 +5,11 @@ import DialogActions from '@material-ui/core/DialogActions'
 import DialogContent from '@material-ui/core/DialogContent'
 import DialogTitle from '@material-ui/core/DialogTitle'
 import Typography from '@material-ui/core/Typography'
+import Dialog from '@material-ui/core/Dialog'
 
 import Button, {ButtonProps} from 'lib/ui/Button'
 import Box from 'lib/ui/Box'
 import {useToggle} from 'lib/toggle'
-import Dialog from 'lib/ui/Dialog'
 
 const DEFAULT_TITLE = 'Are you sure?'
 const DEFAULT_CONFIRM_LABEL = 'Confirm'
@@ -76,10 +76,7 @@ export default function ConfirmDialog(props: {
         <StyledDialogContent>
           <Content>{props.description}</Content>
         </StyledDialogContent>
-        <StyledDialogAction
-          disableSpacing
-          isVertically={props.buttonsDisplay === 'vertically'}
-        >
+        <StyledDialogAction disableSpacing>
           <Box
             display={props.buttonsDisplay === 'vertically' ? 'block' : 'flex'}
           >
@@ -100,7 +97,6 @@ export default function ConfirmDialog(props: {
                 variant="contained"
                 color="primary"
                 onClick={handleCancel}
-                autoFocus
               >
                 Cancel
               </CancelButton>
@@ -118,7 +114,7 @@ function CancelButton(
 ) {
   const {dialogVariant, ...buttonProps} = props
   const color: ButtonProps['color'] =
-    dialogVariant === 'dangerous' ? 'primary' : 'default'
+    dialogVariant === 'dangerous' ? 'primary' : 'grey'
 
   return (
     <Button {...buttonProps} color={color} fullWidth>
@@ -148,7 +144,7 @@ function Content(props: {children: string | React.ReactElement}) {
   return <Typography>{props.children}</Typography>
 }
 
-const StyledDialogAction = styled(DialogActions)<{isVertically: boolean}>`
+const StyledDialogAction = styled(DialogActions)`
   justify-content: center !important;
   background-color: #f1f1f1;
 `

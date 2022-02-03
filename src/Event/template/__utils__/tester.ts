@@ -17,7 +17,7 @@ type TemplateFactory = (overrides?: Partial<GlobalTemplateProps>) => Template
  * @param title
  * @param testFn
  */
-export const testTemplates = (
+export const allTemplates = (
   title: string,
   testFn: (fakeTemplate: TemplateFactory) => Promise<void>,
 ) => {

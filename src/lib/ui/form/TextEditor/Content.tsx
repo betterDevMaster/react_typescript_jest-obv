@@ -4,6 +4,7 @@ export default function Content(props: {
   className?: string
   color?: string
   children: string
+  'aria-label'?: string
 }) {
   return (
     <div
@@ -18,6 +19,7 @@ export default function Content(props: {
       dangerouslySetInnerHTML={{
         __html: props.children,
       }}
+      aria-label={props['aria-label']}
     />
   )
 }

@@ -26,9 +26,10 @@ import {useHasVisibleItems} from 'Event/attendee-rules/matcher'
 import Section from 'Event/template/Cards/Dashboard/Sidebar/Section'
 import {useEditSidebarItem} from 'Event/template/Cards/Dashboard/Sidebar/SidebarItem'
 import {createPositions, HashMap, Ordered, orderedIdsByPosition} from 'lib/list'
+import {HasRules} from 'Event/attendee-rules'
 
 export const RESOURCE_LIST = 'Resource List'
-export interface ResourceListProps extends Ordered {
+export interface ResourceListProps extends Ordered, HasRules {
   id: string
   type: typeof RESOURCE_LIST
   title: string
@@ -74,7 +75,7 @@ export function ResourceList(props: ResourceListProps) {
           onClose={toggleConfig}
           list={props}
         />
-        <RemoveResourcesButton {...props} />
+        <RemoveResourcesButton />
       </EditModeOnly>
       <Editable onEdit={toggleConfig}>
         <Heading aria-label="resources">{v(title)}</Heading>
@@ -90,7 +91,7 @@ export function ResourceList(props: ResourceListProps) {
   )
 }
 
-function RemoveResourcesButton(props: ResourceListProps) {
+function RemoveResourcesButton() {
   const {remove: removeItem} = useEditSidebarItem()
 
   return (

@@ -8,8 +8,8 @@ import {useTemplate} from 'Event/TemplateProvider'
 import {BaseTemplate, BASE_DEFAULTS, Header} from 'Event/template'
 import {BlogPost} from 'Event/Dashboard/components/BlogPosts'
 import {DeepRequired} from 'lib/type-utils'
-import {SidebarItem} from 'Event/template/SimpleBlog/Dashboard/Sidebar/SidebarItem'
-import {CountDownTimer} from 'Event/Dashboard/components/CountDownTimer'
+import {SidebarItemProps} from 'Event/template/SimpleBlog/Dashboard/Sidebar/SidebarItem'
+import {CountDownTimerSettings} from 'Event/Dashboard/components/CountDownTimer'
 import {useTemplateUpdate} from 'Event/TemplateUpdateProvider'
 
 export const SIMPLE_BLOG = 'Simple Blog'
@@ -30,13 +30,12 @@ export function useSimpleBlogUpdate() {
 
 export type SimpleBlog = BaseTemplate & {
   name: typeof SIMPLE_BLOG
-  isDarkMode?: boolean
   title: string
   mainNav: HashMap<NavButtonWithSize>
   welcomeText?: string
   heroImageSize?: number
   sidebar: Sidebar
-  sidebarItems: HashMap<SidebarItem>
+  sidebarItems: HashMap<SidebarItemProps>
   blogPosts: HashMap<BlogPost>
   textColor?: string
   linkColor?: string
@@ -136,6 +135,7 @@ export type SimpleBlog = BaseTemplate & {
       hoverBackgroundColor?: string
       borderRadius?: number
     }
+    inputBorderRadius?: number
   }
   bodyHTMLEmbed?: string | null
   leaderboard?: {
@@ -184,7 +184,7 @@ export type SimpleBlog = BaseTemplate & {
     description?: string
     redirectUrl?: string
   }
-  countDownTimers?: HashMap<CountDownTimer>
+  countDownTimers?: HashMap<CountDownTimerSettings>
   imageWaterfall?: {
     title?: string
     description?: string
@@ -259,7 +259,6 @@ export const createSimpleBlog = (): DeepRequired<SimpleBlog> => ({
   blogPosts: {},
   backgroundPosition: 'fixed',
   heroImageSize: 50,
-  isDarkMode: false,
   textColor: '#000000',
   linkColor: '#000000',
   linkUnderline: true,
@@ -372,6 +371,7 @@ export const createSimpleBlog = (): DeepRequired<SimpleBlog> => ({
       hoverBackgroundColor: colors.primary,
       borderRadius: 0,
     },
+    inputBorderRadius: 56,
   },
   leaderboard: {
     title: 'Leaderboard',

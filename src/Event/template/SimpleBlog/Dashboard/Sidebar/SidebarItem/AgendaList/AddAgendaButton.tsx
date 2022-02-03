@@ -1,12 +1,12 @@
 import React, {useState} from 'react'
 import Button from '@material-ui/core/Button'
-import {Agenda} from 'Event/template/SimpleBlog/Dashboard/Sidebar/SidebarItem/AgendaList'
+import {AgendaSettings} from 'Event/template/SimpleBlog/Dashboard/Sidebar/SidebarItem/AgendaList'
 import {AgendaItemConfig} from 'Event/template/SimpleBlog/Dashboard/Sidebar/SidebarItem/AgendaList/AgendaItemConfig'
 
 export default function AddAgendaButton(props: {className?: string}) {
-  const [agenda, setAgenda] = useState<Agenda | null>(null)
+  const [agenda, setAgenda] = useState<AgendaSettings | null>(null)
 
-  const newAgenda = (): Agenda => ({
+  const newAgenda = (): AgendaSettings => ({
     text: 'Event',
     startDate: new Date().toISOString(),
     endDate: new Date().toISOString(),
@@ -32,7 +32,10 @@ export default function AddAgendaButton(props: {className?: string}) {
   )
 }
 
-function NewAgendaConfig(props: {agenda: Agenda | null; onClose: () => void}) {
+function NewAgendaConfig(props: {
+  agenda: AgendaSettings | null
+  onClose: () => void
+}) {
   const {agenda, onClose} = props
   if (!agenda) {
     return null

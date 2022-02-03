@@ -9,7 +9,6 @@ import {goToSponsorConfig} from 'Event/template/Panels/Dashboard/Sponsors/Sponso
 import {createEntityList} from 'lib/list'
 import {fakeNavButton} from 'Event/Dashboard/components/NavButton/__utils__/factory'
 import {fakePanels} from 'Event/template/Panels/__utils__/factory'
-import {clickEdit} from '__utils__/edit'
 
 const mockPut = axios.put as jest.Mock
 

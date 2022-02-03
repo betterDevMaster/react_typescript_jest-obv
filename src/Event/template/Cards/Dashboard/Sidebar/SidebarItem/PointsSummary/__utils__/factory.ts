@@ -3,7 +3,6 @@ import {
   POINTS_SUMMARY,
 } from 'Event/template/Cards/Dashboard/Sidebar/SidebarItem/PointsSummary'
 import faker from 'faker'
-import {uuid} from 'lib/uuid'
 
 export const fakePoints = (
   overrides?: Partial<PointsSummaryProps>,

@@ -27,20 +27,18 @@ BaseButton.args = {
 }
 
 const ButtonWithIcon: ComponentStory<typeof Button> = (args) => (
-  <Button {...args}>
-    <Icon {...AddIcon.args} />
-    Upload
-  </Button>
+  <Button {...args}>Upload</Button>
 )
-
-export const UploadButton = ButtonWithIcon.bind({})
-UploadButton.args = {
-  variant: 'contained',
-  color: 'primary',
-}
 
 const AddIcon = IconTemplate.bind({})
 
 AddIcon.args = {
   className: 'far fa-arrow-circle-up',
+}
+
+export const UploadButton = ButtonWithIcon.bind({})
+UploadButton.args = {
+  variant: 'contained',
+  color: 'primary',
+  startIcon: <Icon {...AddIcon.args} />,
 }

@@ -2,15 +2,14 @@ import {LoginProps} from 'Event/auth/Login'
 import styled from 'styled-components'
 import React, {useMemo} from 'react'
 import Typography from '@material-ui/core/Typography'
-import MuiTextField, {TextFieldProps} from '@material-ui/core/TextField'
 import MuiButton, {ButtonProps} from '@material-ui/core/Button'
-import {makeStyles} from '@material-ui/core/styles'
 import {spacing} from 'lib/ui/theme'
 import Logo from 'Event/template/Cards/Login/Logo'
 import {rgba} from 'lib/color'
 import {useCardsTemplate} from 'Event/template/Cards'
 import Paper from '@material-ui/core/Paper'
-import PasswordField from 'lib/ui/TextField/PasswordField'
+import BaseTextField from 'Event/ui/TextField'
+import {TextFieldProps} from '@material-ui/core/TextField'
 
 export default function Page(props: {
   isPreview?: LoginProps['isPreview']
@@ -178,43 +177,17 @@ export function TextField(props: TextFieldProps) {
   const template = useCardsTemplate()
   const {login} = template
 
-  const useStyles = makeStyles({
-    root: {
-      backgroundColor: '#f2f5f9 !important',
-      borderRadius: `${login.inputBorderRadius}px !important;` || spacing[14],
-      '& .MuiFilledInput-input': {
-        borderRadius: `${login.inputBorderRadius}px !important;` || spacing[14],
-      },
-      '&::before': {
-        content: 'unset',
-      },
-      '&::after': {
-        content: 'unset',
-      },
-    },
-  })
-
-  const classes = useStyles()
-
-  const Field = props.type === 'password' ? PasswordField : MuiTextField
-
-  return (
-    <Field
-      {...props}
-      variant="filled"
-      InputProps={{
-        classes: {
-          root: classes.root,
-        },
-      }}
-    />
-  )
+  return <BaseTextField {...props} borderRadius={login.inputBorderRadius} />
 }
 
 export const StyledButton = styled(
-  ({color, backgroundColor, borderRadius, hoverColor, ...otherProps}) => (
-    <MuiButton {...otherProps} />
-  ),
+  ({
+    color: _1,
+    backgroundColor: _2,
+    borderRadius: _3,
+    hoverColor: _4,
+    ...otherProps
+  }) => <MuiButton {...otherProps} />,
 )`
   border-radius: ${(props) => props.borderRadius} !important;
   height: 50px;

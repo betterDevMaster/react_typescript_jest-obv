@@ -20,6 +20,7 @@ import {fakeEvent, fakeWaiver} from 'Event/__utils__/factory'
 import {submitWaiver} from 'Event/Step2/__utils__/submit-waiver'
 import {fakeForm} from 'organization/Event/FormsProvider/__utils__/factory'
 import {fakeCards} from 'Event/template/Cards/__utils__/factory'
+import {mockGet} from '__utils__/http'
 
 const mockPost = axios.post as jest.Mock
 
@@ -188,4 +189,34 @@ it('should submit answers', async () => {
   )
   // Saved 'other' radio input value
   expect(submission(radioOtherQuestion).value).toBe(otherValue)
+})
+
+it('should retrieve a matching waiver', async () => {
+  const defaultWaiver = fakeWaiver()
+  const event = fakeEvent({
+    has_additional_waivers: true,
+    waiver: defaultWaiver,
+    template: fakeCards(),
+  })
+
+  const attendee = fakeAttendee({
+    has_password: true,
+    waiver: null,
+  })
+
+  const body = 'some attendee specific waiver'
+
+  const targetWaiver = fakeWaiver({
+    body: `<html><p>${body}</p></html>`,
+  })
+
+  const {findByText} = await loginToEventSite({
+    event,
+    attendee,
+    beforeRender: () => {
+      mockGet.mockResolvedValueOnce({data: targetWaiver})
+    },
+  })
+
+  expect(await findByText(body)).toBeInTheDocument()
 })

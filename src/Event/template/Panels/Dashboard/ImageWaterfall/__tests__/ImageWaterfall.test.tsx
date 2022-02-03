@@ -1,10 +1,8 @@
 import {fakeAttendee} from 'Event/auth/__utils__/factory'
 import axios from 'axios'
-import {fakeNavButtonWithSize} from 'Event/Dashboard/components/NavButton/__utils__/factory'
 import {fakePanels} from 'Event/template/Panels/__utils__/factory'
 import {fakeEvent, fakeImageEntry} from 'Event/__utils__/factory'
 import {loginToEventSite} from 'Event/__utils__/url'
-import {createEntityList} from 'lib/list'
 import user from '@testing-library/user-event'
 
 const mockGet = axios.get as jest.Mock

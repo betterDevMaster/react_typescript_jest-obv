@@ -2,6 +2,7 @@ import {AuthClientSettings, useAuthClient} from 'auth/auth-client'
 import {getToken} from 'auth/token'
 import {isTeamMember, TeamMember} from 'auth/user'
 import {useMemo} from 'react'
+import {createPrivate as createEcho} from 'lib/sockets/echo'
 
 export const TEAM_MEMBER_TOKEN_KEY = '__obvio_team_member_token__'
 
@@ -51,4 +52,9 @@ export function useObvioUser() {
   }
 
   return user
+}
+
+export function useTeamMemberEcho() {
+  const token = useAuthToken()
+  return useMemo(() => createEcho(token), [token])
 }

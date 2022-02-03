@@ -1,7 +1,7 @@
 import styled from 'styled-components'
 import TextField from '@material-ui/core/TextField'
 import ColorPicker from 'lib/ui/ColorPicker'
-import {TicketRibbon} from 'Event/template/Cards/Dashboard/Sidebar/SidebarItem/TicketRibbonList/TicketRibbon'
+import {TicketRibbonProps} from 'Event/template/Cards/Dashboard/Sidebar/SidebarItem/TicketRibbonList/TicketRibbon'
 import React, {useEffect, useState, useCallback} from 'react'
 import {onChangeStringHandler} from 'lib/dom'
 import DangerButton from 'lib/ui/Button/DangerButton'
@@ -23,16 +23,16 @@ const MAX_NUM_CHARACTERS = 9
 
 export interface TicketRibbonConfigProps {
   control: UseFormMethods['control']
-  customRibbon?: TicketRibbon['customRibbon']
-  setCustomRibbon: (customRibbon: TicketRibbon['customRibbon']) => void
+  customRibbon?: TicketRibbonProps['customRibbon']
+  setCustomRibbon: (customRibbon: TicketRibbonProps['customRibbon']) => void
   processing: boolean
   setProcessing: (procesing: boolean) => void
-  ticketRibbon: TicketRibbon
+  ticketRibbon: TicketRibbonProps
 }
 
 export function TicketRibbonConfig(
   props: ComponentConfigProps & {
-    ticketRibbon: TicketRibbon
+    ticketRibbon: TicketRibbonProps
     id?: string
   },
 ) {
@@ -58,7 +58,7 @@ export function TicketRibbonConfig(
     setCustomRibbon(ticketRibbon.customRibbon)
   }, [isVisible, ticketRibbon])
 
-  const update = (id: string, updated: TicketRibbon) => {
+  const update = (id: string, updated: TicketRibbonProps) => {
     updateItem({
       ribbons: {
         [id]: updated,
@@ -66,7 +66,7 @@ export function TicketRibbonConfig(
     })
   }
 
-  const insert = (newRibbon: TicketRibbon) => {
+  const insert = (newRibbon: TicketRibbonProps) => {
     const id = uuid()
 
     updateItem({
@@ -77,7 +77,7 @@ export function TicketRibbonConfig(
   }
 
   const save = (formData: any) => {
-    const ribbon: TicketRibbon = {
+    const ribbon: TicketRibbonProps = {
       ...formData,
       rules,
       text,

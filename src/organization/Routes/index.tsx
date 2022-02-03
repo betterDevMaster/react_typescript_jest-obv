@@ -10,6 +10,7 @@ import {Redirect} from 'react-router'
 import {obvioRoutes} from 'obvio/Routes'
 import {PaymentMethodProvider} from 'organization/PaymentMethodProvider'
 import WithLiveChatSupport from 'lib/WithLiveChatSupport'
+import TeamMemberLiveUpdates from 'auth/TeamMemberLiveUpdates'
 
 export default function OrganizationRoutes() {
   const {user, loading} = useObvioAuth()
@@ -25,18 +26,20 @@ export default function OrganizationRoutes() {
    */
   if (user) {
     return (
-      <WithLiveChatSupport user={user}>
-        <OwnerProvider>
-          <PaymentMethodProvider>
-            <OrganizationBillingStatusOverlay />
-            <PermissionsProvider>
-              <TextEditorProvider>
-                <UserRoutes />
-              </TextEditorProvider>
-            </PermissionsProvider>
-          </PaymentMethodProvider>
-        </OwnerProvider>
-      </WithLiveChatSupport>
+      <TeamMemberLiveUpdates>
+        <WithLiveChatSupport user={user}>
+          <OwnerProvider>
+            <PaymentMethodProvider>
+              <OrganizationBillingStatusOverlay />
+              <PermissionsProvider>
+                <TextEditorProvider>
+                  <UserRoutes />
+                </TextEditorProvider>
+              </PermissionsProvider>
+            </PaymentMethodProvider>
+          </OwnerProvider>
+        </WithLiveChatSupport>
+      </TeamMemberLiveUpdates>
     )
   }
 

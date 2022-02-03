@@ -4,7 +4,7 @@ import {useBreadcrumbs} from 'lib/ui/BreadcrumbProvider'
 import Page from 'lib/ui/layout/Page'
 import React, {useState} from 'react'
 import {obvioRoutes} from 'obvio/Routes'
-import {getPlan, isPlan, PlanName} from 'obvio/Billing/plans'
+import {isPlan, PlanInfo, useGetPlanFromQueryParams} from 'obvio/Billing/plans'
 import {useQueryParams} from 'lib/url'
 import {Redirect} from 'react-router-dom'
 import Typography from '@material-ui/core/Typography'
@@ -13,10 +13,13 @@ import Box from '@material-ui/core/Box'
 import {usePaymentMethod} from 'obvio/Billing/PaymentMethodProvider'
 import ErrorAlert from 'lib/ui/alerts/ErrorAlert'
 import SubscribeStep from 'obvio/Billing/ChangePlanPage/SubscribeStep'
+import {useGetSubscription} from '../subscribe'
 import CreditCardForm from 'obvio/Billing/CreditCardManagement/NewCardForm'
+import {formatDate} from 'lib/date-time'
 
 export default function ChangePlanPage() {
-  const {plan} = useQueryParams()
+  const params = useQueryParams()
+  const plan = useGetPlanFromQueryParams()
 
   useBreadcrumbs([
     {
@@ -25,23 +28,36 @@ export default function ChangePlanPage() {
     },
     {
       title: 'Change Plan',
-      url: `${obvioRoutes.billing.change_plan}?plan=${plan}`,
+      url: `${obvioRoutes.billing.change_plan}?plan=${plan?.name}`,
     },
   ])
 
-  if (!isPlan(plan)) {
+  if (!plan || !isPlan(plan.name)) {
     return <Redirect to={obvioRoutes.billing.root} />
   }
 
-  return <Content plan={plan} />
+  return <Content plan={plan} downgrade={'downgrade' in params} />
 }
 
-function Content(props: {plan: PlanName}) {
-  const {plan} = props
-  const info = getPlan(plan)
+function Content(props: {plan: PlanInfo; downgrade: boolean}) {
+  const {downgrade, plan} = props
+  const subscription = useGetSubscription()
   const [error, setError] = useState<string | null>(null)
 
-  const price = formatPrice(info.price)
+  const price = formatPrice(plan.price)
+  const actionText = downgrade ? 'downgrading' : 'subscribing'
+
+  const billedOn = () => {
+    if (subscription?.renews_at) {
+      return (
+        <>
+          on <strong>{formatDate(subscription.renews_at)}</strong>
+        </>
+      )
+    }
+
+    return <strong>now</strong>
+  }
 
   return (
     <>
@@ -51,16 +67,14 @@ function Content(props: {plan: PlanName}) {
             <ErrorAlert>{error}</ErrorAlert>
             <Box mb={4}>
               <Typography>
-                You are subscribing to the <strong>{info.label}</strong> plan.
+                You are {actionText} to the <strong>{plan.label}</strong> plan.
               </Typography>
               <Typography>
-                <strong>
-                  You will be billed now for ${price}, recurring annually until
-                  cancelled.
-                </strong>
+                You will be billed {billedOn()} for <strong>${price}</strong>,
+                recurring annually until cancelled.
               </Typography>
             </Box>
-            <Step plan={plan} onError={setError} />
+            <Step downgrade={downgrade} plan={plan} onError={setError} />
           </Box>
         </Page>
       </Layout>
@@ -68,7 +82,11 @@ function Content(props: {plan: PlanName}) {
   )
 }
 
-function Step(props: {plan: PlanName; onError: (error: string) => void}) {
+function Step(props: {
+  plan: PlanInfo
+  downgrade: boolean
+  onError: (error: string) => void
+}) {
   const {paymentMethod} = usePaymentMethod()
 
   if (!paymentMethod) {

@@ -2,6 +2,7 @@ import React from 'react'
 import styled from 'styled-components'
 import Box from '@material-ui/core/Box'
 import Button from 'lib/ui/Button'
+import {Header as Typography} from 'lib/ui/typography'
 import avatar from 'assets/images/test.png'
 
 export type HeaderProps = {
@@ -15,7 +16,9 @@ export default function Header(props: HeaderProps) {
     <Container>
       <UserBox>
         <ProfileAvatar src={avatar} alt="profile avatar" />
-        {firstName} {lastName}
+        <Typography>
+          {firstName} {lastName}
+        </Typography>
       </UserBox>
       <Button variant="contained" color="success">
         Save Changes
@@ -35,11 +38,6 @@ const Container = styled(Box)`
 const UserBox = styled(Box)`
   display: flex;
   align-items: center;
-  font-style: normal;
-  font-weight: 500;
-  font-size: 24px;
-  line-height: 28px;
-  color: #000000;
 `
 
 const ProfileAvatar = styled.img`

@@ -1,4 +1,3 @@
-import {signInToObvio} from 'obvio/__utils__/sign-in-to-obvio'
 import React from 'react'
 import user from '@testing-library/user-event'
 import axios from 'axios'
@@ -12,7 +11,6 @@ import SingleUseCreditCardForm from 'lib/stripe/SingleUseCreditCardForm'
 import {hideConsoleErrors} from 'setupTests'
 import {goToBillingSettings} from 'obvio/Billing/__utils__/go-to-billing-settings'
 
-const mockGet = axios.get as jest.Mock
 const mockPost = axios.post as jest.Mock
 const mockAjax = ajax.get as jest.Mock
 
@@ -34,7 +32,6 @@ it('should purchase selected credits', async () => {
     has_active_subscription: true,
     plan: fakePlan({name: plan}),
     credits: 0, // start with 0 credits
-    is_founder: true,
   })
 
   const paymentMethod = fakePaymentMethod()

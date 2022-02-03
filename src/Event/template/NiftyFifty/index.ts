@@ -7,7 +7,7 @@ import {EmojiList} from 'Event/template/NiftyFifty/Dashboard/EmojiList'
 import {ResourceList} from 'Event/template/NiftyFifty/Dashboard/Resources/ResourceList'
 import {useTemplate} from 'Event/TemplateProvider'
 import {useTemplateUpdate} from 'Event/TemplateUpdateProvider'
-import {CountDownTimer} from 'Event/Dashboard/components/CountDownTimer'
+import {CountDownTimerSettings} from 'Event/Dashboard/components/CountDownTimer'
 
 import {EntityList, HashMap} from 'lib/list'
 import {Column} from 'lib/ui/layout'
@@ -280,7 +280,7 @@ export type NiftyFifty = BaseTemplate &
       redirectUrl: string
       shouldRedirect: boolean
     }
-    countDownTimers?: HashMap<CountDownTimer>
+    countDownTimers?: HashMap<CountDownTimerSettings>
     imageWaterfall?: {
       title?: string
       menuTitle?: string

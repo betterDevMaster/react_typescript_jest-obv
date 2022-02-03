@@ -6,6 +6,9 @@ import {useEventAuth} from 'Event/auth'
 import CustomButton from 'lib/ui/Button/CustomButton'
 import {useEditMode} from 'Event/Dashboard/editor/state/edit-mode'
 import {useAttendeeVariables} from 'Event'
+import {eventRoutes} from 'Event/Routes'
+import {RelativeLink} from 'lib/ui/link/RelativeLink'
+import {useEvent} from 'Event/EventProvider'
 
 export default function Menu(props: {
   onChangeTab: (tab: number) => void
@@ -90,6 +93,7 @@ export default function Menu(props: {
           You're logged in as <br />
           {props.user.email}
         </UserInfo>
+        <ChangePasswordListItem color={color} />
         <LogoutBox>
           <CustomButton
             variant="text"
@@ -132,6 +136,26 @@ function LinkText(props: {
     </TabText>
   )
 }
+
+function ChangePasswordListItem(props: {color: string}) {
+  const {event} = useEvent()
+
+  if (!event.requires_attendee_password) {
+    return null
+  }
+
+  return (
+    <StyledRelativeLink
+      to={eventRoutes.changePassword}
+      aria-label="change password"
+      disableStyles
+      color={props.color}
+    >
+      Change Password
+    </StyledRelativeLink>
+  )
+}
+
 const TabText = styled.span`
   text-align: center;
   font-weight: bold;
@@ -172,4 +196,8 @@ const UserInfo = styled.p<{color: string}>`
 const LogoutBox = styled.div`
   margin-top: 16px;
   text-align: center;
+`
+
+const StyledRelativeLink = styled(RelativeLink)<{color: string}>`
+  color: ${(props) => props.color};
 `

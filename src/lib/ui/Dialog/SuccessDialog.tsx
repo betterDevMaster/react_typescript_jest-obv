@@ -14,7 +14,7 @@ import Button from '@material-ui/core/Button'
 export default function SuccessDialog(props: {
   showing: boolean
   onClose: () => void
-  children: string
+  children: string | string[]
 }) {
   return (
     <Dialog open={props.showing} onClose={props.onClose}>

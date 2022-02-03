@@ -25,15 +25,15 @@ export default function PointConfigAction(props: PointConfigActionProps) {
   const {actions} = useActions()
 
   return (
-    <Accordion id={id} expanded={false}>
-      <AccordionSummary>
+    <Accordion id={id}>
+      <AccordionSummary expandedIconName="chevron">
         <ActionName>{action}</ActionName>
       </AccordionSummary>
       <StyledAccordionDetails>
-        <ConfigFlexBox>
+        <ConfigFlexBox flexDirection="row">
           <Left>
             <StyledLabel>Platform Action</StyledLabel>
-            <Select fullWidth onChange={(v) => {}}>
+            <Select fullWidth onChange={() => {}}>
               {actions.map((action) => (
                 <Option>{action.action}</Option>
               ))}
@@ -46,31 +46,19 @@ export default function PointConfigAction(props: PointConfigActionProps) {
         </ConfigFlexBox>
         <ConfigBox>
           <ConfigLabel>Points earned</ConfigLabel>
-          <CounterButtons
-            current={pointsEarned}
-            hasBorder
-            onChange={(v) => {}}
-          />
+          <CounterButtons current={pointsEarned} onChange={(v) => {}} />
         </ConfigBox>
         <ConfigBox>
           <ConfigLabel>Max per day</ConfigLabel>
-          <CounterButtons current={maxPerDay} hasBorder onChange={(v) => {}} />
+          <CounterButtons current={maxPerDay} onChange={(v) => {}} />
         </ConfigBox>
         <ConfigBox>
           <ConfigLabel>Max per event</ConfigLabel>
-          <CounterButtons
-            current={maxPerEvent}
-            hasBorder
-            onChange={(v) => {}}
-          />
+          <CounterButtons current={maxPerEvent} onChange={(v) => {}} />
         </ConfigBox>
         <ConfigBox>
           <ConfigLabel>Min interval (Minutes)</ConfigLabel>
-          <CounterButtons
-            current={minInterval}
-            hasBorder
-            onChange={(v) => {}}
-          />
+          <CounterButtons current={minInterval} onChange={(v) => {}} />
         </ConfigBox>
       </StyledAccordionDetails>
     </Accordion>
@@ -90,6 +78,8 @@ const StyledAccordionDetails = styled(AccordionDetails)`
 `
 
 const ConfigBox = styled(Box)`
+  display: flex;
+  flex-direction: column;
   padding: ${(props) => `${props.theme.spacing[5]} ${props.theme.spacing[4]}`};
   border-bottom: 1px solid #dfdfdf;
 `

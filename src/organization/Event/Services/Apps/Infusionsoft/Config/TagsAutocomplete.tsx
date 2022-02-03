@@ -76,9 +76,9 @@ export default function TagsAutocomplete(props: {
       <Autocomplete
         disablePortal
         options={options}
-        value={value}
+        value={value || null}
         onChange={handleAutocomplete(onChange)}
-        getOptionLabel={(option) => option.name}
+        getOptionLabel={(option) => (option ? option.name : '')}
         loading={loading}
         closeIcon=""
         aria-label={'tag id holder'}

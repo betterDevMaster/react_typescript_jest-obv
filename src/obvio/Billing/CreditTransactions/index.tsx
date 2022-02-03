@@ -20,15 +20,17 @@ import {useAsync} from 'lib/async'
 import TablePagination from '@material-ui/core/TablePagination'
 import PaginationActions from 'lib/ui/table/PaginationActions'
 import TransactionRow from 'obvio/Billing/CreditTransactions/TransactionRow'
+import {PlanName} from 'obvio/Billing/plans'
 
-type CreditTransactionBase = {
+export type CreditTransactionBase = {
   last_transaction: string
   id: number
   total: number
+  plan: PlanName
 }
 
 export type EventCreditTransaction = CreditTransactionBase & {
-  transaction_type: 'event'
+  transaction_group: 'event_deduction'
   event_name: string
   event_slug: string
   event_start: string
@@ -36,12 +38,19 @@ export type EventCreditTransaction = CreditTransactionBase & {
 }
 
 export type PurchaseCreditTransaction = CreditTransactionBase & {
-  transaction_type: 'purchase'
+  type: 'purchase'
+  transaction_group: 'addition'
+}
+
+export type SubscriptionCreditsTransaction = CreditTransactionBase & {
+  type: 'subscription_credits'
+  transaction_group: 'addition'
 }
 
 export type CreditTransaction =
   | EventCreditTransaction
   | PurchaseCreditTransaction
+  | SubscriptionCreditsTransaction
 
 export default function CreditTransactions() {
   useBreadcrumbs([

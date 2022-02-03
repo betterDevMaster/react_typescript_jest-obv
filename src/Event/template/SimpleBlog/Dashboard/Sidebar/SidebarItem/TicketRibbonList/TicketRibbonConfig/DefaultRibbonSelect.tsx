@@ -2,7 +2,7 @@ import {TicketRibbonConfigProps} from 'Event/template/SimpleBlog/Dashboard/Sideb
 import FormControl from '@material-ui/core/FormControl'
 import styled from 'styled-components'
 import Select from '@material-ui/core/Select'
-import {TICKET_RIBBON_IMAGE} from 'Event/template/SimpleBlog/Dashboard/Sidebar/SidebarItem/TicketRibbonList/TicketRibbon'
+import {TICKET_RIBBON_IMAGE} from 'Event/template/SimpleBlog/Dashboard/Sidebar/SidebarItem/TicketRibbonList/Ribbon'
 import React from 'react'
 import MenuItem from '@material-ui/core/MenuItem'
 import {onUnknownChangeHandler} from 'lib/dom'

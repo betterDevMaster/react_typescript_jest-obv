@@ -3,7 +3,7 @@ export function guardValidDimensions(aspectRatio: number) {
     return new Promise<File>((resolve, reject) => {
       const reader = new FileReader()
 
-      reader.onloadend = (event) => {
+      reader.onloadend = () => {
         if (reader.result === null) {
           return reject('Image could not be read. Please try again. [201]')
         }
@@ -35,7 +35,7 @@ export function guardValidMimeType(file: File) {
   return new Promise<File>((resolve, reject) => {
     const reader = new FileReader()
 
-    reader.onloadend = (evt) => {
+    reader.onloadend = () => {
       if (reader.result === null) {
         reject('Image could not be read. Please try again. [101]')
         return false

@@ -191,7 +191,26 @@ export function Config() {
                 />
               </Grid>
               <Grid item xs={12} md={6}>
-                <InputLabel>Border Radius</InputLabel>
+                <InputLabel>Input Border Radius</InputLabel>
+                <Controller
+                  name="setPasswordForm.inputBorderRadius"
+                  defaultValue={setPasswordForm.inputBorderRadius}
+                  control={control}
+                  render={({value, onChange}) => (
+                    <Slider
+                      valueLabelDisplay="auto"
+                      aria-label="input border radius"
+                      value={value}
+                      onChange={handleChangeSlider(onChange)}
+                      step={1}
+                      min={0}
+                      max={60}
+                    />
+                  )}
+                />
+              </Grid>
+              <Grid item xs={12} md={6}>
+                <InputLabel>Button Border Radius</InputLabel>
 
                 <Controller
                   name="setPasswordForm.button.borderRadius"

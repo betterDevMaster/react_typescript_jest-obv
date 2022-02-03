@@ -1,4 +1,4 @@
-import {duration, getDiffDatetime, getNumDays} from 'lib/date-time'
+import {duration, getNumDays} from 'lib/date-time'
 import faker from 'faker'
 import moment from 'moment'
 
@@ -32,7 +32,7 @@ it('should all elements have more than 2 characters', () => {
 })
 
 it('should calculate diff days', () => {
-  expect(getNumDays('2021-01-01 13:00:00', '2021-01-04 13:00:00')).toBe(4)
-  expect(getNumDays('2021-01-01 00:00:00', '2021-01-04 00:00:00')).toBe(4)
-  expect(getNumDays('2021-01-01 23:00:00', '2021-01-04 00:00:00')).toBe(4)
+  expect(getNumDays('2021-01-01 13:00:00', '2021-01-04 13:00:00')).toBe(3)
+  expect(getNumDays('2021-01-01 00:00:00', '2021-01-04 00:00:00')).toBe(3)
+  expect(getNumDays('2021-01-01 23:00:00', '2021-01-04 00:00:00')).toBe(3)
 })

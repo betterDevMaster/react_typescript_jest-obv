@@ -44,7 +44,7 @@ export type Ordered = {
 // Returns the ids in an array sorted by their position property.
 export function orderedIdsByPosition(items: HashMap<Ordered>) {
   return Object.entries(items)
-    .sort(([aId, {position: aPosition}], [bId, {position: bPosition}]) => {
+    .sort(([_aId, {position: aPosition}], [_bId, {position: bPosition}]) => {
       // Place items without positions last
       if (!aPosition) {
         return 1

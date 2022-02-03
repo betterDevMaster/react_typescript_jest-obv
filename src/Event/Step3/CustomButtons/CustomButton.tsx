@@ -1,6 +1,7 @@
 import Grid from '@material-ui/core/Grid'
 import styled from 'styled-components'
 import NavButton, {
+  NavButtonProps,
   NavButtonWithSize,
 } from 'Event/Dashboard/components/NavButton'
 import React from 'react'
@@ -37,7 +38,7 @@ export default React.memo((props: CustomButtonProps) => {
       throw new Error('Missing button update function')
     }
 
-    const {[id]: target, ...otherButtons} = buttons.entities
+    const {[id]: _target, ...otherButtons} = buttons.entities
 
     const removed = {
       ids: buttons.ids.filter((i) => i !== id),
@@ -115,7 +116,7 @@ function Button(props: CustomButtonProps) {
    */
   const areaId = event.tech_check?.area_key || null
 
-  const buttonProps: NavButton = {
+  const buttonProps: NavButtonProps = {
     ...props.button,
     areaId,
   }

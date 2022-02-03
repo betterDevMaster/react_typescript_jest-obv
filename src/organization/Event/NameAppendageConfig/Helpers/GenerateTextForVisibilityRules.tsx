@@ -11,7 +11,7 @@ export function GenerateTextForVisibilityRules(props: {
   let first = true
 
   if (props.rules.length) {
-    props.rules.map((value: any, index: number) => {
+    props.rules.map((value: any, _: number) => {
       if (!first) {
         generatedText += value.condition + ' '
       } else {

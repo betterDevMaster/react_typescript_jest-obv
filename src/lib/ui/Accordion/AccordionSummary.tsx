@@ -1,34 +1,65 @@
-import React from 'react'
+import React, {useMemo} from 'react'
 import MuiAccordionSummary from '@material-ui/core/AccordionSummary'
-import {makeStyles} from '@material-ui/core/styles'
+import {MenuIcon, PlusIcon, MinusIcon, ChevronIcon} from 'lib/ui/Icon'
+import styled from 'styled-components'
+import {colors} from 'lib/ui/theme'
 
 type AccordionSummaryProps = {
   children: JSX.Element | string | JSX.Element[]
-  expandedIcon?: JSX.Element
+  expandedIconName?: 'menu' | 'chevron' | 'plus'
+  expanded?: boolean
+  activeColor?: keyof typeof colors
   ['aria-label']?: string
 }
 
 export default function AccordionSummary(props: AccordionSummaryProps) {
-  const useStyles = makeStyles({
-    root: {
-      backgroundColor: '#ffffff',
-      borderBottom: '1px solid rgba(0, 0, 0, .125)',
-      marginBottom: -1,
-      minHeight: 56,
-      '&$expanded': {
-        minHeight: 56,
-      },
-    },
-  })
+  const color = useMemo(() => {
+    if (!props.expanded) {
+      return 'unset'
+    }
 
-  const classes = useStyles()
+    if (!props.activeColor) {
+      return 'unset'
+    }
+
+    return props.activeColor
+  }, [props.expanded, props.activeColor])
+
   return (
-    <MuiAccordionSummary
-      className={classes.root}
-      expandIcon={props.expandedIcon}
+    <Summary
+      expandIcon={<ExpandedIcon {...props} color={color} />}
       aria-label={props['aria-label']}
+      expanded={props.expanded}
+      color={color}
     >
       {props.children}
-    </MuiAccordionSummary>
+    </Summary>
   )
 }
+
+function ExpandedIcon(props: AccordionSummaryProps & {color: string}) {
+  if (props.expandedIconName === 'menu') {
+    return <MenuIcon color={props.color} />
+  }
+  if (props.expandedIconName === 'chevron') {
+    return <ChevronIcon color={props.color} />
+  }
+  if (props.expandedIconName === 'plus' && !props.expanded) {
+    return <PlusIcon color={props.color} />
+  }
+  if (props.expandedIconName === 'plus' && props.expanded) {
+    return <MinusIcon color={props.color} />
+  }
+
+  return null
+}
+
+const Summary = styled((props) => {
+  const {expanded: _1, color: _2, ...otherProps} = props
+  return <MuiAccordionSummary {...otherProps} />
+})`
+  background-color: ${(props) => (!props.expanded ? '#ffffff' : '#F1F1F1')};
+  color: ${(props) => props.color};
+  border-bottom: 1px solid rgba(0, 0, 0, 0.125);
+  min-height: 56px !important;
+`

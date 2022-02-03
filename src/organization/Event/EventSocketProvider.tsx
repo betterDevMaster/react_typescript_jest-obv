@@ -2,13 +2,13 @@ import {useEvent, useRefreshEvent} from 'Event/EventProvider'
 import {Channel} from 'laravel-echo/dist/channel'
 import FullPageLoader from 'lib/ui/layout/FullPageLoader'
 import {useOrganization} from 'organization/OrganizationProvider'
-import {useOrganizationEcho} from 'organization/OrganizationProvider'
 import PrivateChannel from 'pusher-js/types/src/core/channels/private_channel'
 import React, {useEffect, useState, useCallback} from 'react'
 import {
   socketConnected,
   socketDisconnected,
 } from 'organization/Event/EventSocketNotification'
+import {useTeamMemberEcho} from 'obvio/auth'
 
 type EventSocketContextProps = {
   channel: Channel
@@ -40,7 +40,8 @@ export default function EventSocketProvider(props: {
   const {
     event: {slug},
   } = useEvent()
-  const echo = useOrganizationEcho()
+  const echo = useTeamMemberEcho()
+
   const refreshEvent = useRefreshEvent()
 
   const {client} = useOrganization()

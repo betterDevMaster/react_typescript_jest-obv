@@ -1,4 +1,3 @@
-import {signInToObvio} from 'obvio/__utils__/sign-in-to-obvio'
 import user from '@testing-library/user-event'
 import axios from 'axios'
 import {fakeTeamMember} from 'organization/Team/__utils__/factory'
@@ -10,7 +9,6 @@ import {TeamMember} from 'auth/user'
 import {hideConsoleErrors} from 'setupTests'
 import {goToBillingSettings} from 'obvio/Billing/__utils__/go-to-billing-settings'
 
-const mockGet = axios.get as jest.Mock
 const mockPost = axios.post as jest.Mock
 const mockAjax = ajax.get as jest.Mock
 
@@ -29,7 +27,6 @@ it('should purchase selected credits', async () => {
     has_active_subscription: true,
     plan: fakePlan({name: plan}),
     credits: 0, // start with 0 credits
-    is_founder: true,
   })
 
   const paymentMethod = fakePaymentMethod()
@@ -120,7 +117,6 @@ it('should require a payment method', async () => {
     has_active_subscription: true,
     plan: fakePlan({name: plan}),
     credits: 0, // start with 0 credits
-    is_subscribed: true,
   })
 
   const {findByText} = await goToBillingSettings({
@@ -137,7 +133,6 @@ it('should require a plan', async () => {
     has_active_subscription: true,
     plan: null, // no plan
     credits: 0,
-    is_subscribed: true,
   })
 
   const {findByText} = await goToBillingSettings({

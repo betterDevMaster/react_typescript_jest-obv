@@ -153,11 +153,11 @@ const AdditionalContent = styled(TextEditorContent)`
 
 const StyledButton = styled(
   ({
-    textColor,
-    backgroundColor,
-    borderRadius,
-    borderColor,
-    borderWidth,
+    textColor: _1,
+    backgroundColor: _2,
+    borderRadius: _3,
+    borderColor: _4,
+    borderWidth: _5,
     ...otherProps
   }: ButtonProps & {
     textColor: string

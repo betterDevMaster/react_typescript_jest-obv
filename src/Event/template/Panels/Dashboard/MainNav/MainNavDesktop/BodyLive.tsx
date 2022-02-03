@@ -29,7 +29,7 @@ export default function BodyLive(props: {className?: string}) {
    * page to prevent the cursor from being stuck at old counts
    * ie. on cursor 3 when only single page.
    */
-  useEffect(resetCursor, [perPage])
+  useEffect(resetCursor, [perPage, resetCursor])
 
   const lastPage = perPage ? cursor + perPage : ids.length
 

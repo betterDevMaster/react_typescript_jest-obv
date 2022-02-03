@@ -3,11 +3,9 @@ import UploadButton from 'lib/ui/ImageUploader/ImageUpload/UploadButton'
 import {useFileSelect} from 'lib/ui/form/file'
 import Box from 'lib/ui/Box'
 import ImageUpload from 'lib/ui/ImageUploader/ImageUpload'
-import RemoveIconButton from 'lib/ui/ImageUploader/ImageUpload/RemoveIconButton'
 import Cropper from 'lib/ui/ImageUploader/ImageUpload/Cropper'
 import Image from 'lib/ui/ImageUploader/ImageUpload/Image'
 import {FileLocation} from 'lib/http-client'
-import {Label} from 'lib/ui/typography'
 
 export type ImageUploaderProps = {
   label?: string
@@ -25,7 +23,7 @@ export default function ImageUploader(props: ImageUploaderProps) {
   const file = useFileSelect(props.fileLocation)
 
   return (
-    <Box mb={3}>
+    <Box display="flex">
       <ImageUpload
         file={file}
         disabled={props.processing}
@@ -42,11 +40,10 @@ export default function ImageUploader(props: ImageUploaderProps) {
             'aria-label': 'upload image',
           }}
           size="small"
+          label={props.label}
         >
           Image
         </UploadButton>
-        <RemoveIconButton aria-label="remove image" size="small" />
-        <Label>{props.label}</Label>
       </ImageUpload>
     </Box>
   )

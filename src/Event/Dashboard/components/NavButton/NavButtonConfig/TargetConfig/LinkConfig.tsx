@@ -11,7 +11,6 @@ import React from 'react'
 import MenuItem from '@material-ui/core/MenuItem'
 import Select from '@material-ui/core/Select'
 import InputLabel from '@material-ui/core/InputLabel'
-import NavButton from 'Event/Dashboard/components/NavButton'
 import {EventPages, EVENT_PAGES} from 'Event/Routes'
 import {TargetConfigProps} from 'Event/Dashboard/components/NavButton/NavButtonConfig/TargetConfig'
 
@@ -54,7 +53,7 @@ export default function LinkConfig(props: LinkConfigProps) {
   )
 }
 
-function PageSelect<T extends NavButton>(props: LinkConfigProps) {
+function PageSelect(props: LinkConfigProps) {
   const pages = props.pages || EVENT_PAGES
 
   const value = props.page || 0

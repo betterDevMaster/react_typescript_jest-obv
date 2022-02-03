@@ -1,4 +1,4 @@
-import {TicketRibbon} from 'Event/template/Panels/Dashboard/TicketRibbonList/TicketRibbon'
+import {TicketRibbon} from 'Event/template/Panels/Dashboard/TicketRibbonList/Ribbon'
 import faker from 'faker'
 
 export const fakeTicketRibbon = (

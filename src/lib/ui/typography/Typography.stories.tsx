@@ -1,7 +1,12 @@
 import React from 'react'
 import {ComponentStory, ComponentMeta} from '@storybook/react'
-import {Title, Description, SubHead, Label} from 'lib/ui/typography'
-import ThemeProvider from 'lib/ui/theme/ThemeProvider'
+import {
+  Title,
+  Description,
+  SubHead,
+  Label,
+  ErrorMessage,
+} from 'lib/ui/typography'
 
 export default {
   title: 'Components/Typography',
@@ -14,30 +19,27 @@ export default {
 } as ComponentMeta<typeof Title>
 
 const TitleTemplate: ComponentStory<typeof Title> = (args) => (
-  <ThemeProvider>
-    <Title {...args}>Title</Title>
-  </ThemeProvider>
+  <Title {...args}>Title</Title>
 )
 
 const DescriptionTemplate: ComponentStory<typeof Description> = (args) => (
-  <ThemeProvider>
-    <Description {...args}>Description</Description>
-  </ThemeProvider>
+  <Description {...args}>Description</Description>
 )
 
 const SubHeadTemplate: ComponentStory<typeof SubHead> = (args) => (
-  <ThemeProvider>
-    <SubHead {...args}>SubHead</SubHead>
-  </ThemeProvider>
+  <SubHead {...args}>SubHead</SubHead>
 )
 
 const LabelTemplate: ComponentStory<typeof Label> = (args) => (
-  <ThemeProvider>
-    <Label {...args}>Label</Label>
-  </ThemeProvider>
+  <Label {...args}>Label</Label>
+)
+
+const ErrorMessageTemplate: ComponentStory<typeof ErrorMessage> = (args) => (
+  <ErrorMessage {...args}>Error</ErrorMessage>
 )
 
 export const TitleTypography = TitleTemplate.bind({})
 export const DescriptionTypography = DescriptionTemplate.bind({})
 export const SubHeadTypography = SubHeadTemplate.bind({})
 export const LabelTypography = LabelTemplate.bind({})
+export const ErrorMessageTypography = ErrorMessageTemplate.bind({})

@@ -1,12 +1,12 @@
 import {
   RIBBONS,
-  TicketRibbon,
+  TicketRibbonProps,
 } from 'Event/template/Cards/Dashboard/Sidebar/SidebarItem/TicketRibbonList/TicketRibbon'
 import faker from 'faker'
 
 export const fakeTicketRibbon = (
-  overrides?: Partial<TicketRibbon>,
-): TicketRibbon => ({
+  overrides?: Partial<TicketRibbonProps>,
+): TicketRibbonProps => ({
   name: faker.random.arrayElement(RIBBONS),
   text: faker.random.word(),
   color: '#FFFFFF',

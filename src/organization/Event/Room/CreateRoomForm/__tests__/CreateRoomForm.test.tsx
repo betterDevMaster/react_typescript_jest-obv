@@ -4,10 +4,7 @@ import axios from 'axios'
 import {fakeArea, fakeRoom} from 'organization/Event/AreaList/__utils__/factory'
 import {wait} from '@testing-library/react'
 import {CONFIGURE_EVENTS} from 'organization/PermissionsProvider'
-import {
-  goToArea,
-  goToAreas,
-} from 'organization/Event/AreaList/__utils__/go-to-areas'
+import {goToArea} from 'organization/Event/AreaList/__utils__/go-to-areas'
 
 const mockGet = axios.get as jest.Mock
 const mockPost = axios.post as jest.Mock
@@ -15,7 +12,7 @@ const mockPost = axios.post as jest.Mock
 it('should create a room', async () => {
   const area = fakeArea()
 
-  // Rooms
+  // Room
   const existingRooms = Array.from(
     {length: faker.random.number({min: 1, max: 3})},
     fakeRoom,
@@ -77,12 +74,7 @@ it('should create a room', async () => {
 
 it('should allow retrying room', async () => {
   const area = fakeArea()
-  const {
-    areas,
-    findByLabelText,
-    findByText,
-    findAllByLabelText,
-  } = await goToArea({
+  const {findByLabelText, findByText, findAllByLabelText} = await goToArea({
     userPermissions: [CONFIGURE_EVENTS],
     area,
     rooms: [], // start with 0 rooms

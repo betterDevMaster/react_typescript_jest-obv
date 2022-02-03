@@ -19,7 +19,7 @@ import ProfileButtonAvatar from 'lib/ui/avatar/ProfileButtonAvatar'
 import Icon from 'lib/ui/Icon'
 import IconButton from 'lib/ui/IconButton'
 
-type AppBar = {
+type AppBarProps = {
   user: TeamMember
   logout: () => void
   homeLinkTarget: string
@@ -31,8 +31,8 @@ type AppBar = {
   collapsableSidebar: (flag: boolean) => void
 }
 
-export default function AppBar(props: AppBar) {
-  const useStyles = makeStyles((theme) => ({
+export default function AppBar(props: AppBarProps) {
+  const useStyles = makeStyles(() => ({
     root: {
       backgroundColor: '#ffffff',
       zIndex: 100,
@@ -70,7 +70,7 @@ export default function AppBar(props: AppBar) {
     logout()
   }
 
-  const handleMobileSidebar = (flag: boolean) => {
+  const handleMobileSidebar = () => {
     props.collapsableSidebar(!statusSidebar)
     setStatusSidebar(!statusSidebar)
   }
@@ -156,7 +156,7 @@ export default function AppBar(props: AppBar) {
 // Not actually using the forwarded ref, since this isn't
 // an actual MUI MenuItem, but we get a forward
 // ref error if we don't receive it.
-const UserMenuItem = React.forwardRef((props: {user: User}, ref) => {
+const UserMenuItem = React.forwardRef((props: {user: User}, _ref) => {
   return (
     <>
       <UserEmail>

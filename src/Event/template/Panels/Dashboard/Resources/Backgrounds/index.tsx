@@ -80,7 +80,7 @@ export default function PanelsBackgrounds() {
 }
 
 const StyledCard = styled((props) => {
-  const {backgroundColor, borderRadius, ...otherProps} = props
+  const {backgroundColor: _1, borderRadius: _2, ...otherProps} = props
   return <Card {...otherProps} />
 })`
   background-color: ${(props) => props.backgroundColor} !important;

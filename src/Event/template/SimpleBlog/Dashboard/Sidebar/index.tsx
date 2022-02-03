@@ -9,6 +9,7 @@ import AddSidebarItemButton from 'Event/template/SimpleBlog/Dashboard/Sidebar/Ad
 import {DragDropContext, Droppable, DropResult} from 'react-beautiful-dnd'
 import {useEditMode} from 'Event/Dashboard/editor/state/edit-mode'
 import {createPositions, orderedIdsByPosition} from 'lib/list'
+import {SectionBox} from 'Event/template/SimpleBlog/Dashboard/Sidebar/Section'
 
 export default function Sidebar() {
   const {sidebarItems} = useSimpleBlogTemplate()
@@ -17,7 +18,9 @@ export default function Sidebar() {
 
   const ids = orderedIdsByPosition(sidebarItems)
   const items = ids.map((id, index) => {
-    return <SidebarItem key={id} {...sidebarItems[id]} index={index} id={id} />
+    const props = sidebarItems[id]
+
+    return <SidebarItem key={id} {...props} index={index} id={id} />
   })
 
   if (!isEditMode) {
@@ -42,7 +45,9 @@ function DraggableList(props: {children: React.ReactElement[]}) {
           )}
         </Droppable>
       </DragDropContext>
-      <AddSidebarItemButton />
+      <SectionBox disablePaddingY>
+        <AddSidebarItemButton />
+      </SectionBox>
     </SidebarContainer>
   )
 }

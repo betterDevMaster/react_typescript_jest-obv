@@ -16,7 +16,7 @@ import CreditsMenuItem from 'obvio/Billing/CreditsMenuItem'
 import Divider from '@material-ui/core/Divider'
 
 export default function AppBar() {
-  const useStyles = makeStyles((theme) => ({
+  const useStyles = makeStyles(() => ({
     root: {
       backgroundColor: '#ffffff',
     },

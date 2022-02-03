@@ -12,6 +12,7 @@ import {Area} from 'organization/Event/AreasProvider'
 import axios from 'axios'
 import {Room} from 'Event/room'
 import {RoomMetrics} from 'organization/Event/Area/RoomList'
+import {CHECK_IN_ATTENDEES, START_ROOMS} from 'organization/PermissionsProvider'
 
 const mockGet = axios.get as jest.Mock
 
@@ -50,12 +51,34 @@ export async function goToArea(
   const roomMetrics: RoomMetrics[] = rooms.map((r) =>
     fakeRoomMetrics({room_id: r.id}),
   )
+  const url = faker.internet.url()
 
   mockGet.mockImplementationOnce(() => Promise.resolve({data: area}))
   mockGet.mockImplementationOnce(() => Promise.resolve({data: rooms}))
+
+  for (const room of rooms) {
+    if (!room.is_online) {
+      continue
+    }
+
+    if (context.userPermissions?.includes(START_ROOMS)) {
+      mockGet.mockImplementationOnce(() => Promise.resolve({data: {url}}))
+      continue
+    }
+
+    if (
+      context.userPermissions?.includes(CHECK_IN_ATTENDEES) &&
+      area.is_tech_check
+    ) {
+      mockGet.mockImplementationOnce(() => Promise.resolve({data: {url}}))
+    }
+  }
+
   mockGet.mockImplementationOnce(() => Promise.resolve({data: roomMetrics}))
 
   user.click(await context.findByLabelText(`view ${area.name} area`))
+
+  jest.clearAllMocks()
 
   return {...context, area, rooms}
 }

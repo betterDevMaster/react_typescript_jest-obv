@@ -7,6 +7,7 @@ const UploadButton: React.ComponentType<{
   }
   children?: string
   size?: ButtonProps['size']
+  label?: string
 }>
 
 export default UploadButton

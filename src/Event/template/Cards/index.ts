@@ -8,8 +8,8 @@ import {useTemplate} from 'Event/TemplateProvider'
 import {BaseTemplate, BASE_DEFAULTS, Header} from 'Event/template'
 import {BlogPost} from 'Event/Dashboard/components/BlogPosts'
 import {DeepRequired} from 'lib/type-utils'
-import {SidebarItem} from 'Event/template/Cards/Dashboard/Sidebar/SidebarItem'
-import {CountDownTimer} from 'Event/Dashboard/components/CountDownTimer'
+import {SidebarItemProps} from 'Event/template/Cards/Dashboard/Sidebar/SidebarItem'
+import {CountDownTimerSettings} from 'Event/Dashboard/components/CountDownTimer'
 import {Hero} from 'Event/template/Cards/Dashboard/Hero/HeroConfig'
 import {CardsNavButtonProps} from 'Event/template/Cards/Dashboard/CardsNavButton'
 import {useTemplateUpdate} from 'Event/TemplateUpdateProvider'
@@ -33,7 +33,6 @@ export type Cards = BaseTemplate &
   CustomBackgrounds & {
     name: typeof CARDS
     accentColor: string
-    isDarkMode?: boolean
     title: string
     homeMenuTitle: string
     mainNav: {
@@ -46,7 +45,7 @@ export type Cards = BaseTemplate &
     }
     hero: Hero
     sidebar: Sidebar
-    sidebarItems: HashMap<SidebarItem>
+    sidebarItems: HashMap<SidebarItemProps>
     blogPosts: HashMap<BlogPost>
     textColor?: string
     linkColor?: string
@@ -152,6 +151,7 @@ export type Cards = BaseTemplate &
         hoverBackgroundColor?: string
         borderRadius?: number
       }
+      inputBorderRadius?: number
     }
     bodyHTMLEmbed?: string | null
     leaderboard?: {
@@ -217,7 +217,7 @@ export type Cards = BaseTemplate &
       step3Label: string
       step3Icon: string
     }
-    countDownTimers?: HashMap<CountDownTimer>
+    countDownTimers?: HashMap<CountDownTimerSettings>
     imageWaterfall?: {
       title?: string
       description?: string
@@ -321,7 +321,6 @@ export const createCards = (): DeepRequired<Cards> => ({
     checkBoxColor: '#3c18c5',
   },
   blogPosts: {},
-  isDarkMode: false,
   textColor: '#000000',
   linkColor: '#000000',
   linkUnderline: true,
@@ -434,6 +433,7 @@ export const createCards = (): DeepRequired<Cards> => ({
       hoverBackgroundColor: colors.primary,
       borderRadius: 0,
     },
+    inputBorderRadius: 56,
   },
   leaderboard: {
     title: 'Leaderboard',

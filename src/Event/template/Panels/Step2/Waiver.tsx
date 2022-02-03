@@ -8,7 +8,6 @@ import {onChangeCheckedHandler} from 'lib/dom'
 import {useWaiver} from 'Event/Step2/WaiverProvider'
 import {useAttendeeVariables} from 'Event'
 import Typography from '@material-ui/core/Typography'
-import {usePanelsTemplate} from 'Event/template/Panels'
 import Box from '@material-ui/core/Box'
 
 export default function Waiver() {
@@ -22,9 +21,8 @@ export default function Waiver() {
     body,
   } = useWaiver()
 
-  const {isDarkMode} = usePanelsTemplate()
   const v = useAttendeeVariables()
-  const color = isDarkMode ? '#FFFFFF' : '#000000'
+  const color = '#000000'
 
   return (
     <>
@@ -40,7 +38,6 @@ export default function Waiver() {
               <StyledCheckBox
                 color={color}
                 checked={agree}
-                isDarkMode={isDarkMode}
                 onChange={onChangeCheckedHandler(setAgree)}
                 inputProps={{
                   'aria-label': 'agree to waiver checkbox',
@@ -69,11 +66,9 @@ const Body = styled.div`
 `
 
 const StyledCheckBox = styled((props) => {
-  const {color, isDarkMode, ...otherProps} = props
+  const {color: _1, ...otherProps} = props
   return <Checkbox {...otherProps} />
-})<{
-  isDarkMode?: boolean
-}>`
+})`
   color: ${(props) => props.color} !important;
 `
 

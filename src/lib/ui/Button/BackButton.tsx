@@ -7,6 +7,7 @@ import {useTheme} from 'styled-components'
 export default function BackButton(props: {
   onClick: () => void
   className?: string
+  'aria-label'?: string
 }) {
   const theme = useTheme()
 
@@ -16,6 +17,7 @@ export default function BackButton(props: {
       variant="text"
       onClick={props.onClick}
       textColor={theme.colors.primary}
+      aria-label={props['aria-label']}
     >
       <BackIcon />
       back

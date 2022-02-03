@@ -1,7 +1,6 @@
 import React, {useState} from 'react'
 import Image from 'lib/ui/ImageUploader/ImageUpload/Image'
 import UploadButton from 'lib/ui/ImageUploader/ImageUpload/UploadButton'
-import RemoveButton from 'lib/ui/ImageUploader/ImageUpload/RemoveButton'
 import Cropper from 'lib/ui/ImageUploader/ImageUpload/Cropper'
 import {is, hasChildren} from 'lib/react-utils'
 import RemoveIconButton from 'lib/ui/ImageUploader/ImageUpload/RemoveIconButton'
@@ -74,33 +73,16 @@ export default function ImageUpload(props) {
             selected={file.selected}
             isVisible={isVisible()}
             key={index}
-          />
-        )
-      }
-
-      if (is(RemoveButton, component)) {
-        return (
-          <RemoveButton
-            {...component.props}
-            onClick={file.remove}
-            isVisible={file.canRemove}
-            selected={file.selected}
-            disabled={disabled}
-            key={index}
-          />
-        )
-      }
-
-      if (is(RemoveIconButton, component)) {
-        return (
-          <RemoveIconButton
-            {...component.props}
-            onClick={file.remove}
-            isVisible={file.canRemove}
-            selected={file.selected}
-            disabled={disabled}
-            key={index}
-          />
+          >
+            <RemoveIconButton
+              {...component.props}
+              onClick={file.remove}
+              isVisible={file.canRemove}
+              selected={file.selected}
+              disabled={disabled}
+              key={index}
+            />
+          </Image>
         )
       }
 

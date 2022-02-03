@@ -1,7 +1,7 @@
 import TextField from '@material-ui/core/TextField'
 import InputLabel from '@material-ui/core/InputLabel'
 import {usePanelsTemplate, usePanelsUpdate} from 'Event/template/Panels'
-import {TicketRibbon} from 'Event/template/Panels/Dashboard/TicketRibbonList/TicketRibbon'
+import {TicketRibbon} from 'Event/template/Panels/Dashboard/TicketRibbonList/Ribbon'
 import RuleConfig, {useRuleConfig} from 'Event/attendee-rules/RuleConfig'
 import ColorPicker from 'lib/ui/ColorPicker'
 import FontStyleInput from 'lib/ui/typography/FontStyleInput'

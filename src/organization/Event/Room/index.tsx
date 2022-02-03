@@ -45,6 +45,9 @@ import {RelativeLink} from 'lib/ui/link/RelativeLink'
 import {useInterval} from 'lib/interval'
 import {FETCH_METRICS_INTERVAL_SECS} from 'organization/Event/Area'
 import DeleteRoomButton from 'organization/Event/Room/DeleteRoomButton'
+import PauseButton from 'organization/Event/Room/PauseButton'
+import EndButton from 'organization/Event/Room/EndButton'
+import {ButtonGroup} from '@material-ui/core'
 
 export const DEFAULT_MAX_NUM_ATTENDEES = 500
 
@@ -132,7 +135,25 @@ export default function RoomConfig() {
         <FormControl>
           <FormControlLabel control={<OnlineSwitch />} label="Open" />
         </FormControl>
-        <StartRoom processing={processing} />
+
+        <StyledButtonGroup
+          color="primary"
+          aria-label="outlined primary button group"
+        >
+          <StartRoom processing={processing}>
+            {startLabel(Number(numAttendees))}
+          </StartRoom>
+
+          <PauseRoom
+            processing={processing}
+            numAttendees={Number(numAttendees)}
+          />
+          <EndRoom
+            processing={processing}
+            numAttendees={Number(numAttendees)}
+          />
+        </StyledButtonGroup>
+
         <HasPermission permission={CONFIGURE_EVENTS}>
           <FormControl>
             <FormControlLabel
@@ -212,7 +233,19 @@ export default function RoomConfig() {
   )
 }
 
-function StartRoom(props: {processing: boolean}) {
+const StyledButtonGroup = styled(ButtonGroup)`
+  display: flex;
+`
+
+export const startLabel = (numAttendees: number | null) => {
+  if (numAttendees && numAttendees > 0) {
+    return 'Join'
+  }
+
+  return 'Start'
+}
+
+function StartRoom(props: {processing: boolean; children?: string}) {
   const canStartRooms = useCanStartRooms()
   if (!canStartRooms) {
     return null
@@ -220,7 +253,39 @@ function StartRoom(props: {processing: boolean}) {
 
   return (
     <Box mb={3}>
-      <StartButton processing={props.processing} />
+      <StartButton processing={props.processing} children={props.children} />
+    </Box>
+  )
+}
+
+function PauseRoom(props: {processing: boolean; numAttendees?: number}) {
+  const canStartRooms = useCanStartRooms()
+  if (!canStartRooms) {
+    return null
+  }
+
+  return (
+    <Box mb={3}>
+      <PauseButton
+        numAttendees={props.numAttendees}
+        processing={props.processing}
+      />
+    </Box>
+  )
+}
+
+function EndRoom(props: {processing: boolean; numAttendees?: number}) {
+  const canStartRooms = useCanStartRooms()
+  if (!canStartRooms) {
+    return null
+  }
+
+  return (
+    <Box mb={3}>
+      <EndButton
+        numAttendees={props.numAttendees}
+        processing={props.processing}
+      />
     </Box>
   )
 }

@@ -1,7 +1,5 @@
 import React from 'react'
 import {render} from '__utils__/render'
-import OrganizationProvider from 'organization/OrganizationProvider'
-import OwnerProvider from 'organization/OwnerProvider'
 import FeatureToggle from 'lib/FeatureToggle'
 import {fakeTeamMember} from 'organization/Team/__utils__/factory'
 

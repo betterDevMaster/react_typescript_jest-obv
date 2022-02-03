@@ -11,7 +11,7 @@ export type TagsRule = BaseRule & {
   target: string
 }
 
-export default function TagsRule(props: {rule: TagsRule}) {
+export default function TagsRuleLabel(props: {rule: TagsRule}) {
   return (
     <div>
       tags {props.rule.type} {props.rule.target}

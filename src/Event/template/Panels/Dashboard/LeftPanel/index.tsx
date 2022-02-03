@@ -9,7 +9,7 @@ import {Editable} from 'Event/Dashboard/editor/views/EditComponent'
 import EditModeOnly from 'Event/Dashboard/editor/views/EditModeOnly'
 import Logo from 'Event/Logo'
 import {usePanelsTemplate} from 'Event/template/Panels'
-import EmojiList from 'Event/template/Panels/Dashboard/EmojiList'
+import Emojis from 'Event/template/Panels/Dashboard/EmojiList'
 import LeftPanelConfig from 'Event/template/Panels/Dashboard/LeftPanel/LeftPanelConfig'
 import MainNavDesktop from 'Event/template/Panels/Dashboard/MainNav/MainNavDesktop'
 import Menu from 'Event/template/Panels/Dashboard/Menu'
@@ -79,7 +79,7 @@ export default function LeftPanel(props: {
               {menuVisible ? null : (
                 <>
                   <MainNavDesktop />
-                  <EmojiList />
+                  <Emojis />
                 </>
               )}
             </MainContent>

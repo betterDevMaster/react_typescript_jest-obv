@@ -1,4 +1,4 @@
-import React from 'react'
+import React, {useCallback} from 'react'
 import {Redirect} from 'react-router-dom'
 
 import {useTrackEventPage} from 'analytics'
@@ -17,6 +17,10 @@ import {SIMPLE_BLOG} from 'Event/template/SimpleBlog'
 import {PANELS} from 'Event/template/Panels'
 import {CARDS} from 'Event/template/Cards'
 import {NIFTY_FIFTY} from 'Event/template/NiftyFifty'
+import FullPageLoader from 'lib/ui/layout/FullPageLoader'
+import {api} from 'lib/url'
+import {WaiverConfig} from 'Event'
+import {useAsync} from 'lib/async'
 
 export default function Step2() {
   const attendee = useAttendee()
@@ -39,8 +43,30 @@ export default function Step2() {
     return <Redirect to={eventRoutes.step3} />
   }
 
+  if (event.has_additional_waivers) {
+    return <MatchingStep2 />
+  }
+
   return (
     <WaiverProvider waiver={event.waiver}>
+      <TemplateStep2 />
+    </WaiverProvider>
+  )
+}
+
+/**
+ * A Step 2 that matches the attendee in cases
+ * where there could be additional waivers.
+ */
+function MatchingStep2() {
+  const waiver = useTargetWaiver()
+
+  if (!waiver) {
+    return <FullPageLoader />
+  }
+
+  return (
+    <WaiverProvider waiver={waiver}>
       <TemplateStep2 />
     </WaiverProvider>
   )
@@ -63,4 +89,24 @@ function TemplateStep2() {
     default:
       throw new Error(`Missing step 2 for template.`)
   }
+}
+
+/**
+ * Fetches a target waiver for the attendee. Used when there
+ * could be multiple waivers.
+ *
+ * @returns
+ */
+function useTargetWaiver() {
+  const {client} = useEvent()
+
+  const url = api(`/waiver`)
+  const request = useCallback(() => client.get<WaiverConfig>(url), [
+    client,
+    url,
+  ])
+
+  const {data} = useAsync(request)
+
+  return data
 }

@@ -12,10 +12,7 @@ import {
 import {useHistory} from 'react-router'
 import {useEventRoutes} from 'organization/Event/EventRoutes'
 
-export default function DeleteAreaButton(props: {
-  onError: (error: string) => void
-  clearError: () => void
-}) {
+export default function DeleteAreaButton() {
   const {processing} = useArea()
   const {event} = useEvent()
   const deleteArea = useDeleteArea()

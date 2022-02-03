@@ -14,7 +14,7 @@ import Slider from '@material-ui/core/Slider'
 import Typography from '@material-ui/core/Typography'
 import {useOrganization} from 'organization/OrganizationProvider'
 import {api} from 'lib/url'
-import {useCardsTemplate} from 'Event/template/Cards'
+import {useCardsTemplate, useCardsUpdate} from 'Event/template/Cards'
 import TextField from '@material-ui/core/TextField'
 import {fieldError} from 'lib/form'
 import {ValidationError} from 'lib/ui/api-client'
@@ -54,49 +54,22 @@ export default function PageSettingsDialog(props: {
   const [serverError, setServerError] = useState<ValidationError<any>>(null)
   const [image, setImage] = useState<null | File>(null)
   const [shouldRemoveImage, setShouldRemoveImage] = useState(false)
+  const updateTemplate = useCardsUpdate()
 
-  const data = (formData: SettingsFormData) => {
-    const {
-      perRow,
-      title,
-      menuTitle,
-      cardBackgroundColor,
-      cardBackgroundOpacity,
-      description,
-      isVisible,
-    } = formData
-
-    const required = {
-      template: {
-        ...template,
-        sponsors: {
-          ...template.sponsors,
-          title,
-          menuTitle,
-          perRow,
-          cardBackgroundColor,
-          cardBackgroundOpacity,
-          description,
-          isVisible,
-        },
-      },
-    }
-
+  const imageData = () => {
     if (image) {
       const formData = new FormData()
-      formData.set('template', JSON.stringify(required.template))
       formData.set('sponsor_question_icon', image)
       return formData
     }
 
     if (shouldRemoveImage) {
       return {
-        ...required,
         sponsor_question_icon: null,
       }
     }
 
-    return required
+    return null
   }
 
   const submit = (form: SettingsFormData) => {
@@ -106,15 +79,28 @@ export default function PageSettingsDialog(props: {
 
     setProcessing(true)
     const url = api(`/events/${event.slug}`)
+
+    const eventData = imageData()
+
+    updateTemplate({
+      sponsors: form,
+    })
+
+    if (!eventData) {
+      setProcessing(false)
+      props.onClose()
+      return
+    }
+
     client
-      .put<ObvioEvent>(url, data(form))
+      .put<ObvioEvent>(url, eventData)
       .then((event) => {
         updateEvent(event)
         setProcessing(false)
         props.onClose()
       })
-      .catch(setServerError)
-      .finally(() => {
+      .catch((error) => {
+        setServerError(error)
         setProcessing(false)
       })
   }
@@ -287,7 +273,7 @@ function QuestionIcon(props: {selected: File | null; isVisible: boolean}) {
     return null
   }
 
-  if (Boolean(selected)) {
+  if (selected) {
     const src = URL.createObjectURL(selected)
     return (
       <QuestionIconBox>

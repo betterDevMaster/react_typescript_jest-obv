@@ -1,4 +1,3 @@
-import React from 'react'
 import faker from 'faker'
 import {fakePanels} from 'Event/template/Panels/__utils__/factory'
 import {fakeEvent} from 'Event/__utils__/factory'

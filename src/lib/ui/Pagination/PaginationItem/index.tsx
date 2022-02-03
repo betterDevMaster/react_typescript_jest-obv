@@ -1,7 +1,6 @@
 import DirectionButton from 'lib/ui/Pagination/PaginationItem/DirectionButton'
 import PageButton from 'lib/ui/Pagination/PaginationItem/PageButton'
 import React from 'react'
-import styled from 'styled-components'
 
 type PaginationButtonType =
   | 'page'

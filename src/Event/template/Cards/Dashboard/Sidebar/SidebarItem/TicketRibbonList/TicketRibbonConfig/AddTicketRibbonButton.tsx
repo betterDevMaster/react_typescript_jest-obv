@@ -1,16 +1,18 @@
 import Button from '@material-ui/core/Button'
 import {
   BLUE_RIBBON,
-  TicketRibbon,
+  TicketRibbonProps,
 } from 'Event/template/Cards/Dashboard/Sidebar/SidebarItem/TicketRibbonList/TicketRibbon'
 import React, {useState} from 'react'
 import {TicketRibbonConfig} from 'Event/template/Cards/Dashboard/Sidebar/SidebarItem/TicketRibbonList/TicketRibbonConfig'
 
 export default function AddTicketRibbonButton(props: {className?: string}) {
-  const [ticketRibbon, setTicketRibbon] = useState<TicketRibbon | null>(null)
+  const [ticketRibbon, setTicketRibbon] = useState<TicketRibbonProps | null>(
+    null,
+  )
 
   const add = () => {
-    const newRibbon: TicketRibbon = {
+    const newRibbon: TicketRibbonProps = {
       name: BLUE_RIBBON,
       text: '',
       color: '#ffffff',
@@ -41,7 +43,7 @@ export default function AddTicketRibbonButton(props: {className?: string}) {
 }
 
 function NewTicketRibbonConfig(props: {
-  ticketRibbon: TicketRibbon | null
+  ticketRibbon: TicketRibbonProps | null
   onClose: () => void
 }) {
   if (!props.ticketRibbon) {

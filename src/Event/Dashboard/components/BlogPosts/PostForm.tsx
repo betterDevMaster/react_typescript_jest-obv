@@ -177,14 +177,14 @@ const StyledLetter = styled.p<{
 
 const StyledFormButton = styled((props) => {
   const {
-    color,
-    backgroundColor,
-    backgroundHoverColor,
-    raidus,
-    fontSize,
-    width,
-    borderWidth,
-    borderColor,
+    color: _1,
+    backgroundColor: _2,
+    backgroundHoverColor: _3,
+    raidus: _4,
+    fontSize: _5,
+    width: _6,
+    borderWidth: _7,
+    borderColor: _8,
     ...otherProps
   } = props
   return <Button {...otherProps} />

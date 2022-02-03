@@ -5,7 +5,7 @@ import {createEntityList} from 'lib/list'
 import {useEffect, useState} from 'react'
 import Box from '@material-ui/core/Box'
 import InputLabel from '@material-ui/core/InputLabel'
-import NavButton from 'Event/Dashboard/components/NavButton'
+import NavButton, {NavButtonProps} from 'Event/Dashboard/components/NavButton'
 import {v4 as uid} from 'uuid'
 import {EditComponentOverlay} from 'Event/Dashboard/editor/views/EditComponent'
 import AddButton from 'Event/template/NiftyFifty/Dashboard/Sponsors/SponsorEditDialog/Form/Buttons/AddButton'
@@ -85,7 +85,7 @@ export function useButtons(sponsor: Sponsor) {
     setLoading(false)
   }, [sponsor])
 
-  const add = (button: NavButton) => {
+  const add = (button: NavButtonProps) => {
     const id = uid()
     const ids = [...buttons.ids, id]
     const entities = {
@@ -119,7 +119,7 @@ export function useButtons(sponsor: Sponsor) {
     stopEdit()
   }
 
-  const update = (button: NavButton) => {
+  const update = (button: NavButtonProps) => {
     if (!editingId) {
       throw new Error(
         `'editingId' not set; was update called outside of ButtonConfig?`,

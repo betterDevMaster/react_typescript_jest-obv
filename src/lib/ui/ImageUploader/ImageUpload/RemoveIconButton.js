@@ -8,20 +8,23 @@ export default function RemoveIconButton(props) {
   }
 
   return (
-    <CloseIcon
-      className="far fa-times-circle"
-      onClick={props.onClick}
-      disabled={props.disabled}
-    />
+    <CloseIcon onClick={props.onClick} disabled={props.disabled}>
+      <Icon className="fas fa-times" iconSize={18} />
+    </CloseIcon>
   )
 }
 
-const CloseIcon = styled(Icon)`
+const CloseIcon = styled.div`
   cursor: pointer;
   display: inline-block;
-  margin-left: -${(props) => props.theme.spacing[15]};
-  margin-top: ${(props) => props.theme.spacing[3]};
+  margin-right: -10px;
+  margin-top: -10px;
   position: absolute;
+  text-align: center;
+  border-radius: 50%;
+  width: 20px;
+  height: 20px;
+  background-color: rgba(196, 196, 196, 0.75);
   &: hover {
     cursor: point;
   }

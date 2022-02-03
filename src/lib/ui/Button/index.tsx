@@ -1,6 +1,7 @@
 import {colors} from 'lib/ui/theme'
 import React from 'react'
 import styled from 'styled-components'
+import Box from 'lib/ui/Box'
 
 type ButtonStyles =
   | 'primary'
@@ -11,6 +12,8 @@ type ButtonStyles =
   | 'secondary'
   | 'light'
   | 'dark'
+  | 'accent'
+  | 'grey'
   | 'default'
 
 const DEFAULT_FONT_SIZE = 14
@@ -28,6 +31,8 @@ export type ButtonProps = {
   borderWidth?: number
   disableBorderRadius?: boolean
   disablePadding?: boolean
+  startIcon?: React.ReactNode
+  endIcon?: React.ReactNode
   onClick?: () => void
   'aria-label'?: string
 }
@@ -45,13 +50,15 @@ export default function Button(props: ButtonProps) {
       disabled={props.disabled}
       fullWidth={props.fullWidth}
       width={props.width ? `${props.width}%` : 'unset'}
-      borderWidth={props.borderWidth ? props.borderWidth : 0}
+      borderWidth={getBorderWidth(props)}
       fontSize={props.fontSize || DEFAULT_FONT_SIZE}
       disableBorderRadius={Boolean(props.disableBorderRadius)}
       disablePadding={props.disablePadding}
       hasBorder={hasBorder(props)}
     >
+      <IconBox isStartIcon={true}>{props.startIcon}</IconBox>
       {props.children}
+      <IconBox isStartIcon={false}>{props.endIcon}</IconBox>
     </StyledButton>
   )
 }
@@ -96,6 +103,9 @@ function borderColor(props: ButtonProps) {
   if (props.variant === 'text') {
     return 'transparent'
   }
+  if (props.variant === 'contained') {
+    return textColor(props)
+  }
   return getColor(props)
 }
 
@@ -103,19 +113,18 @@ function getColor(props: ButtonProps) {
   if (props.color === 'danger') {
     return colors.error
   }
-
   if (props.color === 'primary') {
     return colors.primary
   }
-
   if (props.color === 'success') {
     return colors.success
   }
-
   if (props.color === 'info') {
     return colors.info
   }
-
+  if (props.color === 'accent') {
+    return colors.accent
+  }
   if (props.color === 'warning') {
     return colors.warning
   }
@@ -128,7 +137,9 @@ function getColor(props: ButtonProps) {
   if (props.color === 'dark') {
     return '#000000'
   }
-
+  if (props.color === 'grey') {
+    return colors.grey500
+  }
   return '#e7e7e7'
 }
 
@@ -137,6 +148,13 @@ function hasBorder(props: ButtonProps) {
     return false
   }
   return true
+}
+
+function getBorderWidth(props: ButtonProps) {
+  if (hasBorder(props) === false) {
+    return 0
+  }
+  return props.borderWidth || 1
 }
 
 type StyleProps = {
@@ -153,20 +171,20 @@ type StyleProps = {
 }
 
 const StyledButton = styled.button<StyleProps>`
+  display: inline-flex;
   padding: ${(props) =>
     props.disablePadding
       ? 'unset'
       : `${props.theme.spacing[2]} ${props.theme.spacing[8]}`};
   color: ${(props) => props.color};
-  border: ${(props) => (props.hasBorder ? `1px solid ${props.color}` : 'none')};
+  border: ${(props) => `${props.borderWidth}px solid ${props.borderColor}`};
   border-radius: 3px;
   background-color: ${(props) => props.backgroundColor};
   width: ${(props) => (props.fullWidth ? '100%' : props.width)};
   border-radius: ${(props) => (props.disableBorderRadius ? '0px' : '4px')};
-  border-style: solid;
-  border-width: ${(props) => props.borderWidth}px;
-  border-color: ${(props) => props.borderColor};
   font-size: ${(props) => props.fontSize}px;
+  justify-content: center;
+  line-height: 24px;
   &:hover {
     cursor: pointer;
     filter: brightness(0.95);
@@ -179,3 +197,13 @@ const StyledButton = styled.button<StyleProps>`
     cursor: default;
   }
 `
+
+function IconBox(props: {children?: React.ReactNode; isStartIcon: boolean}) {
+  if (!props.children) {
+    return null
+  }
+  if (!props.isStartIcon) {
+    return <Box pl={1}>{props.children}</Box>
+  }
+  return <Box pr={1}>{props.children}</Box>
+}

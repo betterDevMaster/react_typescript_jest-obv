@@ -30,7 +30,7 @@ export default function Menu(
 
   return (
     <>
-      {props.button({open})}
+      {button({open})}
       <MuiMenu
         onClick={handleClose}
         anchorOrigin={{

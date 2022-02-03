@@ -14,6 +14,7 @@ export async function goToRoomConfig(
     area?: Area
     room?: Room
     startUrl?: string
+    hasJoinedUsers?: boolean
   } = {},
 ) {
   const room = options.room || fakeRoom()
@@ -34,7 +35,11 @@ export async function goToRoomConfig(
     )
   }
 
-  mockGet.mockImplementationOnce(() => Promise.resolve({data: []})) // metrics
+  const metrics = options.hasJoinedUsers
+    ? {num_attendees: '5', last_joined_timestamp: '1643798432'}
+    : {num_attendees: 0, last_joined_timestamp: '1643798432'}
+
+  mockGet.mockImplementationOnce(() => Promise.resolve({data: metrics})) // metrics
 
   // go to room config
   user.click(await context.findByLabelText(`view ${room.number} room`))

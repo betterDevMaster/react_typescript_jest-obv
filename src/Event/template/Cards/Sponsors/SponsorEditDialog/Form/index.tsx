@@ -19,8 +19,8 @@ import Buttons, {
   useButtons,
 } from 'Event/template/Cards/Sponsors/SponsorEditDialog/Form/Buttons'
 import ButtonConfig from 'Event/template/Cards/Sponsors/SponsorEditDialog/Form/ButtonConfig'
-import NavButton from 'Event/Dashboard/components/NavButton'
 import TextField from '@material-ui/core/TextField'
+import {NavButtonProps} from 'Event/Dashboard/components/NavButton'
 
 export default function EditSponsorForm(props: {
   sponsor: Sponsor
@@ -167,9 +167,9 @@ export default function EditSponsorForm(props: {
 }
 
 function ButtonEditFields(props: {
-  button: NavButton | null
+  button: NavButtonProps | null
   onClose: () => void
-  onChange: (button: NavButton) => void
+  onChange: (button: NavButtonProps) => void
   onRemove: () => void
 }) {
   if (!props.button) {

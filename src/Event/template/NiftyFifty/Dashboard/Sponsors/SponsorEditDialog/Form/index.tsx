@@ -17,7 +17,7 @@ import Buttons, {
   useButtons,
 } from 'Event/template/NiftyFifty/Dashboard/Sponsors/SponsorEditDialog/Form/Buttons'
 import ButtonConfig from 'Event/template/NiftyFifty/Dashboard/Sponsors/SponsorEditDialog/Form/ButtonConfig'
-import NavButton from 'Event/Dashboard/components/NavButton'
+import {NavButtonProps} from 'Event/Dashboard/components/NavButton'
 
 import {api} from 'lib/url'
 import TextEditor from 'lib/ui/form/TextEditor'
@@ -42,7 +42,7 @@ export interface UpdateSponsorData {
   name: string
   description?: string
   settings: null | {
-    buttons?: EntityList<NavButton>
+    buttons?: EntityList<NavButtonProps>
   }
 }
 
@@ -229,9 +229,9 @@ export default function EditSponsorForm(props: {
 }
 
 function ButtonEditFields(props: {
-  button: NavButton | null
+  button: NavButtonProps | null
   onClose: () => void
-  onChange: (button: NavButton) => void
+  onChange: (button: NavButtonProps) => void
   onRemove: () => void
 }) {
   if (!props.button) {

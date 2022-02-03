@@ -28,7 +28,6 @@ it('should purchase credits by team member with purchase permission', async () =
   const owner = fakeTeamMember({
     has_active_subscription: true,
     plan: fakePlan({name: 'enterprise'}),
-    is_subscribed: true,
     credits: 0,
   })
   const {paymentMethod} = signInToOrganization({

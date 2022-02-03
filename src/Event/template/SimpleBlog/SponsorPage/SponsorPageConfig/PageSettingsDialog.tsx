@@ -59,15 +59,7 @@ export default function PageSettingsDialog(props: {
 
   const {sponsors: sponsorsPageSettings} = template
 
-  const data = ({
-    sponsor_page_title,
-    description,
-    backToDashboardText,
-    backToDashboardTextColor,
-    sponsorSpace,
-    sponsorSeperator,
-    imageSize,
-  }: SettingsFormData) => {
+  const data = ({sponsor_page_title}: SettingsFormData) => {
     const required = {
       sponsor_page_title,
     }
@@ -94,7 +86,7 @@ export default function PageSettingsDialog(props: {
       return
     }
 
-    const {sponsor_page_title, ...templateProperties} = form
+    const {sponsor_page_title: _, ...templateProperties} = form
 
     updateTemplate({
       sponsors: templateProperties,

@@ -8,6 +8,8 @@ import {
 } from 'organization/PermissionsProvider'
 import ConfigNavItem from 'organization/Event/Page/ConfigNav/ConfigNavItem'
 import TemplateConfigNavItems from 'organization/Event/Page/ConfigNav/TemplateConfigNavItems'
+import {ENTERPRISE} from 'obvio/Billing/plans'
+import IfPlan from 'organization/auth/IfPlan'
 
 export default function ConfigNav() {
   const routes = useEventRoutes()
@@ -32,7 +34,7 @@ function ConfigureEventPages() {
   return (
     <HasPermission permission={CONFIGURE_EVENTS}>
       <>
-        <ConfigNavItem to={routes.waiver} aria-label="configure waiver">
+        <ConfigNavItem to={routes.waiver.root} aria-label="configure waiver">
           Waiver
         </ConfigNavItem>
         <ConfigNavItem to={routes.forms.root} aria-label="configure forms">
@@ -86,6 +88,11 @@ function ConfigureEventPages() {
         <ConfigNavItem to={routes.image_entries} aria-label="image entries">
           Image Entries
         </ConfigNavItem>
+        <IfPlan plan={ENTERPRISE}>
+          <ConfigNavItem to={routes.webhooks} aria-label="webhooks">
+            Webhooks
+          </ConfigNavItem>
+        </IfPlan>
         <TemplateConfigNavItems />
       </>
     </HasPermission>

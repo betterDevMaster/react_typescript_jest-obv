@@ -16,7 +16,7 @@ export default function PlatformActionSelect(props: {
   const {event} = useEvent()
   const setPlatformAction = useSetPlatformAction()
 
-  const entry = Object.entries(event.platform_actions).find(([key, val]) => {
+  const entry = Object.entries(event.platform_actions).find(([_, val]) => {
     return val === props.action.id
   })
   const value = entry ? entry[0] : 0 // use 0 value as unselected as MUI select doesn't accept empty strings

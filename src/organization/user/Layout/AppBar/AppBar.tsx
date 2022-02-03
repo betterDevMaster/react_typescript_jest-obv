@@ -27,7 +27,7 @@ import {
 import OrganizationCreditsMenuItem from 'obvio/Billing/OrganizationCreditsMenuItem'
 
 export default function AppBar() {
-  const useStyles = makeStyles((theme) => ({
+  const useStyles = makeStyles(() => ({
     root: {
       backgroundColor: '#ffffff',
     },

@@ -1,10 +1,7 @@
 import faker from 'faker'
 import user from '@testing-library/user-event'
 import axios from 'axios'
-import {
-  fakeArea,
-  fakeRoomMetrics,
-} from 'organization/Event/AreaList/__utils__/factory'
+import {fakeArea} from 'organization/Event/AreaList/__utils__/factory'
 import {CONFIGURE_EVENTS} from 'organization/PermissionsProvider'
 import {goToAreas} from 'organization/Event/AreaList/__utils__/go-to-areas'
 

@@ -139,7 +139,7 @@ export function useSavedValue(props: {
 }
 
 const StyledFormHelperText = styled((props) => {
-  const {color, ...otherProps} = props
+  const {color: _, ...otherProps} = props
   return <FormHelperText {...otherProps} />
 })`
   color: ${(props) => props.color} !important;

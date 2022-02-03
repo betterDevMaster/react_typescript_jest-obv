@@ -17,11 +17,7 @@ it('should send a request to sync tags', async () => {
     has_mailchimp: true,
   })
 
-  const {
-    findByText,
-    findByLabelText,
-    queryByText,
-  } = await goToAttendeeManagement({
+  const {findByText, findByLabelText} = await goToAttendeeManagement({
     userPermissions: [UPDATE_ATTENDEES],
     attendees: [attendee],
   })

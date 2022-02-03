@@ -1,5 +1,5 @@
 import React, {FormEvent} from 'react'
-import {PlanName} from 'obvio/Billing/plans'
+import {PlanInfo} from 'obvio/Billing/plans'
 import {PaymentMethod} from '@stripe/stripe-js'
 import SuccessDialog from 'lib/ui/Dialog/SuccessDialog'
 import Button from '@material-ui/core/Button'
@@ -10,8 +10,9 @@ import {useSubscribe} from 'obvio/Billing/subscribe'
 import {useToggle} from 'lib/toggle'
 
 export default function SubscribeStep(props: {
-  plan: PlanName
+  plan: PlanInfo
   paymentMethod: PaymentMethod
+  downgrade: boolean
   onError: (error: string) => void
 }) {
   const {flag: processing, toggle: toggleProcessing} = useToggle()
@@ -43,10 +44,13 @@ export default function SubscribeStep(props: {
     history.push(obvioRoutes.billing.root)
   }
 
+  const successText = props.downgrade ? 'Downgraded' : 'Upgraded'
+  const buttonText = props.downgrade ? 'Downgrade' : 'Subscribe'
+
   return (
     <>
       <SuccessDialog showing={showingSuccess} onClose={handleSuccess}>
-        Plan Upgraded!
+        Plan {successText}!
       </SuccessDialog>
       <Button
         type="submit"
@@ -56,7 +60,7 @@ export default function SubscribeStep(props: {
         variant="contained"
         onClick={handleSubmit}
       >
-        Subscribe
+        {buttonText}
       </Button>
     </>
   )

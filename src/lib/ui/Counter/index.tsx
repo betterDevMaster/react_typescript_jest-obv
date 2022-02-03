@@ -1,8 +1,7 @@
 import React, {useState} from 'react'
-import Button from '@material-ui/core/Button'
-import ButtonGroup from '@material-ui/core/ButtonGroup'
-import {makeStyles} from '@material-ui/styles'
-import {colors} from 'lib/ui/theme'
+import Button from 'lib/ui/Button'
+import {PlusIcon, MinusIcon} from 'lib/ui/Icon'
+import styled from 'styled-components'
 
 const DEFAULT_MIN = 0
 const DEFAULT_MAX = 100
@@ -12,10 +11,6 @@ interface CounterProps {
   min?: number
   max?: number
   current?: number
-  orientation?: 'vertical' | 'horizontal'
-  size?: 'small' | 'medium' | 'large'
-  hasBorder?: boolean
-  displayColor?: 'primary' | 'danger' | 'default'
   onChange?: (val: number) => void
 }
 export default function Counter(props: CounterProps) {
@@ -44,44 +39,43 @@ export default function Counter(props: CounterProps) {
     }
   }
 
-  const useStyles = makeStyles({
-    root: {
-      border: props.hasBorder ? '1px solid #DFDFDF' : '',
-      '& > .Mui-disabled': {
-        backgroundColor: 'transparent',
-        color: getColor(props),
-      },
-    },
-  })
-
-  const classes = useStyles()
-
   return (
-    <ButtonGroup
-      size={props.size}
-      aria-label="small outlined button group"
-      variant="contained"
-      color="primary"
-      orientation={props.orientation}
-      className={classes.root}
-    >
-      <Button onClick={handleDecrement}>-</Button>
-      <Button disabled fullWidth>
-        {current}
-      </Button>
-      <Button onClick={handleIncrement}>+</Button>
-    </ButtonGroup>
+    <Container>
+      <StyledButton
+        variant="contained"
+        color="primary"
+        onClick={handleDecrement}
+        disablePadding
+      >
+        <MinusIcon />
+      </StyledButton>
+      <Label>{current}</Label>
+      <StyledButton
+        variant="contained"
+        color="primary"
+        onClick={handleIncrement}
+        disablePadding
+      >
+        <PlusIcon />
+      </StyledButton>
+    </Container>
   )
 }
 
-function getColor(props: CounterProps) {
-  if (props.displayColor === 'danger') {
-    return colors.error
-  }
-
-  if (props.displayColor === 'primary') {
-    return colors.primary
-  }
-
-  return '#000000'
-}
+const StyledButton = styled(Button)`
+  padding: ${(props) => props.theme.spacing[2]};
+`
+const Container = styled.div`
+  display: inline-flex;
+  padding: ${(props) => props.theme.spacing[2]};
+  border-radius: 4px;
+  border: 1px solid #e7e7e7;
+`
+const Label = styled.span`
+  width: 45px;
+  font-size: 17px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+`

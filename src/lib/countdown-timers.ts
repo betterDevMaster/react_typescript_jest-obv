@@ -1,8 +1,8 @@
-import {CountDownTimer} from 'Event/Dashboard/components/CountDownTimer'
+import {CountDownTimerSettings} from 'Event/Dashboard/components/CountDownTimer'
 import {now, date} from 'lib/date-time'
 
 export const useHasCountDownTimers = (
-  countDownTimers: Record<string, CountDownTimer>,
+  countDownTimers: Record<string, CountDownTimerSettings>,
 ) => {
   if (Object.keys(countDownTimers).length === 0) {
     return null

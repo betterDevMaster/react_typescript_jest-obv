@@ -5,7 +5,6 @@ import faker from 'faker'
 import {fakeCards} from 'Event/template/Cards/__utils__/factory'
 import {wait} from '@testing-library/react'
 import {eventRoutes, EVENT_PAGES} from 'Event/Routes'
-import {fakeNavButtonWithSize} from 'Event/Dashboard/components/NavButton/__utils__/factory'
 import {createHashMap} from 'lib/list'
 import {fakeCardsNavButton} from 'Event/template/Cards/Dashboard/CardsNavButton/__utils__/factory'
 

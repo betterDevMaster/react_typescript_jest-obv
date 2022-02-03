@@ -21,7 +21,6 @@ export default function SidebarLink(props: SidebarLinkProps) {
   const {
     icon,
     children,
-    link,
     nested,
     onClick,
     label,
@@ -29,14 +28,12 @@ export default function SidebarLink(props: SidebarLinkProps) {
     location,
   } = props
 
-  const toggleCollapse = (e: any) => {
-    if (isSidebarOpened) {
-      e.preventDefault()
-      setIsOpen(!isOpen)
-    }
+  const [isOpen, setIsOpen] = useState(false)
+
+  const toggleCollapse = () => {
+    setIsOpen(!isOpen)
   }
 
-  const [isOpen, setIsOpen] = useState(false)
   const isLinkActive = location === label
 
   if (!children)
@@ -64,7 +61,7 @@ export default function SidebarLink(props: SidebarLinkProps) {
         <ListItemText primary={label} />
       </StyledListItem>
       {children && (
-        <Collapse in={isOpen && isSidebarOpened} timeout="auto" unmountOnExit>
+        <Collapse in={isOpen && !isSidebarOpened} timeout="auto" unmountOnExit>
           <List component="div" disablePadding>
             {children.map((children, index) => (
               <SidebarLink

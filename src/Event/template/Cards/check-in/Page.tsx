@@ -6,7 +6,7 @@ import Footer from 'Event/template/Cards/Dashboard/Footer'
 import {useCardsTemplate} from 'Event/template/Cards'
 import {rgba} from 'lib/color'
 import LanguageSelectMenu from 'Event/LanguageSelector'
-import {muiDarkTheme, muiTheme} from 'lib/ui/theme'
+import {muiTheme} from 'lib/ui/theme'
 import {ThemeProvider} from '@material-ui/core/styles'
 import {withStyles} from '@material-ui/core/styles'
 import Paper from '@material-ui/core/Paper'
@@ -20,20 +20,18 @@ export default function CheckInPage(props: {
 }) {
   const template = useCardsTemplate()
 
-  const {background, isDarkMode} = template
+  const {background} = template
 
   const dashboardBackground = useRandomBackground()
 
   const backgroundRGBColor = rgba(background.color, background.opacity)
-
-  const theme = isDarkMode ? muiDarkTheme : muiTheme
 
   const color = template.textColor
   const linkUnderline = template.linkUnderline
   const linkColor = template.linkColor
 
   return (
-    <ThemeProvider theme={theme}>
+    <ThemeProvider theme={muiTheme}>
       <TopBox
         background={dashboardBackground}
         color={color}

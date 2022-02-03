@@ -8,16 +8,12 @@ import List from '@material-ui/core/List'
 import ListItem from '@material-ui/core/ListItem'
 import Dialog from '@material-ui/core/Dialog'
 import Button from '@material-ui/core/Button'
-import {useTemplate} from 'Event/TemplateProvider'
 
 export default function LanguageSelector() {
   const {current, set} = useLanguage()
   const isEditMode = useEditMode()
   const {languages, translationsEnabled} = useLanguage()
   const [dialogVisible, setDialogVisible] = useState(false)
-
-  const template = useTemplate()
-  const {isDarkMode} = template
 
   const toggleDialog = () => setDialogVisible(!dialogVisible)
 
@@ -41,7 +37,6 @@ export default function LanguageSelector() {
         onClick={toggleDialog}
         startIcon={<LanguageIcon />}
         disableRipple
-        isDarkMode={isDarkMode}
       >
         Change Language
       </StyledButton>
@@ -76,25 +71,9 @@ const BottomLeft = styled.div`
   width: 50px;
 `
 
-const StyledButton = styled((props) => {
-  const {isDarkMode, ...otherProps} = props
-  return <Button {...otherProps} />
-})<{
-  isDarkMode?: boolean
-}>`
+const StyledButton = styled(Button)`
   padding-top: ${(props) => props.theme.spacing[2]} !important;
   white-space: nowrap;
-  ${(props) =>
-    props.isDarkMode ? 'background-color: rgba(0, 0, 0, 0.75) !important;' : ''}
-  ${(props) => (props.isDarkMode ? 'color: #ffffff !important;' : '')}
-
-
-  &:hover {
-    ${(props) =>
-      props.isDarkMode
-        ? 'background-color: rgba(0, 0, 0, 0.85) !important;'
-        : ''}
-  }
   svg {
     font-size: 24px !important;
     margin-bottom: 2px;

@@ -17,7 +17,7 @@ import {Controller, useForm, UseFormMethods} from 'react-hook-form'
 import InputLabel from '@material-ui/core/InputLabel'
 import {SaveButton} from 'organization/Event/DashboardConfig/ComponentConfig'
 
-export interface ProgressBar {
+export interface ProgressBarSettings {
   background: string
   textColor: string
 }

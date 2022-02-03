@@ -150,6 +150,17 @@ export function useCanStartRooms() {
   return area.is_tech_check
 }
 
+export function IfCanStartRooms(props: {
+  children: JSX.Element | JSX.Element[]
+}) {
+  const canStartRooms = useCanStartRooms()
+  if (!canStartRooms) {
+    return null
+  }
+
+  return <>{props.children}</>
+}
+
 export function useCanUpdatePermission(permission: Permission) {
   const isOwner = useIsOwner()
 

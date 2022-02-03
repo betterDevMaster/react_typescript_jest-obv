@@ -9,7 +9,7 @@ export default {
   argTypes: {},
 } as ComponentMeta<typeof PointsConfig>
 
-const Template: ComponentStory<typeof PointsConfig> = (args) => (
+const Template: ComponentStory<typeof PointsConfig> = () => (
   <ThemeProvider>
     <PointsConfig />
   </ThemeProvider>

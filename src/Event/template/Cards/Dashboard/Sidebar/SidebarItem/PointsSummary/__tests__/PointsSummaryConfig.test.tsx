@@ -9,6 +9,8 @@ import {goToDashboardConfig} from 'organization/Event/DashboardConfig/__utils__/
 import {createPointsSummary} from 'Event/template/Cards/Dashboard/Sidebar/SidebarItem/PointsSummary'
 import {createHashMap} from 'lib/list'
 import {REMOVE} from 'Event/TemplateUpdateProvider'
+import {inputElementFor} from '__utils__/render'
+import {TAGS} from 'Event/attendee-rules/RuleConfig/RuleList/SingleRule/TagsRule'
 
 const mockAxiosPost = axios.post as jest.Mock
 const mockPut = axios.put as jest.Mock
@@ -148,4 +150,47 @@ it('should remove the logo', async () => {
 
   expect(url).toMatch(`/events/${event.slug}`)
   expect(data.points_summary_logo).toBe(null)
+})
+
+it('should save  rules', async () => {
+  const sidebarItems = createHashMap([createPointsSummary()])
+  const dashboard = fakeCards({
+    sidebarItems,
+  })
+  const event = fakeEvent({template: dashboard})
+
+  const {findByLabelText, findByText} = await goToDashboardConfig({event})
+
+  fireEvent.click(await findByText(/edit points summary/i))
+  user.click(await findByText(/visibility rules/i))
+
+  user.click(await findByLabelText('add rule'))
+
+  // Select tags as source
+  fireEvent.change(inputElementFor(await findByLabelText('pick rule source')), {
+    target: {
+      value: TAGS,
+    },
+  })
+
+  const target = faker.random.word()
+  user.type(await findByLabelText('new tag target'), target)
+
+  user.click(await findByLabelText('save rule'))
+  user.click(await findByLabelText('close rules config'))
+  user.click(await findByLabelText('save'))
+
+  // Saved
+  await wait(() => {
+    expect(mockPut).toHaveBeenCalledTimes(1)
+  })
+
+  const [url, data] = mockPut.mock.calls[0]
+  expect(url).toMatch(`/events/${event.slug}/template`)
+
+  const sidebarId = Object.keys(sidebarItems)[0]
+
+  expect(data.template[`sidebarItems.${sidebarId}.rules`][0].target).toBe(
+    target,
+  )
 })

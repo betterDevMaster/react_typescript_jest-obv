@@ -1,4 +1,4 @@
-import {testTemplates} from 'Event/template/__utils__/tester'
+import {allTemplates} from 'Event/template/__utils__/tester'
 import user from '@testing-library/user-event'
 import {fakeEvent} from 'Event/__utils__/factory'
 import {goToDashboardConfig} from 'organization/Event/DashboardConfig/__utils__/go-dashboard-config'
@@ -12,7 +12,7 @@ afterEach(() => {
   jest.clearAllMocks()
 })
 
-testTemplates('should edit post styles', async (fakeTemplate) => {
+allTemplates('should edit post styles', async (fakeTemplate) => {
   const event = fakeEvent({
     template: fakeTemplate(),
   })
