@@ -28,6 +28,9 @@ export const colors = {
   grey500: '#C4C4C4',
   blue: '#2794d2',
   disabled: '#c4c4c4',
+  input: {
+    background: '#f2f5f9',
+  },
 }
 
 export const spacing = Array(60)
@@ -97,13 +100,3 @@ export const createMuiLightTheme = (options: MuiThemeOptions) =>
     },
     muiBaseTheme,
   )
-
-export const getColor = (value?: keyof typeof colors): string => {
-  if (!value) {
-    return 'unset'
-  }
-  if (value === 'text') {
-    return colors['text'].muted
-  }
-  return colors[value]
-}

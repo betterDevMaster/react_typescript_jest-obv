@@ -135,6 +135,7 @@ export type SimpleBlog = BaseTemplate & {
       hoverBackgroundColor?: string
       borderRadius?: number
     }
+    inputBorderRadius?: number
   }
   bodyHTMLEmbed?: string | null
   leaderboard?: {
@@ -370,6 +371,7 @@ export const createSimpleBlog = (): DeepRequired<SimpleBlog> => ({
       hoverBackgroundColor: colors.primary,
       borderRadius: 0,
     },
+    inputBorderRadius: 56,
   },
   leaderboard: {
     title: 'Leaderboard',

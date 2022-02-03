@@ -1,9 +1,8 @@
 import React, {useMemo} from 'react'
 import MuiAccordionSummary from '@material-ui/core/AccordionSummary'
-import KeyboardArrowDownIcon from '@material-ui/icons/KeyboardArrowDown'
 import {MenuIcon, PlusIcon, MinusIcon, ChevronIcon} from 'lib/ui/Icon'
 import styled from 'styled-components'
-import {colors, getColor} from 'lib/ui/theme'
+import {colors} from 'lib/ui/theme'
 
 type AccordionSummaryProps = {
   children: JSX.Element | string | JSX.Element[]
@@ -15,7 +14,15 @@ type AccordionSummaryProps = {
 
 export default function AccordionSummary(props: AccordionSummaryProps) {
   const color = useMemo(() => {
-    return props.expanded ? getColor(props.activeColor) : 'unset'
+    if (!props.expanded) {
+      return 'unset'
+    }
+
+    if (!props.activeColor) {
+      return 'unset'
+    }
+
+    return props.activeColor
   }, [props.expanded, props.activeColor])
 
   return (

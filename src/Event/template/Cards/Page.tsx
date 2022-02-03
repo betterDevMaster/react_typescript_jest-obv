@@ -20,7 +20,6 @@ export default function CardsPage(props: {
 }) {
   const [menuVisible, setMenuVisible] = useState(false)
   const toggleMenu = () => setMenuVisible(!menuVisible)
-
   return (
     <ThemeProvider theme={muiTheme}>
       <Box>
@@ -43,7 +42,6 @@ export default function CardsPage(props: {
     </ThemeProvider>
   )
 }
-
 export function useTheme() {
   const {accentColor} = useCardsTemplate()
 

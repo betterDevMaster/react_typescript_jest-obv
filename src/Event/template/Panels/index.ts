@@ -199,6 +199,7 @@ export type Panels = BaseTemplate & {
       hoverBackgroundColor?: string
       borderRadius?: number
     }
+    inputBorderRadius?: number
   }
   sponsors?: {
     title?: string
@@ -405,6 +406,7 @@ export const createPanels = (): DeepRequired<Panels> => ({
       hoverBackgroundColor: '#000000',
       borderRadius: 4,
     },
+    inputBorderRadius: 56,
   },
   sponsors: {
     title: 'Sponsors',

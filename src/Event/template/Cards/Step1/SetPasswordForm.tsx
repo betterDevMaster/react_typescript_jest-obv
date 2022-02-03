@@ -2,7 +2,6 @@ import Container from '@material-ui/core/Container'
 import styled from 'styled-components'
 import React from 'react'
 import Typography from '@material-ui/core/Typography/'
-import TextField from '@material-ui/core/TextField'
 import {useForm} from 'react-hook-form'
 import withStyles from '@material-ui/core/styles/withStyles'
 import {spacing} from 'lib/ui/theme'
@@ -13,6 +12,7 @@ import {useAttendeeVariables} from 'Event'
 import {useCardsTemplate} from 'Event/template/Cards'
 import StepIndicator from 'Event/template/Cards/check-in/StepIndicator'
 import CheckInPage from 'Event/template/Cards/check-in/Page'
+import TextField from 'Event/ui/TextField'
 
 export default function SetPasswordForm(props: SetPasswordFormProps) {
   const {register, handleSubmit, errors, watch} = useForm()
@@ -35,8 +35,10 @@ export default function SetPasswordForm(props: SetPasswordFormProps) {
               label={v(setPasswordForm.passwordLabel)}
               type="password"
               fullWidth
-              variant="outlined"
+              variant="filled"
+              borderRadius={setPasswordForm.inputBorderRadius}
               name="password"
+              InputProps={{disableUnderline: true}}
               inputProps={{
                 ref: register({
                   required: 'Password is required',
@@ -55,8 +57,10 @@ export default function SetPasswordForm(props: SetPasswordFormProps) {
               label={v(setPasswordForm.confirmPasswordLabel)}
               type="password"
               fullWidth
-              variant="outlined"
+              variant="filled"
               name="password_confirmation"
+              borderRadius={setPasswordForm.inputBorderRadius}
+              InputProps={{disableUnderline: true}}
               inputProps={{
                 ref: register({
                   required: 'Confirm Password is required',

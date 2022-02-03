@@ -162,6 +162,7 @@ export type Cards = BaseTemplate &
         hoverBackgroundColor?: string
         borderRadius?: number
       }
+      inputBorderRadius?: number
     }
     bodyHTMLEmbed?: string | null
     leaderboard?: {
@@ -486,6 +487,7 @@ export const createCards = (): DeepRequired<Cards> => ({
       hoverBackgroundColor: colors.primary,
       borderRadius: 0,
     },
+    inputBorderRadius: 56,
   },
   leaderboard: {
     title: 'Leaderboard',

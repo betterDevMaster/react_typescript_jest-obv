@@ -1,17 +1,16 @@
 import {LoginProps} from 'Event/auth/Login'
+import BaseTextField from 'Event/ui/TextField'
 import {useEvent} from 'Event/EventProvider'
 import styled from 'styled-components'
 import React from 'react'
 import Typography from '@material-ui/core/Typography'
-import MuiTextField, {TextFieldProps} from '@material-ui/core/TextField'
+import {TextFieldProps} from '@material-ui/core/TextField'
 import MuiButton, {ButtonProps} from '@material-ui/core/Button'
 import defaultBackground from 'assets/images/background_login.png'
-import {makeStyles} from '@material-ui/core/styles'
 import {spacing} from 'lib/ui/theme'
 import Logo from 'Event/template/SimpleBlog/Login/Logo'
 import {rgba} from 'lib/color'
 import {useSimpleBlogTemplate} from 'Event/template/SimpleBlog'
-import PasswordField from 'lib/ui/TextField/PasswordField'
 
 export default function Page(props: {
   isPreview?: LoginProps['isPreview']
@@ -138,37 +137,7 @@ export function TextField(props: TextFieldProps) {
   const template = useSimpleBlogTemplate()
   const {login} = template
 
-  const useStyles = makeStyles({
-    root: {
-      backgroundColor: '#f2f5f9 !important',
-      borderRadius: `${login.inputBorderRadius}px !important;` || spacing[14],
-      '& .MuiFilledInput-input': {
-        borderRadius: `${login.inputBorderRadius}px !important;` || spacing[14],
-      },
-      '&::before': {
-        content: 'unset',
-      },
-      '&::after': {
-        content: 'unset',
-      },
-    },
-  })
-
-  const classes = useStyles()
-
-  const Field = props.type === 'password' ? PasswordField : MuiTextField
-
-  return (
-    <Field
-      {...props}
-      variant="filled"
-      InputProps={{
-        classes: {
-          root: classes.root,
-        },
-      }}
-    />
-  )
+  return <BaseTextField {...props} borderRadius={login.inputBorderRadius} />
 }
 
 export const StyledButton = styled(
