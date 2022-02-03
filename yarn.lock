@@ -3351,7 +3351,7 @@
     "unfetch" "^4.2.0"
     "util-deprecate" "^1.0.2"
 
-"@storybook/react-docgen-typescript-plugin@1.0.2-canary.253f8c1.0", "@storybook/react-docgen-typescript-plugin@canary":
+"@storybook/react-docgen-typescript-plugin@1.0.2-canary.253f8c1.0":
   "integrity" "sha512-mmoRG/rNzAiTbh+vGP8d57dfcR2aP+5/Ll03KKFyfy5FqWFm/Gh7u27ikx1I3LmVMI8n6jh5SdWMkMKon7/tDw=="
   "resolved" "https://registry.npmjs.org/@storybook/react-docgen-typescript-plugin/-/react-docgen-typescript-plugin-1.0.2-canary.253f8c1.0.tgz"
   "version" "1.0.2-canary.253f8c1.0"
@@ -3362,6 +3362,19 @@
     "flat-cache" "^3.0.4"
     "micromatch" "^4.0.2"
     "react-docgen-typescript" "^2.0.0"
+    "tslib" "^2.0.0"
+
+"@storybook/react-docgen-typescript-plugin@canary":
+  "integrity" "sha512-eVg3BxlOm2P+chijHBTByr90IZVUtgRW56qEOLX7xlww2NBuKrcavBlcmn+HH7GIUktquWkMPtvy6e0W0NgA5w=="
+  "resolved" "https://registry.npmjs.org/@storybook/react-docgen-typescript-plugin/-/react-docgen-typescript-plugin-1.0.2-canary.6.9d540b91e815f8fc2f8829189deb00553559ff63.0.tgz"
+  "version" "1.0.2-canary.6.9d540b91e815f8fc2f8829189deb00553559ff63.0"
+  dependencies:
+    "debug" "^4.1.1"
+    "endent" "^2.0.1"
+    "find-cache-dir" "^3.3.1"
+    "flat-cache" "^3.0.4"
+    "micromatch" "^4.0.2"
+    "react-docgen-typescript" "^2.1.1"
     "tslib" "^2.0.0"
 
 "@storybook/react@^6.4.13", "@storybook/react@>=5.2", "@storybook/react@6.4.13":
@@ -13583,6 +13596,11 @@
   "integrity" "sha512-ycVaidV55GOeDOKRP6PCw1i1502dElQ1KG/IInj8sOg50imG+Pmv6LY6DG2xlAF0asd8zXLcyFlWNnICKWP1LA=="
   "resolved" "https://registry.npmjs.org/react-docgen-typescript/-/react-docgen-typescript-2.2.1.tgz"
   "version" "2.2.1"
+
+"react-docgen-typescript@^2.1.1":
+  "integrity" "sha512-tvg2ZtOpOi6QDwsb3GZhOjDkkX0h8Z2gipvTg6OVMUyoYoURhEiRNePT8NZItTVCDh39JJHnLdfCOkzoLbFnTg=="
+  "resolved" "https://registry.npmjs.org/react-docgen-typescript/-/react-docgen-typescript-2.2.2.tgz"
+  "version" "2.2.2"
 
 "react-docgen@^5.0.0":
   "integrity" "sha512-JBjVQ9cahmNlfjMGxWUxJg919xBBKAoy3hgDgKERbR+BcF4ANpDuzWAScC7j27hZfd8sJNmMPOLWo9+vB/XJEQ=="
