@@ -100,12 +100,10 @@ function Content(props: SponsorProps) {
         onClose={toggleForm}
       />
       <Grid item xs={template.sponsors.imageSize}>
-        {sponsor.image && (
-          <StyledImageContent>
-            <Image sponsor={sponsor} />
-            <Buttons sponsor={props.sponsor} />
-          </StyledImageContent>
-        )}
+        <StyledImageContent imageStatus={sponsor.image}>
+          <Image sponsor={sponsor} />
+          <Buttons sponsor={props.sponsor} />
+        </StyledImageContent>
       </Grid>
       <HeadContent>
         <SponsorName color={template.textColor}>{v(sponsor.name)}</SponsorName>
@@ -114,13 +112,13 @@ function Content(props: SponsorProps) {
       <InnerContent color={template.textColor}>
         {v(sponsor.description)}
       </InnerContent>
-      {!sponsor.image && <Buttons sponsor={props.sponsor} />}
+      <Buttons imageStatus={sponsor.image} sponsor={props.sponsor} />
       <ClearContent />
     </Box>
   )
 }
 
-function Buttons(props: {sponsor: Sponsor}) {
+function Buttons(props: {sponsor: Sponsor; imageStatus?: any}) {
   const buttons = props.sponsor.settings?.buttons
 
   if (!buttons || buttons.ids.length === 0) {
@@ -128,7 +126,7 @@ function Buttons(props: {sponsor: Sponsor}) {
   }
 
   return (
-    <ButtonsContainer>
+    <ButtonsContainer imageStatus={props.imageStatus}>
       {buttons.ids.map((id) => (
         <ButtonBox key={id}>
           <NavButton {...buttons.entities[id]} aria-label="sponsor button" />
@@ -172,13 +170,19 @@ const SponsorName = styled.div<{
   }
 `
 
-const StyledImageContent = styled.div`
+const StyledImageContent = styled.div<{
+  imageStatus: any
+}>`
+  ${(props) => !props.imageStatus && 'display: none'};
   float: left;
   margin: ${(props) =>
     `${props.theme.spacing[5]} ${props.theme.spacing[4]} ${props.theme.spacing[4]} 0`};
 `
 
-const ButtonsContainer = styled.div`
+const ButtonsContainer = styled.div<{
+  imageStatus?: any
+}>`
+  ${(props) => !props.imageStatus && 'display: none'};
   margin: auto;
   width: ${BUTTONS_WIDTH_PERCENT}%;
 `
