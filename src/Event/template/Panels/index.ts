@@ -86,13 +86,11 @@ export type Panels = BaseTemplate & {
     textColor: string
     backgroundColor: string
     backgroundOpacity: number
-    isDarkMode: boolean
   }
   points_unit: string
   blogPosts: HashMap<BlogPost>
   resourceList: ResourceListSettings
   menuIconColor: string
-  isDarkMode?: boolean
   background?: {
     color?: string
     opacity?: number
@@ -281,7 +279,6 @@ export const createPanels = (): DeepRequired<Panels> => ({
     textColor: '#000000',
     backgroundColor: '#FFFFFF',
     backgroundOpacity: 0,
-    isDarkMode: false,
   },
   blogPosts: {},
   resourceList: {
@@ -295,7 +292,6 @@ export const createPanels = (): DeepRequired<Panels> => ({
     linkColor: 'blue',
   },
   menuIconColor: '#000000',
-  isDarkMode: false,
   background: {
     color: '#FFFFFF',
     opacity: 0,

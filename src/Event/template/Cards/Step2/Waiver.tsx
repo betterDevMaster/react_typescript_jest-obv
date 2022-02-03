@@ -11,7 +11,6 @@ import Grid from '@material-ui/core/Grid'
 import Box from '@material-ui/core/Box'
 import {useAttendeeVariables} from 'Event'
 import Typography from '@material-ui/core/Typography'
-import {useCardsTemplate} from 'Event/template/Cards'
 import Content from 'lib/ui/form/TextEditor/Content'
 
 export default function Waiver(props: {checkBoxColor?: string}) {
@@ -25,7 +24,6 @@ export default function Waiver(props: {checkBoxColor?: string}) {
     body,
   } = useWaiver()
 
-  const {isDarkMode} = useCardsTemplate()
   const v = useAttendeeVariables()
   const color = props.checkBoxColor
 
@@ -40,7 +38,6 @@ export default function Waiver(props: {checkBoxColor?: string}) {
                 <StyledCheckBox
                   color={color}
                   checked={agree}
-                  isDarkMode={isDarkMode}
                   onChange={onChangeCheckedHandler(setAgree)}
                   inputProps={{
                     'aria-label': 'agree to waiver checkbox',
@@ -75,10 +72,8 @@ const Body = styled(Content)`
 `
 
 const StyledCheckBox = styled((props) => {
-  const {color: _1, isDarkMode: _2, ...otherProps} = props
+  const {color: _1, ...otherProps} = props
   return <Checkbox {...otherProps} />
-})<{
-  isDarkMode?: boolean
-}>`
+})`
   color: ${(props) => props.color} !important;
 `

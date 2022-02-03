@@ -11,7 +11,6 @@ import Grid from '@material-ui/core/Grid'
 import Box from '@material-ui/core/Box'
 import {useAttendeeVariables} from 'Event'
 import Typography from '@material-ui/core/Typography'
-import {useSimpleBlogTemplate} from 'Event/template/SimpleBlog'
 import Content from 'lib/ui/form/TextEditor/Content'
 
 export default function Waiver() {
@@ -25,10 +24,7 @@ export default function Waiver() {
     body,
   } = useWaiver()
 
-  const template = useSimpleBlogTemplate()
-  const {isDarkMode} = template
   const v = useAttendeeVariables()
-  const color = isDarkMode ? '#FFFFFF' : '#000000'
 
   return (
     <>
@@ -39,9 +35,7 @@ export default function Waiver() {
             <FormControlLabel
               control={
                 <StyledCheckBox
-                  color={color}
                   checked={agree}
-                  isDarkMode={isDarkMode}
                   onChange={onChangeCheckedHandler(setAgree)}
                   inputProps={{
                     'aria-label': 'agree to waiver checkbox',
@@ -74,10 +68,8 @@ const Body = styled(Content)`
 `
 
 const StyledCheckBox = styled((props) => {
-  const {color: _1, isDarkMode: _2, ...otherProps} = props
+  const {color: _1, ...otherProps} = props
   return <Checkbox {...otherProps} />
-})<{
-  isDarkMode?: boolean
-}>`
-  color: ${(props) => props.color} !important;
+})`
+  color: #000000 !important;
 `

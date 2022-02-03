@@ -79,37 +79,9 @@ export const muiTheme = createMuiTheme(
   muiBaseTheme,
 )
 
-export const muiDarkTheme = createMuiTheme(
-  {
-    palette: {
-      type: 'dark',
-      primary: {
-        main: '#FFFFFF',
-      },
-    },
-  },
-  muiBaseTheme,
-)
-
 export type MuiThemeOptions = {
   secondaryColor: string
 }
-
-export const createMuiDarkTheme = (options: MuiThemeOptions) =>
-  createMuiTheme(
-    {
-      palette: {
-        type: 'dark',
-        primary: {
-          main: '#FFFFFF',
-        },
-        secondary: {
-          main: options.secondaryColor || colors.secondary,
-        },
-      },
-    },
-    muiBaseTheme,
-  )
 
 export const createMuiLightTheme = (options: MuiThemeOptions) =>
   createMuiTheme(

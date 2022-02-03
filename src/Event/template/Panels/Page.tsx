@@ -6,11 +6,7 @@ import {safeColor, rgba} from 'lib/color'
 import {ThemeProvider} from '@material-ui/core/styles'
 import {Panels, usePanelsTemplate} from 'Event/template/Panels'
 import Hidden from '@material-ui/core/Hidden'
-import {
-  createMuiDarkTheme,
-  createMuiLightTheme,
-  MuiThemeOptions,
-} from 'lib/ui/theme'
+import {createMuiLightTheme, MuiThemeOptions} from 'lib/ui/theme'
 import LanguageSelector from 'Event/LanguageSelector'
 
 const DEFAULT_BACKGROUND_COLOR = '#FFFFFF'
@@ -22,13 +18,13 @@ export default function Page(props: {
   Mobile: React.ReactElement
 }) {
   const {Left, Right, Mobile} = props
-  const {linkUnderline, backgroundPosition, isDarkMode} = usePanelsTemplate()
+  const {linkUnderline, backgroundPosition} = usePanelsTemplate()
 
   const background = useBackground()
   const backgroundColor = useBackgroundColor()
   const textColor = useTextColor()
   const linkColor = useLinkColor()
-  const theme = useTheme(isDarkMode)
+  const theme = useTheme()
 
   return (
     <ThemeProvider theme={theme}>
@@ -80,9 +76,7 @@ function useBackgroundColor() {
 }
 
 function useTextColor() {
-  const {isDarkMode} = usePanelsTemplate()
-
-  return isDarkMode ? '#FFFFFF' : '#000000'
+  return '#000000'
 }
 
 function useLinkColor() {
@@ -97,7 +91,7 @@ function useLinkColor() {
   return linkColor
 }
 
-export function useTheme(isDarkMode?: boolean) {
+export function useTheme() {
   const template = usePanelsTemplate()
 
   // Material-UI: Unsupported color names.
@@ -106,7 +100,7 @@ export function useTheme(isDarkMode?: boolean) {
     secondaryColor: safeColor(template.accentColor),
   }
 
-  return isDarkMode ? createMuiDarkTheme(options) : createMuiLightTheme(options)
+  return createMuiLightTheme(options)
 }
 
 const Box = styled.div<{

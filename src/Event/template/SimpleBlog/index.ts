@@ -30,7 +30,6 @@ export function useSimpleBlogUpdate() {
 
 export type SimpleBlog = BaseTemplate & {
   name: typeof SIMPLE_BLOG
-  isDarkMode?: boolean
   title: string
   mainNav: HashMap<NavButtonWithSize>
   welcomeText?: string
@@ -259,7 +258,6 @@ export const createSimpleBlog = (): DeepRequired<SimpleBlog> => ({
   blogPosts: {},
   backgroundPosition: 'fixed',
   heroImageSize: 50,
-  isDarkMode: false,
   textColor: '#000000',
   linkColor: '#000000',
   linkUnderline: true,

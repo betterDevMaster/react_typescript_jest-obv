@@ -8,16 +8,12 @@ import Footer from 'Event/template/Cards/Dashboard/Footer'
 import {Cards, useCardsTemplate} from 'Event/template/Cards'
 import {rgba, safeColor} from 'lib/color'
 import LanguageSelectMenu from 'Event/LanguageSelector'
-import {muiDarkTheme, muiTheme} from 'lib/ui/theme'
+import {muiTheme} from 'lib/ui/theme'
 import {ThemeProvider} from '@material-ui/core/styles'
 import {withStyles} from '@material-ui/core/styles'
 import MainNav from 'Event/template/Cards/Dashboard/MainNav'
 import {useRandomBackground} from 'Event/template/Cards/Login/Page'
-import {
-  createMuiDarkTheme,
-  createMuiLightTheme,
-  MuiThemeOptions,
-} from 'lib/ui/theme'
+import {createMuiLightTheme, MuiThemeOptions} from 'lib/ui/theme'
 import IconButton from 'lib/ui/IconButton'
 import {Icon} from 'lib/fontawesome/Icon'
 import {Typography} from '@material-ui/core'
@@ -34,13 +30,11 @@ export default function CardsPage(props: {
   const toggleMenu = () => setMenuVisible(!menuVisible)
   const template = useCardsTemplate()
 
-  const {background, isDarkMode} = template
+  const {background} = template
 
   const dashboardBackground = useRandomBackground()
 
   const backgroundRGBColor = rgba(background.color, background.opacity)
-
-  const theme = isDarkMode ? muiDarkTheme : muiTheme
 
   const color = template.textColor
   const linkUnderline = template.linkUnderline
@@ -49,7 +43,7 @@ export default function CardsPage(props: {
   const contentRef = useRef<HTMLDivElement>(null)
 
   return (
-    <ThemeProvider theme={theme}>
+    <ThemeProvider theme={muiTheme}>
       <TopBox
         background={dashboardBackground}
         color={color}
@@ -112,14 +106,14 @@ function ScrollDownIndicator(props: {
   )
 }
 
-export function useTheme(isDarkMode?: boolean) {
+export function useTheme() {
   const template = useCardsTemplate()
 
   const options: MuiThemeOptions = {
     secondaryColor: safeColor(template.accentColor),
   }
 
-  return isDarkMode ? createMuiDarkTheme(options) : createMuiLightTheme(options)
+  return createMuiLightTheme(options)
 }
 
 export const TopBox = styled.div<{

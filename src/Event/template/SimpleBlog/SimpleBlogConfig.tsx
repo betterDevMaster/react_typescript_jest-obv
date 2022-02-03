@@ -32,7 +32,6 @@ export function SimpleBlogConfig(props: ComponentConfigProps) {
   const update = useSimpleBlogUpdate()
   const {event} = useEvent()
 
-  const [isDarkMode, setIsDarkMode] = useState(template.isDarkMode)
   const [headerIsCollapsed, setHeaderIsCollapsed] = useState(
     template.header.isCollapsed,
   )
@@ -67,7 +66,6 @@ export function SimpleBlogConfig(props: ComponentConfigProps) {
       return
     }
 
-    setIsDarkMode(template.isDarkMode)
     setHeaderIsCollapsed(template.header.isCollapsed)
     setDisableHeaderShadow(template.header.disableShadow)
     setHeaderBackgroundColor(template.header.backgroundColor)
@@ -84,7 +82,6 @@ export function SimpleBlogConfig(props: ComponentConfigProps) {
 
   const save = () => {
     const data: DeepPartial<SimpleBlog> = {
-      isDarkMode,
       header: {
         isCollapsed: headerIsCollapsed,
         disableShadow: disableHeaderShadow,
@@ -115,16 +112,6 @@ export function SimpleBlogConfig(props: ComponentConfigProps) {
       onClose={onClose}
       title="Simple Blog"
     >
-      <Box display="flex" justifyContent="flex-end">
-        <Switch
-          checked={isDarkMode}
-          onChange={onChangeCheckedHandler(setIsDarkMode)}
-          arial-label="config event theme mode"
-          labelPlacement="start"
-          color="primary"
-          label="Dark Mode"
-        />
-      </Box>
       <Box mb={2}>
         <EventImageUpload label="Logo" property="logo" current={event.logo} />
       </Box>

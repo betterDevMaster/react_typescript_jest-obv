@@ -5,7 +5,6 @@ import InputLabel from '@material-ui/core/InputLabel'
 import Slider from '@material-ui/core/Slider'
 import {handleChangeSlider} from 'lib/dom'
 import ColorPicker from 'lib/ui/ColorPicker'
-import Switch from 'lib/ui/form/Switch'
 import {Panels, usePanelsTemplate, usePanelsUpdate} from 'Event/template/Panels'
 import ComponentConfig, {
   SaveButton,
@@ -36,23 +35,6 @@ export default function RightPanelConfig(props: {
         title="Right Panel Config"
       >
         <form onSubmit={handleSubmit(submit)}>
-          <Box mb={2}>
-            <Controller
-              name="isDarkMode"
-              defaultValue={rightPanel.isDarkMode}
-              control={control}
-              render={({value, onChange}) => (
-                <Switch
-                  checked={value}
-                  onChange={onChange}
-                  arial-label="set dark mode"
-                  labelPlacement="end"
-                  color="primary"
-                  label="Dark Mode"
-                />
-              )}
-            />
-          </Box>
           <Box mb={2}>
             <Controller
               name="barBackgroundColor"

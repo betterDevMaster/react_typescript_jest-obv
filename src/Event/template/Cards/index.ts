@@ -34,7 +34,6 @@ export type Cards = BaseTemplate &
   CustomBackgrounds & {
     name: typeof CARDS
     accentColor: string
-    isDarkMode?: boolean
     title: string
     homeMenuTitle: string
     mainNav: {
@@ -345,7 +344,6 @@ export const createCards = (): DeepRequired<Cards> => ({
     checkBoxColor: '#3c18c5',
   },
   blogPosts: {},
-  isDarkMode: false,
   textColor: '#000000',
   linkColor: '#000000',
   linkUnderline: true,

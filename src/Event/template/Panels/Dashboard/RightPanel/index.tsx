@@ -17,7 +17,7 @@ export default function RightPanel(props: {
 }) {
   const {rightPanel} = usePanelsTemplate()
   const {flag: barConfigVisible, toggle: toggleBarConfig} = useToggle()
-  const theme = useTheme(rightPanel.isDarkMode)
+  const theme = useTheme()
 
   return (
     <>
