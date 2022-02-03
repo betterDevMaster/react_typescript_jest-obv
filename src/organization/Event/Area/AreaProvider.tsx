@@ -10,7 +10,7 @@ import {useParams} from 'react-router-dom'
 
 type AreaContextProps = {
   area: Area
-  update: <T extends keyof Area>(key: T) => (val: Area[T]) => void
+  update: (data: Partial<Area>) => void
   processing: boolean
   deleteArea: () => Promise<void>
 }
@@ -76,17 +76,15 @@ function useUpdateArea(
   } = useEvent()
 
   const update = useCallback(
-    <T extends keyof Area>(key: T) => {
+    (data: Partial<Area>) => {
       const url = api(`/events/${slug}/areas/${id}`)
-      return (value: Area[T]) => {
-        setProcessing(true)
-        client
-          .patch<Area>(url, {[key]: value})
-          .then(setArea)
-          .finally(() => {
-            setProcessing(false)
-          })
-      }
+      setProcessing(true)
+      return client
+        .patch<Area>(url, data)
+        .then(setArea)
+        .finally(() => {
+          setProcessing(false)
+        })
     },
     [client, slug, setArea, id, setProcessing],
   )

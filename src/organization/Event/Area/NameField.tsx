@@ -26,6 +26,8 @@ export default function NameField() {
     return <Title variant="h5">{area.name}</Title>
   }
 
+  const save = () => update({name})
+
   return (
     <TextField
       value={name}
@@ -42,7 +44,7 @@ export default function NameField() {
           <InputAdornment position="end">
             <Button
               aria-label="save name"
-              onClick={() => update('name')(name)}
+              onClick={save}
               color="primary"
               disabled={processing}
             >
