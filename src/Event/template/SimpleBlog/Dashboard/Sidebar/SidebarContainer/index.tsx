@@ -40,7 +40,7 @@ export default function SidebarContainer(props: {children: React.ReactNode}) {
         <Box {...sidebar}>
           <TopLayer>
             <EditModeOnly>
-              <SectionBox disablePaddingY>
+              <SectionBox disablePaddingTop>
                 <Button
                   onClick={toggleConfig}
                   fullWidth

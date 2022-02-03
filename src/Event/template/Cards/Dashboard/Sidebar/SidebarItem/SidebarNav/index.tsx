@@ -11,6 +11,7 @@ import {RemoveButton} from 'organization/Event/DashboardConfig/ComponentConfig'
 import {useEditSidebarItem} from 'Event/template/Cards/Dashboard/Sidebar/SidebarItem'
 import {useRemoveIfEmpty} from 'Event/TemplateUpdateProvider'
 import {NavButtonProps} from 'Event/Dashboard/components/NavButton'
+import Section from 'Event/template/Cards/Dashboard/Sidebar/Section'
 
 export const SIDEBAR_NAV = 'Sidebar Nav'
 export type SidebarNavProps = Ordered & {
@@ -24,6 +25,14 @@ export const createSidebarNav = (): SidebarNavProps => ({
 })
 
 export default function SidebarNav(props: SidebarNavProps) {
+  return (
+    <Section>
+      <Content {...props} />
+    </Section>
+  )
+}
+
+function Content(props: SidebarNavProps) {
   const isEditMode = useEditMode()
   const {buttons} = props
 
@@ -59,14 +68,10 @@ export default function SidebarNav(props: SidebarNavProps) {
   })
 
   if (!isEditMode) {
-    return <Box>{buttonComponents}</Box>
+    return <>{buttonComponents}</>
   }
 
-  return (
-    <Box>
-      <DroppleList {...props}>{buttonComponents}</DroppleList>
-    </Box>
-  )
+  return <DroppleList {...props}>{buttonComponents}</DroppleList>
 }
 
 function RemoveSidebarNavButton(props: SidebarNavProps) {
@@ -125,10 +130,4 @@ function useHandleDrag(props: SidebarNavProps) {
 const StyledNewSidebarNavButton = styled(NewSidebarNavButton)`
   margin-top: ${(props) => props.theme.spacing[6]} !important;
   margin-bottom: ${(props) => props.theme.spacing[5]}!important;
-`
-
-const Box = styled.div`
-  margin-bottom: 30px;
-  width: 100%;
-  padding: 0 ${(props) => props.theme.spacing[8]};
 `

@@ -29,10 +29,12 @@ export default React.forwardRef<
 export const SectionBox = styled.div<{
   disablePaddingX?: boolean
   disablePaddingY?: boolean
-  disablePaddingBottom?: boolean
+  disablePaddingTop?: boolean
 }>`
   padding-top: ${(props) =>
-    props.disablePaddingY ? 0 : props.theme.spacing[8]};
+    props.disablePaddingY || props.disablePaddingTop
+      ? 0
+      : props.theme.spacing[8]};
   padding-right: ${(props) =>
     props.disablePaddingX ? 0 : props.theme.spacing[8]};
   padding-bottom: ${(props) =>
