@@ -51,6 +51,7 @@ import FormSelect from 'organization/Event/FormsProvider/FormSelect'
 import Layout from 'organization/user/Layout'
 import Page from 'organization/Event/Page'
 import {useOrganization} from 'organization/OrganizationProvider'
+import AdditionalWaiversButton from 'organization/Event/WaiverConfig/AdditionalWaiversButton'
 import {useObvioUser} from 'obvio/auth'
 
 const imageUploadId = 'waived-logo-upload'
@@ -178,26 +179,29 @@ export default function WaiverConfig() {
     <Layout>
       <Page>
         <form onSubmit={handleSubmit(submit)}>
-          <FormControl fullWidth disabled={submitting}>
-            <FormControlLabel
-              control={
-                <Controller
-                  type="checkbox"
-                  name="is_enabled"
-                  defaultValue={event.waiver ? event.waiver.is_enabled : true}
-                  control={control}
-                  render={({onChange, value}) => (
-                    <Switch
-                      checked={!!value}
-                      onChange={(e) => onChange(e.target.checked)}
-                      inputProps={{'aria-label': 'toggle enabled'}}
-                    />
-                  )}
-                />
-              }
-              label="Enabled"
-            />
-          </FormControl>
+          <Box display="flex" justifyContent="space-between">
+            <FormControl fullWidth disabled={submitting}>
+              <FormControlLabel
+                control={
+                  <Controller
+                    type="checkbox"
+                    name="is_enabled"
+                    defaultValue={event.waiver ? event.waiver.is_enabled : true}
+                    control={control}
+                    render={({onChange, value}) => (
+                      <Switch
+                        checked={!!value}
+                        onChange={(e) => onChange(e.target.checked)}
+                        inputProps={{'aria-label': 'toggle enabled'}}
+                      />
+                    )}
+                  />
+                }
+                label="Enabled"
+              />
+            </FormControl>
+            <AdditionalWaiversButton />
+          </Box>
           <TextField
             name="title"
             label="Waiver File Title (optional)"
