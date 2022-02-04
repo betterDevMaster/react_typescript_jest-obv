@@ -4,7 +4,7 @@ import {BlogPost} from 'Event/Dashboard/components/BlogPosts'
 import {NavButtonWithSize} from 'Event/Dashboard/components/NavButton'
 import {BaseTemplate, BASE_DEFAULTS} from 'Event/template'
 import {EmojiList} from 'Event/template/NiftyFifty/Dashboard/EmojiList'
-import {ResourceList} from 'Event/template/NiftyFifty/Dashboard/Resources/ResourceList'
+import {ResourceListSettings} from 'Event/template/NiftyFifty/Dashboard/Resources/ResourceList'
 import {useTemplate} from 'Event/TemplateProvider'
 import {useTemplateUpdate} from 'Event/TemplateUpdateProvider'
 import {CountDownTimerSettings} from 'Event/Dashboard/components/CountDownTimer'
@@ -135,7 +135,7 @@ export type NiftyFifty = BaseTemplate &
     }
     points_unit: string
     blogPosts: HashMap<BlogPost>
-    resourceList: ResourceList
+    resourceList: ResourceListSettings
     menuIconColor: string
     background?: {
       color?: string

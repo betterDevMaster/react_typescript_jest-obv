@@ -24,7 +24,7 @@ import ResourceItem from 'Event/template/NiftyFifty/Dashboard/Resources/Resource
 import AddResourceButton from 'Event/template/NiftyFifty/Dashboard/Resources/ResourceList/AddResourceButton'
 import ResourceListConfig from 'Event/template/NiftyFifty/Dashboard/Resources/ResourceList/ResourceListConfig'
 
-export interface ResourceList {
+export interface ResourceListSettings {
   title: string
   resources: Resource[]
   cardBackgroundColor?: string

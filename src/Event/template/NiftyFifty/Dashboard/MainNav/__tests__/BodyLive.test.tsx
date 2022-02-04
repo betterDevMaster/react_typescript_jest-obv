@@ -28,11 +28,7 @@ it('should paginate buttons', async () => {
     }),
   })
 
-  const {
-    queryByLabelText,
-    findAllByTestId,
-    findByLabelText,
-  } = await loginToEventSite({
+  const {queryByLabelText, findAllByTestId} = await loginToEventSite({
     event,
     attendee: fakeAttendee({
       tech_check_completed_at: 'now',
@@ -47,4 +43,12 @@ it('should paginate buttons', async () => {
     global.innerHeight = 500
     global.dispatchEvent(new Event('resize'))
   })
+
+  const firstButton = (await findAllByTestId('main nav button container'))[0]
+
+  // is on first page
+  expect(queryByLabelText('show prev buttons')).not.toBeInTheDocument()
+
+  // is on next page (first button hidden)
+  expect(firstButton).toHaveStyle('display: block;')
 })

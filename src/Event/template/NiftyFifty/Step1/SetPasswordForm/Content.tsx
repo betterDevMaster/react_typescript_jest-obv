@@ -164,12 +164,12 @@ const ErrorText = withStyles({
 
 export const StyledButton = styled(
   ({
-    color,
-    backgroundColor,
-    borderRadius,
-    hoverColor,
-    borderColor,
-    borderWidth,
+    color: _1,
+    backgroundColor: _2,
+    borderRadius: _3,
+    hoverColor: _4,
+    borderColor: _5,
+    borderWidth: _6,
     ...otherProps
   }) => <MuiButton {...otherProps} />,
 )`

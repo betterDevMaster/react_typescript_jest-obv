@@ -44,7 +44,6 @@ import {useObvioUser} from 'obvio/auth'
 import {SaveButton} from 'organization/Event/DashboardConfig/ComponentConfig'
 import TemplateProvider from 'Event/TemplateProvider'
 import AdditionalWaiversButton from 'organization/Event/WaiverConfig/AdditionalWaiversButton'
-import {IfOwnerHasPlan} from 'organization/OwnerProvider'
 
 const imageUploadId = 'waived-logo-upload'
 

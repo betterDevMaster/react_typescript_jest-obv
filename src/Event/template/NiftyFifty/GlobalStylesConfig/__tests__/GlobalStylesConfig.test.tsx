@@ -5,11 +5,8 @@ import {CONFIGURE_EVENTS} from 'organization/PermissionsProvider'
 import {goToEventConfig} from 'organization/Event/__utils__/event'
 import axios from 'axios'
 import {fakeNiftyFifty} from 'Event/template/NiftyFifty/__utils__/factory'
-import faker from 'faker'
-import {fireEvent} from '@testing-library/react'
 
 const mockPut = axios.put as jest.Mock
-const mockPost = axios.post as jest.Mock
 
 beforeEach(() => {
   jest.clearAllMocks()

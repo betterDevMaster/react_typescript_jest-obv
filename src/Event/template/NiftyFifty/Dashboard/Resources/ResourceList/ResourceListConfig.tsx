@@ -11,7 +11,7 @@ import {
   useNiftyFiftyTemplate,
   useNiftyFiftyUpdate,
 } from 'Event/template/NiftyFifty'
-import {ResourceList} from 'Event/template/NiftyFifty/Dashboard/Resources/ResourceList'
+import {ResourceListSettings} from 'Event/template/NiftyFifty/Dashboard/Resources/ResourceList'
 import ComponentConfig, {
   SaveButton,
 } from 'organization/Event/DashboardConfig/ComponentConfig'
@@ -27,7 +27,7 @@ export default function ResourceListConfig(props: {
 
   const submit = (
     data: Pick<
-      ResourceList,
+      ResourceListSettings,
       | 'isVisible'
       | 'title'
       | 'menuTitle'

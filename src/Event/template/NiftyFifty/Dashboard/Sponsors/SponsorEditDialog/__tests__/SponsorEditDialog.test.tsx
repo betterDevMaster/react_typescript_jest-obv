@@ -9,7 +9,6 @@ import {goToSponsorConfig} from 'Event/template/NiftyFifty/Dashboard/Sponsors/Sp
 import {createEntityList} from 'lib/list'
 import {fakeNavButton} from 'Event/Dashboard/components/NavButton/__utils__/factory'
 import {fakeNiftyFifty} from 'Event/template/NiftyFifty/__utils__/factory'
-import {clickEdit} from '__utils__/edit'
 
 const mockPut = axios.put as jest.Mock
 

@@ -1,4 +1,3 @@
-import {fakeAttendee} from 'Event/auth/__utils__/factory'
 import faker from 'faker'
 import {loginToEventSite} from 'Event/__utils__/url'
 import axios from 'axios'

@@ -10,10 +10,10 @@ import {v4 as uid} from 'uuid'
 import {EditComponentOverlay} from 'Event/Dashboard/editor/views/EditComponent'
 import AddButton from 'Event/template/NiftyFifty/Dashboard/Sponsors/SponsorEditDialog/Form/Buttons/AddButton'
 
-type Buttons = NonNullable<NonNullable<Sponsor['settings']>['buttons']>
+type SponsorButtons = NonNullable<NonNullable<Sponsor['settings']>['buttons']>
 
 export default function Buttons(props: {
-  buttons: Buttons
+  buttons: SponsorButtons
   edit: ReturnType<typeof useButtons>['edit']
   onAdd: ReturnType<typeof useButtons>['add']
   duplicate: ReturnType<typeof useButtons>['duplicate']
@@ -42,7 +42,7 @@ export default function Buttons(props: {
 }
 
 function ButtonList(props: {
-  buttons: Buttons
+  buttons: SponsorButtons
   edit: ReturnType<typeof useButtons>['edit']
   duplicate: ReturnType<typeof useButtons>['duplicate']
 }) {
@@ -72,7 +72,7 @@ function ButtonList(props: {
 }
 
 export function useButtons(sponsor: Sponsor) {
-  const [buttons, setButtons] = useState<Buttons>(createEntityList([]))
+  const [buttons, setButtons] = useState<SponsorButtons>(createEntityList([]))
   const [loading, setLoading] = useState(true)
   const [editingId, setEditingId] = useState<string | null>(null)
 
@@ -112,7 +112,7 @@ export function useButtons(sponsor: Sponsor) {
       return
     }
 
-    const {[editingId]: target, ...otherEntities} = buttons.entities
+    const {[editingId]: _, ...otherEntities} = buttons.entities
     const otherIds = buttons.ids.filter((i) => i !== editingId)
 
     setButtons({ids: otherIds, entities: otherEntities})

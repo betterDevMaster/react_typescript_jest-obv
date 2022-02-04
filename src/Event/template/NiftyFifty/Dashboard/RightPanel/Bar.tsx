@@ -126,7 +126,7 @@ function Tab(props: {showing: boolean} & TabProps) {
 
 const StyledTab = styled(
   (props: {showing: boolean; color: string} & TabProps) => {
-    const {showing, ...tabProps} = props
+    const {showing: _, ...tabProps} = props
 
     return <MuiTab {...tabProps} />
   },

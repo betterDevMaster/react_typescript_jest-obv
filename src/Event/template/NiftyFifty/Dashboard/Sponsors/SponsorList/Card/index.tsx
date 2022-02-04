@@ -2,7 +2,7 @@ import React, {useState} from 'react'
 import {Draggable} from 'react-beautiful-dnd'
 import styled from 'styled-components'
 
-import {Grid, useTheme, useMediaQuery} from '@material-ui/core'
+import Grid from '@material-ui/core/Grid'
 
 import {useAttendeeVariables} from 'Event'
 import {Sponsor} from 'Event/SponsorPage'
@@ -72,8 +72,6 @@ function Content(props: SponsorProps) {
   const [formVisible, setFormVisible] = useState(false)
   const toggleForm = () => setFormVisible(!formVisible)
   const v = useAttendeeVariables()
-  const theme = useTheme()
-  const isXSMobile = useMediaQuery(theme.breakpoints.down('xs'))
   const template = useNiftyFiftyTemplate()
 
   const backgroundColor =
@@ -88,11 +86,7 @@ function Content(props: SponsorProps) {
         )
 
   return (
-    <Box
-      aria-label="sponsor"
-      backgroundColor={backgroundColor}
-      isXSMobile={isXSMobile}
-    >
+    <Box aria-label="sponsor" backgroundColor={backgroundColor}>
       <SponsorForm
         sponsor={sponsor}
         visible={formVisible}
@@ -137,18 +131,20 @@ function Buttons(props: {sponsor: Sponsor; imageStatus?: any}) {
 }
 
 const Box = styled((props) => {
-  const {backgroundColor, isXSMobile, ...otherProps} = props
+  const {backgroundColor: _, ...otherProps} = props
   return <div {...otherProps} />
 })<{
-  isXSMobile: boolean
   backgroundColor: string
 }>`
   background: ${(props) => props.backgroundColor};
-  padding: ${(props) =>
-    props.isXSMobile ? props.theme.spacing[4] : props.theme.spacing[6]} 
-    ${(props) =>
-      props.isXSMobile ? props.theme.spacing[8] : props.theme.spacing[12]}};
+  padding: ${(props) => props.theme.spacing[6]}
+    ${(props) => props.theme.spacing[12]};
+
   position: relative;
+  @media (max-width: ${(props) => props.theme.breakpoints.sm}) {
+    padding: ${(props) => props.theme.spacing[4]}
+      ${(props) => props.theme.spacing[8]};
+  }
 `
 
 const HeadContent = styled.div`

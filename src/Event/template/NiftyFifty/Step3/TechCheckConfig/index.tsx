@@ -108,7 +108,7 @@ export default function Form() {
       skipTechCheckRules: rules,
     })
     setTechCheck(data)
-      .then((event) => {
+      .then(() => {
         setResponseError(null)
       })
       .catch((e) => {

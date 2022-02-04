@@ -5,7 +5,6 @@ import {CONFIGURE_EVENTS} from 'organization/PermissionsProvider'
 import {fakeNiftyFifty} from 'Event/template/NiftyFifty/__utils__/factory'
 import axios from 'axios'
 import {goToGlobalStylesConfig} from 'organization/Event/Page/__utils__/go-to-global-styles-config'
-import faker from 'faker'
 
 const mockPut = axios.put as jest.Mock
 

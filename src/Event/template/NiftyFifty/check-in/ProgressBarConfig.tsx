@@ -28,7 +28,7 @@ import {numberFormat} from 'lib/numberFormat'
 
 import {SaveButton} from 'organization/Event/DashboardConfig/ComponentConfig'
 
-export interface ProgressBar {
+export interface ProgressBarSettings {
   background: string
   textColor: string
 }

@@ -22,7 +22,7 @@ export interface EmojiList {
   emojiWidth?: number | null
 }
 
-export default function EmojiList() {
+export default function Emojis() {
   const template = useNiftyFiftyTemplate()
   const {emojiList: list} = template
 
