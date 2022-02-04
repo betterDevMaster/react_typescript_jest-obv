@@ -1,5 +1,4 @@
 import React, {useState} from 'react'
-import Button from '@material-ui/core/Button'
 import styled from 'styled-components'
 import {useNiftyFiftyTemplate} from 'Event/template/NiftyFifty'
 import {
@@ -8,6 +7,7 @@ import {
 } from 'organization/Event/Backgrounds/BackgroundsProvider'
 import BackgroundImage from 'Event/template/NiftyFifty/Dashboard/Resources/Backgrounds/BackgroundsConfig/BackgroundImage'
 import BackgroundImageEditDialog from 'Event/template/NiftyFifty/Dashboard/Resources/Backgrounds/BackgroundsConfig/BackgroundImageEditDialog'
+import Button from 'lib/ui/Button'
 
 export default function BackgroundImageRow(props: {background: Background}) {
   const [visibleEditDialog, setVisibleEditDialog] = useState(false)
@@ -30,7 +30,6 @@ export default function BackgroundImageRow(props: {background: Background}) {
         aria-label="background image"
       />
       <Button
-        type="button"
         variant="contained"
         color="primary"
         disabled={busy}

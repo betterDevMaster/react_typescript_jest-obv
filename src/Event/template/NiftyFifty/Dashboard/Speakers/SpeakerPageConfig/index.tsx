@@ -1,6 +1,5 @@
 import styled from 'styled-components'
 import Box from '@material-ui/core/Box'
-import Button from '@material-ui/core/Button'
 import React, {useState} from 'react'
 import Layout from 'organization/user/Layout'
 import AddSpeakerButton from 'Event/template/NiftyFifty/Dashboard/Speakers/SpeakerPageConfig/AddSpeakerButton'
@@ -9,6 +8,7 @@ import SpeakerPageEditDialog from 'Event/template/NiftyFifty/Dashboard/Speakers/
 import {Speaker} from 'Event/SpeakerPage'
 import {useSpeakers} from 'organization/Event/SpeakersProvider'
 import SpeakerPage from 'Event/template/NiftyFifty/Dashboard/Speakers'
+import Button from 'lib/ui/Button'
 
 export default function SpeakerPageConfig() {
   const {add, edit} = useSpeakers()

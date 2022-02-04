@@ -1,16 +1,13 @@
 import React from 'react'
 import styled from 'styled-components'
 
-import {
-  AppBar,
-  CssBaseline,
-  MenuItem,
-  makeStyles,
-  Select,
-  Toolbar,
-  useTheme,
-  useMediaQuery,
-} from '@material-ui/core'
+import {makeStyles, useTheme, useMediaQuery} from '@material-ui/core'
+import AppBar from '@material-ui/core/AppBar'
+import CssBaseline from '@material-ui/core/CssBaseline'
+import MenuItem from '@material-ui/core/MenuItem'
+import Select from '@material-ui/core/Select'
+import Toolbar from '@material-ui/core/Toolbar'
+
 import KeyboardArrowDownIcon from '@material-ui/icons/KeyboardArrowDown'
 
 import {useEditMode} from 'Event/Dashboard/editor/state/edit-mode'

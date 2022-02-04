@@ -1,7 +1,8 @@
 import React from 'react'
 import {Controller, useForm} from 'react-hook-form'
 
-import {Box, TextField} from '@material-ui/core'
+import Box from '@material-ui/core/Box'
+import TextField from '@material-ui/core/TextField'
 
 import {
   NiftyFifty,

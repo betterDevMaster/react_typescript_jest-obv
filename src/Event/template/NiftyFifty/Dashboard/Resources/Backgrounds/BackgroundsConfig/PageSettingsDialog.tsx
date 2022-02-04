@@ -4,7 +4,7 @@ import DialogTitle from '@material-ui/core/DialogTitle'
 import Dialog from 'lib/ui/Dialog'
 import Box from '@material-ui/core/Box'
 import TextField from '@material-ui/core/TextField'
-import Button from '@material-ui/core/Button'
+import Button from 'lib/ui/Button'
 import TextEditor, {TextEditorContainer} from 'lib/ui/form/TextEditor'
 import {useEvent, useUpdate} from 'Event/EventProvider'
 

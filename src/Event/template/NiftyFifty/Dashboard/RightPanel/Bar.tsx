@@ -5,8 +5,9 @@ import {
   useNiftyFiftyTemplate,
 } from 'Event/template/NiftyFifty'
 
-import {makeStyles, Tabs} from '@material-ui/core'
+import {makeStyles} from '@material-ui/core'
 import MuiTab, {TabProps} from '@material-ui/core/Tab'
+import Tabs from '@material-ui/core/Tabs'
 
 import {useAttendeeVariables} from 'Event'
 import {TOP_BAR_HEIGHT} from 'Event/template/NiftyFifty/Page'

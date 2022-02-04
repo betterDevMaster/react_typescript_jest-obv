@@ -2,14 +2,12 @@ import React, {useState} from 'react'
 import styled from 'styled-components'
 import {Controller, useForm} from 'react-hook-form'
 
-import {
-  Box,
-  Button,
-  FormControl,
-  InputLabel,
-  TextField,
-  Typography,
-} from '@material-ui/core'
+import Box from '@material-ui/core/Box'
+import FormControl from '@material-ui/core/FormControl'
+import InputLabel from '@material-ui/core/InputLabel'
+import TextField from '@material-ui/core/TextField'
+import Typography from '@material-ui/core/Typography'
+
 import {withStyles} from '@material-ui/core/styles'
 
 import {Sponsor} from 'Event/SponsorPage'
@@ -33,6 +31,7 @@ import UploadButton from 'lib/ui/form/ImageUpload/UploadButton'
 import Image from 'lib/ui/form/ImageUpload/Image'
 import {useFileSelect} from 'lib/ui/form/file'
 import {EntityList} from 'lib/list'
+import Button from 'lib/ui/Button'
 
 import {useOrganization} from 'organization/OrganizationProvider'
 import {useSponsors} from 'organization/Event/SponsorsProvider'
@@ -208,7 +207,6 @@ export default function EditSponsorForm(props: {
           fullWidth
           variant="contained"
           color="primary"
-          type="submit"
           aria-label="save sponsor"
           disabled={submitting}
         >

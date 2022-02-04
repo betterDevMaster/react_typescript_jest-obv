@@ -2,7 +2,11 @@ import React, {useState, useEffect} from 'react'
 import {useForm, Controller} from 'react-hook-form'
 import styled from 'styled-components'
 
-import {Grid, InputLabel, Slider, TextField} from '@material-ui/core'
+import Grid from '@material-ui/core/Grid'
+import InputLabel from '@material-ui/core/InputLabel'
+import Slider from '@material-ui/core/Slider'
+import TextField from '@material-ui/core/TextField'
+
 import withStyles from '@material-ui/core/styles/withStyles'
 
 import {

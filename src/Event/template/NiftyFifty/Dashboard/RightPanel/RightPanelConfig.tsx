@@ -1,7 +1,10 @@
 import React from 'react'
 import {Controller, useForm} from 'react-hook-form'
 
-import {Box, InputLabel, Slider, TextField} from '@material-ui/core'
+import Box from '@material-ui/core/Box'
+import InputLabel from '@material-ui/core/InputLabel'
+import Slider from '@material-ui/core/Slider'
+import TextField from '@material-ui/core/TextField'
 
 import {
   NiftyFifty,

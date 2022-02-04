@@ -1,7 +1,8 @@
 import React from 'react'
 import {DragDropContext, Droppable, DropResult} from 'react-beautiful-dnd'
 
-import {Grid, Typography} from '@material-ui/core'
+import Grid from '@material-ui/core/Grid'
+import Typography from '@material-ui/core/Typography'
 
 import {Speaker} from 'Event/SpeakerPage'
 import {

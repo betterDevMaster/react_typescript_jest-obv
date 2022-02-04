@@ -1,7 +1,8 @@
 import React from 'react'
 import styled from 'styled-components'
 
-import {Paper, Typography} from '@material-ui/core'
+import Paper from '@material-ui/core/Paper'
+import Typography from '@material-ui/core/Typography'
 import {makeStyles} from '@material-ui/core/styles'
 import MuiTextField, {TextFieldProps} from '@material-ui/core/TextField'
 import MuiButton, {ButtonProps} from '@material-ui/core/Button'

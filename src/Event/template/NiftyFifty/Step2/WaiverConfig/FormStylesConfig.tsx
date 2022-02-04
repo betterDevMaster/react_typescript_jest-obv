@@ -2,7 +2,7 @@ import React from 'react'
 import {Controller, useForm} from 'react-hook-form'
 import styled from 'styled-components'
 
-import {Button, TextField} from '@material-ui/core'
+import TextField from '@material-ui/core/TextField'
 
 import {
   useNiftyFiftyTemplate,
@@ -11,6 +11,7 @@ import {
 
 import ColorPicker from 'lib/ui/ColorPicker'
 import {useToggle} from 'lib/toggle'
+import Button from 'lib/ui/Button'
 
 import ComponentConfig from 'organization/Event/DashboardConfig/ComponentConfig'
 
@@ -161,7 +162,6 @@ function EditFormStyleButton(props: {onClick: () => void; className?: string}) {
     <Button
       className={props.className}
       fullWidth
-      size="large"
       variant="contained"
       color="primary"
       aria-label="style post form"

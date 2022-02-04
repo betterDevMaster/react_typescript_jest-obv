@@ -2,14 +2,11 @@ import React, {useState} from 'react'
 import {Controller, useForm} from 'react-hook-form'
 import styled from 'styled-components'
 
-import {
-  Button,
-  FormControl,
-  Grid,
-  InputLabel,
-  Slider,
-  TextField,
-} from '@material-ui/core'
+import FormControl from '@material-ui/core/FormControl'
+import Grid from '@material-ui/core/Grid'
+import InputLabel from '@material-ui/core/InputLabel'
+import Slider from '@material-ui/core/Slider'
+import TextField from '@material-ui/core/TextField'
 
 import {
   NiftyFifty,
@@ -20,6 +17,7 @@ import {
 import {handleChangeSlider, onChangeCheckedHandler} from 'lib/dom'
 import Switch from 'lib/ui/form/Switch'
 import ColorPicker from 'lib/ui/ColorPicker'
+import Button from 'lib/ui/Button'
 import TextEditor, {TextEditorContainer} from 'lib/ui/form/TextEditor'
 import {numberFormat} from 'lib/numberFormat'
 
@@ -207,7 +205,6 @@ export default function SpeakerPageConfigForm(props: {onClose: () => void}) {
         fullWidth
         variant="contained"
         color="primary"
-        type="submit"
         aria-label="save speaker page config"
         disabled={submitting}
       >

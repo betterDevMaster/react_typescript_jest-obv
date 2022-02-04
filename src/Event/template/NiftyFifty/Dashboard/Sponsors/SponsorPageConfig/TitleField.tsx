@@ -1,9 +1,10 @@
 import React, {useState} from 'react'
 import TextField from '@material-ui/core/TextField'
 import InputAdornment from '@material-ui/core/InputAdornment'
-import Button from '@material-ui/core/Button'
 import {ObvioEvent} from 'Event'
 import {api} from 'lib/url'
+import Button from 'lib/ui/Button'
+
 import {useEvent} from 'Event/EventProvider'
 import {useOrganization} from 'organization/OrganizationProvider'
 import {onChangeStringHandler} from 'lib/dom'
@@ -49,6 +50,7 @@ export default function TitleField() {
               onClick={save}
               disabled={!canSave}
               color="primary"
+              variant="contained"
               aria-label="save sponsor page title"
             >
               Save

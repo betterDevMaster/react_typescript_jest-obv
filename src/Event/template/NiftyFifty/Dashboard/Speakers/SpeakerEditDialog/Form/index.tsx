@@ -2,8 +2,9 @@ import React, {useState} from 'react'
 import {Controller, useForm} from 'react-hook-form'
 import styled from 'styled-components'
 
-import {Button, TextField} from '@material-ui/core'
+import TextField from '@material-ui/core/TextField'
 
+import Button from 'lib/ui/Button'
 import DangerButton from 'lib/ui/Button/DangerButton'
 import {api} from 'lib/url'
 import {fieldError} from 'lib/form'
@@ -155,7 +156,6 @@ export default function EditSpeakerForm(props: {
         fullWidth
         variant="contained"
         color="primary"
-        type="submit"
         aria-label="save speaker"
         disabled={submitting}
       >

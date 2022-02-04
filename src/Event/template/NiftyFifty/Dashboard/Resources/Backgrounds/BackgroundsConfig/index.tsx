@@ -1,5 +1,4 @@
 import React, {useState} from 'react'
-import Button from '@material-ui/core/Button'
 import Grid from '@material-ui/core/Grid'
 import InputLabel from '@material-ui/core/InputLabel'
 import Slider from '@material-ui/core/Slider'
@@ -12,6 +11,7 @@ import {
   useNiftyFiftyUpdate,
 } from 'Event/template/NiftyFifty'
 import {handleChangeSlider} from 'lib/dom'
+import Button from 'lib/ui/Button'
 import {spacing} from 'lib/ui/theme'
 import {useForm} from 'react-hook-form'
 import {useToggle} from 'lib/toggle'
@@ -140,7 +140,6 @@ export default function BackgroundsConfig() {
         color="primary"
         disabled={processing}
         fullWidth
-        type="submit"
         variant="contained"
       >
         Save Zoom Background Settings

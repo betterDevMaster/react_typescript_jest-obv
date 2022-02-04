@@ -1,6 +1,7 @@
 import React from 'react'
 
-import {DialogContent, DialogTitle} from '@material-ui/core'
+import DialogContent from '@material-ui/core/DialogContent'
+import DialogTitle from '@material-ui/core/DialogTitle'
 
 import Form from 'Event/template/NiftyFifty/Dashboard/Sponsors/SponsorEditDialog/Form'
 

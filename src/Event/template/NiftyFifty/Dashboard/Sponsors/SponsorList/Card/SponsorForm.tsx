@@ -1,5 +1,4 @@
 import DialogContent from '@material-ui/core/DialogContent'
-import Button from '@material-ui/core/Button'
 import DialogTitle from '@material-ui/core/DialogTitle'
 import Question from 'Event/Question'
 import Dialog from 'lib/ui/Dialog'
@@ -10,6 +9,7 @@ import Box from '@material-ui/core/Box'
 import {hasSubmittedForm, useSubmissions} from 'Event/SubmissionsProvider'
 import {Sponsor} from 'Event/SponsorPage'
 import {useAttendeeVariables} from 'Event'
+import Button from 'lib/ui/Button'
 import {
   DEFAULT_RESUBMIT_LABEL,
   DEFAULT_SUBMITTED_MESSAGE,
@@ -110,7 +110,12 @@ function Body(props: {form: Form; onSubmitted: () => void}) {
           disabled={submitting}
         />
       ))}
-      <Button type="submit" variant="outlined" disabled={submitting} fullWidth>
+      <Button
+        color="primary"
+        variant="outlined"
+        disabled={submitting}
+        fullWidth
+      >
         {v(form.submit_label || DEFAULT_SUBMIT_LABEL)}
       </Button>
     </form>
@@ -132,7 +137,7 @@ function SubmittedMessage(props: {form: Form; onResubmit: () => void}) {
   return (
     <div>
       <p>{v(props.form.submitted_message || DEFAULT_SUBMITTED_MESSAGE)}</p>
-      <Button variant="text" onClick={onResubmit}>
+      <Button variant="text" color="primary" onClick={onResubmit}>
         {v(props.form.resubmit_button_label || DEFAULT_RESUBMIT_LABEL)}
       </Button>
     </div>

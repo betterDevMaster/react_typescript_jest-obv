@@ -1,9 +1,9 @@
-import Button from '@material-ui/core/Button'
 import styled from 'styled-components'
 import {NavButtonWithSize} from 'Event/Dashboard/components/NavButton'
 import React, {useState} from 'react'
 import {useNiftyFiftyTemplate} from 'Event/template/NiftyFifty'
 import MainNavButtonConfig from 'Event/template/NiftyFifty/Dashboard/MainNav/MainNavButton/MainNavButtonConfig'
+import Button from 'lib/ui/Button'
 
 export default function NewMainNavButton(props: {className?: string}) {
   const template = useNiftyFiftyTemplate()
@@ -38,7 +38,6 @@ export default function NewMainNavButton(props: {className?: string}) {
       <NewButtonConfig button={button} onClose={() => setButton(null)} />
       <StyledButton
         fullWidth
-        size="large"
         variant="outlined"
         color="primary"
         aria-label="add main nav button"

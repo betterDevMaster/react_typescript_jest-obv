@@ -7,7 +7,8 @@ import {
   DropResult,
 } from 'react-beautiful-dnd'
 
-import {Grid, useTheme, useMediaQuery} from '@material-ui/core'
+import {useTheme, useMediaQuery} from '@material-ui/core'
+import Grid from '@material-ui/core/Grid'
 
 import {useAttendeeVariables} from 'Event'
 import {HasRules} from 'Event/attendee-rules'

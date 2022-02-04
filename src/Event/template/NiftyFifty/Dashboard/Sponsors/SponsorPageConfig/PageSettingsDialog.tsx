@@ -2,18 +2,15 @@ import React, {useState} from 'react'
 import {Controller, useForm} from 'react-hook-form'
 import styled from 'styled-components'
 
-import {
-  Box,
-  Button,
-  DialogContent,
-  DialogTitle,
-  FormControl,
-  Grid,
-  InputLabel,
-  Slider,
-  TextField,
-  Typography,
-} from '@material-ui/core'
+import Box from '@material-ui/core/Box'
+import DialogContent from '@material-ui/core/DialogContent'
+import DialogTitle from '@material-ui/core/DialogTitle'
+import FormControl from '@material-ui/core/FormControl'
+import Grid from '@material-ui/core/Grid'
+import InputLabel from '@material-ui/core/InputLabel'
+import Slider from '@material-ui/core/Slider'
+import TextField from '@material-ui/core/TextField'
+import Typography from '@material-ui/core/Typography'
 import {withStyles} from '@material-ui/core/styles'
 
 import {ObvioEvent} from 'Event'
@@ -29,6 +26,7 @@ import {fieldError} from 'lib/form'
 import {ValidationError} from 'lib/ui/api-client'
 import {handleChangeSlider, onChangeCheckedHandler} from 'lib/dom'
 import {spacing} from 'lib/ui/theme'
+import Button from 'lib/ui/Button'
 import DangerButton from 'lib/ui/Button/DangerButton'
 import ColorPicker from 'lib/ui/ColorPicker'
 import TextEditor, {TextEditorContainer} from 'lib/ui/form/TextEditor'
@@ -309,7 +307,6 @@ export default function PageSettingsDialog(props: {
               />
             </Box>
             <Button
-              type="submit"
               variant="contained"
               color="primary"
               fullWidth

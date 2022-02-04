@@ -2,7 +2,8 @@ import React from 'react'
 import {Draggable} from 'react-beautiful-dnd'
 import styled from 'styled-components'
 
-import {Grid, useTheme, useMediaQuery} from '@material-ui/core'
+import Grid from '@material-ui/core/Grid'
+import {useTheme, useMediaQuery} from '@material-ui/core'
 
 import {useAttendeeVariables} from 'Event'
 import Image from 'Event/template/NiftyFifty/Dashboard/Speakers/SpeakerList/Card/Image'
